@@ -9,10 +9,18 @@ export const canReplyWithCache = (type, payload, resourceState) => {
     const now = new Date();
     switch (type) {
         case 'getOne':
-            return resourceState.validity[(payload as GetOneParams).id] > now;
+            return (
+                resourceState &&
+                resourceState.validity &&
+                resourceState.validity[(payload as GetOneParams).id] > now
+            );
         case 'getMany':
-            return (payload as GetManyParams).ids.every(
-                id => resourceState.validity[id] > now
+            return (
+                resourceState &&
+                resourceState.validity &&
+                (payload as GetManyParams).ids.every(
+                    id => resourceState.validity[id] > now
+                )
             );
         default:
             return false;

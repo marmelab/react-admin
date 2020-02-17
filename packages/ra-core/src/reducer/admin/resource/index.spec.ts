@@ -33,6 +33,7 @@ describe('Resources Reducer', () => {
                             total: 0,
                             loadedOnce: false,
                         },
+                        validity: {},
                         props: { name: 'posts' },
                     },
                     comments: {
@@ -50,6 +51,7 @@ describe('Resources Reducer', () => {
                             total: 0,
                             loadedOnce: false,
                         },
+                        validity: {},
                         props: { name: 'comments' },
                     },
                 },
@@ -77,6 +79,7 @@ describe('Resources Reducer', () => {
                     total: 0,
                     loadedOnce: false,
                 },
+                validity: {},
                 props: { name: 'posts' },
             },
             comments: {
@@ -94,6 +97,7 @@ describe('Resources Reducer', () => {
                     total: 0,
                     loadedOnce: false,
                 },
+                validity: {},
                 props: { name: 'comments' },
             },
             users: {
@@ -111,6 +115,7 @@ describe('Resources Reducer', () => {
                     total: 0,
                     loadedOnce: false,
                 },
+                validity: {},
                 props: { name: 'users', options: 'foo' },
             },
         });
@@ -135,6 +140,7 @@ describe('Resources Reducer', () => {
                             total: 0,
                             loadedOnce: false,
                         },
+                        validity: {},
                         props: { name: 'posts' },
                     },
                     comments: {
@@ -152,6 +158,7 @@ describe('Resources Reducer', () => {
                             total: 0,
                             loadedOnce: false,
                         },
+                        validity: {},
                         props: { name: 'comments' },
                     },
                 },
@@ -176,6 +183,7 @@ describe('Resources Reducer', () => {
                     total: 0,
                     loadedOnce: false,
                 },
+                validity: {},
                 props: { name: 'posts' },
             },
         });
@@ -200,6 +208,7 @@ describe('Resources Reducer', () => {
                             total: 0,
                             loadedOnce: false,
                         },
+                        validity: {},
                         props: { name: 'posts' },
                     },
                     comments: {
@@ -217,6 +226,7 @@ describe('Resources Reducer', () => {
                             total: 0,
                             loadedOnce: false,
                         },
+                        validity: {},
                         props: { name: 'comments' },
                     },
                 },
@@ -249,6 +259,7 @@ describe('Resources Reducer', () => {
                     total: 0,
                     loadedOnce: false,
                 },
+                validity: {},
                 props: { name: 'posts' },
             },
             comments: {
@@ -266,6 +277,7 @@ describe('Resources Reducer', () => {
                     total: 0,
                     loadedOnce: false,
                 },
+                validity: {},
                 props: { name: 'comments' },
             },
         });
