@@ -159,12 +159,19 @@ const useListController = (props: ListProps): ListControllerProps => {
                     'warning'
                 ),
         },
-        (state: ReduxState) =>
-            state.admin.resources[resource]
-                ? state.admin.resources[resource].list.idsForQuery[
-                      JSON.stringify(payload)
-                  ]
-                : null,
+        (state: ReduxState): Identifier[] => {
+            // grab the ids from the state
+            const resourceState = state.admin.resources[resource];
+            // if the resource isn't initialized, return null
+            if (!resourceState) return null;
+            const idsForQuery =
+                resourceState.list.idsForQuery[JSON.stringify(payload)];
+            // if the list of ids for the current request (idsForQuery) isn't loaded yet,
+            // return the list of ids for the previous request (ids)
+            return idsForQuery === undefined
+                ? resourceState.list.ids
+                : idsForQuery;
+        },
         (state: ReduxState) =>
             state.admin.resources[resource]
                 ? state.admin.resources[resource].list.total

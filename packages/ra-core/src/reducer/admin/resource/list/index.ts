@@ -16,7 +16,7 @@ export default combineReducers({
      *
      * @see https://stackoverflow.com/questions/43375079/redux-warning-only-appearing-in-tests
      */
-    ids: ids || defaultReducer, // @deprecated, use idsForQuery instead
+    ids: ids || defaultReducer,
     idsForQuery: idsForQuery || defaultReducer,
     loadedOnce: loadedOnce || defaultReducer,
     params: params || defaultReducer,
