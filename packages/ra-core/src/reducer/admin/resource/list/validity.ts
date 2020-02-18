@@ -1,6 +1,6 @@
 import { Reducer } from 'redux';
 import { FETCH_END } from '../../../../actions';
-import { GET_LIST } from '../../../../core';
+import { GET_LIST, CREATE } from '../../../../core';
 
 interface ValidityRegistry {
     [key: string]: Date;
@@ -16,24 +16,33 @@ const validityReducer: Reducer<ValidityRegistry> = (
         !meta ||
         !meta.fetchResponse ||
         meta.fetchStatus !== FETCH_END ||
-        meta.fromCache === true ||
-        meta.fetchResponse !== GET_LIST
+        meta.fromCache === true
     ) {
         return previousState;
     }
-    if (payload.validUntil) {
-        // store the validity date
-        return {
-            ...previousState,
-            [JSON.stringify(requestPayload)]: payload.validUntil,
-        };
-    } else {
-        // remove the validity date
-        const {
-            [JSON.stringify(requestPayload)]: value,
-            ...rest
-        } = previousState;
-        return rest;
+    switch (meta.fetchResponse) {
+        case GET_LIST: {
+            if (payload.validUntil) {
+                // store the validity date
+                return {
+                    ...previousState,
+                    [JSON.stringify(requestPayload)]: payload.validUntil,
+                };
+            } else {
+                // remove the validity date
+                const {
+                    [JSON.stringify(requestPayload)]: value,
+                    ...rest
+                } = previousState;
+                return rest;
+            }
+        }
+        case CREATE:
+            // force refresh of all lists because we don't know where the
+            // new record will appear in the list
+            return initialState;
+        default:
+            return previousState;
     }
 };
 
