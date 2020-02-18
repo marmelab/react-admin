@@ -68,6 +68,7 @@ const useGetMatching = (
     options?: any
 ): UseGetMatchingResult => {
     const relatedTo = referenceSource(referencingResource, source);
+    const payload = { pagination, sort, filter };
     const {
         data: possibleValues,
         total,
@@ -78,7 +79,7 @@ const useGetMatching = (
         {
             type: 'getList',
             resource,
-            payload: { pagination, sort, filter },
+            payload,
         },
         {
             ...options,
@@ -93,7 +94,9 @@ const useGetMatching = (
             }),
         (state: ReduxState) =>
             state.admin.resources[resource]
-                ? state.admin.resources[resource].list.total
+                ? state.admin.resources[resource].list.totalForQuery[
+                      JSON.stringify(payload)
+                  ]
                 : null
     );
 
