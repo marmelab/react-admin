@@ -22,6 +22,7 @@ export const BooleanField: FunctionComponent<
 > = ({
     className,
     classes: classesOverride,
+    emptyText,
     source,
     record = {},
     valueLabelTrue,
@@ -72,7 +73,9 @@ export const BooleanField: FunctionComponent<
             variant="body2"
             className={className}
             {...sanitizeRestProps(rest)}
-        />
+        >
+            {emptyText}
+        </Typography>
     );
 };
 
