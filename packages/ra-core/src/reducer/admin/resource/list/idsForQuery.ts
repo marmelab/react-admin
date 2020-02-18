@@ -4,7 +4,8 @@ import mapValues from 'lodash/mapValues';
 import {
     CRUD_GET_LIST_SUCCESS,
     CrudGetListSuccessAction,
-    CrudGetOneSuccessAction,
+    CRUD_GET_MATCHING_SUCCESS,
+    CrudGetMatchingAction,
 } from '../../../../actions';
 import { DELETE, DELETE_MANY } from '../../../../core';
 import { Identifier } from '../../../../types';
@@ -17,7 +18,7 @@ interface State {
 
 type ActionTypes =
     | CrudGetListSuccessAction
-    | CrudGetOneSuccessAction
+    | CrudGetMatchingAction
     | {
           type: 'OTHER_ACTION';
           payload: any;
@@ -45,6 +46,7 @@ const idsForQueryReducer: Reducer<State> = (
 
     switch (action.type) {
         case CRUD_GET_LIST_SUCCESS:
+        case CRUD_GET_MATCHING_SUCCESS:
             return {
                 ...previousState,
                 [JSON.stringify(
