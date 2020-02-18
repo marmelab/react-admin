@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import { FETCH_END } from '../../../actions';
+import { FETCH_END, REFRESH_VIEW } from '../../../actions';
 import {
     CREATE,
     DELETE,
@@ -23,8 +23,11 @@ const initialState = {};
 
 const validityReducer: Reducer<ValidityRegistry> = (
     previousState = initialState,
-    { payload, requestPayload, meta }
+    { type, payload, requestPayload, meta }
 ) => {
+    if (type === REFRESH_VIEW) {
+        return initialState;
+    }
     if (
         !meta ||
         !meta.fetchResponse ||

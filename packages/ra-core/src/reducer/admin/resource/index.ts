@@ -43,20 +43,10 @@ export default (previousState = initialState, action: ActionTypes) => {
         }, {});
     }
 
-    if (action.type === REFRESH_VIEW) {
-        return Object.keys(previousState).reduce(
-            (acc, resource) => ({
-                ...acc,
-                [resource]: {
-                    ...previousState[resource],
-                    validity: {},
-                },
-            }),
-            {}
-        );
-    }
-
-    if (!action.meta || !action.meta.resource) {
+    if (
+        action.type !== REFRESH_VIEW &&
+        (!action.meta || !action.meta.resource)
+    ) {
         return previousState;
     }
 
@@ -64,18 +54,12 @@ export default (previousState = initialState, action: ActionTypes) => {
     const newState = resources.reduce(
         (acc, resource) => ({
             ...acc,
-            [resource]:
-                action.meta.resource === resource
-                    ? {
-                          props: previousState[resource].props,
-                          data: data(previousState[resource].data, action),
-                          list: list(previousState[resource].list, action),
-                          validity: validity(
-                              previousState[resource].validity,
-                              action
-                          ),
-                      }
-                    : previousState[resource],
+            [resource]: {
+                props: previousState[resource].props,
+                data: data(previousState[resource].data, action),
+                list: list(previousState[resource].list, action),
+                validity: validity(previousState[resource].validity, action),
+            },
         }),
         {}
     );
