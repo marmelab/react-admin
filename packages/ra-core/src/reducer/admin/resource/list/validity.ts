@@ -25,7 +25,7 @@ const validityReducer: Reducer<ValidityRegistry> = (
         // store the validity date
         return {
             ...previousState,
-            [JSON.stringify(requestPayload)]: new Date(),
+            [JSON.stringify(requestPayload)]: payload.validUntil,
         };
     } else {
         // remove the validity date
