@@ -5,7 +5,7 @@ import {
     CRUD_GET_LIST_SUCCESS,
     CrudGetListSuccessAction,
     CRUD_GET_MATCHING_SUCCESS,
-    CrudGetMatchingAction,
+    CrudGetMatchingSuccessAction,
 } from '../../../../actions';
 import { DELETE, DELETE_MANY } from '../../../../core';
 import { Identifier } from '../../../../types';
@@ -18,7 +18,7 @@ interface State {
 
 type ActionTypes =
     | CrudGetListSuccessAction
-    | CrudGetMatchingAction
+    | CrudGetMatchingSuccessAction
     | {
           type: 'OTHER_ACTION';
           payload: any;
