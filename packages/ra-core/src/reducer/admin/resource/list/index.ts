@@ -5,6 +5,7 @@ import loadedOnce from './loadedOnce';
 import params from './params';
 import selectedIds from './selectedIds';
 import total from './total';
+import totalForQuery from './totalForQuery';
 import validity from './validity';
 
 const defaultReducer = () => null;
@@ -23,5 +24,6 @@ export default combineReducers({
     params: params || defaultReducer,
     selectedIds: selectedIds || defaultReducer,
     total: total || defaultReducer,
+    totalForQuery: totalForQuery || defaultReducer,
     validity: validity || defaultReducer,
 });

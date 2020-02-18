@@ -132,6 +132,7 @@ const useListController = (props: ListProps): ListControllerProps => {
         sort: { field: query.sort, order: query.order },
         filter: { ...query.filter, ...filter },
     };
+    const requestSignature = JSON.stringify(payload);
 
     /**
      * We don't use useGetList() here because we want the list of ids to be
@@ -159,23 +160,32 @@ const useListController = (props: ListProps): ListControllerProps => {
                     'warning'
                 ),
         },
+        // data selector
         (state: ReduxState): Identifier[] => {
-            // grab the ids from the state
             const resourceState = state.admin.resources[resource];
             // if the resource isn't initialized, return null
             if (!resourceState) return null;
             const idsForQuery =
-                resourceState.list.idsForQuery[JSON.stringify(payload)];
+                resourceState.list.idsForQuery[requestSignature];
             // if the list of ids for the current request (idsForQuery) isn't loaded yet,
             // return the list of ids for the previous request (ids)
             return idsForQuery === undefined
                 ? resourceState.list.ids
                 : idsForQuery;
         },
-        (state: ReduxState) =>
-            state.admin.resources[resource]
-                ? state.admin.resources[resource].list.total
-                : null
+        // total selector
+        (state: ReduxState) => {
+            const resourceState = state.admin.resources[resource];
+            // if the resource isn't initialized, return null
+            if (!resourceState) return null;
+            const totalForQuery =
+                resourceState.list.totalForQuery[requestSignature];
+            // if the total for the current request (totalForQuery) isn't loaded yet,
+            // return the total for the previous request (total)
+            return totalForQuery === undefined
+                ? resourceState.list.total
+                : totalForQuery;
+        }
     );
     const data = useSelector(
         (state: ReduxState) =>

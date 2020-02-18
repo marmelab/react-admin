@@ -298,6 +298,7 @@ export interface ReduxState {
                     loadedOnce: boolean;
                     selectedIds: Identifier[];
                     total: number;
+                    totalForQuery: { [key: string]: number };
                 };
                 validity: {
                     [key: string]: Date;

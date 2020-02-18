@@ -42,10 +42,11 @@ export const getResultFromCache = (type, payload, resourceState) => {
     switch (type) {
         case 'getList': {
             const data = resourceState.data;
-            const ids = resourceState.list.idsForQuery[JSON.stringify(payload)];
+            const requestSignature = JSON.stringify(payload);
+            const ids = resourceState.list.idsForQuery[requestSignature];
             return {
                 data: ids.map(id => data[id]),
-                total: resourceState.list.total, // FIXME should be request dependent
+                total: resourceState.list.totalForQuery[requestSignature],
             } as GetListResult;
         }
         case 'getOne':
