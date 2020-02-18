@@ -62,16 +62,18 @@ export const NumberField: FunctionComponent<
         return null;
     }
     const value = get(record, source);
-    if (value == null && !emptyText) {
-        return null;
+    if (value == null) {
+        return emptyText ? (
+            <Typography
+                component="span"
+                variant="body2"
+                className={className}
+                {...sanitizeRestProps(rest)}
+            >
+                {emptyText}
+            </Typography>
+        ) : null;
     }
-
-    const getValue = () => {
-        if (value == null) {
-            return emptyText;
-        }
-        return hasNumberFormat ? value.toLocaleString(locales, options) : value;
-    };
 
     return (
         <Typography
@@ -80,7 +82,7 @@ export const NumberField: FunctionComponent<
             className={className}
             {...sanitizeRestProps(rest)}
         >
-            {getValue()}
+            {hasNumberFormat ? value.toLocaleString(locales, options) : value}
         </Typography>
     );
 };

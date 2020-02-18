@@ -64,26 +64,27 @@ export const DateField: FunctionComponent<
         return null;
     }
     const value = get(record, source);
-    if (value == null && !emptyText) {
-        return null;
+    if (value == null) {
+        return emptyText ? (
+            <Typography
+                component="span"
+                variant="body2"
+                className={className}
+                {...sanitizeRestProps(rest)}
+            >
+                {emptyText}
+            </Typography>
+        ) : null;
     }
 
-    const getValue = () => {
-        if (value == null) {
-            return emptyText;
-        }
-
-        const date = value instanceof Date ? value : new Date(value);
-        const dateString = showTime
-            ? toLocaleStringSupportsLocales
-                ? date.toLocaleString(locales, options)
-                : date.toLocaleString()
-            : toLocaleStringSupportsLocales
-            ? date.toLocaleDateString(locales, options)
-            : date.toLocaleDateString();
-
-        return dateString;
-    };
+    const date = value instanceof Date ? value : new Date(value);
+    const dateString = showTime
+        ? toLocaleStringSupportsLocales
+            ? date.toLocaleString(locales, options)
+            : date.toLocaleString()
+        : toLocaleStringSupportsLocales
+        ? date.toLocaleDateString(locales, options)
+        : date.toLocaleDateString();
 
     return (
         <Typography
@@ -92,7 +93,7 @@ export const DateField: FunctionComponent<
             className={className}
             {...sanitizeRestProps(rest)}
         >
-            {getValue()}
+            {dateString}
         </Typography>
     );
 };

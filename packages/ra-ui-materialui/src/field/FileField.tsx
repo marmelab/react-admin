@@ -2,6 +2,7 @@ import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import classnames from 'classnames';
 
 import sanitizeRestProps from './sanitizeRestProps';
@@ -36,13 +37,20 @@ const FileField: FunctionComponent<Props & InjectedFieldProps> = ({
     const classes = useStyles({ classes: classesOverride });
 
     if (!sourceValue) {
-        return (
-            <div
-                className={classnames(classes.root, className)}
+        return emptyText ? (
+            <Typography
+                component="span"
+                variant="body2"
+                className={className}
                 {...sanitizeRestProps(rest)}
             >
                 {emptyText}
-            </div>
+            </Typography>
+        ) : (
+            <div
+                className={classnames(classes.root, className)}
+                {...sanitizeRestProps(rest)}
+            />
         );
     }
 

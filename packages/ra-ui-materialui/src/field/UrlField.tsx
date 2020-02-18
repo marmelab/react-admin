@@ -11,7 +11,16 @@ const UrlField: FunctionComponent<
     const value = get(record, source);
 
     if (value == null && emptyText) {
-        return <Typography className={className}>{emptyText}</Typography>;
+        return (
+            <Typography
+                component="span"
+                variant="body2"
+                className={className}
+                {...sanitizeRestProps(rest)}
+            >
+                {emptyText}
+            </Typography>
+        );
     }
 
     return (

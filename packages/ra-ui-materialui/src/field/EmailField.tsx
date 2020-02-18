@@ -1,6 +1,7 @@
 import React, { FunctionComponent, HtmlHTMLAttributes } from 'react';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
+import Typography from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
@@ -15,7 +16,14 @@ const EmailField: FunctionComponent<
 
     if (value == null) {
         return emptyText ? (
-            <span className={className}>{emptyText}</span>
+            <Typography
+                component="span"
+                variant="body2"
+                className={className}
+                {...sanitizeRestProps(rest)}
+            >
+                {emptyText}
+            </Typography>
         ) : null;
     }
 
