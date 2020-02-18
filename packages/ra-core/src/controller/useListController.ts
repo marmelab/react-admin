@@ -124,12 +124,20 @@ const useListController = (props: ListProps): ListControllerProps => {
     });
 
     const [selectedIds, selectionModifiers] = useRecordSelection(resource);
+    const payload = {
+        pagination: {
+            page: query.page,
+            perPage: query.perPage,
+        },
+        sort: { field: query.sort, order: query.order },
+        filter: { ...query.filter, ...filter },
+    };
 
     /**
      * We don't use useGetList() here because we want the list of ids to be
      * always available for optimistic rendering, and therefore we need a
      * custom action (CRUD_GET_LIST), a custom reducer for ids and total
-     * (admin.resources.[resource].list.ids and admin.resources.[resource].list.total)
+     * (admin.resources.[resource].list.idsForQueries and admin.resources.[resource].list.total)
      * and a custom selector for these reducers.
      * Also we don't want that calls to useGetList() in userland change
      * the list of ids in the main List view.
@@ -138,14 +146,7 @@ const useListController = (props: ListProps): ListControllerProps => {
         {
             type: 'getList',
             resource,
-            payload: {
-                pagination: {
-                    page: query.page,
-                    perPage: query.perPage,
-                },
-                sort: { field: query.sort, order: query.order },
-                filter: { ...query.filter, ...filter },
-            },
+            payload,
         },
         {
             action: CRUD_GET_LIST,
@@ -160,7 +161,9 @@ const useListController = (props: ListProps): ListControllerProps => {
         },
         (state: ReduxState) =>
             state.admin.resources[resource]
-                ? state.admin.resources[resource].list.ids
+                ? state.admin.resources[resource].list.idsForQuery[
+                      JSON.stringify(payload)
+                  ]
                 : null,
         (state: ReduxState) =>
             state.admin.resources[resource]

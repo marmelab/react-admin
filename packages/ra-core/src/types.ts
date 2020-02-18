@@ -293,7 +293,8 @@ export interface ReduxState {
                 };
                 list: {
                     params: any;
-                    ids: Identifier[];
+                    ids: Identifier[]; // @deprecated, use idsForQuery instead
+                    idsForQuery: { [key: string]: Identifier[] };
                     loadedOnce: boolean;
                     selectedIds: Identifier[];
                     total: number;

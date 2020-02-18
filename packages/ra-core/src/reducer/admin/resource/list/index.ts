@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import ids from './ids';
+import idsForQuery from './idsForQuery';
 import loadedOnce from './loadedOnce';
 import params from './params';
 import selectedIds from './selectedIds';
@@ -15,7 +16,8 @@ export default combineReducers({
      *
      * @see https://stackoverflow.com/questions/43375079/redux-warning-only-appearing-in-tests
      */
-    ids: ids || defaultReducer,
+    ids: ids || defaultReducer, // @deprecated, use idsForQuery instead
+    idsForQuery: idsForQuery || defaultReducer,
     loadedOnce: loadedOnce || defaultReducer,
     params: params || defaultReducer,
     selectedIds: selectedIds || defaultReducer,

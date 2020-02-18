@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 
@@ -107,6 +107,8 @@ const useQueryWithStore = (
     loaded: boolean;
 } => {
     const { type, resource, payload } = query;
+    const requestSignature = JSON.stringify({ query, options });
+    const requestSignatureRef = useRef(requestSignature);
     const data = useSelector(dataSelector);
     const total = useSelector(totalSelector);
     const [state, setState] = useSafeSetState({
@@ -116,7 +118,18 @@ const useQueryWithStore = (
         loading: true,
         loaded: data !== undefined && !isEmptyList(data),
     });
-    if (!isEqual(state.data, data) || state.total !== total) {
+    if (requestSignatureRef.current !== requestSignature) {
+        // request has changed, reset the loading state
+        requestSignatureRef.current = requestSignature;
+        setState({
+            data,
+            total,
+            error: null,
+            loading: true,
+            loaded: data !== undefined && !isEmptyList(data),
+        });
+    } else if (!isEqual(state.data, data) || state.total !== total) {
+        // the dataProvider response arrived in the Redux store
         if (isNaN(total)) {
             console.error(
                 'Total from response is not a number. Please check your dataProvider or the API.'
@@ -157,7 +170,7 @@ const useQueryWithStore = (
                 });
             });
         // deep equality, see https://github.com/facebook/react/issues/14476#issuecomment-471199055
-    }, [JSON.stringify({ query, options })]); // eslint-disable-line
+    }, [requestSignature]); // eslint-disable-line
 
     return state;
 };
