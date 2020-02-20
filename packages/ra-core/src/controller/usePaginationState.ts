@@ -1,6 +1,15 @@
 import { useEffect, useReducer, useCallback, useRef } from 'react';
 import { Pagination } from '../types';
 
+/**
+ * @typedef PaginationProps
+ * @type {Object}
+ * @property {number} page: The page number.
+ * @property {number} perPage: The number of item per page.
+ * @property {function} setPage: Set the page number
+ * @property {function} setPerPage: Set the per page number
+ * @property {function} setPagination: Set page and perPage pagination numbers
+ */
 interface PaginationProps {
     page: number;
     perPage: number;
@@ -24,21 +33,6 @@ const defaultPagination = {
     page: 1,
     perPage: 25,
 };
-
-/**
- * @name setNumber
- * @function
- * @param {number} state the state value
- */
-
-/**
- * @typedef PaginationProps
- * @type {Object}
- * @property {number} page: The page number.
- * @property {number} perPage: The number of item per page.
- * @property {setNumber} setPage: Set the page number
- * @property {setNumber} setPerPage: Set the per page number
- */
 
 /**
  * Hooks to provide pagination state (apge and perPage)

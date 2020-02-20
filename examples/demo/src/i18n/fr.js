@@ -55,20 +55,28 @@ export default {
                 name: 'Nom',
                 total_spent: 'Dépenses',
                 zipcode: 'Code postal',
+                password: 'Mot de passe',
+                confirm_password: 'Confirmez le mot de passe',
             },
-            tabs: {
+            fieldGroups: {
                 identity: 'Identité',
                 address: 'Adresse',
-                orders: 'Commandes',
-                reviews: 'Commentaires',
                 stats: 'Statistiques',
+                history: 'Historique',
+                password: 'Mot de passe',
+                change_password: 'Changer le mot de passe',
             },
             page: {
                 delete: 'Supprimer le client',
             },
+            errors: {
+                password_mismatch:
+                    'La confirmation du mot de passe est différent du mot de passe.',
+            },
         },
         commands: {
             name: 'Commande |||| Commandes',
+            amount: '1 commande |||| %{smart_count} commandes',
             title: 'Commande n°%{reference}',
             fields: {
                 basket: {
@@ -138,6 +146,8 @@ export default {
         },
         reviews: {
             name: 'Commentaire |||| Commentaires',
+            amount: '1 commentaire |||| %{smart_count} commentaires',
+            relative_to_poster: 'Commentaire sur',
             detail: 'Détail du commentaire',
             fields: {
                 customer_id: 'Client',

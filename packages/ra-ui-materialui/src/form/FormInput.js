@@ -7,11 +7,14 @@ import Labeled from '../input/Labeled';
 
 const sanitizeRestProps = ({ basePath, record, ...rest }) => rest;
 
-const useStyles = makeStyles(theme => ({
-    input: { width: theme.spacing(32) },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        input: { width: theme.spacing(32) },
+    }),
+    { name: 'RaFormInput' }
+);
 
-export const FormInput = ({ input, classes: classesOverride, ...rest }) => {
+const FormInput = ({ input, classes: classesOverride, ...rest }) => {
     const classes = useStyles({ classes: classesOverride });
     return input ? (
         <div

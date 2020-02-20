@@ -1,5 +1,14 @@
 import React from 'react';
-import { Create, DateInput, FormTab, TabbedForm, TextInput } from 'react-admin';
+import {
+    Create,
+    DateInput,
+    SimpleForm,
+    TextInput,
+    useTranslate,
+    PasswordInput,
+    required,
+} from 'react-admin';
+import { Typography, Box } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Styles } from '@material-ui/styles/withStyles';
 
@@ -16,53 +25,94 @@ export const styles: Styles<Theme, any> = {
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
     },
+    password: { display: 'inline-block' },
+    confirm_password: { display: 'inline-block', marginLeft: 32 },
 };
 
 const useStyles = makeStyles(styles);
 
+export const validatePasswords = ({
+    password,
+    confirm_password,
+}: {
+    password: string;
+    confirm_password: string;
+}) => {
+    const errors = {} as any;
+
+    if (password && confirm_password && password !== confirm_password) {
+        errors.confirm_password = [
+            'resources.customers.errors.password_mismatch',
+        ];
+    }
+
+    return errors;
+};
+
 const VisitorCreate = (props: any) => {
     const classes = useStyles();
+
     return (
         <Create {...props}>
-            <TabbedForm>
-                <FormTab label="resources.customers.tabs.identity">
-                    <TextInput
-                        autoFocus
-                        source="first_name"
-                        formClassName={classes.first_name}
-                    />
-                    <TextInput
-                        source="last_name"
-                        formClassName={classes.last_name}
-                    />
-                    <TextInput
-                        type="email"
-                        source="email"
-                        validation={{ email: true }}
-                        fullWidth={true}
-                        formClassName={classes.email}
-                    />
-                    <DateInput source="birthday" />
-                </FormTab>
-                <FormTab
-                    label="resources.customers.tabs.address"
-                    path="address"
-                >
-                    <TextInput
-                        source="address"
-                        formClassName={classes.address}
-                        multiline={true}
-                        fullWidth={true}
-                    />
-                    <TextInput
-                        source="zipcode"
-                        formClassName={classes.zipcode}
-                    />
-                    <TextInput source="city" formClassName={classes.city} />
-                </FormTab>
-            </TabbedForm>
+            <SimpleForm validate={validatePasswords}>
+                <SectionTitle label="resources.customers.fieldGroups.identity" />
+                <TextInput
+                    autoFocus
+                    source="first_name"
+                    formClassName={classes.first_name}
+                    validate={requiredValidate}
+                />
+                <TextInput
+                    source="last_name"
+                    formClassName={classes.last_name}
+                    validate={requiredValidate}
+                />
+                <TextInput
+                    type="email"
+                    source="email"
+                    validation={{ email: true }}
+                    fullWidth={true}
+                    formClassName={classes.email}
+                    validate={requiredValidate}
+                />
+                <DateInput source="birthday" />
+                <Separator />
+                <SectionTitle label="resources.customers.fieldGroups.address" />
+                <TextInput
+                    source="address"
+                    formClassName={classes.address}
+                    multiline={true}
+                    fullWidth={true}
+                />
+                <TextInput source="zipcode" formClassName={classes.zipcode} />
+                <TextInput source="city" formClassName={classes.city} />
+                <Separator />
+                <SectionTitle label="resources.customers.fieldGroups.password" />
+                <PasswordInput
+                    source="password"
+                    formClassName={classes.password}
+                />
+                <PasswordInput
+                    source="confirm_password"
+                    formClassName={classes.confirm_password}
+                />
+            </SimpleForm>
         </Create>
     );
 };
+
+const requiredValidate = [required()];
+
+const SectionTitle = ({ label }: { label: string }) => {
+    const translate = useTranslate();
+
+    return (
+        <Typography variant="h6" gutterBottom>
+            {translate(label)}
+        </Typography>
+    );
+};
+
+const Separator = () => <Box pt="1em" />;
 
 export default VisitorCreate;

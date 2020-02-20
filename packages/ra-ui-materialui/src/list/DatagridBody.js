@@ -24,6 +24,7 @@ const DatagridBody = ({
     selectedIds,
     styles,
     version,
+    isRowSelectable,
     ...rest
 }) => (
     <TableBody className={classnames('datagrid-body', className)} {...rest}>
@@ -47,6 +48,7 @@ const DatagridBody = ({
                     record: data[id],
                     resource,
                     rowClick,
+                    selectable: !isRowSelectable || isRowSelectable(data[id]),
                     selected: selectedIds.includes(id),
                     style: rowStyle ? rowStyle(data[id], rowIndex) : null,
                 },
@@ -73,6 +75,7 @@ DatagridBody.propTypes = {
     rowStyle: PropTypes.func,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     styles: PropTypes.object,
+    isRowSelectable: PropTypes.func,
     version: PropTypes.number,
 };
 

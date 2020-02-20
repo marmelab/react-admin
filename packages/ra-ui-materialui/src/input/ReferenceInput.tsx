@@ -12,8 +12,10 @@ import {
     InputProps,
     Pagination,
     Sort,
+    warning as warningLog,
 } from 'ra-core';
 
+import sanitizeInputProps from './sanitizeRestProps';
 import LinearProgress from '../layout/LinearProgress';
 import Labeled from './Labeled';
 import ReferenceError from './ReferenceError';
@@ -108,7 +110,7 @@ interface Props {
  *     <SelectInput optionText="title" />
  * </ReferenceInput>
  */
-export const ReferenceInput: FunctionComponent<Props & InputProps> = ({
+const ReferenceInput: FunctionComponent<Props & InputProps> = ({
     format,
     onBlur,
     onChange,
@@ -165,41 +167,23 @@ ReferenceInput.defaultProps = {
 };
 
 const sanitizeRestProps = ({
-    allowEmpty,
-    basePath,
     choices,
     className,
-    component,
     crudGetMatching,
     crudGetOne,
-    defaultValue,
     filter,
     filterToQuery,
-    formClassName,
-    initializeForm,
-    input,
-    isRequired,
-    label,
-    locale,
-    meta,
     onChange,
-    optionValue,
-    optionText,
     perPage,
-    record,
     reference,
     referenceSource,
-    resource,
     setFilter,
     setPagination,
     setSort,
     sort,
-    source,
-    textAlign,
-    translateChoice,
     validation,
     ...rest
-}: any) => rest;
+}: any) => sanitizeInputProps(rest);
 
 interface ReferenceInputViewProps {
     allowEmpty?: boolean;
@@ -209,7 +193,7 @@ interface ReferenceInputViewProps {
     classes?: object;
     className?: string;
     error?: string;
-    helperText?: string;
+    helperText?: string | boolean;
     id: string;
     input: FieldInputProps<any, HTMLElement>;
     isRequired: boolean;
@@ -285,6 +269,15 @@ export const ReferenceInputView: FunctionComponent<ReferenceInputViewProps> = ({
           }
         : meta;
 
+    // helperText should never be set on ReferenceInput, only in child component
+    // But in a Filter component, the child helperText have to be forced to false
+    warningLog(
+        helperText !== undefined && helperText !== false,
+        "<ReferenceInput> doesn't accept a helperText prop. Set the helperText prop on the child component instead"
+    );
+
+    const disabledHelperText = helperText === false ? { helperText } : {};
+
     return cloneElement(children, {
         allowEmpty,
         classes,
@@ -301,6 +294,7 @@ export const ReferenceInputView: FunctionComponent<ReferenceInputViewProps> = ({
         setPagination,
         setSort,
         translateChoice: false,
+        ...disabledHelperText,
         ...sanitizeRestProps(rest),
     });
 };

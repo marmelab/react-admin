@@ -13,27 +13,30 @@ import AlertError from '@material-ui/icons/ErrorOutline';
 import classnames from 'classnames';
 import { useTranslate } from 'ra-core';
 
-const useStyles = makeStyles(theme => ({
-    contentText: {
-        minWidth: 400,
-    },
-    confirmPrimary: {
-        color: theme.palette.primary.main,
-    },
-    confirmWarning: {
-        color: theme.palette.error.main,
-        '&:hover': {
-            backgroundColor: fade(theme.palette.error.main, 0.12),
-            // Reset on mouse devices
-            '@media (hover: none)': {
-                backgroundColor: 'transparent',
+const useStyles = makeStyles(
+    theme => ({
+        contentText: {
+            minWidth: 400,
+        },
+        confirmPrimary: {
+            color: theme.palette.primary.main,
+        },
+        confirmWarning: {
+            color: theme.palette.error.main,
+            '&:hover': {
+                backgroundColor: fade(theme.palette.error.main, 0.12),
+                // Reset on mouse devices
+                '@media (hover: none)': {
+                    backgroundColor: 'transparent',
+                },
             },
         },
-    },
-    iconPaddingStyle: {
-        paddingRight: '0.5em',
-    },
-}));
+        iconPaddingStyle: {
+            paddingRight: '0.5em',
+        },
+    }),
+    { name: 'RaConfirm' }
+);
 
 /**
  * Confirmation dialog
@@ -45,6 +48,8 @@ const useStyles = makeStyles(theme => ({
  *     content="Are you sure you want to delete this item?"
  *     confirm="Yes"
  *     confirmColor="primary"
+ *     ConfirmIcon=ActionCheck
+ *     CancelIcon=AlertError
  *     cancel="Cancel"
  *     onConfirm={() => { // do something }}
  *     onClose={() => { // do something }}
@@ -58,6 +63,8 @@ const Confirm = ({
     confirm,
     cancel,
     confirmColor,
+    ConfirmIcon,
+    CancelIcon,
     onClose,
     onConfirm,
     classes: classesOverride,
@@ -98,7 +105,7 @@ const Confirm = ({
             </DialogContent>
             <DialogActions>
                 <Button disabled={loading} onClick={onClose}>
-                    <AlertError className={classes.iconPaddingStyle} />
+                    <CancelIcon className={classes.iconPaddingStyle} />
                     {translate(cancel, { _: cancel })}
                 </Button>
                 <Button
@@ -110,7 +117,7 @@ const Confirm = ({
                     })}
                     autoFocus
                 >
-                    <ActionCheck className={classes.iconPaddingStyle} />
+                    <ConfirmIcon className={classes.iconPaddingStyle} />
                     {translate(confirm, { _: confirm })}
                 </Button>
             </DialogActions>
@@ -123,6 +130,8 @@ Confirm.propTypes = {
     classes: PropTypes.object,
     confirm: PropTypes.string.isRequired,
     confirmColor: PropTypes.string.isRequired,
+    ConfirmIcon: PropTypes.elementType.isRequired,
+    CancelIcon: PropTypes.elementType.isRequired,
     content: PropTypes.string.isRequired,
     isOpen: PropTypes.bool,
     loading: PropTypes.bool,
@@ -136,6 +145,8 @@ Confirm.defaultProps = {
     classes: {},
     confirm: 'ra.action.confirm',
     confirmColor: 'primary',
+    ConfirmIcon: ActionCheck,
+    CancelIcon: AlertError,
     isOpen: false,
 };
 

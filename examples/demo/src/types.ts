@@ -58,3 +58,7 @@ export interface FieldProps<T extends Record = Record> {
     record?: T;
     source?: string;
 }
+
+export interface Review extends Record {
+    customer_id: string;
+}

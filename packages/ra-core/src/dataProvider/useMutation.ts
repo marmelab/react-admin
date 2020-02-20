@@ -205,7 +205,7 @@ export interface MutationOptions {
 }
 
 export type UseMutationValue = [
-    (query: Partial<Mutation>, options?: Partial<MutationOptions>) => void,
+    (query?: Partial<Mutation>, options?: Partial<MutationOptions>) => void,
     {
         data?: any;
         total?: number;

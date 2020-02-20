@@ -47,7 +47,7 @@ import sanitizeRestProps from './sanitizeRestProps';
  *
  * @see https://github.com/final-form/react-final-form-arrays
  */
-export const ArrayInput = ({
+const ArrayInput = ({
     className,
     defaultValue,
     label,

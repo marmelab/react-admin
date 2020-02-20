@@ -6,13 +6,13 @@ import { Record } from '../../types';
 import getResourceLinkPath, { LinkToFunctionType } from './getResourceLinkPath';
 import useReference, { UseReferenceProps } from '../useReference';
 
-interface childrenParams extends UseReferenceProps {
+interface ChildrenParams extends UseReferenceProps {
     resourceLinkPath: string | false;
 }
 
 interface Props {
     basePath: string;
-    children: (params: childrenParams) => ReactNode;
+    children: (params: ChildrenParams) => ReactNode;
     record?: Record;
     reference: string;
     resource: string;

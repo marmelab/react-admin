@@ -6,73 +6,76 @@ import HotTub from '@material-ui/icons/HotTub';
 import History from '@material-ui/icons/History';
 import classnames from 'classnames';
 
-import { useTranslate, Authenticated } from 'ra-core';
+import { useAuthenticated, useTranslate } from 'ra-core';
 import Title from './Title';
 
-const useStyles = makeStyles(theme => ({
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        [theme.breakpoints.up('md')]: {
-            height: '100%',
+const useStyles = makeStyles(
+    theme => ({
+        container: {
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            [theme.breakpoints.up('md')]: {
+                height: '100%',
+            },
+            [theme.breakpoints.down('sm')]: {
+                height: '100vh',
+                marginTop: '-3em',
+            },
         },
-        [theme.breakpoints.down('sm')]: {
-            height: '100vh',
-            marginTop: '-3em',
+        icon: {
+            width: '9em',
+            height: '9em',
         },
-    },
-    icon: {
-        width: '9em',
-        height: '9em',
-    },
-    message: {
-        textAlign: 'center',
-        fontFamily: 'Roboto, sans-serif',
-        opacity: 0.5,
-        margin: '0 1em',
-    },
-    toolbar: {
-        textAlign: 'center',
-        marginTop: '2em',
-    },
-}));
+        message: {
+            textAlign: 'center',
+            fontFamily: 'Roboto, sans-serif',
+            opacity: 0.5,
+            margin: '0 1em',
+        },
+        toolbar: {
+            textAlign: 'center',
+            marginTop: '2em',
+        },
+    }),
+    { name: 'RaNotFound' }
+);
 
 function goBack() {
     window.history.go(-1);
 }
 
-const NotFound = ({
-    className,
-    classes: classesOverride,
-    title,
-    location,
-    ...rest
-}) => {
+const NotFound = ({ className, classes: classesOverride, title, ...rest }) => {
     const classes = useStyles({ classes: classesOverride });
     const translate = useTranslate();
+    useAuthenticated();
     return (
-        <Authenticated location={location}>
-            <div className={classnames(classes.container, className)} {...rest}>
-                <Title defaultTitle={title} />
-                <div className={classes.message}>
-                    <HotTub className={classes.icon} />
-                    <h1>{translate('ra.page.not_found')}</h1>
-                    <div>{translate('ra.message.not_found')}.</div>
-                </div>
-                <div className={classes.toolbar}>
-                    <Button
-                        variant="contained"
-                        icon={<History />}
-                        onClick={goBack}
-                    >
-                        {translate('ra.action.back')}
-                    </Button>
-                </div>
+        <div
+            className={classnames(classes.container, className)}
+            {...sanitizeRestProps(rest)}
+        >
+            <Title defaultTitle={title} />
+            <div className={classes.message}>
+                <HotTub className={classes.icon} />
+                <h1>{translate('ra.page.not_found')}</h1>
+                <div>{translate('ra.message.not_found')}.</div>
             </div>
-        </Authenticated>
+            <div className={classes.toolbar}>
+                <Button variant="contained" icon={<History />} onClick={goBack}>
+                    {translate('ra.action.back')}
+                </Button>
+            </div>
+        </div>
     );
 };
+
+const sanitizeRestProps = ({
+    staticContext,
+    history,
+    location,
+    match,
+    ...rest
+}) => rest;
 
 NotFound.propTypes = {
     className: PropTypes.string,

@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+
+<head>
+    <title>React-admin - {{ page.title }}</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta name="description" content="{{ page.description }}">
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="{{ '/css/materialize.min.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/css/style-v4.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/css/syntax.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/css/prism.css' | relative_url }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+    <!-- You won't find analytics tags in this page. React-admin protects your privacy! -->
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <div class="nav-wrapper" style="background: linear-gradient(145deg,#027be3 11%,#1a237e 75%)">
+                <div class="left">
+                    <form action="#" onsubmit="return false;">
+                        <div class="input-field" style="position:absolute">
+                            <input type="search" name="q" id="query" size="31" maxlength="255" value=""
+                                style="vertical-align:inherit!important" />
+                            <label class="label-icon" for="test"><i class="material-icons">search</i></label>
+                            <i class="material-icons">close</i>
+                        </div>
+                        <span id="search"></span>
+                    </form>
+                </div>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li class="active"><a href="https://marmelab.com/react-admin/Readme.html">Documentation</a></li>
+                    <li><a href="https://marmelab.com/react-admin-demo">Demo</a></li>
+                    <li><a href="https://marmelab.com/en/blog/#react-admin">Blog</a></li>
+                    <li><a href="https://github.com/marmelab/react-admin">GitHub</a></li>
+                </ul>
+            </div>
+        </nav>
+        <ul id="slide-out" class="sidenav sidenav-fixed">
+            <li class="logo">
+                <a href="{{ site.url }}"><img src="{{ site.url }}/assets/logo_white.png" /></a>
+            </li>
+            <li class="version">
+                {% include versions.html %}
+            </li>
+            {% include_relative navigation.html %}
+        </ul>
+
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m8 offset-m1 xl7 offset-xl1 markdown-section DocSearch-content">
+                    {{ content }}
+                </div>
+                <div class="col hide-on-small-only m3 xl3 offset-xl1">
+                    <div class="toc-wrapper">
+                        <div style="height: 1px;">
+                            <ul class="section table-of-contents pushpin">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ '/js/materialize.min.js' | relative_url }}"></script>
+    <script src="{{ 'js/prism.js' | relative_url }}"></script>
+    <script>
+        function slugify(text) {
+            return text.toString().toLowerCase()
+                .replace(/\s+/g, '-')           // Replace spaces with -
+                .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+                .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+                .replace(/^-+/, '')             // Trim - from start of text
+                .replace(/-+$/, '');            // Trim - from end of text
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            /* Generate table of contents */
+            document.querySelectorAll('.markdown-section h2').forEach(element => {
+                element.classList.add('scrollspy');
+                var a = document.createElement('a');
+                a.href = "#" + slugify(element.innerText);
+                a.innerText = element.innerText;
+                var li = document.createElement('li');
+                li.appendChild(a);
+                document.querySelector('.table-of-contents').appendChild(li)
+            })
+            M.Sidenav.init(document.querySelectorAll('.sidenav'));
+            M.Pushpin.init(document.querySelector('.pushpin'), { offset: 75, top: 75 });
+            M.ScrollSpy.init(document.querySelectorAll('.scrollspy'));
+            M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
+        });
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+    <script type="text/javascript">
+        docsearch({
+            apiKey: '32f254b1de6a25a96665d1229b6eb8f7',
+            indexName: 'marmelab-react-admin',
+            inputSelector: '#query',
+            debug: false, // Set debug to true if you want to inspect the dropdown 
+            autocompleteOptions: {
+                appendTo: '#search',
+                hint: false,
+            }
+        }); 
+    </script>
+</body>
+
+</html>

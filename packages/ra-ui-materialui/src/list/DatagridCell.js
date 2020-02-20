@@ -15,7 +15,7 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-export const DatagridCell = ({
+const DatagridCell = ({
     className,
     field,
     record,

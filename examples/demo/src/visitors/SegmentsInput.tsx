@@ -24,6 +24,7 @@ const SegmentsInput: FC<Props> = ({ addField, ...rest }) => {
 SegmentsInput.defaultProps = {
     addField: true,
     source: 'groups',
+    resource: 'customers',
 };
 
 export default SegmentsInput;

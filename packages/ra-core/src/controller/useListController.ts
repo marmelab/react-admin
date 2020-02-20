@@ -2,6 +2,7 @@ import { isValidElement, ReactElement, useEffect, useMemo } from 'react';
 import inflection from 'inflection';
 import { Location } from 'history';
 import { useSelector, shallowEqual } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import useListParams from './useListParams';
@@ -29,7 +30,7 @@ export interface ListProps {
     hasEdit?: boolean;
     hasList?: boolean;
     hasShow?: boolean;
-    location: Location;
+    location?: Location;
     path?: string;
     query: ListParams;
     resource: string;
@@ -40,6 +41,8 @@ const defaultSort = {
     field: 'id',
     order: SORT_ASC,
 };
+
+const defaultData = {};
 
 export interface ListControllerProps {
     basePath: string;
@@ -87,17 +90,12 @@ export interface ListControllerProps {
  * }
  */
 const useListController = (props: ListProps): ListControllerProps => {
-    useCheckMinimumRequiredProps(
-        'List',
-        ['basePath', 'location', 'resource'],
-        props
-    );
+    useCheckMinimumRequiredProps('List', ['basePath', 'resource'], props);
 
     const {
         basePath,
         resource,
         hasCreate,
-        location,
         filterDefaultValues,
         sort = defaultSort,
         perPage = 10,
@@ -110,6 +108,8 @@ const useListController = (props: ListProps): ListControllerProps => {
             '<List> received a React element as `filter` props. If you intended to set the list filter elements, use the `filters` (with an s) prop instead. The `filter` prop is internal and should not be set by the developer.'
         );
     }
+
+    const location = useLocation();
     const translate = useTranslate();
     const notify = useNotify();
     const version = useVersion();
@@ -171,7 +171,7 @@ const useListController = (props: ListProps): ListControllerProps => {
         (state: ReduxState) =>
             state.admin.resources[resource]
                 ? state.admin.resources[resource].data
-                : null,
+                : defaultData,
         shallowEqual
     );
 
@@ -209,7 +209,8 @@ const useListController = (props: ListProps): ListControllerProps => {
         displayedFilters: query.displayedFilters,
         filterValues: query.filterValues,
         hasCreate,
-        ids,
+        // ids might be null if the resource has not been initialized yet (custom routes for example)
+        ids: ids || [],
         loading,
         loaded,
         onSelect: selectionModifiers.select,
@@ -225,7 +226,8 @@ const useListController = (props: ListProps): ListControllerProps => {
         setPage: queryModifiers.setPage,
         setPerPage: queryModifiers.setPerPage,
         setSort: queryModifiers.setSort,
-        total,
+        // total might be null if the resource has not been initialized yet (custom routes for example)
+        total: total != undefined ? total : 0, // eslint-disable-line eqeqeq
         version,
     };
 };

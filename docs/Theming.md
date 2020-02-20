@@ -465,7 +465,7 @@ const MyCustomIcon = () => {
 
 const MyUserMenu = props => (<UserMenu {...props} icon={MyCustomIcon} />);
 
-const MyAppBar = props => <AppBar {...props} userMenu={MyUserMenu} />;
+const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
 ```
 {% endraw %}
 
@@ -605,6 +605,8 @@ MyLayout.propTypes = {
 export default MyLayout;
 ```
 
+**Tip**: Don't forget to render a `<Notification>` component in your custom layout, otherwise the undoable updates will never be sent to the server. That's because part of the "undo" logic of react-admin lies in the `<Notification>` component.  
+
 ## Customizing the AppBar Content
 
 By default, the react-admin `<AppBar>` component displays the page title. You can override this default by passing children to `<AppBar>` - they will replace the default title. And if you still want to include the page title, make sure you include an element with id `react-admin-title` in the top bar (this uses [React Portals](https://reactjs.org/docs/portals.html)). 
@@ -717,7 +719,7 @@ import React, { createElement } from 'react';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@material-ui/core';
 import { MenuItemLink, getResources } from 'react-admin';
-import { withRouter } from 'react-router-dom';
+import DefaultIcon from '@material-ui/icons/ViewList';
 import LabelIcon from '@material-ui/icons/Label';
 
 const Menu = ({ onMenuClick, logout }) => {
@@ -730,8 +732,13 @@ const Menu = ({ onMenuClick, logout }) => {
                 <MenuItemLink
                     key={resource.name}
                     to={`/${resource.name}`}
-                    primaryText={resource.options && resource.options.label || resource.name}
-                    leftIcon={createElement(resource.icon)}
+                    primaryText={
+                        (resource.options && resource.options.label) ||
+                        resource.name
+                    }
+                    leftIcon={
+                        resource.icon ? <resource.icon /> : <DefaultIcon />
+                    }
                     onClick={onMenuClick}
                     sidebarIsOpen={open}
                 />
@@ -748,7 +755,7 @@ const Menu = ({ onMenuClick, logout }) => {
     );
 };
 
-export default withRouter(Menu);
+export default Menu;
 ```
 
 **Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views.
@@ -842,15 +849,39 @@ export default withRouter(Menu);
 
 ### Changing the Background Image
 
-By default, the login page displays a random background image changing every day. If you want to change that background image, you can use the default Login page component and pass an image URL as the `backgroundImage` prop.
+By default, the login page displays a gradient background. If you want to change the background, you can use the default Login page component and pass an image URL as the `backgroundImage` prop.
 
 ```jsx
 import { Admin, Login } from 'react-admin';
 
-const MyLoginPage = () => <Login backgroundImage="/background.jpg" />;
+const MyLoginPage = () => (
+    <Login
+        // A random image that changes everyday
+        backgroundImage="https://source.unsplash.com/random/1600x900/daily"
+    />
+);
 
 const App = () => (
     <Admin loginPage={MyLoginPage}>
+        // ...
+    </Admin>
+);
+```
+
+## Using a Custom Logout Button
+
+### Changing the Icon
+
+It is possible to use a completely [custom logout button](./Authentication.md#the-datagrid-component) or you can simply override some properties of the default button. If you want to change the icon, you can use the default `<Logout>` component and pass a different icon as the `icon` prop.
+
+```jsx
+import { Admin, Logout } from 'react-admin';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+
+const MyLogoutButton = props => <Logout {...props} icon={<ExitToAppIcon/>} />;
+
+const App = () => (
+    <Admin logoutButton={MyLogoutButton}>
         // ...
     </Admin>
 );
@@ -864,7 +895,7 @@ You can override the notification component, for instance to change the notifica
 // in src/MyNotification.js
 import { Notification } from 'react-admin';
 
-const MyNotification = props => <Notification {...props}autoHideDuration={5000} />;
+const MyNotification = props => <Notification {...props} autoHideDuration={5000} />;
 
 export default MyNotification;
 ```

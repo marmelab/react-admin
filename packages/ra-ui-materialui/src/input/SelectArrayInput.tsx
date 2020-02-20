@@ -64,20 +64,23 @@ const sanitizeRestProps = ({
     ...rest
 }: any) => rest;
 
-const useStyles = makeStyles(theme => ({
-    root: {},
-    chips: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
-    chip: {
-        margin: theme.spacing(1 / 4),
-    },
-    select: {
-        height: 'auto',
-        overflow: 'auto',
-    },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        root: {},
+        chips: {
+            display: 'flex',
+            flexWrap: 'wrap',
+        },
+        chip: {
+            margin: theme.spacing(1 / 4),
+        },
+        select: {
+            height: 'auto',
+            overflow: 'auto',
+        },
+    }),
+    { name: 'RaSelectArrayInput' }
+);
 
 /**
  * An Input component for a select box allowing multiple selections, using an array of objects for the options
@@ -205,7 +208,12 @@ const SelectArrayInput: FunctionComponent<
             variant={variant}
             {...sanitizeRestProps(rest)}
         >
-            <InputLabel htmlFor={id} shrink variant={variant}>
+            <InputLabel
+                htmlFor={id}
+                shrink
+                variant={variant}
+                error={touched && !!error}
+            >
                 <FieldTitle
                     label={label}
                     source={source}
@@ -249,15 +257,13 @@ const SelectArrayInput: FunctionComponent<
             >
                 {choices.map(renderMenuItem)}
             </Select>
-            {(touched && error) || helperText ? (
-                <FormHelperText>
-                    <InputHelperText
-                        touched={touched}
-                        error={error}
-                        helperText={helperText}
-                    />
-                </FormHelperText>
-            ) : null}
+            <FormHelperText error={touched && !!error}>
+                <InputHelperText
+                    touched={touched}
+                    error={error}
+                    helperText={helperText}
+                />
+            </FormHelperText>
         </FormControl>
     );
 };

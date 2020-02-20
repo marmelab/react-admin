@@ -11,6 +11,13 @@ const sometimesFailsDataProvider = new Proxy(uploadCapableDataProvider, {
         // if (name === 'delete' && resource === 'posts') {
         //     return Promise.reject(new Error('deletion error'));
         // }
+        if (
+            resource === 'posts' &&
+            params.data &&
+            params.data.title === 'f00bar'
+        ) {
+            return Promise.reject(new Error('this title cannot be used'));
+        }
         return uploadCapableDataProvider[name](resource, params);
     },
 });
@@ -20,7 +27,7 @@ const delayedDataProvider = new Proxy(sometimesFailsDataProvider, {
             setTimeout(
                 () =>
                     resolve(sometimesFailsDataProvider[name](resource, params)),
-                1000
+                300
             )
         ),
 });

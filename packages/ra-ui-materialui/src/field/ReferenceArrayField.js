@@ -37,7 +37,7 @@ import { fieldPropTypes } from './types';
  * </ReferenceArrayField>
  *
  */
-export const ReferenceArrayField = ({ children, ...props }) => {
+const ReferenceArrayField = ({ children, ...props }) => {
     if (React.Children.count(children) !== 1) {
         throw new Error(
             '<ReferenceArrayField> only accepts a single child (like <Datagrid>)'
@@ -73,9 +73,12 @@ ReferenceArrayField.defaultProps = {
     addLabel: true,
 };
 
-const useStyles = makeStyles(theme => ({
-    progress: { marginTop: theme.spacing(2) },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        progress: { marginTop: theme.spacing(2) },
+    }),
+    { name: 'RaReferenceArrayField' }
+);
 
 export const ReferenceArrayFieldView = ({
     children,

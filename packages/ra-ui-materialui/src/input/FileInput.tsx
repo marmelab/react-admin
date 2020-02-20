@@ -18,18 +18,23 @@ import FileInputPreview from './FileInputPreview';
 import sanitizeRestProps from './sanitizeRestProps';
 import InputHelperText from './InputHelperText';
 
-const useStyles = makeStyles(theme => ({
-    dropZone: {
-        background: theme.palette.background.default,
-        cursor: 'pointer',
-        padding: theme.spacing(1),
-        textAlign: 'center',
-        color: theme.palette.getContrastText(theme.palette.background.default),
-    },
-    preview: {},
-    removeButton: {},
-    root: { width: '100%' },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        dropZone: {
+            background: theme.palette.background.default,
+            cursor: 'pointer',
+            padding: theme.spacing(1),
+            textAlign: 'center',
+            color: theme.palette.getContrastText(
+                theme.palette.background.default
+            ),
+        },
+        preview: {},
+        removeButton: {},
+        root: { width: '100%' },
+    }),
+    { name: 'RaFileInput' }
+);
 
 export interface FileInputProps {
     accept?: string;
@@ -121,13 +126,17 @@ const FileInput: FunctionComponent<
     const { touched, error } = meta;
     const files = value ? (Array.isArray(value) ? value : [value]) : [];
 
-    const onDrop = newFiles => {
+    const onDrop = (newFiles, rejectedFiles, event) => {
         const updatedFiles = multiple ? [...files, ...newFiles] : [...newFiles];
 
         if (multiple) {
             onChange(updatedFiles);
         } else {
             onChange(updatedFiles[0]);
+        }
+
+        if (options.onDrop) {
+            options.onDrop(newFiles, rejectedFiles, event);
         }
     };
 
@@ -154,6 +163,7 @@ const FileInput: FunctionComponent<
         multiple,
         onDrop,
     });
+
     return (
         <Labeled
             id={id}
@@ -203,15 +213,13 @@ const FileInput: FunctionComponent<
                         ))}
                     </div>
                 )}
-                {(touched && error) || helperText ? (
-                    <FormHelperText>
-                        <InputHelperText
-                            touched={touched}
-                            error={error}
-                            helperText={helperText}
-                        />
-                    </FormHelperText>
-                ) : null}
+                <FormHelperText>
+                    <InputHelperText
+                        touched={touched}
+                        error={error}
+                        helperText={helperText}
+                    />
+                </FormHelperText>
             </>
         </Labeled>
     );

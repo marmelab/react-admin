@@ -11,6 +11,11 @@ interface UseFilterStateOptions {
     debounceTime?: number;
 }
 
+/**
+ * @typedef UseFilterStateProps
+ * @property {Object} filter: The filter object.
+ * @property {setFilter} setFilter: Update the filter with the given string
+ */
 interface UseFilterStateProps {
     filter: Filter;
     setFilter: (v: string) => void;
@@ -18,19 +23,6 @@ interface UseFilterStateProps {
 
 const defaultFilterToQuery = (v: string) => ({ q: v });
 const emptyFilter = {};
-
-/**
- * @name setFilter
- * @function
- * @param {string} the value
- */
-
-/**
- * @typedef FilterProps
- * @type {Object}
- * @property {Object} filter: The filter object.
- * @property {setFilter} setFilter: Update the filter with the given string
- */
 
 /**
  * Hooks to provide filter state and setFilter which update the query part of the filter
@@ -59,7 +51,7 @@ const emptyFilter = {};
  * @param {Object} option.permanentFilter Permanent filter to be merged with the filter string. Defaults to {}.
  * @param {number} option.debounceTime Time in ms between filter updates - used to debounce the search. Defaults to 500ms.
  *
- * @returns {FilterProps} The filter props
+ * @returns {UseFilterStateOptions} The filter props
  */
 export default ({
     filterToQuery = defaultFilterToQuery,

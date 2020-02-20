@@ -19,6 +19,7 @@ import { TextFieldProps } from '@material-ui/core/TextField';
 const sanitizeRestProps = ({
     addLabel,
     allowEmpty,
+    alwaysOn,
     emptyValue,
     basePath,
     choices,
@@ -57,11 +58,14 @@ const sanitizeRestProps = ({
     ...rest
 }: any) => rest;
 
-const useStyles = makeStyles(theme => ({
-    input: {
-        minWidth: theme.spacing(20),
-    },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        input: {
+            minWidth: theme.spacing(20),
+        },
+    }),
+    { name: 'RaSelectInput' }
+);
 
 /**
  * An Input component for a select box, using an array of objects for the options
@@ -205,24 +209,25 @@ const SelectInput: FunctionComponent<
             {...input}
             select
             label={
-                <FieldTitle
-                    label={label}
-                    source={source}
-                    resource={resource}
-                    isRequired={isRequired}
-                />
+                label !== '' &&
+                label !== false && (
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                )
             }
             className={`${classes.input} ${className}`}
             clearAlwaysVisible
             error={!!(touched && error)}
             helperText={
-                (touched && error) || helperText ? (
-                    <InputHelperText
-                        touched={touched}
-                        error={error}
-                        helperText={helperText}
-                    />
-                ) : null
+                <InputHelperText
+                    touched={touched}
+                    error={error}
+                    helperText={helperText}
+                />
             }
             {...options}
             {...sanitizeRestProps(rest)}
@@ -257,7 +262,7 @@ SelectInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
     classes: PropTypes.object,
     className: PropTypes.string,
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     options: PropTypes.object,
     optionText: PropTypes.oneOfType([
         PropTypes.string,

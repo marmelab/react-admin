@@ -39,6 +39,8 @@ module.exports = {
             loading: 'Loading',
             not_found: 'Not Found',
             show: '%{name} #%{id}',
+            empty: 'No %{name} yet.',
+            invite: 'Do you want to add one?',
         },
         input: {
             file: {
@@ -58,6 +60,10 @@ module.exports = {
                     'At least one of the associated references no longer appears to be available.',
                 single_missing:
                     'Associated reference no longer appears to be available.',
+            },
+            password: {
+                toggle_visible: 'Hide password',
+                toggle_hidden: 'Show password',
             },
         },
         message: {

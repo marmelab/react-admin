@@ -33,30 +33,35 @@ interface Props {
     theme: object;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
-    main: {
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh',
-        height: '1px',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-    },
-    card: {
-        minWidth: 300,
-        marginTop: '6em',
-    },
-    avatar: {
-        margin: '1em',
-        display: 'flex',
-        justifyContent: 'center',
-    },
-    icon: {
-        backgroundColor: theme.palette.secondary[500],
-    },
-}));
+const useStyles = makeStyles(
+    (theme: Theme) => ({
+        main: {
+            display: 'flex',
+            flexDirection: 'column',
+            minHeight: '100vh',
+            height: '1px',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover',
+            backgroundImage:
+                'radial-gradient(circle at 50% 14em, #313264 0%, #00023b 60%, #00023b 100%)',
+        },
+        card: {
+            minWidth: 300,
+            marginTop: '6em',
+        },
+        avatar: {
+            margin: '1em',
+            display: 'flex',
+            justifyContent: 'center',
+        },
+        icon: {
+            backgroundColor: theme.palette.secondary[500],
+        },
+    }),
+    { name: 'RaLogin' }
+);
 
 /**
  * A standalone login page, to serve as authentication gate to the admin
@@ -157,7 +162,6 @@ Login.propTypes = {
 };
 
 Login.defaultProps = {
-    backgroundImage: 'https://source.unsplash.com/random/1600x900/daily',
     theme: defaultTheme,
     children: <DefaultLoginForm />,
 };

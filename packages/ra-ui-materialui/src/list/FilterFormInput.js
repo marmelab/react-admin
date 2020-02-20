@@ -8,11 +8,14 @@ import { useTranslate } from 'ra-core';
 
 const emptyRecord = {};
 
-const useStyles = makeStyles(theme => ({
-    body: { display: 'flex', alignItems: 'flex-end' },
-    spacer: { width: theme.spacing(2) },
-    hideButton: {},
-}));
+const useStyles = makeStyles(
+    theme => ({
+        body: { display: 'flex', alignItems: 'flex-end' },
+        spacer: { width: theme.spacing(2) },
+        hideButton: {},
+    }),
+    { name: 'RaFilterFormInput' }
+);
 
 const FilterFormInput = ({
     filterElement,
@@ -45,6 +48,7 @@ const FilterFormInput = ({
                 record: emptyRecord,
                 variant,
                 margin,
+                helperText: false,
             })}
             <div className={classes.spacer}>&nbsp;</div>
         </div>

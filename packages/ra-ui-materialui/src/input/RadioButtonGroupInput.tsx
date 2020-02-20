@@ -16,12 +16,17 @@ import sanitizeRestProps from './sanitizeRestProps';
 import InputHelperText from './InputHelperText';
 import RadioButtonGroupInputItem from './RadioButtonGroupInputItem';
 
-const useStyles = makeStyles(theme => ({
-    label: {
-        transform: 'translate(0, 5px) scale(0.75)',
-        transformOrigin: `top ${theme.direction === 'ltr' ? 'left' : 'right'}`,
-    },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        label: {
+            transform: 'translate(0, 5px) scale(0.75)',
+            transformOrigin: `top ${
+                theme.direction === 'ltr' ? 'left' : 'right'
+            }`,
+        },
+    }),
+    { name: 'RaRadioButtonGroupInput' }
+);
 
 /**
  * An Input component for a radio button group, using an array of objects for the options
@@ -80,7 +85,7 @@ const useStyles = makeStyles(theme => ({
  *
  * The object passed as `options` props is passed to the material-ui <RadioButtonGroup> component
  */
-export const RadioButtonGroupInput: FunctionComponent<
+const RadioButtonGroupInput: FunctionComponent<
     ChoicesProps & InputProps<RadioGroupProps> & FormControlProps
 > = ({
     choices = [],
@@ -109,6 +114,7 @@ export const RadioButtonGroupInput: FunctionComponent<
         id,
         isRequired,
         meta: { error, touched },
+        input,
     } = useInput({
         format,
         onBlur,
@@ -140,6 +146,7 @@ export const RadioButtonGroupInput: FunctionComponent<
             <RadioGroup id={id} row={row} {...options}>
                 {choices.map(choice => (
                     <RadioButtonGroupInputItem
+                        {...input}
                         key={get(choice, optionValue)}
                         choice={choice}
                         optionText={optionText}
@@ -149,15 +156,13 @@ export const RadioButtonGroupInput: FunctionComponent<
                     />
                 ))}
             </RadioGroup>
-            {(touched && error) || helperText ? (
-                <FormHelperText>
-                    <InputHelperText
-                        touched={touched}
-                        error={error}
-                        helperText={helperText}
-                    />
-                </FormHelperText>
-            ) : null}
+            <FormHelperText>
+                <InputHelperText
+                    touched={touched}
+                    error={error}
+                    helperText={helperText}
+                />
+            </FormHelperText>
         </FormControl>
     );
 };

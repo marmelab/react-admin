@@ -34,6 +34,7 @@ EnhancedFunctionField.defaultProps = {
 };
 
 EnhancedFunctionField.propTypes = {
+    // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
 };

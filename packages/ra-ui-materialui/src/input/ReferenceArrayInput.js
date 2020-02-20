@@ -6,6 +6,7 @@ import {
     useTranslate,
 } from 'ra-core';
 
+import sanitizeInputProps from './sanitizeRestProps';
 import LinearProgress from '../layout/LinearProgress';
 import Labeled from '../input/Labeled';
 import ReferenceError from './ReferenceError';
@@ -88,13 +89,15 @@ import ReferenceError from './ReferenceError';
  *     <SelectArrayInput optionText="name" />
  * </ReferenceArrayInput>
  */
-export const ReferenceArrayInput = ({
+const ReferenceArrayInput = ({
     children,
     id: idOverride,
     onBlur,
     onChange,
     onFocus,
     validate,
+    parse,
+    format,
     ...props
 }) => {
     if (React.Children.count(children) !== 1) {
@@ -110,6 +113,8 @@ export const ReferenceArrayInput = ({
         onFocus,
         source: props.source,
         validate,
+        parse,
+        format,
     });
 
     const controllerProps = useReferenceArrayInputController({
@@ -160,33 +165,13 @@ ReferenceArrayInput.defaultProps = {
 };
 
 const sanitizeRestProps = ({
-    alwaysOn,
-    basePath,
-    component,
     crudGetMany,
     crudGetMatching,
-    defaultValue,
     filterToQuery,
-    formClassName,
-    initializeForm,
-    input,
-    isRequired,
-    label,
-    locale,
-    meta,
-    optionText,
-    optionValue,
     perPage,
-    record,
     referenceSource,
-    resource,
-    allowEmpty,
-    source,
-    textAlign,
-    translate,
-    translateChoice,
     ...rest
-}) => rest;
+}) => sanitizeInputProps(rest);
 
 export const ReferenceArrayInputView = ({
     allowEmpty,

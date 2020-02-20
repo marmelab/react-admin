@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import inflection from 'inflection';
 import { parse } from 'query-string';
 import { Location } from 'history';
-import { match as Match } from 'react-router-dom';
+import { match as Match, useLocation } from 'react-router-dom';
 
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import { useCreate } from '../dataProvider';
@@ -18,7 +18,14 @@ export interface CreateControllerProps {
     loaded: boolean;
     saving: boolean;
     defaultTitle: string;
-    save: (record: Partial<Record>, redirect: RedirectionSideEffect) => void;
+    save: (
+        record: Partial<Record>,
+        redirect: RedirectionSideEffect,
+        callbacks?: {
+            onSuccess: () => void;
+            onFailure: (error: string | { message?: string }) => void;
+        }
+    ) => void;
     resource: string;
     basePath: string;
     record?: Partial<Record>;
@@ -32,8 +39,8 @@ export interface CreateProps {
     hasEdit?: boolean;
     hasList?: boolean;
     hasShow?: boolean;
-    location: Location;
-    match: Match;
+    location?: Location;
+    match?: Match;
     record?: Partial<Record>;
     resource: string;
     successMessage?: string;
@@ -57,21 +64,17 @@ export interface CreateProps {
  * }
  */
 const useCreateController = (props: CreateProps): CreateControllerProps => {
-    useCheckMinimumRequiredProps(
-        'Create',
-        ['basePath', 'location', 'resource'],
-        props
-    );
+    useCheckMinimumRequiredProps('Create', ['basePath', 'resource'], props);
     const {
         basePath,
         resource,
-        location,
         record = {},
         hasShow,
         hasEdit,
         successMessage,
     } = props;
 
+    const location = useLocation();
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();

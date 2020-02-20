@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import get from 'lodash/get';
 import { makeStyles } from '@material-ui/core/styles';
-import { Error as ErrorIcon } from '@material-ui/icons';
+import ErrorIcon from '@material-ui/icons/Error';
 import { useReference, getResourceLinkPath } from 'ra-core';
 
 import LinearProgress from '../layout/LinearProgress';
@@ -59,10 +59,9 @@ const ReferenceField = ({ children, record, source, ...props }) => {
     if (React.Children.count(children) !== 1) {
         throw new Error('<ReferenceField> only accepts a single child');
     }
-    const id = get(record, source);
     const { loaded, error, referenceRecord } = useReference({
-        ...props,
-        id,
+        reference: props.reference,
+        id: get(record, source),
     });
     const resourceLinkPath = getResourceLinkPath({ record, source, ...props });
 
@@ -110,14 +109,16 @@ ReferenceField.defaultProps = {
     addLabel: true,
     classes: {},
     link: 'edit',
-    record: {},
 };
 
-const useStyles = makeStyles(theme => ({
-    link: {
-        color: theme.palette.primary.main,
-    },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        link: {
+            color: theme.palette.primary.main,
+        },
+    }),
+    { name: 'RaReferenceField' }
+);
 
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();

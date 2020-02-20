@@ -34,6 +34,7 @@ Failing to upgrade one of the `ra-` packages will result in a duplication of the
 
 * `react` and `react-dom` are now required to be >= 16.9. This version is backward compatible with 16.3, which was the minimum requirement in react-admin, and it offers the support for Hooks, on which react-admin v3 relies heavily.
 * `react-redux` requires a minimum version of 7.1.0 (instead of 5.0). Check their upgrade guide for [6.0](https://github.com/reduxjs/react-redux/releases/tag/v6.0.0) and [7.0](https://github.com/reduxjs/react-redux/releases/tag/v7.0.0)
+* `redux-saga` requires a minimim version of 1.0.0 (instead of ~0.16.0). Check their [list of breaking changes for redux-saga 1.0](https://github.com/redux-saga/redux-saga/releases/tag/v1.0.0) on GitHub. 
 * `material-ui` requires a minimum of 4.0.0 (instead of 1.5). Check their [Upgrade guide](https://next.material-ui.com/guides/migration-v3/).
 
 ## `react-router-redux` replaced by `connected-react-router`
@@ -160,9 +161,10 @@ const SaveWithNoteButton = props => {
         }
 
         create(
-            null,
             {
-                data: { ...formState.values, average_note: 10 },
+                payload: {
+                    data: { ...formState.values, average_note: 10 },
+                },
             },
             {
                 onSuccess: ({ data: newRecord }) => {
@@ -207,7 +209,7 @@ import { FormDataConsumer, REDUX_FORM_NAME } from 'react-admin';
 +            <SelectInput
 +                source="country"
 +                choices={countries}
-+                onChange={value => form.change('city', null)}
++                onChange={value => form.change('city', value)}
 +                {...rest}
 +            />
 +            <SelectInput
@@ -229,7 +231,7 @@ const OrderEdit = (props) => (
 -                            source="country"
 -                            choices={countries}
 -                            onChange={value => dispatch(
--                                change(REDUX_FORM_NAME, 'city', null)
+-                                change(REDUX_FORM_NAME, 'city', value)
 -                            )}
 -                             {...rest}
 -                        />
@@ -372,6 +374,43 @@ export default ({
     return store;
 };
 ```
+
+## Custom Forms Using `reduxForm()` Must Be Replaced By The `<Form>` Component
+
+The [final-form migration documentation here](https://final-form.org/docs/react-final-form/migration/redux-form) explains the various changes you have to perform in your code.
+
+```diff
+-import { reduxForm } from 'redux-form'
++import { Form } from 'react-final-form'
+
+-const CustomForm = reduxForm({ form: 'record-form', someOptions: true })(({ record, resource }) => (
++const CustomForm = ({ record, resource }) => (
++    <Form someOptions={true}>
++        {({ handleSubmit }) => (
++            <form onSubmit={handleSubmit}>
+-            <Fragment>
+                <Typography>Notes</Typography>
+                <TextInput source="note" />
++            </form>
+-            </Fragment>
++        )}
++    </Form>
++);
+-));
+```
+
+## Material-ui Icons Have Changed
+
+If you were using Material-ui icons for your design, be aware that some icons present in 1.X versions were removed from version 4.0.
+
+Example:
+
+* `LightbulbOutline` is no more available in `@Material-ui/icons`
+
+But there is a quick fix for this one by using another package instead:
+
+* `import Lightbulb from '@material-ui/docs/svgIcons/LightbulbOutline';`
+
 
 ## Custom Exporter Functions Must Use `jsonexport` Instead Of `papaparse`
 
@@ -1201,7 +1240,9 @@ const App = () => (
         })}
     >
         <TranslationProvider>
-+           <DataProviderContext.Provider valuse={dataProvider} >
+
+           <DataProviderContext.Provider valuse={dataProvider} >
+
                 <ThemeProvider>
                     <Resource name="posts" intent="registration" />
                     ...

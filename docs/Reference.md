@@ -18,6 +18,8 @@ title: "Reference"
 * [`<AutocompleteInput>`](./Inputs.md#autocompleteinput)
 * [`<BooleanField>`](./Fields.md#booleanfield)
 * [`<BooleanInput>`](./Inputs.md#booleaninput-and-nullablebooleaninput)
+* [`<BulkDeleteButton>`](./List.md#bulk-action-buttons)
+* [`<BulkExportButton>`](./List.md#bulk-action-buttons)
 * [`<CheckboxGroupInput>`](./Inputs.md#checkboxgroupinput)
 * [`<ChipField>`](./Fields.md#chipfield)
 * `<CloneButton>`
@@ -52,6 +54,7 @@ title: "Reference"
 * `<Labeled>`
 * [`<Layout>`](./Theming.md#using-a-custom-layout)
 * [`<Loading>`](./Theming.md#Loading)
+* [`<Logout>`](./Theming.md#using-a-custom-logout-button)
 * [`<List>`](./List.md#the-list-component)
 * [`<ListGuesser>`](./List.md#the-listguesser-component)
 * `<ListButton>`
@@ -62,6 +65,7 @@ title: "Reference"
 * [`<NumberField>`](./Fields.md#numberfield)
 * [`<NumberInput>`](./Inputs.md#numberinput)
 * [`<Pagination>`](./List.md#pagination)
+* [`<PasswordInput>`](./Inputs.md#passwordinput)
 * [`<Query>`](./Actions.md#legacy-components-query-mutation-and-withdataprovider)
 * [`<RadioButtonGroupInput>`](./Inputs.md#radiobuttongroupinput)
 * [`<ReferenceArrayField>`](./Fields.md#referencearrayfield)

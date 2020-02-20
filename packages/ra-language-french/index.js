@@ -40,6 +40,8 @@ module.exports = {
             loading: 'Chargement',
             not_found: 'Page manquante',
             show: '%{name} #%{id}',
+            empty: 'Pas encore de %{name}.',
+            invite: 'Voulez-vous en créer un ?',
         },
         input: {
             file: {
@@ -60,6 +62,10 @@ module.exports = {
                     'Au moins une des références associées semble ne plus être disponible.',
                 single_missing:
                     'La référence associée ne semble plus disponible.',
+            },
+            password: {
+                toggle_visible: 'Cacher le mot de passe',
+                toggle_hidden: 'Montrer le mot de passe',
             },
         },
         message: {

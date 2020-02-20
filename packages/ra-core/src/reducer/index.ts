@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import { combineReducers, Reducer } from 'redux';
 import { connectRouter } from 'connected-react-router';
 import admin, {
     getResources as adminGetResources,
@@ -6,7 +6,12 @@ import admin, {
     getPossibleReferenceValues as adminGetPossibleReferenceValues,
 } from './admin';
 export { getNotification } from './admin/notifications';
-export default (customReducers, history) =>
+
+interface CustomReducers {
+    [key: string]: Reducer;
+}
+
+export default (customReducers: CustomReducers, history) =>
     combineReducers({
         admin,
         router: connectRouter(history),

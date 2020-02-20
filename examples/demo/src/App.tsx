@@ -40,9 +40,12 @@ const App = () => {
             restoreFetch = await fakeServerFactory(
                 process.env.REACT_APP_DATA_PROVIDER
             );
-
+            const dataProviderInstance = await dataProviderFactory(
+                process.env.REACT_APP_DATA_PROVIDER
+            );
             setDataProvider(
-                await dataProviderFactory(process.env.REACT_APP_DATA_PROVIDER)
+                // GOTCHA: dataProviderInstance can be a function
+                () => dataProviderInstance
             );
         };
 

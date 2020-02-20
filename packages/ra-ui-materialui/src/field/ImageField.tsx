@@ -7,16 +7,19 @@ import classnames from 'classnames';
 import sanitizeRestProps from './sanitizeRestProps';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
-const useStyles = makeStyles({
-    list: {
-        display: 'flex',
-        listStyleType: 'none',
+const useStyles = makeStyles(
+    {
+        list: {
+            display: 'flex',
+            listStyleType: 'none',
+        },
+        image: {
+            margin: '0.5rem',
+            maxHeight: '10rem',
+        },
     },
-    image: {
-        margin: '0.5rem',
-        maxHeight: '10rem',
-    },
-});
+    { name: 'RaImageField' }
+);
 
 interface Props extends FieldProps {
     src?: string;
@@ -24,7 +27,7 @@ interface Props extends FieldProps {
     classes?: object;
 }
 
-export const ImageField: FunctionComponent<Props & InjectedFieldProps> = ({
+const ImageField: FunctionComponent<Props & InjectedFieldProps> = ({
     className,
     classes: classesOverride,
     record,

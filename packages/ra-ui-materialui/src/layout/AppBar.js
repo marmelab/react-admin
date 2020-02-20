@@ -15,35 +15,38 @@ import LoadingIndicator from './LoadingIndicator';
 import DefaultUserMenu from './UserMenu';
 import HideOnScroll from './HideOnScroll';
 
-const useStyles = makeStyles(theme => ({
-    toolbar: {
-        paddingRight: 24,
-    },
-    menuButton: {
-        marginLeft: '0.5em',
-        marginRight: '0.5em',
-    },
-    menuButtonIconClosed: {
-        transition: theme.transitions.create(['transform'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        transform: 'rotate(0deg)',
-    },
-    menuButtonIconOpen: {
-        transition: theme.transitions.create(['transform'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        transform: 'rotate(180deg)',
-    },
-    title: {
-        flex: 1,
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-    },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        toolbar: {
+            paddingRight: 24,
+        },
+        menuButton: {
+            marginLeft: '0.5em',
+            marginRight: '0.5em',
+        },
+        menuButtonIconClosed: {
+            transition: theme.transitions.create(['transform'], {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+            }),
+            transform: 'rotate(0deg)',
+        },
+        menuButtonIconOpen: {
+            transition: theme.transitions.create(['transform'], {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+            }),
+            transform: 'rotate(180deg)',
+        },
+        title: {
+            flex: 1,
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+        },
+    }),
+    { name: 'RaAppBar' }
+);
 
 const AppBar = ({
     children,

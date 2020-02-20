@@ -12,6 +12,7 @@ import InputPropTypes from './InputPropTypes';
 import Labeled from './Labeled';
 import NullableBooleanInput from './NullableBooleanInput';
 import NumberInput from './NumberInput';
+import PasswordInput from './PasswordInput';
 import RadioButtonGroupInput from './RadioButtonGroupInput';
 import ReferenceArrayInput from './ReferenceArrayInput';
 import ReferenceInput from './ReferenceInput';
@@ -36,6 +37,7 @@ export {
     Labeled,
     NullableBooleanInput,
     NumberInput,
+    PasswordInput,
     RadioButtonGroupInput,
     ReferenceArrayInput,
     ReferenceInput,
