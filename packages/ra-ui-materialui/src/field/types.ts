@@ -13,6 +13,7 @@ export interface FieldProps {
     headerClassName?: string;
     textAlign?: TextAlign;
     emptyText?: string;
+    fieldKey?: string;
 }
 
 // Props injected by react-admin
@@ -32,4 +33,5 @@ export const fieldPropTypes = {
     headerClassName: PropTypes.string,
     textAlign: PropTypes.oneOf<TextAlign>(['right', 'left']),
     emptyText: PropTypes.string,
+    fieldKey: PropTypes.string,
 };
