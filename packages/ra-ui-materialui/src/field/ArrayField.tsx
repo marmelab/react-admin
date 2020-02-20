@@ -85,7 +85,7 @@ export class ArrayField extends Component<
     constructor(props: FieldProps & InjectedFieldProps) {
         super(props);
         this.state = props.record
-            ? this.getDataAndIds(props.record, props.source)
+            ? this.getDataAndIds(props.record, props.source, props.fieldKey)
             : initialState;
     }
 
@@ -95,22 +95,35 @@ export class ArrayField extends Component<
     ) {
         if (nextProps.record !== prevProps.record) {
             this.setState(
-                this.getDataAndIds(nextProps.record, nextProps.source)
+                this.getDataAndIds(
+                    nextProps.record,
+                    nextProps.source,
+                    nextProps.fieldKey
+                )
             );
         }
     }
 
-    getDataAndIds(record: object, source: string) {
+    getDataAndIds(record: object, source: string, fieldKey: string) {
         const list = get(record, source);
-        return list
+        if (!list) {
+            return initialState;
+        }
+        return fieldKey
             ? {
+                  data: list.reduce((prev, item) => {
+                      prev[item[fieldKey]] = item;
+                      return prev;
+                  }, {}),
+                  ids: list.map(item => item[fieldKey]),
+              }
+            : {
                   data: list.reduce((prev, item) => {
                       prev[JSON.stringify(item)] = item;
                       return prev;
                   }, {}),
                   ids: list.map(JSON.stringify),
-              }
-            : initialState;
+              };
     }
 
     render() {
@@ -121,6 +134,7 @@ export class ArrayField extends Component<
             record,
             sortable,
             source,
+            fieldKey,
             ...rest
         } = this.props;
         const { ids, data } = this.state;
