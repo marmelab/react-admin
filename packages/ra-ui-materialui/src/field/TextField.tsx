@@ -8,8 +8,22 @@ import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 const TextField: FunctionComponent<
     FieldProps & InjectedFieldProps & TypographyProps
-> = ({ className, source, record = {}, ...rest }) => {
+> = ({ className, source, record = {}, emptyText, ...rest }) => {
     const value = get(record, source);
+
+    if (value == null && emptyText) {
+        return (
+            <Typography
+                component="span"
+                variant="body2"
+                className={className}
+                {...sanitizeRestProps(rest)}
+            >
+                {emptyText}
+            </Typography>
+        );
+    }
+
     return (
         <Typography
             component="span"
@@ -17,7 +31,7 @@ const TextField: FunctionComponent<
             className={className}
             {...sanitizeRestProps(rest)}
         >
-            {value && typeof value !== 'string' ? JSON.stringify(value) : value}
+            {typeof value !== 'string' ? JSON.stringify(value) : value}
         </Typography>
     );
 };

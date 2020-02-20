@@ -30,4 +30,17 @@ describe('<ChipField />', () => {
         );
         expect(getByText('foo')).not.toBeNull();
     });
+
+    it('should render the emptyText when value is null', () => {
+        const { getByText } = render(
+            <ChipField
+                className="className"
+                classes={{}}
+                source="name"
+                record={{ name: null }}
+                emptyText="NA"
+            />
+        );
+        expect(getByText('NA')).not.toBeNull();
+    });
 });

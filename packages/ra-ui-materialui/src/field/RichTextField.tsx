@@ -15,7 +15,7 @@ interface Props extends FieldProps {
 
 const RichTextField: FunctionComponent<
     Props & InjectedFieldProps & TypographyProps
-> = ({ className, source, record = {}, stripTags, ...rest }) => {
+> = ({ className, emptyText, source, record = {}, stripTags, ...rest }) => {
     const value = get(record, source);
     if (stripTags) {
         return (
@@ -25,7 +25,7 @@ const RichTextField: FunctionComponent<
                 component="span"
                 {...sanitizeRestProps(rest)}
             >
-                {removeTags(value)}
+                {value == null && emptyText ? emptyText : removeTags(value)}
             </Typography>
         );
     }
@@ -37,7 +37,11 @@ const RichTextField: FunctionComponent<
             component="span"
             {...sanitizeRestProps(rest)}
         >
-            <span dangerouslySetInnerHTML={{ __html: value }} />
+            {value == null && emptyText ? (
+                emptyText
+            ) : (
+                <span dangerouslySetInnerHTML={{ __html: value }} />
+            )}
         </Typography>
     );
 };
