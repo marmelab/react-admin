@@ -1240,7 +1240,6 @@ const App = () => (
         })}
     >
         <TranslationProvider>
-
            <DataProviderContext.Provider valuse={dataProvider} >
                 <ThemeProvider>
                     <Resource name="posts" intent="registration" />
