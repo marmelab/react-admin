@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react';
-import PropTypes from 'prop-types';
+import React, { FC, useCallback, MouseEventHandler } from 'react';
+import PropTypes, { ReactComponentLike } from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -55,7 +55,7 @@ const useStyles = makeStyles(
  *     onClose={() => { // do something }}
  * />
  */
-const Confirm = ({
+const Confirm: FC<ConfirmProps> = ({
     isOpen,
     loading,
     title,
@@ -76,7 +76,7 @@ const Confirm = ({
     const handleConfirm = useCallback(
         e => {
             e.stopPropagation();
-            onConfirm();
+            onConfirm(e);
         },
         [onConfirm]
     );
@@ -125,13 +125,29 @@ const Confirm = ({
     );
 };
 
+export interface ConfirmProps {
+    cancel?: string;
+    classes?: object;
+    confirm?: string;
+    confirmColor?: string;
+    ConfirmIcon?: ReactComponentLike;
+    CancelIcon?: ReactComponentLike;
+    content: string;
+    isOpen?: boolean;
+    loading?: boolean;
+    onClose: MouseEventHandler;
+    onConfirm: MouseEventHandler;
+    title: string;
+    translateOptions?: object;
+}
+
 Confirm.propTypes = {
-    cancel: PropTypes.string.isRequired,
+    cancel: PropTypes.string,
     classes: PropTypes.object,
-    confirm: PropTypes.string.isRequired,
-    confirmColor: PropTypes.string.isRequired,
-    ConfirmIcon: PropTypes.elementType.isRequired,
-    CancelIcon: PropTypes.elementType.isRequired,
+    confirm: PropTypes.string,
+    confirmColor: PropTypes.string,
+    ConfirmIcon: PropTypes.elementType,
+    CancelIcon: PropTypes.elementType,
     content: PropTypes.string.isRequired,
     isOpen: PropTypes.bool,
     loading: PropTypes.bool,
