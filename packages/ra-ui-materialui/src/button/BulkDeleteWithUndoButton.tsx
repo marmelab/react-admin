@@ -92,10 +92,10 @@ const sanitizeRestProps = ({
     classes,
     filterValues,
     label,
-    resource,
     undoable,
     ...rest
-}: Omit<BulkDeleteWithUndoButtonProps, 'selectedIds' | 'icon'>) => rest;
+}: Omit<BulkDeleteWithUndoButtonProps, 'resource' | 'selectedIds' | 'icon'>) =>
+    rest;
 
 interface Props {
     basePath?: string;
@@ -103,6 +103,7 @@ interface Props {
     icon: ReactElement;
     undoable?: boolean;
     filterValues?: any;
+    resource: string;
 }
 
 export type BulkDeleteWithUndoButtonProps = Props & ButtonProps;
