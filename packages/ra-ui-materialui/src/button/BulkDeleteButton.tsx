@@ -7,22 +7,19 @@ import BulkDeleteWithUndoButton, {
     BulkDeleteWithUndoButtonProps,
 } from './BulkDeleteWithUndoButton';
 
-function isUndo(
-    props: BulkDeleteButtonProps
-): props is BulkDeleteWithUndoButtonProps {
-    return (props as any).undoable;
-}
-
-const BulkDeleteButton: FC<BulkDeleteButtonProps> = props =>
-    isUndo(props) ? (
+const BulkDeleteButton: FC<BulkDeleteButtonProps> = ({ undoable, ...props }) =>
+    undoable ? (
         <BulkDeleteWithUndoButton {...props} />
     ) : (
         <BulkDeleteWithConfirmButton {...props} />
     );
 
-export type BulkDeleteButtonProps =
-    | BulkDeleteWithUndoButtonProps
-    | BulkDeleteWithConfirmButtonProps;
+interface Props {
+    undoable?: boolean;
+}
+
+export type BulkDeleteButtonProps = Props &
+    (BulkDeleteWithUndoButtonProps | BulkDeleteWithConfirmButtonProps);
 
 BulkDeleteButton.propTypes = {
     basePath: PropTypes.string,

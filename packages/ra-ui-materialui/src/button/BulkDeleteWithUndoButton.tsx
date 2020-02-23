@@ -37,7 +37,6 @@ const BulkDeleteWithUndoButton: FC<BulkDeleteWithUndoButtonProps> = ({
     label,
     onClick,
     resource,
-    undoable = true,
     selectedIds,
     ...rest
 }) => {
@@ -64,7 +63,7 @@ const BulkDeleteWithUndoButton: FC<BulkDeleteWithUndoButtonProps> = ({
                     : error.message || 'ra.notification.http_error',
                 'warning'
             ),
-        undoable,
+        undoable: true,
     });
 
     const handleClick = e => {
@@ -92,18 +91,16 @@ const sanitizeRestProps = ({
     classes,
     filterValues,
     label,
-    undoable,
     ...rest
 }: Omit<BulkDeleteWithUndoButtonProps, 'resource' | 'selectedIds' | 'icon'>) =>
     rest;
 
 interface Props {
     basePath?: string;
-    selectedIds: Identifier[];
-    icon: ReactElement;
-    undoable?: boolean;
     filterValues?: any;
+    icon: ReactElement;
     resource: string;
+    selectedIds: Identifier[];
 }
 
 export type BulkDeleteWithUndoButtonProps = Props & ButtonProps;
@@ -119,7 +116,6 @@ BulkDeleteWithUndoButton.propTypes = {
 
 BulkDeleteWithUndoButton.defaultProps = {
     label: 'ra.action.delete',
-    undoable: true,
     icon: <ActionDelete />,
 };
 

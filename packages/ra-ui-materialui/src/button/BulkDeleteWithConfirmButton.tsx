@@ -133,12 +133,12 @@ const sanitizeRestProps = ({
 
 interface Props {
     basePath?: string;
-    confirmTitle?: string;
     confirmContent?: string;
+    confirmTitle?: string;
+    filterValues?: any;
+    icon: ReactElement;
     resource: string;
     selectedIds: Identifier[];
-    icon: ReactElement;
-    filterValues?: any;
 }
 
 export type BulkDeleteWithConfirmButtonProps = Props & ButtonProps;
