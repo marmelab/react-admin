@@ -8,6 +8,7 @@ export const SET_PAGE = 'SET_PAGE';
 export const SET_PER_PAGE = 'SET_PER_PAGE';
 
 export const SET_FILTER = 'SET_FILTER';
+export const SET_DISPLAYEDFILTER = 'SET_DISPLAYEDFILTER';
 
 const oppositeOrder = direction =>
     direction === SORT_DESC ? SORT_ASC : SORT_DESC;
@@ -44,6 +45,10 @@ const queryReducer: Reducer<ListParams> = (
 
         case SET_FILTER: {
             return { ...previousState, page: 1, filter: payload };
+        }
+
+        case SET_DISPLAYEDFILTER: {
+            return { ...previousState, page: 1, displayedFilters: payload };
         }
 
         default:
