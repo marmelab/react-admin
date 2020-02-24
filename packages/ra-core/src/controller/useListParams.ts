@@ -8,7 +8,6 @@ import { Location } from 'history';
 
 import queryReducer, {
     SET_FILTER,
-    SET_DISPLAYEDFILTER,
     SET_PAGE,
     SET_PER_PAGE,
     SET_SORT,
@@ -178,24 +177,23 @@ const useListParams = ({
 
     const debouncedSetFilters = lodashDebounce(
         (newFilters, newDisplayedFilters) => {
+            let payload = {
+                filter: removeEmpty(newFilters),
+                displayedFilters: undefined,
+            };
+            if (newDisplayedFilters) {
+                payload.displayedFilters = Object.keys(
+                    newDisplayedFilters
+                ).reduce((filters, filter) => {
+                    if (newDisplayedFilters[filter])
+                        return { ...filters, [filter]: true };
+                    return { ...filters };
+                }, {});
+            }
             changeParams({
                 type: SET_FILTER,
-                payload: removeEmpty(newFilters),
+                payload,
             });
-            if (newDisplayedFilters) {
-                const displayable = Object.keys(newDisplayedFilters).reduce(
-                    (filters, filter) => {
-                        if (newDisplayedFilters[filter])
-                            return { ...filters, [filter]: true };
-                        return { ...filters };
-                    },
-                    {}
-                );
-                changeParams({
-                    type: SET_DISPLAYEDFILTER,
-                    payload: displayable,
-                });
-            }
         },
         debounce
     );
@@ -208,8 +206,11 @@ const useListParams = ({
 
     const hideFilter = useCallback((filterName: string) => {
         const newFilters = removeKey(filterValues, filterName);
-        const newDsplayedFilters = removeKey(displayedFilterValues, filterName);
-        setFilters(newFilters, newDsplayedFilters);
+        const newDisplayedFilters = removeKey(
+            displayedFilterValues,
+            filterName
+        );
+        setFilters(newFilters, newDisplayedFilters);
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
     const showFilter = useCallback((filterName: string, defaultValue: any) => {

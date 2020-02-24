@@ -18,7 +18,7 @@ const useStyles = makeStyles(
 
 const FilterButton = ({
     filters,
-    displayedFilters,
+    displayedFilters = {},
     filterValues,
     showFilter,
     classes: classesOverride,
@@ -91,7 +91,7 @@ const FilterButton = ({
 FilterButton.propTypes = {
     resource: PropTypes.string.isRequired,
     filters: PropTypes.arrayOf(PropTypes.node).isRequired,
-    displayedFilters: PropTypes.object.isRequired,
+    displayedFilters: PropTypes.object,
     filterValues: PropTypes.object.isRequired,
     showFilter: PropTypes.func.isRequired,
     classes: PropTypes.object,

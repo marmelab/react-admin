@@ -89,7 +89,7 @@ export const FilterForm = ({
     margin,
     variant,
     filters,
-    displayedFilters,
+    displayedFilters = {},
     hideFilter,
     initialValues,
     ...rest
@@ -147,7 +147,7 @@ const handleSubmit = event => {
 FilterForm.propTypes = {
     resource: PropTypes.string.isRequired,
     filters: PropTypes.arrayOf(PropTypes.node).isRequired,
-    displayedFilters: PropTypes.object.isRequired,
+    displayedFilters: PropTypes.object,
     hideFilter: PropTypes.func.isRequired,
     initialValues: PropTypes.object,
     classes: PropTypes.object,

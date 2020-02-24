@@ -8,7 +8,6 @@ export const SET_PAGE = 'SET_PAGE';
 export const SET_PER_PAGE = 'SET_PER_PAGE';
 
 export const SET_FILTER = 'SET_FILTER';
-export const SET_DISPLAYEDFILTER = 'SET_DISPLAYEDFILTER';
 
 const oppositeOrder = direction =>
     direction === SORT_DESC ? SORT_ASC : SORT_DESC;
@@ -44,11 +43,14 @@ const queryReducer: Reducer<ListParams> = (
             return { ...previousState, page: 1, perPage: payload };
 
         case SET_FILTER: {
-            return { ...previousState, page: 1, filter: payload };
-        }
-
-        case SET_DISPLAYEDFILTER: {
-            return { ...previousState, page: 1, displayedFilters: payload };
+            return {
+                ...previousState,
+                page: 1,
+                filter: payload.filter,
+                displayedFilters: payload.displayedFilters
+                    ? payload.displayedFilters
+                    : previousState.displayedFilters,
+            };
         }
 
         default:
