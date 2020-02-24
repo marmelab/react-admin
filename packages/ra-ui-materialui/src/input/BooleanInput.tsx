@@ -22,6 +22,7 @@ const BooleanInput: FunctionComponent<
     onChange,
     onFocus,
     options,
+    disabled,
     parse,
     resource,
     source,
@@ -63,6 +64,7 @@ const BooleanInput: FunctionComponent<
                         onChange={handleChange}
                         {...inputProps}
                         {...options}
+                        disabled={disabled}
                     />
                 }
                 label={
@@ -88,6 +90,7 @@ const BooleanInput: FunctionComponent<
 BooleanInput.propTypes = {
     ...InputPropTypes,
     options: PropTypes.shape(Switch.propTypes),
+    disabled: PropTypes.bool,
 };
 
 BooleanInput.defaultProps = {
