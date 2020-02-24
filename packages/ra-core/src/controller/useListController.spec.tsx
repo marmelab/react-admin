@@ -70,7 +70,15 @@ describe('useListController', () => {
                 <ListController {...props} />,
                 {
                     admin: {
-                        resources: { posts: { list: { params: {} } } },
+                        resources: {
+                            posts: {
+                                list: {
+                                    params: {},
+                                    idsForQuery: {},
+                                    totalForQuery: {},
+                                },
+                            },
+                        },
                     },
                 }
             );
@@ -110,7 +118,11 @@ describe('useListController', () => {
                         resources: {
                             posts: {
                                 list: {
-                                    params: { filter: { q: 'hello' } },
+                                    params: {
+                                        filter: { q: 'hello' },
+                                    },
+                                    idsForQuery: {},
+                                    totalForQuery: {},
                                 },
                             },
                         },
@@ -150,6 +162,8 @@ describe('useListController', () => {
                             posts: {
                                 list: {
                                     params: {},
+                                    idsForQuery: {},
+                                    totalForQuery: {},
                                 },
                             },
                         },
@@ -178,7 +192,7 @@ describe('useListController', () => {
             expect(updatedCrudGetListCalls[1][0].payload.filter).toEqual({
                 foo: 2,
             });
-            expect(children).toBeCalledTimes(5);
+            expect(children).toBeCalledTimes(6);
             // Check that the permanent filter is not included in the displayedFilters (passed to Filter form and button)
             expect(children.mock.calls[3][0].displayedFilters).toEqual({});
             // Check that the permanent filter is not included in the filterValues (passed to Filter form and button)
@@ -227,6 +241,8 @@ describe('useListController', () => {
                             posts: {
                                 list: {
                                     params: { filter: { q: 'hello' } },
+                                    idsForQuery: {},
+                                    totalForQuery: {},
                                 },
                             },
                         },

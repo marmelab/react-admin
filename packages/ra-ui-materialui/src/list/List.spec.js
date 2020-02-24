@@ -91,6 +91,8 @@ describe('<List />', () => {
                         params: {},
                         selectedIds: [],
                         total: 0,
+                        idsForQuery: {},
+                        totalForQuery: {},
                     },
                 },
             },

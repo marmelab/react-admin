@@ -70,6 +70,14 @@ describe('<ReferenceArrayInputController />', () => {
                             },
                             list: {
                                 total: 42,
+                                totalForQuery: {
+                                    '{"pagination":{"page":1,"perPage":25},"sort":{"field":"id","order":"DESC"},"filter":{"q":""}}': 42,
+                                },
+                                idsForQuery: {
+                                    '{"pagination":{"page":1,"perPage":25},"sort":{"field":"id","order":"DESC"},"filter":{"q":""}}': [
+                                        1,
+                                    ],
+                                },
                             },
                         },
                     },
@@ -143,6 +151,14 @@ describe('<ReferenceArrayInputController />', () => {
                             },
                             list: {
                                 total: 42,
+                                totalForQuery: {
+                                    '{"pagination":{"page":1,"perPage":25},"sort":{"field":"id","order":"DESC"},"filter":{"q":""}}': 42,
+                                },
+                                idsForQuery: {
+                                    '{"pagination":{"page":1,"perPage":25},"sort":{"field":"id","order":"DESC"},"filter":{"q":""}}': [
+                                        1,
+                                    ],
+                                },
                             },
                         },
                     },
@@ -177,6 +193,14 @@ describe('<ReferenceArrayInputController />', () => {
                             },
                             list: {
                                 total: 42,
+                                totalForQuery: {
+                                    '{"pagination":{"page":1,"perPage":25},"sort":{"field":"id","order":"DESC"},"filter":{"q":""}}': 42,
+                                },
+                                idsForQuery: {
+                                    '{"pagination":{"page":1,"perPage":25},"sort":{"field":"id","order":"DESC"},"filter":{"q":""}}': [
+                                        1,
+                                    ],
+                                },
                             },
                         },
                     },
@@ -211,6 +235,14 @@ describe('<ReferenceArrayInputController />', () => {
                             },
                             list: {
                                 total: 42,
+                                totalForQuery: {
+                                    '{"pagination":{"page":1,"perPage":25},"sort":{"field":"id","order":"DESC"},"filter":{"q":""}}': 42,
+                                },
+                                idsForQuery: {
+                                    '{"pagination":{"page":1,"perPage":25},"sort":{"field":"id","order":"DESC"},"filter":{"q":""}}': [
+                                        1,
+                                    ],
+                                },
                             },
                         },
                     },
@@ -270,6 +302,14 @@ describe('<ReferenceArrayInputController />', () => {
                             },
                             list: {
                                 total: 42,
+                                totalForQuery: {
+                                    '{"pagination":{"page":1,"perPage":25},"sort":{"field":"id","order":"DESC"},"filter":{"q":""}}': 42,
+                                },
+                                idsForQuery: {
+                                    '{"pagination":{"page":1,"perPage":25},"sort":{"field":"id","order":"DESC"},"filter":{"q":""}}': [
+                                        1,
+                                    ],
+                                },
                             },
                         },
                     },
@@ -567,7 +607,12 @@ describe('<ReferenceArrayInputController />', () => {
             </ReferenceArrayInputController>,
             {
                 admin: {
-                    resources: { tags: { data: {}, list: {} } },
+                    resources: {
+                        tags: {
+                            data: {},
+                            list: { idsForQuery: {}, totalForQuery: {} },
+                        },
+                    },
                     references: { possibleValues: {} },
                     ui: { viewVersion: 1 },
                 },
