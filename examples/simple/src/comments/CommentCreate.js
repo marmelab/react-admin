@@ -13,9 +13,16 @@ import PostReferenceInput from './PostReferenceInput';
 const now = new Date();
 const defaultSort = { field: 'title', order: 'ASC' };
 
+const handleSubmit = (values, redirect) => {
+    console.log('handleSubmit');
+    console.log(values);
+    console.log(redirect);
+    return true;
+};
+
 const CommentCreate = props => (
     <Create {...props}>
-        <SimpleForm redirect={false}>
+        <SimpleForm redirect={false} onSubmit={handleSubmit}>
             <PostReferenceInput
                 source="post_id"
                 reference="posts"

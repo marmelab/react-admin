@@ -24,6 +24,7 @@ import getFormInitialValues from './getFormInitialValues';
  * @typedef {object} Props the props you can use (other props are injected by Create or Edit)
  * @prop {object} initialValues
  * @prop {function} validate
+ * @prop {function} onSubmit
  * @prop {boolean} submitOnEnter
  * @prop {string} redirect
  *
@@ -44,6 +45,7 @@ const FormWithRedirect = ({
     saving,
     subscription = defaultSubscription,
     validate,
+    onSubmit,
     validateOnBlur,
     version,
     ...props
@@ -69,7 +71,11 @@ const FormWithRedirect = ({
                 : redirect.current;
         const finalValues = sanitizeEmptyValues(finalInitialValues, values);
 
-        save(finalValues, finalRedirect);
+        if (onSubmit && typeof onSubmit === 'function') {
+            onSubmit(finalValues, finalRedirect);
+        } else {
+            save(finalValues, finalRedirect);
+        }
     };
 
     return (

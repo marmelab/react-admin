@@ -63,6 +63,7 @@ SimpleForm.propTypes = {
     submitOnEnter: PropTypes.bool,
     undoable: PropTypes.bool,
     validate: PropTypes.func,
+    onSubmit: PropTypes.func,
     version: PropTypes.number,
 };
 
@@ -196,6 +197,7 @@ const sanitizeRestProps = ({
     untouch,
     valid,
     validate,
+    onSubmit,
     validating,
     _reduxForm,
     ...props
