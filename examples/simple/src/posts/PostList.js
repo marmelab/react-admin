@@ -1,7 +1,7 @@
+import React, { Children, Fragment, cloneElement, memo } from 'react';
 import BookIcon from '@material-ui/icons/Book';
 import Chip from '@material-ui/core/Chip';
 import { useMediaQuery, makeStyles } from '@material-ui/core';
-import React, { Children, Fragment, cloneElement } from 'react';
 import lodashGet from 'lodash/get';
 import jsonExport from 'jsonexport/dist';
 import {
@@ -80,13 +80,13 @@ const useStyles = makeStyles(theme => ({
     publishedAt: { fontStyle: 'italic' },
 }));
 
-const PostListBulkActions = props => (
+const PostListBulkActions = memo(props => (
     <Fragment>
         <ResetViewsButton {...props} />
         <BulkDeleteButton {...props} />
         <BulkExportButton {...props} />
     </Fragment>
-);
+));
 
 const usePostListActionToolbarStyles = makeStyles({
     toolbar: {
