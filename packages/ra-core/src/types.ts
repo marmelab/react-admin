@@ -294,11 +294,14 @@ export interface ReduxState {
                 list: {
                     params: any;
                     ids: Identifier[];
-                    idsForQuery: { [key: string]: Identifier[] };
                     loadedOnce: boolean;
                     selectedIds: Identifier[];
                     total: number;
-                    totalForQuery: { [key: string]: number };
+                    cachedRequests?: {
+                        ids: Identifier[];
+                        total: number;
+                        validity: Date;
+                    };
                 };
                 validity: {
                     [key: string]: Date;

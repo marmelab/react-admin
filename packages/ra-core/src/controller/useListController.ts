@@ -138,8 +138,8 @@ const useListController = (props: ListProps): ListControllerProps => {
      * We don't use useGetList() here because we want the list of ids to be
      * always available for optimistic rendering, and therefore we need a
      * custom action (CRUD_GET_LIST), a custom reducer for ids and total
-     * (admin.resources.[resource].list.idsForQueries and admin.resources.[resource].list.total)
-     * and a custom selector for these reducers.
+     * (admin.resources.[resource].list.cachedRequests),and a custom selector
+     * for these reducers.
      * Also we don't want that calls to useGetList() in userland change
      * the list of ids in the main List view.
      */
@@ -165,26 +165,24 @@ const useListController = (props: ListProps): ListControllerProps => {
             const resourceState = state.admin.resources[resource];
             // if the resource isn't initialized, return null
             if (!resourceState) return null;
-            const idsForQuery =
-                resourceState.list.idsForQuery[requestSignature];
-            // if the list of ids for the current request (idsForQuery) isn't loaded yet,
-            // return the list of ids for the previous request (ids)
-            return idsForQuery === undefined
-                ? resourceState.list.ids
-                : idsForQuery;
+            const cachedRequests =
+                resourceState.list.cachedRequests[requestSignature];
+            // if the list of ids for the current request isn't loaded yet,
+            // return the list of ids for the previous request
+            return cachedRequests ? cachedRequests.ids : resourceState.list.ids;
         },
         // total selector
         (state: ReduxState) => {
             const resourceState = state.admin.resources[resource];
             // if the resource isn't initialized, return null
             if (!resourceState) return null;
-            const totalForQuery =
-                resourceState.list.totalForQuery[requestSignature];
-            // if the total for the current request (totalForQuery) isn't loaded yet,
-            // return the total for the previous request (total)
-            return totalForQuery === undefined
-                ? resourceState.list.total
-                : totalForQuery;
+            const cachedRequests =
+                resourceState.list.cachedRequests[requestSignature];
+            // if the total for the current request isn't loaded yet,
+            // return the total for the previous request
+            return cachedRequests
+                ? cachedRequests.total
+                : resourceState.list.total;
         }
     );
     const data = useSelector(

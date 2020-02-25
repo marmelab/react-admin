@@ -1,4 +1,6 @@
 import { useSelector } from 'react-redux';
+import get from 'lodash/get';
+
 import { CRUD_GET_MATCHING } from '../actions/dataActions/crudGetMatching';
 import { Identifier, Pagination, Sort, Record, ReduxState } from '../types';
 import useQueryWithStore from './useQueryWithStore';
@@ -93,11 +95,17 @@ const useGetMatching = (
                 source,
             }),
         (state: ReduxState) =>
-            state.admin.resources[resource]
-                ? state.admin.resources[resource].list.totalForQuery[
-                      JSON.stringify(payload)
-                  ]
-                : null
+            get(
+                state.admin.resources,
+                [
+                    resource,
+                    'list',
+                    'cachedRequests',
+                    JSON.stringify(payload),
+                    'total',
+                ],
+                null
+            )
     );
 
     const referenceState = useSelector(state =>

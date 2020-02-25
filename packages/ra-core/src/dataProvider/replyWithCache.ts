@@ -1,3 +1,4 @@
+import get from 'lodash/get';
 import {
     GetListParams,
     GetListResult,
@@ -12,12 +13,12 @@ export const canReplyWithCache = (type, payload, resourceState) => {
     switch (type) {
         case 'getList':
             return (
-                resourceState &&
-                resourceState.list &&
-                resourceState.list.validity &&
-                resourceState.list.validity[
-                    JSON.stringify(payload as GetListParams)
-                ] > now
+                get(resourceState, [
+                    'list',
+                    'cachedRequests',
+                    JSON.stringify(payload as GetListParams),
+                    'validity',
+                ]) > now
             );
         case 'getOne':
             return (
@@ -43,10 +44,11 @@ export const getResultFromCache = (type, payload, resourceState) => {
         case 'getList': {
             const data = resourceState.data;
             const requestSignature = JSON.stringify(payload);
-            const ids = resourceState.list.idsForQuery[requestSignature];
+            const cachedRequest =
+                resourceState.list.cachedRequests[requestSignature];
             return {
-                data: ids.map(id => data[id]),
-                total: resourceState.list.totalForQuery[requestSignature],
+                data: cachedRequest.ids.map(id => data[id]),
+                total: cachedRequest.total,
             } as GetListResult;
         }
         case 'getOne':

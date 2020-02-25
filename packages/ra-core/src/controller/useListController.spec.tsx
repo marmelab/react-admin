@@ -74,8 +74,7 @@ describe('useListController', () => {
                             posts: {
                                 list: {
                                     params: {},
-                                    idsForQuery: {},
-                                    totalForQuery: {},
+                                    cachedRequests: {},
                                 },
                             },
                         },
@@ -121,8 +120,7 @@ describe('useListController', () => {
                                     params: {
                                         filter: { q: 'hello' },
                                     },
-                                    idsForQuery: {},
-                                    totalForQuery: {},
+                                    cachedRequests: {},
                                 },
                             },
                         },
@@ -162,8 +160,7 @@ describe('useListController', () => {
                             posts: {
                                 list: {
                                     params: {},
-                                    idsForQuery: {},
-                                    totalForQuery: {},
+                                    cachedRequests: {},
                                 },
                             },
                         },
@@ -241,8 +238,7 @@ describe('useListController', () => {
                             posts: {
                                 list: {
                                     params: { filter: { q: 'hello' } },
-                                    idsForQuery: {},
-                                    totalForQuery: {},
+                                    cachedRequests: {},
                                 },
                             },
                         },

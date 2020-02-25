@@ -1,12 +1,10 @@
 import { combineReducers } from 'redux';
+import cachedRequests from './cachedRequests';
 import ids from './ids';
-import idsForQuery from './idsForQuery';
 import loadedOnce from './loadedOnce';
 import params from './params';
 import selectedIds from './selectedIds';
 import total from './total';
-import totalForQuery from './totalForQuery';
-import validity from './validity';
 
 const defaultReducer = () => null;
 
@@ -19,11 +17,9 @@ export default combineReducers({
      * @see https://stackoverflow.com/questions/43375079/redux-warning-only-appearing-in-tests
      */
     ids: ids || defaultReducer,
-    idsForQuery: idsForQuery || defaultReducer,
+    total: total || defaultReducer,
     loadedOnce: loadedOnce || defaultReducer,
     params: params || defaultReducer,
     selectedIds: selectedIds || defaultReducer,
-    total: total || defaultReducer,
-    totalForQuery: totalForQuery || defaultReducer,
-    validity: validity || defaultReducer,
+    cachedRequests: cachedRequests || defaultReducer,
 });
