@@ -1,4 +1,5 @@
 import fakeRestProvider from 'ra-data-fakerest';
+import { cacheDataProviderProxy } from 'react-admin';
 
 import data from './data';
 import addUploadFeature from './addUploadFeature';
@@ -11,17 +12,6 @@ const sometimesFailsDataProvider = new Proxy(uploadCapableDataProvider, {
         // if (name === 'delete' && resource === 'posts') {
         //     return Promise.reject(new Error('deletion error'));
         // }
-        // test cache
-        if (name === 'getList' || name === 'getMany' || name === 'getOne') {
-            return uploadCapableDataProvider[name](resource, params).then(
-                response => {
-                    const validUntil = new Date();
-                    validUntil.setTime(validUntil.getTime() + 5 * 60 * 1000); // five minutes
-                    response.validUntil = validUntil;
-                    return response;
-                }
-            );
-        }
         return uploadCapableDataProvider[name](resource, params);
     },
 });
@@ -36,4 +26,4 @@ const delayedDataProvider = new Proxy(sometimesFailsDataProvider, {
         ),
 });
 
-export default delayedDataProvider;
+export default cacheDataProviderProxy(delayedDataProvider);
