@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ActionDelete from '@material-ui/icons/Delete';
 import { fade } from '@material-ui/core/styles/colorManipulator';
@@ -9,22 +9,10 @@ import {
     useNotify,
     useUnselectAll,
     CRUD_DELETE_MANY,
+    Identifier,
 } from 'ra-core';
 
-import Button from './Button';
-
-const sanitizeRestProps = ({
-    basePath,
-    classes,
-    dispatchCrudDeleteMany,
-    filterValues,
-    label,
-    resource,
-    selectedIds,
-    startUndoable,
-    undoable,
-    ...rest
-}) => rest;
+import Button, { ButtonProps } from './Button';
 
 const useStyles = makeStyles(
     theme => ({
@@ -42,7 +30,7 @@ const useStyles = makeStyles(
     { name: 'RaBulkDeleteWithUndoButton' }
 );
 
-const BulkDeleteWithUndoButton = ({
+const BulkDeleteWithUndoButton: FC<BulkDeleteWithUndoButtonProps> = ({
     basePath,
     classes: classesOverride,
     icon,
@@ -50,7 +38,6 @@ const BulkDeleteWithUndoButton = ({
     onClick,
     resource,
     selectedIds,
-    startUndoable,
     ...rest
 }) => {
     const classes = useStyles({ classes: classesOverride });
@@ -79,10 +66,10 @@ const BulkDeleteWithUndoButton = ({
         undoable: true,
     });
 
-    const handleClick = () => {
+    const handleClick = e => {
         deleteMany();
         if (typeof onClick === 'function') {
-            onClick();
+            onClick(e);
         }
     };
 
@@ -99,19 +86,36 @@ const BulkDeleteWithUndoButton = ({
     );
 };
 
+const sanitizeRestProps = ({
+    basePath,
+    classes,
+    filterValues,
+    label,
+    ...rest
+}: Omit<BulkDeleteWithUndoButtonProps, 'resource' | 'selectedIds' | 'icon'>) =>
+    rest;
+
+interface Props {
+    basePath?: string;
+    filterValues?: any;
+    icon: ReactElement;
+    resource: string;
+    selectedIds: Identifier[];
+}
+
+export type BulkDeleteWithUndoButtonProps = Props & ButtonProps;
+
 BulkDeleteWithUndoButton.propTypes = {
     basePath: PropTypes.string,
     classes: PropTypes.object,
     label: PropTypes.string,
     resource: PropTypes.string.isRequired,
-    startUndoable: PropTypes.func,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
     icon: PropTypes.element,
 };
 
 BulkDeleteWithUndoButton.defaultProps = {
     label: 'ra.action.delete',
-    undoable: true,
     icon: <ActionDelete />,
 };
 

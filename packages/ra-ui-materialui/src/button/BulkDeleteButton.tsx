@@ -1,14 +1,25 @@
-import React from 'react';
+import React, { FC } from 'react';
 import PropTypes from 'prop-types';
-import BulkDeleteWithConfirmButton from './BulkDeleteWithConfirmButton';
-import BulkDeleteWithUndoButton from './BulkDeleteWithUndoButton';
+import BulkDeleteWithConfirmButton, {
+    BulkDeleteWithConfirmButtonProps,
+} from './BulkDeleteWithConfirmButton';
+import BulkDeleteWithUndoButton, {
+    BulkDeleteWithUndoButtonProps,
+} from './BulkDeleteWithUndoButton';
 
-const BulkDeleteButton = ({ undoable, ...props }) =>
+const BulkDeleteButton: FC<BulkDeleteButtonProps> = ({ undoable, ...props }) =>
     undoable ? (
         <BulkDeleteWithUndoButton {...props} />
     ) : (
         <BulkDeleteWithConfirmButton {...props} />
     );
+
+interface Props {
+    undoable?: boolean;
+}
+
+export type BulkDeleteButtonProps = Props &
+    (BulkDeleteWithUndoButtonProps | BulkDeleteWithConfirmButtonProps);
 
 BulkDeleteButton.propTypes = {
     basePath: PropTypes.string,
