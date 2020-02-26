@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { FC } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress, {
+    CircularProgressProps,
+} from '@material-ui/core/CircularProgress';
 
 import RefreshIconButton from '../button/RefreshIconButton';
+import { ReduxState } from 'ra-core';
 
 const useStyles = makeStyles(
     {
@@ -16,8 +19,14 @@ const useStyles = makeStyles(
     { name: 'RaLoadingIndicator' }
 );
 
-const LoadingIndicator = ({ classes: classesOverride, className, ...rest }) => {
-    const loading = useSelector(state => state.admin.loading > 0);
+export type LoadingIndicatorProps = CircularProgressProps;
+
+const LoadingIndicator: FC<LoadingIndicatorProps> = ({
+    classes: classesOverride,
+    className,
+    ...rest
+}) => {
+    const loading = useSelector<ReduxState>(state => state.admin.loading > 0);
     const classes = useStyles({ classes: classesOverride });
     return loading ? (
         <CircularProgress
@@ -35,7 +44,6 @@ const LoadingIndicator = ({ classes: classesOverride, className, ...rest }) => {
 LoadingIndicator.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
-    width: PropTypes.string,
 };
 
 export default LoadingIndicator;

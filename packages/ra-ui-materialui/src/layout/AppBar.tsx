@@ -1,8 +1,10 @@
-import React, { Children, cloneElement } from 'react';
+import React, { Children, cloneElement, FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
-import MuiAppBar from '@material-ui/core/AppBar';
+import MuiAppBar, {
+    AppBarProps as MuiAppBarProps,
+} from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -48,11 +50,10 @@ const useStyles = makeStyles(
     { name: 'RaAppBar' }
 );
 
-const AppBar = ({
+const AppBar: FC<AppBarProps> = ({
     children,
     classes: classesOverride,
     className,
-    logo,
     logout,
     open,
     title,
@@ -61,7 +62,7 @@ const AppBar = ({
 }) => {
     const classes = useStyles({ classes: classesOverride });
     const dispatch = useDispatch();
-    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+    const isXSmall = useMediaQuery<any>(theme => theme.breakpoints.down('xs'));
 
     return (
         <HideOnScroll>
@@ -102,6 +103,14 @@ const AppBar = ({
         </HideOnScroll>
     );
 };
+
+interface Props {
+    logout?: ReactElement;
+    userMenu?: ReactElement;
+    open?: boolean;
+}
+
+export type AppBarProps = Props & MuiAppBarProps;
 
 AppBar.propTypes = {
     children: PropTypes.node,
