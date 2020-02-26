@@ -5,7 +5,6 @@ import React, {
     isValidElement,
 } from 'react';
 import PropTypes from 'prop-types';
-import compose from 'recompose/compose';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import get from 'lodash/get';
 import Typography from '@material-ui/core/Typography';
