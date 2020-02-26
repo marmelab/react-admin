@@ -89,12 +89,11 @@ export const SimpleFormIterator = ({
     // we need a unique id for each field for a proper enter/exit animation
     // but redux-form doesn't provide one (cf https://github.com/erikras/redux-form/issues/2735)
     // so we keep an internal map between the field position and an auto-increment id
-    let nextId =
-        fields && fields.length
-            ? fields.length
-            : defaultValue
-            ? defaultValue.length
-            : 0;
+    let nextId = fields.length
+        ? fields.length
+        : defaultValue
+        ? defaultValue.length
+        : 0;
 
     // We check whether we have a defaultValue (which must be an array) before checking
     // the fields prop which will always be empty for a new record.
@@ -124,7 +123,7 @@ export const SimpleFormIterator = ({
     };
 
     const records = get(record, source);
-    return fields ? (
+    return fields.length ? (
         <ul className={classes.root}>
             {submitFailed && typeof error !== 'object' && error && (
                 <FormHelperText error>
