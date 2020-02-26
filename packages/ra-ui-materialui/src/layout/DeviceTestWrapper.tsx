@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { FC } from 'react';
 import mediaQuery from 'css-mediaquery';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
+import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
+
+export interface DeviceTestWrapperProps {
+    width?: Breakpoint;
+}
 
 /**
  * Test utility to simulate a device form factor for server-side mediaQueries
@@ -14,7 +19,10 @@ import { createMuiTheme } from '@material-ui/core/styles';
  *     <MyResponsiveComponent />
  * <DeviceTestWrapper>
  */
-const DeviceTestWrapper = ({ width = 'md', children }) => {
+const DeviceTestWrapper: FC<DeviceTestWrapperProps> = ({
+    width = 'md',
+    children,
+}) => {
     const theme = createMuiTheme();
 
     // Use https://github.com/ericf/css-mediaquery as ponyfill.
