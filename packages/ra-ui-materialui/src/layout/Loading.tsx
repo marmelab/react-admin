@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { FC } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useTranslate } from 'ra-core';
+import { ClassNameMap } from '@material-ui/styles';
 
 const useStyles = makeStyles(
     theme => ({
@@ -33,7 +34,7 @@ const useStyles = makeStyles(
     { name: 'RaLoading' }
 );
 
-const Loading = ({
+const Loading: FC<LoadingProps> = ({
     classes: classesOverride,
     className,
     loadingPrimary = 'ra.page.loading',
@@ -52,8 +53,17 @@ const Loading = ({
     );
 };
 
+type LoadingClassKey = 'container' | 'icon' | 'message';
+
+interface LoadingProps {
+    classes?: Partial<ClassNameMap<LoadingClassKey>>;
+    className?: string;
+    loadingPrimary?: string;
+    loadingSecondary?: string;
+}
+
 Loading.propTypes = {
-    classes: PropTypes.object,
+    classes: PropTypes.any,
     className: PropTypes.string,
     loadingPrimary: PropTypes.string,
     loadingSecondary: PropTypes.string,
