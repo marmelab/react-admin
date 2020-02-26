@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC, ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import CardContent from '@material-ui/core/CardContent';
+import CardContent, { CardContentProps } from '@material-ui/core/CardContent';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(
@@ -23,6 +23,8 @@ const useStyles = makeStyles(
     { name: 'RaCardContentInner' }
 );
 
+export type CardContentInnerProps = CardContentProps;
+
 /**
  * Overrides material-ui CardContent to allow inner content
  *
@@ -30,7 +32,7 @@ const useStyles = makeStyles(
  * padding double the spacing between each CardContent, leading to too much
  * wasted space. Use this component as a CardContent alternative.
  */
-const CardContentInner = ({
+const CardContentInner: FC<CardContentInnerProps> = ({
     classes: classesOverride,
     className,
     children,
