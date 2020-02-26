@@ -15,8 +15,10 @@ const useStyles = makeStyles(
     { name: 'RaLink' }
 );
 
+type LinkClassKey = 'link';
+
 export interface LinkProps extends RRLinkProps {
-    classes?: ClassNameMap;
+    classes?: Partial<ClassNameMap<LinkClassKey>>;
     className?: string;
 }
 
