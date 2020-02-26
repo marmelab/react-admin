@@ -71,7 +71,7 @@ export const SimpleFormIterator = ({
     basePath,
     classes: classesOverride,
     children,
-    fields,
+    fields = [],
     meta: { error, submitFailed },
     record,
     resource,
