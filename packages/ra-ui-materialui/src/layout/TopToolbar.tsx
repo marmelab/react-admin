@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { FC } from 'react';
 import PropTypes from 'prop-types';
-import Toolbar from '@material-ui/core/Toolbar';
+import Toolbar, { ToolbarProps } from '@material-ui/core/Toolbar';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
+
+export interface TopToolbarProps extends ToolbarProps {
+    className?: string;
+}
 
 const useStyles = makeStyles(
     theme => ({
@@ -29,7 +33,7 @@ const useStyles = makeStyles(
     { name: 'RaTopToolbar' }
 );
 
-const TopToolbar = ({ className, children, ...rest }) => {
+const TopToolbar: FC<TopToolbarProps> = ({ className, children, ...rest }) => {
     const classes = useStyles();
     return (
         <Toolbar className={classnames(classes.root, className)} {...rest}>
