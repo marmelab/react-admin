@@ -1,9 +1,28 @@
-import React, { Children, cloneElement, memo } from 'react';
+import React, { Children, cloneElement, FC, memo, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { makeStyles } from '@material-ui/core/styles';
-import { useReferenceArrayFieldController } from 'ra-core';
+import {
+    useReferenceArrayFieldController,
+    Identifier,
+    RecordMap,
+} from 'ra-core';
 import { fieldPropTypes } from './types';
+import { ClassNameMap } from '@material-ui/styles';
+
+interface ReferenceArrayFieldProps {
+    addLabel?: boolean;
+    allowEmpty: boolean;
+    basePath: string;
+    children: ReactElement;
+    classes: Partial<ClassNameMap<ReferenceArrayFieldClassKey>>;
+    className: string;
+    label: string;
+    reference: string;
+    resource: string;
+    source: string;
+    [key: string]: any;
+}
 
 /**
  * A container component that fetches records from another resource specified
@@ -37,7 +56,11 @@ import { fieldPropTypes } from './types';
  * </ReferenceArrayField>
  *
  */
-const ReferenceArrayField = ({ children, ...props }) => {
+
+const ReferenceArrayField: FC<ReferenceArrayFieldProps> = ({
+    children,
+    ...props
+}) => {
     if (React.Children.count(children) !== 1) {
         throw new Error(
             '<ReferenceArrayField> only accepts a single child (like <Datagrid>)'
@@ -80,7 +103,22 @@ const useStyles = makeStyles(
     { name: 'RaReferenceArrayField' }
 );
 
-export const ReferenceArrayFieldView = ({
+type ReferenceArrayFieldClassKey = 'progress';
+
+interface ReferenceArrayFieldViewProps {
+    children: ReactElement;
+    classes?: Partial<ClassNameMap<ReferenceArrayFieldClassKey>>;
+    className: string;
+    data: RecordMap;
+    error?: any;
+    ids: Identifier[];
+    loaded: boolean;
+    loading: boolean;
+    reference: string;
+    referenceBasePath: string;
+}
+
+export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = ({
     children,
     className,
     classes: classesOverride,
@@ -107,9 +145,9 @@ export const ReferenceArrayFieldView = ({
 };
 
 ReferenceArrayFieldView.propTypes = {
-    classes: PropTypes.object,
+    classes: PropTypes.any,
     className: PropTypes.string,
-    data: PropTypes.object,
+    data: PropTypes.any,
     ids: PropTypes.array,
     loaded: PropTypes.bool,
     children: PropTypes.element.isRequired,
