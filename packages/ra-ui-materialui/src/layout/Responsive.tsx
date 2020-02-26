@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import withWidth from '@material-ui/core/withWidth';
 
 /**
  * @deprecated use useMediaQuery instead
  */
-export const Responsive = ({
+export const Responsive: FC<ResponsiveProps> = ({
     xsmall,
     small,
     medium,
@@ -56,6 +56,15 @@ export const Responsive = ({
 
     return element ? React.cloneElement(element, rest) : null;
 };
+
+interface ResponsiveProps {
+    xsmall?: ReactElement;
+    small?: ReactElement;
+    medium?: ReactElement;
+    large?: ReactElement;
+    width?: string;
+    [key: string]: any;
+}
 
 Responsive.propTypes = {
     xsmall: PropTypes.element,
