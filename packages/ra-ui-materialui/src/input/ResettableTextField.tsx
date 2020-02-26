@@ -1,9 +1,9 @@
-import React, { useCallback } from 'react';
+import React, { FC, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
-import MuiTextField from '@material-ui/core/TextField';
+import MuiTextField, { TextFieldProps } from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import ClearIcon from '@material-ui/icons/Clear';
 import { useTranslate } from 'ra-core';
@@ -37,10 +37,18 @@ const handleMouseDownClearButton = event => {
     event.preventDefault();
 };
 
+interface Props {
+    clearAlwaysVisible?: boolean;
+    disabled?: boolean;
+    resettable?: boolean;
+}
+
+export type ResettableTextFieldProps = Props & TextFieldProps;
+
 /**
  * An override of the default Material-UI TextField which is resettable
  */
-function ResettableTextField({
+const ResettableTextField: FC<ResettableTextFieldProps> = ({
     classes: classesOverride,
     clearAlwaysVisible,
     InputProps,
@@ -50,7 +58,7 @@ function ResettableTextField({
     variant = 'filled',
     margin = 'dense',
     ...props
-}) {
+}) => {
     const classes = useStyles({ classes: classesOverride });
     const translate = useTranslate();
 
@@ -58,7 +66,7 @@ function ResettableTextField({
     const handleClickClearButton = useCallback(
         event => {
             event.preventDefault();
-            onChange('');
+            onChange(event);
         },
         [onChange]
     );
@@ -82,7 +90,6 @@ function ResettableTextField({
         clearIcon,
         inputAdornedEnd,
         selectAdornment,
-        visibleClearButton,
         visibleClearIcon,
         ...restClasses
     } = classes;
@@ -185,14 +192,14 @@ function ResettableTextField({
                 ...InputPropsWithoutEndAdornment,
             }}
             disabled={disabled}
-            variant={variant}
+            variant={variant as any}
             margin={margin}
             {...props}
             onFocus={handleFocus}
             onBlur={handleBlur}
         />
     );
-}
+};
 
 ResettableTextField.propTypes = {
     classes: PropTypes.object,
