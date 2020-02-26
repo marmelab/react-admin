@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { FC, Fragment, ErrorInfo } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Button from '@material-ui/core/Button';
@@ -9,8 +9,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import ErrorIcon from '@material-ui/icons/Report';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import History from '@material-ui/icons/History';
+import { ClassNameMap } from '@material-ui/styles';
 
-import Title, { TitlePropType } from './Title';
+import Title from './Title';
 import { useTranslate } from 'ra-core';
 
 const useStyles = makeStyles(
@@ -52,7 +53,22 @@ function goBack() {
     window.history.go(-1);
 }
 
-const Error = ({
+export type ErrorClassKey =
+    | 'container'
+    | 'title'
+    | 'icon'
+    | 'panel'
+    | 'panelDetails'
+    | 'toolbar';
+
+export interface ErrorProps extends React.HTMLAttributes<HTMLDivElement> {
+    error: Error;
+    errorInfo?: ErrorInfo;
+    title?: string;
+    classes?: Partial<ClassNameMap<ErrorClassKey>>;
+}
+
+const Error: FC<ErrorProps> = ({
     error,
     errorInfo,
     classes: classesOverride,
@@ -87,7 +103,7 @@ const Error = ({
                 <div className={classes.toolbar}>
                     <Button
                         variant="contained"
-                        icon={<History />}
+                        startIcon={<History />}
                         onClick={goBack}
                     >
                         {translate('ra.action.back')}
@@ -99,11 +115,11 @@ const Error = ({
 };
 
 Error.propTypes = {
-    classes: PropTypes.object,
+    classes: PropTypes.any,
     className: PropTypes.string,
-    error: PropTypes.object.isRequired,
-    errorInfo: PropTypes.object,
-    title: TitlePropType,
+    error: PropTypes.any.isRequired,
+    errorInfo: PropTypes.any,
+    title: PropTypes.string,
 };
 
 export default Error;

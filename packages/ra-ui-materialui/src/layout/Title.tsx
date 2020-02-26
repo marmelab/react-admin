@@ -1,9 +1,27 @@
-import React, { cloneElement } from 'react';
+import React, { cloneElement, FC, ReactElement } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
-import { useTranslate, warning } from 'ra-core';
+import { useTranslate, warning, Record } from 'ra-core';
 
-const Title = ({ className, defaultTitle, locale, record, title, ...rest }) => {
+export type TitleType = string | ReactElement;
+
+interface TitleProps {
+    className?: string;
+    defaultTitle?: string;
+    locale?: string;
+    record?: Record;
+    title?: TitleType;
+    [key: string]: any;
+}
+
+const Title: FC<TitleProps> = ({
+    className,
+    defaultTitle,
+    locale,
+    record,
+    title,
+    ...rest
+}) => {
     const translate = useTranslate();
     const container =
         typeof document !== 'undefined'
@@ -26,16 +44,13 @@ const Title = ({ className, defaultTitle, locale, record, title, ...rest }) => {
     return createPortal(titleElement, container);
 };
 
-export const TitlePropType = PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.element,
-]);
+export const TitlePropType = PropTypes.element;
 
 Title.propTypes = {
     defaultTitle: PropTypes.string,
     className: PropTypes.string,
     locale: PropTypes.string,
-    record: PropTypes.object,
+    record: PropTypes.any,
     title: TitlePropType,
 };
 
