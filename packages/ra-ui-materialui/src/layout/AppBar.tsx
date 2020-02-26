@@ -62,7 +62,7 @@ const AppBar: FC<AppBarProps> = ({
 }) => {
     const classes = useStyles({ classes: classesOverride });
     const dispatch = useDispatch();
-    const isXSmall = useMediaQuery<any>(theme => theme.breakpoints.down('xs'));
+    const isXSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('xs'));
 
     return (
         <HideOnScroll>
