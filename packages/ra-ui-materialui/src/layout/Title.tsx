@@ -5,7 +5,7 @@ import { useTranslate, warning, Record } from 'ra-core';
 
 export type TitleType = string | ReactElement;
 
-interface TitleProps {
+export interface TitleProps {
     className?: string;
     defaultTitle?: string;
     locale?: string;
