@@ -67,7 +67,7 @@ const useStyles = makeStyles(
     { name: 'RaSimpleFormIterator' }
 );
 
-export const SimpleFormIterator = ({
+const SimpleFormIterator = ({
     basePath,
     classes: classesOverride,
     children,
