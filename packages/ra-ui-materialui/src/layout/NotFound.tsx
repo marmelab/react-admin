@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { FC, HTMLAttributes } from 'react';
+import { RouteComponentProps } from 'react-router';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
@@ -8,6 +9,7 @@ import classnames from 'classnames';
 
 import { useAuthenticated, useTranslate } from 'ra-core';
 import Title from './Title';
+import { ClassNameMap } from '@material-ui/styles';
 
 const useStyles = makeStyles(
     theme => ({
@@ -45,7 +47,12 @@ function goBack() {
     window.history.go(-1);
 }
 
-const NotFound = ({ className, classes: classesOverride, title, ...rest }) => {
+const NotFound: FC<NotFoundProps> = ({
+    className,
+    classes: classesOverride,
+    title,
+    ...rest
+}) => {
     const classes = useStyles({ classes: classesOverride });
     const translate = useTranslate();
     useAuthenticated();
@@ -61,7 +68,11 @@ const NotFound = ({ className, classes: classesOverride, title, ...rest }) => {
                 <div>{translate('ra.message.not_found')}.</div>
             </div>
             <div className={classes.toolbar}>
-                <Button variant="contained" icon={<History />} onClick={goBack}>
+                <Button
+                    variant="contained"
+                    startIcon={<History />}
+                    onClick={goBack}
+                >
                     {translate('ra.action.back')}
                 </Button>
             </div>
@@ -69,19 +80,29 @@ const NotFound = ({ className, classes: classesOverride, title, ...rest }) => {
     );
 };
 
+type NotFoundClassKey = 'container' | 'icon' | 'message' | 'toolbar';
+
+export interface NotFoundProps
+    extends RouteComponentProps,
+        HTMLAttributes<HTMLDivElement> {
+    classes?: Partial<ClassNameMap<NotFoundClassKey>>;
+    className?: string;
+    title?: string;
+}
+
 const sanitizeRestProps = ({
     staticContext,
     history,
     location,
     match,
     ...rest
-}) => rest;
+}: NotFoundProps): HTMLAttributes<HTMLDivElement> => rest;
 
 NotFound.propTypes = {
     className: PropTypes.string,
-    classes: PropTypes.object,
+    classes: PropTypes.any,
     title: PropTypes.string,
-    location: PropTypes.object,
+    location: PropTypes.any,
 };
 
 export default NotFound;
