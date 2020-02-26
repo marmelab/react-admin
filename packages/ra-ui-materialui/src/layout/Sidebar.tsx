@@ -1,9 +1,21 @@
-import React, { useEffect, Children, cloneElement } from 'react';
+import React, {
+    FC,
+    useEffect,
+    Children,
+    cloneElement,
+    ReactElement,
+} from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { Drawer, makeStyles, useMediaQuery } from '@material-ui/core';
+import {
+    Drawer,
+    makeStyles,
+    useMediaQuery,
+    Theme,
+    DrawerProps,
+} from '@material-ui/core';
 import lodashGet from 'lodash/get';
-import { setSidebarVisibility } from 'ra-core';
+import { setSidebarVisibility, ReduxState } from 'ra-core';
 
 export const DRAWER_WIDTH = 240;
 export const CLOSED_DRAWER_WIDTH = 55;
@@ -14,7 +26,7 @@ const useStyles = makeStyles(
             position: 'relative',
             height: 'auto',
             overflowX: 'hidden',
-            width: props =>
+            width: (props: any) =>
                 props.open
                     ? lodashGet(theme, 'sidebar.width', DRAWER_WIDTH)
                     : lodashGet(
@@ -45,27 +57,29 @@ const useStyles = makeStyles(
     { name: 'RaSidebar' }
 );
 
-const Sidebar = ({
+const Sidebar: FC<SidebarProps> = ({
     children,
-    closedSize,
-    size,
     classes: classesOverride,
     ...rest
 }) => {
     const dispatch = useDispatch();
-    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
-    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+    const isXSmall = useMediaQuery<Theme>(theme =>
+        theme.breakpoints.down('xs')
+    );
+    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
     // FIXME negating isXSmall and isSmall should be enough, but unfortunately
     // mui media queries use a two pass system and are always false at first
     // see https://github.com/mui-org/material-ui/issues/14336
-    const isDesktop = useMediaQuery(theme => theme.breakpoints.up('md'));
+    const isDesktop = useMediaQuery<Theme>(theme => theme.breakpoints.up('md'));
     useEffect(() => {
         if (isDesktop) {
             dispatch(setSidebarVisibility(true)); // FIXME renders with a closed sidebar at first
         }
     }, [isDesktop, dispatch]);
-    const open = useSelector(state => state.admin.ui.sidebarOpen);
-    useSelector(state => state.locale); // force redraw on locale change
+    const open = useSelector<ReduxState, boolean>(
+        state => state.admin.ui.sidebarOpen
+    );
+    useSelector<any>(state => state.locale); // force redraw on locale change
     const handleClose = () => dispatch(setSidebarVisibility(false));
     const toggleSidebar = () => dispatch(setSidebarVisibility(!open));
     const classes = useStyles({ classes: classesOverride, open });
@@ -113,8 +127,12 @@ const Sidebar = ({
     );
 };
 
+export interface SidebarProps extends DrawerProps {
+    children: ReactElement;
+}
+
 Sidebar.propTypes = {
-    children: PropTypes.node.isRequired,
+    children: PropTypes.element.isRequired,
 };
 
 export default Sidebar;
