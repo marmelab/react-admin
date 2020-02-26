@@ -36,9 +36,14 @@ const useStyles = makeStyles(
     { name: 'RaNotification' }
 );
 
-const Notification: React.FunctionComponent<
-    Props & Omit<SnackbarProps, 'open'>
-> = ({ type, className, autoHideDuration, ...rest }) => {
+export type NotificationProps = Props & Omit<SnackbarProps, 'open'>;
+
+const Notification: React.FunctionComponent<NotificationProps> = ({
+    type,
+    className,
+    autoHideDuration,
+    ...rest
+}) => {
     const [open, setOpen] = useState(false);
     const notification = useSelector(getNotification);
     const dispatch = useDispatch();

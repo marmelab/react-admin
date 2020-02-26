@@ -1,6 +1,10 @@
 import React, {
     Component,
+    ComponentType,
     createElement,
+    ErrorInfo,
+    HTMLAttributes,
+    ReactElement,
     useEffect,
     useRef,
     useState,
@@ -8,22 +12,22 @@ import React, {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { withRouter } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import {
     createMuiTheme,
     withStyles,
     createStyles,
 } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
+import { ThemeProvider, ClassNameMap } from '@material-ui/styles';
 import compose from 'recompose/compose';
 
-import DefaultAppBar from './AppBar';
-import DefaultSidebar from './Sidebar';
-import DefaultMenu from './Menu';
-import DefaultNotification from './Notification';
-import DefaultError from './Error';
+import DefaultAppBar, { AppBarProps } from './AppBar';
+import DefaultSidebar, { SidebarProps } from './Sidebar';
+import DefaultMenu, { MenuProps } from './Menu';
+import DefaultNotification, { NotificationProps } from './Notification';
+import DefaultError, { ErrorProps } from './Error';
 import defaultTheme from '../defaultTheme';
-import { ComponentPropType } from 'ra-core';
+import { ComponentPropType, CustomRoutes } from 'ra-core';
 
 const styles = theme =>
     createStyles({
@@ -74,10 +78,35 @@ const sanitizeRestProps = ({
     location,
     match,
     ...props
-}) => props;
+}: Omit<LayoutProps, 'title'>) => props;
 
-class Layout extends Component {
+class Layout extends Component<LayoutProps, LayoutState> {
     state = { hasError: false, errorMessage: null, errorInfo: null };
+
+    static propTypes = {
+        appBar: ComponentPropType,
+        children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
+        classes: PropTypes.object,
+        className: PropTypes.string,
+        customRoutes: PropTypes.array,
+        dashboard: ComponentPropType,
+        error: ComponentPropType,
+        history: PropTypes.object.isRequired,
+        logout: PropTypes.element,
+        menu: ComponentPropType,
+        notification: ComponentPropType,
+        open: PropTypes.bool,
+        sidebar: ComponentPropType,
+        title: PropTypes.node.isRequired,
+    };
+
+    static defaultProps = {
+        appBar: DefaultAppBar,
+        error: DefaultError,
+        menu: DefaultMenu,
+        notification: DefaultNotification,
+        sidebar: DefaultSidebar,
+    };
 
     constructor(props) {
         super(props);
@@ -146,30 +175,30 @@ class Layout extends Component {
     }
 }
 
-Layout.propTypes = {
-    appBar: ComponentPropType,
-    children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    customRoutes: PropTypes.array,
-    dashboard: ComponentPropType,
-    error: ComponentPropType,
-    history: PropTypes.object.isRequired,
-    logout: PropTypes.element,
-    menu: ComponentPropType,
-    notification: ComponentPropType,
-    open: PropTypes.bool,
-    sidebar: ComponentPropType,
-    title: PropTypes.node.isRequired,
-};
+interface Props {
+    appBar?: ComponentType<AppBarProps>;
+    open?: boolean;
+    classes?: ClassNameMap;
+    className?: string;
+    customRoutes?: CustomRoutes;
+    error?: ComponentType<ErrorProps>;
+    dashboard?: ComponentType<any>;
+    logout?: ReactElement;
+    menu?: ComponentType<MenuProps>;
+    notification?: ComponentType<NotificationProps>;
+    sidebar?: ComponentType<SidebarProps>;
+    title: string;
+}
 
-Layout.defaultProps = {
-    appBar: DefaultAppBar,
-    error: DefaultError,
-    menu: DefaultMenu,
-    notification: DefaultNotification,
-    sidebar: DefaultSidebar,
-};
+interface LayoutState {
+    hasError: boolean;
+    errorMessage?: string;
+    errorInfo?: ErrorInfo;
+}
+
+export type LayoutProps = Props &
+    RouteComponentProps &
+    HTMLAttributes<HTMLDivElement>;
 
 const mapStateToProps = state => ({
     open: state.admin.ui.sidebarOpen,
