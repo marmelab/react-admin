@@ -1,4 +1,12 @@
-import React, { Children, cloneElement, isValidElement, useState } from 'react';
+import React, {
+    Children,
+    cloneElement,
+    FC,
+    isValidElement,
+    useState,
+    ReactElement,
+    ReactNode,
+} from 'react';
 import PropTypes from 'prop-types';
 import { useTranslate } from 'ra-core';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -6,11 +14,17 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 
-const UserMenu = props => {
+export interface UserMenuProps {
+    label?: string;
+    icon?: ReactNode;
+    logout?: ReactElement;
+    children?: ReactNode;
+}
+
+const UserMenu: FC<UserMenuProps> = ({ children, label, icon, logout }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const translate = useTranslate();
 
-    const { children, label, icon, logout } = props;
     if (!logout && !children) return null;
     const open = Boolean(anchorEl);
 
