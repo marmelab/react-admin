@@ -22,7 +22,7 @@ import {
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import { useFormState, FormSpy } from 'react-final-form';
 
-const SaveWithNoteButton = props => {
+const SaveWithNoteButton = ({ selfSubmit, ...props }) => {
     const [create] = useCreate('posts');
     const redirectTo = useRedirect();
     const notify = useNotify();
