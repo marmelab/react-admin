@@ -3,6 +3,7 @@ import React, {
     cloneElement,
     Component,
     isValidElement,
+    useRef,
 } from 'react';
 import PropTypes from 'prop-types';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
@@ -86,24 +87,24 @@ const SimpleFormIterator = ({
     const translate = useTranslate();
     const classes = useStyles({ classes: classesOverride });
 
-    // we need a unique id for each field for a proper enter/exit animation
-    // but redux-form doesn't provide one (cf https://github.com/erikras/redux-form/issues/2735)
+    // We need a unique id for each field for a proper enter/exit animation
     // so we keep an internal map between the field position and an auto-increment id
-    let nextId =
+    const nextId = useRef(
         fields && fields.length
             ? fields.length
             : defaultValue
             ? defaultValue.length
-            : 0;
+            : 0
+    );
 
     // We check whether we have a defaultValue (which must be an array) before checking
     // the fields prop which will always be empty for a new record.
     // Without it, our ids wouldn't match the default value and we would get key warnings
     // on the CssTransition element inside our render method
-    let ids = nextId > 0 ? Array.from(Array(nextId).keys()) : [];
+    const ids = useRef(nextId > 0 ? Array.from(Array(nextId).keys()) : []);
 
     const removeField = index => () => {
-        ids.splice(index, 1);
+        ids.current.splice(index, 1);
         fields.remove(index);
     };
 
@@ -119,7 +120,7 @@ const SimpleFormIterator = ({
     };
 
     const addField = () => {
-        ids.push(nextId++);
+        ids.current.push(nextId.current++);
         fields.push({});
     };
 
@@ -134,7 +135,7 @@ const SimpleFormIterator = ({
             <TransitionGroup component={null}>
                 {fields.map((member, index) => (
                     <CSSTransition
-                        key={ids[index]}
+                        key={ids.current[index]}
                         timeout={500}
                         classNames="fade"
                         {...TransitionProps}
