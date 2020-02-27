@@ -1,18 +1,18 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render } from '@testing-library/react';
 
 import SimpleShowLayout from './SimpleShowLayout';
 import TextField from '../field/TextField';
 
 describe('<SimpleShowLayout />', () => {
     it('should display children inputs of SimpleShowLayout', () => {
-        const wrapper = shallow(
-            <SimpleShowLayout>
+        const { queryByText } = render(
+            <SimpleShowLayout record={{ foo: 'foo', bar: 'bar' }}>
                 <TextField source="foo" />
                 <TextField source="bar" />
             </SimpleShowLayout>
         );
-        const inputs = wrapper.find('EnhancedTextField');
-        expect(inputs.map(i => i.prop('source'))).toEqual(['foo', 'bar']);
+        expect(queryByText('foo')).not.toBeNull();
+        expect(queryByText('bar')).not.toBeNull();
     });
 });
