@@ -44,7 +44,13 @@ import CardContentInner from '../layout/CardContentInner';
 const SimpleForm = props => (
     <FormWithRedirect
         {...props}
-        render={formProps => <SimpleFormView {...formProps} />}
+        render={formProps => (
+            <SimpleFormView
+                save={props.save}
+                onSubmit={props.onSubmit}
+                {...formProps}
+            />
+        )}
     />
 );
 
@@ -80,8 +86,10 @@ const SimpleFormView = ({
     redirect,
     resource,
     saving,
+    save,
     submitOnEnter,
     toolbar,
+    onSubmit,
     undoable,
     variant,
     ...rest
@@ -117,6 +125,8 @@ const SimpleFormView = ({
                 redirect,
                 resource,
                 saving,
+                save,
+                onSubmit,
                 submitOnEnter,
                 undoable,
             })}

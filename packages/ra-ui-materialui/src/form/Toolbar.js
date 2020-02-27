@@ -59,12 +59,18 @@ const Toolbar = ({
     redirect,
     resource,
     saving,
+    save,
     submitOnEnter,
     undoable,
+    onSubmit,
     width,
     ...rest
 }) => {
     const classes = useStyles({ classes: classesOverride });
+    const onClick =
+        onSubmit && typeof onSubmit === 'function' && !invalid
+            ? save
+            : undefined;
     return (
         <Fragment>
             <MuiToolbar
@@ -111,6 +117,10 @@ const Toolbar = ({
                                   handleSubmitWithRedirect: valueOrDefault(
                                       button.props.handleSubmitWithRedirect,
                                       handleSubmitWithRedirect
+                                  ),
+                                  onClick: valueOrDefault(
+                                      button.props.onClick,
+                                      onClick
                                   ),
                                   invalid,
                                   pristine,

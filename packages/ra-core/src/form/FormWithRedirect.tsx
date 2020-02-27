@@ -72,7 +72,7 @@ const FormWithRedirect = ({
         const finalValues = sanitizeEmptyValues(finalInitialValues, values);
 
         if (onSubmit && typeof onSubmit === 'function') {
-            onSubmit(finalValues, finalRedirect);
+            onSubmit(finalValues, finalRedirect, save);
         } else {
             save(finalValues, finalRedirect);
         }

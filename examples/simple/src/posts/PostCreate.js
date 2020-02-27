@@ -59,7 +59,7 @@ const SaveWithNoteButton = props => {
         basePath,
     ]);
 
-    return <SaveButton {...props} handleSubmitWithRedirect={handleClick} />;
+    return <SaveButton {...props} onClick={handleClick} />;
 };
 
 const PostCreateToolbar = props => (
@@ -90,6 +90,12 @@ const PostCreateToolbar = props => (
     </Toolbar>
 );
 
+const handleSubmit = (values, redirect) => {
+    console.log(
+        'Disable default save function to have specific action on the Save buttons'
+    );
+};
+
 const backlinksDefaultValue = [
     {
         date: new Date(),
@@ -109,6 +115,7 @@ const PostCreate = ({ permissions, ...props }) => {
     return (
         <Create {...props}>
             <SimpleForm
+                onSubmit={handleSubmit}
                 toolbar={<PostCreateToolbar />}
                 initialValues={initialValues}
                 validate={values => {

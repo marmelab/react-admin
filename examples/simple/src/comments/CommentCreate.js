@@ -13,11 +13,9 @@ import PostReferenceInput from './PostReferenceInput';
 const now = new Date();
 const defaultSort = { field: 'title', order: 'ASC' };
 
-const handleSubmit = (values, redirect) => {
-    console.log('handleSubmit');
-    console.log(values);
-    console.log(redirect);
-    return true;
+const handleSubmit = (values, redirect, save) => {
+    console.log('Do something before default save function');
+    save(values, redirect);
 };
 
 const CommentCreate = props => (
