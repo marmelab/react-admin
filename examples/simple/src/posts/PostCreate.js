@@ -20,46 +20,36 @@ import {
     useRedirect,
     useNotify,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
-import { useFormState, FormSpy } from 'react-final-form';
+import { FormSpy } from 'react-final-form';
 
 const SaveWithNoteButton = ({ selfSubmit, ...props }) => {
     const [create] = useCreate('posts');
     const redirectTo = useRedirect();
     const notify = useNotify();
-    const { basePath, redirect } = props;
+    const { basePath } = props;
 
-    const formState = useFormState();
-    const handleClick = useCallback(() => {
-        if (!formState.valid) {
-            return;
-        }
-
-        create(
-            {
-                payload: {
-                    data: { ...formState.values, average_note: 10 },
+    const handleClick = useCallback(
+        (values, redirect) => {
+            create(
+                {
+                    payload: {
+                        data: { ...values, average_note: 10 },
+                    },
                 },
-            },
-            {
-                onSuccess: ({ data: newRecord }) => {
-                    notify('ra.notification.created', 'info', {
-                        smart_count: 1,
-                    });
-                    redirectTo(redirect, basePath, newRecord.id, newRecord);
-                },
-            }
-        );
-    }, [
-        formState.valid,
-        formState.values,
-        create,
-        notify,
-        redirectTo,
-        redirect,
-        basePath,
-    ]);
+                {
+                    onSuccess: ({ data: newRecord }) => {
+                        notify('ra.notification.created', 'info', {
+                            smart_count: 1,
+                        });
+                        redirectTo(redirect, basePath, newRecord.id, newRecord);
+                    },
+                }
+            );
+        },
+        [create, notify, redirectTo, basePath]
+    );
 
-    return <SaveButton {...props} onClick={handleClick} />;
+    return <SaveButton {...props} customSave={handleClick} />;
 };
 
 const PostCreateToolbar = props => (
@@ -90,12 +80,6 @@ const PostCreateToolbar = props => (
     </Toolbar>
 );
 
-const handleSubmit = (values, redirect) => {
-    console.log(
-        'Disable default save function to have specific action on the Save buttons'
-    );
-};
-
 const backlinksDefaultValue = [
     {
         date: new Date(),
@@ -115,7 +99,6 @@ const PostCreate = ({ permissions, ...props }) => {
     return (
         <Create {...props}>
             <SimpleForm
-                onSubmit={handleSubmit}
                 toolbar={<PostCreateToolbar />}
                 initialValues={initialValues}
                 validate={values => {

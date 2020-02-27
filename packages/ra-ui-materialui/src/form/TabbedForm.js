@@ -79,7 +79,9 @@ import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
 const TabbedForm = props => (
     <FormWithRedirect
         {...props}
-        render={formProps => <TabbedFormView {...formProps} />}
+        render={formProps => (
+            <TabbedFormView save={props.save} {...formProps} />
+        )}
     />
 );
 
@@ -130,6 +132,8 @@ export const TabbedFormView = ({
     submitOnEnter,
     tabs,
     toolbar,
+    save,
+    setSave,
     translate,
     undoable,
     value,
@@ -204,6 +208,8 @@ export const TabbedFormView = ({
                     redirect: defaultRedirect,
                     resource,
                     saving,
+                    save,
+                    setSave,
                     submitOnEnter,
                     undoable,
                 })}
@@ -231,6 +237,7 @@ TabbedFormView.propTypes = {
     ]),
     resource: PropTypes.string,
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
+    setSave: PropTypes.func,
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
     tabs: PropTypes.element.isRequired,
@@ -281,6 +288,7 @@ const sanitizeRestProps = ({
     reset,
     resetSection,
     save,
+    setSave,
     staticContext,
     submit,
     submitAsSideEffect,

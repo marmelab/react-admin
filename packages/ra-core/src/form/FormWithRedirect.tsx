@@ -24,7 +24,7 @@ import getFormInitialValues from './getFormInitialValues';
  * @typedef {object} Props the props you can use (other props are injected by Create or Edit)
  * @prop {object} initialValues
  * @prop {function} validate
- * @prop {function} onSubmit
+ * @prop {function} save
  * @prop {boolean} submitOnEnter
  * @prop {string} redirect
  *
@@ -45,17 +45,21 @@ const FormWithRedirect = ({
     saving,
     subscription = defaultSubscription,
     validate,
-    onSubmit,
     validateOnBlur,
     version,
     ...props
 }) => {
     let redirect = useRef(props.redirect);
+    let realSave = useRef(save);
     // We don't use state here for two reasons:
     // 1. There no way to execute code only after the state has been updated
     // 2. We don't want the form to rerender when redirect is changed
     const setRedirect = newRedirect => {
         redirect.current = newRedirect;
+    };
+
+    const setSave = newSave => {
+        realSave.current = newSave;
     };
 
     const finalInitialValues = getFormInitialValues(
@@ -71,11 +75,7 @@ const FormWithRedirect = ({
                 : redirect.current;
         const finalValues = sanitizeEmptyValues(finalInitialValues, values);
 
-        if (onSubmit && typeof onSubmit === 'function') {
-            onSubmit(finalValues, finalRedirect, save);
-        } else {
-            save(finalValues, finalRedirect);
-        }
+        realSave.current(finalValues, finalRedirect);
     };
 
     return (
@@ -101,6 +101,8 @@ const FormWithRedirect = ({
                     setRedirect={setRedirect}
                     saving={formProps.submitting || saving}
                     render={render}
+                    save={save}
+                    setSave={setSave}
                 />
             )}
         </Form>

@@ -45,11 +45,7 @@ const SimpleForm = props => (
     <FormWithRedirect
         {...props}
         render={formProps => (
-            <SimpleFormView
-                save={props.save}
-                onSubmit={props.onSubmit}
-                {...formProps}
-            />
+            <SimpleFormView save={props.save} {...formProps} />
         )}
     />
 );
@@ -69,7 +65,6 @@ SimpleForm.propTypes = {
     submitOnEnter: PropTypes.bool,
     undoable: PropTypes.bool,
     validate: PropTypes.func,
-    onSubmit: PropTypes.func,
     version: PropTypes.number,
 };
 
@@ -86,10 +81,10 @@ const SimpleFormView = ({
     redirect,
     resource,
     saving,
-    save,
     submitOnEnter,
     toolbar,
-    onSubmit,
+    save,
+    setSave,
     undoable,
     variant,
     ...rest
@@ -126,7 +121,7 @@ const SimpleFormView = ({
                 resource,
                 saving,
                 save,
-                onSubmit,
+                setSave,
                 submitOnEnter,
                 undoable,
             })}
@@ -148,6 +143,7 @@ SimpleFormView.propTypes = {
         PropTypes.func,
     ]),
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
+    setSave: PropTypes.func,
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
     toolbar: PropTypes.element,
@@ -192,6 +188,7 @@ const sanitizeRestProps = ({
     reset,
     resetSection,
     save,
+    setSave,
     setRedirect,
     submit,
     submitError,
@@ -207,7 +204,6 @@ const sanitizeRestProps = ({
     untouch,
     valid,
     validate,
-    onSubmit,
     validating,
     _reduxForm,
     ...props
