@@ -1,10 +1,4 @@
-import React, {
-    Children,
-    cloneElement,
-    Component,
-    isValidElement,
-    useRef,
-} from 'react';
+import React, { Children, cloneElement, isValidElement, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import get from 'lodash/get';
