@@ -6,22 +6,16 @@ import {
     useReferenceArrayFieldController,
     Identifier,
     RecordMap,
+    ReferenceArrayProps,
 } from 'ra-core';
-import { fieldPropTypes } from './types';
+import { fieldPropTypes, FieldProps, InjectedFieldProps } from './types';
 import { ClassNameMap } from '@material-ui/styles';
 
-interface ReferenceArrayFieldProps {
-    addLabel?: boolean;
-    allowEmpty: boolean;
-    basePath: string;
-    children: ReactElement;
-    classes: Partial<ClassNameMap<ReferenceArrayFieldClassKey>>;
-    className: string;
-    label: string;
+interface ReferenceArrayFieldProps extends FieldProps, InjectedFieldProps {
     reference: string;
-    resource: string;
-    source: string;
-    [key: string]: any;
+    classes?: Partial<ClassNameMap<ReferenceArrayFieldClassKey>>;
+    children: ReactElement;
+    resource?: string;
 }
 
 /**
@@ -67,10 +61,18 @@ const ReferenceArrayField: FC<ReferenceArrayFieldProps> = ({
         );
     }
 
+    const { basePath, reference, resource, record, source } = props;
+
     return (
         <PureReferenceArrayFieldView
             {...props}
-            {...useReferenceArrayFieldController(props)}
+            {...useReferenceArrayFieldController({
+                basePath,
+                reference,
+                resource,
+                record,
+                source,
+            })}
         >
             {children}
         </PureReferenceArrayFieldView>
@@ -85,7 +87,7 @@ ReferenceArrayField.propTypes = {
     className: PropTypes.string,
     children: PropTypes.element.isRequired,
     label: PropTypes.string,
-    record: PropTypes.object,
+    record: PropTypes.any,
     reference: PropTypes.string.isRequired,
     resource: PropTypes.string,
     sortBy: PropTypes.string,
@@ -105,17 +107,10 @@ const useStyles = makeStyles(
 
 type ReferenceArrayFieldClassKey = 'progress';
 
-interface ReferenceArrayFieldViewProps {
+interface ReferenceArrayFieldViewProps extends FieldProps, ReferenceArrayProps {
     children: ReactElement;
     classes?: Partial<ClassNameMap<ReferenceArrayFieldClassKey>>;
-    className: string;
-    data: RecordMap;
-    error?: any;
-    ids: Identifier[];
-    loaded: boolean;
-    loading: boolean;
     reference: string;
-    referenceBasePath: string;
 }
 
 export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = ({

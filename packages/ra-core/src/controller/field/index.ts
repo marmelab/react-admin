@@ -2,7 +2,9 @@ import ReferenceArrayFieldController from './ReferenceArrayFieldController';
 import ReferenceFieldController from './ReferenceFieldController';
 import ReferenceManyFieldController from './ReferenceManyFieldController';
 import getResourceLinkPath, { LinkToType } from './getResourceLinkPath';
-import useReferenceArrayFieldController from './useReferenceArrayFieldController';
+import useReferenceArrayFieldController, {
+    ReferenceArrayProps,
+} from './useReferenceArrayFieldController';
 import useReferenceManyFieldController from './useReferenceManyFieldController';
 
 export {
@@ -13,4 +15,5 @@ export {
     useReferenceManyFieldController,
     ReferenceManyFieldController,
     LinkToType,
+    ReferenceArrayProps,
 };
