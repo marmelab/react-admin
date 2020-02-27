@@ -49,6 +49,7 @@ export default ({
                       ...state,
                       admin: {
                           ...state.admin,
+                          loading: 0,
                           resources: {},
                           customQueries: {},
                           references: { oneToMany: {}, possibleValues: {} },
