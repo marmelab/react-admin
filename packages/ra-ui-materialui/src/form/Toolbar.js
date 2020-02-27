@@ -67,7 +67,7 @@ const Toolbar = ({
     ...rest
 }) => {
     const classes = useStyles({ classes: classesOverride });
-    const onClick =
+    const selfSubmit =
         onSubmit && typeof onSubmit === 'function' && !invalid
             ? save
             : undefined;
@@ -106,8 +106,8 @@ const Toolbar = ({
                         )}
                     </div>
                 ) : (
-                    Children.map(children, button =>
-                        button && isValidElement(button)
+                    Children.map(children, button => {
+                        return button && isValidElement(button)
                             ? React.cloneElement(button, {
                                   basePath,
                                   handleSubmit: valueOrDefault(
@@ -118,10 +118,7 @@ const Toolbar = ({
                                       button.props.handleSubmitWithRedirect,
                                       handleSubmitWithRedirect
                                   ),
-                                  onClick: valueOrDefault(
-                                      button.props.onClick,
-                                      onClick
-                                  ),
+                                  selfSubmit,
                                   invalid,
                                   pristine,
                                   record,
@@ -136,8 +133,8 @@ const Toolbar = ({
                                       undoable
                                   ),
                               })
-                            : null
-                    )
+                            : null;
+                    })
                 )}
             </MuiToolbar>
             <div className={classes.spacer} />

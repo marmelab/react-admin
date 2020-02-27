@@ -5,6 +5,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import ContentSave from '@material-ui/icons/Save';
 import classnames from 'classnames';
+import { useFormState } from 'react-final-form';
 import {
     useTranslate,
     useNotify,
@@ -25,9 +26,11 @@ const SaveButton: FC<SaveButtonProps> = ({
     icon = defaultIcon,
     onClick,
     handleSubmitWithRedirect,
+    selfSubmit,
     ...rest
 }) => {
     const classes = useStyles({ classes: classesOverride });
+    const formState = useFormState();
     const notify = useNotify();
     const translate = useTranslate();
 
@@ -44,6 +47,10 @@ const SaveButton: FC<SaveButtonProps> = ({
                 event.preventDefault();
             }
             handleSubmitWithRedirect(redirect);
+        }
+
+        if (typeof selfSubmit === 'function') {
+            selfSubmit(formState.values, redirect);
         }
 
         if (typeof onClick === 'function') {
@@ -109,6 +116,7 @@ interface Props {
     classes?: object;
     className?: string;
     handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
+    selfSubmit?: (values: object, redirect: RedirectionSideEffect) => void;
     icon?: ReactElement;
     invalid?: boolean;
     label?: string;
@@ -132,6 +140,7 @@ SaveButton.propTypes = {
     className: PropTypes.string,
     classes: PropTypes.object,
     handleSubmitWithRedirect: PropTypes.func,
+    selfSubmit: PropTypes.func,
     invalid: PropTypes.bool,
     label: PropTypes.string,
     pristine: PropTypes.bool,
