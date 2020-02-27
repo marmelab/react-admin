@@ -104,8 +104,8 @@ const Toolbar = ({
                         )}
                     </div>
                 ) : (
-                    Children.map(children, button => {
-                        return button && isValidElement(button)
+                    Children.map(children, button =>
+                        button && isValidElement(button)
                             ? React.cloneElement(button, {
                                   basePath,
                                   handleSubmit: valueOrDefault(
@@ -135,8 +135,8 @@ const Toolbar = ({
                                       undoable
                                   ),
                               })
-                            : null;
-                    })
+                            : null
+                    )
                 )}
             </MuiToolbar>
             <div className={classes.spacer} />
