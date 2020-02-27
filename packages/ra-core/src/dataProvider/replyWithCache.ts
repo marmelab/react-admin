@@ -26,6 +26,7 @@ export const canReplyWithCache = (type, payload, resourceState) => {
                 resourceState.validity &&
                 resourceState.validity[(payload as GetOneParams).id] > now
             );
+
         case 'getMany':
             return (
                 resourceState &&
