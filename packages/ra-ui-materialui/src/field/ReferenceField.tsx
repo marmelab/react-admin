@@ -1,14 +1,32 @@
-import React, { Children, cloneElement, memo } from 'react';
+import React, { Children, cloneElement, FC, memo, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import get from 'lodash/get';
 import { makeStyles } from '@material-ui/core/styles';
 import ErrorIcon from '@material-ui/icons/Error';
-import { useReference, getResourceLinkPath } from 'ra-core';
+import {
+    useReference,
+    UseReferenceProps,
+    getResourceLinkPath,
+    LinkToType,
+} from 'ra-core';
 
 import LinearProgress from '../layout/LinearProgress';
 import Link from '../Link';
 import sanitizeRestProps from './sanitizeRestProps';
+import { ClassNameMap } from '@material-ui/styles';
+import { FieldProps, InjectedFieldProps } from './types';
+
+interface ReferenceFieldProps extends FieldProps, InjectedFieldProps {
+    children: ReactElement;
+    classes?: Partial<ClassNameMap<ReferenceFieldClassKey>>;
+    reference: string;
+    resource: string;
+    source: string;
+    translateChoice?: Function | boolean;
+    linkType?: LinkToType;
+    link?: LinkToType;
+}
 
 /**
  * Fetch reference record, and delegate rendering to child component.
@@ -55,22 +73,30 @@ import sanitizeRestProps from './sanitizeRestProps';
  * backward-compatibility is still kept
  */
 
-const ReferenceField = ({ children, record, source, ...props }) => {
+const ReferenceField: FC<ReferenceFieldProps> = ({
+    children,
+    record,
+    source,
+    ...props
+}) => {
     if (React.Children.count(children) !== 1) {
         throw new Error('<ReferenceField> only accepts a single child');
     }
-    const { loaded, error, referenceRecord } = useReference({
-        reference: props.reference,
-        id: get(record, source),
+    const { basePath } = props;
+    const resourceLinkPath = getResourceLinkPath({
+        ...props,
+        record,
+        source,
+        basePath,
     });
-    const resourceLinkPath = getResourceLinkPath({ record, source, ...props });
 
     return (
         <PureReferenceFieldView
             {...props}
-            loaded={loaded}
-            error={error}
-            referenceRecord={referenceRecord}
+            {...useReference({
+                reference: props.reference,
+                id: get(record, source),
+            })}
             resourceLinkPath={resourceLinkPath}
         >
             {children}
@@ -82,12 +108,12 @@ ReferenceField.propTypes = {
     addLabel: PropTypes.bool,
     basePath: PropTypes.string,
     children: PropTypes.element.isRequired,
-    classes: PropTypes.object,
+    classes: PropTypes.any,
     className: PropTypes.string,
     cellClassName: PropTypes.string,
     headerClassName: PropTypes.string,
     label: PropTypes.string,
-    record: PropTypes.object,
+    record: PropTypes.any,
     reference: PropTypes.string.isRequired,
     resource: PropTypes.string,
     sortBy: PropTypes.string,
@@ -123,7 +149,21 @@ const useStyles = makeStyles(
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
 
-export const ReferenceFieldView = ({
+type ReferenceFieldClassKey = 'link';
+
+interface ReferenceFieldViewProps
+    extends FieldProps,
+        InjectedFieldProps,
+        UseReferenceProps {
+    classes?: Partial<ClassNameMap<ReferenceFieldClassKey>>;
+    reference: string;
+    resource: string;
+    translateChoice?: Function | boolean;
+    resourceLinkPath?: string | boolean;
+    children?: ReactElement;
+}
+
+export const ReferenceFieldView: FC<ReferenceFieldViewProps> = ({
     basePath,
     children,
     className,
@@ -159,7 +199,7 @@ export const ReferenceFieldView = ({
     if (resourceLinkPath) {
         return (
             <Link
-                to={resourceLinkPath}
+                to={resourceLinkPath as string}
                 className={className}
                 onClick={stopPropagation}
             >
@@ -191,11 +231,11 @@ ReferenceFieldView.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.element,
     className: PropTypes.string,
-    classes: PropTypes.object,
+    classes: PropTypes.any,
     loading: PropTypes.bool,
-    record: PropTypes.object,
+    record: PropTypes.any,
     reference: PropTypes.string,
-    referenceRecord: PropTypes.object,
+    referenceRecord: PropTypes.any,
     resource: PropTypes.string,
     resourceLinkPath: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     source: PropTypes.string,

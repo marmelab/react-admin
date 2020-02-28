@@ -15,7 +15,7 @@ import useListController from './useListController';
 import useEditController from './useEditController';
 import useCreateController from './useCreateController';
 import useShowController from './useShowController';
-import useReference from './useReference';
+import useReference, { UseReferenceProps } from './useReference';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 export {
     getListControllerProps,
@@ -35,6 +35,7 @@ export {
     useSortState,
     usePaginationState,
     useReference,
+    UseReferenceProps,
 };
 
 export * from './field';
