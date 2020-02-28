@@ -1,14 +1,16 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render, cleanup } from '@testing-library/react';
 
 import { FormDataConsumerView } from './FormDataConsumer';
 
 describe('FormDataConsumerView', () => {
+    afterEach(cleanup);
+
     it('does not call its children function with scopedFormData and getSource if it did not receive an index prop', () => {
         const children = jest.fn();
         const formData = { id: 123, title: 'A title' };
 
-        shallow(
+        render(
             <FormDataConsumerView
                 form="a-form"
                 formData={formData}
@@ -29,7 +31,7 @@ describe('FormDataConsumerView', () => {
         });
         const formData = { id: 123, title: 'A title', authors: [{ id: 0 }] };
 
-        shallow(
+        render(
             <FormDataConsumerView
                 form="a-form"
                 source="authors[0]"
