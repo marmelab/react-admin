@@ -107,7 +107,7 @@ interface Props {
  *      source="post_id"
  *      reference="posts"
  *      filterToQuery={searchText => ({ title: searchText })}>
- *     <SelectInput optionText="title" />
+ *     <AutocompleteInput optionText="title" />
  * </ReferenceInput>
  */
 const ReferenceInput: FunctionComponent<Props & InputProps> = ({
