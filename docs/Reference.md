@@ -86,7 +86,7 @@ title: "Reference"
 * `<Sidebar>`
 * `<SimpleList>`
 * [`<SimpleForm>`](./CreateEdit.md#the-simpleform-component)
-* [`<SimpleformIterator>`](./Inputs.md#arrayinput)
+* [`<SimpleFormIterator>`](./Inputs.md#arrayinput)
 * [`<SimpleList>`](./List.md#the-simplelist-component)
 * [`<SimpleShowLayout>`](./Show.md#the-simpleshowlayout-component)
 * [`<SingleFieldList>`](./List.md#the-singlefieldlist-component)
