@@ -1,7 +1,6 @@
-import assert from 'assert';
-import { render, fireEvent, cleanup } from '@testing-library/react';
-import { Form } from 'react-final-form';
 import React from 'react';
+import { Form } from 'react-final-form';
+import { render, fireEvent, cleanup } from '@testing-library/react';
 import FormField from './FormField';
 
 describe('<FormField>', () => {
@@ -22,7 +21,7 @@ describe('<FormField>', () => {
         );
         const input = getByRole('textbox');
         fireEvent.change(input, { target: { value: 'Lorem' } });
-        assert.equal(formApi.getState().values.title, 'Lorem');
+        expect(formApi.getState().values.title).toEqual('Lorem');
     });
 
     it('should not render a <Field /> component if the field has an input', () => {
@@ -40,6 +39,6 @@ describe('<FormField>', () => {
         );
         const input = getByRole('textbox');
         fireEvent.change(input, { target: { value: 'Lorem' } });
-        assert.notEqual(formApi.getState().values.title, 'Lorem');
+        expect(formApi.getState().values.title).not.toEqual('Lorem');
     });
 });

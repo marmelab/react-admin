@@ -3,7 +3,6 @@ import { Route, MemoryRouter } from 'react-router-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { render, cleanup } from '@testing-library/react';
-import assert from 'assert';
 
 import RoutesWithLayout from './RoutesWithLayout';
 
@@ -34,7 +33,7 @@ describe('<RoutesWithLayout>', () => {
             </Provider>
         );
 
-        assert.notEqual(queryByText('Dashboard'), null);
+        expect(queryByText('Dashboard')).not.toBeNull();
     });
 
     it('should show the first resource on / when there is only one resource and no dashboard', () => {
@@ -48,7 +47,7 @@ describe('<RoutesWithLayout>', () => {
             </Provider>
         );
 
-        assert.notEqual(queryByText('Default'), null);
+        expect(queryByText('Default')).not.toBeNull();
     });
 
     it('should show the first resource on / when there are multiple resource and no dashboard', () => {
@@ -64,8 +63,8 @@ describe('<RoutesWithLayout>', () => {
             </Provider>
         );
 
-        assert.notEqual(queryByText('Default'), null);
-        assert.equal(queryByText('Resource'), null);
+        expect(queryByText('Default')).not.toBeNull();
+        expect(queryByText('Resource')).toBeNull();
     });
 
     it('should accept custom routes', () => {
@@ -83,6 +82,7 @@ describe('<RoutesWithLayout>', () => {
                 </MemoryRouter>
             </Provider>
         );
-        assert.notEqual(queryByText('Custom'), null);
+
+        expect(queryByText('Custom')).not.toBeNull();
     });
 });

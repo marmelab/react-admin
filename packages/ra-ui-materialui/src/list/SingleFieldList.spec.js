@@ -1,5 +1,4 @@
 import React from 'react';
-import assert from 'assert';
 import { render, cleanup } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
@@ -34,8 +33,8 @@ describe('<SingleFieldList />', () => {
             </SingleFieldList>
         );
         const linkElements = queryAllByRole('link');
-        assert.equal(linkElements.length, 2);
-        assert.deepEqual(linkElements.map(link => link.getAttribute('href')), [
+        expect(linkElements).toHaveLength(2);
+        expect(linkElements.map(link => link.getAttribute('href'))).toEqual([
             '/posts/1',
             '/posts/2',
         ]);
@@ -56,8 +55,8 @@ describe('<SingleFieldList />', () => {
             </SingleFieldList>
         );
         const linkElements = queryAllByRole('link');
-        assert.equal(linkElements.length, 2);
-        assert.deepEqual(linkElements.map(link => link.getAttribute('href')), [
+        expect(linkElements).toHaveLength(2);
+        expect(linkElements.map(link => link.getAttribute('href'))).toEqual([
             '/posts/1',
             '/posts/2',
         ]);
@@ -79,9 +78,8 @@ describe('<SingleFieldList />', () => {
                 </SingleFieldList>
             );
             const linkElements = queryAllByRole('link');
-            assert.equal(linkElements.length, 2);
-            assert.deepEqual(
-                linkElements.map(link => link.getAttribute('href')),
+            expect(linkElements).toHaveLength(2);
+            expect(linkElements.map(link => link.getAttribute('href'))).toEqual(
                 [`/${action}/1`, `/${action}/2`]
             );
             cleanup();
@@ -105,8 +103,8 @@ describe('<SingleFieldList />', () => {
         );
 
         const linkElements = queryAllByRole('link');
-        assert.equal(linkElements.length, 2);
-        assert.deepEqual(linkElements.map(link => link.getAttribute('href')), [
+        expect(linkElements).toHaveLength(2);
+        expect(linkElements.map(link => link.getAttribute('href'))).toEqual([
             '/prefix/bar/1/show',
             '/prefix/bar/2/show',
         ]);
@@ -129,9 +127,8 @@ describe('<SingleFieldList />', () => {
                 </SingleFieldList>
             );
             const linkElements = queryAllByRole('link');
-            assert.equal(linkElements.length, 2);
-            assert.deepEqual(
-                linkElements.map(link => link.getAttribute('href')),
+            expect(linkElements).toHaveLength(2);
+            expect(linkElements.map(link => link.getAttribute('href'))).toEqual(
                 [`/${action}/1/show`, `/${action}/2/show`]
             );
             cleanup();
@@ -155,8 +152,8 @@ describe('<SingleFieldList />', () => {
         );
 
         const linkElements = queryAllByRole('link');
-        assert.equal(linkElements.length, 0);
-        assert.notEqual(queryByText('foo'), null);
-        assert.notEqual(queryByText('bar'), null);
+        expect(linkElements).toHaveLength(0);
+        expect(queryByText('foo')).not.toBeNull();
+        expect(queryByText('bar')).not.toBeNull();
     });
 });

@@ -1,5 +1,4 @@
 import React from 'react';
-import assert from 'assert';
 import { render, cleanup } from '@testing-library/react';
 import FunctionField from './FunctionField';
 
@@ -11,7 +10,7 @@ describe('<FunctionField />', () => {
         const { queryByText } = render(
             <FunctionField record={record} render={r => r.foo.substr(0, 2)} />
         );
-        assert.notEqual(queryByText('ba'), null);
+        expect(queryByText('ba')).not.toBeNull();
     });
 
     it('should use custom className', () => {
@@ -22,6 +21,6 @@ describe('<FunctionField />', () => {
                 className="foo"
             />
         );
-        assert.ok(queryByText('bar').classList.contains('foo'));
+        expect(queryByText('bar').classList).toContain('foo');
     });
 });
