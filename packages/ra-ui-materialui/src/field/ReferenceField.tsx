@@ -21,7 +21,7 @@ interface ReferenceFieldProps extends FieldProps, InjectedFieldProps {
     children: ReactElement;
     classes?: Partial<ClassNameMap<ReferenceFieldClassKey>>;
     reference: string;
-    resource: string;
+    resource?: string;
     source: string;
     translateChoice?: Function | boolean;
     linkType?: LinkToType;
@@ -82,9 +82,10 @@ const ReferenceField: FC<ReferenceFieldProps> = ({
     if (React.Children.count(children) !== 1) {
         throw new Error('<ReferenceField> only accepts a single child');
     }
-    const { basePath } = props;
+    const { basePath, resource } = props;
     const resourceLinkPath = getResourceLinkPath({
         ...props,
+        resource,
         record,
         source,
         basePath,
@@ -157,9 +158,9 @@ interface ReferenceFieldViewProps
         UseReferenceProps {
     classes?: Partial<ClassNameMap<ReferenceFieldClassKey>>;
     reference: string;
-    resource: string;
+    resource?: string;
     translateChoice?: Function | boolean;
-    resourceLinkPath?: string | boolean;
+    resourceLinkPath?: ReturnType<typeof getResourceLinkPath>;
     children?: ReactElement;
 }
 
@@ -237,7 +238,10 @@ ReferenceFieldView.propTypes = {
     reference: PropTypes.string,
     referenceRecord: PropTypes.any,
     resource: PropTypes.string,
-    resourceLinkPath: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    resourceLinkPath: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.oneOf([false]),
+    ]) as React.Validator<string | false>,
     source: PropTypes.string,
     translateChoice: PropTypes.bool,
 };
