@@ -13,7 +13,7 @@ import { useNotify } from '../../sideEffect';
  * @property {string | false} referenceBasePath base path of the related record
  * @property {number} total records
  */
-interface ReferenceManyProps {
+export interface ReferenceManyProps {
     data: RecordMap;
     ids: Identifier[];
     loaded: boolean;

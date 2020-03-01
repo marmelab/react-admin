@@ -6,7 +6,7 @@ import {
 } from '../reducer/admin/resource/list/queryReducer';
 import { Sort } from '../types';
 
-interface SortProps {
+export interface SortProps {
     setSortField: (field: string) => void;
     setSortOrder: (order: string) => void;
     setSort: (sort: Sort) => void;

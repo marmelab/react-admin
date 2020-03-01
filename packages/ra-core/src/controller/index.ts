@@ -9,8 +9,8 @@ import {
 import useRecordSelection from './useRecordSelection';
 import useVersion from './useVersion';
 import useFilterState from './useFilterState';
-import useSortState from './useSortState';
-import usePaginationState from './usePaginationState';
+import useSortState, { SortProps } from './useSortState';
+import usePaginationState, { PaginationProps } from './usePaginationState';
 import useListController from './useListController';
 import useEditController from './useEditController';
 import useCreateController from './useCreateController';
@@ -36,6 +36,8 @@ export {
     usePaginationState,
     useReference,
     UseReferenceProps,
+    PaginationProps,
+    SortProps,
 };
 
 export * from './field';

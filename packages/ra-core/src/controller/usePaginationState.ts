@@ -10,7 +10,7 @@ import { Pagination } from '../types';
  * @property {function} setPerPage: Set the per page number
  * @property {function} setPagination: Set page and perPage pagination numbers
  */
-interface PaginationProps {
+export interface PaginationProps {
     page: number;
     perPage: number;
     pagination: Pagination;
