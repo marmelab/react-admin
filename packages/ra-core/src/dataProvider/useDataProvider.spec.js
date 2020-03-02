@@ -4,6 +4,7 @@ import expect from 'expect';
 
 import renderWithRedux from '../util/renderWithRedux';
 import useDataProvider from './useDataProvider';
+import useUpdate from './useUpdate';
 import { DataProviderContext } from '../dataProvider';
 import { useRefresh } from '../sideEffect';
 
@@ -301,11 +302,11 @@ describe('useDataProvider', () => {
             // wait for the dataProvider to return
             await act(async () => await new Promise(r => setTimeout(r)));
             // click on the refresh button
+            expect(getOne).toBeCalledTimes(1);
             await act(async () => {
                 fireEvent.click(getByText('refresh'));
                 await new Promise(r => setTimeout(r));
             });
-            expect(getOne).toBeCalledTimes(1);
             rerender(
                 <DataProviderContext.Provider value={dataProvider}>
                     <UseGetOne key="2" />
@@ -315,5 +316,44 @@ describe('useDataProvider', () => {
             await act(async () => await new Promise(r => setTimeout(r)));
             expect(getOne).toBeCalledTimes(2);
         });
+    });
+
+    it('should not use the cache after an update', async () => {
+        const getOne = jest.fn(() => {
+            const validUntil = new Date();
+            validUntil.setTime(validUntil.getTime() + 1000);
+            return Promise.resolve({ data: { id: 1 }, validUntil });
+        });
+        const dataProvider = {
+            getOne,
+            update: () => Promise.resolve({ data: { id: 1, foo: 'bar' } }),
+        };
+        const Update = () => {
+            const [update] = useUpdate('posts', 1, { foo: 'bar ' });
+            return <button onClick={() => update()}>update</button>;
+        };
+        const { getByText, rerender } = renderWithRedux(
+            <DataProviderContext.Provider value={dataProvider}>
+                <UseGetOne key="1" />
+                <Update />
+            </DataProviderContext.Provider>,
+            { admin: { resources: { posts: { data: {}, list: {} } } } }
+        );
+        // wait for the dataProvider to return
+        await act(async () => await new Promise(r => setTimeout(r)));
+        expect(getOne).toBeCalledTimes(1);
+        // click on the update button
+        await act(async () => {
+            fireEvent.click(getByText('update'));
+            await new Promise(r => setTimeout(r));
+        });
+        rerender(
+            <DataProviderContext.Provider value={dataProvider}>
+                <UseGetOne key="2" />
+            </DataProviderContext.Provider>
+        );
+        // wait for the dataProvider to return
+        await act(async () => await new Promise(r => setTimeout(r)));
+        expect(getOne).toBeCalledTimes(2);
     });
 });
