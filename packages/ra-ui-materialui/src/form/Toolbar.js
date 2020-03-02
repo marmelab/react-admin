@@ -90,7 +90,7 @@ const Toolbar = ({
                             invalid={invalid}
                             redirect={redirect}
                             saving={saving}
-                            save={save}
+                            onSave={save}
                             setOnSave={setOnSave}
                             submitOnEnter={submitOnEnter}
                         />
