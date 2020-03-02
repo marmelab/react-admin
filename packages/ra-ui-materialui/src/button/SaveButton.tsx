@@ -33,7 +33,7 @@ const SaveButton: FC<SaveButtonProps> = ({
     const notify = useNotify();
     const translate = useTranslate();
 
-    const handleClick = event => {
+    const handleMouseDown = event => {
         if (typeof setOnSave === 'function') {
             setOnSave(onSave);
         }
