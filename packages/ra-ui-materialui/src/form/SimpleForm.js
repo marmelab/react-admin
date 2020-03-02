@@ -84,7 +84,7 @@ const SimpleFormView = ({
     submitOnEnter,
     toolbar,
     save,
-    setSave,
+    setOnSave,
     undoable,
     variant,
     ...rest
@@ -121,7 +121,7 @@ const SimpleFormView = ({
                 resource,
                 saving,
                 save,
-                setSave,
+                setOnSave,
                 submitOnEnter,
                 undoable,
             })}
@@ -143,7 +143,7 @@ SimpleFormView.propTypes = {
         PropTypes.func,
     ]),
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
-    setSave: PropTypes.func,
+    setOnSave: PropTypes.func,
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
     toolbar: PropTypes.element,
@@ -188,7 +188,7 @@ const sanitizeRestProps = ({
     reset,
     resetSection,
     save,
-    setSave,
+    setOnSave,
     setRedirect,
     submit,
     submitError,

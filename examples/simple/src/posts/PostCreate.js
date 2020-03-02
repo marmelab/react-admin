@@ -28,7 +28,7 @@ const SaveWithNoteButton = props => {
     const notify = useNotify();
     const { basePath } = props;
 
-    const handleClick = useCallback(
+    const handleSave = useCallback(
         (values, redirect) => {
             create(
                 {
@@ -49,7 +49,7 @@ const SaveWithNoteButton = props => {
         [create, notify, redirectTo, basePath]
     );
 
-    return <SaveButton {...props} customSave={handleClick} />;
+    return <SaveButton {...props} onSave={handleSave} />;
 };
 
 const PostCreateToolbar = props => (

@@ -50,7 +50,7 @@ const FormWithRedirect = ({
     ...props
 }) => {
     let redirect = useRef(props.redirect);
-    let realSave = useRef(save);
+    let onSave = useRef(save);
     // We don't use state here for two reasons:
     // 1. There no way to execute code only after the state has been updated
     // 2. We don't want the form to rerender when redirect is changed
@@ -58,8 +58,8 @@ const FormWithRedirect = ({
         redirect.current = newRedirect;
     };
 
-    const setSave = newSave => {
-        realSave.current = newSave;
+    const setOnSave = newOnSave => {
+        onSave.current = newOnSave;
     };
 
     const finalInitialValues = getFormInitialValues(
@@ -75,7 +75,7 @@ const FormWithRedirect = ({
                 : redirect.current;
         const finalValues = sanitizeEmptyValues(finalInitialValues, values);
 
-        realSave.current(finalValues, finalRedirect);
+        onSave.current(finalValues, finalRedirect);
     };
 
     return (
@@ -102,7 +102,7 @@ const FormWithRedirect = ({
                     saving={formProps.submitting || saving}
                     render={render}
                     save={save}
-                    setSave={setSave}
+                    setOnSave={setOnSave}
                 />
             )}
         </Form>

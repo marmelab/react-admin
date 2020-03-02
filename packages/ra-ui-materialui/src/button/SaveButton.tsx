@@ -25,8 +25,8 @@ const SaveButton: FC<SaveButtonProps> = ({
     icon = defaultIcon,
     onClick,
     handleSubmitWithRedirect,
-    customSave,
-    setSave,
+    onSave,
+    setOnSave,
     ...rest
 }) => {
     const classes = useStyles({ classes: classesOverride });
@@ -34,8 +34,8 @@ const SaveButton: FC<SaveButtonProps> = ({
     const translate = useTranslate();
 
     const handleClick = event => {
-        if (typeof setSave === 'function') {
-            setSave(customSave);
+        if (typeof setOnSave === 'function') {
+            setOnSave(onSave);
         }
         if (saving) {
             // prevent double submission
@@ -114,9 +114,9 @@ interface Props {
     classes?: object;
     className?: string;
     handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
-    customSave?: (values: object, redirect: RedirectionSideEffect) => void;
-    setSave?: (
-        save: (values: object, redirect: RedirectionSideEffect) => void
+    onSave?: (values: object, redirect: RedirectionSideEffect) => void;
+    setOnSave?: (
+        onSave: (values: object, redirect: RedirectionSideEffect) => void
     ) => void;
     icon?: ReactElement;
     invalid?: boolean;
@@ -141,8 +141,8 @@ SaveButton.propTypes = {
     className: PropTypes.string,
     classes: PropTypes.object,
     handleSubmitWithRedirect: PropTypes.func,
-    customSave: PropTypes.func,
-    setSave: PropTypes.func,
+    onSave: PropTypes.func,
+    setOnSave: PropTypes.func,
     invalid: PropTypes.bool,
     label: PropTypes.string,
     pristine: PropTypes.bool,
