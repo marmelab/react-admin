@@ -149,6 +149,7 @@ const SelectInput: FunctionComponent<
     allowEmpty,
     choices = [],
     className,
+    classes: classesOverride,
     disableValue,
     emptyText,
     emptyValue,
@@ -169,7 +170,7 @@ const SelectInput: FunctionComponent<
     ...rest
 }) => {
     const translate = useTranslate();
-    const classes = useStyles({});
+    const classes = useStyles({ classes: classesOverride });
     const { getChoiceText, getChoiceValue } = useChoices({
         optionText,
         optionValue,
