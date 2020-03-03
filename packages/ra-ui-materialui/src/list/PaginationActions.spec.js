@@ -1,11 +1,13 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render, cleanup } from '@testing-library/react';
 
 import PaginationActions from './PaginationActions';
 
 describe('<PaginationActions />', () => {
+    afterEach(cleanup);
+
     it('should not render any actions when no pagination is necessary', () => {
-        const wrapper = shallow(
+        const { queryAllByRole } = render(
             <PaginationActions
                 page={0}
                 rowsPerPage={20}
@@ -15,13 +17,11 @@ describe('<PaginationActions />', () => {
                 classes={{}}
             />
         );
-        expect(wrapper.find('WithStyles(ForwardRef(Button))')).toHaveLength(0);
-        expect(wrapper.find('WithStyles(ForwardRef(Typography))')).toHaveLength(
-            0
-        );
+        expect(queryAllByRole('button')).toHaveLength(0);
     });
+
     it('should render action buttons when pagination is necessary', () => {
-        const wrapper = shallow(
+        const { queryAllByRole } = render(
             <PaginationActions
                 page={0}
                 rowsPerPage={5}
@@ -32,11 +32,11 @@ describe('<PaginationActions />', () => {
             />
         );
         // 1 2 3 next
-        expect(wrapper.find('WithStyles(ForwardRef(Button))')).toHaveLength(4);
+        expect(queryAllByRole('button')).toHaveLength(4);
     });
 
     it('should skip page action buttons when there are too many', () => {
-        const wrapper = shallow(
+        const { queryAllByRole } = render(
             <PaginationActions
                 page={7}
                 rowsPerPage={1}
@@ -47,6 +47,6 @@ describe('<PaginationActions />', () => {
             />
         );
         // prev 1 ... 7 8 9 ... 15 next
-        expect(wrapper.find('WithStyles(ForwardRef(Button))')).toHaveLength(7);
+        expect(queryAllByRole('button')).toHaveLength(7);
     });
 });

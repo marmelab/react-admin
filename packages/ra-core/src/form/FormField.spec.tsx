@@ -1,21 +1,44 @@
-import assert from 'assert';
-import { shallow } from 'enzyme';
 import React from 'react';
+import { Form } from 'react-final-form';
+import { render, fireEvent, cleanup } from '@testing-library/react';
 import FormField from './FormField';
 
 describe('<FormField>', () => {
-    const Foo = () => <div />;
+    afterEach(cleanup);
+
+    const Foo = ({ input }) => <input type="text" {...input} />;
+
     it('should render a <Field/> component for the input component', () => {
-        const wrapper = shallow(<FormField source="title" component={Foo} />);
-        const component = wrapper.find('Field');
-        assert.equal(component.length, 1);
-        assert.equal(wrapper.prop('component'), Foo);
-    });
-    it('should not render a <Field /> component the field has an input', () => {
-        const wrapper = shallow(
-            <FormField source="title" component={Foo} input={{}} />
+        let formApi;
+        const { getByRole } = render(
+            <Form
+                onSubmit={jest.fn()}
+                render={({ form }) => {
+                    formApi = form;
+                    return <FormField source="title" component={Foo} />;
+                }}
+            />
         );
-        const component = wrapper.find('Field');
-        assert.equal(component.length, 0);
+        const input = getByRole('textbox');
+        fireEvent.change(input, { target: { value: 'Lorem' } });
+        expect(formApi.getState().values.title).toEqual('Lorem');
+    });
+
+    it('should not render a <Field /> component if the field has an input', () => {
+        let formApi;
+        const { getByRole } = render(
+            <Form
+                onSubmit={jest.fn()}
+                render={({ form }) => {
+                    formApi = form;
+                    return (
+                        <FormField source="title" component={Foo} input={{}} />
+                    );
+                }}
+            />
+        );
+        const input = getByRole('textbox');
+        fireEvent.change(input, { target: { value: 'Lorem' } });
+        expect(formApi.getState().values.title).not.toEqual('Lorem');
     });
 });
