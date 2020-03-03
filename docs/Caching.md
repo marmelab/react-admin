@@ -32,7 +32,7 @@ Optimistic rendering improves user experience by displaying stale data while get
 
 React-admin supports HTTP cache headers by default, provided your API sends them. 
 
-Data providers almost always rely on `winfow.fetch()` to call the HTTP API. React-admin's `fetchJSON()`, and third-party libraries like `axios` use `window.fetch()`, too. Fortunately, the `window.fetch()` HTTP client behaves just like your browser and follows the [RFC 7234](https://tools.ietf.org/html/rfc7234) about HTTP cache headers. So if your API includes one of the following cache headers, all data providers support them:
+Data providers almost always rely on `window.fetch()` to call the HTTP API. React-admin's `fetchJSON()`, and third-party libraries like `axios` use `window.fetch()`, too. Fortunately, the `window.fetch()` HTTP client behaves just like your browser and follows the [RFC 7234](https://tools.ietf.org/html/rfc7234) about HTTP cache headers. So if your API includes one of the following cache headers, all data providers support them:
 
 - `Cache-Control`
 - `Expires`
