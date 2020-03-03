@@ -70,11 +70,12 @@ const SimpleList = ({
     ...rest
 }) => {
     const classes = useStyles({ classes: classesOverride });
+    const { link, ...restClasses } = classes;
 
     if (loaded === false) {
         return (
             <SimpleListLoading
-                classes={classes}
+                classes={restClasses}
                 className={className}
                 hasLeftAvatarOrIcon={!!leftIcon || !!leftAvatar}
                 hasRightAvatarOrIcon={!!rightIcon || !!rightAvatar}
