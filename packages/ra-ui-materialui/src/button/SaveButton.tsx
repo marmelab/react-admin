@@ -48,6 +48,8 @@ const SaveButton: FC<SaveButtonProps> = ({
     const handleMouseDown = event => {
         if (typeof onSave === 'function') {
             setOnSave(onSave);
+        } else {
+            setOnSave();
         }
         if (saving) {
             // prevent double submission

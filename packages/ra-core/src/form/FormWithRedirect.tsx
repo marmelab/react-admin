@@ -61,7 +61,9 @@ const FormWithRedirect = ({
     };
 
     const setOnSave = newOnSave => {
-        onSave.current = newOnSave;
+        typeof newOnSave === 'function'
+            ? (onSave.current = newOnSave)
+            : (onSave.current = save);
     };
 
     const finalInitialValues = getFormInitialValues(

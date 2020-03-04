@@ -430,5 +430,5 @@ export type Exporter = (
 ) => Promise<void>;
 
 export type SetOnSave = (
-    onSave: (values: object, redirect: any) => void
+    onSave?: (values: object, redirect: any) => void
 ) => void;

@@ -79,9 +79,7 @@ import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
 const TabbedForm = props => (
     <FormWithRedirect
         {...props}
-        render={formProps => (
-            <TabbedFormView save={props.save} {...formProps} />
-        )}
+        render={formProps => <TabbedFormView {...formProps} />}
     />
 );
 
@@ -132,7 +130,6 @@ export const TabbedFormView = ({
     submitOnEnter,
     tabs,
     toolbar,
-    save,
     translate,
     undoable,
     value,
@@ -207,7 +204,6 @@ export const TabbedFormView = ({
                     redirect: defaultRedirect,
                     resource,
                     saving,
-                    save,
                     submitOnEnter,
                     undoable,
                 })}
