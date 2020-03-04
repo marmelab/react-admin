@@ -4,6 +4,7 @@ import HttpError from './HttpError';
 import * as fetchUtils from './fetch';
 import Mutation from './Mutation';
 import Query from './Query';
+import cacheDataProviderProxy from './cacheDataProviderProxy';
 import undoableEventEmitter from './undoableEventEmitter';
 import useDataProvider from './useDataProvider';
 import useMutation from './useMutation';
@@ -22,6 +23,7 @@ import useDelete from './useDelete';
 import useDeleteMany from './useDeleteMany';
 
 export {
+    cacheDataProviderProxy,
     convertLegacyDataProvider,
     DataProviderContext,
     fetchUtils,

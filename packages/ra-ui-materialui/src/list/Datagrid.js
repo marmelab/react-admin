@@ -93,8 +93,8 @@ const useStyles = makeStyles(
  *     </Datagrid>
  * </ReferenceManyField>
  */
-function Datagrid({ classes: classesOverride, ...props }) {
-    const classes = useStyles({ classes: classesOverride });
+const Datagrid = props => {
+    const classes = useStyles(props);
     const {
         basePath,
         optimized = false,
@@ -262,7 +262,7 @@ function Datagrid({ classes: classesOverride, ...props }) {
             )}
         </Table>
     );
-}
+};
 
 Datagrid.propTypes = {
     basePath: PropTypes.string,

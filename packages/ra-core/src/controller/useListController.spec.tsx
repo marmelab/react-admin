@@ -70,7 +70,14 @@ describe('useListController', () => {
                 <ListController {...props} />,
                 {
                     admin: {
-                        resources: { posts: { list: { params: {} } } },
+                        resources: {
+                            posts: {
+                                list: {
+                                    params: {},
+                                    cachedRequests: {},
+                                },
+                            },
+                        },
                     },
                 }
             );
@@ -110,7 +117,10 @@ describe('useListController', () => {
                         resources: {
                             posts: {
                                 list: {
-                                    params: { filter: { q: 'hello' } },
+                                    params: {
+                                        filter: { q: 'hello' },
+                                    },
+                                    cachedRequests: {},
                                 },
                             },
                         },
@@ -150,12 +160,14 @@ describe('useListController', () => {
                             posts: {
                                 list: {
                                     params: {},
+                                    cachedRequests: {},
                                 },
                             },
                         },
                     },
                 }
             );
+
             const crudGetListCalls = dispatch.mock.calls.filter(
                 call => call[0].type === 'RA/CRUD_GET_LIST'
             );
@@ -163,7 +175,7 @@ describe('useListController', () => {
             // Check that the permanent filter was used in the query
             expect(crudGetListCalls[0][0].payload.filter).toEqual({ foo: 1 });
             // Check that the permanent filter is not included in the displayedFilters (passed to Filter form and button)
-            expect(children).toBeCalledTimes(3);
+            expect(children).toBeCalledTimes(2);
             expect(children.mock.calls[0][0].displayedFilters).toEqual({});
             // Check that the permanent filter is not included in the filterValues (passed to Filter form and button)
             expect(children.mock.calls[0][0].filterValues).toEqual({});
@@ -180,9 +192,9 @@ describe('useListController', () => {
             });
             expect(children).toBeCalledTimes(5);
             // Check that the permanent filter is not included in the displayedFilters (passed to Filter form and button)
-            expect(children.mock.calls[3][0].displayedFilters).toEqual({});
+            expect(children.mock.calls[2][0].displayedFilters).toEqual({});
             // Check that the permanent filter is not included in the filterValues (passed to Filter form and button)
-            expect(children.mock.calls[3][0].filterValues).toEqual({});
+            expect(children.mock.calls[2][0].filterValues).toEqual({});
         });
 
         afterEach(() => {
@@ -227,6 +239,7 @@ describe('useListController', () => {
                             posts: {
                                 list: {
                                     params: { filter: { q: 'hello' } },
+                                    cachedRequests: {},
                                 },
                             },
                         },

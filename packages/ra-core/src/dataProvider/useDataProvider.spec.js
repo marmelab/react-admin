@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { cleanup, act } from '@testing-library/react';
+import { cleanup, act, fireEvent } from '@testing-library/react';
 import expect from 'expect';
 
 import renderWithRedux from '../util/renderWithRedux';
 import useDataProvider from './useDataProvider';
+import useUpdate from './useUpdate';
 import { DataProviderContext } from '../dataProvider';
+import { useRefresh } from '../sideEffect';
 
 const UseGetOne = () => {
     const [data, setData] = useState();
@@ -12,7 +14,7 @@ const UseGetOne = () => {
     const dataProvider = useDataProvider();
     useEffect(() => {
         dataProvider
-            .getOne()
+            .getOne('posts', { id: 1 })
             .then(res => setData(res.data))
             .catch(e => setError(e));
     }, [dataProvider]);
@@ -202,5 +204,156 @@ describe('useDataProvider', () => {
             expect(onFailure.mock.calls).toHaveLength(1);
             expect(onFailure.mock.calls[0][0]).toEqual(new Error('foo'));
         });
+    });
+
+    describe('cache', () => {
+        it('should not skip the dataProvider call if there is no cache', async () => {
+            const getOne = jest.fn(() => Promise.resolve({ data: { id: 1 } }));
+            const dataProvider = { getOne };
+            const { rerender } = renderWithRedux(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <UseGetOne key="1" />
+                </DataProviderContext.Provider>,
+                { admin: { resources: { posts: { data: {}, list: {} } } } }
+            );
+            // wait for the dataProvider to return
+            await act(async () => await new Promise(r => setTimeout(r)));
+            expect(getOne).toBeCalledTimes(1);
+            rerender(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <UseGetOne key="2" />
+                </DataProviderContext.Provider>
+            );
+            // wait for the dataProvider to return
+            await act(async () => await new Promise(r => setTimeout(r)));
+            expect(getOne).toBeCalledTimes(2);
+        });
+
+        it('should skip the dataProvider call if there is a valid cache', async () => {
+            const getOne = jest.fn(() => {
+                const validUntil = new Date();
+                validUntil.setTime(validUntil.getTime() + 1000);
+                return Promise.resolve({ data: { id: 1 }, validUntil });
+            });
+            const dataProvider = { getOne };
+            const { rerender } = renderWithRedux(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <UseGetOne key="1" />
+                </DataProviderContext.Provider>,
+                { admin: { resources: { posts: { data: {}, list: {} } } } }
+            );
+            // wait for the dataProvider to return
+            await act(async () => await new Promise(r => setTimeout(r)));
+            expect(getOne).toBeCalledTimes(1);
+            rerender(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <UseGetOne key="2" />
+                </DataProviderContext.Provider>
+            );
+            // wait for the dataProvider to return
+            await act(async () => await new Promise(r => setTimeout(r)));
+            expect(getOne).toBeCalledTimes(1);
+        });
+
+        it('should not skip the dataProvider call if there is an invalid cache', async () => {
+            const getOne = jest.fn(() => {
+                const validUntil = new Date();
+                validUntil.setTime(validUntil.getTime() - 1000);
+                return Promise.resolve({ data: { id: 1 }, validUntil });
+            });
+            const dataProvider = { getOne };
+            const { rerender } = renderWithRedux(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <UseGetOne key="1" />
+                </DataProviderContext.Provider>,
+                { admin: { resources: { posts: { data: {}, list: {} } } } }
+            );
+            // wait for the dataProvider to return
+            await act(async () => await new Promise(r => setTimeout(r)));
+            expect(getOne).toBeCalledTimes(1);
+            rerender(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <UseGetOne key="2" />
+                </DataProviderContext.Provider>
+            );
+            // wait for the dataProvider to return
+            await act(async () => await new Promise(r => setTimeout(r)));
+            expect(getOne).toBeCalledTimes(2);
+        });
+
+        it('should not use the cache after a refresh', async () => {
+            const getOne = jest.fn(() => {
+                const validUntil = new Date();
+                validUntil.setTime(validUntil.getTime() + 1000);
+                return Promise.resolve({ data: { id: 1 }, validUntil });
+            });
+            const dataProvider = { getOne };
+            const Refresh = () => {
+                const refresh = useRefresh();
+                return <button onClick={() => refresh()}>refresh</button>;
+            };
+            const { getByText, rerender } = renderWithRedux(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <UseGetOne key="1" />
+                    <Refresh />
+                </DataProviderContext.Provider>,
+                { admin: { resources: { posts: { data: {}, list: {} } } } }
+            );
+            // wait for the dataProvider to return
+            await act(async () => await new Promise(r => setTimeout(r)));
+            // click on the refresh button
+            expect(getOne).toBeCalledTimes(1);
+            await act(async () => {
+                fireEvent.click(getByText('refresh'));
+                await new Promise(r => setTimeout(r));
+            });
+            rerender(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <UseGetOne key="2" />
+                </DataProviderContext.Provider>
+            );
+            // wait for the dataProvider to return
+            await act(async () => await new Promise(r => setTimeout(r)));
+            expect(getOne).toBeCalledTimes(2);
+        });
+    });
+
+    it('should not use the cache after an update', async () => {
+        const getOne = jest.fn(() => {
+            const validUntil = new Date();
+            validUntil.setTime(validUntil.getTime() + 1000);
+            return Promise.resolve({ data: { id: 1 }, validUntil });
+        });
+        const dataProvider = {
+            getOne,
+            update: () => Promise.resolve({ data: { id: 1, foo: 'bar' } }),
+        };
+        const Update = () => {
+            const [update] = useUpdate('posts', 1, { foo: 'bar ' });
+            return <button onClick={() => update()}>update</button>;
+        };
+        const { getByText, rerender } = renderWithRedux(
+            <DataProviderContext.Provider value={dataProvider}>
+                <UseGetOne key="1" />
+                <Update />
+            </DataProviderContext.Provider>,
+            { admin: { resources: { posts: { data: {}, list: {} } } } }
+        );
+        // wait for the dataProvider to return
+        await act(async () => await new Promise(r => setTimeout(r)));
+        expect(getOne).toBeCalledTimes(1);
+        // click on the update button
+        await act(async () => {
+            fireEvent.click(getByText('update'));
+            await new Promise(r => setTimeout(r));
+        });
+        rerender(
+            <DataProviderContext.Provider value={dataProvider}>
+                <UseGetOne key="2" />
+            </DataProviderContext.Provider>
+        );
+        // wait for the dataProvider to return
+        await act(async () => await new Promise(r => setTimeout(r)));
+        expect(getOne).toBeCalledTimes(2);
     });
 });
