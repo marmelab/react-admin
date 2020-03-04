@@ -46,17 +46,14 @@ interface ReferenceArrayFieldProps extends FieldProps, InjectedFieldProps {
  *
  */
 
-const ReferenceArrayField: FC<ReferenceArrayFieldProps> = ({
-    children,
-    ...props
-}) => {
+const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
+    const { children, basePath, reference, resource, record, source } = props;
+
     if (React.Children.count(children) !== 1) {
         throw new Error(
             '<ReferenceArrayField> only accepts a single child (like <Datagrid>)'
         );
     }
-
-    const { basePath, reference, resource, record, source } = props;
 
     return (
         <PureReferenceArrayFieldView
