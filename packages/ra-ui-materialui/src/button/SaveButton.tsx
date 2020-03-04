@@ -1,4 +1,10 @@
-import React, { cloneElement, FC, ReactElement, SyntheticEvent } from 'react';
+import React, {
+    useContext,
+    cloneElement,
+    FC,
+    ReactElement,
+    SyntheticEvent,
+} from 'react';
 import PropTypes from 'prop-types';
 import Button, { ButtonProps } from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -10,6 +16,7 @@ import {
     useNotify,
     RedirectionSideEffect,
     Record,
+    OnSaveContext,
 } from 'ra-core';
 
 const SaveButton: FC<SaveButtonProps> = ({
@@ -26,12 +33,12 @@ const SaveButton: FC<SaveButtonProps> = ({
     onClick,
     handleSubmitWithRedirect,
     onSave,
-    setOnSave,
     ...rest
 }) => {
     const classes = useStyles({ classes: classesOverride });
     const notify = useNotify();
     const translate = useTranslate();
+    const setOnSave = useContext(OnSaveContext);
 
     // We handle the click event through mousedown because of an issue when
     // the button is not as the same place when mouseup occurs, preventing the click
@@ -39,7 +46,7 @@ const SaveButton: FC<SaveButtonProps> = ({
     // It can happen when some errors appear under inputs, pushing the button
     // towards the window bottom.
     const handleMouseDown = event => {
-        if (typeof setOnSave === 'function') {
+        if (typeof onSave === 'function') {
             setOnSave(onSave);
         }
         if (saving) {
@@ -120,9 +127,6 @@ interface Props {
     className?: string;
     handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
     onSave?: (values: object, redirect: RedirectionSideEffect) => void;
-    setOnSave?: (
-        onSave: (values: object, redirect: RedirectionSideEffect) => void
-    ) => void;
     icon?: ReactElement;
     invalid?: boolean;
     label?: string;
@@ -147,7 +151,6 @@ SaveButton.propTypes = {
     classes: PropTypes.object,
     handleSubmitWithRedirect: PropTypes.func,
     onSave: PropTypes.func,
-    setOnSave: PropTypes.func,
     invalid: PropTypes.bool,
     label: PropTypes.string,
     pristine: PropTypes.bool,

@@ -5,6 +5,7 @@ import arrayMutators from 'final-form-arrays';
 import useInitializeFormWithRecord from './useInitializeFormWithRecord';
 import sanitizeEmptyValues from './sanitizeEmptyValues';
 import getFormInitialValues from './getFormInitialValues';
+import OnSaveContext from './OnSaveContext';
 
 /**
  * Wrapper around react-final-form's Form to handle redirection on submit,
@@ -51,6 +52,7 @@ const FormWithRedirect = ({
 }) => {
     let redirect = useRef(props.redirect);
     let onSave = useRef(save);
+
     // We don't use state here for two reasons:
     // 1. There no way to execute code only after the state has been updated
     // 2. We don't want the form to rerender when redirect is changed
@@ -79,33 +81,34 @@ const FormWithRedirect = ({
     };
 
     return (
-        <Form
-            key={version} // support for refresh button
-            debug={debug}
-            decorators={decorators}
-            form={form}
-            initialValues={finalInitialValues}
-            initialValuesEqual={initialValuesEqual}
-            keepDirtyOnReinitialize={keepDirtyOnReinitialize}
-            mutators={mutators} // necessary for ArrayInput
-            onSubmit={submit}
-            subscription={subscription} // don't redraw entire form each time one field changes
-            validate={validate}
-            validateOnBlur={validateOnBlur}
-        >
-            {formProps => (
-                <FormView
-                    {...props}
-                    {...formProps}
-                    record={record}
-                    setRedirect={setRedirect}
-                    saving={formProps.submitting || saving}
-                    render={render}
-                    save={save}
-                    setOnSave={setOnSave}
-                />
-            )}
-        </Form>
+        <OnSaveContext.Provider value={setOnSave}>
+            <Form
+                key={version} // support for refresh button
+                debug={debug}
+                decorators={decorators}
+                form={form}
+                initialValues={finalInitialValues}
+                initialValuesEqual={initialValuesEqual}
+                keepDirtyOnReinitialize={keepDirtyOnReinitialize}
+                mutators={mutators} // necessary for ArrayInput
+                onSubmit={submit}
+                subscription={subscription} // don't redraw entire form each time one field changes
+                validate={validate}
+                validateOnBlur={validateOnBlur}
+            >
+                {formProps => (
+                    <FormView
+                        {...props}
+                        {...formProps}
+                        record={record}
+                        setRedirect={setRedirect}
+                        saving={formProps.submitting || saving}
+                        render={render}
+                        save={save}
+                    />
+                )}
+            </Form>
+        </OnSaveContext.Provider>
     );
 };
 

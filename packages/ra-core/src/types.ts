@@ -428,3 +428,7 @@ export type Exporter = (
     dataProvider: DataProvider,
     resource?: string
 ) => Promise<void>;
+
+export type SetOnSave = (
+    onSave: (values: object, redirect: any) => void
+) => void;

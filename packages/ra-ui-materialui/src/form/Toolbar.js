@@ -62,7 +62,6 @@ const Toolbar = ({
     save,
     submitOnEnter,
     undoable,
-    setOnSave,
     width,
     ...rest
 }) => {
@@ -91,7 +90,6 @@ const Toolbar = ({
                             redirect={redirect}
                             saving={saving}
                             onSave={save}
-                            setOnSave={setOnSave}
                             submitOnEnter={submitOnEnter}
                         />
                         {record && typeof record.id !== 'undefined' && (
@@ -120,7 +118,6 @@ const Toolbar = ({
                                       button.props.onSave,
                                       save
                                   ),
-                                  setOnSave,
                                   invalid,
                                   pristine,
                                   record,

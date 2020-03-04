@@ -133,7 +133,6 @@ export const TabbedFormView = ({
     tabs,
     toolbar,
     save,
-    setOnSave,
     translate,
     undoable,
     value,
@@ -209,7 +208,6 @@ export const TabbedFormView = ({
                     resource,
                     saving,
                     save,
-                    setOnSave,
                     submitOnEnter,
                     undoable,
                 })}
@@ -237,7 +235,6 @@ TabbedFormView.propTypes = {
     ]),
     resource: PropTypes.string,
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
-    setOnSave: PropTypes.func,
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
     tabs: PropTypes.element.isRequired,
@@ -288,7 +285,6 @@ const sanitizeRestProps = ({
     reset,
     resetSection,
     save,
-    setOnSave,
     staticContext,
     submit,
     submitAsSideEffect,
