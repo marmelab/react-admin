@@ -105,7 +105,7 @@ export class SimpleFormIterator extends Component {
     addField = () => {
         const { fields } = this.props;
         this.ids.push(this.nextId++);
-        fields.push({});
+        fields.push(undefined);
     };
 
     render() {
