@@ -98,6 +98,72 @@ describe('<SimpleFormIterator />', () => {
         expect(queryAllByText('ra.action.remove').length).toBe(2);
     });
 
+    it('should add correct children on add button click without source', async () => {
+        const {
+            getByText,
+            queryAllByLabelText,
+            queryAllByText,
+        } = renderWithRedux(
+            <SimpleForm>
+                <ArrayInput source="emails">
+                    <SimpleFormIterator translate={x => x}>
+                        <TextInput label="CustomLabel" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        );
+
+        const addItemElement = getByText('ra.action.add').closest('button');
+
+        fireEvent.click(addItemElement);
+        await wait(() => {
+            const inputElements = queryAllByLabelText('CustomLabel');
+
+            expect(inputElements.length).toBe(1);
+        });
+
+        const inputElements = queryAllByLabelText('CustomLabel');
+
+        expect(inputElements.map(inputElement => inputElement.value)).toEqual([
+            '',
+        ]);
+
+        expect(queryAllByText('ra.action.remove').length).toBe(1);
+    });
+
+    it('should add correct children with default value on add button click without source', async () => {
+        const {
+            getByText,
+            queryAllByLabelText,
+            queryAllByText,
+        } = renderWithRedux(
+            <SimpleForm>
+                <ArrayInput source="emails">
+                    <SimpleFormIterator translate={x => x}>
+                        <TextInput label="CustomLabel" defaultValue={5} />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        );
+
+        const addItemElement = getByText('ra.action.add').closest('button');
+
+        fireEvent.click(addItemElement);
+        await wait(() => {
+            const inputElements = queryAllByLabelText('CustomLabel');
+
+            expect(inputElements.length).toBe(1);
+        });
+
+        const inputElements = queryAllByLabelText('CustomLabel');
+
+        expect(inputElements.map(inputElement => inputElement.value)).toEqual([
+            '5',
+        ]);
+
+        expect(queryAllByText('ra.action.remove').length).toBe(1);
+    });
+
     it('should remove children row on remove button click', async () => {
         const emails = [{ email: 'foo@bar.com' }, { email: 'bar@foo.com' }];
 
