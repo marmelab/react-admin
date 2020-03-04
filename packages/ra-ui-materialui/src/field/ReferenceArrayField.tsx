@@ -1,9 +1,17 @@
-import React, { Children, cloneElement, memo } from 'react';
+import React, { Children, cloneElement, FC, memo, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { makeStyles } from '@material-ui/core/styles';
-import { useReferenceArrayFieldController } from 'ra-core';
-import { fieldPropTypes } from './types';
+import { ReferenceArrayProps, useReferenceArrayFieldController } from 'ra-core';
+import { fieldPropTypes, FieldProps, InjectedFieldProps } from './types';
+import { ClassNameMap } from '@material-ui/styles';
+
+interface ReferenceArrayFieldProps extends FieldProps, InjectedFieldProps {
+    reference: string;
+    classes?: Partial<ClassNameMap<ReferenceArrayFieldClassKey>>;
+    children: ReactElement;
+    resource?: string;
+}
 
 /**
  * A container component that fetches records from another resource specified
@@ -37,7 +45,10 @@ import { fieldPropTypes } from './types';
  * </ReferenceArrayField>
  *
  */
-const ReferenceArrayField = ({ children, ...props }) => {
+
+const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
+    const { children, basePath, reference, resource, record, source } = props;
+
     if (React.Children.count(children) !== 1) {
         throw new Error(
             '<ReferenceArrayField> only accepts a single child (like <Datagrid>)'
@@ -47,7 +58,13 @@ const ReferenceArrayField = ({ children, ...props }) => {
     return (
         <PureReferenceArrayFieldView
             {...props}
-            {...useReferenceArrayFieldController(props)}
+            {...useReferenceArrayFieldController({
+                basePath,
+                reference,
+                resource,
+                record,
+                source,
+            })}
         >
             {children}
         </PureReferenceArrayFieldView>
@@ -62,7 +79,7 @@ ReferenceArrayField.propTypes = {
     className: PropTypes.string,
     children: PropTypes.element.isRequired,
     label: PropTypes.string,
-    record: PropTypes.object,
+    record: PropTypes.any,
     reference: PropTypes.string.isRequired,
     resource: PropTypes.string,
     sortBy: PropTypes.string,
@@ -80,7 +97,15 @@ const useStyles = makeStyles(
     { name: 'RaReferenceArrayField' }
 );
 
-export const ReferenceArrayFieldView = ({
+type ReferenceArrayFieldClassKey = 'progress';
+
+interface ReferenceArrayFieldViewProps extends FieldProps, ReferenceArrayProps {
+    children: ReactElement;
+    classes?: Partial<ClassNameMap<ReferenceArrayFieldClassKey>>;
+    reference: string;
+}
+
+export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = ({
     children,
     className,
     classes: classesOverride,
@@ -107,9 +132,9 @@ export const ReferenceArrayFieldView = ({
 };
 
 ReferenceArrayFieldView.propTypes = {
-    classes: PropTypes.object,
+    classes: PropTypes.any,
     className: PropTypes.string,
-    data: PropTypes.object,
+    data: PropTypes.any,
     ids: PropTypes.array,
     loaded: PropTypes.bool,
     children: PropTypes.element.isRequired,

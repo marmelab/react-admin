@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import debounce from 'lodash/debounce';
-
-export interface Filter {
-    [k: string]: any;
-}
+import { Filter } from '../types';
 
 interface UseFilterStateOptions {
     filterToQuery?: (v: string) => Filter;
