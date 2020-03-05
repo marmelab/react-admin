@@ -109,12 +109,10 @@ Ideal for embedded arrays of objects, e.g. `tags` and `backlinks` in the followi
 
 The child must be an iterator component (like `<Datagrid>` or `<SingleFieldList>`).
 
-Here is how to display all the backlinks of the current post as a `<Datagrid>`
-Optional prop fieldKey can be pass to ArrayField to use as Key
-Which reduces time and memory to generate key
+Here is how to display all the backlinks of the current post as a `<Datagrid>`:
 
 ```jsx
-<ArrayField source="backlinks" fieldKey="uuid">
+<ArrayField source="backlinks">
     <Datagrid>
         <DateField source="date" />
         <UrlField source="url" />
@@ -129,6 +127,18 @@ And here is how to display all the tags of the current post as `<Chip>` componen
     <SingleFieldList>
         <ChipField source="name" />
     </SingleFieldList>
+</ArrayField>
+```
+
+**Tip**: If the array value contains a lot of items, you may experience slowdowns in the UI. In such cases, set the `fieldKey` prop to use one field as key, and reduce CPU and memory usage:
+
+```diff
+-<ArrayField source="backlinks">
++<ArrayField source="backlinks" fieldKey="uuid">
+    <Datagrid>
+        <DateField source="date" />
+        <UrlField source="url" />
+    </Datagrid>
 </ArrayField>
 ```
 
