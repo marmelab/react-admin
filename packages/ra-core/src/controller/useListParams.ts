@@ -185,9 +185,9 @@ const useListParams = ({
                 payload.displayedFilters = Object.keys(
                     newDisplayedFilters
                 ).reduce((filters, filter) => {
-                    if (newDisplayedFilters[filter])
-                        return { ...filters, [filter]: true };
-                    return { ...filters };
+                    return newDisplayedFilters[filter]
+                        ? { ...filters, [filter]: true }
+                        : filters;
                 }, {});
             }
             changeParams({
