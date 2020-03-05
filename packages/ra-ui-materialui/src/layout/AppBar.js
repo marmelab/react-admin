@@ -52,7 +52,7 @@ const AppBar = ({
     children,
     classes: classesOverride,
     className,
-    color = "secondary",
+    color = 'secondary',
     logo,
     logout,
     open,
