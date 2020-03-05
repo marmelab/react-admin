@@ -978,7 +978,7 @@ The child component may further filter results (that's the case, for instance, f
      source="post_id"
      reference="posts"
      filterToQuery={searchText => ({ title: searchText })}>
-    <SelectInput optionText="title" />
+    <AutocompleteInput optionText="title" />
 </ReferenceInput>
 ```
 
