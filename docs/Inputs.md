@@ -108,7 +108,7 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admi
 }
 ```
 
-`<ArrayInput>` expects a single child, which must be a *form iterator* component. A form iterator is a component accepting a `fields` object as passed by [react-final-form-array](https://github.com/final-form/react-final-form-arrays#fieldarrayrenderprops), and defining a layout for an array of fields. For instance, the `<SimpleFormIterator>` component displays an array of fields in an unordered list (`<ul>`), one sub-form by list item (`<li>`). It also provides controls for adding and removing a sub-record (a backlink in this example).
+`<ArrayInput>` expects a single child, which must be a *form iterator* component. A form iterator is a component accepting a `fields` object as passed by [react-final-form-array](https://github.com/final-form/react-final-form-arrays#fieldarrayrenderprops), and defining a layout for an array of fields. For instance, the `<SimpleFormIterator>` component displays an array of react-admin Inputs in an unordered list (`<ul>`), one sub-form by list item (`<li>`). It also provides controls for adding and removing a sub-record (a backlink in this example).
 
 You can pass `disableAdd` and `disableRemove` as props of `SimpleFormIterator`, to disable `ADD` and `REMOVE` button respectively. Default value of both is `false`.
 
@@ -119,6 +119,30 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admi
     <SimpleFormIterator disableRemove >
         <DateInput source="date" />
         <TextInput source="url" />
+    </SimpleFormIterator>
+</ArrayInput>
+```
+
+**Note**: SimpleFormIterator only intend to work with `Inputs` children. (Because it rewrite the `source` prop to have the absolute source inside the `ArrayInput`, that is needed by `react-final-form`).
+If you want to use some `Fields` instead, you have to use `FormDataConsumer` to get the correct source.
+
+```jsx
+import { ArrayInput, SimpleFormIterator, DateInput, TextInput, FormDataConsumer } from 'react-admin';
+
+<ArrayInput source="backlinks">
+    <SimpleFormIterator disableRemove >
+        <DateInput source="date" />
+        <FormDataConsumer>
+            {({ getSource, scopedFormData }) => {
+                getSource();
+                return (
+                    <TextField
+                        source={'url'}
+                        record={scopedFormData}
+                    />
+                );
+            }}
+        </FormDataConsumer>
     </SimpleFormIterator>
 </ArrayInput>
 ```
