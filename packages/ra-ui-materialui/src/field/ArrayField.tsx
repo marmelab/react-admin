@@ -46,9 +46,7 @@ const initialState = {
  * //       }
  * //    ]
  * // }
- * // Optional prop fieldKey can be pass to ArrayField to use as Key
- * // Which reduces time and memory to generate key
- *     <ArrayField source="backlinks" fieldKey="uuid">
+ *     <ArrayField source="backlinks">
  *         <Datagrid>
  *             <DateField source="date" />
  *             <UrlField source="url" />
@@ -67,6 +65,14 @@ const initialState = {
  *         <SingleFieldList>
  *             <ChipField source="name" />
  *         </SingleFieldList>
+ *     </ArrayField>
+ *
+ * If the array value contains a lot of items, you may experience slowdowns in the UI.
+ * In such cases, set the `fieldKey` prop to use one field as key, and reduce CPU and memory usage:
+ *
+ * @example
+ *     <ArrayField source="backlinks" fieldKey="uuid">
+ *         ...
  *     </ArrayField>
  *
  * If you need to render a collection in a custom way, it's often simpler
