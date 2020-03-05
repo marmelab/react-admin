@@ -44,6 +44,7 @@ const SaveButton: FC<SaveButtonProps> = ({
         if (typeof onSave === 'function') {
             setOnSave(onSave);
         } else {
+            // we reset to the Form default save function
             setOnSave();
         }
         if (saving) {

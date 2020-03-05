@@ -60,6 +60,15 @@ const FormWithRedirect = ({
         redirect.current = newRedirect;
     };
 
+    /**
+     * A form can have several Save buttons. In case the user clicks on
+     * a Save button with a custom onSave handler, then on a second Save button
+     * without custom onSave handler, the user expects the default save
+     * handler (the one of the Form) to be called.
+     * That's why the SaveButton onClick calls setOnSave() with no parameters
+     * if it has no custom onSave, and why this function forces a default to
+     * save.
+     */
     const setOnSave = newOnSave => {
         typeof newOnSave === 'function'
             ? (onSave.current = newOnSave)
