@@ -41,7 +41,7 @@ interface Modifiers {
     setPage: (page: number) => void;
     setPerPage: (pageSize: number) => void;
     setSort: (sort: string) => void;
-    setFilters: (filters: any) => void;
+    setFilters: (filters: any, displayedFilters: any) => void;
     hideFilter: (filterName: string) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
 }
@@ -112,10 +112,8 @@ const useListParams = ({
     perPage = 10,
     debounce = 500,
 }: ListParamsOptions): [Parameters, Modifiers] => {
-    const [displayedFilters, setDisplayedFilters] = useState({});
     const dispatch = useDispatch();
     const history = useHistory();
-
     const params = useSelector(
         (reduxState: ReduxState) =>
             reduxState.admin.resources[resource]
@@ -151,6 +149,7 @@ const useListParams = ({
             search: `?${stringify({
                 ...newParams,
                 filter: JSON.stringify(newParams.filter),
+                displayedFilters: JSON.stringify(newParams.displayedFilters),
             })}`,
         });
         dispatch(changeListParams(resource, newParams));
@@ -174,43 +173,56 @@ const useListParams = ({
     );
 
     const filterValues = query.filter || emptyObject;
+    const displayedFilterValues = query.displayedFilters || emptyObject;
 
     const debouncedSetFilters = lodashDebounce(
-        newFilters =>
+        (newFilters, newDisplayedFilters) => {
+            let payload = {
+                filter: removeEmpty(newFilters),
+                displayedFilters: undefined,
+            };
+            if (newDisplayedFilters) {
+                payload.displayedFilters = Object.keys(
+                    newDisplayedFilters
+                ).reduce((filters, filter) => {
+                    return newDisplayedFilters[filter]
+                        ? { ...filters, [filter]: true }
+                        : filters;
+                }, {});
+            }
             changeParams({
                 type: SET_FILTER,
-                payload: removeEmpty(newFilters),
-            }),
+                payload,
+            });
+        },
         debounce
     );
 
     const setFilters = useCallback(
-        filters => debouncedSetFilters(filters),
+        (filters, displayedFilters) =>
+            debouncedSetFilters(filters, displayedFilters),
         requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );
 
     const hideFilter = useCallback((filterName: string) => {
-        setDisplayedFilters(previousFilters => ({
-            ...previousFilters,
-            [filterName]: false,
-        }));
         const newFilters = removeKey(filterValues, filterName);
-        setFilters(newFilters);
+        const newDisplayedFilters = removeKey(
+            displayedFilterValues,
+            filterName
+        );
+        setFilters(newFilters, newDisplayedFilters);
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
     const showFilter = useCallback((filterName: string, defaultValue: any) => {
-        setDisplayedFilters(previousFilters => ({
-            ...previousFilters,
-            [filterName]: true,
-        }));
-        if (typeof defaultValue !== 'undefined') {
-            setFilters(set(filterValues, filterName, defaultValue));
-        }
+        setFilters(
+            set(filterValues, filterName, defaultValue),
+            set(displayedFilterValues, filterName, true)
+        );
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
     return [
         {
-            displayedFilters,
+            displayedFilters: displayedFilterValues,
             filterValues,
             requestSignature,
             ...query,
@@ -227,20 +239,32 @@ const useListParams = ({
     ];
 };
 
-export const validQueryParams = ['page', 'perPage', 'sort', 'order', 'filter'];
+export const validQueryParams = [
+    'page',
+    'perPage',
+    'sort',
+    'order',
+    'filter',
+    'displayedFilters',
+];
+
+const parseObject = (query, field) => {
+    if (query[field] && typeof query[field] === 'string') {
+        try {
+            query[field] = JSON.parse(query[field]);
+        } catch (err) {
+            delete query[field];
+        }
+    }
+};
 
 export const parseQueryFromLocation = ({ search }) => {
     const query = pickBy(
         parse(search),
         (v, k) => validQueryParams.indexOf(k) !== -1
     );
-    if (query.filter && typeof query.filter === 'string') {
-        try {
-            query.filter = JSON.parse(query.filter);
-        } catch (err) {
-            delete query.filter;
-        }
-    }
+    parseObject(query, 'filter');
+    parseObject(query, 'displayedFilters');
     return query;
 };
 

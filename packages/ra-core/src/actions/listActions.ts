@@ -8,6 +8,7 @@ export interface ListParams {
     page: number;
     perPage: number;
     filter: any;
+    displayedFilters: any;
 }
 
 export interface ChangeListParamsAction {

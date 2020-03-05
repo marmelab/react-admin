@@ -96,6 +96,27 @@ describe('List Page', () => {
             ListPagePosts.setFilterValue('q', '');
         });
 
+        it('should keep added filters when emptying it after navigating away and back', () => {
+            ListPagePosts.logout();
+            LoginPage.login('admin', 'password');
+            ListPagePosts.showFilter('title');
+            ListPagePosts.setFilterValue('title', 'quis culpa impedit');
+            cy.contains('1-1 of 1');
+
+            cy.get('[href="#/users"]').click();
+
+            cy.get('[href="#/posts"]').click();
+
+            cy.get(ListPagePosts.elements.filter('title')).should(el =>
+                expect(el).to.have.value('quis culpa impedit')
+            );
+            ListPagePosts.setFilterValue('title', '');
+            ListPagePosts.waitUntilDataLoaded();
+            cy.get(ListPagePosts.elements.filter('title')).should(
+                el => expect(el).to.exist
+            );
+        });
+
         it('should allow to disable alwaysOn filters with default value', () => {
             ListPagePosts.logout();
             LoginPage.login('admin', 'password');
