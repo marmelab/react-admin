@@ -91,6 +91,7 @@ describe('<List />', () => {
                         params: {},
                         selectedIds: [],
                         total: 0,
+                        cachedRequests: {},
                     },
                 },
             },

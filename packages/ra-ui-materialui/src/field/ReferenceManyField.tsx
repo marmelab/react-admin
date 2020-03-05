@@ -1,10 +1,22 @@
-import React, { Fragment, cloneElement, Children } from 'react';
+import React, {
+    FC,
+    Fragment,
+    cloneElement,
+    Children,
+    ReactElement,
+} from 'react';
 import PropTypes from 'prop-types';
 import {
-    useSortState,
+    Filter,
+    Sort,
     usePaginationState,
     useReferenceManyFieldController,
+    useSortState,
+    ReferenceManyProps,
+    PaginationProps,
+    SortProps,
 } from 'ra-core';
+import { FieldProps, InjectedFieldProps } from './types';
 
 /**
  * Render related records to the current one.
@@ -52,7 +64,7 @@ import {
  *    ...
  * </ReferenceManyField>
  */
-export const ReferenceManyField = props => {
+export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
     const {
         children,
         sort: initialSort,
@@ -104,21 +116,30 @@ export const ReferenceManyField = props => {
     );
 };
 
+interface ReferenceManyFieldProps extends FieldProps, InjectedFieldProps {
+    children: ReactElement;
+    filter?: Filter;
+    sort?: Sort;
+    perPage?: number;
+    reference: string;
+    resource?: string;
+    target: string;
+}
+
 ReferenceManyField.propTypes = {
     addLabel: PropTypes.bool,
     basePath: PropTypes.string,
     children: PropTypes.element.isRequired,
-    classes: PropTypes.object,
     className: PropTypes.string,
     filter: PropTypes.object,
     label: PropTypes.string,
     perPage: PropTypes.number,
-    record: PropTypes.object,
+    record: PropTypes.any,
     reference: PropTypes.string.isRequired,
     resource: PropTypes.string,
     sortBy: PropTypes.string,
     source: PropTypes.string.isRequired,
-    sort: PropTypes.shape({
+    sort: PropTypes.exact({
         field: PropTypes.string,
         order: PropTypes.string,
     }),
@@ -133,7 +154,7 @@ ReferenceManyField.defaultProps = {
     addLabel: true,
 };
 
-export const ReferenceManyFieldView = ({
+export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = ({
     children,
     className,
     currentSort,
@@ -174,14 +195,26 @@ export const ReferenceManyFieldView = ({
     </Fragment>
 );
 
+interface ReferenceManyFieldViewProps
+    extends FieldProps,
+        InjectedFieldProps,
+        Partial<ReferenceManyProps>,
+        Pick<PaginationProps, 'page' | 'perPage' | 'setPage' | 'setPerPage'> {
+    children: ReactElement;
+    currentSort?: Sort;
+    pagination?: ReactElement;
+    reference?: string;
+    setSort?: SortProps['setSortField'];
+}
+
 ReferenceManyFieldView.propTypes = {
     children: PropTypes.element,
     className: PropTypes.string,
-    currentSort: PropTypes.shape({
+    currentSort: PropTypes.exact({
         field: PropTypes.string,
         order: PropTypes.string,
     }),
-    data: PropTypes.object,
+    data: PropTypes.any,
     ids: PropTypes.array,
     loaded: PropTypes.bool,
     pagination: PropTypes.element,

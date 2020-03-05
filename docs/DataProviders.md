@@ -337,9 +337,9 @@ Data Providers methods must return a Promise for an object with a `data` propert
 
 Method             | Response format
 ------------------ | ----------------
-`getList`          | `{ data: {Record[]}, total: {int} }`
-`getOne`           | `{ data: {Record} }`
-`getMany`          | `{ data: {Record[]} }`
+`getList`          | `{ data: {Record[]}, total: {int}, validUntil?: {Date} }`
+`getOne`           | `{ data: {Record}, validUntil?: {Date} }`
+`getMany`          | `{ data: {Record[]}, validUntil?: {Date} }`
 `getManyReference` | `{ data: {Record[]}, total: {int} }`
 `create`           | `{ data: {Record} }`
 `update`           | `{ data: {Record} }`
@@ -439,8 +439,9 @@ dataProvider.deleteMany('posts', { ids: [123, 234] })
 // {
 //     data: [123, 234]
 // }
-
 ```
+
+**Tip**: The `validUntil` field in the response is optional. It enables the Application cache, a client-side optimization to speed up rendering and reduce network traffic. Check [the Caching documentation](./Caching.md#application-cache) for more details.
 
 ### Example Implementation
 

@@ -48,13 +48,31 @@ interface Props extends FieldProps {
  */
 export const NumberField: FunctionComponent<
     Props & InjectedFieldProps & TypographyProps
-> = ({ className, record, source, locales, options, textAlign, ...rest }) => {
+> = ({
+    className,
+    emptyText,
+    record,
+    source,
+    locales,
+    options,
+    textAlign,
+    ...rest
+}) => {
     if (!record) {
         return null;
     }
     const value = get(record, source);
     if (value == null) {
-        return null;
+        return emptyText ? (
+            <Typography
+                component="span"
+                variant="body2"
+                className={className}
+                {...sanitizeRestProps(rest)}
+            >
+                {emptyText}
+            </Typography>
+        ) : null;
     }
 
     return (

@@ -33,7 +33,9 @@ const OrderFilter = props => (
         <ReferenceInput source="customer_id" reference="customers">
             <AutocompleteInput
                 optionText={choice =>
-                    `${choice.first_name} ${choice.last_name}`
+                    choice.first_name && choice.last_name
+                        ? `${choice.first_name} ${choice.last_name}`
+                        : ''
                 }
             />
         </ReferenceInput>

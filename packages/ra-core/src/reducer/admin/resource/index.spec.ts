@@ -21,7 +21,6 @@ describe('Resources Reducer', () => {
                     posts: {
                         data: {},
                         list: {
-                            ids: [],
                             params: {
                                 filter: {},
                                 order: null,
@@ -29,16 +28,18 @@ describe('Resources Reducer', () => {
                                 perPage: null,
                                 sort: null,
                             },
-                            selectedIds: [],
+                            ids: [],
+                            cachedRequests: {},
                             total: 0,
+                            selectedIds: [],
                             loadedOnce: false,
                         },
+                        validity: {},
                         props: { name: 'posts' },
                     },
                     comments: {
                         data: {},
                         list: {
-                            ids: [],
                             params: {
                                 filter: {},
                                 order: null,
@@ -46,10 +47,13 @@ describe('Resources Reducer', () => {
                                 perPage: null,
                                 sort: null,
                             },
-                            selectedIds: [],
+                            ids: [],
+                            cachedRequests: {},
                             total: 0,
+                            selectedIds: [],
                             loadedOnce: false,
                         },
+                        validity: {},
                         props: { name: 'comments' },
                     },
                 },
@@ -65,7 +69,6 @@ describe('Resources Reducer', () => {
             posts: {
                 data: {},
                 list: {
-                    ids: [],
                     params: {
                         filter: {},
                         order: null,
@@ -73,16 +76,18 @@ describe('Resources Reducer', () => {
                         perPage: null,
                         sort: null,
                     },
-                    selectedIds: [],
+                    ids: [],
+                    cachedRequests: {},
                     total: 0,
+                    selectedIds: [],
                     loadedOnce: false,
                 },
+                validity: {},
                 props: { name: 'posts' },
             },
             comments: {
                 data: {},
                 list: {
-                    ids: [],
                     params: {
                         filter: {},
                         order: null,
@@ -90,16 +95,18 @@ describe('Resources Reducer', () => {
                         perPage: null,
                         sort: null,
                     },
-                    selectedIds: [],
+                    ids: [],
+                    cachedRequests: {},
                     total: 0,
+                    selectedIds: [],
                     loadedOnce: false,
                 },
+                validity: {},
                 props: { name: 'comments' },
             },
             users: {
                 data: {},
                 list: {
-                    ids: [],
                     params: {
                         filter: {},
                         order: null,
@@ -107,10 +114,13 @@ describe('Resources Reducer', () => {
                         perPage: null,
                         sort: null,
                     },
-                    selectedIds: [],
+                    ids: [],
+                    cachedRequests: {},
                     total: 0,
+                    selectedIds: [],
                     loadedOnce: false,
                 },
+                validity: {},
                 props: { name: 'users', options: 'foo' },
             },
         });
@@ -123,7 +133,6 @@ describe('Resources Reducer', () => {
                     posts: {
                         data: {},
                         list: {
-                            ids: [],
                             params: {
                                 filter: {},
                                 order: null,
@@ -131,16 +140,18 @@ describe('Resources Reducer', () => {
                                 perPage: null,
                                 sort: null,
                             },
-                            selectedIds: [],
+                            ids: [],
+                            cachedRequests: {},
                             total: 0,
+                            selectedIds: [],
                             loadedOnce: false,
                         },
+                        validity: {},
                         props: { name: 'posts' },
                     },
                     comments: {
                         data: {},
                         list: {
-                            ids: [],
                             params: {
                                 filter: {},
                                 order: null,
@@ -148,10 +159,13 @@ describe('Resources Reducer', () => {
                                 perPage: null,
                                 sort: null,
                             },
-                            selectedIds: [],
+                            ids: [],
+                            cachedRequests: {},
                             total: 0,
+                            selectedIds: [],
                             loadedOnce: false,
                         },
+                        validity: {},
                         props: { name: 'comments' },
                     },
                 },
@@ -164,7 +178,6 @@ describe('Resources Reducer', () => {
             posts: {
                 data: {},
                 list: {
-                    ids: [],
                     params: {
                         filter: {},
                         order: null,
@@ -172,10 +185,13 @@ describe('Resources Reducer', () => {
                         perPage: null,
                         sort: null,
                     },
-                    selectedIds: [],
+                    ids: [],
+                    cachedRequests: {},
                     total: 0,
+                    selectedIds: [],
                     loadedOnce: false,
                 },
+                validity: {},
                 props: { name: 'posts' },
             },
         });
@@ -188,7 +204,6 @@ describe('Resources Reducer', () => {
                     posts: {
                         data: {},
                         list: {
-                            ids: [],
                             params: {
                                 filter: {},
                                 order: null,
@@ -196,16 +211,18 @@ describe('Resources Reducer', () => {
                                 perPage: null,
                                 sort: null,
                             },
-                            selectedIds: [],
+                            ids: [],
+                            cachedRequests: {},
                             total: 0,
+                            selectedIds: [],
                             loadedOnce: false,
                         },
+                        validity: {},
                         props: { name: 'posts' },
                     },
                     comments: {
                         data: {},
                         list: {
-                            ids: [],
                             params: {
                                 filter: {},
                                 order: null,
@@ -213,10 +230,13 @@ describe('Resources Reducer', () => {
                                 perPage: null,
                                 sort: null,
                             },
-                            selectedIds: [],
+                            ids: [],
+                            cachedRequests: {},
                             total: 0,
+                            selectedIds: [],
                             loadedOnce: false,
                         },
+                        validity: {},
                         props: { name: 'comments' },
                     },
                 },
@@ -237,7 +257,6 @@ describe('Resources Reducer', () => {
             posts: {
                 data: {},
                 list: {
-                    ids: [],
                     params: {
                         filter: { commentable: true },
                         order: null,
@@ -245,16 +264,18 @@ describe('Resources Reducer', () => {
                         perPage: null,
                         sort: null,
                     },
-                    selectedIds: [],
+                    ids: [],
+                    cachedRequests: {},
                     total: 0,
+                    selectedIds: [],
                     loadedOnce: false,
                 },
+                validity: {},
                 props: { name: 'posts' },
             },
             comments: {
                 data: {},
                 list: {
-                    ids: [],
                     params: {
                         filter: {},
                         order: null,
@@ -262,10 +283,13 @@ describe('Resources Reducer', () => {
                         perPage: null,
                         sort: null,
                     },
-                    selectedIds: [],
+                    ids: [],
+                    cachedRequests: {},
                     total: 0,
+                    selectedIds: [],
                     loadedOnce: false,
                 },
+                validity: {},
                 props: { name: 'comments' },
             },
         });

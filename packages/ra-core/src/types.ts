@@ -29,11 +29,14 @@ export interface Sort {
     field: string;
     order: string;
 }
+export interface Filter {
+    [k: string]: any;
+}
 export interface Pagination {
     page: number;
     perPage: number;
 }
-
+export type ValidUntil = Date;
 /**
  * i18nProvider types
  */
@@ -117,6 +120,7 @@ export interface GetListParams {
 export interface GetListResult {
     data: Record[];
     total: number;
+    validUntil?: ValidUntil;
 }
 
 export interface GetOneParams {
@@ -124,6 +128,7 @@ export interface GetOneParams {
 }
 export interface GetOneResult {
     data: Record;
+    validUntil?: ValidUntil;
 }
 
 export interface GetManyParams {
@@ -131,6 +136,7 @@ export interface GetManyParams {
 }
 export interface GetManyResult {
     data: Record[];
+    validUntil?: ValidUntil;
 }
 
 export interface GetManyReferenceParams {
@@ -143,6 +149,7 @@ export interface GetManyReferenceParams {
 export interface GetManyReferenceResult {
     data: Record[];
     total: number;
+    validUntil?: ValidUntil;
 }
 
 export interface UpdateParams {
@@ -152,6 +159,7 @@ export interface UpdateParams {
 }
 export interface UpdateResult {
     data: Record;
+    validUntil?: ValidUntil;
 }
 
 export interface UpdateManyParams {
@@ -160,6 +168,7 @@ export interface UpdateManyParams {
 }
 export interface UpdateManyResult {
     data?: Identifier[];
+    validUntil?: ValidUntil;
 }
 
 export interface CreateParams {
@@ -167,6 +176,7 @@ export interface CreateParams {
 }
 export interface CreateResult {
     data: Record;
+    validUntil?: ValidUntil;
 }
 
 export interface DeleteParams {
@@ -182,6 +192,17 @@ export interface DeleteManyParams {
 export interface DeleteManyResult {
     data?: Identifier[];
 }
+
+export type DataProviderResult =
+    | CreateResult
+    | DeleteResult
+    | DeleteManyResult
+    | GetListResult
+    | GetManyResult
+    | GetManyReferenceResult
+    | GetOneResult
+    | UpdateResult
+    | UpdateManyResult;
 
 export type DataProviderProxy = {
     getList: (
@@ -269,13 +290,25 @@ export interface ReduxState {
         };
         resources: {
             [name: string]: {
-                data: any;
+                data: {
+                    [key: string]: Record;
+                    [key: number]: Record;
+                };
                 list: {
                     params: any;
                     ids: Identifier[];
                     loadedOnce: boolean;
                     selectedIds: Identifier[];
                     total: number;
+                    cachedRequests?: {
+                        ids: Identifier[];
+                        total: number;
+                        validity: Date;
+                    };
+                };
+                validity: {
+                    [key: string]: Date;
+                    [key: number]: Date;
                 };
             };
         };
@@ -395,3 +428,11 @@ export type Exporter = (
     dataProvider: DataProvider,
     resource?: string
 ) => Promise<void>;
+
+export type SetOnSave = (
+    onSave?: (values: object, redirect: any) => void
+) => void;
+
+export type FormFunctions = {
+    setOnSave?: SetOnSave;
+};

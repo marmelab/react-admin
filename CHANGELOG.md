@@ -1,5 +1,22 @@
 # Changelog
 
+## v3.3.0
+
+* Add opt-in client-side caching layer to save on network requests, add support for optimistic rendering of multiple list pages, make `useListController` use `useGetList`, fix refresh when leaving optimistic mode ([4386](https://github.com/marmelab/react-admin/pull/4386)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to keep form validation when using custom save buttons ([4458](https://github.com/marmelab/react-admin/pull/4458)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Add support for `disabled` prop in `<BooleanInput>` ([4443](https://github.com/marmelab/react-admin/pull/4443)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Add `fieldKey` prop to `<ArrayField>` to improve performance on large arrays ([4437](https://github.com/marmelab/react-admin/pull/4437)) ([Hemant-yadav](https://github.com/Hemant-yadav))
+* Add `emptyText` prop to show a fixed string when the value of a `<Field>` is `null` ([4413](https://github.com/marmelab/react-admin/pull/4413)) ([m4theushw](https://github.com/m4theushw))
+* Fix empty filters are lost when navigating away ([4442](https://github.com/marmelab/react-admin/pull/4442)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Fix dark theme contrast in demo ([4399](https://github.com/marmelab/react-admin/pull/4399)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Convert `<Field>` components to TypeScript ([4459](https://github.com/marmelab/react-admin/pull/4459)) ([josephktcheung](https://github.com/josephktcheung))
+* Convert `<SimpleFormIterator>` to function component ([4450](https://github.com/marmelab/react-admin/pull/4450)) ([WiXSL](https://github.com/WiXSL))
+* Convert remaining tests to `react-testing-library` ([4446](https://github.com/marmelab/react-admin/pull/4446)) ([m4theushw](https://github.com/m4theushw))
+* Convert `<Confirm>`, `<Layout>` and `<BulkDeleteButton>` to TypeScript ([4441](https://github.com/marmelab/react-admin/pull/4441)) ([josephktcheung](https://github.com/josephktcheung))
+* Convert `<RichTextInput>` to TypeScript ([4223](https://github.com/marmelab/react-admin/pull/4223)) ([tlaziuk](https://github.com/tlaziuk))
+* [Doc] Add documentation for using of `<Field>` components inside `<SimpleFormIterator>` ([4477](https://github.com/marmelab/react-admin/pull/4477)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* [Doc] Fix `<ReferenceInput>` documentation of `filterToQuery` prop ([4461](https://github.com/marmelab/react-admin/pull/4461)) ([leibowitz](https://github.com/leibowitz))
+
 ## v3.2.4
 
 * Fix error when using `<SimpleListLoading>` directly ([4469](https://github.com/marmelab/react-admin/pull/4469)) ([WiXSL](https://github.com/WiXSL))

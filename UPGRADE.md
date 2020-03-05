@@ -103,7 +103,7 @@ The author of `redux-form` has written a new Form library for React called `reac
 
 The next sections highlight changes that you must do to your code as a consequence of switching to `react-final-form`.
 
-## Custom Form Toolbar or Buttons Must Use New `handleSubmit` Signature
+## Custom Form Toolbar or Buttons Must Use New `handleSubmit` Signature or must Use `onSave`
 
 If you were using custom buttons (to alter the form values before submit for example), you'll need to update your code. In `react-admin` v2, the form toolbar and its buttons used to receive `handleSubmit` and `handleSubmitWithRedirect` props. These props accepted functions which were called with the form values.
 
@@ -112,9 +112,7 @@ The migration to `react-final-form` changes their signature and behavior to the 
 - `handleSubmit`: accepts no arguments, and will submit the form with its current values immediately
 - `handleSubmitWithRedirect` accepts a custom redirect, and will submit the form with its current values immediately
 
-Here's how to migrate the *Altering the Form Values before Submitting* example from the documentation, in two variants:
-
-1. Using the `react-final-form` hook API to send change events
+Here's how to migrate the *Altering the Form Values before Submitting* example from the documentation:
 
 ```jsx
 import React, { useCallback } from 'react';
@@ -139,53 +137,51 @@ const SaveWithNoteButton = ({ handleSubmit, handleSubmitWithRedirect, ...props }
 };
 ```
 
-2. Using react-admin hooks to run custom mutations
+The override of these functions has now a huge drawback, which makes it impractical: by skipping the default `handleSubmitWithRedirect`, the button doesn't trigger form validation. And unfortunately, react-final-form doesn't provide a way to trigger form validation manually.
+​
+That's why react-admin now provides a way to override just the data provider call and its side effect called `onSave`.
 
-For instance, in the `simple` example:
+The `onSave` value should be a function expecting 2 arguments: the form values to save, and the redirection to perform.
+
+Here's how to migrate the *Using `onSave` To Alter the Form Submission Behavior* example from the documentation:
 
 ```jsx
 import React, { useCallback } from 'react';
-import { useFormState } from 'react-final-form';
-import { SaveButton, Toolbar, useCreate, useRedirect, useNotify } from 'react-admin';
-
+import {
+    SaveButton,
+    Toolbar,
+    useCreate,
+    useRedirect,
+    useNotify,
+} from 'react-admin';
+​
 const SaveWithNoteButton = props => {
     const [create] = useCreate('posts');
     const redirectTo = useRedirect();
     const notify = useNotify();
-    const { basePath, redirect } = props;
-
-    const formState = useFormState();
-    const handleClick = useCallback(() => {
-        if (!formState.valid) {
-            return;
-        }
-
-        create(
-            {
-                payload: {
-                    data: { ...formState.values, average_note: 10 },
+    const { basePath } = props;
+​
+    const handleSave = useCallback(
+        (values, redirect) => {
+            create(
+                {
+                    payload: { data: { ...values, average_note: 10 } },
                 },
-            },
-            {
-                onSuccess: ({ data: newRecord }) => {
-                    notify('ra.notification.created', 'info', {
-                        smart_count: 1,
-                    });
-                    redirectTo(redirect, basePath, newRecord.id, newRecord);
-                },
-            }
-        );
-    }, [
-        formState.valid,
-        formState.values,
-        create,
-        notify,
-        redirectTo,
-        redirect,
-        basePath,
-    ]);
-
-    return <SaveButton {...props} handleSubmitWithRedirect={handleClick} />;
+                {
+                    onSuccess: ({ data: newRecord }) => {
+                        notify('ra.notification.created', 'info', {
+                            smart_count: 1,
+                        });
+                        redirectTo(redirect, basePath, newRecord.id, newRecord);
+                    },
+                }
+            );
+        },
+        [create, notify, redirectTo, basePath]
+    );
+​
+    // set onSave props instead of handleSubmitWithRedirect
+    return <SaveButton {...props} onSave={handleSave} />;
 };
 ```
 

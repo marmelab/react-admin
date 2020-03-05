@@ -1,9 +1,10 @@
 import React from 'react';
-import assert from 'assert';
-import { shallow } from 'enzyme';
+import { render, cleanup } from '@testing-library/react';
 import { ReferenceArrayInputView } from './ReferenceArrayInput';
 
 describe('<ReferenceArrayInput />', () => {
+    afterEach(cleanup);
+
     const defaultProps = {
         input: {},
         meta: {},
@@ -13,10 +14,10 @@ describe('<ReferenceArrayInput />', () => {
         source: 'tag_ids',
         translate: x => `*${x}*`,
     };
-    const MyComponent = () => <span id="mycomponent" />;
 
-    it('should render a LinearProgress if loading is true', () => {
-        const wrapper = shallow(
+    it('should render a progress bar if loading is true', () => {
+        const MyComponent = () => <div>MyComponent</div>;
+        const { queryByRole, queryByText } = render(
             <ReferenceArrayInputView
                 {...{
                     ...defaultProps,
@@ -27,36 +28,30 @@ describe('<ReferenceArrayInput />', () => {
                 <MyComponent />
             </ReferenceArrayInputView>
         );
-        const MyComponentElement = wrapper.find('MyComponent');
-        assert.equal(MyComponentElement.length, 0);
-        const LinearProgressElement = wrapper.find('LinearProgress');
-        assert.equal(LinearProgressElement.length, 1);
+        expect(queryByRole('progressbar')).not.toBeNull();
+        expect(queryByText('MyComponent')).toBeNull();
     });
 
     it('should display an error if error is defined', () => {
-        const wrapper = shallow(
+        const MyComponent = () => <div>MyComponent</div>;
+        const { queryByDisplayValue, queryByText } = render(
             <ReferenceArrayInputView
                 {...{
                     ...defaultProps,
-                    error: 'ra.input.references.all_missing',
+                    error: 'error',
                     input: {},
                 }}
             >
                 <MyComponent />
             </ReferenceArrayInputView>
         );
-        const MyComponentElement = wrapper.find('MyComponent');
-        assert.equal(MyComponentElement.length, 0);
-        const ErrorElement = wrapper.find('ReferenceError');
-        assert.equal(ErrorElement.length, 1);
-        assert.equal(
-            ErrorElement.prop('error'),
-            'ra.input.references.all_missing'
-        );
+        expect(queryByDisplayValue('error')).not.toBeNull();
+        expect(queryByText('MyComponent')).toBeNull();
     });
 
     it('should send an error to the children if warning is defined', () => {
-        const wrapper = shallow(
+        const MyComponent = ({ meta }) => <div>{meta.helperText}</div>;
+        const { queryByText, queryByRole } = render(
             <ReferenceArrayInputView
                 {...{
                     ...defaultProps,
@@ -68,17 +63,13 @@ describe('<ReferenceArrayInput />', () => {
                 <MyComponent />
             </ReferenceArrayInputView>
         );
-        const ErrorElement = wrapper.find('ReferenceError');
-        assert.equal(ErrorElement.length, 0);
-        const MyComponentElement = wrapper.find('MyComponent');
-        assert.equal(MyComponentElement.length, 1);
-        assert.deepEqual(MyComponentElement.prop('meta'), {
-            helperText: 'fetch error',
-        });
+        expect(queryByRole('textbox')).toBeNull();
+        expect(queryByText('fetch error')).not.toBeNull();
     });
 
     it('should not send an error to the children if warning is not defined', () => {
-        const wrapper = shallow(
+        const MyComponent = ({ meta }) => <div>{JSON.stringify(meta)}</div>;
+        const { queryByText, queryByRole } = render(
             <ReferenceArrayInputView
                 {...{
                     ...defaultProps,
@@ -89,17 +80,17 @@ describe('<ReferenceArrayInput />', () => {
                 <MyComponent />
             </ReferenceArrayInputView>
         );
-        const ErrorElement = wrapper.find('ReferenceError');
-        assert.equal(ErrorElement.length, 0);
-        const MyComponentElement = wrapper.find('MyComponent');
-        assert.equal(MyComponentElement.length, 1);
-        assert.deepEqual(MyComponentElement.prop('meta'), {
-            helperText: false,
-        });
+        expect(queryByRole('textbox')).toBeNull();
+        expect(
+            queryByText(JSON.stringify({ helperText: false }))
+        ).not.toBeNull();
     });
 
     it('should render enclosed component if references present in input are available in state', () => {
-        const wrapper = shallow(
+        const MyComponent = ({ choices }) => (
+            <div>{JSON.stringify(choices)}</div>
+        );
+        const { queryByRole, queryByText } = render(
             <ReferenceArrayInputView
                 {...{
                     ...defaultProps,
@@ -110,15 +101,15 @@ describe('<ReferenceArrayInput />', () => {
                 <MyComponent />
             </ReferenceArrayInputView>
         );
-        const ErrorElement = wrapper.find('ReferenceError');
-        assert.equal(ErrorElement.length, 0);
-        const MyComponentElement = wrapper.find('MyComponent');
-        assert.equal(MyComponentElement.length, 1);
-        assert.deepEqual(MyComponentElement.prop('choices'), [1]);
+        expect(queryByRole('textbox')).toBeNull();
+        expect(queryByText(JSON.stringify([1]))).not.toBeNull();
     });
 
     it('should render enclosed component even if the choices are empty', () => {
-        const wrapper = shallow(
+        const MyComponent = ({ choices }) => (
+            <div>{JSON.stringify(choices)}</div>
+        );
+        const { queryByRole, queryByText } = render(
             <ReferenceArrayInputView
                 {...{
                     ...defaultProps,
@@ -128,20 +119,19 @@ describe('<ReferenceArrayInput />', () => {
                 <MyComponent />
             </ReferenceArrayInputView>
         );
-        const LinearProgressElement = wrapper.find(
-            'WithStyles(LinearProgress)'
-        );
-        assert.equal(LinearProgressElement.length, 0);
-        const ErrorElement = wrapper.find('ReferenceError');
-        assert.equal(ErrorElement.length, 0);
-        const MyComponentElement = wrapper.find('MyComponent');
-        assert.equal(MyComponentElement.length, 1);
-        assert.deepEqual(MyComponentElement.prop('choices'), []);
+        expect(queryByRole('progressbar')).toBeNull();
+        expect(queryByRole('textbox')).toBeNull();
+        expect(queryByText(JSON.stringify([]))).not.toBeNull();
     });
 
     it('should pass onChange down to child component', () => {
+        let onChangeCallback;
+        const MyComponent = ({ onChange }) => {
+            onChangeCallback = onChange;
+            return <div />;
+        };
         const onChange = jest.fn();
-        const wrapper = shallow(
+        render(
             <ReferenceArrayInputView
                 {...defaultProps}
                 allowEmpty
@@ -150,12 +140,13 @@ describe('<ReferenceArrayInput />', () => {
                 <MyComponent />
             </ReferenceArrayInputView>
         );
-        wrapper.find('MyComponent').simulate('change', 'foo');
-        assert.deepEqual(onChange.mock.calls[0], ['foo']);
+        onChangeCallback('foo');
+        expect(onChange).toBeCalledWith('foo');
     });
 
     it('should pass meta down to child component', () => {
-        const wrapper = shallow(
+        const MyComponent = ({ meta }) => <div>{JSON.stringify(meta)}</div>;
+        const { queryByText } = render(
             <ReferenceArrayInputView
                 {...defaultProps}
                 allowEmpty
@@ -164,8 +155,8 @@ describe('<ReferenceArrayInput />', () => {
                 <MyComponent />
             </ReferenceArrayInputView>
         );
-
-        const myComponent = wrapper.find('MyComponent');
-        assert.notEqual(myComponent.prop('meta'), undefined);
+        expect(
+            queryByText(JSON.stringify({ touched: false, helperText: false }))
+        ).not.toBeNull();
     });
 });

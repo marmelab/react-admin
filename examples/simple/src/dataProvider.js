@@ -1,4 +1,5 @@
 import fakeRestProvider from 'ra-data-fakerest';
+import { cacheDataProviderProxy } from 'react-admin';
 
 import data from './data';
 import addUploadFeature from './addUploadFeature';
@@ -32,4 +33,4 @@ const delayedDataProvider = new Proxy(sometimesFailsDataProvider, {
         ),
 });
 
-export default delayedDataProvider;
+export default cacheDataProviderProxy(delayedDataProvider);

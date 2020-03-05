@@ -1,5 +1,17 @@
-import { Pagination, Sort, ReduxState } from '../types';
+import { useSelector, shallowEqual } from 'react-redux';
+import get from 'lodash/get';
+
+import {
+    Pagination,
+    Sort,
+    ReduxState,
+    Identifier,
+    Record,
+    RecordMap,
+} from '../types';
 import useQueryWithStore from './useQueryWithStore';
+
+const defaultData = {};
 
 /**
  * Call the dataProvider.getList() method and return the resolved result
@@ -39,44 +51,59 @@ import useQueryWithStore from './useQueryWithStore';
  *     )}</ul>;
  * };
  */
-const useGetList = (
+const useGetList = <RecordType = Record>(
     resource: string,
     pagination: Pagination,
     sort: Sort,
     filter: object,
     options?: any
-) => {
-    if (options && options.action) {
-        throw new Error(
-            'useGetList() does not support custom action names. Use useQueryWithStore() and your own Redux selectors if you need a custom action name for a getList query'
-        );
-    }
-    const key = JSON.stringify({
-        type: 'GET_LIST',
-        resource: resource,
-        payload: { pagination, sort, filter },
-    });
-    const { data, total, error, loading, loaded } = useQueryWithStore(
+): {
+    data?: RecordMap<RecordType>;
+    ids?: Identifier[];
+    total?: number;
+    error?: any;
+    loading: boolean;
+    loaded: boolean;
+} => {
+    const requestSignature = JSON.stringify({ pagination, sort, filter });
+
+    const { data: ids, total, error, loading, loaded } = useQueryWithStore(
         { type: 'getList', resource, payload: { pagination, sort, filter } },
         options,
-        (state: ReduxState) =>
-            state.admin.customQueries[key]
-                ? state.admin.customQueries[key].data
-                : null,
-        (state: ReduxState) =>
-            state.admin.customQueries[key]
-                ? state.admin.customQueries[key].total
-                : null
+        // data selector (may return [])
+        (state: ReduxState): Identifier[] =>
+            get(
+                state.admin.resources,
+                [resource, 'list', 'cachedRequests', requestSignature, 'ids'],
+                []
+            ),
+        // total selector (may return undefined)
+        (state: ReduxState): number =>
+            get(state.admin.resources, [
+                resource,
+                'list',
+                'cachedRequests',
+                requestSignature,
+                'total',
+            ])
     );
-    const ids = data ? data.map(record => record.id) : [];
-    const dataObject = data
-        ? data.reduce((acc, next) => {
-              acc[next.id] = next;
-              return acc;
-          }, {})
-        : {};
 
-    return { data: dataObject, ids, total, error, loading, loaded };
+    const data = useSelector((state: ReduxState): RecordMap<RecordType> => {
+        if (!ids) return defaultData;
+        const allResourceData = get(
+            state.admin.resources,
+            [resource, 'data'],
+            defaultData
+        );
+        return ids
+            .map(id => allResourceData[id])
+            .reduce((acc, record) => {
+                acc[record.id] = record;
+                return acc;
+            }, {});
+    }, shallowEqual);
+
+    return { data, ids, total, error, loading, loaded };
 };
 
 export default useGetList;

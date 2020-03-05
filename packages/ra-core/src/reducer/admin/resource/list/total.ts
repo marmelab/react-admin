@@ -1,14 +1,11 @@
 import { Reducer } from 'redux';
 import {
-    CRUD_GET_ONE_SUCCESS,
-    CrudGetOneSuccessAction,
     CRUD_GET_LIST_SUCCESS,
     CrudGetListSuccessAction,
 } from '../../../../actions/dataActions';
 import { DELETE, DELETE_MANY } from '../../../../core';
 
 type ActionTypes =
-    | CrudGetOneSuccessAction
     | CrudGetListSuccessAction
     | {
           type: 'OTHER_TYPE';
@@ -22,9 +19,6 @@ const totalReducer: Reducer<State> = (
     previousState = 0,
     action: ActionTypes
 ) => {
-    if (action.type === CRUD_GET_ONE_SUCCESS) {
-        return previousState === 0 ? 1 : previousState;
-    }
     if (action.type === CRUD_GET_LIST_SUCCESS) {
         return action.payload.total;
     }

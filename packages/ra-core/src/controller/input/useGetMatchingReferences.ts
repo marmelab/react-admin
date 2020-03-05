@@ -1,14 +1,13 @@
 import { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { Filter } from '../useFilterState';
 import { crudGetMatchingAccumulate } from '../../actions/accumulateActions';
 import {
     getPossibleReferences,
     getPossibleReferenceValues,
     getReferenceResource,
 } from '../../reducer';
-import { Pagination, Sort, Record } from '../../types';
+import { Pagination, Sort, Record, Filter } from '../../types';
 import { useDeepCompareEffect } from '../../util/hooks';
 
 interface UseMatchingReferencesOption {

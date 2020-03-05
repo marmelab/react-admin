@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { FC, Fragment, useState, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ActionDelete from '@material-ui/icons/Delete';
 import { fade } from '@material-ui/core/styles/colorManipulator';
@@ -11,21 +11,11 @@ import {
     useNotify,
     useUnselectAll,
     CRUD_DELETE_MANY,
+    Identifier,
 } from 'ra-core';
 
 import Confirm from '../layout/Confirm';
-import Button from './Button';
-
-const sanitizeRestProps = ({
-    basePath,
-    classes,
-    crudDeleteMany,
-    filterValues,
-    label,
-    resource,
-    selectedIds,
-    ...rest
-}) => rest;
+import Button, { ButtonProps } from './Button';
 
 const useStyles = makeStyles(
     theme => ({
@@ -43,12 +33,11 @@ const useStyles = makeStyles(
     { name: 'RaBulkDeleteWithConfirmButton' }
 );
 
-const BulkDeleteWithConfirmButton = ({
+const BulkDeleteWithConfirmButton: FC<BulkDeleteWithConfirmButtonProps> = ({
     basePath,
     classes: classesOverride,
     confirmTitle,
     confirmContent,
-    crudDeleteMany,
     icon,
     label,
     onClick,
@@ -91,11 +80,11 @@ const BulkDeleteWithConfirmButton = ({
         setOpen(false);
     };
 
-    const handleDelete = () => {
+    const handleDelete = e => {
         deleteMany();
 
         if (typeof onClick === 'function') {
-            onClick();
+            onClick(e);
         }
     };
 
@@ -130,6 +119,29 @@ const BulkDeleteWithConfirmButton = ({
         </Fragment>
     );
 };
+
+const sanitizeRestProps = ({
+    basePath,
+    classes,
+    filterValues,
+    label,
+    ...rest
+}: Omit<
+    BulkDeleteWithConfirmButtonProps,
+    'resource' | 'selectedIds' | 'icon'
+>) => rest;
+
+interface Props {
+    basePath?: string;
+    confirmContent?: string;
+    confirmTitle?: string;
+    filterValues?: any;
+    icon: ReactElement;
+    resource: string;
+    selectedIds: Identifier[];
+}
+
+export type BulkDeleteWithConfirmButtonProps = Props & ButtonProps;
 
 BulkDeleteWithConfirmButton.propTypes = {
     basePath: PropTypes.string,

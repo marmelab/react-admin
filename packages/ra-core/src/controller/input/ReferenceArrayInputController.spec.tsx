@@ -68,9 +68,7 @@ describe('<ReferenceArrayInputController />', () => {
                                     id: 1,
                                 },
                             },
-                            list: {
-                                total: 42,
-                            },
+                            list: {},
                         },
                     },
                 },
@@ -567,7 +565,12 @@ describe('<ReferenceArrayInputController />', () => {
             </ReferenceArrayInputController>,
             {
                 admin: {
-                    resources: { tags: { data: {}, list: {} } },
+                    resources: {
+                        tags: {
+                            data: {},
+                            list: {},
+                        },
+                    },
                     references: { possibleValues: {} },
                     ui: { viewVersion: 1 },
                 },

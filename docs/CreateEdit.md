@@ -1230,85 +1230,42 @@ export const UserEdit = ({ permissions, ...props }) =>
 ```
 {% endraw %}
 
-## Altering the Form Values before Submitting
+## Altering the Form Values Before Submitting
 
-Sometimes, you may want your custom action to alter the form values before actually sending them to the `dataProvider`.
-For those cases, you should know that every button inside a form [Toolbar](#toolbar) receive two props:
+Sometimes, you may want to alter the form values before actually sending them to the `dataProvider`. For those cases, you should know that every button inside a form [Toolbar](#toolbar) receive two props:
 
-- `handleSubmit` which calls the default form save method
-- `handleSubmitWithRedirect` which calls the default form save method but allows to specify a custom redirection
-
-Knowing this, there are two ways to alter the form values before submit:
-
-1. Using react-final-form API to send change events
+* `handleSubmit` which calls the default form save method (provided by react-final-form)
+* `handleSubmitWithRedirect` which calls the default form save method and allows to specify a custom redirection
+​
+Decorating `handleSubmitWithRedirect` with your own logic allows you to alter the form values before submitting. For instance, to set the `average_note` field value just before submission:
 
 ```jsx
 import React, { useCallback } from 'react';
 import { useForm } from 'react-final-form';
-import { SaveButton, Toolbar, useCreate, useRedirect, useNotify } from 'react-admin';
-
+import {
+    SaveButton,
+    Toolbar,
+    useCreate,
+    useRedirect,
+    useNotify,
+} from 'react-admin';
+​
 const SaveWithNoteButton = ({ handleSubmitWithRedirect, ...props }) => {
     const [create] = useCreate('posts');
     const redirectTo = useRedirect();
     const notify = useNotify();
     const { basePath, redirect } = props;
-
+​
     const form = useForm();
-
+​
     const handleClick = useCallback(() => {
+        // change the average_note field value
         form.change('average_note', 10);
-
+​
         handleSubmitWithRedirect('edit');
     }, [form]);
-
-    return <SaveButton {...props} handleSubmitWithRedirect={handleClick} />;
-};
-```
-
-2. Using react-admin hooks to run custom mutations
-
-For instance, in the `simple` example:
-
-```jsx
-import React, { useCallback } from 'react';
-import { useFormState } from 'react-final-form';
-import { SaveButton, Toolbar, useCreate, useRedirect, useNotify } from 'react-admin';
-
-const SaveWithNoteButton = props => {
-    const [create] = useCreate('posts');
-    const redirectTo = useRedirect();
-    const notify = useNotify();
-    const { basePath, redirect } = props;
-
-    const formState = useFormState();
-    const handleClick = useCallback(() => {
-        if (!formState.valid) {
-            return;
-        }
-
-        create(
-            {
-                payload: { data: { ...formState.values, average_note: 10 } },
-            },
-            {
-                onSuccess: ({ data: newRecord }) => {
-                    notify('ra.notification.created', 'info', {
-                        smart_count: 1,
-                    });
-                    redirectTo(redirect, basePath, newRecord.id, newRecord);
-                },
-            }
-        );
-    }, [
-        formState.valid,
-        formState.values,
-        create,
-        notify,
-        redirectTo,
-        redirect,
-        basePath,
-    ]);
-
+​
+    // override handleSubmitWithRedirect with custom logic
     return <SaveButton {...props} handleSubmitWithRedirect={handleClick} />;
 };
 ```
@@ -1333,4 +1290,99 @@ const PostCreateToolbar = props => (
 );
 ```
 
-**Note**: This technique will not trigger a form validation pass.
+**Tip**: Which one of `handleSubmit` and `handleSubmitWithRedirect` should you override? If you want to keep the redirection, override `handleSubmitWithRedirect` just like in the previous example. If you want to disable redirection, or handle it yourself, override `handleSubmit`.  
+
+## Using `onSave` To Alter the Form Submission Behavior
+
+The previous technique works well for altering values. But you may want to call a route before submission, or submit the form to different dataProvider methods/resources depending on the form values. And in this case, wrapping `handleSubmitWithRedirect` does not work, because you don't have control on the submission itself.
+​
+Instead of *decorating* `handleSubmitWithRedirect`, you can *replace* it, and do the API call manually. You don't have to change anything in the form values in that case. So the previous example can be rewritten as:
+
+```jsx
+import React, { useCallback } from 'react';
+import { useFormState } from 'react-final-form';
+import {
+    SaveButton,
+    Toolbar,
+    useCreate,
+    useRedirect,
+    useNotify,
+} from 'react-admin';
+​
+const SaveWithNoteButton = props => {
+    const [create] = useCreate('posts');
+    const redirectTo = useRedirect();
+    const notify = useNotify();
+    const { basePath, redirect } = props;
+    // get values from the form
+    const formState = useFormState();
+​
+    const handleClick = useCallback(
+        () => {
+            // call dataProvider.create() manually
+            create(
+                {
+                    payload: { data: { ...formState.values, average_note: 10 } },
+                },
+                {
+                    onSuccess: ({ data: newRecord }) => {
+                        notify('ra.notification.created', 'info', {
+                            smart_count: 1,
+                        });
+                        redirectTo(redirect, basePath, newRecord.id, newRecord);
+                    },
+                }
+            );
+        },
+        [create, notify, redirectTo, basePath, formState, redirect]
+    );
+​
+    return <SaveButton {...props} handleSubmitWithRedirect={handleClick} />;
+};
+```
+
+This technique has a huge drawback, which makes it impractical: by skipping the default `handleSubmitWithRedirect`, this button doesn't trigger form validation. And unfortunately, react-final-form doesn't provide a way to trigger form validation manually.
+​
+That's why react-admin provides a way to override just the data provider call and its side effects. It's called `onSave`, and here is how you would use it in the previous use case:
+
+```jsx
+import React, { useCallback } from 'react';
+import {
+    SaveButton,
+    Toolbar,
+    useCreate,
+    useRedirect,
+    useNotify,
+} from 'react-admin';
+​
+const SaveWithNoteButton = props => {
+    const [create] = useCreate('posts');
+    const redirectTo = useRedirect();
+    const notify = useNotify();
+    const { basePath } = props;
+​
+    const handleSave = useCallback(
+        (values, redirect) => {
+            create(
+                {
+                    payload: { data: { ...values, average_note: 10 } },
+                },
+                {
+                    onSuccess: ({ data: newRecord }) => {
+                        notify('ra.notification.created', 'info', {
+                            smart_count: 1,
+                        });
+                        redirectTo(redirect, basePath, newRecord.id, newRecord);
+                    },
+                }
+            );
+        },
+        [create, notify, redirectTo, basePath]
+    );
+​
+    // set onSave props instead of handleSubmitWithRedirect
+    return <SaveButton {...props} onSave={handleSave} />;
+};
+```
+
+The `onSave` value should be a function expecting 2 arguments: the form values to save, and the redirection to perform.
