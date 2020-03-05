@@ -1,6 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {
+    useState,
+    useEffect,
+    useCallback,
+    FC,
+    CSSProperties,
+} from 'react';
 import { useVersion, useDataProvider } from 'react-admin';
-import { useMediaQuery } from '@material-ui/core';
+import { useMediaQuery, Theme } from '@material-ui/core';
 
 import Welcome from './Welcome';
 import MonthlyRevenue from './MonthlyRevenue';
@@ -8,6 +14,28 @@ import NbNewOrders from './NbNewOrders';
 import PendingOrders from './PendingOrders';
 import PendingReviews from './PendingReviews';
 import NewCustomers from './NewCustomers';
+
+import { Customer, Order, Review } from '../types';
+
+interface OrderStats {
+    revenue: number;
+    nbNewOrders: number;
+    pendingOrders: Order[];
+}
+
+interface CustomerData {
+    [key: string]: Customer;
+}
+
+interface State {
+    nbNewOrders?: number;
+    nbPendingReviews?: number;
+    pendingOrders?: Order[];
+    pendingOrdersCustomers?: CustomerData;
+    pendingReviews?: Review[];
+    pendingReviewsCustomers?: CustomerData;
+    revenue?: number;
+}
 
 const styles = {
     flex: { display: 'flex' },
@@ -17,12 +45,16 @@ const styles = {
     singleCol: { marginTop: '2em', marginBottom: '2em' },
 };
 
-const Dashboard = () => {
-    const [state, setState] = useState({});
+const Dashboard: FC = () => {
+    const [state, setState] = useState({} as State);
     const version = useVersion();
     const dataProvider = useDataProvider();
-    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
-    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+    const isXSmall = useMediaQuery((theme: Theme) =>
+        theme.breakpoints.down('xs')
+    );
+    const isSmall = useMediaQuery((theme: Theme) =>
+        theme.breakpoints.down('sm')
+    );
 
     const fetchOrders = useCallback(async () => {
         const aMonthAgo = new Date();
@@ -33,9 +65,9 @@ const Dashboard = () => {
             pagination: { page: 1, perPage: 50 },
         });
         const aggregations = recentOrders
-            .filter(order => order.status !== 'cancelled')
+            .filter((order: Order) => order.status !== 'cancelled')
             .reduce(
-                (stats, order) => {
+                (stats: OrderStats, order: Order) => {
                     if (order.status !== 'cancelled') {
                         stats.revenue += order.total;
                         stats.nbNewOrders++;
@@ -63,14 +95,19 @@ const Dashboard = () => {
             pendingOrders: aggregations.pendingOrders,
         }));
         const { data: customers } = await dataProvider.getMany('customers', {
-            ids: aggregations.pendingOrders.map(order => order.customer_id),
+            ids: aggregations.pendingOrders.map(
+                (order: Order) => order.customer_id
+            ),
         });
         setState(state => ({
             ...state,
-            pendingOrdersCustomers: customers.reduce((prev, customer) => {
-                prev[customer.id] = customer; // eslint-disable-line no-param-reassign
-                return prev;
-            }, {}),
+            pendingOrdersCustomers: customers.reduce(
+                (prev: CustomerData, customer: Customer) => {
+                    prev[customer.id] = customer; // eslint-disable-line no-param-reassign
+                    return prev;
+                },
+                {}
+            ),
         }));
     }, [dataProvider]);
 
@@ -80,18 +117,21 @@ const Dashboard = () => {
             sort: { field: 'date', order: 'DESC' },
             pagination: { page: 1, perPage: 100 },
         });
-        const nbPendingReviews = reviews.reduce(nb => ++nb, 0);
+        const nbPendingReviews = reviews.reduce((nb: number) => ++nb, 0);
         const pendingReviews = reviews.slice(0, Math.min(10, reviews.length));
         setState(state => ({ ...state, pendingReviews, nbPendingReviews }));
         const { data: customers } = await dataProvider.getMany('customers', {
-            ids: pendingReviews.map(review => review.customer_id),
+            ids: pendingReviews.map((review: Review) => review.customer_id),
         });
         setState(state => ({
             ...state,
-            pendingReviewsCustomers: customers.reduce((prev, customer) => {
-                prev[customer.id] = customer; // eslint-disable-line no-param-reassign
-                return prev;
-            }, {}),
+            pendingReviewsCustomers: customers.reduce(
+                (prev: CustomerData, customer: Customer) => {
+                    prev[customer.id] = customer; // eslint-disable-line no-param-reassign
+                    return prev;
+                },
+                {}
+            ),
         }));
     }, [dataProvider]);
 
@@ -111,7 +151,7 @@ const Dashboard = () => {
     } = state;
     return isXSmall ? (
         <div>
-            <div style={styles.flexColumn}>
+            <div style={styles.flexColumn as CSSProperties}>
                 <div style={{ marginBottom: '2em' }}>
                     <Welcome />
                 </div>
@@ -128,7 +168,7 @@ const Dashboard = () => {
             </div>
         </div>
     ) : isSmall ? (
-        <div style={styles.flexColumn}>
+        <div style={styles.flexColumn as CSSProperties}>
             <div style={styles.singleCol}>
                 <Welcome />
             </div>

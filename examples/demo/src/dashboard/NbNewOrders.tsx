@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Card from '@material-ui/core/Card';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { makeStyles } from '@material-ui/core/styles';
@@ -6,6 +6,10 @@ import Typography from '@material-ui/core/Typography';
 import { useTranslate } from 'react-admin';
 
 import CardIcon from './CardIcon';
+
+interface Props {
+    value?: number;
+}
 
 const useStyles = makeStyles({
     main: {
@@ -19,9 +23,10 @@ const useStyles = makeStyles({
         padding: 16,
         minHeight: 52,
     },
+    title: {},
 });
 
-const NbNewOrders = ({ value }) => {
+const NbNewOrders: FC<Props> = ({ value }) => {
     const translate = useTranslate();
     const classes = useStyles();
     return (

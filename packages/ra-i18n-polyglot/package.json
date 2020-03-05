@@ -1,6 +1,6 @@
 {
     "name": "ra-i18n-polyglot",
-    "version": "3.2.0",
+    "version": "3.2.4",
     "description": "Polyglot i18n provider for react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",
@@ -22,11 +22,11 @@
         "build": "yarn run build-cjs && yarn run build-esm",
         "build-cjs": "rimraf ./lib && tsc",
         "build-esm": "rimraf ./esm && tsc --outDir esm --module es2015",
-        "watch": "rimraf ./lib && tsc --watch"
+        "watch": "tsc --outDir esm --module es2015 --watch"
     },
     "dependencies": {
         "node-polyglot": "^2.2.2",
-        "ra-core": "^3.2.0"
+        "ra-core": "^3.2.4"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",

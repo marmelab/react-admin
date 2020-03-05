@@ -1,6 +1,6 @@
 {
     "name": "ra-input-rich-text",
-    "version": "3.2.0",
+    "version": "3.2.2",
     "description": "<RichTextInput> component for react-admin, useful for editing HTML code in admin GUIs.",
     "main": "lib/index.js",
     "module": "esm/index.js",
@@ -37,7 +37,7 @@
         "build": "yarn run build-cjs && yarn run build-esm",
         "build-cjs": "rimraf ./lib && tsc",
         "build-esm": "rimraf ./esm && tsc --outDir esm --module es2015",
-        "watch": "rimraf ./lib && tsc --watch"
+        "watch": "tsc --outDir esm --module es2015 --watch"
     },
     "peerDependencies": {
         "ra-core": "^3.0.0",

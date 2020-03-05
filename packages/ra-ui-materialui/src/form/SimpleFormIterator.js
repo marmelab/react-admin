@@ -115,7 +115,7 @@ const SimpleFormIterator = ({
 
     const addField = () => {
         ids.current.push(nextId.current++);
-        fields.push({});
+        fields.push(undefined);
     };
 
     const records = get(record, source);

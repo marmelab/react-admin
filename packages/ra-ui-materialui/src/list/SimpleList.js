@@ -14,13 +14,19 @@ import SimpleListLoading from './SimpleListLoading';
 
 const useStyles = makeStyles(
     {
+        tertiary: { float: 'right', opacity: 0.541176 },
+    },
+    { name: 'RaSimpleList' }
+);
+
+const useLinkOrNotStyles = makeStyles(
+    {
         link: {
             textDecoration: 'none',
             color: 'inherit',
         },
-        tertiary: { float: 'right', opacity: 0.541176 },
     },
-    { name: 'RaSimpleList' }
+    { name: 'RaLinkOrNot' }
 );
 
 const LinkOrNot = ({
@@ -30,7 +36,7 @@ const LinkOrNot = ({
     id,
     children,
 }) => {
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useLinkOrNotStyles({ classes: classesOverride });
     return linkType === 'edit' || linkType === true ? (
         <Link to={linkToRecord(basePath, id)} className={classes.link}>
             {children}

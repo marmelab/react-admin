@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom';
 import { useTranslate, useQueryWithStore } from 'react-admin';
 
 import CardIcon from './CardIcon';
+import { Customer } from '../types';
 
 const useStyles = makeStyles({
     main: {
@@ -62,7 +63,7 @@ const NewCustomers = () => {
 
     if (!loaded) return null;
 
-    const nb = visitors ? visitors.reduce(nb => ++nb, 0) : 0;
+    const nb = visitors ? visitors.reduce((nb: number) => ++nb, 0) : 0;
     return (
         <div className={classes.main}>
             <CardIcon Icon={CustomerIcon} bgColor="#4caf50" />
@@ -80,7 +81,7 @@ const NewCustomers = () => {
                 <Divider />
                 <List>
                     {visitors
-                        ? visitors.map(record => (
+                        ? visitors.map((record: Customer) => (
                               <ListItem
                                   button
                                   to={`/customers/${record.id}`}

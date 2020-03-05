@@ -36,6 +36,9 @@ module.exports = {
             'OptionTextElement',
             'RedirectionSideEffect',
             'RefreshSideEffect',
+            'AdminUIProps',
+            'AdminContextProps',
+            'AdminRouterProps',
         ]),
     ].concat(
         process.env.NODE_ENV === 'development'

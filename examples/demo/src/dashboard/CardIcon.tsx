@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { FC, ComponentType } from 'react';
 import Card from '@material-ui/core/Card';
 import { makeStyles } from '@material-ui/core/styles';
+import { SvgIconProps } from '@material-ui/core/SvgIcon';
+
+interface Props {
+    bgColor: string;
+    Icon: ComponentType<SvgIconProps>;
+}
 
 const useStyles = makeStyles({
     card: {
@@ -18,7 +24,7 @@ const useStyles = makeStyles({
     },
 });
 
-const CardIcon = ({ Icon, bgColor }) => {
+const CardIcon: FC<Props> = ({ Icon, bgColor }) => {
     const classes = useStyles();
     return (
         <Card className={classes.card} style={{ backgroundColor: bgColor }}>

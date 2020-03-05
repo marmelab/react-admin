@@ -1,5 +1,38 @@
 # Changelog
 
+## v3.2.4
+
+* Fix error when using `<SimpleListLoading>` directly ([4469](https://github.com/marmelab/react-admin/pull/4469)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<LoadingIndicator>` shows infinite loading after Unauthorized error ([4456](https://github.com/marmelab/react-admin/pull/4456)) ([Developerius](https://github.com/Developerius))
+* Fix `[object Object]` error in `<ArrayInput>` when using `defaultValue` or primitive value ([4394](https://github.com/marmelab/react-admin/pull/4394)) ([jdemangeon](https://github.com/jdemangeon))
+* [Doc] Fix broken images in advanced tutorials ([4467](https://github.com/marmelab/react-admin/pull/4467)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix links to JSONPlaceholder are http instead of https ([4457](https://github.com/marmelab/react-admin/pull/4457)) ([WiXSL](https://github.com/WiXSL))
+
+## v3.2.3
+
+* Fix wrong defaults for `<CoreAdminUI>` in development mode ([4432](https://github.com/marmelab/react-admin/pull/4432)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<SimpleFormIterator>` styles can't be overridden by theme ([4426](https://github.com/marmelab/react-admin/pull/4426)) ([WiXSL](https://github.com/WiXSL))
+* Fix typo in variable name in unit tests ([4427](https://github.com/marmelab/react-admin/pull/4427)) ([developerium](https://github.com/developerium))
+* Migrate Dashboard demo components to TypeScript ([4415](https://github.com/marmelab/react-admin/pull/4415)) ([developerium](https://github.com/developerium))
+* [Doc] Fix typo in Upgrade guide for custom apps ([4433](https://github.com/marmelab/react-admin/pull/4433)) ([nadeeraka](https://github.com/nadeeraka))
+
+## v3.2.2
+
+* Fix `<CloneButton>` does not work with `<TabbedForm>` ([4422](https://github.com/marmelab/react-admin/pull/4422)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Empty>` component shows incorrectly in dark theme. ([4419](https://github.com/marmelab/react-admin/pull/4419)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<List>` does not refresh after API error ([4179](https://github.com/marmelab/react-admin/pull/4179)) ([m4theushw](https://github.com/m4theushw))
+* Fix unable to submit a form using the keyboard ([4410](https://github.com/marmelab/react-admin/pull/4410)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Fix hot reload for demo example ([4252](https://github.com/marmelab/react-admin/pull/4252)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Fich rich text editor toobal colors ([4409](https://github.com/marmelab/react-admin/pull/4409)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* [Doc] Fix custom menu snippet in theming documentation ([4418](https://github.com/marmelab/react-admin/pull/4418)) ([fzaninotto](https://github.com/fzaninotto))
+
+
+## v3.2.1
+
+* Fix `<FilterForm>` layout broken by bottom margin on `Input` components ([4390](https://github.com/marmelab/react-admin/pull/4390)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<RichTextInput>` dark theme ([4384](https://github.com/marmelab/react-admin/pull/4384)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Fix `<Layout>` styles can't be overridden by theme ([4382](https://github.com/marmelab/react-admin/pull/4382)) ([leonidasv](https://github.com/leonidasv))
+
 ## v3.2.0
 
 * Add the `<Empty>` component, an invite to create the first record when the list is empty ([4113](https://github.com/marmelab/react-admin/pull/4113)) ([m4theushw](https://github.com/m4theushw))

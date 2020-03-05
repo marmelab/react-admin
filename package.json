@@ -3,6 +3,7 @@
     "name": "react-admin-lerna",
     "scripts": {
         "build": "lerna run build",
+        "watch": "lerna run --parallel watch",
         "build-demo": "cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=rest yarn -s build",
         "test-unit": "cross-env NODE_ENV=test cross-env BABEL_ENV=cjs NODE_ICU_DATA=node_modules/full-icu jest",
         "test-unit-ci": "cross-env NODE_ENV=test cross-env BABEL_ENV=cjs NODE_ICU_DATA=node_modules/full-icu jest --runInBand",
@@ -15,7 +16,9 @@
         "run-simple": "cd examples/simple && yarn -s start",
         "run-tutorial": "yarn run -s build && cd examples/tutorial && yarn -s start",
         "run-demo": "cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=rest yarn -s start",
-        "run-graphql-demo": "cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=graphql yarn -s start"
+        "run-graphql-demo": "cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=graphql yarn -s start",
+        "run-demo-watch": "concurrently \"yarn run watch\" \"yarn run run-demo\"",
+        "run-graphql-demo-watch": "concurrently \"yarn run watch\" \"yarn run run-graphql-demo\""
     },
     "jest": {
         "setupFilesAfterEnv": [
@@ -46,6 +49,7 @@
         "@typescript-eslint/parser": "^1.9.0",
         "babel-eslint": "^10.0.1",
         "cheerio": "~1.0.0-rc.2",
+        "concurrently": "^5.1.0",
         "cross-env": "^5.2.0",
         "eslint": "^5.16.0",
         "eslint-config-prettier": "^4.3.0",

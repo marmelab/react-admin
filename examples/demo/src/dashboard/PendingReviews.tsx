@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Card from '@material-ui/core/Card';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -15,6 +15,13 @@ import { useTranslate } from 'react-admin';
 import CardIcon from './CardIcon';
 
 import StarRatingField from '../reviews/StarRatingField';
+import { Customer, Review } from '../types';
+
+interface Props {
+    reviews?: Review[];
+    customers?: { [key: string]: Customer };
+    nb?: number;
+}
 
 const useStyles = makeStyles(theme => ({
     main: {
@@ -36,7 +43,7 @@ const useStyles = makeStyles(theme => ({
         minHeight: 48,
     },
     avatar: {
-        background: theme.palette.background.avatar,
+        background: theme.palette.background.paper,
     },
     listItemText: {
         overflowY: 'hidden',
@@ -52,7 +59,7 @@ const location = {
     query: { filter: JSON.stringify({ status: 'pending' }) },
 };
 
-const PendingReviews = ({ reviews = [], customers = {}, nb }) => {
+const PendingReviews: FC<Props> = ({ reviews = [], customers = {}, nb }) => {
     const classes = useStyles();
     const translate = useTranslate();
     return (
@@ -73,7 +80,7 @@ const PendingReviews = ({ reviews = [], customers = {}, nb }) => {
                 </Typography>
                 <Divider />
                 <List>
-                    {reviews.map(record => (
+                    {reviews.map((record: Review) => (
                         <ListItem
                             key={record.id}
                             button
@@ -95,7 +102,12 @@ const PendingReviews = ({ reviews = [], customers = {}, nb }) => {
                             </ListItemAvatar>
 
                             <ListItemText
-                                primary={<StarRatingField record={record} />}
+                                primary={
+                                    <StarRatingField
+                                        record={record}
+                                        size="small"
+                                    />
+                                }
                                 secondary={record.comment}
                                 className={classes.listItemText}
                                 style={{ paddingRight: 0 }}

@@ -64,7 +64,7 @@ export default (theme: Theme): StyleRules<string, any> => ({
                     fontWeight: 500,
                 },
                 '& a': {
-                    color: '#304ffe',
+                    color: theme.palette.primary.main,
                 },
                 '& ul': {
                     marginBottom: '1rem',
@@ -82,49 +82,64 @@ export default (theme: Theme): StyleRules<string, any> => ({
                 },
             },
             '& .standard .ql-editor': {
-                backgroundColor: 'white',
+                backgroundColor: theme.palette.background.paper,
             },
             '& .outlined .ql-editor': {
-                backgroundColor: 'white',
+                backgroundColor: theme.palette.background.paper,
             },
             '& .ql-toolbar.ql-snow': {
                 margin: '0.5rem 0',
                 border: 0,
                 padding: 0,
+
+                '& .ql-picker-item': {
+                    color: theme.palette.text.primary,
+                },
+                '& .ql-stroke': {
+                    stroke: theme.palette.text.primary,
+                },
+                '& .ql-fill': {
+                    fill: theme.palette.text.primary,
+                },
                 '& .ql-picker-item.ql-active': {
-                    color: '#304ffe',
+                    color: theme.palette.primary.main,
                 },
                 '& .ql-picker-item:hover': {
-                    color: '#304ffe',
+                    color: theme.palette.primary.main,
                 },
                 '& .ql-picker-item.ql-selected': {
-                    color: '#304ffe',
+                    color: theme.palette.primary.main,
                 },
                 '& .ql-picker-label.ql-active': {
-                    color: '#304ffe',
+                    color: theme.palette.primary.main,
                 },
                 '& .ql-picker-label.ql-selected': {
-                    color: '#304ffe',
+                    color: theme.palette.primary.main,
                 },
                 '& .ql-picker-label:hover': {
-                    color: '#304ffe',
+                    color: theme.palette.primary.main,
                 },
 
                 '& button:hover .ql-fill': {
-                    fill: '#304ffe',
+                    fill: theme.palette.primary.main,
                 },
                 '& button.ql-active .ql-fill': {
-                    fill: '#304ffe',
+                    fill: theme.palette.primary.main,
                 },
 
                 '& button:hover .ql-stroke': {
-                    stroke: '#304ffe',
+                    stroke: theme.palette.primary.main,
                 },
                 '& button.ql-active .ql-stroke': {
-                    stroke: '#304ffe',
+                    stroke: theme.palette.primary.main,
                 },
                 '& .ql-picker-label:hover .ql-stroke': {
-                    stroke: '#304ffe',
+                    stroke: theme.palette.primary.main,
+                },
+
+                '& .ql-picker.ql-expanded .ql-picker-options': {
+                    backgroundColor: theme.palette.background.paper,
+                    borderColor: theme.palette.background.paper,
                 },
 
                 '& .ql-snow .ql-picker.ql-expanded .ql-picker-options': {
@@ -134,6 +149,7 @@ export default (theme: Theme): StyleRules<string, any> => ({
 
                 '& .ql-picker-label': {
                     paddingLeft: 0,
+                    color: theme.palette.text.primary,
                 },
 
                 '& + .ql-container.ql-snow': {

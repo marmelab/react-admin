@@ -8,12 +8,12 @@ import ImageInput from './ImageInput';
 describe('<ImageInput />', () => {
     afterEach(cleanup);
 
-    const defautProps = {
+    const defaultProps = {
         source: 'image',
         resource: 'posts',
     };
 
-    const defautPropsMultiple = {
+    const defaultPropsMultiple = {
         source: 'images',
         resource: 'posts',
         multiple: true,
@@ -24,7 +24,7 @@ describe('<ImageInput />', () => {
             <Form
                 onSubmit={jest.fn()}
                 render={() => (
-                    <ImageInput {...defautProps}>
+                    <ImageInput {...defaultProps}>
                         <div />
                     </ImageInput>
                 )}
@@ -39,7 +39,7 @@ describe('<ImageInput />', () => {
             <Form
                 onSubmit={jest.fn()}
                 render={() => (
-                    <ImageInput {...defautProps} multiple>
+                    <ImageInput {...defaultProps} multiple>
                         <div />
                     </ImageInput>
                 )}
@@ -61,7 +61,7 @@ describe('<ImageInput />', () => {
                 onSubmit={onSubmit}
                 render={({ handleSubmit }) => (
                     <form onSubmit={handleSubmit}>
-                        <ImageInput {...defautProps}>
+                        <ImageInput {...defaultProps}>
                             <div />
                         </ImageInput>
                         <button type="submit" aria-label="Save" />
@@ -98,7 +98,7 @@ describe('<ImageInput />', () => {
                 onSubmit={onSubmit}
                 render={({ handleSubmit }) => (
                     <form onSubmit={handleSubmit}>
-                        <ImageInput {...defautPropsMultiple}>
+                        <ImageInput {...defaultPropsMultiple}>
                             <div />
                         </ImageInput>
                         <button type="submit" aria-label="Save" />
@@ -144,7 +144,7 @@ describe('<ImageInput />', () => {
                 onSubmit={onSubmit}
                 render={({ handleSubmit }) => (
                     <form onSubmit={handleSubmit}>
-                        <ImageInput {...defautProps}>
+                        <ImageInput {...defaultProps}>
                             <ImageField source="src" title="title" />
                         </ImageInput>
                         <button type="submit" aria-label="Save" />
@@ -182,7 +182,7 @@ describe('<ImageInput />', () => {
                 onSubmit={onSubmit}
                 render={({ handleSubmit }) => (
                     <form onSubmit={handleSubmit}>
-                        <ImageInput {...defautPropsMultiple}>
+                        <ImageInput {...defaultPropsMultiple}>
                             <ImageField source="src" title="title" />
                         </ImageInput>
                         <button type="submit" aria-label="Save" />
@@ -225,7 +225,7 @@ describe('<ImageInput />', () => {
                 onSubmit={onSubmit}
                 render={({ handleSubmit }) => (
                     <form onSubmit={handleSubmit}>
-                        <ImageInput {...defautPropsMultiple}>
+                        <ImageInput {...defaultPropsMultiple}>
                             <ImageField source="src" title="title" />
                         </ImageInput>
                         <button type="submit" aria-label="Save" />
@@ -256,7 +256,7 @@ describe('<ImageInput />', () => {
                     onSubmit={jest.fn()}
                     render={() => (
                         <ImageInput
-                            {...defautProps}
+                            {...defaultProps}
                             placeholder={expectedLabel}
                         >
                             <div />
@@ -287,7 +287,7 @@ describe('<ImageInput />', () => {
                     }}
                     onSubmit={jest.fn()}
                     render={() => (
-                        <ImageInput {...defautProps} source="image">
+                        <ImageInput {...defaultProps} source="image">
                             <ImageField source="url" title="title" />
                         </ImageInput>
                     )}
@@ -318,7 +318,7 @@ describe('<ImageInput />', () => {
                         ],
                     }}
                     render={() => (
-                        <ImageInput {...defautPropsMultiple}>
+                        <ImageInput {...defaultPropsMultiple}>
                             <ImageField source="url" title="title" />
                         </ImageInput>
                     )}
@@ -349,7 +349,7 @@ describe('<ImageInput />', () => {
                         },
                     }}
                     render={() => (
-                        <ImageInput {...defautProps} source="image">
+                        <ImageInput {...defaultProps} source="image">
                             <ImageField source="url" title="title" />
                         </ImageInput>
                     )}
@@ -372,7 +372,7 @@ describe('<ImageInput />', () => {
                         },
                     }}
                     render={() => (
-                        <ImageInput {...defautProps} source="image">
+                        <ImageInput {...defaultProps} source="image">
                             <ImageField source="url" title="title" />
                         </ImageInput>
                     )}
@@ -398,7 +398,7 @@ describe('<ImageInput />', () => {
                     onSubmit={onSubmit}
                     render={({ handleSubmit }) => (
                         <form onSubmit={handleSubmit}>
-                            <ImageInput {...defautPropsMultiple}>
+                            <ImageInput {...defaultPropsMultiple}>
                                 <ImageField source="url" />
                             </ImageInput>
                             <button type="submit" aria-label="Save" />
