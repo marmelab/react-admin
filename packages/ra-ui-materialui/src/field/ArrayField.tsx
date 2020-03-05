@@ -35,16 +35,20 @@ const initialState = {
  * //   id: 123
  * //   backlinks: [
  * //       {
+ * //           uuid: '34fdf393-f449-4b04-a423-38ad02ae159e',
  * //           date: '2012-08-10T00:00:00.000Z',
  * //           url: 'http://example.com/foo/bar.html',
  * //       },
  * //       {
+ * //           uuid: 'd907743a-253d-4ec1-8329-404d4c5e6cf1',
  * //           date: '2012-08-14T00:00:00.000Z',
  * //           url: 'https://blog.johndoe.com/2012/08/12/foobar.html',
  * //       }
  * //    ]
  * // }
- *     <ArrayField source="backlinks">
+ * // Optional prop fieldKey can be pass to ArrayField to use as Key
+ * // Which reduces time and memory to generate key
+ *     <ArrayField source="backlinks" fieldKey="uuid">
  *         <Datagrid>
  *             <DateField source="date" />
  *             <UrlField source="url" />
