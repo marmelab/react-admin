@@ -27,7 +27,7 @@ This tutorial explains how to have a create, show or edit view of a referenced r
 
 This tutorial shows how to use pure react to implement a custom component replacing react-admin default List.
 
-![Screencast](https://marmelab.com/storybook_App5-d9b4cf0e7faf3ed208c102f8b2334409.gif)
+![Screencast](https://marmelab.com/d9b4cf0e7faf3ed208c102f8b2334409/storybook_App5.gif)
 
 * [Article](https://marmelab.com/blog/2019/01/17/react-timeline.html)
 * [Repository](https://github.com/marmelab/timeline-react-admin)
@@ -36,7 +36,7 @@ This tutorial shows how to use pure react to implement a custom component replac
 
 This tutorial shows how to display Creation and Edition forms in a drawer or a dialog from the List page.
 
-![Screencast](https://marmelab.com/end-result-07b25da5494055c4306dd7e7a48fd010.gif)
+![Screencast](https://marmelab.com/07b25da5494055c4306dd7e7a48fd010/end-result.gif)
 
 * [Article](https://marmelab.com/blog/2019/02/07/react-admin-advanced-recipes-creating-and-editing-a-record-from-the-list-page.html)
 * [Codesandbox](https://codesandbox.io/s/lrm6kl00nl)
@@ -45,7 +45,7 @@ This tutorial shows how to display Creation and Edition forms in a drawer or a d
 
 This tutorial explains how to create a profile page based on an `<Edit>` component, and accessible as a standalone page.
 
-![Screencast](https://marmelab.com/end_result-668056e9d8273ff5ce75dfc641151a90.gif)
+![Screencast](https://marmelab.com/668056e9d8273ff5ce75dfc641151a90/end_result.gif)
 
 * [Article](https://marmelab.com/blog/2019/03/07/react-admin-advanced-recipes-user-profile.html)
 * [Codesandbox](https://codesandbox.io/s/o1jmj4lwv9)
@@ -54,7 +54,7 @@ This tutorial explains how to create a profile page based on an `<Edit>` compone
 
 This article shows how you can customize many parts of the framework without repeating yourself.
 
-![Screencast](https://marmelab.com/react-admin-edit-defaults-54d42faced9043f7933df212cbda0f1b.gif)
+![Screencast](https://marmelab.com/54d42faced9043f7933df212cbda0f1b/react-admin-edit-defaults.gif)
 
 * [Article](https://marmelab.com/blog/2019/03/27/supplying-your-own-defaults-to-react-admin.html)
 * [Codesandbox](https://codesandbox.io/s/qzxx4mjl59)

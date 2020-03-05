@@ -36,7 +36,7 @@ import jsonServerProvider from 'ra-data-json-server';
 import { PostCreate, PostEdit } from './posts';
 
 const App = () => (
-    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerProvider('https://jsonplaceholder.typicode.com')}>
         <Resource name="posts" create={PostCreate} edit={PostEdit} />
     </Admin>
 );
@@ -359,7 +359,7 @@ import { Admin, Resource, EditGuesser } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 
 const App = () => (
-    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerProvider('https://jsonplaceholder.typicode.com')}>
         <Resource name="posts" edit={EditGuesser} />
     </Admin>
 );

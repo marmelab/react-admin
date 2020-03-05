@@ -5,7 +5,7 @@ title: "The Resource Component"
 
 # The `<Resource>` component
 
-A `<Resource>` component maps one API endpoint to a CRUD interface. For instance, the following admin app offers a read-only interface to the resources exposed by the JSONPlaceholder API at  [`http://jsonplaceholder.typicode.com/posts`](http://jsonplaceholder.typicode.com/posts) and [`http://jsonplaceholder.typicode.com/users`](http://jsonplaceholder.typicode.com/users):
+A `<Resource>` component maps one API endpoint to a CRUD interface. For instance, the following admin app offers a read-only interface to the resources exposed by the JSONPlaceholder API at  [`https://jsonplaceholder.typicode.com/posts`](https://jsonplaceholder.typicode.com/posts) and [`https://jsonplaceholder.typicode.com/users`](https://jsonplaceholder.typicode.com/users):
 
 ```jsx
 // in src/App.js
@@ -17,7 +17,7 @@ import { PostList } from './posts';
 import { UserList } from './users';
 
 const App = () => (
-    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerProvider('https://jsonplaceholder.typicode.com')}>
         <Resource name="posts" list={PostList} />
         <Resource name="users" list={UserList} />
     </Admin>
@@ -43,7 +43,7 @@ import { UserList } from './posts';
 import { CommentList, CommentEdit, CommentCreate, CommentIcon } from './comments';
 
 const App = () => (
-    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerProvider('https://jsonplaceholder.typicode.com')}>
         <Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} icon={PostIcon} />
         <Resource name="users" list={UserList} />
         <Resource name="comments" list={CommentList} create={CommentCreate} edit={CommentEdit} icon={CommentIcon} />
@@ -75,7 +75,7 @@ React-admin uses the `name` prop both to determine the API endpoint (passed to t
 <Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} />
 ```
 
-For this resource react-admin will fetch the `http://jsonplaceholder.typicode.com/posts` endpoint for data.
+For this resource react-admin will fetch the `https://jsonplaceholder.typicode.com/posts` endpoint for data.
 
 The routing will map the component as follows:
 
@@ -84,7 +84,7 @@ The routing will map the component as follows:
 * `/posts/:id` maps to `PostEdit`
 * `/posts/:id/show` maps to `PostShow`
 
-**Tip**: If you want to use a special API endpoint (e.g. 'http://jsonplaceholder.typicode.com/my-custom-posts-endpoint') without altering the URL in the react-admin application (so still use `/posts`), write the mapping from the resource `name` (`posts`) to the API endpoint (`my-custom-posts-endpoint`) in your own [`dataProvider`](./Admin.md#dataprovider)
+**Tip**: If you want to use a special API endpoint (e.g. 'https://jsonplaceholder.typicode.com/my-custom-posts-endpoint') without altering the URL in the react-admin application (so still use `/posts`), write the mapping from the resource `name` (`posts`) to the API endpoint (`my-custom-posts-endpoint`) in your own [`dataProvider`](./Admin.md#dataprovider)
 
 ## `icon`
 
@@ -101,7 +101,7 @@ import jsonServerProvider from 'ra-data-json-server';
 import { PostList } from './posts';
 
 const App = () => (
-    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerProvider('https://jsonplaceholder.typicode.com')}>
         <Resource name="posts" list={PostList} icon={PostIcon} />
         <Resource name="users" list={UserList} icon={UserIcon} />
     </Admin>
