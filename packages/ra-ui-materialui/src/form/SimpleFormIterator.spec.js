@@ -2,7 +2,7 @@ import { cleanup, fireEvent, wait, getByText } from '@testing-library/react';
 import React from 'react';
 import { renderWithRedux } from 'ra-core';
 
-import { SimpleFormIterator } from './SimpleFormIterator';
+import SimpleFormIterator from './SimpleFormIterator';
 import TextInput from '../input/TextInput';
 import { ArrayInput } from '../input';
 import SimpleForm from './SimpleForm';
