@@ -100,6 +100,7 @@ const Datagrid = props => {
         optimized = false,
         body = optimized ? <PureDatagridBody /> : <DatagridBody />,
         children,
+        classes: classesOverride,
         className,
         currentSort,
         data,

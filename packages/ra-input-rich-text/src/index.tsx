@@ -50,6 +50,7 @@ const RichTextInput: FunctionComponent<Props> = props => {
         options = {}, // Quill editor options
         toolbar = true,
         fullWidth = true,
+        classes: classesOverride,
         configureQuill,
         helperText,
         label,
