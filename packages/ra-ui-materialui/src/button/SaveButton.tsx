@@ -38,13 +38,13 @@ const SaveButton: FC<SaveButtonProps> = ({
     const classes = useStyles({ classes: classesOverride });
     const notify = useNotify();
     const translate = useTranslate();
-    const formContext = useContext(FormContext);
+    const { setOnSave } = useContext(FormContext);
 
     const handleClick = event => {
         if (typeof onSave === 'function') {
-            formContext.setOnSave(onSave);
+            setOnSave(onSave);
         } else {
-            formContext.setOnSave();
+            setOnSave();
         }
         if (saving) {
             // prevent double submission

@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useMemo } from 'react';
 import { Form } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 
@@ -66,6 +66,8 @@ const FormWithRedirect = ({
             : (onSave.current = save);
     };
 
+    const formContextValue = useMemo(() => ({ setOnSave }), [setOnSave]);
+
     const finalInitialValues = getFormInitialValues(
         initialValues,
         defaultValue,
@@ -83,7 +85,7 @@ const FormWithRedirect = ({
     };
 
     return (
-        <FormContext.Provider value={{ setOnSave }}>
+        <FormContext.Provider value={formContextValue}>
             <Form
                 key={version} // support for refresh button
                 debug={debug}
