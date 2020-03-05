@@ -1,4 +1,10 @@
-import React, { cloneElement, FC, ReactElement, SyntheticEvent } from 'react';
+import React, {
+    useContext,
+    cloneElement,
+    FC,
+    ReactElement,
+    SyntheticEvent,
+} from 'react';
 import PropTypes from 'prop-types';
 import Button, { ButtonProps } from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -10,6 +16,7 @@ import {
     useNotify,
     RedirectionSideEffect,
     Record,
+    FormContext,
 } from 'ra-core';
 
 const SaveButton: FC<SaveButtonProps> = ({
@@ -25,13 +32,21 @@ const SaveButton: FC<SaveButtonProps> = ({
     icon = defaultIcon,
     onClick,
     handleSubmitWithRedirect,
+    onSave,
     ...rest
 }) => {
     const classes = useStyles({ classes: classesOverride });
     const notify = useNotify();
     const translate = useTranslate();
+    const { setOnSave } = useContext(FormContext);
 
     const handleClick = event => {
+        if (typeof onSave === 'function') {
+            setOnSave(onSave);
+        } else {
+            // we reset to the Form default save function
+            setOnSave();
+        }
         if (saving) {
             // prevent double submission
             event.preventDefault();
@@ -109,6 +124,7 @@ interface Props {
     classes?: object;
     className?: string;
     handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
+    onSave?: (values: object, redirect: RedirectionSideEffect) => void;
     icon?: ReactElement;
     invalid?: boolean;
     label?: string;
@@ -132,6 +148,7 @@ SaveButton.propTypes = {
     className: PropTypes.string,
     classes: PropTypes.object,
     handleSubmitWithRedirect: PropTypes.func,
+    onSave: PropTypes.func,
     invalid: PropTypes.bool,
     label: PropTypes.string,
     pristine: PropTypes.bool,

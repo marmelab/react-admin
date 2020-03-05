@@ -112,6 +112,7 @@ const Toolbar = ({
                                       button.props.handleSubmitWithRedirect,
                                       handleSubmitWithRedirect
                                   ),
+                                  onSave: button.props.onSave,
                                   invalid,
                                   pristine,
                                   record,
