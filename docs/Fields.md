@@ -94,10 +94,12 @@ Ideal for embedded arrays of objects, e.g. `tags` and `backlinks` in the followi
   ],
   backlinks: [
         {
+            uuid: '34fdf393-f449-4b04-a423-38ad02ae159e',
             date: '2012-08-10T00:00:00.000Z',
             url: 'http://example.com/foo/bar.html',
         },
         {
+            uuid: 'd907743a-253d-4ec1-8329-404d4c5e6cf1',
             date: '2012-08-14T00:00:00.000Z',
             url: 'https://blog.johndoe.com/2012/08/12/foobar.html',
         }
@@ -107,7 +109,7 @@ Ideal for embedded arrays of objects, e.g. `tags` and `backlinks` in the followi
 
 The child must be an iterator component (like `<Datagrid>` or `<SingleFieldList>`).
 
-Here is how to display all the backlinks of the current post as a `<Datagrid>`
+Here is how to display all the backlinks of the current post as a `<Datagrid>`:
 
 ```jsx
 <ArrayField source="backlinks">
@@ -125,6 +127,18 @@ And here is how to display all the tags of the current post as `<Chip>` componen
     <SingleFieldList>
         <ChipField source="name" />
     </SingleFieldList>
+</ArrayField>
+```
+
+**Tip**: If the array value contains a lot of items, you may experience slowdowns in the UI. In such cases, set the `fieldKey` prop to use one field as key, and reduce CPU and memory usage:
+
+```diff
+-<ArrayField source="backlinks">
++<ArrayField source="backlinks" fieldKey="uuid">
+    <Datagrid>
+        <DateField source="date" />
+        <UrlField source="url" />
+    </Datagrid>
 </ArrayField>
 ```
 
