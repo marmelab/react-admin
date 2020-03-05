@@ -16,7 +16,7 @@ import {
     useNotify,
     RedirectionSideEffect,
     Record,
-    OnSaveContext,
+    FormContext,
 } from 'ra-core';
 
 const SaveButton: FC<SaveButtonProps> = ({
@@ -38,13 +38,13 @@ const SaveButton: FC<SaveButtonProps> = ({
     const classes = useStyles({ classes: classesOverride });
     const notify = useNotify();
     const translate = useTranslate();
-    const setOnSave = useContext(OnSaveContext);
+    const formContext = useContext(FormContext);
 
     const handleClick = event => {
         if (typeof onSave === 'function') {
-            setOnSave(onSave);
+            formContext.setOnSave(onSave);
         } else {
-            setOnSave();
+            formContext.setOnSave();
         }
         if (saving) {
             // prevent double submission

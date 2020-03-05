@@ -1,6 +1,6 @@
 import addField from './addField';
 import FormDataConsumer from './FormDataConsumer';
-import OnSaveContext from './OnSaveContext';
+import FormContext from './FormContext';
 import FormField from './FormField';
 import FormWithRedirect from './FormWithRedirect';
 import useInput, { InputProps } from './useInput';
@@ -29,7 +29,7 @@ export {
     useInitializeFormWithRecord,
     useSuggestions,
     ValidationError,
-    OnSaveContext,
+    FormContext,
 };
 export { isRequired } from './FormField';
 export * from './validate';

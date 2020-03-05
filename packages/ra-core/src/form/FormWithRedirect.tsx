@@ -5,7 +5,7 @@ import arrayMutators from 'final-form-arrays';
 import useInitializeFormWithRecord from './useInitializeFormWithRecord';
 import sanitizeEmptyValues from './sanitizeEmptyValues';
 import getFormInitialValues from './getFormInitialValues';
-import OnSaveContext from './OnSaveContext';
+import FormContext from './FormContext';
 
 /**
  * Wrapper around react-final-form's Form to handle redirection on submit,
@@ -83,7 +83,7 @@ const FormWithRedirect = ({
     };
 
     return (
-        <OnSaveContext.Provider value={setOnSave}>
+        <FormContext.Provider value={{ setOnSave }}>
             <Form
                 key={version} // support for refresh button
                 debug={debug}
@@ -110,7 +110,7 @@ const FormWithRedirect = ({
                     />
                 )}
             </Form>
-        </OnSaveContext.Provider>
+        </FormContext.Provider>
     );
 };
 

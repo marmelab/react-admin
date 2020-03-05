@@ -432,3 +432,7 @@ export type Exporter = (
 export type SetOnSave = (
     onSave?: (values: object, redirect: any) => void
 ) => void;
+
+export type FormFunctions = {
+    setOnSave?: SetOnSave;
+};
