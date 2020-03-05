@@ -70,15 +70,13 @@ const useGetList = <RecordType = Record>(
     const { data: ids, total, error, loading, loaded } = useQueryWithStore(
         { type: 'getList', resource, payload: { pagination, sort, filter } },
         options,
-        // data selector (may return undefined)
+        // data selector (may return [])
         (state: ReduxState): Identifier[] =>
-            get(state.admin.resources, [
-                resource,
-                'list',
-                'cachedRequests',
-                requestSignature,
-                'ids',
-            ]),
+            get(
+                state.admin.resources,
+                [resource, 'list', 'cachedRequests', requestSignature, 'ids'],
+                []
+            ),
         // total selector (may return undefined)
         (state: ReduxState): number =>
             get(state.admin.resources, [

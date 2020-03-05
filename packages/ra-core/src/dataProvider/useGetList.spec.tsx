@@ -220,7 +220,7 @@ describe('useGetList', () => {
         });
         expect(hookValue.mock.calls[0][0]).toEqual({
             data: {},
-            ids: undefined,
+            ids: [],
             total: undefined,
             loading: true,
             loaded: false,

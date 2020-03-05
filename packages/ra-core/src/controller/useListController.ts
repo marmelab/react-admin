@@ -206,7 +206,7 @@ const useListController = <RecordType = Record>(
         filterValues: query.filterValues,
         hasCreate,
         hideFilter: queryModifiers.hideFilter,
-        ids: typeof ids === 'undefined' ? defaultIds : ids,
+        ids: typeof total === 'undefined' ? defaultIds : ids,
         loaded: loaded || defaultIds.length > 0,
         loading,
         onSelect: selectionModifiers.select,
