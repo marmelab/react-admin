@@ -123,8 +123,7 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admi
 </ArrayInput>
 ```
 
-**Note**: SimpleFormIterator only intend to work with `Inputs` children. (Because it rewrite the `source` prop to have the absolute source inside the `ArrayInput`, that is needed by `react-final-form`).
-If you want to use some `Fields` instead, you have to use `FormDataConsumer` to get the correct source.
+**Note**: `SimpleFormIterator` only accepts `Input` components as children. If you want to use some `Fields` instead, you have to use a `<FormDataConsumer>` to get the correct source, as follows:
 
 ```jsx
 import { ArrayInput, SimpleFormIterator, DateInput, TextInput, FormDataConsumer } from 'react-admin';
