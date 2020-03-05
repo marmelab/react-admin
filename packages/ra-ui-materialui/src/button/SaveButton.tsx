@@ -40,12 +40,7 @@ const SaveButton: FC<SaveButtonProps> = ({
     const translate = useTranslate();
     const setOnSave = useContext(OnSaveContext);
 
-    // We handle the click event through mousedown because of an issue when
-    // the button is not as the same place when mouseup occurs, preventing the click
-    // event to fire.
-    // It can happen when some errors appear under inputs, pushing the button
-    // towards the window bottom.
-    const handleMouseDown = event => {
+    const handleClick = event => {
         if (typeof onSave === 'function') {
             setOnSave(onSave);
         } else {
