@@ -1,5 +1,13 @@
 # Changelog
 
+## v3.2.4
+
+* Fix error when using `<SimpleListLoading>` directly ([4469](https://github.com/marmelab/react-admin/pull/4469)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<LoadingIndicator>` shows infinite loading after Unauthorized error ([4456](https://github.com/marmelab/react-admin/pull/4456)) ([Developerius](https://github.com/Developerius))
+* Fix `[object Object]` error in `<ArrayInput>` when using `defaultValue` or primitive value ([4394](https://github.com/marmelab/react-admin/pull/4394)) ([jdemangeon](https://github.com/jdemangeon))
+* [Doc] Fix broken images in advanced tutorials ([4467](https://github.com/marmelab/react-admin/pull/4467)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix links to JSONPlaceholder are http instead of https ([4457](https://github.com/marmelab/react-admin/pull/4457)) ([WiXSL](https://github.com/WiXSL))
+
 ## v3.2.3
 
 * Fix wrong defaults for `<CoreAdminUI>` in development mode ([4432](https://github.com/marmelab/react-admin/pull/4432)) ([fzaninotto](https://github.com/fzaninotto))
