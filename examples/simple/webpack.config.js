@@ -39,6 +39,13 @@ module.exports = {
             'AdminUIProps',
             'AdminContextProps',
             'AdminRouterProps',
+            'ReferenceArrayProps',
+            'ReferenceManyProps',
+            'LinkToType',
+            'FormContext',
+            'UseReferenceProps',
+            'SortProps',
+            'PaginationProps',
         ]),
     ].concat(
         process.env.NODE_ENV === 'development'
