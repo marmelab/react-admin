@@ -48,7 +48,6 @@ interface Props {
 const RichTextInput: FunctionComponent<Props> = props => {
     const {
         options = {}, // Quill editor options
-        record = {},
         toolbar = true,
         fullWidth = true,
         configureQuill,

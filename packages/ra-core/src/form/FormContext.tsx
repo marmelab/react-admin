@@ -1,4 +1,4 @@
-import React, { createContext } from 'react';
+import { createContext } from 'react';
 import { FormFunctions } from '../types';
 
 const defaultFormFunctions: FormFunctions = { setOnSave: () => {} };

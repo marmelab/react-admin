@@ -69,11 +69,14 @@ const FormWithRedirect = ({
      * if it has no custom onSave, and why this function forces a default to
      * save.
      */
-    const setOnSave = newOnSave => {
-        typeof newOnSave === 'function'
-            ? (onSave.current = newOnSave)
-            : (onSave.current = save);
-    };
+    const setOnSave = useCallback(
+        newOnSave => {
+            typeof newOnSave === 'function'
+                ? (onSave.current = newOnSave)
+                : (onSave.current = save);
+        },
+        [save]
+    );
 
     const formContextValue = useMemo(() => ({ setOnSave }), [setOnSave]);
 
