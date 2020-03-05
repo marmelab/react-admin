@@ -171,6 +171,7 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = ({
     classes: classesOverride,
     error,
     loaded,
+    loading,
     record,
     reference,
     referenceRecord,
