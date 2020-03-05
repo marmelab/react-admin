@@ -52,6 +52,7 @@ const AppBar = ({
     children,
     classes: classesOverride,
     className,
+    color = "secondary",
     logo,
     logout,
     open,
@@ -65,7 +66,7 @@ const AppBar = ({
 
     return (
         <HideOnScroll>
-            <MuiAppBar className={className} color="secondary" {...rest}>
+            <MuiAppBar className={className} color={color} {...rest}>
                 <Toolbar
                     disableGutters
                     variant={isXSmall ? 'regular' : 'dense'}
@@ -107,6 +108,7 @@ AppBar.propTypes = {
     children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
+    color: PropTypes.oneOf(['primary', 'secondary']),
     logout: PropTypes.element,
     open: PropTypes.bool,
     userMenu: PropTypes.element,
