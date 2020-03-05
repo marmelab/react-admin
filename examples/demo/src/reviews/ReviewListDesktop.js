@@ -28,13 +28,13 @@ const useListStyles = makeStyles({
     },
 });
 
-const ReviewListDesktop = props => {
+const ReviewListDesktop = ({ selectedRow, ...props }) => {
     const classes = useListStyles();
     const theme = useTheme();
     return (
         <Datagrid
             rowClick="edit"
-            rowStyle={rowStyle(props.selectedRow, theme)}
+            rowStyle={rowStyle(selectedRow, theme)}
             classes={{
                 headerRow: classes.headerRow,
                 headerCell: classes.headerCell,
