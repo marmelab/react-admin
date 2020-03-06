@@ -49,6 +49,8 @@ const FilterFormInput = ({
                 variant,
                 margin,
                 helperText: false,
+                // ignore defaultValue in Field because it was already set in Form (via mergedInitialValuesWithDefaultValues)
+                defaultValue: undefined,
             })}
             <div className={classes.spacer}>&nbsp;</div>
         </div>
