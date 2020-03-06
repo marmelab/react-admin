@@ -870,7 +870,7 @@ export const PostEdit = (props) => (
 Here are the props received by the `Toolbar` component when passed as the `toolbar` prop of the `SimpleForm` or `TabbedForm` components:
 
 * `handleSubmitWithRedirect`: The function to call in order to submit the form. It accepts a single parameter overriding the form's default redirect.
-* `handleSubmit` which is the same prop as in [`react-final-form`](https://github.com/final-form/react-final-form#handlesubmit-syntheticeventhtmlformelement--promiseobject)
+* `handleSubmit` which is the same prop as in [`react-final-form`](https://final-form.org/docs/react-final-form/types/FormRenderProps#handlesubmit)
 * `invalid`: A boolean indicating whether the form is invalid
 * `pristine`: A boolean indicating whether the form is pristine (eg: no inputs have been changed yet)
 * `redirect`: The default form's redirect
