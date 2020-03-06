@@ -47,7 +47,35 @@ const useStyles = makeStyles(
     }),
     { name: 'RaAppBar' }
 );
-
+/**
+ * The AppBar component renders a custom MuiAppBar.
+ *
+ * @param {Function} children Must be a function which will be called with the mutate callback
+ * @param {Object} classes CSS class names
+ * @param {string} className CSS class applied to the MuiAppBar component
+ * @param {string} color The color of the AppBar
+ * @param {Object} logo //
+ * @param {Object} logout The logout button component
+ * @param {boolean} State of the <Admin> Sidebar
+ * @param {string} title The title of the AppBar
+ * @param {Function} userMenu A custom userMenu for the AppBar
+ *
+ * @example
+ *
+ * const MyAppBar = props => {
+ *   const classes = useStyles();
+ *   return (
+ *       <AppBar {...props}>
+ *           <Typography
+ *               variant="h6"
+ *               color="inherit"
+ *               className={classes.title}
+ *               id="react-admin-title"
+ *           />
+ *        </AppBar>
+ *    );
+ *};
+ */
 const AppBar = ({
     children,
     classes: classesOverride,
