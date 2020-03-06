@@ -22,10 +22,10 @@ import FormContext from './FormContext';
  *    />
  * );
  *
- * @typedef {object} Props the props you can use (other props are injected by Create or Edit)
- * @prop {object} initialValues
- * @prop {function} validate
- * @prop {function} save
+ * @typedef {Object} Props the props you can use (other props are injected by Create or Edit)
+ * @prop {Object} initialValues
+ * @prop {Function} validate
+ * @prop {Function} save
  * @prop {boolean} submitOnEnter
  * @prop {string} redirect
  *
