@@ -26,7 +26,7 @@ interface AllNavigatorLanguage extends NavigatorLanguage {
  *         </Admin>
  *     );
  *
- * @param {String} defaultLocale Defaults to 'en'
+ * @param {string} defaultLocale Defaults to 'en'
  */
 export const resolveBrowserLocale = (defaultLocale = DEFAULT_LOCALE) => {
     // from http://blog.ksol.fr/user-locale-detection-browser-javascript/
