@@ -55,10 +55,10 @@ const useStyles = makeStyles(
  * @param {string} className CSS class applied to the MuiAppBar component
  * @param {string} color The color of the AppBar
  * @param {Object} logo //
- * @param {Object} logout The logout button component
- * @param {boolean} State of the <Admin> Sidebar
+ * @param {Object} logout The logout button component that will be pass to the UserMenu component
+ * @param {boolean} open State of the <Admin/> Sidebar
  * @param {string} title The title of the AppBar
- * @param {Function} userMenu A custom userMenu for the AppBar
+ * @param {Function} userMenu A custom UserMenu component for the AppBar. UserMenu component by default
  *
  * @example
  *
