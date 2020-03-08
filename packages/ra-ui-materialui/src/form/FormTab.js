@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import MuiTab from '@material-ui/core/Tab';
 import classnames from 'classnames';
-import { translate } from 'ra-core';
+import { useTranslate } from 'ra-core';
 
 import FormInput from './FormInput';
 
@@ -18,32 +18,39 @@ const sanitizeRestProps = ({
 
 const hiddenStyle = { display: 'none' };
 
-class FormTab extends Component {
-    renderHeader = ({ className, label, icon, value, translate, ...rest }) => {
-        const to = { pathname: value, state: { skipFormReset: true } };
+const FormTab = ({
+    basePath,
+    className,
+    contentClassName,
+    children,
+    hidden,
+    icon,
+    intent,
+    label,
+    margin,
+    record,
+    resource,
+    variant,
+    value,
+    ...rest
+}) => {
+    const translate = useTranslate();
+    const location = useLocation();
 
-        return (
-            <MuiTab
-                key={label}
-                label={translate(label, { _: label })}
-                value={value}
-                icon={icon}
-                className={classnames('form-tab', className)}
-                component={Link}
-                to={to}
-                {...sanitizeRestProps(rest)}
-            />
-        );
-    };
+    const renderHeader = () => (
+        <MuiTab
+            key={label}
+            label={translate(label, { _: label })}
+            value={value}
+            icon={icon}
+            className={classnames('form-tab', className)}
+            component={Link}
+            to={{ ...location, pathname: value }}
+            {...sanitizeRestProps(rest)}
+        />
+    );
 
-    renderContent = ({
-        contentClassName,
-        children,
-        hidden,
-        basePath,
-        record,
-        resource,
-    }) => (
+    const renderContent = () => (
         <span style={hidden ? hiddenStyle : null} className={contentClassName}>
             {React.Children.map(
                 children,
@@ -54,33 +61,29 @@ class FormTab extends Component {
                             input={input}
                             record={record}
                             resource={resource}
+                            variant={input.props.variant || variant}
+                            margin={input.props.margin || margin}
                         />
                     )
             )}
         </span>
     );
 
-    render() {
-        const { children, context, ...rest } = this.props;
-        return context === 'header'
-            ? this.renderHeader(rest)
-            : this.renderContent({ children, ...rest });
-    }
-}
+    return intent === 'header' ? renderHeader() : renderContent();
+};
 
 FormTab.propTypes = {
     className: PropTypes.string,
     contentClassName: PropTypes.string,
     children: PropTypes.node,
-    context: PropTypes.oneOf(['header', 'content']),
+    intent: PropTypes.oneOf(['header', 'content']),
     hidden: PropTypes.bool,
     icon: PropTypes.element,
     label: PropTypes.string.isRequired,
     path: PropTypes.string,
-    translate: PropTypes.func.isRequired,
     value: PropTypes.string,
 };
 
 FormTab.displayName = 'FormTab';
 
-export default translate(FormTab);
+export default FormTab;

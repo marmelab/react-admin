@@ -1,32 +1,28 @@
-import React, { Component } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { reduxForm } from 'redux-form';
+import { Form, FormSpy } from 'react-final-form';
+import arrayMutators from 'final-form-arrays';
 import classnames from 'classnames';
-import { withStyles, createStyles } from '@material-ui/core/styles';
-import compose from 'recompose/compose';
-import withProps from 'recompose/withProps';
+import { makeStyles } from '@material-ui/core/styles';
 import lodashSet from 'lodash/set';
 import lodashGet from 'lodash/get';
 
 import FilterFormInput from './FilterFormInput';
 
-const styles = theme =>
-    createStyles({
+const useStyles = makeStyles(
+    theme => ({
         form: {
-            marginTop: '-10px',
+            marginTop: -theme.spacing(2),
             paddingTop: 0,
             display: 'flex',
             alignItems: 'flex-end',
             flexWrap: 'wrap',
-        },
-        body: { display: 'flex', alignItems: 'flex-end' },
-        spacer: { width: '1em' },
-        icon: {
-            color: theme.palette.primary1Color || '#00bcd4',
-            paddingBottom: 0,
+            minHeight: theme.spacing(10),
         },
         clearFix: { clear: 'right' },
-    });
+    }),
+    { name: 'RaFilterForm' }
+);
 
 const sanitizeRestProps = ({
     anyTouched,
@@ -41,15 +37,24 @@ const sanitizeRestProps = ({
     clearSubmitErrors,
     destroy,
     dirty,
+    dirtyFields,
+    dirtyFieldsSinceLastSubmit,
+    dirtySinceLastSubmit,
     dispatch,
     displayedFilters,
+    errors,
+    filters,
     filterValues,
+    form,
     handleSubmit,
+    hasSubmitErrors,
+    hasValidationErrors,
     hideFilter,
     initialize,
     initialized,
     initialValues,
     invalid,
+    modified,
     pristine,
     pure,
     reset,
@@ -58,70 +63,91 @@ const sanitizeRestProps = ({
     setFilter,
     setFilters,
     submit,
+    submitAsSideEffect,
+    submitError,
+    submitErrors,
     submitFailed,
     submitSucceeded,
     submitting,
     touch,
+    touched,
     triggerSubmit,
     untouch,
     valid,
     validate,
+    validating,
+    values,
+    visited,
+    __versions,
     ...props
 }) => props;
 
-export class FilterForm extends Component {
-    componentDidMount() {
-        this.props.filters.forEach(filter => {
+export const FilterForm = ({
+    classes = {},
+    className,
+    resource,
+    margin,
+    variant,
+    filters,
+    displayedFilters = {},
+    hideFilter,
+    initialValues,
+    ...rest
+}) => {
+    useEffect(() => {
+        filters.forEach(filter => {
             if (filter.props.alwaysOn && filter.props.defaultValue) {
                 throw new Error(
                     'Cannot use alwaysOn and defaultValue on a filter input. Please set the filterDefaultValues props on the <List> element instead.'
                 );
             }
         });
-    }
+    }, [filters]);
 
-    getShownFilters() {
-        const { filters, displayedFilters, initialValues } = this.props;
-
-        return filters.filter(
+    const getShownFilters = () =>
+        filters.filter(
             filterElement =>
                 filterElement.props.alwaysOn ||
                 displayedFilters[filterElement.props.source] ||
                 typeof lodashGet(initialValues, filterElement.props.source) !==
                     'undefined'
         );
-    }
 
-    handleHide = event =>
-        this.props.hideFilter(event.currentTarget.dataset.key);
+    const handleHide = useCallback(
+        event => hideFilter(event.currentTarget.dataset.key),
+        [hideFilter]
+    );
 
-    render() {
-        const { classes = {}, className, resource, ...rest } = this.props;
+    return (
+        <form
+            className={classnames(className, classes.form)}
+            {...sanitizeRestProps(rest)}
+            onSubmit={handleSubmit}
+        >
+            {getShownFilters().map(filterElement => (
+                <FilterFormInput
+                    key={filterElement.props.source}
+                    filterElement={filterElement}
+                    handleHide={handleHide}
+                    resource={resource}
+                    margin={margin}
+                    variant={variant}
+                />
+            ))}
+            <div className={classes.clearFix} />
+        </form>
+    );
+};
 
-        return (
-            <div
-                className={classnames(className, classes.form)}
-                {...sanitizeRestProps(rest)}
-            >
-                {this.getShownFilters().map(filterElement => (
-                    <FilterFormInput
-                        key={filterElement.props.source}
-                        filterElement={filterElement}
-                        handleHide={this.handleHide}
-                        classes={classes}
-                        resource={resource}
-                    />
-                ))}
-                <div className={classes.clearFix} />
-            </div>
-        );
-    }
-}
+const handleSubmit = event => {
+    event.preventDefault();
+    return false;
+};
 
 FilterForm.propTypes = {
     resource: PropTypes.string.isRequired,
     filters: PropTypes.arrayOf(PropTypes.node).isRequired,
-    displayedFilters: PropTypes.object.isRequired,
+    displayedFilters: PropTypes.object,
     hideFilter: PropTypes.func.isRequired,
     initialValues: PropTypes.object,
     classes: PropTypes.object,
@@ -132,36 +158,58 @@ export const mergeInitialValuesWithDefaultValues = ({
     initialValues,
     filters,
 }) => ({
-    initialValues: {
-        ...filters
-            .filter(
-                filterElement =>
-                    filterElement.props.alwaysOn &&
+    ...filters
+        .filter(
+            filterElement =>
+                filterElement.props.alwaysOn && filterElement.props.defaultValue
+        )
+        .reduce(
+            (acc, filterElement) =>
+                lodashSet(
+                    { ...acc },
+                    filterElement.props.source,
                     filterElement.props.defaultValue
-            )
-            .reduce(
-                (acc, filterElement) =>
-                    lodashSet(
-                        { ...acc },
-                        filterElement.props.source,
-                        filterElement.props.defaultValue
-                    ),
-                {}
-            ),
-        ...initialValues,
-    },
+                ),
+            {}
+        ),
+    ...initialValues,
 });
 
-const enhance = compose(
-    withStyles(styles),
-    withProps(mergeInitialValuesWithDefaultValues),
-    reduxForm({
-        form: 'filterForm',
-        enableReinitialize: true,
-        destroyOnUnmount: false, // do not destroy to preserve state across navigation
-        onChange: (values, dispatch, props) =>
-            props && props.setFilters(values),
-    })
-);
+const EnhancedFilterForm = ({ classes: classesOverride, ...props }) => {
+    const classes = useStyles({ classes: classesOverride });
 
-export default enhance(FilterForm);
+    const mergedInitialValuesWithDefaultValues = mergeInitialValuesWithDefaultValues(
+        props
+    );
+
+    const { initialValues, ...rest } = props;
+
+    return (
+        <Form
+            onSubmit={handleFinalFormSubmit}
+            initialValues={mergedInitialValuesWithDefaultValues}
+            mutators={{ ...arrayMutators }}
+            render={formProps => (
+                <>
+                    <FormSpy
+                        subscription={FormSpySubscription}
+                        onChange={({ pristine, values }) => {
+                            if (pristine) {
+                                return;
+                            }
+                            props && props.setFilters(values);
+                        }}
+                    />
+                    <FilterForm classes={classes} {...formProps} {...rest} />
+                </>
+            )}
+        />
+    );
+};
+
+const handleFinalFormSubmit = () => {};
+
+// Options to instruct the FormSpy that it should only listen to the values and pristine changes
+const FormSpySubscription = { values: true, pristine: true };
+
+export default EnhancedFilterForm;

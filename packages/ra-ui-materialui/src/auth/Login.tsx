@@ -1,22 +1,24 @@
 import React, {
-    Component,
-    ReactElement,
-    ComponentType,
     HtmlHTMLAttributes,
+    ReactNode,
+    useRef,
+    useEffect,
+    useMemo,
 } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import Card from '@material-ui/core/Card';
-import Avatar from '@material-ui/core/Avatar';
 import {
-    MuiThemeProvider,
+    Card,
+    Avatar,
     createMuiTheme,
-    withStyles,
-    createStyles,
-    WithStyles,
+    makeStyles,
     Theme,
-} from '@material-ui/core/styles';
+} from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/styles';
 import LockIcon from '@material-ui/icons/Lock';
+import { StaticContext } from 'react-router';
+import { useHistory } from 'react-router-dom';
+import { useCheckAuth } from 'ra-core';
 
 import defaultTheme from '../defaultTheme';
 import Notification from '../layout/Notification';
@@ -24,13 +26,15 @@ import DefaultLoginForm from './LoginForm';
 
 interface Props {
     backgroundImage?: string;
-    loginForm: ReactElement<any>;
+    children: ReactNode;
+    classes?: object;
+    className?: string;
+    staticContext?: StaticContext;
     theme: object;
-    staticContext?: object;
 }
 
-const styles = (theme: Theme) =>
-    createStyles({
+const useStyles = makeStyles(
+    (theme: Theme) => ({
         main: {
             display: 'flex',
             flexDirection: 'column',
@@ -40,6 +44,8 @@ const styles = (theme: Theme) =>
             justifyContent: 'flex-start',
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
+            backgroundImage:
+                'radial-gradient(circle at 50% 14em, #313264 0%, #00023b 60%, #00023b 100%)',
         },
         card: {
             minWidth: 300,
@@ -53,14 +59,16 @@ const styles = (theme: Theme) =>
         icon: {
             backgroundColor: theme.palette.secondary[500],
         },
-    });
+    }),
+    { name: 'RaLogin' }
+);
 
 /**
  * A standalone login page, to serve as authentication gate to the admin
  *
  * Expects the user to enter a login and a password, which will be checked
- * by the `authProvider` using the AUTH_LOGIN verb. Redirects to the root page
- * (/) upon success, otherwise displays an authentication error message.
+ * by the `authProvider.login()` method. Redirects to the root page (/)
+ * upon success, otherwise displays an authentication error message.
  *
  * Copy and adapt this component to implement your own login logic
  * (e.g. to authenticate via email or facebook or anything else).
@@ -73,86 +81,89 @@ const styles = (theme: Theme) =>
  *        </Admin>
  *     );
  */
-class Login extends Component<
-    Props & WithStyles<typeof styles> & HtmlHTMLAttributes<HTMLDivElement>
-> {
-    theme = createMuiTheme(this.props.theme);
-    containerRef = React.createRef<HTMLDivElement>();
-    backgroundImageLoaded = false;
+const Login: React.FunctionComponent<
+    Props & HtmlHTMLAttributes<HTMLDivElement>
+> = ({
+    theme,
+    classes: classesOverride,
+    className,
+    children,
+    staticContext,
+    backgroundImage,
+    ...rest
+}) => {
+    const containerRef = useRef<HTMLDivElement>();
+    const classes = useStyles({ classes: classesOverride });
+    const muiTheme = useMemo(() => createMuiTheme(theme), [theme]);
+    let backgroundImageLoaded = false;
+    const checkAuth = useCheckAuth();
+    const history = useHistory();
+    useEffect(() => {
+        checkAuth({}, false)
+            .then(() => {
+                // already authenticated, redirect to the home page
+                history.push('/');
+            })
+            .catch(() => {
+                // not authenticated, stay on the login page
+            });
+    }, [checkAuth, history]);
 
-    updateBackgroundImage = () => {
-        if (!this.backgroundImageLoaded && this.containerRef.current) {
-            const { backgroundImage } = this.props;
-            this.containerRef.current.style.backgroundImage = `url(${backgroundImage})`;
-            this.backgroundImageLoaded = true;
+    const updateBackgroundImage = () => {
+        if (!backgroundImageLoaded && containerRef.current) {
+            containerRef.current.style.backgroundImage = `url(${backgroundImage})`;
+            backgroundImageLoaded = true;
         }
     };
 
     // Load background image asynchronously to speed up time to interactive
-    lazyLoadBackgroundImage() {
-        const { backgroundImage } = this.props;
-
+    const lazyLoadBackgroundImage = () => {
         if (backgroundImage) {
             const img = new Image();
-            img.onload = this.updateBackgroundImage;
+            img.onload = updateBackgroundImage;
             img.src = backgroundImage;
         }
-    }
+    };
 
-    componentDidMount() {
-        this.lazyLoadBackgroundImage();
-    }
-
-    componentDidUpdate() {
-        if (!this.backgroundImageLoaded) {
-            this.lazyLoadBackgroundImage();
+    useEffect(() => {
+        if (!backgroundImageLoaded) {
+            lazyLoadBackgroundImage();
         }
-    }
+    });
 
-    render() {
-        const {
-            backgroundImage,
-            classes,
-            className,
-            loginForm,
-            staticContext,
-            ...rest
-        } = this.props;
+    return (
+        <ThemeProvider theme={muiTheme}>
+            <div
+                className={classnames(classes.main, className)}
+                {...rest}
+                ref={containerRef}
+            >
+                <Card className={classes.card}>
+                    <div className={classes.avatar}>
+                        <Avatar className={classes.icon}>
+                            <LockIcon />
+                        </Avatar>
+                    </div>
+                    {children}
+                </Card>
+                <Notification />
+            </div>
+        </ThemeProvider>
+    );
+};
 
-        return (
-            <MuiThemeProvider theme={this.theme}>
-                <div
-                    className={classnames(classes.main, className)}
-                    {...rest}
-                    ref={this.containerRef}
-                >
-                    <Card className={classes.card}>
-                        <div className={classes.avatar}>
-                            <Avatar className={classes.icon}>
-                                <LockIcon />
-                            </Avatar>
-                        </div>
-                        {loginForm}
-                    </Card>
-                    <Notification />
-                </div>
-            </MuiThemeProvider>
-        );
-    }
-}
-
-const EnhancedLogin = withStyles(styles)(Login) as ComponentType<Props>;
-
-EnhancedLogin.propTypes = {
+Login.propTypes = {
     backgroundImage: PropTypes.string,
-    loginForm: PropTypes.element,
+    children: PropTypes.node,
+    classes: PropTypes.object,
+    className: PropTypes.string,
     theme: PropTypes.object,
     staticContext: PropTypes.object,
 };
 
-EnhancedLogin.defaultProps = {
-    backgroundImage: 'https://source.unsplash.com/random/1600x900/daily',
+Login.defaultProps = {
     theme: defaultTheme,
-    loginForm: <DefaultLoginForm />,
+    children: <DefaultLoginForm />,
 };
-export default EnhancedLogin;
+
+export default Login;

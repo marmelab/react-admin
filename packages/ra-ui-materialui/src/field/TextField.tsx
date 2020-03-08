@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { FunctionComponent } from 'react';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
@@ -6,21 +6,32 @@ import Typography, { TypographyProps } from '@material-ui/core/Typography';
 import sanitizeRestProps from './sanitizeRestProps';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
-const TextField: SFC<FieldProps & InjectedFieldProps & TypographyProps> = ({
-    className,
-    source,
-    record = {},
-    ...rest
-}) => {
+const TextField: FunctionComponent<
+    FieldProps & InjectedFieldProps & TypographyProps
+> = ({ className, source, record = {}, emptyText, ...rest }) => {
     const value = get(record, source);
+
+    if (value == null && emptyText) {
+        return (
+            <Typography
+                component="span"
+                variant="body2"
+                className={className}
+                {...sanitizeRestProps(rest)}
+            >
+                {emptyText}
+            </Typography>
+        );
+    }
+
     return (
         <Typography
             component="span"
-            variant="body1"
+            variant="body2"
             className={className}
             {...sanitizeRestProps(rest)}
         >
-            {value && typeof value !== 'string' ? JSON.stringify(value) : value}
+            {typeof value !== 'string' ? JSON.stringify(value) : value}
         </Typography>
     );
 };
@@ -35,6 +46,7 @@ EnhancedTextField.defaultProps = {
 };
 
 EnhancedTextField.propTypes = {
+    // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
 };

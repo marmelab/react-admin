@@ -3,13 +3,13 @@ import {
     CRUD_GET_MANY_REFERENCE_SUCCESS,
     CrudGetManyReferenceSuccessAction,
     CrudDeleteSuccessAction,
-} from '../../../actions/dataActions';
+} from '../../../actions';
 import { Identifier, ReduxState } from '../../../types';
-import { DELETE, DELETE_MANY } from '../../../dataFetchActions';
+import { DELETE, DELETE_MANY } from '../../../core';
 
 const initialState = {};
 
-interface State {
+export interface OneToManyState {
     [relatedTo: string]: { ids: Identifier[]; total: number };
 }
 
@@ -18,7 +18,7 @@ type ActionTypes =
     | CrudDeleteSuccessAction
     | { type: 'OTHER_ACTION'; payload: any; meta?: any };
 
-const oneToManyReducer: Reducer<State> = (
+const oneToManyReducer: Reducer<OneToManyState> = (
     previousState = initialState,
     action: ActionTypes
 ) => {
@@ -138,11 +138,13 @@ export const getReferencesByIds = (
     return Object.keys(references).length > 0 ? references : null;
 };
 
-const getRelatedReferences = (previousState: State, resource: string) =>
-    Object.keys(previousState).filter(key => key.includes(resource));
+const getRelatedReferences = (
+    previousState: OneToManyState,
+    resource: string
+) => Object.keys(previousState).filter(key => key.includes(resource));
 
 const removeDeletedReferences = (removedIds: Identifier[]) => (
-    previousState: State,
+    previousState: OneToManyState,
     key: string
 ) => {
     const idsToKeep = previousState[key].ids.filter(

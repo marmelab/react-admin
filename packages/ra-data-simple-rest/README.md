@@ -14,17 +14,19 @@ npm install --save ra-data-simple-rest
 
 This Data Provider fits REST APIs using simple GET parameters for filters and sorting. This is the dialect used for instance in [FakeRest](https://github.com/marmelab/FakeRest).
 
-| REST verb            | API calls
-|----------------------|----------------------------------------------------------------
-| `GET_LIST`           | `GET http://my.api.url/posts?sort=['title','ASC']&range=[0, 24]&filter={title:'bar'}`
-| `GET_ONE`            | `GET http://my.api.url/posts/123`
-| `CREATE`             | `POST http://my.api.url/posts`
-| `UPDATE`             | `PUT http://my.api.url/posts/123`
-| `DELETE`             | `DELETE http://my.api.url/posts/123`
-| `GET_MANY`           | `GET http://my.api.url/posts?filter={ids:[123,456,789]}`
-| `GET_MANY_REFERENCE` | `GET http://my.api.url/posts?filter={author_id:345}`
+| Method             | API calls
+|--------------------|----------------------------------------------------------------
+| `getList`          | `GET http://my.api.url/posts?sort=['title','ASC']&range=[0, 24]&filter={title:'bar'}`
+| `getOne`           | `GET http://my.api.url/posts/123`
+| `getMany`          | `GET http://my.api.url/posts?filter={id:[123,456,789]}`
+| `getManyReference` | `GET http://my.api.url/posts?filter={author_id:345}`
+| `create`           | `POST http://my.api.url/posts/123`
+| `update`           | `PUT http://my.api.url/posts/123`
+| `updateMany`       | Multiple calls to `PUT http://my.api.url/posts/123`
+| `delete`           | `DELETE http://my.api.url/posts/123`
+| `deteleMany`       | Multiple calls to `DELETE http://my.api.url/posts/123`
 
-**Note**: The simple REST data provider expects the API to include a `Content-Range` header in the response to `GET_LIST` calls. The value must be the total number of resources in the collection. This allows react-admin to know how many pages of resources there are in total, and build the pagination controls.
+**Note**: The simple REST data provider expects the API to include a `Content-Range` header in the response to `getList` calls. The value must be the total number of resources in the collection. This allows react-admin to know how many pages of resources there are in total, and build the pagination controls.
 
 ```
 Content-Range: posts 0-24/319
@@ -72,7 +74,7 @@ const httpClient = (url, options = {}) => {
     // add your own headers here
     options.headers.set('X-Custom-Header', 'foobar');
     return fetchUtils.fetchJson(url, options);
-}
+};
 const dataProvider = simpleRestProvider('http://localhost:3000', httpClient);
 
 render(
@@ -87,24 +89,17 @@ Now all the requests to the REST API will contain the `X-Custom-Header: foobar` 
 
 **Tip**: The most common usage of custom headers is for authentication. `fetchJson` has built-on support for the `Authorization` token header:
 
-```jsx
+```js
 const httpClient = (url, options = {}) => {
     options.user = {
         authenticated: true,
         token: 'SRTRDFVESGNJYTUKTYTHRG'
-    }
+    };
     return fetchUtils.fetchJson(url, options);
-}
+};
 ```
 
 Now all the requests to the REST API will contain the `Authorization: SRTRDFVESGNJYTUKTYTHRG` header.
-
-**Note**: In case of REST verb "CREATE" consider that the response body is the same as the request body but with the object ID injected .
-```
-case CREATE:
-return { data: { ...params.data, id: json.id } };
-```
-This is because of backwards compatibility compliance.
 
 ## License
 

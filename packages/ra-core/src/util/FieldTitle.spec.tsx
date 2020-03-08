@@ -1,88 +1,87 @@
-import assert from 'assert';
-import { shallow } from 'enzyme';
+import expect from 'expect';
+import { render, cleanup } from '@testing-library/react';
 import React from 'react';
 
 import { FieldTitle } from './FieldTitle';
+import TestTranslationProvider from '../i18n/TestTranslationProvider';
+import renderWithRedux from './renderWithRedux';
 
 describe('FieldTitle', () => {
-    const translateMock = dictionary => (term, options) =>
-        dictionary[term] || options._ || '';
-    it('should return empty span by default', () =>
-        assert.equal(shallow(<FieldTitle />).html(), '<span></span>'));
-    it('should use the label when given', () =>
-        assert.equal(
-            shallow(<FieldTitle label="foo" />).html(),
-            '<span>foo</span>'
-        ));
-    it('should the label as translate key when translation is available', () =>
-        assert.equal(
-            shallow(
-                <FieldTitle
-                    label="foo"
-                    translate={translateMock({ foo: 'bar' })}
-                />
-            ).html(),
-            '<span>bar</span>'
-        ));
+    afterEach(cleanup);
+
+    it('should return empty span by default', () => {
+        const { container } = render(<FieldTitle />);
+        expect(container.firstChild).toBeInstanceOf(HTMLSpanElement);
+        expect(container.firstChild.textContent).toEqual('');
+    });
+
+    it('should use the label when given', () => {
+        const { container } = render(<FieldTitle label="foo" />);
+        expect(container.firstChild.textContent).toEqual('foo');
+    });
+
+    it('should use the label as translate key when translation is available', () => {
+        const { container } = renderWithRedux(
+            <TestTranslationProvider messages={{ foo: 'bar' }}>
+                <FieldTitle label="foo" />
+            </TestTranslationProvider>
+        );
+        expect(container.firstChild.textContent).toEqual('bar');
+    });
 
     it('should use the humanized source when given', () => {
-        assert.equal(
-            shallow(
-                <FieldTitle
-                    resource="posts"
-                    source="title"
-                    translate={translateMock({})}
-                />
-            ).html(),
-            '<span>Title</span>'
+        const { container } = renderWithRedux(
+            <TestTranslationProvider translate={(key, options) => options._}>
+                <FieldTitle resource="posts" source="title" />
+            </TestTranslationProvider>
         );
+        expect(container.firstChild.textContent).toEqual('Title');
+    });
 
-        assert.equal(
-            shallow(
-                <FieldTitle
-                    resource="posts"
-                    source="title_with_underscore"
-                    translate={translateMock({})}
-                />
-            ).html(),
-            '<span>Title with underscore</span>'
+    it('should use the humanized source when given with underscores', () => {
+        const { container } = renderWithRedux(
+            <TestTranslationProvider translate={(key, options) => options._}>
+                <FieldTitle resource="posts" source="title_with_underscore" />
+            </TestTranslationProvider>
         );
-
-        assert.equal(
-            shallow(
-                <FieldTitle
-                    resource="posts"
-                    source="titleWithCamelCase"
-                    translate={translateMock({})}
-                />
-            ).html(),
-            '<span>Title with camel case</span>'
+        expect(container.firstChild.textContent).toEqual(
+            'Title with underscore'
         );
     });
 
-    it('should use the source and resource as translate key when translation is available', () =>
-        assert.equal(
-            shallow(
-                <FieldTitle
-                    resource="posts"
-                    source="title"
-                    translate={translateMock({
-                        'resources.posts.fields.title': 'titre',
-                    })}
-                />
-            ).html(),
-            '<span>titre</span>'
-        ));
-    it('should use label rather than source', () =>
-        assert.equal(
-            shallow(
-                <FieldTitle label="foo" resource="posts" source="title" />
-            ).html(),
-            '<span>foo</span>'
-        ));
-    it('should add a trailing asterisk if the field is required', () =>
-        assert.equal(
-            shallow(<FieldTitle label="foo" isRequired />).html(),
-            '<span>foo *</span>'
-        ));
+    it('should use the humanized source when given with camelCase', () => {
+        const { container } = renderWithRedux(
+            <TestTranslationProvider translate={(key, options) => options._}>
+                <FieldTitle resource="posts" source="titleWithCamelCase" />
+            </TestTranslationProvider>
+        );
+        expect(container.firstChild.textContent).toEqual(
+            'Title with camel case'
+        );
+    });
+
+    it('should use the source and resource as translate key when translation is available', () => {
+        const { container } = renderWithRedux(
+            <TestTranslationProvider
+                messages={{
+                    'resources.posts.fields.title': 'titre',
+                }}
+            >
+                <FieldTitle resource="posts" source="title" />
+            </TestTranslationProvider>
+        );
+        expect(container.firstChild.textContent).toEqual('titre');
+    });
+
+    it('should use label rather than source', () => {
+        const { container } = render(
+            <FieldTitle label="foo" resource="posts" source="title" />
+        );
+        expect(container.firstChild.textContent).toEqual('foo');
+    });
+
+    it('should add a trailing asterisk if the field is required', () => {
+        const { container } = render(<FieldTitle label="foo" isRequired />);
+        expect(container.firstChild.textContent).toEqual('foo *');
+    });
 });

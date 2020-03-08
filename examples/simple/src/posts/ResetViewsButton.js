@@ -1,35 +1,62 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import { startUndoable, crudUpdateMany, Button } from 'react-admin';
+import {
+    useUpdateMany,
+    useRefresh,
+    useNotify,
+    useUnselectAll,
+    Button,
+    CRUD_UPDATE_MANY,
+} from 'react-admin';
 
-class ResetViewsAction extends Component {
-    handleClick = () => {
-        const { basePath, startUndoable, resource, selectedIds } = this.props;
-        startUndoable(
-            crudUpdateMany(resource, selectedIds, { views: 0 }, basePath)
-        );
-    };
+const ResetViewsButton = ({ resource, selectedIds }) => {
+    const notify = useNotify();
+    const unselectAll = useUnselectAll();
+    const refresh = useRefresh();
+    const [updateMany, { loading }] = useUpdateMany(
+        resource,
+        selectedIds,
+        { views: 0 },
+        {
+            action: CRUD_UPDATE_MANY,
+            onSuccess: () => {
+                notify(
+                    'ra.notification.updated',
+                    'info',
+                    { smart_count: selectedIds.length },
+                    true
+                );
+                unselectAll(resource);
+                refresh();
+            },
+            onFailure: error =>
+                notify(
+                    typeof error === 'string'
+                        ? error
+                        : error.message || 'ra.notification.http_error',
+                    'warning'
+                ),
+            undoable: true,
+        }
+    );
 
-    render() {
-        return (
-            <Button label="simple.action.resetViews" onClick={this.handleClick}>
-                <VisibilityOff />
-            </Button>
-        );
-    }
-}
+    return (
+        <Button
+            label="simple.action.resetViews"
+            disabled={loading}
+            onClick={updateMany}
+        >
+            <VisibilityOff />
+        </Button>
+    );
+};
 
-ResetViewsAction.propTypes = {
+ResetViewsButton.propTypes = {
     basePath: PropTypes.string,
     label: PropTypes.string,
     resource: PropTypes.string.isRequired,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
-    startUndoable: PropTypes.func.isRequired,
 };
 
-export default connect(
-    undefined,
-    { startUndoable }
-)(ResetViewsAction);
+export default ResetViewsButton;

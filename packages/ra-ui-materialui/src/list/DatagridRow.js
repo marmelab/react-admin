@@ -1,202 +1,206 @@
-import React, { Component, Fragment, isValidElement } from 'react';
+import React, {
+    Fragment,
+    isValidElement,
+    cloneElement,
+    createElement,
+    useState,
+    useEffect,
+    useCallback,
+    memo,
+} from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import Checkbox from '@material-ui/core/Checkbox';
+import classnames from 'classnames';
+import { TableCell, TableRow, Checkbox } from '@material-ui/core';
 import { linkToRecord } from 'ra-core';
+import isEqual from 'lodash/isEqual';
 
 import DatagridCell from './DatagridCell';
 import ExpandRowButton from './ExpandRowButton';
+import { useHistory } from 'react-router-dom';
 
-const sanitizeRestProps = ({
+const computeNbColumns = (expand, children, hasBulkActions) =>
+    expand
+        ? 1 + // show expand button
+          (hasBulkActions ? 1 : 0) + // checkbox column
+          React.Children.toArray(children).filter(child => !!child).length // non-null children
+        : 0; // we don't need to compute columns if there is no expand panel;
+
+const defaultClasses = {};
+
+const DatagridRow = ({
     basePath,
     children,
-    classes,
+    classes = defaultClasses,
     className,
-    rowClick,
+    expand,
+    hasBulkActions,
+    hover,
     id,
-    isLoading,
     onToggleItem,
-    push,
     record,
     resource,
+    rowClick,
     selected,
     style,
-    styles,
+    selectable,
     ...rest
-}) => rest;
-
-class DatagridRow extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            expanded: false,
-            colSpan: this.computeColSpan(props),
-        };
-    }
-
-    componentDidUpdate = (prevProps, prevState) => {
-        const colSpan = this.computeColSpan(this.props);
-        if (colSpan !== prevState.colSpan) {
-            this.setState({ colSpan });
+}) => {
+    const [expanded, setExpanded] = useState(false);
+    const [nbColumns, setNbColumns] = useState(
+        computeNbColumns(expand, children, hasBulkActions)
+    );
+    useEffect(() => {
+        // Fields can be hidden dynamically based on permissions;
+        // The expand panel must span over the remaining columns
+        // So we must recompute the number of columns to span on
+        const newNbColumns = computeNbColumns(expand, children, hasBulkActions);
+        if (newNbColumns !== nbColumns) {
+            setNbColumns(newNbColumns);
         }
-    };
+    }, [expand, nbColumns, children, hasBulkActions]);
 
-    handleToggleExpanded = event => {
-        this.setState(state => ({ expanded: !state.expanded }));
-        event.stopPropagation();
-    };
+    const history = useHistory();
 
-    handleToggle = event => {
-        this.props.onToggleItem(this.props.id);
-        event.stopPropagation();
-    };
+    const handleToggleExpand = useCallback(
+        event => {
+            setExpanded(!expanded);
+            event.stopPropagation();
+        },
+        [expanded]
+    );
+    const handleToggleSelection = useCallback(
+        event => {
+            onToggleItem(id);
+            event.stopPropagation();
+        },
+        [id, onToggleItem]
+    );
+    const handleClick = useCallback(
+        async event => {
+            if (!rowClick) return;
+            event.persist();
 
-    handleClick = async event => {
-        const { basePath, rowClick, id, record } = this.props;
-
-        if (!rowClick) return;
-
-        if (typeof rowClick === 'function') {
-            const path = await rowClick(id, basePath, record);
-            this.handleRedirection(path, event);
-            return;
-        }
-
-        this.handleRedirection(rowClick, event);
-    };
-
-    handleRedirection = (path, event) => {
-        const { basePath, id, push } = this.props;
-
-        if (path === 'edit') {
-            push(linkToRecord(basePath, id));
-            return;
-        }
-        if (path === 'show') {
-            push(linkToRecord(basePath, id, 'show'));
-            return;
-        }
-        if (path === 'expand') {
-            this.handleToggleExpanded(event);
-            return;
-        }
-        if (!path) return;
-
-        push(path);
-    };
-
-    computeColSpan = props => {
-        const { children, hasBulkActions } = props;
-        return (
-            1 + // show expand button
-            (hasBulkActions ? 1 : 0) + // checkbox column
-            React.Children.toArray(children).filter(child => !!child).length // non-null children
-        );
-    };
-
-    render() {
-        const {
+            const effect =
+                typeof rowClick === 'function'
+                    ? await rowClick(id, basePath, record)
+                    : rowClick;
+            switch (effect) {
+                case 'edit':
+                    history.push(linkToRecord(basePath, id));
+                    return;
+                case 'show':
+                    history.push(linkToRecord(basePath, id, 'show'));
+                    return;
+                case 'expand':
+                    handleToggleExpand(event);
+                    return;
+                case 'toggleSelection':
+                    handleToggleSelection(event);
+                    return;
+                default:
+                    if (effect) history.push(effect);
+                    return;
+            }
+        },
+        [
             basePath,
-            children,
-            classes,
-            className,
-            expand,
-            hasBulkActions,
-            hover,
+            history,
+            handleToggleExpand,
+            handleToggleSelection,
             id,
             record,
-            resource,
-            selected,
-            style,
-            styles,
-            ...rest
-        } = this.props;
-        const { expanded, colSpan } = this.state;
-        return (
-            <Fragment>
-                <TableRow
-                    className={className}
-                    key={id}
-                    style={style}
-                    hover={hover}
-                    onClick={this.handleClick}
-                    {...sanitizeRestProps(rest)}
-                >
-                    {expand && (
-                        <TableCell
-                            padding="none"
-                            className={classes.expandIconCell}
-                        >
-                            <ExpandRowButton
-                                classes={classes}
-                                expanded={expanded}
-                                expandContentId={`${id}-expand`}
-                                onClick={this.handleToggleExpanded}
-                            />
-                        </TableCell>
-                    )}
-                    {hasBulkActions && (
-                        <TableCell padding="none">
+            rowClick,
+        ]
+    );
+
+    return (
+        <Fragment>
+            <TableRow
+                className={className}
+                key={id}
+                style={style}
+                hover={hover}
+                onClick={handleClick}
+                {...rest}
+            >
+                {expand && (
+                    <TableCell
+                        padding="none"
+                        className={classes.expandIconCell}
+                    >
+                        <ExpandRowButton
+                            classes={classes}
+                            expanded={expanded}
+                            onClick={handleToggleExpand}
+                            expandContentId={`${id}-expand`}
+                        />
+                    </TableCell>
+                )}
+                {hasBulkActions && (
+                    <TableCell padding="checkbox">
+                        {selectable && (
                             <Checkbox
                                 color="primary"
                                 className={`select-item ${classes.checkbox}`}
                                 checked={selected}
-                                onClick={this.handleToggle}
+                                onClick={handleToggleSelection}
                             />
-                        </TableCell>
-                    )}
-                    {React.Children.map(children, (field, index) =>
-                        isValidElement(field) ? (
-                            <DatagridCell
-                                key={`${id}-${field.props.source || index}`}
-                                className={classNames(
-                                    `column-${field.props.source}`,
-                                    classes.rowCell
-                                )}
-                                record={record}
-                                {...{ field, basePath, resource }}
-                            />
-                        ) : null
-                    )}
-                </TableRow>
-                {expand && expanded && (
-                    <TableRow key={`${id}-expand`} id={`${id}-expand`}>
-                        <TableCell colSpan={colSpan}>
-                            {React.cloneElement(expand, {
-                                record,
-                                basePath,
-                                resource,
-                                id: String(id),
-                            })}
-                        </TableCell>
-                    </TableRow>
+                        )}
+                    </TableCell>
                 )}
-            </Fragment>
-        );
-    }
-}
+                {React.Children.map(children, (field, index) =>
+                    isValidElement(field) ? (
+                        <DatagridCell
+                            key={`${id}-${field.props.source || index}`}
+                            className={classnames(
+                                `column-${field.props.source}`,
+                                classes.rowCell
+                            )}
+                            record={record}
+                            {...{ field, basePath, resource }}
+                        />
+                    ) : null
+                )}
+            </TableRow>
+            {expand && expanded && (
+                <TableRow key={`${id}-expand`} id={`${id}-expand`}>
+                    <TableCell colSpan={nbColumns}>
+                        {isValidElement(expand)
+                            ? cloneElement(expand, {
+                                  record,
+                                  basePath,
+                                  resource,
+                                  id: String(id),
+                              })
+                            : createElement(expand, {
+                                  record,
+                                  basePath,
+                                  resource,
+                                  id: String(id),
+                              })}
+                    </TableCell>
+                </TableRow>
+            )}
+        </Fragment>
+    );
+};
 
 DatagridRow.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
-    expand: PropTypes.node,
+    expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     hasBulkActions: PropTypes.bool.isRequired,
     hover: PropTypes.bool,
     id: PropTypes.any,
     onToggleItem: PropTypes.func,
-    push: PropTypes.func,
     record: PropTypes.object.isRequired,
     resource: PropTypes.string,
     rowClick: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     selected: PropTypes.bool,
     style: PropTypes.object,
-    styles: PropTypes.object,
+    selectable: PropTypes.bool,
 };
 
 DatagridRow.defaultProps = {
@@ -204,12 +208,17 @@ DatagridRow.defaultProps = {
     hover: true,
     record: {},
     selected: false,
+    selectable: true,
 };
 
-// wat? TypeScript looses the displayName if we don't set it explicitly
-DatagridRow.displayName = 'DatagridRow';
+const areEqual = (prevProps, nextProps) => {
+    const { children: _, ...prevPropsWithoutChildren } = prevProps;
+    const { children: __, ...nextPropsWithoutChildren } = nextProps;
+    return isEqual(prevPropsWithoutChildren, nextPropsWithoutChildren);
+};
 
-export default connect(
-    null,
-    { push }
-)(DatagridRow);
+export const PureDatagridRow = memo(DatagridRow, areEqual);
+
+PureDatagridRow.displayName = 'PureDatagridRow';
+
+export default DatagridRow;

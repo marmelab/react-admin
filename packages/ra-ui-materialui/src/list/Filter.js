@@ -1,20 +1,24 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { sanitizeListRestProps } from 'ra-core';
 
 import FilterForm from './FilterForm';
 import FilterButton from './FilterButton';
 
-const styles = {
-    button: {},
-    form: {},
-};
+const useStyles = makeStyles(
+    {
+        button: {},
+        form: {},
+    },
+    { name: 'RaFilter' }
+);
 
-export class Filter extends Component {
-    renderButton() {
+const Filter = props => {
+    const classes = useStyles({ classes: props.classes });
+    const renderButton = () => {
         const {
-            classes = {},
+            classes: classesOverride,
             context,
             resource,
             children,
@@ -22,8 +26,9 @@ export class Filter extends Component {
             hideFilter,
             displayedFilters,
             filterValues,
+            variant,
             ...rest
-        } = this.props;
+        } = props;
 
         return (
             <FilterButton
@@ -36,11 +41,11 @@ export class Filter extends Component {
                 {...sanitizeListRestProps(rest)}
             />
         );
-    }
+    };
 
-    renderForm() {
+    const renderForm = () => {
         const {
-            classes = {},
+            classes: classesOverride,
             context,
             resource,
             children,
@@ -50,7 +55,7 @@ export class Filter extends Component {
             filterValues,
             setFilters,
             ...rest
-        } = this.props;
+        } = props;
 
         return (
             <FilterForm
@@ -64,14 +69,10 @@ export class Filter extends Component {
                 {...sanitizeListRestProps(rest)}
             />
         );
-    }
+    };
 
-    render() {
-        return this.props.context === 'button'
-            ? this.renderButton()
-            : this.renderForm();
-    }
-}
+    return props.context === 'button' ? renderButton() : renderForm();
+};
 
 Filter.propTypes = {
     children: PropTypes.node,
@@ -85,4 +86,4 @@ Filter.propTypes = {
     resource: PropTypes.string.isRequired,
 };
 
-export default withStyles(styles)(Filter);
+export default Filter;

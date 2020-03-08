@@ -1,34 +1,58 @@
-import React, { SFC, ComponentType } from 'react';
+import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import classnames from 'classnames';
 
 import sanitizeRestProps from './sanitizeRestProps';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
-const styles = createStyles({
-    list: {
-        display: 'flex',
-        listStyleType: 'none',
+const useStyles = makeStyles(
+    {
+        list: {
+            display: 'flex',
+            listStyleType: 'none',
+        },
+        image: {
+            margin: '0.5rem',
+            maxHeight: '10rem',
+        },
     },
-    image: {
-        margin: '0.5rem',
-        maxHeight: '10rem',
-    },
-});
+    { name: 'RaImageField' }
+);
 
 interface Props extends FieldProps {
     src?: string;
     title?: string;
+    classes?: object;
 }
 
-export const ImageField: SFC<
-    Props & InjectedFieldProps & WithStyles<typeof styles>
-> = ({ className, classes, record, source, src, title, ...rest }) => {
+const ImageField: FunctionComponent<Props & InjectedFieldProps> = ({
+    className,
+    classes: classesOverride,
+    emptyText,
+    record,
+    source,
+    src,
+    title,
+    ...rest
+}) => {
     const sourceValue = get(record, source);
+    const classes = useStyles({ classes: classesOverride });
     if (!sourceValue) {
-        return <div className={className} {...sanitizeRestProps(rest)} />;
+        return emptyText ? (
+            <Typography
+                component="span"
+                variant="body2"
+                className={className}
+                {...sanitizeRestProps(rest)}
+            >
+                {emptyText}
+            </Typography>
+        ) : (
+            <div className={className} {...sanitizeRestProps(rest)} />
+        );
     }
 
     if (Array.isArray(sourceValue)) {
@@ -73,20 +97,14 @@ export const ImageField: SFC<
 // wat? TypeScript looses the displayName if we don't set it explicitly
 ImageField.displayName = 'ImageField';
 
-const EnhancedImageField = withStyles(styles)(ImageField) as ComponentType<
-    Props
->;
-
-EnhancedImageField.defaultProps = {
+ImageField.defaultProps = {
     addLabel: true,
 };
 
-EnhancedImageField.propTypes = {
+ImageField.propTypes = {
     ...fieldPropTypes,
     src: PropTypes.string,
     title: PropTypes.string,
 };
 
-EnhancedImageField.displayName = 'EnhancedImageField';
-
-export default EnhancedImageField;
+export default ImageField;

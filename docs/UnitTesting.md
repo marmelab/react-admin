@@ -54,7 +54,7 @@ At this point, your component should `mount` without errors and you can unit tes
 
 ## Enabling reducers to ensure actions are dispatched
 
-If you component relies on a reducer, e.g. redux-form submission, you can enable reducers using the `enableReducers` prop:
+If your component relies on a a reducer, you can enable reducers using the `enableReducers` prop:
 
 ```jsx
 myCustomEditView = mount(
@@ -64,12 +64,11 @@ myCustomEditView = mount(
 );
 ```
 
-This means that reducers will work as they will within the app.  For example, you can now submit a form and redux-form will cause a re-render of your component.
-
+This means that reducers will work as they will within the app.
 
 ## Spying on the store 'dispatch'
 
-If you are using `mapDispatch` within connected components, it is likely you will want to test that actions have been dispatched with the correct arguments.  You can return the `store` being used within the tests using a `renderProp`.
+If you are using `useDispatch` within your components, it is likely you will want to test that actions have been dispatched with the correct arguments.  You can return the `store` being used within the tests using a `renderProp`.
 
 ```jsx
 let dispatchSpy;
@@ -87,7 +86,6 @@ it('should send the user to another url', () => {
     expect(dispatchSpy).toHaveBeenCalledWith(`/next-url`);
 });
 ```
-
 
 ## Testing Permissions
 

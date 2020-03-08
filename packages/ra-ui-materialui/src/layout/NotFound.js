@@ -1,17 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import HotTub from '@material-ui/icons/HotTub';
 import History from '@material-ui/icons/History';
-import compose from 'recompose/compose';
 import classnames from 'classnames';
 
-import { translate } from 'ra-core';
+import { useAuthenticated, useTranslate } from 'ra-core';
 import Title from './Title';
 
-const styles = theme =>
-    createStyles({
+const useStyles = makeStyles(
+    theme => ({
         container: {
             display: 'flex',
             flexDirection: 'column',
@@ -38,38 +37,51 @@ const styles = theme =>
             textAlign: 'center',
             marginTop: '2em',
         },
-    });
+    }),
+    { name: 'RaNotFound' }
+);
 
 function goBack() {
     window.history.go(-1);
 }
 
-const NotFound = ({ classes, className, translate, title, ...rest }) => (
-    <div className={classnames(classes.container, className)} {...rest}>
-        <Title defaultTitle={title} />
-        <div className={classes.message}>
-            <HotTub className={classes.icon} />
-            <h1>{translate('ra.page.not_found')}</h1>
-            <div>{translate('ra.message.not_found')}.</div>
+const NotFound = ({ className, classes: classesOverride, title, ...rest }) => {
+    const classes = useStyles({ classes: classesOverride });
+    const translate = useTranslate();
+    useAuthenticated();
+    return (
+        <div
+            className={classnames(classes.container, className)}
+            {...sanitizeRestProps(rest)}
+        >
+            <Title defaultTitle={title} />
+            <div className={classes.message}>
+                <HotTub className={classes.icon} />
+                <h1>{translate('ra.page.not_found')}</h1>
+                <div>{translate('ra.message.not_found')}.</div>
+            </div>
+            <div className={classes.toolbar}>
+                <Button variant="contained" icon={<History />} onClick={goBack}>
+                    {translate('ra.action.back')}
+                </Button>
+            </div>
         </div>
-        <div className={classes.toolbar}>
-            <Button variant="raised" icon={<History />} onClick={goBack}>
-                {translate('ra.action.back')}
-            </Button>
-        </div>
-    </div>
-);
-
-NotFound.propTypes = {
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    title: PropTypes.string,
-    translate: PropTypes.func.isRequired,
+    );
 };
 
-const enhance = compose(
-    withStyles(styles),
-    translate
-);
+const sanitizeRestProps = ({
+    staticContext,
+    history,
+    location,
+    match,
+    ...rest
+}) => rest;
 
-export default enhance(NotFound);
+NotFound.propTypes = {
+    className: PropTypes.string,
+    classes: PropTypes.object,
+    title: PropTypes.string,
+    location: PropTypes.object,
+};
+
+export default NotFound;

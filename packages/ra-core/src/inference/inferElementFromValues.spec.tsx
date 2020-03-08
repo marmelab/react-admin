@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { FunctionComponent } from 'react';
 import inferElementFromValues from './inferElementFromValues';
 import InferredElement from './InferredElement';
 
@@ -7,9 +7,9 @@ interface Props {
     reference?: string;
 }
 describe('inferElementFromValues', () => {
-    const Good: SFC<Props> = () => <span />;
-    const Bad: SFC<Props> = () => <span />;
-    const Dummy: SFC<{ [key: string]: any }> = () => <span />;
+    const Good: FunctionComponent<Props> = () => <span />;
+    const Bad: FunctionComponent<Props> = () => <span />;
+    const Dummy: FunctionComponent<{ [key: string]: any }> = () => <span />;
 
     it('should return an InferredElement', () => {
         const types = {

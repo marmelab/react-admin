@@ -1,13 +1,10 @@
-import React, { ComponentType, Component, ComponentClass } from 'react';
-import { default as wrapDisplayName } from 'recompose/wrapDisplayName';
+import React, { ComponentType } from 'react';
 import { default as warning } from '../util/warning';
-import {
-    TranslationContextProps,
-    TranslationContext,
-} from './TranslationContext';
+import useTranslate from './useTranslate';
+import useLocale from './useLocale';
 
 /**
- * Higher-Order Component for getting access to the `translate` function in props.
+ * Higher-Order Component for getting access to the `locale` and the `translate` function in props.
  *
  * Requires that the app is decorated by the <TranslationProvider> to inject
  * the translation dictionaries and function in the context.
@@ -24,9 +21,7 @@ import {
  *
  * @param {*} BaseComponent The component to decorate
  */
-const withTranslate = <OriginalProps extends TranslationContextProps>(
-    BaseComponent: ComponentType<OriginalProps>
-): ComponentClass<OriginalProps> => {
+const withTranslate = (BaseComponent: ComponentType): ComponentType => {
     warning(
         typeof BaseComponent === 'string',
         `The translate function is a Higher Order Component, and should not be called directly with a translation key. Use the translate function passed as prop to your component props instead:
@@ -36,30 +31,16 @@ const MyHelloButton = ({ translate }) => (
 );`
     );
 
-    const {
-        translate: translateToDiscard,
-        ...defaultProps
-    } = (BaseComponent.defaultProps || {}) as any;
+    const TranslatedComponent = props => {
+        const translate = useTranslate();
+        const locale = useLocale();
 
-    class TranslatedComponent extends Component<OriginalProps> {
-        static defaultProps = defaultProps;
+        return (
+            <BaseComponent {...props} translate={translate} locale={locale} />
+        );
+    };
 
-        static displayName = wrapDisplayName(BaseComponent, 'translate');
-
-        render() {
-            return (
-                <TranslationContext.Consumer>
-                    {({ translate, locale }) => (
-                        <BaseComponent
-                            translate={translate}
-                            locale={locale}
-                            {...this.props}
-                        />
-                    )}
-                </TranslationContext.Consumer>
-            );
-        }
-    }
+    TranslatedComponent.defaultProps = BaseComponent.defaultProps;
 
     return TranslatedComponent;
 };

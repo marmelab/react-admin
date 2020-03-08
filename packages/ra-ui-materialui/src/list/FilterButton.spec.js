@@ -1,9 +1,13 @@
 import React from 'react';
 import expect from 'expect';
-import { render, cleanup, fireEvent } from 'react-testing-library';
+import { render, cleanup, fireEvent } from '@testing-library/react';
+import { ThemeProvider } from '@material-ui/styles';
+import { createMuiTheme } from '@material-ui/core';
 
-import { FilterButton } from './FilterButton';
+import FilterButton from './FilterButton';
 import TextInput from '../input/TextInput';
+
+const theme = createMuiTheme();
 
 describe('<FilterButton />', () => {
     const defaultProps = {
@@ -17,7 +21,6 @@ describe('<FilterButton />', () => {
             'customer.name': true,
         },
         showFilter: () => {},
-        translate: () => {},
         filterValues: {},
     };
 
@@ -35,13 +38,16 @@ describe('<FilterButton />', () => {
             const hiddenFilter = (
                 <TextInput source="Returned" label="Returned" />
             );
-            const { queryByText } = render(
-                <FilterButton
-                    {...defaultProps}
-                    filters={defaultProps.filters.concat(hiddenFilter)}
-                />
+            const { getByLabelText, queryByText } = render(
+                <ThemeProvider theme={theme}>
+                    <FilterButton
+                        {...defaultProps}
+                        filters={defaultProps.filters.concat(hiddenFilter)}
+                    />
+                </ThemeProvider>
             );
-            fireEvent.click(queryByText('ra.action.add_filter'));
+
+            fireEvent.click(getByLabelText('ra.action.add_filter'));
 
             expect(queryByText('Returned')).not.toBeNull();
             expect(queryByText('Name')).toBeNull();

@@ -1,5 +1,6 @@
 import { Reducer } from 'redux';
-import { FETCH_END } from '../../../actions/fetchActions';
+import isEqual from 'lodash/isEqual';
+import { FETCH_END } from '../../../actions';
 import {
     CREATE,
     DELETE,
@@ -10,7 +11,7 @@ import {
     GET_ONE,
     UPDATE,
     UPDATE_MANY,
-} from '../../../dataFetchActions';
+} from '../../../core';
 import getFetchedAt from '../../../util/getFetchedAt';
 import { Record, Identifier } from '../../../types';
 
@@ -61,7 +62,7 @@ export const hideFetchedAt = (
  * The cached data is displayed before fetching, and stale data is removed
  * only once fresh data is fetched.
  */
-export const addRecords = (
+export const addRecordsAndRemoveOutdated = (
     newRecords: Record[] = [],
     oldRecords: RecordSetWithDate
 ): RecordSetWithDate => {
@@ -75,10 +76,60 @@ export const addRecords = (
 
     const records = { fetchedAt: newFetchedAt };
     Object.keys(newFetchedAt).forEach(
-        id => (records[id] = newRecordsById[id] || oldRecords[id])
+        id =>
+            (records[id] = newRecordsById[id]
+                ? isEqual(newRecordsById[id], oldRecords[id])
+                    ? oldRecords[id] // do not change the record to avoid a redraw
+                    : newRecordsById[id]
+                : oldRecords[id])
     );
 
     return hideFetchedAt(records);
+};
+
+/**
+ * Add new records to the pool, without touching the other ones.
+ */
+export const addRecords = (
+    newRecords: Record[] = [],
+    oldRecords: RecordSetWithDate
+): RecordSetWithDate => {
+    const newRecordsById = { ...oldRecords };
+    newRecords.forEach(record => {
+        newRecordsById[record.id] = isEqual(record, oldRecords[record.id])
+            ? (oldRecords[record.id] as Record)
+            : record;
+    });
+
+    const updatedFetchedAt = getFetchedAt(
+        newRecords.map(({ id }) => id),
+        oldRecords.fetchedAt
+    );
+
+    Object.defineProperty(newRecordsById, 'fetchedAt', {
+        value: { ...oldRecords.fetchedAt, ...updatedFetchedAt },
+        enumerable: false,
+    });
+
+    return newRecordsById;
+};
+
+export const addOneRecord = (
+    newRecord: Record,
+    oldRecords: RecordSetWithDate,
+    date = new Date()
+): RecordSetWithDate => {
+    const newRecordsById = {
+        ...oldRecords,
+        [newRecord.id]: isEqual(newRecord, oldRecords[newRecord.id])
+            ? oldRecords[newRecord.id] // do not change the record to avoid a redraw
+            : newRecord,
+    };
+
+    return Object.defineProperty(newRecordsById, 'fetchedAt', {
+        value: { ...oldRecords.fetchedAt, [newRecord.id]: date },
+        enumerable: false,
+    });
 };
 
 /**
@@ -112,14 +163,14 @@ const dataReducer: Reducer<RecordSetWithDate> = (
                 ...previousState[payload.id],
                 ...payload.data,
             };
-            return addRecords([updatedRecord], previousState);
+            return addOneRecord(updatedRecord, previousState);
         }
         if (meta.fetch === UPDATE_MANY) {
             const updatedRecords = payload.ids.map(id => ({
                 ...previousState[id],
                 ...payload.data,
             }));
-            return addRecords(updatedRecords, previousState);
+            return addRecordsAndRemoveOutdated(updatedRecords, previousState);
         }
         if (meta.fetch === DELETE) {
             return removeRecords([payload.id], previousState);
@@ -134,13 +185,14 @@ const dataReducer: Reducer<RecordSetWithDate> = (
 
     switch (meta.fetchResponse) {
         case GET_LIST:
+            return addRecordsAndRemoveOutdated(payload.data, previousState);
         case GET_MANY:
         case GET_MANY_REFERENCE:
             return addRecords(payload.data, previousState);
-        case GET_ONE:
         case UPDATE:
         case CREATE:
-            return addRecords([payload.data], previousState);
+        case GET_ONE:
+            return addOneRecord(payload.data, previousState);
         default:
             return previousState;
     }

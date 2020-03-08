@@ -10,11 +10,13 @@ export default url => ({
         },
         inputs: `.ra-input`,
         tabs: `.form-tab`,
-        snackbar: 'div[role="alertdialog"]',
+        snackbar: 'div[role="alert"]',
         submitButton: ".edit-page div[role='toolbar'] button[type='submit']",
         cloneButton: '.button-clone',
         tab: index => `.form-tab:nth-of-type(${index})`,
         title: '#react-admin-title',
+        userMenu: 'button[title="Profile"]',
+        logout: '.logout',
     },
 
     navigate() {
@@ -56,5 +58,10 @@ export default url => ({
 
     clone() {
         cy.get(this.elements.cloneButton).click();
+    },
+
+    logout() {
+        cy.get(this.elements.userMenu).click();
+        cy.get(this.elements.logout).click();
     },
 });

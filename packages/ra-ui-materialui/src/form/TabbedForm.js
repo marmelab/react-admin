@@ -1,28 +1,253 @@
-import React, { Children, Component, isValidElement } from 'react';
+import React, { Children, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import {
-    reduxForm,
-    getFormAsyncErrors,
-    getFormSyncErrors,
-    getFormSubmitErrors,
-} from 'redux-form';
-import { connect } from 'react-redux';
-import { withRouter, Route } from 'react-router-dom';
-import compose from 'recompose/compose';
+import { Route, useRouteMatch, useLocation } from 'react-router-dom';
 import Divider from '@material-ui/core/Divider';
-import Tabs from '@material-ui/core/Tabs';
-import { withStyles, createStyles } from '@material-ui/core/styles';
-import { getDefaultValues, translate, REDUX_FORM_NAME } from 'ra-core';
+import { makeStyles } from '@material-ui/core/styles';
+import { escapePath, FormWithRedirect } from 'ra-core';
 import get from 'lodash/get';
 
 import Toolbar from './Toolbar';
-import CardContentInner from '../layout/CardContentInner';
+import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
 
-const styles = theme =>
-    createStyles({
+/**
+ * Form layout where inputs are divided by tab, one input per line.
+ *
+ * Pass FormTab components as children.
+ *
+ * @example
+ *
+ * import React from 'react';
+ * import {
+ *     Edit,
+ *     TabbedForm,
+ *     FormTab,
+ *     Datagrid,
+ *     TextField,
+ *     DateField,
+ *     TextInput,
+ *     ReferenceManyField,
+ *     NumberInput,
+ *     DateInput,
+ *     BooleanInput,
+ *     EditButton
+ * } from 'react-admin';
+ *
+ * export const PostEdit = (props) => (
+ *     <Edit {...props}>
+ *         <TabbedForm>
+ *             <FormTab label="summary">
+ *                 <TextInput disabled label="Id" source="id" />
+ *                 <TextInput source="title" validate={required()} />
+ *                 <TextInput multiline source="teaser" validate={required()} />
+ *             </FormTab>
+ *             <FormTab label="body">
+ *                 <RichTextInput source="body" validate={required()} addLabel={false} />
+ *             </FormTab>
+ *             <FormTab label="Miscellaneous">
+ *                 <TextInput label="Password (if protected post)" source="password" type="password" />
+ *                 <DateInput label="Publication date" source="published_at" />
+ *                 <NumberInput source="average_note" validate={[ number(), minValue(0) ]} />
+ *                 <BooleanInput label="Allow comments?" source="commentable" defaultValue />
+ *                 <TextInput disabled label="Nb views" source="views" />
+ *             </FormTab>
+ *             <FormTab label="comments">
+ *                 <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
+ *                     <Datagrid>
+ *                         <TextField source="body" />
+ *                         <DateField source="created_at" />
+ *                         <EditButton />
+ *                     </Datagrid>
+ *                 </ReferenceManyField>
+ *             </FormTab>
+ *         </TabbedForm>
+ *     </Edit>
+ * );
+ *
+ * @typedef {object} Props the props you can use (other props are injected by Create or Edit)
+ * @prop {ReactElement[]} FormTab elements
+ * @prop {object} initialValues
+ * @prop {function} validate
+ * @prop {boolean} submitOnEnter
+ * @prop {string} redirect
+ * @prop {ReactElement} toolbar The element displayed at the bottom of the form, contzining the SaveButton
+ * @prop {string} variant Apply variant to all inputs. Possible values are 'standard', 'outlined', and 'filled' (default)
+ * @prop {string} margin Apply variant to all inputs. Possible values are 'none', 'normal', and 'dense' (default)
+ *
+ * @param {Prop} props
+ */
+const TabbedForm = props => (
+    <FormWithRedirect
+        {...props}
+        render={formProps => <TabbedFormView {...formProps} />}
+    />
+);
+
+TabbedForm.propTypes = {
+    children: PropTypes.node,
+    defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
+    initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    record: PropTypes.object,
+    redirect: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func,
+    ]),
+    save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
+    saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+    submitOnEnter: PropTypes.bool,
+    undoable: PropTypes.bool,
+    validate: PropTypes.func,
+};
+
+const useStyles = makeStyles(
+    theme => ({
         errorTabButton: { color: theme.palette.error.main },
-    });
+        content: {
+            paddingTop: theme.spacing(1),
+            paddingLeft: theme.spacing(2),
+            paddingRight: theme.spacing(2),
+        },
+    }),
+    { name: 'RaTabbedForm' }
+);
+
+export const TabbedFormView = ({
+    basePath,
+    children,
+    className,
+    classes: classesOverride,
+    form,
+    handleSubmit,
+    handleSubmitWithRedirect,
+    invalid,
+    pristine,
+    record,
+    redirect: defaultRedirect,
+    resource,
+    saving,
+    setRedirect,
+    submitOnEnter,
+    tabs,
+    toolbar,
+    translate,
+    undoable,
+    value,
+    variant,
+    margin,
+    ...rest
+}) => {
+    const tabsWithErrors = findTabsWithErrors(children, form.getState().errors);
+    const classes = useStyles({ classes: classesOverride });
+    const match = useRouteMatch();
+    const location = useLocation();
+
+    const url = match ? match.url : location.pathname;
+    return (
+        <form
+            className={classnames('tabbed-form', className)}
+            {...sanitizeRestProps(rest)}
+        >
+            {React.cloneElement(
+                tabs,
+                {
+                    classes,
+                    url,
+                    tabsWithErrors,
+                },
+                children
+            )}
+            <Divider />
+            <div className={classes.content}>
+                {/* All tabs are rendered (not only the one in focus), to allow validation
+                on tabs not in focus. The tabs receive a `hidden` property, which they'll
+                use to hide the tab using CSS if it's not the one in focus.
+                See https://github.com/marmelab/react-admin/issues/1866 */}
+                {Children.map(
+                    children,
+                    (tab, index) =>
+                        tab && (
+                            <Route
+                                exact
+                                path={escapePath(
+                                    getTabFullPath(tab, index, url)
+                                )}
+                            >
+                                {routeProps =>
+                                    isValidElement(tab)
+                                        ? React.cloneElement(tab, {
+                                              intent: 'content',
+                                              resource,
+                                              record,
+                                              basePath,
+                                              hidden: !routeProps.match,
+                                              variant:
+                                                  tab.props.variant || variant,
+                                              margin:
+                                                  tab.props.margin || margin,
+                                          })
+                                        : null
+                                }
+                            </Route>
+                        )
+                )}
+            </div>
+            {toolbar &&
+                React.cloneElement(toolbar, {
+                    basePath,
+                    className: 'toolbar',
+                    handleSubmitWithRedirect,
+                    handleSubmit,
+                    invalid,
+                    pristine,
+                    record,
+                    redirect: defaultRedirect,
+                    resource,
+                    saving,
+                    submitOnEnter,
+                    undoable,
+                })}
+        </form>
+    );
+};
+
+TabbedFormView.propTypes = {
+    basePath: PropTypes.string,
+    children: PropTypes.node,
+    className: PropTypes.string,
+    classes: PropTypes.object,
+    defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
+    initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    handleSubmit: PropTypes.func, // passed by react-final-form
+    invalid: PropTypes.bool,
+    location: PropTypes.object,
+    match: PropTypes.object,
+    pristine: PropTypes.bool,
+    record: PropTypes.object,
+    redirect: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func,
+    ]),
+    resource: PropTypes.string,
+    save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
+    saving: PropTypes.bool,
+    submitOnEnter: PropTypes.bool,
+    tabs: PropTypes.element.isRequired,
+    tabsWithErrors: PropTypes.arrayOf(PropTypes.string),
+    toolbar: PropTypes.element,
+    translate: PropTypes.func,
+    undoable: PropTypes.bool,
+    validate: PropTypes.func,
+    value: PropTypes.number,
+    version: PropTypes.number,
+};
+
+TabbedFormView.defaultProps = {
+    submitOnEnter: true,
+    tabs: <TabbedFormTabs />,
+    toolbar: <Toolbar />,
+};
 
 const sanitizeRestProps = ({
     anyTouched,
@@ -39,9 +264,14 @@ const sanitizeRestProps = ({
     clearSubmitErrors,
     destroy,
     dirty,
+    dirtyFields,
+    dirtyFieldsSinceLastSubmit,
+    dirtySinceLastSubmit,
     dispatch,
     form,
     handleSubmit,
+    hasSubmitErrors,
+    hasValidationErrors,
     initialize,
     initialized,
     initialValues,
@@ -53,6 +283,9 @@ const sanitizeRestProps = ({
     save,
     staticContext,
     submit,
+    submitAsSideEffect,
+    submitError,
+    submitErrors,
     submitFailed,
     submitSucceeded,
     submitting,
@@ -63,207 +296,13 @@ const sanitizeRestProps = ({
     untouch,
     valid,
     validate,
+    validating,
+    _reduxForm,
     ...props
 }) => props;
 
-const getTabFullPath = (tab, index, baseUrl) =>
-    `${baseUrl}${
-        tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
-    }`;
-
-export class TabbedForm extends Component {
-    handleSubmitWithRedirect = (redirect = this.props.redirect) =>
-        this.props.handleSubmit(values => this.props.save(values, redirect));
-
-    render() {
-        const {
-            basePath,
-            children,
-            className,
-            classes = {},
-            invalid,
-            location,
-            match,
-            pristine,
-            record,
-            redirect,
-            resource,
-            saving,
-            submitOnEnter,
-            tabsWithErrors,
-            toolbar,
-            translate,
-            undoable,
-            value,
-            version,
-            ...rest
-        } = this.props;
-
-        const url = match ? match.url : location.pathname;
-        const validTabPaths = Children.toArray(children).map((tab, index) =>
-            getTabFullPath(tab, index, url)
-        );
-
-        // This ensure we don't get warnings from material-ui Tabs component when
-        // the current location pathname targets a dynamically added Tab
-        // In the case the targeted Tab is not present at first render (when
-        // using permissions for example) we temporarily switch to the first
-        // available tab. The current location will be applied again on the
-        // first render containing the targeted tab. This is almost transparent
-        // for the user who may just see an short tab selection animation
-        const tabsValue = validTabPaths.includes(location.pathname)
-            ? location.pathname
-            : validTabPaths[0];
-
-        return (
-            <form
-                className={classnames('tabbed-form', className)}
-                key={version}
-                {...sanitizeRestProps(rest)}
-            >
-                <Tabs
-                    // The location pathname will contain the page path including the current tab path
-                    // so we can use it as a way to determine the current tab
-                    value={tabsValue}
-                    indicatorColor="primary"
-                >
-                    {Children.map(children, (tab, index) => {
-                        if (!isValidElement(tab)) return null;
-
-                        // Builds the full tab tab which is the concatenation of the last matched route in the
-                        // TabbedShowLayout hierarchy (ex: '/posts/create', '/posts/12', , '/posts/12/show')
-                        // and the tab path.
-                        // This will be used as the Tab's value
-                        const tabPath = getTabFullPath(tab, index, url);
-
-                        return React.cloneElement(tab, {
-                            context: 'header',
-                            value: tabPath,
-                            className:
-                                tabsWithErrors.includes(tab.props.label) &&
-                                location.pathname !== tabPath
-                                    ? classes.errorTabButton
-                                    : null,
-                        });
-                    })}
-                </Tabs>
-                <Divider />
-                <CardContentInner>
-                    {/* All tabs are rendered (not only the one in focus), to allow validation
-                    on tabs not in focus. The tabs receive a `hidden` property, which they'll
-                    use to hide the tab using CSS if it's not the one in focus.
-                    See https://github.com/marmelab/react-admin/issues/1866 */}
-                    {Children.map(
-                        children,
-                        (tab, index) =>
-                            tab && (
-                                <Route
-                                    exact
-                                    path={getTabFullPath(tab, index, url)}
-                                >
-                                    {routeProps =>
-                                        isValidElement(tab)
-                                            ? React.cloneElement(tab, {
-                                                  context: 'content',
-                                                  resource,
-                                                  record,
-                                                  basePath,
-                                                  hidden: !routeProps.match,
-                                                  /**
-                                                   * Force redraw when the tab becomes active
-                                                   *
-                                                   * This is because the fields, decorated by redux-form and connect,
-                                                   * aren't redrawn by default when the tab becomes active.
-                                                   * Unfortunately, some material-ui fields (like multiline TextField)
-                                                   * compute their size based on the scrollHeight of a dummy DOM element,
-                                                   * and scrollHeight is 0 in a hidden div. So they must be redrawn
-                                                   * once the tab becomes active.
-                                                   *
-                                                   * @ref https://github.com/marmelab/react-admin/issues/1956
-                                                   */
-                                                  key: `${index}_${!routeProps.match}`,
-                                              })
-                                            : null
-                                    }
-                                </Route>
-                            )
-                    )}
-                </CardContentInner>
-                {toolbar &&
-                    React.cloneElement(toolbar, {
-                        basePath,
-                        className: 'toolbar',
-                        handleSubmitWithRedirect: this.handleSubmitWithRedirect,
-                        handleSubmit: this.props.handleSubmit,
-                        invalid,
-                        pristine,
-                        record,
-                        redirect,
-                        resource,
-                        saving,
-                        submitOnEnter,
-                        undoable,
-                    })}
-            </form>
-        );
-    }
-}
-
-TabbedForm.propTypes = {
-    basePath: PropTypes.string,
-    children: PropTypes.node,
-    className: PropTypes.string,
-    classes: PropTypes.object,
-    defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
-    handleSubmit: PropTypes.func, // passed by redux-form
-    invalid: PropTypes.bool,
-    location: PropTypes.object,
-    match: PropTypes.object,
-    pristine: PropTypes.bool,
-    record: PropTypes.object,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
-    resource: PropTypes.string,
-    save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
-    saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-    submitOnEnter: PropTypes.bool,
-    tabsWithErrors: PropTypes.arrayOf(PropTypes.string),
-    toolbar: PropTypes.element,
-    translate: PropTypes.func,
-    undoable: PropTypes.bool,
-    validate: PropTypes.func,
-    value: PropTypes.number,
-    version: PropTypes.number,
-};
-
-TabbedForm.defaultProps = {
-    submitOnEnter: true,
-    toolbar: <Toolbar />,
-};
-
-const collectErrors = (state, props) => {
-    const syncErrors = getFormSyncErrors(props.form)(state);
-    const asyncErrors = getFormAsyncErrors(props.form)(state);
-    const submitErrors = getFormSubmitErrors(props.form)(state);
-
-    return {
-        ...syncErrors,
-        ...asyncErrors,
-        ...submitErrors,
-    };
-};
-
-export const findTabsWithErrors = (
-    state,
-    props,
-    collectErrorsImpl = collectErrors
-) => {
-    const errors = collectErrorsImpl(state, props);
-
-    return Children.toArray(props.children).reduce((acc, child) => {
+export const findTabsWithErrors = (children, errors) => {
+    return Children.toArray(children).reduce((acc, child) => {
         if (!isValidElement(child)) {
             return acc;
         }
@@ -283,36 +322,4 @@ export const findTabsWithErrors = (
     }, []);
 };
 
-const enhance = compose(
-    withRouter,
-    connect((state, props) => {
-        const children = Children.toArray(props.children).reduce(
-            (acc, child) => [
-                ...acc,
-                ...(isValidElement(child)
-                    ? Children.toArray(child.props.children)
-                    : []),
-            ],
-            []
-        );
-
-        return {
-            form: props.form || REDUX_FORM_NAME,
-            initialValues: getDefaultValues(state, { ...props, children }),
-            saving: props.saving || state.admin.saving,
-            tabsWithErrors: findTabsWithErrors(state, {
-                form: REDUX_FORM_NAME,
-                ...props,
-            }),
-        };
-    }),
-    translate, // Must be before reduxForm so that it can be used in validation
-    reduxForm({
-        destroyOnUnmount: false,
-        enableReinitialize: true,
-        keepDirtyOnReinitialize: true,
-    }),
-    withStyles(styles)
-);
-
-export default enhance(TabbedForm);
+export default TabbedForm;

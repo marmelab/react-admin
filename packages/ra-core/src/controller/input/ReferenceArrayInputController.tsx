@@ -1,35 +1,19 @@
-import { Component, ReactNode, ComponentType } from 'react';
-import { connect } from 'react-redux';
+import {
+    ComponentType,
+    FunctionComponent,
+    ReactElement,
+    useCallback,
+} from 'react';
 import debounce from 'lodash/debounce';
-import compose from 'recompose/compose';
-import { createSelector } from 'reselect';
-import get from 'lodash/get';
-import isEqual from 'lodash/isEqual';
-import difference from 'lodash/difference';
-import { WrappedFieldInputProps } from 'redux-form';
 
-import {
-    crudGetMany as crudGetManyAction,
-    crudGetMatching as crudGetMatchingAction,
-} from '../../actions/dataActions';
-import {
-    getPossibleReferences,
-    getPossibleReferenceValues,
-    getReferenceResource,
-} from '../../reducer';
-import { getStatusForArrayInput as getDataStatus } from './referenceDataStatus';
-import withTranslate from '../../i18n/translate';
-import { Record, Sort, Translate, Pagination, Dispatch } from '../../types';
-import { MatchingReferencesError } from './types';
-
-const defaultReferenceSource = (resource: string, source: string) =>
-    `${resource}@${source}`;
+import { Record, Sort, Pagination } from '../../types';
+import useReferenceArrayInputController from './useReferenceArrayInputController';
 
 interface ChildrenFuncParams {
     choices: Record[];
     error?: string;
-    isLoading: boolean;
-    onChange: (value: any) => void;
+    loaded: boolean;
+    loading: boolean;
     setFilter: (filter: any) => void;
     setPagination: (pagination: Pagination) => void;
     setSort: (sort: Sort) => void;
@@ -39,27 +23,17 @@ interface ChildrenFuncParams {
 interface Props {
     allowEmpty?: boolean;
     basePath: string;
-    children: (params: ChildrenFuncParams) => ReactNode;
+    children: (params: ChildrenFuncParams) => ReactElement;
     filter?: object;
-    filterToQuery: (filter: {}) => any;
-    input?: WrappedFieldInputProps;
+    filterToQuery?: (filter: {}) => any;
+    input?: any;
     meta?: object;
     perPage?: number;
     record?: Record;
     reference: string;
-    referenceSource: typeof defaultReferenceSource;
     resource: string;
     sort?: Sort;
     source: string;
-}
-
-interface EnhancedProps {
-    crudGetMatching: Dispatch<typeof crudGetMatchingAction>;
-    crudGetMany: Dispatch<typeof crudGetManyAction>;
-    matchingReferences?: Record[] | MatchingReferencesError;
-    onChange?: () => void;
-    referenceRecords?: Record[];
-    translate: Translate;
 }
 
 /**
@@ -73,9 +47,9 @@ interface EnhancedProps {
  *    tag_ids: [ "1", "23", "4" ]
  * }
  *
- * ReferenceArrayInput component fetches the current resources (using the
- * `CRUD_GET_MANY` REST method) as well as possible resources (using the
- * `CRUD_GET_MATCHING` REST method) in the reference endpoint. It then
+ * ReferenceArrayInput component fetches the current resources (using
+ * `dataProvider.getMany()`) as well as possible resources (using
+ * `dataProvider.getMatching()` REST method) in the reference endpoint. It then
  * delegates rendering to a subcomponent, to which it passes the possible
  * choices as the `choices` attribute.
  *
@@ -140,218 +114,53 @@ interface EnhancedProps {
  *     <SelectArrayInput optionText="name" />
  * </ReferenceArrayInput>
  */
-export class UnconnectedReferenceArrayInputController extends Component<
-    Props & EnhancedProps
-> {
-    public static defaultProps = {
-        allowEmpty: false,
-        filter: {},
-        filterToQuery: searchText => ({ q: searchText }),
-        matchingReferences: null,
-        perPage: 25,
-        sort: { field: 'id', order: 'DESC' },
-        referenceRecords: [],
-        referenceSource: defaultReferenceSource, // used in unit tests
-    };
+const ReferenceArrayInputController: FunctionComponent<Props> = ({
+    basePath,
+    children,
+    filter = {},
+    input,
+    filterToQuery = searchText => ({ q: searchText }),
+    perPage = 25,
+    reference,
+    resource,
+    sort = { field: 'id', order: 'DESC' },
+    source,
+}) => {
+    const {
+        choices,
+        error,
+        loaded,
+        loading,
+        setFilter,
+        setPagination,
+        setSort,
+        warning,
+    } = useReferenceArrayInputController({
+        basePath,
+        filter,
+        filterToQuery,
+        input,
+        perPage,
+        sort,
+        reference,
+        resource,
+        source,
+    });
 
-    private params;
-    private debouncedSetFilter;
+    const debouncedSetFilter = useCallback(debounce(setFilter, 500), [
+        setFilter,
+    ]);
 
-    constructor(props: Props & EnhancedProps) {
-        super(props);
-        const { perPage, sort, filter } = props;
-        // stored as a property rather than state because we don't want redraw of async updates
-        this.params = { pagination: { page: 1, perPage }, sort, filter };
-        this.debouncedSetFilter = debounce(this.setFilter.bind(this), 500);
-    }
-
-    componentDidMount() {
-        this.fetchReferencesAndOptions(this.props, {} as Props & EnhancedProps);
-    }
-
-    componentWillReceiveProps(nextProps: Props & EnhancedProps) {
-        let shouldFetchOptions = false;
-
-        if (
-            (this.props.record || { id: undefined }).id !==
-            (nextProps.record || { id: undefined }).id
-        ) {
-            this.fetchReferencesAndOptions(nextProps);
-        } else if (this.props.input.value !== nextProps.input.value) {
-            this.fetchReferences(nextProps);
-        } else {
-            if (!isEqual(nextProps.filter, this.props.filter)) {
-                this.params = { ...this.params, filter: nextProps.filter };
-                shouldFetchOptions = true;
-            }
-            if (!isEqual(nextProps.sort, this.props.sort)) {
-                this.params = { ...this.params, sort: nextProps.sort };
-                shouldFetchOptions = true;
-            }
-            if (nextProps.perPage !== this.props.perPage) {
-                this.params = {
-                    ...this.params,
-                    pagination: {
-                        ...this.params.pagination,
-                        perPage: nextProps.perPage,
-                    },
-                };
-                shouldFetchOptions = true;
-            }
-        }
-        if (shouldFetchOptions) {
-            this.fetchOptions();
-        }
-    }
-
-    setFilter = (filter: any) => {
-        if (filter !== this.params.filter) {
-            this.params.filter = this.props.filterToQuery(filter);
-            this.fetchOptions();
-        }
-    };
-
-    setPagination = (pagination: Pagination) => {
-        if (pagination !== this.params.pagination) {
-            this.params.pagination = pagination;
-            this.fetchOptions();
-        }
-    };
-
-    setSort = (sort: Sort) => {
-        if (sort !== this.params.sort) {
-            this.params.sort = sort;
-            this.fetchOptions();
-        }
-    };
-
-    fetchReferences = (nextProps, currentProps = this.props) => {
-        const { crudGetMany, input, reference } = nextProps;
-        const ids = input.value;
-        if (ids) {
-            if (!Array.isArray(ids)) {
-                throw Error(
-                    'The value of ReferenceArrayInput should be an array'
-                );
-            }
-            const idsToFetch = difference(
-                ids,
-                get(currentProps, 'input.value', [])
-            );
-            if (idsToFetch.length) crudGetMany(reference, idsToFetch);
-        }
-    };
-
-    fetchOptions = (props = this.props) => {
-        const {
-            crudGetMatching,
-            reference,
-            source,
-            resource,
-            referenceSource,
-            filter: defaultFilter,
-        } = props;
-        const { pagination, sort, filter } = this.params;
-        crudGetMatching(
-            reference,
-            referenceSource(resource, source),
-            pagination,
-            sort,
-            {
-                ...defaultFilter,
-                ...filter,
-            }
-        );
-    };
-
-    fetchReferencesAndOptions(nextProps, currentProps = this.props) {
-        this.fetchReferences(nextProps, currentProps);
-        this.fetchOptions(nextProps);
-    }
-
-    render() {
-        const {
-            input,
-            referenceRecords,
-            matchingReferences,
-            onChange,
-            children,
-            translate,
-        } = this.props;
-
-        const dataStatus = getDataStatus({
-            input,
-            matchingReferences,
-            referenceRecords,
-            translate,
-        });
-
-        return children({
-            choices: dataStatus.choices,
-            error: dataStatus.error,
-            isLoading: dataStatus.waiting,
-            onChange,
-            setFilter: this.debouncedSetFilter,
-            setPagination: this.setPagination,
-            setSort: this.setSort,
-            warning: dataStatus.warning,
-        });
-    }
-}
-
-const makeMapStateToProps = () =>
-    createSelector(
-        [
-            getReferenceResource,
-            getPossibleReferenceValues,
-            (_, { resource, input }) => {
-                const { value: referenceIds } = input;
-
-                if (!referenceIds) {
-                    return [];
-                }
-
-                if (Array.isArray(referenceIds)) {
-                    return referenceIds;
-                }
-
-                throw new Error(
-                    `<ReferenceArrayInput> expects value to be an array, but the value passed as '${resource}.${
-                        input.name
-                    }' is type '${typeof referenceIds}': ${referenceIds}`
-                );
-            },
-        ],
-        (referenceState, possibleValues, inputIds) => ({
-            matchingReferences: getPossibleReferences(
-                referenceState,
-                possibleValues,
-                inputIds
-            ),
-            referenceRecords:
-                referenceState &&
-                inputIds.reduce((references, referenceId) => {
-                    if (referenceState.data[referenceId]) {
-                        references.push(referenceState.data[referenceId]);
-                    }
-                    return references;
-                }, []),
-        })
-    );
-
-const ReferenceArrayInputController = compose(
-    withTranslate,
-    connect(
-        makeMapStateToProps(),
-        {
-            crudGetMany: crudGetManyAction,
-            crudGetMatching: crudGetMatchingAction,
-        }
-    )
-)(UnconnectedReferenceArrayInputController);
-
-ReferenceArrayInputController.defaultProps = {
-    referenceSource: defaultReferenceSource, // used in makeMapStateToProps
+    return children({
+        choices,
+        error,
+        loaded,
+        loading,
+        setFilter: debouncedSetFilter,
+        setPagination,
+        setSort,
+        warning,
+    });
 };
 
 export default ReferenceArrayInputController as ComponentType<Props>;

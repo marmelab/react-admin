@@ -10,7 +10,7 @@ export default url => ({
         },
         inputs: `.ra-input`,
         richTextInputError: '.create-page .ra-rich-text-input-error',
-        snackbar: 'div[role="alertdialog"]',
+        snackbar: 'div[role="alert"]',
         submitButton: ".create-page div[role='toolbar'] button[type='submit']",
         submitAndShowButton:
             ".create-page form div[role='toolbar'] button[type='button']:nth-child(2)",
@@ -21,6 +21,8 @@ export default url => ({
         descInput: '.ql-editor',
         tab: index => `.form-tab:nth-of-type(${index})`,
         title: '#react-admin-title',
+        userMenu: 'button[title="Profile"]',
+        logout: '.logout',
     },
 
     navigate() {
@@ -28,7 +30,7 @@ export default url => ({
     },
 
     waitUntilVisible() {
-        cy.get(this.elements.submitButton);
+        cy.get(this.elements.submitButton).should('be.visible');
     },
 
     setInputValue(type, name, value, clearPreviousValue = true) {
@@ -65,6 +67,13 @@ export default url => ({
         cy.wait(200); // let the notification disappear (could block further submits)
     },
 
+    submitWithKeyboard() {
+        cy.get('input:first').type('{enter}');
+        cy.get(this.elements.snackbar);
+        cy.get(this.elements.body).click(); // dismiss notification
+        cy.wait(200); // let the notification disappear (could block further submits)
+    },
+
     submitAndShow() {
         cy.get(this.elements.submitAndShowButton).click();
         cy.get(this.elements.snackbar);
@@ -88,5 +97,10 @@ export default url => ({
 
     gotoTab(index) {
         cy.get(this.elements.tab(index)).click();
+    },
+
+    logout() {
+        cy.get(this.elements.userMenu).click();
+        cy.get(this.elements.logout).click();
     },
 });

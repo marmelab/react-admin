@@ -1,67 +1,75 @@
 import React from 'react';
 import expect from 'expect';
 import { BooleanField } from './BooleanField';
-import { render, cleanup } from 'react-testing-library';
+import { render, cleanup } from '@testing-library/react';
 
 const defaultProps = {
     record: { published: true },
     source: 'published',
     resource: 'posts',
-    translate: x => x,
     classes: {},
 };
 
 describe('<BooleanField />', () => {
     afterEach(cleanup);
     it('should display tick and truthy text if value is true', () => {
-        const { queryByText } = render(<BooleanField {...defaultProps} />);
-        expect(queryByText('ra.boolean.true')).not.toBeNull();
-        expect(queryByText('ra.boolean.true').nextSibling.dataset.testid).toBe(
-            'true'
-        );
-        expect(queryByText('ra.boolean.false')).toBeNull();
+        const { queryByTitle } = render(<BooleanField {...defaultProps} />);
+        expect(queryByTitle('ra.boolean.true')).not.toBeNull();
+        expect(queryByTitle('ra.boolean.true').dataset.testid).toBe('true');
+        expect(queryByTitle('ra.boolean.false')).toBeNull();
     });
 
     it('should use valueLabelTrue for custom truthy text', () => {
-        const { queryByText } = render(
+        const { queryByTitle } = render(
             <BooleanField
                 {...defaultProps}
                 valueLabelTrue="Has been published"
             />
         );
-        expect(queryByText('ra.boolean.true')).toBeNull();
-        expect(queryByText('Has been published')).not.toBeNull();
+        expect(queryByTitle('ra.boolean.true')).toBeNull();
+        expect(queryByTitle('Has been published')).not.toBeNull();
     });
 
     it('should display cross and falsy text if value is false', () => {
-        const { queryByText } = render(
+        const { queryByTitle } = render(
             <BooleanField {...defaultProps} record={{ published: false }} />
         );
-        expect(queryByText('ra.boolean.true')).toBeNull();
-        expect(queryByText('ra.boolean.false')).not.toBeNull();
-        expect(queryByText('ra.boolean.false').nextSibling.dataset.testid).toBe(
-            'false'
-        );
+        expect(queryByTitle('ra.boolean.true')).toBeNull();
+        expect(queryByTitle('ra.boolean.false')).not.toBeNull();
+        expect(queryByTitle('ra.boolean.false').dataset.testid).toBe('false');
     });
 
     it('should use valueLabelFalse for custom falsy text', () => {
-        const { queryByText } = render(
+        const { queryByTitle } = render(
             <BooleanField
                 {...defaultProps}
                 record={{ published: false }}
                 valueLabelFalse="Has not been published"
             />
         );
-        expect(queryByText('ra.boolean.false')).toBeNull();
-        expect(queryByText('Has not been published')).not.toBeNull();
+        expect(queryByTitle('ra.boolean.false')).toBeNull();
+        expect(queryByTitle('Has not been published')).not.toBeNull();
     });
 
     it('should not display anything if value is null', () => {
-        const { queryByText } = render(
+        const { queryByTitle } = render(
             <BooleanField {...defaultProps} record={{ published: null }} />
         );
-        expect(queryByText('ra.boolean.true')).toBeNull();
-        expect(queryByText('ra.boolean.false')).toBeNull();
+        expect(queryByTitle('ra.boolean.true')).toBeNull();
+        expect(queryByTitle('ra.boolean.false')).toBeNull();
+    });
+
+    it('should display the emptyText when is present and the value is null', () => {
+        const { queryByTitle, queryByText } = render(
+            <BooleanField
+                {...defaultProps}
+                record={{ published: null }}
+                emptyText="NA"
+            />
+        );
+        expect(queryByTitle('ra.boolean.true')).toBeNull();
+        expect(queryByTitle('ra.boolean.false')).toBeNull();
+        expect(queryByText('NA')).not.toBeNull();
     });
 
     it('should use custom className', () => {
@@ -76,13 +84,13 @@ describe('<BooleanField />', () => {
     });
 
     it('should handle deep fields', () => {
-        const { queryByText } = render(
+        const { queryByTitle } = render(
             <BooleanField
                 {...defaultProps}
                 record={{ foo: { bar: true } }}
                 source="foo.bar"
             />
         );
-        expect(queryByText('ra.boolean.true')).not.toBeNull();
+        expect(queryByTitle('ra.boolean.true')).not.toBeNull();
     });
 });

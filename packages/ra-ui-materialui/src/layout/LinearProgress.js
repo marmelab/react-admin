@@ -1,16 +1,18 @@
 import React from 'react';
 import Progress from '@material-ui/core/LinearProgress';
 import PropTypes from 'prop-types';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
-const styles = theme =>
-    createStyles({
+const useStyles = makeStyles(
+    theme => ({
         root: {
-            margin: `${theme.spacing.unit}px 0`,
-            width: `${theme.spacing.unit * 20}px`,
+            margin: `${theme.spacing(1)}px 0`,
+            width: `${theme.spacing(20)}px`,
         },
-    });
+    }),
+    { name: 'RaLinearProgress' }
+);
 
 /**
  * Progress bar formatted to replace an input or a field in a form layout
@@ -20,11 +22,14 @@ const styles = theme =>
  * @see ReferenceField
  * @see ReferenceInput
  *
- * @param {object} classes CSS class names injected by withStyles
+ * @param {object} classes CSS class names
  */
-export const LinearProgress = ({ classes, className, ...rest }) => (
-    <Progress className={classnames(classes.root, className)} {...rest} />
-);
+const LinearProgress = ({ classes: classesOverride, className, ...rest }) => {
+    const classes = useStyles({ classes: classesOverride });
+    return (
+        <Progress className={classnames(classes.root, className)} {...rest} />
+    );
+};
 LinearProgress.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
@@ -32,4 +37,4 @@ LinearProgress.propTypes = {
 // wat? TypeScript looses the displayName if we don't set it explicitly
 LinearProgress.displayName = 'LinearProgress';
 
-export default withStyles(styles)(LinearProgress);
+export default LinearProgress;

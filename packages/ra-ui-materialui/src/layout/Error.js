@@ -1,21 +1,20 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import compose from 'recompose/compose';
 import Button from '@material-ui/core/Button';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import ErrorIcon from '@material-ui/icons/Report';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import History from '@material-ui/icons/History';
 
-import Title from './Title';
-import { translate } from 'ra-core';
+import Title, { TitlePropType } from './Title';
+import { useTranslate } from 'ra-core';
 
-const styles = theme =>
-    createStyles({
+const useStyles = makeStyles(
+    theme => ({
         container: {
             display: 'flex',
             flexDirection: 'column',
@@ -45,7 +44,9 @@ const styles = theme =>
         toolbar: {
             marginTop: '2em',
         },
-    });
+    }),
+    { name: 'RaError' }
+);
 
 function goBack() {
     window.history.go(-1);
@@ -54,54 +55,55 @@ function goBack() {
 const Error = ({
     error,
     errorInfo,
-    classes,
+    classes: classesOverride,
     className,
     title,
-    translate,
     ...rest
-}) => (
-    <Fragment>
-        <Title defaultTitle={title} />
-        <div className={classnames(classes.container, className)} {...rest}>
-            <h1 className={classes.title} role="alert">
-                <ErrorIcon className={classes.icon} />
-                {translate('ra.page.error')}
-            </h1>
-            <div>{translate('ra.message.error')}</div>
-            {process.env.NODE_ENV !== 'production' && (
-                <ExpansionPanel className={classes.panel}>
-                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                        {translate('ra.message.details')}
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails className={classes.panelDetails}>
-                        <div>
-                            <h2>{translate(error.toString())}</h2>
-                            {errorInfo.componentStack}
-                        </div>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
-            )}
-            <div className={classes.toolbar}>
-                <Button variant="raised" icon={<History />} onClick={goBack}>
-                    {translate('ra.action.back')}
-                </Button>
+}) => {
+    const classes = useStyles({ classes: classesOverride });
+    const translate = useTranslate();
+    return (
+        <Fragment>
+            <Title defaultTitle={title} />
+            <div className={classnames(classes.container, className)} {...rest}>
+                <h1 className={classes.title} role="alert">
+                    <ErrorIcon className={classes.icon} />
+                    {translate('ra.page.error')}
+                </h1>
+                <div>{translate('ra.message.error')}</div>
+                {process.env.NODE_ENV !== 'production' && (
+                    <ExpansionPanel className={classes.panel}>
+                        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                            {translate('ra.message.details')}
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails className={classes.panelDetails}>
+                            <div>
+                                <h2>{translate(error.toString())}</h2>
+                                {errorInfo.componentStack}
+                            </div>
+                        </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                )}
+                <div className={classes.toolbar}>
+                    <Button
+                        variant="contained"
+                        icon={<History />}
+                        onClick={goBack}
+                    >
+                        {translate('ra.action.back')}
+                    </Button>
+                </div>
             </div>
-        </div>
-    </Fragment>
-);
+        </Fragment>
+    );
+};
 
 Error.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
     error: PropTypes.object.isRequired,
     errorInfo: PropTypes.object,
-    translate: PropTypes.func.isRequired,
-    title: PropTypes.string,
+    title: TitlePropType,
 };
 
-const enhance = compose(
-    withStyles(styles),
-    translate
-);
-
-export default enhance(Error);
+export default Error;

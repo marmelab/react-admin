@@ -1,21 +1,19 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import inflection from 'inflection';
-import { withStyles } from '@material-ui/core/styles';
 import {
-    ShowController,
+    useShowController,
     InferredElement,
     getElementsFromRecords,
 } from 'ra-core';
-import { ShowView, styles } from './Show';
+
+import { ShowView } from './Show';
 import showFieldTypes from './showFieldTypes';
 
-export class ShowViewGuesser extends Component {
-    state = {
-        inferredChild: null,
-    };
-    componentDidUpdate() {
-        const { record, resource } = this.props;
-        if (record && !this.state.inferredChild) {
+const ShowViewGuesser = props => {
+    const { record, resource } = props;
+    const [inferredChild, setInferredChild] = useState(null);
+    useEffect(() => {
+        if (record && !inferredChild) {
             const inferredElements = getElementsFromRecords(
                 [record],
                 showFieldTypes
@@ -39,21 +37,17 @@ ${inferredChild.getRepresentation()}
     </Show>
 );`
                 );
-            this.setState({ inferredChild: inferredChild.getElement() });
+            setInferredChild(inferredChild.getElement());
         }
-    }
+    }, [record, inferredChild, resource]);
 
-    render() {
-        return <ShowView {...this.props}>{this.state.inferredChild}</ShowView>;
-    }
-}
+    return <ShowView {...props}>{inferredChild}</ShowView>;
+};
 
 ShowViewGuesser.propTypes = ShowView.propTypes;
 
 const ShowGuesser = props => (
-    <ShowController {...props}>
-        {controllerProps => <ShowViewGuesser {...props} {...controllerProps} />}
-    </ShowController>
+    <ShowViewGuesser {...props} {...useShowController(props)} />
 );
 
-export default withStyles(styles)(ShowGuesser);
+export default ShowGuesser;

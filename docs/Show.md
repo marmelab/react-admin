@@ -18,6 +18,7 @@ Here are all the props accepted by the `<Show>` component:
 * [`title`](#page-title)
 * [`actions`](#actions)
 * [`aside`](#aside-component)
+* [`component`](#component)
 
 Here is the minimal code necessary to display a view to show a post:
 
@@ -31,7 +32,7 @@ import jsonServerProvider from 'ra-data-json-server';
 import { PostCreate, PostEdit, PostShow } from './posts';
 
 const App = () => (
-    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerProvider('https://jsonplaceholder.typicode.com')}>
         <Resource name="posts" show={PostShow} create={PostCreate} edit={PostEdit} />
     </Admin>
 );
@@ -88,25 +89,18 @@ export const PostShow = (props) => (
 
 ### Actions
 
-You can replace the list of default actions by your own element using the `actions` prop:
+You can replace the list of default actions by your own component using the `actions` prop:
 
 ```jsx
-import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
-import { EditButton } from 'react-admin';
-
-const cardActionStyle = {
-    zIndex: 2,
-    display: 'inline-block',
-    float: 'right',
-};
+import { EditButton, TopToolbar } from 'react-admin';
 
 const PostShowActions = ({ basePath, data, resource }) => (
-    <CardActions style={cardActionStyle}>
+    <TopToolbar>
         <EditButton basePath={basePath} record={data} />
         {/* Add your custom actions */}
         <Button color="primary" onClick={customAction}>Custom Action</Button>
-    </CardActions>
+    </TopToolbar>
 );
 
 export const PostShow = (props) => (
@@ -124,17 +118,18 @@ You may want to display additional information on the side of the resource detai
 ```jsx
 const Aside = () => (
     <div style={{ width: 200, margin: '1em' }}>
-        <Typography variant="title">Post details</Typography>
-        <Typography variant="body1">
+        <Typography variant="h6">Post details</Typography>
+        <Typography variant="body2">
             Posts will only be published one an editor approves them
         </Typography>
     </div>
 );
 
 const PostShow = props => (
-    <Show aside={<Aside />} {...props}>
+    <Show aside={Aside} {...props}>
         ...
     </Show>
+);
 ```
 {% endraw %}
 
@@ -144,9 +139,9 @@ The `aside` component receives the same props as the `Show` child component: `ba
 ```jsx
 const Aside = ({ record }) => (
     <div style={{ width: 200, margin: '1em' }}>
-        <Typography variant="title">Post details</Typography>
+        <Typography variant="h6">Post details</Typography>
         {record && (
-            <Typography variant="body1">
+            <Typography variant="body2">
                 Creation date: {record.createdAt}
             </Typography>
         )}
@@ -156,6 +151,30 @@ const Aside = ({ record }) => (
 {% endraw %}
 
 **Tip**: Always test that the `record` is defined before using it, as react-admin starts rendering the UI before the API call is over.
+
+### Component
+
+By default, the Show view renders the main content area inside a material-ui `<Card>` element. The actual layout of the area depends on the `ShowLayout` component you're using (`<SimpleShowLayout>`, `<TabbedShowLayout>`, or a custom layout component).
+
+Some layouts also use `Card`, in which case the user ends up seeing a card inside a card, which is bad UI. To avoid that, you can override the main area container by passing a `component` prop:
+
+```jsx
+// use a div as root component
+const PostShow = props => (
+    <Show component="div" {...props}>
+        ...
+    </Show>
+);
+
+// use a custom component as root component 
+const PostShow = props => (
+    <Show component={MyComponent} {...props}>
+        ...
+    </Show>
+);
+```
+
+The default value for the `component` prop is `Card`.
 
 ## The `<ShowGuesser>` component
 
@@ -168,7 +187,7 @@ import { Admin, Resource, ShowGuesser } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 
 const App = () => (
-    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerProvider('https://jsonplaceholder.typicode.com')}>
         <Resource name="posts" show={ShowGuesser} />
     </Admin>
 );
@@ -254,7 +273,7 @@ To style the tabs, the `<Tab>` component accepts two props:
 
 By default, `<TabbedShowLayout>` renders its tabs using `<TabbedShowLayoutTabs>`, an internal react-admin component. You can pass a custom component as the `tabs` prop to override that default. Also, props passed to `<TabbedShowLayoutTabs>` are passed to the material-ui's `<Tabs>` component inside `<TabbedShowLayoutTabs>`. That means you can create a custom `tabs` component without copying several components from the react-admin source.
 
-For instance, to make use of scrollable `<Tabs>`, you can pass a scrollable props to `<TabbedShowLayoutTabs>` and use it in the `tabs` prop from `<TabbedShowLayout>` as follows:
+For instance, to make use of scrollable `<Tabs>`, you can pass a `variant="scrollable"` prop to `<TabbedShowLayoutTabs>` and use it in the `tabs` prop from `<TabbedShowLayout>` as follows:
 
 ```jsx
 import {
@@ -265,7 +284,7 @@ import {
 
 const ScrollableTabbedShowLayout = props => (
     <Show{...props}>
-        <TabbedShowLayout tabs={<TabbedShowLayoutTabs scrollable={true}/>}>
+        <TabbedShowLayout tabs={<TabbedShowLayoutTabs variant="scrollable" {...props} />}>
             ...
         </TabbedShowLayout>
     </Show>
@@ -277,31 +296,25 @@ export default ScrollableTabbedShowLayout;
 
 ## Displaying Fields depending on the user permissions
 
-You might want to display some fields only to users with specific permissions. Those permissions are retrieved for each route and will provided to your component as a `permissions` prop.
+You might want to display some fields only to users with specific permissions. 
 
-Each route will call the `authProvider` with the `AUTH_GET_PERMISSIONS` type and some parameters including the current location and route parameters. It's up to you to return whatever you need to check inside your component such as the user's role, etc.
+Before rendering the `Show` component, react-admin calls the `authProvider.getPermissions()` method, and passes the result to the component as the `permissions` prop. It's up to your `authProvider` to return whatever you need to check roles and permissions inside your component.
 
 Here's an example inside a `Show` view with a `SimpleShowLayout` and a custom `actions` component:
 
 {% raw %}
 ```jsx
-import CardActions from '@material-ui/core/CardActions';
+import TopToolbar from '@material-ui/core/TopToolbar';
 import Button from '@material-ui/core/Button';
 import { EditButton, DeleteButton } from 'react-admin';
 
-const cardActionStyle = {
-    zIndex: 2,
-    display: 'inline-block',
-    float: 'right',
-};
-
 const PostShowActions = ({ permissions, basePath, data, resource }) => (
-    <CardActions style={cardActionStyle}>
+    <TopToolbar>
         <EditButton basePath={basePath} record={data} />
         {permissions === 'admin' &&
             <DeleteButton basePath={basePath} record={data} resource={resource} />
         }
-    </CardActions>
+    </TopToolbar>
 );
 
 export const PostShow = ({ permissions, ...props }) => (

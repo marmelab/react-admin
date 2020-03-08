@@ -9,7 +9,7 @@ import { Identifier } from '../../../types';
 
 const initialState = {};
 
-interface State {
+export interface PossibleValuesState {
     [relatedTo: string]: { error?: string | object } | Identifier[];
 }
 
@@ -18,7 +18,7 @@ type ActionTypes =
     | CrudGetMatchingFailureAction
     | { type: 'OTHER_ACTION' };
 
-const possibleValuesreducer: Reducer<State> = (
+const possibleValuesreducer: Reducer<PossibleValuesState> = (
     previousState = initialState,
     action: ActionTypes
 ) => {
@@ -40,8 +40,9 @@ const possibleValuesreducer: Reducer<State> = (
     }
 };
 
-export const getPossibleReferenceValues = (state, props) =>
-    state[props.referenceSource(props.resource, props.source)];
+export const getPossibleReferenceValues = (state, props) => {
+    return state[props.referenceSource(props.resource, props.source)];
+};
 
 export const getPossibleReferences = (
     referenceState,

@@ -1,8 +1,8 @@
 {
-  "lerna": "2.5.1",
-  "packages": [
-    "examples/data-generator",
-    "packages/*"
-  ],
-  "version": "2.9.8"
+    "lerna": "2.5.1",
+    "packages": [
+        "examples/data-generator",
+        "packages/*"
+    ],
+    "version": "3.3.0"
 }

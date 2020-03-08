@@ -1,12 +1,11 @@
 import AppBar from './AppBar';
-import AppBarMobile from './AppBarMobile';
 import CardActions from './CardActions';
 import CardContentInner from './CardContentInner';
 import Confirm from './Confirm';
 import DashboardMenuItem from './DashboardMenuItem';
+import DeviceTestWrapper from './DeviceTestWrapper';
 import Error from './Error';
-import Header from './Header';
-import Headroom from './Headroom';
+import HideOnScroll from './HideOnScroll';
 import Layout from './Layout';
 import Loading from './Loading';
 import LinearProgress from './LinearProgress';
@@ -15,24 +14,22 @@ import Menu from './Menu';
 import MenuItemLink from './MenuItemLink';
 import NotFound from './NotFound';
 import Notification from './Notification';
-import RecordTitle from './RecordTitle';
 import Responsive from './Responsive';
 import Sidebar from './Sidebar';
-import Title from './Title';
+import Title, { TitlePropType } from './Title';
 import TitleForRecord from './TitleForRecord';
+import TopToolbar from './TopToolbar';
 import UserMenu from './UserMenu';
-import ViewTitle from './ViewTitle';
 
 export {
     AppBar,
-    AppBarMobile,
     CardActions,
     CardContentInner,
     Confirm,
     DashboardMenuItem,
+    DeviceTestWrapper,
     Error,
-    Header,
-    Headroom,
+    HideOnScroll,
     Layout,
     Loading,
     LinearProgress,
@@ -41,11 +38,11 @@ export {
     MenuItemLink,
     NotFound,
     Notification,
-    RecordTitle,
     Responsive,
     Sidebar,
     Title,
     TitleForRecord,
+    TitlePropType,
+    TopToolbar,
     UserMenu,
-    ViewTitle,
 };

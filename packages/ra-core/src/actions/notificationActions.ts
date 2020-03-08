@@ -3,7 +3,7 @@ export const SHOW_NOTIFICATION = 'RA/SHOW_NOTIFICATION';
 export type NotificationType = 'info' | 'warning' | 'error';
 
 interface NotificationOptions {
-    // The type of the notification
+    // The duration in milliseconds the notification is shown
     autoHideDuration?: number;
     // Arguments used to translate the message
     messageArgs?: any;
@@ -25,7 +25,7 @@ export interface ShowNotificationAction {
 /**
  * Shows a snackbar/toast notification on the screen
  *
- * @see {@link https://v1.material-ui.com/api/snackbar/|Material ui snackbar component}
+ * @see {@link https://material-ui.com/api/snackbar/|Material ui snackbar component}
  * @see {@link https://material.io/guidelines/components/snackbars-toasts.html|Material ui reference document on snackbar}
  */
 export const showNotification = (

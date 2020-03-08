@@ -15,7 +15,7 @@ export default function(db) {
     });
 
     // add 'collector' group
-    var customersBySpending = db.commands.reduce((customers, command) => {
+    const customersBySpending = db.commands.reduce((customers, command) => {
         if (!customers[command.customer_id]) {
             customers[command.customer_id] = { nbProducts: 0 };
         }

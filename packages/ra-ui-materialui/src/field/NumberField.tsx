@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
@@ -46,8 +46,11 @@ interface Props extends FieldProps {
  * // renders the record { id: 1234, price: 25.99 } as
  * <span>25,99 $US</span>
  */
-export const NumberField: SFC<Props & InjectedFieldProps & TypographyProps> = ({
+export const NumberField: FunctionComponent<
+    Props & InjectedFieldProps & TypographyProps
+> = ({
     className,
+    emptyText,
     record,
     source,
     locales,
@@ -60,29 +63,26 @@ export const NumberField: SFC<Props & InjectedFieldProps & TypographyProps> = ({
     }
     const value = get(record, source);
     if (value == null) {
-        return null;
-    }
-    if (!hasNumberFormat) {
-        return (
+        return emptyText ? (
             <Typography
                 component="span"
-                variant="body1"
+                variant="body2"
                 className={className}
                 {...sanitizeRestProps(rest)}
             >
-                {value}
+                {emptyText}
             </Typography>
-        );
+        ) : null;
     }
 
     return (
         <Typography
+            variant="body2"
             component="span"
-            variant="body1"
             className={className}
             {...sanitizeRestProps(rest)}
         >
-            {value.toLocaleString(locales, options)}
+            {hasNumberFormat ? value.toLocaleString(locales, options) : value}
         </Typography>
     );
 };
@@ -98,6 +98,7 @@ EnhancedNumberField.defaultProps = {
 };
 
 EnhancedNumberField.propTypes = {
+    // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
     locales: PropTypes.oneOfType([

@@ -1,6 +1,6 @@
 {
     "name": "react-admin",
-    "version": "2.9.8",
+    "version": "3.3.0",
     "description": "A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI",
     "files": [
         "*.md",
@@ -23,19 +23,33 @@
         "build": "yarn run build-cjs && yarn run build-esm",
         "build-cjs": "rimraf ./lib && tsc",
         "build-esm": "rimraf ./esm && tsc --outDir esm --module es2015",
-        "watch": "rimraf ./lib && tsc --watch"
+        "watch": "tsc --outDir esm --module es2015 --watch"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
-        "rimraf": "^2.6.2"
+        "rimraf": "^2.6.3"
     },
     "peerDependencies": {
-        "react": "^16.3.0",
-        "react-dom": "^16.3.0"
+        "react": "^16.9.0",
+        "react-dom": "^16.9.0"
     },
     "dependencies": {
-        "ra-core": "^2.9.8",
-        "ra-language-english": "^2.9.3",
-        "ra-ui-materialui": "^2.9.8"
+        "@material-ui/core": "^4.3.3",
+        "@material-ui/icons": "^4.2.1",
+        "@material-ui/styles": "^4.3.3",
+        "connected-react-router": "^6.5.2",
+        "final-form": "^4.18.5",
+        "final-form-arrays": "^3.0.1",
+        "ra-core": "^3.3.0",
+        "ra-i18n-polyglot": "^3.3.0",
+        "ra-language-english": "^3.2.0",
+        "ra-ui-materialui": "^3.3.0",
+        "react-final-form": "^6.3.3",
+        "react-final-form-arrays": "^3.1.1",
+        "react-redux": "^7.1.0",
+        "react-router": "^5.1.0",
+        "react-router-dom": "^5.1.0",
+        "redux": "^3.7.2 || ^4.0.3",
+        "redux-saga": "^1.0.0"
     }
 }

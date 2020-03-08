@@ -1,6 +1,6 @@
 {
     "name": "ra-language-french",
-    "version": "2.9.3",
+    "version": "3.2.0",
     "description": "French messages for react-admin, the frontend framework for building admin applications on top of REST/GraphQL services",
     "main": "index.js",
     "repository": {
@@ -10,7 +10,7 @@
     "keywords": [
         "react",
         "react-admin",
-        "react-admin",
+        "admin-on-rest",
         "translation"
     ],
     "author": "François Zaninotto",

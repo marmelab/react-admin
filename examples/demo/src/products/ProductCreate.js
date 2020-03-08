@@ -9,74 +9,101 @@ import {
     TextInput,
     required,
 } from 'react-admin';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { InputAdornment } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import RichTextInput from 'ra-input-rich-text';
 
 export const styles = {
-    stock: { width: '5em' },
-    price: { width: '5em' },
-    width: { width: '5em' },
+    price: { width: '7em' },
+    width: { width: '7em' },
+    height: { width: '7em' },
+    stock: { width: '7em' },
     widthFormGroup: { display: 'inline-block' },
-    height: { width: '5em' },
     heightFormGroup: { display: 'inline-block', marginLeft: 32 },
 };
 
-const ProductCreate = ({ classes, ...props }) => (
-    <Create {...props}>
-        <TabbedForm>
-            <FormTab label="resources.products.tabs.image">
-                <TextInput
-                    autoFocus
-                    source="image"
-                    options={{ fullWidth: true }}
-                    validate={required()}
-                />
-                <TextInput
-                    source="thumbnail"
-                    options={{ fullWidth: true }}
-                    validate={required()}
-                />
-            </FormTab>
-            <FormTab label="resources.products.tabs.details" path="details">
-                <TextInput source="reference" validate={required()} />
-                <NumberInput
-                    source="price"
-                    validate={required()}
-                    className={classes.price}
-                />
-                <NumberInput
-                    source="width"
-                    validate={required()}
-                    className={classes.width}
-                    formClassName={classes.widthFormGroup}
-                />
-                <NumberInput
-                    source="height"
-                    validate={required()}
-                    className={classes.height}
-                    formClassName={classes.heightFormGroup}
-                />
-                <ReferenceInput
-                    source="category_id"
-                    reference="categories"
-                    allowEmpty
-                >
-                    <SelectInput source="name" />
-                </ReferenceInput>
-                <NumberInput
-                    source="stock"
-                    validate={required()}
-                    className={classes.stock}
-                />
-            </FormTab>
-            <FormTab
-                label="resources.products.tabs.description"
-                path="description"
-            >
-                <RichTextInput source="description" addLabel={false} />
-            </FormTab>
-        </TabbedForm>
-    </Create>
-);
+const useStyles = makeStyles(styles);
 
-export default withStyles(styles)(ProductCreate);
+const ProductCreate = props => {
+    const classes = useStyles();
+    return (
+        <Create {...props}>
+            <TabbedForm>
+                <FormTab label="resources.products.tabs.image">
+                    <TextInput
+                        autoFocus
+                        source="image"
+                        fullWidth
+                        validate={required()}
+                    />
+                    <TextInput
+                        source="thumbnail"
+                        fullWidth
+                        validate={required()}
+                    />
+                </FormTab>
+                <FormTab label="resources.products.tabs.details" path="details">
+                    <TextInput source="reference" validate={required()} />
+                    <NumberInput
+                        source="price"
+                        validate={required()}
+                        className={classes.price}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    €
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    <NumberInput
+                        source="width"
+                        validate={required()}
+                        className={classes.width}
+                        formClassName={classes.widthFormGroup}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="start">
+                                    cm
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    <NumberInput
+                        source="height"
+                        validate={required()}
+                        className={classes.height}
+                        formClassName={classes.heightFormGroup}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="start">
+                                    cm
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    <ReferenceInput
+                        source="category_id"
+                        reference="categories"
+                        allowEmpty
+                    >
+                        <SelectInput source="name" />
+                    </ReferenceInput>
+                    <NumberInput
+                        source="stock"
+                        validate={required()}
+                        className={classes.stock}
+                    />
+                </FormTab>
+                <FormTab
+                    label="resources.products.tabs.description"
+                    path="description"
+                >
+                    <RichTextInput source="description" label="" />
+                </FormTab>
+            </TabbedForm>
+        </Create>
+    );
+};
+
+export default ProductCreate;

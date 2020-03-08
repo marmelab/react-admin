@@ -1,20 +1,10 @@
-import { Component, ReactNode } from 'react';
-import { connect } from 'react-redux';
-import get from 'lodash/get';
+import { FunctionComponent, ReactNode, ReactElement } from 'react';
 
-import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions';
-import { getReferencesByIds } from '../../reducer/admin/references/oneToMany';
-import {
-    ReduxState,
-    Record,
-    RecordMap,
-    Dispatch,
-    Sort,
-    Identifier,
-} from '../../types';
+import useReferenceArrayFieldController from './useReferenceArrayFieldController';
+import { Identifier, RecordMap, Record, Sort } from '../..';
 
 interface ChildrenFuncParams {
-    loadedOnce: boolean;
+    loaded: boolean;
     ids: Identifier[];
     data: RecordMap;
     referenceBasePath: string;
@@ -24,9 +14,6 @@ interface ChildrenFuncParams {
 interface Props {
     basePath: string;
     children: (params: ChildrenFuncParams) => ReactNode;
-    crudGetManyAccumulate: Dispatch<typeof crudGetManyAccumulateAction>;
-    data?: RecordMap;
-    ids: Identifier[];
     record?: Record;
     reference: string;
     resource: string;
@@ -34,94 +21,31 @@ interface Props {
 }
 
 /**
- * A container component that fetches records from another resource specified
- * by an array of *ids* in current record.
+ * Render prop version of the useReferenceArrayFieldController hook.
  *
- * You must define the fields to be passed to the iterator component as children.
- *
- * @example Display all the products of the current order as datagrid
- * // order = {
- * //   id: 123,
- * //   product_ids: [456, 457, 458],
- * // }
- * <ReferenceArrayField label="Products" reference="products" source="product_ids">
- *     <Datagrid>
- *         <TextField source="id" />
- *         <TextField source="description" />
- *         <NumberField source="price" options={{ style: 'currency', currency: 'USD' }} />
- *         <EditButton />
- *     </Datagrid>
- * </ReferenceArrayField>
- *
- * @example Display all the categories of the current product as a list of chips
- * // product = {
- * //   id: 456,
- * //   category_ids: [11, 22, 33],
- * // }
- * <ReferenceArrayField label="Categories" reference="categories" source="category_ids">
- *     <SingleFieldList>
- *         <ChipField source="name" />
- *     </SingleFieldList>
- * </ReferenceArrayField>
- *
+ * @see useReferenceArrayFieldController
  */
-export class UnconnectedReferenceArrayFieldController extends Component<Props> {
-    componentDidMount() {
-        this.fetchReferences();
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (
-            (this.props.record || { id: undefined }).id !==
-            (nextProps.record || {}).id
-        ) {
-            this.fetchReferences(nextProps);
-        }
-    }
-
-    fetchReferences({ crudGetManyAccumulate, reference, ids } = this.props) {
-        crudGetManyAccumulate(reference, ids);
-    }
-
-    render() {
-        const {
+const ReferenceArrayFieldController: FunctionComponent<Props> = ({
+    resource,
+    reference,
+    basePath,
+    record,
+    source,
+    children,
+}) => {
+    return children({
+        currentSort: {
+            field: 'id',
+            order: 'ASC',
+        },
+        ...useReferenceArrayFieldController({
             resource,
             reference,
-            data,
-            ids,
-            children,
             basePath,
-        } = this.props;
-
-        const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
-
-        return children({
-            loadedOnce: data != undefined, // eslint-disable-line eqeqeq
-            ids,
-            data,
-            referenceBasePath,
-            currentSort: {
-                field: 'id',
-                order: 'ASC',
-            },
-        });
-    }
-}
-
-const mapStateToProps = (state: ReduxState, props: Props) => {
-    const { record, source, reference } = props;
-    const ids = get(record, source) || [];
-    return {
-        data: getReferencesByIds(state, reference, ids),
-        ids,
-    };
+            record,
+            source,
+        }),
+    }) as ReactElement<any>;
 };
-
-const ReferenceArrayFieldController = connect(
-    mapStateToProps,
-    {
-        crudGetManyAccumulate: crudGetManyAccumulateAction,
-    }
-)(UnconnectedReferenceArrayFieldController);
 
 export default ReferenceArrayFieldController;

@@ -1,8 +1,8 @@
-import React, { ReactType } from 'react';
+import React, { ElementType } from 'react';
 import FormField from './FormField';
 
 export default (
-    BaseComponent: ReactType,
+    BaseComponent: ElementType<any>,
     fieldProps: {
         [key: string]: any;
     } = {}

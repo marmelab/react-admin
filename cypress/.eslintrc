@@ -1,9 +1,7 @@
 {
     "extends": "../.eslintrc",
-    "plugins": [
-        "cypress"
-    ],
-      "env": {
+    "plugins": ["cypress"],
+    "env": {
         "cypress/globals": true
     }
 }

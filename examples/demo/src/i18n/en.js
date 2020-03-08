@@ -40,24 +40,34 @@ export default {
             name: 'Customer |||| Customers',
             fields: {
                 commands: 'Orders',
+                first_seen: 'First seen',
                 groups: 'Segments',
+                last_seen: 'Last seen',
                 last_seen_gte: 'Visited Since',
                 name: 'Name',
                 total_spent: 'Total spent',
+                password: 'Password',
+                confirm_password: 'Confirm password',
             },
-            tabs: {
+            fieldGroups: {
                 identity: 'Identity',
                 address: 'Address',
-                orders: 'Orders',
-                reviews: 'Reviews',
                 stats: 'Stats',
+                history: 'History',
+                password: 'Password',
+                change_password: 'Change Password',
             },
             page: {
                 delete: 'Delete Customer',
             },
+            errors: {
+                password_mismatch:
+                    'The password confirmation is not the same as the password.',
+            },
         },
         commands: {
             name: 'Order |||| Orders',
+            amount: '1 order |||| %{smart_count} orders',
             title: 'Order %{reference}',
             fields: {
                 basket: {
@@ -121,6 +131,8 @@ export default {
         },
         reviews: {
             name: 'Review |||| Reviews',
+            amount: '1 review |||| %{smart_count} reviews',
+            relative_to_poster: 'Review on poster',
             detail: 'Review detail',
             fields: {
                 customer_id: 'Customer',

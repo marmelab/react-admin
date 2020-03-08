@@ -1,58 +1,35 @@
-import React, { SFC } from 'react';
+import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
 import FalseIcon from '@material-ui/icons/Clear';
 import TrueIcon from '@material-ui/icons/Done';
-import Typography, { TypographyProps } from '@material-ui/core/Typography';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
+import { Tooltip, Typography } from '@material-ui/core';
+import { TypographyProps } from '@material-ui/core/Typography';
 import compose from 'recompose/compose';
-import { translate as withTranslate, TranslationContextProps } from 'ra-core';
+import { useTranslate } from 'ra-core';
 
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import sanitizeRestProps from './sanitizeRestProps';
-
-const styles = createStyles({
-    label: {
-        // Move the text out of the flow of the container.
-        position: 'absolute',
-
-        // Reduce its height and width to just one pixel.
-        height: 1,
-        width: 1,
-
-        // Hide any overflowing elements or text.
-        overflow: 'hidden',
-
-        // Clip the box to zero pixels.
-        clip: 'rect(0, 0, 0, 0)',
-
-        // Text won't wrap to a second line.
-        whiteSpace: 'nowrap',
-    },
-});
 
 interface Props extends FieldProps {
     valueLabelTrue?: string;
     valueLabelFalse?: string;
 }
 
-interface EnhancedProps
-    extends TranslationContextProps,
-        WithStyles<typeof styles> {}
-
-export const BooleanField: SFC<
-    Props & InjectedFieldProps & EnhancedProps & TypographyProps
+export const BooleanField: FunctionComponent<
+    Props & InjectedFieldProps & TypographyProps
 > = ({
     className,
-    classes,
+    classes: classesOverride,
+    emptyText,
     source,
     record = {},
-    translate,
     valueLabelTrue,
     valueLabelFalse,
     ...rest
 }) => {
+    const translate = useTranslate();
     const value = get(record, source);
     let ariaLabel = value ? valueLabelTrue : valueLabelFalse;
 
@@ -64,14 +41,13 @@ export const BooleanField: SFC<
         return (
             <Typography
                 component="span"
-                variant="body1"
+                variant="body2"
                 className={className}
                 {...sanitizeRestProps(rest)}
             >
-                <span className={classes.label}>
-                    {translate(ariaLabel, { _: ariaLabel })}
-                </span>
-                <FalseIcon data-testid="false" />
+                <Tooltip title={translate(ariaLabel, { _: ariaLabel })}>
+                    <FalseIcon data-testid="false" />
+                </Tooltip>
             </Typography>
         );
     }
@@ -80,14 +56,13 @@ export const BooleanField: SFC<
         return (
             <Typography
                 component="span"
-                variant="body1"
+                variant="body2"
                 className={className}
                 {...sanitizeRestProps(rest)}
             >
-                <span className={classes.label}>
-                    {translate(ariaLabel, { _: ariaLabel })}
-                </span>
-                <TrueIcon data-testid="true" />
+                <Tooltip title={translate(ariaLabel, { _: ariaLabel })}>
+                    <TrueIcon data-testid="true" />
+                </Tooltip>
             </Typography>
         );
     }
@@ -95,27 +70,26 @@ export const BooleanField: SFC<
     return (
         <Typography
             component="span"
-            variant="body1"
+            variant="body2"
             className={className}
             {...sanitizeRestProps(rest)}
-        />
+        >
+            {emptyText}
+        </Typography>
     );
 };
 
 const EnhancedBooleanField = compose<
-    Props & InjectedFieldProps & EnhancedProps & TypographyProps,
+    Props & InjectedFieldProps & TypographyProps,
     Props & TypographyProps
->(
-    pure,
-    withStyles(styles),
-    withTranslate
-)(BooleanField);
+>(pure)(BooleanField);
 
 EnhancedBooleanField.defaultProps = {
     addLabel: true,
 };
 
 EnhancedBooleanField.propTypes = {
+    // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
     valueLabelFalse: PropTypes.string,

@@ -3,16 +3,20 @@ import {
     RegisterResourceAction,
     UNREGISTER_RESOURCE,
     UnregisterResourceAction,
+    REFRESH_VIEW,
+    RefreshViewAction,
 } from '../../../actions';
 
 import data from './data';
 import list from './list';
+import validity from './validity';
 
 const initialState = {};
 
 type ActionTypes =
     | RegisterResourceAction
     | UnregisterResourceAction
+    | RefreshViewAction
     | { type: 'OTHER_ACTION'; payload?: any; meta?: { resource?: string } };
 
 export default (previousState = initialState, action: ActionTypes) => {
@@ -21,6 +25,7 @@ export default (previousState = initialState, action: ActionTypes) => {
             props: action.payload,
             data: data(undefined, action),
             list: list(undefined, action),
+            validity: validity(undefined, action),
         };
         return {
             ...previousState,
@@ -38,7 +43,10 @@ export default (previousState = initialState, action: ActionTypes) => {
         }, {});
     }
 
-    if (!action.meta || !action.meta.resource) {
+    if (
+        action.type !== REFRESH_VIEW &&
+        (!action.meta || !action.meta.resource)
+    ) {
         return previousState;
     }
 
@@ -47,11 +55,16 @@ export default (previousState = initialState, action: ActionTypes) => {
         (acc, resource) => ({
             ...acc,
             [resource]:
+                action.type === REFRESH_VIEW ||
                 action.meta.resource === resource
                     ? {
                           props: previousState[resource].props,
                           data: data(previousState[resource].data, action),
                           list: list(previousState[resource].list, action),
+                          validity: validity(
+                              previousState[resource].validity,
+                              action
+                          ),
                       }
                     : previousState[resource],
         }),

@@ -1,9 +1,9 @@
 import { put, takeEvery } from 'redux-saga/effects';
-import { push } from 'react-router-redux';
-import { reset } from 'redux-form';
+import { push } from 'connected-react-router';
 
 import { Identifier } from '../types';
 import resolveRedirectTo from '../util/resolveRedirectTo';
+import { refreshView } from '../actions/uiActions';
 
 type RedirectToFunction = (
     basePath: string,
@@ -11,7 +11,7 @@ type RedirectToFunction = (
     data: any
 ) => string;
 
-export type RedirectionSideEffect = string | false | RedirectToFunction;
+export type RedirectionSideEffect = string | boolean | RedirectToFunction;
 
 interface ActionWithSideEffect {
     type: string;
@@ -41,27 +41,29 @@ export function* handleRedirection({
     requestPayload,
     meta: { basePath, redirectTo },
 }: ActionWithSideEffect) {
-    return redirectTo
-        ? yield put(
-              push(
-                  resolveRedirectTo(
-                      redirectTo,
-                      basePath,
-                      payload
-                          ? payload.id ||
-                                (payload.data ? payload.data.id : null)
-                          : requestPayload
-                          ? requestPayload.id
-                          : null,
-                      payload && payload.data
-                          ? payload.data
-                          : requestPayload && requestPayload.data
-                          ? requestPayload.data
-                          : null
-                  )
-              )
-          )
-        : yield put(reset('record-form')); // explicit no redirection, reset the form
+    if (!redirectTo) {
+        yield put(refreshView());
+        return;
+    }
+
+    yield put(
+        push(
+            resolveRedirectTo(
+                redirectTo,
+                basePath,
+                payload
+                    ? payload.id || (payload.data ? payload.data.id : null)
+                    : requestPayload
+                    ? requestPayload.id
+                    : null,
+                payload && payload.data
+                    ? payload.data
+                    : requestPayload && requestPayload.data
+                    ? requestPayload.data
+                    : null
+            )
+        )
+    );
 }
 
 export default function*() {

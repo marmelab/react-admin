@@ -1,7 +1,7 @@
 import assert from 'assert';
 
 import oneToManyReducer, { nameRelatedTo } from './oneToMany';
-import { DELETE, DELETE_MANY } from '../../../dataFetchActions';
+import { DELETE, DELETE_MANY } from '../../../core';
 import { UNDOABLE } from '../../../actions';
 
 describe('oneToMany', () => {

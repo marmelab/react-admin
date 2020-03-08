@@ -1,10 +1,8 @@
-import assert from 'assert';
-import { render } from 'enzyme';
+import expect from 'expect';
+import { cleanup } from '@testing-library/react';
 import React from 'react';
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { TranslationProvider } from 'ra-core';
+import { renderWithRedux } from 'ra-core';
+
 import FilterForm, { mergeInitialValuesWithDefaultValues } from './FilterForm';
 import TextInput from '../input/TextInput';
 
@@ -12,44 +10,32 @@ describe('<FilterForm />', () => {
     const defaultProps = {
         resource: 'post',
         filters: [],
-        setFilter: () => {},
+        setFilters: () => {},
         hideFilter: () => {},
         displayedFilters: {},
         filterValues: {},
     };
 
-    let store;
-    beforeEach(() => {
-        store = createStore(() => ({ i18n: { locale: 'en' } }));
-    });
-
     it('should display correctly passed filters', () => {
         const filters = [
             <TextInput source="title" label="Title" />,
             <TextInput source="customer.name" label="Name" />,
-        ]; // eslint-disable-line react/jsx-key
+        ];
         const displayedFilters = {
             title: true,
             'customer.name': true,
         };
 
-        const muiTheme = createMuiTheme({ userAgent: false });
-        const wrapper = render(
-            <Provider store={store}>
-                <TranslationProvider>
-                    <MuiThemeProvider theme={muiTheme}>
-                        <FilterForm
-                            {...defaultProps}
-                            filters={filters}
-                            displayedFilters={displayedFilters}
-                        />
-                    </MuiThemeProvider>
-                </TranslationProvider>
-            </Provider>
+        const { queryAllByLabelText } = renderWithRedux(
+            <FilterForm
+                {...defaultProps}
+                filters={filters}
+                displayedFilters={displayedFilters}
+            />
         );
-
-        const titleFilter = wrapper.find('input[type="text"]');
-        assert.equal(titleFilter.length, 2);
+        expect(queryAllByLabelText('Title')).toHaveLength(1);
+        expect(queryAllByLabelText('Name')).toHaveLength(1);
+        cleanup();
     });
 
     describe('mergeInitialValuesWithDefaultValues', () => {
@@ -83,16 +69,13 @@ describe('<FilterForm />', () => {
                 { props: { source: 'notMeEither' } },
             ];
 
-            assert.deepEqual(
-                mergeInitialValuesWithDefaultValues({ initialValues, filters }),
-                {
-                    initialValues: {
-                        title: 'initial title',
-                        url: 'default url',
-                        author: { name: 'default author' },
-                    },
-                }
-            );
+            expect(
+                mergeInitialValuesWithDefaultValues({ initialValues, filters })
+            ).toEqual({
+                title: 'initial title',
+                url: 'default url',
+                author: { name: 'default author' },
+            });
         });
     });
 });

@@ -4,8 +4,10 @@ import {
     SetListSelectedIdsAction,
     TOGGLE_LIST_ITEM,
     ToggleListItemAction,
-} from '../../../../actions/listActions';
-import { DELETE, DELETE_MANY } from '../../../../dataFetchActions';
+    CRUD_DELETE_SUCCESS,
+    CrudDeleteSuccessAction,
+} from '../../../../actions';
+import { DELETE, DELETE_MANY } from '../../../../core';
 import { Identifier } from '../../../../types';
 
 const initialState = [];
@@ -15,6 +17,7 @@ type State = Identifier[];
 type ActionTypes =
     | SetListSelectedIdsAction
     | ToggleListItemAction
+    | CrudDeleteSuccessAction
     | {
           type: 'DELETE_ACTION';
           meta: { optimistic: true; fetch: string };
@@ -42,6 +45,15 @@ const selectedIdsReducer: Reducer<State> = (
             ];
         } else {
             return [...previousState, action.payload];
+        }
+    }
+    if (action.type === CRUD_DELETE_SUCCESS) {
+        const index = previousState.indexOf(action.payload.data.id);
+        if (index > -1) {
+            return [
+                ...previousState.slice(0, index),
+                ...previousState.slice(index + 1),
+            ];
         }
     }
 

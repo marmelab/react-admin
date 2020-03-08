@@ -132,6 +132,8 @@ describe('buildVariables', () => {
             const params = {
                 target: 'author.id',
                 id: 'author1',
+                pagination: { page: 1, perPage: 10 },
+                sort: { field: 'name', order: 'ASC' },
             };
 
             expect(
@@ -143,6 +145,10 @@ describe('buildVariables', () => {
                 )
             ).toEqual({
                 filter: { authorId: 'author1' },
+                page: 0,
+                perPage: 10,
+                sortField: 'name',
+                sortOrder: 'ASC',
             });
         });
     });

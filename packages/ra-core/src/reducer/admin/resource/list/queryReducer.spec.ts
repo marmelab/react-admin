@@ -36,7 +36,7 @@ describe('Query Reducer', () => {
                 {},
                 {
                     type: 'SET_FILTER',
-                    payload: { title: 'foo' },
+                    payload: { filter: { title: 'foo' } },
                 }
             );
             assert.deepEqual(updatedState.filter, { title: 'foo' });
@@ -51,11 +51,26 @@ describe('Query Reducer', () => {
                 },
                 {
                     type: 'SET_FILTER',
-                    payload: { title: 'bar' },
+                    payload: { filter: { title: 'bar' } },
                 }
             );
 
             assert.deepEqual(updatedState.filter, { title: 'bar' });
+        });
+
+        it('should add new filter and displayedFilter with given value when set', () => {
+            const updatedState = queryReducer(
+                {},
+                {
+                    type: 'SET_FILTER',
+                    payload: {
+                        filter: { title: 'foo' },
+                        displayedFilters: { title: true },
+                    },
+                }
+            );
+            assert.deepEqual(updatedState.filter, { title: 'foo' });
+            assert.deepEqual(updatedState.displayedFilters, { title: true });
         });
 
         it('should reset page to 1', () => {

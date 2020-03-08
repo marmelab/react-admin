@@ -29,6 +29,7 @@ module.exports = {
         boolean: {
             true: 'Oui',
             false: 'Non',
+            null: '',
         },
         page: {
             create: 'Créer %{name}',
@@ -39,6 +40,8 @@ module.exports = {
             loading: 'Chargement',
             not_found: 'Page manquante',
             show: '%{name} #%{id}',
+            empty: 'Pas encore de %{name}.',
+            invite: 'Voulez-vous en créer un ?',
         },
         input: {
             file: {
@@ -59,6 +62,10 @@ module.exports = {
                     'Au moins une des références associées semble ne plus être disponible.',
                 single_missing:
                     'La référence associée ne semble plus disponible.',
+            },
+            password: {
+                toggle_visible: 'Cacher le mot de passe',
+                toggle_hidden: 'Montrer le mot de passe',
             },
         },
         message: {
@@ -95,6 +102,7 @@ module.exports = {
             prev: 'Précédent',
         },
         auth: {
+            auth_check_error: 'Merci de vous connecter pour continuer',
             user_menu: 'Profil',
             username: 'Identifiant',
             password: 'Mot de passe',
@@ -112,6 +120,8 @@ module.exports = {
             http_error: 'Erreur de communication avec le serveur',
             data_provider_error:
                 'Erreur dans le dataProvider. Plus de détails dans la console.',
+            i18n_error:
+                'Erreur de chargement des traductions pour la langue sélectionnée',
             canceled: 'Action annulée',
             logged_out: 'Votre session a pris fin, veuillez vous reconnecter.',
         },

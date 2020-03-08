@@ -1,6 +1,4 @@
 import frenchMessages from 'ra-language-french';
-import treeFrenchMessages from 'ra-tree-language-french';
-import { mergeTranslations } from 'react-admin';
 
 export default {
     simple: {
@@ -10,7 +8,7 @@ export default {
         },
         'create-post': 'Nouveau post',
     },
-    ...mergeTranslations(frenchMessages, treeFrenchMessages),
+    ...frenchMessages,
     resources: {
         posts: {
             name: 'Article |||| Articles',
@@ -19,6 +17,7 @@ export default {
                 body: 'Contenu',
                 comments: 'Commentaires',
                 commentable: 'Commentable',
+                commentable_short: 'Com.',
                 created_at: 'Créé le',
                 notifications: 'Destinataires de notifications',
                 nb_view: 'Nb de vues',

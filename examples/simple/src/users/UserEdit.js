@@ -2,49 +2,70 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+    CloneButton,
     DeleteWithConfirmButton,
-    DisabledInput,
     Edit,
     FormTab,
+    required,
     SaveButton,
     SelectInput,
+    ShowButton,
     TabbedForm,
     TextInput,
     Toolbar,
-    required,
+    TopToolbar,
 } from 'react-admin';
-import { withStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 import UserTitle from './UserTitle';
 import Aside from './Aside';
 
-const toolbarStyles = {
+const useToolbarStyles = makeStyles({
     toolbar: {
         display: 'flex',
         justifyContent: 'space-between',
     },
-};
+});
 
 /**
  * Custom Toolbar for the Edit form
  *
  * Save with undo, but delete with confirm
  */
-const UserEditToolbar = withStyles(toolbarStyles)(props => (
-    <Toolbar {...props}>
-        <SaveButton />
-        <DeleteWithConfirmButton />
-    </Toolbar>
-));
+const UserEditToolbar = props => {
+    const classes = useToolbarStyles();
+    return (
+        <Toolbar {...props} classes={classes}>
+            <SaveButton />
+            <DeleteWithConfirmButton />
+        </Toolbar>
+    );
+};
+
+const EditActions = ({ basePath, data, hasShow }) => (
+    <TopToolbar>
+        <CloneButton
+            className="button-clone"
+            basePath={basePath}
+            record={data}
+        />
+        <ShowButton basePath={basePath} record={data} />
+    </TopToolbar>
+);
 
 const UserEdit = ({ permissions, ...props }) => (
-    <Edit title={<UserTitle />} aside={<Aside />} {...props}>
+    <Edit
+        title={<UserTitle />}
+        aside={<Aside />}
+        actions={<EditActions />}
+        {...props}
+    >
         <TabbedForm
             defaultValue={{ role: 'user' }}
             toolbar={<UserEditToolbar />}
         >
             <FormTab label="user.form.summary" path="">
-                {permissions === 'admin' && <DisabledInput source="id" />}
+                {permissions === 'admin' && <TextInput disabled source="id" />}
                 <TextInput
                     source="name"
                     defaultValue="slim shady"

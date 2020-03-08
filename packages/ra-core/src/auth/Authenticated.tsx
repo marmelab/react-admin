@@ -1,33 +1,31 @@
-import React, { Component, ReactElement } from 'react';
-import { connect } from 'react-redux';
+import { cloneElement, ReactElement, FunctionComponent } from 'react';
 
-import { userCheck as userCheckAction } from '../actions/authActions';
-import { UserCheck } from './types';
+import useAuthenticated from './useAuthenticated';
 
 interface Props {
-    authParams?: object;
     children: ReactElement<any>;
-    location: object;
-    userCheck: UserCheck;
+    authParams?: object;
+    location?: object; // kept for backwards compatibility, unused
 }
 
 /**
- * Restrict access to children to authenticated users
+ * Restrict access to children to authenticated users.
+ * Redirects anonymous users to the login page.
  *
- * Useful for Route components ; used internally by Resource.
  * Use it to decorate your custom page components to require
  * authentication.
  *
- * Pass the `location` from the `routeParams` as `location` prop.
  * You can set additional `authParams` at will if your authProvider
  * requires it.
+ *
+ * @see useAuthenticated
  *
  * @example
  *     import { Authenticated } from 'react-admin';
  *
  *     const CustomRoutes = [
- *         <Route path="/foo" render={routeParams =>
- *             <Authenticated location={routeParams.location} authParams={{ foo: 'bar' }}>
+ *         <Route path="/foo" render={() =>
+ *             <Authenticated authParams={{ foo: 'bar' }}>
  *                 <Foo />
  *             </Authenticated>
  *         } />
@@ -38,36 +36,16 @@ interface Props {
  *         </Admin>
  *     );
  */
-export class Authenticated extends Component<Props> {
-    componentWillMount() {
-        this.checkAuthentication(this.props);
-    }
+const Authenticated: FunctionComponent<Props> = ({
+    authParams,
+    children,
+    location, // kept for backwards compatibility, unused
+    ...rest
+}) => {
+    useAuthenticated(authParams);
+    // render the child even though the useAuthenticated() call isn't finished (optimistic rendering)
+    // the above hook will log out if the authProvider doesn't validate that the user is authenticated
+    return cloneElement(children, rest);
+};
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.location !== this.props.location) {
-            this.checkAuthentication(nextProps);
-        }
-    }
-
-    checkAuthentication(params) {
-        const { userCheck, authParams, location } = params;
-        userCheck(authParams, location && location.pathname);
-    }
-
-    // render the child even though the AUTH_CHECK isn't finished (optimistic rendering)
-    render() {
-        const {
-            children,
-            userCheck,
-            authParams,
-            location,
-            ...rest
-        } = this.props;
-        return React.cloneElement(children, rest);
-    }
-}
-
-export default connect(
-    null,
-    { userCheck: userCheckAction }
-)(Authenticated);
+export default Authenticated;

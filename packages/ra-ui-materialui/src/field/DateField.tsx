@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
@@ -48,8 +48,11 @@ interface Props extends FieldProps {
  * <span>mercredi 7 novembre 2012</span>
  */
 
-export const DateField: SFC<Props & InjectedFieldProps & TypographyProps> = ({
+export const DateField: FunctionComponent<
+    Props & InjectedFieldProps & TypographyProps
+> = ({
     className,
+    emptyText,
     locales,
     options,
     record,
@@ -62,8 +65,18 @@ export const DateField: SFC<Props & InjectedFieldProps & TypographyProps> = ({
     }
     const value = get(record, source);
     if (value == null) {
-        return null;
+        return emptyText ? (
+            <Typography
+                component="span"
+                variant="body2"
+                className={className}
+                {...sanitizeRestProps(rest)}
+            >
+                {emptyText}
+            </Typography>
+        ) : null;
     }
+
     const date = value instanceof Date ? value : new Date(value);
     const dateString = showTime
         ? toLocaleStringSupportsLocales
@@ -76,7 +89,7 @@ export const DateField: SFC<Props & InjectedFieldProps & TypographyProps> = ({
     return (
         <Typography
             component="span"
-            variant="body1"
+            variant="body2"
             className={className}
             {...sanitizeRestProps(rest)}
         >
@@ -92,6 +105,7 @@ EnhancedDateField.defaultProps = {
 };
 
 EnhancedDateField.propTypes = {
+    // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
     locales: PropTypes.oneOfType([

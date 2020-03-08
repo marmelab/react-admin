@@ -15,15 +15,17 @@ describe('Authentication', () => {
         ListPage.navigate();
         ListPage.logout();
         ListPage.navigate();
-        cy.url().then(url => expect(url).to.contain('/#/login'));
+        cy.url().should('contain', '/#/login');
     });
     it('should not login with incorrect credentials', () => {
-        LoginPage.navigate();
+        ListPage.navigate();
+        ListPage.logout();
         LoginPage.login('foo', 'bar');
         cy.contains('Authentication failed, please retry');
     });
     it('should login with correct credentials', () => {
-        LoginPage.navigate();
+        ListPage.navigate();
+        ListPage.logout();
         LoginPage.login('login', 'password');
         cy.url().then(url => expect(url).to.contain('/#/posts'));
     });

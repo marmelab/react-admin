@@ -1,13 +1,16 @@
 import React from 'react';
-import assert from 'assert';
-import { shallow } from 'enzyme';
+import expect from 'expect';
+import { render, cleanup } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+
 import { ReferenceArrayFieldView } from './ReferenceArrayField';
 import TextField from './TextField';
 import SingleFieldList from '../list/SingleFieldList';
 
 describe('<ReferenceArrayField />', () => {
+    afterEach(cleanup);
     it('should render a loading indicator when related records are not yet fetched', () => {
-        const wrapper = shallow(
+        const { queryAllByRole } = render(
             <ReferenceArrayFieldView
                 record={{ barIds: [1, 2] }}
                 resource="foo"
@@ -16,17 +19,14 @@ describe('<ReferenceArrayField />', () => {
                 basePath=""
                 data={null}
                 ids={[1, 2]}
-                loadedOnce={false}
+                loaded={false}
             >
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
             </ReferenceArrayFieldView>
         );
-        const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
-        assert.equal(ProgressElements.length, 1);
-        const SingleFieldListElement = wrapper.find('SingleFieldList');
-        assert.equal(SingleFieldListElement.length, 0);
+        expect(queryAllByRole('progressbar')).toHaveLength(1);
     });
 
     it('should render a list of the child component', () => {
@@ -34,34 +34,32 @@ describe('<ReferenceArrayField />', () => {
             1: { id: 1, title: 'hello' },
             2: { id: 2, title: 'world' },
         };
-        const wrapper = shallow(
-            <ReferenceArrayFieldView
-                record={{ barIds: [1, 2] }}
-                resource="foo"
-                reference="bar"
-                source="barIds"
-                basePath=""
-                data={data}
-                ids={[1, 2]}
-            >
-                <SingleFieldList>
-                    <TextField source="title" />
-                </SingleFieldList>
-            </ReferenceArrayFieldView>
+        const { queryAllByRole, container, getByText } = render(
+            <MemoryRouter>
+                <ReferenceArrayFieldView
+                    record={{ barIds: [1, 2] }}
+                    resource="foo"
+                    reference="bar"
+                    source="barIds"
+                    basePath=""
+                    data={data}
+                    ids={[1, 2]}
+                    loaded={true}
+                >
+                    <SingleFieldList>
+                        <TextField source="title" />
+                    </SingleFieldList>
+                </ReferenceArrayFieldView>
+            </MemoryRouter>
         );
-        const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
-        assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find(
-            'WithStyles(SingleFieldList)'
-        );
-        assert.equal(SingleFieldListElement.length, 1);
-        assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
-        assert.deepEqual(SingleFieldListElement.at(0).prop('data'), data);
-        assert.deepEqual(SingleFieldListElement.at(0).prop('ids'), [1, 2]);
+        expect(queryAllByRole('progressbar')).toHaveLength(0);
+        expect(container.firstChild.textContent).not.toBeUndefined();
+        expect(getByText('hello')).toBeDefined();
+        expect(getByText('world')).toBeDefined();
     });
 
     it('should render nothing when there are no related records', () => {
-        const wrapper = shallow(
+        const { queryAllByRole, container } = render(
             <ReferenceArrayFieldView
                 record={{ barIds: [1, 2] }}
                 resource="foo"
@@ -70,21 +68,15 @@ describe('<ReferenceArrayField />', () => {
                 basePath=""
                 data={{}}
                 ids={[]}
+                loaded={true}
             >
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
             </ReferenceArrayFieldView>
         );
-        const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
-        assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find(
-            'WithStyles(SingleFieldList)'
-        );
-        assert.equal(SingleFieldListElement.length, 1);
-        assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
-        assert.deepEqual(SingleFieldListElement.at(0).prop('data'), {});
-        assert.deepEqual(SingleFieldListElement.at(0).prop('ids'), []);
+        expect(queryAllByRole('progressbar')).toHaveLength(0);
+        expect(container.firstChild.textContent).toBe('');
     });
 
     it('should support record with string identifier', () => {
@@ -92,33 +84,28 @@ describe('<ReferenceArrayField />', () => {
             'abc-1': { id: 'abc-1', title: 'hello' },
             'abc-2': { id: 'abc-2', title: 'world' },
         };
-        const wrapper = shallow(
-            <ReferenceArrayFieldView
-                record={{ barIds: ['abc-1', 'abc-2'] }}
-                resource="foo"
-                reference="bar"
-                source="barIds"
-                basePath=""
-                data={data}
-                ids={['abc-1', 'abc-2']}
-            >
-                <SingleFieldList>
-                    <TextField source="title" />
-                </SingleFieldList>
-            </ReferenceArrayFieldView>
+        const { queryAllByRole, container, getByText } = render(
+            <MemoryRouter>
+                <ReferenceArrayFieldView
+                    record={{ barIds: ['abc-1', 'abc-2'] }}
+                    resource="foo"
+                    reference="bar"
+                    source="barIds"
+                    basePath=""
+                    data={data}
+                    loaded={true}
+                    ids={['abc-1', 'abc-2']}
+                >
+                    <SingleFieldList>
+                        <TextField source="title" />
+                    </SingleFieldList>
+                </ReferenceArrayFieldView>
+            </MemoryRouter>
         );
-        const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
-        assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find(
-            'WithStyles(SingleFieldList)'
-        );
-        assert.equal(SingleFieldListElement.length, 1);
-        assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
-        assert.deepEqual(SingleFieldListElement.at(0).prop('data'), data);
-        assert.deepEqual(SingleFieldListElement.at(0).prop('ids'), [
-            'abc-1',
-            'abc-2',
-        ]);
+        expect(queryAllByRole('progressbar')).toHaveLength(0);
+        expect(container.firstChild.textContent).not.toBeUndefined();
+        expect(getByText('hello')).toBeDefined();
+        expect(getByText('world')).toBeDefined();
     });
 
     it('should support record with number identifier', () => {
@@ -126,30 +113,28 @@ describe('<ReferenceArrayField />', () => {
             1: { id: 1, title: 'hello' },
             2: { id: 2, title: 'world' },
         };
-        const wrapper = shallow(
-            <ReferenceArrayFieldView
-                record={{ barIds: [1, 2] }}
-                resource="foo"
-                reference="bar"
-                source="barIds"
-                basePath=""
-                data={data}
-                ids={[1, 2]}
-            >
-                <SingleFieldList>
-                    <TextField source="title" />
-                </SingleFieldList>
-            </ReferenceArrayFieldView>
+        const { queryAllByRole, container, getByText } = render(
+            <MemoryRouter>
+                <ReferenceArrayFieldView
+                    record={{ barIds: [1, 2] }}
+                    resource="foo"
+                    reference="bar"
+                    source="barIds"
+                    basePath=""
+                    data={data}
+                    loaded={true}
+                    ids={[1, 2]}
+                >
+                    <SingleFieldList>
+                        <TextField source="title" />
+                    </SingleFieldList>
+                </ReferenceArrayFieldView>
+            </MemoryRouter>
         );
-        const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
-        assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find(
-            'WithStyles(SingleFieldList)'
-        );
-        assert.equal(SingleFieldListElement.length, 1);
-        assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
-        assert.deepEqual(SingleFieldListElement.at(0).prop('data'), data);
-        assert.deepEqual(SingleFieldListElement.at(0).prop('ids'), [1, 2]);
+        expect(queryAllByRole('progressbar')).toHaveLength(0);
+        expect(container.firstChild.textContent).not.toBeUndefined();
+        expect(getByText('hello')).toBeDefined();
+        expect(getByText('world')).toBeDefined();
     });
 
     it('should use custom className', () => {
@@ -157,27 +142,25 @@ describe('<ReferenceArrayField />', () => {
             1: { id: 1, title: 'hello' },
             2: { id: 2, title: 'world' },
         };
-        const wrapper = shallow(
-            <ReferenceArrayFieldView
-                record={{ barIds: [1, 2] }}
-                className="myClass"
-                resource="foo"
-                reference="bar"
-                source="barIds"
-                basePath=""
-                data={data}
-                ids={[1, 2]}
-            >
-                <SingleFieldList>
-                    <TextField source="title" />
-                </SingleFieldList>
-            </ReferenceArrayFieldView>
+        const { container } = render(
+            <MemoryRouter>
+                <ReferenceArrayFieldView
+                    record={{ barIds: [1, 2] }}
+                    className="myClass"
+                    resource="foo"
+                    reference="bar"
+                    source="barIds"
+                    basePath=""
+                    data={data}
+                    ids={[1, 2]}
+                    loaded={true}
+                >
+                    <SingleFieldList>
+                        <TextField source="title" />
+                    </SingleFieldList>
+                </ReferenceArrayFieldView>
+            </MemoryRouter>
         );
-        const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
-        assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find(
-            'WithStyles(SingleFieldList)'
-        );
-        assert.equal(SingleFieldListElement.at(0).prop('className'), 'myClass');
+        expect(container.getElementsByClassName('myClass')).toHaveLength(1);
     });
 });

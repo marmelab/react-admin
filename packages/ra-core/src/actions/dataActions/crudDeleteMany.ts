@@ -1,5 +1,5 @@
 import { Identifier, Record } from '../../types';
-import { DELETE_MANY } from '../../dataFetchActions';
+import { DELETE_MANY } from '../../core';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import { NotificationSideEffect, RefreshSideEffect } from '../../sideEffect';
 

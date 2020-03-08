@@ -1,23 +1,22 @@
 import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import MuiAppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
-import withWidth from '@material-ui/core/withWidth';
-import compose from 'recompose/compose';
-import { toggleSidebar as toggleSidebarAction } from 'ra-core';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { toggleSidebar } from 'ra-core';
 
 import LoadingIndicator from './LoadingIndicator';
-import UserMenu from './UserMenu';
-import Headroom from './Headroom';
+import DefaultUserMenu from './UserMenu';
+import HideOnScroll from './HideOnScroll';
 
-const styles = theme =>
-    createStyles({
+const useStyles = makeStyles(
+    theme => ({
         toolbar: {
             paddingRight: 24,
         },
@@ -45,63 +44,64 @@ const styles = theme =>
             whiteSpace: 'nowrap',
             overflow: 'hidden',
         },
-    });
+    }),
+    { name: 'RaAppBar' }
+);
 
 const AppBar = ({
     children,
-    classes,
+    classes: classesOverride,
     className,
     logo,
     logout,
     open,
     title,
-    toggleSidebar,
     userMenu,
-    width,
     ...rest
-}) => (
-    <Headroom>
-        <MuiAppBar
-            className={className}
-            color="secondary"
-            position="static"
-            {...rest}
-        >
-            <Toolbar
-                disableGutters
-                variant={width === 'xs' ? 'regular' : 'dense'}
-                className={classes.toolbar}
-            >
-                <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    onClick={toggleSidebar}
-                    className={classNames(classes.menuButton)}
+}) => {
+    const classes = useStyles({ classes: classesOverride });
+    const dispatch = useDispatch();
+    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+
+    return (
+        <HideOnScroll>
+            <MuiAppBar className={className} color="secondary" {...rest}>
+                <Toolbar
+                    disableGutters
+                    variant={isXSmall ? 'regular' : 'dense'}
+                    className={classes.toolbar}
                 >
-                    <MenuIcon
-                        classes={{
-                            root: open
-                                ? classes.menuButtonIconOpen
-                                : classes.menuButtonIconClosed,
-                        }}
-                    />
-                </IconButton>
-                {Children.count(children) === 0 ? (
-                    <Typography
-                        variant="title"
+                    <IconButton
                         color="inherit"
-                        className={classes.title}
-                        id="react-admin-title"
-                    />
-                ) : (
-                    children
-                )}
-                <LoadingIndicator />
-                {cloneElement(userMenu, { logout })}
-            </Toolbar>
-        </MuiAppBar>
-    </Headroom>
-);
+                        aria-label="open drawer"
+                        onClick={() => dispatch(toggleSidebar())}
+                        className={classNames(classes.menuButton)}
+                    >
+                        <MenuIcon
+                            classes={{
+                                root: open
+                                    ? classes.menuButtonIconOpen
+                                    : classes.menuButtonIconClosed,
+                            }}
+                        />
+                    </IconButton>
+                    {Children.count(children) === 0 ? (
+                        <Typography
+                            variant="h6"
+                            color="inherit"
+                            className={classes.title}
+                            id="react-admin-title"
+                        />
+                    ) : (
+                        children
+                    )}
+                    <LoadingIndicator />
+                    {cloneElement(userMenu, { logout })}
+                </Toolbar>
+            </MuiAppBar>
+        </HideOnScroll>
+    );
+};
 
 AppBar.propTypes = {
     children: PropTypes.node,
@@ -109,28 +109,11 @@ AppBar.propTypes = {
     className: PropTypes.string,
     logout: PropTypes.element,
     open: PropTypes.bool,
-    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
-        .isRequired,
-    toggleSidebar: PropTypes.func.isRequired,
-    userMenu: PropTypes.node,
-    width: PropTypes.string,
+    userMenu: PropTypes.element,
 };
 
 AppBar.defaultProps = {
-    userMenu: <UserMenu />,
+    userMenu: <DefaultUserMenu />,
 };
 
-const enhance = compose(
-    connect(
-        state => ({
-            locale: state.i18n.locale, // force redraw on locale change
-        }),
-        {
-            toggleSidebar: toggleSidebarAction,
-        }
-    ),
-    withStyles(styles),
-    withWidth()
-);
-
-export default enhance(AppBar);
+export default AppBar;

@@ -1,127 +1,127 @@
-import React, { Component } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import pure from 'recompose/pure';
-import TablePagination from '@material-ui/core/TablePagination';
-import compose from 'recompose/compose';
-import { translate, sanitizeListRestProps } from 'ra-core';
+import { TablePagination, Toolbar, useMediaQuery } from '@material-ui/core';
+import {
+    useTranslate,
+    sanitizeListRestProps,
+    ComponentPropType,
+} from 'ra-core';
 
-import PaginationActions from './PaginationActions';
-import PaginationLimit from './PaginationLimit';
-import Responsive from '../layout/Responsive';
+import DefaultPaginationActions from './PaginationActions';
+import DefaultPaginationLimit from './PaginationLimit';
 
 const emptyArray = [];
 
-export class Pagination extends Component {
-    getNbPages = () => Math.ceil(this.props.total / this.props.perPage) || 1;
-
-    componentDidUpdate() {
-        if (this.props.page < 1 || isNaN(this.props.page)) {
-            this.props.setPage(1);
+const Pagination = ({
+    loading,
+    page,
+    perPage,
+    rowsPerPageOptions,
+    total,
+    setPage,
+    setPerPage,
+    actions,
+    limit,
+    ...rest
+}) => {
+    useEffect(() => {
+        if (page < 1 || isNaN(page)) {
+            setPage(1);
         }
-    }
+    }, [page, setPage]);
+    const translate = useTranslate();
+    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+
+    const getNbPages = () => Math.ceil(total / perPage) || 1;
 
     /**
      * Warning: material-ui's page is 0-based
      */
-    handlePageChange = (event, page) => {
-        event && event.stopPropagation();
-        if (page < 0 || page > this.getNbPages() - 1) {
-            throw new Error(
-                this.props.translate('ra.navigation.page_out_of_boundaries', {
-                    page: page + 1,
-                })
-            );
-        }
-        this.props.setPage(page + 1);
-    };
+    const handlePageChange = useCallback(
+        (event, page) => {
+            event && event.stopPropagation();
+            if (page < 0 || page > getNbPages() - 1) {
+                throw new Error(
+                    translate('ra.navigation.page_out_of_boundaries', {
+                        page: page + 1,
+                    })
+                );
+            }
+            setPage(page + 1);
+        },
+        [total, perPage, setPage, translate] // eslint-disable-line react-hooks/exhaustive-deps
+    );
 
-    handlePerPageChange = event => {
-        this.props.setPerPage(event.target.value);
-    };
+    const handlePerPageChange = useCallback(
+        event => {
+            setPerPage(event.target.value);
+        },
+        [setPerPage]
+    );
 
-    labelDisplayedRows = ({ from, to, count }) => {
-        const { translate } = this.props;
-        return translate('ra.navigation.page_range_info', {
-            offsetBegin: from,
-            offsetEnd: to,
-            total: count,
-        });
-    };
+    const labelDisplayedRows = useCallback(
+        ({ from, to, count }) =>
+            translate('ra.navigation.page_range_info', {
+                offsetBegin: from,
+                offsetEnd: to,
+                total: count,
+            }),
+        [translate]
+    );
 
-    render() {
-        const {
-            width, // used for testing responsive
-            isLoading,
-            page,
-            perPage,
-            rowsPerPageOptions,
-            total,
-            translate,
-            ...rest
-        } = this.props;
+    if (total === 0) {
+        return loading ? <Toolbar variant="dense" /> : limit;
+    }
 
-        if (!isLoading && total === 0) {
-            return <PaginationLimit />;
-        }
-
+    if (isSmall) {
         return (
-            <Responsive
-                width={width}
-                small={
-                    <TablePagination
-                        count={total}
-                        rowsPerPage={perPage}
-                        page={page - 1}
-                        onChangePage={this.handlePageChange}
-                        rowsPerPageOptions={emptyArray}
-                        component="span"
-                        labelDisplayedRows={this.labelDisplayedRows}
-                        {...sanitizeListRestProps(rest)}
-                    />
-                }
-                medium={
-                    <TablePagination
-                        count={total}
-                        rowsPerPage={perPage}
-                        page={page - 1}
-                        onChangePage={this.handlePageChange}
-                        onChangeRowsPerPage={this.handlePerPageChange}
-                        ActionsComponent={PaginationActions}
-                        component="span"
-                        labelRowsPerPage={translate(
-                            'ra.navigation.page_rows_per_page'
-                        )}
-                        labelDisplayedRows={this.labelDisplayedRows}
-                        rowsPerPageOptions={rowsPerPageOptions}
-                        {...sanitizeListRestProps(rest)}
-                    />
-                }
+            <TablePagination
+                count={total}
+                rowsPerPage={perPage}
+                page={page - 1}
+                onChangePage={handlePageChange}
+                rowsPerPageOptions={emptyArray}
+                component="span"
+                labelDisplayedRows={labelDisplayedRows}
+                {...sanitizeListRestProps(rest)}
             />
         );
     }
-}
+
+    return (
+        <TablePagination
+            count={total}
+            rowsPerPage={perPage}
+            page={page - 1}
+            onChangePage={handlePageChange}
+            onChangeRowsPerPage={handlePerPageChange}
+            ActionsComponent={actions}
+            component="span"
+            labelRowsPerPage={translate('ra.navigation.page_rows_per_page')}
+            labelDisplayedRows={labelDisplayedRows}
+            rowsPerPageOptions={rowsPerPageOptions}
+            {...sanitizeListRestProps(rest)}
+        />
+    );
+};
 
 Pagination.propTypes = {
-    classes: PropTypes.object,
-    className: PropTypes.string,
+    actions: ComponentPropType,
     ids: PropTypes.array,
-    isLoading: PropTypes.bool,
+    limit: PropTypes.element,
+    loading: PropTypes.bool,
     page: PropTypes.number,
     perPage: PropTypes.number,
     rowsPerPageOptions: PropTypes.arrayOf(PropTypes.number),
     setPage: PropTypes.func,
     setPerPage: PropTypes.func,
-    translate: PropTypes.func.isRequired,
     total: PropTypes.number,
 };
 
 Pagination.defaultProps = {
     rowsPerPageOptions: [5, 10, 25],
+    actions: DefaultPaginationActions,
+    limit: <DefaultPaginationLimit />,
 };
 
-const enhance = compose(
-    pure,
-    translate
-);
-
-export default enhance(Pagination);
+export default React.memo(Pagination);

@@ -1,102 +1,63 @@
-import React, { Children, ReactElement, Component } from 'react';
-import Polyglot from 'node-polyglot';
-import { connect, MapStateToProps } from 'react-redux';
-import defaultMessages from 'ra-language-english';
-import defaultsDeep from 'lodash/defaultsDeep';
-import { ReduxState } from '../types';
-import {
-    TranslationContextProps,
-    TranslationContext,
-} from './TranslationContext';
+import React, {
+    useCallback,
+    useMemo,
+    Children,
+    FunctionComponent,
+} from 'react';
 
-interface MappedProps {
-    locale: string;
-    messages: object;
-}
-
-interface State {
-    contextValues: TranslationContextProps;
-}
+import { useSafeSetState } from '../util/hooks';
+import { TranslationContext } from './TranslationContext';
+import { I18nProvider } from '../types';
 
 interface Props {
-    children: ReactElement<any>;
+    locale?: string;
+    i18nProvider: I18nProvider;
 }
-
-interface ViewProps extends MappedProps, Props {}
 
 /**
  * Creates a translation context, available to its children
  *
- * Must be called within a Redux app.
- *
  * @example
  *     const MyApp = () => (
  *         <Provider store={store}>
- *             <TranslationProvider locale="fr" messages={messages}>
+ *             <TranslationProvider i18nProvider={i18nProvider}>
  *                 <!-- Child components go here -->
  *             </TranslationProvider>
  *         </Provider>
  *     );
  */
-class TranslationProviderView extends Component<ViewProps, State> {
-    constructor(props) {
-        super(props);
-        const { locale, messages } = props;
-        const polyglot = new Polyglot({
-            locale,
-            phrases: defaultsDeep({ '': '' }, messages, defaultMessages),
-        });
+const TranslationProvider: FunctionComponent<Props> = props => {
+    const { i18nProvider, children } = props;
 
-        this.state = {
-            contextValues: {
-                locale,
-                translate: polyglot.t.bind(polyglot),
-            },
-        };
-    }
+    const [state, setState] = useSafeSetState({
+        locale: i18nProvider ? i18nProvider.getLocale() : 'en',
+        i18nProvider,
+    });
 
-    componentDidUpdate(prevProps) {
-        if (
-            prevProps.locale !== this.props.locale ||
-            prevProps.messages !== this.props.messages
-        ) {
-            const { locale, messages } = this.props;
+    const setLocale = useCallback(
+        (newLocale: string) =>
+            setState({
+                locale: newLocale,
+                i18nProvider,
+            }),
+        [i18nProvider, setState]
+    );
 
-            const polyglot = new Polyglot({
-                locale,
-                phrases: defaultsDeep({ '': '' }, messages, defaultMessages),
-            });
+    // Allow locale modification by including setLocale in the context
+    // This can't be done in the initial state because setState doesn't exist yet
+    const value = useMemo(
+        () => ({
+            ...state,
+            setLocale,
+        }),
+        [setLocale, state]
+    );
 
-            this.setState({
-                contextValues: {
-                    locale,
-                    translate: polyglot.t.bind(polyglot),
-                },
-            });
-        }
-    }
-
-    render() {
-        const { children } = this.props;
-        const { contextValues } = this.state;
-
-        return (
-            <TranslationContext.Provider value={contextValues}>
-                {Children.only(children)}
-            </TranslationContext.Provider>
-        );
-    }
-}
-
-const mapStateToProps: MapStateToProps<
-    MappedProps,
-    any,
-    ReduxState
-> = state => ({
-    locale: state.i18n.locale,
-    messages: state.i18n.messages,
-});
-
-const TranslationProvider = connect(mapStateToProps)(TranslationProviderView);
+    return (
+        <TranslationContext.Provider value={value}>
+            {Children.only(children)}
+        </TranslationContext.Provider>
+    );
+};
 
 export default TranslationProvider;

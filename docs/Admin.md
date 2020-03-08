@@ -28,44 +28,41 @@ export default App;
 Here are all the props accepted by the component:
 
 - [The `<Admin>` Component](#the-admin-component)
-    - [`dataProvider`](#dataprovider)
-    - [`title`](#title)
-    - [`dashboard`](#dashboard)
-    - [`catchAll`](#catchall)
-    - [`menu`](#menu)
-    - [`theme`](#theme)
-    - [`appLayout`](#applayout)
-    - [`customReducers`](#customreducers)
-    - [`customSagas`](#customsagas)
-    - [`customRoutes`](#customroutes)
-    - [`authProvider`](#authprovider)
-    - [`loginPage`](#loginpage)
-    - [`logoutButton`](#logoutbutton)
-    - [`initialState`](#initialstate)
-    - [`history`](#history)
-    - [`locale`](#internationalization)
-    - [`i18nProvider`](#internationalization)
-    - [Declaring resources at runtime](#declaring-resources-at-runtime)
-    - [Using react-admin without `<Admin>` and `<Resource>`](#using-react-admin-without-admin-and-resource)
+  - [`dataProvider`](#dataprovider)
+  - [`title`](#title)
+  - [`dashboard`](#dashboard)
+  - [`catchAll`](#catchall)
+  - [`menu`](#menu)
+  - [`theme`](#theme)
+  - [`layout`](#layout)
+  - [`customReducers`](#customreducers)
+  - [`customSagas`](#customsagas)
+  - [`customRoutes`](#customroutes)
+  - [`authProvider`](#authprovider)
+  - [`loginPage`](#loginpage)
+  - [`logoutButton`](#logoutbutton)
+  - [`initialState`](#initialstate)
+  - [`history`](#history)
+  - [Internationalization](#internationalization)
+  - [Declaring resources at runtime](#declaring-resources-at-runtime)
+  - [Using react-admin without `<Admin>` and `<Resource>`](#using-react-admin-without-admin-and-resource)
 
 ## `dataProvider`
 
-The only required prop, it must be a function returning a promise, with the following signature:
+The only required prop, it must be an object with the following methods returning a promise:
 
 ```jsx
-/**
- * Query a data provider and return a promise for a response
- *
- * @example
- * dataProvider(GET_ONE, 'posts', { id: 123 })
- *  => new Promise(resolve => resolve({ id: 123, title: "hello, world" }))
- *
- * @param {string} type Request type, e.g GET_LIST
- * @param {string} resource Resource name, e.g. "posts"
- * @param {Object} payload Request parameters. Depends on the action type
- * @returns {Promise} the Promise for a response
- */
-const dataProvider = (type, resource, params) => new Promise();
+const dataProvider = {
+    getList:    (resource, params) => Promise,
+    getOne:     (resource, params) => Promise,
+    getMany:    (resource, params) => Promise,
+    getManyReference: (resource, params) => Promise,
+    create:     (resource, params) => Promise,
+    update:     (resource, params) => Promise,
+    updateMany: (resource, params) => Promise,
+    delete:     (resource, params) => Promise,
+    deleteMany: (resource, params) => Promise,
+}
 ```
 
 The `dataProvider` is also the ideal place to add custom HTTP headers, authentication, etc. The [Data Providers Chapter](./DataProviders.md) of the documentation lists available data providers, and explains how to build your own.
@@ -102,6 +99,10 @@ export default () => (
 
 ```jsx
 // in src/App.js
+import React from 'react';
+import { Admin } from 'react-admin';
+import simpleRestProvider from 'ra-data-simple-rest';
+
 import Dashboard from './Dashboard';
 
 const App = () => (
@@ -140,6 +141,10 @@ export default () => (
 
 ```jsx
 // in src/App.js
+import React from 'react';
+import { Admin } from 'react-admin';
+import simpleRestProvider from 'ra-data-simple-rest';
+
 import NotFound from './NotFound';
 
 const App = () => (
@@ -153,57 +158,55 @@ const App = () => (
 
 ## `menu`
 
-**Tip**: This prop is deprecated. To override the menu component, use a [custom layout](#applayout) instead.
+**Tip**: This prop is deprecated. To override the menu component, use a [custom layout](#layout) instead.
 
-React-admin uses the list of `<Resource>` components passed as children of `<Admin>` to build a menu to each resource with a `list` component.
+React-admin uses the list of `<Resource>` components passed as children of `<Admin>` to build a menu to each resource with a `<List>` component.
 
 If you want to add or remove menu items, for instance to link to non-resources pages, you can create your own menu component:
 
 ```jsx
 // in src/Menu.js
 import React, { createElement } from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useMediaQuery } from '@material-ui/core';
 import { MenuItemLink, getResources } from 'react-admin';
 import { withRouter } from 'react-router-dom';
 import LabelIcon from '@material-ui/icons/Label';
 
-import Responsive from '../layout/Responsive';
-
-const Menu = ({ resources, onMenuClick, logout }) => (
-    <div>
-        {resources.map(resource => (
+const Menu = ({ onMenuClick, logout }) => {
+    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+    const open = useSelector(state => state.admin.ui.sidebarOpen);
+    const resources = useSelector(getResources);
+    return (
+        <div>
+            {resources.map(resource => (
+                <MenuItemLink
+                    key={resource.name}
+                    to={`/${resource.name}`}
+                    primaryText={resource.options && resource.options.label || resource.name}
+                    leftIcon={createElement(resource.icon)}
+                    onClick={onMenuClick}
+                    sidebarIsOpen={open}
+                />
+            ))}
             <MenuItemLink
-                key={resource.name}
-                to={`/${resource.name}`}
-                primaryText={resource.options && resource.options.label || resource.name}
-                leftIcon={createElement(resource.icon)}
+                to="/custom-route"
+                primaryText="Miscellaneous"
+                leftIcon={LabelIcon}
                 onClick={onMenuClick}
+                sidebarIsOpen={open}
             />
-        ))}
-        <MenuItemLink
-            to="/custom-route"
-            primaryText="Miscellaneous"
-            leftIcon={<LabelIcon />}
-            onClick={onMenuClick} />
-        <Responsive
-            small={logout}
-            medium={null} // Pass null to render nothing on larger devices
-        />
-    </div>
-);
+            {isXSmall && logout}
+        </div>
+    );
+}
 
-const mapStateToProps = state => ({
-    resources: getResources(state),
-});
-
-export default withRouter(connect(mapStateToProps)(Menu));
+export default withRouter(Menu);
 ```
 
 **Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views. It supports a custom text and icon (which must be a material-ui `<SvgIcon>`).
 
 **Tip**: Note that we include the `logout` item only on small devices. Indeed, the `logout` button is already displayed in the AppBar on larger devices.
-
-**Tip**: Note that we use React Router [`withRouter`](https://reacttraining.com/react-router/web/api/withRouter) Higher Order Component and that it is used **before** Redux [`connect](https://github.com/reactjs/react-redux/blob/master/docs/api.html#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options). This is required if you want the active menu item to be highlighted.
 
 Then, pass it to the `<Admin>` component as the `menu` prop:
 
@@ -222,7 +225,7 @@ See the [Theming documentation](./Theming.md#using-a-custom-menu) for more detai
 
 ## `theme`
 
-Material UI supports [theming](http://v1.material-ui.com/customization/themes). This lets you customize the look and feel of an admin by overriding fonts, colors, and spacing. You can provide a custom material ui theme by using the `theme` prop:
+Material UI supports [theming](https://material-ui.com/customization/themes). This lets you customize the look and feel of an admin by overriding fonts, colors, and spacing. You can provide a custom material ui theme by using the `theme` prop:
 
 ```jsx
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -242,11 +245,11 @@ const App = () => (
 
 ![Dark theme](./img/dark-theme.png)
 
-For more details on predefined themes and custom themes, refer to the [Material UI Customization documentation](https://v1.material-ui.com/customization/themes/).
+For more details on predefined themes and custom themes, refer to the [Material UI Customization documentation](https://material-ui.com/customization/themes/).
 
-## `appLayout`
+## `layout`
 
-If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where react-admin will render the resources. If you use material UI fields and inputs, it should contain a `<MuiThemeProvider>` element. And finally, if you want to show the spinner in the app header when the app fetches data in the background, the Layout should connect to the redux store.
+If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where react-admin will render the resources. If you use material UI fields and inputs, it should contain a `<ThemeProvider>` element. And finally, if you want to show the spinner in the app header when the app fetches data in the background, the Layout should connect to the redux store.
 
 Use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.js) as a starting point, and check [the Theming documentation](./Theming.md#using-a-custom-layout) for examples.
 
@@ -255,7 +258,7 @@ Use the [default layout](https://github.com/marmelab/react-admin/blob/master/pac
 import MyLayout from './MyLayout';
 
 const App = () => (
-    <Admin appLayout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+    <Admin layout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -289,8 +292,7 @@ The `<Admin>` app uses [Redux](http://redux.js.org/) to manage state. The state 
 ```jsx
 {
     admin: { /*...*/ }, // used by react-admin
-    form: { /*...*/ }, // used by redux-form
-    routing: { /*...*/ }, // used by react-router-redux
+    routing: { /*...*/ }, // used by connected-react-router
 }
 ```
 
@@ -331,8 +333,7 @@ Now the state will look like:
 ```jsx
 {
     admin: { /*...*/ }, // used by react-admin
-    form: { /*...*/ }, // used by redux-form
-    routing: { /*...*/ }, // used by react-router-redux
+    routing: { /*...*/ }, // used by connected-react-router
     bitcoinRate: 123, // managed by rateReducer
 }
 ```
@@ -375,7 +376,7 @@ export default App;
 
 ## `customRoutes`
 
-To register your own routes, create a module returning a list of [react-router](https://github.com/ReactTraining/react-router) `<Route>` component:
+To register your own routes, create a module returning a list of [react-router-dom](https://reacttraining.com/react-router/web/guides/quick-start) `<Route>` component:
 
 ```jsx
 // in src/customRoutes.js
@@ -443,15 +444,15 @@ export default Foo;
 
 ## `authProvider`
 
-The `authProvider` prop expect a function returning a Promise, to control the application authentication strategy:
+The `authProvider` prop expect an object with 5 methods, each returning a Promise, to control the authentication strategy:
 
 ```jsx
-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'react-admin';
-
-const authProvider(type, params) {
-    // type can be any of AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, and AUTH_CHECK
-    // ...
-    return Promise.resolve();
+const authProvider = {
+    login: params => Promise.resolve(),
+    logout: params => Promise.resolve(),
+    checkAuth: params => Promise.resolve(),
+    checkError: error => Promise.resolve(),
+    getPermissions: params => Promise.resolve(),
 };
 
 const App = () => (
@@ -502,13 +503,43 @@ const App = () => (
 
 The `initialState` prop lets you pass preloaded state to Redux. See the [Redux Documentation](http://redux.js.org/docs/api/createStore.html#createstorereducer-preloadedstate-enhancer) for more details.
 
+It accepts either a function or an object:
+
+```jsx
+const initialState = {
+    theme: 'dark',
+    grid: 5,
+};
+
+const App = () => (
+    <Admin initialState={initialState} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        // ...
+    </Admin>
+);
+```
+
+```jsx
+const initialState = () => ({
+    theme: localStorage.getItem('theme'),
+    grid: localStorage.getItem('grid'),
+});
+
+const App = () => (
+    <Admin initialState={initialState} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        // ...
+    </Admin>
+);
+```
+
+
 ## `history`
 
 By default, react-admin creates URLs using a hash sign (e.g. "myadmin.acme.com/#/posts/123"). The hash portion of the URL (i.e. `#/posts/123` in the example) contains the main application route. This strategy has the benefit of working without a server, and with legacy web browsers. But you may want to use another routing strategy, e.g. to allow server-side rendering.
 
 You can create your own `history` function (compatible with [the `history` npm package](https://github.com/reacttraining/history)), and pass it to the `<Admin>` component to override the default history strategy. For instance, to use `browserHistory`:
 
-```js
+```jsx
+import React from 'react';
 import { createBrowserHistory as createHistory } from 'history';
 
 const history = createHistory();
@@ -522,15 +553,15 @@ const App = () => (
 
 ## Internationalization
 
-The `locale` and `i18nProvider` props let you translate the GUI. The [Translation Documentation](./Translation.md) details this process.
+The `i18nProvider` props let you translate the GUI. The [Translation Documentation](./Translation.md) details this process.
 
 ## Declaring resources at runtime
 
-You might want to dynamically define the resources when the app starts. The `<Admin>` component accepts a function as its child and this function can return a Promise. If you also defined an `authProvider`, the function will receive the result of a call to `authProvider` with the `AUTH_GET_PERMISSIONS` type (you can read more about this in the [Authorization](./Authorization.md) chapter).
+You might want to dynamically define the resources when the app starts. The `<Admin>` component accepts a function as its child and this function can return a Promise. If you also defined an `authProvider`, the child function will receive the result of a call to `authProvider.getPermissions()` (you can read more about this in the [Authorization](./Authorization.md) chapter).
 
 For instance, getting the resource from an API might look like:
 
-```js
+```jsx
 import React from 'react';
 
 import { Admin, Resource } from 'react-admin';

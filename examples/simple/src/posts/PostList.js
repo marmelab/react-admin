@@ -1,12 +1,13 @@
+import React, { Children, Fragment, cloneElement, memo } from 'react';
 import BookIcon from '@material-ui/icons/Book';
 import Chip from '@material-ui/core/Chip';
-import { withStyles } from '@material-ui/core/styles';
-import React, { Children, Fragment, cloneElement } from 'react';
+import { useMediaQuery, makeStyles } from '@material-ui/core';
 import lodashGet from 'lodash/get';
-import { unparse as convertToCSV } from 'papaparse/papaparse.min';
+import jsonExport from 'jsonexport/dist';
 import {
     BooleanField,
     BulkDeleteButton,
+    BulkExportButton,
     ChipField,
     Datagrid,
     DateField,
@@ -16,22 +17,28 @@ import {
     List,
     NumberField,
     ReferenceArrayField,
-    Responsive,
     SearchInput,
     ShowButton,
     SimpleList,
     SingleFieldList,
     TextField,
     TextInput,
-    translate,
+    useTranslate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 import ResetViewsButton from './ResetViewsButton';
 export const PostIcon = BookIcon;
 
-const QuickFilter = translate(({ label, translate }) => (
-    <Chip style={{ marginBottom: 8 }} label={translate(label)} />
-));
+const useQuickFilterStyles = makeStyles(theme => ({
+    chip: {
+        marginBottom: theme.spacing(1),
+    },
+}));
+const QuickFilter = ({ label }) => {
+    const translate = useTranslate();
+    const classes = useQuickFilterStyles();
+    return <Chip className={classes.chip} label={translate(label)} />;
+};
 
 const PostFilter = props => (
     <Filter {...props}>
@@ -55,10 +62,10 @@ const exporter = posts => {
             backlink => backlink.url
         ),
     }));
-    return downloadCSV(convertToCSV({ data }), 'posts');
+    jsonExport(data, (err, csv) => downloadCSV(csv, 'posts'));
 };
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
     title: {
         maxWidth: '20em',
         overflow: 'hidden',
@@ -71,25 +78,33 @@ const styles = theme => ({
         },
     },
     publishedAt: { fontStyle: 'italic' },
-});
+}));
 
-const PostListBulkActions = props => (
+const PostListBulkActions = memo(props => (
     <Fragment>
         <ResetViewsButton {...props} />
         <BulkDeleteButton {...props} />
+        <BulkExportButton {...props} />
     </Fragment>
-);
+));
 
-const PostListActionToolbar = withStyles({
+const usePostListActionToolbarStyles = makeStyles({
     toolbar: {
         alignItems: 'center',
         display: 'flex',
+        marginTop: -1,
+        marginBottom: -1,
     },
-})(({ classes, children, ...props }) => (
-    <div className={classes.toolbar}>
-        {Children.map(children, button => cloneElement(button, props))}
-    </div>
-));
+});
+
+const PostListActionToolbar = ({ children, ...props }) => {
+    const classes = usePostListActionToolbarStyles();
+    return (
+        <div className={classes.toolbar}>
+            {Children.map(children, button => cloneElement(button, props))}
+        </div>
+    );
+};
 
 const rowClick = (id, basePath, record) => {
     if (record.commentable) {
@@ -103,16 +118,18 @@ const PostPanel = ({ id, record, resource }) => (
     <div dangerouslySetInnerHTML={{ __html: record.body }} />
 );
 
-const PostList = withStyles(styles)(({ classes, ...props }) => (
-    <List
-        {...props}
-        bulkActionButtons={<PostListBulkActions />}
-        filters={<PostFilter />}
-        sort={{ field: 'published_at', order: 'DESC' }}
-        exporter={exporter}
-    >
-        <Responsive
-            small={
+const PostList = props => {
+    const classes = useStyles();
+    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+    return (
+        <List
+            {...props}
+            bulkActionButtons={<PostListBulkActions />}
+            filters={<PostFilter />}
+            sort={{ field: 'published_at', order: 'DESC' }}
+            exporter={exporter}
+        >
+            {isSmall ? (
                 <SimpleList
                     primaryText={record => record.title}
                     secondaryText={record => `${record.views} views`}
@@ -120,9 +137,8 @@ const PostList = withStyles(styles)(({ classes, ...props }) => (
                         new Date(record.published_at).toLocaleDateString()
                     }
                 />
-            }
-            medium={
-                <Datagrid rowClick={rowClick} expand={<PostPanel />}>
+            ) : (
+                <Datagrid rowClick={rowClick} expand={PostPanel} optimized>
                     <TextField source="id" />
                     <TextField source="title" cellClassName={classes.title} />
                     <DateField
@@ -153,9 +169,9 @@ const PostList = withStyles(styles)(({ classes, ...props }) => (
                         <ShowButton />
                     </PostListActionToolbar>
                 </Datagrid>
-            }
-        />
-    </List>
-));
+            )}
+        </List>
+    );
+};
 
 export default PostList;
