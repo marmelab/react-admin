@@ -52,15 +52,16 @@ function goBack() {
     window.history.go(-1);
 }
 
-const Error = ({
-    error,
-    errorInfo,
-    classes: classesOverride,
-    className,
-    title,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+const Error = props => {
+    const {
+        error,
+        errorInfo,
+        classes: classesOverride,
+        className,
+        title,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     const translate = useTranslate();
     return (
         <Fragment>

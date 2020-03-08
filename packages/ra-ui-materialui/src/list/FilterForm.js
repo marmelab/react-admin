@@ -175,14 +175,15 @@ export const mergeInitialValuesWithDefaultValues = ({
     ...initialValues,
 });
 
-const EnhancedFilterForm = ({ classes: classesOverride, ...props }) => {
-    const classes = useStyles({ classes: classesOverride });
+const EnhancedFilterForm = props => {
+    const { classes: classesOverride, ...rest } = props;
+    const classes = useStyles(props);
 
     const mergedInitialValuesWithDefaultValues = mergeInitialValuesWithDefaultValues(
         props
     );
 
-    const { initialValues, ...rest } = props;
+    const { initialValues, ...rest2 } = rest;
 
     return (
         <Form
@@ -197,10 +198,10 @@ const EnhancedFilterForm = ({ classes: classesOverride, ...props }) => {
                             if (pristine) {
                                 return;
                             }
-                            props && props.setFilters(values);
+                            rest && rest.setFilters(values);
                         }}
                     />
-                    <FilterForm classes={classes} {...formProps} {...rest} />
+                    <FilterForm classes={classes} {...formProps} {...rest2} />
                 </>
             )}
         />

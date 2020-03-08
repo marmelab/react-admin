@@ -83,17 +83,18 @@ const useStyles = makeStyles(
  */
 const Login: React.FunctionComponent<
     Props & HtmlHTMLAttributes<HTMLDivElement>
-> = ({
-    theme,
-    classes: classesOverride,
-    className,
-    children,
-    staticContext,
-    backgroundImage,
-    ...rest
-}) => {
+> = props => {
+    const {
+        theme,
+        classes: classesOverride,
+        className,
+        children,
+        staticContext,
+        backgroundImage,
+        ...rest
+    } = props;
     const containerRef = useRef<HTMLDivElement>();
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useStyles(props);
     const muiTheme = useMemo(() => createMuiTheme(theme), [theme]);
     let backgroundImageLoaded = false;
     const checkAuth = useCheckAuth();

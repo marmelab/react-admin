@@ -136,29 +136,30 @@ const useStyles = makeStyles(
  */
 const SelectArrayInput: FunctionComponent<
     ChoicesProps & InputProps<SelectProps> & FormControlProps
-> = ({
-    choices = [],
-    classes: classesOverride,
-    className,
-    format,
-    helperText,
-    label,
-    margin = 'dense',
-    onBlur,
-    onChange,
-    onFocus,
-    options,
-    optionText,
-    optionValue,
-    parse,
-    resource,
-    source,
-    translateChoice,
-    validate,
-    variant = 'filled',
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+> = props => {
+    const {
+        choices = [],
+        classes: classesOverride,
+        className,
+        format,
+        helperText,
+        label,
+        margin = 'dense',
+        onBlur,
+        onChange,
+        onFocus,
+        options,
+        optionText,
+        optionValue,
+        parse,
+        resource,
+        source,
+        translateChoice,
+        validate,
+        variant = 'filled',
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     const { getChoiceText, getChoiceValue } = useChoices({
         optionText,
         optionValue,

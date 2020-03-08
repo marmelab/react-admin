@@ -19,23 +19,24 @@ import {
     FormContext,
 } from 'ra-core';
 
-const SaveButton: FC<SaveButtonProps> = ({
-    className,
-    classes: classesOverride = {},
-    invalid,
-    label = 'ra.action.save',
-    pristine,
-    redirect,
-    saving,
-    submitOnEnter,
-    variant = 'contained',
-    icon = defaultIcon,
-    onClick,
-    handleSubmitWithRedirect,
-    onSave,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+const SaveButton: FC<SaveButtonProps> = props => {
+    const {
+        className,
+        classes: classesOverride,
+        invalid,
+        label = 'ra.action.save',
+        pristine,
+        redirect,
+        saving,
+        submitOnEnter,
+        variant = 'contained',
+        icon = defaultIcon,
+        onClick,
+        handleSubmitWithRedirect,
+        onSave,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     const notify = useNotify();
     const translate = useTranslate();
     const { setOnSave } = useContext(FormContext);

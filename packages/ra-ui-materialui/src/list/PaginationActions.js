@@ -18,16 +18,9 @@ const useStyles = makeStyles(
     { name: 'RaPaginationActions' }
 );
 
-function PaginationActions({
-    classes: classesOverride,
-    page,
-    rowsPerPage,
-    count,
-    onChangePage,
-    color,
-    size,
-}) {
-    const classes = useStyles({ classes: classesOverride });
+function PaginationActions(props) {
+    const { page, rowsPerPage, count, onChangePage, color, size } = props;
+    const classes = useStyles(props);
     const translate = useTranslate();
     /**
      * Warning: material-ui's page is 0-based

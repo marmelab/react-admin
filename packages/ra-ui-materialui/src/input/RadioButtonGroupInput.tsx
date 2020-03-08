@@ -87,28 +87,29 @@ const useStyles = makeStyles(
  */
 const RadioButtonGroupInput: FunctionComponent<
     ChoicesProps & InputProps<RadioGroupProps> & FormControlProps
-> = ({
-    choices = [],
-    classes: classesOverride,
-    format,
-    helperText,
-    label,
-    margin = 'dense',
-    onBlur,
-    onChange,
-    onFocus,
-    options,
-    optionText,
-    optionValue,
-    parse,
-    resource,
-    row,
-    source,
-    translateChoice,
-    validate,
-    ...rest
-}) => {
-    const classes = useStyles(classesOverride);
+> = props => {
+    const {
+        choices = [],
+        classes: classesOverride,
+        format,
+        helperText,
+        label,
+        margin = 'dense',
+        onBlur,
+        onChange,
+        onFocus,
+        options,
+        optionText,
+        optionValue,
+        parse,
+        resource,
+        row,
+        source,
+        translateChoice,
+        validate,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
 
     const {
         id,

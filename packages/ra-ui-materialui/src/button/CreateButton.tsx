@@ -9,15 +9,16 @@ import { useTranslate } from 'ra-core';
 
 import Button, { ButtonProps } from './Button';
 
-const CreateButton: FC<CreateButtonProps> = ({
-    basePath = '',
-    className,
-    classes: classesOverride,
-    label = 'ra.action.create',
-    icon = defaultIcon,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+const CreateButton: FC<CreateButtonProps> = props => {
+    const {
+        basePath = '',
+        className,
+        classes: classesOverride,
+        label = 'ra.action.create',
+        icon = defaultIcon,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     const translate = useTranslate();
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('sm')

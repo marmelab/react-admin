@@ -92,7 +92,7 @@ export const CreateView = props => {
         ...rest
     } = props;
     useCheckMinimumRequiredProps('Create', ['children'], props);
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useStyles(props);
     return (
         <div
             className={classnames('create-page', classes.root, className)}
