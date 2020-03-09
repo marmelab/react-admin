@@ -105,7 +105,10 @@ const useReferenceArrayInputController = ({
         : referenceRecordsFromStore;
 
     // filter out not found references - happens when the dataProvider doesn't guarantee referential integrity
-    const finalReferenceRecords = referenceRecords.filter(Boolean);
+    // filter out not selected items - happens when the form value is changed by script (i.e. Filtering button)
+    const finalReferenceRecords = referenceRecords
+        .filter(Boolean)
+        .filter(item => item === undefined || input.value.includes(item.id));
 
     const { data: matchingReferences } = useGetMatching(
         reference,
