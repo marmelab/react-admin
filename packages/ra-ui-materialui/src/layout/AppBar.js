@@ -54,7 +54,6 @@ const useStyles = makeStyles(
  * @param {Object} classes CSS class names
  * @param {string} className CSS class applied to the MuiAppBar component
  * @param {string} color The color of the AppBar
- * @param {Object} logo //
  * @param {Object} logout The logout button component that will be pass to the UserMenu component
  * @param {boolean} open State of the <Admin/> Sidebar
  * @param {string} title The title of the AppBar
@@ -81,7 +80,6 @@ const AppBar = ({
     classes: classesOverride,
     className,
     color = 'secondary',
-    logo,
     logout,
     open,
     title,
