@@ -56,7 +56,6 @@ const useStyles = makeStyles(
  * @param {string} color The color of the AppBar
  * @param {Object} logout The logout button component that will be pass to the UserMenu component
  * @param {boolean} open State of the <Admin/> Sidebar
- * @param {string} title The title of the AppBar
  * @param {Function} userMenu A custom UserMenu component for the AppBar. UserMenu component by default
  *
  * @example
@@ -82,7 +81,6 @@ const AppBar = ({
     color = 'secondary',
     logout,
     open,
-    title,
     userMenu,
     ...rest
 }) => {
