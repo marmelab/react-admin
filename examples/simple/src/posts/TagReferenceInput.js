@@ -33,7 +33,7 @@ const TagReferenceInput = ({ ...props }) => {
                 <AutocompleteArrayInput />
             </ReferenceArrayInput>
             <Button
-                data-testid="button-add-filter"
+                name="change-filter"
                 className={classes.button}
                 onClick={handleAddFilter}
             >
