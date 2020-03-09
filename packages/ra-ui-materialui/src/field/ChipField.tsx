@@ -19,15 +19,16 @@ const useStyles = makeStyles(
 
 export const ChipField: FunctionComponent<
     FieldProps & InjectedFieldProps & ChipProps
-> = ({
-    className,
-    classes: classesOverride,
-    source,
-    record = {},
-    emptyText,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+> = props => {
+    const {
+        className,
+        classes: classesOverride,
+        source,
+        record = {},
+        emptyText,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     const value = get(record, source);
 
     if (value == null && emptyText) {

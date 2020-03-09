@@ -112,33 +112,34 @@ const useStyles = makeStyles(
     { name: 'RaTabbedForm' }
 );
 
-export const TabbedFormView = ({
-    basePath,
-    children,
-    className,
-    classes: classesOverride,
-    form,
-    handleSubmit,
-    handleSubmitWithRedirect,
-    invalid,
-    pristine,
-    record,
-    redirect: defaultRedirect,
-    resource,
-    saving,
-    setRedirect,
-    submitOnEnter,
-    tabs,
-    toolbar,
-    translate,
-    undoable,
-    value,
-    variant,
-    margin,
-    ...rest
-}) => {
+export const TabbedFormView = props => {
+    const {
+        basePath,
+        children,
+        className,
+        classes: classesOverride,
+        form,
+        handleSubmit,
+        handleSubmitWithRedirect,
+        invalid,
+        pristine,
+        record,
+        redirect: defaultRedirect,
+        resource,
+        saving,
+        setRedirect,
+        submitOnEnter,
+        tabs,
+        toolbar,
+        translate,
+        undoable,
+        value,
+        variant,
+        margin,
+        ...rest
+    } = props;
     const tabsWithErrors = findTabsWithErrors(children, form.getState().errors);
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useStyles(props);
     const match = useRouteMatch();
     const location = useLocation();
 

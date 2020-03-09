@@ -18,9 +18,10 @@ const useStyles = makeStyles(
 
 const SearchInput: FunctionComponent<
     InputProps<TextFieldProps> & Omit<TextFieldProps, 'label' | 'helperText'>
-> = ({ classes: classesOverride, ...props }) => {
+> = props => {
+    const { classes: classesOverride, ...rest } = props;
     const translate = useTranslate();
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useStyles(props);
 
     return (
         <TextInput
@@ -36,7 +37,7 @@ const SearchInput: FunctionComponent<
                 ),
             }}
             className={classes.input}
-            {...props}
+            {...rest}
         />
     );
 };

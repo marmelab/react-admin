@@ -30,25 +30,27 @@ const getStringFromBoolean = (value?: boolean | null): string => {
 
 const NullableBooleanInput: FunctionComponent<
     InputProps<TextFieldProps> & Omit<TextFieldProps, 'label' | 'helperText'>
-> = ({
-    className,
-    format = getStringFromBoolean,
-    helperText,
-    label,
-    margin = 'dense',
-    onBlur,
-    onChange,
-    onFocus,
-    options,
-    displayNull,
-    parse = getBooleanFromString,
-    resource,
-    source,
-    validate,
-    variant = 'filled',
-    ...rest
-}) => {
-    const classes = useStyles({});
+> = props => {
+    const {
+        className,
+        classes: classesOverride,
+        format = getStringFromBoolean,
+        helperText,
+        label,
+        margin = 'dense',
+        onBlur,
+        onChange,
+        onFocus,
+        options,
+        displayNull,
+        parse = getBooleanFromString,
+        resource,
+        source,
+        validate,
+        variant = 'filled',
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     const translate = useTranslate();
 
     const {

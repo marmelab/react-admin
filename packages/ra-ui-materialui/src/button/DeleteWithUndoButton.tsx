@@ -16,19 +16,20 @@ import {
 
 import Button, { ButtonProps } from './Button';
 
-const DeleteWithUndoButton: FC<DeleteWithUndoButtonProps> = ({
-    label = 'ra.action.delete',
-    classes: classesOverride,
-    className,
-    icon = defaultIcon,
-    onClick,
-    resource,
-    record,
-    basePath,
-    redirect: redirectTo = 'list',
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+const DeleteWithUndoButton: FC<DeleteWithUndoButtonProps> = props => {
+    const {
+        label = 'ra.action.delete',
+        classes: classesOverride,
+        className,
+        icon = defaultIcon,
+        onClick,
+        resource,
+        record,
+        basePath,
+        redirect: redirectTo = 'list',
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     const notify = useNotify();
     const redirect = useRedirect();
     const refresh = useRefresh();

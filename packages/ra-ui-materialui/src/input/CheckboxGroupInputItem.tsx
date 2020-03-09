@@ -13,17 +13,19 @@ const useStyles = makeStyles(
     { name: 'RaCheckboxGroupInputItem' }
 );
 
-const CheckboxGroupInputItem = ({
-    id,
-    choice,
-    onChange,
-    optionText,
-    optionValue,
-    translateChoice,
-    value,
-    ...rest
-}) => {
-    const classes = useStyles({});
+const CheckboxGroupInputItem = props => {
+    const {
+        classes: classesOverride,
+        id,
+        choice,
+        onChange,
+        optionText,
+        optionValue,
+        translateChoice,
+        value,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     const { getChoiceText, getChoiceValue } = useChoices({
         optionText,
         optionValue,

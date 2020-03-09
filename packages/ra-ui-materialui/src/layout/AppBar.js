@@ -48,18 +48,19 @@ const useStyles = makeStyles(
     { name: 'RaAppBar' }
 );
 
-const AppBar = ({
-    children,
-    classes: classesOverride,
-    className,
-    logo,
-    logout,
-    open,
-    title,
-    userMenu,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+const AppBar = props => {
+    const {
+        children,
+        classes: classesOverride,
+        className,
+        logo,
+        logout,
+        open,
+        title,
+        userMenu,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     const dispatch = useDispatch();
     const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
 

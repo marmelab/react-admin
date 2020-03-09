@@ -40,18 +40,19 @@ const handleMouseDownClearButton = event => {
 /**
  * An override of the default Material-UI TextField which is resettable
  */
-function ResettableTextField({
-    classes: classesOverride,
-    clearAlwaysVisible,
-    InputProps,
-    value,
-    resettable,
-    disabled,
-    variant = 'filled',
-    margin = 'dense',
-    ...props
-}) {
-    const classes = useStyles({ classes: classesOverride });
+function ResettableTextField(props) {
+    const {
+        classes: classesOverride,
+        clearAlwaysVisible,
+        InputProps,
+        value,
+        resettable,
+        disabled,
+        variant = 'filled',
+        margin = 'dense',
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     const translate = useTranslate();
 
     const { onChange, onFocus, onBlur } = props;
@@ -187,7 +188,7 @@ function ResettableTextField({
             disabled={disabled}
             variant={variant}
             margin={margin}
-            {...props}
+            {...rest}
             onFocus={handleFocus}
             onBlur={handleBlur}
         />

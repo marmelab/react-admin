@@ -26,19 +26,20 @@ import { useTranslate } from 'ra-core';
  * </Button>
  *
  */
-const Button: FC<ButtonProps> = ({
-    alignIcon = 'left',
-    children,
-    classes: classesOverride,
-    className,
-    color,
-    disabled,
-    label,
-    size,
-    ...rest
-}) => {
+const Button: FC<ButtonProps> = props => {
+    const {
+        alignIcon = 'left',
+        children,
+        classes: classesOverride,
+        className,
+        color,
+        disabled,
+        label,
+        size,
+        ...rest
+    } = props;
     const translate = useTranslate();
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useStyles(props);
     const isXSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('xs')
     );

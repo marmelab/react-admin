@@ -24,8 +24,9 @@ const useStyles = makeStyles(
  *
  * @param {object} classes CSS class names
  */
-const LinearProgress = ({ classes: classesOverride, className, ...rest }) => {
-    const classes = useStyles({ classes: classesOverride });
+const LinearProgress = props => {
+    const { classes: classesOverride, className, ...rest } = props;
+    const classes = useStyles(props);
     return (
         <Progress className={classnames(classes.root, className)} {...rest} />
     );
