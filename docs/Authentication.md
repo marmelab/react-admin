@@ -230,7 +230,7 @@ Use the `useLogin` and `useLogout` hooks in your custom `LoginPage` and `LogoutB
 ```jsx
 // in src/MyLoginPage.js
 import React, { useState } from 'react';
-import { useLogin, useNotify } from 'react-admin';
+import { useLogin, useNotify, Notification } from 'react-admin';
 import { ThemeProvider } from '@material-ui/styles';
 
 const MyLoginPage = ({ theme }) => {
@@ -250,6 +250,7 @@ const MyLoginPage = ({ theme }) => {
                 <input name="email" type="email" value={email} onChange={e => setEmail(e.target.value)} /> 
                 <input name="password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
             </form>
+            <Notification />
         </ThemeProvider>
     );
 };
