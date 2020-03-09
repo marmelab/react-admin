@@ -249,8 +249,8 @@ const MyLoginPage = ({ theme }) => {
             <form onSubmit={submit}>
                 <input name="email" type="email" value={email} onChange={e => setEmail(e.target.value)} /> 
                 <input name="password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
-                <Notification />
             </form>
+            <Notification />
         </ThemeProvider>
     );
 };
