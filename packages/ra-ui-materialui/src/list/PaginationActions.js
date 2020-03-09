@@ -127,7 +127,11 @@ function PaginationActions(props) {
                     onClick={prevPage}
                     className="previous-page"
                 >
-                    {theme.direction === "rtl" ? <ChevronRight /> : <ChevronLeft />}
+                    {theme.direction === 'rtl' ? (
+                        <ChevronLeft />
+                    ) : (
+                        <ChevronRight />
+                    )}
                     {translate('ra.navigation.prev')}
                 </Button>
             )}
@@ -141,7 +145,11 @@ function PaginationActions(props) {
                     className="next-page"
                 >
                     {translate('ra.navigation.next')}
-                    {theme.direction === "rtl" ? <ChevronLeft /> : <ChevronRight />}
+                    {theme.direction === 'rtl' ? (
+                        <ChevronRight />
+                    ) : (
+                        <ChevronLeft />
+                    )}
                 </Button>
             )}
         </div>
@@ -164,7 +172,7 @@ PaginationActions.propTypes = {
     rowsPerPage: PropTypes.number.isRequired,
     color: PropTypes.oneOf(['primary', 'secondary']),
     size: PropTypes.oneOf(['small', 'medium', 'large']),
-    theme: PropTypes.object.isRequired,
+    theme: PropTypes.object,
 };
 
 PaginationActions.defaultProps = {
