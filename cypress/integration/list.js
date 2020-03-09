@@ -96,7 +96,7 @@ describe('List Page', () => {
             ListPagePosts.setFilterValue('q', '');
         });
 
-        it.only('should keep added filters when emptying it after navigating away and back', () => {
+        it('should keep added filters when emptying it after navigating away and back', () => {
             ListPagePosts.logout();
             LoginPage.login('admin', 'password');
             ListPagePosts.showFilter('title');
