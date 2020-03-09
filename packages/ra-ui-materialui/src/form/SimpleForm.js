@@ -29,10 +29,10 @@ import CardContentInner from '../layout/CardContentInner';
  *     </Create>
  * );
  *
- * @typedef {object} Props the props you can use (other props are injected by Create or Edit)
+ * @typedef {Object} Props the props you can use (other props are injected by Create or Edit)
  * @prop {ReactElement[]} children Input elements
- * @prop {object} initialValues
- * @prop {function} validate
+ * @prop {Object} initialValues
+ * @prop {Function} validate
  * @prop {boolean} submitOnEnter
  * @prop {string} redirect
  * @prop {ReactElement} toolbar The element displayed at the bottom of the form, contzining the SaveButton

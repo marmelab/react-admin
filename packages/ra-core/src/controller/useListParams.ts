@@ -279,7 +279,7 @@ export const parseQueryFromLocation = ({ search }) => {
  * To check if the user has custom params, we must compare the params
  * to these initial values.
  *
- * @param {object} params
+ * @param {Object} params
  */
 export const hasCustomParams = (params: ListParams) => {
     return (
