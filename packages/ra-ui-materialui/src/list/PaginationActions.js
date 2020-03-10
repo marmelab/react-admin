@@ -128,9 +128,9 @@ function PaginationActions(props) {
                     className="previous-page"
                 >
                     {theme.direction === 'rtl' ? (
-                        <ChevronLeft />
-                    ) : (
                         <ChevronRight />
+                    ) : (
+                        <ChevronLeft />
                     )}
                     {translate('ra.navigation.prev')}
                 </Button>
@@ -146,9 +146,9 @@ function PaginationActions(props) {
                 >
                     {translate('ra.navigation.next')}
                     {theme.direction === 'rtl' ? (
-                        <ChevronRight />
-                    ) : (
                         <ChevronLeft />
+                    ) : (
+                        <ChevronRight />
                     )}
                 </Button>
             )}
