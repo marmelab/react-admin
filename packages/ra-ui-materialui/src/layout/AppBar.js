@@ -132,7 +132,7 @@ AppBar.propTypes = {
     children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
-    color: PropTypes.oneOf(['primary', 'secondary']),
+    color: PropTypes.oneOf(['default', 'inherit', 'primary', 'secondary', 'transparent']),
     logout: PropTypes.element,
     open: PropTypes.bool,
     userMenu: PropTypes.element,
