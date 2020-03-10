@@ -43,6 +43,10 @@ const FilterFormInput = ({
                 </IconButton>
             )}
             {React.cloneElement(filterElement, {
+                allowEmpty:
+                    filterElement.props.allowEmpty === undefined
+                        ? true
+                        : filterElement.props.allowEmpty,
                 resource,
                 record: emptyRecord,
                 variant,
