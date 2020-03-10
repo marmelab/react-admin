@@ -682,7 +682,7 @@ const App = () => (
 ![custom AppBar](./img/custom_appbar.png)
 
 
-**Tip**: You can change the color of the `<AppBar>` by setting the `color` prop to `primary` or `secondary`. The latter is the default.
+**Tip**: You can change the color of the `<AppBar>` by setting the `color` prop to `default`, `inherit`, `primary`, `secondary` or `transparent`. The latter is the default.
 
 ## Replacing The AppBar
 
