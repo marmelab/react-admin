@@ -138,7 +138,7 @@ const ReferenceInput: FunctionComponent<Props & InputProps> = ({
 };
 
 ReferenceInput.propTypes = {
-    allowEmpty: PropTypes.bool.isRequired,
+    allowEmpty: PropTypes.bool,
     basePath: PropTypes.string,
     children: PropTypes.element.isRequired,
     className: PropTypes.string,
@@ -159,7 +159,6 @@ ReferenceInput.propTypes = {
 };
 
 ReferenceInput.defaultProps = {
-    allowEmpty: false,
     filter: {},
     filterToQuery: searchText => (searchText ? { q: searchText } : {}),
     perPage: 25,
