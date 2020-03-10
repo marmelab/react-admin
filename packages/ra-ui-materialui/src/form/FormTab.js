@@ -81,7 +81,7 @@ FormTab.propTypes = {
     hidden: PropTypes.bool,
     icon: PropTypes.element,
     label: PropTypes.string.isRequired,
-    margin: PropTypes.Margin,
+    margin: PropTypes.oneOf(['none', 'dense', 'normal']),
     path: PropTypes.string,
     record: PropTypes.object,
     resource: PropTypes.string,
