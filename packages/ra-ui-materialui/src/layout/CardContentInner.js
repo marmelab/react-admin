@@ -30,12 +30,9 @@ const useStyles = makeStyles(
  * padding double the spacing between each CardContent, leading to too much
  * wasted space. Use this component as a CardContent alternative.
  */
-const CardContentInner = ({
-    classes: classesOverride,
-    className,
-    children,
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+const CardContentInner = props => {
+    const { className, children } = props;
+    const classes = useStyles(props);
     return (
         <CardContent className={classnames(classes.root, className)}>
             {children}

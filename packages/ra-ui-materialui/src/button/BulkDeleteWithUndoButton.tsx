@@ -30,17 +30,18 @@ const useStyles = makeStyles(
     { name: 'RaBulkDeleteWithUndoButton' }
 );
 
-const BulkDeleteWithUndoButton: FC<BulkDeleteWithUndoButtonProps> = ({
-    basePath,
-    classes: classesOverride,
-    icon,
-    label,
-    onClick,
-    resource,
-    selectedIds,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+const BulkDeleteWithUndoButton: FC<BulkDeleteWithUndoButtonProps> = props => {
+    const {
+        basePath,
+        classes: classesOverride,
+        icon,
+        label,
+        onClick,
+        resource,
+        selectedIds,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     const notify = useNotify();
     const unselectAll = useUnselectAll();
     const refresh = useRefresh();

@@ -16,9 +16,10 @@ const useStyles = makeStyles(
     { name: 'RaLoadingIndicator' }
 );
 
-const LoadingIndicator = ({ classes: classesOverride, className, ...rest }) => {
+const LoadingIndicator = props => {
+    const { classes: classesOverride, className, ...rest } = props;
     const loading = useSelector(state => state.admin.loading > 0);
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useStyles(props);
     return loading ? (
         <CircularProgress
             className={classNames('app-loader', classes.loader, className)}

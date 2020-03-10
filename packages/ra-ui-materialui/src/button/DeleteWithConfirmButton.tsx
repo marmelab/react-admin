@@ -26,26 +26,27 @@ import {
 import Confirm from '../layout/Confirm';
 import Button, { ButtonProps } from './Button';
 
-const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = ({
-    basePath,
-    classes: classesOverride,
-    className,
-    confirmTitle = 'ra.message.delete_title',
-    confirmContent = 'ra.message.delete_content',
-    icon = defaultIcon,
-    label = 'ra.action.delete',
-    onClick,
-    record,
-    resource,
-    redirect: redirectTo = 'list',
-    ...rest
-}) => {
+const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
+    const {
+        basePath,
+        classes: classesOverride,
+        className,
+        confirmTitle = 'ra.message.delete_title',
+        confirmContent = 'ra.message.delete_content',
+        icon = defaultIcon,
+        label = 'ra.action.delete',
+        onClick,
+        record,
+        resource,
+        redirect: redirectTo = 'list',
+        ...rest
+    } = props;
     const [open, setOpen] = useState(false);
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();
     const refresh = useRefresh();
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useStyles(props);
 
     const [deleteOne, { loading }] = useDelete(
         resource,

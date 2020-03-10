@@ -53,29 +53,30 @@ const LinkOrNot = ({
     );
 };
 
-const SimpleList = ({
-    basePath,
-    className,
-    classes: classesOverride,
-    data,
-    hasBulkActions,
-    ids,
-    loaded,
-    loading,
-    leftAvatar,
-    leftIcon,
-    linkType,
-    onToggleItem,
-    primaryText,
-    rightAvatar,
-    rightIcon,
-    secondaryText,
-    selectedIds,
-    tertiaryText,
-    total,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+const SimpleList = props => {
+    const {
+        basePath,
+        className,
+        classes: classesOverride,
+        data,
+        hasBulkActions,
+        ids,
+        loaded,
+        loading,
+        leftAvatar,
+        leftIcon,
+        linkType,
+        onToggleItem,
+        primaryText,
+        rightAvatar,
+        rightIcon,
+        secondaryText,
+        selectedIds,
+        tertiaryText,
+        total,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
 
     if (loaded === false) {
         return (

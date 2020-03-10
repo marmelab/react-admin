@@ -46,25 +46,26 @@ const useStyles = makeStyles(
 const valueOrDefault = (value, defaultValue) =>
     typeof value === 'undefined' ? defaultValue : value;
 
-const Toolbar = ({
-    basePath,
-    children,
-    className,
-    classes: classesOverride,
-    handleSubmit,
-    handleSubmitWithRedirect,
-    invalid,
-    pristine,
-    record,
-    redirect,
-    resource,
-    saving,
-    submitOnEnter,
-    undoable,
-    width,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+const Toolbar = props => {
+    const {
+        basePath,
+        children,
+        className,
+        classes: classesOverride,
+        handleSubmit,
+        handleSubmitWithRedirect,
+        invalid,
+        pristine,
+        record,
+        redirect,
+        resource,
+        saving,
+        submitOnEnter,
+        undoable,
+        width,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     return (
         <Fragment>
             <MuiToolbar

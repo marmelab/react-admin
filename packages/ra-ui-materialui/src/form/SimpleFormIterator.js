@@ -62,24 +62,24 @@ const useStyles = makeStyles(
     { name: 'RaSimpleFormIterator' }
 );
 
-const SimpleFormIterator = ({
-    basePath,
-    classes: classesOverride,
-    children,
-    fields,
-    meta: { error, submitFailed },
-    record,
-    resource,
-    source,
-    disableAdd,
-    disableRemove,
-    variant,
-    margin,
-    TransitionProps,
-    defaultValue,
-}) => {
+const SimpleFormIterator = props => {
+    const {
+        basePath,
+        children,
+        fields,
+        meta: { error, submitFailed },
+        record,
+        resource,
+        source,
+        disableAdd,
+        disableRemove,
+        variant,
+        margin,
+        TransitionProps,
+        defaultValue,
+    } = props;
     const translate = useTranslate();
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useStyles(props);
 
     // We need a unique id for each field for a proper enter/exit animation
     // so we keep an internal map between the field position and an auto-increment id
