@@ -681,6 +681,9 @@ const App = () => (
 
 ![custom AppBar](./img/custom_appbar.png)
 
+
+**Tip**: You can change the color of the `<AppBar>` by setting the `color` prop to `primary` or `secondary`. The latter is the default.
+
 ## Replacing The AppBar
 
 For more drastic changes of the top component, you will probably want to create an `<AppBar>` from scratch instead of just passing children to react-admin's `<AppBar>`. 
