@@ -625,7 +625,6 @@ describe('<ReferenceArrayInputController />', () => {
             </ReferenceArrayInputController>,
             { admin: { resources: { tags: { data: { 5: {}, 6: {} } } } } }
         );
-        console.log('wait');
         await wait();
         expect(dispatch).toHaveBeenCalledWith({
             type: CRUD_GET_MANY,

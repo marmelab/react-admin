@@ -70,7 +70,13 @@ const useReferenceArrayInputController = ({
         }
 
         inputValue.current = input.value;
-    }, [idsToFetch, idsToGetFromStore, input.value, setIdsToFetch]);
+    }, [
+        idsToFetch,
+        idsToGetFromStore,
+        input.value,
+        setIdsToFetch,
+        setIdsToGetFromStore,
+    ]);
 
     const [pagination, setPagination] = useState({ page: 1, perPage });
     const [sort, setSort] = useState(defaultSort);
