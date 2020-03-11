@@ -62,3 +62,9 @@ export interface FieldProps<T extends Record = Record> {
 export interface Review extends Record {
     customer_id: string;
 }
+
+declare global {
+    interface Window {
+        restServer: any;
+    }
+}

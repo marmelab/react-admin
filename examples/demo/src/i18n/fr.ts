@@ -1,3 +1,4 @@
+// @ts-ignore
 import frenchMessages from 'ra-language-french';
 
 export default {

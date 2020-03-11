@@ -3,7 +3,7 @@ import buildApolloClient, {
 } from 'ra-data-graphql-simple';
 import { DELETE } from 'ra-core';
 import gql from 'graphql-tag';
-const getGqlResource = resource => {
+const getGqlResource = (resource: string) => {
     switch (resource) {
         case 'customers':
             return 'Customer';
@@ -28,17 +28,17 @@ const getGqlResource = resource => {
     }
 };
 
-const customBuildQuery = introspectionResults => {
+const customBuildQuery = (introspectionResults: any) => {
     const buildQuery = buildQueryFactory(introspectionResults);
 
-    return (type, resource, params) => {
+    return (type: any, resource: any, params: any) => {
         if (type === DELETE) {
             return {
                 query: gql`mutation remove${resource}($id: ID!) {
                     remove${resource}(id: $id)
                 }`,
                 variables: { id: params.id },
-                parseResponse: ({ data }) => {
+                parseResponse: ({ data }: any) => {
                     if (data[`remove${resource}`]) {
                         return { data: { id: params.id } };
                     }
@@ -59,11 +59,11 @@ export default () => {
         },
         introspection: {
             operationNames: {
-                [DELETE]: resource => `remove${resource.name}`,
+                [DELETE]: (resource: any) => `remove${resource.name}`,
             },
         },
         buildQuery: customBuildQuery,
-    }).then(dataProvider => (type, resource, params) =>
+    }).then((dataProvider: any) => (type: any, resource: any, params: any) =>
         dataProvider(type, getGqlResource(resource), params)
     );
 };

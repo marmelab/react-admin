@@ -1,5 +1,6 @@
 import JsonGraphqlServer from 'json-graphql-server';
 import generateData from 'data-generator-retail';
+
 import fetchMock from 'fetch-mock';
 
 export default () => {
