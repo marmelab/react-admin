@@ -21,7 +21,7 @@ Here are all the props accepted by the `<Create>` and `<Edit>` components:
 * [`actions`](#actions)
 * [`aside`](#aside-component)
 * [`successMessage`](#success-message)
-* [`component](#component)
+* [`component`](#component)
 * [`undoable`](#undoable) (`<Edit>` only)
 
 Here is the minimal code necessary to display a form to create and edit comments:
