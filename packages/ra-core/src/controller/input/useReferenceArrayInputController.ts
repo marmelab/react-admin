@@ -56,11 +56,14 @@ const useReferenceArrayInputController = ({
     // optimization: we fetch selected items only once. When the user selects more items,
     // as we already have the past selected items in the store, we don't fetch them.
     useEffect(() => {
+        // Only fetch new ids
         const newIdsToFetch = difference(input.value, inputValue.current);
-        if (newIdsToFetch.length > 0) {
-            setIdsToFetch(newIdsToFetch);
-            setIdsToGetFromStore(inputValue.current || []);
-        }
+        // Only get from store ids selected and already fetched
+        const newIdsToGetFromStore = difference(input.value, newIdsToFetch);
+        //Always change states to avoid keeping previous values no more selected
+        setIdsToFetch(newIdsToFetch);
+        setIdsToGetFromStore(newIdsToGetFromStore);
+
         inputValue.current = input.value;
     }, [input.value, setIdsToFetch]);
 
@@ -105,10 +108,7 @@ const useReferenceArrayInputController = ({
         : referenceRecordsFromStore;
 
     // filter out not found references - happens when the dataProvider doesn't guarantee referential integrity
-    // filter out not selected items - happens when the form value is changed by script (i.e. with a filtering Button)
-    const finalReferenceRecords = referenceRecords
-        .filter(Boolean)
-        .filter(item => input.value.includes(item.id));
+    const finalReferenceRecords = referenceRecords.filter(Boolean);
 
     const { data: matchingReferences } = useGetMatching(
         reference,
