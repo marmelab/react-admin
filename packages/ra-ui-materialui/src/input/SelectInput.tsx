@@ -273,6 +273,7 @@ SelectInput.propTypes = {
     ]).isRequired,
     optionValue: PropTypes.string.isRequired,
     disableValue: PropTypes.string,
+    resettable: PropTypes.bool,
     resource: PropTypes.string,
     source: PropTypes.string,
     translateChoice: PropTypes.bool,
