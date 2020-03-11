@@ -60,12 +60,17 @@ const useReferenceArrayInputController = ({
         const newIdsToFetch = difference(input.value, inputValue.current);
         // Only get from store ids selected and already fetched
         const newIdsToGetFromStore = difference(input.value, newIdsToFetch);
-        //Always change states to avoid keeping previous values no more selected
-        setIdsToFetch(newIdsToFetch);
-        setIdsToGetFromStore(newIdsToGetFromStore);
+
+        // Change states each time input values changes to avoid keeping previous values no more selected
+        if (!isEqual(idsToFetch, newIdsToFetch)) {
+            setIdsToFetch(newIdsToFetch);
+        }
+        if (!isEqual(idsToGetFromStore, newIdsToGetFromStore)) {
+            setIdsToGetFromStore(newIdsToGetFromStore);
+        }
 
         inputValue.current = input.value;
-    }, [input.value, setIdsToFetch]);
+    }, [idsToFetch, idsToGetFromStore, input.value, setIdsToFetch]);
 
     const [pagination, setPagination] = useState({ page: 1, perPage });
     const [sort, setSort] = useState(defaultSort);
