@@ -60,7 +60,23 @@ const useReferenceArrayInputController = ({
         const newIdsToFetch = difference(input.value, inputValue.current);
         // Only get from store ids selected and already fetched
         const newIdsToGetFromStore = difference(input.value, newIdsToFetch);
-
+        /*
+            input.value (current)
+                +------------------------+
+                | ********************** |
+                | ********************** |  inputValue.current (old)
+                | ********** +-----------------------+
+                | ********** | ooooooooo |           |
+                | ********** | ooooooooo |           |
+                | ********** | ooooooooo |           |
+                | ********** | ooooooooo |           |
+                +---|--------|------|----+           |
+                    |        |      |                |
+                    |        |      |                |
+                    |        +------|----------------+
+                    |               |
+            newIdsToFetch    newIdsToGetFromStore
+        */
         // Change states each time input values changes to avoid keeping previous values no more selected
         if (!isEqual(idsToFetch, newIdsToFetch)) {
             setIdsToFetch(newIdsToFetch);
