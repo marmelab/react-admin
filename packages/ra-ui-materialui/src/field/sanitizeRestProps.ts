@@ -18,6 +18,7 @@ export default (props: object): object =>
         'resource',
         'sortable',
         'sortBy',
+        'sortByOrder',
         'source',
         'textAlign',
         'translateChoice',

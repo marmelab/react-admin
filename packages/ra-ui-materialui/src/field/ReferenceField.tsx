@@ -118,6 +118,7 @@ ReferenceField.propTypes = {
     reference: PropTypes.string.isRequired,
     resource: PropTypes.string,
     sortBy: PropTypes.string,
+    sortByOrder: PropTypes.string,
     source: PropTypes.string.isRequired,
     translateChoice: PropTypes.func,
     linkType: PropTypes.oneOfType([

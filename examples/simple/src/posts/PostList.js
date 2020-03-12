@@ -140,7 +140,12 @@ const PostList = props => {
             ) : (
                 <Datagrid rowClick={rowClick} expand={PostPanel} optimized>
                     <TextField source="id" />
-                    <TextField source="title" cellClassName={classes.title} />
+                    <TextField
+                        source="title"
+                        cellClassName={classes.title}
+                        sortBy="title"
+                        sortByOrder="DESC"
+                    />
                     <DateField
                         source="published_at"
                         cellClassName={classes.publishedAt}

@@ -5,6 +5,7 @@ type TextAlign = 'right' | 'left';
 export interface FieldProps {
     addLabel?: boolean;
     sortBy?: string;
+    sortByOrder?: string;
     source?: string;
     label?: string;
     sortable?: boolean;
@@ -25,6 +26,7 @@ export interface InjectedFieldProps {
 export const fieldPropTypes = {
     addLabel: PropTypes.bool,
     sortBy: PropTypes.string,
+    sortByOrder: PropTypes.string,
     source: PropTypes.string,
     label: PropTypes.string,
     sortable: PropTypes.bool,
