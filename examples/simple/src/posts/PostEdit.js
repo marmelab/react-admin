@@ -20,7 +20,6 @@ import {
     ReferenceManyField,
     ReferenceInput,
     SelectInput,
-    SelectArrayInput,
     SimpleFormIterator,
     TabbedForm,
     TextField,
