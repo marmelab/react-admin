@@ -35,7 +35,14 @@ const TabbedFormTabs = ({
         : validTabPaths[0];
 
     return (
-        <Tabs value={tabValue} indicatorColor="primary" {...rest}>
+        <Tabs
+            className={classes.root}
+            value={tabValue}
+            indicatorColor="primary"
+            {...rest}
+            // scrollButtons="auto"
+            variant="scrollable"
+        >
             {Children.map(children, (tab, index) => {
                 if (!isValidElement(tab)) return null;
 
