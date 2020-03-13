@@ -1,3 +1,4 @@
+import { ApolloQueryResult } from 'apollo-client';
 import buildApolloClient, {
     buildQuery as buildQueryFactory,
 } from 'ra-data-graphql-simple';
@@ -57,7 +58,7 @@ const customBuildQuery = (
                     remove${resource}(id: $id)
                 }`,
                 variables: { id: params.id },
-                parseResponse: ({ data }: any) => {
+                parseResponse: ({ data }: ApolloQueryResult<any>) => {
                     if (data[`remove${resource}`]) {
                         return { data: { id: params.id } };
                     }
