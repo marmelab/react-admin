@@ -550,7 +550,7 @@ export const PostList = (props) => (
 
 ### Specify Sort Order
 
-By default, a column is sorted by the `ASC` order property. You can use `DESC` via the `sortByOrder` property:
+By default, a column is sorted by the `ASC` order. You can use `DESC` via the `sortByOrder` property:
 
 {% raw %}
 ```jsx
