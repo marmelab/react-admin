@@ -1042,18 +1042,28 @@ The `<SimpleForm>` and `<TabbedForm>` layouts are quite simple. In order to bett
 Here is an example of such custom form, taken from the Posters Galore demo. It uses [material-ui's `<Box>` component](https://material-ui.com/components/box/), and it's a good starting point for your custom form layouts.
 
 ```jsx
+import React from 'react';
 import {
     FormWithRedirect,
     DateInput,
     SelectArrayInput,
     TextInput,
-    Toolbar,
     SaveButton,
     DeleteButton,
+    NullableBooleanInput,
 } from 'react-admin';
-import { CardContent, Typography, Box, Toolbar } from '@material-ui/core';
+import { Typography, Box, Toolbar } from '@material-ui/core';
 
-const VisitorForm = (props) => (
+const segments = [
+    { id: 'compulsive', name: 'Compulsive' },
+    { id: 'collector', name: 'Collector' },
+    { id: 'ordered_once', name: 'Ordered Once' },
+    { id: 'regular', name: 'Regular' },
+    { id: 'returns', name: 'Returns' },
+    { id: 'reviewer', name: 'Reviewer' },
+];
+
+const VisitorForm = props => (
     <FormWithRedirect
         {...props}
         render={formProps => (
