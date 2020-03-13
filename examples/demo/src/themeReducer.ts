@@ -1,11 +1,18 @@
-import { CHANGE_THEME } from './configuration/actions';
+import { Reducer } from 'redux';
+import { CHANGE_THEME, changeTheme } from './configuration/actions';
+import { ThemeName } from './types';
 
-export default (
+type State = ThemeName;
+type Action = ReturnType<typeof changeTheme>;
+
+const themeReducer: Reducer<State, Action> = (
     previousState = 'light',
-    { type, payload }: { type: string; payload: any }
+    { type, payload }
 ) => {
     if (type === CHANGE_THEME) {
         return payload;
     }
     return previousState;
 };
+
+export default themeReducer;
