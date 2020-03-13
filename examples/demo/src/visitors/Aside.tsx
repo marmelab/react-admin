@@ -197,26 +197,24 @@ const EventList: FC<EventListProps> = ({ record, basePath }) => {
     );
 };
 
+interface AsideEvent {
+    type: string;
+    date: any;
+    data: OrderRecord | ReviewRecord;
+}
+
 const mixOrdersAndReviews = (
     orders: RecordMap<OrderRecord>,
     orderIds: Identifier[],
     reviews: RecordMap<ReviewRecord>,
     reviewIds: Identifier[]
 ) => {
-    const eventsFromOrders: {
-        type: string;
-        date: any;
-        data: Record;
-    }[] = orderIds.map(id => ({
+    const eventsFromOrders = orderIds.map<AsideEvent>(id => ({
         type: 'order',
         date: orders[id].date,
         data: orders[id],
     }));
-    const eventsFromReviews: {
-        type: string;
-        date: any;
-        data: Record;
-    }[] = reviewIds.map(id => ({
+    const eventsFromReviews = reviewIds.map<AsideEvent>(id => ({
         type: 'review',
         date: reviews[id].date,
         data: reviews[id],

@@ -41,6 +41,7 @@ export interface Customer extends Record {
 }
 
 export interface Order extends Record {
+    date: string;
     basket: BasketItem[];
 }
 
@@ -61,6 +62,7 @@ export interface FieldProps<T extends Record = Record> {
 }
 
 export interface Review extends Record {
+    date: string;
     customer_id: string;
 }
 
