@@ -83,7 +83,7 @@ ReferenceArrayField.propTypes = {
     reference: PropTypes.string.isRequired,
     resource: PropTypes.string,
     sortBy: PropTypes.string,
-    sortByOrder: PropTypes.string,
+    sortByOrder: fieldPropTypes.sortByOrder,
     source: PropTypes.string.isRequired,
 };
 
