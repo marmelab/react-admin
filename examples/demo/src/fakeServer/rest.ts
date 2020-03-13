@@ -1,7 +1,5 @@
-// @ts-ignore
 import FakeRest from 'fakerest';
 import fetchMock from 'fetch-mock';
-// @ts-ignore
 import generateData from 'data-generator-retail';
 
 export default () => {
