@@ -48,14 +48,16 @@ describe('<DatagridHeaderCell />', () => {
             expect(getByTitle('ra.action.sort').dataset.sort).toBe('title');
         });
 
-        it('should be enabled when field has a sortByOrder props', () => {
+        it('should be change order when field has a sortByOrder props', () => {
             const { getByTitle } = render(
                 <table>
                     <tbody>
                         <tr>
                             <DatagridHeaderCell
                                 currentSort={{}}
-                                field={<Field sortByOrder="DESC" />}
+                                field={
+                                    <Field sortBy="title" sortByOrder="DESC" />
+                                }
                                 updateSort={() => true}
                             />
                         </tr>
@@ -63,6 +65,23 @@ describe('<DatagridHeaderCell />', () => {
                 </table>
             );
             expect(getByTitle('ra.action.sort').dataset.order).toBe('DESC');
+        });
+
+        it('should be keep ASC order when field has not sortByOrder props', () => {
+            const { getByTitle } = render(
+                <table>
+                    <tbody>
+                        <tr>
+                            <DatagridHeaderCell
+                                currentSort={{}}
+                                field={<Field source="title" />}
+                                updateSort={() => true}
+                            />
+                        </tr>
+                    </tbody>
+                </table>
+            );
+            expect(getByTitle('ra.action.sort').dataset.order).toBe('ASC');
         });
 
         it('should be disabled when field has no sortby and no source', () => {
