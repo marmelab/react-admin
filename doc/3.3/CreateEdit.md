@@ -21,7 +21,7 @@ Here are all the props accepted by the `<Create>` and `<Edit>` components:
 * [`actions`](#actions)
 * [`aside`](#aside-component)
 * [`successMessage`](#success-message)
-* [`component](#component)
+* [`component`](#component)
 * [`undoable`](#undoable) (`<Edit>` only)
 
 Here is the minimal code necessary to display a form to create and edit comments:
@@ -870,7 +870,7 @@ export const PostEdit = (props) => (
 Here are the props received by the `Toolbar` component when passed as the `toolbar` prop of the `SimpleForm` or `TabbedForm` components:
 
 * `handleSubmitWithRedirect`: The function to call in order to submit the form. It accepts a single parameter overriding the form's default redirect.
-* `handleSubmit` which is the same prop as in [`react-final-form`](https://github.com/final-form/react-final-form#handlesubmit-syntheticeventhtmlformelement--promiseobject)
+* `handleSubmit` which is the same prop as in [`react-final-form`](https://final-form.org/docs/react-final-form/types/FormRenderProps#handlesubmit)
 * `invalid`: A boolean indicating whether the form is invalid
 * `pristine`: A boolean indicating whether the form is pristine (eg: no inputs have been changed yet)
 * `redirect`: The default form's redirect
@@ -1042,18 +1042,28 @@ The `<SimpleForm>` and `<TabbedForm>` layouts are quite simple. In order to bett
 Here is an example of such custom form, taken from the Posters Galore demo. It uses [material-ui's `<Box>` component](https://material-ui.com/components/box/), and it's a good starting point for your custom form layouts.
 
 ```jsx
+import React from 'react';
 import {
     FormWithRedirect,
     DateInput,
     SelectArrayInput,
     TextInput,
-    Toolbar,
     SaveButton,
     DeleteButton,
+    NullableBooleanInput,
 } from 'react-admin';
-import { CardContent, Typography, Box, Toolbar } from '@material-ui/core';
+import { Typography, Box, Toolbar } from '@material-ui/core';
 
-const VisitorForm = (props) => (
+const segments = [
+    { id: 'compulsive', name: 'Compulsive' },
+    { id: 'collector', name: 'Collector' },
+    { id: 'ordered_once', name: 'Ordered Once' },
+    { id: 'regular', name: 'Regular' },
+    { id: 'returns', name: 'Returns' },
+    { id: 'reviewer', name: 'Reviewer' },
+];
+
+const VisitorForm = props => (
     <FormWithRedirect
         {...props}
         render={formProps => (
