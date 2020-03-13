@@ -90,7 +90,7 @@ export default () => {
             ...rest: Parameters<LegacyDataProvider>
         ) => {
             const [type, resource, params] = rest;
-            dataProvider(type, getGqlResource(resource), params);
+            return dataProvider(type, getGqlResource(resource), params);
         }
     );
 };
