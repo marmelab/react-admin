@@ -1,5 +1,18 @@
 # Changelog
 
+## v3.3.1
+
+* Fix pagination buttons are in the wrong direction in RTL languages ([4496](https://github.com/marmelab/react-admin/pull/4496)) ([alikazemkhanloo](https://github.com/alikazemkhanloo))
+* Fix `<ReferenceArrayInput>` list when filter is changed ([4494](https://github.com/marmelab/react-admin/pull/4494)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Fix rerender caused by style override ([4490](https://github.com/marmelab/react-admin/pull/4490)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix build of `ra-input-rich-text` ([4455](https://github.com/marmelab/react-admin/pull/4455)) ([teyc](https://github.com/teyc))
+* [Doc] Fix code sample in CreateEdit docs. ([4524](https://github.com/marmelab/react-admin/pull/4524)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix useless line in `ra-data-graphcool` readme ([4521](https://github.com/marmelab/react-admin/pull/4521)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* [Doc] Fix anchor text in CreateEdit list of props ([4515](https://github.com/marmelab/react-admin/pull/4515)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix Authentication docs missing `<Notification>` in `<MyLoginPage>` example ([4492](https://github.com/marmelab/react-admin/pull/4492)) ([gvillo](https://github.com/gvillo))
+* [Doc] Fix some jsDocs definitions. ([4484](https://github.com/marmelab/react-admin/pull/4484)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix link to react-final-form in CreateEdit documentation ([4483](https://github.com/marmelab/react-admin/pull/4483)) ([ekalinin](https://github.com/ekalinin))
+
 ## v3.3.0
 
 * Add opt-in client-side caching layer to save on network requests, add support for optimistic rendering of multiple list pages, make `useListController` use `useGetList`, fix refresh when leaving optimistic mode ([4386](https://github.com/marmelab/react-admin/pull/4386)) ([fzaninotto](https://github.com/fzaninotto))
