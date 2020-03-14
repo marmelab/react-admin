@@ -472,13 +472,13 @@ However, in some cases (e.g. inside a `<ReferenceField>`), you may not want the 
 <SelectField source="gender" choices={choices} translateChoice={false}/>
 ```
 
-**Tip**: `<ReferenceField>` sets `translateChoice` to `false` by default.
+**Tip**: `<SelectField>` sets `translateChoice` to `true` by default.
 
 ## `<ReferenceField>`
 
 This component fetches a single referenced record (using the `GET_MANY` REST method), and displays one field of this record. That's why a `<ReferenceField>` must always have a child `<Field>`.
 
-For instance, here is how to fetch the `post` related to `comment` records, and display the `title` for each:
+For instance, here is how to fetch the `user` related to `post` records, and display the `name` for each:
 
 ```jsx
 import React from 'react';
@@ -488,9 +488,10 @@ export const PostList = (props) => (
     <List {...props}>
         <Datagrid>
             <TextField source="id" />
-            <ReferenceField label="Author" source="user_id" reference="users">
+            <ReferenceField label="User" source="user_id" reference="users">
                 <TextField source="name" />
             </ReferenceField>
+            <TextField source="title" />
         </Datagrid>
     </List>
 );
@@ -506,8 +507,8 @@ With this configuration, `<ReferenceField>` wraps the user's name in a link to t
 
 ```jsx
 <Admin dataProvider={myDataProvider}>
-    <Resource name="comments" list={CommentList} />
-    <Resource name="posts" />
+    <Resource name="posts" list={PostList} />
+    <Resource name="users" />
 </Admin>
 ```
 
