@@ -207,7 +207,7 @@ const PostList = props => (
 )
 ```
 
-In many cases, you'll need more than simple object manipulation. You'll need to *augment* your objects based on relationships. For instance, the export for comments should include the title of the related post - but the export only exposes a `post_id` by default. For that purpose, the exporter receives a `fetchRelatedRecords` function as second parameter. It fetches related records using your `dataProvider` and the `GET_MANY` verb, and returns a promise.
+In many cases, you'll need more than simple object manipulation. You'll need to *augment* your objects based on relationships. For instance, the export for comments should include the title of the related post - but the export only exposes a `post_id` by default. For that purpose, the exporter receives a `fetchRelatedRecords` function as second parameter. It fetches related records using your `dataProvider.getMany()` method, and returns a promise.
 
 Here is an example for a Comments exporter, fetching related Posts:
 
@@ -217,7 +217,7 @@ import { List, downloadCSV } from 'react-admin';
 import jsonExport from 'jsonexport/dist';
 
 const exporter = (records, fetchRelatedRecords) => {
-    // will call dataProvider(GET_MANY, 'posts', { ids: records.map(record => record.post_id) }), ignoring duplicate and empty post_id
+    // will call dataProvider.getMany('posts', { ids: records.map(record => record.post_id) }), ignoring duplicate and empty post_id
     fetchRelatedRecords(records, 'post_id', 'posts').then(posts => {
         const data = records.map(record => ({
                 ...record,
