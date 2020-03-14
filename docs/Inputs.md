@@ -133,10 +133,9 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput, FormDataConsumer 
         <DateInput source="date" />
         <FormDataConsumer>
             {({ getSource, scopedFormData }) => {
-                getSource();
                 return (
                     <TextField
-                        source={'url'}
+                        source={getSource('url')}
                         record={scopedFormData}
                     />
                 );
