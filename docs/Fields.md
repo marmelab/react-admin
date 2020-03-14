@@ -488,7 +488,7 @@ export const PostList = (props) => (
     <List {...props}>
         <Datagrid>
             <TextField source="id" />
-            <ReferenceField label="User" source="user_id" reference="users">
+            <ReferenceField label="User" source="userId" reference="users">
                 <TextField source="name" />
             </ReferenceField>
             <TextField source="title" />
