@@ -1,4 +1,12 @@
-import {FunctionComponent, cloneElement, Children, useEffect, useState, memo} from 'react';
+import {
+    FunctionComponent,
+    cloneElement,
+    Children,
+    useEffect,
+    useState,
+    memo,
+    useCallback,
+} from 'react';
 import get from 'lodash/get';
 import { Identifier } from 'ra-core';
 
@@ -99,31 +107,37 @@ export const ArrayField: FunctionComponent<
     fieldKey,
     ...rest
 }) => {
-    const getDataAndIds = (record: object, source: string, fieldKey: string) => {
+    const getDataAndIds = (
+        record: object,
+        source: string,
+        fieldKey: string
+    ) => {
         const list = get(record, source);
         if (!list) {
             return initialState;
         }
         return fieldKey
-          ? {
-              data: list.reduce((prev, item) => {
-                  prev[item[fieldKey]] = item;
-                  return prev;
-              }, {}),
-              ids: list.map(item => item[fieldKey]),
-          }
-          : {
-              data: list.reduce((prev, item) => {
-                  prev[JSON.stringify(item)] = item;
-                  return prev;
-              }, {}),
-              ids: list.map(JSON.stringify),
-          };
+            ? {
+                  data: list.reduce((prev, item) => {
+                      prev[item[fieldKey]] = item;
+                      return prev;
+                  }, {}),
+                  ids: list.map(item => item[fieldKey]),
+              }
+            : {
+                  data: list.reduce((prev, item) => {
+                      prev[JSON.stringify(item)] = item;
+                      return prev;
+                  }, {}),
+                  ids: list.map(JSON.stringify),
+              };
     };
 
-    const { ids: initialIds, data: initialData } = record ? getDataAndIds(record, source, fieldKey) : initialState;
-    const [ ids, setIds ] = useState(initialIds);
-    const [ data, setData ] = useState(initialData);
+    const { ids: initialIds, data: initialData } = record
+        ? getDataAndIds(record, source, fieldKey)
+        : initialState;
+    const [ids, setIds] = useState(initialIds);
+    const [data, setData] = useState(initialData);
 
     useEffect(() => {
         const { ids, data } = getDataAndIds(record, source, fieldKey);
@@ -141,10 +155,11 @@ export const ArrayField: FunctionComponent<
         ...rest,
     });
 };
-
+// @ts-ignore
 const EnhancedArrayField = memo<FieldProps>(ArrayField);
 
 EnhancedArrayField.defaultProps = {
+    // @ts-ignore
     addLabel: true,
 };
 
