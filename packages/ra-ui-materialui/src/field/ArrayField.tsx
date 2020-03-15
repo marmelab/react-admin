@@ -157,12 +157,11 @@ export const ArrayField: FunctionComponent<
 };
 // @ts-ignore
 const EnhancedArrayField = memo<FieldProps>(ArrayField);
-
+// @ts-ignore
 EnhancedArrayField.defaultProps = {
-    // @ts-ignore
     addLabel: true,
 };
-
+// @ts-ignore
 EnhancedArrayField.propTypes = fieldPropTypes;
 EnhancedArrayField.displayName = 'EnhancedArrayField';
 
