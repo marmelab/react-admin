@@ -95,7 +95,9 @@ const SimpleFormIterator = props => {
     // the fields prop which will always be empty for a new record.
     // Without it, our ids wouldn't match the default value and we would get key warnings
     // on the CssTransition element inside our render method
-    const ids = useRef(nextId.current > 0 ? Array.from(Array(nextId.current).keys()) : []);
+    const ids = useRef(
+        nextId.current > 0 ? Array.from(Array(nextId.current).keys()) : []
+    );
 
     const removeField = index => () => {
         ids.current.splice(index, 1);
