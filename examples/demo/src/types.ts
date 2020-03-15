@@ -1,4 +1,7 @@
-import { ReduxState, Record, Identifier } from 'ra-core';
+import { ReduxState, Record, Identifier, usePermissions } from 'ra-core';
+import { RouteComponentProps } from 'react-router-dom';
+import { StaticContext } from 'react-router';
+import * as H from 'history';
 
 export type ThemeName = 'light' | 'dark';
 
@@ -64,6 +67,41 @@ export interface FieldProps<T extends Record = Record> {
 export interface Review extends Record {
     date: string;
     customer_id: string;
+}
+
+export interface ResourceMatch {
+    id: string;
+    [k: string]: string;
+}
+
+export interface ResourceComponentProps<
+    Params extends { [K in keyof Params]?: string } = {},
+    C extends StaticContext = StaticContext,
+    S = H.LocationState
+> extends RouteComponentProps<Params, C, S> {
+    resource: string;
+    options: object;
+    hasList: boolean;
+    hasEdit: boolean;
+    hasShow: boolean;
+    hasCreate: boolean;
+    permissions: ReturnType<typeof usePermissions>['permissions'];
+}
+
+export interface EditComponentProps<
+    Params extends ResourceMatch = { id: string },
+    C extends StaticContext = StaticContext,
+    S = H.LocationState
+> extends ResourceComponentProps<Params, C, S> {
+    id: string;
+}
+
+export interface ShowComopnentProps<
+    Params extends ResourceMatch = { id: string },
+    C extends StaticContext = StaticContext,
+    S = H.LocationState
+> extends ResourceComponentProps<Params, C, S> {
+    id: string;
 }
 
 declare global {
