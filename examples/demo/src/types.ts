@@ -1,7 +1,15 @@
-import { ReduxState, Record, Identifier, usePermissions } from 'ra-core';
+import {
+    useListController,
+    ReduxState,
+    Record,
+    Identifier,
+    usePermissions,
+} from 'ra-core';
 import { RouteComponentProps } from 'react-router-dom';
 import { StaticContext } from 'react-router';
 import * as H from 'history';
+import { ClassNameMap } from '@material-ui/core/styles/withStyles';
+import { ListControllerProps } from 'ra-core/esm/controller/useListController';
 
 export type ThemeName = 'light' | 'dark';
 
@@ -43,8 +51,11 @@ export interface Customer extends Record {
     total_spent: number;
 }
 
+export type OrderStatus = 'ordered' | 'delivered' | 'cancelled';
+
 export interface Order extends Record {
     date: string;
+    status: OrderStatus;
     basket: BasketItem[];
 }
 
@@ -72,6 +83,34 @@ export interface Review extends Record {
 export interface ResourceMatch {
     id: string;
     [k: string]: string;
+}
+
+type FilterClassKey = 'button' | 'form';
+
+export interface FilterProps<Params = {}> {
+    classes?: ClassNameMap<FilterClassKey>;
+    context?: 'form' | 'button';
+    displayedFilters?: { [K in keyof Params]?: boolean };
+    filterValues?: Params;
+    hideFilter?: ReturnType<typeof useListController>['hideFilter'];
+    setFilters?: ReturnType<typeof useListController>['setFilters'];
+    showFilter?: ReturnType<typeof useListController>['showFilter'];
+    resource?: string;
+}
+
+type ElementConstructor<P> =
+    | ((props: P) => React.ReactElement<any> | null)
+    | (new (props: P) => React.Component<P, any, any>);
+
+export type Props<C> = C extends ElementConstructor<infer P>
+    ? P
+    : C extends keyof JSX.IntrinsicElements
+    ? JSX.IntrinsicElements[C]
+    : {};
+
+export interface DatagridProps<RecordType = Record>
+    extends Partial<ListControllerProps<RecordType>> {
+    hasBulkActions?: boolean;
 }
 
 export interface ResourceComponentProps<

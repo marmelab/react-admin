@@ -39,14 +39,19 @@ const useListStyles = makeStyles(theme => ({
 }));
 
 interface MobileGridProps {
-    ids: Identifier[];
-    data: RecordMap<Record>;
-    basePath: string;
+    ids?: Identifier[];
+    data?: RecordMap<Record>;
+    basePath?: string;
 }
 
 const MobileGrid: FC<MobileGridProps> = ({ ids, data, basePath }) => {
     const translate = useTranslate();
     const classes = useListStyles();
+
+    if (!ids || !data || !basePath) {
+        return null;
+    }
+
     return (
         <div style={{ margin: '1em' }}>
             {ids.map(id => (
