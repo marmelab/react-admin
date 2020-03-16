@@ -40,6 +40,7 @@ const TabbedFormTabs = ({
 
     return (
         <Tabs
+            aria-label="Form-tabs"
             value={tabValue}
             indicatorColor="primary"
             {...scrollableProps}

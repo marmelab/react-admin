@@ -162,7 +162,7 @@ export const TabbedFormView = props => {
 
     const url = match ? match.url : location.pathname;
     const scrollableProps = scrollable
-        ? { scrollable: true, scrollButtons: 'auto', variant: 'scrollable' }
+        ? { scrollable: true, scrollButtons: 'on', variant: 'scrollable' }
         : {};
     return (
         <form
@@ -181,7 +181,6 @@ export const TabbedFormView = props => {
                     tabsWithErrors,
                     ...scrollableProps,
                 },
-                // ...scrollableProps,
                 children
             )}
             <Divider

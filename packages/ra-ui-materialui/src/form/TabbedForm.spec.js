@@ -92,4 +92,55 @@ describe('<TabbedForm />', () => {
             expect(tabs).toEqual(['tab1', 'tab3', 'tab4']);
         });
     });
+
+    it('should have scroll buttons when too much Tabs />', () => {
+        const { queryByLabelText } = renderWithRedux(
+            <MemoryRouter initialEntries={['/']}>
+                <TabbedForm
+                    style={{
+                        width: 200,
+                        maxWidth: 200,
+                    }}
+                >
+                    <FormTab label="A Useful Tab 1" />
+                    <FormTab label="A Useful Tab 2" />
+                    <FormTab label="A Useful Tab 3" />
+                    <FormTab label="A Useful Tab 4" />
+                    <FormTab label="A Useful Tab 5" />
+                    <FormTab label="A Useful Tab 6" />
+                    <FormTab label="A Useful Tab 7" />
+                </TabbedForm>
+            </MemoryRouter>
+        );
+
+        const tabs = queryByLabelText('Form-tabs');
+
+        expect(tabs.children).toHaveLength(4);
+    });
+
+    it('should not have scroll buttons when too much Tabs />', () => {
+        const { queryByLabelText } = renderWithRedux(
+            <MemoryRouter initialEntries={['/']}>
+                <TabbedForm
+                    style={{
+                        width: 200,
+                        maxWidth: 200,
+                    }}
+                    scrollable={false}
+                >
+                    <FormTab label="A Useful Tab 1" />
+                    <FormTab label="A Useful Tab 2" />
+                    <FormTab label="A Useful Tab 3" />
+                    <FormTab label="A Useful Tab 4" />
+                    <FormTab label="A Useful Tab 5" />
+                    <FormTab label="A Useful Tab 6" />
+                    <FormTab label="A Useful Tab 7" />
+                </TabbedForm>
+            </MemoryRouter>
+        );
+
+        const tabs = queryByLabelText('Form-tabs');
+
+        expect(tabs.children).toHaveLength(1);
+    });
 });
