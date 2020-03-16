@@ -28,10 +28,15 @@ const sanitizeRestProps = ({
 const useStyles = makeStyles(
     theme => ({
         content: {
-            paddingTop: theme.spacing(1),
+            paddingTop: props =>
+                props.scrollable ? 48 + theme.spacing(1) : theme.spacing(1),
             paddingLeft: theme.spacing(2),
             paddingRight: theme.spacing(2),
+        },
+        scrollableDivider: {
             marginTop: 48,
+            position: 'absolute',
+            width: '100%',
         },
         scrollableTabs: {
             position: 'absolute',
@@ -113,7 +118,11 @@ const TabbedShowLayout = props => {
         >
             {cloneElement(tabs, { classes, ...scrollableProps }, children)}
 
-            <Divider />
+            <Divider
+                className={classnames({
+                    [classes.scrollableDivider]: scrollable,
+                })}
+            />
             <div className={classes.content}>
                 {Children.map(children, (tab, index) =>
                     tab && isValidElement(tab) ? (

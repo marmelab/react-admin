@@ -107,10 +107,15 @@ const useStyles = makeStyles(
     theme => ({
         errorTabButton: { color: theme.palette.error.main },
         content: {
-            paddingTop: theme.spacing(1),
+            paddingTop: props =>
+                props.scrollable ? 48 + theme.spacing(1) : theme.spacing(1),
             paddingLeft: theme.spacing(2),
             paddingRight: theme.spacing(2),
+        },
+        scrollableDivider: {
             marginTop: 48,
+            position: 'absolute',
+            width: '100%',
         },
         scrollableTabs: {
             position: 'absolute',
@@ -179,7 +184,11 @@ export const TabbedFormView = props => {
                 // ...scrollableProps,
                 children
             )}
-            <Divider />
+            <Divider
+                className={classnames({
+                    [classes.scrollableDivider]: scrollable,
+                })}
+            />
             <div className={classes.content}>
                 {/* All tabs are rendered (not only the one in focus), to allow validation
                 on tabs not in focus. The tabs receive a `hidden` property, which they'll
