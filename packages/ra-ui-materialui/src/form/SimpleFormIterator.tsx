@@ -1,6 +1,7 @@
 import React, { Children, cloneElement, isValidElement, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { CSSTransitionProps } from 'react-transition-group/CSSTransition';
 import get from 'lodash/get';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -11,7 +12,7 @@ import AddIcon from '@material-ui/icons/AddCircleOutline';
 import { useTranslate, ValidationError } from 'ra-core';
 import classNames from 'classnames';
 
-import FormInput from '../form/FormInput';
+import FormInput from './FormInput';
 
 const useStyles = makeStyles(
     theme => ({
@@ -62,7 +63,47 @@ const useStyles = makeStyles(
     { name: 'RaSimpleFormIterator' }
 );
 
-const SimpleFormIterator = ({
+export interface RowIndexProps {
+    index: number;
+}
+
+export const DefaultRowIndex: React.FC<RowIndexProps> = ({ index }) => {
+    const classes = useStyles();
+
+    return (
+        <Typography
+            data-testid="default-row-index"
+            variant="body1"
+            className={classes.index}
+        >
+            {index + 1}
+        </Typography>
+    );
+};
+
+export interface SimpleFormIteratorProps {
+    defaultValue: any; // PropTypes.any;
+    basePath: string; // PropTypes.string;
+    children: React.ReactNode; // PropTypes.node;
+    classes: any; // PropTypes.object;
+    className: string; // PropTypes.string;
+    fields: any; // PropTypes.object;
+    meta: any; //PropTypes.object;
+    record: object; // PropTypes.object;
+    source: string; //PropTypes.string;
+    resource: string; //PropTypes.string;
+    translate: any; // PropTypes.func;
+    disableAdd: boolean; // PropTypes.bool;
+    disableRemove: (record: object) => boolean | boolean; // PropTypes.oneOfType([PropTypes.func, PropTypes.bool]);
+    TransitionProps: CSSTransitionProps; // PropTypes.shape({});
+
+    variant: string;
+    margin: string;
+
+    RowIndexComponent: React.ComponentType<RowIndexProps>;
+}
+
+const SimpleFormIterator: React.FC<SimpleFormIteratorProps> = ({
     basePath,
     classes: classesOverride,
     children,
@@ -71,12 +112,14 @@ const SimpleFormIterator = ({
     record,
     resource,
     source,
-    disableAdd,
-    disableRemove,
+    disableAdd = false,
+    disableRemove = false,
     variant,
     margin,
     TransitionProps,
     defaultValue,
+
+    RowIndexComponent,
 }) => {
     const translate = useTranslate();
     const classes = useStyles({ classes: classesOverride });
@@ -95,7 +138,9 @@ const SimpleFormIterator = ({
     // the fields prop which will always be empty for a new record.
     // Without it, our ids wouldn't match the default value and we would get key warnings
     // on the CssTransition element inside our render method
-    const ids = useRef(nextId > 0 ? Array.from(Array(nextId).keys()) : []);
+    const ids = useRef(
+        nextId.current > 0 ? Array.from(Array(nextId.current).keys()) : []
+    );
 
     const removeField = index => () => {
         ids.current.splice(index, 1);
@@ -118,8 +163,25 @@ const SimpleFormIterator = ({
         fields.push(undefined);
     };
 
+    if (!fields) {
+        return;
+    }
+
     const records = get(record, source);
-    return fields ? (
+
+    const RowIndex = ({ index }) => {
+        if (RowIndexComponent === null) {
+            return null;
+        }
+
+        const Component = RowIndexComponent
+            ? RowIndexComponent
+            : DefaultRowIndex;
+
+        return <Component index={index} />;
+    };
+
+    return (
         <ul className={classes.root}>
             {submitFailed && typeof error !== 'object' && error && (
                 <FormHelperText error>
@@ -135,12 +197,7 @@ const SimpleFormIterator = ({
                         {...TransitionProps}
                     >
                         <li className={classes.line}>
-                            <Typography
-                                variant="body1"
-                                className={classes.index}
-                            >
-                                {index + 1}
-                            </Typography>
+                            <RowIndex index={index} />
                             <section className={classes.form}>
                                 {Children.map(children, (input, index2) =>
                                     isValidElement(input) ? (
@@ -148,6 +205,7 @@ const SimpleFormIterator = ({
                                             basePath={
                                                 input.props.basePath || basePath
                                             }
+                                            classes={{}}
                                             input={cloneElement(input, {
                                                 source: input.props.source
                                                     ? `${member}.${
@@ -221,7 +279,7 @@ const SimpleFormIterator = ({
                 </li>
             )}
         </ul>
-    ) : null;
+    );
 };
 
 SimpleFormIterator.defaultProps = {

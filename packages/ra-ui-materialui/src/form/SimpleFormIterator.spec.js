@@ -1,4 +1,10 @@
-import { cleanup, fireEvent, wait, getByText } from '@testing-library/react';
+import {
+    cleanup,
+    fireEvent,
+    wait,
+    getByText,
+    getNodeText,
+} from '@testing-library/react';
 import React from 'react';
 import { renderWithRedux } from 'ra-core';
 
@@ -6,6 +12,14 @@ import SimpleFormIterator from './SimpleFormIterator';
 import TextInput from '../input/TextInput';
 import { ArrayInput } from '../input';
 import SimpleForm from './SimpleForm';
+
+const RECORD = {
+    emails: [
+        { email: 'foo@bar.com' },
+        { email: 'bar@foo.com' },
+        { email: 'com@foo.bar' },
+    ],
+};
 
 describe('<SimpleFormIterator />', () => {
     afterEach(cleanup);
@@ -40,7 +54,7 @@ describe('<SimpleFormIterator />', () => {
 
     it('should not display remove button if disableRemove is truthy', () => {
         const { queryAllByText } = renderWithRedux(
-            <SimpleForm record={{ emails: [{ email: '' }, { email: '' }] }}>
+            <SimpleForm record={RECORD}>
                 <ArrayInput source="emails">
                     <SimpleFormIterator translate={x => x} disableRemove>
                         <TextInput source="email" />
@@ -165,10 +179,8 @@ describe('<SimpleFormIterator />', () => {
     });
 
     it('should remove children row on remove button click', async () => {
-        const emails = [{ email: 'foo@bar.com' }, { email: 'bar@foo.com' }];
-
         const { queryAllByLabelText } = renderWithRedux(
-            <SimpleForm record={{ emails }}>
+            <SimpleForm record={RECORD}>
                 <ArrayInput source="emails">
                     <SimpleFormIterator translate={x => x}>
                         <TextInput source="email" />
@@ -183,7 +195,7 @@ describe('<SimpleFormIterator />', () => {
 
         expect(
             inputElements.map(inputElement => ({ email: inputElement.value }))
-        ).toEqual(emails);
+        ).toEqual(RECORD.emails);
 
         const removeFirstButton = getByText(
             inputElements[0].closest('li'),
@@ -200,7 +212,88 @@ describe('<SimpleFormIterator />', () => {
                 inputElements.map(inputElement => ({
                     email: inputElement.value,
                 }))
-            ).toEqual([{ email: 'bar@foo.com' }]);
+            ).toEqual([{ email: 'bar@foo.com' }, { email: 'com@foo.bar' }]);
+        });
+    });
+
+    describe('index display component', () => {
+        function render(RowIndex) {
+            return renderWithRedux(
+                <SimpleForm record={RECORD}>
+                    <ArrayInput source="emails">
+                        <SimpleFormIterator
+                            translate={x => x}
+                            RowIndexComponent={RowIndex}
+                        >
+                            <TextInput source="email" />
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </SimpleForm>
+            );
+        }
+
+        describe('default component', () => {
+            it('should start indexing from 1', () => {
+                const { queryAllByTestId } = render();
+
+                const rowIndex = queryAllByTestId('default-row-index');
+
+                expect(getNodeText(rowIndex[0])).toBe('1');
+            });
+
+            it('should end indexing with length of items', () => {
+                const { queryAllByTestId } = render();
+
+                const rowIndex = queryAllByTestId('default-row-index');
+
+                expect(getNodeText(rowIndex[RECORD.emails.length - 1])).toBe(
+                    RECORD.emails.length.toString()
+                );
+            });
+        });
+
+        describe('custom component', () => {
+            const CustomIndex = ({ index }) => (
+                <div data-testid="custom-index">{index}</div>
+            );
+
+            it('should allow to hide the row index component by passing null', () => {
+                const { queryAllByTestId } = render(null);
+
+                const defaultRowIndex = queryAllByTestId('default-row-index');
+
+                expect(defaultRowIndex).toHaveLength(0);
+            });
+
+            it('should render custom component', () => {
+                const { queryAllByTestId } = render(CustomIndex);
+
+                const defaultRowIndex = queryAllByTestId('default-row-index');
+
+                expect(defaultRowIndex).toHaveLength(0);
+
+                const customRowIndex = queryAllByTestId('custom-index');
+
+                expect(customRowIndex).toHaveLength(RECORD.emails.length);
+            });
+
+            it('should start index from 0', () => {
+                const { queryAllByTestId } = render(CustomIndex);
+
+                const customRowIndex = queryAllByTestId('custom-index');
+
+                expect(getNodeText(customRowIndex[0])).toBe('0');
+            });
+
+            it('should end index with length - 1 of items', () => {
+                const { queryAllByTestId } = render(CustomIndex);
+
+                const customRowIndex = queryAllByTestId('custom-index');
+
+                expect(
+                    getNodeText(customRowIndex[RECORD.emails.length - 1])
+                ).toBe((RECORD.emails.length - 1).toString());
+            });
         });
     });
 });

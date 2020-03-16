@@ -58,6 +58,12 @@ const FormInput = ({ input, classes: classesOverride, ...rest }) => {
 };
 
 FormInput.propTypes = {
+    basePath: PropTypes.string,
+    source: PropTypes.string,
+    record: PropTypes.object,
+    resource: PropTypes.string,
+    variant: PropTypes.string,
+    margin: PropTypes.any,
     className: PropTypes.string,
     classes: PropTypes.object,
     input: PropTypes.object,
