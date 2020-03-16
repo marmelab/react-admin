@@ -165,26 +165,6 @@ const PostEdit = ({ permissions, ...props }) => (
                     </Datagrid>
                 </ReferenceManyField>
             </FormTab>
-            <FormTab label="SuperTab 1">
-                <Tabs variant="scrollable" scrollButtons="auto">
-                    <Tab label="Item One" />
-                    <Tab label="Item Two" />
-                    <Tab label="Item Three" />
-                    <Tab label="Item Four" />
-                    <Tab label="Item Five" />
-                    <Tab label="Item Six" />
-                    <Tab label="Item Seven" />
-                </Tabs>
-            </FormTab>
-            <FormTab label="SuperTab 2" />
-            <FormTab label="SuperTab 3" />
-            <FormTab label="SuperTab 4" />
-            <FormTab label="SuperTab 5" />
-            <FormTab label="SuperTab 6" />
-            <FormTab label="SuperTab 7" />
-            <FormTab label="SuperTab 8" />
-            <FormTab label="SuperTab 9" />
-            <FormTab label="SuperTab 10" />
         </TabbedForm>
     </Edit>
 );
