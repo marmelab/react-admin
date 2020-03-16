@@ -34,6 +34,7 @@ import {
     DatagridProps,
     Order,
     Props,
+    ListComponentProps,
 } from '../types';
 import { Identifier } from 'ra-core';
 
@@ -223,7 +224,7 @@ const StyledTabbedDatagrid: FC<DatagridProps<Order>> = props => {
     return <TabbedDatagrid classes={classes} isXSmall={isXSmall} {...props} />;
 };
 
-const OrderList: FC<any> = ({ classes, ...props }) => (
+const OrderList: FC<ListComponentProps> = props => (
     <List
         {...props}
         filterDefaultValues={{ status: 'ordered' }}

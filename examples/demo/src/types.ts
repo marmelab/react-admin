@@ -135,7 +135,7 @@ export interface EditComponentProps<
     id: string;
 }
 
-export interface ShowComopnentProps<
+export interface ListComponentProps<
     Params extends ResourceMatch = { id: string },
     C extends StaticContext = StaticContext,
     S = H.LocationState
