@@ -31,8 +31,6 @@ import {
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import PostTitle from './PostTitle';
 import TagReferenceInput from './TagReferenceInput';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 
 const EditActions = ({ basePath, data, hasShow }) => (
     <TopToolbar>

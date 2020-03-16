@@ -79,14 +79,12 @@ import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
  * @param {Prop} props
  */
 
-const TabbedForm = props => {
-    return (
-        <FormWithRedirect
-            {...props}
-            render={formProps => <TabbedFormView {...formProps} />}
-        />
-    );
-};
+const TabbedForm = props => (
+    <FormWithRedirect
+        {...props}
+        render={formProps => <TabbedFormView {...formProps} />}
+    />
+);
 
 TabbedForm.propTypes = {
     children: PropTypes.node,
