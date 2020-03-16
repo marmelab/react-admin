@@ -74,6 +74,7 @@ import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
  * @prop {ReactElement} toolbar The element displayed at the bottom of the form, containing the SaveButton
  * @prop {string} variant Apply variant to all inputs. Possible values are 'standard', 'outlined', and 'filled' (default)
  * @prop {string} margin Apply variant to all inputs. Possible values are 'none', 'normal', and 'dense' (default)
+ * @prop {boolean} scrollable The multiple tabs becomes scrollable when they go beyond form witdh
  *
  * @param {Prop} props
  */
@@ -102,6 +103,7 @@ TabbedForm.propTypes = {
     submitOnEnter: PropTypes.bool,
     undoable: PropTypes.bool,
     validate: PropTypes.func,
+    scrollable: PropTypes.bool,
 };
 
 const useStyles = makeStyles(
@@ -111,13 +113,17 @@ const useStyles = makeStyles(
             paddingTop: theme.spacing(1),
             paddingLeft: theme.spacing(2),
             paddingRight: theme.spacing(2),
-            marginTop: 50,
+            marginTop: 68,
         },
-        root: {
+        scrollableTabs: {
             position: 'absolute',
-            width: '80%',
-            boxSizing: 'content-box',
-            padding: '10px',
+            // All the screen less the menu and the paddings
+            // width: 'calc(100% - 240px - 5px - 24px - 20px)',
+            width: 'calc(100% - 20px)',
+            padding: 10,
+        },
+        formRelative: {
+            position: 'relative',
         },
     }),
     { name: 'RaTabbedForm' }
@@ -138,6 +144,7 @@ export const TabbedFormView = props => {
         redirect: defaultRedirect,
         resource,
         saving,
+        scrollable = true,
         setRedirect,
         submitOnEnter,
         tabs,
@@ -155,20 +162,27 @@ export const TabbedFormView = props => {
     const location = useLocation();
 
     const url = match ? match.url : location.pathname;
+    const scrollableProps = scrollable
+        ? { scrollable: true, scrollButtons: 'auto', variant: 'scrollable' }
+        : {};
     return (
         <form
-            className={classnames('tabbed-form', className)}
+            className={classnames(
+                'tabbed-form',
+                className,
+                classes.formRelative
+            )}
             {...sanitizeRestProps(rest)}
         >
             {React.cloneElement(
                 tabs,
                 {
                     classes,
-                    scrollable: true,
-                    scrollButtons: 'on',
                     url,
                     tabsWithErrors,
+                    ...scrollableProps,
                 },
+                // ...scrollableProps,
                 children
             )}
             <Divider />
@@ -297,6 +311,7 @@ const sanitizeRestProps = ({
     reset,
     resetSection,
     save,
+    scrollable,
     staticContext,
     submit,
     submitAsSideEffect,

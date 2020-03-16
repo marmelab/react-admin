@@ -34,14 +34,16 @@ const TabbedFormTabs = ({
         ? location.pathname
         : validTabPaths[0];
 
+    const scrollableProps = rest.scrollable
+        ? { className: classes.scrollableTabs }
+        : {};
+
     return (
         <Tabs
-            className={classes.root}
             value={tabValue}
             indicatorColor="primary"
+            {...scrollableProps}
             {...rest}
-            // scrollButtons="auto"
-            variant="scrollable"
         >
             {Children.map(children, (tab, index) => {
                 if (!isValidElement(tab)) return null;
