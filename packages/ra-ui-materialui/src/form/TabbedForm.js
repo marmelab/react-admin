@@ -78,7 +78,6 @@ import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
  *
  * @param {Prop} props
  */
-
 const TabbedForm = props => (
     <FormWithRedirect
         {...props}
@@ -111,14 +110,11 @@ const useStyles = makeStyles(
             paddingTop: theme.spacing(1),
             paddingLeft: theme.spacing(2),
             paddingRight: theme.spacing(2),
-            marginTop: 68,
+            marginTop: 48,
         },
         scrollableTabs: {
             position: 'absolute',
-            // All the screen less the menu and the paddings
-            // width: 'calc(100% - 240px - 5px - 24px - 20px)',
-            width: 'calc(100% - 20px)',
-            padding: 10,
+            width: '100%',
         },
         formRelative: {
             position: 'relative',
