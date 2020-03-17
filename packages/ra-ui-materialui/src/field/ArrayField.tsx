@@ -141,6 +141,7 @@ export const ArrayField: FunctionComponent<
         setData(data);
     }, [record, source, fieldKey]);
 
+    // @ts-ignore
     return cloneElement(Children.only(children), {
         ids,
         data,
