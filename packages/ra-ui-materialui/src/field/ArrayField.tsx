@@ -22,6 +22,28 @@ const initialState = {
     ids: [],
 };
 
+const getDataAndIds = (record: object, source: string, fieldKey: string) => {
+    const list = get(record, source);
+    if (!list) {
+        return initialState;
+    }
+    return fieldKey
+        ? {
+              data: list.reduce((prev, item) => {
+                  prev[item[fieldKey]] = item;
+                  return prev;
+              }, {}),
+              ids: list.map(item => item[fieldKey]),
+          }
+        : {
+              data: list.reduce((prev, item) => {
+                  prev[JSON.stringify(item)] = item;
+                  return prev;
+              }, {}),
+              ids: list.map(JSON.stringify),
+          };
+};
+
 /**
  * Display a collection
  *
@@ -107,32 +129,6 @@ export const ArrayField: FunctionComponent<
     fieldKey,
     ...rest
 }) => {
-    const getDataAndIds = (
-        record: object,
-        source: string,
-        fieldKey: string
-    ) => {
-        const list = get(record, source);
-        if (!list) {
-            return initialState;
-        }
-        return fieldKey
-            ? {
-                  data: list.reduce((prev, item) => {
-                      prev[item[fieldKey]] = item;
-                      return prev;
-                  }, {}),
-                  ids: list.map(item => item[fieldKey]),
-              }
-            : {
-                  data: list.reduce((prev, item) => {
-                      prev[JSON.stringify(item)] = item;
-                      return prev;
-                  }, {}),
-                  ids: list.map(JSON.stringify),
-              };
-    };
-
     const { ids: initialIds, data: initialData } = record
         ? getDataAndIds(record, source, fieldKey)
         : initialState;
