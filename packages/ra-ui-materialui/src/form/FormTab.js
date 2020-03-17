@@ -37,7 +37,7 @@ const FormTab = ({
     const translate = useTranslate();
     const location = useLocation();
 
-    const renderHeader = () => (
+    return intent === 'header' ? (
         <MuiTab
             key={label}
             label={translate(label, { _: label })}
@@ -48,9 +48,7 @@ const FormTab = ({
             to={{ ...location, pathname: value }}
             {...sanitizeRestProps(rest)}
         />
-    );
-
-    const renderContent = () => (
+    ) : (
         <span style={hidden ? hiddenStyle : null} className={contentClassName}>
             {React.Children.map(
                 children,
@@ -68,8 +66,6 @@ const FormTab = ({
             )}
         </span>
     );
-
-    return intent === 'header' ? renderHeader() : renderContent();
 };
 
 FormTab.propTypes = {

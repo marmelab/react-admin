@@ -73,7 +73,7 @@ const Tab = ({
 }) => {
     const translate = useTranslate();
 
-    const renderHeader = () => (
+    return context === 'header' ? (
         <MuiTab
             key={label}
             label={translate(label, { _: label })}
@@ -84,9 +84,7 @@ const Tab = ({
             to={value}
             {...sanitizeRestProps(rest)}
         />
-    );
-
-    const renderContent = () => (
+    ) : (
         <span className={contentClassName}>
             {React.Children.map(children, field =>
                 field && isValidElement(field) ? (
@@ -122,8 +120,6 @@ const Tab = ({
             )}
         </span>
     );
-
-    return context === 'header' ? renderHeader() : renderContent();
 };
 
 Tab.propTypes = {
