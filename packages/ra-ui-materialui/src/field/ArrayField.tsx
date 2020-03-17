@@ -139,7 +139,7 @@ export const ArrayField: FunctionComponent<
         const { ids, data } = getDataAndIds(record, source, fieldKey);
         setIds(ids);
         setData(data);
-    }, [record]);
+    }, [record, source, fieldKey]);
 
     // @ts-ignore
     return cloneElement(Children.only(children), {
