@@ -157,7 +157,7 @@ const EnhancedArrayField = memo<FieldProps>(ArrayField);
 EnhancedArrayField.defaultProps = {
     addLabel: true,
 };
-
+// @ts-ignore
 EnhancedArrayField.propTypes = fieldPropTypes;
 EnhancedArrayField.displayName = 'EnhancedArrayField';
 
