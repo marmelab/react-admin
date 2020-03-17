@@ -47,6 +47,11 @@ const PostFilter = props => (
             source="title"
             defaultValue="Qui tempore rerum et voluptates"
         />
+        <TextInput
+            label="resources.posts.fields.country"
+            source="informations.country"
+            defaultValue="France"
+        />
         <QuickFilter
             label="resources.posts.fields.commentable"
             source="commentable"
@@ -150,6 +155,10 @@ const PostList = props => {
                         source="commentable"
                         label="resources.posts.fields.commentable_short"
                         sortable={false}
+                    />
+                    <TextField
+                        label="resources.posts.fields.country"
+                        source="informations.country"
                     />
                     <NumberField source="views" />
                     <ReferenceArrayField

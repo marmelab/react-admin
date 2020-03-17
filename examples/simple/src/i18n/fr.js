@@ -28,6 +28,7 @@ export default {
                 tags: 'Catégories',
                 title: 'Titre',
                 views: 'Vues',
+                country: 'Pays',
                 authors: 'Auteurs',
             },
         },
