@@ -141,7 +141,6 @@ export const ArrayField: FunctionComponent<
         setData(data);
     }, [record, source, fieldKey]);
 
-    // @ts-ignore
     return cloneElement(Children.only(children), {
         ids,
         data,
@@ -151,13 +150,13 @@ export const ArrayField: FunctionComponent<
         ...rest,
     });
 };
-// @ts-ignore
+
 const EnhancedArrayField = memo<FieldProps>(ArrayField);
-// @ts-ignore
+
 EnhancedArrayField.defaultProps = {
     addLabel: true,
 };
-// @ts-ignore
+
 EnhancedArrayField.propTypes = fieldPropTypes;
 EnhancedArrayField.displayName = 'EnhancedArrayField';
 
