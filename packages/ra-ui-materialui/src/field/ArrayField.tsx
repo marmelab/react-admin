@@ -153,7 +153,7 @@ export const ArrayField: FunctionComponent<
 };
 
 const EnhancedArrayField = memo<FieldProps>(ArrayField);
-
+// @ts-ignore
 EnhancedArrayField.defaultProps = {
     addLabel: true,
 };
