@@ -35,6 +35,7 @@ describe('useListController', () => {
             sort: 'id',
             order: SORT_ASC,
             filter: {},
+            displayedFilters: {},
         },
         resource: 'posts',
         debounce: 200,
@@ -119,6 +120,7 @@ describe('useListController', () => {
                                 list: {
                                     params: {
                                         filter: { q: 'hello' },
+                                        displayedFilters: { q: true },
                                     },
                                     cachedRequests: {},
                                 },
@@ -141,6 +143,9 @@ describe('useListController', () => {
 
             const state = reduxStore.getState();
             expect(state.admin.resources.posts.list.params.filter).toEqual({});
+            expect(
+                state.admin.resources.posts.list.params.displayedFilters
+            ).toEqual({ q: true });
         });
 
         it('should update data if permanent filters change', () => {
@@ -206,14 +211,20 @@ describe('useListController', () => {
         it('Does not remove previously shown filter when adding a new one', () => {
             let currentDisplayedFilters;
 
-            let fakeComponent = ({ showFilter, displayedFilters }) => {
+            let fakeComponent = ({
+                showFilter,
+                displayedFilters,
+                filterValues,
+            }) => {
+                console.log('fakeComponent displayedFilters', displayedFilters);
+                console.log('fakeComponent filterValues', filterValues);
                 currentDisplayedFilters = displayedFilters;
                 return (
                     <>
                         <button
                             aria-label="Show filter 1"
                             onClick={() => {
-                                showFilter('filter1', '');
+                                showFilter('filter1', 'bob');
                             }}
                         />
                         <button
@@ -238,7 +249,10 @@ describe('useListController', () => {
                         resources: {
                             posts: {
                                 list: {
-                                    params: { filter: { q: 'hello' } },
+                                    params: {
+                                        filter: { q: 'hello' },
+                                        displayedFilters: { q: true },
+                                    },
                                     cachedRequests: {},
                                 },
                             },

@@ -220,6 +220,9 @@ const useListParams = ({
             ...displayedFilterValues,
             [filterName]: true,
         };
+        console.log('filterName', filterName);
+        console.log('newFilters', newFilters);
+        console.log('newDisplayedFilters', newDisplayedFilters);
         setFilters(newFilters, newDisplayedFilters);
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
