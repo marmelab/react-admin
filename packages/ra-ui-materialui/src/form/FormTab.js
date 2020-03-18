@@ -86,7 +86,7 @@ FormTab.propTypes = {
     record: PropTypes.object,
     resource: PropTypes.string,
     value: PropTypes.string,
-    variant: PropTypes.oneOf(['text', 'outlined', 'contained']),
+    variant: PropTypes.oneOf(['standar', 'outlined', 'filled']),
 };
 
 FormTab.displayName = 'FormTab';
