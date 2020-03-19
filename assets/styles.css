@@ -508,10 +508,11 @@ nav {
     text-decoration: none;
     cursor: pointer;
     color: var(--white);
+    opacity: 0.7;
 }
 
 .clickable > a:hover {
-    opacity: 0.5;
+    opacity: 1;
     filter: drop-shadow(10px 10px 10px rgba(0, 2, 159, 1));
 }
 
