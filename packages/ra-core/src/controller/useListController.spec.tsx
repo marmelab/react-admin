@@ -1,6 +1,6 @@
 import React from 'react';
 import expect from 'expect';
-import { fireEvent, cleanup } from '@testing-library/react';
+import { fireEvent, wait, cleanup } from '@testing-library/react';
 import lolex from 'lolex';
 import TextField from '@material-ui/core/TextField/TextField';
 
@@ -208,7 +208,7 @@ describe('useListController', () => {
         });
     });
     describe('showFilter', () => {
-        it('Does not remove previously shown filter when adding a new one', () => {
+        it('Does not remove previously shown filter when adding a new one', async () => {
             let currentDisplayedFilters;
 
             let fakeComponent = ({
@@ -216,8 +216,6 @@ describe('useListController', () => {
                 displayedFilters,
                 filterValues,
             }) => {
-                console.log('fakeComponent displayedFilters', displayedFilters);
-                console.log('fakeComponent filterValues', filterValues);
                 currentDisplayedFilters = displayedFilters;
                 return (
                     <>
@@ -251,7 +249,6 @@ describe('useListController', () => {
                                 list: {
                                     params: {
                                         filter: { q: 'hello' },
-                                        displayedFilters: { q: true },
                                     },
                                     cachedRequests: {},
                                 },
@@ -262,11 +259,15 @@ describe('useListController', () => {
             );
 
             fireEvent.click(getByLabelText('Show filter 1'));
-            expect(currentDisplayedFilters).toEqual({ filter1: true });
+            await wait(() => {
+                expect(currentDisplayedFilters).toEqual({ filter1: true });
+            });
             fireEvent.click(getByLabelText('Show filter 2'));
-            expect(currentDisplayedFilters).toEqual({
-                filter1: true,
-                filter2: true,
+            await wait(() => {
+                expect(currentDisplayedFilters).toEqual({
+                    filter1: true,
+                    filter2: true,
+                });
             });
         });
     });
