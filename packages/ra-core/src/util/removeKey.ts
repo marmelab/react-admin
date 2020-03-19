@@ -15,6 +15,9 @@ const deepRemoveKey = (target, path) => {
     }
 
     const deepKey = paths[0];
+    if (target[deepKey] === undefined) {
+        return target;
+    }
     const deep = deepRemoveKey(target[deepKey], paths.slice(1).join('.'));
 
     if (Object.keys(deep).length === 0) {

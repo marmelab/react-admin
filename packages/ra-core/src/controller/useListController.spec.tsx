@@ -1,6 +1,6 @@
 import React from 'react';
 import expect from 'expect';
-import { fireEvent, cleanup } from '@testing-library/react';
+import { fireEvent, wait, cleanup } from '@testing-library/react';
 import lolex from 'lolex';
 import TextField from '@material-ui/core/TextField/TextField';
 
@@ -35,6 +35,7 @@ describe('useListController', () => {
             sort: 'id',
             order: SORT_ASC,
             filter: {},
+            displayedFilters: {},
         },
         resource: 'posts',
         debounce: 200,
@@ -119,6 +120,7 @@ describe('useListController', () => {
                                 list: {
                                     params: {
                                         filter: { q: 'hello' },
+                                        displayedFilters: { q: true },
                                     },
                                     cachedRequests: {},
                                 },
@@ -141,6 +143,9 @@ describe('useListController', () => {
 
             const state = reduxStore.getState();
             expect(state.admin.resources.posts.list.params.filter).toEqual({});
+            expect(
+                state.admin.resources.posts.list.params.displayedFilters
+            ).toEqual({ q: true });
         });
 
         it('should update data if permanent filters change', () => {
@@ -203,17 +208,21 @@ describe('useListController', () => {
         });
     });
     describe('showFilter', () => {
-        it('Does not remove previously shown filter when adding a new one', () => {
+        it('Does not remove previously shown filter when adding a new one', async () => {
             let currentDisplayedFilters;
 
-            let fakeComponent = ({ showFilter, displayedFilters }) => {
+            let fakeComponent = ({
+                showFilter,
+                displayedFilters,
+                filterValues,
+            }) => {
                 currentDisplayedFilters = displayedFilters;
                 return (
                     <>
                         <button
                             aria-label="Show filter 1"
                             onClick={() => {
-                                showFilter('filter1', '');
+                                showFilter('filter1.subdata', 'bob');
                             }}
                         />
                         <button
@@ -238,7 +247,9 @@ describe('useListController', () => {
                         resources: {
                             posts: {
                                 list: {
-                                    params: { filter: { q: 'hello' } },
+                                    params: {
+                                        filter: { q: 'hello' },
+                                    },
                                     cachedRequests: {},
                                 },
                             },
@@ -248,11 +259,17 @@ describe('useListController', () => {
             );
 
             fireEvent.click(getByLabelText('Show filter 1'));
-            expect(currentDisplayedFilters).toEqual({ filter1: true });
+            await wait(() => {
+                expect(currentDisplayedFilters).toEqual({
+                    'filter1.subdata': true,
+                });
+            });
             fireEvent.click(getByLabelText('Show filter 2'));
-            expect(currentDisplayedFilters).toEqual({
-                filter1: true,
-                filter2: true,
+            await wait(() => {
+                expect(currentDisplayedFilters).toEqual({
+                    'filter1.subdata': true,
+                    filter2: true,
+                });
             });
         });
     });
