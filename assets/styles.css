@@ -504,6 +504,17 @@ nav {
     text-align: center;
 }
 
+.clickable > a {
+    text-decoration: none;
+    cursor: pointer;
+    color: var(--white);
+}
+
+.clickable > a:hover {
+    opacity: 0.5;
+    filter: drop-shadow(10px 10px 10px rgba(0, 2, 159, 1));
+}
+
 @media (max-width: 767px) {
     .github-stars {
         display: none;
