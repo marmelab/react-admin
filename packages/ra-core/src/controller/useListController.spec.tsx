@@ -222,7 +222,7 @@ describe('useListController', () => {
                         <button
                             aria-label="Show filter 1"
                             onClick={() => {
-                                showFilter('filter1', 'bob');
+                                showFilter('filter1.subdata', 'bob');
                             }}
                         />
                         <button
@@ -260,12 +260,14 @@ describe('useListController', () => {
 
             fireEvent.click(getByLabelText('Show filter 1'));
             await wait(() => {
-                expect(currentDisplayedFilters).toEqual({ filter1: true });
+                expect(currentDisplayedFilters).toEqual({
+                    'filter1.subdata': true,
+                });
             });
             fireEvent.click(getByLabelText('Show filter 2'));
             await wait(() => {
                 expect(currentDisplayedFilters).toEqual({
-                    filter1: true,
+                    'filter1.subdata': true,
                     filter2: true,
                 });
             });
