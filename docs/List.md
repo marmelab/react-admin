@@ -296,8 +296,9 @@ import {
     useNotify,
     useUnselectAll,
 } from 'react-admin';
+import { VisibilityOff } from '@material-ui/icons';
 
-const ResetViewsButton = ({ selectedIds }) => {
+const ResetViewsButton = ({ resource, selectedIds }) => {
     const refresh = useRefresh();
     const notify = useNotify();
     const unselectAll = useUnselectAll();
@@ -343,7 +344,7 @@ import {
     useUnselectAll,
 } from 'react-admin';
 
-const ResetViewsButton = ({ selectedIds }) => {
+const ResetViewsButton = ({ resource, selectedIds }) => {
     const [open, setOpen] = useState(false);
     const refresh = useRefresh();
     const notify = useNotify();
