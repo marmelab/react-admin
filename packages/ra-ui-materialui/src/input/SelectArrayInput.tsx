@@ -26,6 +26,7 @@ import { FormControlProps } from '@material-ui/core/FormControl';
 const sanitizeRestProps = ({
     addLabel,
     allowEmpty,
+    alwaysOn,
     basePath,
     choices,
     classNamInputWithOptionsPropse,
