@@ -785,15 +785,15 @@ For instance, let's imagine you have to use the `my.api.url` REST API, which exp
 
 | Action              | Expected API request |
 |---------------------|---------------------- |
-| Get list            | `GET http://my.api.url/posts?sort=['title','ASC']&range=[0, 24]&filter={title:'bar'}` |
+| Get list            | `GET http://my.api.url/posts?sort=["title","ASC"]&range=[0, 24]&filter={"title":"bar"}` |
 | Get one record      | `GET http://my.api.url/posts/123` |
-| Get several records | `GET http://my.api.url/posts?filter={id:[123,456,789]}` |
-| Get related records | `GET http://my.api.url/posts?filter={author_id:345}` |
+| Get several records | `GET http://my.api.url/posts?filter={"id":[123,456,789]}` |
+| Get related records | `GET http://my.api.url/posts?filter={"author_id":345}` |
 | Create a record     | `POST http://my.api.url/posts/123` |
 | Update a record     | `PUT http://my.api.url/posts/123` |
-| Update records      | `PUT http://my.api.url/posts?filter={id:[123,124,125]}` |
+| Update records      | `PUT http://my.api.url/posts?filter={"id":[123,124,125]}` |
 | Delete a record     | `DELETE http://my.api.url/posts/123` |
-| Delete records      | `DELETE http://my.api.url/posts?filter={id:[123,124,125]}` |
+| Delete records      | `DELETE http://my.api.url/posts?filter={"id":[123,124,125]}` |
 
 
 React-admin calls the Data Provider with one method for each of the actions of this list, and expects a Promise in return. These methods are called `getList`, `getOne`, `getMany`, `getManyReference`, `create`, `update`, `updateMany`, `delete`, and `deleteMany`. It's the Data Provider's job to emit HTTP requests and transform the response into the format expected by react-admin.

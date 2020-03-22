@@ -105,17 +105,19 @@ interface ReferenceArrayFieldViewProps extends FieldProps, ReferenceArrayProps {
     reference: string;
 }
 
-export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = ({
-    children,
-    className,
-    classes: classesOverride,
-    data,
-    ids,
-    loaded,
-    reference,
-    referenceBasePath,
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+export const ReferenceArrayFieldView: FC<
+    ReferenceArrayFieldViewProps
+> = props => {
+    const {
+        children,
+        className,
+        data,
+        ids,
+        loaded,
+        reference,
+        referenceBasePath,
+    } = props;
+    const classes = useStyles(props);
     if (!loaded) {
         return <LinearProgress className={classes.progress} />;
     }

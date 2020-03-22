@@ -6,6 +6,9 @@ export default url => ({
             if (type === 'rich-text-input') {
                 return `.ra-input-${name} .ql-editor`;
             }
+            if (type === 'reference-array-input') {
+                return `.ra-input div[role=combobox]`;
+            }
             return `.edit-page [name='${name}']`;
         },
         inputs: `.ra-input`,
@@ -37,8 +40,8 @@ export default url => ({
         }
     },
 
-    clickInput(name) {
-        cy.get(this.elements.input(name)).click();
+    clickInput(name, type = 'input') {
+        cy.get(this.elements.input(name, type)).click();
     },
 
     gotoTab(index) {

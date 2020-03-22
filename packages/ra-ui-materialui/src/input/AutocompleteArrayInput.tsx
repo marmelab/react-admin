@@ -92,46 +92,47 @@ interface Options {
  */
 const AutocompleteArrayInput: FunctionComponent<
     InputProps<TextFieldProps & Options> & DownshiftProps<any>
-> = ({
-    allowDuplicates,
-    allowEmpty,
-    classes: classesOverride,
-    choices = [],
-    emptyText,
-    emptyValue,
-    format,
-    fullWidth,
-    helperText,
-    id: idOverride,
-    input: inputOverride,
-    isRequired: isRequiredOverride,
-    label,
-    limitChoicesToValue,
-    margin,
-    matchSuggestion,
-    meta: metaOverride,
-    onBlur,
-    onChange,
-    onFocus,
-    options: {
-        suggestionsContainerProps,
-        labelProps,
-        InputProps,
-        ...options
-    } = {},
-    optionText = 'name',
-    optionValue = 'id',
-    parse,
-    resource,
-    setFilter,
-    shouldRenderSuggestions: shouldRenderSuggestionsOverride,
-    source,
-    suggestionLimit,
-    translateChoice = true,
-    validate,
-    variant = 'filled',
-    ...rest
-}) => {
+> = props => {
+    const {
+        allowDuplicates,
+        allowEmpty,
+        classes: classesOverride,
+        choices = [],
+        emptyText,
+        emptyValue,
+        format,
+        fullWidth,
+        helperText,
+        id: idOverride,
+        input: inputOverride,
+        isRequired: isRequiredOverride,
+        label,
+        limitChoicesToValue,
+        margin,
+        matchSuggestion,
+        meta: metaOverride,
+        onBlur,
+        onChange,
+        onFocus,
+        options: {
+            suggestionsContainerProps,
+            labelProps,
+            InputProps,
+            ...options
+        } = {} as TextFieldProps & Options,
+        optionText = 'name',
+        optionValue = 'id',
+        parse,
+        resource,
+        setFilter,
+        shouldRenderSuggestions: shouldRenderSuggestionsOverride,
+        source,
+        suggestionLimit,
+        translateChoice = true,
+        validate,
+        variant = 'filled',
+        ...rest
+    } = props;
     warning(
         isValidElement(optionText) && !matchSuggestion,
         `If the optionText prop is a React element, you must also specify the matchSuggestion prop:
@@ -141,7 +142,7 @@ const AutocompleteArrayInput: FunctionComponent<
         `
     );
 
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useStyles(props);
 
     let inputEl = useRef<HTMLInputElement>();
     let anchorEl = useRef<any>();

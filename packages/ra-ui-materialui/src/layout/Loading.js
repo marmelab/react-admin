@@ -33,13 +33,13 @@ const useStyles = makeStyles(
     { name: 'RaLoading' }
 );
 
-const Loading = ({
-    classes: classesOverride,
-    className,
-    loadingPrimary = 'ra.page.loading',
-    loadingSecondary = 'ra.message.loading',
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+const Loading = props => {
+    const {
+        className,
+        loadingPrimary = 'ra.page.loading',
+        loadingSecondary = 'ra.message.loading',
+    } = props;
+    const classes = useStyles(props);
     const translate = useTranslate();
     return (
         <div className={classnames(classes.container, className)}>

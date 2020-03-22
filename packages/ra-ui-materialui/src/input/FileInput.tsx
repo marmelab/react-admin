@@ -51,29 +51,33 @@ export interface FileInputOptions extends DropzoneOptions {
 
 const FileInput: FunctionComponent<
     FileInputProps & InputProps<FileInputOptions>
-> = ({
-    accept,
-    children,
-    className,
-    classes: classesOverride,
-    format,
-    helperText,
-    label,
-    labelMultiple = 'ra.input.file.upload_several',
-    labelSingle = 'ra.input.file.upload_single',
-    maxSize,
-    minSize,
-    multiple = false,
-    options: { inputProps: inputPropsOptions, ...options } = {},
-    parse,
-    placeholder,
-    resource,
-    source,
-    validate,
-    ...rest
-}) => {
+> = props => {
+    const {
+        accept,
+        children,
+        className,
+        classes: classesOverride,
+        format,
+        helperText,
+        label,
+        labelMultiple = 'ra.input.file.upload_several',
+        labelSingle = 'ra.input.file.upload_single',
+        maxSize,
+        minSize,
+        multiple = false,
+        options: {
+            inputProps: inputPropsOptions,
+            ...options
+        } = {} as FileInputOptions,
+        parse,
+        placeholder,
+        resource,
+        source,
+        validate,
+        ...rest
+    } = props;
     const translate = useTranslate();
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useStyles(props);
 
     // turn a browser dropped file structure into expected structure
     const transformFile = file => {

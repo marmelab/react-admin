@@ -206,18 +206,21 @@ const useListParams = ({
 
     const hideFilter = useCallback((filterName: string) => {
         const newFilters = removeKey(filterValues, filterName);
-        const newDisplayedFilters = removeKey(
-            displayedFilterValues,
-            filterName
-        );
+        const newDisplayedFilters = {
+            ...displayedFilterValues,
+            [filterName]: undefined,
+        };
+
         setFilters(newFilters, newDisplayedFilters);
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
     const showFilter = useCallback((filterName: string, defaultValue: any) => {
-        setFilters(
-            set(filterValues, filterName, defaultValue),
-            set(displayedFilterValues, filterName, true)
-        );
+        const newFilters = set(filterValues, filterName, defaultValue);
+        const newDisplayedFilters = {
+            ...displayedFilterValues,
+            [filterName]: true,
+        };
+        setFilters(newFilters, newDisplayedFilters);
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
     return [
@@ -279,7 +282,7 @@ export const parseQueryFromLocation = ({ search }) => {
  * To check if the user has custom params, we must compare the params
  * to these initial values.
  *
- * @param {object} params
+ * @param {Object} params
  */
 export const hasCustomParams = (params: ListParams) => {
     return (

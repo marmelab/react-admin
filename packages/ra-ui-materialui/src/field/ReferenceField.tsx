@@ -164,24 +164,25 @@ interface ReferenceFieldViewProps
     children?: ReactElement;
 }
 
-export const ReferenceFieldView: FC<ReferenceFieldViewProps> = ({
-    basePath,
-    children,
-    className,
-    classes: classesOverride,
-    error,
-    loaded,
-    loading,
-    record,
-    reference,
-    referenceRecord,
-    resource,
-    resourceLinkPath,
-    source,
-    translateChoice = false,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
+    const {
+        basePath,
+        children,
+        className,
+        classes: classesOverride,
+        error,
+        loaded,
+        loading,
+        record,
+        reference,
+        referenceRecord,
+        resource,
+        resourceLinkPath,
+        source,
+        translateChoice = false,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     if (!loaded) {
         return <LinearProgress />;
     }

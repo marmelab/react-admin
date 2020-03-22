@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import { useTranslate } from 'ra-core';
@@ -18,17 +18,11 @@ const useStyles = makeStyles(
     { name: 'RaPaginationActions' }
 );
 
-function PaginationActions({
-    classes: classesOverride,
-    page,
-    rowsPerPage,
-    count,
-    onChangePage,
-    color,
-    size,
-}) {
-    const classes = useStyles({ classes: classesOverride });
+function PaginationActions(props) {
+    const { page, rowsPerPage, count, onChangePage, color, size } = props;
+    const classes = useStyles(props);
     const translate = useTranslate();
+    const theme = useTheme();
     /**
      * Warning: material-ui's page is 0-based
      */
@@ -133,7 +127,11 @@ function PaginationActions({
                     onClick={prevPage}
                     className="previous-page"
                 >
-                    <ChevronLeft />
+                    {theme.direction === 'rtl' ? (
+                        <ChevronRight />
+                    ) : (
+                        <ChevronLeft />
+                    )}
                     {translate('ra.navigation.prev')}
                 </Button>
             )}
@@ -147,7 +145,11 @@ function PaginationActions({
                     className="next-page"
                 >
                     {translate('ra.navigation.next')}
-                    <ChevronRight />
+                    {theme.direction === 'rtl' ? (
+                        <ChevronLeft />
+                    ) : (
+                        <ChevronRight />
+                    )}
                 </Button>
             )}
         </div>
@@ -170,6 +172,7 @@ PaginationActions.propTypes = {
     rowsPerPage: PropTypes.number.isRequired,
     color: PropTypes.oneOf(['primary', 'secondary']),
     size: PropTypes.oneOf(['small', 'medium', 'large']),
+    theme: PropTypes.object,
 };
 
 PaginationActions.defaultProps = {

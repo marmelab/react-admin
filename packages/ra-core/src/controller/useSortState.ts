@@ -75,7 +75,7 @@ export const defaultSort = { field: 'id', order: 'DESC' };
  * @typedef SortProps
  * @type {Object}
  * @property {Object} sort: the sort object.
- * @property {String} sort.field: the sort object.
+ * @property {string} sort.field: the sort object.
  * @property {'ASC' | 'DESC'} sort.order: the sort object.
  * @property {setSort} setSort
  * @property {setSortField} setSortField

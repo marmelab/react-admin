@@ -47,6 +47,7 @@ const useStyles = makeStyles(
     }),
     { name: 'RaAppBar' }
 );
+
 /**
  * The AppBar component renders a custom MuiAppBar.
  *
@@ -74,17 +75,20 @@ const useStyles = makeStyles(
  *    );
  *};
  */
-const AppBar = ({
-    children,
-    classes: classesOverride,
-    className,
-    color = 'secondary',
-    logout,
-    open,
-    userMenu,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+const AppBar = props => {
+    const {
+        children,
+        classes: classesOverride,
+        className,
+        color = 'secondary',
+        logo,
+        logout,
+        open,
+        title,
+        userMenu,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     const dispatch = useDispatch();
     const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
 

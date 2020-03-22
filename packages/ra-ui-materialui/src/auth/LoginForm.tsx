@@ -49,12 +49,13 @@ const Input = ({
     />
 );
 
-const LoginForm: FunctionComponent<Props> = ({ redirectTo }) => {
+const LoginForm: FunctionComponent<Props> = props => {
+    const { redirectTo } = props;
     const [loading, setLoading] = useSafeSetState(false);
     const login = useLogin();
     const translate = useTranslate();
     const notify = useNotify();
-    const classes = useStyles({});
+    const classes = useStyles(props);
 
     const validate = (values: FormData) => {
         const errors = { username: undefined, password: undefined };
