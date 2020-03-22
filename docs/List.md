@@ -298,7 +298,7 @@ import {
 } from 'react-admin';
 import { VisibilityOff } from '@material-ui/icons';
 
-const ResetViewsButton = ({ resource, selectedIds }) => {
+const ResetViewsButton = ({ selectedIds }) => {
     const refresh = useRefresh();
     const notify = useNotify();
     const unselectAll = useUnselectAll();
@@ -310,7 +310,7 @@ const ResetViewsButton = ({ resource, selectedIds }) => {
             onSuccess: () => {
                 refresh();
                 notify('Posts updated');
-                unselectAll(resource);
+                unselectAll('posts');
             },
             onFailure: error => notify('Error: posts not updated', 'warning'),
         }
@@ -344,7 +344,7 @@ import {
     useUnselectAll,
 } from 'react-admin';
 
-const ResetViewsButton = ({ resource, selectedIds }) => {
+const ResetViewsButton = ({ selectedIds }) => {
     const [open, setOpen] = useState(false);
     const refresh = useRefresh();
     const notify = useNotify();
@@ -357,7 +357,7 @@ const ResetViewsButton = ({ resource, selectedIds }) => {
             onSuccess: () => {
                 refresh();
                 notify('Posts updated');
-                unselectAll(resource);
+                unselectAll('posts');
             },
             onFailure: error => notify('Error: posts not updated', 'warning'),
         }
@@ -398,6 +398,17 @@ export default ResetViewsButton;
 
 ```diff
 // in ./ResetViewsButton.js
+import React from 'react';
+import {
+    Button,
+    Confirm,
+    useUpdateMany,
+    useRefresh,
+    useNotify,
+    useUnselectAll,
+} from 'react-admin';
+import { VisibilityOff } from '@material-ui/icons';
+
 const ResetViewsButton = ({ selectedIds }) => {
     const refresh = useRefresh();
     const notify = useNotify();
@@ -411,7 +422,7 @@ const ResetViewsButton = ({ selectedIds }) => {
                 refresh();
 -               notify('Posts updated');
 +               notify('Posts updated', 'info', '{}, true); // the last argument forces the display of 'undo' in the notification
-                unselectAll(resource);
+                unselectAll('posts');
             },
             onFailure: error => notify('Error: posts not updated', 'warning'),
 +           undoable: true
