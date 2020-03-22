@@ -1,5 +1,19 @@
 # Changelog
 
+## v3.3.2
+
+* Fix warning in `<SelectArrayInput>` when `alwaysOn` is true ([4561](https://github.com/marmelab/react-admin/pull/4561)) ([yelworc](https://github.com/yelworc))
+* Fix regression on filters using dot separator in source ([4545](https://github.com/marmelab/react-admin/pull/4545)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Fix `<SimpleFormIterator>` for non empty array inputs ([4535](https://github.com/marmelab/react-admin/pull/4535)) ([NikitaVlaznev](https://github.com/NikitaVlaznev))
+* Fix missing PropType for `resettable` prop in `<SelectInput>` ([4513](https://github.com/marmelab/react-admin/pull/4513)) ([WiXSL](https://github.com/WiXSL))
+* Change Fields docs menu item order to make it easier to find ([4529](https://github.com/marmelab/react-admin/pull/4529)) ([WiXSL](https://github.com/WiXSL))
+* Add link to Belarusian, Estonian, Latvian, and Lithuanian translations ([4559](https://github.com/marmelab/react-admin/pull/4559)) ([AntonLukichev](https://github.com/AntonLukichev))
+* Add link to Korean translation ([4550](https://github.com/marmelab/react-admin/pull/4550)) ([acidsound](https://github.com/acidsound))
+* [Doc] Fix `dataProvider` calls using old-style verbs instead of method ([4532](https://github.com/marmelab/react-admin/pull/4532)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix example in `<ReferenceField>` and `<SelectField>` documentation ([4530](https://github.com/marmelab/react-admin/pull/4530)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix invalid JSON in API call examples for simple rest data provider  ([4528](https://github.com/marmelab/react-admin/pull/4528)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix code sample for `<SimpleFormIterator>` when using `Field` components as child ([4527](https://github.com/marmelab/react-admin/pull/4527)) ([ValentinnDimitroff](https://github.com/ValentinnDimitroff))
+
 ## v3.3.1
 
 * Fix pagination buttons are in the wrong direction in RTL languages ([4496](https://github.com/marmelab/react-admin/pull/4496)) ([alikazemkhanloo](https://github.com/alikazemkhanloo))
