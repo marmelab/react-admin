@@ -296,6 +296,7 @@ import {
     useNotify,
     useUnselectAll,
 } from 'react-admin';
+import { VisibilityOff } from '@material-ui/icons';
 
 const ResetViewsButton = ({ selectedIds }) => {
     const refresh = useRefresh();
@@ -309,7 +310,7 @@ const ResetViewsButton = ({ selectedIds }) => {
             onSuccess: () => {
                 refresh();
                 notify('Posts updated');
-                unselectAll(resource);
+                unselectAll('posts');
             },
             onFailure: error => notify('Error: posts not updated', 'warning'),
         }
@@ -356,7 +357,7 @@ const ResetViewsButton = ({ selectedIds }) => {
             onSuccess: () => {
                 refresh();
                 notify('Posts updated');
-                unselectAll(resource);
+                unselectAll('posts');
             },
             onFailure: error => notify('Error: posts not updated', 'warning'),
         }
@@ -397,6 +398,17 @@ export default ResetViewsButton;
 
 ```diff
 // in ./ResetViewsButton.js
+import React from 'react';
+import {
+    Button,
+    Confirm,
+    useUpdateMany,
+    useRefresh,
+    useNotify,
+    useUnselectAll,
+} from 'react-admin';
+import { VisibilityOff } from '@material-ui/icons';
+
 const ResetViewsButton = ({ selectedIds }) => {
     const refresh = useRefresh();
     const notify = useNotify();
@@ -410,7 +422,7 @@ const ResetViewsButton = ({ selectedIds }) => {
                 refresh();
 -               notify('Posts updated');
 +               notify('Posts updated', 'info', '{}, true); // the last argument forces the display of 'undo' in the notification
-                unselectAll(resource);
+                unselectAll('posts');
             },
             onFailure: error => notify('Error: posts not updated', 'warning'),
 +           undoable: true
