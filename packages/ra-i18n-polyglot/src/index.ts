@@ -2,7 +2,9 @@ import Polyglot from 'node-polyglot';
 
 import { I18nProvider, TranslationMessages } from 'ra-core';
 
-type GetMessages = (locale: string) => TranslationMessages;
+type GetMessages = (
+    locale: string
+) => TranslationMessages | Promise<TranslationMessages>;
 
 /**
  * Build a polyglot-based i18nProvider based on a function returning the messages for a locale

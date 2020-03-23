@@ -1,6 +1,7 @@
+import { TranslationMessages } from 'ra-core';
 import frenchMessages from 'ra-language-french';
 
-export default {
+const customFrenchMessages: TranslationMessages = {
     ...frenchMessages,
     pos: {
         search: 'Rechercher',
@@ -188,3 +189,5 @@ export default {
         },
     },
 };
+
+export default customFrenchMessages;

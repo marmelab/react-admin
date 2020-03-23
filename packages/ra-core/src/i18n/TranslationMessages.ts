@@ -1,10 +1,8 @@
 interface StringMap {
-    [key: string]: StringMap | string;
+    [key: string]: StringMap | string | undefined;
 }
 
-export interface TranslationMessages {
-    // for custom translation strings
-    [key: string]: StringMap | string;
+export interface TranslationMessages extends StringMap {
     ra?: {
         action?: {
             // for custom translation strings
