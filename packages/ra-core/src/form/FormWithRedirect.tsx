@@ -1,11 +1,13 @@
-import React, { useRef, useCallback, useMemo } from 'react';
-import { Form } from 'react-final-form';
+import React, { useRef, useCallback, useMemo, useEffect } from 'react';
+import { Form, useForm } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
+import { useHistory } from 'react-router-dom';
 
 import useInitializeFormWithRecord from './useInitializeFormWithRecord';
 import sanitizeEmptyValues from './sanitizeEmptyValues';
 import getFormInitialValues from './getFormInitialValues';
 import FormContext from './FormContext';
+import { useTranslate } from '../i18n';
 
 /**
  * Wrapper around react-final-form's Form to handle redirection on submit,
@@ -138,6 +140,34 @@ const defaultSubscription = {
 const FormView = ({ render, ...props }) => {
     // if record changes (after a getOne success or a refresh), the form must be updated
     useInitializeFormWithRecord(props.record);
+
+    const form = useForm();
+    const history = useHistory();
+    const translate = useTranslate();
+
+    // warn the user if they leave a form with unsaved changes
+    useEffect(() => {
+        return () => {
+            const formState = form.getState();
+            console.log(formState);
+            if (
+                formState.dirty &&
+                (!formState.submitSucceeded ||
+                    (formState.submitSucceeded &&
+                        formState.dirtySinceLastSubmit))
+            ) {
+                if (
+                    !window.confirm(
+                        translate(
+                            'There are unsaved changes. Are you sure you want to leave?'
+                        )
+                    )
+                ) {
+                    history.goBack();
+                }
+            }
+        };
+    }, [translate]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const { redirect, setRedirect, handleSubmit } = props;
 
