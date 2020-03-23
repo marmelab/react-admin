@@ -47,7 +47,7 @@ const PostEdit = ({ permissions, ...props }) => (
     <Edit
         title={<PostTitle />}
         actions={<EditActions />}
-        undoable={true}
+        //undoable={false}
         {...props}
     >
         <TabbedForm initialValues={{ average_note: 0 }}>
