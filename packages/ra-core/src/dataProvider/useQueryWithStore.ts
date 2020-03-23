@@ -5,7 +5,9 @@ import isEqual from 'lodash/isEqual';
 import useDataProvider from './useDataProvider';
 import getFetchType from './getFetchType';
 import { useSafeSetState } from '../util/hooks';
-import { ReduxState } from '../types';
+import { ReduxState, Identifier } from '../types';
+
+import get from 'lodash/get';
 
 export interface Query {
     type: string;
@@ -110,6 +112,10 @@ const useQueryWithStore = (
     const requestSignature = JSON.stringify({ query, options });
     const requestSignatureRef = useRef(requestSignature);
     const data = useSelector(dataSelector);
+    const cacheRequests = useSelector(
+        (state: ReduxState): object =>
+            get(state.admin.resources, [resource, 'list', 'cachedRequests'], [])
+    );
     const total = useSelector(totalSelector);
     const [state, setState] = useSafeSetState({
         data,
@@ -128,8 +134,22 @@ const useQueryWithStore = (
             loading: true,
             loaded: data !== undefined && !isEmptyList(data),
         });
-    } else if (!isEqual(state.data, data) || state.total !== total) {
+    } else if (
+        (!isEqual(state.data, data) || state.total !== total) &&
+        !isEqual(cacheRequests, {})
+    ) {
         // the dataProvider response arrived in the Redux store
+        if (query.resource === 'posts') {
+            console.log('query', query.resource, query.type);
+            console.log('-------');
+            console.log('state.data', JSON.stringify(state.data));
+            console.log('      data', JSON.stringify(data));
+            console.log('isEqual(state.data, data)', isEqual(state.data, data));
+            console.log('-------');
+            console.log('state.total', state.total, typeof state.total);
+            console.log('      total', total, typeof total);
+            console.log('state.total !== total', state.total !== total);
+        }
         if (isNaN(total)) {
             console.error(
                 'Total from response is not a number. Please check your dataProvider or the API.'
