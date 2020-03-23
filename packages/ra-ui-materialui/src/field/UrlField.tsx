@@ -2,7 +2,7 @@ import React, { FunctionComponent, HtmlHTMLAttributes } from 'react';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
 import sanitizeRestProps from './sanitizeRestProps';
-import { Typography, Link } from "@material-ui/core";
+import { Typography, Link } from '@material-ui/core';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 const UrlField: FunctionComponent<
