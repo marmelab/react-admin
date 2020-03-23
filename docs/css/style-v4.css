@@ -94,6 +94,11 @@ ul.sidenav code {
     font-size: 0.9em;
 }
 
+.table-of-contents {
+    overflow-y: auto;
+    height: calc( 100% - 75px);
+}
+
 .table-of-contents a.active {
     font-weight: 500;
     padding-left: 14px;
