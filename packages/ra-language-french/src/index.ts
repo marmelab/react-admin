@@ -90,6 +90,8 @@ const frenchMessages: TranslationMessages = {
             not_found:
                 "L'URL saisie est incorrecte, ou vous avez suivi un mauvais lien.",
             yes: 'Oui',
+            unsaved_changes:
+                "Certains changements n'ont pas été enregistrés. Etes-vous sûr(e) de vouloir quitter cette page ?",
         },
         navigation: {
             no_results: 'Aucun résultat',
