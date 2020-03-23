@@ -13,6 +13,14 @@ export interface Query {
     payload: object;
 }
 
+export interface StateResult {
+    data?: any;
+    total?: number;
+    error?: any;
+    loading: boolean;
+    loaded: boolean;
+}
+
 export interface QueryOptions {
     onSuccess?: (args?: any) => void;
     onFailure?: (error: any) => void;
@@ -111,7 +119,10 @@ const useQueryWithStore = (
     const requestSignatureRef = useRef(requestSignature);
     const data = useSelector(dataSelector);
     const total = useSelector(totalSelector);
-    const [state, setState] = useSafeSetState({
+    const [state, setState]: [
+        StateResult,
+        (StateResult) => void
+    ] = useSafeSetState({
         data,
         total,
         error: null,
