@@ -34,4 +34,3 @@ const delayedDataProvider = new Proxy(sometimesFailsDataProvider, {
 });
 
 export default cacheDataProviderProxy(delayedDataProvider);
-// export default delayedDataProvider;

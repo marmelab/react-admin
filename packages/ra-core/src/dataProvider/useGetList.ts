@@ -71,21 +71,12 @@ const useGetList = <RecordType = Record>(
         { type: 'getList', resource, payload: { pagination, sort, filter } },
         options,
         // data selector (may return [])
-        (state: ReduxState): Identifier[] => {
-            /*if (resource === 'posts') {
-                console.log(
-                    'data selector',
-                    JSON.stringify(
-                        state.admin.resources.posts.list.cachedRequests
-                    )
-                );
-            }*/
-            return get(
+        (state: ReduxState): Identifier[] =>
+            get(
                 state.admin.resources,
                 [resource, 'list', 'cachedRequests', requestSignature, 'ids'],
                 []
-            );
-        },
+            ),
         // total selector (may return undefined)
         (state: ReduxState): number =>
             get(state.admin.resources, [
