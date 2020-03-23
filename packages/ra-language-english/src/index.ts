@@ -1,4 +1,6 @@
-module.exports = {
+import { TranslationMessages } from 'ra-core';
+
+const englishMessages: TranslationMessages = {
     ra: {
         action: {
             add_filter: 'Add filter',
@@ -133,3 +135,5 @@ module.exports = {
         },
     },
 };
+
+export default englishMessages;
