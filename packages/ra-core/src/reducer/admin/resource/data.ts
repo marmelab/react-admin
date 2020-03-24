@@ -132,6 +132,9 @@ export const addOneRecord = (
     });
 };
 
+const includesNotStrict = (items, element) =>
+    items.some(item => item == element);
+
 /**
  * Remove records from the pool
  */
@@ -140,12 +143,12 @@ const removeRecords = (
     oldRecords: RecordSetWithDate
 ): RecordSetWithDate => {
     const records = Object.entries(oldRecords)
-        .filter(([key]) => !removedRecordIds.includes(key))
+        .filter(([key]) => !includesNotStrict(removedRecordIds, key))
         .reduce((obj, [key, val]) => ({ ...obj, [key]: val }), {
             fetchedAt: {}, // TypeScript warns later if this is not defined
         });
     records.fetchedAt = Object.entries(oldRecords.fetchedAt)
-        .filter(([key]) => !removedRecordIds.includes(key))
+        .filter(([key]) => !includesNotStrict(removedRecordIds, key))
         .reduce((obj, [key, val]) => ({ ...obj, [key]: val }), {});
 
     return hideFetchedAt(records);
