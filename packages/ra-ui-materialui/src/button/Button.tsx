@@ -43,7 +43,7 @@ const Button: FC<ButtonProps> = props => {
     const isXSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('xs')
     );
-    const restProps =  sanitizeRestProps(rest);
+    const restProps =  sanitizeButtonRestProps(rest);
 
     return isXSmall ? (
         label && !disabled ? (
@@ -154,7 +154,7 @@ interface Props {
 
 export type ButtonProps = Props & MuiButtonProps;
 
-const sanitizeRestProps = ({
+export const sanitizeButtonRestProps = ({
     // The next props are injected by Toolbar
     basePath,
     handleSubmit,
