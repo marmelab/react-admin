@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useForm } from 'react-final-form';
 import { useHistory } from 'react-router-dom';
 
@@ -23,6 +23,12 @@ const useWarnWhenUnsavedChanges = () => {
     const history = useHistory();
     const translate = useTranslate();
 
+    // Keep track of the current location inside the form (e.g. active tab)
+    const formLocation = useRef(history.location);
+    useEffect(() => {
+        formLocation.current = history.location;
+    }, [history.location]);
+
     useEffect(() => {
         // on mount: apply unsaved changes
         const unsavedChanges = JSON.parse(
@@ -34,6 +40,7 @@ const useWarnWhenUnsavedChanges = () => {
             );
             window.sessionStorage.removeItem('unsavedChanges');
         }
+
         // on unmount : check and save unsaved changes, then cancel navigation
         return () => {
             const formState = form.getState();
@@ -58,8 +65,7 @@ const useWarnWhenUnsavedChanges = () => {
                         'unsavedChanges',
                         JSON.stringify(dirtyFieldValues)
                     );
-                    // FIXME does not work of the user left the page with a back
-                    history.goBack();
+                    history.push(formLocation.current);
                 }
             } else {
                 window.sessionStorage.removeItem('unsavedChanges');
