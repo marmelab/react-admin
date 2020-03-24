@@ -883,7 +883,20 @@ Here are the props received by the `Toolbar` component when passed as the `toolb
 
 **Tip**: To alter the form values before submitting, you should use the `handleSubmit` prop. See [Altering the Form Values before Submitting](#altering-the-form-values-before-submitting) for more information and examples.
 
-**Tip** `<Toolbar>` will pass many props to its children, if you use `<CreateButton>` or other buttons you will get `React does not recognize the <xxx> prop on a DOM element` errors, insteade you can build you own button.
+**Tip** If your `<Toolbar>` contains `<CreateButton>` the injection of `handleSubmit` `handleSubmitWithRedirect` `onSave` `invalid` `pristine` `saving` `submitOnEnter` props from the `<Toolbar>` will cause React warnings. You'll need to wrap `<CreateButton>` in another component and ignore the injected props, as follows:
+
+```jsx
+export const ToolbarCreateButton = ({
+  handleSubmit,
+  handleSubmitWithRedirect,
+  onSave,
+  invalid,
+  pristine,
+  saving,
+  submitOnEnter,
+  ...rest
+}) => <CreateButton {...rest} />;
+```
 
 ## Customizing The Form Layout
 
