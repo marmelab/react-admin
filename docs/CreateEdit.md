@@ -1184,7 +1184,7 @@ const defaultSubscription = {
 
 React-admin keeps track of the form state, so it can detect when the user leaves an Edit or Create page with unsaved changes. To avoid data loss, you can use this ability to ask the user to confirm before leaving a page with unsaved changes. 
 
-![Warn About Unsaved Changes](./img/warn_when_unsaved_changs.png)
+![Warn About Unsaved Changes](./img/warn_when_unsaved_changes.png)
 
 Warning about unsaved changes is an opt-in feature: you must set the `warnWhenUnsavedChanges` prop in the form component to enable it:
 
