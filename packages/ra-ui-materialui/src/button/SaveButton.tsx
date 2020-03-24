@@ -77,7 +77,7 @@ const SaveButton: FC<SaveButtonProps> = props => {
             onClick={handleClick}
             color={saving ? 'default' : 'primary'}
             aria-label={displayedLabel}
-            {...sanitizeRestProps(rest)}
+            {...rest}
         >
             {saving ? (
                 <CircularProgress
@@ -111,14 +111,6 @@ const useStyles = makeStyles(
     }),
     { name: 'RaSaveButton' }
 );
-
-const sanitizeRestProps = ({
-    basePath,
-    record,
-    resource,
-    undoable,
-    ...rest
-}: SaveButtonProps) => rest;
 
 interface Props {
     classes?: object;

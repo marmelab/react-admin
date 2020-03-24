@@ -103,7 +103,7 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
                     className
                 )}
                 key="button"
-                {...sanitizeRestProps(rest)}
+                {...rest}
             >
                 {icon}
             </Button>
@@ -130,12 +130,6 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
 };
 
 const defaultIcon = <ActionDelete />;
-
-const sanitizeRestProps = ({
-    label,
-    undoable,
-    ...rest
-}: DeleteWithConfirmButtonProps) => rest;
 
 const useStyles = makeStyles(
     theme => ({

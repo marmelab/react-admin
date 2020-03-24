@@ -163,6 +163,7 @@ const sanitizeRestProps = ({
     onSave,
     pristine,
     record,
+    redirect,
     resource,
     saving,
     submitOnEnter,

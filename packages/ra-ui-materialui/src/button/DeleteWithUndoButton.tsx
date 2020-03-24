@@ -82,21 +82,12 @@ const DeleteWithUndoButton: FC<DeleteWithUndoButtonProps> = props => {
                 className
             )}
             key="button"
-            {...sanitizeRestProps(rest)}
+            {...rest}
         >
             {icon}
         </Button>
     );
 };
-
-export const sanitizeRestProps = ({
-    classes,
-    label,
-    resource,
-    undoable,
-    redirect,
-    ...rest
-}: DeleteWithUndoButtonProps) => rest;
 
 const useStyles = makeStyles(
     theme => ({
@@ -124,7 +115,7 @@ interface Props {
     record?: Record;
     redirect?: RedirectionSideEffect;
     resource?: string;
-    // May be injected by Toolbar - sanitized in DeleteWithUndoButton
+    // May be injected by Toolbar - sanitized in Button
     handleSubmit?: (event?: SyntheticEvent<HTMLFormElement>) => Promise<Object>;
     handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
     invalid?: boolean;
