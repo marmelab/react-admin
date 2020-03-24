@@ -155,14 +155,18 @@ interface Props {
 export type ButtonProps = Props & MuiButtonProps;
 
 const sanitizeRestProps = ({
-    // The next 7 props are injected by Toolbar
+    // The next props are injected by Toolbar
+    basePath,
     handleSubmit,
     handleSubmitWithRedirect,
     invalid,
     onSave,
     pristine,
+    record,
+    resource,
     saving,
     submitOnEnter,
+    undoable,
     ...rest
 }: any) => rest;
 
