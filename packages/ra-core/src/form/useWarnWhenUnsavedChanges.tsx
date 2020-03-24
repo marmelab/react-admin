@@ -18,7 +18,7 @@ import { useTranslate } from '../i18n';
  *
  * @see history.block()
  */
-const useWarnWhenUnsavedChanges = () => {
+const useWarnWhenUnsavedChanges = (enable: boolean) => {
     const form = useForm();
     const history = useHistory();
     const translate = useTranslate();
@@ -30,6 +30,11 @@ const useWarnWhenUnsavedChanges = () => {
     }, [history.location]);
 
     useEffect(() => {
+        if (!enable) {
+            window.sessionStorage.removeItem('unsavedChanges');
+            return;
+        }
+
         // on mount: apply unsaved changes
         const unsavedChanges = JSON.parse(
             window.sessionStorage.getItem('unsavedChanges')

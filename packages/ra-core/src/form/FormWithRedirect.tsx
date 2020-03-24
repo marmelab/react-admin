@@ -49,6 +49,7 @@ const FormWithRedirect = ({
     validate,
     validateOnBlur,
     version,
+    warnWhenUnsavedChanges,
     ...props
 }) => {
     let redirect = useRef(props.redirect);
@@ -122,6 +123,7 @@ const FormWithRedirect = ({
                         saving={formProps.submitting || saving}
                         render={render}
                         save={save}
+                        warnWhenUnsavedChanges={warnWhenUnsavedChanges}
                     />
                 )}
             </Form>
@@ -136,10 +138,10 @@ const defaultSubscription = {
     invalid: true,
 };
 
-const FormView = ({ render, ...props }) => {
+const FormView = ({ render, warnWhenUnsavedChanges, ...props }) => {
     // if record changes (after a getOne success or a refresh), the form must be updated
     useInitializeFormWithRecord(props.record);
-    useWarnWhenUnsavedChanges();
+    useWarnWhenUnsavedChanges(warnWhenUnsavedChanges);
 
     const { redirect, setRedirect, handleSubmit } = props;
 
