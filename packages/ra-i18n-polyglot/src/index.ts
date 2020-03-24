@@ -1,8 +1,10 @@
 import Polyglot from 'node-polyglot';
 
-import { I18nProvider } from 'ra-core';
+import { I18nProvider, TranslationMessages } from 'ra-core';
 
-type GetMessages = (locale: string) => Object;
+type GetMessages = (
+    locale: string
+) => TranslationMessages | Promise<TranslationMessages>;
 
 /**
  * Build a polyglot-based i18nProvider based on a function returning the messages for a locale
@@ -45,7 +47,7 @@ export default (
                 // so we systematically return a Promise for the messages
                 // i18nProvider may return a Promise for language changes,
                 resolve(getMessages(newLocale as string))
-            ).then((messages: Object) => {
+            ).then((messages: TranslationMessages) => {
                 locale = newLocale;
                 const newPolyglot = new Polyglot({
                     locale: newLocale,
