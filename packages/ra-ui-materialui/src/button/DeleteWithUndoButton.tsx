@@ -91,16 +91,10 @@ const DeleteWithUndoButton: FC<DeleteWithUndoButtonProps> = props => {
 
 export const sanitizeRestProps = ({
     classes,
-    handleSubmit,
-    handleSubmitWithRedirect,
-    invalid,
     label,
-    pristine,
     resource,
-    saving,
     undoable,
     redirect,
-    submitOnEnter,
     ...rest
 }: DeleteWithUndoButtonProps) => rest;
 

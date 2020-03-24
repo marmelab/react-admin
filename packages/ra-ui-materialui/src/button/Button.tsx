@@ -43,6 +43,7 @@ const Button: FC<ButtonProps> = props => {
     const isXSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('xs')
     );
+    const restProps =  sanitizeRestProps(rest);
 
     return isXSmall ? (
         label && !disabled ? (
@@ -51,7 +52,7 @@ const Button: FC<ButtonProps> = props => {
                     aria-label={translate(label, { _: label })}
                     className={className}
                     color={color}
-                    {...rest}
+                    {...restProps}
                 >
                     {children}
                 </IconButton>
@@ -61,7 +62,7 @@ const Button: FC<ButtonProps> = props => {
                 className={className}
                 color={color}
                 disabled={disabled}
-                {...rest}
+                {...restProps}
             >
                 {children}
             </IconButton>
@@ -73,7 +74,7 @@ const Button: FC<ButtonProps> = props => {
             size={size}
             aria-label={label ? translate(label, { _: label }) : undefined}
             disabled={disabled}
-            {...rest}
+            {...restProps}
         >
             {alignIcon === 'left' &&
                 children &&
@@ -136,6 +137,18 @@ interface Props {
 }
 
 export type ButtonProps = Props & MuiButtonProps;
+
+const sanitizeRestProps = ({
+    // The next 7 props are injected by Toolbar
+    handleSubmit,
+    handleSubmitWithRedirect,
+    invalid,
+    onSave,
+    pristine,
+    saving,
+    submitOnEnter,
+    ...rest
+}: any) => rest;
 
 Button.propTypes = {
     alignIcon: PropTypes.oneOf(['left', 'right']),

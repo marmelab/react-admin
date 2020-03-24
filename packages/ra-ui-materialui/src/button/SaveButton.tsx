@@ -114,7 +114,6 @@ const useStyles = makeStyles(
 
 const sanitizeRestProps = ({
     basePath,
-    handleSubmit,
     record,
     resource,
     undoable,

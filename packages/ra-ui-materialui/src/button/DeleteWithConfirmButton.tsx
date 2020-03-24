@@ -132,13 +132,7 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
 const defaultIcon = <ActionDelete />;
 
 const sanitizeRestProps = ({
-    handleSubmit,
-    handleSubmitWithRedirect,
-    invalid,
     label,
-    pristine,
-    saving,
-    submitOnEnter,
     undoable,
     ...rest
 }: DeleteWithConfirmButtonProps) => rest;
