@@ -1,6 +1,5 @@
-import React, { FunctionComponent, HtmlHTMLAttributes } from 'react';
+import React, { FunctionComponent, HtmlHTMLAttributes, memo } from 'react';
 import get from 'lodash/get';
-import pure from 'recompose/pure';
 import Typography from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
@@ -39,14 +38,14 @@ const EmailField: FunctionComponent<
     );
 };
 
-const EnhancedEmailField = pure<
+const EnhancedEmailField = memo<
     FieldProps & HtmlHTMLAttributes<HTMLAnchorElement>
 >(EmailField);
-
+// @ts-ignore
 EnhancedEmailField.defaultProps = {
     addLabel: true,
 };
-
+// @ts-ignore
 EnhancedEmailField.propTypes = fieldPropTypes;
 EnhancedEmailField.displayName = 'EnhancedEmailField';
 

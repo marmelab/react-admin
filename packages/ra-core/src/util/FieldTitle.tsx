@@ -1,5 +1,4 @@
-import React, { FunctionComponent } from 'react';
-import pure from 'recompose/pure';
+import React, { FunctionComponent, memo } from 'react';
 
 import useTranslate from '../i18n/useTranslate';
 import getFieldLabelTranslationArgs from './getFieldLabelTranslationArgs';
@@ -31,4 +30,4 @@ export const FieldTitle: FunctionComponent<Props> = ({
 // wat? TypeScript looses the displayName if we don't set it explicitly
 FieldTitle.displayName = 'FieldTitle';
 
-export default pure(FieldTitle);
+export default memo(FieldTitle);

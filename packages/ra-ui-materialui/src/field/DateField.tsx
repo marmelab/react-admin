@@ -1,7 +1,6 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import pure from 'recompose/pure';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
@@ -98,12 +97,12 @@ export const DateField: FunctionComponent<
     );
 };
 
-const EnhancedDateField = pure<Props>(DateField);
-
+const EnhancedDateField = memo<Props>(DateField);
+// @ts-ignore
 EnhancedDateField.defaultProps = {
     addLabel: true,
 };
-
+// @ts-ignore
 EnhancedDateField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,

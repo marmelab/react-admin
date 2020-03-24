@@ -1,6 +1,5 @@
-import React, { FC, ReactElement } from 'react';
+import React, { FC, memo, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import shouldUpdate from 'recompose/shouldUpdate';
 import Queue from '@material-ui/icons/Queue';
 import { Link } from 'react-router-dom';
 import { stringify } from 'query-string';
@@ -57,7 +56,8 @@ CloneButton.propTypes = {
     record: PropTypes.any,
 };
 
-const enhance = shouldUpdate(
+const PureCloneButton = memo(
+    CloneButton,
     (props: Props, nextProps: Props) =>
         (props.record &&
             nextProps.record &&
@@ -66,4 +66,4 @@ const enhance = shouldUpdate(
         (props.record == null && nextProps.record != null)
 );
 
-export default enhance(CloneButton);
+export default PureCloneButton;

@@ -1,5 +1,4 @@
-import React, { FunctionComponent } from 'react';
-import pure from 'recompose/pure';
+import React, { FunctionComponent, memo } from 'react';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
@@ -27,12 +26,12 @@ const FunctionField: FunctionComponent<
         </Typography>
     ) : null;
 
-const EnhancedFunctionField = pure<Props & TypographyProps>(FunctionField);
-
+const EnhancedFunctionField = memo<Props & TypographyProps>(FunctionField);
+// @ts-ignore
 EnhancedFunctionField.defaultProps = {
     addLabel: true,
 };
-
+// @ts-ignore
 EnhancedFunctionField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,

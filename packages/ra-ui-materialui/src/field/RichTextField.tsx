@@ -1,7 +1,6 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import pure from 'recompose/pure';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 import sanitizeRestProps from './sanitizeRestProps';
 import { InjectedFieldProps, FieldProps, fieldPropTypes } from './types';
@@ -36,13 +35,13 @@ const RichTextField: FunctionComponent<
     );
 };
 
-const EnhancedRichTextField = pure<Props & TypographyProps>(RichTextField);
-
+const EnhancedRichTextField = memo<Props & TypographyProps>(RichTextField);
+// @ts-ignore
 EnhancedRichTextField.defaultProps = {
     addLabel: true,
     stripTags: false,
 };
-
+// @ts-ignore
 EnhancedRichTextField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,

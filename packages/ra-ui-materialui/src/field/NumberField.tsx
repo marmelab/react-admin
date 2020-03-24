@@ -1,7 +1,6 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import pure from 'recompose/pure';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
@@ -90,13 +89,13 @@ export const NumberField: FunctionComponent<
 // wat? TypeScript looses the displayName if we don't set it explicitly
 NumberField.displayName = 'NumberField';
 
-const EnhancedNumberField = pure<Props & TypographyProps>(NumberField);
-
+const EnhancedNumberField = memo<Props & TypographyProps>(NumberField);
+// @ts-ignore
 EnhancedNumberField.defaultProps = {
     addLabel: true,
     textAlign: 'right',
 };
-
+// @ts-ignore
 EnhancedNumberField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,

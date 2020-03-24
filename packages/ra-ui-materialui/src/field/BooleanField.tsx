@@ -1,12 +1,10 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import pure from 'recompose/pure';
 import FalseIcon from '@material-ui/icons/Clear';
 import TrueIcon from '@material-ui/icons/Done';
 import { Tooltip, Typography } from '@material-ui/core';
 import { TypographyProps } from '@material-ui/core/Typography';
-import compose from 'recompose/compose';
 import { useTranslate } from 'ra-core';
 
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
@@ -68,15 +66,12 @@ export const BooleanField: FunctionComponent<
     );
 };
 
-const EnhancedBooleanField = compose<
-    Props & InjectedFieldProps & TypographyProps,
-    Props & TypographyProps
->(pure)(BooleanField);
-
+const EnhancedBooleanField = memo<Props & TypographyProps>(BooleanField);
+// @ts-ignore
 EnhancedBooleanField.defaultProps = {
     addLabel: true,
 };
-
+// @ts-ignore
 EnhancedBooleanField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,

@@ -1,7 +1,6 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import pure from 'recompose/pure';
 import { ChoicesProps, useChoices } from 'ra-core';
 import Typography from '@material-ui/core/Typography';
 
@@ -122,12 +121,12 @@ SelectField.defaultProps = {
     translateChoice: true,
 };
 
-const EnhancedSelectField = pure(SelectField);
-
+const EnhancedSelectField = memo(SelectField);
+// @ts-ignore
 EnhancedSelectField.defaultProps = {
     addLabel: true,
 };
-
+// @ts-ignore
 EnhancedSelectField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,

@@ -1,6 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 import get from 'lodash/get';
-import pure from 'recompose/pure';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
@@ -28,12 +27,12 @@ const TextField: FunctionComponent<
 // wat? TypeScript looses the displayName if we don't set it explicitly
 TextField.displayName = 'TextField';
 
-const EnhancedTextField = pure(TextField);
-
+const EnhancedTextField = memo(TextField);
+// @ts-ignore
 EnhancedTextField.defaultProps = {
     addLabel: true,
 };
-
+// @ts-ignore
 EnhancedTextField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,

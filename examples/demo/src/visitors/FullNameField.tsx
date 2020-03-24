@@ -1,6 +1,5 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import pure from 'recompose/pure';
 
 import AvatarField from './AvatarField';
 import { FieldProps, Customer } from '../types';
@@ -34,8 +33,8 @@ const FullNameField: FC<Props> = ({ record, size }) => {
     ) : null;
 };
 
-const PureFullNameField = pure(FullNameField);
-
+const PureFullNameField = memo(FullNameField);
+// @ts-ignore
 PureFullNameField.defaultProps = {
     source: 'last_name',
     label: 'resources.customers.fields.name',
