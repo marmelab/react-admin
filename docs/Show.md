@@ -314,7 +314,7 @@ export const PostShow = (props) => (
 ```
 {% endraw %}
 
-**Tip**: By default, `<TabbedShowLayout>` use MaterialUI scrollable buttons when there is too much Tabs to display. If you preferer the screen to expands with the tabs, use `scrollable={false}`.
+**Tip**: By default, `<TabbedShowLayout>` use MaterialUI scrollable buttons when there are too many Tabs to display. If you prefer the screen to expands with the tabs, use `scrollable={false}`.
 
 To style the tabs, the `<Tab>` component accepts two props:
 
