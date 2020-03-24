@@ -138,7 +138,7 @@ const includesNotStrict = (items, element) =>
 /**
  * Remove records from the pool
  */
-const removeRecords = (
+export const removeRecords = (
     removedRecordIds: Identifier[] = [],
     oldRecords: RecordSetWithDate
 ): RecordSetWithDate => {
