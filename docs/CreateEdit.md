@@ -883,6 +883,27 @@ Here are the props received by the `Toolbar` component when passed as the `toolb
 
 **Tip**: To alter the form values before submitting, you should use the `handleSubmit` prop. See [Altering the Form Values before Submitting](#altering-the-form-values-before-submitting) for more information and examples.
 
+**Tip**: If you want to include a `<CreateButton>` in the `<Toolbar>`, the props injected by `<Toolbar>` to its children (`handleSubmit`, `handleSubmitWithRedirect`, `onSave`, `invalid`, `pristine`, `saving`, and `submitOnEnter`) will cause React warnings. You'll need to wrap `<CreateButton>` in another component and ignore the injected props, as follows:
+
+```jsx
+const ToolbarCreateButton = ({
+  handleSubmit,
+  handleSubmitWithRedirect,
+  onSave,
+  invalid,
+  pristine,
+  saving,
+  submitOnEnter,
+  ...rest
+}) => <CreateButton {...rest} />;
+
+const PostEditToolbar = props => (
+    <Toolbar {...props} >
+        <ToolbarCreateButton />
+    </Toolbar>
+);
+```
+
 ## Customizing The Form Layout
 
 You can customize each row in a `<SimpleForm>` or in a `<TabbedForm>` by passing props to the Input components:
