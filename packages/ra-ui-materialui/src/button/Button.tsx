@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from 'react';
+import React, {FC, ReactElement, SyntheticEvent} from 'react';
 import PropTypes from 'prop-types';
 import {
     Button as MuiButton,
@@ -11,7 +11,7 @@ import {
 import { ButtonProps as MuiButtonProps } from '@material-ui/core/Button';
 import { Theme } from '@material-ui/core';
 import classnames from 'classnames';
-import { useTranslate } from 'ra-core';
+import {Record, RedirectionSideEffect, useTranslate} from 'ra-core';
 
 /**
  * A generic Button with side icon. Only the icon is displayed on small screens.
@@ -134,6 +134,22 @@ interface Props {
     disabled?: boolean;
     label?: string;
     size?: 'small' | 'medium' | 'large';
+    icon?: ReactElement;
+    onClick?: () => void;
+    redirect?: RedirectionSideEffect;
+    variant?: string;
+    // May be injected by Toolbar
+    basePath?: string;
+    handleSubmit?: (event?: SyntheticEvent<HTMLFormElement>) => Promise<Object>;
+    handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
+    invalid?: boolean;
+    onSave?: (values: object, redirect: RedirectionSideEffect) => void;
+    saving?: boolean;
+    submitOnEnter?: boolean;
+    pristine?: boolean;
+    record?: Record;
+    resource?: string;
+    undoable?: boolean;
 }
 
 export type ButtonProps = Props & MuiButtonProps;
