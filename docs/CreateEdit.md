@@ -1202,6 +1202,29 @@ export const TagEdit = props => (
 
 And that's all. `warnWhenUnsavedChanges` works for both `<SimpleForm>` and `<TabbedForm>`. In fact, this feature is provided by a custom hook called `useWarnWhenUnsavedChanges()`, which you can use in your own react-final-form forms.
 
+```jsx
+import { Form, Field } from 'react-final-form';
+import { useWarnWhenUnsavedChanges } from 'react-admin';
+
+const MyForm = () => (
+    <Form onSubmit={() => { /*...*/}} component={FormBody} />
+);
+
+const FormBody = ({ handleSubmit }) => {
+    // enable the warn when unsaved changes feature
+    useWarnWhenUnsavedChanges(true);
+    return (
+        <form onSubmit={handleSubmit}>
+            <label id="firstname-label">First Name</label>
+            <Field name="firstName" aria-labelledby="firstname-label" component="input" />
+            <button type="submit">Submit</button>
+        </form>
+    );
+};
+```
+
+**Tip**: You can customize the message displayed in the confirm dialog by setting the `ra.message.unsaved_changes` message in your i18nProvider.
+
 ## Displaying Fields or Inputs depending on the user permissions
 
 You might want to display some fields, inputs or filters only to users with specific permissions. 
