@@ -393,6 +393,7 @@ Here are all the props you can set on the `<SimpleForm>` component:
 * [`toolbar`](#toolbar)
 * [`variant`](#variant)
 * [`margin`](#margin)
+* [`warnWhenUnsavedChanges`](#warning-about-unsaved-changes)
 
 ```jsx
 export const PostCreate = (props) => (
@@ -431,6 +432,7 @@ Here are all the props accepted by the `<TabbedForm>` component:
 * [`margin`](#margin)
 * `save`: The function invoked when the form is submitted. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
 * `saving`: A boolean indicating whether a save operation is ongoing. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
+* [`warnWhenUnsavedChanges`](#warning-about-unsaved-changes)
 
 {% raw %}
 ```jsx
@@ -1177,6 +1179,51 @@ const defaultSubscription = {
 };
 ```
 {% endraw %}
+
+## Warning About Unsaved Changes
+
+React-admin keeps track of the form state, so it can detect when the user leaves an Edit or Create page with unsaved changes. To avoid data loss, you can use this ability to ask the user to confirm before leaving a page with unsaved changes. 
+
+![Warn About Unsaved Changes](./img/warn_when_unsaved_changes.png)
+
+Warning about unsaved changes is an opt-in feature: you must set the `warnWhenUnsavedChanges` prop in the form component to enable it:
+
+```jsx
+export const TagEdit = props => (
+    <Edit {...props}>
+        <SimpleForm warnWhenUnsavedChanges>
+            <TextField source="id" />
+            <TextInput source="name" />
+            ...
+        </SimpleForm>
+    </Edit>
+);
+```
+
+And that's all. `warnWhenUnsavedChanges` works for both `<SimpleForm>` and `<TabbedForm>`. In fact, this feature is provided by a custom hook called `useWarnWhenUnsavedChanges()`, which you can use in your own react-final-form forms.
+
+```jsx
+import { Form, Field } from 'react-final-form';
+import { useWarnWhenUnsavedChanges } from 'react-admin';
+
+const MyForm = () => (
+    <Form onSubmit={() => { /*...*/}} component={FormBody} />
+);
+
+const FormBody = ({ handleSubmit }) => {
+    // enable the warn when unsaved changes feature
+    useWarnWhenUnsavedChanges(true);
+    return (
+        <form onSubmit={handleSubmit}>
+            <label id="firstname-label">First Name</label>
+            <Field name="firstName" aria-labelledby="firstname-label" component="input" />
+            <button type="submit">Submit</button>
+        </form>
+    );
+};
+```
+
+**Tip**: You can customize the message displayed in the confirm dialog by setting the `ra.message.unsaved_changes` message in your i18nProvider.
 
 ## Displaying Fields or Inputs depending on the user permissions
 

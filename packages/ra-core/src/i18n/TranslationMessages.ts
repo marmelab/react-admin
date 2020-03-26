@@ -89,6 +89,7 @@ export interface TranslationMessages extends StringMap {
             no: string;
             not_found: string;
             yes: string;
+            unsaved_changes: string;
         };
         navigation: {
             [key: string]: StringMap | string;
