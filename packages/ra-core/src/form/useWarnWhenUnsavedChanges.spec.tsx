@@ -86,7 +86,7 @@ describe('useWarnWhenUnsavedChanges', () => {
         expect(queryByText('Somewhere')).toBeNull();
     });
 
-    it('should warn when leaving form with no unsaved changes but accept override', () => {
+    it('should warn when leaving form with unsaved changes but accept override', () => {
         // mock click on "OK" in the confirm dialog
         window.confirm = jest.fn().mockReturnValue(true);
         const { getByLabelText, getByText, queryByText } = render(<App />);
