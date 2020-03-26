@@ -69,7 +69,7 @@ describe('useWarnWhenUnsavedChanges', () => {
         getByText('Submitted');
     });
 
-    it('should warn when leaving form with no unsaved changes', () => {
+    it('should warn when leaving form with unsaved changes', () => {
         // mock click on "cancel" in the confirm dialog
         window.confirm = jest.fn().mockReturnValue(false);
         const { getByLabelText, getByText, queryByText } = render(<App />);
