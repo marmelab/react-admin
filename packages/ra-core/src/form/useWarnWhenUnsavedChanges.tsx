@@ -13,7 +13,7 @@ import { useTranslate } from '../i18n';
  * instance TabbedForm), and the confirm dialog would show up when navigating
  * inside the form. So instead of relying on route change detection, we rely
  * on unmount detection. The resulting UI isn't perfect, because when they
- * click the cancel buttun, users briefly see the page they asked before
+ * click the cancel button, users briefly see the page they asked before
  * seeing the form page again. But that's the best we can do.
  *
  * @see history.block()
