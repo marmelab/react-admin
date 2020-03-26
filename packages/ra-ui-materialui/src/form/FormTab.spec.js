@@ -64,12 +64,12 @@ describe('<FormTab label="foo" />', () => {
                     <TextInput source="name" />
                 </FormTab>
                 <FormTab
-                     label="Third"
-                     basePath="/posts"
-                     resource="posts"
-                     record={record}
-                     margin="normal"
-                     variant="outlined"
+                    label="Third"
+                    basePath="/posts"
+                    resource="posts"
+                    record={record}
+                    margin="normal"
+                    variant="outlined"
                 >
                     <TextInput source="name" />
                 </FormTab>
