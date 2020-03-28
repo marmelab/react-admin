@@ -50,7 +50,7 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
 
     const [deleteOne, { loading }] = useDelete(
         resource,
-        record && record.id,
+        record.id,
         record,
         {
             action: CRUD_DELETE,
@@ -156,9 +156,9 @@ interface Props {
     icon?: ReactElement;
     label?: string;
     onClick?: (e: MouseEvent) => void;
-    record?: Record;
+    record: Record;
     redirect?: RedirectionSideEffect;
-    resource?: string;
+    resource: string;
     // May be injected by Toolbar - sanitized in Button
     handleSubmit?: (event?: SyntheticEvent<HTMLFormElement>) => Promise<Object>;
     handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
@@ -184,7 +184,7 @@ DeleteWithConfirmButton.propTypes = {
         PropTypes.bool,
         PropTypes.func,
     ]),
-    resource: PropTypes.string,
+    resource: PropTypes.string.isRequired,
     icon: PropTypes.element,
 };
 

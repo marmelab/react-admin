@@ -1,4 +1,4 @@
-import React, {FC, ReactElement, SyntheticEvent} from 'react';
+import React, { FC, ReactElement, SyntheticEvent, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import {
     Button as MuiButton,
@@ -131,6 +131,8 @@ interface Props {
     classes?: object;
     className?: string;
     color?: MuiPropTypes.Color;
+    component?: ReactNode,
+    to?: string | { pathname: string; search: string; },
     disabled?: boolean;
     label?: string;
     size?: 'small' | 'medium' | 'large';

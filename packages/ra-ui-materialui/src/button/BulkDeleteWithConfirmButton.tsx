@@ -39,7 +39,7 @@ const BulkDeleteWithConfirmButton: FC<
     const {
         basePath,
         classes: classesOverride,
-        confirmTitle,
+        confirmTitle = '',
         confirmContent,
         icon,
         label,

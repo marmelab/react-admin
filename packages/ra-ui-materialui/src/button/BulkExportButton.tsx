@@ -85,7 +85,7 @@ interface Props {
     label?: string;
     onClick?: (e: Event) => void;
     selectedIds: Identifier[];
-    resource?: string;
+    resource: string;
 }
 
 export type BulkExportButtonProps = Props & ButtonProps;
