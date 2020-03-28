@@ -2,7 +2,7 @@ import { render, cleanup, fireEvent } from '@testing-library/react';
 import React from 'react';
 import expect from 'expect';
 import { TestContext } from 'ra-core';
-import {createMuiTheme, ThemeProvider} from "@material-ui/core";
+import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import Button from './Button';
 
 const theme = createMuiTheme();
@@ -29,16 +29,16 @@ describe('<Button />', () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
         const { getByLabelText } = render(
-          <TestContext>
-              <ThemeProvider theme={theme}>
-                  <Button label='button' {...invalidButtonDomProps} />
-              </ThemeProvider>
-          </TestContext>
+            <TestContext>
+                <ThemeProvider theme={theme}>
+                    <Button label='button' {...invalidButtonDomProps} />
+                </ThemeProvider>
+            </TestContext>
         );
 
         expect(spy).not.toHaveBeenCalled();
         expect(getByLabelText('button').getAttribute('type')).toEqual(
-          'button'
+            'button'
         );
 
         spy.mockRestore();

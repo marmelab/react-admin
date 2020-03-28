@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { useTranslate } from 'ra-core';
 
-import Button, {ButtonProps, sanitizeButtonRestProps} from './Button';
+import Button, { ButtonProps, sanitizeButtonRestProps } from './Button';
 
 const CreateButton: FC<CreateButtonProps> = props => {
     const {

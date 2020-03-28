@@ -2,7 +2,7 @@ import { render, cleanup, fireEvent } from '@testing-library/react';
 import React from 'react';
 import expect from 'expect';
 import { TestContext } from 'ra-core';
-import {createMuiTheme, ThemeProvider} from "@material-ui/core";
+import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import SaveButton from './SaveButton';
 
 const theme = createMuiTheme();
@@ -29,16 +29,16 @@ describe('<SaveButton />', () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
         const { getByLabelText } = render(
-          <TestContext>
-              <ThemeProvider theme={theme}>
-                  <SaveButton {...invalidButtonDomProps} />
-              </ThemeProvider>
-          </TestContext>
+            <TestContext>
+                <ThemeProvider theme={theme}>
+                    <SaveButton {...invalidButtonDomProps} />
+                </ThemeProvider>
+            </TestContext>
         );
 
         expect(spy).not.toHaveBeenCalled();
         expect(getByLabelText('ra.action.save').getAttribute('type')).toEqual(
-          'submit'
+            'submit'
         );
 
         spy.mockRestore();

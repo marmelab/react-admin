@@ -1,8 +1,8 @@
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render, cleanup } from '@testing-library/react';
 import React from 'react';
 import expect from 'expect';
 import { TestContext } from 'ra-core';
-import {createMuiTheme, ThemeProvider} from "@material-ui/core";
+import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import CreateButton from './CreateButton';
 
 const invalidButtonDomProps = {
@@ -29,17 +29,17 @@ describe('<CreateButton />', () => {
         const theme = createMuiTheme({
             props: {
                 MuiWithWidth: {
-                    initialWidth: 'sm'
-                }
-            }
+                    initialWidth: 'sm',
+                },
+            },
         });
 
         const { getByLabelText } = render(
-          <TestContext>
-              <ThemeProvider theme={theme}>
-                  <CreateButton {...invalidButtonDomProps} />
-              </ThemeProvider>
-          </TestContext>
+            <TestContext>
+                <ThemeProvider theme={theme}>
+                    <CreateButton {...invalidButtonDomProps} />
+                </ThemeProvider>
+            </TestContext>
         );
 
         expect(spy).not.toHaveBeenCalled();

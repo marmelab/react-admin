@@ -1,9 +1,9 @@
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render, cleanup } from '@testing-library/react';
 import React from 'react';
 import expect from 'expect';
-import { TestContext, Resource } from 'ra-core';
-import {createMuiTheme, ThemeProvider} from "@material-ui/core";
-import DeleteWithUndoButton from "./DeleteWithUndoButton";
+import { TestContext } from 'ra-core';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core';
+import DeleteWithUndoButton from './DeleteWithUndoButton';
 
 const theme = createMuiTheme();
 
@@ -29,16 +29,28 @@ describe('<DeleteWithUndoButton />', () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
         const { getByLabelText } = render(
-          <TestContext initialState={{ admin: { resources: { posts: { data: { 1: {id: 1, foo: 'bar' } } } } } }}>
-              <ThemeProvider theme={theme}>
-                  <DeleteWithUndoButton {...invalidButtonDomProps} />
-              </ThemeProvider>
-          </TestContext>
+            <TestContext initialState={{
+                admin: {
+                    resources: {
+                        posts: {
+                            data: {
+                                1: {
+                                    id: 1, foo: 'bar'
+                                }
+                            }
+                        }
+                    }
+                }
+            }}>
+                <ThemeProvider theme={theme}>
+                    <DeleteWithUndoButton {...invalidButtonDomProps} />
+                </ThemeProvider>
+            </TestContext>
         );
 
         expect(spy).not.toHaveBeenCalled();
         expect(getByLabelText('ra.action.delete').getAttribute('type')).toEqual(
-          'button'
+            'button'
         );
 
         spy.mockRestore();

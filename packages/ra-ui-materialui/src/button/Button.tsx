@@ -11,7 +11,7 @@ import {
 import { ButtonProps as MuiButtonProps } from '@material-ui/core/Button';
 import { Theme } from '@material-ui/core';
 import classnames from 'classnames';
-import {Record, RedirectionSideEffect, useTranslate} from 'ra-core';
+import { Record, RedirectionSideEffect, useTranslate } from 'ra-core';
 
 /**
  * A generic Button with side icon. Only the icon is displayed on small screens.
@@ -43,7 +43,7 @@ const Button: FC<ButtonProps> = props => {
     const isXSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('xs')
     );
-    const restProps =  sanitizeButtonRestProps(rest);
+    const restProps = sanitizeButtonRestProps(rest);
 
     return isXSmall ? (
         label && !disabled ? (
@@ -131,8 +131,8 @@ interface Props {
     classes?: object;
     className?: string;
     color?: MuiPropTypes.Color;
-    component?: ReactNode,
-    to?: string | { pathname: string; search: string; },
+    component?: ReactNode;
+    to?: string | { pathname: string; search: string; };
     disabled?: boolean;
     label?: string;
     size?: 'small' | 'medium' | 'large';
