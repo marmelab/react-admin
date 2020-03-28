@@ -1,4 +1,4 @@
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render, cleanup } from '@testing-library/react';
 import React from 'react';
 import expect from 'expect';
 import { TestContext } from 'ra-core';
@@ -31,15 +31,13 @@ describe('<Button />', () => {
         const { getByLabelText } = render(
             <TestContext>
                 <ThemeProvider theme={theme}>
-                    <Button label='button' {...invalidButtonDomProps} />
+                    <Button label="button" {...invalidButtonDomProps} />
                 </ThemeProvider>
             </TestContext>
         );
 
         expect(spy).not.toHaveBeenCalled();
-        expect(getByLabelText('button').getAttribute('type')).toEqual(
-            'button'
-        );
+        expect(getByLabelText('button').getAttribute('type')).toEqual('button');
 
         spy.mockRestore();
     });

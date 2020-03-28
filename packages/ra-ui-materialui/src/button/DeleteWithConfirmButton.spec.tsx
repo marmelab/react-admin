@@ -29,19 +29,22 @@ describe('<DeleteWithConfirmButton />', () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
         const { getByLabelText } = render(
-            <TestContext initialState={{
-                admin: {
-                    resources: {
-                        posts: {
-                            data: {
-                                1: {
-                                    id: 1, foo: 'bar'
-                                }
-                            }
-                        }
-                    }
-                }
-            }}>
+            <TestContext
+                initialState={{
+                    admin: {
+                        resources: {
+                            posts: {
+                                data: {
+                                    1: {
+                                        id: 1,
+                                        foo: 'bar',
+                                    },
+                                },
+                            },
+                        },
+                    },
+                }}
+            >
                 <ThemeProvider theme={theme}>
                     <DeleteWithConfirmButton {...invalidButtonDomProps} />
                 </ThemeProvider>

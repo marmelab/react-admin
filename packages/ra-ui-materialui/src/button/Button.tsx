@@ -132,7 +132,7 @@ interface Props {
     className?: string;
     color?: MuiPropTypes.Color;
     component?: ReactNode;
-    to?: string | { pathname: string; search: string; };
+    to?: string | { pathname: string; search: string };
     disabled?: boolean;
     label?: string;
     size?: 'small' | 'medium' | 'large';

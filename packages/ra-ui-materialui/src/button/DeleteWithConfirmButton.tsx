@@ -36,7 +36,7 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
         icon = defaultIcon,
         label = 'ra.action.delete',
         onClick,
-        record = {id: ''},
+        record = { id: '' },
         resource = '',
         redirect: redirectTo = 'list',
         ...rest
@@ -48,29 +48,24 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
     const refresh = useRefresh();
     const classes = useStyles(props);
 
-    const [deleteOne, { loading }] = useDelete(
-        resource,
-        record.id,
-        record,
-        {
-            action: CRUD_DELETE,
-            onSuccess: () => {
-                notify('ra.notification.deleted', 'info', { smart_count: 1 });
-                redirect(redirectTo, basePath); //FIXME: redirections/RedirectionSideEffect !== useRedirect/RedirectionSideEffect
-                refresh();
-            },
-            onFailure: error => {
-                notify(
-                    typeof error === 'string'
-                        ? error
-                        : error.message || 'ra.notification.http_error',
-                    'warning'
-                );
-                setOpen(false);
-            },
-            undoable: false,
-        }
-    );
+    const [deleteOne, { loading }] = useDelete(resource, record.id, record, {
+        action: CRUD_DELETE,
+        onSuccess: () => {
+            notify('ra.notification.deleted', 'info', { smart_count: 1 });
+            redirect(redirectTo, basePath); //FIXME: redirections/RedirectionSideEffect !== useRedirect/RedirectionSideEffect
+            refresh();
+        },
+        onFailure: error => {
+            notify(
+                typeof error === 'string'
+                    ? error
+                    : error.message || 'ra.notification.http_error',
+                'warning'
+            );
+            setOpen(false);
+        },
+        undoable: false,
+    });
 
     const handleClick = e => {
         setOpen(true);

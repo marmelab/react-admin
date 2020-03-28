@@ -24,7 +24,7 @@ const DeleteWithUndoButton: FC<DeleteWithUndoButtonProps> = props => {
         icon = defaultIcon,
         onClick,
         resource = '',
-        record = {id: ''},
+        record = { id: '' },
         basePath,
         redirect: redirectTo = 'list',
         ...rest
@@ -34,32 +34,22 @@ const DeleteWithUndoButton: FC<DeleteWithUndoButtonProps> = props => {
     const redirect = useRedirect();
     const refresh = useRefresh();
 
-    const [deleteOne, { loading }] = useDelete(
-        resource,
-        record.id,
-        record,
-        {
-            action: CRUD_DELETE,
-            onSuccess: () => {
-                notify(
-                    'ra.notification.deleted',
-                    'info',
-                    { smart_count: 1 },
-                    true
-                );
-                redirect(redirectTo, basePath); //FIXME: redirections/RedirectionSideEffect !== useRedirect/RedirectionSideEffect
-                refresh();
-            },
-            onFailure: error =>
-                notify(
-                    typeof error === 'string'
-                        ? error
-                        : error.message || 'ra.notification.http_error',
-                    'warning'
-                ),
-            undoable: true,
-        }
-    );
+    const [deleteOne, { loading }] = useDelete(resource, record.id, record, {
+        action: CRUD_DELETE,
+        onSuccess: () => {
+            notify('ra.notification.deleted', 'info', { smart_count: 1 }, true);
+            redirect(redirectTo, basePath); //FIXME: redirections/RedirectionSideEffect !== useRedirect/RedirectionSideEffect
+            refresh();
+        },
+        onFailure: error =>
+            notify(
+                typeof error === 'string'
+                    ? error
+                    : error.message || 'ra.notification.http_error',
+                'warning'
+            ),
+        undoable: true,
+    });
     const handleDelete = useCallback(
         event => {
             event.stopPropagation();
