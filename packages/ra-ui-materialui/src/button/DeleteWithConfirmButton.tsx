@@ -36,8 +36,8 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
         icon = defaultIcon,
         label = 'ra.action.delete',
         onClick,
-        record,
-        resource,
+        record = {id: ''},
+        resource = '',
         redirect: redirectTo = 'list',
         ...rest
     } = props;
@@ -56,7 +56,7 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
             action: CRUD_DELETE,
             onSuccess: () => {
                 notify('ra.notification.deleted', 'info', { smart_count: 1 });
-                redirect(redirectTo, basePath);
+                redirect(redirectTo, basePath); //FIXME: redirections/RedirectionSideEffect !== useRedirect/RedirectionSideEffect
                 refresh();
             },
             onFailure: error => {
@@ -156,9 +156,9 @@ interface Props {
     icon?: ReactElement;
     label?: string;
     onClick?: (e: MouseEvent) => void;
-    record: Record;
+    record?: Record;
     redirect?: RedirectionSideEffect;
-    resource: string;
+    resource?: string;
     // May be injected by Toolbar - sanitized in Button
     handleSubmit?: (event?: SyntheticEvent<HTMLFormElement>) => Promise<Object>;
     handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
@@ -184,7 +184,7 @@ DeleteWithConfirmButton.propTypes = {
         PropTypes.bool,
         PropTypes.func,
     ]),
-    resource: PropTypes.string.isRequired,
+    resource: PropTypes.string,
     icon: PropTypes.element,
 };
 

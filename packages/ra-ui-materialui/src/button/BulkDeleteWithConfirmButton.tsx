@@ -39,8 +39,8 @@ const BulkDeleteWithConfirmButton: FC<
     const {
         basePath,
         classes: classesOverride,
-        confirmTitle = '',
-        confirmContent,
+        confirmTitle = 'ra.message.bulk_delete_title',
+        confirmContent = 'ra.message.bulk_delete_content',
         icon,
         label,
         onClick,
@@ -158,8 +158,6 @@ BulkDeleteWithConfirmButton.propTypes = {
 };
 
 BulkDeleteWithConfirmButton.defaultProps = {
-    confirmTitle: 'ra.message.bulk_delete_title',
-    confirmContent: 'ra.message.bulk_delete_content',
     label: 'ra.action.delete',
     icon: <ActionDelete />,
 };

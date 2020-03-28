@@ -23,8 +23,8 @@ const DeleteWithUndoButton: FC<DeleteWithUndoButtonProps> = props => {
         className,
         icon = defaultIcon,
         onClick,
-        resource,
-        record,
+        resource = '',
+        record = {id: ''},
         basePath,
         redirect: redirectTo = 'list',
         ...rest
@@ -36,7 +36,7 @@ const DeleteWithUndoButton: FC<DeleteWithUndoButtonProps> = props => {
 
     const [deleteOne, { loading }] = useDelete(
         resource,
-        record && record.id,
+        record.id,
         record,
         {
             action: CRUD_DELETE,
@@ -47,7 +47,7 @@ const DeleteWithUndoButton: FC<DeleteWithUndoButtonProps> = props => {
                     { smart_count: 1 },
                     true
                 );
-                redirect(redirectTo, basePath);
+                redirect(redirectTo, basePath); //FIXME: redirections/RedirectionSideEffect !== useRedirect/RedirectionSideEffect
                 refresh();
             },
             onFailure: error =>

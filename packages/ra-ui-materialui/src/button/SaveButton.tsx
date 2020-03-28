@@ -45,10 +45,10 @@ const SaveButton: FC<SaveButtonProps> = props => {
 
     const handleClick = event => {
         if (typeof onSave === 'function') {
-            setOnSave(onSave);
+            setOnSave && setOnSave(onSave);
         } else {
             // we reset to the Form default save function
-            setOnSave();
+            setOnSave && setOnSave();
         }
         if (saving) {
             // prevent double submission
@@ -61,7 +61,7 @@ const SaveButton: FC<SaveButtonProps> = props => {
             if (event) {
                 event.preventDefault();
             }
-            handleSubmitWithRedirect(redirect);
+            handleSubmitWithRedirect && handleSubmitWithRedirect(redirect);
         }
 
         if (typeof onClick === 'function') {
