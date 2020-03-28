@@ -19,6 +19,8 @@ import {
     FormContext,
 } from 'ra-core';
 
+import { sanitizeButtonRestProps } from './Button';
+
 const SaveButton: FC<SaveButtonProps> = props => {
     const {
         className,
@@ -77,7 +79,7 @@ const SaveButton: FC<SaveButtonProps> = props => {
             onClick={handleClick}
             color={saving ? 'default' : 'primary'}
             aria-label={displayedLabel}
-            {...rest}
+            {...sanitizeButtonRestProps(rest)}
         >
             {saving ? (
                 <CircularProgress
@@ -126,7 +128,7 @@ interface Props {
     saving?: boolean;
     submitOnEnter?: boolean;
     variant?: string;
-    // May be injected by Toolbar - sanitized in SaveButton
+    // May be injected by Toolbar - sanitized in Button
     basePath?: string;
     handleSubmit?: (event?: SyntheticEvent<HTMLFormElement>) => Promise<Object>;
     record?: Record;
