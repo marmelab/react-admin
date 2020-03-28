@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import MuiGridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
@@ -6,7 +6,29 @@ import { makeStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
 import { Link } from 'react-router-dom';
 import { NumberField } from 'react-admin';
-import { linkToRecord } from 'ra-core';
+import { linkToRecord, Identifier } from 'ra-core';
+import { Product } from '../types';
+
+enum Width {
+    xs = 'xs',
+    sm = 'sm',
+    md = 'md',
+    lg = 'lg',
+}
+
+declare type TimesCallback = (key: number) => void;
+
+interface GridListProps {
+    ids: Identifier[];
+    data: { [key: string]: Product };
+    basePath: string;
+    width: Width;
+    nbItems: number;
+}
+
+interface Props extends GridListProps {
+    loaded: boolean;
+}
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -33,7 +55,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const getColsForWidth = width => {
+const getColsForWidth = (width: Width) => {
     if (width === 'xs') return 2;
     if (width === 'sm') return 3;
     if (width === 'md') return 4;
@@ -41,10 +63,10 @@ const getColsForWidth = width => {
     return 6;
 };
 
-const times = (nbChildren, fn) =>
+const times = (nbChildren: number, fn: TimesCallback) =>
     Array.from({ length: nbChildren }, (_, key) => fn(key));
 
-const LoadingGridList = ({ width, nbItems = 10 }) => {
+const LoadingGridList: FC<GridListProps> = ({ width, nbItems = 10 }) => {
     const classes = useStyles();
     return (
         <div className={classes.root}>
@@ -64,7 +86,7 @@ const LoadingGridList = ({ width, nbItems = 10 }) => {
     );
 };
 
-const LoadedGridList = ({ ids, data, basePath, width }) => {
+const LoadedGridList: FC<GridListProps> = ({ ids, data, basePath, width }) => {
     const classes = useStyles();
     return (
         <div className={classes.root}>
@@ -106,7 +128,7 @@ const LoadedGridList = ({ ids, data, basePath, width }) => {
     );
 };
 
-const GridList = ({ loaded, ...props }) =>
+const GridList: FC<Props> = ({ loaded, ...props }) =>
     loaded ? <LoadedGridList {...props} /> : <LoadingGridList {...props} />;
 
-export default withWidth()(GridList);
+export default withWidth()(GridList as any);
