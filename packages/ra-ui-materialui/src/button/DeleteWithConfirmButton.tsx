@@ -159,7 +159,7 @@ interface Props {
     record?: Record;
     redirect?: RedirectionSideEffect;
     resource?: string;
-    // May be injected by Toolbar - sanitized in DeleteWithConfirButton
+    // May be injected by Toolbar - sanitized in Button
     handleSubmit?: (event?: SyntheticEvent<HTMLFormElement>) => Promise<Object>;
     handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
     invalid?: boolean;
