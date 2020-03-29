@@ -462,7 +462,7 @@ Here are all the props accepted by the `<TabbedForm>` component:
 * [`variant`](#variant)
 * [`margin`](#margin)
 * `save`: The function invoked when the form is submitted. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
-* `saving`: A boolean indicating whether a save operation is ongoing. This is passed automati<cally by `react-admin` when the form component is used inside `Create` and `Edit` components.
+* `saving`: A boolean indicating whether a save operation is ongoing. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
 
 {% raw %}
 ```jsx
