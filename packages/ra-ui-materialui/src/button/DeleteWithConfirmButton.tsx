@@ -36,8 +36,8 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
         icon = defaultIcon,
         label = 'ra.action.delete',
         onClick,
-        record = { id: '' },
-        resource = '',
+        record,
+        resource,
         redirect: redirectTo = 'list',
         ...rest
     } = props;

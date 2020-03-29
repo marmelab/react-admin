@@ -57,12 +57,12 @@ const useStyles = makeStyles(
  */
 const Confirm: FC<ConfirmProps> = props => {
     const {
-        isOpen = false,
+        isOpen,
         loading,
         title,
         content,
-        confirm = 'ra.action.confirm',
-        cancel = 'ra.action.cancel',
+        confirm,
+        cancel,
         confirmColor,
         ConfirmIcon,
         CancelIcon,
@@ -157,10 +157,13 @@ Confirm.propTypes = {
 };
 
 Confirm.defaultProps = {
+    cancel: 'ra.action.cancel',
     classes: {},
+    confirm: 'ra.action.confirm',
     confirmColor: 'primary',
     ConfirmIcon: ActionCheck,
     CancelIcon: AlertError,
+    isOpen: false,
 };
 
 export default Confirm;

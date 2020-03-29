@@ -23,8 +23,8 @@ const DeleteWithUndoButton: FC<DeleteWithUndoButtonProps> = props => {
         className,
         icon = defaultIcon,
         onClick,
-        resource = '',
-        record = { id: '' },
+        resource,
+        record,
         basePath,
         redirect: redirectTo = 'list',
         ...rest

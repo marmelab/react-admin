@@ -101,7 +101,7 @@ interface Props {
     label?: string;
     maxResults?: number;
     onClick?: (e: Event) => void;
-    resource: string;
+    resource?: string;
     sort?: Sort;
 }
 
