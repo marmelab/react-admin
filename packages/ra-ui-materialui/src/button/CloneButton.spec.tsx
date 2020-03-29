@@ -54,9 +54,7 @@ describe('<CloneButton />', () => {
         );
 
         expect(spy).not.toHaveBeenCalled();
-        expect(getByLabelText('ra.action.clone').getAttribute('type')).toEqual(
-            'button'
-        );
+        expect(getByLabelText('ra.action.clone').tagName).toEqual('A');
 
         spy.mockRestore();
     });
