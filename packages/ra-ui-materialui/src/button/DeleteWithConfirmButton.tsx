@@ -52,7 +52,7 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
         action: CRUD_DELETE,
         onSuccess: () => {
             notify('ra.notification.deleted', 'info', { smart_count: 1 });
-            redirect(redirectTo, basePath); //FIXME: redirections/RedirectionSideEffect !== useRedirect/RedirectionSideEffect
+            redirect(redirectTo, basePath);
             refresh();
         },
         onFailure: error => {
