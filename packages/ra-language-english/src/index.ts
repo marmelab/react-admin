@@ -26,6 +26,8 @@ const englishMessages: TranslationMessages = {
             undo: 'Undo',
             expand: 'Expand',
             close: 'Close',
+            open_menu: 'Open menu',
+            close_menu: 'Close menu',
         },
         boolean: {
             true: 'Yes',
