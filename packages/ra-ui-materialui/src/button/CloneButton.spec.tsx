@@ -45,7 +45,7 @@ describe('<CloneButton />', () => {
     it('should render as button type with no DOM errors', () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-        const { getByLabelText } = render(
+        const { getByRole } = render(
             <TestContext>
                 <ThemeProvider theme={theme}>
                     <CloneButton {...invalidButtonDomProps} />
@@ -54,7 +54,9 @@ describe('<CloneButton />', () => {
         );
 
         expect(spy).not.toHaveBeenCalled();
-        expect(getByLabelText('ra.action.clone').tagName).toEqual('A');
+        expect(getByRole('button').getAttribute('href')).toEqual(
+            '/create?source=%7B%22foo%22%3A%22bar%22%7D'
+        );
 
         spy.mockRestore();
     });
