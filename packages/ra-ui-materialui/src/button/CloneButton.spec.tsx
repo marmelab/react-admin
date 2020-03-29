@@ -6,8 +6,24 @@ import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 
 import { CloneButton } from './CloneButton';
+import { TestContext } from 'ra-core';
 
 const theme = createMuiTheme();
+
+const invalidButtonDomProps = {
+    basePath: '',
+    handleSubmit: jest.fn(),
+    handleSubmitWithRedirect: jest.fn(),
+    invalid: false,
+    onSave: jest.fn(),
+    pristine: false,
+    record: { id: 123, foo: 'bar' },
+    redirect: 'list',
+    resource: 'posts',
+    saving: false,
+    submitOnEnter: true,
+    undoable: false,
+};
 
 describe('<CloneButton />', () => {
     it('should pass a clone of the record in the location state', () => {
@@ -24,5 +40,24 @@ describe('<CloneButton />', () => {
         expect(button.getAttribute('href')).toEqual(
             '/create?source=%7B%22foo%22%3A%22bar%22%7D'
         );
+    });
+
+    it('should render as button type with no DOM errors', () => {
+        const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+        const { getByLabelText } = render(
+            <TestContext>
+                <ThemeProvider theme={theme}>
+                    <CloneButton {...invalidButtonDomProps} />
+                </ThemeProvider>
+            </TestContext>
+        );
+
+        expect(spy).not.toHaveBeenCalled();
+        expect(getByLabelText('ra.action.clone').getAttribute('type')).toEqual(
+            'button'
+        );
+
+        spy.mockRestore();
     });
 });
