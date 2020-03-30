@@ -27,6 +27,8 @@ const frenchMessages: TranslationMessages = {
             undo: 'Annuler',
             expand: 'Étendre',
             close: 'Fermer',
+            open_menu: 'Ouvrir le menu',
+            close_menu: 'Fermer le menu',
         },
         boolean: {
             true: 'Oui',
