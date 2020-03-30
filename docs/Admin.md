@@ -193,7 +193,7 @@ const Menu = ({ onMenuClick, logout }) => {
             <MenuItemLink
                 to="/custom-route"
                 primaryText="Miscellaneous"
-                leftIcon={LabelIcon}
+                leftIcon={<LabelIcon />}
                 onClick={onMenuClick}
                 sidebarIsOpen={open}
             />
