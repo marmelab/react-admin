@@ -80,7 +80,7 @@ export default ({
             });
             latestValue.current = value;
         }, debounceTime),
-        []
+        [permanentFilter]
     );
 
     return {
