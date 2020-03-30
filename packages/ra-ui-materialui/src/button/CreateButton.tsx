@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { useTranslate } from 'ra-core';
 
-import Button, { ButtonProps } from './Button';
+import Button, { ButtonProps, sanitizeButtonRestProps } from './Button';
 
 const CreateButton: FC<CreateButtonProps> = props => {
     const {
@@ -30,7 +30,7 @@ const CreateButton: FC<CreateButtonProps> = props => {
             className={classnames(classes.floating, className)}
             to={`${basePath}/create`}
             aria-label={label && translate(label)}
-            {...rest as any}
+            {...sanitizeButtonRestProps(rest)}
         >
             {icon}
         </Fab>
