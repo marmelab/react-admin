@@ -411,6 +411,37 @@ export const PostCreate = (props) => (
 * `save`: The function invoked when the form is submitted.
 * `saving`: A boolean indicating whether a save operation is ongoing.
 
+### Label Decoration
+
+`<SimpleForm>` scans its children for the `addLabel` prop, and automatically wraps a child in a `<Labeled>` component when found. This displays a label on top of the child, based on the `label` prop. This is not necessary for `<Input>` components, as they already contain their label. Also, all the react-admin `<Field>` components have a default prop `addLabel: true`, which explains why react-admin shows a label on top of Fields when they are used as children of `<SimpleForm>`. 
+
+For your own components that don't include a label by default, set the `addLabel` prop if you want to use them as `<SimpleForm>` children.
+
+```jsx
+const IdentifierField = ({ record }) => (
+    <Typography>{record.id}</Typography>
+);
+
+const BodyField = ({ record }) => (
+    <Identifier label="body">
+        <Typography>
+            {record.body}
+        </Typography>
+    </Identifier>
+);
+
+const PostEdit = (props) => (
+    <Create {...props}>
+        <SimpleForm>
+            <IdentifierField addLabel label="Identifier"> {/* SimpleForm will add a label */}
+            <TextField source="title" /> {/* SimpleForm will add a label, too (TextField has addLabel:true in defaultProps) */}
+            <BodyField /> {/* SimpleForm will NOT add a label */}
+            <NumberInput source="nb_views" /> {/* SimpleForm will NOT add a label */}
+        </SimpleForm>
+    </Create>
+);
+```
+
 ## The `<TabbedForm>` component
 
 Just like `<SimpleForm>`, `<TabbedForm>` receives the `record` prop, renders the actual form, and handles form validation on submit. However, the `<TabbedForm>` component renders inputs grouped by tab. The tabs are set by using `<FormTab>` components, which expect a `label` and an `icon` prop.
@@ -426,6 +457,7 @@ Here are all the props accepted by the `<TabbedForm>` component:
 * [`validate`](#validation)
 * [`submitOnEnter`](#submit-on-enter)
 * [`redirect`](#redirection-after-submission)
+* [`tabs`](#tabbed-form-tabs)
 * [`toolbar`](#toolbar)
 * [`variant`](#variant)
 * [`margin`](#margin)
@@ -488,9 +520,42 @@ To style the tabs, the `<FormTab>` component accepts two props:
 - `className` is passed to the tab *header*
 - `contentClassName` is passed to the tab *content*
 
+### Label Decoration
+
+`<FormTab>` scans its children for the `addLabel` prop, and automatically wraps a child in a `<Labeled>` component when found. This displays a label on top of the child, based on the `label` prop. This is not necessary for `<Input>` components, as they already contain their label. Also, all the react-admin `<Field>` components have a default prop `addLabel: true`, which explains why react-admin shows a label on top of Fields when they are used as children of `<FormTab>`. 
+
+For your own components that don't include a label by default, set the `addLabel` prop if you want to use them as `<FormTab>` children.
+
+```jsx
+const IdentifierField = ({ record }) => (
+    <Typography>{record.id}</Typography>
+);
+
+const BodyField = ({ record }) => (
+    <Identifier label="body">
+        <Typography>
+            {record.body}
+        </Typography>
+    </Identifier>
+);
+
+const PostEdit = (props) => (
+    <Create {...props}>
+        <TabbeForm>
+            <FormTab label="main">
+                <IdentifierField addLabel label="Identifier"> {/* FormTab will add a label */}
+                <TextField source="title" /> {/* FormTab will add a label, too (TextField has addLabel:true) in defaultProps */}
+                <BodyField /> {/* FormTab will NOT add a label */}
+                <NumberInput source="nb_views" /> {/* FormTab will NOT add a label */}
+            </FormTab>
+        </TabbeForm>
+    </Create>
+);
+```
+
 ### TabbedFormTabs
 
-By default `<TabbedForm>` uses `<TabbedFormTabs>`, an internal react-admin component to renders tabs. You can pass a custom component as the `tabs` prop to override the default component. Besides, props from `<TabbedFormTabs>` are passed to material-ui's `<Tabs>` component inside `<TabbedFormTabs>`.
+By default `<TabbedForm>` uses `<TabbedFormTabs>`, an internal react-admin component, to renders tabs. You can pass a custom component as the `tabs` prop to override the default component. Besides, props from `<TabbedFormTabs>` are passed to material-ui's `<Tabs>` component inside `<TabbedFormTabs>`.
 
 The following example shows how to make use of scrollable `<Tabs>`. Pass the `scrollable` prop to `<TabbedFormTabs>` and pass that as the `tabs` prop to `<TabbedForm>`
 

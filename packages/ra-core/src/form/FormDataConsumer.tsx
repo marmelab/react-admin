@@ -63,6 +63,12 @@ interface Props extends ConnectedProps {
  *     </Edit>
  * );
  */
+const FormDataConsumer = ({ subscription, ...props }: ConnectedProps) => {
+    const formState = useFormState({ subscription });
+
+    return <FormDataConsumerView formData={formState.values} {...props} />;
+};
+
 export const FormDataConsumerView: FunctionComponent<Props> = ({
     children,
     form,
@@ -117,12 +123,6 @@ export const FormDataConsumerView: FunctionComponent<Props> = ({
     );
 
     return ret === undefined ? null : ret;
-};
-
-const FormDataConsumer = ({ subscription, ...props }: ConnectedProps) => {
-    const formState = useFormState({ subscription });
-
-    return <FormDataConsumerView formData={formState.values} {...props} />;
 };
 
 export default FormDataConsumer;
