@@ -844,7 +844,7 @@ const MyList = props => {
         hideFilter, // a callback to hide one of the filters, e.g. hidefilter('title')
         // row selection
         selectedIds, // an array listing the ids of the selcted rows, e.g. [123, 456]
-        onSelect, // callback to change the liust of selected rows, e.g onSelect([456, 789])
+        onSelect, // callback to change the list of selected rows, e.g onSelect([456, 789])
         onToggleItem, // callback to toggle the selection of a given record based on its id, e.g. onToggleItem(456)
         onUnselectItems, // callback to clear the selection, e.g. onUnselectItems();
         // misc
