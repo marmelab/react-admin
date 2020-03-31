@@ -201,6 +201,56 @@ React-admin provides guessers for the `List` view (`ListGuesser`), the `Edit` vi
 
 **Tip**: Do not use the guessers in production. They are slower than manually-defined components, because they have to infer types based on the content. Besides, the guesses are not always perfect.
 
+## `useShowController`
+
+The `<Show>` component takes care of two things:
+
+1. (the "controller") Fetching data based on the URL and transforming it
+2. (the "view") Rendering the page title, the actions, the content and aside areas 
+
+In some cases, you may want to customize the view entirely (i.e. keep the code for step 1, and provide your own code for step 2). For these cases, react-admin provides a hook called `useShowController()`, which contains just the controller part of the `<Show>` component.
+
+This hook takes one object as input (the props passed to a `<Show>` component) and returns the fetched data for the Show view. You can use it to create your own custom Show view, like this one:
+
+```jsx
+import { useShowController, SimpleShowLayout } from 'react-admin';
+
+const MyShow = props => {
+    const {
+        basePath, // deduced from the location, useful for action buttons
+        defaultTitle, // the translated title based on the resource, e.g. 'Post #123'
+        loaded, // boolean that is false until the record is available
+        loading, // boolean that is true on mount, and false once the record was fetched
+        record, // record fetched via dataProvider.getOne() based on the id from the location
+        resource, // the resource name, deduced from the location. e.g. 'posts'
+        version, // integer used by the refresh feature
+    } = useShowController(props);
+    return (
+        <div>
+            <h1>{defaultTitle}</h1>
+            {cloneElement(props.children, {
+                basePath,
+                record,
+                resource,
+                version,
+            })}
+        </div>
+    );
+}
+
+const PostShow = props => (
+    <MyShow {...props}>
+        <SimpleShowLayout>
+            ...
+        </SimpleShowLayout>
+    </MyShow>
+)
+```
+
+This custom Show view has no action buttons or aside component - it's up to you to add them in pure React.
+
+**Tip**: You don't have to clone the child element. If you can't reuse an existing form component like `<SimpleShowLayout>`, feel free to write the form code inside your custom `MyShow` component. 
+
 ## The `<SimpleShowLayout>` component
 
 The `<SimpleShowLayout>` component receives the `record` as prop from its parent component. It is responsible for rendering the actual view.

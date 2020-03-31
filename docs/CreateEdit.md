@@ -373,6 +373,113 @@ React-admin provides guessers for the `List` view (`ListGuesser`), the `Edit` vi
 
 **Tip**: Do not use the guessers in production. They are slower than manually-defined components, because they have to infer types based on the content. Besides, the guesses are not always perfect.
 
+## `useCreateController` and `useEditController`
+
+The `<Create>` and `<Edit>` components both take care of two things:
+
+1. (the "controller") Fetching data based on the URL and transforming it
+2. (the "view") Rendering the page title, the actions, the content and aside areas 
+
+In some cases, you may want to customize the view entirely (i.e. keep the code for step 1, and provide your own code for step 2). For these cases, react-admin provides two hooks, `useCreateController()` and `useEditController()`. These hooks contain just the controller part of the `<Create>` and `<Edit>` components.
+
+**Tip**: You should not use these hooks to hide or show form inputs based on the data. For that need, check [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs)
+
+### `useCreateController`
+
+This hook takes one object as input (the props passed to a `<Create>` component) and returns the save callback for the Create view, as well as some pre-computed values. You can use it to create your own custom Create view, like this one:
+
+```jsx
+import { useCreateController, SimpleForm } from 'react-admin';
+
+const MyCreate = props => {
+    const {
+        basePath, // deduced from the location, useful for action buttons
+        defaultTitle, // the translated title based on the resource, e.g. 'Create Post'
+        record, // empty object, unless some values were passed in the location state to prefill the form
+        redirect, // the default redirection route. Defaults to 'edit', unless the resource has no edit view, in which case it's 'list'
+        resource, // the resource name, deduced from the location. e.g. 'posts'
+        save, // the create callback, to be passed to the underlying form as submit handler
+        saving, // boolean that becomes true when the dataProvider is called to create the record
+        version, // integer used by the refresh feature
+    } = useCreateController(props);
+    return (
+        <div>
+            <h1>{defaultTitle}</h1>
+            {cloneElement(props.children, {
+                basePath,
+                record,
+                redirect,
+                resource,
+                save,
+                saving,
+                version,
+            })}
+        </div>
+    );
+}
+
+const PostCreate = props => (
+    <MyCreate {...props}>
+        <SimpleForm>
+            ...
+        </SimpleForm>
+    </MyCreate>
+)
+```
+
+This custom Create view has no action buttons or aside component - it's up to you to add them in pure React.
+
+**Tip**: You don't have to clone the child element. If you can't reuse an existing form component like `<SimpleForm>` or `<TabbedForm>`, feel free to write the form code inside your custom `MyCreate` component. 
+
+### `useEditController`
+
+This hook takes one object as input (the props passed to an `<Edit>` component) and returns the fetched data and callbacks for the Edit view. You can use it to create your own custom Edit view, like this one:
+
+```jsx
+import { useEditController, SimpleForm } from 'react-admin';
+
+const MyEdit = props => {
+    const {
+        basePath, // deduced from the location, useful for action buttons
+        defaultTitle, // the translated title based on the resource, e.g. 'Post #123'
+        loaded, // boolean that is false until the record is available
+        loading, // boolean that is true on mount, and false once the record was fetched
+        record, // record fetched via dataProvider.getOne() based on the id from the location
+        redirect, // the default redirection route. Defaults to 'list'
+        resource, // the resource name, deduced from the location. e.g. 'posts'
+        save, // the update callback, to be passed to the underlying form as submit handler
+        saving, // boolean that becomes true when the dataProvider is called to update the record
+        version, // integer used by the refresh feature
+    } = useEditController(props);
+    return (
+        <div>
+            <h1>{defaultTitle}</h1>
+            {cloneElement(props.children, {
+                basePath,
+                record,
+                redirect,
+                resource,
+                save,
+                saving,
+                version,
+            })}
+        </div>
+    );
+}
+
+const PostEdit = props => (
+    <MyEdit {...props}>
+        <SimpleForm>
+            ...
+        </SimpleForm>
+    </MyEdit>
+)
+```
+
+This custom Edit view has no action buttons or aside component - it's up to you to add them in pure React.
+
+**Tip**: You don't have to clone the child element. If you can't reuse an existing form component like `<SimpleForm>` or `<TabbedForm>`, feel free to write the form code inside your custom `MyEdit` component. 
+
 ## The `<SimpleForm>` component
 
 The `<SimpleForm>` component receives the `record` as prop from its parent component. It is responsible for rendering the actual form. It is also responsible for validating the form data. Finally, it receives a `handleSubmit` function as prop, to be called with the updated record as argument when the user submits the form.

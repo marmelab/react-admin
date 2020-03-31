@@ -797,6 +797,96 @@ React-admin provides guessers for the `List` view (`ListGuesser`), the `Edit` vi
 
 **Tip**: Do not use the guessers in production. They are slower than manually-defined components, because they have to infer types based on the content. Besides, the guesses are not always perfect.
 
+## `useListController`
+
+The `<List>` components takes care of two things:
+
+1. (the "controller") Fetching data based on the URL and transforming it
+2. (the "view") Rendering the page title, the actions, the content and aside areas 
+
+In some cases, you may want to customize the view entirely (i.e. keep the code for step 1, and provide your own code for step 2). For these cases, react-admin provides a hook called `useListController()`, which contain just the controller part of the `<List>`.
+
+This hook takes one object as input (the props passed to a `<List>` component) and returns the fetched data and callbacks for the List view. In fact, it returns a lot of variables because the List page is complex: based on the URL, the List controller deduces filters, pagination, ordering, it provides callbacks to update them, it fetches the data, etc. 
+
+You can use `useListController()` to create your own custom List view, like this one:
+
+```jsx
+import { 
+    useListController,
+    ListToolbar,
+    BulkActionsToolbar,
+    Pagination,
+    Datagrid
+} from 'react-admin';
+
+const MyList = props => {
+    const controllerProps = useListController(props);
+    const {
+        // fetched data
+        data, // an id-based dictionary of the list data, e.g. { 123: { id: 123, title: 'hello world' }, 456: { ... } }
+        ids, // an array listing the ids of the records in the list, e.g [123, 456, ...]
+        total, // the total number of results for the current filters, excluding pagination. Useful to build the pagination controls. e.g. 23 
+        loaded, // boolean that is false until the data is available
+        loading, // boolean that is true on mount, and false once the data was fetched
+        // pagination
+        page, // the current page. Starts at 1
+        perPage, // the number of results per page. Defaults to 25
+        setPage, // a callback to change the page, e.g. setPage(3)
+        setPerPage, // a callback to change the number of results per page, e.g. setPerPage(25)
+        // sorting
+        currentSort, // a sort object { field, order }, e.g. { field: 'date', order: 'DESC' } 
+        setSort, // a callback to change the sort, e.g. setSort('name', 'ASC')
+        // filtering
+        displayedFilters, // a dictionary of the displayed filters, e.g. { title: true, nationality: true }
+        filterValues, // a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
+        setFilters, // a callback to update the filters, e.g. setFilters(filters, displayedFilters)
+        showFilter, // a callback to show one of the filters, e.g. showFilter('title', defaultValue)
+        hideFilter, // a callback to hide one of the filters, e.g. hidefilter('title')
+        // row selection
+        selectedIds, // an array listing the ids of the selcted rows, e.g. [123, 456]
+        onSelect, // callback to change the list of selected rows, e.g onSelect([456, 789])
+        onToggleItem, // callback to toggle the selection of a given record based on its id, e.g. onToggleItem(456)
+        onUnselectItems, // callback to clear the selection, e.g. onUnselectItems();
+        // misc
+        basePath, // deduced from the location, useful for action buttons
+        defaultTitle, // the translated title based on the resource, e.g. 'Posts'
+        resource, // the resource name, deduced from the location. e.g. 'posts'
+        version, // integer used by the refresh feature
+    } = controllerProps;
+    return (
+        <div>
+            <h1>{defaultTitle}</h1>
+            <ListToolbar
+                    filters={props.filters}
+                    {...controllerProps}
+                    actions={props.actions}
+                    permanentFilter={props.filter}
+                />
+            <BulkActionsToolbar {...controllerProps}>
+                {props.bulkActionButtons}
+            </BulkActionsToolbar>
+            {cloneElement(children, {
+                ...controllerProps,
+                hasBulkActions: props.bulkActionButtons !== false,
+            })}
+            <Pagination {...controllerProps} />
+        </div>
+    );
+}
+
+const PostList = props => (
+    <MyList {...props}>
+        <Datagrid>
+            ...
+        </Datagrid>
+    </MyList>
+)
+```
+
+This custom List view has no aside component - it's up to you to add it in pure React.
+
+**Tip**: You don't have to clone the child element. If you can't reuse an existing list view component like `<Datagrid>` or `<SimpleList>`, feel free to write the form code inside your custom `MyList` component. 
+
 ## The `<Datagrid>` component
 
 The `Datagrid` component renders a list of records as a table. It is usually used as a child of the [`<List>`](#the-list-component) and [`<ReferenceManyField>`](./Fields.md#referencemanyfield) components.
