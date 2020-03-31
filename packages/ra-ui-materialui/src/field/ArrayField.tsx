@@ -4,10 +4,10 @@ import {
     Children,
     useEffect,
     useState,
-    memo,
     useCallback,
 } from 'react';
 import get from 'lodash/get';
+import pure from 'recompose/pure';
 import { Identifier } from 'ra-core';
 
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
@@ -152,12 +152,12 @@ export const ArrayField: FunctionComponent<
     });
 };
 
-const EnhancedArrayField = memo<FieldProps>(ArrayField);
-// @ts-ignore
+const EnhancedArrayField = pure<FieldProps>(ArrayField);
+
 EnhancedArrayField.defaultProps = {
     addLabel: true,
 };
-// @ts-ignore
+
 EnhancedArrayField.propTypes = fieldPropTypes;
 EnhancedArrayField.displayName = 'EnhancedArrayField';
 
