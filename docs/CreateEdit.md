@@ -1058,6 +1058,11 @@ Here are the props received by the `Toolbar` component when passed as the `toolb
 **Tip**: If you want to include a custom `Button` that doesn't render a react-admin `<Button>` in a `<Toolbar>`, the props injected by `<Toolbar>` to its children (`handleSubmit`, `handleSubmitWithRedirect`, `onSave`, `invalid`, `pristine`, `saving`, and `submitOnEnter`) will cause React warnings. You'll need to wrap your custom `Button` in another component and ignore the injected props, as follows:
 
 ```jsx
+import React from 'react';
+import Button from '@material-ui/core/Button';
+
+const CustomButton = props => <Button label="My Custom Button" {...props} />
+
 const ToolbarCustomButton = ({
   handleSubmit,
   handleSubmitWithRedirect,
