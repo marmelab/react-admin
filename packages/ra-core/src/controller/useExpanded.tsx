@@ -14,7 +14,7 @@ import { Identifier, ReduxState } from '../types';
  *
  * @example
  *
- * const [expanded, toggleExpanded] = useExpand('posts', 123);
+ * const [expanded, toggleExpanded] = useExpanded('posts', 123);
  * const expandIcon = expanded ? ExpandLess : ExpandMore;
  * const onExpandClick = () => toggleExpanded();
  */
