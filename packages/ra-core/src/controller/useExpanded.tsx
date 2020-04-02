@@ -23,16 +23,16 @@ const useExpanded = (
     id: Identifier
 ): [boolean, () => void] => {
     const dispatch = useDispatch();
-    const expanded = useSelector<ReduxState, boolean>(
-        (reduxState: ReduxState) => {
-            const expandedList = reduxState.admin.resources[resource]
+    const expandedList = useSelector<ReduxState, Identifier[]>(
+        (reduxState: ReduxState) =>
+            reduxState.admin.resources[resource]
                 ? reduxState.admin.resources[resource].list.expanded
-                : undefined;
-            if (!expandedList) return false;
-            const index = expandedList.map(el => el == id).indexOf(true); // eslint-disable-line eqeqeq
-            return index !== -1;
-        }
+                : undefined
     );
+    const expanded =
+        expandedList === undefined
+            ? false
+            : expandedList.map(el => el == id).indexOf(true) !== -1; // eslint-disable-line eqeqeq
     const toggleExpanded = useCallback(() => {
         dispatch(toggleListItemExpand(resource, id));
     }, [dispatch, resource, id]);
