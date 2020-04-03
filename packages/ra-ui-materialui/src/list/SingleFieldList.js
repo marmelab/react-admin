@@ -15,6 +15,7 @@ const useStyles = makeStyles(
             marginTop: -theme.spacing(1),
             marginBottom: -theme.spacing(1),
         },
+        link: {},
     }),
     { name: 'RaSingleFieldList' }
 );
