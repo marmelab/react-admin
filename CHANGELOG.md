@@ -1,5 +1,20 @@
 # Changelog
 
+## v3.3.4
+
+* Fix `<ExportButton>` ignores custom `exporter` prop ([4630](https://github.com/marmelab/react-admin/pull/4630)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<ReferenceInput>` `filter` prop change doesn't update filters ([4508](https://github.com/marmelab/react-admin/pull/4508)) ([tarunraj95](https://github.com/tarunraj95))
+* Fix `destroyOnUnregister` prop is ignored in `<SimpleForm>` and `<TabbedForm>` ([4595](https://github.com/marmelab/react-admin/pull/4595)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix duplicate `react-transition-group` package dependency ([4597](https://github.com/marmelab/react-admin/pull/4597)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `useState` return type in demo example `<Dashboard>` ([4590](https://github.com/marmelab/react-admin/pull/4590)) ([developerium](https://github.com/developerium))
+* Remove obsolete `getDefaultValues` function ([4620](https://github.com/marmelab/react-admin/pull/4620)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* [Doc] Add section about page controller hooks ([4608](https://github.com/marmelab/react-admin/pull/4608)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<MenuItemLink>` example so that the `leftIcon` prop uses an element ([4604](https://github.com/marmelab/react-admin/pull/4604)) ([janakact](https://github.com/janakact))
+* [Doc] Fix `addLabel` usage documentation ([4598](https://github.com/marmelab/react-admin/pull/4598)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add `react-admin-import-csv` to the Ecosystem section ([4599](https://github.com/marmelab/react-admin/pull/4599)) ([benwinding](https://github.com/benwinding))
+* [Doc] Fix data provider example on file upload ([4591](https://github.com/marmelab/react-admin/pull/4591)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fixing theming documentation for custom icons ([4581](https://github.com/marmelab/react-admin/pull/4581)) ([g3n35i5](https://github.com/g3n35i5))
+
 ## v3.3.3
 
 * Fix `useGetList` after an optimistic delete when using string identifiers ([4575](https://github.com/marmelab/react-admin/pull/4575)) ([fzaninotto](https://github.com/fzaninotto))
