@@ -2,16 +2,16 @@
 
 ## v3.4.0
 
-* Add row expand state persistence in `<Datagrid>` ([4624](https://gihub.com/marmelab/react-admin/pull/4624)) ([fzaninotto](https://github.com/fzaninotto))
-* Add a data refresh when the App comes back from background ([4582](https://gihub.com/marmelab/react-admin/pull/4582)) ([fzaninotto](https://github.com/fzaninotto))
-* Add warning when leaving form with unsaved changes ([4570](https://gihub.com/marmelab/react-admin/pull/4570)) ([fzaninotto](https://github.com/fzaninotto))
-* Add support for `allowEmpty=false` in Filter `<Input>` components ([4500](https://gihub.com/marmelab/react-admin/pull/4500)) ([JulienMattiussi](https://github.com/JulienMattiussi))
-* Add `color` prop to `<AppBar>`  ([4479](https://gihub.com/marmelab/react-admin/pull/4479)) ([WiXSL](https://github.com/WiXSL))
-* Add translation for hamburger menu tooltip ([4596](https://gihub.com/marmelab/react-admin/pull/4596)) ([fzaninotto](https://github.com/fzaninotto))
-* Improve buttons props sanitation  ([4574](https://gihub.com/marmelab/react-admin/pull/4574)) ([WiXSL](https://github.com/WiXSL))
-* Add style to `<UrlField>` ([4568](https://gihub.com/marmelab/react-admin/pull/4568)) ([WiXSL](https://github.com/WiXSL))
-* Convert `ra-language-english` and `ra-language-french` to typescript  ([4569](https://gihub.com/marmelab/react-admin/pull/4569)) ([mayteio](https://github.com/mayteio))
-* [Doc] Improve documentation on AppBar color prop.  ([4503](https://gihub.com/marmelab/react-admin/pull/4503)) ([WiXSL](https://github.com/WiXSL))
+* Add row expand state persistence in `<Datagrid>` ([4624](https://github.com/marmelab/react-admin/pull/4624)) ([fzaninotto](https://github.com/fzaninotto))
+* Add a data refresh when the App comes back from background ([4582](https://github.com/marmelab/react-admin/pull/4582)) ([fzaninotto](https://github.com/fzaninotto))
+* Add warning when leaving form with unsaved changes ([4570](https://github.com/marmelab/react-admin/pull/4570)) ([fzaninotto](https://github.com/fzaninotto))
+* Add support for `allowEmpty=false` in Filter `<Input>` components ([4500](https://github.com/marmelab/react-admin/pull/4500)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Add `color` prop to `<AppBar>`  ([4479](https://github.com/marmelab/react-admin/pull/4479)) ([WiXSL](https://github.com/WiXSL))
+* Add translation for hamburger menu tooltip ([4596](https://github.com/marmelab/react-admin/pull/4596)) ([fzaninotto](https://github.com/fzaninotto))
+* Improve buttons props sanitation  ([4574](https://github.com/marmelab/react-admin/pull/4574)) ([WiXSL](https://github.com/WiXSL))
+* Add style to `<UrlField>` ([4568](https://github.com/marmelab/react-admin/pull/4568)) ([WiXSL](https://github.com/WiXSL))
+* Convert `ra-language-english` and `ra-language-french` to typescript  ([4569](https://github.com/marmelab/react-admin/pull/4569)) ([mayteio](https://github.com/mayteio))
+* [Doc] Improve documentation on AppBar color prop.  ([4503](https://github.com/marmelab/react-admin/pull/4503)) ([WiXSL](https://github.com/WiXSL))
 
 ## v3.3.4
 
