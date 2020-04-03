@@ -177,7 +177,6 @@ const SelectArrayInput: FunctionComponent<
         translateChoice,
     });
     const {
-        id,
         input,
         isRequired,
         meta: { error, touched },
