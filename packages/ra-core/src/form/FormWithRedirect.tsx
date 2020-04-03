@@ -149,6 +149,7 @@ export interface FormWithRedirectOwnProps {
     redirect: RedirectionSideEffect;
     saving: boolean;
     version: number;
+    warnWhenUnsavedChanges?: boolean;
 }
 
 const defaultSubscription = {
