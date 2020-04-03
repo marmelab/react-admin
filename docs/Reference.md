@@ -151,6 +151,7 @@ title: "Reference"
 * `useUpdateLoading`
 * [`useUpdateMany`](./Actions.md#specialized-hooks)
 * [`useUnselectAll`](./Actions.md#handling-side-effects-in-usedataprovider)
+* [`useWarnWhenUnsavedChanges`](./CreateEdit.md#warning-about-unsaved-changes)
 * `useVersion`
 * [`withDataProvider`](./Actions.md#legacy-components-query-mutation-and-withdataprovider)
 * [`withTranslate`](./Translation.md#withtranslate-hoc)

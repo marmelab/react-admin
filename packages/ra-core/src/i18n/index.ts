@@ -23,3 +23,4 @@ export const DEFAULT_LOCALE = 'en';
 
 export * from './TranslationUtils';
 export * from './TranslationContext';
+export * from './TranslationMessages';

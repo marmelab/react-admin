@@ -8,6 +8,14 @@ import { ArrayInput } from '../input';
 import SimpleForm from './SimpleForm';
 
 describe('<SimpleFormIterator />', () => {
+    // bypass confirm leave form with unsaved changes
+    let confirmSpy;
+    beforeAll(() => {
+        confirmSpy = jest.spyOn(window, 'confirm');
+        confirmSpy.mockImplementation(jest.fn(() => true));
+    });
+    afterAll(() => confirmSpy.mockRestore());
+
     afterEach(cleanup);
 
     it('should display an add item button at least', () => {

@@ -260,7 +260,7 @@ const SelectInput: FunctionComponent<
 };
 
 SelectInput.propTypes = {
-    allowEmpty: PropTypes.bool.isRequired,
+    allowEmpty: PropTypes.bool,
     emptyText: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     emptyValue: PropTypes.any,
     choices: PropTypes.arrayOf(PropTypes.object),
@@ -282,7 +282,6 @@ SelectInput.propTypes = {
 };
 
 SelectInput.defaultProps = {
-    allowEmpty: false,
     emptyText: '',
     emptyValue: '',
     options: {},

@@ -1,4 +1,6 @@
-module.exports = {
+import { TranslationMessages } from 'ra-core';
+
+const englishMessages: TranslationMessages = {
     ra: {
         action: {
             add_filter: 'Add filter',
@@ -24,6 +26,8 @@ module.exports = {
             undo: 'Undo',
             expand: 'Expand',
             close: 'Close',
+            open_menu: 'Open menu',
+            close_menu: 'Close menu',
         },
         boolean: {
             true: 'Yes',
@@ -84,6 +88,8 @@ module.exports = {
             not_found:
                 'Either you typed a wrong URL, or you followed a bad link.',
             yes: 'Yes',
+            unsaved_changes:
+                "Some of your changes weren't saved. Are you sure you want to ignore them?",
         },
         navigation: {
             no_results: 'No results found',
@@ -133,3 +139,5 @@ module.exports = {
         },
     },
 };
+
+export default englishMessages;

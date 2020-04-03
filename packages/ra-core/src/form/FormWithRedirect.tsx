@@ -3,6 +3,7 @@ import { Form, FormProps } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 
 import useInitializeFormWithRecord from './useInitializeFormWithRecord';
+import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
 import sanitizeEmptyValues from './sanitizeEmptyValues';
 import getFormInitialValues from './getFormInitialValues';
 import FormContext from './FormContext';
@@ -51,6 +52,7 @@ const FormWithRedirect: FC<FormWithRedirectOwnProps & FormProps> = ({
     validate,
     validateOnBlur,
     version,
+    warnWhenUnsavedChanges,
     ...props
 }) => {
     let redirect = useRef(props.redirect);
@@ -125,6 +127,7 @@ const FormWithRedirect: FC<FormWithRedirectOwnProps & FormProps> = ({
                         saving={formProps.submitting || saving}
                         render={render}
                         save={save}
+                        warnWhenUnsavedChanges={warnWhenUnsavedChanges}
                     />
                 )}
             </Form>
@@ -146,6 +149,7 @@ export interface FormWithRedirectOwnProps {
     redirect: RedirectionSideEffect;
     saving: boolean;
     version: number;
+    warnWhenUnsavedChanges?: boolean;
 }
 
 const defaultSubscription = {
@@ -155,9 +159,10 @@ const defaultSubscription = {
     invalid: true,
 };
 
-const FormView = ({ render, ...props }) => {
+const FormView = ({ render, warnWhenUnsavedChanges, ...props }) => {
     // if record changes (after a getOne success or a refresh), the form must be updated
     useInitializeFormWithRecord(props.record);
+    useWarnWhenUnsavedChanges(warnWhenUnsavedChanges);
 
     const { redirect, setRedirect, handleSubmit } = props;
 

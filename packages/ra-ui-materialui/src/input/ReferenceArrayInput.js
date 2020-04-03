@@ -139,7 +139,7 @@ const ReferenceArrayInput = ({
 };
 
 ReferenceArrayInput.propTypes = {
-    allowEmpty: PropTypes.bool.isRequired,
+    allowEmpty: PropTypes.bool,
     basePath: PropTypes.string,
     children: PropTypes.element.isRequired,
     className: PropTypes.string,
@@ -157,7 +157,6 @@ ReferenceArrayInput.propTypes = {
 };
 
 ReferenceArrayInput.defaultProps = {
-    allowEmpty: false,
     filter: {},
     filterToQuery: searchText => (searchText ? { q: searchText } : {}),
     perPage: 25,
