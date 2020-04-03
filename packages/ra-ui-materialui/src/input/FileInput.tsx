@@ -47,6 +47,7 @@ export interface FileInputProps {
 
 export interface FileInputOptions extends DropzoneOptions {
     inputProps?: any;
+    onRemove?: Function;
 }
 
 const FileInput: FunctionComponent<
@@ -152,6 +153,10 @@ const FileInput: FunctionComponent<
             onChange(filteredFiles as any);
         } else {
             onChange(null);
+        }
+
+        if (options.onRemove) {
+            options.onRemove(file);
         }
     };
 
