@@ -9,27 +9,27 @@ import { useRefresh } from '../sideEffect';
  */
 const useRefreshWhenVisible = (delay = 1000 * 60 * 5) => {
     const refresh = useRefresh();
-    let lastHiddenTime;
-    const handleVisibilityChange = () => {
-        if (document.hidden) {
-            // tab goes hidden
-            lastHiddenTime = Date.now();
-        } else {
-            // tab goes visible
-            if (Date.now() - lastHiddenTime > delay) {
-                refresh();
-            }
-            lastHiddenTime = null;
-        }
-    };
     useEffect(() => {
+        let lastHiddenTime;
+        const handleVisibilityChange = () => {
+            if (document.hidden) {
+                // tab goes hidden
+                lastHiddenTime = Date.now();
+            } else {
+                // tab goes visible
+                if (Date.now() - lastHiddenTime > delay) {
+                    refresh();
+                }
+                lastHiddenTime = null;
+            }
+        };
         document.addEventListener('visibilitychange', handleVisibilityChange);
         return () =>
             document.removeEventListener(
                 'visibilitychange',
                 handleVisibilityChange
             );
-    }, [handleVisibilityChange]);
+    }, [delay, refresh]);
 };
 
 export default useRefreshWhenVisible;
