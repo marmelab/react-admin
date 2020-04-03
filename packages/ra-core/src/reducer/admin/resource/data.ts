@@ -133,7 +133,7 @@ export const addOneRecord = (
 };
 
 const includesNotStrict = (items, element) =>
-    items.some(item => item == element);
+    items.some(item => item == element); // eslint-disable-line eqeqeq
 
 /**
  * Remove records from the pool
