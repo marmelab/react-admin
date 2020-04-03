@@ -40,7 +40,6 @@ const ListActions = ({
                         resource={resource}
                         sort={currentSort}
                         filter={{ ...filterValues, ...permanentFilter }}
-                        exporter={exporter}
                     />
                 )}
             </TopToolbar>
