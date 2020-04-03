@@ -463,7 +463,7 @@ const MyCustomIcon = () => {
     )
 };
 
-const MyUserMenu = props => (<UserMenu {...props} icon={MyCustomIcon} />);
+const MyUserMenu = props => (<UserMenu {...props} icon={<MyCustomIcon />} />);
 
 const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
 ```

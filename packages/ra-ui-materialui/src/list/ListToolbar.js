@@ -53,7 +53,7 @@ const ListToolbar = props => {
                 React.cloneElement(actions, {
                     ...rest,
                     className: classes.actions,
-                    exporter,
+                    exporter, // deprecated, use ExporterContext instead
                     filters,
                     filterValues,
                     permanentFilter,

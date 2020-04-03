@@ -1,5 +1,5 @@
-import React, { useRef, useCallback, useMemo } from 'react';
-import { Form } from 'react-final-form';
+import React, { FC, useRef, useCallback, useMemo } from 'react';
+import { Form, FormProps } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 
 import useInitializeFormWithRecord from './useInitializeFormWithRecord';
@@ -7,6 +7,8 @@ import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
 import sanitizeEmptyValues from './sanitizeEmptyValues';
 import getFormInitialValues from './getFormInitialValues';
 import FormContext from './FormContext';
+import { Record } from '../types';
+import { RedirectionSideEffect } from '../sideEffect';
 
 /**
  * Wrapper around react-final-form's Form to handle redirection on submit,
@@ -32,12 +34,13 @@ import FormContext from './FormContext';
  *
  * @param {Prop} props
  */
-const FormWithRedirect = ({
-    initialValues,
+const FormWithRedirect: FC<FormWithRedirectOwnProps & FormProps> = ({
     debug,
     decorators,
     defaultValue,
+    destroyOnUnregister,
     form,
+    initialValues,
     initialValuesEqual,
     keepDirtyOnReinitialize = true,
     mutators = arrayMutators as any, // FIXME see https://github.com/final-form/react-final-form/issues/704 and https://github.com/microsoft/TypeScript/issues/35771
@@ -104,6 +107,7 @@ const FormWithRedirect = ({
                 key={version} // support for refresh button
                 debug={debug}
                 decorators={decorators}
+                destroyOnUnregister={destroyOnUnregister}
                 form={form}
                 initialValues={finalInitialValues}
                 initialValuesEqual={initialValuesEqual}
@@ -130,6 +134,22 @@ const FormWithRedirect = ({
         </FormContext.Provider>
     );
 };
+
+export interface FormWithRedirectOwnProps {
+    defaultValue?: any;
+    record?: Record;
+    save: (
+        data: Partial<Record>,
+        redirectTo: RedirectionSideEffect,
+        options?: {
+            onSuccess?: (data?: any) => void;
+            onFailure?: (error: any) => void;
+        }
+    ) => void;
+    redirect: RedirectionSideEffect;
+    saving: boolean;
+    version: number;
+}
 
 const defaultSubscription = {
     submitting: true,
