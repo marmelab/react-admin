@@ -133,10 +133,10 @@ Here is how this Data Provider maps react-admin calls to API calls:
 
 | Method name        | API call
 |--------------------|----------------------------------------------------------------
-| `getList`          | `GET http://my.api.url/posts?sort=['title','ASC']&range=[0, 24]&filter={title:'bar'}`
+| `getList`          | `GET http://my.api.url/posts?sort=["title","ASC"]&range=[0, 24]&filter={"title":"bar"}`
 | `getOne`           | `GET http://my.api.url/posts/123`
-| `getMany`          | `GET http://my.api.url/posts?filter={id:[123,456,789]}`
-| `getManyReference` | `GET http://my.api.url/posts?filter={author_id:345}`
+| `getMany`          | `GET http://my.api.url/posts?filter={"id":[123,456,789]}`
+| `getManyReference` | `GET http://my.api.url/posts?filter={"author_id":345}`
 | `create`           | `POST http://my.api.url/posts/123`
 | `update`           | `PUT http://my.api.url/posts/123`
 | `updateMany`       | Multiple calls to `PUT http://my.api.url/posts/123`
@@ -260,10 +260,10 @@ const myDataProvider = {
 const convertFileToBase64 = file =>
     new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.readAsDataURL(file.rawFile);
-
         reader.onload = () => resolve(reader.result);
         reader.onerror = reject;
+
+        reader.readAsDataURL(file.rawFile);
     });
 
 export default myDataProvider;
@@ -450,7 +450,7 @@ Let's say that you want to map the react-admin requests to a REST backend exposi
 ```
 # getList
 
-GET http://path.to.my.api/posts?sort=['title','ASC']&range=[0, 4]&filter={author_id:12}
+GET http://path.to.my.api/posts?sort=["title","ASC"]&range=[0, 4]&filter={"author_id":12}
 
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -473,7 +473,7 @@ Content-Type: application/json
 
 # getMany
 
-GET http://path.to.my.api/posts?filter={id:[123,124,125]}
+GET http://path.to.my.api/posts?filter={"id":[123,124,125]}
 
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -485,7 +485,7 @@ Content-Type: application/json
 
 # getManyReference
 
-GET http://path.to.my.api/comments?sort=['created_at','DESC']&range=[0, 24]&filter={post_id:123}
+GET http://path.to.my.api/comments?sort=["created_at","DESC"]&range=[0, 24]&filter={"post_id":123}
 
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -516,7 +516,7 @@ Content-Type: application/json
 
 # updateMany
 
-PUT http://path.to.my.api/posts?filter={id:[123,124,125]}
+PUT http://path.to.my.api/posts?filter={"id":[123,124,125]}
 { "title": "hello, world!" }
 
 HTTP/1.1 200 OK
@@ -533,7 +533,7 @@ Content-Type: application/json
 
 # deleteMany
 
-DELETE http://path.to.my.api/posts?filter={id:[123,124,125]}
+DELETE http://path.to.my.api/posts?filter={"id":[123,124,125]}
 
 HTTP/1.1 200 OK
 Content-Type: application/json
