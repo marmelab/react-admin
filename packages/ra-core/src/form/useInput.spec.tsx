@@ -64,6 +64,43 @@ describe('useInput', () => {
         expect(inputProps.meta).toBeDefined();
     });
 
+    it('allows to override the value of enhanced input', () => {
+        let inputProps;
+        const enhancedInput: any = {
+            id: 'parent',
+            name: 'title',
+            isRequired: true,
+        };
+        const meta = {
+            touched: false,
+        };
+        render(
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <Input
+                        id="my-title"
+                        source="title"
+                        input={enhancedInput}
+                        meta={meta}
+                        resource="posts"
+                        defaultValue={'overridden value'}
+                    >
+                        {props => {
+                            inputProps = props;
+                            return <div />;
+                        }}
+                    </Input>
+                )}
+            />
+        );
+
+        expect(inputProps.id).toEqual('my-title');
+        expect(inputProps.input).toBeDefined();
+        expect(inputProps.input.value).toEqual('overridden value');
+        expect(inputProps.meta).toBeDefined();
+    });
+
     it('allows to extend the input event handlers', () => {
         const handleBlur = jest.fn();
         const handleChange = jest.fn();

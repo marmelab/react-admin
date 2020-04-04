@@ -91,10 +91,14 @@ const useInput = ({
 
     // If there is an input prop, this input has already been enhanced by final-form
     // This is required in for inputs used inside other inputs (such as the SelectInput inside a ReferenceInput)
-    if (options.input) {
+    const enhancedInput = options.input;
+    if (enhancedInput) {
         return {
             id: id || source,
-            input: options.input,
+            input: {
+                ...enhancedInput,
+                value: enhancedInput.value || input.value,
+            },
             meta: options.meta,
             isRequired: isRequired(validate),
         };

@@ -159,4 +159,29 @@ describe('<ReferenceArrayInput />', () => {
             queryByText(JSON.stringify({ touched: false, helperText: false }))
         ).not.toBeNull();
     });
+
+    it('should pass format and parse props down to child component', () => {
+        let formatCallback, parseCallback;
+        const MyComponent = ({ parse, format }) => {
+            parseCallback = parse;
+            formatCallback = format;
+            return <div />;
+        };
+        const parse = jest.fn();
+        const format = jest.fn();
+        render(
+            <ReferenceArrayInputView
+                {...defaultProps}
+                allowEmpty
+                parse={parse}
+                format={format}
+            >
+                <MyComponent />
+            </ReferenceArrayInputView>
+        );
+        parseCallback('parse');
+        formatCallback('format');
+        expect(parse).toBeCalledWith('parse');
+        expect(format).toBeCalledWith('format');
+    });
 });
