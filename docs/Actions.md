@@ -138,7 +138,7 @@ In practice, react-admin uses `useQueryWithStore` instead of `useQuery` everywhe
 
 ## `useMutation` Hook
 
-`useMutation` emits the request to the `dataProvider` as soon as the component mounts. To emit the request based on a user action, use the `useMutation` hook instead. This hook takes the same arguments as `useQuery`, but returns a callback that emits the request when executed.
+`useQuery` emits the request to the `dataProvider` as soon as the component mounts. To emit the request based on a user action, use the `useMutation` hook instead. This hook takes the same arguments as `useQuery`, but returns a callback that emits the request when executed.
 
 Here is an implementation of an "Approve" button:
 
