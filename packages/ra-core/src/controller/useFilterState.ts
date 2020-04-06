@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import debounce from 'lodash/debounce';
+import isEqual from 'lodash/isEqual';
 import { Filter } from '../types';
 
 interface UseFilterStateOptions {
@@ -63,7 +64,7 @@ export default ({
     });
 
     useEffect(() => {
-        if (permanentFilterProp.current !== permanentFilter) {
+        if (!isEqual(permanentFilterProp.current, permanentFilter)) {
             permanentFilterProp.current = permanentFilter;
             setFilterValue({
                 ...permanentFilter,
