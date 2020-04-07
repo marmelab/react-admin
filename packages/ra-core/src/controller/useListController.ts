@@ -155,7 +155,11 @@ const useListController = <RecordType = Record>(
 
     const data = useSelector(
         (state: ReduxState): RecordMap<RecordType> =>
-            get(state.admin.resources, [resource, 'data'], defaultData)
+            get(
+                state.admin.resources,
+                [resource, 'data'],
+                defaultData
+            ) as RecordMap<RecordType>
     );
 
     // When the user changes the page/sort/filter, this controller runs the
