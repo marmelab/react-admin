@@ -112,19 +112,6 @@ prettier: ## prettify the source code using prettier
 
 test: build test-unit lint test-e2e ## launch all tests
 
-test-on-travis: build
-ifeq ($(TEST_SUITE),unit)
-	$(MAKE) test-unit lint
-else ifeq ($(TEST_SUITE),e2e-chrome)
-	BROWSER=chrome $(MAKE) test-e2e
-else ifeq ($(TEST_SUITE),e2e-firefox)
-	BROWSER=firefox $(MAKE) test-e2e
-else
-	@echo "Invalid test suite, please check your TEST_SUITE env var"
-	exit 1
-endif
-
-
 test-unit: ## launch unit tests
 	@if [ "$(CI)" != "true" ]; then \
 		echo "Running unit tests..."; \
@@ -139,7 +126,7 @@ test-unit-watch: ## launch unit tests and watch for changes
 	echo "Running unit tests..."; \
 	yarn -s test-unit --watch; \
 
-test-e2e: ## launch end-to-end tests
+test-e2e: ## launch end-to-end tests (ex. BROWSER=firefox make test-e2e)
 	@if [ "$(build)" != "false" ]; then \
 		echo 'Building example code (call "make build=false test-e2e" to skip the build)...'; \
 		cd examples/simple && BABEL_ENV=cjs yarn -s build; \
