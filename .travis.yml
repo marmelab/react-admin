@@ -1,29 +1,37 @@
+os: linux
+dist: trusty
+
 language: node_js
-sudo: required
 node_js:
   - 'lts/*'
+
 addons:
   chrome: stable
-  firefox: stable
+  firefox: latest
+
 env:
   jobs:
-    - E2E_BROWSER=chrome
-    - E2E_BROWSER=firefox
+    - TEST_SUITE=unit
+    - TEST_SUITE=e2e-chrome
+    - TEST_SUITE=e2e-firefox
   global:
     - DISPLAY=:99.0
     - NODE_ENV=test
-dist: trusty
+
 cache:
   yarn: true
   directories:
     - ~/.cache
+
 before_install:
-    - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
-    - curl -o- -L https://yarnpkg.com/install.sh | bash
-    - source ~/.bashrc
-    - sh -e /etc/init.d/xvfb start
-    - sleep 3
-script: make test
+  - '/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16'
+  - curl -o- -L https://yarnpkg.com/install.sh | bash
+  - source ~/.bashrc
+  - sh -e /etc/init.d/xvfb start
+  - sleep 3
+
+script: make test-on-travis
+
 branches:
   only:
     - master

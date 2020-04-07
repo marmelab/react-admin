@@ -112,6 +112,19 @@ prettier: ## prettify the source code using prettier
 
 test: build test-unit lint test-e2e ## launch all tests
 
+test-on-travis: build
+ifeq ($(TEST_SUITE),unit)
+	$(MAKE) test-unit lint
+else ifeq ($(TEST_SUITE),e2e-chrome)
+	BROWSER=chrome $(MAKE) test-e2e
+else ifeq ($(TEST_SUITE),e2e-firefox)
+	BROWSER=firefox $(MAKE) test-e2e
+else
+	@echo "Invalid test suite, please check your TEST_SUITE env var"
+	exit 1
+endif
+
+
 test-unit: ## launch unit tests
 	@if [ "$(CI)" != "true" ]; then \
 		echo "Running unit tests..."; \
