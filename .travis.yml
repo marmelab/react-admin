@@ -6,8 +6,9 @@ addons:
   chrome: stable
   firefox: stable
 env:
-  - E2E_BROWSER=chrome
-  - E2E_BROWSER=firefox
+  jobs:
+    - E2E_BROWSER=chrome
+    - E2E_BROWSER=firefox
   global:
     - DISPLAY=:99.0
     - NODE_ENV=test
