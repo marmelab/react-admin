@@ -110,7 +110,7 @@ const AppBar = props => {
                                 ? 'ra.action.close_menu'
                                 : 'ra.action.open_menu',
                             {
-                                _: 'Open/Close menu',
+                                _: 'ra.action.open_close_menu',
                             }
                         )}
                         enterDelay={500}

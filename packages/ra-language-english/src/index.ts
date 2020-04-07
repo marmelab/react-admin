@@ -28,6 +28,7 @@ const englishMessages: TranslationMessages = {
             close: 'Close',
             open_menu: 'Open menu',
             close_menu: 'Close menu',
+            open_close_menu: 'Open/Close menu',
         },
         boolean: {
             true: 'Yes',
