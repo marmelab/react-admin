@@ -5,7 +5,7 @@ return server.start().then(listeningServer => {
     // kick off a cypress run
     return cypress
         .run({
-            browser: 'chrome',
+            browser: process.env.E2E_BROWSER || 'chrome',
             config: {
                 baseUrl: 'http://localhost:8080',
                 video: false,
