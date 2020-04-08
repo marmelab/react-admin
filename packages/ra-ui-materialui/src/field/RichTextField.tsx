@@ -17,18 +17,6 @@ const RichTextField: FunctionComponent<
     Props & InjectedFieldProps & TypographyProps
 > = ({ className, emptyText, source, record = {}, stripTags, ...rest }) => {
     const value = get(record, source);
-    if (stripTags) {
-        return (
-            <Typography
-                className={className}
-                variant="body2"
-                component="span"
-                {...sanitizeRestProps(rest)}
-            >
-                {value == null && emptyText ? emptyText : removeTags(value)}
-            </Typography>
-        );
-    }
 
     return (
         <Typography
@@ -39,6 +27,8 @@ const RichTextField: FunctionComponent<
         >
             {value == null && emptyText ? (
                 emptyText
+            ) : stripTags ? (
+                removeTags(value)
             ) : (
                 <span dangerouslySetInnerHTML={{ __html: value }} />
             )}

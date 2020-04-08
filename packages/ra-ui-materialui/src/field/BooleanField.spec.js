@@ -59,18 +59,21 @@ describe('<BooleanField />', () => {
         expect(queryByTitle('ra.boolean.false')).toBeNull();
     });
 
-    it('should display the emptyText when is present and the value is null', () => {
-        const { queryByTitle, queryByText } = render(
-            <BooleanField
-                {...defaultProps}
-                record={{ published: null }}
-                emptyText="NA"
-            />
-        );
-        expect(queryByTitle('ra.boolean.true')).toBeNull();
-        expect(queryByTitle('ra.boolean.false')).toBeNull();
-        expect(queryByText('NA')).not.toBeNull();
-    });
+    it.each([null, undefined])(
+        'should display the emptyText when is present and the value is %s',
+        published => {
+            const { queryByTitle, queryByText } = render(
+                <BooleanField
+                    {...defaultProps}
+                    record={{ published }}
+                    emptyText="NA"
+                />
+            );
+            expect(queryByTitle('ra.boolean.true')).toBeNull();
+            expect(queryByTitle('ra.boolean.false')).toBeNull();
+            expect(queryByText('NA')).not.toBeNull();
+        }
+    );
 
     it('should use custom className', () => {
         const { container } = render(

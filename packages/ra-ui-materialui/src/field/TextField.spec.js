@@ -1,6 +1,6 @@
 import React from 'react';
 import assert from 'assert';
-import { render, cleanup } from '@testing-library/react';
+import { render, cleanup, getNodeText } from '@testing-library/react';
 import TextField from './TextField';
 
 describe('<TextField />', () => {
@@ -18,6 +18,32 @@ describe('<TextField />', () => {
             null
         );
     });
+
+    it.each([null, undefined])(
+        'should display emptyText prop if provided for %s value',
+        value => {
+            const record = { title: value };
+            const { queryByText } = render(
+                <TextField
+                    emptyText="Sorry, there's nothing here"
+                    record={record}
+                    source="title"
+                />
+            );
+            assert.notEqual(queryByText("Sorry, there's nothing here"), null);
+        }
+    );
+
+    it.each([null, undefined])(
+        'should display nothing for %s value without emptyText prop',
+        value => {
+            const record = { title: value };
+            const { container } = render(
+                <TextField record={record} source="title" />
+            );
+            assert.strictEqual(getNodeText(container), '');
+        }
+    );
 
     it('should handle deep fields', () => {
         const record = {
