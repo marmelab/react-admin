@@ -167,6 +167,8 @@ const AutocompleteArrayInput: FunctionComponent<
         ...rest,
     });
 
+    const values = input.value || [];
+
     const [filterValue, setFilterValue] = React.useState('');
 
     const getSuggestionFromValue = useCallback(
@@ -174,10 +176,10 @@ const AutocompleteArrayInput: FunctionComponent<
         [choices, optionValue]
     );
 
-    const selectedItems = useMemo(
-        () => (input.value || []).map(getSuggestionFromValue),
-        [input.value, getSuggestionFromValue]
-    );
+    const selectedItems = useMemo(() => values.map(getSuggestionFromValue), [
+        ...values,
+        getSuggestionFromValue,
+    ]);
 
     const { getChoiceText, getChoiceValue, getSuggestions } = useSuggestions({
         allowDuplicates,
@@ -215,7 +217,7 @@ const AutocompleteArrayInput: FunctionComponent<
     // would have to first clear the input before seeing any other choices
     useEffect(() => {
         handleFilterChange('');
-    }, [input.value, handleFilterChange]);
+    }, [...values, handleFilterChange]);
 
     const handleKeyDown = useCallback(
         (event: React.KeyboardEvent) => {
