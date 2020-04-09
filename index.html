@@ -1,4 +1,5 @@
-<html>
+<!doctype html>
+<html lang="en">
 
 <head>
   <title>React Admin</title>
@@ -22,6 +23,7 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,700|Source+Sans+Pro:400,600,700&display=swap"
     rel="stylesheet" />
   <link rel="shortcut icon" href="./assets/favicon.ico" />
+  <meta name="description" content="A Web Framework for B2B applications" />
   <meta property="og:title" content="React Admin" />
   <meta property="og:description" content="A Web Framework for B2B applications" />
   <meta property="og:type" content="website" />
@@ -35,7 +37,7 @@
       <img src="./assets/lego.svg" id="lego" alt="" />
       <nav>
         <a href="." id="logo">
-          <img src="./assets/logo.svg" class="lego" alt="" />
+          <img src="./assets/logo.svg" class="lego" alt="React Admin Home Page" />
         </a>
         <div id="menu">
           <label for="hamburger">
@@ -85,8 +87,9 @@
         <div id="laptop">
           <img src="assets/laptop.svg" alt="" />
           <div>
-            <iframe src="https://player.vimeo.com/video/268958716?title=0&byline=0&portrait=0" width="100%"
-              height="100%" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+            <iframe title="React Admin features demonstration"
+              src="https://player.vimeo.com/video/268958716?title=0&byline=0&portrait=0" width="100%" height="100%"
+              frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
           </div>
         </div>
       </div>
@@ -241,13 +244,14 @@ export default App;</code></pre>
         own adapter takes minutes.
       </p>
       <div class="grid clickable">
-        <a target="openapi" href="https://swagger.io/specification/" rel="noreferrer noopener" >
-            <img src="assets/adapters/openapi.png" alt="Open API" />
+        <a target="openapi" href="https://swagger.io/specification/" rel="noreferrer noopener">
+          <img src="assets/adapters/openapi.png" alt="Open API" />
         </a>
         <a target="jsonapi" href="https://github.com/henvo/ra-jsonapi-client" rel="noreferrer noopener">
           <img src="assets/adapters/jsonapi.png" alt="Json API" />
         </a>
-        <a target="graphql" href="https://github.com/marmelab/react-admin/tree/master/packages/ra-data-graphql" rel="noreferrer noopener">
+        <a target="graphql" href="https://github.com/marmelab/react-admin/tree/master/packages/ra-data-graphql"
+          rel="noreferrer noopener">
           <img src="assets/adapters/graphql.png" alt="GraphQL" />
         </a>
         <a target="apiplatform" href="https://api-platform.com/docs/admin/" rel="noreferrer noopener">
@@ -259,7 +263,8 @@ export default App;</code></pre>
         <a target="firebase" href="https://github.com/aymendhaya/ra-data-firebase-client" rel="noreferrer noopener">
           <img src="assets/adapters/firebase.png" alt="Firebase" />
         </a>
-        <a target="hasura" href="https://github.com/hasura/graphql-engine/tree/master/community/tools/ra-data-hasura" rel="noreferrer noopener">
+        <a target="hasura" href="https://github.com/hasura/graphql-engine/tree/master/community/tools/ra-data-hasura"
+          rel="noreferrer noopener">
           <img src="assets/adapters/hasura.png" alt="Hasura" />
         </a>
         <a target="prisma" href="https://github.com/weakky/ra-data-prisma" rel="noreferrer noopener">
@@ -418,10 +423,10 @@ export default App;</code></pre>
           <label class="carousel__control carousel__control--backward" for="J"></label>
           <label class="carousel__control carousel__control--forward" for="F"></label>
         </div>
-        <div class="carousel__track">
+        <ul class="carousel__track">
           <li class="carousel__slide">
             <div class="testimonial">
-              <img src="assets/testimonials/hugo.jpg" />
+              <img alt="" src="assets/testimonials/hugo.jpg" />
               <div>
                 <blockquote>
                   <p>
@@ -435,7 +440,7 @@ export default App;</code></pre>
           </li>
           <li class="carousel__slide">
             <div class="testimonial">
-              <img src="assets/testimonials/musk.jpg" />
+              <img alt="" src="assets/testimonials/musk.jpg" />
               <div>
                 <blockquote>
                   <p>
@@ -449,7 +454,7 @@ export default App;</code></pre>
           </li>
           <li class="carousel__slide">
             <div class="testimonial">
-              <img src="assets/testimonials/gandhi.jpg" />
+              <img alt="" src="assets/testimonials/gandhi.jpg" />
               <div>
                 <blockquote>
                   <p>
@@ -464,7 +469,7 @@ export default App;</code></pre>
           </li>
           <li class="carousel__slide">
             <div class="testimonial">
-              <img src="assets/testimonials/lebron.jpg" />
+              <img alt="" src="assets/testimonials/lebron.jpg" />
               <div>
                 <blockquote>
                   <p>
@@ -479,7 +484,7 @@ export default App;</code></pre>
           </li>
           <li class="carousel__slide">
             <div class="testimonial">
-              <img src="assets/testimonials/katie.png" />
+              <img alt="" src="assets/testimonials/katie.png" />
               <div>
                 <blockquote>
                   <p>
@@ -494,7 +499,7 @@ export default App;</code></pre>
           </li>
           <li class="carousel__slide">
             <div class="testimonial">
-              <img src="assets/testimonials/trump.jpg" />
+              <img alt="" src="assets/testimonials/trump.jpg" />
               <div>
                 <blockquote>
                   <p>
@@ -506,7 +511,7 @@ export default App;</code></pre>
               </div>
             </div>
           </li>
-        </div>
+        </ul>
         <div class="carousel__indicators">
           <label class="carousel__indicator" for="F"></label>
           <label class="carousel__indicator" for="G"></label>
@@ -520,45 +525,45 @@ export default App;</code></pre>
   </div>
   <div class="super-container deepblue">
     <div class="container">
-        <h3 class="title">Built on top of state-of-the-art Tech</h3>
-        <div class="grid tech clickable" style="max-width: none;">
-          <a target="react" href="https://reactjs.org/" rel="noreferrer noopener">
-            <div class="grid-item">
-                <img src="assets/techs/react.png" alt="React" />
-                <p>React</p>
-            </div>
-          </a>
-          <a target="materialui" href="https://material-ui.com/" rel="noreferrer noopener">
-            <div class="grid-item">
-                <img src="assets/techs/material-ui.png" alt="Material UI" />
-                <p>Material UI</p>
-            </div>
-          </a>
-          <a target="reactrouter" href="https://reacttraining.com/react-router/" rel="noreferrer noopener">
-            <div class="grid-item">
-                <img src="assets/techs/react-router.png" alt="React Router" />
-                <p>React Router</p>
-            </div>
-          </a>
-          <a target="redux" href="https://redux.js.org/" rel="noreferrer noopener">
-            <div class="grid-item">
-                <img src="assets/techs/redux.png" alt="Redux" />
-                <p>Redux</p>
-            </div>
-          </a>
-          <a target="reduxsaga" href="https://redux-saga.js.org/" rel="noreferrer noopener">
-            <div class="grid-item">
-                <img src="assets/techs/redux-saga.png" alt="Redux Saga" />
-                <p>Redux Saga</p>
-            </div>
-          </a>
-          <a target="finalform" href="https://final-form.org/react" rel="noreferrer noopener">
-            <div class="grid-item">
-                <img src="assets/techs/react-final-form.png" alt="React Final Form" />
-                <p>React Final Form</p>
-            </div>
-          </a>
-        </div>
+      <h3 class="title">Built on top of state-of-the-art Tech</h3>
+      <div class="grid tech clickable" style="max-width: none;">
+        <a target="react" href="https://reactjs.org/" rel="noreferrer noopener">
+          <div class="grid-item">
+            <img src="assets/techs/react.png" alt="React" />
+            <p>React</p>
+          </div>
+        </a>
+        <a target="materialui" href="https://material-ui.com/" rel="noreferrer noopener">
+          <div class="grid-item">
+            <img src="assets/techs/material-ui.png" alt="Material UI" />
+            <p>Material UI</p>
+          </div>
+        </a>
+        <a target="reactrouter" href="https://reacttraining.com/react-router/" rel="noreferrer noopener">
+          <div class="grid-item">
+            <img src="assets/techs/react-router.png" alt="React Router" />
+            <p>React Router</p>
+          </div>
+        </a>
+        <a target="redux" href="https://redux.js.org/" rel="noreferrer noopener">
+          <div class="grid-item">
+            <img src="assets/techs/redux.png" alt="Redux" />
+            <p>Redux</p>
+          </div>
+        </a>
+        <a target="reduxsaga" href="https://redux-saga.js.org/" rel="noreferrer noopener">
+          <div class="grid-item">
+            <img src="assets/techs/redux-saga.png" alt="Redux Saga" />
+            <p>Redux Saga</p>
+          </div>
+        </a>
+        <a target="finalform" href="https://final-form.org/react" rel="noreferrer noopener">
+          <div class="grid-item">
+            <img src="assets/techs/react-final-form.png" alt="React Final Form" />
+            <p>React Final Form</p>
+          </div>
+        </a>
+      </div>
     </div>
   </div>
   <div class="super-container lightgrey">
@@ -572,7 +577,7 @@ export default App;</code></pre>
       </p>
       <div class="support-grid">
         <div class="card">
-          <img src="assets/osi.png" />
+          <img src="assets/osi.png" alt="" />
           <div class="title">
             Community Edition
           </div>
@@ -587,7 +592,7 @@ export default App;</code></pre>
           <p>Forever. This is open-source</p>
         </div>
         <div class="card">
-          <img src="assets/marmelab.png" />
+          <img src="assets/marmelab.png" alt="" />
           <div class="title">
             Enterprise Edition
           </div>
@@ -613,8 +618,8 @@ export default App;</code></pre>
       </p>
     </div>
   </div>
-  <script src="assets/prism.js"></script>
-  <script src="assets/githubstars.js"></script>
+  <script src="assets/prism.js" async></script>
+  <script src="assets/githubstars.js" defer></script>
 </body>
 
 </html>
