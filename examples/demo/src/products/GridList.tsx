@@ -10,8 +10,6 @@ import { NumberField } from 'react-admin';
 import { linkToRecord, Identifier } from 'ra-core';
 import { Product } from '../types';
 
-declare type TimesCallback = (key: number) => void;
-
 interface GridListProps {
     ids: Identifier[];
     data: { [key: string]: Product };
@@ -57,7 +55,7 @@ const getColsForWidth = (width: Breakpoint) => {
     return 6;
 };
 
-const times = (nbChildren: number, fn: TimesCallback) =>
+const times = (nbChildren: number, fn: (key: number) => void) =>
     Array.from({ length: nbChildren }, (_, key) => fn(key));
 
 const LoadingGridList: FC<GridListProps> = ({ width, nbItems = 10 }) => {
