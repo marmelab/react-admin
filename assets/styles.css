@@ -463,7 +463,7 @@ nav {
     background-position: 0 0.2em;
 }
 
-.card > a {
+.card > a, .primary-button {
     display: block;
     margin-top: 1em;
     align-self: auto;
@@ -485,7 +485,7 @@ nav {
     font-weight: bold;
 }
 
-.card > a:hover {
+.card > a:hover, .primary-button:hover {
     text-decoration: underline;
 }
 
