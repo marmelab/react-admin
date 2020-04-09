@@ -4,17 +4,11 @@ import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import { makeStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
+import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
 import { Link } from 'react-router-dom';
 import { NumberField } from 'react-admin';
 import { linkToRecord, Identifier } from 'ra-core';
 import { Product } from '../types';
-
-enum Width {
-    xs = 'xs',
-    sm = 'sm',
-    md = 'md',
-    lg = 'lg',
-}
 
 declare type TimesCallback = (key: number) => void;
 
@@ -22,7 +16,7 @@ interface GridListProps {
     ids: Identifier[];
     data: { [key: string]: Product };
     basePath: string;
-    width: Width;
+    width: Breakpoint;
     nbItems: number;
 }
 
@@ -55,7 +49,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const getColsForWidth = (width: Width) => {
+const getColsForWidth = (width: Breakpoint) => {
     if (width === 'xs') return 2;
     if (width === 'sm') return 3;
     if (width === 'md') return 4;
