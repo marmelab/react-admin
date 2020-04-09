@@ -123,4 +123,4 @@ const LoadedGridList: FC<GridListProps> = ({ ids, data, basePath, width }) => {
 const GridList: FC<Props> = ({ loaded, ...props }) =>
     loaded ? <LoadedGridList {...props} /> : <LoadingGridList {...props} />;
 
-export default withWidth()(GridList as any);
+export default withWidth()(GridList);
