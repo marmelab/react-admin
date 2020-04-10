@@ -933,7 +933,7 @@ By default, the filter form doesn't provide a submit button, and submits automat
 
 ![Filters with submit button](./img/filter_with_submit.gif)
 
-React-admin doesn't provide any component for that, but it's a good opportunity to illustrate the internals of the `<Filter>` component. We'l lactually provide an alternative implementation to `<Filter>`.
+React-admin doesn't provide any component for that, but it's a good opportunity to illustrate the internals of the `<Filter>` component. We'll actually provide an alternative implementation to `<Filter>`.
 
 As explained earlier, `<List>` clones the `filters` element twice. It passes special props to the element to let it interact with the URI query parameter more easily:
 
