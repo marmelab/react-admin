@@ -1,4 +1,4 @@
-import { introspectionQuery } from 'graphql';
+import { getIntrospectionQuery } from 'graphql';
 import gql from 'graphql-tag';
 import { GET_LIST, GET_ONE } from 'ra-core';
 
@@ -35,7 +35,7 @@ export default async (client, options) => {
               .query({
                   fetchPolicy: 'network-only',
                   query: gql`
-                      ${introspectionQuery}
+                      ${getIntrospectionQuery()}
                   `,
               })
               .then(({ data: { __schema } }) => __schema);
