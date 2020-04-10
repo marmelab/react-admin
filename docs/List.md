@@ -892,7 +892,7 @@ const PostFilter = props => (
 );
 ```
 
-In the example given above, the `q` filter triggers a full-text search on all fields. It's your responsibility to implement the full-text filtering capabilities in your API.
+In the example given above, the `q` filter triggers a full-text search on all fields. It's your responsibility to implement the full-text filtering capabilities in your `dataProvider`, or in your API.
 
 ### Quick Filters
 
@@ -973,7 +973,7 @@ const PostFilterButton = ({ showFilter }) => (
 );
 ```
 
-Normally, `showFilter()` enables one filter, but we'll use here to show the entire form. 
+Normally, `showFilter()` adds one input to the `displayedFilters` list. As the filter form will be entirely hidden or shown, we use `showFilter()` with a virtual "main" input, which represents the entire form. 
 
 Next is the form component, based on `react-final-form`. The form inputs appear directly in the form, and the form submission triggers the `setFilters()` callback passed as parameter:
 
