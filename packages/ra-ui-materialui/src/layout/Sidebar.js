@@ -56,15 +56,6 @@ const Sidebar = props => {
     const dispatch = useDispatch();
     const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
     const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
-    // FIXME negating isXSmall and isSmall should be enough, but unfortunately
-    // mui media queries use a two pass system and are always false at first
-    // see https://github.com/mui-org/material-ui/issues/14336
-    const isDesktop = useMediaQuery(theme => theme.breakpoints.up('md'));
-    useEffect(() => {
-        if (isDesktop) {
-            dispatch(setSidebarVisibility(true)); // FIXME renders with a closed sidebar at first
-        }
-    }, [isDesktop, dispatch]);
     const open = useSelector(state => state.admin.ui.sidebarOpen);
     useSelector(state => state.locale); // force redraw on locale change
     const handleClose = () => dispatch(setSidebarVisibility(false));
