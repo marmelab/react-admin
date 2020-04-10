@@ -1061,7 +1061,7 @@ export const PostList = (props) => (
 );
 ```
 
-You can use a similar approach to customize the list filter completely, e.g. to display the filters in a sidebar, or a a line in the datagrid, etc.
+You can use a similar approach to customize the list filter completely, e.g. to display the filters in a sidebar, or as a line in the datagrid, etc.
 
 ## The `<ListGuesser>` component
 
