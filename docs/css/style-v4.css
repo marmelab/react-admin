@@ -96,7 +96,7 @@ ul.sidenav code {
 
 .table-of-contents {
     overflow-y: auto;
-    height: calc( 100% - 75px);
+    height: calc(100% - 75px);
 }
 
 .table-of-contents a.active {
@@ -243,7 +243,7 @@ ul.sidenav code {
     font-size: 1.75em;
 }
 .markdown-section h3 {
-    margin-top: 0.85em;
+    margin-top: 1.5em;
     font-size: 1em;
 }
 .markdown-section code,
