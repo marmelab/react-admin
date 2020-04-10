@@ -1,4 +1,4 @@
-import React, { useEffect, Children, cloneElement } from 'react';
+import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Drawer, makeStyles, useMediaQuery } from '@material-ui/core';
