@@ -975,7 +975,7 @@ const PostFilterButton = ({ showFilter }) => (
 
 Normally, `showFilter()` enables one filter, but we'll use here to show the entire form. 
 
-Next is the form component, based on `react-final-form`. The form inputs appear direclty in the form, and the form submission triggers the `setFilters()` callback passed as parameter:
+Next is the form component, based on `react-final-form`. The form inputs appear directly in the form, and the form submission triggers the `setFilters()` callback passed as parameter:
 
 ```jsx
 import React from "react";
