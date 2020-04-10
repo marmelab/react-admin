@@ -1,5 +1,24 @@
 # Changelog
 
+## v3.4.1
+
+* Fix build broken due to full ICU package version ([4673](https://github.com/marmelab/react-admin/pull/4673)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix Simple example webpack configuration missing dependency aliases ([4663](https://github.com/marmelab/react-admin/pull/4663)) ([jdemangeon](https://github.com/jdemangeon))
+* Fix `<Field>` with null value gets rendered as "null", fix `emptyText` inconsistencies ([4661](https://github.com/marmelab/react-admin/pull/4661)) ([jdemangeon](https://github.com/jdemangeon))
+* Fix `parse` and `format` usage in `<AutocompleteArrayInput>` ([4653](https://github.com/marmelab/react-admin/pull/4653)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix `permanentFilter` changes aren't reflected in List requests ([4650](https://github.com/marmelab/react-admin/pull/4650)) ([oleg-andreyev](https://github.com/oleg-andreyev))
+* Fix multiple notifications shown once the session ends ([4645](https://github.com/marmelab/react-admin/pull/4645)) ([djhi](https://github.com/djhi))
+* Fix missing `defaultValue` handling in `<ReferenceArrayInput>` ([4641](https://github.com/marmelab/react-admin/pull/4641)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `onRemove` does not fire in `<FileInput>` options ([4637](https://github.com/marmelab/react-admin/pull/4637)) ([oleg-andreyev](https://github.com/oleg-andreyev))
+* Fix error when passing custom link style to `<SingleFieldList>` ([4636](https://github.com/marmelab/react-admin/pull/4636)) ([Slavvkko](https://github.com/Slavvkko))
+* Upgrade Cypress version ([4654](https://github.com/marmelab/react-admin/pull/4654)) ([Kmaschta](https://github.com/Kmaschta))
+* [Doc] Add section about filters in List documentation ([4675](https://github.com/marmelab/react-admin/pull/4675)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix an outdated link on Translation docs ([4669](https://github.com/marmelab/react-admin/pull/4669)) ([henriko202](https://github.com/henriko202))
+* [Doc] Update `<NumberInput>` "parse" documentation for Firefox ([4652](https://github.com/marmelab/react-admin/pull/4652)) ([Kmaschta](https://github.com/Kmaschta))
+* [Doc] Update CreateEdit chapter to clarify tip about declaring form validators ([4651](https://github.com/marmelab/react-admin/pull/4651)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix `useQuery` being incorrectly referenced in `useMutation` definition docs ([4639](https://github.com/marmelab/react-admin/pull/4639)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Improve buttons sanitation explanation ([4621](https://github.com/marmelab/react-admin/pull/4621)) ([WiXSL](https://github.com/WiXSL))
+
 ## v3.4.0
 
 * Add row expand state persistence in `<Datagrid>` ([4624](https://github.com/marmelab/react-admin/pull/4624)) ([fzaninotto](https://github.com/fzaninotto))
@@ -31,7 +50,7 @@
 ## v3.3.3
 
 * Fix `useGetList` after an optimistic delete when using string identifiers ([4575](https://github.com/marmelab/react-admin/pull/4575)) ([fzaninotto](https://github.com/fzaninotto))
-* Fix "Total from response is not a number" console error in optimistic mode  RFR([4573](https://github.com/marmelab/react-admin/pull/4573)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Fix "Total from response is not a number" console error in optimistic mode ([4573](https://github.com/marmelab/react-admin/pull/4573)) ([JulienMattiussi](https://github.com/JulienMattiussi))
 * [Doc] Fix Edit Toolbar docs to explain how to use a `<CreateButton>` ([4544](https://github.com/marmelab/react-admin/pull/4544)) ([agent3bood](https://github.com/agent3bood))
 * [Doc] Fix right menu when it contains too many items ([4560](https://github.com/marmelab/react-admin/pull/4560)) ([JulienMattiussi](https://github.com/JulienMattiussi))
 * [Doc] Fix code examples of `<List>` bulk action buttons ([4556](https://github.com/marmelab/react-admin/pull/4556)) ([WiXSL](https://github.com/WiXSL))
