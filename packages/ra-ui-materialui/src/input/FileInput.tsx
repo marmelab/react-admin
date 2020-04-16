@@ -205,6 +205,13 @@ const FileInput: FunctionComponent<
                         <p>{translate(labelSingle)}</p>
                     )}
                 </div>
+                <FormHelperText>
+                    <InputHelperText
+                        touched={touched}
+                        error={error}
+                        helperText={helperText}
+                    />
+                </FormHelperText>
                 {children && (
                     <div className="previews">
                         {files.map((file, index) => (
@@ -222,13 +229,6 @@ const FileInput: FunctionComponent<
                         ))}
                     </div>
                 )}
-                <FormHelperText>
-                    <InputHelperText
-                        touched={touched}
-                        error={error}
-                        helperText={helperText}
-                    />
-                </FormHelperText>
             </>
         </Labeled>
     );
