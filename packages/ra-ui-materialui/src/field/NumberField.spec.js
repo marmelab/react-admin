@@ -1,9 +1,11 @@
 import React from 'react';
 import assert from 'assert';
-import { render } from '@testing-library/react';
+import { render, cleanup } from '@testing-library/react';
 import { NumberField } from './NumberField';
 
 describe('<NumberField />', () => {
+    afterEach(cleanup);
+
     it('should return null when the record is not set', () => {
         const { container } = render(<NumberField source="foo" />);
         assert.equal(container.firstChild, null);
@@ -14,12 +16,15 @@ describe('<NumberField />', () => {
         assert.equal(container.firstChild, null);
     });
 
-    it('should render the emptyText when value is null', () => {
-        const { queryByText } = render(
-            <NumberField record={{ foo: null }} emptyText="NA" source="foo" />
-        );
-        assert.notEqual(queryByText('NA'), null);
-    });
+    it.each([null, undefined])(
+        'should render the emptyText when value is %s',
+        foo => {
+            const { getByText } = render(
+                <NumberField record={{ foo }} emptyText="NA" source="foo" />
+            );
+            assert.notEqual(getByText('NA'), null);
+        }
+    );
 
     it('should render a number', () => {
         const { queryByText } = render(
@@ -64,6 +69,6 @@ describe('<NumberField />', () => {
             <NumberField record={{ foo: { bar: 2 } }} source="foo.bar" />
         );
 
-        assert.notEqual(queryByText('1'), null);
+        assert.notEqual(queryByText('2'), null);
     });
 });

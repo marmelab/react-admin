@@ -130,7 +130,7 @@ describe('buildVariables', () => {
     describe('GET_MANY_REFERENCE', () => {
         it('returns correct variables', () => {
             const params = {
-                target: 'author.id',
+                target: 'author_id',
                 id: 'author1',
                 pagination: { page: 1, perPage: 10 },
                 sort: { field: 'name', order: 'ASC' },
@@ -144,7 +144,7 @@ describe('buildVariables', () => {
                     {}
                 )
             ).toEqual({
-                filter: { authorId: 'author1' },
+                filter: { author_id: 'author1' },
                 page: 0,
                 perPage: 10,
                 sortField: 'name',

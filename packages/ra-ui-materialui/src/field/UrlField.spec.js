@@ -29,15 +29,18 @@ describe('<UrlField />', () => {
         expect(link.href).toEqual(url);
     });
 
-    it('should render the emptyText when value is null', () => {
-        const { getByText } = render(
-            <UrlField
-                record={{ url: null }}
-                className="foo"
-                source="url"
-                emptyText="NA"
-            />
-        );
-        expect(getByText('NA')).not.toEqual(null);
-    });
+    it.each([null, undefined])(
+        'should render the emptyText when value is %s',
+        url => {
+            const { getByText } = render(
+                <UrlField
+                    record={{ url }}
+                    className="foo"
+                    source="url"
+                    emptyText="NA"
+                />
+            );
+            expect(getByText('NA')).not.toEqual(null);
+        }
+    );
 });

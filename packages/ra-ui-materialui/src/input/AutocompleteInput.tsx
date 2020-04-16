@@ -138,6 +138,7 @@ const AutocompleteInput: FunctionComponent<
         variant = 'filled',
         ...rest
     } = props;
+
     if (isValidElement(optionText) && !inputText) {
         throw new Error(`If the optionText prop is a React element, you must also specify the inputText prop:
         <AutocompleteInput
@@ -229,11 +230,11 @@ const AutocompleteInput: FunctionComponent<
         // If we have a value, set the filter to its text so that
         // Downshift displays it correctly
         setFilterValue(
-            input.value
-                ? inputText
-                    ? inputText(getChoiceText(selectedItem).props.record)
-                    : getChoiceText(selectedItem)
-                : ''
+            typeof input.value === 'undefined' || input.value === null
+                ? ''
+                : inputText
+                ? inputText(getChoiceText(selectedItem).props.record)
+                : getChoiceText(selectedItem)
         );
     }, [
         input.value,
@@ -286,6 +287,7 @@ const AutocompleteInput: FunctionComponent<
     const handleBlur = useCallback(
         event => {
             handleFilterChange('');
+
             // If we had a value before, set the filter back to its text so that
             // Downshift displays it correctly
             setFilterValue(

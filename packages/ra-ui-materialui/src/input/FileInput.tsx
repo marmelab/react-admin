@@ -47,6 +47,7 @@ export interface FileInputProps {
 
 export interface FileInputOptions extends DropzoneOptions {
     inputProps?: any;
+    onRemove?: Function;
 }
 
 const FileInput: FunctionComponent<
@@ -153,6 +154,10 @@ const FileInput: FunctionComponent<
         } else {
             onChange(null);
         }
+
+        if (options.onRemove) {
+            options.onRemove(file);
+        }
     };
 
     const childrenElement = isValidElement(Children.only(children))
@@ -200,6 +205,13 @@ const FileInput: FunctionComponent<
                         <p>{translate(labelSingle)}</p>
                     )}
                 </div>
+                <FormHelperText>
+                    <InputHelperText
+                        touched={touched}
+                        error={error}
+                        helperText={helperText}
+                    />
+                </FormHelperText>
                 {children && (
                     <div className="previews">
                         {files.map((file, index) => (
@@ -217,13 +229,6 @@ const FileInput: FunctionComponent<
                         ))}
                     </div>
                 )}
-                <FormHelperText>
-                    <InputHelperText
-                        touched={touched}
-                        error={error}
-                        helperText={helperText}
-                    />
-                </FormHelperText>
             </>
         </Labeled>
     );

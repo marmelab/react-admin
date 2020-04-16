@@ -903,7 +903,7 @@ export default {
 
 See the [Translation documentation](Translation.md#translation-messages) for details.
 
-**Tip**: Make sure to define validation functions or array of functions in a variable, instead of defining them directly in JSX. This can result in a new function or array at every render, and trigger infinite rerender.
+**Tip**: Make sure to define validation functions or array of functions in a variable outside of your component, instead of defining them directly in JSX. This can result in a new function or array at every render, and trigger infinite rerender.
 
 {% raw %}
 ```jsx
@@ -1057,10 +1057,15 @@ Here are the props received by the `Toolbar` component when passed as the `toolb
 
 **Tip**: To alter the form values before submitting, you should use the `handleSubmit` prop. See [Altering the Form Values before Submitting](#altering-the-form-values-before-submitting) for more information and examples.
 
-**Tip**: If you want to include a `<CreateButton>` in the `<Toolbar>`, the props injected by `<Toolbar>` to its children (`handleSubmit`, `handleSubmitWithRedirect`, `onSave`, `invalid`, `pristine`, `saving`, and `submitOnEnter`) will cause React warnings. You'll need to wrap `<CreateButton>` in another component and ignore the injected props, as follows:
+**Tip**: If you want to include a custom `Button` in a `<Toolbar>` that doesn't render a react-admin `<Button>`, the props injected by `<Toolbar>` to its children (`handleSubmit`, `handleSubmitWithRedirect`, `onSave`, `invalid`, `pristine`, `saving`, and `submitOnEnter`) will cause React warnings. You'll need to wrap your custom `Button` in another component and ignore the injected props, as follows:
 
 ```jsx
-const ToolbarCreateButton = ({
+import React from 'react';
+import Button from '@material-ui/core/Button';
+
+const CustomButton = props => <Button label="My Custom Button" {...props} />
+
+const ToolbarCustomButton = ({
   handleSubmit,
   handleSubmitWithRedirect,
   onSave,
@@ -1069,11 +1074,11 @@ const ToolbarCreateButton = ({
   saving,
   submitOnEnter,
   ...rest
-}) => <CreateButton {...rest} />;
+}) => <CustomButton {...rest} />;
 
 const PostEditToolbar = props => (
     <Toolbar {...props} >
-        <ToolbarCreateButton />
+        <ToolbarCustomButton />
     </Toolbar>
 );
 ```
@@ -1486,7 +1491,7 @@ Sometimes, you may want to alter the form values before actually sending them to
 
 * `handleSubmit` which calls the default form save method (provided by react-final-form)
 * `handleSubmitWithRedirect` which calls the default form save method and allows to specify a custom redirection
-​
+
 Decorating `handleSubmitWithRedirect` with your own logic allows you to alter the form values before submitting. For instance, to set the `average_note` field value just before submission:
 
 ```jsx
@@ -1499,22 +1504,22 @@ import {
     useRedirect,
     useNotify,
 } from 'react-admin';
-​
+
 const SaveWithNoteButton = ({ handleSubmitWithRedirect, ...props }) => {
     const [create] = useCreate('posts');
     const redirectTo = useRedirect();
     const notify = useNotify();
     const { basePath, redirect } = props;
-​
+
     const form = useForm();
-​
+
     const handleClick = useCallback(() => {
         // change the average_note field value
         form.change('average_note', 10);
-​
+
         handleSubmitWithRedirect('edit');
     }, [form]);
-​
+
     // override handleSubmitWithRedirect with custom logic
     return <SaveButton {...props} handleSubmitWithRedirect={handleClick} />;
 };
@@ -1545,7 +1550,7 @@ const PostCreateToolbar = props => (
 ## Using `onSave` To Alter the Form Submission Behavior
 
 The previous technique works well for altering values. But you may want to call a route before submission, or submit the form to different dataProvider methods/resources depending on the form values. And in this case, wrapping `handleSubmitWithRedirect` does not work, because you don't have control on the submission itself.
-​
+
 Instead of *decorating* `handleSubmitWithRedirect`, you can *replace* it, and do the API call manually. You don't have to change anything in the form values in that case. So the previous example can be rewritten as:
 
 ```jsx
@@ -1558,7 +1563,7 @@ import {
     useRedirect,
     useNotify,
 } from 'react-admin';
-​
+
 const SaveWithNoteButton = props => {
     const [create] = useCreate('posts');
     const redirectTo = useRedirect();
@@ -1566,7 +1571,7 @@ const SaveWithNoteButton = props => {
     const { basePath, redirect } = props;
     // get values from the form
     const formState = useFormState();
-​
+
     const handleClick = useCallback(
         () => {
             // call dataProvider.create() manually
@@ -1586,13 +1591,13 @@ const SaveWithNoteButton = props => {
         },
         [create, notify, redirectTo, basePath, formState, redirect]
     );
-​
+
     return <SaveButton {...props} handleSubmitWithRedirect={handleClick} />;
 };
 ```
 
 This technique has a huge drawback, which makes it impractical: by skipping the default `handleSubmitWithRedirect`, this button doesn't trigger form validation. And unfortunately, react-final-form doesn't provide a way to trigger form validation manually.
-​
+
 That's why react-admin provides a way to override just the data provider call and its side effects. It's called `onSave`, and here is how you would use it in the previous use case:
 
 ```jsx
@@ -1604,13 +1609,13 @@ import {
     useRedirect,
     useNotify,
 } from 'react-admin';
-​
+
 const SaveWithNoteButton = props => {
     const [create] = useCreate('posts');
     const redirectTo = useRedirect();
     const notify = useNotify();
     const { basePath } = props;
-​
+
     const handleSave = useCallback(
         (values, redirect) => {
             create(
@@ -1629,7 +1634,7 @@ const SaveWithNoteButton = props => {
         },
         [create, notify, redirectTo, basePath]
     );
-​
+
     // set onSave props instead of handleSubmitWithRedirect
     return <SaveButton {...props} onSave={handleSave} />;
 };

@@ -15,7 +15,7 @@ const useStyles = makeStyles({
     },
     small: {
         width: 15,
-        haight: 15,
+        height: 15,
     },
 });
 

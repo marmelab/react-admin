@@ -156,13 +156,13 @@ const ApproveButton = ({ record }) => {
 };
 ```
 
-`useQuery` expects a Query argument with the following keys:
+`useMutation` expects a Query argument with the following keys:
 
 - `type`: The method to call on the Data Provider, e.g. `update`
 - `resource`: The Resource name, e.g. "posts"
 - `params`: The query parameters. Depends on the query type.
 
-The return value of `useQuery` is an array with the following items:
+The return value of `useMutation` is an array with the following items:
 
 - A callback function
 - An object representing the query state, using the following keys

@@ -103,26 +103,28 @@ describe('<RichTextField />', () => {
         assert.equal(container.firstChild.classList.contains('foo'), true);
     });
 
-    it('should render the emptyText when value is null and stripTags is set to false', () => {
-        const { queryByText } = render(
-            <RichTextField
-                record={{ body: null }}
-                emptyText="NA"
-                source="body"
-            />
-        );
-        assert.notEqual(queryByText('NA'), null);
-    });
+    it.each([null, undefined])(
+        'should render the emptyText when value is %s and stripTags is set to false',
+        body => {
+            const { queryByText } = render(
+                <RichTextField record={{ body }} emptyText="NA" source="body" />
+            );
+            assert.notEqual(queryByText('NA'), null);
+        }
+    );
 
-    it('should render the emptyText when value is null and stripTags is set to true', () => {
-        const { queryByText } = render(
-            <RichTextField
-                record={{ body: null }}
-                emptyText="NA"
-                source="body"
-                stripTags
-            />
-        );
-        assert.notEqual(queryByText('NA'), null);
-    });
+    it.each([null, undefined])(
+        'should render the emptyText when value is %s and stripTags is set to true',
+        body => {
+            const { queryByText } = render(
+                <RichTextField
+                    record={{ body }}
+                    emptyText="NA"
+                    source="body"
+                    stripTags
+                />
+            );
+            assert.notEqual(queryByText('NA'), null);
+        }
+    );
 });

@@ -115,6 +115,7 @@ const ReferenceArrayInput = ({
         validate,
         parse,
         format,
+        ...props,
     });
 
     const controllerProps = useReferenceArrayInputController({
