@@ -16,6 +16,7 @@ const useStyles = makeStyles(
         suggestion: {
             display: 'block',
             fontFamily: theme.typography.fontFamily,
+            minHeight: 24,
         },
         suggestionText: { fontWeight: 300 },
         highlightedSuggestionText: { fontWeight: 500 },
