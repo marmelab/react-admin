@@ -5,8 +5,8 @@
     "description": "",
     "main": "index.html",
     "scripts": {
-        "dev": "SANDBOX=true ./node_modules/.bin/webpack-dev-server --progress --color --hot --watch --mode development",
-        "start": "./node_modules/.bin/webpack-dev-server --progress --color --hot --watch --mode development",
+        "dev": "./node_modules/.bin/webpack-dev-server --progress --color --hot --watch --mode development",
+        "start": "USE_ALIAS=true ./node_modules/.bin/webpack-dev-server --progress --color --hot --watch --mode development",
         "serve": "./node_modules/.bin/serve --listen 8080 ./dist",
         "build": "./node_modules/.bin/webpack-cli --color --mode development --hide-modules true"
     },

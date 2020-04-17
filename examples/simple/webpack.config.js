@@ -55,9 +55,8 @@ module.exports = {
             : []
     ),
     resolve:
-        process.env.SANDBOX === 'true'
-            ? {}
-            : {
+        process.env.USE_ALIAS === 'true'
+            ? {
                   extensions: ['.ts', '.js', '.tsx', '.json'],
                   alias: {
                       'ra-core': path.join(...packagesPath, 'ra-core', 'src'),
@@ -97,7 +96,8 @@ module.exports = {
                           'src'
                       ),
                   },
-              },
+              }
+            : {},
     devServer: {
         stats: {
             children: false,
