@@ -54,43 +54,50 @@ module.exports = {
             ? [new BundleAnalyzerPlugin()]
             : []
     ),
-    resolve: {
-        extensions: ['.ts', '.js', '.tsx', '.json'],
-        alias: {
-            'ra-core': path.join(...packagesPath, 'ra-core', 'src'),
-            'ra-language-french': path.join(
-                ...packagesPath,
-                'ra-language-french',
-                'src'
-            ),
-            'ra-language-english': path.join(
-                ...packagesPath,
-                'ra-language-english',
-                'src'
-            ),
-            'ra-ui-materialui': path.join(
-                ...packagesPath,
-                'ra-ui-materialui',
-                'src'
-            ),
-            'react-admin': path.join(...packagesPath, 'react-admin', 'src'),
-            'ra-data-fakerest': path.join(
-                ...packagesPath,
-                'ra-data-fakerest',
-                'src'
-            ),
-            'ra-i18n-polyglot': path.join(
-                ...packagesPath,
-                'ra-i18n-polyglot',
-                'src'
-            ),
-            'ra-input-rich-text': path.join(
-                ...packagesPath,
-                'ra-input-rich-text',
-                'src'
-            ),
-        },
-    },
+    resolve:
+        process.env.SANDBOX === 'true'
+            ? {}
+            : {
+                  extensions: ['.ts', '.js', '.tsx', '.json'],
+                  alias: {
+                      'ra-core': path.join(...packagesPath, 'ra-core', 'src'),
+                      'ra-language-french': path.join(
+                          ...packagesPath,
+                          'ra-language-french',
+                          'src'
+                      ),
+                      'ra-language-english': path.join(
+                          ...packagesPath,
+                          'ra-language-english',
+                          'src'
+                      ),
+                      'ra-ui-materialui': path.join(
+                          ...packagesPath,
+                          'ra-ui-materialui',
+                          'src'
+                      ),
+                      'react-admin': path.join(
+                          ...packagesPath,
+                          'react-admin',
+                          'src'
+                      ),
+                      'ra-data-fakerest': path.join(
+                          ...packagesPath,
+                          'ra-data-fakerest',
+                          'src'
+                      ),
+                      'ra-i18n-polyglot': path.join(
+                          ...packagesPath,
+                          'ra-i18n-polyglot',
+                          'src'
+                      ),
+                      'ra-input-rich-text': path.join(
+                          ...packagesPath,
+                          'ra-input-rich-text',
+                          'src'
+                      ),
+                  },
+              },
     devServer: {
         stats: {
             children: false,
