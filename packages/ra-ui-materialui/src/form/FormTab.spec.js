@@ -39,7 +39,9 @@ describe('<FormTab label="foo" />', () => {
         );
     });
 
-    it('should render a TabbedForm with custom props', () => {
+    it('should render a TabbedForm with FormTabs having custom props without warnings', () => {
+        const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
         const record = { name: 'foo' };
         const { container } = renderWithRedux(
             <TabbedForm>
@@ -75,7 +77,10 @@ describe('<FormTab label="foo" />', () => {
                 </FormTab>
             </TabbedForm>
         );
+        expect(spy).not.toHaveBeenCalled();
         expect(container).not.toBeNull();
+
+        spy.mockRestore();
     });
 
     it('should pass variant and margin to child inputs', () => {
