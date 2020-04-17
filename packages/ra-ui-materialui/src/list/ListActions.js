@@ -81,4 +81,5 @@ export default onlyUpdateForKeys([
     'displayedFilters',
     'filterValues',
     'selectedIds',
+    'total',
 ])(Actions);
