@@ -1,5 +1,17 @@
 # Changelog
 
+## v3.4.2
+
+* Fix `<AutocompleteInput>` not accepting 0 as a value ([4693](https://github.com/marmelab/react-admin/pull/4693)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix helper text misalignment in `<FileInput>` preview ([4680](https://github.com/marmelab/react-admin/pull/4680)) ([oleg-andreyev](https://github.com/oleg-andreyev))
+* Fix filter error in `ra-data-graphql-simple` `getManyReference()` implementation ([4685](https://github.com/marmelab/react-admin/pull/4685)) ([jdemangeon](https://github.com/jdemangeon))
+* Fix default app `<Loading>` is not not centered vertically ([4686](https://github.com/marmelab/react-admin/pull/4686)) ([manishsundriyal](https://github.com/manishsundriyal))
+* Fix `<AutocompleteInput>` empty suggestion item height ([4691](https://github.com/marmelab/react-admin/pull/4691)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix `ra-data-graphql` uses deprecated query `introspectionQuery` ([4674](https://github.com/marmelab/react-admin/pull/4674)) ([edulecca](https://github.com/edulecca))
+* Fix css typo in `<StarRatingField>` in the demo ([4678](https://github.com/marmelab/react-admin/pull/4678)) ([kopax](https://github.com/kopax))
+* [Doc] Fix snippet in Upgrade guide regarding `<FormDataConsumer>` ([4700](https://github.com/marmelab/react-admin/pull/4700)) ([shakhal](https://github.com/shakhal))
+* [Doc] Change the Portuguese translation to a more up to date package ([4696](https://github.com/marmelab/react-admin/pull/4696)) ([henriko202](https://github.com/henriko202))
+
 ## v3.4.1
 
 * Fix build broken due to full ICU package version ([4673](https://github.com/marmelab/react-admin/pull/4673)) ([Kmaschta](https://github.com/Kmaschta))
