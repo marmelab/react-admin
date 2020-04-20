@@ -73,6 +73,7 @@ const FormTab = ({
 };
 
 FormTab.propTypes = {
+    basePath: PropTypes.string,
     className: PropTypes.string,
     contentClassName: PropTypes.string,
     children: PropTypes.node,
@@ -80,8 +81,12 @@ FormTab.propTypes = {
     hidden: PropTypes.bool,
     icon: PropTypes.element,
     label: PropTypes.string.isRequired,
+    margin: PropTypes.oneOf(['none', 'dense', 'normal']),
     path: PropTypes.string,
+    record: PropTypes.object,
+    resource: PropTypes.string,
     value: PropTypes.string,
+    variant: PropTypes.oneOf(['standard', 'outlined', 'filled']),
 };
 
 FormTab.displayName = 'FormTab';
