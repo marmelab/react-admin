@@ -138,7 +138,7 @@ const SaveWithNoteButton = ({ handleSubmit, handleSubmitWithRedirect, ...props }
 ```
 
 The override of these functions has now a huge drawback, which makes it impractical: by skipping the default `handleSubmitWithRedirect`, the button doesn't trigger form validation. And unfortunately, react-final-form doesn't provide a way to trigger form validation manually.
-​
+
 That's why react-admin now provides a way to override just the data provider call and its side effect called `onSave`.
 
 The `onSave` value should be a function expecting 2 arguments: the form values to save, and the redirection to perform.
@@ -154,13 +154,13 @@ import {
     useRedirect,
     useNotify,
 } from 'react-admin';
-​
+
 const SaveWithNoteButton = props => {
     const [create] = useCreate('posts');
     const redirectTo = useRedirect();
     const notify = useNotify();
     const { basePath } = props;
-​
+
     const handleSave = useCallback(
         (values, redirect) => {
             create(
@@ -179,7 +179,7 @@ const SaveWithNoteButton = props => {
         },
         [create, notify, redirectTo, basePath]
     );
-​
+
     // set onSave props instead of handleSubmitWithRedirect
     return <SaveButton {...props} onSave={handleSave} />;
 };
@@ -884,11 +884,11 @@ For instance:
 
 ## Prop `loadedOnce` Renamed To `loaded`
 
-The `List`, `ReferenceArrayfield` and `ReferenceManyField` used to inject a `loadedOnce` prop to their child. This prop has been renamed to `loaded`.
+The `List`, `ReferenceArrayField` and `ReferenceManyField` used to inject a `loadedOnce` prop to their child. This prop has been renamed to `loaded`.
 
 As a consequence, the components usually used as child of these 3 components now accept a `loaded` prop instead of `loadedOnce`. This concerns `Datagrid`, `SingleFieldList`, and `GridList`.
 
-This change is transparent unless you use a custom view component inside a `List`, `ReferenceArrayfield` or `ReferenceManyField`.
+This change is transparent unless you use a custom view component inside a `List`, `ReferenceArrayField` or `ReferenceManyField`.
 
 ```diff
 const PostList = props => (
