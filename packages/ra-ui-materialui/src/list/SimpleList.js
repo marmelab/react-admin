@@ -35,13 +35,18 @@ const LinkOrNot = ({
     basePath,
     id,
     children,
+    record,
 }) => {
     const classes = useLinkOrNotStyles({ classes: classesOverride });
-    return linkType === 'edit' || linkType === true ? (
+    const link = typeof linkType === 'function'
+      ? linkType(record, id)
+      : linkType;
+
+    return link === 'edit' || link === true ? (
         <Link to={linkToRecord(basePath, id)} className={classes.link}>
             {children}
         </Link>
-    ) : linkType === 'show' ? (
+    ) : link === 'show' ? (
         <Link
             to={`${linkToRecord(basePath, id)}/show`}
             className={classes.link}
@@ -100,6 +105,7 @@ const SimpleList = props => {
                         basePath={basePath}
                         id={id}
                         key={id}
+                        record={data[id]}
                     >
                         <ListItem button={!!linkType}>
                             {leftIcon && (
