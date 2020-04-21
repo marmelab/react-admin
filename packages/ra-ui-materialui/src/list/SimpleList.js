@@ -38,9 +38,8 @@ const LinkOrNot = ({
     record,
 }) => {
     const classes = useLinkOrNotStyles({ classes: classesOverride });
-    const link = typeof linkType === 'function'
-      ? linkType(record, id)
-      : linkType;
+    const link =
+        typeof linkType === 'function' ? linkType(record, id) : linkType;
 
     return link === 'edit' || link === true ? (
         <Link to={linkToRecord(basePath, id)} className={classes.link}>
