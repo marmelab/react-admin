@@ -650,14 +650,14 @@ const BodyField = ({ record }) => (
 
 const PostEdit = (props) => (
     <Create {...props}>
-        <TabbeForm>
+        <TabbedForm>
             <FormTab label="main">
                 <IdentifierField addLabel label="Identifier"> {/* FormTab will add a label */}
                 <TextField source="title" /> {/* FormTab will add a label, too (TextField has addLabel:true) in defaultProps */}
                 <BodyField /> {/* FormTab will NOT add a label */}
                 <NumberInput source="nb_views" /> {/* FormTab will NOT add a label */}
             </FormTab>
-        </TabbeForm>
+        </TabbedForm>
     </Create>
 );
 ```
