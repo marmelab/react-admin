@@ -331,18 +331,23 @@ nav {
     font-size: 16px;
     min-height: 150px;
     position: relative;
-    margin: 0 45px;
+    margin: 0 65px;
 }
 
 .testimonial img {
     border: 3px solid #9cc1d3;
     border-radius: 50%;
     display: block;
-    width: 120px;
+    max-width: 120px;
     height: 120px;
     position: absolute !important;
-    top: -20px;
+    top: 10px;
     left: 0;
+}
+
+.testimonial img.noborder {
+    border: 0;
+    border-radius: 0;
 }
 
 .testimonial > div {
@@ -360,7 +365,7 @@ nav {
     background: none;
     color: gray;
     font-family: 'Roboto', sans-serif;
-    font-size: 1.5em;
+    font-size: 1.3rem;
     font-style: italic;
     line-height: 1.4 !important;
     margin: 0;
@@ -373,7 +378,14 @@ nav {
 .testimonial blockquote p {
     color: #75808a;
     line-height: 1.4 !important;
+    margin-bottom: 15px;
 }
+
+.testimonial blockquote .source {
+    color: #666;
+    font-size: 0.8em;
+}
+
 .testimonial blockquote p:before {
     content: '\201C';
     font-family: Georgia, serif;

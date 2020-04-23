@@ -1,7 +1,6 @@
 .carousel {
   height: 150px;
   text-align: center;
-  overflow: hidden;
   position: relative;
   padding: 0;
   list-style: none;
@@ -191,7 +190,7 @@
 }
 .carousel__indicators {
   position: absolute;
-  bottom: 0px;
+  bottom: -30px;
   width: 100%;
   text-align: center;
 }
