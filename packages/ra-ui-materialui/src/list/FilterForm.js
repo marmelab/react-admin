@@ -12,10 +12,9 @@ import FilterFormInput from './FilterFormInput';
 const useStyles = makeStyles(
     theme => ({
         form: {
-            marginTop: -theme.spacing(2),
             paddingTop: 0,
             display: 'flex',
-            alignItems: 'flex-end',
+            alignItems: 'center',
             flexWrap: 'wrap',
             minHeight: theme.spacing(10),
         },
