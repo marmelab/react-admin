@@ -195,7 +195,7 @@ describe('useListController', () => {
             expect(updatedCrudGetListCalls[1][0].payload.filter).toEqual({
                 foo: 2,
             });
-            expect(children).toBeCalledTimes(5);
+            expect(children).toBeCalledTimes(4);
             // Check that the permanent filter is not included in the displayedFilters (passed to Filter form and button)
             expect(children.mock.calls[2][0].displayedFilters).toEqual({});
             // Check that the permanent filter is not included in the filterValues (passed to Filter form and button)
