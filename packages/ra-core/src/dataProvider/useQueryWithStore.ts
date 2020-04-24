@@ -56,7 +56,12 @@ const defaultDataSelector = query => (state: ReduxState) => {
         : undefined;
 };
 
-const defaultTotalSelector = () => null;
+const defaultTotalSelector = query => (state: ReduxState) => {
+    const key = JSON.stringify({ ...query, type: getFetchType(query.type) });
+    return state.admin.customQueries[key]
+        ? state.admin.customQueries[key].total
+        : null;
+};
 
 /**
  * Fetch the data provider through Redux, return the value from the store.
@@ -106,7 +111,7 @@ const useQueryWithStore = (
     query: Query,
     options: QueryOptions = { action: 'CUSTOM_QUERY' },
     dataSelector: (state: ReduxState) => any = defaultDataSelector(query),
-    totalSelector: (state: ReduxState) => number = defaultTotalSelector
+    totalSelector: (state: ReduxState) => number = defaultTotalSelector(query)
 ): {
     data?: any;
     total?: number;
