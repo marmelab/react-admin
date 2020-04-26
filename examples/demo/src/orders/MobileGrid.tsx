@@ -14,6 +14,7 @@ import {
 } from 'react-admin';
 
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
+import { Identifier } from 'ra-core';
 
 const useListStyles = makeStyles(theme => ({
     card: {
@@ -24,20 +25,26 @@ const useListStyles = makeStyles(theme => ({
     },
     cardTitleContent: {
         display: 'flex',
-        flexDirection: 'rows',
+        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
     },
     cardContent: theme.typography.body1,
     cardContentRow: {
         display: 'flex',
-        flexDirection: 'rows',
+        flexDirection: 'row',
         alignItems: 'center',
         margin: '0.5rem 0',
     },
 }));
 
-const MobileGrid = ({ ids, data, basePath }) => {
+interface Props {
+    ids: Identifier[];
+    data?: any;
+    basePath?: string;
+}
+
+export const MobileGrid: React.FC<Props> = ({ ids, data, basePath }) => {
     const translate = useTranslate();
     const classes = useListStyles();
     return (
@@ -88,7 +95,6 @@ const MobileGrid = ({ ids, data, basePath }) => {
                                 record={data[id]}
                                 source="total"
                                 options={{ style: 'currency', currency: 'USD' }}
-                                className={classes.total}
                             />
                         </span>
                         <span className={classes.cardContentRow}>

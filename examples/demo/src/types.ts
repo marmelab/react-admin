@@ -57,6 +57,7 @@ export interface FieldProps<T extends Record = Record> {
     label?: string;
     record?: T;
     source?: string;
+    basePath?: string;
 }
 
 export interface Review extends Record {

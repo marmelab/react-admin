@@ -13,7 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import Basket from './Basket';
 
-const OrderTitle = ({ record }) => {
+const OrderTitle = ({ record }: any) => {
     const translate = useTranslate();
     return (
         <span>
@@ -28,7 +28,7 @@ const useEditStyles = makeStyles({
     root: { alignItems: 'flex-start' },
 });
 
-const OrderEdit = props => {
+const OrderEdit = (props: any) => {
     const classes = useEditStyles();
     return (
         <Edit
@@ -41,7 +41,7 @@ const OrderEdit = props => {
                 <DateInput source="date" />
                 <ReferenceInput source="customer_id" reference="customers">
                     <AutocompleteInput
-                        optionText={choice =>
+                        optionText={(choice: any) =>
                             `${choice.first_name} ${choice.last_name}`
                         }
                     />

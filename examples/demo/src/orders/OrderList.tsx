@@ -21,18 +21,19 @@ import {
     Divider,
     Tabs,
     Tab,
+    Theme,
 } from '@material-ui/core';
 
 import NbItemsField from './NbItemsField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import MobileGrid from './MobileGrid';
 
-const OrderFilter = props => (
+const OrderFilter = (props: any) => (
     <Filter {...props}>
         <SearchInput source="q" alwaysOn />
         <ReferenceInput source="customer_id" reference="customers">
             <AutocompleteInput
-                optionText={choice =>
+                optionText={(choice: any) =>
                     choice.first_name && choice.last_name
                         ? `${choice.first_name} ${choice.last_name}`
                         : ''
@@ -50,23 +51,27 @@ const useDatagridStyles = makeStyles({
     total: { fontWeight: 'bold' },
 });
 
-class TabbedDatagrid extends React.Component {
+class TabbedDatagrid extends React.Component<any, any> {
     tabs = [
         { id: 'ordered', name: 'ordered' },
         { id: 'delivered', name: 'delivered' },
         { id: 'cancelled', name: 'cancelled' },
     ];
 
-    state = { ordered: [], delivered: [], cancelled: [] };
+    state: { [key: string]: any[] } = {
+        ordered: [],
+        delivered: [],
+        cancelled: [],
+    };
 
-    static getDerivedStateFromProps(props, state) {
+    static getDerivedStateFromProps(props: any, state: any) {
         if (props.ids !== state[props.filterValues.status]) {
             return { ...state, [props.filterValues.status]: props.ids };
         }
         return null;
     }
 
-    handleChange = (event, value) => {
+    handleChange = (event: any, value: any) => {
         const { filterValues, setFilters } = this.props;
         setFilters({ ...filterValues, status: value });
     };
@@ -163,13 +168,15 @@ class TabbedDatagrid extends React.Component {
     }
 }
 
-const StyledTabbedDatagrid = props => {
+const StyledTabbedDatagrid = (props: any) => {
     const classes = useDatagridStyles();
-    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+    const isXSmall = useMediaQuery((theme: Theme) =>
+        theme.breakpoints.down('xs')
+    );
     return <TabbedDatagrid classes={classes} isXSmall={isXSmall} {...props} />;
 };
 
-const OrderList = ({ classes, ...props }) => (
+const OrderList = ({ classes, ...props }: any) => (
     <List
         {...props}
         filterDefaultValues={{ status: 'ordered' }}
