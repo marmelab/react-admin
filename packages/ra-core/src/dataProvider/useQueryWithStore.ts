@@ -129,31 +129,45 @@ const useQueryWithStore = (
         loading: true,
         loaded: data !== undefined && !isEmptyList(data),
     });
-    if (requestSignatureRef.current !== requestSignature) {
-        // request has changed, reset the loading state
-        requestSignatureRef.current = requestSignature;
-        setState({
-            data,
-            total,
-            error: null,
-            loading: true,
-            loaded: data !== undefined && !isEmptyList(data),
-        });
-    } else if (!isEqual(state.data, data) || state.total !== total) {
-        // the dataProvider response arrived in the Redux store
-        if (typeof total !== 'undefined' && isNaN(total)) {
-            console.error(
-                'Total from response is not a number. Please check your dataProvider or the API.'
-            );
-        } else {
+
+    useEffect(() => {
+        if (requestSignatureRef.current !== requestSignature) {
+            // request has changed, reset the loading state
+            requestSignatureRef.current = requestSignature;
             setState({
-                ...state,
                 data,
                 total,
-                loaded: true,
+                error: null,
+                loading: true,
+                loaded: data !== undefined && !isEmptyList(data),
             });
         }
-    }
+    }, [data, requestSignature, setState, total]);
+
+    useEffect(() => {
+        const signaturesAreEqual =
+            requestSignatureRef.current === requestSignature;
+
+        if (
+            signaturesAreEqual &&
+            (!isEqual(state.data, data) || state.total !== total)
+        ) {
+            // the dataProvider response arrived in the Redux store
+            if (typeof total !== 'undefined' && isNaN(total)) {
+                console.error(
+                    'Total from response is not a number. Please check your dataProvider or the API.'
+                );
+            } else {
+                setState(prevState => ({
+                    ...prevState,
+                    data,
+                    total,
+                    loaded: true,
+                }));
+            }
+        }
+    }, [data, requestSignature, setState, state, total]);
+
     const dataProvider = useDataProvider();
     useEffect(() => {
         setState(prevState => ({ ...prevState, loading: true }));
@@ -166,6 +180,10 @@ const useQueryWithStore = (
                 // through the data and total selectors.
                 // In addition, if the query is optimistic, the response
                 // will be empty, so it should not be used at all.
+                if (requestSignature !== requestSignatureRef.current) {
+                    return;
+                }
+
                 setState(prevState => ({
                     ...prevState,
                     error: null,
@@ -174,6 +192,9 @@ const useQueryWithStore = (
                 }));
             })
             .catch(error => {
+                if (requestSignature !== requestSignatureRef.current) {
+                    return;
+                }
                 setState({
                     error,
                     loading: false,
