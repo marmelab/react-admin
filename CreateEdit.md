@@ -650,14 +650,14 @@ const BodyField = ({ record }) => (
 
 const PostEdit = (props) => (
     <Create {...props}>
-        <TabbeForm>
+        <TabbedForm>
             <FormTab label="main">
                 <IdentifierField addLabel label="Identifier"> {/* FormTab will add a label */}
                 <TextField source="title" /> {/* FormTab will add a label, too (TextField has addLabel:true) in defaultProps */}
                 <BodyField /> {/* FormTab will NOT add a label */}
                 <NumberInput source="nb_views" /> {/* FormTab will NOT add a label */}
             </FormTab>
-        </TabbeForm>
+        </TabbedForm>
     </Create>
 );
 ```
@@ -687,7 +687,7 @@ export const PostEdit = (props) => (
 
 ## Default Values
 
-To define default values, you can add a `initialValues` prop to form components (`<SimpleForm>`, `<Tabbedform>`, etc.), or add a `defaultValue` to individual input components. Let's see each of these options.
+To define default values, you can add a `initialValues` prop to form components (`<SimpleForm>`, `<TabbedForm>`, etc.), or add a `defaultValue` to individual input components. Let's see each of these options.
 
 **Note**: on RA v2 the `initialValues` used to be named `defaultValue`
 

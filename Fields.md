@@ -241,9 +241,9 @@ This component accepts a `showTime` attribute (`false` by default) to force the 
 ```
 {% endraw %}
 
-See [Intl.DateTimeformat documentation](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Date/toLocaleDateString) for the `options` prop syntax.
+See [Intl.DateTimeFormat documentation](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Date/toLocaleDateString) for the `options` prop syntax.
 
-**Tip**: If you need more formatting options than what `Intl.DateTimeformat` can provide, build your own field component leveraging a third-party library like [moment.js](http://momentjs.com/).
+**Tip**: If you need more formatting options than what `Intl.DateTimeFormat` can provide, build your own field component leveraging a third-party library like [moment.js](http://momentjs.com/).
 
 ## `<EmailField>`
 
@@ -393,9 +393,9 @@ import { NumberField }  from 'react-admin';
 ```
 {% endraw %}
 
-See [Intl.Numberformat documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString) for the `options` prop syntax.
+See [Intl.NumberFormat documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString) for the `options` prop syntax.
 
-**Tip**: If you need more formatting options than what `Intl.Numberformat` can provide, build your own field component leveraging a third-party library like [numeral.js](http://numeraljs.com/).
+**Tip**: If you need more formatting options than what `Intl.NumberFormat` can provide, build your own field component leveraging a third-party library like [numeral.js](http://numeraljs.com/).
 
 **Tip**: When used in a `Show` view, the right alignment may look weird. Disable it by resetting the `style` attribute:
 
