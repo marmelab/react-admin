@@ -12,7 +12,6 @@ import { Form } from 'react-final-form';
 import { TestTranslationProvider } from 'ra-core';
 
 describe('<AutocompleteInput />', () => {
-
     //Fix document.createRange is not a function error on fireEvent usage (Fixed in jsdom v16.0.0)
     //reported by https://github.com/mui-org/material-ui/issues/15726#issuecomment-493124813
     global.document.createRange = () => ({
@@ -48,15 +47,15 @@ describe('<AutocompleteInput />', () => {
 
     it('should set AutocompleteInput value to an empty string when the selected item is null', () => {
         const { queryByDisplayValue } = render(
-          <Form
-            onSubmit={jest.fn()}
-            render={() => (
-              <AutocompleteInput
-                {...defaultProps}
-                choices={[{ id: 2, name: 'foo' }]}
-              />
-            )}
-          />
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <AutocompleteInput
+                        {...defaultProps}
+                        choices={[{ id: 2, name: 'foo' }]}
+                    />
+                )}
+            />
         );
         expect(queryByDisplayValue('')).not.toBeNull();
     });
