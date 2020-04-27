@@ -1,5 +1,15 @@
 # Changelog
 
+## v3.4.3
+
+* Fix race condition on the `List` page resulting in page coming back to 1 ([4718](https://github.com/marmelab/react-admin/pull/4718)) ([djhi](https://github.com/djhi))
+* Fix `initialValue` in `<SelectInput>` component causes warning ([4717](https://github.com/marmelab/react-admin/pull/4717)) ([djhi](https://github.com/djhi))
+* Fix `<FormTab>` component does not validate all props at runtime ([4501](https://github.com/marmelab/react-admin/pull/4501)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix custom `buildQuery` snippet `in ra-data-graphql` README ([4723](https://github.com/marmelab/react-admin/pull/4723)) ([bookvik](https://github.com/bookvik))
+* [Doc] Fix typo in CreateEdit documentation ([4714](https://github.com/marmelab/react-admin/pull/4714)) ([deuzu](https://github.com/deuzu))
+* [Doc] Fix typo in code comment for `checkAuth` ([4707](https://github.com/marmelab/react-admin/pull/4707)) ([martencassel](https://github.com/martencassel))
+* [Doc] Fix character case typos in docs ([4701](https://github.com/marmelab/react-admin/pull/4701)) ([WiXSL](https://github.com/WiXSL))
+
 ## v3.4.2
 
 * Fix `<AutocompleteInput>` not accepting 0 as a value ([4693](https://github.com/marmelab/react-admin/pull/4693)) ([Kmaschta](https://github.com/Kmaschta))
