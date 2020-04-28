@@ -22,19 +22,20 @@ interface Props extends FieldProps {
     classes?: object;
 }
 
-const FileField: FunctionComponent<Props & InjectedFieldProps> = ({
-    className,
-    classes: classesOverride,
-    emptyText,
-    record,
-    source,
-    title,
-    src,
-    target,
-    ...rest
-}) => {
+const FileField: FunctionComponent<Props & InjectedFieldProps> = props => {
+    const {
+        className,
+        classes: classesOverride,
+        emptyText,
+        record,
+        source,
+        title,
+        src,
+        target,
+        ...rest
+    } = props;
     const sourceValue = get(record, source);
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useStyles(props);
 
     if (!sourceValue) {
         return emptyText ? (

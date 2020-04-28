@@ -106,11 +106,11 @@ title: "Reference"
 * `useCheckAuth`
 * `useChoices`
 * [`useCreate`](./Actions.md#specialized-hooks)
-* `useCreateController`
+* [`useCreateController`](./CreateEdit.md#usecreatecontroller)
 * [`useDataProvider`](./Actions.md#usedataprovider-hook)
 * [`useDelete`](./Actions.md#specialized-hooks)
 * [`useDeleteMany`](./Actions.md#specialized-hooks)
-* `useEditController`
+* [`useEditController`](./CreateEdit.md#useeditcontroller)
 * `useFilterState`
 * [`useGetList`](./Actions.md#specialized-hooks)
 * [`useGetMany`](./Actions.md#specialized-hooks)
@@ -120,7 +120,7 @@ title: "Reference"
 * [`useGetOne`](./Actions.md#specialized-hooks)
 * `useGetPermissions`
 * `useInput`
-* `useListController`
+* [`useListController`](./List.md#uselistcontroller)
 * `useListParams`
 * `useLoading`
 * [`useLocale`](./Translation.md#uselocale-getting-the-current-locale)
@@ -142,7 +142,7 @@ title: "Reference"
 * `useReferenceManyFieldController`
 * [`useRefresh`](./Actions.md#handling-side-effects-in-usedataprovider)
 * [`useSetLocale`](./Translation.md#usesetlocale-changing-locale-at-runtime)
-* `useShowController`
+* [`useShowController`](./Show.md#useshowcontroller)
 * `useSortState`
 * [`useStyles`](./Theming.md#overriding-a-component-style)
 * `useSuggestions`
@@ -151,6 +151,7 @@ title: "Reference"
 * `useUpdateLoading`
 * [`useUpdateMany`](./Actions.md#specialized-hooks)
 * [`useUnselectAll`](./Actions.md#handling-side-effects-in-usedataprovider)
+* [`useWarnWhenUnsavedChanges`](./CreateEdit.md#warning-about-unsaved-changes)
 * `useVersion`
 * [`withDataProvider`](./Actions.md#legacy-components-query-mutation-and-withdataprovider)
 * [`withTranslate`](./Translation.md#withtranslate-hoc)

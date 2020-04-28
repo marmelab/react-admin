@@ -16,19 +16,20 @@ const useStyles = makeStyles(
     { name: 'RaFilterButton' }
 );
 
-const FilterButton = ({
-    filters,
-    displayedFilters = {},
-    filterValues,
-    showFilter,
-    classes: classesOverride,
-    className,
-    resource,
-    ...rest
-}) => {
+const FilterButton = props => {
+    const {
+        filters,
+        displayedFilters = {},
+        filterValues,
+        showFilter,
+        classes: classesOverride,
+        className,
+        resource,
+        ...rest
+    } = props;
     const [open, setOpen] = useState(false);
     const anchorEl = useRef();
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useStyles(props);
 
     const hiddenFilters = filters.filter(
         filterElement =>

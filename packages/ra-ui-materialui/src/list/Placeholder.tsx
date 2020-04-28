@@ -17,9 +17,11 @@ interface Props {
     classes?: Record<'root', string>;
 }
 
-const Placeholder: FC<Props> = ({ className, classes: classesOverride }) => {
-    const classes = useStyles({ classes: classesOverride });
-    return <div className={classnames(className, classes.root)}>&nbsp;</div>;
+const Placeholder: FC<Props> = props => {
+    const classes = useStyles(props);
+    return (
+        <div className={classnames(props.className, classes.root)}>&nbsp;</div>
+    );
 };
 
 export default Placeholder;

@@ -1,9 +1,11 @@
 import React from 'react';
 import assert from 'assert';
-import { render } from '@testing-library/react';
+import { render, cleanup } from '@testing-library/react';
 import EmailField from './EmailField';
 
 describe('<EmailField />', () => {
+    afterEach(cleanup);
+
     it('should render as an email link', () => {
         const record = { foo: 'foo@bar.com' };
         const { container } = render(
@@ -48,14 +50,17 @@ describe('<EmailField />', () => {
         assert.ok(container.firstChild.classList.contains('foo'));
     });
 
-    it('should render the emptyText when value is null', () => {
-        const { queryByText } = render(
-            <EmailField record={{ foo: null }} source="foo" emptyText="NA" />
-        );
-        assert.notEqual(queryByText('NA'), null);
-    });
+    it.each([null, undefined])(
+        'should render the emptyText when value is %s',
+        foo => {
+            const { queryByText } = render(
+                <EmailField record={{ foo }} source="foo" emptyText="NA" />
+            );
+            assert.notEqual(queryByText('NA'), null);
+        }
+    );
 
-    it('should return null when the record has no value for the source', () => {
+    it('should return null when the record has no value for the source and no emptyText', () => {
         const { container } = render(<EmailField record={{}} source="foo" />);
         assert.equal(container.firstChild, null);
     });

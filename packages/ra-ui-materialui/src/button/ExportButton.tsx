@@ -6,8 +6,8 @@ import {
     useDataProvider,
     useNotify,
     Sort,
-    DataProvider,
     ExporterContext,
+    Exporter,
 } from 'ra-core';
 import Button, { ButtonProps } from './Button';
 
@@ -19,9 +19,11 @@ const ExportButton: FunctionComponent<ExportButtonProps> = ({
     onClick,
     label = 'ra.action.export',
     icon = defaultIcon,
+    exporter: customExporter,
     ...rest
 }) => {
-    const exporter = useContext(ExporterContext);
+    const exporterFromContext = useContext(ExporterContext);
+    const exporter = customExporter || exporterFromContext;
     const dataProvider = useDataProvider();
     const notify = useNotify();
     const handleClick = useCallback(
@@ -78,24 +80,15 @@ const defaultFilter = {};
 
 const sanitizeRestProps = ({
     basePath,
-    exporter,
     ...rest
 }: Omit<
     ExportButtonProps,
-    'sort' | 'filter' | 'maxResults' | 'resource' | 'label'
+    'sort' | 'filter' | 'maxResults' | 'resource' | 'label' | 'exporter'
 >) => rest;
 
 interface Props {
     basePath?: string;
-    exporter?: (
-        data: any,
-        fetchRelatedRecords: (
-            data: any,
-            field: string,
-            resource: string
-        ) => Promise<any>,
-        dataProvider: DataProvider
-    ) => Promise<void>;
+    exporter?: Exporter;
     filter?: any;
     icon?: JSX.Element;
     label?: string;

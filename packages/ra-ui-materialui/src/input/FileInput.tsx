@@ -47,33 +47,38 @@ export interface FileInputProps {
 
 export interface FileInputOptions extends DropzoneOptions {
     inputProps?: any;
+    onRemove?: Function;
 }
 
 const FileInput: FunctionComponent<
     FileInputProps & InputProps<FileInputOptions>
-> = ({
-    accept,
-    children,
-    className,
-    classes: classesOverride,
-    format,
-    helperText,
-    label,
-    labelMultiple = 'ra.input.file.upload_several',
-    labelSingle = 'ra.input.file.upload_single',
-    maxSize,
-    minSize,
-    multiple = false,
-    options: { inputProps: inputPropsOptions, ...options } = {},
-    parse,
-    placeholder,
-    resource,
-    source,
-    validate,
-    ...rest
-}) => {
+> = props => {
+    const {
+        accept,
+        children,
+        className,
+        classes: classesOverride,
+        format,
+        helperText,
+        label,
+        labelMultiple = 'ra.input.file.upload_several',
+        labelSingle = 'ra.input.file.upload_single',
+        maxSize,
+        minSize,
+        multiple = false,
+        options: {
+            inputProps: inputPropsOptions,
+            ...options
+        } = {} as FileInputOptions,
+        parse,
+        placeholder,
+        resource,
+        source,
+        validate,
+        ...rest
+    } = props;
     const translate = useTranslate();
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useStyles(props);
 
     // turn a browser dropped file structure into expected structure
     const transformFile = file => {
@@ -149,6 +154,10 @@ const FileInput: FunctionComponent<
         } else {
             onChange(null);
         }
+
+        if (options.onRemove) {
+            options.onRemove(file);
+        }
     };
 
     const childrenElement = isValidElement(Children.only(children))
@@ -196,6 +205,13 @@ const FileInput: FunctionComponent<
                         <p>{translate(labelSingle)}</p>
                     )}
                 </div>
+                <FormHelperText>
+                    <InputHelperText
+                        touched={touched}
+                        error={error}
+                        helperText={helperText}
+                    />
+                </FormHelperText>
                 {children && (
                     <div className="previews">
                         {files.map((file, index) => (
@@ -213,13 +229,6 @@ const FileInput: FunctionComponent<
                         ))}
                     </div>
                 )}
-                <FormHelperText>
-                    <InputHelperText
-                        touched={touched}
-                        error={error}
-                        helperText={helperText}
-                    />
-                </FormHelperText>
             </>
         </Labeled>
     );

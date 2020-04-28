@@ -27,7 +27,8 @@ describe('<ReferenceArrayInputController />', () => {
                 input={{ value: [1, 2] }}
             >
                 {children}
-            </ReferenceArrayInputController>
+            </ReferenceArrayInputController>,
+            { admin: { resources: { tags: { data: {} } } } }
         );
 
         expect(queryByText('true')).not.toBeNull();
@@ -43,7 +44,8 @@ describe('<ReferenceArrayInputController />', () => {
                 input={{ value: [1, 2] }}
             >
                 {children}
-            </ReferenceArrayInputController>
+            </ReferenceArrayInputController>,
+            { admin: { resources: { tags: { data: {} } } } }
         );
         expect(queryByText('true')).not.toBeNull();
     });
@@ -110,6 +112,7 @@ describe('<ReferenceArrayInputController />', () => {
             </ReferenceArrayInputController>,
             {
                 admin: {
+                    resources: { tags: { data: {} } },
                     references: {
                         possibleValues: {
                             'posts@tag_ids': { error: 'boom' },
@@ -234,6 +237,7 @@ describe('<ReferenceArrayInputController />', () => {
             </ReferenceArrayInputController>,
             {
                 admin: {
+                    resources: { tags: { data: { 5: {}, 6: {} } } },
                     references: {
                         possibleValues: {
                             'posts@tag_ids': [],
@@ -288,7 +292,8 @@ describe('<ReferenceArrayInputController />', () => {
         const { dispatch } = renderWithRedux(
             <ReferenceArrayInputController {...defaultProps} allowEmpty>
                 {children}
-            </ReferenceArrayInputController>
+            </ReferenceArrayInputController>,
+            { admin: { resources: { tags: { data: {} } } } }
         );
         expect(dispatch.mock.calls[0][0]).toEqual({
             type: CRUD_GET_MATCHING,
@@ -425,7 +430,8 @@ describe('<ReferenceArrayInputController />', () => {
                 input={{ value: [5, 6] }}
             >
                 {children}
-            </ReferenceArrayInputController>
+            </ReferenceArrayInputController>,
+            { admin: { resources: { tags: { data: { 5: {}, 6: {} } } } } }
         );
         await wait(() => {
             expect(dispatch).toHaveBeenCalledWith({
@@ -449,7 +455,8 @@ describe('<ReferenceArrayInputController />', () => {
                 input={{ value: [5] }}
             >
                 {children}
-            </ReferenceArrayInputController>
+            </ReferenceArrayInputController>,
+            { admin: { resources: { tags: { data: { 5: {} } } } } }
         );
 
         fireEvent.click(getByLabelText('Filter'));
@@ -477,7 +484,8 @@ describe('<ReferenceArrayInputController />', () => {
                 input={{ value: [5] }}
             >
                 {children}
-            </ReferenceArrayInputController>
+            </ReferenceArrayInputController>,
+            { admin: { resources: { tags: { data: { 5: {} } } } } }
         );
 
         rerender(
@@ -614,9 +622,9 @@ describe('<ReferenceArrayInputController />', () => {
                 input={{ value: [5, 6] }}
             >
                 {children}
-            </ReferenceArrayInputController>
+            </ReferenceArrayInputController>,
+            { admin: { resources: { tags: { data: { 5: {}, 6: {} } } } } }
         );
-
         await wait();
         expect(dispatch).toHaveBeenCalledWith({
             type: CRUD_GET_MANY,

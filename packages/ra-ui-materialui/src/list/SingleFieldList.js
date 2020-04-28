@@ -15,6 +15,7 @@ const useStyles = makeStyles(
             marginTop: -theme.spacing(1),
             marginBottom: -theme.spacing(1),
         },
+        link: {},
     }),
     { name: 'RaSingleFieldList' }
 );
@@ -67,19 +68,20 @@ const handleClick = () => {};
  *     </SingleFieldList>
  * </ReferenceManyField>
  */
-function SingleFieldList({
-    classes: classesOverride,
-    className,
-    ids,
-    data,
-    loaded,
-    resource,
-    basePath,
-    children,
-    linkType,
-    ...rest
-}) {
-    const classes = useStyles({ classes: classesOverride });
+function SingleFieldList(props) {
+    const {
+        classes: classesOverride,
+        className,
+        ids,
+        data,
+        loaded,
+        resource,
+        basePath,
+        children,
+        linkType,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
 
     if (loaded === false) {
         return <LinearProgress />;

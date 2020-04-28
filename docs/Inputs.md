@@ -133,10 +133,9 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput, FormDataConsumer 
         <DateInput source="date" />
         <FormDataConsumer>
             {({ getSource, scopedFormData }) => {
-                getSource();
                 return (
                     <TextField
-                        source={'url'}
+                        source={getSource('url')}
                         record={scopedFormData}
                     />
                 );
@@ -935,7 +934,7 @@ import { ReferenceInput, SelectInput } from 'react-admin';
 </Admin>
 ```
 
-**Tip**: Why does `<ReferenceInput>` use the `GET_MANY` verb with a single value `[id]` instead of `GET_ONE` to fetch the record for the current value? Because when there are many `<ReferenceInput>` for the same resource in a form (for instance when inside an `<ArrayInput>`), react-admin *aggregates* the calls to `GET_MANY` into a single one with `[id1, id2, ...)]`. This speeds up the UI and avoids hitting the API too much.
+**Tip**: Why does `<ReferenceInput>` use the `dataProvider.getMany()` method with a single value `[id]` instead of `dataProvider.getOne()` to fetch the record for the current value? Because when there are many `<ReferenceInput>` for the same resource in a form (for instance when inside an `<ArrayInput>`), react-admin *aggregates* the calls to `dataProvider.getMany()` into a single one with `[id1, id2, ...)]`. This speeds up the UI and avoids hitting the API too much.
 
 Set the `allowEmpty` prop when you want to add an empty choice with a value of `null` in the choices list.
 Disabling `allowEmpty` does not mean that the input will be required. If you want to make the input required, you must add a validator as indicated in [Validation Documentation](./CreateEdit.md#validation). Enabling the `allowEmpty` props just adds an empty choice (with `null` value) on top of the options, and makes the value nullable.
@@ -1364,7 +1363,7 @@ Mnemonic for the two functions:
 Say the user would like to input values of 0-100 to a percentage field but your API (hence record) expects 0-1.0. You can use simple `parse()` and `format()` functions to archive the transform:
 
 ```jsx
-<NumberInput source="percent" format={v => v*100} parse={v => v/100} label="Formatted number" />
+<NumberInput source="percent" format={v => v * 100} parse={v => parseFloat(v) / 100} label="Formatted number" />
 ```
 
 `<DateInput>` stores and returns a string. If you would like to store a JavaScript Date object in your record instead:

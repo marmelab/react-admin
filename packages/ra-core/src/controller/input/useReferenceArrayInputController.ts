@@ -56,13 +56,43 @@ const useReferenceArrayInputController = ({
     // optimization: we fetch selected items only once. When the user selects more items,
     // as we already have the past selected items in the store, we don't fetch them.
     useEffect(() => {
+        // Only fetch new ids
         const newIdsToFetch = difference(input.value, inputValue.current);
-        if (newIdsToFetch.length > 0) {
+        // Only get from store ids selected and already fetched
+        const newIdsToGetFromStore = difference(input.value, newIdsToFetch);
+        /*
+            input.value (current)
+                +------------------------+
+                | ********************** |
+                | ********************** |  inputValue.current (old)
+                | ********** +-----------------------+
+                | ********** | ooooooooo |           |
+                | ********** | ooooooooo |           |
+                | ********** | ooooooooo |           |
+                | ********** | ooooooooo |           |
+                +---|--------|------|----+           |
+                    |        |      |                |
+                    |        |      |                |
+                    |        +------|----------------+
+                    |               |
+            newIdsToFetch    newIdsToGetFromStore
+        */
+        // Change states each time input values changes to avoid keeping previous values no more selected
+        if (!isEqual(idsToFetch, newIdsToFetch)) {
             setIdsToFetch(newIdsToFetch);
-            setIdsToGetFromStore(inputValue.current || []);
         }
+        if (!isEqual(idsToGetFromStore, newIdsToGetFromStore)) {
+            setIdsToGetFromStore(newIdsToGetFromStore);
+        }
+
         inputValue.current = input.value;
-    }, [input.value, setIdsToFetch]);
+    }, [
+        idsToFetch,
+        idsToGetFromStore,
+        input.value,
+        setIdsToFetch,
+        setIdsToGetFromStore,
+    ]);
 
     const [pagination, setPagination] = useState({ page: 1, perPage });
     const [sort, setSort] = useState(defaultSort);

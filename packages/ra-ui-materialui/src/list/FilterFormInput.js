@@ -17,16 +17,10 @@ const useStyles = makeStyles(
     { name: 'RaFilterFormInput' }
 );
 
-const FilterFormInput = ({
-    filterElement,
-    handleHide,
-    classes: classesOverride,
-    resource,
-    variant,
-    margin,
-}) => {
+const FilterFormInput = props => {
+    const { filterElement, handleHide, resource, variant, margin } = props;
     const translate = useTranslate();
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useStyles(props);
     return (
         <div
             data-source={filterElement.props.source}

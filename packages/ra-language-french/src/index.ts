@@ -1,4 +1,6 @@
-module.exports = {
+import { TranslationMessages } from 'ra-core';
+
+const frenchMessages: TranslationMessages = {
     ra: {
         action: {
             add_filter: 'Ajouter un filtre',
@@ -25,6 +27,8 @@ module.exports = {
             undo: 'Annuler',
             expand: 'Étendre',
             close: 'Fermer',
+            open_menu: 'Ouvrir le menu',
+            close_menu: 'Fermer le menu',
         },
         boolean: {
             true: 'Oui',
@@ -88,6 +92,8 @@ module.exports = {
             not_found:
                 "L'URL saisie est incorrecte, ou vous avez suivi un mauvais lien.",
             yes: 'Oui',
+            unsaved_changes:
+                "Certains changements n'ont pas été enregistrés. Êtes-vous sûr(e) de vouloir quitter cette page ?",
         },
         navigation: {
             no_results: 'Aucun résultat',
@@ -138,3 +144,5 @@ module.exports = {
         },
     },
 };
+
+export default frenchMessages;

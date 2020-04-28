@@ -98,6 +98,7 @@ const useGetList = <RecordType = Record>(
         return ids
             .map(id => allResourceData[id])
             .reduce((acc, record) => {
+                if (!record) return acc;
                 acc[record.id] = record;
                 return acc;
             }, {});

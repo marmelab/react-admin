@@ -2,7 +2,6 @@ import RichTextInput from 'ra-input-rich-text';
 import React from 'react';
 import {
     TopToolbar,
-    AutocompleteArrayInput,
     AutocompleteInput,
     ArrayInput,
     BooleanInput,
@@ -18,7 +17,6 @@ import {
     ImageField,
     ImageInput,
     NumberInput,
-    ReferenceArrayInput,
     ReferenceManyField,
     ReferenceInput,
     SelectInput,
@@ -32,6 +30,7 @@ import {
     FormDataConsumer,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import PostTitle from './PostTitle';
+import TagReferenceInput from './TagReferenceInput';
 
 const EditActions = ({ basePath, data, hasShow }) => (
     <TopToolbar>
@@ -46,7 +45,7 @@ const EditActions = ({ basePath, data, hasShow }) => (
 
 const PostEdit = ({ permissions, ...props }) => (
     <Edit title={<PostTitle />} actions={<EditActions />} {...props}>
-        <TabbedForm initialValues={{ average_note: 0 }}>
+        <TabbedForm initialValues={{ average_note: 0 }} warnWhenUnsavedChanges>
             <FormTab label="post.form.summary">
                 <TextInput disabled source="id" />
                 <TextInput source="title" validate={required()} resettable />
@@ -121,13 +120,11 @@ const PostEdit = ({ permissions, ...props }) => (
                 />
             </FormTab>
             <FormTab label="post.form.miscellaneous">
-                <ReferenceArrayInput
+                <TagReferenceInput
                     reference="tags"
                     source="tags"
-                    filter={{ published: true }}
-                >
-                    <AutocompleteArrayInput fullWidth />
-                </ReferenceArrayInput>
+                    label="Tags"
+                />
                 <ArrayInput source="backlinks">
                     <SimpleFormIterator>
                         <DateInput source="date" />

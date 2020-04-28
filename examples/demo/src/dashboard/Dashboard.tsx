@@ -46,7 +46,7 @@ const styles = {
 };
 
 const Dashboard: FC = () => {
-    const [state, setState] = useState({} as State);
+    const [state, setState] = useState<State>({});
     const version = useVersion();
     const dataProvider = useDataProvider();
     const isXSmall = useMediaQuery((theme: Theme) =>

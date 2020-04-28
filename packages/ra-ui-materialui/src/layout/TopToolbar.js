@@ -29,8 +29,9 @@ const useStyles = makeStyles(
     { name: 'RaTopToolbar' }
 );
 
-const TopToolbar = ({ className, children, ...rest }) => {
-    const classes = useStyles();
+const TopToolbar = props => {
+    const { className, children, ...rest } = props;
+    const classes = useStyles(props);
     return (
         <Toolbar className={classnames(classes.root, className)} {...rest}>
             {children}

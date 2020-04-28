@@ -2,11 +2,47 @@ import { render, cleanup, fireEvent } from '@testing-library/react';
 import React from 'react';
 import expect from 'expect';
 import { TestContext } from 'ra-core';
-
+import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import SaveButton from './SaveButton';
+
+const theme = createMuiTheme();
+
+const invalidButtonDomProps = {
+    basePath: '',
+    handleSubmit: jest.fn(),
+    handleSubmitWithRedirect: jest.fn(),
+    invalid: false,
+    onSave: jest.fn(),
+    pristine: false,
+    record: { id: 123, foo: 'bar' },
+    redirect: 'list',
+    resource: 'posts',
+    saving: false,
+    submitOnEnter: true,
+    undoable: false,
+};
 
 describe('<SaveButton />', () => {
     afterEach(cleanup);
+
+    it('should render as submit type with no DOM errors', () => {
+        const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+        const { getByLabelText } = render(
+            <TestContext>
+                <ThemeProvider theme={theme}>
+                    <SaveButton {...invalidButtonDomProps} />
+                </ThemeProvider>
+            </TestContext>
+        );
+
+        expect(spy).not.toHaveBeenCalled();
+        expect(getByLabelText('ra.action.save').getAttribute('type')).toEqual(
+            'submit'
+        );
+
+        spy.mockRestore();
+    });
 
     it('should render as submit type when submitOnEnter is true', () => {
         const { getByLabelText } = render(

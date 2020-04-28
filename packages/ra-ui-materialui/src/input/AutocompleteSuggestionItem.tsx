@@ -16,6 +16,7 @@ const useStyles = makeStyles(
         suggestion: {
             display: 'block',
             fontFamily: theme.typography.fontFamily,
+            minHeight: 24,
         },
         suggestionText: { fontWeight: 300 },
         highlightedSuggestionText: { fontWeight: 500 },
@@ -35,17 +36,18 @@ interface Props {
 
 const AutocompleteSuggestionItem: FunctionComponent<
     Props & MenuItemProps<'li', { button?: true }>
-> = ({
-    suggestion,
-    index,
-    highlightedIndex,
-    isSelected,
-    filterValue,
-    classes: classesOverride,
-    getSuggestionText,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+> = props => {
+    const {
+        suggestion,
+        index,
+        highlightedIndex,
+        isSelected,
+        filterValue,
+        classes: classesOverride,
+        getSuggestionText,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     const isHighlighted = highlightedIndex === index;
     const suggestionText = getSuggestionText(suggestion);
     let matches;

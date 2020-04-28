@@ -72,7 +72,7 @@ const defaultFilter = {};
  * @param {string} option.basePath basepath to current resource
  * @param {number} option.page the page number
  * @param {number} option.perPage the number of item per page
- * @param {object} option.sort the sort to apply to the referenced records
+ * @param {Object} option.sort the sort to apply to the referenced records
  *
  * @returns {ReferenceManyProps} The reference many props
  */

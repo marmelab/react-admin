@@ -8,6 +8,7 @@ import {
 } from './useListController';
 import useRecordSelection from './useRecordSelection';
 import useVersion from './useVersion';
+import useExpanded from './useExpanded';
 import useFilterState from './useFilterState';
 import useSortState, { SortProps } from './useSortState';
 import usePaginationState, { PaginationProps } from './usePaginationState';
@@ -31,6 +32,7 @@ export {
     useShowController,
     useRecordSelection,
     useVersion,
+    useExpanded,
     useFilterState,
     useSortState,
     usePaginationState,

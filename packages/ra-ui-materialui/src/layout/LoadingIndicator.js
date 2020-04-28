@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { useRefreshWhenVisible } from 'ra-core';
 
 import RefreshIconButton from '../button/RefreshIconButton';
 
@@ -16,9 +17,11 @@ const useStyles = makeStyles(
     { name: 'RaLoadingIndicator' }
 );
 
-const LoadingIndicator = ({ classes: classesOverride, className, ...rest }) => {
+const LoadingIndicator = props => {
+    const { classes: classesOverride, className, ...rest } = props;
+    useRefreshWhenVisible();
     const loading = useSelector(state => state.admin.loading > 0);
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useStyles(props);
     return loading ? (
         <CircularProgress
             className={classNames('app-loader', classes.loader, className)}

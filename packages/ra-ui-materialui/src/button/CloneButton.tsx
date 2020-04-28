@@ -29,7 +29,7 @@ export const CloneButton: FC<CloneButtonProps> = ({
         }
         label={label}
         onClick={stopPropagation}
-        {...sanitizeRestProps(rest)}
+        {...rest}
     >
         {icon}
     </Button>
@@ -41,17 +41,6 @@ const defaultIcon = <Queue />;
 const stopPropagation = e => e.stopPropagation();
 
 const omitId = ({ id, ...rest }: Record) => rest;
-
-const sanitizeRestProps = ({
-    // the next 6 props are injected by Toolbar
-    handleSubmit,
-    handleSubmitWithRedirect,
-    invalid,
-    pristine,
-    saving,
-    submitOnEnter,
-    ...rest
-}: any) => rest;
 
 interface Props {
     basePath?: string;

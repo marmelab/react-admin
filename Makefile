@@ -37,6 +37,14 @@ build-ra-ui-materialui:
 	@echo "Transpiling ra-ui-materialui files...";
 	@cd ./packages/ra-ui-materialui && yarn -s build
 
+build-ra-language-english:
+	@echo "Transpiling ra-language-english files...";
+	@cd ./packages/ra-language-english && yarn -s build
+
+build-ra-language-french:
+	@echo "Transpiling ra-language-french files...";
+	@cd ./packages/ra-language-french && yarn -s build
+
 build-react-admin:
 	@echo "Transpiling react-admin files...";
 	@rm -rf ./packages/react-admin/docs
@@ -80,7 +88,7 @@ build-data-generator:
 	@echo "Transpiling data-generator files...";
 	@cd ./examples/data-generator && yarn -s build
 
-build: build-ra-core build-ra-ui-materialui build-ra-data-fakerest build-ra-data-json-server build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphcool build-ra-data-graphql-simple build-ra-i18n-polyglot build-ra-input-rich-text build-data-generator build-react-admin  ## compile ES6 files to JS
+build: build-ra-core build-ra-ui-materialui build-ra-data-fakerest build-ra-data-json-server build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphcool build-ra-data-graphql-simple build-ra-i18n-polyglot build-ra-input-rich-text build-data-generator build-ra-language-english build-ra-language-french build-react-admin  ## compile ES6 files to JS
 
 doc: ## compile doc as html and launch doc web server
 	@yarn -s doc
@@ -118,7 +126,7 @@ test-unit-watch: ## launch unit tests and watch for changes
 	echo "Running unit tests..."; \
 	yarn -s test-unit --watch; \
 
-test-e2e: ## launch end-to-end tests
+test-e2e: ## launch end-to-end tests (ex. BROWSER=firefox make test-e2e)
 	@if [ "$(build)" != "false" ]; then \
 		echo 'Building example code (call "make build=false test-e2e" to skip the build)...'; \
 		cd examples/simple && BABEL_ENV=cjs yarn -s build; \

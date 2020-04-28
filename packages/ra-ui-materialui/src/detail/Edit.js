@@ -72,31 +72,36 @@ Edit.propTypes = {
     successMessage: PropTypes.string,
 };
 
-export const EditView = ({
-    actions,
-    aside,
-    basePath,
-    children,
-    classes: classesOverride,
-    className,
-    component: Content,
-    defaultTitle,
-    hasList,
-    hasShow,
-    record,
-    redirect,
-    resource,
-    save,
-    saving,
-    title,
-    undoable,
-    version,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
-    if (typeof actions === 'undefined' && hasShow) {
-        actions = <DefaultActions />;
-    }
+export const EditView = props => {
+    const {
+        actions,
+        aside,
+        basePath,
+        children,
+        classes: classesOverride,
+        className,
+        component: Content,
+        defaultTitle,
+        hasList,
+        hasShow,
+        record,
+        redirect,
+        resource,
+        save,
+        saving,
+        title,
+        undoable,
+        version,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
+    const finalActions =
+        typeof actions === 'undefined' && hasShow ? (
+            <DefaultActions />
+        ) : (
+            actions
+        );
+
     if (!children) {
         return null;
     }
@@ -110,19 +115,19 @@ export const EditView = ({
                 record={record}
                 defaultTitle={defaultTitle}
             />
-            {actions &&
-                cloneElement(actions, {
+            {finalActions &&
+                cloneElement(finalActions, {
                     basePath,
                     data: record,
                     hasShow,
                     hasList,
                     resource,
                     //  Ensure we don't override any user provided props
-                    ...actions.props,
+                    ...finalActions.props,
                 })}
             <div
                 className={classnames(classes.main, {
-                    [classes.noActions]: !actions,
+                    [classes.noActions]: !finalActions,
                 })}
             >
                 <Content className={classes.card}>

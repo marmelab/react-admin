@@ -1,25 +1,32 @@
+os: linux
+dist: trusty
+
 language: node_js
-sudo: required
 node_js:
   - 'lts/*'
+
 addons:
   chrome: stable
+
 env:
   global:
     - DISPLAY=:99.0
     - NODE_ENV=test
-dist: trusty
+
 cache:
   yarn: true
   directories:
     - ~/.cache
+
 before_install:
-    - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
-    - curl -o- -L https://yarnpkg.com/install.sh | bash
-    - source ~/.bashrc
-    - sh -e /etc/init.d/xvfb start
-    - sleep 3
+  - '/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16'
+  - curl -o- -L https://yarnpkg.com/install.sh | bash
+  - source ~/.bashrc
+  - sh -e /etc/init.d/xvfb start
+  - sleep 3
+
 script: make test
+
 branches:
   only:
     - master

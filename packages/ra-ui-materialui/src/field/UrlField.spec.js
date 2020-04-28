@@ -1,42 +1,46 @@
 import React from 'react';
-import assert from 'assert';
-import { render } from '@testing-library/react';
+import expect from 'expect';
+import { render, cleanup } from '@testing-library/react';
 import UrlField from './UrlField';
 
+const url = 'https://en.wikipedia.org/wiki/HAL_9000';
+
 describe('<UrlField />', () => {
-    it('should display a link', () => {
-        const record = { website: 'https://en.wikipedia.org/wiki/HAL_9000' };
-        const { container } = render(
+    afterEach(cleanup);
+
+    it('should render a link', () => {
+        const record = { website: url };
+        const { getByText } = render(
             <UrlField record={record} source="website" />
         );
-        assert.equal(
-            container.innerHTML,
-            '<a href="https://en.wikipedia.org/wiki/HAL_9000">https://en.wikipedia.org/wiki/HAL_9000</a>'
-        );
+        const link = getByText(url);
+        expect(link.tagName).toEqual('A');
+        expect(link.href).toEqual(url);
     });
 
     it('should handle deep fields', () => {
         const record = {
-            foo: { website: 'https://en.wikipedia.org/wiki/HAL_9000' },
+            foo: { website: url },
         };
-        const { container } = render(
+        const { getByText } = render(
             <UrlField record={record} source="foo.website" />
         );
-        assert.equal(
-            container.innerHTML,
-            '<a href="https://en.wikipedia.org/wiki/HAL_9000">https://en.wikipedia.org/wiki/HAL_9000</a>'
-        );
+        const link = getByText(url);
+        expect(link.href).toEqual(url);
     });
 
-    it('should render the emptyText when value is null', () => {
-        const { queryByText } = render(
-            <UrlField
-                record={{ url: null }}
-                className="foo"
-                source="url"
-                emptyText="NA"
-            />
-        );
-        assert.notEqual(queryByText('NA'), null);
-    });
+    it.each([null, undefined])(
+        'should render the emptyText when value is %s',
+        url => {
+            const { getByText } = render(
+                <UrlField
+                    record={{ url }}
+                    className="foo"
+                    source="url"
+                    emptyText="NA"
+                />
+            );
+            expect(getByText('NA')).not.toEqual(null);
+        }
+    );
 });

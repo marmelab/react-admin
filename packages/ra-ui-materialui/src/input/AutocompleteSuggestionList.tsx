@@ -23,15 +23,15 @@ interface Props {
     suggestionsContainerProps?: any;
 }
 
-const AutocompleteSuggestionList: FunctionComponent<Props> = ({
-    children,
-    isOpen,
-    menuProps,
-    inputEl,
-    classes: classesOverride = undefined,
-    suggestionsContainerProps,
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+const AutocompleteSuggestionList: FunctionComponent<Props> = props => {
+    const {
+        children,
+        isOpen,
+        menuProps,
+        inputEl,
+        suggestionsContainerProps,
+    } = props;
+    const classes = useStyles(props);
 
     return (
         <Popper

@@ -14,8 +14,9 @@ const useStyles = makeStyles(
     { name: 'RaFormInput' }
 );
 
-const FormInput = ({ input, classes: classesOverride, ...rest }) => {
-    const classes = useStyles({ classes: classesOverride });
+const FormInput = props => {
+    const { input, classes: classesOverride, ...rest } = props;
+    const classes = useStyles(props);
     return input ? (
         <div
             className={classnames(

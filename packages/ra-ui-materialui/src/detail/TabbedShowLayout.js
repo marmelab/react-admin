@@ -72,21 +72,22 @@ const useStyles = makeStyles(
  *     );
  *     export default App;
  */
-const TabbedShowLayout = ({
-    basePath,
-    children,
-    classes: classesOverride,
-    className,
-    record,
-    resource,
-    version,
-    value,
-    tabs,
-    ...rest
-}) => {
+const TabbedShowLayout = props => {
+    const {
+        basePath,
+        children,
+        classes: classesOverride,
+        className,
+        record,
+        resource,
+        version,
+        value,
+        tabs,
+        ...rest
+    } = props;
     const match = useRouteMatch();
 
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useStyles(props);
     return (
         <div className={className} key={version} {...sanitizeRestProps(rest)}>
             {cloneElement(tabs, {}, children)}

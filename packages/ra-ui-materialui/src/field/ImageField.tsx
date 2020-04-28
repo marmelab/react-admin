@@ -28,18 +28,19 @@ interface Props extends FieldProps {
     classes?: object;
 }
 
-const ImageField: FunctionComponent<Props & InjectedFieldProps> = ({
-    className,
-    classes: classesOverride,
-    emptyText,
-    record,
-    source,
-    src,
-    title,
-    ...rest
-}) => {
+const ImageField: FunctionComponent<Props & InjectedFieldProps> = props => {
+    const {
+        className,
+        classes: classesOverride,
+        emptyText,
+        record,
+        source,
+        src,
+        title,
+        ...rest
+    } = props;
     const sourceValue = get(record, source);
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useStyles(props);
     if (!sourceValue) {
         return emptyText ? (
             <Typography

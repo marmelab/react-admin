@@ -120,7 +120,7 @@ export const ListView = props => {
         ...rest
     } = props;
     useCheckMinimumRequiredProps('List', ['children'], props);
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useStyles(props);
     const {
         defaultTitle,
         version,

@@ -29,6 +29,8 @@ Here are all the props accepted by the component:
 
 - [The `<Admin>` Component](#the-admin-component)
   - [`dataProvider`](#dataprovider)
+  - [`authProvider`](#authprovider)
+  - [`i18nProvider`](#internationalization)
   - [`title`](#title)
   - [`dashboard`](#dashboard)
   - [`catchAll`](#catchall)
@@ -38,7 +40,6 @@ Here are all the props accepted by the component:
   - [`customReducers`](#customreducers)
   - [`customSagas`](#customsagas)
   - [`customRoutes`](#customroutes)
-  - [`authProvider`](#authprovider)
   - [`loginPage`](#loginpage)
   - [`logoutButton`](#logoutbutton)
   - [`initialState`](#initialstate)
@@ -192,7 +193,7 @@ const Menu = ({ onMenuClick, logout }) => {
             <MenuItemLink
                 to="/custom-route"
                 primaryText="Miscellaneous"
-                leftIcon={LabelIcon}
+                leftIcon={<LabelIcon />}
                 onClick={onMenuClick}
                 sidebarIsOpen={open}
             />

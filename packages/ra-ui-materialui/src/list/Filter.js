@@ -15,7 +15,7 @@ const useStyles = makeStyles(
 );
 
 const Filter = props => {
-    const classes = useStyles({ classes: props.classes });
+    const classes = useStyles(props);
     const renderButton = () => {
         const {
             classes: classesOverride,

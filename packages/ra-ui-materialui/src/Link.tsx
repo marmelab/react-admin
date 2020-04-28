@@ -22,14 +22,15 @@ export interface LinkProps extends RRLinkProps {
     className?: string;
 }
 
-const Link: FC<LinkProps> = ({
-    to,
-    children,
-    classes: classesOverride,
-    className,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+const Link: FC<LinkProps> = props => {
+    const {
+        to,
+        children,
+        classes: classesOverride,
+        className,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     return (
         <RRLink
             to={to}

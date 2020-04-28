@@ -94,6 +94,11 @@ ul.sidenav code {
     font-size: 0.9em;
 }
 
+.table-of-contents {
+    overflow-y: auto;
+    height: calc(100% - 75px);
+}
+
 .table-of-contents a.active {
     font-weight: 500;
     padding-left: 14px;
@@ -238,7 +243,7 @@ ul.sidenav code {
     font-size: 1.75em;
 }
 .markdown-section h3 {
-    margin-top: 0.85em;
+    margin-top: 1.5em;
     font-size: 1em;
 }
 .markdown-section code,

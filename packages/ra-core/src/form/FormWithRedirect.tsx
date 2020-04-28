@@ -1,11 +1,14 @@
-import React, { useRef, useCallback, useMemo } from 'react';
-import { Form } from 'react-final-form';
+import React, { FC, useRef, useCallback, useMemo } from 'react';
+import { Form, FormProps } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 
 import useInitializeFormWithRecord from './useInitializeFormWithRecord';
+import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
 import sanitizeEmptyValues from './sanitizeEmptyValues';
 import getFormInitialValues from './getFormInitialValues';
 import FormContext from './FormContext';
+import { Record } from '../types';
+import { RedirectionSideEffect } from '../sideEffect';
 
 /**
  * Wrapper around react-final-form's Form to handle redirection on submit,
@@ -22,21 +25,22 @@ import FormContext from './FormContext';
  *    />
  * );
  *
- * @typedef {object} Props the props you can use (other props are injected by Create or Edit)
- * @prop {object} initialValues
- * @prop {function} validate
- * @prop {function} save
+ * @typedef {Object} Props the props you can use (other props are injected by Create or Edit)
+ * @prop {Object} initialValues
+ * @prop {Function} validate
+ * @prop {Function} save
  * @prop {boolean} submitOnEnter
  * @prop {string} redirect
  *
  * @param {Prop} props
  */
-const FormWithRedirect = ({
-    initialValues,
+const FormWithRedirect: FC<FormWithRedirectOwnProps & FormProps> = ({
     debug,
     decorators,
     defaultValue,
+    destroyOnUnregister,
     form,
+    initialValues,
     initialValuesEqual,
     keepDirtyOnReinitialize = true,
     mutators = arrayMutators as any, // FIXME see https://github.com/final-form/react-final-form/issues/704 and https://github.com/microsoft/TypeScript/issues/35771
@@ -48,6 +52,7 @@ const FormWithRedirect = ({
     validate,
     validateOnBlur,
     version,
+    warnWhenUnsavedChanges,
     ...props
 }) => {
     let redirect = useRef(props.redirect);
@@ -102,6 +107,7 @@ const FormWithRedirect = ({
                 key={version} // support for refresh button
                 debug={debug}
                 decorators={decorators}
+                destroyOnUnregister={destroyOnUnregister}
                 form={form}
                 initialValues={finalInitialValues}
                 initialValuesEqual={initialValuesEqual}
@@ -121,12 +127,30 @@ const FormWithRedirect = ({
                         saving={formProps.submitting || saving}
                         render={render}
                         save={save}
+                        warnWhenUnsavedChanges={warnWhenUnsavedChanges}
                     />
                 )}
             </Form>
         </FormContext.Provider>
     );
 };
+
+export interface FormWithRedirectOwnProps {
+    defaultValue?: any;
+    record?: Record;
+    save: (
+        data: Partial<Record>,
+        redirectTo: RedirectionSideEffect,
+        options?: {
+            onSuccess?: (data?: any) => void;
+            onFailure?: (error: any) => void;
+        }
+    ) => void;
+    redirect: RedirectionSideEffect;
+    saving: boolean;
+    version: number;
+    warnWhenUnsavedChanges?: boolean;
+}
 
 const defaultSubscription = {
     submitting: true,
@@ -135,9 +159,10 @@ const defaultSubscription = {
     invalid: true,
 };
 
-const FormView = ({ render, ...props }) => {
+const FormView = ({ render, warnWhenUnsavedChanges, ...props }) => {
     // if record changes (after a getOne success or a refresh), the form must be updated
     useInitializeFormWithRecord(props.record);
+    useWarnWhenUnsavedChanges(warnWhenUnsavedChanges);
 
     const { redirect, setRedirect, handleSubmit } = props;
 

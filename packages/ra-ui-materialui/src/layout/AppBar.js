@@ -2,14 +2,17 @@ import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
-import MuiAppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import {
+    AppBar as MuiAppBar,
+    IconButton,
+    Toolbar,
+    Tooltip,
+    Typography,
+    makeStyles,
+    useMediaQuery,
+} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { toggleSidebar } from 'ra-core';
+import { toggleSidebar, useTranslate } from 'ra-core';
 
 import LoadingIndicator from './LoadingIndicator';
 import DefaultUserMenu from './UserMenu';
@@ -47,6 +50,7 @@ const useStyles = makeStyles(
     }),
     { name: 'RaAppBar' }
 );
+
 /**
  * The AppBar component renders a custom MuiAppBar.
  *
@@ -74,19 +78,23 @@ const useStyles = makeStyles(
  *    );
  *};
  */
-const AppBar = ({
-    children,
-    classes: classesOverride,
-    className,
-    color = 'secondary',
-    logout,
-    open,
-    userMenu,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+const AppBar = props => {
+    const {
+        children,
+        classes: classesOverride,
+        className,
+        color = 'secondary',
+        logo,
+        logout,
+        open,
+        title,
+        userMenu,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     const dispatch = useDispatch();
     const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+    const translate = useTranslate();
 
     return (
         <HideOnScroll>
@@ -96,20 +104,31 @@ const AppBar = ({
                     variant={isXSmall ? 'regular' : 'dense'}
                     className={classes.toolbar}
                 >
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={() => dispatch(toggleSidebar())}
-                        className={classNames(classes.menuButton)}
+                    <Tooltip
+                        title={translate(
+                            open
+                                ? 'ra.action.close_menu'
+                                : 'ra.action.open_menu',
+                            {
+                                _: 'Open/Close menu',
+                            }
+                        )}
+                        enterDelay={500}
                     >
-                        <MenuIcon
-                            classes={{
-                                root: open
-                                    ? classes.menuButtonIconOpen
-                                    : classes.menuButtonIconClosed,
-                            }}
-                        />
-                    </IconButton>
+                        <IconButton
+                            color="inherit"
+                            onClick={() => dispatch(toggleSidebar())}
+                            className={classNames(classes.menuButton)}
+                        >
+                            <MenuIcon
+                                classes={{
+                                    root: open
+                                        ? classes.menuButtonIconOpen
+                                        : classes.menuButtonIconClosed,
+                                }}
+                            />
+                        </IconButton>
+                    </Tooltip>
                     {Children.count(children) === 0 ? (
                         <Typography
                             variant="h6"

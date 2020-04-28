@@ -41,17 +41,18 @@ const useStyles = makeStyles(
     { name: 'RaBulkActionsToolbar' }
 );
 
-const BulkActionsToolbar = ({
-    basePath,
-    classes: classesOverride,
-    filterValues,
-    label,
-    resource,
-    selectedIds,
-    children,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+const BulkActionsToolbar = props => {
+    const {
+        basePath,
+        classes: classesOverride,
+        filterValues,
+        label,
+        resource,
+        selectedIds,
+        children,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     const translate = useTranslate();
 
     return (

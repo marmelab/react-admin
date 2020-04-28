@@ -38,12 +38,19 @@ const useStyles = makeStyles(
 
 const Notification: React.FunctionComponent<
     Props & Omit<SnackbarProps, 'open'>
-> = ({ type, className, autoHideDuration, ...rest }) => {
+> = props => {
+    const {
+        classes: classesOverride,
+        type,
+        className,
+        autoHideDuration,
+        ...rest
+    } = props;
     const [open, setOpen] = useState(false);
     const notification = useSelector(getNotification);
     const dispatch = useDispatch();
     const translate = useTranslate();
-    const styles = useStyles({});
+    const styles = useStyles(props);
 
     useEffect(() => {
         setOpen(!!notification);

@@ -106,15 +106,18 @@ describe('<DateField />', () => {
         assert.notEqual(queryByText(date), null);
     });
 
-    it('should render the emptyText when value is null', () => {
-        const { queryByText } = render(
-            <DateField
-                record={{ foo: null }}
-                source="foo"
-                locales="fr-FR"
-                emptyText="NA"
-            />
-        );
-        assert.notEqual(queryByText('NA'), null);
-    });
+    it.each([null, undefined])(
+        'should render the emptyText when value is %s',
+        foo => {
+            const { queryByText } = render(
+                <DateField
+                    record={{ foo }}
+                    source="foo"
+                    locales="fr-FR"
+                    emptyText="NA"
+                />
+            );
+            assert.notEqual(queryByText('NA'), null);
+        }
+    );
 });

@@ -1,11 +1,22 @@
 {
     "name": "ra-language-french",
-    "version": "3.2.0",
+    "version": "3.4.1",
     "description": "French messages for react-admin, the frontend framework for building admin applications on top of REST/GraphQL services",
-    "main": "index.js",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/marmelab/react-admin.git"
+    },
+    "main": "lib/index.js",
+    "module": "esm/index.js",
+    "types": "esm/index.d.ts",
+    "scripts": {
+        "build": "yarn run build-cjs && yarn run build-esm",
+        "build-cjs": "rimraf ./lib && tsc",
+        "build-esm": "rimraf ./esm && tsc --outDir esm --module es2015",
+        "watch": "tsc --outDir esm --module es2015 --watch"
+    },
+    "dependencies": {
+        "ra-core": "^3.4.1"
     },
     "keywords": [
         "react",

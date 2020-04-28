@@ -18,18 +18,21 @@ const useStyles = makeStyles(
 interface Props {
     children: ReactNode;
     className?: string;
+    classes?: object;
     onRemove: () => void;
     file: any;
 }
 
-const FileInputPreview: FunctionComponent<Props> = ({
-    children,
-    className,
-    onRemove,
-    file,
-    ...rest
-}) => {
-    const classes = useStyles(rest);
+const FileInputPreview: FunctionComponent<Props> = props => {
+    const {
+        children,
+        classes: classesOverride,
+        className,
+        onRemove,
+        file,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     const translate = useTranslate();
 
     useEffect(() => {

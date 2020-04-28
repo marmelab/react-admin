@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import debounce from 'lodash/debounce';
+import isEqual from 'lodash/isEqual';
 import { Filter } from '../types';
 
 interface UseFilterStateOptions {
@@ -56,14 +57,14 @@ export default ({
     debounceTime = 500,
 }: UseFilterStateOptions): UseFilterStateProps => {
     const permanentFilterProp = useRef(permanentFilter);
-    const latestValue = useRef();
+    const latestValue = useRef<string>();
     const [filter, setFilterValue] = useState({
         ...permanentFilter,
         ...filterToQuery(''),
     });
 
     useEffect(() => {
-        if (permanentFilterProp.current !== permanentFilter) {
+        if (!isEqual(permanentFilterProp.current, permanentFilter)) {
             permanentFilterProp.current = permanentFilter;
             setFilterValue({
                 ...permanentFilter,
@@ -73,14 +74,14 @@ export default ({
     }, [permanentFilter, permanentFilterProp, filterToQuery]);
 
     const setFilter = useCallback(
-        debounce(value => {
+        debounce((value: string) => {
             setFilterValue({
                 ...permanentFilter,
                 ...filterToQuery(value),
             });
             latestValue.current = value;
         }, debounceTime),
-        []
+        [permanentFilter]
     );
 
     return {

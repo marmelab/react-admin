@@ -25,10 +25,16 @@ const TestComponent = ({ error }: { error?: any }) => {
     return <div>{loggedOut ? '' : 'logged in'}</div>;
 };
 
+let loggedIn = true;
+
 const authProvider: AuthProvider = {
     login: () => Promise.reject('bad method'),
-    logout: () => Promise.reject('bad method'),
-    checkAuth: () => Promise.reject('bad method'),
+    logout: () => {
+        loggedIn = false;
+        return Promise.resolve();
+    },
+    checkAuth: () =>
+        loggedIn ? Promise.resolve() : Promise.reject('bad method'),
     checkError: params => {
         if (params instanceof Error && params.message === 'denied') {
             return Promise.reject(new Error('logout'));
@@ -39,7 +45,11 @@ const authProvider: AuthProvider = {
 };
 
 describe('useLogoutIfAccessDenied', () => {
-    afterEach(cleanup);
+    afterEach(() => {
+        logout.mockClear();
+        notify.mockClear();
+        cleanup();
+    });
 
     it('should not logout if passed no error', async () => {
         const { queryByText } = render(
@@ -68,6 +78,19 @@ describe('useLogoutIfAccessDenied', () => {
     it('should logout if passed an error that makes the authProvider throw', async () => {
         const { queryByText } = render(
             <AuthContext.Provider value={authProvider}>
+                <TestComponent error={new Error('denied')} />
+            </AuthContext.Provider>
+        );
+        await wait();
+        expect(logout).toHaveBeenCalledTimes(1);
+        expect(notify).toHaveBeenCalledTimes(1);
+        expect(queryByText('logged in')).toBeNull();
+    });
+
+    it('should not send multiple notifications if already logged out', async () => {
+        const { queryByText } = render(
+            <AuthContext.Provider value={authProvider}>
+                <TestComponent error={new Error('denied')} />
                 <TestComponent error={new Error('denied')} />
             </AuthContext.Provider>
         );

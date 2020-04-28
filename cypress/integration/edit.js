@@ -68,6 +68,41 @@ describe('Edit Page', () => {
                 expect(el).to.have.value(date)
             );
         });
+
+        it('should change reference list correctly when changing filter', () => {
+            const EditPostTagsPage = editPageFactory('/#/posts/13');
+            EditPostTagsPage.navigate();
+            EditPostTagsPage.gotoTab(3);
+
+            // Music is selected by default
+            cy.get(
+                EditPostTagsPage.elements.input('tags', 'reference-array-input')
+            )
+                .get(`div[role=button]`)
+                .contains('Music')
+                .should('exist');
+
+            EditPostTagsPage.clickInput('change-filter');
+
+            // Music should not be selected anymore after filter reset
+            cy.get(
+                EditPostTagsPage.elements.input('tags', 'reference-array-input')
+            )
+                .get(`div[role=button]`)
+                .contains('Music')
+                .should('not.exist');
+
+            EditPostTagsPage.clickInput('tags', 'reference-array-input');
+
+            // Music should not be visible in the list after filter reset
+            cy.get('div[role=listbox]')
+                .contains('Music')
+                .should('not.exist');
+
+            cy.get('div[role=listbox]')
+                .contains('Photo')
+                .should('exist');
+        });
     });
 
     it('should fill form correctly even when switching from one form type to another', () => {

@@ -6,9 +6,9 @@ import { Pagination } from '../types';
  * @type {Object}
  * @property {number} page: The page number.
  * @property {number} perPage: The number of item per page.
- * @property {function} setPage: Set the page number
- * @property {function} setPerPage: Set the per page number
- * @property {function} setPagination: Set page and perPage pagination numbers
+ * @property {Function} setPage: Set the page number
+ * @property {Function} setPerPage: Set the per page number
+ * @property {Function} setPagination: Set page and perPage pagination numbers
  */
 export interface PaginationProps {
     page: number;

@@ -19,23 +19,26 @@ import {
     FormContext,
 } from 'ra-core';
 
-const SaveButton: FC<SaveButtonProps> = ({
-    className,
-    classes: classesOverride = {},
-    invalid,
-    label = 'ra.action.save',
-    pristine,
-    redirect,
-    saving,
-    submitOnEnter,
-    variant = 'contained',
-    icon = defaultIcon,
-    onClick,
-    handleSubmitWithRedirect,
-    onSave,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+import { sanitizeButtonRestProps } from './Button';
+
+const SaveButton: FC<SaveButtonProps> = props => {
+    const {
+        className,
+        classes: classesOverride,
+        invalid,
+        label = 'ra.action.save',
+        pristine,
+        redirect,
+        saving,
+        submitOnEnter,
+        variant = 'contained',
+        icon = defaultIcon,
+        onClick,
+        handleSubmitWithRedirect,
+        onSave,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     const notify = useNotify();
     const translate = useTranslate();
     const { setOnSave } = useContext(FormContext);
@@ -76,7 +79,7 @@ const SaveButton: FC<SaveButtonProps> = ({
             onClick={handleClick}
             color={saving ? 'default' : 'primary'}
             aria-label={displayedLabel}
-            {...sanitizeRestProps(rest)}
+            {...sanitizeButtonRestProps(rest)}
         >
             {saving ? (
                 <CircularProgress
@@ -111,15 +114,6 @@ const useStyles = makeStyles(
     { name: 'RaSaveButton' }
 );
 
-const sanitizeRestProps = ({
-    basePath,
-    handleSubmit,
-    record,
-    resource,
-    undoable,
-    ...rest
-}: SaveButtonProps) => rest;
-
 interface Props {
     classes?: object;
     className?: string;
@@ -134,7 +128,7 @@ interface Props {
     saving?: boolean;
     submitOnEnter?: boolean;
     variant?: string;
-    // May be injected by Toolbar - sanitized in SaveButton
+    // May be injected by Toolbar - sanitized in Button
     basePath?: string;
     handleSubmit?: (event?: SyntheticEvent<HTMLFormElement>) => Promise<Object>;
     record?: Record;

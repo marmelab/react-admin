@@ -68,27 +68,32 @@ Show.propTypes = {
     title: PropTypes.node,
 };
 
-export const ShowView = ({
-    actions,
-    aside,
-    basePath,
-    children,
-    classes: classesOverride,
-    className,
-    component: Content,
-    defaultTitle,
-    hasEdit,
-    hasList,
-    record,
-    resource,
-    title,
-    version,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
-    if (typeof actions === 'undefined' && hasEdit) {
-        actions = <DefaultActions />;
-    }
+export const ShowView = props => {
+    const {
+        actions,
+        aside,
+        basePath,
+        children,
+        classes: classesOverride,
+        className,
+        component: Content,
+        defaultTitle,
+        hasEdit,
+        hasList,
+        record,
+        resource,
+        title,
+        version,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
+    const finalActions =
+        typeof actions === 'undefined' && hasEdit ? (
+            <DefaultActions />
+        ) : (
+            actions
+        );
+
     if (!children) {
         return null;
     }
@@ -102,19 +107,19 @@ export const ShowView = ({
                 record={record}
                 defaultTitle={defaultTitle}
             />
-            {actions &&
-                cloneElement(actions, {
+            {finalActions &&
+                cloneElement(finalActions, {
                     basePath,
                     data: record,
                     hasList,
                     hasEdit,
                     resource,
                     //  Ensure we don't override any user provided props
-                    ...actions.props,
+                    ...finalActions.props,
                 })}
             <div
                 className={classnames(classes.main, {
-                    [classes.noActions]: !actions,
+                    [classes.noActions]: !finalActions,
                 })}
             >
                 <Content className={classes.card}>

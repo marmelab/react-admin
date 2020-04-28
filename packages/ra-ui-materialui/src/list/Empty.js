@@ -29,8 +29,9 @@ const useStyles = makeStyles(
     { name: 'RaEmpty' }
 );
 
-const Empty = ({ resource, basePath }) => {
-    const classes = useStyles();
+const Empty = props => {
+    const { resource, basePath } = props;
+    const classes = useStyles(props);
     const translate = useTranslate();
 
     const resourceName = inflection.humanize(

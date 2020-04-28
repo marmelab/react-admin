@@ -98,28 +98,30 @@ const useStyles = makeStyles(
  */
 const CheckboxGroupInput: FunctionComponent<
     ChoicesProps & InputProps<CheckboxProps> & FormControlProps
-> = ({
-    choices = [],
-    format,
-    helperText,
-    label,
-    margin = 'dense',
-    onBlur,
-    onChange,
-    onFocus,
-    optionText,
-    optionValue,
-    options,
-    parse,
-    resource,
-    row,
-    source,
-    translate,
-    translateChoice,
-    validate,
-    ...rest
-}) => {
-    const classes = useStyles({});
+> = props => {
+    const {
+        choices = [],
+        classes: classesOverride,
+        format,
+        helperText,
+        label,
+        margin = 'dense',
+        onBlur,
+        onChange,
+        onFocus,
+        optionText,
+        optionValue,
+        options,
+        parse,
+        resource,
+        row,
+        source,
+        translate,
+        translateChoice,
+        validate,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
 
     const {
         id,

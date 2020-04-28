@@ -145,31 +145,33 @@ const SelectInput: FunctionComponent<
     ChoicesProps &
         InputProps<TextFieldProps> &
         Omit<TextFieldProps, 'label' | 'helperText'>
-> = ({
-    allowEmpty,
-    choices = [],
-    className,
-    disableValue,
-    emptyText,
-    emptyValue,
-    format,
-    helperText,
-    label,
-    onBlur,
-    onChange,
-    onFocus,
-    options,
-    optionText,
-    optionValue,
-    parse,
-    resource,
-    source,
-    translateChoice,
-    validate,
-    ...rest
-}) => {
+> = props => {
+    const {
+        allowEmpty,
+        choices = [],
+        classes: classesOverride,
+        className,
+        disableValue,
+        emptyText,
+        emptyValue,
+        format,
+        helperText,
+        label,
+        onBlur,
+        onChange,
+        onFocus,
+        options,
+        optionText,
+        optionValue,
+        parse,
+        resource,
+        source,
+        translateChoice,
+        validate,
+        ...rest
+    } = props;
     const translate = useTranslate();
-    const classes = useStyles({});
+    const classes = useStyles(props);
     const { getChoiceText, getChoiceValue } = useChoices({
         optionText,
         optionValue,
@@ -273,6 +275,7 @@ SelectInput.propTypes = {
     ]).isRequired,
     optionValue: PropTypes.string.isRequired,
     disableValue: PropTypes.string,
+    resettable: PropTypes.bool,
     resource: PropTypes.string,
     source: PropTypes.string,
     translateChoice: PropTypes.bool,

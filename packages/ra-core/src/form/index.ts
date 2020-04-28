@@ -13,6 +13,7 @@ import useChoices, {
     OptionText,
 } from './useChoices';
 import useSuggestions from './useSuggestions';
+import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
 
 export {
     addField,
@@ -30,6 +31,7 @@ export {
     useSuggestions,
     ValidationError,
     FormContext,
+    useWarnWhenUnsavedChanges,
 };
 export { isRequired } from './FormField';
 export * from './validate';

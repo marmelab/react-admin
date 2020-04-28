@@ -33,20 +33,23 @@ const useStyles = makeStyles(
     { name: 'RaBulkDeleteWithConfirmButton' }
 );
 
-const BulkDeleteWithConfirmButton: FC<BulkDeleteWithConfirmButtonProps> = ({
-    basePath,
-    classes: classesOverride,
-    confirmTitle,
-    confirmContent,
-    icon,
-    label,
-    onClick,
-    resource,
-    selectedIds,
-    ...rest
-}) => {
+const BulkDeleteWithConfirmButton: FC<
+    BulkDeleteWithConfirmButtonProps
+> = props => {
+    const {
+        basePath,
+        classes: classesOverride,
+        confirmTitle,
+        confirmContent,
+        icon,
+        label,
+        onClick,
+        resource,
+        selectedIds,
+        ...rest
+    } = props;
     const [isOpen, setOpen] = useState(false);
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useStyles(props);
     const notify = useNotify();
     const unselectAll = useUnselectAll();
     const refresh = useRefresh();

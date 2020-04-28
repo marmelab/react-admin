@@ -408,7 +408,7 @@ describe('<AutocompleteInput />', () => {
 
         it('should allow customized rendering of suggesting item', () => {
             const SuggestionItem = ({ record }: { record?: any }) => (
-                <div aria-label={record.name} />
+                <div aria-label={record && record.name} />
             );
 
             const { getByLabelText, queryByLabelText } = render(
@@ -418,8 +418,8 @@ describe('<AutocompleteInput />', () => {
                         <AutocompleteInput
                             {...defaultProps}
                             optionText={<SuggestionItem />}
-                            inputText={record => record.name}
-                            matchSuggestion={(filter, choice) => true}
+                            inputText={record => record && record.name}
+                            matchSuggestion={() => true}
                             choices={[
                                 { id: 1, name: 'bar' },
                                 { id: 2, name: 'foo' },
@@ -571,5 +571,23 @@ describe('<AutocompleteInput />', () => {
         fireEvent.focus(input);
 
         expect(getByLabelText('My Sugggestions Container')).not.toBeNull();
+    });
+
+    describe('Fix issue #4660', () => {
+        it('should accept 0 as an input value', () => {
+            const { queryByDisplayValue } = render(
+                <Form
+                    onSubmit={jest.fn()}
+                    initialValues={{ role: 0 }}
+                    render={() => (
+                        <AutocompleteInput
+                            {...defaultProps}
+                            choices={[{ id: 0, name: 'foo' }]}
+                        />
+                    )}
+                />
+            );
+            expect(queryByDisplayValue('foo')).not.toBeNull();
+        });
     });
 });
