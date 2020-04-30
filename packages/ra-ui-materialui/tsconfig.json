@@ -2,20 +2,8 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "lib",
-    "rootDir": "src",
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true
+    "rootDir": "src"
   },
-  "exclude": [
-    "**/*.spec.ts",
-    "**/*.spec.tsx",
-    "**/*.spec.js"
-  ],
-  "include": [
-    "src"
-  ]
+  "exclude": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.spec.js"],
+  "include": ["src"]
 }
