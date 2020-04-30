@@ -129,11 +129,14 @@ export const ArrayField: FunctionComponent<
     fieldKey,
     ...rest
 }) => {
-    const { ids: initialIds, data: initialData } = record
-        ? getDataAndIds(record, source, fieldKey)
-        : initialState;
-    const [ids, setIds] = useState(initialIds);
-    const [data, setData] = useState(initialData);
+    const [ids, setIds] = useState(() => {
+        const list = get(record, source);
+        if (!list) return [];
+        return fieldKey
+            ? list.map(item => item[fieldKey])
+            : list.map(JSON.stringify);
+    });
+    const [data, setData] = useState(ids);
 
     useEffect(() => {
         const { ids, data } = getDataAndIds(record, source, fieldKey);
