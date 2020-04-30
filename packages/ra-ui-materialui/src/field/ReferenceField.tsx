@@ -119,7 +119,7 @@ ReferenceField.propTypes = {
     resource: PropTypes.string,
     sortBy: PropTypes.string,
     source: PropTypes.string.isRequired,
-    translateChoice: PropTypes.func,
+    translateChoice: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     linkType: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.bool,
@@ -245,7 +245,7 @@ ReferenceFieldView.propTypes = {
         PropTypes.oneOf([false]),
     ]) as React.Validator<string | false>,
     source: PropTypes.string,
-    translateChoice: PropTypes.bool,
+    translateChoice: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
 };
 
 const PureReferenceFieldView = memo(ReferenceFieldView);
