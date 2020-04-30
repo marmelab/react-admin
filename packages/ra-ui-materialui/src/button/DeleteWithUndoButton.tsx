@@ -34,7 +34,7 @@ const DeleteWithUndoButton: FC<DeleteWithUndoButtonProps> = props => {
     const redirect = useRedirect();
     const refresh = useRefresh();
 
-    const [deleteOne, { loading }] = useDelete(resource, record.id, record, {
+    const [deleteOne, { loading }] = useDelete(resource, null, null, {
         action: CRUD_DELETE,
         onSuccess: () => {
             notify('ra.notification.deleted', 'info', { smart_count: 1 }, true);
@@ -53,12 +53,14 @@ const DeleteWithUndoButton: FC<DeleteWithUndoButtonProps> = props => {
     const handleDelete = useCallback(
         event => {
             event.stopPropagation();
-            deleteOne();
+            deleteOne({
+                payload: { id: record.id, previousData: record },
+            });
             if (typeof onClick === 'function') {
                 onClick(event);
             }
         },
-        [deleteOne, onClick]
+        [deleteOne, onClick, record]
     );
 
     return (
