@@ -230,7 +230,9 @@ const AutocompleteInput: FunctionComponent<
         // If we have a value, set the filter to its text so that
         // Downshift displays it correctly
         setFilterValue(
-            typeof input.value === 'undefined' || input.value === null
+            typeof input.value === 'undefined' ||
+                input.value === null ||
+                selectedItem === null
                 ? ''
                 : inputText
                 ? inputText(getChoiceText(selectedItem).props.record)
