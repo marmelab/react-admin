@@ -136,7 +136,20 @@ export const ArrayField: FunctionComponent<
             ? list.map(item => item[fieldKey])
             : list.map(JSON.stringify);
     });
-    const [data, setData] = useState(ids);
+
+    const [data, setData] = useState(() => {
+        const list = get(record, source);
+        if (!list) return {};
+        return fieldKey
+            ? list.reduce((prev, item) => {
+                  prev[item[fieldKey]] = item;
+                  return prev;
+              }, {})
+            : list.reduce((prev, item) => {
+                  prev[JSON.stringify(item)] = item;
+                  return prev;
+              }, {});
+    });
 
     useEffect(() => {
         const { ids, data } = getDataAndIds(record, source, fieldKey);
