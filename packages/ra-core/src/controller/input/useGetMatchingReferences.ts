@@ -106,6 +106,10 @@ const useGetMatchingReferenceSelector = ({
             const referenceResource = getReferenceResource(state, {
                 reference,
             });
+            if (!referenceResource) {
+                throw new Error(`Cannot fetch a reference to "${reference}" (unknown resource).
+You must add <Resource name="${reference}" /> as child of <Admin> to use "${reference}" in a reference`);
+            }
             const possibleValues = getPossibleReferenceValues(state, {
                 referenceSource,
                 resource,
