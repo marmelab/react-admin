@@ -11,7 +11,7 @@ export const CLOSED_DRAWER_WIDTH = 55;
 const useStyles = makeStyles(
     theme => ({
         drawerPaper: {
-            position: 'relative',
+            position: 'sticky',
             height: 'auto',
             overflowX: 'hidden',
             width: props =>
