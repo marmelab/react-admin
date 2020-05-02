@@ -135,6 +135,14 @@ export interface ShowComponentProps<
     id: string;
 }
 
+export interface CreateComponentProps<
+    Params extends ResourceMatch = { id: string },
+    C extends StaticContext = StaticContext,
+    S = H.LocationState
+> extends ResourceComponentProps<Params, C, S> {
+    id: string;
+}
+
 declare global {
     interface Window {
         restServer: any;

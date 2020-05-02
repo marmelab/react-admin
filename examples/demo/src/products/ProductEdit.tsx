@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import {
     Datagrid,
     DateField,
@@ -22,10 +22,16 @@ import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from '../reviews/StarRatingField';
 import Poster from './Poster';
 import { styles as createStyles } from './ProductCreate';
+import { Product, EditComponentProps } from '../types';
 
-const ProductTitle = ({ record }) => <span>Poster #{record.reference}</span>;
+interface ProductTitleProps {
+    record?: Product;
+}
 
-const styles = {
+const ProductTitle: FC<ProductTitleProps> = ({ record }) =>
+    record ? <span>Poster #{record.reference}</span> : null;
+
+const useStyles = makeStyles({
     ...createStyles,
     comment: {
         maxWidth: '20em',
@@ -33,11 +39,9 @@ const styles = {
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
     },
-};
+});
 
-const useStyles = makeStyles(styles);
-
-const ProductEdit = props => {
+const ProductEdit: FC<EditComponentProps> = props => {
     const classes = useStyles();
     return (
         <Edit {...props} title={<ProductTitle />}>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import {
     Create,
     FormTab,
@@ -12,6 +12,7 @@ import {
 import { InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import RichTextInput from 'ra-input-rich-text';
+import { CreateComponentProps } from '../types';
 
 export const styles = {
     price: { width: '7em' },
@@ -24,7 +25,7 @@ export const styles = {
 
 const useStyles = makeStyles(styles);
 
-const ProductCreate = props => {
+const ProductCreate: FC<CreateComponentProps> = props => {
     const classes = useStyles();
     return (
         <Create {...props}>

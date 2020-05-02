@@ -1,12 +1,14 @@
-import React from 'react';
 import MuiGridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import { makeStyles } from '@material-ui/core/styles';
-import withWidth from '@material-ui/core/withWidth';
-import { Link } from 'react-router-dom';
-import { NumberField } from 'react-admin';
+import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import { linkToRecord } from 'ra-core';
+import React, { FC } from 'react';
+import { NumberField } from 'react-admin';
+import { Link } from 'react-router-dom';
+import { DatagridProps, Product } from '../types';
+import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -33,7 +35,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const getColsForWidth = width => {
+const getColsForWidth = (width: Breakpoint) => {
     if (width === 'xs') return 2;
     if (width === 'sm') return 3;
     if (width === 'md') return 4;
@@ -41,10 +43,13 @@ const getColsForWidth = width => {
     return 6;
 };
 
-const times = (nbChildren, fn) =>
+const times = (nbChildren: number, fn: (key: number) => any) =>
     Array.from({ length: nbChildren }, (_, key) => fn(key));
 
-const LoadingGridList = ({ width, nbItems = 10 }) => {
+const LoadingGridList: FC<GridProps & { nbItems?: number }> = ({
+    width,
+    nbItems = 10,
+}) => {
     const classes = useStyles();
     return (
         <div className={classes.root}>
@@ -64,8 +69,11 @@ const LoadingGridList = ({ width, nbItems = 10 }) => {
     );
 };
 
-const LoadedGridList = ({ ids, data, basePath, width }) => {
+const LoadedGridList: FC<GridProps> = ({ ids, data, basePath, width }) => {
     const classes = useStyles();
+
+    if (!ids || !data) return null;
+
     return (
         <div className={classes.root}>
             <MuiGridList
@@ -75,6 +83,7 @@ const LoadedGridList = ({ ids, data, basePath, width }) => {
             >
                 {ids.map(id => (
                     <GridListTile
+                        // @ts-ignore
                         component={Link}
                         key={id}
                         to={linkToRecord(basePath, data[id].id)}
@@ -106,7 +115,9 @@ const LoadedGridList = ({ ids, data, basePath, width }) => {
     );
 };
 
-const GridList = ({ loaded, ...props }) =>
+interface GridProps extends DatagridProps<Product>, WithWidth {}
+
+const GridList: FC<GridProps> = ({ loaded, ...props }) =>
     loaded ? <LoadedGridList {...props} /> : <LoadingGridList {...props} />;
 
 export default withWidth()(GridList);

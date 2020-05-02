@@ -1,4 +1,7 @@
-import React from 'react';
+import Chip from '@material-ui/core/Chip';
+import { makeStyles } from '@material-ui/core/styles';
+import { InputProps } from 'ra-core';
+import React, { FC } from 'react';
 import {
     Filter,
     List,
@@ -9,8 +12,7 @@ import {
     SelectInput,
     useTranslate,
 } from 'react-admin';
-import Chip from '@material-ui/core/Chip';
-import { makeStyles } from '@material-ui/core/styles';
+import { FilterProps, ListComponentProps } from '../types';
 import GridList from './GridList';
 
 const useQuickFilterStyles = makeStyles(theme => ({
@@ -19,13 +21,23 @@ const useQuickFilterStyles = makeStyles(theme => ({
     },
 }));
 
-const QuickFilter = ({ label }) => {
+const QuickFilter: FC<InputProps> = ({ label }) => {
     const translate = useTranslate();
     const classes = useQuickFilterStyles();
     return <Chip className={classes.root} label={translate(label)} />;
 };
 
-export const ProductFilter = props => (
+interface FilterParams {
+    q?: string;
+    category_id?: string;
+    width_gte?: number;
+    width_lte?: number;
+    height_gte?: number;
+    height_lte?: number;
+    stock_lte?: number;
+}
+
+export const ProductFilter: FC<FilterProps<FilterParams>> = props => (
     <Filter {...props}>
         <SearchInput source="q" alwaysOn />
         <ReferenceInput
@@ -47,7 +59,7 @@ export const ProductFilter = props => (
     </Filter>
 );
 
-const ProductList = props => (
+const ProductList: FC<ListComponentProps> = props => (
     <List
         {...props}
         filters={<ProductFilter />}
