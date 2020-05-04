@@ -152,7 +152,7 @@ const TagsField = ({ record }) => (
         ))}
     </ul>
 )
-TagsField.defaultProps = { 
+TagsField.defaultProps = {
     addLabel: true
 };
 ```
@@ -893,6 +893,14 @@ PriceField.defaultProps = {
 };
 ```
 {% endraw %}
+
+
+## Third-Party Components
+
+You can find components for react-admin in third-party repositories.
+
+- [OoDeLally/react-admin-clipboard-list-field](https://github.com/OoDeLally/react-admin-clipboard-list-field): a quick and customizable copy-to-clipboard field.
+
 
 ## Writing Your Own Field Component
 

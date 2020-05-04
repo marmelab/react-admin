@@ -188,6 +188,7 @@ You can find translation packages for the following languages:
 - Norwegian (`no`): [jon-harald/ra-language-norwegian](https://github.com/jon-harald/ra-language-norwegian)
 - Polish (`pl`): [tskorupka/ra-language-polish](https://github.com/tskorupka/ra-language-polish)
 - Portuguese (`pt`): [henriko202/ra-language-portuguese](https://github.com/henriko202/ra-language-portuguese)
+- Romanian (`ro`): [gyhaLabs/ra-language-romanian](https://github.com/gyhaLabs/ra-language-romanian)
 - Russian (`ru`): [klucherev/ra-language-russian](https://github.com/klucherev/ra-language-russian)
 - Slovak (`sk`): [zavadpe/ra-language-slovak](https://github.com/zavadpe/ra-language-slovak)
 - Spanish (`es`): [blackboxvision/ra-language-spanish](https://github.com/BlackBoxVision/ra-language-spanish)
