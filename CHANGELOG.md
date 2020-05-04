@@ -1,5 +1,12 @@
 # Changelog
 
+## v3.5.0
+
+* Update `<Sidebar>` default state to avoid flickering on load ([4677](https://github.com/marmelab/react-admin/pull/4677)) ([Luwangel](https://github.com/Luwangel))
+* Add support for function value of `<SimpleList>` `linkType` prop ([4708](https://github.com/marmelab/react-admin/pull/4708)) ([WiXSL](https://github.com/WiXSL))
+* Fix documentation and propType for `<SimpleList>` `linkType` prop ([4735](https://github.com/marmelab/react-admin/pull/4735)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Add a link to `<ClipboardListField>` third-party package ([4659](https://github.com/marmelab/react-admin/pull/4659)) ([OoDeLally](https://github.com/OoDeLally))
+
 ## v3.4.4
 
 * Fix cryptic error message when using a `<ReferenceInput>` to a missing resource ([4744](https://github.com/marmelab/react-admin/pull/4744)) ([fzaninotto](https://github.com/fzaninotto))
