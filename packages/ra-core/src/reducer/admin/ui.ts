@@ -26,8 +26,16 @@ export interface UIState {
     readonly viewVersion: number;
 }
 
+// Match the medium breakpoint defined in the material-ui theme
+// See https://material-ui.com/customization/breakpoints/#breakpoints
+const isDesktop = (): boolean =>
+    // (min-width: 960px) => theme.breakpoints.up('md')
+    window && window.matchMedia && typeof window.matchMedia === 'function'
+        ? window.matchMedia('(min-width:960px)').matches
+        : false;
+
 const defaultState: UIState = {
-    sidebarOpen: false,
+    sidebarOpen: isDesktop(),
     optimistic: false,
     viewVersion: 0,
 };

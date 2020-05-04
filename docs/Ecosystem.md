@@ -13,7 +13,11 @@ title: "Ecosystem"
 - [User Interface](#user-interface)
 - [Miscellaneous](#miscellaneous)
 
-## Inputs and Fields
+## Fields
+
+See the [Field](./Fields.md#third-party-components) page.
+
+## Inputs
 
 See the [Input](./Inputs.md#third-party-components) page.
 

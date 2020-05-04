@@ -1607,12 +1607,13 @@ export const PostList = (props) => (
             primaryText={record => record.title}
             secondaryText={record => `${record.views} views`}
             tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+            linkType={record => record.canEdit ? "edit" : "show"}
         />
     </List>
 );
 ```
 
-`<SimpleList>` iterates over the list data. For each record, it executes the `primaryText`, `secondaryText`, `leftAvatar`, `leftIcon`, `rightAvatar`, and `rightIcon` props function, and passes the result as the corresponding `<ListItem>` prop.
+`<SimpleList>` iterates over the list data. For each record, it executes the `primaryText`, `secondaryText`, `linkType`, `leftAvatar`, `leftIcon`, `rightAvatar`, and `rightIcon` props function, and passes the result as the corresponding `<ListItem>` prop.
 
 **Tip**: To use a `<SimpleList>` on small screens and a `<Datagrid>` on larger screens, use material-ui's `useMediaQuery` hook:
 
@@ -1631,6 +1632,7 @@ export const PostList = (props) => {
                     primaryText={record => record.title}
                     secondaryText={record => `${record.views} views`}
                     tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+                    linkType={record => record.canEdit ? "edit" : "show"}   
                 />
             ) : (
                 <Datagrid>
@@ -1642,7 +1644,7 @@ export const PostList = (props) => {
 }
 ```
 
-**Tip**: The `<SimpleList>` items link to the edition page by default. You can set the `linkType` prop to `show` to link to the `<Show>` page instead.
+**Tip**: The `<SimpleList>` items link to the edition page by default. You can also set the `linkType` prop to `show` directly to link to the `<Show>` page instead.
 
 ```jsx
 // in src/posts.js
