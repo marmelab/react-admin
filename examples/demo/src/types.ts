@@ -98,10 +98,6 @@ export interface FilterProps<Params = {}> {
     resource?: string;
 }
 
-type ElementConstructor<P> =
-    | ((props: P) => React.ReactElement<any> | null)
-    | (new (props: P) => React.Component<P, any, any>);
-
 export interface DatagridProps<RecordType = Record>
     extends Partial<ListControllerProps<RecordType>> {
     hasBulkActions?: boolean;
