@@ -33,7 +33,6 @@ import {
     OrderStatus,
     DatagridProps,
     Order,
-    Props,
     ListComponentProps,
 } from '../types';
 import { Identifier } from 'ra-core';
@@ -111,10 +110,8 @@ const TabbedDatagrid: FC<TabbedDatagridProps> = ({
         }
     }, [ids, filterValues.status]);
 
-    const handleChange = useCallback<
-        NonNullable<Props<typeof Tabs>['onChange']>
-    >(
-        (event, value) => {
+    const handleChange = useCallback(
+        (event: React.ChangeEvent<{}>, value: any) => {
             setFilters &&
                 setFilters(
                     { ...filterValues, status: value },

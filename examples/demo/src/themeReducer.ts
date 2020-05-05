@@ -3,7 +3,9 @@ import { CHANGE_THEME, changeTheme } from './configuration/actions';
 import { ThemeName } from './types';
 
 type State = ThemeName;
-type Action = ReturnType<typeof changeTheme> | { type: 'OTHER_ACTION' };
+type Action =
+    | ReturnType<typeof changeTheme>
+    | { type: 'OTHER_ACTION'; payload?: any };
 
 const themeReducer: Reducer<State, Action> = (
     previousState = 'light',

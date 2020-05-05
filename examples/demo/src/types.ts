@@ -102,12 +102,6 @@ type ElementConstructor<P> =
     | ((props: P) => React.ReactElement<any> | null)
     | (new (props: P) => React.Component<P, any, any>);
 
-export type Props<C> = C extends ElementConstructor<infer P>
-    ? P
-    : C extends keyof JSX.IntrinsicElements
-    ? JSX.IntrinsicElements[C]
-    : {};
-
 export interface DatagridProps<RecordType = Record>
     extends Partial<ListControllerProps<RecordType>> {
     hasBulkActions?: boolean;
