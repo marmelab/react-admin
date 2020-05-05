@@ -121,6 +121,8 @@ export interface ResourceComponentProps<
     permissions: ReturnType<typeof usePermissions>['permissions'];
 }
 
+export interface ListComponentProps extends ResourceComponentProps {}
+
 export interface EditComponentProps<
     Params extends ResourceMatch = { id: string },
     C extends StaticContext = StaticContext,
@@ -129,7 +131,7 @@ export interface EditComponentProps<
     id: string;
 }
 
-export interface ListComponentProps<
+export interface ShowComponentProps<
     Params extends ResourceMatch = { id: string },
     C extends StaticContext = StaticContext,
     S = H.LocationState
