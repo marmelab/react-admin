@@ -1340,21 +1340,6 @@ const PostList = props => (
 )
 ```
 
-### `isRowSelectable`
-
-You can customize which rows will show a selection checkbox using the `isRowSelectable` prop. It expects a function that will receive the record of each `<DatagridRow>` and returns a boolean expression.  For instance, this code shows a checkbox only for rows with an id greater than 300:
-
-```jsx
-export const PostList = props => (
-    <List {...props}>
-        <Datagrid isRowSelectable={ record => record.id > 300 }>
-            ...
-        </Datagrid>
-    </List>
-);
-```
-{% endraw %}
-
 ![expandable panel](./img/datagrid_expand.gif)
 
 The `expand` prop expects an component as value. When the user chooses to expand the row, the Datagrid render the component, and passes the current `record`, `id`, and `resource`.
@@ -1389,7 +1374,7 @@ const PostList = props => (
 
 The result will be the same as in the previous snippet, except that `<Show>` encloses the content inside a material-ui `<Card>`.
 
-**Tip**: You can go one step further and use an `<Edit>` view as `expand` component, albeit with a twist:
+**Tip**: You can go one step further and use an `<Edit>` view as `expand` component:
 
 ```jsx
 const PostEdit = props => (
@@ -1398,10 +1383,7 @@ const PostEdit = props => (
         /* disable the app title change when shown */
         title=" "
     >
-        <SimpleForm
-            /* The form must have a name dependent on the record, because by default all forms have the same name */
-            form={`post_edit_${props.id}`}
-        >
+        <SimpleForm>
             <RichTextInput source="body" />
         </SimpleForm>
     </Edit>
@@ -1419,6 +1401,21 @@ const PostList = props => (
     </List>
 )
 ```
+
+### `isRowSelectable`
+
+You can customize which rows will show a selection checkbox using the `isRowSelectable` prop. It expects a function that will receive the record of each `<DatagridRow>` and returns a boolean expression.  For instance, this code shows a checkbox only for rows with an id greater than 300:
+
+```jsx
+export const PostList = props => (
+    <List {...props}>
+        <Datagrid isRowSelectable={ record => record.id > 300 }>
+            ...
+        </Datagrid>
+    </List>
+);
+```
+{% endraw %}
 
 ### CSS API
 
