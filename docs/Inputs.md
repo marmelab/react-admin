@@ -163,7 +163,26 @@ import { AutocompleteInput } from 'react-admin';
 ]} />
 ```
 
-You can also customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
+### Properties
+
+| Prop | Required | Type | Default | Description |
+| ---|---|---|---|--- |
+| `allowEmpty` | Optional | `boolean` | `false` | If `false` and the searchText typed did not match any suggestion, the searchText will revert to the current value when the field is blurred. If `true` and the `searchText` is set to `''` then the field will set the input value to `null`. |
+| `choices` | Required | `Object[]` | - | List of items to autosuggest |
+| `emptyValue` | Optional | anything | `''` | The value to use for the empty element |
+| `emptyText` | Optional | `string` | `''` | The text to use for the empty element |
+| `matchSuggestion` | Optional | `Function` | - | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean`
+| `optionText` | Optional | <code>string &#124; Function &#124; Component</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`) |
+| `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
+| `inputText` | Optional | <code>Function</code> | `-` | If `optionText` is a custom Component, this function is needed to determine the text displayed for the current selection. |
+| `setFilter` | Optional | `Function` | `null` | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
+| `shouldRenderSuggestions` | Optional | Function | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
+
+`<AutocompleteInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
+### Usage
+
+You can customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
 
 ```jsx
 const choices = [
@@ -260,23 +279,6 @@ Lastly, would you need to override the props of the suggestions container (a `Po
 
 **Tip**: `<AutocompleteInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceInput>`](#referenceinput) doesn't cover your need), you'll have to [write your own Input component](#writing-your-own-input-component) based on material-ui `<AutoComplete>` component.
 
-### Properties
-
-| Prop | Required | Type | Default | Description |
-| ---|---|---|---|--- |
-| `allowEmpty` | Optional | `boolean` | `false` | If `false` and the searchText typed did not match any suggestion, the searchText will revert to the current value when the field is blurred. If `true` and the `searchText` is set to `''` then the field will set the input value to `null`. |
-| `choices` | Required | `Object[]` | - | List of items to autosuggest |
-| `emptyValue` | Optional | anything | `''` | The value to use for the empty element |
-| `emptyText` | Optional | `string` | `''` | The text to use for the empty element |
-| `matchSuggestion` | Optional | `Function` | - | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean`
-| `optionText` | Optional | <code>string &#124; Function &#124; Component</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`) |
-| `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
-| `inputText` | Optional | <code>Function</code> | `-` | If `optionText` is a custom Component, this function is needed to determine the text displayed for the current selection. |
-| `setFilter` | Optional | `Function` | `null` | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
-| `shouldRenderSuggestions` | Optional | Function | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
-
-`<AutocompleteInput>` also accepts the [common input props](./Inputs.md#common-input-props).
-
 ## `<AutocompleteArrayInput>`
 
 To let users choose multiple values in a list using a dropdown with autocompletion, use `<AutocompleteArrayInput>`.
@@ -293,7 +295,26 @@ import { AutocompleteArrayInput } from 'react-admin';
 ]} />
 ```
 
-You can also customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
+### Properties
+
+| Prop | Required | Type | Default | Description |
+| ---|---|---|---|--- |
+| `allowEmpty` | Optional | `boolean` | `false` | If `true`, the first option is an empty one |
+| `allowDuplicates` | Optional | `boolean` | `false` | If `true`, the options can be selected several times |
+| `choices` | Required | `Object[]` | - | List of items to autosuggest |
+| `matchSuggestion` | Optional | `Function` | - | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean` |
+| `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
+| `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the current record as argument (`(record)=> {string}`) |
+| `setFilter` | Optional | `Function` | `null` | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
+| `shouldRenderSuggestions` | Optional | `Function` | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
+| `source` | Required |  `string` | - | Name of field to edit, its type should match the type retrieved from `optionValue`  |
+| `suggestionLimit` | Optional | `Number` | `null` | Limits the numbers of suggestions that are shown in the dropdown list |
+
+`<AutocompleteArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
+### Usage
+
+You can customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
 
 ```jsx
 const choices = [
@@ -368,23 +389,6 @@ If you need to override the props of the suggestions container (a `Popper` eleme
 
 **Tip**: React-admin's `<AutocompleteInput>` has only a capital A, while material-ui's `<AutoComplete>` has a capital A and a capital C. Don't mix up the components!
 
-### Properties
-
-| Prop | Required | Type | Default | Description |
-| ---|---|---|---|--- |
-| `allowEmpty` | Optional | `boolean` | `false` | If `true`, the first option is an empty one |
-| `allowDuplicates` | Optional | `boolean` | `false` | If `true`, the options can be selected several times |
-| `choices` | Required | `Object[]` | - | List of items to autosuggest |
-| `matchSuggestion` | Optional | `Function` | - | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean` |
-| `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
-| `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the current record as argument (`(record)=> {string}`) |
-| `setFilter` | Optional | `Function` | `null` | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
-| `shouldRenderSuggestions` | Optional | `Function` | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
-| `source` | Required |  `string` | - | Name of field to edit, its type should match the type retrieved from `optionValue`  |
-| `suggestionLimit` | Optional | `Number` | `null` | Limits the numbers of suggestions that are shown in the dropdown list |
-
-`<AutocompleteArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
-
 ## `<BooleanInput>` and `<NullableBooleanInput>`
 
 `<BooleanInput />` is a toggle button allowing you to attribute a `true` or `false` value to a record field.
@@ -449,8 +453,7 @@ englishMessages.ra.boolean.null = 'Null label';
 
 ![NullableBooleanInput](./img/nullable-boolean-input-null-label.png)
 
-
-`<BooleanInput>` and `<NullableBooleanInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+`<BooleanInput>` and `<NullableBooleanInput>` also accept the [common input props](./Inputs.md#common-input-props).
 
 ## `<CheckboxGroupInput>`
 
@@ -468,7 +471,22 @@ import { CheckboxGroupInput } from 'react-admin';
 
 ![CheckboxGroupInput](./img/checkbox-group-input.png)
 
-You can also customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
+### Properties
+
+| Prop | Type | Default | Description |
+| ---|---|---|--- |
+| `choices` | Required | `Object[]` | - | List of choices |
+| `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`) |
+| `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value |
+| `row` | Optional | `boolean` | `true` | Display group of elements in a compact row. |
+
+Refer to [Material UI Checkbox documentation](https://material-ui.com/api/checkbox/) for more details.
+
+`<CheckboxGroupInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
+### Usage
+
+You can customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
 
 ```jsx
 const choices = [
@@ -529,19 +547,6 @@ import { FavoriteBorder, Favorite } from '@material-ui/icons';
 ```
 {% endraw %}
 
-### Properties
-
-| Prop | Type | Default | Description |
-| ---|---|---|--- |
-| `choices` | Required | `Object[]` | - | List of choices |
-| `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`) |
-| `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value |
-| `row` | `boolean` | `true` | Display group of elements in a compact row. |
-
-Refer to [Material UI Checkbox documentation](https://material-ui.com/api/checkbox/) for more details.
-
-`<CheckboxGroupInput>` also accepts the [common input props](./Inputs.md#common-input-props).
-
 ## `<DateInput>`
 
 Ideal for editing dates, `<DateInput>` renders an HTML `<input type="date">` element, that most browsers display as a standard [Date Picker](https://material-ui.com/components/pickers/#date-pickers). That means the appearance of `<DateInput>` depends on the browser, and falls back to a text input on Safari. The date formatting in this input depends on the user's locale.
@@ -578,9 +583,27 @@ import { DateTimeInput } from 'react-admin';
 
 ![ImageInput](./img/image-input.png)
 
+### Properties
+
+| Prop | Type | Default | Description |
+| ---|---|---|--- |
+| `accept` | Optional | `string | string[]` | - | Accepted file type(s), e. g. 'image/*,.pdf'. If left empty, all file types are accepted. Equivalent of the `accept` attribute of an `<input type="file">`. See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept for syntax and examples. |
+| `children` | Optional | `ReactNode` | - | Element used to display the preview of an image (cloned several times if the select accepts multiple files). |
+| `minSize` | Optional | `number` | 0 | Minimum image size (in bytes), e.g. 5000 form 5KB |
+| `maxSize` | Optional | `number` | Infinity | Maximum image size (in bytes), e.g. 5000000 for 5MB |
+| `multiple` | Optional | `boolean` | false | Set to true if the input should accept a list of images, false if it should only accept one image |
+| `labelSingle` | Optional | `string` | 'ra.input.image. upload_single' | Invite displayed in the drop zone if the input accepts one image |
+| `labelMultiple` | Optional | `string` | 'ra.input.file. upload_multiple' | Invite displayed in the drop zone if the input accepts several images |
+| `placeholder` | Optional | `string | ReactNode` | - | Invite displayed in the drop zone, overrides `labelSingle` and `labelMultiple` |
+| `options` | Optional | `object` | `{}` | Additional options passed to react-dropzone's `useDropzone()` hook. See [the react-dropzone source](https://github.com/react-dropzone/react-dropzone/blob/master/src/index.js)  for details . |
+
+`<ImageInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
+### Usage
+
 Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and `maxSize` props. `accept` must be a valid [MIME type](http://www.iana.org/assignments/media-types/media-types.xhtml) according to [input element specification](https://www.w3.org/wiki/HTML/Elements/input/file) or a valid file extension. If `multiple` is set to false and additional files are droppped, all files besides the first will be rejected. Any file which does not have a size in the [`minSize`, `maxSize`] range, will be rejected as well.
 
-`ImageInput` delegates the preview of currently selected images to its child. `ImageInput` clones its child as many times as there are selected images, passing the image as the `record` prop. To preview a simple list of image thubnails, you can use `<ImageField>` as child, as follows:
+`<ImageInput>` delegates the preview of currently selected images to its child. `<ImageInput>` clones its child as many times as there are selected images, passing the image as the `record` prop. To preview a simple list of image thubnails, you can use `<ImageField>` as child, as follows:
 
 ```jsx
 <ImageInput source="pictures" label="Related pictures" accept="image/*">
@@ -604,27 +627,29 @@ If the default Dropzone label doesn't fit with your need, you can pass a `placeh
 
 Note that the image upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.md#extending-a-data-provider-example-of-file-upload) for base64 encoding data by extending the REST Client.
 
-### Properties
-
-| Prop | Type | Default | Description |
-| ---|---|---|--- |
-| `accept` | Optional | `string | string[]` | - | Accepted file type(s), e. g. 'image/*,.pdf'. If left empty, all file types are accepted. Equivalent of the `accept` attribute of an `<input type="file">`. See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept for syntax and examples. |
-| `children` | Optional | `ReactNode` | - | Element used to display the preview of an image (cloned several times if the select accepts multiple files). |
-| `minSize` | Optional | `number` | 0 | Minimum image size (in bytes), e.g. 5000 form 5KB |
-| `maxSize` | Optional | `number` | Infinity | Maximum image size (in bytes), e.g. 5000000 for 5MB |
-| `multiple` | Optional | `boolean` | false | Set to true if the input should accept a list of images, false if it should only accept one image |
-| `labelSingle` | Optional | `string` | 'ra.input.image. upload_single' | Invite displayed in the drop zone if the input accepts one image |
-| `labelMultiple` | Optional | `string` | 'ra.input.file. upload_multiple' | Invite displayed in the drop zone if the input accepts several images |
-| `placeholder` | Optional | `string | ReactNode` | - | Invite displayed in the drop zone, overrides `labelSingle` and `labelMultiple` |
-| `options` | Optional | `object` | `{}` | Additional options passed to react-dropzone's `useDropzone()` hook. See [the react-dropzone source](https://github.com/react-dropzone/react-dropzone/blob/master/src/index.js)  for details . |
-
-`<ImageInput>` also accepts the [common input props](./Inputs.md#common-input-props).
-
 ## `<FileInput>`
 
 `<FileInput>` allows to upload files using [react-dropzone](https://github.com/okonet/react-dropzone).
 
 ![FileInput](./img/file-input.png)
+
+### Properties
+
+| Prop | Type | Default | Description |
+| ---|---|---|--- |
+| `accept` | Optional | `string | string[]` | - | Accepted file type(s), e. g. 'application/json,video/*' or 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'. If left empty, all file types are accepted. Equivalent of the `accept` attribute of an `<input type="file">`. See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept for syntax and examples. |
+| `children` | Optional | `ReactNode` | - | Element used to display the preview of a file (cloned several times if the select accepts multiple files). |
+| `minSize` | Optional | `number` | 0 | Minimum file size (in bytes), e.g. 5000 form 5KB |
+| `maxSize` | Optional | `number` | Infinity | Maximum file size (in bytes), e.g. 5000000 for 5MB |
+| `multiple` | Optional | `boolean` | false | Set to true if the input should accept a list of files, false if it should only accept one file |
+| `labelSingle` | Optional | `string` | 'ra.input.file. upload_single' | Invite displayed in the drop zone if the input accepts one file |
+| `labelMultiple` | Optional | `string` | 'ra.input.file. upload_several' | Invite displayed in the drop zone if the input accepts several files |
+| `placeholder` | Optional | `string | ReactNode` | - | Invite displayed in the drop zone, overrides `labelSingle` and `labelMultiple` |
+| `options` | Optional | `object` | `{}` | Additional options passed to react-dropzone's `useDropzone()` hook. See [the react-dropzone source](https://github.com/react-dropzone/react-dropzone/blob/master/src/index.js)  for details . |
+
+`<FileInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
+### Usage
 
 Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and `maxSize` props. `accept` must be a valid [MIME type](http://www.iana.org/assignments/media-types/media-types.xhtml) according to [input element specification](https://www.w3.org/wiki/HTML/Elements/input/file) or a valid file extension. If `multiple` is set to false and additional files are droppped, all files besides the first will be rejected. Any file which does not have a size in the [`minSize`, `maxSize`] range, will be rejected as well.
 
@@ -652,22 +677,6 @@ If the default Dropzone label doesn't fit with your need, you can pass a `placeh
 
 Note that the file upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.md#extending-a-data-provider-example-of-file-upload) for base64 encoding data by extending the REST Client.
 
-### Properties
-
-| Prop | Type | Default | Description |
-| ---|---|---|--- |
-| `accept` | Optional | `string | string[]` | - | Accepted file type(s), e. g. 'application/json,video/*' or 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'. If left empty, all file types are accepted. Equivalent of the `accept` attribute of an `<input type="file">`. See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept for syntax and examples. |
-| `children` | Optional | `ReactNode` | - | Element used to display the preview of a file (cloned several times if the select accepts multiple files). |
-| `minSize` | Optional | `number` | 0 | Minimum file size (in bytes), e.g. 5000 form 5KB |
-| `maxSize` | Optional | `number` | Infinity | Maximum file size (in bytes), e.g. 5000000 for 5MB |
-| `multiple` | Optional | `boolean` | false | Set to true if the input should accept a list of files, false if it should only accept one file |
-| `labelSingle` | Optional | `string` | 'ra.input.file. upload_single' | Invite displayed in the drop zone if the input accepts one file |
-| `labelMultiple` | Optional | `string` | 'ra.input.file. upload_several' | Invite displayed in the drop zone if the input accepts several files |
-| `placeholder` | Optional | `string | ReactNode` | - | Invite displayed in the drop zone, overrides `labelSingle` and `labelMultiple` |
-| `options` | Optional | `object` | `{}` | Additional options passed to react-dropzone's `useDropzone()` hook. See [the react-dropzone source](https://github.com/react-dropzone/react-dropzone/blob/master/src/index.js)  for details . |
-
-`<FileInput>` also accepts the [common input props](./Inputs.md#common-input-props).
-
 ## `<NumberInput>`
 
 `<NumberInput>` translates to a HTML `<input type="number">`. It is necessary for numeric values because of a [known React bug](https://github.com/facebook/react/issues/1425), which prevents using the more generic [`<TextInput>`](#textinput) in that case.
@@ -678,13 +687,23 @@ import { NumberInput } from 'react-admin';
 <NumberInput source="nb_views" />
 ```
 
-You can customize the `step` props (which defaults to "any"):
+### Properties
+
+| Prop | Required | Type | Default | Description |
+| ---|---|---|---|--- |
+| `max` | Optional | number | '' | The maximum value to accept for this input |
+| `min` | Optional | number | '' | The minimum value to accept for this input |
+| `step` | Optional | number | 'any' | A stepping interval to use when using up and down arrows to adjust the value, as well as for validation |
+
+`<NumberInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
+### Usage
+
+You can customize the `step` props (which defaults to "any"). For instance, to restrict the value to integers, ise a value of 1 for the `step`:
 
 ```jsx
 <NumberInput source="nb_views" step={1} />
 ```
-
-`<NumberInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
 ## `<PasswordInput>`
 
@@ -730,7 +749,22 @@ import { RadioButtonGroupInput } from 'react-admin';
 
 ![RadioButtonGroupInput](./img/radio-button-group-input.png)
 
-You can also customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
+### Properties
+
+| Prop | Required | Type | Default | Description |
+| ---|---|---|---|--- |
+| `choices` | Required | `Object[]` | - | List of items to show as options |
+| `options` | Optional | Object | - | Props to pass to the underlying `<RadioButtonGroup>` element
+| `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the current record as argument (`(record)=> {string}`) |
+| `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
+| `row` | Optional | `boolean` | true | Display options in a compact row. |
+| `translateChoice` | Optional | Boolean | `true` | Whether the choices should be translated |
+
+`<RadioButtonGroupInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
+### Usage
+
+You can customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
 
 ```jsx
 const choices = [
@@ -798,19 +832,6 @@ import { RadioButtonGroupInput, ReferenceInput } from 'react-admin';
     <RadioButtonGroupInput optionText="last_name" />
 </ReferenceInput>
 ```
-
-### Properties
-
-| Prop | Required | Type | Default | Description |
-| ---|---|---|---|--- |
-| `choices` | Required | `Object[]` | - | List of items to show as options |
-| `options` | Optional | Object | Props to pass to the underlying `<RadioButtonGroup>` element
-| `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the current record as argument (`(record)=> {string}`) |
-| `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
-| `row` | `boolean` | true | Display options in a compact row. |
-| `translateChoice` | Optional | Boolean | `true` | Whether the choices should be translated |
-
-`<RadioButtonGroupInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
 ## `<ReferenceArrayInput>`
 
@@ -934,7 +955,20 @@ import { ReferenceInput, SelectInput } from 'react-admin';
 </Admin>
 ```
 
-**Tip**: Why does `<ReferenceInput>` use the `dataProvider.getMany()` method with a single value `[id]` instead of `dataProvider.getOne()` to fetch the record for the current value? Because when there are many `<ReferenceInput>` for the same resource in a form (for instance when inside an `<ArrayInput>`), react-admin *aggregates* the calls to `dataProvider.getMany()` into a single one with `[id1, id2, ...)]`. This speeds up the UI and avoids hitting the API too much.
+### Properties
+
+| Prop | Required | Type | Default | Description |
+| ---|---|---|---|--- |
+| `allowEmpty` | Optional | Boolean | false | If true, add an empty item to the list of choices to allow for empty value |
+| `filter` | Optional | Object | `{}` | Permanent filters to use for getting the suggestion list |
+| `filterToQuery` | Optional | Function `string => Object` | `searchText => ({ q: [searchText] })` | How to transform the searchText (passed e.g. by an `<AutocompleteArrayInput>`) into a parameter for the data provider |
+| `perPage` | Optional | number | 25 | Number of suggestions to show  |
+| `reference` | Required | String | '' | Name of the reference resource, e.g. 'posts'. |
+| `sort` | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }` | How to order the list of suggestions |
+
+`<ReferenceInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
+### Usage
 
 Set the `allowEmpty` prop when you want to add an empty choice with a value of `null` in the choices list.
 Disabling `allowEmpty` does not mean that the input will be required. If you want to make the input required, you must add a validator as indicated in [Validation Documentation](./CreateEdit.md#validation). Enabling the `allowEmpty` props just adds an empty choice (with `null` value) on top of the options, and makes the value nullable.
@@ -1017,18 +1051,7 @@ The child component receives the following props from `<ReferenceInput>`:
 - `setPagination`: : function to call to update the pagination of the request for possible values
 - `setSort`: function to call to update the sorting of the request for possible values
 
-### Properties
-
-| Prop | Required | Type | Default | Description |
-| ---|---|---|---|--- |
-| `allowEmpty` | Optional | Boolean | false | If true, add an empty item to the list of choices to allow for empty value |
-| `filter` | Optional | Object | `{}` | Permanent filters to use for getting the suggestion list |
-| `filterToQuery` | Optional | Function `string => Object` | `searchText => ({ q: [searchText] })` | How to transform the searchText (passed e.g. by an `<AutocompleteArrayInput>`) into a parameter for the data provider |
-| `perPage` | Optional | number | 25 | Number of suggestions to show  |
-| `reference` | Required | String | '' | Name of the reference resource, e.g. 'posts'. |
-| `sort` | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }` | How to order the list of suggestions |
-
-`<ReferenceInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+**Tip**: Why does `<ReferenceInput>` use the `dataProvider.getMany()` method with a single value `[id]` instead of `dataProvider.getOne()` to fetch the record for the current value? Because when there are many `<ReferenceInput>` for the same resource in a form (for instance when inside an `<ArrayInput>`), react-admin *aggregates* the calls to `dataProvider.getMany()` into a single one with `[id1, id2, ...)]`. This speeds up the UI and avoids hitting the API too much.
 
 ## `<RichTextInput>`
 
@@ -1087,7 +1110,24 @@ import { SelectInput } from 'react-admin';
 
 ![SelectInput](./img/select-input.gif)
 
-You can also customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
+### Properties
+
+| Prop | Required | Type | Default | Description |
+| ---|---|---|---|--- |
+| `allowEmpty` | Optional | Boolean | `false` | If true, the first option is an empty one |
+| `choices` | Required | `Object[]` | - | List of items to show as options |
+| `emptyText` | Optional | string | '' | The text to display for the empty option |
+| `options` | Optional | Object | - | Props to pass to the underlying `<SelectInput>` element
+| `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the current record as argument (`(record)=> {string}`) |
+| `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
+| `resettable` | Optional | Boolean | `false` | If `true`, display a button to reset the changes in this input value |
+| `translateChoice` | Optional | Boolean | `true` | Whether the choices should be translated |
+
+`<SelectInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
+### Usage
+
+You can customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
 
 ```jsx
 const choices = [
@@ -1196,21 +1236,6 @@ const choices = [
 <SelectInput source="contact_id" choices={choices} optionText="full_name" optionValue="_id" disableValue="not_available" />
 ```
 
-### Properties
-
-| Prop | Required | Type | Default | Description |
-| ---|---|---|---|--- |
-| `allowEmpty` | Optional | Boolean | `false` | If true, the first option is an empty one |
-| `choices` | Required | `Object[]` | - | List of items to show as options |
-| `emptyText` | Optional | string | '' | The text to display for the empty option |
-| `options` | Optional | Object | Props to pass to the underlying `<SelectInput>` element
-| `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the current record as argument (`(record)=> {string}`) |
-| `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
-| `resettable` | Optional | Boolean | `false` | If `true`, display a button to reset the changes in this input value |
-| `translateChoice` | Optional | Boolean | `true` | Whether the choices should be translated |
-
-`<SelectInput>` also accepts the [common input props](./Inputs.md#common-input-props).
-
 ## `<SelectArrayInput>`
 
 To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [Material ui's `<Select>`](https://material-ui.com/api/select). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
@@ -1318,6 +1343,17 @@ import { TextInput } from 'react-admin';
 
 ![TextInput](./img/text-input.png)
 
+### Properties
+
+| Prop | Required | Type | Default | Description |
+| ---|---|---|---|--- |
+| `resettable` | Optional | Boolean | `false` | If `true`, display a button to reset the changes in this input value |
+| `type` | Optional | string | `text` | Type attribute passed to the `<input>` element |
+
+`<TextInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
+### Usage
+
 You can choose a specific input type using the `type` attribute, for instance `text` (the default), `email`, `url`, or `password`:
 
 ```jsx
@@ -1341,15 +1377,6 @@ import { TextInput } from 'react-admin';
 ![resettable TextInput](./img/resettable-text-input.png)
 
 **Warning**: Do not use `type="number"`, or you'll receive a string as value (this is a [known React bug](https://github.com/facebook/react/issues/1425)). Instead, use [`<NumberInput>`](#numberinput).
-
-### Properties
-
-| Prop | Required | Type | Default | Description |
-| ---|---|---|---|--- |
-| `resettable` | Optional | Boolean | `false` | If `true`, display a button to reset the changes in this input value |
-| `type` | Optional | string | `text` | Type attribute passed to the `<input>` element |
-
-`<TextInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
 ## Transforming Input Value to/from Record
 
