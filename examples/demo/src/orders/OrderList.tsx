@@ -76,20 +76,19 @@ const tabs = [
     { id: 'cancelled', name: 'cancelled' },
 ];
 
-interface TabbedDatagridProps extends DatagridProps<Order> {
-    classes: ReturnType<typeof useDatagridStyles>;
-    isXSmall: boolean;
-}
+interface TabbedDatagridProps extends DatagridProps<Order> {}
 
 const TabbedDatagrid: FC<TabbedDatagridProps> = ({
     ids,
     filterValues,
-    isXSmall,
-    classes,
     setFilters,
     displayedFilters,
     ...rest
 }) => {
+    const classes = useDatagridStyles();
+    const isXSmall = useMediaQuery<Theme>(theme =>
+        theme.breakpoints.down('xs')
+    );
     const [ordered, setOrdered] = useState<Identifier[]>([]);
     const [delivered, setDelivered] = useState<Identifier[]>([]);
     const [cancelled, setCancelled] = useState<Identifier[]>([]);
@@ -213,14 +212,6 @@ const TabbedDatagrid: FC<TabbedDatagridProps> = ({
     );
 };
 
-const StyledTabbedDatagrid: FC<DatagridProps<Order>> = props => {
-    const classes = useDatagridStyles();
-    const isXSmall = useMediaQuery<Theme>(theme =>
-        theme.breakpoints.down('xs')
-    );
-    return <TabbedDatagrid classes={classes} isXSmall={isXSmall} {...props} />;
-};
-
 const OrderList: FC<ListComponentProps> = props => (
     <List
         {...props}
@@ -229,7 +220,7 @@ const OrderList: FC<ListComponentProps> = props => (
         perPage={25}
         filters={<OrderFilter />}
     >
-        <StyledTabbedDatagrid />
+        <TabbedDatagrid />
     </List>
 );
 
