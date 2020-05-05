@@ -35,14 +35,14 @@ const getGqlResource = (resource: string) => {
     }
 };
 
-type IntrsopectionResource = IntrospectionType & {
+type IntrospectionResource = IntrospectionType & {
     [key: string]: IntrospectionField;
 };
 
 interface IntrospectionResults {
     types: IntrospectionType[];
     queries: IntrospectionField[];
-    resources: IntrsopectionResource[];
+    resources: IntrospectionResource[];
     schema: IntrospectionSchema;
 }
 
