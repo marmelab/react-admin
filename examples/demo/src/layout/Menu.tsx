@@ -4,6 +4,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import LabelIcon from '@material-ui/icons/Label';
 import { useMediaQuery, Theme } from '@material-ui/core';
 import { useTranslate, DashboardMenuItem, MenuItemLink } from 'react-admin';
+import { makeStyles } from '@material-ui/core/styles';
 
 import visitors from '../visitors';
 import orders from '../orders';
@@ -22,6 +23,14 @@ interface Props {
     onMenuClick: () => void;
 }
 
+const useStyles = makeStyles({
+    sidebarIsFixed: {
+        position: 'fixed',
+        top: '4em',
+        zIndex: 100,
+    },
+});
+
 const Menu: FC<Props> = ({ onMenuClick, dense, logout }) => {
     const [state, setState] = useState({
         menuCatalog: false,
@@ -38,9 +47,9 @@ const Menu: FC<Props> = ({ onMenuClick, dense, logout }) => {
     const handleToggle = (menu: MenuName) => {
         setState(state => ({ ...state, [menu]: !state[menu] }));
     };
-
+    const classes = useStyles();
     return (
-        <div>
+        <div className={classes.sidebarIsFixed}>
             {' '}
             <DashboardMenuItem onClick={onMenuClick} sidebarIsOpen={open} />
             <SubMenu
