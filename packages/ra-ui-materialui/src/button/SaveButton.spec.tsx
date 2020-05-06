@@ -44,6 +44,22 @@ describe('<SaveButton />', () => {
         spy.mockRestore();
     });
 
+    it('should render a disabled submit type', () => {
+        const { getByLabelText } = render(
+            <TestContext>
+                <ThemeProvider theme={theme}>
+                    <SaveButton
+                        label="Submit.Not.Disabled.Pristine"
+                        pristine={true}
+                    />
+                </ThemeProvider>
+            </TestContext>
+        );
+        expect(
+            getByLabelText('Submit.Not.Disabled.Pristine')['disabled']
+        ).toEqual(true);
+    });
+
     it('should render as submit type when submitOnEnter is true', () => {
         const { getByLabelText } = render(
             <TestContext>
