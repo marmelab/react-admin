@@ -181,6 +181,7 @@ EnhancedArrayField.defaultProps = {
 
 EnhancedArrayField.propTypes = {
     ...fieldPropTypes,
+    // @ts-ignore
     fieldKey: PropTypes.string,
 };
 EnhancedArrayField.displayName = 'EnhancedArrayField';
