@@ -154,7 +154,7 @@ export const ArrayField: FunctionComponent<
     });
 };
 
-const EnhancedArrayField = pure<FieldProps>(ArrayField);
+const EnhancedArrayField = pure<ArrayFieldProps & FieldProps>(ArrayField);
 
 EnhancedArrayField.defaultProps = {
     addLabel: true,
