@@ -7,19 +7,19 @@ import withWidth from '@material-ui/core/withWidth';
 import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
 import { Link } from 'react-router-dom';
 import { NumberField } from 'react-admin';
-import { linkToRecord, Identifier } from 'ra-core';
+import { linkToRecord } from 'ra-core';
+import { ListControllerProps } from 'ra-core/esm/controller/useListController';
+
 import { Product } from '../types';
 
-interface GridListProps {
-    ids: Identifier[];
-    data: { [key: string]: Product };
-    basePath: string;
+interface Props extends ListControllerProps<Product> {
     width: Breakpoint;
-    nbItems: number;
 }
 
-interface Props extends GridListProps {
-    loaded: boolean;
+interface LoadedGridListProps extends Omit<Props, 'loaded'> {}
+
+interface LoadingGridListProps extends Omit<Props, 'loaded'> {
+    nbItems?: number;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -58,7 +58,7 @@ const getColsForWidth = (width: Breakpoint) => {
 const times = (nbChildren: number, fn: (key: number) => void) =>
     Array.from({ length: nbChildren }, (_, key) => fn(key));
 
-const LoadingGridList: FC<GridListProps> = ({ width, nbItems = 10 }) => {
+const LoadingGridList: FC<LoadingGridListProps> = ({ width, nbItems = 10 }) => {
     const classes = useStyles();
     return (
         <div className={classes.root}>
@@ -78,7 +78,12 @@ const LoadingGridList: FC<GridListProps> = ({ width, nbItems = 10 }) => {
     );
 };
 
-const LoadedGridList: FC<GridListProps> = ({ ids, data, basePath, width }) => {
+const LoadedGridList: FC<LoadedGridListProps> = ({
+    ids,
+    data,
+    basePath,
+    width,
+}) => {
     const classes = useStyles();
     return (
         <div className={classes.root}>
