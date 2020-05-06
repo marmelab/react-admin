@@ -19,10 +19,9 @@ cache:
         - ~/.cache
 
 before_install:
-    - curl -o- -L https://yarnpkg.com/install.sh | bash
-    - source ~/.bashrc
+    - sh -e /etc/init.d/xvfb start
 
-script: xvfb-run --server-args="-ac -screen 0 1280x1024x16" make test
+script: make test
 
 branches:
     only:
