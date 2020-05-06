@@ -18,9 +18,6 @@ cache:
     directories:
         - ~/.cache
 
-before_install:
-    - sh -e /etc/init.d/xvfb start
-
 script: make test
 
 branches:
