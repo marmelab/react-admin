@@ -4,7 +4,6 @@ import {
     Children,
     useEffect,
     useState,
-    useCallback,
 } from 'react';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
