@@ -89,6 +89,7 @@ const LoadedGridList: FC<GridListProps> = ({ ids, data, basePath, width }) => {
             >
                 {ids.map(id => (
                     <GridListTile
+                        // @ts-ignore
                         component={Link}
                         key={id}
                         to={linkToRecord(basePath, data[id].id)}
