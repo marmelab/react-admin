@@ -48,16 +48,11 @@ describe('<SaveButton />', () => {
         const { getByLabelText } = render(
             <TestContext>
                 <ThemeProvider theme={theme}>
-                    <SaveButton
-                        label="Submit.Not.Disabled.Pristine"
-                        pristine={true}
-                    />
+                    <SaveButton pristine={true} />
                 </ThemeProvider>
             </TestContext>
         );
-        expect(
-            getByLabelText('Submit.Not.Disabled.Pristine')['disabled']
-        ).toEqual(true);
+        expect(getByLabelText('ra.action.save')['disabled']).toEqual(true);
     });
 
     it('should render as submit type when submitOnEnter is true', () => {
