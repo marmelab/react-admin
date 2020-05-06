@@ -11,6 +11,11 @@ import pure from 'recompose/pure';
 import { Identifier } from 'ra-core';
 
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import PropTypes from 'prop-types';
+
+interface ArrayFieldProps {
+    fieldKey?: string;
+}
 
 interface State {
     data: object;
@@ -118,7 +123,7 @@ const getDataAndIds = (record: object, source: string, fieldKey: string) => {
  *     TagsField.defaultProps = { addLabel: true };
  */
 export const ArrayField: FunctionComponent<
-    FieldProps & InjectedFieldProps & State
+    ArrayFieldProps & FieldProps & InjectedFieldProps & State
 > = ({
     addLabel,
     basePath,
@@ -174,7 +179,10 @@ EnhancedArrayField.defaultProps = {
     addLabel: true,
 };
 
-EnhancedArrayField.propTypes = fieldPropTypes;
+EnhancedArrayField.propTypes = {
+    ...fieldPropTypes,
+    fieldKey: PropTypes.string,
+};
 EnhancedArrayField.displayName = 'EnhancedArrayField';
 
 export default EnhancedArrayField;
