@@ -122,7 +122,7 @@ const getDataAndIds = (record: object, source: string, fieldKey: string) => {
  *     TagsField.defaultProps = { addLabel: true };
  */
 export const ArrayField: FunctionComponent<
-    ArrayFieldProps & FieldProps & InjectedFieldProps & State
+    ArrayFieldProps & FieldProps & InjectedFieldProps
 > = ({
     addLabel,
     basePath,
