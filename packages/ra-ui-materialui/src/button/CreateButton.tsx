@@ -82,11 +82,10 @@ CreateButton.propTypes = {
     label: PropTypes.string,
 };
 
-export default memo(
-    CreateButton,
-    (prevProps, nextProps) => {
-        return prevProps.basePath === nextProps.basePath &&
-            prevProps.label === nextProps.label &&
-            prevProps.translate === nextProps.translate
-    }
-);
+export default memo(CreateButton, (prevProps, nextProps) => {
+    return (
+        prevProps.basePath === nextProps.basePath &&
+        prevProps.label === nextProps.label &&
+        prevProps.translate === nextProps.translate
+    );
+});

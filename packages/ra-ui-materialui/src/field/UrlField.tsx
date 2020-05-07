@@ -1,4 +1,4 @@
-import React, {FunctionComponent, HtmlHTMLAttributes, memo} from 'react';
+import React, { FunctionComponent, HtmlHTMLAttributes, memo } from 'react';
 import get from 'lodash/get';
 import sanitizeRestProps from './sanitizeRestProps';
 import { Typography, Link } from '@material-ui/core';
@@ -35,4 +35,6 @@ UrlField.defaultProps = {
 
 UrlField.propTypes = fieldPropTypes;
 
-export default memo<FieldProps & HtmlHTMLAttributes<HTMLAnchorElement>>(UrlField);
+export default memo<FieldProps & HtmlHTMLAttributes<HTMLAnchorElement>>(
+    UrlField
+);

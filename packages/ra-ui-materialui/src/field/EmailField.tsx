@@ -44,4 +44,6 @@ EmailField.defaultProps = {
 
 EmailField.propTypes = fieldPropTypes;
 
-export default memo<FieldProps & HtmlHTMLAttributes<HTMLAnchorElement>>(EmailField);
+export default memo<FieldProps & HtmlHTMLAttributes<HTMLAnchorElement>>(
+    EmailField
+);
