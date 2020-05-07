@@ -302,14 +302,14 @@ describe('Create Page', () => {
     });
 
     it('should show rich text input error message when form is submitted', () => {
-        CreatePage.submit();
+        CreatePage.submit({ force: true });
         cy.get(CreatePage.elements.richTextInputError)
             .should('exist')
             .contains('Required');
     });
 
     it('should not show rich text input error message when form is submitted and input is filled with text', () => {
-        CreatePage.submit();
+        CreatePage.submit({ force: true });
         cy.get(CreatePage.elements.richTextInputError)
             .should('exist')
             .contains('Required');
