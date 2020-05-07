@@ -1,5 +1,4 @@
 import React, { FunctionComponent, memo } from 'react';
-import compose from 'recompose/compose';
 import get from 'lodash/get';
 import Chip, { ChipProps } from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
@@ -52,17 +51,13 @@ export const ChipField: FunctionComponent<
     );
 };
 
-const EnhancedChipField = memo<FieldProps & ChipProps>(ChipField);
-// @ts-ignore
-EnhancedChipField.defaultProps = {
+ChipField.defaultProps = {
     addLabel: true,
 };
-// @ts-ignore
-EnhancedChipField.propTypes = {
+
+ChipField.propTypes = {
     ...ChipField.propTypes,
     ...fieldPropTypes,
 };
 
-EnhancedChipField.displayName = 'EnhancedChipField';
-
-export default EnhancedChipField;
+export default memo<FieldProps & ChipProps>(ChipField);

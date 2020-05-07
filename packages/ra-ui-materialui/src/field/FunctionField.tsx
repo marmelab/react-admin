@@ -26,18 +26,14 @@ const FunctionField: FunctionComponent<
         </Typography>
     ) : null;
 
-const EnhancedFunctionField = memo<Props & TypographyProps>(FunctionField);
-// @ts-ignore
-EnhancedFunctionField.defaultProps = {
+FunctionField.defaultProps = {
     addLabel: true,
 };
-// @ts-ignore
-EnhancedFunctionField.propTypes = {
+
+FunctionField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
 };
 
-EnhancedFunctionField.displayName = 'EnhancedFunctionField';
-
-export default EnhancedFunctionField;
+export default memo<Props & TypographyProps>(FunctionField);

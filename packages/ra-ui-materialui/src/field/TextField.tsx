@@ -24,21 +24,17 @@ const TextField: FunctionComponent<
     );
 };
 
-// wat? TypeScript looses the displayName if we don't set it explicitly
+// what? TypeScript looses the displayName if we don't set it explicitly
 TextField.displayName = 'TextField';
 
-const EnhancedTextField = memo(TextField);
-// @ts-ignore
-EnhancedTextField.defaultProps = {
+TextField.defaultProps = {
     addLabel: true,
 };
-// @ts-ignore
-EnhancedTextField.propTypes = {
+
+TextField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
 };
 
-EnhancedTextField.displayName = 'EnhancedTextField';
-
-export default EnhancedTextField;
+export default memo<FieldProps & TypographyProps>(TextField);

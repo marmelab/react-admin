@@ -66,19 +66,16 @@ export const BooleanField: FunctionComponent<
     );
 };
 
-const EnhancedBooleanField = memo<Props & TypographyProps>(BooleanField);
-// @ts-ignore
-EnhancedBooleanField.defaultProps = {
+BooleanField.defaultProps = {
     addLabel: true,
 };
-// @ts-ignore
-EnhancedBooleanField.propTypes = {
+
+BooleanField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
     valueLabelFalse: PropTypes.string,
     valueLabelTrue: PropTypes.string,
 };
-EnhancedBooleanField.displayName = 'EnhancedBooleanField';
 
-export default EnhancedBooleanField;
+export default memo<Props & TypographyProps>(BooleanField);

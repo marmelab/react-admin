@@ -97,13 +97,11 @@ export const DateField: FunctionComponent<
     );
 };
 
-const EnhancedDateField = memo<Props>(DateField);
-// @ts-ignore
-EnhancedDateField.defaultProps = {
+DateField.defaultProps = {
     addLabel: true,
 };
-// @ts-ignore
-EnhancedDateField.propTypes = {
+
+DateField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
@@ -115,6 +113,4 @@ EnhancedDateField.propTypes = {
     showTime: PropTypes.bool,
 };
 
-EnhancedDateField.displayName = 'EnhancedDateField';
-
-export default EnhancedDateField;
+export default memo<Props>(DateField);

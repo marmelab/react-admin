@@ -86,17 +86,15 @@ export const NumberField: FunctionComponent<
     );
 };
 
-// wat? TypeScript looses the displayName if we don't set it explicitly
+// what? TypeScript looses the displayName if we don't set it explicitly
 NumberField.displayName = 'NumberField';
 
-const EnhancedNumberField = memo<Props & TypographyProps>(NumberField);
-// @ts-ignore
-EnhancedNumberField.defaultProps = {
+NumberField.defaultProps = {
     addLabel: true,
     textAlign: 'right',
 };
-// @ts-ignore
-EnhancedNumberField.propTypes = {
+
+NumberField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
@@ -107,6 +105,4 @@ EnhancedNumberField.propTypes = {
     options: PropTypes.object,
 };
 
-EnhancedNumberField.displayName = 'EnhancedNumberField';
-
-export default EnhancedNumberField;
+export default memo<Props & TypographyProps>(NumberField);
