@@ -9,12 +9,20 @@ import Collapse from '@material-ui/core/Collapse';
 import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTranslate } from 'react-admin';
+import { CSSProperties } from '@material-ui/core/styles/withStyles';
 
 const useStyles = makeStyles(theme => ({
-    icon: { minWidth: theme.spacing(5) },
+    icon: {
+        minWidth: theme.spacing(5),
+        fontSize: '2em',
+    },
     sidebarIsOpen: {
         paddingLeft: 25,
         transition: 'padding-left 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
+        // backgroundColor: '#FFFFF0',
+        // padding: '2em',
+        // border:'red 5px solid',
+        // fontSize:'5em'
     },
     sidebarIsClosed: {
         paddingLeft: 0,
@@ -29,6 +37,7 @@ interface Props {
     isOpen: boolean;
     name: string;
     sidebarIsOpen: boolean;
+    style: string;
 }
 
 const SubMenu: FC<Props> = ({
@@ -39,6 +48,7 @@ const SubMenu: FC<Props> = ({
     icon,
     children,
     dense,
+    style,
 }) => {
     const translate = useTranslate();
     const classes = useStyles();
@@ -59,11 +69,20 @@ const SubMenu: FC<Props> = ({
             {sidebarIsOpen || isOpen ? (
                 header
             ) : (
-                <Tooltip title={translate(name)} placement="right">
+                <Tooltip
+                    title={translate(name)}
+                    placement="right"
+                    className={style}
+                >
                     {header}
                 </Tooltip>
             )}
-            <Collapse in={isOpen} timeout="auto" unmountOnExit>
+            <Collapse
+                in={isOpen}
+                timeout="auto"
+                unmountOnExit
+                className={style}
+            >
                 <List
                     dense={dense}
                     component="div"
@@ -76,7 +95,7 @@ const SubMenu: FC<Props> = ({
                 >
                     {children}
                 </List>
-                <Divider />
+                <Divider className={style} />
             </Collapse>
         </Fragment>
     );
