@@ -153,16 +153,13 @@ export const ArrayField: FunctionComponent<
     });
 };
 
-const EnhancedArrayField: FunctionComponent<ArrayFieldProps & FieldProps> = memo(ArrayField);
-
-EnhancedArrayField.defaultProps = {
+ArrayField.defaultProps = {
     addLabel: true,
 };
 
-EnhancedArrayField.propTypes = {
+ArrayField.propTypes = {
     ...fieldPropTypes,
     fieldKey: PropTypes.string,
 };
-EnhancedArrayField.displayName = 'EnhancedArrayField';
 
-export default EnhancedArrayField;
+export default memo<ArrayFieldProps & FieldProps>(ArrayField);
