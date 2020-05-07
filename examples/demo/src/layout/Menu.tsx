@@ -4,6 +4,8 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import LabelIcon from '@material-ui/icons/Label';
 import { useMediaQuery, Theme } from '@material-ui/core';
 import { useTranslate, DashboardMenuItem, MenuItemLink } from 'react-admin';
+import { makeStyles } from '@material-ui/core/styles';
+import { CSSProperties } from '@material-ui/core/styles/withStyles';
 
 import visitors from '../visitors';
 import orders from '../orders';
@@ -22,6 +24,26 @@ interface Props {
     onMenuClick: () => void;
 }
 
+const useStyles = makeStyles({
+    sidebarIsFixed: {
+        position: 'fixed',
+        top: '4em',
+        zIndex: 100,
+        backgroud: 'blue',
+    },
+    sideBarCatalog: {
+        backgroundColor: 'red',
+        padding: '1em',
+        textDecorationColor: 'blue',
+    },
+    sideBarSales: {
+        backgroundColor: 'blue',
+    },
+    sideBarCustomers: {
+        backgroundColor: 'green',
+    },
+});
+
 const Menu: FC<Props> = ({ onMenuClick, dense, logout }) => {
     const [state, setState] = useState({
         menuCatalog: false,
@@ -38,11 +60,12 @@ const Menu: FC<Props> = ({ onMenuClick, dense, logout }) => {
     const handleToggle = (menu: MenuName) => {
         setState(state => ({ ...state, [menu]: !state[menu] }));
     };
-
+    const classes = useStyles();
     return (
-        <div>
+        <div className={classes.sidebarIsFixed}>
             {' '}
             <DashboardMenuItem onClick={onMenuClick} sidebarIsOpen={open} />
+            {console.log(classes.sideBarSales)}
             <SubMenu
                 handleToggle={() => handleToggle('menuSales')}
                 isOpen={state.menuSales}
@@ -50,6 +73,7 @@ const Menu: FC<Props> = ({ onMenuClick, dense, logout }) => {
                 name="pos.menu.sales"
                 icon={<orders.icon />}
                 dense={dense}
+                style={classes.sideBarSales}
             >
                 <MenuItemLink
                     to={`/commands`}
@@ -79,6 +103,7 @@ const Menu: FC<Props> = ({ onMenuClick, dense, logout }) => {
                 name="pos.menu.catalog"
                 icon={<products.icon />}
                 dense={dense}
+                style={classes.sideBarCatalog}
             >
                 <MenuItemLink
                     to={`/products`}
@@ -108,6 +133,7 @@ const Menu: FC<Props> = ({ onMenuClick, dense, logout }) => {
                 name="pos.menu.customers"
                 icon={<visitors.icon />}
                 dense={dense}
+                style={classes.sideBarCustomers}
             >
                 <MenuItemLink
                     to={`/customers`}
