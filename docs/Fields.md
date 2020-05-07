@@ -279,7 +279,7 @@ import { ImageField } from 'react-admin';
 
 This field is also generally used within an [<ImageInput />](./Inputs.md#imageinput) component to display preview.
 
-The optional `title` prop points to the picture title property, used for both `alt` and `title` attributes. It can either be an hard-written string, or a path within your JSON object:
+The optional `title` prop points to the picture title property, used for both `alt` and `title` attributes. It can either be a hard-written string, or a path within your JSON object:
 
 ```jsx
 // { picture: { url: 'cover.jpg', title: 'Larry Cover (French pun intended)' } }
@@ -291,7 +291,7 @@ The optional `title` prop points to the picture title property, used for both `a
 <ImageField source="picture.url" title="Picture" />
 ```
 
-If passed value is an existing path within your JSON object, then it uses the object attribute. Otherwise, it considers its value as an hard-written title.
+If passed value is an existing path within your JSON object, then it uses the object attribute. Otherwise, it considers its value as a hard-written title.
 
 
 If the record actually contains an array of images in its property defined by the `source` prop, the `src` prop will be needed to determine the `src` value of the images, for example:
@@ -320,7 +320,7 @@ import { FileField } from 'react-admin';
 
 This field is also generally used within an [<FileInput />](./Inputs.md#fileinput) component to display preview.
 
-The optional `title` prop points to the file title property, used for `title` attributes. It can either be an hard-written string, or a path within your JSON object:
+The optional `title` prop points to the file title property, used for `title` attributes. It can either be a hard-written string, or a path within your JSON object:
 
 ```jsx
 // { file: { url: 'doc.pdf', title: 'Presentation' } }
@@ -332,7 +332,7 @@ The optional `title` prop points to the file title property, used for `title` at
 <FileField source="file.url" title="File" />
 ```
 
-If passed value is an existing path within your JSON object, then it uses the object attribute. Otherwise, it considers its value as an hard-written title.
+If passed value is an existing path within your JSON object, then it uses the object attribute. Otherwise, it considers its value as a hard-written title.
 
 If the record actually contains an array of files in its property defined by the `source` prop, the `src` prop will be needed to determine the `href` value of the links, for example:
 
@@ -359,7 +359,7 @@ You can optionally set the `target` prop to choose which window will the link tr
 
 Displays a number formatted according to the browser locale, right aligned.
 
-Uses `Intl.NumberFormat()` if available, passing the `locales` and `options` props as arguments. This allows perfect display of decimals, currencies, percentage, etc.
+Uses `Intl.NumberFormat()` if available, passing the `locales` and `options` props as arguments. This allows a perfect display of decimals, currencies, percentages, etc.
 
 If Intl is not available, it outputs number as is (and ignores the `locales` and `options` props).
 
@@ -503,7 +503,7 @@ With this configuration, `<ReferenceField>` wraps the user's name in a link to t
 
 ![ReferenceField](./img/reference-field.png)
 
-`<ReferenceField>` accepts a `reference` attribute, which specifies the resource to fetch for the related record. Also, you can use any `Field` component as child.
+`<ReferenceField>` accepts a `reference` attribute, which specifies the resource to fetch for the related record. Also, you can use any `Field` component as a child.
 
 **Note**: You **must** add a `<Resource>` for the reference resource - react-admin needs it to fetch the reference data. You *can* omit the `list` prop in this reference if you want to hide it in the sidebar menu.
 
@@ -530,7 +530,7 @@ By default, `<ReferenceField>` is sorted by its `source`. To specify another att
 </ReferenceField>
 ```
 
-You can also prevent `<ReferenceField>` from adding link to children by setting `link` to `false`.
+You can also prevent `<ReferenceField>` from adding a link to children by setting `link` to `false`.
 
 ```jsx
 // No link
@@ -570,11 +570,11 @@ You can also use a custom `link` function to get a custom path for the children.
 ]
 ```
 
-Then react-admin renders the `<PostList>` with a loader for the `<ReferenceField>`, fetches the API for the related users in one call (`GET http://path.to.my.api/users?ids=[789,735]`), and re-renders the list once the data arrives. This accelerates the rendering, and minimizes network load.
+Then react-admin renders the `<PostList>` with a loader for the `<ReferenceField>`, fetches the API for the related users in one call (`GET http://path.to.my.api/users?ids=[789,735]`), and re-renders the list once the data arrives. This accelerates the rendering and minimizes network load.
 
 ## `<ReferenceManyField>`
 
-This component fetches a list of referenced records by reverse lookup of the current `record.id` in other resource (using the `dataProvider.getManyReference()` REST method). You can specify the target field name, i.e. the field name of the current record's id in the other resource, using the required `target` field. The result is then passed to an iterator component (like `<SingleFieldList>` or `<Datagrid>`). The iterator component usually has one or more child `<Field>` components.
+This component fetches a list of referenced records by a reverse lookup of the current `record.id` in another resource (using the `dataProvider.getManyReference()` REST method). You can specify the target field name, i.e. the field name of the current record's id in the other resource, using the required `target` field. The result is then passed to an iterator component (like `<SingleFieldList>` or `<Datagrid>`). The iterator component usually has one or more child `<Field>` components.
 
 For instance, here is how to fetch the `comments` related to a `post` record by matching `comment.post_id` to `post.id`, and then display the `author.name` for each, in a `<ChipField>`:
 
@@ -600,7 +600,7 @@ export const PostList = (props) => (
 
 ![ReferenceManyFieldSingleFieldList](./img/reference-many-field-single-field-list.png)
 
-`<ReferenceManyField>` accepts a `reference` attribute, which specifies the resource to fetch for the related record. It also accepts a `source` attribute which define the field containing the value to look for in the `target` field of the referenced resource. By default this is the `id` of the resource (`post.id` in the previous example).
+`<ReferenceManyField>` accepts a `reference` attribute, which specifies the resource to fetch for the related record. It also accepts a `source` attribute which defines the field containing the value to look for in the `target` field of the referenced resource. By default, this is the `id` of the resource (`post.id` in the previous example).
 
 **Note**: You **must** add a `<Resource>` for the reference resource - react-admin needs it to fetch the reference data. You *can* omit the `list` prop in this reference if you want to hide it in the sidebar menu.
 
@@ -674,7 +674,7 @@ Also, you can filter the query used to populate the possible values. Use the `fi
 
 ## `<ReferenceArrayField>`
 
-Use `<ReferenceArrayField>` to display an list of reference values based on an array of foreign keys.
+Use `<ReferenceArrayField>` to display a list of reference values based on an array of foreign keys.
 
 For instance, if a post has many tags, a post resource may look like:
 
@@ -731,7 +731,7 @@ export const App = () => (
 );
 ```
 
-In an Edit of Show view, you can combine `<ReferenceArrayField>` with `<Datagrid>` to display a related resources in a table. For instance, to display more details about the tags related to a post in the `PostShow` view:
+In an Edit of Show view, you can combine `<ReferenceArrayField>` with `<Datagrid>` to display related resources in a table. For instance, to display more details about the tags related to a post in the `PostShow` view:
 
 ```jsx
 import React from 'react';
@@ -823,7 +823,7 @@ export const ProductList = (props) => (
 <td><span class="[class name generated by JSS]">2</span></td>
 ```
 
-React-admin usually delegates the rendering of fields components to material-ui components. Refer to the material-ui documentation to see the default styles for elements.
+React-admin usually delegates the rendering of field components to material-ui components. Refer to the material-ui documentation to see the default styles for elements.
 
 You may want to customize the cell style inside a `DataGrid`. You can use the `cellClassName` for that:
 
@@ -968,7 +968,7 @@ React-admin lets you use the same `Field` components in the `List` view and in t
 
 React-admin uses a trick: the `Show` view layouts (`<SimpleShowLayout>` and `<TabbedShowLayout>`) inspect their `Field` children, and whenever one has the `addLabel` prop set to `true`, the layout adds a label.
 
-That means that the only thing you need to add to a custom component to make it usable in a `Show` view is a `addLabel: true` default prop.
+That means that the only thing you need to add to a custom component to make it usable in a `Show` view is an `addLabel: true` default prop.
 
 ```js
 FullNameField.defaultProps = {
