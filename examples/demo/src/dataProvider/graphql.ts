@@ -1,9 +1,16 @@
+import { ApolloQueryResult } from 'apollo-client';
 import buildApolloClient, {
     buildQuery as buildQueryFactory,
 } from 'ra-data-graphql-simple';
-import { DELETE } from 'ra-core';
+import { DELETE, LegacyDataProvider } from 'ra-core';
 import gql from 'graphql-tag';
-const getGqlResource = resource => {
+import {
+    IntrospectionField,
+    IntrospectionSchema,
+    IntrospectionType,
+} from 'graphql';
+
+const getGqlResource = (resource: string) => {
     switch (resource) {
         case 'customers':
             return 'Customer';
@@ -28,7 +35,20 @@ const getGqlResource = resource => {
     }
 };
 
-const customBuildQuery = introspectionResults => {
+type IntrospectionResource = IntrospectionType & {
+    [key: string]: IntrospectionField;
+};
+
+interface IntrospectionResults {
+    types: IntrospectionType[];
+    queries: IntrospectionField[];
+    resources: IntrospectionResource[];
+    schema: IntrospectionSchema;
+}
+
+const customBuildQuery = (
+    introspectionResults: IntrospectionResults
+): LegacyDataProvider => {
     const buildQuery = buildQueryFactory(introspectionResults);
 
     return (type, resource, params) => {
@@ -38,7 +58,7 @@ const customBuildQuery = introspectionResults => {
                     remove${resource}(id: $id)
                 }`,
                 variables: { id: params.id },
-                parseResponse: ({ data }) => {
+                parseResponse: ({ data }: ApolloQueryResult<any>) => {
                     if (data[`remove${resource}`]) {
                         return { data: { id: params.id } };
                     }
@@ -59,11 +79,17 @@ export default () => {
         },
         introspection: {
             operationNames: {
-                [DELETE]: resource => `remove${resource.name}`,
+                [DELETE]: (resource: IntrospectionType) =>
+                    `remove${resource.name}`,
             },
         },
         buildQuery: customBuildQuery,
-    }).then(dataProvider => (type, resource, params) =>
-        dataProvider(type, getGqlResource(resource), params)
+    }).then(
+        (dataProvider: LegacyDataProvider) => (
+            ...rest: Parameters<LegacyDataProvider>
+        ) => {
+            const [type, resource, params] = rest;
+            return dataProvider(type, getGqlResource(resource), params);
+        }
     );
 };

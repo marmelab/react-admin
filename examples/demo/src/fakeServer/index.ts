@@ -1,4 +1,4 @@
-export default type => {
+export default (type: string) => {
     switch (type) {
         case 'graphql':
             return import('./graphql').then(factory => factory.default());
