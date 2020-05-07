@@ -1,9 +1,20 @@
-import { Component, cloneElement, Children } from 'react';
+import {
+    FunctionComponent,
+    cloneElement,
+    Children,
+    useEffect,
+    useState,
+    memo,
+} from 'react';
 import get from 'lodash/get';
-import pure from 'recompose/pure';
 import { Identifier } from 'ra-core';
 
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import PropTypes from 'prop-types';
+
+interface ArrayFieldProps {
+    fieldKey?: string;
+}
 
 interface State {
     data: object;
@@ -13,6 +24,28 @@ interface State {
 const initialState = {
     data: {},
     ids: [],
+};
+
+const getDataAndIds = (record: object, source: string, fieldKey: string) => {
+    const list = get(record, source);
+    if (!list) {
+        return initialState;
+    }
+    return fieldKey
+        ? {
+              data: list.reduce((prev, item) => {
+                  prev[item[fieldKey]] = item;
+                  return prev;
+              }, {}),
+              ids: list.map(item => item[fieldKey]),
+          }
+        : {
+              data: list.reduce((prev, item) => {
+                  prev[JSON.stringify(item)] = item;
+                  return prev;
+              }, {}),
+              ids: list.map(JSON.stringify),
+          };
 };
 
 /**
@@ -88,86 +121,45 @@ const initialState = {
  *     )
  *     TagsField.defaultProps = { addLabel: true };
  */
-export class ArrayField extends Component<
-    FieldProps & InjectedFieldProps,
-    State
-> {
-    constructor(props: FieldProps & InjectedFieldProps) {
-        super(props);
-        this.state = props.record
-            ? this.getDataAndIds(props.record, props.source, props.fieldKey)
-            : initialState;
-    }
+export const ArrayField: FunctionComponent<
+    ArrayFieldProps & FieldProps & InjectedFieldProps
+> = ({
+    addLabel,
+    basePath,
+    children,
+    record,
+    sortable,
+    source,
+    fieldKey,
+    ...rest
+}) => {
+    const [ids, setIds] = useState();
+    const [data, setData] = useState();
 
-    componentWillReceiveProps(
-        nextProps: FieldProps & InjectedFieldProps,
-        prevProps: FieldProps & InjectedFieldProps
-    ) {
-        if (nextProps.record !== prevProps.record) {
-            this.setState(
-                this.getDataAndIds(
-                    nextProps.record,
-                    nextProps.source,
-                    nextProps.fieldKey
-                )
-            );
-        }
-    }
+    useEffect(() => {
+        const { ids, data } = getDataAndIds(record, source, fieldKey);
+        setIds(ids);
+        setData(data);
+    }, [record, source, fieldKey]);
 
-    getDataAndIds(record: object, source: string, fieldKey: string) {
-        const list = get(record, source);
-        if (!list) {
-            return initialState;
-        }
-        return fieldKey
-            ? {
-                  data: list.reduce((prev, item) => {
-                      prev[item[fieldKey]] = item;
-                      return prev;
-                  }, {}),
-                  ids: list.map(item => item[fieldKey]),
-              }
-            : {
-                  data: list.reduce((prev, item) => {
-                      prev[JSON.stringify(item)] = item;
-                      return prev;
-                  }, {}),
-                  ids: list.map(JSON.stringify),
-              };
-    }
+    // @ts-ignore
+    return cloneElement(Children.only(children), {
+        ids,
+        data,
+        loading: false,
+        basePath,
+        currentSort: {},
+        ...rest,
+    });
+};
 
-    render() {
-        const {
-            addLabel,
-            basePath,
-            children,
-            record,
-            sortable,
-            source,
-            fieldKey,
-            ...rest
-        } = this.props;
-        const { ids, data } = this.state;
-
-        // @ts-ignore
-        return cloneElement(Children.only(children), {
-            ids,
-            data,
-            loading: false,
-            basePath,
-            currentSort: {},
-            ...rest,
-        });
-    }
-}
-
-const EnhancedArrayField = pure<FieldProps>(ArrayField);
-
-EnhancedArrayField.defaultProps = {
+ArrayField.defaultProps = {
     addLabel: true,
 };
 
-EnhancedArrayField.propTypes = fieldPropTypes;
-EnhancedArrayField.displayName = 'EnhancedArrayField';
+ArrayField.propTypes = {
+    ...fieldPropTypes,
+    fieldKey: PropTypes.string,
+};
 
-export default EnhancedArrayField;
+export default memo<ArrayFieldProps & FieldProps>(ArrayField);
