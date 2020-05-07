@@ -33,11 +33,9 @@ const FullNameField: FC<Props> = ({ record, size }) => {
     ) : null;
 };
 
-const PureFullNameField = memo(FullNameField);
-// @ts-ignore
-PureFullNameField.defaultProps = {
+FullNameField.defaultProps = {
     source: 'last_name',
     label: 'resources.customers.fields.name',
 };
 
-export default PureFullNameField;
+export default memo<Props>(FullNameField);
