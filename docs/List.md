@@ -80,7 +80,7 @@ export const PostList = (props) => (
 );
 ```
 
-The title can be either a string, or an element of your own.
+The title can be either a string or an element of your own.
 
 ### Actions
 
@@ -174,7 +174,7 @@ By default, clicking this button will:
 2. Transform the result into a CSV string,
 3. Download the CSV file.
 
-The columns of the CSV file match all the fields of the records in the `dataProvider` response. That means that the export doesn't take into account the selection and ordering of fields in your `<List>` via `Field` components. If you want to customize the result, pass a custom `exporter` function to the `<List>`. This function will receive the data from the `dataProvider` (after step 1), and replace steps 2-3 (i.e. it's in charge of transforming, converting, and downloading the file).
+The columns of the CSV file match all the fields of the records in the `dataProvider` response. That means that the export doesn't take into account the selection and ordering of fields in your `<List>` via `Field` components. If you want to customize the result, pass a custom `exporter` function to the `<List>`. This function will receive the data from the `dataProvider` (after step 1) and replace steps 2-3 (i.e. it's in charge of transforming, converting, and downloading the file).
 
 **Tip**: For CSV conversion, you can import [jsonexport](https://github.com/kauegimenes/jsonexport#browser-import-examples), a CSV to JSON converter which is already a react-admin dependency. And for CSV download, take advantage of react-admin's `downloadCSV` function.
 
@@ -207,7 +207,7 @@ const PostList = props => (
 )
 ```
 
-In many cases, you'll need more than simple object manipulation. You'll need to *augment* your objects based on relationships. For instance, the export for comments should include the title of the related post - but the export only exposes a `post_id` by default. For that purpose, the exporter receives a `fetchRelatedRecords` function as second parameter. It fetches related records using your `dataProvider.getMany()` method, and returns a promise.
+In many cases, you'll need more than simple object manipulation. You'll need to *augment* your objects based on relationships. For instance, the export for comments should include the title of the related post - but the export only exposes a `post_id` by default. For that purpose, the exporter receives a `fetchRelatedRecords` function as the second parameter. It fetches related records using your `dataProvider.getMany()` method and returns a promise.
 
 Here is an example for a Comments exporter, fetching related Posts:
 
@@ -471,7 +471,7 @@ The `Filter` component accepts the usual `className` prop but you can override m
 
 Children of the `<Filter>` form are regular inputs. `<Filter>` hides them all by default, except those that have the `alwaysOn` prop.
 
-For more details about the `filters` prop, see the [Filtering the List](#filtering-the-list) secion below. 
+For more details about the `filters` prop, see the [Filtering the List](#filtering-the-list) section below. 
 
 ### Records Per Page
 
@@ -810,15 +810,15 @@ export const PostList = (props) => (
 
 `<List>` clones the component passed as `filters` twice:
 
-- once with with the prop `context="form"`, to render the filter *form*
-- once with with the prop `context="button"`, to render the filter *button*
+- once with the prop `context="form"`, to render the filter *form*
+- once with the prop `context="button"`, to render the filter *button*
 
 The component passed as `filters` should know how to render differently according to the `context` prop. 
 
 That's the case of the react-admin `<Filter>` component: 
 
 - `<Filter context="form">` renders an inline form based on its children which must be `<Input>` components
-- `<Filter context="button">` renders an dropdown allowing to enable filters based on the `source` prop of its children. 
+- `<Filter context="button">` renders a dropdown allowing to enable filters based on the `source` prop of its children. 
 
 ```jsx
 const PostFilter = (props) => (
@@ -896,7 +896,7 @@ In the example given above, the `q` filter triggers a full-text search on all fi
 
 ### Quick Filters
 
-Users usually dislike using their keyboard to filter a list (especially on mobile). A good way satisfy thus user requirement is to turn filters into *quick filter*. A Quick filter is a filter with a non-editable `defaultValue`. Users can only enable or disable them. 
+Users usually dislike using their keyboard to filter a list (especially on mobile). A good way to satisfy this user requirement is to turn filters into *quick filter*. A Quick filter is a filter with a non-editable `defaultValue`. Users can only enable or disable them. 
 
 ![`<QuickFilter>`](./img/quick_filters.gif)
 
@@ -1095,7 +1095,7 @@ The `<List>` components takes care of two things:
 1. (the "controller") Fetching data based on the URL and transforming it
 2. (the "view") Rendering the page title, the actions, the content and aside areas 
 
-In some cases, you may want to customize the view entirely (i.e. keep the code for step 1, and provide your own code for step 2). For these cases, react-admin provides a hook called `useListController()`, which contain just the controller part of the `<List>`.
+In some cases, you may want to customize the view entirely (i.e. keep the code for step 1, and provide your own code for step 2). For these cases, react-admin provides a hook called `useListController()`, which contains just the controller part of the `<List>`.
 
 This hook takes one object as input (the props passed to a `<List>` component) and returns the fetched data and callbacks for the List view. In fact, it returns a lot of variables because the List page is complex: based on the URL, the List controller deduces filters, pagination, ordering, it provides callbacks to update them, it fetches the data, etc. 
 
@@ -1342,7 +1342,7 @@ const PostList = props => (
 
 ![expandable panel](./img/datagrid_expand.gif)
 
-The `expand` prop expects an component as value. When the user chooses to expand the row, the Datagrid render the component, and passes the current `record`, `id`, and `resource`.
+The `expand` prop expects a component as value. When the user chooses to expand the row, the Datagrid renders the component and passes the current `record`, `id`, and `resource`.
 
 **Tip**: Since the `expand` element receives the same props as a detail view, you can actually use a `<Show>` view as component for the `expand` prop:
 
