@@ -5,7 +5,6 @@ import {
     useEffect,
     useState,
     memo,
-    FC,
 } from 'react';
 import get from 'lodash/get';
 import { Identifier } from 'ra-core';
@@ -154,7 +153,7 @@ export const ArrayField: FunctionComponent<
     });
 };
 
-const EnhancedArrayField: FC<ArrayFieldProps & FieldProps> = memo(ArrayField);
+const EnhancedArrayField: FunctionComponent<ArrayFieldProps & FieldProps> = memo(ArrayField);
 
 EnhancedArrayField.defaultProps = {
     addLabel: true,
