@@ -44,7 +44,7 @@ describe('<SaveButton />', () => {
         spy.mockRestore();
     });
 
-    it('should render a disabled submit type', () => {
+    it('should render a disabled button', () => {
         const { getByLabelText } = render(
             <TestContext>
                 <ThemeProvider theme={theme}>
