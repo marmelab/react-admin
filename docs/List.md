@@ -553,6 +553,33 @@ export const PostList = (props) => (
 ```
 {% endraw %}
 
+### Specify Sort Order
+
+By default, when the user clicks on a column header, the list becomes sorted in the ascending order. You change this behavior by setting the `sortByOrder` prop to `"DESC"`:
+
+```jsx
+// in src/posts.js
+import React from 'react';
+import { List, Datagrid, TextField } from 'react-admin';
+
+export const PostList = (props) => (
+    <List {...props}>
+        <Datagrid>
+            <ReferenceField label="Post" source="id" reference="posts" sortByOrder="DESC">
+                <TextField source="title" />
+            </ReferenceField>
+            <FunctionField
+                label="Author"
+                sortBy="last_name"
+                sortByOrder="DESC"
+                render={record => `${record.author.first_name} ${record.author.last_name}`}
+            />
+            <TextField source="body" />
+        </Datagrid>
+    </List>
+);
+```
+
 ### Permanent Filter
 
 You can choose to always filter the list, without letting the user disable this filter - for instance to display only published posts. Write the filter to be passed to the REST client in the `filter` props:

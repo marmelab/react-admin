@@ -2,9 +2,11 @@ import { Record } from 'ra-core';
 import PropTypes from 'prop-types';
 
 type TextAlign = 'right' | 'left';
+type SortOrder = 'ASC' | 'DESC';
 export interface FieldProps {
     addLabel?: boolean;
     sortBy?: string;
+    sortByOrder?: SortOrder;
     source?: string;
     label?: string;
     sortable?: boolean;
@@ -24,6 +26,7 @@ export interface InjectedFieldProps {
 export const fieldPropTypes = {
     addLabel: PropTypes.bool,
     sortBy: PropTypes.string,
+    sortByOrder: PropTypes.oneOf<SortOrder>(['ASC', 'DESC']),
     source: PropTypes.string,
     label: PropTypes.string,
     sortable: PropTypes.bool,
