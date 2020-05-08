@@ -5,7 +5,6 @@ import LabelIcon from '@material-ui/icons/Label';
 import { useMediaQuery, Theme } from '@material-ui/core';
 import { useTranslate, DashboardMenuItem, MenuItemLink } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
-import { CSSProperties } from '@material-ui/core/styles/withStyles';
 
 import visitors from '../visitors';
 import orders from '../orders';
@@ -25,22 +24,25 @@ interface Props {
 }
 
 const useStyles = makeStyles({
-    sidebarIsFixed: {
-        position: 'fixed',
-        top: '4em',
-        zIndex: 100,
-        backgroud: 'blue',
-    },
     sideBarCatalog: {
         backgroundColor: 'red',
-        padding: '1em',
-        textDecorationColor: 'blue',
+        fontSize: '1.5em',
     },
     sideBarSales: {
-        backgroundColor: 'blue',
+        backgroundColor: 'yellow',
+        fontSize: '1.5em',
     },
     sideBarCustomers: {
         backgroundColor: 'green',
+        fontSize: '1.5em',
+    },
+    sideBarDashboard: {
+        backgroundColor: 'violet',
+        fontSize: '1.5em',
+    },
+    sideBarReview: {
+        backgroundColor: 'brown',
+        fontSize: '1.5em',
     },
 });
 
@@ -62,9 +64,13 @@ const Menu: FC<Props> = ({ onMenuClick, dense, logout }) => {
     };
     const classes = useStyles();
     return (
-        <div className={classes.sidebarIsFixed}>
+        <div>
             {' '}
-            <DashboardMenuItem onClick={onMenuClick} sidebarIsOpen={open} />
+            <DashboardMenuItem
+                onClick={onMenuClick}
+                sidebarIsOpen={open}
+                className={classes.sideBarDashboard}
+            />
             {console.log(classes.sideBarSales)}
             <SubMenu
                 handleToggle={() => handleToggle('menuSales')}
@@ -165,6 +171,7 @@ const Menu: FC<Props> = ({ onMenuClick, dense, logout }) => {
                 onClick={onMenuClick}
                 sidebarIsOpen={open}
                 dense={dense}
+                className={classes.sideBarReview}
             />
             {isXSmall && (
                 <MenuItemLink
