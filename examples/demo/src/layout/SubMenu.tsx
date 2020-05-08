@@ -13,7 +13,6 @@ import { useTranslate } from 'react-admin';
 const useStyles = makeStyles(theme => ({
     icon: {
         minWidth: theme.spacing(5),
-        fontSize: '2em',
     },
     sidebarIsOpen: {
         paddingLeft: 25,
