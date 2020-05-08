@@ -9,7 +9,6 @@ import Collapse from '@material-ui/core/Collapse';
 import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTranslate } from 'react-admin';
-import { CSSProperties } from '@material-ui/core/styles/withStyles';
 
 const useStyles = makeStyles(theme => ({
     icon: {
@@ -19,10 +18,6 @@ const useStyles = makeStyles(theme => ({
     sidebarIsOpen: {
         paddingLeft: 25,
         transition: 'padding-left 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
-        // backgroundColor: '#FFFFF0',
-        // padding: '2em',
-        // border:'red 5px solid',
-        // fontSize:'5em'
     },
     sidebarIsClosed: {
         paddingLeft: 0,
@@ -54,11 +49,15 @@ const SubMenu: FC<Props> = ({
     const classes = useStyles();
 
     const header = (
-        <MenuItem dense={dense} button onClick={handleToggle}>
+        <MenuItem dense={dense} button onClick={handleToggle} className={style}>
             <ListItemIcon className={classes.icon}>
                 {isOpen ? <ExpandMore /> : icon}
             </ListItemIcon>
-            <Typography variant="inherit" color="textSecondary">
+            <Typography
+                variant="inherit"
+                color="textSecondary"
+                className={style}
+            >
                 {translate(name)}
             </Typography>
         </MenuItem>
