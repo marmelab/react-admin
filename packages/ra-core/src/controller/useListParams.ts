@@ -156,10 +156,10 @@ const useListParams = ({
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
     const setSort = useCallback(
-        (newSort: string, newOrder?: string) =>
+        (sort: string, order?: string) =>
             changeParams({
                 type: SET_SORT,
-                payload: { sort: newSort, order: newOrder || undefined },
+                payload: { sort, order },
             }),
         requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );

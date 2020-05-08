@@ -552,7 +552,6 @@ export const PostList = (props) => (
 
 By default, when the user clicks on a column header, the list becomes sorted in the ascending order. You change this behavior by setting the `sortByOrder` prop to `"DESC"`:
 
-{% raw %}
 ```jsx
 // in src/posts.js
 import React from 'react';
@@ -575,7 +574,6 @@ export const PostList = (props) => (
     </List>
 );
 ```
-{% endraw %}
 
 ### Permanent Filter
 
