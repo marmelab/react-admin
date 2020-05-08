@@ -16,7 +16,7 @@ const CreateButton: FC<CreateButtonProps> = props => {
         classes: classesOverride,
         label = 'ra.action.create',
         icon = defaultIcon,
-        variant = 'text',
+        variant,
         ...rest
     } = props;
     const classes = useStyles(props);
