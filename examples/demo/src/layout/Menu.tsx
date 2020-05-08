@@ -71,7 +71,6 @@ const Menu: FC<Props> = ({ onMenuClick, dense, logout }) => {
                 sidebarIsOpen={open}
                 className={classes.sideBarDashboard}
             />
-            {console.log(classes.sideBarSales)}
             <SubMenu
                 handleToggle={() => handleToggle('menuSales')}
                 isOpen={state.menuSales}
