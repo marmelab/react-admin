@@ -47,11 +47,11 @@ ShowButton.propTypes = {
 const PureShowButton = memo(
     ShowButton,
     (props: Props, nextProps: Props) =>
-        (props.record &&
-            nextProps.record &&
-            props.record.id !== nextProps.record.id) ||
-        props.basePath !== nextProps.basePath ||
-        (props.record == null && nextProps.record != null)
+        (!props.record ||
+            !nextProps.record ||
+            props.record.id === nextProps.record.id) &&
+        props.basePath === nextProps.basePath &&
+        !(props.record == null && nextProps.record != null)
 );
 
 export default PureShowButton;

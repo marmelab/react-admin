@@ -98,8 +98,8 @@ DatagridHeaderCell.propTypes = {
 export default memo(
     DatagridHeaderCell,
     (props, nextProps) =>
-        props.updateSort !== nextProps.updateSort ||
-        props.currentSort.sort !== nextProps.currentSort.sort ||
-        props.currentSort.order !== nextProps.currentSort.order ||
-        (nextProps.isSorting && props.sortable !== nextProps.sortable)
+        props.updateSort === nextProps.updateSort &&
+        props.currentSort.sort === nextProps.currentSort.sort &&
+        props.currentSort.order === nextProps.currentSort.order &&
+        !(nextProps.isSorting && props.sortable !== nextProps.sortable)
 );
