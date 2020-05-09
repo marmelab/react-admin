@@ -129,66 +129,65 @@ const useDataProvider = (): DataProviderProxy => {
             get: (target, name) => {
                 if (typeof name === 'symbol') {
                     return;
-                } else {
-                    return (
-                        resource: string,
-                        payload: any,
-                        options: UseDataProviderOptions
-                    ) => {
-                        const type = name.toString();
-                        const {
-                            action = 'CUSTOM_FETCH',
-                            undoable = false,
-                            onSuccess = undefined,
-                            onFailure = undefined,
-                            ...rest
-                        } = options || {};
-
-                        if (typeof dataProvider[type] !== 'function') {
-                            throw new Error(
-                                `Unknown dataProvider function: ${type}`
-                            );
-                        }
-                        if (onSuccess && typeof onSuccess !== 'function') {
-                            throw new Error(
-                                'The onSuccess option must be a function'
-                            );
-                        }
-                        if (onFailure && typeof onFailure !== 'function') {
-                            throw new Error(
-                                'The onFailure option must be a function'
-                            );
-                        }
-                        if (undoable && !onSuccess) {
-                            throw new Error(
-                                'You must pass an onSuccess callback calling notify() to use the undoable mode'
-                            );
-                        }
-
-                        const params = {
-                            action,
-                            dataProvider,
-                            dispatch,
-                            logoutIfAccessDenied,
-                            onFailure,
-                            onSuccess,
-                            payload,
-                            resource,
-                            rest,
-                            store,
-                            type,
-                            undoable,
-                        };
-                        if (isOptimistic) {
-                            // in optimistic mode, all fetch calls are stacked, to be
-                            // executed once the dataProvider leaves optimistic mode.
-                            // In the meantime, the admin uses data from the store.
-                            optimisticCalls.push(params);
-                            return Promise.resolve();
-                        }
-                        return doQuery(params);
-                    };
                 }
+                return (
+                    resource: string,
+                    payload: any,
+                    options: UseDataProviderOptions
+                ) => {
+                    const type = name.toString();
+                    const {
+                        action = 'CUSTOM_FETCH',
+                        undoable = false,
+                        onSuccess = undefined,
+                        onFailure = undefined,
+                        ...rest
+                    } = options || {};
+
+                    if (typeof dataProvider[type] !== 'function') {
+                        throw new Error(
+                            `Unknown dataProvider function: ${type}`
+                        );
+                    }
+                    if (onSuccess && typeof onSuccess !== 'function') {
+                        throw new Error(
+                            'The onSuccess option must be a function'
+                        );
+                    }
+                    if (onFailure && typeof onFailure !== 'function') {
+                        throw new Error(
+                            'The onFailure option must be a function'
+                        );
+                    }
+                    if (undoable && !onSuccess) {
+                        throw new Error(
+                            'You must pass an onSuccess callback calling notify() to use the undoable mode'
+                        );
+                    }
+
+                    const params = {
+                        action,
+                        dataProvider,
+                        dispatch,
+                        logoutIfAccessDenied,
+                        onFailure,
+                        onSuccess,
+                        payload,
+                        resource,
+                        rest,
+                        store,
+                        type,
+                        undoable,
+                    };
+                    if (isOptimistic) {
+                        // in optimistic mode, all fetch calls are stacked, to be
+                        // executed once the dataProvider leaves optimistic mode.
+                        // In the meantime, the admin uses data from the store.
+                        optimisticCalls.push(params);
+                        return Promise.resolve();
+                    }
+                    return doQuery(params);
+                };
             },
         });
     }, [dataProvider, dispatch, isOptimistic, logoutIfAccessDenied, store]);

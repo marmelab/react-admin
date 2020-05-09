@@ -18,29 +18,28 @@ const useDataProviderWithDeclarativeSideEffects = (): DataProvider => {
             get: (target, name) => {
                 if (typeof name === 'symbol') {
                     return;
-                } else {
-                    return (
-                        resource: string,
-                        payload: any,
-                        options: UseDataProviderOptions
-                    ) => {
-                        const { onSuccess, onFailure } = getSideEffects(
-                            resource,
-                            options
-                        );
-                        try {
-                            return target[name.toString()](resource, payload, {
-                                ...options,
-                                onSuccess,
-                                onFailure,
-                            });
-                        } catch (e) {
-                            // turn synchronous exceptions (e.g. in parameter preparation)
-                            // into async ones, otherwise they'll be lost
-                            return Promise.reject(e);
-                        }
-                    };
                 }
+                return (
+                    resource: string,
+                    payload: any,
+                    options: UseDataProviderOptions
+                ) => {
+                    const { onSuccess, onFailure } = getSideEffects(
+                        resource,
+                        options
+                    );
+                    try {
+                        return target[name.toString()](resource, payload, {
+                            ...options,
+                            onSuccess,
+                            onFailure,
+                        });
+                    } catch (e) {
+                        // turn synchronous exceptions (e.g. in parameter preparation)
+                        // into async ones, otherwise they'll be lost
+                        return Promise.reject(e);
+                    }
+                };
             },
         });
     }, [dataProvider, getSideEffects]);
