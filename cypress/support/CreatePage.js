@@ -61,7 +61,7 @@ export default url => ({
     },
 
     submit() {
-        cy.get(this.elements.submitButton).click({ force: true });
+        cy.get(this.elements.submitButton).click();
         cy.get(this.elements.snackbar);
         cy.get(this.elements.body).click(); // dismiss notification
         cy.wait(200); // let the notification disappear (could block further submits)
