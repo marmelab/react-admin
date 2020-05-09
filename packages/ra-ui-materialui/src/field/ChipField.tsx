@@ -51,13 +51,17 @@ export const ChipField: FunctionComponent<
     );
 };
 
-ChipField.defaultProps = {
+const EnhancedChipField = memo<FieldProps & ChipProps>(ChipField);
+// @ts-ignore
+EnhancedChipField.defaultProps = {
     addLabel: true,
 };
-
-ChipField.propTypes = {
+// @ts-ignore
+EnhancedChipField.propTypes = {
     ...ChipField.propTypes,
     ...fieldPropTypes,
 };
 
-export default memo<FieldProps & ChipProps>(ChipField);
+EnhancedChipField.displayName = 'EnhancedChipField';
+
+export default EnhancedChipField;

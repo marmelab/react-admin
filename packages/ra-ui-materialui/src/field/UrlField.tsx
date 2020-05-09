@@ -29,12 +29,15 @@ const UrlField: FunctionComponent<
     );
 };
 
-UrlField.defaultProps = {
+const EnhancedUrlField = memo<
+    FieldProps & HtmlHTMLAttributes<HTMLAnchorElement>
+>(UrlField);
+// @ts-ignore
+EnhancedUrlField.defaultProps = {
     addLabel: true,
 };
+// @ts-ignore
+EnhancedUrlField.propTypes = fieldPropTypes;
+EnhancedUrlField.displayName = 'EnhancedUrlField';
 
-UrlField.propTypes = fieldPropTypes;
-
-export default memo<FieldProps & HtmlHTMLAttributes<HTMLAnchorElement>>(
-    UrlField
-);
+export default EnhancedUrlField;

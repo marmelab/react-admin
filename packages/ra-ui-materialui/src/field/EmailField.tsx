@@ -38,12 +38,15 @@ const EmailField: FunctionComponent<
     );
 };
 
-EmailField.defaultProps = {
+const EnhancedEmailField = memo<
+    FieldProps & HtmlHTMLAttributes<HTMLAnchorElement>
+>(EmailField);
+// @ts-ignore
+EnhancedEmailField.defaultProps = {
     addLabel: true,
 };
+// @ts-ignore
+EnhancedEmailField.propTypes = fieldPropTypes;
+EnhancedEmailField.displayName = 'EnhancedEmailField';
 
-EmailField.propTypes = fieldPropTypes;
-
-export default memo<FieldProps & HtmlHTMLAttributes<HTMLAnchorElement>>(
-    EmailField
-);
+export default EnhancedEmailField;

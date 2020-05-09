@@ -35,16 +35,20 @@ const RichTextField: FunctionComponent<
     );
 };
 
-RichTextField.defaultProps = {
+const EnhancedRichTextField = memo<Props & TypographyProps>(RichTextField);
+// @ts-ignore
+EnhancedRichTextField.defaultProps = {
     addLabel: true,
     stripTags: false,
 };
-
-RichTextField.propTypes = {
+// @ts-ignore
+EnhancedRichTextField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
     stripTags: PropTypes.bool,
 };
 
-export default memo<Props & TypographyProps>(RichTextField);
+EnhancedRichTextField.displayName = 'EnhancedRichTextField';
+
+export default EnhancedRichTextField;

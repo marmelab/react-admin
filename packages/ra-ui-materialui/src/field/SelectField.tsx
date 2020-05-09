@@ -121,11 +121,13 @@ SelectField.defaultProps = {
     translateChoice: true,
 };
 
-SelectField.defaultProps = {
+const EnhancedSelectField = memo<ChoicesProps & FieldProps>(SelectField);
+// @ts-ignore
+EnhancedSelectField.defaultProps = {
     addLabel: true,
 };
-
-SelectField.propTypes = {
+// @ts-ignore
+EnhancedSelectField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
@@ -139,4 +141,6 @@ SelectField.propTypes = {
     translateChoice: PropTypes.bool,
 };
 
-export default memo<ChoicesProps & FieldProps>(SelectField);
+EnhancedSelectField.displayName = 'EnhancedSelectField';
+
+export default EnhancedSelectField;
