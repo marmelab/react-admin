@@ -60,7 +60,7 @@ Refer to your backend framework or CDN documentation to enable cache headers - a
 
 HTTP cache can help improve the performance and reduce the ecological footprint of a web app. The main drawback is that responses are cached based on their request signature. The cached responses for `GET https://api.acme.com/posts` and `GET https://api.acme.com/posts/123` live in separate buckets on the client-side, and cannot be shared. As a consequence, the browser still makes a lot of useless requests to the API. HTTP cache also has another drawback: browser caches ignore the REST semantics. That means that a call to `DELETE https://api.acme.com/posts/123` can't invalidate the cache of the `GET https://api.acme.com/posts` request, and therefore the cache is sometimes wrong.
 
-These shortcomings explain why most APIs adopt use short expiration or use "validation caching" (based on `Etag` or `Last-Modified` headers) instead of "expiration caching" (based on the `Cache-Control` or `Expires` headers). But with validation caching, the client must send *every request* to the server (sometimes the server returns an empty response, letting the client know that it can use its cache). Validation caching reduces network traffic a lot less than expiration caching and has less impact on performance.
+These shortcomings explain why most APIs adopt short expiration or use "validation caching" (based on `Etag` or `Last-Modified` headers) instead of "expiration caching" (based on the `Cache-Control` or `Expires` headers). But with validation caching, the client must send *every request* to the server (sometimes the server returns an empty response, letting the client know that it can use its cache). Validation caching reduces network traffic a lot less than expiration caching and has less impact on performance.
 
 Finally, if your API uses GraphQL, it probably doesn't offer HTTP caching. 
 
@@ -157,4 +157,4 @@ const dataProvider = simpleRestProvider('http://path.to.my.api/');
 export default cacheDataProviderProxy(dataProvider);
 ```
 
-Application cache provides a very significative boost for the end-user and saves a large portion of the network traffic. Even a short expiration date (30 seconds or one minute) can speed up a complex admin with a low risk of displaying stale data. Adding an application cache is, therefore, a warmly recommended practice!
+Application cache provides a very significant boost for the end-user and saves a large portion of the network traffic. Even a short expiration date (30 seconds or one minute) can speed up a complex admin with a low risk of displaying stale data. Adding an application cache is, therefore, a warmly recommended practice!
