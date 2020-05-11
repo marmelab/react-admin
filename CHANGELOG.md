@@ -1,5 +1,20 @@
 # Changelog
 
+## v3.5.1
+
+* Fix broken SSR due to `<Sidebar>` open default value ([4787](https://github.com/marmelab/react-admin/pull/4787)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<ReferenceInput>` when using an object literal as `filter` prop ([4784](https://github.com/marmelab/react-admin/pull/4784)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<CheckboxGroupInputItem>` doesn't propagate `options` to `<Checkbox>` ([4772](https://github.com/marmelab/react-admin/pull/4772)) ([WiXSL](https://github.com/WiXSL))
+* Fix components / hooks error in react-devtools ([4767](https://github.com/marmelab/react-admin/pull/4767)) ([EricJin987](https://github.com/EricJin987))
+* Fix `<Edit>` view used as expand panel in `<List>` ([4762](https://github.com/marmelab/react-admin/pull/4762)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<DeleteButton>` throws an error when accessing detail page ([4742](https://github.com/marmelab/react-admin/pull/4742)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix minor typos in Caching doc ([4781](https://github.com/marmelab/react-admin/pull/4781)) ([joebordes](https://github.com/joebordes))
+* [Doc] Fix minor typos in Fields doc ([4780](https://github.com/marmelab/react-admin/pull/4780)) ([joebordes](https://github.com/joebordes))
+* [Doc] Fix minor typos in Create/Edit doc ([4779](https://github.com/marmelab/react-admin/pull/4779)) ([joebordes](https://github.com/joebordes))
+* [Doc] Fix minor typos in List doc ([4771](https://github.com/marmelab/react-admin/pull/4771)) ([joebordes](https://github.com/joebordes))
+* [Doc] Fix minor typos in Data Provider doc ([4770](https://github.com/marmelab/react-admin/pull/4770)) ([joebordes](https://github.com/joebordes))
+* [Doc] Add a list of props to all `Field` and `Input` components ([4769](https://github.com/marmelab/react-admin/pull/4769)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v3.5.0
 
 * Update `<Sidebar>` default state to avoid flickering on load ([4677](https://github.com/marmelab/react-admin/pull/4677)) ([Luwangel](https://github.com/Luwangel))
