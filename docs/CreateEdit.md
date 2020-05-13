@@ -712,13 +712,13 @@ export const PostCreate = (props) => (
 
 ### Per Input Default Value
 
-Alternatively, you can specify a `defaultValue` prop directly in `<Input>` components. Default value can be a scalar, or a function returning a scalar.  React-admin will merge the input default values with the form default value (input > form):
+Alternatively, you can specify a `defaultValue` prop directly in `<Input>` components. React-admin will merge the input default values with the form default value (input > form):
 
 ```jsx
 export const PostCreate = (props) => (
     <Create {...props}>
         <SimpleForm>
-            <TextInput disabled source="id" defaultValue={() => uuid()}/>
+            <TextInput source="id" defaultValue={React.useMemo(() => uuid(), [])} disabled />
             <TextInput source="title" />
             <RichTextInput source="body" />
             <NumberInput source="nb_views" defaultValue={0} />
@@ -726,6 +726,8 @@ export const PostCreate = (props) => (
     </Create>
 );
 ```
+
+**Tip**: For default values computed during the first render, or default values that are expensive to compute, use `React.useMemo` as in the example above.
 
 ## Validation
 
