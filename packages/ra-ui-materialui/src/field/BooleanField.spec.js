@@ -1,6 +1,6 @@
 import React from 'react';
 import expect from 'expect';
-import { BooleanField } from './BooleanField';
+import BooleanField from './BooleanField';
 import { render, cleanup } from '@testing-library/react';
 
 const defaultProps = {

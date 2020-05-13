@@ -1,7 +1,7 @@
 import React from 'react';
 import assert from 'assert';
 import { render, cleanup } from '@testing-library/react';
-import { NumberField } from './NumberField';
+import NumberField from './NumberField';
 
 describe('<NumberField />', () => {
     afterEach(cleanup);

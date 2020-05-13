@@ -47,56 +47,58 @@ interface Props extends FieldProps {
  */
 export const NumberField: FunctionComponent<
     Props & InjectedFieldProps & TypographyProps
-> = ({
-    className,
-    emptyText,
-    record,
-    source,
-    locales,
-    options,
-    textAlign,
-    ...rest
-}) => {
-    if (!record) {
-        return null;
-    }
-    const value = get(record, source);
-    if (value == null) {
-        return emptyText ? (
+> = memo<Props & InjectedFieldProps & TypographyProps>(
+    ({
+        className,
+        emptyText,
+        record,
+        source,
+        locales,
+        options,
+        textAlign,
+        ...rest
+    }) => {
+        if (!record) {
+            return null;
+        }
+        const value = get(record, source);
+        if (value == null) {
+            return emptyText ? (
+                <Typography
+                    component="span"
+                    variant="body2"
+                    className={className}
+                    {...sanitizeRestProps(rest)}
+                >
+                    {emptyText}
+                </Typography>
+            ) : null;
+        }
+
+        return (
             <Typography
-                component="span"
                 variant="body2"
+                component="span"
                 className={className}
                 {...sanitizeRestProps(rest)}
             >
-                {emptyText}
+                {hasNumberFormat
+                    ? value.toLocaleString(locales, options)
+                    : value}
             </Typography>
-        ) : null;
+        );
     }
-
-    return (
-        <Typography
-            variant="body2"
-            component="span"
-            className={className}
-            {...sanitizeRestProps(rest)}
-        >
-            {hasNumberFormat ? value.toLocaleString(locales, options) : value}
-        </Typography>
-    );
-};
+);
 
 // what? TypeScript looses the displayName if we don't set it explicitly
 NumberField.displayName = 'NumberField';
 
-const EnhancedNumberField = memo<Props & TypographyProps>(NumberField);
-// @ts-ignore
-EnhancedNumberField.defaultProps = {
+NumberField.defaultProps = {
     addLabel: true,
     textAlign: 'right',
 };
-// @ts-ignore
-EnhancedNumberField.propTypes = {
+
+NumberField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
@@ -107,6 +109,4 @@ EnhancedNumberField.propTypes = {
     options: PropTypes.object,
 };
 
-EnhancedNumberField.displayName = 'EnhancedNumberField';
-
-export default EnhancedNumberField;
+export default NumberField;

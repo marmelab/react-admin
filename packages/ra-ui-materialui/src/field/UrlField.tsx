@@ -6,7 +6,9 @@ import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 const UrlField: FunctionComponent<
     FieldProps & InjectedFieldProps & HtmlHTMLAttributes<HTMLAnchorElement>
-> = ({ className, emptyText, source, record = {}, ...rest }) => {
+> = memo<
+    FieldProps & InjectedFieldProps & HtmlHTMLAttributes<HTMLAnchorElement>
+>(({ className, emptyText, source, record = {}, ...rest }) => {
     const value = get(record, source);
 
     if (value == null && emptyText) {
@@ -27,17 +29,13 @@ const UrlField: FunctionComponent<
             {value}
         </Link>
     );
-};
+});
 
-const EnhancedUrlField = memo<
-    FieldProps & HtmlHTMLAttributes<HTMLAnchorElement>
->(UrlField);
-// @ts-ignore
-EnhancedUrlField.defaultProps = {
+UrlField.defaultProps = {
     addLabel: true,
 };
-// @ts-ignore
-EnhancedUrlField.propTypes = fieldPropTypes;
-EnhancedUrlField.displayName = 'EnhancedUrlField';
 
-export default EnhancedUrlField;
+UrlField.propTypes = fieldPropTypes;
+UrlField.displayName = 'UrlField';
+
+export default UrlField;

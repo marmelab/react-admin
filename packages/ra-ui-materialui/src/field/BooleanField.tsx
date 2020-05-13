@@ -17,25 +17,45 @@ interface Props extends FieldProps {
 
 export const BooleanField: FunctionComponent<
     Props & InjectedFieldProps & TypographyProps
-> = ({
-    className,
-    classes: classesOverride,
-    emptyText,
-    source,
-    record = {},
-    valueLabelTrue,
-    valueLabelFalse,
-    ...rest
-}) => {
-    const translate = useTranslate();
-    const value = get(record, source);
-    let ariaLabel = value ? valueLabelTrue : valueLabelFalse;
+> = memo<Props & InjectedFieldProps & TypographyProps>(
+    ({
+        className,
+        classes: classesOverride,
+        emptyText,
+        source,
+        record = {},
+        valueLabelTrue,
+        valueLabelFalse,
+        ...rest
+    }) => {
+        const translate = useTranslate();
+        const value = get(record, source);
+        let ariaLabel = value ? valueLabelTrue : valueLabelFalse;
 
-    if (!ariaLabel) {
-        ariaLabel = value === false ? 'ra.boolean.false' : 'ra.boolean.true';
-    }
+        if (!ariaLabel) {
+            ariaLabel =
+                value === false ? 'ra.boolean.false' : 'ra.boolean.true';
+        }
 
-    if (value === false || value === true) {
+        if (value === false || value === true) {
+            return (
+                <Typography
+                    component="span"
+                    variant="body2"
+                    className={className}
+                    {...sanitizeRestProps(rest)}
+                >
+                    <Tooltip title={translate(ariaLabel, { _: ariaLabel })}>
+                        {value === true ? (
+                            <TrueIcon data-testid="true" />
+                        ) : (
+                            <FalseIcon data-testid="false" />
+                        )}
+                    </Tooltip>
+                </Typography>
+            );
+        }
+
         return (
             <Typography
                 component="span"
@@ -43,42 +63,22 @@ export const BooleanField: FunctionComponent<
                 className={className}
                 {...sanitizeRestProps(rest)}
             >
-                <Tooltip title={translate(ariaLabel, { _: ariaLabel })}>
-                    {value === true ? (
-                        <TrueIcon data-testid="true" />
-                    ) : (
-                        <FalseIcon data-testid="false" />
-                    )}
-                </Tooltip>
+                {emptyText}
             </Typography>
         );
     }
+);
 
-    return (
-        <Typography
-            component="span"
-            variant="body2"
-            className={className}
-            {...sanitizeRestProps(rest)}
-        >
-            {emptyText}
-        </Typography>
-    );
-};
-
-const EnhancedBooleanField = memo<Props & TypographyProps>(BooleanField);
-// @ts-ignore
-EnhancedBooleanField.defaultProps = {
+BooleanField.defaultProps = {
     addLabel: true,
 };
-// @ts-ignore
-EnhancedBooleanField.propTypes = {
+
+BooleanField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
     valueLabelFalse: PropTypes.string,
     valueLabelTrue: PropTypes.string,
 };
-EnhancedBooleanField.displayName = 'EnhancedBooleanField';
 
-export default EnhancedBooleanField;
+export default BooleanField;

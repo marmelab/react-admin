@@ -10,7 +10,9 @@ const stopPropagation = e => e.stopPropagation();
 
 const EmailField: FunctionComponent<
     FieldProps & InjectedFieldProps & HtmlHTMLAttributes<HTMLAnchorElement>
-> = ({ className, source, record = {}, emptyText, ...rest }) => {
+> = memo<
+    FieldProps & InjectedFieldProps & HtmlHTMLAttributes<HTMLAnchorElement>
+>(({ className, source, record = {}, emptyText, ...rest }) => {
     const value = get(record, source);
 
     if (value == null) {
@@ -36,17 +38,12 @@ const EmailField: FunctionComponent<
             {value}
         </a>
     );
-};
+});
 
-const EnhancedEmailField = memo<
-    FieldProps & HtmlHTMLAttributes<HTMLAnchorElement>
->(EmailField);
-// @ts-ignore
-EnhancedEmailField.defaultProps = {
+EmailField.defaultProps = {
     addLabel: true,
 };
-// @ts-ignore
-EnhancedEmailField.propTypes = fieldPropTypes;
-EnhancedEmailField.displayName = 'EnhancedEmailField';
 
-export default EnhancedEmailField;
+EmailField.propTypes = fieldPropTypes;
+
+export default EmailField;

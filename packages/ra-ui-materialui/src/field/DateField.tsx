@@ -49,61 +49,61 @@ interface Props extends FieldProps {
 
 export const DateField: FunctionComponent<
     Props & InjectedFieldProps & TypographyProps
-> = ({
-    className,
-    emptyText,
-    locales,
-    options,
-    record,
-    showTime = false,
-    source,
-    ...rest
-}) => {
-    if (!record) {
-        return null;
-    }
-    const value = get(record, source);
-    if (value == null) {
-        return emptyText ? (
+> = memo<Props & InjectedFieldProps & TypographyProps>(
+    ({
+        className,
+        emptyText,
+        locales,
+        options,
+        record,
+        showTime = false,
+        source,
+        ...rest
+    }) => {
+        if (!record) {
+            return null;
+        }
+        const value = get(record, source);
+        if (value == null) {
+            return emptyText ? (
+                <Typography
+                    component="span"
+                    variant="body2"
+                    className={className}
+                    {...sanitizeRestProps(rest)}
+                >
+                    {emptyText}
+                </Typography>
+            ) : null;
+        }
+
+        const date = value instanceof Date ? value : new Date(value);
+        const dateString = showTime
+            ? toLocaleStringSupportsLocales
+                ? date.toLocaleString(locales, options)
+                : date.toLocaleString()
+            : toLocaleStringSupportsLocales
+            ? date.toLocaleDateString(locales, options)
+            : date.toLocaleDateString();
+
+        return (
             <Typography
                 component="span"
                 variant="body2"
                 className={className}
                 {...sanitizeRestProps(rest)}
             >
-                {emptyText}
+                {dateString}
             </Typography>
-        ) : null;
+        );
     }
+);
 
-    const date = value instanceof Date ? value : new Date(value);
-    const dateString = showTime
-        ? toLocaleStringSupportsLocales
-            ? date.toLocaleString(locales, options)
-            : date.toLocaleString()
-        : toLocaleStringSupportsLocales
-        ? date.toLocaleDateString(locales, options)
-        : date.toLocaleDateString();
-
-    return (
-        <Typography
-            component="span"
-            variant="body2"
-            className={className}
-            {...sanitizeRestProps(rest)}
-        >
-            {dateString}
-        </Typography>
-    );
-};
-
-const EnhancedDateField = memo<Props>(DateField);
-// @ts-ignore
-EnhancedDateField.defaultProps = {
+DateField.defaultProps = {
     addLabel: true,
 };
-// @ts-ignore
-EnhancedDateField.propTypes = {
+
+DateField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
@@ -115,6 +115,4 @@ EnhancedDateField.propTypes = {
     showTime: PropTypes.bool,
 };
 
-EnhancedDateField.displayName = 'EnhancedDateField';
-
-export default EnhancedDateField;
+export default DateField;

@@ -17,7 +17,7 @@ const useStyles = makeStyles(
 
 export const ChipField: FunctionComponent<
     FieldProps & InjectedFieldProps & ChipProps
-> = props => {
+> = memo<FieldProps & InjectedFieldProps & ChipProps>(props => {
     const {
         className,
         classes: classesOverride,
@@ -49,19 +49,15 @@ export const ChipField: FunctionComponent<
             {...sanitizeRestProps(rest)}
         />
     );
-};
+});
 
-const EnhancedChipField = memo<FieldProps & ChipProps>(ChipField);
-// @ts-ignore
-EnhancedChipField.defaultProps = {
+ChipField.defaultProps = {
     addLabel: true,
 };
-// @ts-ignore
-EnhancedChipField.propTypes = {
+
+ChipField.propTypes = {
     ...ChipField.propTypes,
     ...fieldPropTypes,
 };
 
-EnhancedChipField.displayName = 'EnhancedChipField';
-
-export default EnhancedChipField;
+export default ChipField;
