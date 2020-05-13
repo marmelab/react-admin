@@ -21,7 +21,26 @@ const useInitializeFormWithRecord = record => {
                 // We have to check the record key is actually registered as a field
                 // as some record keys may not have a matching input
                 if (registeredFields.some(field => field === key)) {
-                    form.change(key, record[key]);
+                    if (Array.isArray(record[key])) {
+                        // array of values
+                        record[key].forEach((value, index) => {
+                            if (value && Object.keys(value).length > 0) {
+                                // array of objects
+                                Object.keys(value).forEach(key2 => {
+                                    form.change(
+                                        `${key}[${index}].${key2}`,
+                                        value[key2]
+                                    );
+                                });
+                            } else {
+                                // array of scala values
+                                form.change(`${key}[${index}]`, value);
+                            }
+                        });
+                    } else {
+                        // scalar value
+                        form.change(key, record[key]);
+                    }
                     form.resetFieldState(key);
                 }
             });
