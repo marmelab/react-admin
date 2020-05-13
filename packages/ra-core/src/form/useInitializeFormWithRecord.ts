@@ -18,7 +18,7 @@ const useInitializeFormWithRecord = record => {
         // Using batch ensure we don't get rerenders until all our values are set
         form.batch(() => {
             Object.keys(record).forEach(key => {
-                // We have to check the record key is actually registered as a field
+                // We have to check that the record key is actually registered as a field
                 // as some record keys may not have a matching input
                 if (registeredFields.some(field => field === key)) {
                     if (Array.isArray(record[key])) {
@@ -33,7 +33,7 @@ const useInitializeFormWithRecord = record => {
                                     );
                                 });
                             } else {
-                                // array of scala values
+                                // array of scalar values
                                 form.change(`${key}[${index}]`, value);
                             }
                         });
