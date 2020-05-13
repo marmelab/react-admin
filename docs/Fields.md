@@ -409,9 +409,12 @@ This field is also often used within an [<FileInput />](./Inputs.md#fileinput) c
 
 | Prop | Required | Type | Default | Description |
 | ---|---|---|---|--- |
-| `src` | Optional | string |  - | A function returning a string (or an element) to display based on a record |
-| `title` | Optional | string | record.title | The name of the property containing the image source if the value is an array of objects |
-| `target` | Optional | string | - | The link target. Set to "_blank" to open the file on a new tab |
+| `src` | Optional | `string` |  - | A function returning a string (or an element) to display based on a record |
+| `title` | Optional | `string` | record.title | The name of the property containing the image source if the value is an array of objects |
+| `target` | Optional | `string` | - | The link target. Set to "_blank" to open the file on a new tab |
+| `download` | Optional | `boolan | string` | - | Prompts the user to save the linked URL instead of navigating to it |
+| `ping` | Optional | `string` | - | A space-separated list of URLs. When the link is followed, the browser will send POST requests with the body PING to the URLs. Typically for tracking. |
+| `rel` | Optional | `string` | - | The relationship of the linked URL as space-separated link types (e.g. 'noopener', 'canonical', etc.). |
 
 `<FileField>` also accepts the [common field props](./Fields.md#common-field-props).
 
