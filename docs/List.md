@@ -1879,9 +1879,9 @@ Alternately, if you want to replace the default pagination by a "<previous - nex
 
 ```jsx
 import Button from '@material-ui/core/Button';
+import Toolbar from '@material-ui/core/Toolbar';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
-import Toolbar from '@material-ui/core/Toolbar';
 
 const PostPagination = ({ page, perPage, total, setPage }) => {
     const nbPages = Math.ceil(total / perPage) || 1;
@@ -1889,13 +1889,15 @@ const PostPagination = ({ page, perPage, total, setPage }) => {
         nbPages > 1 &&
             <Toolbar>
                 {page > 1 &&
-                    <Button color="primary" key="prev" icon={ChevronLeft} onClick={() => setPage(page - 1)}>
+                    <Button color="primary" key="prev" onClick={() => setPage(page - 1)}>
+                        <ChevronLeft />
                         Prev
                     </Button>
                 }
                 {page !== nbPages &&
-                    <Button color="primary" key="next" icon={ChevronRight} onClick={() => setPage(page + 1)} labelPosition="before">
+                    <Button color="primary" key="next" onClick={() => setPage(page + 1)}>
                         Next
+                        <ChevronRight />
                     </Button>
                 }
             </Toolbar>
