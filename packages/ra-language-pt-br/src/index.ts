@@ -78,13 +78,15 @@ const ptBrMessages: TranslationMessages = {
             are_you_sure: 'Tem certeza?',
             bulk_delete_content:
                 'Você tem certeza que quer remover isso %{name}? |||| Você tem certeza que quer remover estes %{smart_count} items?',
-            bulk_delete_title: 'Remover %{name} |||| Remover %{smart_count} %{name}',
+            bulk_delete_title:
+                'Remover %{name} |||| Remover %{smart_count} %{name}',
             delete_content: 'Você tem certeza que quer remover este item?',
             delete_title: 'Remover %{name} #%{id}',
             details: 'Detalhes',
             error:
                 'Ocorreu um erro no navegador e seu requisição não foi completada.',
-            invalid_form: 'O formulário não é válido. Por favor, verifique os erros',
+            invalid_form: 
+                'O formulário não é válido. Por favor, verifique os erros',
             loading: 'A página está carregando, aguarde um momento',
             no: 'Não',
             not_found: 'Você digitou uma URL errada, ou seguiu um link errado.',
@@ -117,7 +119,7 @@ const ptBrMessages: TranslationMessages = {
             updated:
                 'Elemento atualizado |||| %{smart_count} elementos atualizados',
             created: 'Elemento criado',
-            deleted: 
+            deleted:
                 'Elemento removido |||| %{smart_count} elementos removidos',
             bad_item: 'Elemento incorreto',
             item_doesnt_exist: 'O elemento não existe',
