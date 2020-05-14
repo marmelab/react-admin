@@ -58,10 +58,11 @@ const ptBrMessages: TranslationMessages = {
                 upload_several:
                     'Solte imagens para upload, ou clique para selecionar uma.',
                 upload_single:
-                    "Solte uma imagem para upload, ou clique para selecioná-la.",
+                    'Solte uma imagem para upload, ou clique para selecioná-la.',
             },
             references: {
-                all_missing: 'Não foi possível encontrar os dados de referência.',
+                all_missing:
+                    'Não foi possível encontrar os dados de referência.',
                 many_missing:
                     'Pelo menos uma das referências associadas aparenta não estar mais disponível.',
                 single_missing:
@@ -77,23 +78,19 @@ const ptBrMessages: TranslationMessages = {
             are_you_sure: 'Tem certeza?',
             bulk_delete_content:
                 'Você tem certeza que quer remover isso %{name}? |||| Você tem certeza que quer remover estes %{smart_count} items?',
-            bulk_delete_title:
-                'Remover %{name} |||| Remover %{smart_count} %{name}',
-            delete_content:
-                'Você tem certeza que quer remover este item?',
+            bulk_delete_title: 'Remover %{name} |||| Remover %{smart_count} %{name}',
+            delete_content: 'Você tem certeza que quer remover este item?',
             delete_title: 'Remover %{name} #%{id}',
             details: 'Detalhes',
             error:
-                "Ocorreu um erro no navegador e seu requisição não foi completada.",
-            invalid_form: "O formulário não é válido. Por favor, verifique os erros",
-            loading:
-                'A página está carregando, aguarde um momento',
+                'Ocorreu um erro no navegador e seu requisição não foi completada.',
+            invalid_form: 'O formulário não é válido. Por favor, verifique os erros',
+            loading: 'A página está carregando, aguarde um momento',
             no: 'Não',
-            not_found:
-                "Você digitou uma URL errada, ou seguiu um link errado.",
+            not_found: 'Você digitou uma URL errada, ou seguiu um link errado.',
             yes: 'Sim',
             unsaved_changes:
-                "Algumas de suas alteracões não foram salvas. Você tem certeza que quer ignorá-las?",
+                'Algumas de suas alteracões não foram salvas. Você tem certeza que quer ignorá-las?',
         },
         navigation: {
             no_results: 'Nenhum resultado encontrado',
@@ -113,16 +110,17 @@ const ptBrMessages: TranslationMessages = {
             username: 'Usuário',
             password: 'Senha',
             sign_in: 'Entrar',
-            sign_in_error: "Erro na autenticação, por favor tente novamente",
+            sign_in_error: 'Erro na autenticação, por favor tente novamente',
             logout: 'Sair',
         },
         notification: {
             updated:
                 'Elemento atualizado |||| %{smart_count} elementos atualizados',
             created: 'Elemento criado',
-            deleted: 'Elemento removido |||| %{smart_count} elementos removidos',
+            deleted: 
+                'Elemento removido |||| %{smart_count} elementos removidos',
             bad_item: 'Elemento incorreto',
-            item_doesnt_exist: "O elemento não existe",
+            item_doesnt_exist: 'O elemento não existe',
             http_error: 'Erro de comunicação com o servidor',
             data_provider_error:
                 'Erro com o dataProvider. Verifique o console para mais detalhes.',
