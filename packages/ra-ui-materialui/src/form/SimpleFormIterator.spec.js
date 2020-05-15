@@ -211,4 +211,37 @@ describe('<SimpleFormIterator />', () => {
             ).toEqual([{ email: 'bar@foo.com' }]);
         });
     });
+
+    it('should not display add buttom if custom addButton is passed', () => {
+        const { queryAllByText } = renderWithRedux(
+            <SimpleForm>
+                <ArrayInput source="emails">
+                    <SimpleFormIterator
+                        translate={x => x}
+                        addButton={<button>Custom Add Button</button>}
+                    >
+                        <TextInput source="email" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        );
+        expect(queryAllByText('ra.action.add').length).toBe(0);
+    });
+
+    it('should not display remove button if custom removeButton is passed', () => {
+        const { queryAllByText } = renderWithRedux(
+            <SimpleForm record={{ emails: [{ email: '' }, { email: '' }] }}>
+                <ArrayInput source="emails">
+                    <SimpleFormIterator
+                        translate={x => x}
+                        removeButton={<button>Custom Remove Button</button>}
+                    >
+                        <TextInput source="email" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        );
+
+        expect(queryAllByText('ra.action.remove').length).toBe(0);
+    });
 });
