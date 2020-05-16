@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-final-form';
+import { isObject } from '../inference/assertions';
 
 /**
  * Restore the record values which should override any default values specified on the form.
@@ -24,7 +25,10 @@ const useInitializeFormWithRecord = record => {
                     if (Array.isArray(record[key])) {
                         // array of values
                         record[key].forEach((value, index) => {
-                            if (value && Object.keys(value).length > 0) {
+                            if (
+                                isObject(value) &&
+                                Object.keys(value).length > 0
+                            ) {
                                 // array of objects
                                 Object.keys(value).forEach(key2 => {
                                     form.change(
