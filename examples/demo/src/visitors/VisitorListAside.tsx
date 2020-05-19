@@ -7,6 +7,7 @@ import {
     InputAdornment,
     List,
     ListItem,
+    ListItemText,
     Box,
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
@@ -39,6 +40,9 @@ const useStyles = makeStyles(theme => ({
     },
     listItem: {
         paddingLeft: '2em',
+    },
+    listItemText: {
+        margin: 0,
     },
 }));
 
@@ -86,7 +90,10 @@ const Aside: FC = props => {
                 selected={isSelected}
                 className={classes.listItem}
             >
-                {translate(label)}
+                <ListItemText
+                    primary={translate(label)}
+                    className={classes.listItemText}
+                />
             </ListItem>
         );
     };

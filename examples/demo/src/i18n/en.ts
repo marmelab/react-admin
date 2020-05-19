@@ -58,7 +58,7 @@ const customEnglishMessages: TranslationMessages = {
                 last_week: 'Last week',
                 this_month: 'This month',
                 last_month: 'Last month',
-                earlier: 'earlier',
+                earlier: 'Earlier',
                 has_ordered: 'Has ordered',
                 has_newsletter: 'Has newsletter',
                 group: 'Segment',
