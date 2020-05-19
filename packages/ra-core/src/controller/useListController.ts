@@ -142,7 +142,6 @@ const useListController = <RecordType = Record>(
         { ...query.filter, ...filter },
         {
             action: CRUD_GET_LIST,
-            version,
             onFailure: error =>
                 notify(
                     typeof error === 'string'
