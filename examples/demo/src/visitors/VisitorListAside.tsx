@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, ReactElement, ChangeEvent } from 'react';
 import {
     Card,
     CardContent,
@@ -51,15 +51,15 @@ const Aside: FC = props => {
         setFilters({ ...filterValues, ...values });
     };
 
-    const onSearchChange = (event: any) => {
+    const onSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
         setFilter({ q: event.target ? event.target.value : undefined });
     };
 
     const onSubmit = () => undefined;
 
-    // @see https://material-ui.com/guides/composition/#react-router
-    const FilterButton: FC<any> = props => {
-        const { children, value } = props;
+    // defining this component here allows to skip passing filterValues and setFilter as props
+    const FilterButton: FC<{ label: string; value: any }> = props => {
+        const { label, value } = props;
         const isSelected = Object.keys(value).reduce(
             (acc, key) => acc && value[key] == filterValues[key], // eslint-disable-line eqeqeq
             true
@@ -86,7 +86,7 @@ const Aside: FC = props => {
                 selected={isSelected}
                 className={classes.listItem}
             >
-                {children}
+                {translate(label)}
             </ListItem>
         );
     };
@@ -123,9 +123,8 @@ const Aside: FC = props => {
                             last_seen_gte: endOfYesterday().toISOString(),
                             last_seen_lte: undefined,
                         }}
-                    >
-                        {translate('resources.customers.filters.today')}
-                    </FilterButton>
+                        label="resources.customers.filters.today"
+                    />
                     <FilterButton
                         value={{
                             last_seen_gte: startOfWeek(
@@ -133,9 +132,8 @@ const Aside: FC = props => {
                             ).toISOString(),
                             last_seen_lte: undefined,
                         }}
-                    >
-                        {translate('resources.customers.filters.this_week')}
-                    </FilterButton>
+                        label="resources.customers.filters.this_week"
+                    />
                     <FilterButton
                         value={{
                             last_seen_gte: subWeeks(
@@ -146,9 +144,8 @@ const Aside: FC = props => {
                                 new Date()
                             ).toISOString(),
                         }}
-                    >
-                        {translate('resources.customers.filters.last_week')}
-                    </FilterButton>
+                        label="resources.customers.filters.last_week"
+                    />
                     <FilterButton
                         value={{
                             last_seen_gte: startOfMonth(
@@ -156,9 +153,8 @@ const Aside: FC = props => {
                             ).toISOString(),
                             last_seen_lte: undefined,
                         }}
-                    >
-                        {translate('resources.customers.filters.this_month')}
-                    </FilterButton>
+                        label="resources.customers.filters.this_month"
+                    />
                     <FilterButton
                         value={{
                             last_seen_gte: subMonths(
@@ -169,9 +165,8 @@ const Aside: FC = props => {
                                 new Date()
                             ).toISOString(),
                         }}
-                    >
-                        {translate('resources.customers.filters.last_month')}
-                    </FilterButton>
+                        label="resources.customers.filters.last_month"
+                    />
                     <FilterButton
                         value={{
                             last_seen_gte: undefined,
@@ -180,9 +175,8 @@ const Aside: FC = props => {
                                 1
                             ).toISOString(),
                         }}
-                    >
-                        {translate('resources.customers.filters.earlier')}
-                    </FilterButton>
+                        label="resources.customers.filters.earlier"
+                    />
                 </List>
 
                 <FilterSection
@@ -191,19 +185,13 @@ const Aside: FC = props => {
                 />
                 <List dense disablePadding>
                     <FilterButton
-                        value={{
-                            has_ordered: true,
-                        }}
-                    >
-                        {translate('ra.boolean.true')}
-                    </FilterButton>
+                        value={{ has_ordered: true }}
+                        label="ra.boolean.true"
+                    />
                     <FilterButton
-                        value={{
-                            has_ordered: false,
-                        }}
-                    >
-                        {translate('ra.boolean.false')}
-                    </FilterButton>
+                        value={{ has_ordered: false }}
+                        label="ra.boolean.false"
+                    />
                 </List>
 
                 <FilterSection
@@ -212,19 +200,13 @@ const Aside: FC = props => {
                 />
                 <List dense disablePadding>
                     <FilterButton
-                        value={{
-                            has_newsletter: true,
-                        }}
-                    >
-                        {translate('ra.boolean.true')}
-                    </FilterButton>
+                        value={{ has_newsletter: true }}
+                        label="ra.boolean.true"
+                    />
                     <FilterButton
-                        value={{
-                            has_newsletter: false,
-                        }}
-                    >
-                        {translate('ra.boolean.false')}
-                    </FilterButton>
+                        value={{ has_newsletter: false }}
+                        label="ra.boolean.false"
+                    />
                 </List>
 
                 <FilterSection
@@ -234,12 +216,9 @@ const Aside: FC = props => {
                 <List dense disablePadding>
                     {segments.map(segment => (
                         <FilterButton
-                            value={{
-                                groups: segment.id,
-                            }}
-                        >
-                            {translate(segment.name)}
-                        </FilterButton>
+                            value={{ groups: segment.id }}
+                            label={segment.name}
+                        />
                     ))}
                 </List>
             </CardContent>
