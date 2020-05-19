@@ -1,20 +1,23 @@
 import React, { FC, ChangeEvent } from 'react';
 import {
+    Box,
     Card,
     CardContent,
     makeStyles,
     Typography,
+    IconButton,
     InputAdornment,
     List,
     ListItem,
     ListItemText,
-    Box,
+    ListItemSecondaryAction,
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOnOutlined';
 import MailIcon from '@material-ui/icons/MailOutline';
 import LocalOfferIcon from '@material-ui/icons/LocalOfferOutlined';
+import CancelIcon from '@material-ui/icons/CancelOutlined';
 import { Form } from 'react-final-form';
 import { TextInput, useTranslate } from 'react-admin';
 import {
@@ -94,6 +97,13 @@ const Aside: FC = props => {
                     primary={translate(label)}
                     className={classes.listItemText}
                 />
+                {isSelected && (
+                    <ListItemSecondaryAction>
+                        <IconButton size="small">
+                            <CancelIcon onClick={addFilter} />
+                        </IconButton>
+                    </ListItemSecondaryAction>
+                )}
             </ListItem>
         );
     };
