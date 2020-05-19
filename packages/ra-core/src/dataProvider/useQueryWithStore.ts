@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 
 import useDataProvider from './useDataProvider';
+import useVersion from '../controller/useVersion';
 import getFetchType from './getFetchType';
 import { useSafeSetState } from '../util/hooks';
 import { ReduxState } from '../types';
@@ -120,7 +121,8 @@ const useQueryWithStore = (
     loaded: boolean;
 } => {
     const { type, resource, payload } = query;
-    const requestSignature = JSON.stringify({ query, options });
+    const version = useVersion(); // used to allow force reload
+    const requestSignature = JSON.stringify({ query, options, version });
     const requestSignatureRef = useRef(requestSignature);
     const data = useSelector(dataSelector);
     const total = useSelector(totalSelector);
