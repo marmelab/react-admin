@@ -14,6 +14,7 @@ import NbNewOrders from './NbNewOrders';
 import PendingOrders from './PendingOrders';
 import PendingReviews from './PendingReviews';
 import NewCustomers from './NewCustomers';
+import OrderChart from './OrderChart';
 
 import { Customer, Order, Review } from '../types';
 
@@ -34,6 +35,7 @@ interface State {
     pendingOrdersCustomers?: CustomerData;
     pendingReviews?: Review[];
     pendingReviewsCustomers?: CustomerData;
+    recentOrders?: Order[];
     revenue?: number;
 }
 
@@ -85,6 +87,7 @@ const Dashboard: FC = () => {
             );
         setState(state => ({
             ...state,
+            recentOrders,
             revenue: aggregations.revenue.toLocaleString(undefined, {
                 style: 'currency',
                 currency: 'USD',
@@ -148,6 +151,7 @@ const Dashboard: FC = () => {
         pendingReviews,
         pendingReviewsCustomers,
         revenue,
+        recentOrders,
     } = state;
     return isXSmall ? (
         <div>
@@ -160,6 +164,9 @@ const Dashboard: FC = () => {
                     <NbNewOrders value={nbNewOrders} />
                 </div>
                 <div style={styles.singleCol}>
+                    <OrderChart orders={recentOrders} />
+                </div>
+                <div style={styles.flex}>
                     <PendingOrders
                         orders={pendingOrders}
                         customers={pendingOrdersCustomers}
@@ -177,6 +184,9 @@ const Dashboard: FC = () => {
                 <NbNewOrders value={nbNewOrders} />
             </div>
             <div style={styles.singleCol}>
+                <OrderChart orders={recentOrders} />
+            </div>
+            <div style={styles.flex}>
                 <PendingOrders
                     orders={pendingOrders}
                     customers={pendingOrdersCustomers}
@@ -192,6 +202,9 @@ const Dashboard: FC = () => {
                 </div>
                 <div style={styles.singleCol}>
                     <Welcome />
+                </div>
+                <div style={styles.singleCol}>
+                    <OrderChart orders={recentOrders} />
                 </div>
                 <div style={styles.singleCol}>
                     <PendingOrders
