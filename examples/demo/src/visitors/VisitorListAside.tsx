@@ -1,0 +1,265 @@
+import React, { FC } from 'react';
+import {
+    Card,
+    CardContent,
+    makeStyles,
+    Typography,
+    InputAdornment,
+    List,
+    ListItem,
+    Box,
+} from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOnOutlined';
+import MailIcon from '@material-ui/icons/MailOutline';
+import LocalOfferIcon from '@material-ui/icons/LocalOfferOutlined';
+import { Form } from 'react-final-form';
+import { TextInput, useTranslate } from 'react-admin';
+import {
+    endOfYesterday,
+    startOfWeek,
+    subWeeks,
+    startOfMonth,
+    subMonths,
+} from 'date-fns';
+
+import segments from '../segments/data';
+
+const useStyles = makeStyles(theme => ({
+    root: {
+        [theme.breakpoints.up('sm')]: {
+            order: -1,
+            width: '15em',
+            marginRight: '1em',
+        },
+        [theme.breakpoints.down('sm')]: {
+            display: 'none',
+        },
+    },
+    listItem: {
+        paddingLeft: '2em',
+    },
+}));
+
+const Aside: FC = props => {
+    const { filterValues, setFilters } = props as any;
+    const classes = useStyles(props);
+    const translate = useTranslate();
+
+    const setFilter = (values: any) => {
+        setFilters({ ...filterValues, ...values });
+    };
+
+    const onSearchChange = (event: any) => {
+        setFilter({ q: event.target ? event.target.value : undefined });
+    };
+
+    const onSubmit = () => undefined;
+
+    // @see https://material-ui.com/guides/composition/#react-router
+    const FilterButton: FC<any> = props => {
+        const { children, value } = props;
+        const isSelected = Object.keys(value).reduce(
+            (acc, key) => acc && value[key] == filterValues[key],
+            true
+        );
+        const addFilter = () => {
+            if (isSelected) {
+                // remove the filter
+                const inverseValues = Object.keys(value).reduce(
+                    (acc, key) => {
+                        acc[key] = undefined;
+                        return acc;
+                    },
+                    {} as any
+                );
+                setFilter(inverseValues);
+            } else {
+                setFilter(value);
+            }
+        };
+        return (
+            <ListItem
+                button
+                onClick={addFilter}
+                selected={isSelected}
+                className={classes.listItem}
+            >
+                {children}
+            </ListItem>
+        );
+    };
+
+    return (
+        <Card className={classes.root}>
+            <CardContent>
+                <Form onSubmit={onSubmit} initialValues={filterValues}>
+                    {({ handleSubmit }) => (
+                        <TextInput
+                            resettable
+                            helperText={false}
+                            source="q"
+                            label="Search"
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <SearchIcon color="disabled" />
+                                    </InputAdornment>
+                                ),
+                            }}
+                            onChange={onSearchChange}
+                        />
+                    )}
+                </Form>
+
+                <FilterSection
+                    icon={AccessTimeIcon}
+                    label="resources.customers.filters.last_visited"
+                />
+                <List dense disablePadding>
+                    <FilterButton
+                        value={{
+                            last_seen_gte: endOfYesterday().toISOString(),
+                            last_seen_lte: undefined,
+                        }}
+                    >
+                        {translate('resources.customers.filters.today')}
+                    </FilterButton>
+                    <FilterButton
+                        value={{
+                            last_seen_gte: startOfWeek(
+                                new Date()
+                            ).toISOString(),
+                            last_seen_lte: undefined,
+                        }}
+                    >
+                        {translate('resources.customers.filters.this_week')}
+                    </FilterButton>
+                    <FilterButton
+                        value={{
+                            last_seen_gte: subWeeks(
+                                startOfWeek(new Date()),
+                                1
+                            ).toISOString(),
+                            last_seen_lte: startOfWeek(
+                                new Date()
+                            ).toISOString(),
+                        }}
+                    >
+                        {translate('resources.customers.filters.last_week')}
+                    </FilterButton>
+                    <FilterButton
+                        value={{
+                            last_seen_gte: startOfMonth(
+                                new Date()
+                            ).toISOString(),
+                            last_seen_lte: undefined,
+                        }}
+                    >
+                        {translate('resources.customers.filters.this_month')}
+                    </FilterButton>
+                    <FilterButton
+                        value={{
+                            last_seen_gte: subMonths(
+                                startOfMonth(new Date()),
+                                1
+                            ).toISOString(),
+                            last_seen_lte: startOfMonth(
+                                new Date()
+                            ).toISOString(),
+                        }}
+                    >
+                        {translate('resources.customers.filters.last_month')}
+                    </FilterButton>
+                    <FilterButton
+                        value={{
+                            last_seen_gte: undefined,
+                            last_seen_lte: subMonths(
+                                startOfMonth(new Date()),
+                                1
+                            ).toISOString(),
+                        }}
+                    >
+                        {translate('resources.customers.filters.earlier')}
+                    </FilterButton>
+                </List>
+
+                <FilterSection
+                    icon={MonetizationOnIcon}
+                    label="resources.customers.filters.has_ordered"
+                />
+                <List dense disablePadding>
+                    <FilterButton
+                        value={{
+                            has_ordered: true,
+                        }}
+                    >
+                        {translate('ra.boolean.true')}
+                    </FilterButton>
+                    <FilterButton
+                        value={{
+                            has_ordered: false,
+                        }}
+                    >
+                        {translate('ra.boolean.false')}
+                    </FilterButton>
+                </List>
+
+                <FilterSection
+                    icon={MailIcon}
+                    label="resources.customers.filters.has_newsletter"
+                />
+                <List dense disablePadding>
+                    <FilterButton
+                        value={{
+                            has_newsletter: true,
+                        }}
+                    >
+                        {translate('ra.boolean.true')}
+                    </FilterButton>
+                    <FilterButton
+                        value={{
+                            has_newsletter: false,
+                        }}
+                    >
+                        {translate('ra.boolean.false')}
+                    </FilterButton>
+                </List>
+
+                <FilterSection
+                    icon={LocalOfferIcon}
+                    label="resources.customers.filters.group"
+                />
+                <List dense disablePadding>
+                    {segments.map(segment => (
+                        <FilterButton
+                            value={{
+                                groups: segment.id,
+                            }}
+                        >
+                            {translate(segment.name)}
+                        </FilterButton>
+                    ))}
+                </List>
+            </CardContent>
+        </Card>
+    );
+};
+
+const FilterSection: FC<{ label: string; icon: FC }> = ({
+    label,
+    icon: Icon,
+}) => {
+    const translate = useTranslate();
+    return (
+        <Box mt={2} display="flex" alignItems="center">
+            <Box mr={1}>
+                <Icon />
+            </Box>
+            <Typography variant="overline">{translate(label)}</Typography>
+        </Box>
+    );
+};
+
+export default Aside;
