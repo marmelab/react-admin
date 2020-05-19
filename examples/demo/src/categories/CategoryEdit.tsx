@@ -32,7 +32,8 @@ const CategoryEdit = (props: any) => (
                 reference="products"
                 target="category_id"
                 label="resources.categories.fields.products"
-                perPage={5}
+                perPage={20}
+                fullWidth
             >
                 <Datagrid>
                     <ThumbnailField />
