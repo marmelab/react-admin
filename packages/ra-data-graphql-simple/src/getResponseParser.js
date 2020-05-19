@@ -13,7 +13,7 @@ const sanitizeResource = data => {
         }
 
         if (Array.isArray(dataKey)) {
-            if (typeof dataKey[0] === 'object') {
+            if (typeof dataKey[0] === 'object' && dataKey[0] !== null) {
                 return {
                     ...acc,
                     [key]: dataKey.map(sanitizeResource),
@@ -24,7 +24,7 @@ const sanitizeResource = data => {
             }
         }
 
-        if (typeof dataKey === 'object') {
+        if (typeof dataKey === 'object' && dataKey !== null) {
             return {
                 ...acc,
                 ...(dataKey &&
