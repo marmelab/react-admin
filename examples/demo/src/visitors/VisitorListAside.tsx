@@ -61,7 +61,7 @@ const Aside: FC = props => {
     const FilterButton: FC<any> = props => {
         const { children, value } = props;
         const isSelected = Object.keys(value).reduce(
-            (acc, key) => acc && value[key] == filterValues[key],
+            (acc, key) => acc && value[key] == filterValues[key], // eslint-disable-line eqeqeq
             true
         );
         const addFilter = () => {
