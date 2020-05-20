@@ -5,7 +5,6 @@ import {
     Datagrid,
     DateField,
     DateInput,
-    EditButton,
     Filter,
     List,
     NullableBooleanInput,
@@ -121,7 +120,11 @@ class TabbedDatagrid extends React.Component {
                             </Datagrid>
                         )}
                         {filterValues.status === 'delivered' && (
-                            <Datagrid {...props} ids={this.state.delivered}>
+                            <Datagrid
+                                {...props}
+                                ids={this.state.delivered}
+                                rowClick="edit"
+                            >
                                 <DateField source="date" showTime />
                                 <TextField source="reference" />
                                 <CustomerReferenceField />
@@ -135,11 +138,14 @@ class TabbedDatagrid extends React.Component {
                                     className={classes.total}
                                 />
                                 <BooleanField source="returned" />
-                                <EditButton />
                             </Datagrid>
                         )}
                         {filterValues.status === 'cancelled' && (
-                            <Datagrid {...props} ids={this.state.cancelled}>
+                            <Datagrid
+                                {...props}
+                                ids={this.state.cancelled}
+                                rowClick="edit"
+                            >
                                 <DateField source="date" showTime />
                                 <TextField source="reference" />
                                 <CustomerReferenceField />
@@ -153,7 +159,6 @@ class TabbedDatagrid extends React.Component {
                                     className={classes.total}
                                 />
                                 <BooleanField source="returned" />
-                                <EditButton />
                             </Datagrid>
                         )}
                     </div>

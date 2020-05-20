@@ -5,6 +5,8 @@
     "dependencies": {
         "@material-ui/core": "^4.9.0",
         "@material-ui/icons": "^4.5.1",
+        "@types/inflection": "^1.5.28",
+        "@types/recharts": "^1.8.10",
         "data-generator-retail": "^3.0.0",
         "fakerest": "~2.1.0",
         "fetch-mock": "~6.3.0",
@@ -25,6 +27,7 @@
         "react-router": "^5.1.0",
         "react-router-dom": "^5.1.0",
         "react-scripts": "^3.0.0",
+        "recharts": "^1.8.5",
         "recompose": "~0.26.0",
         "redux-saga": "^1.0.0"
     },

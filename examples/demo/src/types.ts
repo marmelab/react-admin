@@ -42,6 +42,8 @@ export interface Customer extends Record {
 
 export interface Order extends Record {
     basket: BasketItem[];
+    date: Date;
+    total: number;
 }
 
 export interface BasketItem {

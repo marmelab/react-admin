@@ -977,6 +977,7 @@ Normally, `showFilter()` adds one input to the `displayedFilters` list. As the f
 
 Next is the form component, based on `react-final-form`. The form inputs appear directly in the form, and the form submission triggers the `setFilters()` callback passed as parameter:
 
+{% raw %}
 ```jsx
 import React from "react";
 import { Form } from "react-final-form";
@@ -1050,6 +1051,7 @@ return (
   );
 };
 ```
+{% endraw %}
 
 To finish, we pass the `<PostFilter>` component to the `<List>` component using the `filters` prop:
 

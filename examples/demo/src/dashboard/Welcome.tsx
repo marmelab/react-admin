@@ -12,7 +12,7 @@ import { useTranslate } from 'react-admin';
 
 const useStyles = makeStyles({
     media: {
-        height: '18em',
+        height: '16em',
     },
 });
 
