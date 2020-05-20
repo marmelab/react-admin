@@ -62,10 +62,34 @@ const useStyles = makeStyles(
     { name: 'RaSimpleFormIterator' }
 );
 
+const DefaultAddButton = props => {
+    const { onClick = () => {}, className = '' } = props;
+    const classes = useStyles(props);
+    const translate = useTranslate();
+    return (
+        <Button className={className} size="small" onClick={onClick}>
+            <AddIcon className={classes.leftIcon} />
+            {translate('ra.action.add')}
+        </Button>
+    );
+};
+
+const DefaultRemoveButton = props => {
+    const { onClick = () => {}, className = '' } = props;
+    const classes = useStyles(props);
+    const translate = useTranslate();
+    return (
+        <Button className={className} size="small" onClick={onClick}>
+            <CloseIcon className={classes.leftIcon} />
+            {translate('ra.action.remove')}
+        </Button>
+    );
+};
+
 const SimpleFormIterator = props => {
     const {
-        addButton,
-        removeButton,
+        addButton = <DefaultAddButton />,
+        removeButton = <DefaultRemoveButton />,
         basePath,
         children,
         fields,
@@ -80,7 +104,6 @@ const SimpleFormIterator = props => {
         TransitionProps,
         defaultValue,
     } = props;
-    const translate = useTranslate();
     const classes = useStyles(props);
 
     // We need a unique id for each field for a proper enter/exit animation
@@ -122,61 +145,23 @@ const SimpleFormIterator = props => {
         fields.push(undefined);
     };
 
-    // check if a custom add button was passed as a prop
-    // If yes, then clone that add the addField() method before its onClick event
-    // If no, then just use the original add button
-    const getAddButton = () => {
-        if (!addButton) {
-            return (
-                <Button
-                    className={classNames('button-add', `button-add-${source}`)}
-                    size="small"
-                    onClick={addField}
-                >
-                    <AddIcon className={classes.leftIcon} />
-                    {translate('ra.action.add')}
-                </Button>
-            );
+    // add field and call the onClick event of the button passed as addButton prop
+    const handleAddButtonClick = originalOnClickHandler => event => {
+        addField();
+        if (originalOnClickHandler) {
+            originalOnClickHandler(event);
         }
-
-        const { props: addButtonProps = {} } = addButton;
-        const { onClick: addButtonOnClick = () => {} } = addButtonProps;
-        return cloneElement(addButton, {
-            onClick: e => {
-                addField();
-                addButtonOnClick(e);
-            },
-        });
     };
 
-    // check if a custom remove button was passed as a prop
-    // If yes, then clone that remove the removeField() method before its onClick event
-    // If no, then just use the original remove button
-    const getRemoveButton = index => {
-        if (!removeButton) {
-            return (
-                <Button
-                    className={classNames(
-                        'button-remove',
-                        `button-remove-${source}-${index}`
-                    )}
-                    size="small"
-                    onClick={removeField(index)}
-                >
-                    <CloseIcon className={classes.leftIcon} />
-                    {translate('ra.action.remove')}
-                </Button>
-            );
+    // remove field and call the onClick event of the button passed as removeButton prop
+    const handleRemoveButtonClick = (
+        originalOnClickHandler,
+        index
+    ) => event => {
+        removeField(index)();
+        if (originalOnClickHandler) {
+            originalOnClickHandler(event);
         }
-
-        const { props: removeButtonProps = {} } = removeButton;
-        const { onClick: removeButtonOnClick = () => {} } = removeButtonProps;
-        return cloneElement(removeButton, {
-            onClick: e => {
-                removeField(index);
-                removeButtonOnClick(e);
-            },
-        });
     };
 
     const records = get(record, source);
@@ -245,7 +230,16 @@ const SimpleFormIterator = props => {
                                 disableRemove
                             ) && (
                                 <span className={classes.action}>
-                                    {getRemoveButton(index)}
+                                    {cloneElement(removeButton, {
+                                        onClick: handleRemoveButtonClick(
+                                            removeButton.props.onClick,
+                                            index
+                                        ),
+                                        className: classNames(
+                                            'button-remove',
+                                            `button-remove-${source}-${index}`
+                                        ),
+                                    })}
                                 </span>
                             )}
                         </li>
@@ -254,7 +248,17 @@ const SimpleFormIterator = props => {
             </TransitionGroup>
             {!disableAdd && (
                 <li className={classes.line}>
-                    <span className={classes.action}>{getAddButton()}</span>
+                    <span className={classes.action}>
+                        {cloneElement(addButton, {
+                            onClick: handleAddButtonClick(
+                                addButton.props.onClick
+                            ),
+                            className: classNames(
+                                'button-add',
+                                `button-add-${source}`
+                            ),
+                        })}
+                    </span>
                 </li>
             )}
         </ul>
@@ -264,8 +268,6 @@ const SimpleFormIterator = props => {
 SimpleFormIterator.defaultProps = {
     disableAdd: false,
     disableRemove: false,
-    addButton: null,
-    removeButton: null,
 };
 
 SimpleFormIterator.propTypes = {
