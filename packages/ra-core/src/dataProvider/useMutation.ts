@@ -41,7 +41,7 @@ import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDecl
  *
  * - mount:         [mutate, { loading: false, loaded: false }]
  * - mutate called: [mutate, { loading: true, loaded: false }]
- * - success:       [mutate, { data: [data from response], total: [total from response], loading: false, loaded: true }]
+ * - success:       [mutate, { data: [data from response], total: [total from response], meta: [meta information from response], loading: false, loaded: true }]
  * - error:         [mutate, { error: [error from response], loading: false, loaded: true }]
  *
  * The mutate function accepts the following arguments
@@ -128,6 +128,7 @@ const useMutation = (
         data: null,
         error: null,
         total: null,
+        meta: null,
         loading: false,
         loaded: false,
     });
@@ -161,10 +162,11 @@ const useMutation = (
                 params.payload,
                 params.options
             )
-                .then(({ data, total }) => {
+                .then(({ data, total, meta }) => {
                     setState({
                         data,
                         total,
+                        meta,
                         loading: false,
                         loaded: true,
                     });
@@ -209,6 +211,7 @@ export type UseMutationValue = [
     {
         data?: any;
         total?: number;
+        meta?: object;
         error?: any;
         loading: boolean;
         loaded: boolean;

@@ -19,6 +19,7 @@ describe('Resources Reducer', () => {
             reducer(
                 {
                     posts: {
+                        cachedRequests: {},
                         data: {},
                         list: {
                             params: {
@@ -39,6 +40,7 @@ describe('Resources Reducer', () => {
                         props: { name: 'posts' },
                     },
                     comments: {
+                        cachedRequests: {},
                         data: {},
                         list: {
                             params: {
@@ -69,6 +71,7 @@ describe('Resources Reducer', () => {
             )
         ).toEqual({
             posts: {
+                cachedRequests: {},
                 data: {},
                 list: {
                     params: {
@@ -89,6 +92,7 @@ describe('Resources Reducer', () => {
                 props: { name: 'posts' },
             },
             comments: {
+                cachedRequests: {},
                 data: {},
                 list: {
                     params: {
@@ -109,6 +113,7 @@ describe('Resources Reducer', () => {
                 props: { name: 'comments' },
             },
             users: {
+                cachedRequests: {},
                 data: {},
                 list: {
                     params: {
@@ -136,6 +141,7 @@ describe('Resources Reducer', () => {
             reducer(
                 {
                     posts: {
+                        cachedRequests: {},
                         data: {},
                         list: {
                             params: {
@@ -156,6 +162,7 @@ describe('Resources Reducer', () => {
                         props: { name: 'posts' },
                     },
                     comments: {
+                        cachedRequests: {},
                         data: {},
                         list: {
                             params: {
@@ -183,6 +190,7 @@ describe('Resources Reducer', () => {
             )
         ).toEqual({
             posts: {
+                cachedRequests: {},
                 data: {},
                 list: {
                     params: {
@@ -210,6 +218,7 @@ describe('Resources Reducer', () => {
             reducer(
                 {
                     posts: {
+                        cachedRequests: {},
                         data: {},
                         list: {
                             params: {
@@ -230,6 +239,7 @@ describe('Resources Reducer', () => {
                         props: { name: 'posts' },
                     },
                     comments: {
+                        cachedRequests: {},
                         data: {},
                         list: {
                             params: {
@@ -265,6 +275,7 @@ describe('Resources Reducer', () => {
             )
         ).toEqual({
             posts: {
+                cachedRequests: {},
                 data: {},
                 list: {
                     params: {
@@ -285,6 +296,7 @@ describe('Resources Reducer', () => {
                 props: { name: 'posts' },
             },
             comments: {
+                cachedRequests: {},
                 data: {},
                 list: {
                     params: {

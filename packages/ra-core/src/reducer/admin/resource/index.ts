@@ -7,6 +7,7 @@ import {
     RefreshViewAction,
 } from '../../../actions';
 
+import cachedRequests from './cachedRequests';
 import data from './data';
 import list from './list';
 import validity from './validity';
@@ -25,6 +26,7 @@ export default (previousState = initialState, action: ActionTypes) => {
             props: action.payload,
             data: data(undefined, action),
             list: list(undefined, action),
+            cachedRequests: cachedRequests(undefined, action),
             validity: validity(undefined, action),
         };
         return {
@@ -61,6 +63,10 @@ export default (previousState = initialState, action: ActionTypes) => {
                           props: previousState[resource].props,
                           data: data(previousState[resource].data, action),
                           list: list(previousState[resource].list, action),
+                          cachedRequests: cachedRequests(
+                              previousState[resource].cachedRequests,
+                              action
+                          ),
                           validity: validity(
                               previousState[resource].validity,
                               action

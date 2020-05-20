@@ -5,6 +5,7 @@ import useQueryWithStore from './useQueryWithStore';
 import {
     getReferences,
     getIds,
+    getMeta,
     getTotal,
     nameRelatedTo,
 } from '../reducer/admin/references/oneToMany';
@@ -17,7 +18,7 @@ import { useMemo } from 'react';
  * The return value updates according to the request state:
  *
  * - start: { loading: true, loaded: false }
- * - success: { data: [data from store], ids: [ids from response], total: [total from response], loading: false, loaded: true }
+ * - success: { data: [data from store], ids: [ids from response], total: [total from response], meta: [meta information from response], loading: false, loaded: true }
  * - error: { error: [error from response], loading: false, loaded: true }
  *
  * This hook will return the cached result when called a second time
@@ -32,7 +33,7 @@ import { useMemo } from 'react';
  * @param {string} referencingResource The resource name, e.g. 'posts'. Used to generate a cache key
  * @param {Object} options Options object to pass to the dataProvider. May include side effects to be executed upon success of failure, e.g. { onSuccess: { refresh: true } }
  *
- * @returns The current request state. Destructure as { data, total, ids, error, loading, loaded }.
+ * @returns The current request state. Destructure as { data, total, ids, meta, error, loading, loaded }.
  *
  * @example
  *
@@ -70,7 +71,14 @@ const useGetManyReference = (
         [filter, resource, id, referencingResource, target]
     );
 
-    const { data: ids, total, error, loading, loaded } = useQueryWithStore(
+    const {
+        data: ids,
+        total,
+        meta,
+        error,
+        loading,
+        loaded,
+    } = useQueryWithStore(
         {
             type: 'getManyReference',
             resource: resource,
@@ -78,11 +86,12 @@ const useGetManyReference = (
         },
         { ...options, relatedTo, action: CRUD_GET_MANY_REFERENCE },
         selectIds(relatedTo),
-        selectTotal(relatedTo)
+        selectTotal(relatedTo),
+        selectMeta(relatedTo)
     );
     const data = useSelector(selectData(resource, relatedTo), shallowEqual);
 
-    return { data, ids, total, error, loading, loaded };
+    return { data, ids, total, meta, error, loading, loaded };
 };
 
 export default useGetManyReference;
@@ -96,3 +105,6 @@ const selectIds = (relatedTo: string) => (state: ReduxState) =>
 
 const selectTotal = (relatedTo: string) => (state: ReduxState) =>
     getTotal(state, relatedTo);
+
+const selectMeta = (relatedTo: string) => (state: ReduxState) =>
+    getMeta(state, relatedTo);

@@ -29,6 +29,7 @@ export interface EditProps {
 export interface EditControllerProps {
     loading: boolean;
     loaded: boolean;
+    meta: object;
     saving: boolean;
     defaultTitle: string;
     save: (
@@ -72,7 +73,7 @@ const useEditController = (props: EditProps): EditControllerProps => {
     const redirect = useRedirect();
     const refresh = useRefresh();
     const version = useVersion();
-    const { data: record, loading, loaded } = useGetOne(resource, id, {
+    const { data: record, meta, loading, loaded } = useGetOne(resource, id, {
         action: CRUD_GET_ONE,
         onFailure: () => {
             notify('ra.notification.item_doesnt_exist', 'warning');
@@ -144,6 +145,7 @@ const useEditController = (props: EditProps): EditControllerProps => {
     return {
         loading,
         loaded,
+        meta,
         saving,
         defaultTitle,
         save,

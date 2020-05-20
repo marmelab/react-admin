@@ -10,7 +10,7 @@ import { DELETE, DELETE_MANY } from '../../../core';
 const initialState = {};
 
 export interface OneToManyState {
-    [relatedTo: string]: { ids: Identifier[]; total: number };
+    [relatedTo: string]: { ids: Identifier[]; total: number; meta: object };
 }
 
 type ActionTypes =
@@ -49,6 +49,7 @@ const oneToManyReducer: Reducer<OneToManyState> = (
                 [action.meta.relatedTo]: {
                     ids: action.payload.data.map(record => record.id),
                     total: action.payload.total,
+                    meta: action.payload.meta,
                 },
             };
 
@@ -64,6 +65,10 @@ export const getIds = (state: ReduxState, relatedTo: string) =>
 export const getTotal = (state: ReduxState, relatedTo: string) =>
     state.admin.references.oneToMany[relatedTo] &&
     state.admin.references.oneToMany[relatedTo].total;
+
+export const getMeta = (state: ReduxState, relatedTo: string) =>
+    state.admin.references.oneToMany[relatedTo] &&
+    state.admin.references.oneToMany[relatedTo].meta;
 
 export const getReferences = (state: ReduxState, reference, relatedTo) => {
     const ids = getIds(state, relatedTo);
@@ -160,6 +165,7 @@ const removeDeletedReferences = (removedIds: Identifier[]) => (
         [key]: {
             ids: idsToKeep,
             total: idsToKeep.length,
+            meta: previousState[key].meta,
         },
     };
 };

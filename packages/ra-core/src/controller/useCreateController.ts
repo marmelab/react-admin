@@ -16,6 +16,7 @@ import { Record } from '../types';
 export interface CreateControllerProps {
     loading: boolean;
     loaded: boolean;
+    meta: object;
     saving: boolean;
     defaultTitle: string;
     save: (
@@ -81,7 +82,7 @@ const useCreateController = (props: CreateProps): CreateControllerProps => {
     const recordToUse = getRecord(location, record);
     const version = useVersion();
 
-    const [create, { loading: saving }] = useCreate(resource);
+    const [create, { meta, loading: saving }] = useCreate(resource);
 
     const save = useCallback(
         (
@@ -137,6 +138,7 @@ const useCreateController = (props: CreateProps): CreateControllerProps => {
     return {
         loading: false,
         loaded: true,
+        meta,
         saving,
         defaultTitle,
         save,

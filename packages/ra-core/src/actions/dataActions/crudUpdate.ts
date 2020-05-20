@@ -95,6 +95,7 @@ export interface CrudUpdateSuccessAction {
     readonly type: typeof CRUD_UPDATE_SUCCESS;
     readonly payload: {
         data: Record;
+        meta?: object;
     };
     readonly requestPayload: RequestPayload;
     readonly meta: {

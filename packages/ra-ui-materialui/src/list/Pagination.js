@@ -116,6 +116,7 @@ Pagination.propTypes = {
     setPage: PropTypes.func,
     setPerPage: PropTypes.func,
     total: PropTypes.number,
+    meta: PropTypes.object,
 };
 
 Pagination.defaultProps = {

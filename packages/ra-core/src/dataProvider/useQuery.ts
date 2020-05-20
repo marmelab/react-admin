@@ -10,7 +10,7 @@ import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDecl
  * The return value updates according to the request state:
  *
  * - start: { loading: true, loaded: false }
- * - success: { data: [data from response], total: [total from response], loading: false, loaded: true }
+ * - success: { data: [data from response], total: [total from response], meta: [meta information from response], loading: false, loaded: true }
  * - error: { error: [error from response], loading: false, loaded: true }
  *
  * @param {Object} query
@@ -23,7 +23,7 @@ import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDecl
  * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) } }
  * @param {boolean} options.withDeclarativeSideEffectsSupport Set to true to support legacy side effects (e.g. { onSuccess: { refresh: true } })
  *
- * @returns The current request state. Destructure as { data, total, error, loading, loaded }.
+ * @returns The current request state. Destructure as { data, total, meta, error, loading, loaded }.
  *
  * @example
  *
@@ -73,6 +73,7 @@ const useQuery = (query: Query, options: QueryOptions = {}): UseQueryValue => {
         data: undefined,
         error: null,
         total: null,
+        meta: null,
         loading: true,
         loaded: false,
     });
@@ -93,10 +94,11 @@ const useQuery = (query: Query, options: QueryOptions = {}): UseQueryValue => {
         setState(prevState => ({ ...prevState, loading: true }));
 
         dataProviderWithSideEffects[type](resource, payload, rest)
-            .then(({ data, total }) => {
+            .then(({ data, total, meta }) => {
                 setState({
                     data,
                     total,
+                    meta,
                     loading: false,
                     loaded: true,
                 });
@@ -136,6 +138,7 @@ export interface QueryOptions {
 export type UseQueryValue = {
     data?: any;
     total?: number;
+    meta?: object;
     error?: any;
     loading: boolean;
     loaded: boolean;

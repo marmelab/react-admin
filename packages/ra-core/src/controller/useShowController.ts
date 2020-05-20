@@ -22,6 +22,7 @@ export interface ShowProps {
 export interface ShowControllerProps {
     loading: boolean;
     loaded: boolean;
+    meta: object;
     defaultTitle: string;
     resource: string;
     basePath: string;
@@ -54,7 +55,7 @@ const useShowController = (props: ShowProps): ShowControllerProps => {
     const redirect = useRedirect();
     const refresh = useRefresh();
     const version = useVersion();
-    const { data: record, loading, loaded } = useGetOne(resource, id, {
+    const { data: record, meta, loading, loaded } = useGetOne(resource, id, {
         action: CRUD_GET_ONE,
         onFailure: () => {
             notify('ra.notification.item_doesnt_exist', 'warning');
@@ -76,6 +77,7 @@ const useShowController = (props: ShowProps): ShowControllerProps => {
     return {
         loading,
         loaded,
+        meta,
         defaultTitle,
         resource,
         basePath,

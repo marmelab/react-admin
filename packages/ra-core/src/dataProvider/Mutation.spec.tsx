@@ -47,6 +47,7 @@ describe('Mutation', () => {
             total: null,
             loaded: false,
             loading: false,
+            meta: null,
         });
     });
 

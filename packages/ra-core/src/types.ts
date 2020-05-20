@@ -121,6 +121,7 @@ export interface GetListResult {
     data: Record[];
     total: number;
     validUntil?: ValidUntil;
+    meta?: object;
 }
 
 export interface GetOneParams {
@@ -129,6 +130,7 @@ export interface GetOneParams {
 export interface GetOneResult {
     data: Record;
     validUntil?: ValidUntil;
+    meta?: object;
 }
 
 export interface GetManyParams {
@@ -136,6 +138,7 @@ export interface GetManyParams {
 }
 export interface GetManyResult {
     data: Record[];
+    meta?: object;
     validUntil?: ValidUntil;
 }
 
@@ -150,6 +153,7 @@ export interface GetManyReferenceResult {
     data: Record[];
     total: number;
     validUntil?: ValidUntil;
+    meta?: object;
 }
 
 export interface UpdateParams {
@@ -160,6 +164,7 @@ export interface UpdateParams {
 export interface UpdateResult {
     data: Record;
     validUntil?: ValidUntil;
+    meta?: object;
 }
 
 export interface UpdateManyParams {
@@ -169,6 +174,7 @@ export interface UpdateManyParams {
 export interface UpdateManyResult {
     data?: Identifier[];
     validUntil?: ValidUntil;
+    meta?: object;
 }
 
 export interface CreateParams {
@@ -177,6 +183,7 @@ export interface CreateParams {
 export interface CreateResult {
     data: Record;
     validUntil?: ValidUntil;
+    meta?: object;
 }
 
 export interface DeleteParams {
@@ -185,6 +192,7 @@ export interface DeleteParams {
 }
 export interface DeleteResult {
     data?: Record;
+    meta?: object;
 }
 
 export interface DeleteManyParams {
@@ -192,6 +200,7 @@ export interface DeleteManyParams {
 }
 export interface DeleteManyResult {
     data?: Identifier[];
+    meta?: object;
 }
 
 export type DataProviderResult =
@@ -297,9 +306,11 @@ export interface ReduxState {
                 };
                 list: {
                     cachedRequests?: {
-                        ids: Identifier[];
-                        total: number;
-                        validity: Date;
+                        [key: string]: {
+                            ids: Identifier[];
+                            total: number;
+                            validity: Date;
+                        };
                     };
                     expanded: Identifier[];
                     ids: Identifier[];
@@ -307,6 +318,11 @@ export interface ReduxState {
                     params: any;
                     selectedIds: Identifier[];
                     total: number;
+                };
+                cachedRequests?: {
+                    [key: string]: {
+                        meta: object;
+                    };
                 };
                 validity: {
                     [key: string]: Date;
@@ -316,7 +332,11 @@ export interface ReduxState {
         };
         references: {
             oneToMany: {
-                [relatedTo: string]: { ids: Identifier[]; total: number };
+                [relatedTo: string]: {
+                    ids: Identifier[];
+                    total: number;
+                    meta: object;
+                };
             };
         };
         loading: number;

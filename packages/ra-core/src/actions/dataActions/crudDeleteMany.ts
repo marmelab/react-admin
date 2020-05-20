@@ -86,6 +86,7 @@ export interface CrudDeleteManySuccessAction {
     readonly type: typeof CRUD_DELETE_MANY_SUCCESS;
     readonly payload: {
         data: Record[];
+        meta?: object;
     };
     readonly requestPayload: RequestPayload;
     readonly meta: {

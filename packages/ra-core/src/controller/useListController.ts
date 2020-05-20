@@ -57,6 +57,7 @@ export interface ListControllerProps<RecordType = Record> {
     ids: Identifier[];
     loading: boolean;
     loaded: boolean;
+    meta: object;
     onSelect: (ids: Identifier[]) => void;
     onToggleItem: (id: Identifier) => void;
     onUnselectItems: () => void;
@@ -132,7 +133,7 @@ const useListController = <RecordType = Record>(
      * We want the list of ids to be always available for optimistic rendering,
      * and therefore we need a custom action (CRUD_GET_LIST) that will be used.
      */
-    const { ids, total, loading, loaded } = useGetList<RecordType>(
+    const { ids, total, meta, loading, loaded } = useGetList<RecordType>(
         resource,
         {
             page: query.page,
@@ -212,6 +213,7 @@ const useListController = <RecordType = Record>(
         ids: typeof total === 'undefined' ? defaultIds : ids,
         loaded: loaded || defaultIds.length > 0,
         loading,
+        meta,
         onSelect: selectionModifiers.select,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
@@ -244,6 +246,7 @@ export const injectedProps = [
     'onSelect',
     'onToggleItem',
     'onUnselectItems',
+    'meta',
     'page',
     'perPage',
     'refresh',

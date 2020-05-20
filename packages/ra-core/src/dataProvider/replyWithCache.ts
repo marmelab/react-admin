@@ -41,19 +41,29 @@ export const canReplyWithCache = (type, payload, resourceState) => {
 };
 
 export const getResultFromCache = (type, payload, resourceState) => {
+    const requestSignature = JSON.stringify(payload);
+    const cachedRequest = resourceState.cachedRequests[requestSignature];
+
     switch (type) {
         case 'getList': {
             const data = resourceState.data;
-            const requestSignature = JSON.stringify(payload);
-            const cachedRequest =
+            const cachedListRequest =
                 resourceState.list.cachedRequests[requestSignature];
             return {
-                data: cachedRequest.ids.map(id => data[id]),
-                total: cachedRequest.total,
+                ...{
+                    data: cachedListRequest.ids.map(id => data[id]),
+                    total: cachedListRequest.total,
+                },
+                ...(cachedRequest ? { meta: cachedRequest.meta } : {}),
             } as GetListResult;
         }
         case 'getOne':
-            return { data: resourceState.data[payload.id] } as GetOneResult;
+            return {
+                ...{
+                    data: resourceState.data[payload.id],
+                },
+                ...(cachedRequest ? { meta: cachedRequest.meta } : {}),
+            } as GetOneResult;
         case 'getMany':
             return {
                 data: payload.ids.map(id => resourceState.data[id]),

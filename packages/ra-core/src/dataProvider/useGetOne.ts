@@ -1,3 +1,5 @@
+import get from 'lodash/get';
+
 import { Identifier, Record, ReduxState } from '../types';
 import useQueryWithStore from './useQueryWithStore';
 
@@ -8,7 +10,7 @@ import useQueryWithStore from './useQueryWithStore';
  * The return value updates according to the request state:
  *
  * - start: { loading: true, loaded: false }
- * - success: { data: [data from response], loading: false, loaded: true }
+ * - success: { data: [data from response], meta: [meta information from response], loading: false, loaded: true }
  * - error: { error: [error from response], loading: false, loaded: true }
  *
  * This hook will return the cached result when called a second time
@@ -18,7 +20,7 @@ import useQueryWithStore from './useQueryWithStore';
  * @param id The resource identifier, e.g. 123
  * @param options Options object to pass to the dataProvider. May include side effects to be executed upon success of failure, e.g. { onSuccess: { refresh: true } }
  *
- * @returns The current request state. Destructure as { data, error, loading, loaded }.
+ * @returns The current request state. Destructure as { data, meta, error, loading, loaded }.
  *
  * @example
  *
@@ -35,8 +37,10 @@ const useGetOne = (
     resource: string,
     id: Identifier,
     options?: any
-): UseGetOneHookValue =>
-    useQueryWithStore(
+): UseGetOneHookValue => {
+    const requestSignature = JSON.stringify({ id });
+
+    return useQueryWithStore(
         { type: 'getOne', resource, payload: { id } },
         options,
         (state: ReduxState) => {
@@ -46,11 +50,21 @@ const useGetOne = (
                 );
             }
             return state.admin.resources[resource].data[id];
-        }
+        },
+        () => null,
+        (state: ReduxState): object =>
+            get(state.admin.resources, [
+                resource,
+                'cachedRequests',
+                requestSignature,
+                'meta',
+            ])
     );
+};
 
 export type UseGetOneHookValue = {
     data?: Record;
+    meta?: object;
     loading: boolean;
     loaded: boolean;
     error?: any;

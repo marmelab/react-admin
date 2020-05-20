@@ -87,6 +87,7 @@ export interface CrudCreateSuccessAction {
     readonly type: typeof CRUD_CREATE_SUCCESS;
     readonly payload: {
         data: Record;
+        meta?: object;
     };
     readonly requestPayload: RequestPayload;
     readonly meta: {

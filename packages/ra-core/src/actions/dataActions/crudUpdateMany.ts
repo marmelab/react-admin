@@ -88,6 +88,7 @@ export interface CrudUpdateManySuccessAction {
     readonly type: typeof CRUD_UPDATE_MANY_SUCCESS;
     readonly payload: {
         data: Identifier[];
+        meta?: object;
     };
     readonly requestPayload: RequestPayload;
     readonly meta: {

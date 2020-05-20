@@ -81,6 +81,7 @@ export interface CrudGetOneSuccessAction {
     readonly type: typeof CRUD_GET_ONE_SUCCESS;
     readonly payload: {
         data: Record;
+        meta?: object;
     };
     readonly requestPayload: RequestPayload;
     readonly meta: {

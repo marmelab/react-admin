@@ -85,6 +85,7 @@ export interface CrudGetManyReferenceSuccessAction {
     readonly payload: {
         data: Record[];
         total: number;
+        meta?: object;
     };
     readonly requestPayload: RequestPayload;
     readonly meta: {

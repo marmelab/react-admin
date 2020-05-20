@@ -339,15 +339,15 @@ Data Providers methods must return a Promise for an object with a `data` propert
 
 Method             | Response format
 ------------------ | ----------------
-`getList`          | `{ data: {Record[]}, total: {int}, validUntil?: {Date} }`
-`getOne`           | `{ data: {Record}, validUntil?: {Date} }`
-`getMany`          | `{ data: {Record[]}, validUntil?: {Date} }`
-`getManyReference` | `{ data: {Record[]}, total: {int} }`
-`create`           | `{ data: {Record} }`
-`update`           | `{ data: {Record} }`
-`updateMany`       | `{ data: {mixed[]} }` The ids which have been updated
-`delete`           | `{ data: {Record} }` The record that has been deleted
-`deleteMany`       | `{ data: {mixed[]} }` The ids of the deleted records (optional)
+`getList`          | `{ data: {Record[]}, total: {int}, meta?: {object}, validUntil?: {Date} }`
+`getOne`           | `{ data: {Record}, meta?: {object}, validUntil?: {Date} }`
+`getMany`          | `{ data: {Record[]}, meta?: {object}, validUntil?: {Date} }`
+`getManyReference` | `{ data: {Record[]}, meta?: {object}, total: {int} }`
+`create`           | `{ data: {Record}, meta?: {object} }`
+`update`           | `{ data: {Record}, meta?: {object} }`
+`updateMany`       | `{ data: {mixed[]}, meta?: {object} }` The ids which have been updated
+`delete`           | `{ data: {Record}, meta?: {object} }` The record that has been deleted
+`deleteMany`       | `{ data: {mixed[]}, meta?: {object} }` The ids of the deleted records (optional)
 
 A `{Record}` is an object literal with at least an `id` property, e.g. `{ id: 123, title: "hello, world" }`.
 
@@ -444,6 +444,8 @@ dataProvider.deleteMany('posts', { ids: [123, 234] })
 ```
 
 **Tip**: The `validUntil` field in the response is optional. It enables the Application cache, a client-side optimization to speed up rendering and reduce network traffic. Check [the Caching documentation](./Caching.md#application-cache) for more details.
+
+**Tip**: The `meta` field in the response is optional. It allows to pass arbitrary information received by the data provider to your custom components.
 
 ### Example Implementation
 

@@ -71,6 +71,7 @@ export interface CrudGetListSuccessAction {
     readonly payload: {
         data: Record[];
         total: number;
+        meta?: object;
     };
     readonly requestPayload: RequestPayload;
     readonly meta: {
