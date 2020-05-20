@@ -63,11 +63,10 @@ const useStyles = makeStyles(
 );
 
 const DefaultAddButton = props => {
-    const { onClick = () => {}, className = '' } = props;
     const classes = useStyles(props);
     const translate = useTranslate();
     return (
-        <Button className={className} size="small" onClick={onClick}>
+        <Button size="small" {...props}>
             <AddIcon className={classes.leftIcon} />
             {translate('ra.action.add')}
         </Button>
@@ -75,11 +74,10 @@ const DefaultAddButton = props => {
 };
 
 const DefaultRemoveButton = props => {
-    const { onClick = () => {}, className = '' } = props;
     const classes = useStyles(props);
     const translate = useTranslate();
     return (
-        <Button className={className} size="small" onClick={onClick}>
+        <Button size="small" {...props}>
             <CloseIcon className={classes.leftIcon} />
             {translate('ra.action.remove')}
         </Button>
