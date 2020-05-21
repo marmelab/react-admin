@@ -345,7 +345,7 @@ Method             | Response format
 `create`           | `{ data: {Record} }`
 `update`           | `{ data: {Record} }`
 `updateMany`       | `{ data: {mixed[]} }` The ids which have been updated
-`delete`           | `{ data: {Record|null} }` The record that has been deleted (optional)
+`delete`           | `{ data: {Record} }` The record that has been deleted
 `deleteMany`       | `{ data: {mixed[]} }` The ids of the deleted records (optional)
 
 A `{Record}` is an object literal with at least an `id` property, e.g. `{ id: 123, title: "hello, world" }`.
