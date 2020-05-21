@@ -1250,10 +1250,32 @@ const App = () => (
                     <ConnectedRouter history={history}>
                         <Switch>
                             <Route exact path="/" component={Dashboard} />
-                            <Route exact path="/posts" hasCreate render={(routeProps) => <PostList resource="posts" {...routeProps} />} />
+                            <Route exact path="/posts" render={(routeProps) => <PostList hasCreate resource="posts" {...routeProps} />} />
                             <Route exact path="/posts/create" render={(routeProps) => <PostCreate resource="posts" {...routeProps} />} />
-                            <Route exact path="/posts/:id" hasShow render={(routeProps) => <PostEdit resource="posts" {...routeProps} />} />
-                            <Route exact path="/posts/:id/show" hasEdit render={(routeProps) => <PostShow resource="posts" {...routeProps} />} />
+                            <Route 
+                                exact 
+                                path="/posts/:id" 
+                                render={(routeProps) => (
+                                    <PostEdit 
+                                        hasShow 
+                                        resource="posts" 
+                                        id={decodeURIComponent((routeProps.match).params.id)}
+                                        {...routeProps} 
+                                    />
+                                )} 
+                            />
+                            <Route 
+                                exact 
+                                path="/posts/:id/show" 
+                                render={(routeProps) => (
+                                    <PostShow 
+                                        hasEdit 
+                                        resource="posts" 
+                                        id={decodeURIComponent((routeProps.match).params.id)}
+                                        {...routeProps} 
+                                    />
+                                )} 
+                            />
                             ...
                         </Switch>
                     </ConnectedRouter>
