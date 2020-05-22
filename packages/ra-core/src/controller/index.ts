@@ -2,10 +2,6 @@ import CreateController from './CreateController';
 import EditController from './EditController';
 import ListController from './ListController';
 import ShowController from './ShowController';
-import {
-    getListControllerProps,
-    sanitizeListRestProps,
-} from './useListController';
 import useRecordSelection from './useRecordSelection';
 import useVersion from './useVersion';
 import useExpanded from './useExpanded';
@@ -18,9 +14,8 @@ import useCreateController from './useCreateController';
 import useShowController from './useShowController';
 import useReference, { UseReferenceProps } from './useReference';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
+import useListParams from './useListParams';
 export {
-    getListControllerProps,
-    sanitizeListRestProps,
     CreateController,
     EditController,
     ListController,
@@ -37,6 +32,7 @@ export {
     useSortState,
     usePaginationState,
     useReference,
+    useListParams,
     UseReferenceProps,
     PaginationProps,
     SortProps,
