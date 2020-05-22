@@ -20,6 +20,7 @@ import useCreateController, {
 import useShowController, { ShowControllerProps } from './useShowController';
 import useReference, { UseReferenceProps } from './useReference';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
+import useListParams from './useListParams';
 export {
     getListControllerProps,
     sanitizeListRestProps,
@@ -43,6 +44,7 @@ export {
     EditControllerProps,
     CreateControllerProps,
     ShowControllerProps,
+    useListParams,
     UseReferenceProps,
     PaginationProps,
     SortProps,
