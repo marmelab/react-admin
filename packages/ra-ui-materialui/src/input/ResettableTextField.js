@@ -48,7 +48,7 @@ function ResettableTextField(props) {
         value,
         resettable,
         disabled,
-        variant = 'filled',
+        variant = 'outlined',
         margin = 'dense',
         ...rest
     } = props;
