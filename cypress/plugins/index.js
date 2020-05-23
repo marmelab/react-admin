@@ -5,10 +5,10 @@ module.exports = on => {
     const options = {
         webpackOptions: require('../webpack.config'),
     };
-    on('before:browser:launch', (browser = {}, args) => {
+    on('before:browser:launch', (browser = {}, launchOptions) => {
         if (browser.name === 'chrome') {
             return [
-                ...args.filter(
+                ...launchOptions.args.filter(
                     arg => arg !== '--disable-blink-features=RootLayerScrolling'
                 ),
                 '--disable-gpu',

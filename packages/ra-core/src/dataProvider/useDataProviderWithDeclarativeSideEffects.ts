@@ -16,6 +16,9 @@ const useDataProviderWithDeclarativeSideEffects = (): DataProvider => {
     const dataProviderProxy = useMemo(() => {
         return new Proxy(dataProvider, {
             get: (target, name) => {
+                if (typeof name === 'symbol') {
+                    return;
+                }
                 return (
                     resource: string,
                     payload: any,

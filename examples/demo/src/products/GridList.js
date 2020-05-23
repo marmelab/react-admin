@@ -44,7 +44,7 @@ const getColsForWidth = width => {
 const times = (nbChildren, fn) =>
     Array.from({ length: nbChildren }, (_, key) => fn(key));
 
-const LoadingGridList = ({ width, nbItems = 10 }) => {
+const LoadingGridList = ({ width, nbItems = 20 }) => {
     const classes = useStyles();
     return (
         <div className={classes.root}>

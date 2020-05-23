@@ -23,16 +23,27 @@ export default (
     duration: number = fiveMinutes
 ): DataProvider =>
     new Proxy(dataProvider, {
-        get: (target, name: string) => (resource, params) => {
-            if (name === 'getList' || name === 'getMany' || name === 'getOne') {
-                // @ts-ignore
-                return dataProvider[name](resource, params).then(response => {
-                    const validUntil = new Date();
-                    validUntil.setTime(validUntil.getTime() + duration);
-                    response.validUntil = validUntil;
-                    return response;
-                });
+        get: (target, name: string) => {
+            if (typeof name === 'symbol') {
+                return;
             }
-            return dataProvider[name](resource, params);
+            return (resource, params) => {
+                if (
+                    name === 'getList' ||
+                    name === 'getMany' ||
+                    name === 'getOne'
+                ) {
+                    // @ts-ignore
+                    return dataProvider[name](resource, params).then(
+                        response => {
+                            const validUntil = new Date();
+                            validUntil.setTime(validUntil.getTime() + duration);
+                            response.validUntil = validUntil;
+                            return response;
+                        }
+                    );
+                }
+                return dataProvider[name](resource, params);
+            };
         },
     });

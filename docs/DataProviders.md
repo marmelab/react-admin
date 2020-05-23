@@ -15,7 +15,7 @@ dataProvider
     });
 ```
 
-It's the Data Provider's job to turns these method calls into HTTP requests, and transform the HTTP responses to the data format expected by react-admin. In technical terms, a Data Provider is an *adapter* for an API. 
+It's the Data Provider's job to turn these method calls into HTTP requests, and transform the HTTP responses to the data format expected by react-admin. In technical terms, a Data Provider is an *adapter* for an API. 
 
 And to inject a Data Provider in a react-admin application, pass it as the `dataProvider` prop of the `<Admin>` component, as follows:
 
@@ -85,6 +85,7 @@ Developers from the react-admin community have open-sourced Data Providers for m
 * **[Parse](https://parseplatform.org/)**: [almahdi/ra-data-parse](https://github.com/almahdi/ra-data-parse)
 * **[PostgREST](https://postgrest.org/)**: [raphiniert-com/ra-data-postgrest](https://github.com/raphiniert-com/ra-data-postgrest)
 * **[Prisma](https://github.com/weakky/ra-data-prisma)**: [weakky/ra-data-prisma](https://github.com/weakky/ra-data-prisma)
+* **[Prisma Version 2](https://www.prisma.io/)**: [panter/ra-data-prisma](https://github.com/panter/ra-data-prisma)
 * **[OpenCRUD](https://www.opencrud.org/)**: [weakky/ra-data-opencrud](https://github.com/Weakky/ra-data-opencrud)
 * **[REST-HAPI](https://github.com/JKHeadley/rest-hapi)**: [ra-data-rest-hapi](https://github.com/mkg20001/ra-data-rest-hapi)
 * **[Sails.js](https://sailsjs.com/)**: [mpampin/ra-data-json-sails](https://github.com/mpampin/ra-data-json-sails)
@@ -201,7 +202,7 @@ Now all the requests to the REST API will contain the `Authorization: SRTRDFVESG
 
 ## Extending a Data Provider (Example of File Upload)
 
-As Data Providers are just objects, you can extend them with custom logic for a given method, or for a given resource. 
+As Data Providers are just objects, you can extend them with custom logic for a given method, or a given resource. 
 
 For instance, the following Data Provider extends the `ra-data-simple-rest` provider, and adds image upload support for the `update('posts')` call (react-admin offers an `<ImageInput />` component that allows image upload).
 
@@ -273,7 +274,7 @@ Using this technique, you can also combine two Data Providers for two backends i
 
 ## Writing Your Own Data Provider
 
-APIs are so diverse that quite often, none of the available Data Providers suit you API. In such cases, you'll have to write your own Data Provider. Don't worry, it usually takes only a couple hours. 
+APIs are so diverse that quite often, none of the available Data Providers suit you API. In such cases, you'll have to write your own Data Provider. Don't worry, it usually takes only a couple of hours. 
 
 The methods of a Data Provider receive a request, and return a promise for a response. Both the request and the response format are standardized.
 
@@ -344,7 +345,7 @@ Method             | Response format
 `create`           | `{ data: {Record} }`
 `update`           | `{ data: {Record} }`
 `updateMany`       | `{ data: {mixed[]} }` The ids which have been updated
-`delete`           | `{ data: {Record|null} }` The record that has been deleted (optional)
+`delete`           | `{ data: {Record} }` The record that has been deleted
 `deleteMany`       | `{ data: {mixed[]} }` The ids of the deleted records (optional)
 
 A `{Record}` is an object literal with at least an `id` property, e.g. `{ id: 123, title: "hello, world" }`.
@@ -643,7 +644,7 @@ export default {
 
 When the API backend returns an error, the Data Provider should return a rejected Promise containing an `Error` object. This object should contain a `status` property with the HTTP response code (404, 500, etc.). React-admin inspects this error code, and uses it for [authentication](./Authentication.md) (in case of 401 or 403 errors). Besides, react-admin displays the error `message` on screen in a temporary notification.
 
-If you use `fetchJson`, you don't need to do anything: HTTP errors are automaticlly decorated as expected by react-admin.
+If you use `fetchJson`, you don't need to do anything: HTTP errors are automatically decorated as expected by react-admin.
 
 If you use another HTTP client, make sure you return a rejected Promise. You can use the `HttpError` class to throw an error with status in one line:
 

@@ -84,9 +84,9 @@ That's enough to display the post edit form:
 
 ![post edition form](./img/post-edition.png)
 
-**Tip**: You might find it cumbersome to repeat the same input components for both the `<Create>` and the `<Edit>` view. In practice, these two views almost never have exactly the same form inputs. For instance, in the previous snippet, the `<Edit>` views shows related comments to the current post, which makes no sense for a new post. Having two separate sets of input components for the two views is therefore a deliberate choice. However, if you have the same set of input components, export them as a custom Form component to avoid repetition.
+**Tip**: You might find it cumbersome to repeat the same input components for both the `<Create>` and the `<Edit>` view. In practice, these two views almost never have exactly the same form inputs. For instance, in the previous snippet, the `<Edit>` views show related comments to the current post, which makes no sense for a new post. Having two separate sets of input components for the two views is, therefore, a deliberate choice. However, if you have the same set of input components, export them as a custom Form component to avoid repetition.
 
- `<Create>` accepts a `record` prop, to initialize the form based on an value object.
+ `<Create>` accepts a `record` prop, to initialize the form based on a value object.
 
 ### Page Title
 
@@ -149,7 +149,7 @@ const Aside = () => (
     <div style={{ width: 200, margin: '1em' }}>
         <Typography variant="h6">Post details</Typography>
         <Typography variant="body2">
-            Posts will only be published one an editor approves them
+            Posts will only be published once an editor approves them
         </Typography>
     </div>
 );
@@ -221,7 +221,7 @@ The default value for the `component` prop is `Card`.
 
 By default, the Save and Delete actions are undoable, i.e. react-admin only sends the related request to the data provider after a short delay, during which the user can cancel the action. This is part of the "optimistic rendering" strategy of react-admin ; it makes the user interactions more reactive.
 
-You can disable this behavior by setting `undoable={false}`. With that setting, clicking on the Delete button displays a confirmation dialog. Both the Save and the Delete actions become blocking, and delay the refresh of the screen until the data provider responds.
+You can disable this behavior by setting `undoable={false}`. With that setting, clicking on the Delete button displays a confirmation dialog. Both the Save and the Delete actions become blocking and delay the refresh of the screen until the data provider responds.
 
 ```jsx
 const PostEdit = props => (
@@ -365,13 +365,13 @@ const App = () => (
 );
 ```
 
-Just like `Edit`, `EditGuesser` fetches the data. It then analyzes the response, and guesses the inputs it should use to display a basic form with the data. It also dumps the components it has guessed in the console, where you can copy it into your own code. Use this feature to quickly bootstrap an `Edit` on top of an existing API, without adding the inputs one by one.
+Just like `Edit`, `EditGuesser` fetches the data. It then analyzes the response and guesses the inputs it should use to display a basic form with the data. It also dumps the components it has guessed in the console, where you can copy it into your own code. Use this feature to quickly bootstrap an `Edit` on top of an existing API, without adding the inputs one by one.
 
 ![Guessed Edit](./img/guessed-edit.png)
 
 React-admin provides guessers for the `List` view (`ListGuesser`), the `Edit` view (`EditGuesser`), and the `Show` view (`ShowGuesser`).
 
-**Tip**: Do not use the guessers in production. They are slower than manually-defined components, because they have to infer types based on the content. Besides, the guesses are not always perfect.
+**Tip**: Do not use the guessers in production. They are slower than manually-defined components because they have to infer types based on the content. Besides, the guesses are not always perfect.
 
 ## `useCreateController` and `useEditController`
 
@@ -482,13 +482,13 @@ This custom Edit view has no action buttons or aside component - it's up to you 
 
 ## The `<SimpleForm>` component
 
-The `<SimpleForm>` component receives the `record` as prop from its parent component. It is responsible for rendering the actual form. It is also responsible for validating the form data. Finally, it receives a `handleSubmit` function as prop, to be called with the updated record as argument when the user submits the form.
+The `<SimpleForm>` component receives the `record` as prop from its parent component. It is responsible for rendering the actual form. It is also responsible for validating the form data. Finally, it receives a `handleSubmit` function as prop, to be called with the updated record as an argument when the user submits the form.
 
 The `<SimpleForm>` renders its child components line by line (within `<div>` components). It accepts Input and Field components as children. It relies on `react-final-form` for form handling.
 
 ![post edition form](./img/post-edition.png)
 
-By default the `<SimpleForm>` submits the form when the user presses `ENTER`. If you want
+By default, the `<SimpleForm>` submits the form when the user presses `ENTER`. If you want
 to change this behaviour you can pass `false` for the `submitOnEnter` property, and the user will only be able to submit by pressing the save button. This can be useful e.g. if you have an input widget using `ENTER` for a special function.
 
 Here are all the props you can set on the `<SimpleForm>` component:
@@ -556,7 +556,7 @@ Just like `<SimpleForm>`, `<TabbedForm>` receives the `record` prop, renders the
 
 ![tabbed form](./img/tabbed-form.gif)
 
-By default the `<TabbedForm>` submits the form when the user presses `ENTER`, if you want
+By default, the `<TabbedForm>` submits the form when the user presses `ENTER`, if you want
 to change this behaviour you can pass `false` for the `submitOnEnter` property.
 
 Here are all the props accepted by the `<TabbedForm>` component:
@@ -650,14 +650,14 @@ const BodyField = ({ record }) => (
 
 const PostEdit = (props) => (
     <Create {...props}>
-        <TabbeForm>
+        <TabbedForm>
             <FormTab label="main">
                 <IdentifierField addLabel label="Identifier"> {/* FormTab will add a label */}
                 <TextField source="title" /> {/* FormTab will add a label, too (TextField has addLabel:true) in defaultProps */}
                 <BodyField /> {/* FormTab will NOT add a label */}
                 <NumberInput source="nb_views" /> {/* FormTab will NOT add a label */}
             </FormTab>
-        </TabbeForm>
+        </TabbedForm>
     </Create>
 );
 ```
@@ -687,7 +687,7 @@ export const PostEdit = (props) => (
 
 ## Default Values
 
-To define default values, you can add a `initialValues` prop to form components (`<SimpleForm>`, `<Tabbedform>`, etc.), or add a `defaultValue` to individual input components. Let's see each of these options.
+To define default values, you can add a `initialValues` prop to form components (`<SimpleForm>`, `<TabbedForm>`, etc.), or add a `defaultValue` to individual input components. Let's see each of these options.
 
 **Note**: on RA v2 the `initialValues` used to be named `defaultValue`
 
@@ -712,13 +712,13 @@ export const PostCreate = (props) => (
 
 ### Per Input Default Value
 
-Alternatively, you can specify a `defaultValue` prop directly in `<Input>` components. Default value can be a scalar, or a function returning a scalar.  React-admin will merge the input default values with the form default value (input > form):
+Alternatively, you can specify a `defaultValue` prop directly in `<Input>` components. React-admin will merge the input default values with the form default value (input > form):
 
 ```jsx
 export const PostCreate = (props) => (
     <Create {...props}>
         <SimpleForm>
-            <TextInput disabled source="id" defaultValue={() => uuid()}/>
+            <TextInput source="id" defaultValue={React.useMemo(() => uuid(), [])} disabled />
             <TextInput source="title" />
             <RichTextInput source="body" />
             <NumberInput source="nb_views" defaultValue={0} />
@@ -726,6 +726,8 @@ export const PostCreate = (props) => (
     </Create>
 );
 ```
+
+**Tip**: For default values computed during the first render, or default values that are expensive to compute, use `React.useMemo` as in the example above.
 
 ## Validation
 
@@ -765,7 +767,7 @@ export const UserCreate = (props) => (
 
 ### Per Input Validation: Built-in Field Validators
 
-Alternatively, you can specify a `validate` prop directly in `<Input>` components, taking either a function, or an array of functions. React-admin already bundles a few validator functions, that you can just require, and use as input-level validators:
+Alternatively, you can specify a `validate` prop directly in `<Input>` components, taking either a function or an array of functions. React-admin already bundles a few validator functions, that you can just require, and use as input-level validators:
 
 * `required(message)` if the field is mandatory,
 * `minValue(min, message)` to specify a minimum value for integers,
@@ -861,7 +863,7 @@ export const UserCreate = (props) => (
 
 React-admin will combine all the input-level functions into a single function looking just like the previous one.
 
-Input validation functions receive the current field value, and the values of all fields of the current record. This allows for complex validation scenarios (e.g. validate that two passwords are the same).
+Input validation functions receive the current field value and the values of all fields of the current record. This allows for complex validation scenarios (e.g. validate that two passwords are the same).
 
 **Tip**: If your admin has multi-language support, validator functions should return message *identifiers* rather than messages themselves. React-admin automatically passes these identifiers to the translation function: 
 
@@ -1020,7 +1022,7 @@ export const PostCreate = (props) => (
 );
 ```
 
-Another use case is to remove the `<DeleteButton>` from the toolbar in an edit view. In that case, create a custom toolbar containing only the `<SaveButton>` as child;
+Another use case is to remove the `<DeleteButton>` from the toolbar in an edit view. In that case, create a custom toolbar containing only the `<SaveButton>` as a child;
 
 ```jsx
 import React from 'react';
@@ -1051,7 +1053,7 @@ Here are the props received by the `Toolbar` component when passed as the `toolb
 * `saving`: A boolean indicating whether a save operation is ongoing.
 * `submitOnEnter`: A boolean indicating whether the form should be submitted when pressing `enter`
 
-**Tip**: Use react-admin's `<Toolbar>` component instead of material-ui's `<Toolbar>` component. The former builds up on the latter, and adds support for an alternative mobile layout (and is therefore responsive).
+**Tip**: Use react-admin's `<Toolbar>` component instead of material-ui's `<Toolbar>` component. The former builds upon the latter and adds support for an alternative mobile layout (and is therefore responsive).
 
 **Tip**: Don't forget to also set the `redirect` prop of the Form component to handle submission by the `ENTER` key.
 

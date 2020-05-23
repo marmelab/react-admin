@@ -20,7 +20,6 @@ interface UseFilterStateProps {
 }
 
 const defaultFilterToQuery = (v: string) => ({ q: v });
-const emptyFilter = {};
 
 /**
  * Hooks to provide filter state and setFilter which update the query part of the filter
@@ -53,7 +52,7 @@ const emptyFilter = {};
  */
 export default ({
     filterToQuery = defaultFilterToQuery,
-    permanentFilter = emptyFilter,
+    permanentFilter = {},
     debounceTime = 500,
 }: UseFilterStateOptions): UseFilterStateProps => {
     const permanentFilterProp = useRef(permanentFilter);
@@ -62,6 +61,13 @@ export default ({
         ...permanentFilter,
         ...filterToQuery(''),
     });
+    // Developers often pass an object literal as permanent filter
+    // e.g. <ReferenceInput source="book_id" reference="books" filter={{ is_published: true }}>
+    // The effect should execute again when the parent component updates the filter value,
+    // but not when the object literal describes the same values. Therefore,
+    // we use JSON.stringify(permanentFilter) in the `useEffect` and `useCallback`
+    // dependencies instead of permanentFilter.
+    const permanentFilterSignature = JSON.stringify(permanentFilter);
 
     useEffect(() => {
         if (!isEqual(permanentFilterProp.current, permanentFilter)) {
@@ -71,7 +77,7 @@ export default ({
                 ...filterToQuery(latestValue.current),
             });
         }
-    }, [permanentFilter, permanentFilterProp, filterToQuery]);
+    }, [permanentFilterSignature, permanentFilterProp, filterToQuery]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const setFilter = useCallback(
         debounce((value: string) => {
@@ -81,7 +87,7 @@ export default ({
             });
             latestValue.current = value;
         }, debounceTime),
-        [permanentFilter]
+        [permanentFilterSignature] // eslint-disable-line react-hooks/exhaustive-deps
     );
 
     return {

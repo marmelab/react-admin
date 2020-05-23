@@ -195,7 +195,7 @@ For example:
 import buildFieldList from './buildFieldList';
 
 const buildQuery = introspectionResults => (raFetchType, resourceName, params) => {
-    const resource = introspectionResults.resource.find(r => r.type.name === resourceName);
+    const resource = introspectionResults.resources.find(r => r.type.name === resourceName);
 
     switch (raFetchType) {
         case 'GET_ONE':

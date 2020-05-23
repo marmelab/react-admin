@@ -14,6 +14,7 @@ const customEnglishMessages: TranslationMessages = {
         },
         dashboard: {
             monthly_revenue: 'Monthly Revenue',
+            month_history: '30 Day Revenue History',
             new_orders: 'New Orders',
             pending_reviews: 'Pending Reviews',
             new_customers: 'New Customers',
@@ -49,6 +50,18 @@ const customEnglishMessages: TranslationMessages = {
                 total_spent: 'Total spent',
                 password: 'Password',
                 confirm_password: 'Confirm password',
+            },
+            filters: {
+                last_visited: 'Last visited',
+                today: 'Today',
+                this_week: 'This week',
+                last_week: 'Last week',
+                this_month: 'This month',
+                last_month: 'Last month',
+                earlier: 'Earlier',
+                has_ordered: 'Has ordered',
+                has_newsletter: 'Has newsletter',
+                group: 'Segment',
             },
             fieldGroups: {
                 identity: 'Identity',

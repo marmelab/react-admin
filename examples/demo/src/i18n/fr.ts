@@ -14,6 +14,7 @@ const customFrenchMessages: TranslationMessages = {
         },
         dashboard: {
             monthly_revenue: 'CA à 30 jours',
+            month_history: "Chiffre d'affaire sur 30 jours",
             new_orders: 'Nouvelles commandes',
             pending_reviews: 'Commentaires à modérer',
             new_customers: 'Nouveaux clients',
@@ -58,6 +59,18 @@ const customFrenchMessages: TranslationMessages = {
                 zipcode: 'Code postal',
                 password: 'Mot de passe',
                 confirm_password: 'Confirmez le mot de passe',
+            },
+            filters: {
+                last_visited: 'Dernière visite',
+                today: "Aujourd'hui",
+                this_week: 'Cette semaine',
+                last_week: 'La semaine dernière',
+                this_month: 'Ce mois-ci',
+                last_month: 'Le mois dernier',
+                earlier: 'Plus tôt',
+                has_ordered: 'A déjà commandé',
+                has_newsletter: 'Abonné newsletter',
+                group: 'Segment',
             },
             fieldGroups: {
                 identity: 'Identité',
