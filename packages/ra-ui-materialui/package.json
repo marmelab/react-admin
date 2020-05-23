@@ -1,5 +1,5 @@
 {
-    "name": "ra-ui-materialui",
+    "name": "@seasons/ra-ui-materialui",
     "version": "3.5.3",
     "description": "UI Components for react-admin with MaterialUI",
     "files": [
@@ -15,9 +15,9 @@
         "François Zaninotto",
         "Gildas Garcia"
     ],
-    "repository": "marmelab/react-admin",
-    "homepage": "https://github.com/marmelab/react-admin#readme",
-    "bugs": "https://github.com/marmelab/react-admin/issues",
+    "repository": "seasons/react-admin",
+    "homepage": "https://github.com/seasons/react-admin#readme",
+    "bugs": "https://github.com/seasons/react-admin/issues",
     "license": "MIT",
     "scripts": {
         "build": "yarn run build-cjs && yarn run build-esm",

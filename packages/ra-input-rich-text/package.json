@@ -41,7 +41,7 @@
     },
     "peerDependencies": {
         "ra-core": "^3.0.0",
-        "ra-ui-materialui": "^3.0.0",
+        "@seasons/ra-ui-materialui": "^3.0.0",
         "react": "^16.9.0",
         "react-dom": "^16.9.0"
     },
