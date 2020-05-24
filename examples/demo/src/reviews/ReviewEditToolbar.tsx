@@ -1,10 +1,11 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, FC } from 'react';
 import MuiToolbar from '@material-ui/core/Toolbar';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { SaveButton, DeleteButton } from 'react-admin';
 import AcceptButton from './AcceptButton';
 import RejectButton from './RejectButton';
+import { ToolbarProps, Review } from '../types';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -14,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const ReviewEditToolbar = ({
+const ReviewEditToolbar: FC<ToolbarProps<Review>> = ({
     basePath,
     handleSubmitWithRedirect,
     invalid,

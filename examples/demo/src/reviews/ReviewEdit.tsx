@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import {
     useEditController,
     useTranslate,
@@ -15,6 +15,7 @@ import ProductReferenceField from '../products/ProductReferenceField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from './StarRatingField';
 import ReviewEditToolbar from './ReviewEditToolbar';
+import { EditComponentProps } from '../types';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -41,7 +42,11 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const ReviewEdit = ({ onCancel, ...props }) => {
+interface Props extends EditComponentProps {
+    onCancel: () => void;
+}
+
+const ReviewEdit: FC<Props> = ({ onCancel, ...props }) => {
     const classes = useStyles();
     const controllerProps = useEditController(props);
     const translate = useTranslate();
@@ -66,10 +71,10 @@ const ReviewEdit = ({ onCancel, ...props }) => {
                 version={controllerProps.version}
                 redirect="list"
                 resource="reviews"
+                // @ts-ignore
                 toolbar={<ReviewEditToolbar />}
             >
                 <CustomerReferenceField formClassName={classes.inlineField} />
-
                 <ProductReferenceField formClassName={classes.inlineField} />
                 <DateField source="date" formClassName={classes.inlineField} />
                 <StarRatingField formClassName={classes.inlineField} />

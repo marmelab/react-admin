@@ -1,16 +1,17 @@
-import React, { Fragment, useCallback } from 'react';
+import React, { Fragment, useCallback, FC } from 'react';
 import classnames from 'classnames';
 import { BulkDeleteButton, List } from 'react-admin';
 import { Route, useHistory } from 'react-router-dom';
-import { Drawer, useMediaQuery, makeStyles } from '@material-ui/core';
+import { Drawer, useMediaQuery, makeStyles, Theme } from '@material-ui/core';
 import BulkAcceptButton from './BulkAcceptButton';
 import BulkRejectButton from './BulkRejectButton';
 import ReviewListMobile from './ReviewListMobile';
 import ReviewListDesktop from './ReviewListDesktop';
 import ReviewFilter from './ReviewFilter';
 import ReviewEdit from './ReviewEdit';
+import { BulkActionProps, ListComponentProps } from '../types';
 
-const ReviewsBulkActionButtons = props => (
+const ReviewsBulkActionButtons: FC<BulkActionProps> = props => (
     <Fragment>
         <BulkAcceptButton {...props} />
         <BulkRejectButton {...props} />
@@ -37,9 +38,11 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const ReviewList = props => {
+const ReviewList: FC<ListComponentProps<{ id: string }>> = props => {
     const classes = useStyles();
-    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+    const isXSmall = useMediaQuery<Theme>(theme =>
+        theme.breakpoints.down('xs')
+    );
     const history = useHistory();
 
     const handleClose = useCallback(() => {
@@ -63,6 +66,7 @@ const ReviewList = props => {
                                 className={classnames(classes.list, {
                                     [classes.listWithDrawer]: isMatch,
                                 })}
+                                // @ts-ignore
                                 bulkActionButtons={<ReviewsBulkActionButtons />}
                                 filters={<ReviewFilter />}
                                 perPage={25}
@@ -73,8 +77,9 @@ const ReviewList = props => {
                                 ) : (
                                     <ReviewListDesktop
                                         selectedRow={
-                                            isMatch &&
-                                            parseInt(match.params.id, 10)
+                                            isMatch
+                                                ? match.params.id
+                                                : undefined
                                         }
                                     />
                                 )}

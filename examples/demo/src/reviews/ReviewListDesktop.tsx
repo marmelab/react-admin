@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Datagrid, DateField, TextField } from 'react-admin';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
@@ -7,6 +7,8 @@ import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from './StarRatingField';
 
 import rowStyle from './rowStyle';
+import { DatagridProps } from './../types';
+import { Identifier } from 'ra-core';
 
 const useListStyles = makeStyles({
     headerRow: {
@@ -28,7 +30,11 @@ const useListStyles = makeStyles({
     },
 });
 
-const ReviewListDesktop = ({ selectedRow, ...props }) => {
+interface Props extends DatagridProps {
+    selectedRow: Identifier;
+}
+
+const ReviewListDesktop: FC<Props> = ({ selectedRow, ...props }) => {
     const classes = useListStyles();
     const theme = useTheme();
     return (

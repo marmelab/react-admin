@@ -1,6 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import ThumbUp from '@material-ui/icons/ThumbUp';
+import React, { FC } from 'react';
+import ThumbDown from '@material-ui/icons/ThumbDown';
 import {
     Button,
     useUpdateMany,
@@ -9,16 +8,17 @@ import {
     useUnselectAll,
     CRUD_UPDATE_MANY,
 } from 'react-admin';
+import { BulkActionProps } from '../types';
 
-const BulkAcceptButton = ({ selectedIds }) => {
+const BulkRejectButton: FC<BulkActionProps> = ({ selectedIds }) => {
     const notify = useNotify();
     const redirectTo = useRedirect();
     const unselectAll = useUnselectAll('reviews');
 
-    const [approve, { loading }] = useUpdateMany(
+    const [reject, { loading }] = useUpdateMany(
         'reviews',
         selectedIds,
-        { status: 'accepted' },
+        { status: 'rejected' },
         {
             action: CRUD_UPDATE_MANY,
             undoable: true,
@@ -43,17 +43,13 @@ const BulkAcceptButton = ({ selectedIds }) => {
 
     return (
         <Button
-            label="resources.reviews.action.accept"
-            onClick={approve}
+            label="resources.reviews.action.reject"
+            onClick={reject}
             disabled={loading}
         >
-            <ThumbUp />
+            <ThumbDown />
         </Button>
     );
 };
 
-BulkAcceptButton.propTypes = {
-    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
-};
-
-export default BulkAcceptButton;
+export default BulkRejectButton;
