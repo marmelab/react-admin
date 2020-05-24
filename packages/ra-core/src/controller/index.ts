@@ -18,6 +18,7 @@ import useCreateController from './useCreateController';
 import useShowController from './useShowController';
 import useReference, { UseReferenceProps } from './useReference';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
+import useListParams from './useListParams';
 export {
     getListControllerProps,
     sanitizeListRestProps,
@@ -37,6 +38,7 @@ export {
     useSortState,
     usePaginationState,
     useReference,
+    useListParams,
     UseReferenceProps,
     PaginationProps,
     SortProps,
