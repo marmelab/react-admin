@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { ReferenceField, TextField } from 'react-admin';
 import { FieldProps } from './../types';
 
-const ProductReferenceField: FC<FieldProps & { resource: string }> = props => (
+const ProductReferenceField: FC<FieldProps> = props => (
     <ReferenceField
         label="Product"
         source="product_id"
