@@ -1,4 +1,5 @@
 import React, { Fragment, FC } from 'react';
+import PropTypes from 'prop-types';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -107,6 +108,15 @@ const ReviewListMobile: FC<DatagridProps<Review>> = ({
             })}
         </List>
     ) : null;
+};
+
+ReviewListMobile.propTypes = {
+    basePath: PropTypes.string,
+    data: PropTypes.any,
+    hasBulkActions: PropTypes.bool.isRequired,
+    ids: PropTypes.array,
+    onToggleItem: PropTypes.func,
+    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 ReviewListMobile.defaultProps = {
