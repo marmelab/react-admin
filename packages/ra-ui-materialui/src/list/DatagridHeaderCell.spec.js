@@ -7,6 +7,25 @@ import { DatagridHeaderCell } from './DatagridHeaderCell';
 describe('<DatagridHeaderCell />', () => {
     afterEach(cleanup);
 
+    it('should accept a React element as Field label', () => {
+        const Label = () => <>Label</>;
+        const Field = () => <div />;
+        const { getByText } = render(
+            <table>
+                <tbody>
+                    <tr>
+                        <DatagridHeaderCell
+                            currentSort={{}}
+                            field={<Field source="title" label={<Label />} />}
+                            updateSort={() => true}
+                        />
+                    </tr>
+                </tbody>
+            </table>
+        );
+        expect(getByText('Label')).toBeDefined();
+    });
+
     describe('sorting on a column', () => {
         const Field = () => <div />;
         Field.defaultProps = {

@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, ReactElement } from 'react';
 import pure from 'recompose/pure';
 
 import useTranslate from '../i18n/useTranslate';
@@ -8,7 +8,7 @@ interface Props {
     isRequired?: boolean;
     resource?: string;
     source?: string;
-    label?: string;
+    label?: string | ReactElement;
 }
 
 export const FieldTitle: FunctionComponent<Props> = ({
@@ -18,10 +18,17 @@ export const FieldTitle: FunctionComponent<Props> = ({
     isRequired,
 }) => {
     const translate = useTranslate();
+    if (label && typeof label !== 'string') {
+        return label;
+    }
     return (
         <span>
             {translate(
-                ...getFieldLabelTranslationArgs({ label, resource, source })
+                ...getFieldLabelTranslationArgs({
+                    label: label as string,
+                    resource,
+                    source,
+                })
             )}
             {isRequired && ' *'}
         </span>
