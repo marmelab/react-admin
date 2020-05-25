@@ -1,3 +1,4 @@
+import { ReactElement } from 'react';
 import { Record } from 'ra-core';
 import PropTypes from 'prop-types';
 
@@ -8,7 +9,7 @@ export interface FieldProps {
     sortBy?: string;
     sortByOrder?: SortOrder;
     source?: string;
-    label?: string;
+    label?: string | ReactElement;
     sortable?: boolean;
     className?: string;
     cellClassName?: string;
@@ -28,7 +29,7 @@ export const fieldPropTypes = {
     sortBy: PropTypes.string,
     sortByOrder: PropTypes.oneOf<SortOrder>(['ASC', 'DESC']),
     source: PropTypes.string,
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     sortable: PropTypes.bool,
     className: PropTypes.string,
     cellClassName: PropTypes.string,

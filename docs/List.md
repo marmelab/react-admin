@@ -1217,7 +1217,7 @@ Here are all the props accepted by the component:
 * [`expand`](#expand)
 * [`isRowSelectable`](#isrowselectable)
 
-It renders as many columns as it receives `<Field>` children.
+It renders as many columns as it receives `<Field>` children. It uses the field `label` as column header (or, for fields with not `label`, the field `source`).
 
 ```jsx
 // in src/posts.js
@@ -1546,7 +1546,7 @@ For this kind of use case, you need to use a [custom datagrid body component](#b
 
 ### Performance
 
-when displaying large pages of data, you might experience some performance issues.
+When displaying large pages of data, you might experience some performance issues.
 This is mostly due to the fact that we iterate over the `<Datagrid>` children and clone them.
 
 In such cases, you can opt-in for an optimized version of the `<Datagrid>` by setting its `optimized` prop to `true`. 
