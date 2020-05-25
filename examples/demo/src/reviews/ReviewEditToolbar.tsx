@@ -24,6 +24,8 @@ const ReviewEditToolbar: FC<ToolbarProps<Review>> = ({
     saving,
 }) => {
     const classes = useStyles();
+
+    if (!record) return null;
     return (
         <MuiToolbar className={classes.root}>
             {record.status === 'pending' ? (

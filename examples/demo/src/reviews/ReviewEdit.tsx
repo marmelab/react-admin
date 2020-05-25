@@ -71,7 +71,6 @@ const ReviewEdit: FC<Props> = ({ onCancel, ...props }) => {
                 version={controllerProps.version}
                 redirect="list"
                 resource="reviews"
-                // @ts-ignore
                 toolbar={<ReviewEditToolbar />}
             >
                 <CustomerReferenceField formClassName={classes.inlineField} />

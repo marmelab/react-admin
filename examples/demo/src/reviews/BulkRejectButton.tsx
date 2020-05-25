@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import PropTypes from 'prop-types';
 import ThumbDown from '@material-ui/icons/ThumbDown';
 import {
     Button,
@@ -50,6 +51,10 @@ const BulkRejectButton: FC<BulkActionProps> = ({ selectedIds }) => {
             <ThumbDown />
         </Button>
     );
+};
+
+BulkRejectButton.propTypes = {
+    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 export default BulkRejectButton;

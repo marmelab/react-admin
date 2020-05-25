@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import PropTypes from 'prop-types';
 import ThumbUp from '@material-ui/icons/ThumbUp';
 import {
     Button,
@@ -50,6 +51,10 @@ const BulkAcceptButton: FC<BulkActionProps> = ({ selectedIds }) => {
             <ThumbUp />
         </Button>
     );
+};
+
+BulkAcceptButton.propTypes = {
+    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 export default BulkAcceptButton;

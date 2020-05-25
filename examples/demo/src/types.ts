@@ -82,9 +82,9 @@ export type ReviewStatus = 'accepted' | 'pending' | 'rejected';
 
 export interface Review extends Record {
     date: string;
-    status?: ReviewStatus;
+    status: ReviewStatus;
     customer_id: Identifier;
-    product_id?: Identifier;
+    product_id: Identifier;
 }
 
 export interface ResourceMatch {
@@ -95,24 +95,24 @@ export interface ResourceMatch {
 type FilterClassKey = 'button' | 'form';
 
 export interface ToolbarProps<T extends Record = Record> {
-    handleSubmitWithRedirect: (redirect: RedirectionSideEffect) => void;
-    handleSubmit: FormRenderProps['handleSubmit'];
-    invalid: boolean;
-    pristine: boolean;
-    saving: boolean;
-    submitOnEnter: boolean;
-    redirect: RedirectionSideEffect;
-    basePath: string;
-    record: T;
-    resource: string;
-    undoable: boolean;
+    handleSubmitWithRedirect?: (redirect: RedirectionSideEffect) => void;
+    handleSubmit?: FormRenderProps['handleSubmit'];
+    invalid?: boolean;
+    pristine?: boolean;
+    saving?: boolean;
+    submitOnEnter?: boolean;
+    redirect?: RedirectionSideEffect;
+    basePath?: string;
+    record?: T;
+    resource?: string;
+    undoable?: boolean;
 }
 
 export interface BulkActionProps<Params = {}> {
-    basePath: string;
-    filterValues: Params;
-    resource: string;
-    selectedIds: Identifier[];
+    basePath?: string;
+    filterValues?: Params;
+    resource?: string;
+    selectedIds?: Identifier[];
 }
 
 export interface FilterProps<Params = {}> {

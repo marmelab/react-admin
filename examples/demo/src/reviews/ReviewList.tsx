@@ -66,7 +66,6 @@ const ReviewList: FC<ListComponentProps<{ id: string }>> = props => {
                                 className={classnames(classes.list, {
                                     [classes.listWithDrawer]: isMatch,
                                 })}
-                                // @ts-ignore
                                 bulkActionButtons={<ReviewsBulkActionButtons />}
                                 filters={<ReviewFilter />}
                                 perPage={25}
