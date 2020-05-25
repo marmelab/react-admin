@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import ThumbDown from '@material-ui/icons/ThumbDown';
 import { useTranslate, useUpdate, useNotify, useRedirect } from 'react-admin';
@@ -54,6 +55,10 @@ const RejectButton: FC<{ record: Review }> = ({ record }) => {
     ) : (
         <span />
     );
+};
+
+RejectButton.propTypes = {
+    record: PropTypes.any,
 };
 
 export default RejectButton;
