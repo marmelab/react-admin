@@ -1,27 +1,28 @@
-import React from 'react';
+import React, { FC } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import ThumbDown from '@material-ui/icons/ThumbDown';
+import ThumbUp from '@material-ui/icons/ThumbUp';
 import { useTranslate, useUpdate, useNotify, useRedirect } from 'react-admin';
+import { Review } from './../types';
 
 /**
- * This custom button demonstrate using a custom action to update data
+ * This custom button demonstrate using useUpdate to update data
  */
-const RejectButton = ({ record }) => {
+const AcceptButton: FC<{ record: Review }> = ({ record }) => {
     const translate = useTranslate();
     const notify = useNotify();
     const redirectTo = useRedirect();
 
-    const [reject, { loading }] = useUpdate(
+    const [approve, { loading }] = useUpdate(
         'reviews',
         record.id,
-        { status: 'rejected' },
+        { status: 'accepted' },
         record,
         {
             undoable: true,
             onSuccess: () => {
                 notify(
-                    'resources.reviews.notification.rejected_success',
+                    'resources.reviews.notification.approved_success',
                     'info',
                     {},
                     true
@@ -30,34 +31,33 @@ const RejectButton = ({ record }) => {
             },
             onFailure: () => {
                 notify(
-                    'resources.reviews.notification.rejected_error',
+                    'resources.reviews.notification.approved_error',
                     'warning'
                 );
             },
         }
     );
-
     return record && record.status === 'pending' ? (
         <Button
             variant="outlined"
             color="primary"
             size="small"
-            onClick={reject}
+            onClick={approve}
             disabled={loading}
         >
-            <ThumbDown
+            <ThumbUp
                 color="primary"
-                style={{ paddingRight: '0.5em', color: 'red' }}
+                style={{ paddingRight: '0.5em', color: 'green' }}
             />
-            {translate('resources.reviews.action.reject')}
+            {translate('resources.reviews.action.accept')}
         </Button>
     ) : (
         <span />
     );
 };
 
-RejectButton.propTypes = {
-    record: PropTypes.object,
+AcceptButton.propTypes = {
+    record: PropTypes.any,
 };
 
-export default RejectButton;
+export default AcceptButton;

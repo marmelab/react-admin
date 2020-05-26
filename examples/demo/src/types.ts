@@ -4,12 +4,14 @@ import {
     Record,
     Identifier,
     usePermissions,
+    RedirectionSideEffect,
 } from 'ra-core';
 import { RouteComponentProps } from 'react-router-dom';
 import { StaticContext } from 'react-router';
 import * as H from 'history';
 import { ClassNameMap } from '@material-ui/core/styles/withStyles';
 import { ListControllerProps } from 'ra-core/esm/controller/useListController';
+import { FormRenderProps } from 'react-final-form';
 
 export type ThemeName = 'light' | 'dark';
 
@@ -62,7 +64,7 @@ export interface Order extends Record {
 }
 
 export interface BasketItem {
-    product_id: string;
+    product_id: Identifier;
     quantity: number;
 }
 
@@ -75,11 +77,16 @@ export interface FieldProps<T extends Record = Record> {
     record?: T;
     source?: string;
     basePath?: string;
+    formClassName?: string;
 }
+
+export type ReviewStatus = 'accepted' | 'pending' | 'rejected';
 
 export interface Review extends Record {
     date: string;
-    customer_id: string;
+    status: ReviewStatus;
+    customer_id: Identifier;
+    product_id: Identifier;
 }
 
 export interface ResourceMatch {
@@ -88,6 +95,27 @@ export interface ResourceMatch {
 }
 
 type FilterClassKey = 'button' | 'form';
+
+export interface ToolbarProps<T extends Record = Record> {
+    handleSubmitWithRedirect?: (redirect: RedirectionSideEffect) => void;
+    handleSubmit?: FormRenderProps['handleSubmit'];
+    invalid?: boolean;
+    pristine?: boolean;
+    saving?: boolean;
+    submitOnEnter?: boolean;
+    redirect?: RedirectionSideEffect;
+    basePath?: string;
+    record?: T;
+    resource?: string;
+    undoable?: boolean;
+}
+
+export interface BulkActionProps<Params = {}> {
+    basePath?: string;
+    filterValues?: Params;
+    resource?: string;
+    selectedIds?: Identifier[];
+}
 
 export interface FilterProps<Params = {}> {
     classes?: ClassNameMap<FilterClassKey>;
@@ -119,7 +147,8 @@ export interface ResourceComponentProps<
     permissions: ReturnType<typeof usePermissions>['permissions'];
 }
 
-export interface ListComponentProps extends ResourceComponentProps {}
+export interface ListComponentProps<Params = {}>
+    extends ResourceComponentProps<Params> {}
 
 export interface EditComponentProps<
     Params extends ResourceMatch = { id: string },

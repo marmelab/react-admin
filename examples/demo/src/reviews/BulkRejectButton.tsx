@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import PropTypes from 'prop-types';
 import ThumbDown from '@material-ui/icons/ThumbDown';
 import {
@@ -9,8 +9,9 @@ import {
     useUnselectAll,
     CRUD_UPDATE_MANY,
 } from 'react-admin';
+import { BulkActionProps } from '../types';
 
-const BulkRejectButton = ({ selectedIds }) => {
+const BulkRejectButton: FC<BulkActionProps> = ({ selectedIds }) => {
     const notify = useNotify();
     const redirectTo = useRedirect();
     const unselectAll = useUnselectAll('reviews');
