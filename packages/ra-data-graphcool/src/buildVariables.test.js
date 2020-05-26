@@ -1,10 +1,10 @@
 import {
+    CREATE,
+    DELETE,
     GET_LIST,
     GET_MANY,
     GET_MANY_REFERENCE,
-    CREATE,
     UPDATE,
-    DELETE,
 } from 'ra-core';
 import buildVariables from './buildVariables';
 
@@ -131,6 +131,8 @@ describe('buildVariables', () => {
             const params = {
                 target: 'author.id',
                 id: 'author1',
+                pagination: { page: 1, perPage: 10 },
+                sort: { field: 'name', order: 'ASC' },
             };
 
             expect(
@@ -142,6 +144,9 @@ describe('buildVariables', () => {
                 )
             ).toEqual({
                 filter: { author: { id: 'author1' } },
+                skip: 0,
+                first: 10,
+                orderBy: 'name_ASC',
             });
         });
     });

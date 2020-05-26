@@ -46,7 +46,6 @@ interface Props extends FieldProps {
  * // renders the record { id: 1234, new Date('2012-11-07') } as
  * <span>mercredi 7 novembre 2012</span>
  */
-
 export const DateField: FunctionComponent<
     Props & InjectedFieldProps & TypographyProps
 > = memo<Props & InjectedFieldProps & TypographyProps>(

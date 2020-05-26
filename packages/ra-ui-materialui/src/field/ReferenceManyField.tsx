@@ -16,7 +16,7 @@ import {
     PaginationProps,
     SortProps,
 } from 'ra-core';
-import { FieldProps, InjectedFieldProps } from './types';
+import { FieldProps, fieldPropTypes, InjectedFieldProps } from './types';
 
 /**
  * Render related records to the current one.
@@ -138,6 +138,7 @@ ReferenceManyField.propTypes = {
     reference: PropTypes.string.isRequired,
     resource: PropTypes.string,
     sortBy: PropTypes.string,
+    sortByOrder: fieldPropTypes.sortByOrder,
     source: PropTypes.string.isRequired,
     sort: PropTypes.exact({
         field: PropTypes.string,

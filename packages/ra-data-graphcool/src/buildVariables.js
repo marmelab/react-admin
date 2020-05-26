@@ -14,75 +14,85 @@ const buildGetListVariables = introspectionResults => (
     aorFetchType,
     params
 ) => {
-    const filter = Object.keys(params.filter).reduce((acc, key) => {
-        if (key === 'ids') {
-            return { ...acc, id_in: params.filter[key] };
-        }
-
-        if (typeof params.filter[key] === 'object') {
-            const type = introspectionResults.types.find(
-                t => t.name === `${resource.type.name}Filter`
-            );
-            const filterSome = type.inputFields.find(
-                t => t.name === `${key}_some`
-            );
-
-            if (filterSome) {
-                const filter = Object.keys(params.filter[key]).reduce(
-                    (filter_acc, k) => ({
-                        ...filter_acc,
-                        [`${k}_in`]: params.filter[key][k],
-                    }),
-                    {}
-                );
-                return { ...acc, [`${key}_some`]: filter };
+    let variables = { filter: {} };
+    if (params.filter) {
+        variables.filter = Object.keys(params.filter).reduce((acc, key) => {
+            if (key === 'ids') {
+                return { ...acc, id_in: params.filter[key] };
             }
-        }
 
-        const parts = key.split('.');
-
-        if (parts.length > 1) {
-            if (parts[1] === 'id') {
+            if (typeof params.filter[key] === 'object') {
                 const type = introspectionResults.types.find(
                     t => t.name === `${resource.type.name}Filter`
                 );
                 const filterSome = type.inputFields.find(
-                    t => t.name === `${parts[0]}_some`
+                    t => t.name === `${key}_some`
                 );
 
                 if (filterSome) {
-                    return {
-                        ...acc,
-                        [`${parts[0]}_some`]: { id: params.filter[key] },
-                    };
+                    const filter = Object.keys(params.filter[key]).reduce(
+                        (filter_acc, k) => ({
+                            ...filter_acc,
+                            [`${k}_in`]: params.filter[key][k],
+                        }),
+                        {}
+                    );
+                    return { ...acc, [`${key}_some`]: filter };
+                }
+            }
+
+            const parts = key.split('.');
+
+            if (parts.length > 1) {
+                if (parts[1] === 'id') {
+                    const type = introspectionResults.types.find(
+                        t => t.name === `${resource.type.name}Filter`
+                    );
+                    const filterSome = type.inputFields.find(
+                        t => t.name === `${parts[0]}_some`
+                    );
+
+                    if (filterSome) {
+                        return {
+                            ...acc,
+                            [`${parts[0]}_some`]: { id: params.filter[key] },
+                        };
+                    }
+
+                    return { ...acc, [parts[0]]: { id: params.filter[key] } };
                 }
 
-                return { ...acc, [parts[0]]: { id: params.filter[key] } };
+                const resourceField = resource.type.fields.find(
+                    f => f.name === parts[0]
+                );
+                if (resourceField.type.name === 'Int') {
+                    return { ...acc, [key]: parseInt(params.filter[key], 10) };
+                }
+                if (resourceField.type.name === 'Float') {
+                    return {
+                        ...acc,
+                        [key]: parseFloat(params.filter[key], 10),
+                    };
+                }
             }
 
-            const resourceField = resource.type.fields.find(
-                f => f.name === parts[0]
-            );
-            if (resourceField.type.name === 'Int') {
-                return { ...acc, [key]: parseInt(params.filter[key], 10) };
-            }
-            if (resourceField.type.name === 'Float') {
-                return { ...acc, [key]: parseFloat(params.filter[key], 10) };
-            }
-        }
+            return { ...acc, [key]: params.filter[key] };
+        }, {});
+    }
 
-        return { ...acc, [key]: params.filter[key] };
-    }, {});
-
-    return {
-        skip: parseInt(
+    if (params.pagination) {
+        variables.skip = parseInt(
             (params.pagination.page - 1) * params.pagination.perPage,
             10
-        ),
-        first: parseInt(params.pagination.perPage, 10),
-        orderBy: `${params.sort.field}_${params.sort.order}`,
-        filter,
-    };
+        );
+        variables.first = parseInt(params.pagination.perPage, 10);
+    }
+
+    if (params.sort) {
+        variables.orderBy = `${params.sort.field}_${params.sort.order}`;
+    }
+
+    return variables;
 };
 
 const buildCreateUpdateVariables = (
@@ -141,10 +151,17 @@ export default introspectionResults => (
             };
         case GET_MANY_REFERENCE: {
             const parts = params.target.split('.');
-
-            return {
-                filter: { [parts[0]]: { id: params.id } },
+            let variables = buildGetListVariables(introspectionResults)(
+                resource,
+                aorFetchType,
+                params,
+                queryType
+            );
+            variables.filter = {
+                ...variables.filter,
+                [parts[0]]: { id: params.id },
             };
+            return variables;
         }
         case GET_ONE:
         case DELETE:

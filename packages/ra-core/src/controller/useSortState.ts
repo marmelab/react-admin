@@ -9,7 +9,7 @@ import { Sort } from '../types';
 export interface SortProps {
     setSortField: (field: string) => void;
     setSortOrder: (order: string) => void;
-    setSort: (sort: Sort) => void;
+    setSort: (sort: Sort, order?: string) => void;
     sort: Sort;
 }
 
@@ -116,7 +116,8 @@ export default (initialSort: Sort = defaultSort): SortProps => {
 
     return {
         setSort: useCallback(
-            (sort: Sort) => dispatch({ type: 'SET_SORT', payload: { sort } }),
+            (sort: Sort, order?: string) =>
+                dispatch({ type: 'SET_SORT', payload: { sort, order } }),
             [dispatch]
         ),
         setSortField: useCallback(
