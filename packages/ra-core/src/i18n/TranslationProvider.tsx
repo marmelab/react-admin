@@ -14,6 +14,11 @@ interface Props {
     i18nProvider: I18nProvider;
 }
 
+interface State {
+    locale: string; // this time it's required
+    i18nProvider: I18nProvider;
+}
+
 /**
  * Creates a translation context, available to its children
  *
@@ -29,18 +34,15 @@ interface Props {
 const TranslationProvider: FunctionComponent<Props> = props => {
     const { i18nProvider, children } = props;
 
-    const [state, setState] = useSafeSetState({
+    const [state, setState] = useSafeSetState<State>({
         locale: i18nProvider ? i18nProvider.getLocale() : 'en',
         i18nProvider,
     });
 
     const setLocale = useCallback(
         (newLocale: string) =>
-            setState({
-                locale: newLocale,
-                i18nProvider,
-            }),
-        [i18nProvider, setState]
+            setState(state => ({ ...state, locale: newLocale })),
+        [setState]
     );
 
     // Allow locale modification by including setLocale in the context

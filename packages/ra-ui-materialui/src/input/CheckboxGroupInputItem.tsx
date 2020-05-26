@@ -21,6 +21,7 @@ const CheckboxGroupInputItem = props => {
         onChange,
         optionText,
         optionValue,
+        options,
         translateChoice,
         value,
         ...rest
@@ -51,6 +52,7 @@ const CheckboxGroupInputItem = props => {
                             : false
                     }
                     value={String(getChoiceValue(choice))}
+                    {...options}
                     {...rest}
                 />
             }

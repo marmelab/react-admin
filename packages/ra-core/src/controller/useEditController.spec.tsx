@@ -4,10 +4,8 @@ import { act, cleanup, wait } from '@testing-library/react';
 
 import EditController from './EditController';
 import renderWithRedux from '../util/renderWithRedux';
-import {
-    DataProviderContext,
-    convertLegacyDataProvider,
-} from '../dataProvider';
+import { DataProviderContext } from '../dataProvider';
+import { DataProvider } from '../types';
 
 describe('useEditController', () => {
     afterEach(cleanup);
@@ -24,10 +22,16 @@ describe('useEditController', () => {
     };
 
     it('should query the data provider for the record using a GET_ONE query', () => {
+        const dataProvider = ({
+            getOne: () => Promise.resolve({ data: { id: 12 } }),
+        } as unknown) as DataProvider;
         const { dispatch } = renderWithRedux(
-            <EditController {...defaultProps}>
-                {({ record }) => <div>{record && record.title}</div>}
-            </EditController>
+            <DataProviderContext.Provider value={dataProvider}>
+                <EditController {...defaultProps}>
+                    {({ record }) => <div>{record && record.title}</div>}
+                </EditController>
+            </DataProviderContext.Provider>,
+            { admin: { resources: { posts: { data: {} } } } }
         );
         const crudGetOneAction = dispatch.mock.calls[0][0];
         expect(crudGetOneAction.type).toEqual('RA/CRUD_GET_ONE');
@@ -53,14 +57,22 @@ describe('useEditController', () => {
     });
 
     it('should return an undoable save callback by default', () => {
+        const dataProvider = ({
+            getOne: () => Promise.resolve({ data: { id: 12 } }),
+            update: ({ id, data, previousData }) =>
+                Promise.resolve({ data: { ...previousData, ...data } }),
+        } as unknown) as DataProvider;
         let saveCallback;
         const { dispatch } = renderWithRedux(
-            <EditController {...defaultProps}>
-                {({ save }) => {
-                    saveCallback = save;
-                    return null;
-                }}
-            </EditController>
+            <DataProviderContext.Provider value={dataProvider}>
+                <EditController {...defaultProps}>
+                    {({ save }) => {
+                        saveCallback = save;
+                        return null;
+                    }}
+                </EditController>
+            </DataProviderContext.Provider>,
+            { admin: { resources: { posts: { data: {} } } } }
         );
         act(() => saveCallback({ foo: 'bar' }));
         const call = dispatch.mock.calls.find(
@@ -71,16 +83,18 @@ describe('useEditController', () => {
         expect(crudUpdateAction.payload).toEqual({
             id: 12,
             data: { foo: 'bar' },
-            previousData: null,
+            previousData: undefined,
         });
         expect(crudUpdateAction.meta.resource).toEqual('posts');
     });
 
     it('should return a save callback when undoable is false', () => {
         let saveCallback;
-        const dataProvider = convertLegacyDataProvider(() =>
-            Promise.resolve({ data: null })
-        );
+        const dataProvider = ({
+            getOne: () => Promise.resolve({ data: { id: 12 } }),
+            update: ({ id, data, previousData }) =>
+                Promise.resolve({ data: { ...previousData, ...data } }),
+        } as unknown) as DataProvider;
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <EditController {...defaultProps} undoable={false}>
@@ -89,7 +103,8 @@ describe('useEditController', () => {
                         return null;
                     }}
                 </EditController>
-            </DataProviderContext.Provider>
+            </DataProviderContext.Provider>,
+            { admin: { resources: { posts: { data: {} } } } }
         );
         act(() => saveCallback({ foo: 'bar' }));
         const call = dispatch.mock.calls.find(
@@ -104,7 +119,7 @@ describe('useEditController', () => {
         expect(crudUpdateAction.payload).toEqual({
             id: 12,
             data: { foo: 'bar' },
-            previousData: null,
+            previousData: undefined,
         });
         expect(crudUpdateAction.meta.resource).toEqual('posts');
     });

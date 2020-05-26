@@ -40,7 +40,7 @@ interface Modifiers {
     changeParams: (action: any) => void;
     setPage: (page: number) => void;
     setPerPage: (pageSize: number) => void;
-    setSort: (sort: string) => void;
+    setSort: (sort: string, order?: string) => void;
     setFilters: (filters: any, displayedFilters: any) => void;
     hideFilter: (filterName: string) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
@@ -156,8 +156,11 @@ const useListParams = ({
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
     const setSort = useCallback(
-        (newSort: string) =>
-            changeParams({ type: SET_SORT, payload: { sort: newSort } }),
+        (sort: string, order?: string) =>
+            changeParams({
+                type: SET_SORT,
+                payload: { sort, order },
+            }),
         requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );
 

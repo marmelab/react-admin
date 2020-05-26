@@ -553,6 +553,33 @@ export const PostList = (props) => (
 ```
 {% endraw %}
 
+### Specify Sort Order
+
+By default, when the user clicks on a column header, the list becomes sorted in the ascending order. You change this behavior by setting the `sortByOrder` prop to `"DESC"`:
+
+```jsx
+// in src/posts.js
+import React from 'react';
+import { List, Datagrid, TextField } from 'react-admin';
+
+export const PostList = (props) => (
+    <List {...props}>
+        <Datagrid>
+            <ReferenceField label="Post" source="id" reference="posts" sortByOrder="DESC">
+                <TextField source="title" />
+            </ReferenceField>
+            <FunctionField
+                label="Author"
+                sortBy="last_name"
+                sortByOrder="DESC"
+                render={record => `${record.author.first_name} ${record.author.last_name}`}
+            />
+            <TextField source="body" />
+        </Datagrid>
+    </List>
+);
+```
+
 ### Permanent Filter
 
 You can choose to always filter the list, without letting the user disable this filter - for instance to display only published posts. Write the filter to be passed to the REST client in the `filter` props:
@@ -977,6 +1004,7 @@ Normally, `showFilter()` adds one input to the `displayedFilters` list. As the f
 
 Next is the form component, based on `react-final-form`. The form inputs appear directly in the form, and the form submission triggers the `setFilters()` callback passed as parameter:
 
+{% raw %}
 ```jsx
 import React from "react";
 import { Form } from "react-final-form";
@@ -1050,6 +1078,7 @@ return (
   );
 };
 ```
+{% endraw %}
 
 To finish, we pass the `<PostFilter>` component to the `<List>` component using the `filters` prop:
 
@@ -1190,7 +1219,7 @@ Here are all the props accepted by the component:
 * [`expand`](#expand)
 * [`isRowSelectable`](#isrowselectable)
 
-It renders as many columns as it receives `<Field>` children.
+It renders as many columns as it receives `<Field>` children. It uses the field `label` as column header (or, for fields with not `label`, the field `source`).
 
 ```jsx
 // in src/posts.js
@@ -1519,7 +1548,7 @@ For this kind of use case, you need to use a [custom datagrid body component](#b
 
 ### Performance
 
-when displaying large pages of data, you might experience some performance issues.
+When displaying large pages of data, you might experience some performance issues.
 This is mostly due to the fact that we iterate over the `<Datagrid>` children and clone them.
 
 In such cases, you can opt-in for an optimized version of the `<Datagrid>` by setting its `optimized` prop to `true`. 
@@ -1852,9 +1881,9 @@ Alternately, if you want to replace the default pagination by a "<previous - nex
 
 ```jsx
 import Button from '@material-ui/core/Button';
+import Toolbar from '@material-ui/core/Toolbar';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
-import Toolbar from '@material-ui/core/Toolbar';
 
 const PostPagination = ({ page, perPage, total, setPage }) => {
     const nbPages = Math.ceil(total / perPage) || 1;
@@ -1862,13 +1891,15 @@ const PostPagination = ({ page, perPage, total, setPage }) => {
         nbPages > 1 &&
             <Toolbar>
                 {page > 1 &&
-                    <Button color="primary" key="prev" icon={ChevronLeft} onClick={() => setPage(page - 1)}>
+                    <Button color="primary" key="prev" onClick={() => setPage(page - 1)}>
+                        <ChevronLeft />
                         Prev
                     </Button>
                 }
                 {page !== nbPages &&
-                    <Button color="primary" key="next" icon={ChevronRight} onClick={() => setPage(page + 1)} labelPosition="before">
+                    <Button color="primary" key="next" onClick={() => setPage(page + 1)}>
                         Next
+                        <ChevronRight />
                     </Button>
                 }
             </Toolbar>
