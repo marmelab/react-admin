@@ -3,13 +3,13 @@ import { I18nProvider } from '../types';
 
 export interface TranslationContextProps {
     locale: string;
-    setLocale: (locale: string) => Promise<void>;
+    setLocale: (locale: string) => void;
     i18nProvider: I18nProvider;
 }
 
 const TranslationContext = createContext<TranslationContextProps>({
     locale: 'en',
-    setLocale: () => Promise.resolve(),
+    setLocale: () => {},
     i18nProvider: {
         translate: x => x,
         changeLocale: () => Promise.resolve(),
