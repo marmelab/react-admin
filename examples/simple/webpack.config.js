@@ -48,6 +48,10 @@ module.exports = {
             'UseReferenceProps',
             'SortProps',
             'PaginationProps',
+            'CreateControllerProps',
+            'EditControllerProps',
+            'ShowControllerProps',
+            'ListControllerProps',
         ]),
     ].concat(
         process.env.NODE_ENV === 'development'

@@ -57,6 +57,8 @@ export interface Order extends Record {
     date: string;
     status: OrderStatus;
     basket: BasketItem[];
+    date: Date;
+    total: number;
 }
 
 export interface BasketItem {

@@ -290,7 +290,7 @@ export default MyLogoutButton;
 
 ## `useAuthenticated()` Hook
 
-If you add [custom pages](./Actions.md), of if you [create an admin app from scratch](./CustomApp.md), you may need to secure access to pages manually. That's the purpose of the `useAuthenticated()` hook, which calls the `authProvider.checkAuth()` method on mount, and redirects to login if it returns a rejected Promise.
+If you add [custom pages](./Actions.md), or if you [create an admin app from scratch](./CustomApp.md), you may need to secure access to pages manually. That's the purpose of the `useAuthenticated()` hook, which calls the `authProvider.checkAuth()` method on mount, and redirects to login if it returns a rejected Promise.
 
 ```jsx
 // in src/MyPage.js

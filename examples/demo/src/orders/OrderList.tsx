@@ -5,7 +5,6 @@ import {
     Datagrid,
     DateField,
     DateInput,
-    EditButton,
     Filter,
     List,
     NullableBooleanInput,
@@ -171,7 +170,7 @@ const TabbedDatagrid: FC<TabbedDatagridProps> = ({
                         </Datagrid>
                     )}
                     {filterValues.status === 'delivered' && (
-                        <Datagrid {...rest} ids={delivered}>
+                        <Datagrid {...rest} ids={delivered} rowClick="edit">
                             <DateField source="date" showTime />
                             <TextField source="reference" />
                             <CustomerReferenceField />
@@ -185,11 +184,10 @@ const TabbedDatagrid: FC<TabbedDatagridProps> = ({
                                 className={classes.total}
                             />
                             <BooleanField source="returned" />
-                            <EditButton />
                         </Datagrid>
                     )}
                     {filterValues.status === 'cancelled' && (
-                        <Datagrid {...rest} ids={cancelled}>
+                        <Datagrid {...rest} ids={cancelled} rowClick="edit">
                             <DateField source="date" showTime />
                             <TextField source="reference" />
                             <CustomerReferenceField />
@@ -203,7 +201,6 @@ const TabbedDatagrid: FC<TabbedDatagridProps> = ({
                                 className={classes.total}
                             />
                             <BooleanField source="returned" />
-                            <EditButton />
                         </Datagrid>
                     )}
                 </div>

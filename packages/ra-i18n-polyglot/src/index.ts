@@ -43,19 +43,19 @@ export default (
     return {
         translate: (key: string, options: any = {}) => translate(key, options),
         changeLocale: (newLocale: string) =>
-            new Promise(resolve =>
-                // so we systematically return a Promise for the messages
-                // i18nProvider may return a Promise for language changes,
-                resolve(getMessages(newLocale as string))
-            ).then((messages: TranslationMessages) => {
-                locale = newLocale;
-                const newPolyglot = new Polyglot({
-                    locale: newLocale,
-                    phrases: { '': '', ...messages },
-                    ...polyglotOptions,
-                });
-                translate = newPolyglot.t.bind(newPolyglot);
-            }),
+            // We systematically return a Promise for the messages because
+            // getMessages may return a Promise
+            Promise.resolve(getMessages(newLocale as string)).then(
+                (messages: TranslationMessages) => {
+                    locale = newLocale;
+                    const newPolyglot = new Polyglot({
+                        locale: newLocale,
+                        phrases: { '': '', ...messages },
+                        ...polyglotOptions,
+                    });
+                    translate = newPolyglot.t.bind(newPolyglot);
+                }
+            ),
         getLocale: () => locale,
     };
 };

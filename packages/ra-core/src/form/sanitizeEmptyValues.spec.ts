@@ -45,6 +45,25 @@ describe('sanitizeEmptyValues', () => {
             sanitizeEmptyValues({ obj: { foo: null, foo2: 2 } }, { obj })
         ).toEqual({ obj: { foo: { bar: 1 }, foo2: null } });
     });
+    it('should accept object values in arrays', () => {
+        const obj = [{ foo: 1 }, { foo: 2 }];
+        expect(sanitizeEmptyValues({ obj }, { obj: [{ foo: 1 }, {}] })).toEqual(
+            { obj: [{ foo: 1 }, { foo: null }] }
+        );
+        expect(sanitizeEmptyValues({}, { obj })).toEqual({ obj });
+    });
+    it('should accept adding objects in arrays', () => {
+        const obj = [{ foo: 1, foo2: 2 }, { foo: 3 }, { foo: 4 }];
+        expect(
+            sanitizeEmptyValues({ obj: [{ foo: 1 }, { foo: 4 }] }, { obj })
+        ).toEqual({ obj: [{ foo: 1, foo2: 2 }, { foo: 3 }, { foo: 4 }] });
+    });
+    it('should accept removing objects in array of objects', () => {
+        const obj = [{ foo: 1, foo2: 2 }, { foo: 3 }, { foo: 4 }];
+        expect(
+            sanitizeEmptyValues({ obj }, { obj: [{ foo: 1 }, { foo: 4 }] })
+        ).toEqual({ obj: [{ foo: 1, foo2: null }, { foo: 4 }] });
+    });
     it("should not ignore initial value when it's not of the same type", () => {
         const initialValues = { a: 'foobar' };
         const values = { a: { hello: 'world' } };

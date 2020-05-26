@@ -13,6 +13,7 @@ import {
     TabbedForm,
     TextField,
     TextInput,
+    required,
 } from 'react-admin';
 import { InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -33,6 +34,10 @@ const styles = {
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
     },
+    tab: {
+        maxWidth: '40em',
+        display: 'block',
+    },
 };
 
 const useStyles = makeStyles(styles);
@@ -42,13 +47,28 @@ const ProductEdit = props => {
     return (
         <Edit {...props} title={<ProductTitle />}>
             <TabbedForm>
-                <FormTab label="resources.products.tabs.image">
+                <FormTab
+                    label="resources.products.tabs.image"
+                    contentClassName={classes.tab}
+                >
                     <Poster />
-                    <TextInput source="image" fullWidth />
-                    <TextInput source="thumbnail" fullWidth />
+                    <TextInput
+                        source="image"
+                        fullWidth
+                        validate={requiredValidate}
+                    />
+                    <TextInput
+                        source="thumbnail"
+                        fullWidth
+                        validate={requiredValidate}
+                    />
                 </FormTab>
-                <FormTab label="resources.products.tabs.details" path="details">
-                    <TextInput source="reference" />
+                <FormTab
+                    label="resources.products.tabs.details"
+                    path="details"
+                    contentClassName={classes.tab}
+                >
+                    <TextInput source="reference" validate={requiredValidate} />
                     <NumberInput
                         source="price"
                         className={classes.price}
@@ -59,6 +79,7 @@ const ProductEdit = props => {
                                 </InputAdornment>
                             ),
                         }}
+                        validate={requiredValidate}
                     />
                     <NumberInput
                         source="width"
@@ -71,6 +92,7 @@ const ProductEdit = props => {
                                 </InputAdornment>
                             ),
                         }}
+                        validate={requiredValidate}
                     />
                     <NumberInput
                         source="height"
@@ -83,17 +105,31 @@ const ProductEdit = props => {
                                 </InputAdornment>
                             ),
                         }}
+                        validate={requiredValidate}
                     />
-                    <ReferenceInput source="category_id" reference="categories">
+                    <ReferenceInput
+                        source="category_id"
+                        reference="categories"
+                        validate={requiredValidate}
+                    >
                         <SelectInput source="name" />
                     </ReferenceInput>
-                    <NumberInput source="stock" className={classes.stock} />
+                    <NumberInput
+                        source="stock"
+                        className={classes.stock}
+                        validate={requiredValidate}
+                    />
                 </FormTab>
                 <FormTab
                     label="resources.products.tabs.description"
                     path="description"
+                    contentClassName={classes.tab}
                 >
-                    <RichTextInput source="description" label="" />
+                    <RichTextInput
+                        source="description"
+                        label=""
+                        validate={requiredValidate}
+                    />
                 </FormTab>
                 <FormTab label="resources.products.tabs.reviews" path="reviews">
                     <ReferenceManyField
@@ -120,5 +156,7 @@ const ProductEdit = props => {
         </Edit>
     );
 };
+
+const requiredValidate = [required()];
 
 export default ProductEdit;

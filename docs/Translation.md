@@ -164,6 +164,7 @@ You can find translation packages for the following languages:
 - Arabic (`ar`): [developerium/ra-language-arabic](https://github.com/developerium/ra-language-arabic)
 - Armenian (`am`): [mrdntgrn/ra-language-armenian](https://github.com/mrdntgrn/ra-language-armenian)
 - Belarusian (`be`): [tui-ru/ra-language-belarusian](https://github.com/tui-ru/ra-language-belarusian)
+- Brazilian Portuguese (`pt-br`): [gucarletto/ra-language-pt-br](https://github.com/gucarletto/ra-language-pt-br)
 - Bulgarian (`bg`): [ptodorov0/ra-language-bulgarian](https://github.com/ptodorov0/ra-language-bulgarian)
 - Catalan (`ca`): [sergioedo/ra-language-catalan](https://github.com/sergioedo/ra-language-catalan)
 - Chinese (`zh-TW`): [areyliu6/ra-language-chinese-traditional](https://github.com/areyliu6/ra-language-chinese-traditional)
@@ -570,7 +571,7 @@ export default {
 By default, react-admin translates the notification messages. You can pass variables for polyglot interpolation with custom notifications. For example:
 
 ```js
-notify('myroot.hello.world', 'info', { messageArgs: { name: 'Planet Earth' } });
+notify('myroot.hello.world', 'info', { name: 'Planet Earth' });
 ```
 
 Assuming you have the following in your custom messages:

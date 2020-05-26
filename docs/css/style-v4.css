@@ -81,6 +81,11 @@ footer {
     fill: rgba(0, 0, 0, 0.6);
 }
 
+.sidenav li > a {
+    height: 40px;
+    line-height: 40px;
+}
+
 .sidenav.sidenav-fixed ul.collapsible-accordion a.collapsible-header {
     padding: 0 30px;
 }

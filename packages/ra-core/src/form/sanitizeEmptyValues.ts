@@ -16,8 +16,16 @@ const sanitizeEmptyValues = (initialValues: object, values: object) => {
     if (!initialValues) return values;
     const initialValuesWithEmptyFields = Object.keys(initialValues).reduce(
         (acc, key) => {
-            if (values[key] instanceof Date || Array.isArray(values[key])) {
+            if (values[key] instanceof Date) {
                 acc[key] = values[key];
+            } else if (Array.isArray(values[key])) {
+                if (Array.isArray(initialValues[key])) {
+                    acc[key] = values[key].map((value, index) =>
+                        sanitizeEmptyValues(initialValues[key][index], value)
+                    );
+                } else {
+                    acc[key] = values[key];
+                }
             } else if (
                 typeof values[key] === 'object' &&
                 typeof initialValues[key] === 'object' &&
