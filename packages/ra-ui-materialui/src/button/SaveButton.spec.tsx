@@ -44,6 +44,17 @@ describe('<SaveButton />', () => {
         spy.mockRestore();
     });
 
+    it('should render a disabled button', () => {
+        const { getByLabelText } = render(
+            <TestContext>
+                <ThemeProvider theme={theme}>
+                    <SaveButton pristine={true} />
+                </ThemeProvider>
+            </TestContext>
+        );
+        expect(getByLabelText('ra.action.save')['disabled']).toEqual(true);
+    });
+
     it('should render as submit type when submitOnEnter is true', () => {
         const { getByLabelText } = render(
             <TestContext>

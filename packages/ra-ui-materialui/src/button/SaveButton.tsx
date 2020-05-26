@@ -27,6 +27,7 @@ const SaveButton: FC<SaveButtonProps> = props => {
         classes: classesOverride,
         invalid,
         label = 'ra.action.save',
+        disabled,
         pristine,
         redirect,
         saving,
@@ -79,6 +80,7 @@ const SaveButton: FC<SaveButtonProps> = props => {
             onClick={handleClick}
             color={saving ? 'default' : 'primary'}
             aria-label={displayedLabel}
+            disabled={disabled || pristine}
             {...sanitizeButtonRestProps(rest)}
         >
             {saving ? (
