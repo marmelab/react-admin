@@ -181,6 +181,7 @@ export interface CreateResult {
 
 export interface DeleteParams {
     id: Identifier;
+    previousData: Record;
 }
 export interface DeleteResult {
     data?: Record;
