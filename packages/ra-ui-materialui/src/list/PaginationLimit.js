@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import pure from 'recompose/pure';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';

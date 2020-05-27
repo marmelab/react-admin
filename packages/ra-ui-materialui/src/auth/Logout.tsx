@@ -1,4 +1,5 @@
-import React, { useCallback, FunctionComponent, ReactElement } from 'react';
+import * as React from 'react';
+import { useCallback, FunctionComponent, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { ListItemIcon, MenuItem, makeStyles } from '@material-ui/core';
 import { MenuItemProps } from '@material-ui/core/MenuItem';

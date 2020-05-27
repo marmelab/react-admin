@@ -1,4 +1,5 @@
-import React, { cloneElement, Children } from 'react';
+import * as React from 'react';
+import { cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import LinearProgress from '@material-ui/core/LinearProgress';

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { cleanup, wait } from '@testing-library/react';
 import expect from 'expect';
 import { Router, Route } from 'react-router-dom';

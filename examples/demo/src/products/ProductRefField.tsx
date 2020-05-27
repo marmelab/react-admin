@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import * as React from 'react';
+import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { FieldProps, Product } from '../types';
 

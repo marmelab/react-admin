@@ -1,4 +1,5 @@
-import React, { Children } from 'react';
+import * as React from 'react';
+import { Children } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { FormWithRedirect } from 'ra-core';
@@ -14,7 +15,7 @@ import CardContentInner from '../layout/CardContentInner';
  *
  * @example
  *
- * import React from 'react';
+ * import * as React from "react";
  * import { Create, Edit, SimpleForm, TextInput, DateInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton } from 'react-admin';
  * import RichTextInput from 'ra-input-rich-text';
  *

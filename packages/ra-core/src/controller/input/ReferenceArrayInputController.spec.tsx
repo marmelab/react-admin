@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import expect from 'expect';
 import { cleanup, wait, fireEvent } from '@testing-library/react';
 import ReferenceArrayInputController from './ReferenceArrayInputController';

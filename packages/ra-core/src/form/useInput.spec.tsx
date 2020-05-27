@@ -1,4 +1,5 @@
-import React, { FunctionComponent, ReactElement } from 'react';
+import * as React from 'react';
+import { FunctionComponent, ReactElement } from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
 

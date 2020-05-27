@@ -1,4 +1,5 @@
-import React, { Fragment, useState, useCallback, useEffect } from 'react';
+import * as React from 'react';
+import { Fragment, useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { FormSpy, useForm } from 'react-final-form';
 

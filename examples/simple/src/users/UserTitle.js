@@ -1,5 +1,5 @@
 /* eslint react/jsx-key: off */
-import React from 'react';
+import * as React from 'react';
 import { useTranslate } from 'react-admin';
 
 const UserTitle = ({ record }) => {

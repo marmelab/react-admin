@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import PersonIcon from '@material-ui/icons/Person';

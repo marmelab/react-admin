@@ -1,4 +1,5 @@
-import React, { useEffect, ReactNode, FunctionComponent } from 'react';
+import * as React from 'react';
+import { useEffect, ReactNode, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
 import RemoveCircle from '@material-ui/icons/RemoveCircle';

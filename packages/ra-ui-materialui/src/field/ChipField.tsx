@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import * as React from 'react';
+import { FunctionComponent } from 'react';
 import compose from 'recompose/compose';
 import get from 'lodash/get';
 import pure from 'recompose/pure';

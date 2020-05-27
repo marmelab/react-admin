@@ -29,7 +29,7 @@ Here is the minimal code necessary to display a form to create and edit comments
 {% raw %}
 ```jsx
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 import { Admin, Resource } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 
@@ -44,7 +44,7 @@ const App = () => (
 export default App;
 
 // in src/posts.js
-import React from 'react';
+import * as React from "react";
 import { Create, Edit, SimpleForm, TextInput, DateInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton } from 'react-admin';
 import RichTextInput from 'ra-input-rich-text';
 
@@ -120,7 +120,7 @@ export const PostEdit = (props) => (
 You can replace the list of default actions by your own element using the `actions` prop:
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import Button from '@material-ui/core/Button';
 import { TopToolbar, ShowButton } from 'react-admin';
 
@@ -233,7 +233,7 @@ const PostEdit = props => (
 **Tip**: If you want a confirmation dialog for the Delete button but don't mind undoable Edits, then pass a [custom toolbar](#toolbar) to the form, as follows:
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import {
     Toolbar,
     SaveButton,
@@ -273,7 +273,7 @@ You may need to prepopulate a record based on another one. For that use case, us
 For instance, to allow cloning all the posts from the list:
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { List, Datagrid, TextField, CloneButton } from 'react-admin';
 
 const PostList = props => (
@@ -296,7 +296,7 @@ That means that if you want to create a link to a creation form, presetting *som
 
 {% raw %}
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { Datagrid } from 'react-admin';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
@@ -330,7 +330,7 @@ export default PostList = props => (
 
 {% raw %}
 ```jsx
-import React from 'react';
+import * as React from "react";
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 
@@ -354,7 +354,7 @@ Instead of a custom `Edit`, you can use the `EditGuesser` to determine which inp
 
 ```jsx
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 import { Admin, Resource, EditGuesser } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 
@@ -575,7 +575,7 @@ Here are all the props accepted by the `<TabbedForm>` component:
 
 {% raw %}
 ```jsx
-import React from 'react';
+import * as React from "react";
 import {
     TabbedForm,
     FormTab,
@@ -669,7 +669,7 @@ By default `<TabbedForm>` uses `<TabbedFormTabs>`, an internal react-admin compo
 The following example shows how to make use of scrollable `<Tabs>`. Pass the `scrollable` prop to `<TabbedFormTabs>` and pass that as the `tabs` prop to `<TabbedForm>`
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import {
     Edit,
     TabbedForm,
@@ -994,7 +994,7 @@ The most common use case is to display two submit buttons in the `<Create>` view
 For that use case, use the `<SaveButton>` component with a custom `redirect` prop:
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { Create, SimpleForm, SaveButton, Toolbar } from 'react-admin';
 
 const PostCreateToolbar = props => (
@@ -1025,7 +1025,7 @@ export const PostCreate = (props) => (
 Another use case is to remove the `<DeleteButton>` from the toolbar in an edit view. In that case, create a custom toolbar containing only the `<SaveButton>` as a child;
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { Edit, SimpleForm, SaveButton, Toolbar } from 'react-admin';
 
 const PostEditToolbar = props => (
@@ -1062,7 +1062,7 @@ Here are the props received by the `Toolbar` component when passed as the `toolb
 **Tip**: If you want to include a custom `Button` in a `<Toolbar>` that doesn't render a react-admin `<Button>`, the props injected by `<Toolbar>` to its children (`handleSubmit`, `handleSubmitWithRedirect`, `onSave`, `invalid`, `pristine`, `saving`, and `submitOnEnter`) will cause React warnings. You'll need to wrap your custom `Button` in another component and ignore the injected props, as follows:
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import Button from '@material-ui/core/Button';
 
 const CustomButton = props => <Button label="My Custom Button" {...props} />
@@ -1149,7 +1149,7 @@ export const PostEdit = (props) => (
 The input components are wrapped inside a `div` to ensure a good looking form by default. You can pass a `formClassName` prop to the input components to customize the style of this `div`. For example, here is how to display two inputs on the same line:
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import {
     Edit,
     SimpleForm,
@@ -1244,7 +1244,7 @@ The `<SimpleForm>` and `<TabbedForm>` layouts are quite simple. In order to bett
 Here is an example of such custom form, taken from the Posters Galore demo. It uses [material-ui's `<Box>` component](https://material-ui.com/components/box/), and it's a good starting point for your custom form layouts.
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import {
     FormWithRedirect,
     DateInput,
@@ -1497,7 +1497,8 @@ Sometimes, you may want to alter the form values before actually sending them to
 Decorating `handleSubmitWithRedirect` with your own logic allows you to alter the form values before submitting. For instance, to set the `average_note` field value just before submission:
 
 ```jsx
-import React, { useCallback } from 'react';
+import * as React from 'react';
+import { useCallback } from 'react';
 import { useForm } from 'react-final-form';
 import {
     SaveButton,
@@ -1556,7 +1557,8 @@ The previous technique works well for altering values. But you may want to call 
 Instead of *decorating* `handleSubmitWithRedirect`, you can *replace* it, and do the API call manually. You don't have to change anything in the form values in that case. So the previous example can be rewritten as:
 
 ```jsx
-import React, { useCallback } from 'react';
+import * as React from 'react';
+import { useCallback } from 'react';
 import { useFormState } from 'react-final-form';
 import {
     SaveButton,
@@ -1603,7 +1605,8 @@ This technique has a huge drawback, which makes it impractical: by skipping the 
 That's why react-admin provides a way to override just the data provider call and its side effects. It's called `onSave`, and here is how you would use it in the previous use case:
 
 ```jsx
-import React, { useCallback } from 'react';
+import * as React from 'react';
+import { useCallback } from 'react';
 import {
     SaveButton,
     Toolbar,

@@ -1,4 +1,5 @@
-import React, { FC, ReactElement } from 'react';
+import * as React from 'react';
+import { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ActionList from '@material-ui/icons/List';
 import { Link } from 'react-router-dom';

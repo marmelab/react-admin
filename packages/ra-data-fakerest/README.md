@@ -20,7 +20,7 @@ Pass a JSON object to the provider constructor:
 
 ```jsx
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 import { Admin, Resource } from 'react-admin';
 import fakeDataProvider from 'ra-data-fakerest';
 
@@ -77,7 +77,7 @@ Pass `true` as second argument to log the requests made to the provider in the c
 
 ```jsx
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 import { Admin, Resource } from 'react-admin';
 import fakeDataProvider from 'ra-data-fakerest';
 

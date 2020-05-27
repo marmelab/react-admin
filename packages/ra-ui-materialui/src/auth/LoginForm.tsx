@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import * as React from 'react';
+import { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Field, Form } from 'react-final-form';
 import CardActions from '@material-ui/core/CardActions';

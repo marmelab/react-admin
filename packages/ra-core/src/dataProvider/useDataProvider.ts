@@ -45,7 +45,8 @@ const optimisticCalls = [];
  *
  * @example Basic usage
  *
- * import React, { useState } from 'react';
+ * import * as React from 'react';
+import { useState } from 'react';
  * import { useDataProvider } from 'react-admin';
  *
  * const PostList = () => {

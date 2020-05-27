@@ -1,4 +1,5 @@
-import React, { Children, cloneElement, isValidElement, useState } from 'react';
+import * as React from 'react';
+import { Children, cloneElement, isValidElement, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslate } from 'ra-core';
 import Tooltip from '@material-ui/core/Tooltip';

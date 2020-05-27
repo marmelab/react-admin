@@ -1,5 +1,5 @@
 /* eslint react/jsx-key: off */
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Edit, SimpleForm, TextInput, required } from 'react-admin';
 

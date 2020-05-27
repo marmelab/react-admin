@@ -1,4 +1,5 @@
-import React, { useCallback, useMemo } from 'react';
+import * as React from 'react';
+import { useCallback, useMemo } from 'react';
 import RichTextInput from 'ra-input-rich-text';
 import {
     ArrayInput,

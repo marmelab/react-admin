@@ -1,4 +1,5 @@
-import React, { FC, useRef, useCallback, useMemo } from 'react';
+import * as React from 'react';
+import { FC, useRef, useCallback, useMemo } from 'react';
 import { Form, FormProps } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 

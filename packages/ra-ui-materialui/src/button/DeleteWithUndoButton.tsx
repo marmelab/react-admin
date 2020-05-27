@@ -1,4 +1,5 @@
-import React, { useCallback, FC, ReactElement, SyntheticEvent } from 'react';
+import * as React from 'react';
+import { useCallback, FC, ReactElement, SyntheticEvent } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';

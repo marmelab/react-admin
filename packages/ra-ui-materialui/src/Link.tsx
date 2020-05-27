@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import * as React from 'react';
+import { FC } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Link as RRLink, LinkProps as RRLinkProps } from 'react-router-dom';
