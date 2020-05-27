@@ -56,14 +56,4 @@ CloneButton.propTypes = {
     record: PropTypes.any,
 };
 
-const PureCloneButton = memo(
-    CloneButton,
-    (props: Props, nextProps: Props) =>
-        (!props.record ||
-            !nextProps.record ||
-            props.record === nextProps.record) &&
-        props.basePath === nextProps.basePath &&
-        !(props.record == null && nextProps.record != null)
-);
-
-export default PureCloneButton;
+export default memo(CloneButton);
