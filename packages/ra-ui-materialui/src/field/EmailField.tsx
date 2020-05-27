@@ -1,8 +1,7 @@
 import React, { FunctionComponent, HtmlHTMLAttributes, memo } from 'react';
 import get from 'lodash/get';
-import Typography from '@material-ui/core/Typography';
-
 import sanitizeRestProps from './sanitizeRestProps';
+import { Typography, Link } from '@material-ui/core';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 // useful to prevent click bubbling in a datagrid with rowClick
@@ -29,14 +28,14 @@ const EmailField: FunctionComponent<
     }
 
     return (
-        <a
+        <Link
             className={className}
             href={`mailto:${value}`}
             onClick={stopPropagation}
             {...sanitizeRestProps(rest)}
         >
             {value}
-        </a>
+        </Link>
     );
 });
 

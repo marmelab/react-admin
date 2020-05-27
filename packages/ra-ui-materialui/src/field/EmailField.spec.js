@@ -3,49 +3,33 @@ import assert from 'assert';
 import { render, cleanup } from '@testing-library/react';
 import EmailField from './EmailField';
 
+const email = 'foo@bar.com';
+
 describe('<EmailField />', () => {
     afterEach(cleanup);
 
     it('should render as an email link', () => {
-        const record = { foo: 'foo@bar.com' };
-        const { container } = render(
+        const record = { foo: email };
+        const { getByText } = render(
             <EmailField record={record} source="foo" />
         );
-        assert.equal(
-            container.innerHTML,
-            '<a href="mailto:foo@bar.com">foo@bar.com</a>'
-        );
+        const link = getByText(email);
+        expect(link.tagName).toEqual('A');
+        expect(link.href).toEqual(`mailto:${email}`);
     });
 
     it('should handle deep fields', () => {
-        const record = { foo: { bar: 'foo@bar.com' } };
-        const { container } = render(
+        const record = { foo: { bar: email } };
+        const { getByText } = render(
             <EmailField record={record} source="foo.bar" />
         );
-        assert.equal(
-            container.innerHTML,
-            '<a href="mailto:foo@bar.com">foo@bar.com</a>'
-        );
-    });
-
-    it('should display an email (mailto) link', () => {
-        const record = { email: 'hal@kubrickcorp.com' };
-        const { container } = render(
-            <EmailField record={record} source="email" />
-        );
-        assert.equal(
-            container.innerHTML,
-            '<a href="mailto:hal@kubrickcorp.com">hal@kubrickcorp.com</a>'
-        );
+        const link = getByText(email);
+        expect(link.href).toEqual(`mailto:${email}`);
     });
 
     it('should use custom className', () => {
         const { container } = render(
-            <EmailField
-                record={{ email: true }}
-                source="email"
-                className="foo"
-            />
+            <EmailField record={{ email }} source="email" className="foo" />
         );
         assert.ok(container.firstChild.classList.contains('foo'));
     });
@@ -53,10 +37,10 @@ describe('<EmailField />', () => {
     it.each([null, undefined])(
         'should render the emptyText when value is %s',
         foo => {
-            const { queryByText } = render(
+            const { getByText } = render(
                 <EmailField record={{ foo }} source="foo" emptyText="NA" />
             );
-            assert.notEqual(queryByText('NA'), null);
+            expect(getByText('NA')).not.toEqual(null);
         }
     );
 
