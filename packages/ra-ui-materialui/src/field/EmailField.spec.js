@@ -1,53 +1,57 @@
 import React from 'react';
-import assert from 'assert';
+import expect from 'expect';
 import { render, cleanup } from '@testing-library/react';
 import EmailField from './EmailField';
+
+const url = 'foo@bar.com';
 
 describe('<EmailField />', () => {
     afterEach(cleanup);
 
-    it('should render as an email link', () => {
-        const record = { foo: 'foo@bar.com' };
-        const { container } = render(
+    it('should render as Mui Link', () => {
+        const record = { foo: url };
+        const { getByText } = render(
             <EmailField record={record} source="foo" />
         );
-        assert.equal(
-            container.innerHTML,
-            '<a href="mailto:foo@bar.com">foo@bar.com</a>'
-        );
+        const link = getByText(url);
+        expect(link.tagName).toEqual('A');
+        expect(link.href).toEqual(`mailto:${url}`);
+        expect(link.innerHTML).toEqual(url);
     });
 
     it('should handle deep fields', () => {
-        const record = { foo: { bar: 'foo@bar.com' } };
-        const { container } = render(
+        const record = { foo: { bar: url } };
+        const { getByText } = render(
             <EmailField record={record} source="foo.bar" />
         );
-        assert.equal(
-            container.innerHTML,
-            '<a href="mailto:foo@bar.com">foo@bar.com</a>'
-        );
+        const link = getByText(url);
+        expect(link.tagName).toEqual('A');
+        expect(link.href).toEqual(`mailto:${url}`);
+        expect(link.innerHTML).toEqual(url);
     });
 
     it('should display an email (mailto) link', () => {
-        const record = { email: 'hal@kubrickcorp.com' };
-        const { container } = render(
+        const halUrl = 'hal@kubrickcorp.com';
+        const record = { email: halUrl };
+        const { getByText } = render(
             <EmailField record={record} source="email" />
         );
-        assert.equal(
-            container.innerHTML,
-            '<a href="mailto:hal@kubrickcorp.com">hal@kubrickcorp.com</a>'
-        );
+        const link = getByText(halUrl);
+        expect(link.tagName).toEqual('A');
+        expect(link.href).toEqual(`mailto:${halUrl}`);
+        expect(link.innerHTML).toEqual(halUrl);
     });
 
     it('should use custom className', () => {
-        const { container } = render(
+        const { getByText } = render(
             <EmailField
-                record={{ email: true }}
+                record={{ email: url }}
                 source="email"
                 className="foo"
             />
         );
-        assert.ok(container.firstChild.classList.contains('foo'));
+        const link = getByText(url);
+        expect(link.className).toContain('foo');
     });
 
     it.each([null, undefined])(
@@ -56,12 +60,12 @@ describe('<EmailField />', () => {
             const { queryByText } = render(
                 <EmailField record={{ foo }} source="foo" emptyText="NA" />
             );
-            assert.notEqual(queryByText('NA'), null);
+            expect(queryByText('NA')).not.toBeNull();
         }
     );
 
     it('should return null when the record has no value for the source and no emptyText', () => {
         const { container } = render(<EmailField record={{}} source="foo" />);
-        assert.equal(container.firstChild, null);
+        expect(container.firstChild).toBeNull();
     });
 });
