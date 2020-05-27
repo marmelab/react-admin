@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import * as React from 'react';
+import { FC } from 'react';
 import { CoreAdminContext, AdminContextProps } from 'ra-core';
 
 import defaultI18nProvider from './defaultI18nProvider';

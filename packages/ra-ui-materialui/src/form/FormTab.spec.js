@@ -1,5 +1,5 @@
 import { cleanup } from '@testing-library/react';
-import React from 'react';
+import * as React from 'react';
 import expect from 'expect';
 import { renderWithRedux } from 'ra-core';
 

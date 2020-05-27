@@ -1,4 +1,5 @@
-import React, { ElementType } from 'react';
+import * as React from 'react';
+import { ElementType } from 'react';
 import FormField from './FormField';
 
 export default (

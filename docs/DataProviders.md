@@ -116,7 +116,7 @@ Then, initialize the provider with the REST backend URL, and pass the result to 
 
 ```jsx
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 import { Admin, Resource } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
 
@@ -133,17 +133,17 @@ export default App;
 
 Here is how this Data Provider maps react-admin calls to API calls:
 
-| Method name        | API call
-|--------------------|----------------------------------------------------------------
-| `getList`          | `GET http://my.api.url/posts?sort=["title","ASC"]&range=[0, 24]&filter={"title":"bar"}`
-| `getOne`           | `GET http://my.api.url/posts/123`
-| `getMany`          | `GET http://my.api.url/posts?filter={"id":[123,456,789]}`
-| `getManyReference` | `GET http://my.api.url/posts?filter={"author_id":345}`
-| `create`           | `POST http://my.api.url/posts/123`
-| `update`           | `PUT http://my.api.url/posts/123`
-| `updateMany`       | Multiple calls to `PUT http://my.api.url/posts/123`
-| `delete`           | `DELETE http://my.api.url/posts/123`
-| `deteleMany`       | Multiple calls to `DELETE http://my.api.url/posts/123`
+| Method name        | API call                                                                                |
+| ------------------ | --------------------------------------------------------------------------------------- |
+| `getList`          | `GET http://my.api.url/posts?sort=["title","ASC"]&range=[0, 24]&filter={"title":"bar"}` |
+| `getOne`           | `GET http://my.api.url/posts/123`                                                       |
+| `getMany`          | `GET http://my.api.url/posts?filter={"id":[123,456,789]}`                               |
+| `getManyReference` | `GET http://my.api.url/posts?filter={"author_id":345}`                                  |
+| `create`           | `POST http://my.api.url/posts/123`                                                      |
+| `update`           | `PUT http://my.api.url/posts/123`                                                       |
+| `updateMany`       | Multiple calls to `PUT http://my.api.url/posts/123`                                     |
+| `delete`           | `DELETE http://my.api.url/posts/123`                                                    |
+| `deteleMany`       | Multiple calls to `DELETE http://my.api.url/posts/123`                                  |
 
 **Note**: The simple REST client expects the API to include a `Content-Range` header in the response to `getList` calls. The value must be the total number of resources in the collection. This allows react-admin to know how many pages of resources there are in total, and build the pagination controls.
 
@@ -287,17 +287,17 @@ Data queries require a *method* (e.g. `getOne`), a *resource* (e.g. 'posts') and
 
 Standard methods are:
 
-Method             | Usage                                           | Parameters format
------------------- | ------------------------------------------------|-------------------------------
-`getList`          | Search for resources                            | `{ pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object} }`
-`getOne`           | Read a single resource, by id                   | `{ id: {mixed} }`
-`getMany`          | Read a list of resource, by ids                 | `{ ids: {mixed[]} }`
-`getManyReference` | Read a list of resources related to another one | `{ target: {string}, id: {mixed}, pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object} }`
-`create`           | Create a single resource                        | `{ data: {Object} }`
-`update`           | Update a single resource                        | `{ id: {mixed}, data: {Object}, previousData: {Object} }`
-`updateMany`       | Update multiple resources                       | `{ ids: {mixed[]}, data: {Object} }`
-`delete`           | Delete a single resource                        | `{ id: {mixed}, previousData: {Object} }`
-`deleteMany`       | Delete multiple resources                       | `{ ids: {mixed[]} }`
+| Method             | Usage                                           | Parameters format                                                                                                                               |
+| ------------------ | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `getList`          | Search for resources                            | `{ pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object} }`                                |
+| `getOne`           | Read a single resource, by id                   | `{ id: {mixed} }`                                                                                                                               |
+| `getMany`          | Read a list of resource, by ids                 | `{ ids: {mixed[]} }`                                                                                                                            |
+| `getManyReference` | Read a list of resources related to another one | `{ target: {string}, id: {mixed}, pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object} }` |
+| `create`           | Create a single resource                        | `{ data: {Object} }`                                                                                                                            |
+| `update`           | Update a single resource                        | `{ id: {mixed}, data: {Object}, previousData: {Object} }`                                                                                       |
+| `updateMany`       | Update multiple resources                       | `{ ids: {mixed[]}, data: {Object} }`                                                                                                            |
+| `delete`           | Delete a single resource                        | `{ id: {mixed}, previousData: {Object} }`                                                                                                       |
+| `deleteMany`       | Delete multiple resources                       | `{ ids: {mixed[]} }`                                                                                                                            |
 
 Here are several examples of how react-admin can call the Data Provider:
 
@@ -337,17 +337,17 @@ dataProvider.deleteMany('posts', { ids: [123, 234] });
 
 Data Providers methods must return a Promise for an object with a `data` property.
 
-Method             | Response format
------------------- | ----------------
-`getList`          | `{ data: {Record[]}, total: {int}, validUntil?: {Date} }`
-`getOne`           | `{ data: {Record}, validUntil?: {Date} }`
-`getMany`          | `{ data: {Record[]}, validUntil?: {Date} }`
-`getManyReference` | `{ data: {Record[]}, total: {int} }`
-`create`           | `{ data: {Record} }`
-`update`           | `{ data: {Record} }`
-`updateMany`       | `{ data: {mixed[]} }` The ids which have been updated
-`delete`           | `{ data: {Record} }` The record that has been deleted
-`deleteMany`       | `{ data: {mixed[]} }` The ids of the deleted records (optional)
+| Method             | Response format                                                 |
+| ------------------ | --------------------------------------------------------------- |
+| `getList`          | `{ data: {Record[]}, total: {int}, validUntil?: {Date} }`       |
+| `getOne`           | `{ data: {Record}, validUntil?: {Date} }`                       |
+| `getMany`          | `{ data: {Record[]}, validUntil?: {Date} }`                     |
+| `getManyReference` | `{ data: {Record[]}, total: {int} }`                            |
+| `create`           | `{ data: {Record} }`                                            |
+| `update`           | `{ data: {Record} }`                                            |
+| `updateMany`       | `{ data: {mixed[]} }` The ids which have been updated           |
+| `delete`           | `{ data: {Record} }` The record that has been deleted           |
+| `deleteMany`       | `{ data: {mixed[]} }` The ids of the deleted records (optional) |
 
 A `{Record}` is an object literal with at least an `id` property, e.g. `{ id: 123, title: "hello, world" }`.
 

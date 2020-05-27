@@ -13,7 +13,7 @@ npm install ra-input-rich-text --save-dev
 ## Usage
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import {
     DateInput,
     Edit,

@@ -19,7 +19,7 @@ import { fetchUtils, DataProvider } from 'ra-core';
  *
  * @example
  *
- * import React from 'react';
+ * import * as React from "react";
  * import { Admin, Resource } from 'react-admin';
  * import simpleRestProvider from 'ra-data-simple-rest';
  *

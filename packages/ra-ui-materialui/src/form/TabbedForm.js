@@ -1,4 +1,5 @@
-import React, { Children, isValidElement } from 'react';
+import * as React from 'react';
+import { Children, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Route, useRouteMatch, useLocation } from 'react-router-dom';
@@ -17,7 +18,7 @@ import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
  *
  * @example
  *
- * import React from 'react';
+ * import * as React from "react";
  * import {
  *     Edit,
  *     TabbedForm,

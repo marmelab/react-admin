@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import SimpleForm from '../form/SimpleForm';
 import SimpleFormIterator from '../form/SimpleFormIterator';
 import ArrayInput from '../input/ArrayInput';

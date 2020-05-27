@@ -1,4 +1,5 @@
-import React, { FC, useState } from 'react';
+import * as React from 'react';
+import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
 import SettingsIcon from '@material-ui/icons/Settings';
 import LabelIcon from '@material-ui/icons/Label';

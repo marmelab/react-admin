@@ -1,4 +1,5 @@
-import React, { FC, ReactElement } from 'react';
+import * as React from 'react';
+import { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import { Fab, makeStyles, useMediaQuery, Theme } from '@material-ui/core';

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PostIcon from '@material-ui/icons/Book';
 import UserIcon from '@material-ui/icons/Group';
 import { Admin, Resource, ListGuesser } from 'react-admin';

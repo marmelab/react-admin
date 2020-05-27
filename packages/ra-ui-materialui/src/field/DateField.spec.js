@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import assert from 'assert';
 import { render, cleanup } from '@testing-library/react';
 import { DateField } from './DateField';

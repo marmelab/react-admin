@@ -1,4 +1,5 @@
-import React, { Children, cloneElement } from 'react';
+import * as React from 'react';
+import { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -30,7 +31,7 @@ import TitleForRecord from '../layout/TitleForRecord';
  * @example
  *
  * // in src/posts.js
- * import React from 'react';
+ * import * as React from "react";
  * import { Edit, SimpleForm, TextInput } from 'react-admin';
  *
  * export const PostEdit = (props) => (
@@ -42,7 +43,7 @@ import TitleForRecord from '../layout/TitleForRecord';
  * );
  *
  * // in src/App.js
- * import React from 'react';
+ * import * as React from "react";
  * import { Admin, Resource } from 'react-admin';
  *
  * import { PostEdit } from './posts';

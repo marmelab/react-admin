@@ -1,4 +1,5 @@
-import React, { createElement, FunctionComponent, ComponentType } from 'react';
+import * as React from 'react';
+import { createElement, FunctionComponent, ComponentType } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import CoreAdminRouter from './CoreAdminRouter';

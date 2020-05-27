@@ -1,5 +1,5 @@
 /* eslint react/jsx-key: off */
-import React from 'react';
+import * as React from 'react';
 import { Edit, SimpleForm, TextField, TextInput, required } from 'react-admin';
 
 const TagEdit = props => (

@@ -1,4 +1,5 @@
-import React, { FunctionComponent, HtmlHTMLAttributes } from 'react';
+import * as React from 'react';
+import { FunctionComponent, HtmlHTMLAttributes } from 'react';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
 import Typography from '@material-ui/core/Typography';

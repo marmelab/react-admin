@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import Inbox from '@material-ui/icons/Inbox';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/styles';

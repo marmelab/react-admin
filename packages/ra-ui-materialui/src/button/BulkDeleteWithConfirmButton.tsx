@@ -1,4 +1,5 @@
-import React, { FC, Fragment, useState, ReactElement } from 'react';
+import * as React from 'react';
+import { FC, Fragment, useState, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ActionDelete from '@material-ui/icons/Delete';
 import { fade } from '@material-ui/core/styles/colorManipulator';

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import assert from 'assert';
 import { render, cleanup, getNodeText } from '@testing-library/react';
 import TextField from './TextField';

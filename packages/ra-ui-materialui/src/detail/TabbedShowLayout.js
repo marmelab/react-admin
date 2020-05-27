@@ -1,4 +1,5 @@
-import React, { Children, cloneElement, isValidElement } from 'react';
+import * as React from 'react';
+import { Children, cloneElement, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import Divider from '@material-ui/core/Divider';
 import { Route } from 'react-router-dom';
@@ -42,7 +43,7 @@ const useStyles = makeStyles(
  *
  * @example
  *     // in src/posts.js
- *     import React from 'react';
+ *     import * as React from "react";
  *     import { Show, TabbedShowLayout, Tab, TextField } from 'react-admin';
  *
  *     export const PostShow = (props) => (
@@ -60,7 +61,7 @@ const useStyles = makeStyles(
  *     );
  *
  *     // in src/App.js
- *     import React from 'react';
+ *     import * as React from "react";
  *     import { Admin, Resource } from 'react-admin';
  *
  *     import { PostShow } from './posts';

@@ -1,4 +1,5 @@
-import React, { FunctionComponent, useCallback } from 'react';
+import * as React from 'react';
+import { FunctionComponent, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
@@ -89,6 +90,7 @@ const BooleanInput: FunctionComponent<
 
 BooleanInput.propTypes = {
     ...InputPropTypes,
+    // @ts-ignore
     options: PropTypes.shape(Switch.propTypes),
     disabled: PropTypes.bool,
 };

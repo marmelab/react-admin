@@ -1,5 +1,5 @@
 import { cleanup, fireEvent, wait, getByText } from '@testing-library/react';
-import React from 'react';
+import * as React from 'react';
 import { renderWithRedux } from 'ra-core';
 
 import SimpleFormIterator from './SimpleFormIterator';

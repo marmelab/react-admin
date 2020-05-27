@@ -1,4 +1,5 @@
-import React, { FC, ComponentType } from 'react';
+import * as React from 'react';
+import { FC, ComponentType } from 'react';
 import Card from '@material-ui/core/Card';
 import { makeStyles } from '@material-ui/core/styles';
 import { SvgIconProps } from '@material-ui/core/SvgIcon';

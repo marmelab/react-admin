@@ -1,6 +1,6 @@
 import expect from 'expect';
 import { cleanup, fireEvent } from '@testing-library/react';
-import React from 'react';
+import * as React from 'react';
 import { renderWithRedux } from 'ra-core';
 
 import FilterForm, { mergeInitialValuesWithDefaultValues } from './FilterForm';

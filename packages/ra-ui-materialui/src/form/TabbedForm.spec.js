@@ -1,5 +1,6 @@
 import { cleanup } from '@testing-library/react';
-import React, { createElement } from 'react';
+import * as React from 'react';
+import { createElement } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { renderWithRedux } from 'ra-core';
 

@@ -1,4 +1,5 @@
-import React, { FunctionComponent, ComponentType, useContext } from 'react';
+import * as React from 'react';
+import { FunctionComponent, ComponentType, useContext } from 'react';
 import { Provider, ReactReduxContext } from 'react-redux';
 import { History } from 'history';
 import { createHashHistory } from 'history';

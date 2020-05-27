@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Datagrid, DateField, TextField } from 'react-admin';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 

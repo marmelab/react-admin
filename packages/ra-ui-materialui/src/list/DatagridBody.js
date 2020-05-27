@@ -1,4 +1,5 @@
-import React, { cloneElement, memo } from 'react';
+import * as React from 'react';
+import { cloneElement, memo } from 'react';
 import PropTypes from 'prop-types';
 import TableBody from '@material-ui/core/TableBody';
 import classnames from 'classnames';

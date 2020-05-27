@@ -1,4 +1,5 @@
-import React, { FC, ReactElement } from 'react';
+import * as React from 'react';
+import { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ContentCreate from '@material-ui/icons/Create';
 import { ButtonProps as MuiButtonProps } from '@material-ui/core/Button';

@@ -1,4 +1,5 @@
-import React, { Fragment, useCallback } from 'react';
+import * as React from 'react';
+import { Fragment, useCallback } from 'react';
 import classnames from 'classnames';
 import { BulkDeleteButton, List } from 'react-admin';
 import { Route, useHistory } from 'react-router-dom';

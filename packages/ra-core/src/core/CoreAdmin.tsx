@@ -1,4 +1,5 @@
-import React, { FunctionComponent, ComponentType } from 'react';
+import * as React from 'react';
+import { FunctionComponent, ComponentType } from 'react';
 
 import CoreAdminContext from './CoreAdminContext';
 import CoreAdminUI from './CoreAdminUI';
@@ -53,7 +54,8 @@ export type ChildrenFunction = () => ComponentType[];
  * // you can't use <CoreAdmin>. But as it delegates to sub components,
  * // it's relatively straightforward to replace it:
  *
- * import React, { useEffect, useState } from 'react';
+ * import * as React from 'react';
+import { useEffect, useState } from 'react';
  * import {
  *     CoreAdminContext,
  *     CoreAdminUI,

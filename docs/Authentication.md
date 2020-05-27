@@ -212,7 +212,7 @@ For all these cases, it's up to you to implement your own `LoginPage` component,
 
 ```jsx
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 import { Admin } from 'react-admin';
 
 import MyLoginPage from './MyLoginPage';
@@ -229,7 +229,8 @@ Use the `useLogin` and `useLogout` hooks in your custom `LoginPage` and `LogoutB
 
 ```jsx
 // in src/MyLoginPage.js
-import React, { useState } from 'react';
+import * as React from 'react';
+import { useState } from 'react';
 import { useLogin, useNotify, Notification } from 'react-admin';
 import { ThemeProvider } from '@material-ui/styles';
 
@@ -258,7 +259,8 @@ const MyLoginPage = ({ theme }) => {
 export default MyLoginPage;
 
 // in src/MyLogoutButton.js
-import React, { forwardRef } from 'react';
+import * as React from 'react';
+import { forwardRef } from 'react';
 import { useLogout } from 'react-admin';
 import MenuItem from '@material-ui/core/MenuItem';
 import ExitIcon from '@material-ui/icons/PowerSettingsNew';
