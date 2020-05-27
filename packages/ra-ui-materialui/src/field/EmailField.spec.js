@@ -47,10 +47,10 @@ describe('<EmailField />', () => {
             <EmailField
                 record={{ email: url }}
                 source="email"
-                className="foo"                
+                className="foo"
             />
         );
-        const link = getByText(url);        
+        const link = getByText(url);
         expect(link.className).toContain('foo');
     });
 
