@@ -21,9 +21,9 @@ export default url => ({
         logout: '.logout',
         bulkActionsToolbar: '[data-test=bulk-actions-toolbar]',
         customBulkActionsButton:
-            '[data-test=bulk-actions-toolbar] button:first-child',
+            '[data-test=bulk-actions-toolbar] button[aria-label="Reset views"]',
         deleteBulkActionsButton:
-            '[data-test=bulk-actions-toolbar] button:nth-child(2)',
+            '[data-test=bulk-actions-toolbar] button[aria-label="Delete"]',
         selectAll: '.select-all',
         selectedItem: '.select-item input:checked',
         selectItem: '.select-item input',
