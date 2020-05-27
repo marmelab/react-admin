@@ -56,7 +56,6 @@ export interface Customer extends Record {
 export type OrderStatus = 'ordered' | 'delivered' | 'cancelled';
 
 export interface Order extends Record {
-    date: string;
     status: OrderStatus;
     basket: BasketItem[];
     date: Date;
@@ -159,6 +158,14 @@ export interface EditComponentProps<
 }
 
 export interface ShowComponentProps<
+    Params extends ResourceMatch = { id: string },
+    C extends StaticContext = StaticContext,
+    S = H.LocationState
+> extends ResourceComponentProps<Params, C, S> {
+    id: string;
+}
+
+export interface CreateComponentProps<
     Params extends ResourceMatch = { id: string },
     C extends StaticContext = StaticContext,
     S = H.LocationState
