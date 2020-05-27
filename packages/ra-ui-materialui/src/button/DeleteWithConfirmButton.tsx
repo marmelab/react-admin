@@ -1,7 +1,6 @@
 import React, {
     Fragment,
-    useState,
-    useCallback,
+    ReactEventHandler,
     FC,
     ReactElement,
     SyntheticEvent,
@@ -14,13 +13,9 @@ import classnames from 'classnames';
 import inflection from 'inflection';
 import {
     useTranslate,
-    useDelete,
-    useRefresh,
-    useNotify,
-    useRedirect,
-    CRUD_DELETE,
     Record,
     RedirectionSideEffect,
+    useDeleteWithConfirmController,
 } from 'ra-core';
 
 import Confirm from '../layout/Confirm';
@@ -38,59 +33,29 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
         onClick,
         record,
         resource,
-        redirect: redirectTo = 'list',
+        redirect = 'list',
         ...rest
     } = props;
-    const [open, setOpen] = useState(false);
     const translate = useTranslate();
-    const notify = useNotify();
-    const redirect = useRedirect();
-    const refresh = useRefresh();
     const classes = useStyles(props);
-
-    const [deleteOne, { loading }] = useDelete(resource, record.id, record, {
-        action: CRUD_DELETE,
-        onSuccess: () => {
-            notify('ra.notification.deleted', 'info', { smart_count: 1 });
-            redirect(redirectTo, basePath);
-            refresh();
-        },
-        onFailure: error => {
-            notify(
-                typeof error === 'string'
-                    ? error
-                    : error.message || 'ra.notification.http_error',
-                'warning'
-            );
-            setOpen(false);
-        },
-        undoable: false,
+    const {
+        open,
+        loading,
+        handleDialogOpen,
+        handleDialogClose,
+        handleDelete,
+    } = useDeleteWithConfirmController({
+        resource,
+        record,
+        redirect,
+        basePath,
+        onClick,
     });
-
-    const handleClick = e => {
-        setOpen(true);
-        e.stopPropagation();
-    };
-
-    const handleDialogClose = e => {
-        setOpen(false);
-        e.stopPropagation();
-    };
-
-    const handleDelete = useCallback(
-        event => {
-            deleteOne();
-            if (typeof onClick === 'function') {
-                onClick(event);
-            }
-        },
-        [deleteOne, onClick]
-    );
 
     return (
         <Fragment>
             <Button
-                onClick={handleClick}
+                onClick={handleDialogOpen}
                 label={label}
                 className={classnames(
                     'ra-delete-button',
@@ -150,7 +115,7 @@ interface Props {
     confirmContent?: string;
     icon?: ReactElement;
     label?: string;
-    onClick?: (e: MouseEvent) => void;
+    onClick?: ReactEventHandler<any>;
     record?: Record;
     redirect?: RedirectionSideEffect;
     resource?: string;

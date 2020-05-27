@@ -137,7 +137,6 @@ interface Props {
     label?: string;
     size?: 'small' | 'medium' | 'large';
     icon?: ReactElement;
-    onClick?: (e: MouseEvent) => void;
     redirect?: RedirectionSideEffect;
     variant?: string;
     // May be injected by Toolbar
