@@ -1,6 +1,5 @@
-import React, { FC, ReactElement } from 'react';
+import React, { FC, memo, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import shouldUpdate from 'recompose/shouldUpdate';
 import ImageEye from '@material-ui/icons/RemoveRedEye';
 import { Link } from 'react-router-dom';
 import { linkToRecord, Record } from 'ra-core';
@@ -45,13 +44,13 @@ ShowButton.propTypes = {
     record: PropTypes.any,
 };
 
-const enhance = shouldUpdate(
+const PureShowButton = memo(
+    ShowButton,
     (props: Props, nextProps: Props) =>
-        (props.record &&
-            nextProps.record &&
-            props.record.id !== nextProps.record.id) ||
-        props.basePath !== nextProps.basePath ||
-        (props.record == null && nextProps.record != null)
+        (props.record && nextProps.record
+            ? props.record.id === nextProps.record.id
+            : props.record == nextProps.record) &&
+        props.basePath === nextProps.basePath
 );
 
-export default enhance(ShowButton);
+export default PureShowButton;

@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import shouldUpdate from 'recompose/shouldUpdate';
 import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -97,10 +96,11 @@ DatagridHeaderCell.propTypes = {
     updateSort: PropTypes.func.isRequired,
 };
 
-export default shouldUpdate(
+export default memo(
+    DatagridHeaderCell,
     (props, nextProps) =>
-        props.updateSort !== nextProps.updateSort ||
-        props.currentSort.sort !== nextProps.currentSort.sort ||
-        props.currentSort.order !== nextProps.currentSort.order ||
-        (nextProps.isSorting && props.sortable !== nextProps.sortable)
-)(DatagridHeaderCell);
+        props.updateSort === nextProps.updateSort &&
+        props.currentSort.sort === nextProps.currentSort.sort &&
+        props.currentSort.order === nextProps.currentSort.order &&
+        !(nextProps.isSorting && props.sortable !== nextProps.sortable)
+);

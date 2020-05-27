@@ -123,35 +123,37 @@ const getDataAndIds = (record: object, source: string, fieldKey: string) => {
  */
 export const ArrayField: FunctionComponent<
     ArrayFieldProps & FieldProps & InjectedFieldProps
-> = ({
-    addLabel,
-    basePath,
-    children,
-    record,
-    sortable,
-    source,
-    fieldKey,
-    ...rest
-}) => {
-    const [ids, setIds] = useState();
-    const [data, setData] = useState();
-
-    useEffect(() => {
-        const { ids, data } = getDataAndIds(record, source, fieldKey);
-        setIds(ids);
-        setData(data);
-    }, [record, source, fieldKey]);
-
-    // @ts-ignore
-    return cloneElement(Children.only(children), {
-        ids,
-        data,
-        loading: false,
+> = memo<ArrayFieldProps & FieldProps & InjectedFieldProps>(
+    ({
+        addLabel,
         basePath,
-        currentSort: {},
-        ...rest,
-    });
-};
+        children,
+        record,
+        sortable,
+        source,
+        fieldKey,
+        ...rest
+    }) => {
+        const [ids, setIds] = useState();
+        const [data, setData] = useState();
+
+        useEffect(() => {
+            const { ids, data } = getDataAndIds(record, source, fieldKey);
+            setIds(ids);
+            setData(data);
+        }, [record, source, fieldKey]);
+
+        // @ts-ignore
+        return cloneElement(Children.only(children), {
+            ids,
+            data,
+            loading: false,
+            basePath,
+            currentSort: {},
+            ...rest,
+        });
+    }
+);
 
 ArrayField.defaultProps = {
     addLabel: true,
@@ -162,4 +164,4 @@ ArrayField.propTypes = {
     fieldKey: PropTypes.string,
 };
 
-export default memo<ArrayFieldProps & FieldProps>(ArrayField);
+export default ArrayField;
