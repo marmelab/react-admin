@@ -467,7 +467,7 @@ import { NumberField }  from 'react-admin';
 | Prop | Required | Type | Default | Description |
 | ---|---|---|---|--- |
 | `locales` | Optional | string | '' | Override the browser locale in the date formatting. Passed as first argument to `Intl.DateTimeFormat()`. |
-| `options` | Optional | Object | - | Date formatting options. Passed as second argument to `Intl.DateTimeFormat()`.  |
+| `options` | Optional | Object | - | Number formatting options. Passed as second argument to `Intl.NumberFormat()`.  |
 
 `<NumberField>` also accepts the [common field props](./Fields.md#common-field-props).
 
