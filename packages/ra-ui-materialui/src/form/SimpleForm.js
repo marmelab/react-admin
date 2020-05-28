@@ -176,6 +176,8 @@ const sanitizeRestProps = ({
     initialize,
     initialized,
     initialValues,
+    modifiedSinceLastSubmit,
+    modifiedsincelastsubmit,
     pristine,
     pure,
     redirect,
@@ -198,7 +200,7 @@ const sanitizeRestProps = ({
     valid,
     validate,
     validating,
-    _reduxForm,
+    __versions,
     ...props
 }) => props;
 
