@@ -97,7 +97,7 @@ const ReferenceArrayInput = ({
     onFocus,
     validate,
     parse,
-    format,
+    format = v => (Array.isArray(v) ? v : []),
     ...props
 }) => {
     if (React.Children.count(children) !== 1) {
