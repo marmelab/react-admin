@@ -1,4 +1,5 @@
-import React, { ComponentType } from 'react';
+import * as React from 'react';
+import { ComponentType } from 'react';
 
 const checkMinimumRequiredProps = (
     displayName: string,

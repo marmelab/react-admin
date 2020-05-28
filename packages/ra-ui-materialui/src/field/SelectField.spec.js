@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import expect from 'expect';
 import { render, cleanup } from '@testing-library/react';
 
@@ -30,6 +30,17 @@ describe('<SelectField />', () => {
             <SelectField {...defaultProps} record={{ foo: 2 }} />
         );
         expect(container.firstChild).toBeNull();
+    });
+
+    it('should render the emptyText when the value for the source is not in the choices', () => {
+        const { queryByText } = render(
+            <SelectField
+                record={{ foo: 2 }}
+                emptyText="Option not found"
+                {...defaultProps}
+            />
+        );
+        expect(queryByText('Option not found')).not.toBeNull();
     });
 
     it('should render the choice', () => {

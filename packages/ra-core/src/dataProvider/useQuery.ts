@@ -69,7 +69,7 @@ import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDecl
 const useQuery = (query: Query, options: QueryOptions = {}): UseQueryValue => {
     const { type, resource, payload } = query;
     const { withDeclarativeSideEffectsSupport, ...rest } = options;
-    const [state, setState] = useSafeSetState({
+    const [state, setState] = useSafeSetState<UseQueryValue>({
         data: undefined,
         error: null,
         total: null,

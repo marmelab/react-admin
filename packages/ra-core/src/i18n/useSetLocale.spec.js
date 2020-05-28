@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import expect from 'expect';
 import { fireEvent, cleanup, wait, act } from '@testing-library/react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';

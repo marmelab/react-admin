@@ -1,4 +1,5 @@
-import React, { Children, cloneElement } from 'react';
+import * as React from 'react';
+import { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -30,7 +31,7 @@ import TitleForRecord from '../layout/TitleForRecord';
  * @example
  *
  * // in src/posts.js
- * import React from 'react';
+ * import * as React from "react";
  * import { Edit, SimpleForm, TextInput } from 'react-admin';
  *
  * export const PostEdit = (props) => (
@@ -42,7 +43,7 @@ import TitleForRecord from '../layout/TitleForRecord';
  * );
  *
  * // in src/App.js
- * import React from 'react';
+ * import * as React from "react";
  * import { Admin, Resource } from 'react-admin';
  *
  * import { PostEdit } from './posts';
@@ -72,31 +73,36 @@ Edit.propTypes = {
     successMessage: PropTypes.string,
 };
 
-export const EditView = ({
-    actions,
-    aside,
-    basePath,
-    children,
-    classes: classesOverride,
-    className,
-    component: Content,
-    defaultTitle,
-    hasList,
-    hasShow,
-    record,
-    redirect,
-    resource,
-    save,
-    saving,
-    title,
-    undoable,
-    version,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
-    if (typeof actions === 'undefined' && hasShow) {
-        actions = <DefaultActions />;
-    }
+export const EditView = props => {
+    const {
+        actions,
+        aside,
+        basePath,
+        children,
+        classes: classesOverride,
+        className,
+        component: Content,
+        defaultTitle,
+        hasList,
+        hasShow,
+        record,
+        redirect,
+        resource,
+        save,
+        saving,
+        title,
+        undoable,
+        version,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
+    const finalActions =
+        typeof actions === 'undefined' && hasShow ? (
+            <DefaultActions />
+        ) : (
+            actions
+        );
+
     if (!children) {
         return null;
     }
@@ -110,19 +116,19 @@ export const EditView = ({
                 record={record}
                 defaultTitle={defaultTitle}
             />
-            {actions &&
-                cloneElement(actions, {
+            {finalActions &&
+                cloneElement(finalActions, {
                     basePath,
                     data: record,
                     hasShow,
                     hasList,
                     resource,
                     //  Ensure we don't override any user provided props
-                    ...actions.props,
+                    ...finalActions.props,
                 })}
             <div
                 className={classnames(classes.main, {
-                    [classes.noActions]: !actions,
+                    [classes.noActions]: !finalActions,
                 })}
             >
                 <Content className={classes.card}>

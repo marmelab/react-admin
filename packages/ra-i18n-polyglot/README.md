@@ -14,8 +14,8 @@ npm install --save ra-i18n-polyglot
 
 Wrap the function exported by this package around a function returning translation messages based on a locale to produce a valid `i18nProvider`.
 
-```diff
-import React from 'react';
+```jsx
+import * as React from "react";
 import { Admin, Resource } from 'react-admin';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
@@ -61,6 +61,33 @@ The `message` returned by the function argument should be a dictionary where the
 All core translations are in the `ra` namespace, in order to prevent collisions with your own custom translations. The root key used at runtime is determined by the value of the `locale` prop.
 
 The default messages are available [here](https://github.com/marmelab/react-admin/blob/master/packages/ra-language-english/index.js).
+
+## Asynchronous Locale Change
+
+The function passed as parameter of `polyglotI18nProvider` can return a *Promise* for messages instead of a messages object. This lets you lazy load messages upon language change.
+
+Note that the messages for the default locale (used by react-admin for the initial render) must be returned in a synchronous way. 
+
+```jsx
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
+
+const asyncMessages = {
+    fr: () => import('ra-language-french').then(messages => messages.default),
+    it: () => import('ra-language-italian').then(messages => messages.default),
+};
+
+const messagesResolver = locale => {
+    if (locale === 'en') {
+        // initial call, must return synchronously
+        return englishMessages;
+    }
+    // change of locale after initial call returns a promise
+    return asyncMessages[params.locale]();
+}
+
+const i18nProvider = polyglotI18nProvider(messagesResolver);
+```
 
 ## Using Specific Polyglot Features
 

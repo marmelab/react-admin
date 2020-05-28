@@ -1,8 +1,9 @@
-import React from 'react';
+import * as React from 'react';
 import {
     Filter,
     List,
     NumberInput,
+    Pagination,
     ReferenceInput,
     SearchInput,
     SelectInput,
@@ -51,6 +52,7 @@ const ProductList = props => (
         {...props}
         filters={<ProductFilter />}
         perPage={20}
+        pagination={<Pagination rowsPerPageOptions={[10, 20, 40]} />}
         sort={{ field: 'id', order: 'ASC' }}
     >
         <GridList />

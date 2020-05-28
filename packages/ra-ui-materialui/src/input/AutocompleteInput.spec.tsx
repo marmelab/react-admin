@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import {
     render,
     cleanup,
@@ -12,6 +12,17 @@ import { Form } from 'react-final-form';
 import { TestTranslationProvider } from 'ra-core';
 
 describe('<AutocompleteInput />', () => {
+    //Fix document.createRange is not a function error on fireEvent usage (Fixed in jsdom v16.0.0)
+    //reported by https://github.com/mui-org/material-ui/issues/15726#issuecomment-493124813
+    global.document.createRange = () => ({
+        setStart: () => {},
+        setEnd: () => {},
+        commonAncestorContainer: {
+            nodeName: 'BODY',
+            ownerDocument: document,
+        },
+    });
+
     const defaultProps = {
         source: 'role',
         resource: 'users',
@@ -32,6 +43,21 @@ describe('<AutocompleteInput />', () => {
             />
         );
         expect(getByRole('combobox')).not.toBeNull();
+    });
+
+    it('should set AutocompleteInput value to an empty string when the selected item is null', () => {
+        const { queryByDisplayValue } = render(
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <AutocompleteInput
+                        {...defaultProps}
+                        choices={[{ id: 2, name: 'foo' }]}
+                    />
+                )}
+            />
+        );
+        expect(queryByDisplayValue('')).not.toBeNull();
     });
 
     it('should use the input parameter value as the initial state and input searchText', () => {
@@ -408,7 +434,7 @@ describe('<AutocompleteInput />', () => {
 
         it('should allow customized rendering of suggesting item', () => {
             const SuggestionItem = ({ record }: { record?: any }) => (
-                <div aria-label={record.name} />
+                <div aria-label={record && record.name} />
             );
 
             const { getByLabelText, queryByLabelText } = render(
@@ -418,8 +444,8 @@ describe('<AutocompleteInput />', () => {
                         <AutocompleteInput
                             {...defaultProps}
                             optionText={<SuggestionItem />}
-                            inputText={record => record.name}
-                            matchSuggestion={(filter, choice) => true}
+                            inputText={record => record && record.name}
+                            matchSuggestion={() => true}
                             choices={[
                                 { id: 1, name: 'bar' },
                                 { id: 2, name: 'foo' },
@@ -571,5 +597,23 @@ describe('<AutocompleteInput />', () => {
         fireEvent.focus(input);
 
         expect(getByLabelText('My Sugggestions Container')).not.toBeNull();
+    });
+
+    describe('Fix issue #4660', () => {
+        it('should accept 0 as an input value', () => {
+            const { queryByDisplayValue } = render(
+                <Form
+                    onSubmit={jest.fn()}
+                    initialValues={{ role: 0 }}
+                    render={() => (
+                        <AutocompleteInput
+                            {...defaultProps}
+                            choices={[{ id: 0, name: 'foo' }]}
+                        />
+                    )}
+                />
+            );
+            expect(queryByDisplayValue('foo')).not.toBeNull();
+        });
     });
 });

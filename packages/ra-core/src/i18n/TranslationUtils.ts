@@ -12,7 +12,7 @@ interface AllNavigatorLanguage extends NavigatorLanguage {
  * Use it to determine the <Admin> locale at runtime.
  *
  * @example
- *     import React from 'react';
+ *     import * as React from "react";
  *     import { Admin, Resource, resolveBrowserLocale } from 'react-admin';
  *     import englishMessages from 'ra-language-english';
  *     import frenchMessages from 'ra-language-french';
@@ -26,7 +26,7 @@ interface AllNavigatorLanguage extends NavigatorLanguage {
  *         </Admin>
  *     );
  *
- * @param {String} defaultLocale Defaults to 'en'
+ * @param {string} defaultLocale Defaults to 'en'
  */
 export const resolveBrowserLocale = (defaultLocale = DEFAULT_LOCALE) => {
     // from http://blog.ksol.fr/user-locale-detection-browser-javascript/
@@ -47,7 +47,7 @@ export const resolveBrowserLocale = (defaultLocale = DEFAULT_LOCALE) => {
  * Use it to merge translations from addons with the main react-admin translations.
  *
  * @example
- *     import React from 'react';
+ *     import * as React from "react";
  *     import { Admin, Resource, mergeTranslations } from 'react-admin';
  *     import englishMessages from 'ra-language-english';
  *     import englishTreeMessages from 'ra-tree-language-english';

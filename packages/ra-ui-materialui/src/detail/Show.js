@@ -1,4 +1,5 @@
-import React, { cloneElement, Children } from 'react';
+import * as React from 'react';
+import { cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import { makeStyles } from '@material-ui/core/styles';
@@ -27,7 +28,7 @@ import TitleForRecord from '../layout/TitleForRecord';
  * @example
  *
  * // in src/posts.js
- * import React from 'react';
+ * import * as React from "react";
  * import { Show, SimpleShowLayout, TextField } from 'react-admin';
  *
  * export const PostShow = (props) => (
@@ -39,7 +40,7 @@ import TitleForRecord from '../layout/TitleForRecord';
  * );
  *
  * // in src/App.js
- * import React from 'react';
+ * import * as React from "react";
  * import { Admin, Resource } from 'react-admin';
  *
  * import { PostShow } from './posts';
@@ -68,27 +69,32 @@ Show.propTypes = {
     title: PropTypes.node,
 };
 
-export const ShowView = ({
-    actions,
-    aside,
-    basePath,
-    children,
-    classes: classesOverride,
-    className,
-    component: Content,
-    defaultTitle,
-    hasEdit,
-    hasList,
-    record,
-    resource,
-    title,
-    version,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
-    if (typeof actions === 'undefined' && hasEdit) {
-        actions = <DefaultActions />;
-    }
+export const ShowView = props => {
+    const {
+        actions,
+        aside,
+        basePath,
+        children,
+        classes: classesOverride,
+        className,
+        component: Content,
+        defaultTitle,
+        hasEdit,
+        hasList,
+        record,
+        resource,
+        title,
+        version,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
+    const finalActions =
+        typeof actions === 'undefined' && hasEdit ? (
+            <DefaultActions />
+        ) : (
+            actions
+        );
+
     if (!children) {
         return null;
     }
@@ -102,19 +108,19 @@ export const ShowView = ({
                 record={record}
                 defaultTitle={defaultTitle}
             />
-            {actions &&
-                cloneElement(actions, {
+            {finalActions &&
+                cloneElement(finalActions, {
                     basePath,
                     data: record,
                     hasList,
                     hasEdit,
                     resource,
                     //  Ensure we don't override any user provided props
-                    ...actions.props,
+                    ...finalActions.props,
                 })}
             <div
                 className={classnames(classes.main, {
-                    [classes.noActions]: !actions,
+                    [classes.noActions]: !finalActions,
                 })}
             >
                 <Content className={classes.card}>

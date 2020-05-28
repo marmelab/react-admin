@@ -6,6 +6,9 @@ export default url => ({
             if (type === 'rich-text-input') {
                 return `.ra-input-${name} .ql-editor`;
             }
+            if (type === 'reference-array-input') {
+                return `.ra-input div[role=combobox]`;
+            }
             return `.edit-page [name='${name}']`;
         },
         inputs: `.ra-input`,
@@ -15,6 +18,8 @@ export default url => ({
         cloneButton: '.button-clone',
         tab: index => `.form-tab:nth-of-type(${index})`,
         title: '#react-admin-title',
+        userMenu: 'button[title="Profile"]',
+        logout: '.logout',
     },
 
     navigate() {
@@ -35,8 +40,8 @@ export default url => ({
         }
     },
 
-    clickInput(name) {
-        cy.get(this.elements.input(name)).click();
+    clickInput(name, type = 'input') {
+        cy.get(this.elements.input(name, type)).click();
     },
 
     gotoTab(index) {
@@ -56,5 +61,10 @@ export default url => ({
 
     clone() {
         cy.get(this.elements.cloneButton).click();
+    },
+
+    logout() {
+        cy.get(this.elements.userMenu).click();
+        cy.get(this.elements.logout).click();
     },
 });

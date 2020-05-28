@@ -1,14 +1,13 @@
 import { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { Filter } from '../useFilterState';
 import { crudGetMatchingAccumulate } from '../../actions/accumulateActions';
 import {
     getPossibleReferences,
     getPossibleReferenceValues,
     getReferenceResource,
 } from '../../reducer';
-import { Pagination, Sort, Record } from '../../types';
+import { Pagination, Sort, Record, Filter } from '../../types';
 import { useDeepCompareEffect } from '../../util/hooks';
 
 interface UseMatchingReferencesOption {
@@ -107,6 +106,10 @@ const useGetMatchingReferenceSelector = ({
             const referenceResource = getReferenceResource(state, {
                 reference,
             });
+            if (!referenceResource) {
+                throw new Error(`Cannot fetch a reference to "${reference}" (unknown resource).
+You must add <Resource name="${reference}" /> as child of <Admin> to use "${reference}" in a reference`);
+            }
             const possibleValues = getPossibleReferenceValues(state, {
                 referenceSource,
                 resource,

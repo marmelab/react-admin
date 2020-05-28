@@ -1,4 +1,5 @@
-import React, { FunctionComponent, useCallback } from 'react';
+import * as React from 'react';
+import { FunctionComponent, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
@@ -22,6 +23,7 @@ const BooleanInput: FunctionComponent<
     onChange,
     onFocus,
     options,
+    disabled,
     parse,
     resource,
     source,
@@ -63,6 +65,7 @@ const BooleanInput: FunctionComponent<
                         onChange={handleChange}
                         {...inputProps}
                         {...options}
+                        disabled={disabled}
                     />
                 }
                 label={
@@ -87,7 +90,9 @@ const BooleanInput: FunctionComponent<
 
 BooleanInput.propTypes = {
     ...InputPropTypes,
+    // @ts-ignore
     options: PropTypes.shape(Switch.propTypes),
+    disabled: PropTypes.bool,
 };
 
 BooleanInput.defaultProps = {

@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import * as React from 'react';
+import { FC } from 'react';
 import { useTranslate, SelectArrayInput } from 'react-admin';
 import { InputProps } from 'ra-core';
 

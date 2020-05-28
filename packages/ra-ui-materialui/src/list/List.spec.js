@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import expect from 'expect';
 import { cleanup } from '@testing-library/react';
 import { renderWithRedux } from 'ra-core';
@@ -91,6 +91,7 @@ describe('<List />', () => {
                         params: {},
                         selectedIds: [],
                         total: 0,
+                        cachedRequests: {},
                     },
                 },
             },

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import {
     Create,
     DateInput,
@@ -7,6 +7,7 @@ import {
     useTranslate,
     PasswordInput,
     required,
+    email,
 } from 'react-admin';
 import { Typography, Box } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -71,9 +72,9 @@ const VisitorCreate = (props: any) => {
                     type="email"
                     source="email"
                     validation={{ email: true }}
-                    fullWidth={true}
+                    fullWidth
                     formClassName={classes.email}
-                    validate={requiredValidate}
+                    validate={[required(), email()]}
                 />
                 <DateInput source="birthday" />
                 <Separator />
@@ -81,11 +82,20 @@ const VisitorCreate = (props: any) => {
                 <TextInput
                     source="address"
                     formClassName={classes.address}
-                    multiline={true}
-                    fullWidth={true}
+                    multiline
+                    fullWidth
+                    helperText={false}
                 />
-                <TextInput source="zipcode" formClassName={classes.zipcode} />
-                <TextInput source="city" formClassName={classes.city} />
+                <TextInput
+                    source="zipcode"
+                    formClassName={classes.zipcode}
+                    helperText={false}
+                />
+                <TextInput
+                    source="city"
+                    formClassName={classes.city}
+                    helperText={false}
+                />
                 <Separator />
                 <SectionTitle label="resources.customers.fieldGroups.password" />
                 <PasswordInput

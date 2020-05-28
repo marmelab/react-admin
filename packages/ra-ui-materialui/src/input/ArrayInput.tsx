@@ -1,4 +1,5 @@
-import React, { cloneElement, Children } from 'react';
+import * as React from 'react';
+import { cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
 import { isRequired, FieldTitle, composeValidators } from 'ra-core';
 import { useFieldArray } from 'react-final-form-arrays';

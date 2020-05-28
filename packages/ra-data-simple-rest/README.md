@@ -14,17 +14,17 @@ npm install --save ra-data-simple-rest
 
 This Data Provider fits REST APIs using simple GET parameters for filters and sorting. This is the dialect used for instance in [FakeRest](https://github.com/marmelab/FakeRest).
 
-| Method             | API calls
-|--------------------|----------------------------------------------------------------
-| `getList`          | `GET http://my.api.url/posts?sort=['title','ASC']&range=[0, 24]&filter={title:'bar'}`
-| `getOne`           | `GET http://my.api.url/posts/123`
-| `getMany`          | `GET http://my.api.url/posts?filter={id:[123,456,789]}`
-| `getManyReference` | `GET http://my.api.url/posts?filter={author_id:345}`
-| `create`           | `POST http://my.api.url/posts/123`
-| `update`           | `PUT http://my.api.url/posts/123`
-| `updateMany`       | Multiple calls to `PUT http://my.api.url/posts/123`
-| `delete`           | `DELETE http://my.api.url/posts/123`
-| `deteleMany`       | Multiple calls to `DELETE http://my.api.url/posts/123`
+| Method             | API calls                                                                               |
+| ------------------ | --------------------------------------------------------------------------------------- |
+| `getList`          | `GET http://my.api.url/posts?sort=["title","ASC"]&range=[0, 24]&filter={"title":"bar"}` |
+| `getOne`           | `GET http://my.api.url/posts/123`                                                       |
+| `getMany`          | `GET http://my.api.url/posts?filter={"id":[123,456,789]}`                               |
+| `getManyReference` | `GET http://my.api.url/posts?filter={"author_id":345}`                                  |
+| `create`           | `POST http://my.api.url/posts/123`                                                      |
+| `update`           | `PUT http://my.api.url/posts/123`                                                       |
+| `updateMany`       | Multiple calls to `PUT http://my.api.url/posts/123`                                     |
+| `delete`           | `DELETE http://my.api.url/posts/123`                                                    |
+| `deteleMany`       | Multiple calls to `DELETE http://my.api.url/posts/123`                                  |
 
 **Note**: The simple REST data provider expects the API to include a `Content-Range` header in the response to `getList` calls. The value must be the total number of resources in the collection. This allows react-admin to know how many pages of resources there are in total, and build the pagination controls.
 
@@ -42,7 +42,7 @@ Access-Control-Expose-Headers: Content-Range
 
 ```jsx
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 import { Admin, Resource } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
 

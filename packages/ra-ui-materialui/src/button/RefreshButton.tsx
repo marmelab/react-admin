@@ -1,4 +1,5 @@
-import React, { FC, ReactElement, MouseEvent, useCallback } from 'react';
+import * as React from 'react';
+import { FC, ReactElement, MouseEvent, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import NavigationRefresh from '@material-ui/icons/Refresh';

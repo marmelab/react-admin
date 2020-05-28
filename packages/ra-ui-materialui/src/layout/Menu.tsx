@@ -1,4 +1,5 @@
-import React, { FC, ReactElement } from 'react';
+import * as React from 'react';
+import { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { shallowEqual, useSelector } from 'react-redux';
 // @ts-ignore
@@ -34,17 +35,18 @@ const translatedResourceName = (resource: any, translate: Translate) =>
                 : inflection.humanize(inflection.pluralize(resource.name)),
     });
 
-const Menu: FC<MenuProps> = ({
-    classes: classesOverride,
-    className,
-    dense,
-    hasDashboard,
-    onMenuClick,
-    logout,
-    ...rest
-}) => {
+const Menu: FC<MenuProps> = props => {
+    const {
+        classes: classesOverride,
+        className,
+        dense,
+        hasDashboard,
+        onMenuClick,
+        logout,
+        ...rest
+    } = props;
     const translate = useTranslate();
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useStyles(props);
     const isXSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('xs')
     );

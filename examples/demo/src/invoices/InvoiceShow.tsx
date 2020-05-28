@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import * as React from 'react';
+import { FC } from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
@@ -41,7 +42,7 @@ const InvoiceShow = (props: any) => {
                     </Grid>
                 </Grid>
                 <Grid container spacing={2}>
-                    <Grid item xs={12} alignContent="flex-end">
+                    <Grid item xs={12} container alignContent="flex-end">
                         <ReferenceField
                             resource="invoices"
                             reference="customers"

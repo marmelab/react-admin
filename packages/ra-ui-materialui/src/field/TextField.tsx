@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import * as React from 'react';
+import { FunctionComponent } from 'react';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
@@ -8,8 +9,9 @@ import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 const TextField: FunctionComponent<
     FieldProps & InjectedFieldProps & TypographyProps
-> = ({ className, source, record = {}, ...rest }) => {
+> = ({ className, source, record = {}, emptyText, ...rest }) => {
     const value = get(record, source);
+
     return (
         <Typography
             component="span"
@@ -17,7 +19,9 @@ const TextField: FunctionComponent<
             className={className}
             {...sanitizeRestProps(rest)}
         >
-            {value && typeof value !== 'string' ? JSON.stringify(value) : value}
+            {value != null && typeof value !== 'string'
+                ? JSON.stringify(value)
+                : value || emptyText}
         </Typography>
     );
 };

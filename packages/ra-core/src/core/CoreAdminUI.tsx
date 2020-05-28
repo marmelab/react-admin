@@ -1,4 +1,5 @@
-import React, { createElement, FunctionComponent, ComponentType } from 'react';
+import * as React from 'react';
+import { createElement, FunctionComponent, ComponentType } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import CoreAdminRouter from './CoreAdminRouter';
@@ -19,7 +20,7 @@ const DefaultLayout: FunctionComponent<LayoutProps> = ({ children }) => (
     <>{children}</>
 );
 
-export interface CoreAdminUIProps {
+export interface AdminUIProps {
     catchAll?: CatchAllComponent;
     children?: AdminChildren;
     customRoutes?: CustomRoutes;
@@ -33,7 +34,10 @@ export interface CoreAdminUIProps {
     title?: TitleComponent;
 }
 
-const CoreAdminUI: FunctionComponent<CoreAdminUIProps> = ({
+// for BC
+export type CoreAdminUIProps = AdminUIProps;
+
+const CoreAdminUI: FunctionComponent<AdminUIProps> = ({
     catchAll = Noop,
     children,
     customRoutes = [],

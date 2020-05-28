@@ -42,6 +42,8 @@ export interface Customer extends Record {
 
 export interface Order extends Record {
     basket: BasketItem[];
+    date: Date;
+    total: number;
 }
 
 export interface BasketItem {
@@ -57,4 +59,8 @@ export interface FieldProps<T extends Record = Record> {
     label?: string;
     record?: T;
     source?: string;
+}
+
+export interface Review extends Record {
+    customer_id: string;
 }

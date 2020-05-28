@@ -87,7 +87,7 @@ Then, use the `<Admin>` component as you would in a standalone application. Here
 
 ```jsx
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 import { Provider } from 'react-redux';
 import { createHashHistory } from 'history';
 import { Admin, Resource } from 'react-admin';
@@ -149,7 +149,7 @@ Here is the main code for bootstrapping a barebones react-admin application with
 
 ```diff
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 import { Provider } from 'react-redux';
 import { createHashHistory } from 'history';
 +import { ConnectedRouter } from 'connected-react-router';
@@ -221,16 +221,16 @@ const App = () => (
 +               <ConnectedRouter history={history}>
 +                   <Switch>
 +                       <Route exact path="/" component={Dashboard} />
-+                       <Route exact path="/posts" hasCreate render={(routeProps) => <PostList resource="posts" basePath={routeProps.match.url} {...routeProps} />} />
++                       <Route exact path="/posts" render={(routeProps) => <PostList hasCreate resource="posts" basePath={routeProps.match.url} {...routeProps} />} />
 +                       <Route exact path="/posts/create" render={(routeProps) => <PostCreate resource="posts" basePath={routeProps.match.url} {...routeProps} />} />
-+                       <Route exact path="/posts/:id" hasShow render={(routeProps) => <PostEdit resource="posts" basePath={routeProps.match.url} {...routeProps} />} />
-+                       <Route exact path="/posts/:id/show" hasEdit render={(routeProps) => <PostShow resource="posts" basePath={routeProps.match.url} {...routeProps} />} />
-+                       <Route exact path="/comments" hasCreate render={(routeProps) => <CommentList resource="comments" basePath={routeProps.match.url} {...routeProps} />} />
++                       <Route exact path="/posts/:id" render={(routeProps) => <PostEdit hasShow resource="posts" basePath={routeProps.match.url} id={decodeURIComponent((routeProps.match).params.id)} {...routeProps} />} />
++                       <Route exact path="/posts/:id/show" render={(routeProps) => <PostShow hasEdit resource="posts" basePath={routeProps.match.url} id={decodeURIComponent((routeProps.match).params.id)} {...routeProps} />} />
++                       <Route exact path="/comments" render={(routeProps) => <CommentList hasCreate resource="comments" basePath={routeProps.match.url} {...routeProps} />} />
 +                       <Route exact path="/comments/create" render={(routeProps) => <CommentCreate resource="comments" basePath={routeProps.match.url} {...routeProps} />} />
-+                       <Route exact path="/comments/:id" render={(routeProps) => <CommentEdit resource="comments" basePath={routeProps.match.url} {...routeProps} />} />
-+                       <Route exact path="/users" hasCreate render={(routeProps) => <UsersList resource="users" basePath={routeProps.match.url} {...routeProps} />} />
++                       <Route exact path="/comments/:id" render={(routeProps) => <CommentEdit resource="comments" basePath={routeProps.match.url} id={decodeURIComponent((routeProps.match).params.id)} {...routeProps} />} />
++                       <Route exact path="/users" render={(routeProps) => <UsersList hasCreate resource="users" basePath={routeProps.match.url} {...routeProps} />} />
 +                       <Route exact path="/users/create" render={(routeProps) => <UsersCreate resource="users" basePath={routeProps.match.url} {...routeProps} />} />
-+                       <Route exact path="/users/:id" render={(routeProps) => <UsersEdit resource="users" basePath={routeProps.match.url} {...routeProps} />} />
++                       <Route exact path="/users/:id" render={(routeProps) => <UsersEdit resource="users" basePath={routeProps.match.url} id={decodeURIComponent((routeProps.match).params.id)} {...routeProps} />} />
 +                   </Switch>
 +               </ConnectedRouter>
 +           </ThemeProvider>

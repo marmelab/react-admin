@@ -27,13 +27,12 @@ This example assumes a `Post` type is defined in the graphcool schema.
 
 ```js
 // in App.js
-import React, { Component } from 'react';
+import * as React from 'react';
+import { Component } from 'react';
 import buildGraphcoolProvider from 'ra-data-graphcool';
 import { Admin, Resource, Delete } from 'react-admin';
 
 import { PostCreate, PostEdit, PostList } from './posts';
-
-const client = new ApolloClient();
 
 class App extends Component {
     constructor() {

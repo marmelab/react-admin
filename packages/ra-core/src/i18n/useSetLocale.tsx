@@ -11,7 +11,7 @@ import { useNotify } from '../sideEffect';
  *
  * @example
  *
- * import { useLocale } from 'react-admin';
+ * import { useSetLocale } from 'react-admin';
  *
  * const availableLanguages = {
  *     en: 'English',

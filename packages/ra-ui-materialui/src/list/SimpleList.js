@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import List from '@material-ui/core/List';
@@ -14,13 +14,19 @@ import SimpleListLoading from './SimpleListLoading';
 
 const useStyles = makeStyles(
     {
+        tertiary: { float: 'right', opacity: 0.541176 },
+    },
+    { name: 'RaSimpleList' }
+);
+
+const useLinkOrNotStyles = makeStyles(
+    {
         link: {
             textDecoration: 'none',
             color: 'inherit',
         },
-        tertiary: { float: 'right', opacity: 0.541176 },
     },
-    { name: 'RaSimpleList' }
+    { name: 'RaLinkOrNot' }
 );
 
 const LinkOrNot = ({
@@ -29,13 +35,17 @@ const LinkOrNot = ({
     basePath,
     id,
     children,
+    record,
 }) => {
-    const classes = useStyles({ classes: classesOverride });
-    return linkType === 'edit' || linkType === true ? (
+    const classes = useLinkOrNotStyles({ classes: classesOverride });
+    const link =
+        typeof linkType === 'function' ? linkType(record, id) : linkType;
+
+    return link === 'edit' || link === true ? (
         <Link to={linkToRecord(basePath, id)} className={classes.link}>
             {children}
         </Link>
-    ) : linkType === 'show' ? (
+    ) : link === 'show' ? (
         <Link
             to={`${linkToRecord(basePath, id)}/show`}
             className={classes.link}
@@ -47,29 +57,30 @@ const LinkOrNot = ({
     );
 };
 
-const SimpleList = ({
-    basePath,
-    className,
-    classes: classesOverride,
-    data,
-    hasBulkActions,
-    ids,
-    loaded,
-    loading,
-    leftAvatar,
-    leftIcon,
-    linkType,
-    onToggleItem,
-    primaryText,
-    rightAvatar,
-    rightIcon,
-    secondaryText,
-    selectedIds,
-    tertiaryText,
-    total,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+const SimpleList = props => {
+    const {
+        basePath,
+        className,
+        classes: classesOverride,
+        data,
+        hasBulkActions,
+        ids,
+        loaded,
+        loading,
+        leftAvatar,
+        leftIcon,
+        linkType,
+        onToggleItem,
+        primaryText,
+        rightAvatar,
+        rightIcon,
+        secondaryText,
+        selectedIds,
+        tertiaryText,
+        total,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
 
     if (loaded === false) {
         return (
@@ -93,6 +104,7 @@ const SimpleList = ({
                         basePath={basePath}
                         id={id}
                         key={id}
+                        record={data[id]}
                     >
                         <ListItem button={!!linkType}>
                             {leftIcon && (
@@ -151,8 +163,11 @@ SimpleList.propTypes = {
     ids: PropTypes.array,
     leftAvatar: PropTypes.func,
     leftIcon: PropTypes.func,
-    linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
-        .isRequired,
+    linkType: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func,
+    ]).isRequired,
     onToggleItem: PropTypes.func,
     primaryText: PropTypes.func,
     rightAvatar: PropTypes.func,

@@ -19,9 +19,13 @@ describe('useMatchingReferences', () => {
     afterEach(cleanup);
 
     it('should fetch matchingReferences only on mount', () => {
-        const { dispatch } = renderHook(() => {
-            return useMatchingReferences(defaultProps);
-        });
+        const { dispatch } = renderHook(
+            () => {
+                return useMatchingReferences(defaultProps);
+            },
+            true,
+            { admin: { resources: { posts: {} } } }
+        );
 
         expect(dispatch).toBeCalledTimes(1);
         expect(dispatch.mock.calls[0][0].type).toBe(
@@ -47,9 +51,13 @@ describe('useMatchingReferences', () => {
     });
 
     it('should not fetch matchingReferences on subsequent rerender', () => {
-        const { dispatch, rerender } = renderHook(() => {
-            return useMatchingReferences(defaultProps);
-        });
+        const { dispatch, rerender } = renderHook(
+            () => {
+                return useMatchingReferences(defaultProps);
+            },
+            true,
+            { admin: { resources: { posts: {} } } }
+        );
 
         rerender(() => {
             return useMatchingReferences({
@@ -69,9 +77,13 @@ describe('useMatchingReferences', () => {
     });
 
     it('should fetch matchingReferences when the filter prop changes', () => {
-        const { dispatch, rerender } = renderHook(() => {
-            return useMatchingReferences(defaultProps);
-        });
+        const { dispatch, rerender } = renderHook(
+            () => {
+                return useMatchingReferences(defaultProps);
+            },
+            true,
+            { admin: { resources: { posts: {} } } }
+        );
 
         expect(dispatch).toBeCalledTimes(1);
         expect(dispatch.mock.calls[0][0].type).toBe(
@@ -125,9 +137,13 @@ describe('useMatchingReferences', () => {
     });
 
     it('should refetch matchingReferences when the reference prop changes', () => {
-        const { dispatch, rerender } = renderHook(() => {
-            return useMatchingReferences(defaultProps);
-        });
+        const { dispatch, rerender } = renderHook(
+            () => {
+                return useMatchingReferences(defaultProps);
+            },
+            true,
+            { admin: { resources: { posts: {}, blog_posts: {} } } }
+        );
 
         expect(dispatch).toBeCalledTimes(1);
         expect(dispatch.mock.calls[0][0].type).toBe(
@@ -181,9 +197,13 @@ describe('useMatchingReferences', () => {
     });
 
     it('should refetch matchingReferences when the resource prop changes', () => {
-        const { dispatch, rerender } = renderHook(() => {
-            return useMatchingReferences(defaultProps);
-        });
+        const { dispatch, rerender } = renderHook(
+            () => {
+                return useMatchingReferences(defaultProps);
+            },
+            true,
+            { admin: { resources: { posts: {} } } }
+        );
 
         expect(dispatch).toBeCalledTimes(1);
         expect(dispatch.mock.calls[0][0].type).toBe(
@@ -234,9 +254,13 @@ describe('useMatchingReferences', () => {
     });
 
     it('should refetch matchingReferences when the source prop changes', () => {
-        const { dispatch, rerender } = renderHook(() => {
-            return useMatchingReferences(defaultProps);
-        });
+        const { dispatch, rerender } = renderHook(
+            () => {
+                return useMatchingReferences(defaultProps);
+            },
+            true,
+            { admin: { resources: { posts: {} } } }
+        );
 
         expect(dispatch).toBeCalledTimes(1);
         expect(dispatch.mock.calls[0][0].type).toBe(
@@ -290,9 +314,13 @@ describe('useMatchingReferences', () => {
     });
 
     it('should refetch matchingReferences when the pagination.page prop changes', () => {
-        const { dispatch, rerender } = renderHook(() => {
-            return useMatchingReferences(defaultProps);
-        });
+        const { dispatch, rerender } = renderHook(
+            () => {
+                return useMatchingReferences(defaultProps);
+            },
+            true,
+            { admin: { resources: { posts: {} } } }
+        );
 
         expect(dispatch).toBeCalledTimes(1);
         expect(dispatch.mock.calls[0][0].type).toBe(
@@ -349,9 +377,13 @@ describe('useMatchingReferences', () => {
     });
 
     it('should refetch matchingReferences when the pagination.pagination prop changes', () => {
-        const { dispatch, rerender } = renderHook(() => {
-            return useMatchingReferences(defaultProps);
-        });
+        const { dispatch, rerender } = renderHook(
+            () => {
+                return useMatchingReferences(defaultProps);
+            },
+            true,
+            { admin: { resources: { posts: {} } } }
+        );
 
         expect(dispatch).toBeCalledTimes(1);
         expect(dispatch.mock.calls[0][0].type).toBe(
@@ -408,9 +440,13 @@ describe('useMatchingReferences', () => {
     });
 
     it('should refetch matchingReferences when the sort.field prop changes', () => {
-        const { dispatch, rerender } = renderHook(() => {
-            return useMatchingReferences(defaultProps);
-        });
+        const { dispatch, rerender } = renderHook(
+            () => {
+                return useMatchingReferences(defaultProps);
+            },
+            true,
+            { admin: { resources: { posts: {} } } }
+        );
 
         expect(dispatch).toBeCalledTimes(1);
         expect(dispatch.mock.calls[0][0].type).toBe(
@@ -467,9 +503,13 @@ describe('useMatchingReferences', () => {
     });
 
     it('should refetch matchingReferences when the sort.order prop changes', () => {
-        const { dispatch, rerender } = renderHook(() => {
-            return useMatchingReferences(defaultProps);
-        });
+        const { dispatch, rerender } = renderHook(
+            () => {
+                return useMatchingReferences(defaultProps);
+            },
+            true,
+            { admin: { resources: { posts: {} } } }
+        );
 
         expect(dispatch).toBeCalledTimes(1);
         expect(dispatch.mock.calls[0][0].type).toBe(

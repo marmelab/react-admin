@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import expect from 'expect';
 import { BooleanField } from './BooleanField';
 import { render, cleanup } from '@testing-library/react';
@@ -58,6 +58,22 @@ describe('<BooleanField />', () => {
         expect(queryByTitle('ra.boolean.true')).toBeNull();
         expect(queryByTitle('ra.boolean.false')).toBeNull();
     });
+
+    it.each([null, undefined])(
+        'should display the emptyText when is present and the value is %s',
+        published => {
+            const { queryByTitle, queryByText } = render(
+                <BooleanField
+                    {...defaultProps}
+                    record={{ published }}
+                    emptyText="NA"
+                />
+            );
+            expect(queryByTitle('ra.boolean.true')).toBeNull();
+            expect(queryByTitle('ra.boolean.false')).toBeNull();
+            expect(queryByText('NA')).not.toBeNull();
+        }
+    );
 
     it('should use custom className', () => {
         const { container } = render(

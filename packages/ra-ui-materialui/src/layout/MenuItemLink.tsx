@@ -32,61 +32,57 @@ const useStyles = makeStyles(
     { name: 'RaMenuItemLink' }
 );
 
-const MenuItemLink: FC<MenuItemLinkProps> = forwardRef(
-    (
-        {
-            classes: classesOverride,
-            className,
-            primaryText,
-            leftIcon,
-            onClick,
-            sidebarIsOpen,
-            ...props
+const MenuItemLink: FC<MenuItemLinkProps> = forwardRef((props, ref) => {
+    const {
+        classes: classesOverride,
+        className,
+        primaryText,
+        leftIcon,
+        onClick,
+        sidebarIsOpen,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
+
+    const handleMenuTap = useCallback(
+        e => {
+            onClick && onClick(e);
         },
-        ref
-    ) => {
-        const classes = useStyles({ classes: classesOverride });
+        [onClick]
+    );
 
-        const handleMenuTap = useCallback(
-            e => {
-                onClick && onClick(e);
-            },
-            [onClick]
-        );
-
-        const renderMenuItem = () => {
-            return (
-                <MenuItem
-                    className={classnames(classes.root, className)}
-                    activeClassName={classes.active}
-                    component={NavLinkRef}
-                    ref={ref}
-                    {...props}
-                    onClick={handleMenuTap}
-                >
-                    {leftIcon && (
-                        <ListItemIcon className={classes.icon}>
-                            {cloneElement(leftIcon, {
-                                titleAccess: primaryText,
-                            })}
-                        </ListItemIcon>
-                    )}
-                    {primaryText}
-                </MenuItem>
-            );
-        };
-
-        if (sidebarIsOpen) {
-            return renderMenuItem();
-        }
-
+    const renderMenuItem = () => {
         return (
-            <Tooltip title={primaryText} placement="right">
-                {renderMenuItem()}
-            </Tooltip>
+            <MenuItem
+                className={classnames(classes.root, className)}
+                activeClassName={classes.active}
+                component={NavLinkRef}
+                ref={ref}
+                {...rest}
+                onClick={handleMenuTap}
+            >
+                {leftIcon && (
+                    <ListItemIcon className={classes.icon}>
+                        {cloneElement(leftIcon, {
+                            titleAccess: primaryText,
+                        })}
+                    </ListItemIcon>
+                )}
+                {primaryText}
+            </MenuItem>
         );
+    };
+
+    if (sidebarIsOpen) {
+        return renderMenuItem();
     }
-);
+
+    return (
+        <Tooltip title={primaryText} placement="right">
+            {renderMenuItem()}
+        </Tooltip>
+    );
+});
 
 interface Props {
     leftIcon?: ReactElement;

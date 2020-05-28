@@ -54,13 +54,13 @@ yarn add react-admin
 
 ## Documentation
 
-Read the [Tutorial](http://marmelab.com/react-admin/Tutorial.html) for a 15 minutes introduction. After that, head to the [Documentation](http://marmelab.com/react-admin/index.html), or checkout the [source code of the demo](https://github.com/marmelab/react-admin-demo) for an example usage.
+Read the [Tutorial](http://marmelab.com/react-admin/Tutorial.html) for a 30 minutes introduction. After that, head to the [Documentation](http://marmelab.com/react-admin/index.html), or checkout the [source code of the demo](https://github.com/marmelab/react-admin-demo) for an example usage.
 
 ## At a Glance
 
 ```jsx
 // in app.js
-import React from 'react';
+import * as React from "react";
 import { render } from 'react-dom';
 import { Admin, Resource } from 'react-admin';
 import restProvider from 'ra-data-simple-rest';
@@ -79,7 +79,7 @@ The `<Resource>` component is a configuration component that allows to define su
 
 ```jsx
 // in posts.js
-import React from 'react';
+import * as React from "react";
 import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, TextInput, DateInput } from 'react-admin';
 import BookIcon from '@material-ui/core/svg-icons/action/book';
 export const PostIcon = BookIcon;

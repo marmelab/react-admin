@@ -1,7 +1,9 @@
-import React, { FunctionComponent } from 'react';
+import * as React from 'react';
+import { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import classnames from 'classnames';
 
 import sanitizeRestProps from './sanitizeRestProps';
@@ -21,21 +23,32 @@ interface Props extends FieldProps {
     classes?: object;
 }
 
-const FileField: FunctionComponent<Props & InjectedFieldProps> = ({
-    className,
-    classes: classesOverride,
-    record,
-    source,
-    title,
-    src,
-    target,
-    ...rest
-}) => {
+const FileField: FunctionComponent<Props & InjectedFieldProps> = props => {
+    const {
+        className,
+        classes: classesOverride,
+        emptyText,
+        record,
+        source,
+        title,
+        src,
+        target,
+        ...rest
+    } = props;
     const sourceValue = get(record, source);
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useStyles(props);
 
     if (!sourceValue) {
-        return (
+        return emptyText ? (
+            <Typography
+                component="span"
+                variant="body2"
+                className={className}
+                {...sanitizeRestProps(rest)}
+            >
+                {emptyText}
+            </Typography>
+        ) : (
             <div
                 className={classnames(classes.root, className)}
                 {...sanitizeRestProps(rest)}

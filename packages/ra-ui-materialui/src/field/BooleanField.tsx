@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import * as React from 'react';
+import { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
@@ -22,6 +23,7 @@ export const BooleanField: FunctionComponent<
 > = ({
     className,
     classes: classesOverride,
+    emptyText,
     source,
     record = {},
     valueLabelTrue,
@@ -36,7 +38,7 @@ export const BooleanField: FunctionComponent<
         ariaLabel = value === false ? 'ra.boolean.false' : 'ra.boolean.true';
     }
 
-    if (value === false) {
+    if (value === false || value === true) {
         return (
             <Typography
                 component="span"
@@ -45,22 +47,11 @@ export const BooleanField: FunctionComponent<
                 {...sanitizeRestProps(rest)}
             >
                 <Tooltip title={translate(ariaLabel, { _: ariaLabel })}>
-                    <FalseIcon data-testid="false" />
-                </Tooltip>
-            </Typography>
-        );
-    }
-
-    if (value === true) {
-        return (
-            <Typography
-                component="span"
-                variant="body2"
-                className={className}
-                {...sanitizeRestProps(rest)}
-            >
-                <Tooltip title={translate(ariaLabel, { _: ariaLabel })}>
-                    <TrueIcon data-testid="true" />
+                    {value === true ? (
+                        <TrueIcon data-testid="true" />
+                    ) : (
+                        <FalseIcon data-testid="false" />
+                    )}
                 </Tooltip>
             </Typography>
         );
@@ -72,7 +63,9 @@ export const BooleanField: FunctionComponent<
             variant="body2"
             className={className}
             {...sanitizeRestProps(rest)}
-        />
+        >
+            {emptyText}
+        </Typography>
     );
 };
 

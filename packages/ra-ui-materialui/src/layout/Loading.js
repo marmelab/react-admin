@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
@@ -14,7 +14,7 @@ const useStyles = makeStyles(
             [theme.breakpoints.up('md')]: {
                 height: '100%',
             },
-            [theme.breakpoints.down('sm')]: {
+            [theme.breakpoints.down('lg')]: {
                 height: '100vh',
                 marginTop: '-3em',
             },
@@ -33,13 +33,13 @@ const useStyles = makeStyles(
     { name: 'RaLoading' }
 );
 
-const Loading = ({
-    classes: classesOverride,
-    className,
-    loadingPrimary = 'ra.page.loading',
-    loadingSecondary = 'ra.message.loading',
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+const Loading = props => {
+    const {
+        className,
+        loadingPrimary = 'ra.page.loading',
+        loadingSecondary = 'ra.message.loading',
+    } = props;
+    const classes = useStyles(props);
     const translate = useTranslate();
     return (
         <div className={classnames(classes.container, className)}>

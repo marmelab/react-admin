@@ -5,7 +5,7 @@ import { Record } from '../../types';
 
 export type LinkToFunctionType = (record: Record, reference: string) => string;
 
-type LinkToType = string | boolean | LinkToFunctionType;
+export type LinkToType = string | boolean | LinkToFunctionType;
 
 interface Option {
     basePath: string;

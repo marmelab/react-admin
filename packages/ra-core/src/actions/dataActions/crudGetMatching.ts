@@ -32,7 +32,7 @@ interface RequestPayload {
 }
 
 export const CRUD_GET_MATCHING = 'RA/CRUD_GET_MATCHING';
-interface CrudGetMatchingAction {
+export interface CrudGetMatchingAction {
     readonly type: typeof CRUD_GET_MATCHING;
     readonly payload: RequestPayload;
     readonly meta: {

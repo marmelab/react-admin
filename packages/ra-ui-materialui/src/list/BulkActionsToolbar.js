@@ -1,4 +1,5 @@
-import React, { Children, cloneElement } from 'react';
+import * as React from 'react';
+import { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -41,17 +42,18 @@ const useStyles = makeStyles(
     { name: 'RaBulkActionsToolbar' }
 );
 
-const BulkActionsToolbar = ({
-    basePath,
-    classes: classesOverride,
-    filterValues,
-    label,
-    resource,
-    selectedIds,
-    children,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+const BulkActionsToolbar = props => {
+    const {
+        basePath,
+        classes: classesOverride,
+        filterValues,
+        label,
+        resource,
+        selectedIds,
+        children,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     const translate = useTranslate();
 
     return (

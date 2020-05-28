@@ -73,7 +73,6 @@ const useEditController = (props: EditProps): EditControllerProps => {
     const refresh = useRefresh();
     const version = useVersion();
     const { data: record, loading, loaded } = useGetOne(resource, id, {
-        version, // used to force reload
         action: CRUD_GET_ONE,
         onFailure: () => {
             notify('ra.notification.item_doesnt_exist', 'warning');
@@ -124,18 +123,22 @@ const useEditController = (props: EditProps): EditControllerProps => {
                           },
                     onFailure: onFailure
                         ? onFailure
-                        : error =>
+                        : error => {
                               notify(
                                   typeof error === 'string'
                                       ? error
                                       : error.message ||
                                             'ra.notification.http_error',
                                   'warning'
-                              ),
+                              );
+                              if (undoable) {
+                                  refresh();
+                              }
+                          },
                     undoable,
                 }
             ),
-        [basePath, notify, redirect, undoable, update, successMessage]
+        [update, undoable, notify, successMessage, redirect, basePath, refresh]
     );
 
     return {

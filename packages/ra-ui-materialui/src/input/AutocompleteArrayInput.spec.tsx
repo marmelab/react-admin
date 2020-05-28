@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import {
     cleanup,
     fireEvent,
@@ -397,6 +397,43 @@ describe('<AutocompleteArrayInput />', () => {
             formApi.change('tags', ['p']);
             await waitForDomChange();
             expect(setFilter).toHaveBeenCalledTimes(3);
+            expect(setFilter).toHaveBeenCalledWith('');
+        });
+
+        it('should reset filter only when needed, even if the value is an array of objects (fixes #4454)', async () => {
+            const setFilter = jest.fn();
+            let formApi;
+            const { getByLabelText } = render(
+                <Form
+                    onSubmit={jest.fn()}
+                    initialValues={{ tags: [{ id: 't' }] }}
+                    render={({ form }) => {
+                        formApi = form;
+                        return (
+                            <AutocompleteArrayInput
+                                {...defaultProps}
+                                choices={[
+                                    { id: 't', name: 'Technical' },
+                                    { id: 'p', name: 'Programming' },
+                                ]}
+                                parse={value =>
+                                    value && value.map(v => ({ id: v }))
+                                }
+                                format={value => value && value.map(v => v.id)}
+                                setFilter={setFilter}
+                            />
+                        );
+                    }}
+                />
+            );
+            const input = getByLabelText('resources.posts.fields.tags');
+            fireEvent.change(input, { target: { value: 'p' } });
+            expect(setFilter).toHaveBeenCalledTimes(2);
+            expect(setFilter).toHaveBeenCalledWith('p');
+            formApi.change('tags', ['p']);
+            await waitForDomChange();
+            expect(setFilter).toHaveBeenCalledTimes(3);
+            expect(setFilter).toHaveBeenCalledWith('');
         });
 
         it('should allow customized rendering of suggesting item', () => {

@@ -1,4 +1,5 @@
-import React, { Children, isValidElement, cloneElement } from 'react';
+import * as React from 'react';
+import { Children, isValidElement, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
@@ -25,7 +26,7 @@ const sanitizeRestProps = ({
  *
  * @example
  *     // in src/posts.js
- *     import React from 'react';
+ *     import * as React from "react";
  *     import { Show, SimpleShowLayout, TextField } from 'react-admin';
  *
  *     export const PostShow = (props) => (
@@ -37,7 +38,7 @@ const sanitizeRestProps = ({
  *     );
  *
  *     // in src/App.js
- *     import React from 'react';
+ *     import * as React from "react";
  *     import { Admin, Resource } from 'react-admin';
  *
  *     import { PostShow } from './posts';

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import Inbox from '@material-ui/icons/Inbox';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/styles';
@@ -7,11 +7,15 @@ import { CreateButton } from '../button';
 import inflection from 'inflection';
 
 const useStyles = makeStyles(
-    {
+    theme => ({
         message: {
             textAlign: 'center',
-            opacity: 0.5,
+            opacity: theme.palette.type === 'light' ? 0.5 : 0.8,
             margin: '0 1em',
+            color:
+                theme.palette.type === 'light'
+                    ? 'inherit'
+                    : theme.palette.text.primary,
         },
         icon: {
             width: '9em',
@@ -21,12 +25,13 @@ const useStyles = makeStyles(
             textAlign: 'center',
             marginTop: '2em',
         },
-    },
+    }),
     { name: 'RaEmpty' }
 );
 
-const Empty = ({ resource, basePath }) => {
-    const classes = useStyles();
+const Empty = props => {
+    const { resource, basePath } = props;
+    const classes = useStyles(props);
     const translate = useTranslate();
 
     const resourceName = inflection.humanize(

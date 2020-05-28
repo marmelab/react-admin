@@ -1,4 +1,5 @@
-import React, { useEffect, useCallback } from 'react';
+import * as React from 'react';
+import { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Form, FormSpy } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
@@ -17,7 +18,7 @@ const useStyles = makeStyles(
             display: 'flex',
             alignItems: 'flex-end',
             flexWrap: 'wrap',
-            minHeight: theme.spacing(9.5),
+            minHeight: theme.spacing(10),
         },
         clearFix: { clear: 'right' },
     }),
@@ -89,7 +90,7 @@ export const FilterForm = ({
     margin,
     variant,
     filters,
-    displayedFilters,
+    displayedFilters = {},
     hideFilter,
     initialValues,
     ...rest
@@ -147,7 +148,7 @@ const handleSubmit = event => {
 FilterForm.propTypes = {
     resource: PropTypes.string.isRequired,
     filters: PropTypes.arrayOf(PropTypes.node).isRequired,
-    displayedFilters: PropTypes.object.isRequired,
+    displayedFilters: PropTypes.object,
     hideFilter: PropTypes.func.isRequired,
     initialValues: PropTypes.object,
     classes: PropTypes.object,
@@ -175,14 +176,15 @@ export const mergeInitialValuesWithDefaultValues = ({
     ...initialValues,
 });
 
-const EnhancedFilterForm = ({ classes: classesOverride, ...props }) => {
-    const classes = useStyles({ classes: classesOverride });
+const EnhancedFilterForm = props => {
+    const { classes: classesOverride, ...rest } = props;
+    const classes = useStyles(props);
 
     const mergedInitialValuesWithDefaultValues = mergeInitialValuesWithDefaultValues(
         props
     );
 
-    const { initialValues, ...rest } = props;
+    const { initialValues, ...rest2 } = rest;
 
     return (
         <Form
@@ -197,10 +199,10 @@ const EnhancedFilterForm = ({ classes: classesOverride, ...props }) => {
                             if (pristine) {
                                 return;
                             }
-                            props && props.setFilters(values);
+                            rest && rest.setFilters(values);
                         }}
                     />
-                    <FilterForm classes={classes} {...formProps} {...rest} />
+                    <FilterForm classes={classes} {...formProps} {...rest2} />
                 </>
             )}
         />

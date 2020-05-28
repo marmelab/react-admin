@@ -81,6 +81,11 @@ footer {
     fill: rgba(0, 0, 0, 0.6);
 }
 
+.sidenav li > a {
+    height: 40px;
+    line-height: 40px;
+}
+
 .sidenav.sidenav-fixed ul.collapsible-accordion a.collapsible-header {
     padding: 0 30px;
 }
@@ -92,6 +97,11 @@ footer {
 
 ul.sidenav code {
     font-size: 0.9em;
+}
+
+.table-of-contents {
+    overflow-y: auto;
+    height: calc(100% - 75px);
 }
 
 .table-of-contents a.active {
@@ -238,7 +248,7 @@ ul.sidenav code {
     font-size: 1.75em;
 }
 .markdown-section h3 {
-    margin-top: 0.85em;
+    margin-top: 1.5em;
     font-size: 1em;
 }
 .markdown-section code,

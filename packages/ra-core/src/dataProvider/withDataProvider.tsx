@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { DataProvider } from '../types';
 
 import useDataProvider from './useDataProviderWithDeclarativeSideEffects';

@@ -1,4 +1,5 @@
-import React, { FC, ReactElement, SyntheticEvent } from 'react';
+import * as React from 'react';
+import { FC, ReactElement, SyntheticEvent } from 'react';
 import PropTypes from 'prop-types';
 import { Record, RedirectionSideEffect } from 'ra-core';
 

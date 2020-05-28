@@ -9,7 +9,7 @@ The `<Admin>` component creates an application with its own state, routing, and 
 
 ```jsx
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 
 import { Admin, Resource } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
@@ -29,6 +29,8 @@ Here are all the props accepted by the component:
 
 - [The `<Admin>` Component](#the-admin-component)
   - [`dataProvider`](#dataprovider)
+  - [`authProvider`](#authprovider)
+  - [`i18nProvider`](#internationalization)
   - [`title`](#title)
   - [`dashboard`](#dashboard)
   - [`catchAll`](#catchall)
@@ -38,7 +40,6 @@ Here are all the props accepted by the component:
   - [`customReducers`](#customreducers)
   - [`customSagas`](#customsagas)
   - [`customRoutes`](#customroutes)
-  - [`authProvider`](#authprovider)
   - [`loginPage`](#loginpage)
   - [`logoutButton`](#logoutbutton)
   - [`initialState`](#initialstate)
@@ -85,7 +86,7 @@ By default, the homepage of an admin app is the `list` of the first child `<Reso
 
 ```jsx
 // in src/Dashboard.js
-import React from 'react';
+import * as React from "react";
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { Title } from 'react-admin';
@@ -99,7 +100,7 @@ export default () => (
 
 ```jsx
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 import { Admin } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
 
@@ -124,7 +125,7 @@ You can customize this page to use the component of your choice by passing it as
 
 ```jsx
 // in src/NotFound.js
-import React from 'react';
+import * as React from "react";
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { Title } from 'react-admin';
@@ -141,7 +142,7 @@ export default () => (
 
 ```jsx
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 import { Admin } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
 
@@ -166,7 +167,8 @@ If you want to add or remove menu items, for instance to link to non-resources p
 
 ```jsx
 // in src/Menu.js
-import React, { createElement } from 'react';
+import * as React from 'react';
+import { createElement } from 'react';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@material-ui/core';
 import { MenuItemLink, getResources } from 'react-admin';
@@ -192,7 +194,7 @@ const Menu = ({ onMenuClick, logout }) => {
             <MenuItemLink
                 to="/custom-route"
                 primaryText="Miscellaneous"
-                leftIcon={LabelIcon}
+                leftIcon={<LabelIcon />}
                 onClick={onMenuClick}
                 sidebarIsOpen={open}
             />
@@ -313,7 +315,7 @@ To register this reducer in the `<Admin>` app, simply pass it in the `customRedu
 {% raw %}
 ```jsx
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 import { Admin } from 'react-admin';
 
 import bitcoinRateReducer from './bitcoinRateReducer';
@@ -360,7 +362,7 @@ To register this saga in the `<Admin>` app, simply pass it in the `customSagas` 
 
 ```jsx
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 import { Admin } from 'react-admin';
 
 import bitcoinSaga from './bitcoinSaga';
@@ -380,7 +382,7 @@ To register your own routes, create a module returning a list of [react-router-d
 
 ```jsx
 // in src/customRoutes.js
-import React from 'react';
+import * as React from "react";
 import { Route } from 'react-router-dom';
 import Foo from './Foo';
 import Bar from './Bar';
@@ -397,7 +399,7 @@ Then, pass this array as `customRoutes` prop in the `<Admin>` component:
 
 ```jsx
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 import { Admin } from 'react-admin';
 
 import customRoutes from './customRoutes';
@@ -423,7 +425,7 @@ to design the screen the way you want.
 
 ```jsx
 // in src/Foo.js
-import React from 'react';
+import * as React from "react";
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { Title } from 'react-admin';
@@ -539,7 +541,7 @@ By default, react-admin creates URLs using a hash sign (e.g. "myadmin.acme.com/#
 You can create your own `history` function (compatible with [the `history` npm package](https://github.com/reacttraining/history)), and pass it to the `<Admin>` component to override the default history strategy. For instance, to use `browserHistory`:
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { createBrowserHistory as createHistory } from 'history';
 
 const history = createHistory();
@@ -562,7 +564,7 @@ You might want to dynamically define the resources when the app starts. The `<Ad
 For instance, getting the resource from an API might look like:
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 
 import { Admin, Resource } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';

@@ -14,7 +14,7 @@ import { useGetMany } from '../../dataProvider';
  * @property {boolean} loaded has the reference already been loaded
  * @property {string} referenceBasePath basePath of the reference
  */
-interface ReferenceArrayProps {
+export interface ReferenceArrayProps {
     ids: Identifier[];
     data: RecordMap;
     error?: any;

@@ -1,4 +1,5 @@
-import React, { Children, Fragment, isValidElement } from 'react';
+import * as React from 'react';
+import { Children, Fragment, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import MuiToolbar from '@material-ui/core/Toolbar';
 import withWidth from '@material-ui/core/withWidth';
@@ -46,25 +47,26 @@ const useStyles = makeStyles(
 const valueOrDefault = (value, defaultValue) =>
     typeof value === 'undefined' ? defaultValue : value;
 
-const Toolbar = ({
-    basePath,
-    children,
-    className,
-    classes: classesOverride,
-    handleSubmit,
-    handleSubmitWithRedirect,
-    invalid,
-    pristine,
-    record,
-    redirect,
-    resource,
-    saving,
-    submitOnEnter,
-    undoable,
-    width,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+const Toolbar = props => {
+    const {
+        basePath,
+        children,
+        className,
+        classes: classesOverride,
+        handleSubmit,
+        handleSubmitWithRedirect,
+        invalid,
+        pristine,
+        record,
+        redirect,
+        resource,
+        saving,
+        submitOnEnter,
+        undoable,
+        width,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     return (
         <Fragment>
             <MuiToolbar
@@ -112,6 +114,7 @@ const Toolbar = ({
                                       button.props.handleSubmitWithRedirect,
                                       handleSubmitWithRedirect
                                   ),
+                                  onSave: button.props.onSave,
                                   invalid,
                                   pristine,
                                   record,

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import Toolbar from '@material-ui/core/Toolbar';
 import { makeStyles } from '@material-ui/core/styles';
@@ -29,20 +29,19 @@ const useStyles = makeStyles(
     { name: 'RaListToolbar' }
 );
 
-const defaultClasses = {}; // avoid needless updates
-
-const ListToolbar = ({
-    classes = defaultClasses,
-    filters,
-    filterValues, // dynamically set via the UI by the user
-    permanentFilter, // set in the List component by the developer
-    actions,
-    exporter,
-    ...rest
-}) => {
-    const styles = useStyles({ classes });
+const ListToolbar = props => {
+    const {
+        classes: classesOverride,
+        filters,
+        filterValues, // dynamically set via the UI by the user
+        permanentFilter, // set in the List component by the developer
+        actions,
+        exporter,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     return (
-        <Toolbar className={styles.toolbar}>
+        <Toolbar className={classes.toolbar}>
             {filters &&
                 React.cloneElement(filters, {
                     ...rest,
@@ -53,8 +52,8 @@ const ListToolbar = ({
             {actions &&
                 React.cloneElement(actions, {
                     ...rest,
-                    className: styles.actions,
-                    exporter,
+                    className: classes.actions,
+                    exporter, // deprecated, use ExporterContext instead
                     filters,
                     filterValues,
                     permanentFilter,

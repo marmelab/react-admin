@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import * as React from 'react';
+import { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Field, Form } from 'react-final-form';
 import CardActions from '@material-ui/core/CardActions';
@@ -49,12 +50,13 @@ const Input = ({
     />
 );
 
-const LoginForm: FunctionComponent<Props> = ({ redirectTo }) => {
+const LoginForm: FunctionComponent<Props> = props => {
+    const { redirectTo } = props;
     const [loading, setLoading] = useSafeSetState(false);
     const login = useLogin();
     const translate = useTranslate();
     const notify = useNotify();
-    const classes = useStyles({});
+    const classes = useStyles(props);
 
     const validate = (values: FormData) => {
         const errors = { username: undefined, password: undefined };

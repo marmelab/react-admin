@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import MuiGridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
@@ -44,7 +44,7 @@ const getColsForWidth = width => {
 const times = (nbChildren, fn) =>
     Array.from({ length: nbChildren }, (_, key) => fn(key));
 
-const LoadingGridList = ({ width, nbItems = 10 }) => {
+const LoadingGridList = ({ width, nbItems = 20 }) => {
     const classes = useStyles();
     return (
         <div className={classes.root}>

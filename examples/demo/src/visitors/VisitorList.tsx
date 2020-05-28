@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import {
     BooleanField,
     Datagrid,
@@ -17,6 +17,7 @@ import SegmentInput from './SegmentInput';
 import CustomerLinkField from './CustomerLinkField';
 import ColoredNumberField from './ColoredNumberField';
 import MobileGrid from './MobileGrid';
+import VisitorListAside from './VisitorListAside';
 
 const VisitorFilter = (props: any) => (
     <Filter {...props}>
@@ -37,12 +38,14 @@ const VisitorList = (props: any) => {
     const isXsmall = useMediaQuery<Theme>(theme =>
         theme.breakpoints.down('xs')
     );
+    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
     return (
         <List
             {...props}
-            filters={<VisitorFilter />}
+            filters={isSmall ? <VisitorFilter /> : null}
             sort={{ field: 'last_seen', order: 'DESC' }}
             perPage={25}
+            aside={<VisitorListAside />}
         >
             {isXsmall ? (
                 <MobileGrid />

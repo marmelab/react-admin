@@ -1,4 +1,5 @@
-import React, { Fragment } from 'react';
+import * as React from 'react';
+import { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Button from '@material-ui/core/Button';
@@ -52,15 +53,16 @@ function goBack() {
     window.history.go(-1);
 }
 
-const Error = ({
-    error,
-    errorInfo,
-    classes: classesOverride,
-    className,
-    title,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+const Error = props => {
+    const {
+        error,
+        errorInfo,
+        classes: classesOverride,
+        className,
+        title,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     const translate = useTranslate();
     return (
         <Fragment>

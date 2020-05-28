@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
@@ -45,8 +45,9 @@ function goBack() {
     window.history.go(-1);
 }
 
-const NotFound = ({ className, classes: classesOverride, title, ...rest }) => {
-    const classes = useStyles({ classes: classesOverride });
+const NotFound = props => {
+    const { className, classes: classesOverride, title, ...rest } = props;
+    const classes = useStyles(props);
     const translate = useTranslate();
     useAuthenticated();
     return (

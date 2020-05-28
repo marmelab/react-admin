@@ -1,4 +1,5 @@
-import React, { FC, ReactElement } from 'react';
+import * as React from 'react';
+import { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import { Fab, makeStyles, useMediaQuery, Theme } from '@material-ui/core';
@@ -7,17 +8,19 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { useTranslate } from 'ra-core';
 
-import Button, { ButtonProps } from './Button';
+import Button, { ButtonProps, sanitizeButtonRestProps } from './Button';
 
-const CreateButton: FC<CreateButtonProps> = ({
-    basePath = '',
-    className,
-    classes: classesOverride,
-    label = 'ra.action.create',
-    icon = defaultIcon,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+const CreateButton: FC<CreateButtonProps> = props => {
+    const {
+        basePath = '',
+        className,
+        classes: classesOverride,
+        label = 'ra.action.create',
+        icon = defaultIcon,
+        variant,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     const translate = useTranslate();
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('sm')
@@ -29,7 +32,7 @@ const CreateButton: FC<CreateButtonProps> = ({
             className={classnames(classes.floating, className)}
             to={`${basePath}/create`}
             aria-label={label && translate(label)}
-            {...rest as any}
+            {...sanitizeButtonRestProps(rest)}
         >
             {icon}
         </Fab>
@@ -39,6 +42,7 @@ const CreateButton: FC<CreateButtonProps> = ({
             to={`${basePath}/create`}
             className={className}
             label={label}
+            variant={variant}
             {...rest as any}
         >
             {icon}

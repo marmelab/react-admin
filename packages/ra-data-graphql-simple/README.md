@@ -27,7 +27,8 @@ The `ra-data-graphql-simple` package exposes a single function, which is a const
 
 ```jsx
 // in App.js
-import React, { Component } from 'react';
+import * as React from 'react';
+import { Component } from 'react';
 import buildGraphQLProvider from 'ra-data-graphql-simple';
 import { Admin, Resource } from 'react-admin';
 

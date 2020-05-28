@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { cleanup, fireEvent, wait } from '@testing-library/react';
 import { renderWithRedux, linkToRecord } from 'ra-core';
 
@@ -15,7 +15,17 @@ const render = element =>
         <table>
             <tbody>{element}</tbody>
         </table>,
-        {}
+        {
+            admin: {
+                resources: {
+                    posts: {
+                        list: {
+                            expanded: [],
+                        },
+                    },
+                },
+            },
+        }
     );
 
 describe('<DatagridRow />', () => {
@@ -25,6 +35,7 @@ describe('<DatagridRow />', () => {
         id: 15,
         basePath: '/blob',
         record: { id: 15, title: 'hello' },
+        resource: 'posts',
     };
 
     const renderWithRouter = children => {

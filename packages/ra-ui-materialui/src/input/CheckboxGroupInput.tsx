@@ -1,4 +1,5 @@
-import React, { useCallback, FunctionComponent } from 'react';
+import * as React from 'react';
+import { useCallback, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -98,28 +99,30 @@ const useStyles = makeStyles(
  */
 const CheckboxGroupInput: FunctionComponent<
     ChoicesProps & InputProps<CheckboxProps> & FormControlProps
-> = ({
-    choices = [],
-    format,
-    helperText,
-    label,
-    margin = 'dense',
-    onBlur,
-    onChange,
-    onFocus,
-    optionText,
-    optionValue,
-    options,
-    parse,
-    resource,
-    row,
-    source,
-    translate,
-    translateChoice,
-    validate,
-    ...rest
-}) => {
-    const classes = useStyles({});
+> = props => {
+    const {
+        choices = [],
+        classes: classesOverride,
+        format,
+        helperText,
+        label,
+        margin = 'dense',
+        onBlur,
+        onChange,
+        onFocus,
+        optionText,
+        optionValue,
+        options,
+        parse,
+        resource,
+        row,
+        source,
+        translate,
+        translateChoice,
+        validate,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
 
     const {
         id,

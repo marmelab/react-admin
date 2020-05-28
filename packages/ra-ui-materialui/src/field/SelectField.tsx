@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import * as React from 'react';
+import { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
@@ -71,6 +72,7 @@ export const SelectField: FunctionComponent<
     ChoicesProps & FieldProps & InjectedFieldProps
 > = ({
     className,
+    emptyText,
     source,
     record,
     choices,
@@ -89,7 +91,16 @@ export const SelectField: FunctionComponent<
     const choice = choices.find(choice => getChoiceValue(choice) === value);
 
     if (!choice) {
-        return null;
+        return emptyText ? (
+            <Typography
+                component="span"
+                variant="body2"
+                className={className}
+                {...sanitizeRestProps(rest)}
+            >
+                {emptyText}
+            </Typography>
+        ) : null;
     }
 
     let choiceText = getChoiceText(choice);

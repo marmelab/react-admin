@@ -1,6 +1,6 @@
-import React from 'react';
+import * as React from 'react';
 import { Datagrid, DateField, TextField } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 import ProductReferenceField from '../products/ProductReferenceField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
@@ -28,12 +28,13 @@ const useListStyles = makeStyles({
     },
 });
 
-const ReviewListDesktop = props => {
+const ReviewListDesktop = ({ selectedRow, ...props }) => {
     const classes = useListStyles();
+    const theme = useTheme();
     return (
         <Datagrid
             rowClick="edit"
-            rowStyle={rowStyle}
+            rowStyle={rowStyle(selectedRow, theme)}
             classes={{
                 headerRow: classes.headerRow,
                 headerCell: classes.headerCell,

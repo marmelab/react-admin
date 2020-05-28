@@ -13,7 +13,11 @@ title: "Ecosystem"
 - [User Interface](#user-interface)
 - [Miscellaneous](#miscellaneous)
 
-## Inputs and Fields
+## Fields
+
+See the [Field](./Fields.md#third-party-components) page.
+
+## Inputs
 
 See the [Input](./Inputs.md#third-party-components) page.
 
@@ -24,6 +28,7 @@ See the [Translation](./Translation.md#available-locales) page.
 ## Authentication Providers
 
 - **[AWS Cognito](https://docs.aws.amazon.com/cognito/latest/developerguide/setting-up-the-javascript-sdk.html)**: [thedistance/ra-cognito](https://github.com/thedistance/ra-cognito)
+- **[Firebase Auth (Google, Facebook, Github etc)](https://firebase.google.com/docs/auth/web/firebaseui)**: [benwinding/react-admin-firebase](https://github.com/benwinding/react-admin-firebase#auth-provider)
 
 ## Authorization Management
 
@@ -48,3 +53,4 @@ See the [Data Provider](./DataProviders.md#available-providers) page.
 - [ctbucha/bs-react-admin](https://github.com/ctbucha/bs-react-admin): [BuckleScript](https://bucklescript.github.io/) bindings for React Admin.
 - [dryhten/ra-resource-aggregator](https://github.com/dryhten/ra-resource-aggregator): Resource aggregator for react-admin. It allows you to edit/create/delete multiple resources in the same view.
 - [Dev XP demo (YouTube)](https://youtu.be/nHkVxDEnB3g): How to make changes to the core React Admin project locally
+- [react-admin-import-csv](https://github.com/benwinding/react-admin-import-csv): A csv file import button for react-admin.

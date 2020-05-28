@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import * as React from 'react';
+import { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
@@ -48,13 +49,31 @@ interface Props extends FieldProps {
  */
 export const NumberField: FunctionComponent<
     Props & InjectedFieldProps & TypographyProps
-> = ({ className, record, source, locales, options, textAlign, ...rest }) => {
+> = ({
+    className,
+    emptyText,
+    record,
+    source,
+    locales,
+    options,
+    textAlign,
+    ...rest
+}) => {
     if (!record) {
         return null;
     }
     const value = get(record, source);
     if (value == null) {
-        return null;
+        return emptyText ? (
+            <Typography
+                component="span"
+                variant="body2"
+                className={className}
+                {...sanitizeRestProps(rest)}
+            >
+                {emptyText}
+            </Typography>
+        ) : null;
     }
 
     return (

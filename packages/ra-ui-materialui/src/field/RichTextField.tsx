@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import * as React from 'react';
+import { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
@@ -15,20 +16,8 @@ interface Props extends FieldProps {
 
 const RichTextField: FunctionComponent<
     Props & InjectedFieldProps & TypographyProps
-> = ({ className, source, record = {}, stripTags, ...rest }) => {
+> = ({ className, emptyText, source, record = {}, stripTags, ...rest }) => {
     const value = get(record, source);
-    if (stripTags) {
-        return (
-            <Typography
-                className={className}
-                variant="body2"
-                component="span"
-                {...sanitizeRestProps(rest)}
-            >
-                {removeTags(value)}
-            </Typography>
-        );
-    }
 
     return (
         <Typography
@@ -37,7 +26,13 @@ const RichTextField: FunctionComponent<
             component="span"
             {...sanitizeRestProps(rest)}
         >
-            <span dangerouslySetInnerHTML={{ __html: value }} />
+            {value == null && emptyText ? (
+                emptyText
+            ) : stripTags ? (
+                removeTags(value)
+            ) : (
+                <span dangerouslySetInnerHTML={{ __html: value }} />
+            )}
         </Typography>
     );
 };

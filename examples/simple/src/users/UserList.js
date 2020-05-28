@@ -2,7 +2,7 @@
 import PeopleIcon from '@material-ui/icons/People';
 import memoize from 'lodash/memoize';
 import { useMediaQuery } from '@material-ui/core';
-import React from 'react';
+import * as React from 'react';
 import {
     BulkDeleteWithConfirmButton,
     Datagrid,

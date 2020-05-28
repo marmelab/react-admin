@@ -1,4 +1,5 @@
-import React, { Children, cloneElement } from 'react';
+import * as React from 'react';
+import { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import classnames from 'classnames';
@@ -120,7 +121,7 @@ export const ListView = props => {
         ...rest
     } = props;
     useCheckMinimumRequiredProps('List', ['children'], props);
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useStyles(props);
     const {
         defaultTitle,
         version,

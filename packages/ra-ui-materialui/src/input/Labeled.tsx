@@ -1,4 +1,5 @@
-import React, { FunctionComponent, ReactElement } from 'react';
+import * as React from 'react';
+import { FunctionComponent, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
@@ -55,22 +56,23 @@ interface Props {
  *     <FooComponent source="title" />
  * </Labeled>
  */
-const Labeled: FunctionComponent<Props> = ({
-    children,
-    className,
-    classes: classesOverride,
-    fullWidth,
-    id,
-    input,
-    isRequired,
-    label,
-    margin = 'dense',
-    meta,
-    resource,
-    source,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+const Labeled: FunctionComponent<Props> = props => {
+    const {
+        children,
+        className,
+        classes: classesOverride,
+        fullWidth,
+        id,
+        input,
+        isRequired,
+        label,
+        margin = 'dense',
+        meta,
+        resource,
+        source,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     if (!label && !source) {
         // @ts-ignore
         const name = children && children.type && children.type.name;

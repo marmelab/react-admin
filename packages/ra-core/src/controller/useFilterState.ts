@@ -1,9 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import debounce from 'lodash/debounce';
-
-export interface Filter {
-    [k: string]: any;
-}
+import isEqual from 'lodash/isEqual';
+import { Filter } from '../types';
 
 interface UseFilterStateOptions {
     filterToQuery?: (v: string) => Filter;
@@ -22,7 +20,6 @@ interface UseFilterStateProps {
 }
 
 const defaultFilterToQuery = (v: string) => ({ q: v });
-const emptyFilter = {};
 
 /**
  * Hooks to provide filter state and setFilter which update the query part of the filter
@@ -55,35 +52,42 @@ const emptyFilter = {};
  */
 export default ({
     filterToQuery = defaultFilterToQuery,
-    permanentFilter = emptyFilter,
+    permanentFilter = {},
     debounceTime = 500,
 }: UseFilterStateOptions): UseFilterStateProps => {
     const permanentFilterProp = useRef(permanentFilter);
-    const latestValue = useRef();
+    const latestValue = useRef<string>();
     const [filter, setFilterValue] = useState({
         ...permanentFilter,
         ...filterToQuery(''),
     });
+    // Developers often pass an object literal as permanent filter
+    // e.g. <ReferenceInput source="book_id" reference="books" filter={{ is_published: true }}>
+    // The effect should execute again when the parent component updates the filter value,
+    // but not when the object literal describes the same values. Therefore,
+    // we use JSON.stringify(permanentFilter) in the `useEffect` and `useCallback`
+    // dependencies instead of permanentFilter.
+    const permanentFilterSignature = JSON.stringify(permanentFilter);
 
     useEffect(() => {
-        if (permanentFilterProp.current !== permanentFilter) {
+        if (!isEqual(permanentFilterProp.current, permanentFilter)) {
             permanentFilterProp.current = permanentFilter;
             setFilterValue({
                 ...permanentFilter,
                 ...filterToQuery(latestValue.current),
             });
         }
-    }, [permanentFilter, permanentFilterProp, filterToQuery]);
+    }, [permanentFilterSignature, permanentFilterProp, filterToQuery]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const setFilter = useCallback(
-        debounce(value => {
+        debounce((value: string) => {
             setFilterValue({
                 ...permanentFilter,
                 ...filterToQuery(value),
             });
             latestValue.current = value;
         }, debounceTime),
-        []
+        [permanentFilterSignature] // eslint-disable-line react-hooks/exhaustive-deps
     );
 
     return {

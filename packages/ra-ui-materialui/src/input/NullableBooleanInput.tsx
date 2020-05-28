@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import * as React from 'react';
+import { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import TextField, { TextFieldProps } from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -30,25 +31,27 @@ const getStringFromBoolean = (value?: boolean | null): string => {
 
 const NullableBooleanInput: FunctionComponent<
     InputProps<TextFieldProps> & Omit<TextFieldProps, 'label' | 'helperText'>
-> = ({
-    className,
-    format = getStringFromBoolean,
-    helperText,
-    label,
-    margin = 'dense',
-    onBlur,
-    onChange,
-    onFocus,
-    options,
-    displayNull,
-    parse = getBooleanFromString,
-    resource,
-    source,
-    validate,
-    variant = 'filled',
-    ...rest
-}) => {
-    const classes = useStyles({});
+> = props => {
+    const {
+        className,
+        classes: classesOverride,
+        format = getStringFromBoolean,
+        helperText,
+        label,
+        margin = 'dense',
+        onBlur,
+        onChange,
+        onFocus,
+        options,
+        displayNull,
+        parse = getBooleanFromString,
+        resource,
+        source,
+        validate,
+        variant = 'filled',
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     const translate = useTranslate();
 
     const {

@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import * as React from 'react';
+import { FC } from 'react';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import List, { ListProps } from '@material-ui/core/List';
@@ -35,17 +36,18 @@ interface Props {
     nbFakeLines?: number;
 }
 
-const SimpleListLoading: FC<Props & ListProps> = ({
-    classes: classesOverride,
-    className,
-    hasLeftAvatarOrIcon,
-    hasRightAvatarOrIcon,
-    hasSecondaryText,
-    hasTertiaryText,
-    nbFakeLines = 5,
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+const SimpleListLoading: FC<Props & ListProps> = props => {
+    const {
+        classes: classesOverride,
+        className,
+        hasLeftAvatarOrIcon,
+        hasRightAvatarOrIcon,
+        hasSecondaryText,
+        hasTertiaryText,
+        nbFakeLines = 5,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     const oneSecondHasPassed = useTimeout(1000);
 
     return oneSecondHasPassed ? (

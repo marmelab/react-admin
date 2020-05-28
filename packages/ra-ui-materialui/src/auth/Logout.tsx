@@ -1,4 +1,5 @@
-import React, { useCallback, FunctionComponent, ReactElement } from 'react';
+import * as React from 'react';
+import { useCallback, FunctionComponent, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { ListItemIcon, MenuItem, makeStyles } from '@material-ui/core';
 import { MenuItemProps } from '@material-ui/core/MenuItem';
@@ -32,8 +33,14 @@ const useStyles = makeStyles(
 const LogoutWithRef: FunctionComponent<
     Props & MenuItemProps<'li', { button: true }> // HACK: https://github.com/mui-org/material-ui/issues/16245
 > = React.forwardRef(function Logout(props, ref) {
-    const { className, redirectTo, icon, ...rest } = props;
-    const classes = useStyles({}); // the empty {} is a temp fix for https://github.com/mui-org/material-ui/issues/15942
+    const {
+        className,
+        classes: classesOverride,
+        redirectTo,
+        icon,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     const translate = useTranslate();
     const logout = useLogout();
     // eslint-disable-next-line react-hooks/exhaustive-deps
