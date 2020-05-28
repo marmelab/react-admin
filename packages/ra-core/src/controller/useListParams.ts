@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useEffect } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { parse, stringify } from 'query-string';
 import lodashDebounce from 'lodash/debounce';
@@ -131,10 +131,12 @@ const useListParams = ({
         perPage,
     ];
 
+    const queryFromLocation = parseQueryFromLocation(location);
+
     const query = useMemo(
         () =>
             getQuery({
-                location,
+                queryFromLocation,
                 params,
                 filterDefaultValues,
                 sort,
@@ -142,6 +144,16 @@ const useListParams = ({
             }),
         requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );
+
+    // On mount, if the location includes params (for example from a link like
+    // the categories products on the demo), we need to persist them in the
+    // redux state as well so that we don't loose them after a redirection back
+    // to the list
+    useEffect(() => {
+        if (Object.keys(queryFromLocation).length > 0) {
+            dispatch(changeListParams(resource, query));
+        }
+    }, []); // eslint-disable-line
 
     const changeParams = useCallback(action => {
         const newParams = queryReducer(query, action);
@@ -261,7 +273,7 @@ const parseObject = (query, field) => {
     }
 };
 
-export const parseQueryFromLocation = ({ search }) => {
+export const parseQueryFromLocation = ({ search }): Partial<ListParams> => {
     const query = pickBy(
         parse(search),
         (v, k) => validQueryParams.indexOf(k) !== -1
@@ -303,13 +315,12 @@ export const hasCustomParams = (params: ListParams) => {
  *   - the props passed to the List component (including the filter defaultValues)
  */
 export const getQuery = ({
-    location,
+    queryFromLocation,
     params,
     filterDefaultValues,
     sort,
     perPage,
 }) => {
-    const queryFromLocation = parseQueryFromLocation(location);
     const query: Partial<ListParams> =
         Object.keys(queryFromLocation).length > 0
             ? queryFromLocation
