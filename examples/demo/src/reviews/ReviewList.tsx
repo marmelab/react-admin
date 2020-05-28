@@ -1,7 +1,7 @@
 import React, { Fragment, useCallback, FC } from 'react';
 import classnames from 'classnames';
 import { BulkDeleteButton, List } from 'react-admin';
-import { Route, useHistory } from 'react-router-dom';
+import { Route, RouteChildrenProps, useHistory } from 'react-router-dom';
 import { Drawer, useMediaQuery, makeStyles, Theme } from '@material-ui/core';
 import BulkAcceptButton from './BulkAcceptButton';
 import BulkRejectButton from './BulkRejectButton';
@@ -52,7 +52,7 @@ const ReviewList: FC<ListComponentProps<{ id: string }>> = props => {
     return (
         <div className={classes.root}>
             <Route path="/reviews/:id">
-                {({ match }) => {
+                {({ match }: RouteChildrenProps<{ id: string }>) => {
                     const isMatch = !!(
                         match &&
                         match.params &&
@@ -77,7 +77,10 @@ const ReviewList: FC<ListComponentProps<{ id: string }>> = props => {
                                     <ReviewListDesktop
                                         selectedRow={
                                             isMatch
-                                                ? parseInt(match.params.id, 10)
+                                                ? parseInt(
+                                                      (match as any).params.id,
+                                                      10
+                                                  )
                                                 : undefined
                                         }
                                     />
@@ -95,7 +98,7 @@ const ReviewList: FC<ListComponentProps<{ id: string }>> = props => {
                                 {/* To avoid any errors if the route does not match, we don't render at all the component in this case */}
                                 {isMatch ? (
                                     <ReviewEdit
-                                        id={match.params.id}
+                                        id={(match as any).params.id}
                                         onCancel={handleClose}
                                         {...props}
                                     />

@@ -199,7 +199,7 @@ const EventList: FC<EventListProps> = ({ record, basePath }) => {
 
 interface AsideEvent {
     type: string;
-    date: string;
+    date: Date;
     data: OrderRecord | ReviewRecord;
 }
 
@@ -208,7 +208,7 @@ const mixOrdersAndReviews = (
     orderIds: Identifier[],
     reviews: RecordMap<ReviewRecord>,
     reviewIds: Identifier[]
-) => {
+): AsideEvent[] => {
     const eventsFromOrders = orderIds.map<AsideEvent>(id => ({
         type: 'order',
         date: orders[id].date,

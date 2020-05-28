@@ -41,8 +41,8 @@ const ReviewListMobile: FC<DatagridProps<Review>> = ({
 
     return loading || Number(total) > 0 ? (
         <List className={classes.root}>
-            {ids.map(id => {
-                const item = data[id];
+            {(ids as Exclude<typeof ids, undefined>).map(id => {
+                const item = (data as Exclude<typeof data, undefined>)[id];
                 if (!item) return null;
 
                 return (
@@ -60,7 +60,7 @@ const ReviewListMobile: FC<DatagridProps<Review>> = ({
                                     basePath={basePath}
                                     link={false}
                                 >
-                                    <AvatarField size={40} />
+                                    <AvatarField size="40" />
                                 </ReferenceField>
                             </ListItemAvatar>
                             <ListItemText

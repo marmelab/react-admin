@@ -30,17 +30,20 @@ const useListStyles = makeStyles({
     },
 });
 
-interface Props extends DatagridProps {
-    selectedRow: Identifier;
+export interface ReviewListDesktopProps extends DatagridProps {
+    selectedRow?: Identifier;
 }
 
-const ReviewListDesktop: FC<Props> = ({ selectedRow, ...props }) => {
+const ReviewListDesktop: FC<ReviewListDesktopProps> = ({
+    selectedRow,
+    ...props
+}) => {
     const classes = useListStyles();
     const theme = useTheme();
     return (
         <Datagrid
             rowClick="edit"
-            rowStyle={rowStyle(selectedRow, theme)}
+            rowStyle={selectedRow ? rowStyle(selectedRow, theme) : undefined}
             classes={{
                 headerRow: classes.headerRow,
                 headerCell: classes.headerCell,

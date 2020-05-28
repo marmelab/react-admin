@@ -1,3 +1,4 @@
+import { ReactChildren } from 'react';
 import {
     useListController,
     ReduxState,
@@ -75,14 +76,23 @@ export interface FieldProps<T extends Record = Record> {
     label?: string;
     record?: T;
     source?: string;
+    resource?: string;
     basePath?: string;
     formClassName?: string;
+}
+
+export interface ReferenceFieldProps<T extends Record = Record>
+    extends FieldProps<T> {
+    reference: string;
+    children: ReactChildren;
+    link?: string | false;
+    sortBy?: string;
 }
 
 export type ReviewStatus = 'accepted' | 'pending' | 'rejected';
 
 export interface Review extends Record {
-    date: string;
+    date: Date;
     status: ReviewStatus;
     customer_id: Identifier;
     product_id: Identifier;

@@ -1,8 +1,10 @@
 import React, { FC } from 'react';
 import { ReferenceField, TextField } from 'react-admin';
-import { FieldProps } from './../types';
+import { ReferenceFieldProps } from './../types';
 
-const ProductReferenceField: FC<FieldProps> = props => (
+const ProductReferenceField: FC<
+    Omit<ReferenceFieldProps, 'reference' | 'children'>
+> = props => (
     <ReferenceField
         label="Product"
         source="product_id"
