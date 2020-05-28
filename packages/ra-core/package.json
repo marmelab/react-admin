@@ -55,10 +55,10 @@
     },
     "peerDependencies": {
         "connected-react-router": "^6.5.2",
-        "final-form": "^4.20.0",
+        "final-form": "^4.18.5",
         "react": "^16.9.0",
         "react-dom": "^16.9.0",
-        "react-final-form": "^6.5.0",
+        "react-final-form": "^6.3.3",
         "react-redux": "^7.1.0",
         "react-router": "^5.1.0",
         "react-router-dom": "^5.1.0",
