@@ -1,15 +1,17 @@
-import React, { Children, cloneElement } from 'react';
+import React, { Children, cloneElement, FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import {
     AppBar as MuiAppBar,
+    AppBarProps as MuiAppBarProps,
     IconButton,
     Toolbar,
     Tooltip,
     Typography,
     makeStyles,
     useMediaQuery,
+    Theme,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { toggleSidebar, useTranslate } from 'ra-core';
@@ -78,13 +80,12 @@ const useStyles = makeStyles(
  *    );
  *};
  */
-const AppBar = props => {
+const AppBar: FC<AppBarProps> = props => {
     const {
         children,
         classes: classesOverride,
         className,
         color = 'secondary',
-        logo,
         logout,
         open,
         title,
@@ -93,7 +94,9 @@ const AppBar = props => {
     } = props;
     const classes = useStyles(props);
     const dispatch = useDispatch();
-    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+    const isXSmall = useMediaQuery<Theme>(theme =>
+        theme.breakpoints.down('xs')
+    );
     const translate = useTranslate();
 
     return (
@@ -147,17 +150,19 @@ const AppBar = props => {
     );
 };
 
+interface Props {
+    logout?: ReactElement;
+    userMenu?: ReactElement;
+    open?: boolean;
+}
+
+export type AppBarProps = Props & MuiAppBarProps;
+
 AppBar.propTypes = {
     children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
-    color: PropTypes.oneOf([
-        'default',
-        'inherit',
-        'primary',
-        'secondary',
-        'transparent',
-    ]),
+    color: PropTypes.oneOf(['default', 'inherit', 'primary', 'secondary']),
     logout: PropTypes.element,
     open: PropTypes.bool,
     userMenu: PropTypes.element,
