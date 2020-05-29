@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, FC } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import Snackbar, { SnackbarProps } from '@material-ui/core/Snackbar';
@@ -15,7 +15,7 @@ import {
     useTranslate,
 } from 'ra-core';
 
-interface Props {
+export interface NotificationProps extends Omit<SnackbarProps, 'open'> {
     type?: string;
 }
 
@@ -36,9 +36,7 @@ const useStyles = makeStyles(
     { name: 'RaNotification' }
 );
 
-const Notification: React.FunctionComponent<
-    Props & Omit<SnackbarProps, 'open'>
-> = props => {
+const Notification: FC<NotificationProps> = props => {
     const {
         classes: classesOverride,
         type,

@@ -1,14 +1,24 @@
-import React, { Children, cloneElement } from 'react';
+import React, { Children, cloneElement, FC } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { Drawer, makeStyles, useMediaQuery } from '@material-ui/core';
+import {
+    Drawer,
+    makeStyles,
+    useMediaQuery,
+    Theme,
+    DrawerProps,
+} from '@material-ui/core';
 import lodashGet from 'lodash/get';
-import { setSidebarVisibility } from 'ra-core';
+import { setSidebarVisibility, ReduxState } from 'ra-core';
 
 export const DRAWER_WIDTH = 240;
 export const CLOSED_DRAWER_WIDTH = 55;
 
-const useStyles = makeStyles(
+interface StyleProps {
+    open: boolean;
+}
+
+const useStyles = makeStyles<Theme, StyleProps>(
     theme => ({
         drawerPaper: {
             position: 'relative',
@@ -45,22 +55,17 @@ const useStyles = makeStyles(
     { name: 'RaSidebar' }
 );
 
-const Sidebar = props => {
-    const {
-        children,
-        closedSize,
-        size,
-        classes: classesOverride,
-        ...rest
-    } = props;
+const Sidebar: FC<DrawerProps> = props => {
+    const { children, ...rest } = props;
     const dispatch = useDispatch();
-    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
-    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
-    const open = useSelector(state => state.admin.ui.sidebarOpen);
-    useSelector(state => state.locale); // force redraw on locale change
+    const isXSmall = useMediaQuery<Theme>(theme =>
+        theme.breakpoints.down('xs')
+    );
+    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
+    const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
     const handleClose = () => dispatch(setSidebarVisibility(false));
     const toggleSidebar = () => dispatch(setSidebarVisibility(!open));
-    const classes = useStyles({ ...props, open });
+    const classes = useStyles({ open });
 
     return isXSmall ? (
         <Drawer

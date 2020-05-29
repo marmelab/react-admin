@@ -4,26 +4,37 @@ import React, {
     useEffect,
     useRef,
     useState,
+    ComponentType,
+    ReactNode,
+    ErrorInfo,
+    FC,
 } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { withRouter } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import {
     createMuiTheme,
     withStyles,
     createStyles,
 } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
+import { ThemeProvider, ClassNameMap } from '@material-ui/styles';
 import compose from 'recompose/compose';
 
 import DefaultAppBar from './AppBar';
 import DefaultSidebar from './Sidebar';
-import DefaultMenu from './Menu';
-import DefaultNotification from './Notification';
-import DefaultError from './Error';
+import DefaultMenu, { MenuProps } from './Menu';
+import DefaultNotification, { NotificationProps } from './Notification';
+import DefaultError, { ErrorComponentProps } from './Error';
 import defaultTheme from '../defaultTheme';
-import { ComponentPropType } from 'ra-core';
+import {
+    ComponentPropType,
+    DashboardComponent,
+    TitleComponent,
+    ReduxState,
+} from 'ra-core';
+import { DrawerProps } from '@material-ui/core';
+import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme';
 
 const styles = theme =>
     createStyles({
@@ -76,9 +87,54 @@ const sanitizeRestProps = ({
     ...props
 }) => props;
 
-class Layout extends Component {
-    state = { hasError: false, errorMessage: null, errorInfo: null };
+interface LayoutProps extends RouteComponentProps {
+    appBar?: ComponentType<any>;
+    classes?: ClassNameMap;
+    className?: string;
+    customRoutes?: any[];
+    dashboard?: DashboardComponent;
+    error?: ComponentType<ErrorComponentProps>;
+    logout?: ReactNode;
+    menu?: ComponentType<MenuProps>;
+    notification?: ComponentType<NotificationProps>;
+    open?: boolean;
+    sidebar?: ComponentType<DrawerProps>;
+    title: TitleComponent;
+}
 
+type LayoutState = {
+    hasError?: boolean;
+    errorMessage: Error | null;
+    errorInfo: ErrorInfo | null;
+};
+
+class Layout extends Component<LayoutProps, LayoutState> {
+    static propTypes = {
+        appBar: ComponentPropType,
+        children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
+        classes: PropTypes.object,
+        className: PropTypes.string,
+        customRoutes: PropTypes.array,
+        dashboard: ComponentPropType,
+        error: ComponentPropType,
+        history: PropTypes.object.isRequired,
+        logout: PropTypes.element,
+        menu: ComponentPropType,
+        notification: ComponentPropType,
+        open: PropTypes.bool,
+        sidebar: ComponentPropType,
+        title: PropTypes.node.isRequired,
+    };
+
+    static defaultProps = {
+        appBar: DefaultAppBar,
+        error: DefaultError,
+        menu: DefaultMenu,
+        notification: DefaultNotification,
+        sidebar: DefaultSidebar,
+    };
+
+    state = { hasError: false, errorMessage: null, errorInfo: null };
     constructor(props) {
         super(props);
         /**
@@ -146,32 +202,7 @@ class Layout extends Component {
     }
 }
 
-Layout.propTypes = {
-    appBar: ComponentPropType,
-    children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    customRoutes: PropTypes.array,
-    dashboard: ComponentPropType,
-    error: ComponentPropType,
-    history: PropTypes.object.isRequired,
-    logout: PropTypes.element,
-    menu: ComponentPropType,
-    notification: ComponentPropType,
-    open: PropTypes.bool,
-    sidebar: ComponentPropType,
-    title: PropTypes.node.isRequired,
-};
-
-Layout.defaultProps = {
-    appBar: DefaultAppBar,
-    error: DefaultError,
-    menu: DefaultMenu,
-    notification: DefaultNotification,
-    sidebar: DefaultSidebar,
-};
-
-const mapStateToProps = state => ({
+const mapStateToProps = (state: ReduxState) => ({
     open: state.admin.ui.sidebarOpen,
 });
 
@@ -184,7 +215,14 @@ const EnhancedLayout = compose(
     withStyles(styles, { name: 'RaLayout' })
 )(Layout);
 
-const LayoutWithTheme = ({ theme: themeOverride, ...props }) => {
+interface LayoutWithThemeProps extends LayoutProps {
+    theme?: ThemeOptions;
+}
+
+const LayoutWithTheme: FC<LayoutWithThemeProps> = ({
+    theme: themeOverride,
+    ...props
+}) => {
     const themeProp = useRef(themeOverride);
     const [theme, setTheme] = useState(createMuiTheme(themeOverride));
 
@@ -203,7 +241,7 @@ const LayoutWithTheme = ({ theme: themeOverride, ...props }) => {
 };
 
 LayoutWithTheme.propTypes = {
-    theme: PropTypes.object,
+    theme: PropTypes.any,
 };
 
 LayoutWithTheme.defaultProps = {

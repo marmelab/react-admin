@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
@@ -33,7 +33,13 @@ const useStyles = makeStyles(
     { name: 'RaLoading' }
 );
 
-const Loading = props => {
+interface Props {
+    className?: string;
+    loadingPrimary?: string;
+    loadingSecondary?: string;
+}
+
+const Loading: FC<Props> = props => {
     const {
         className,
         loadingPrimary = 'ra.page.loading',
@@ -53,7 +59,6 @@ const Loading = props => {
 };
 
 Loading.propTypes = {
-    classes: PropTypes.object,
     className: PropTypes.string,
     loadingPrimary: PropTypes.string,
     loadingSecondary: PropTypes.string,

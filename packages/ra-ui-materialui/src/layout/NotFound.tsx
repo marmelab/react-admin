@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
@@ -7,7 +7,8 @@ import History from '@material-ui/icons/History';
 import classnames from 'classnames';
 
 import { useAuthenticated, useTranslate } from 'ra-core';
-import Title from './Title';
+import Title, { TitleProps } from './Title';
+import { RouteComponentProps } from 'react-router-dom';
 
 const useStyles = makeStyles(
     theme => ({
@@ -45,8 +46,14 @@ function goBack() {
     window.history.go(-1);
 }
 
-const NotFound = props => {
-    const { className, classes: classesOverride, title, ...rest } = props;
+interface Props extends RouteComponentProps {
+    className: string;
+    title: TitleProps['defaultTitle'];
+    classes?: object;
+}
+
+const NotFound: FC<Props> = props => {
+    const { className, title, ...rest } = props;
     const classes = useStyles(props);
     const translate = useTranslate();
     useAuthenticated();
@@ -62,8 +69,8 @@ const NotFound = props => {
                 <div>{translate('ra.message.not_found')}.</div>
             </div>
             <div className={classes.toolbar}>
-                <Button variant="contained" icon={<History />} onClick={goBack}>
-                    {translate('ra.action.back')}
+                <Button variant="contained" onClick={goBack}>
+                    <History /> {translate('ra.action.back')}
                 </Button>
             </div>
         </div>
@@ -82,7 +89,6 @@ NotFound.propTypes = {
     className: PropTypes.string,
     classes: PropTypes.object,
     title: PropTypes.string,
-    location: PropTypes.object,
 };
 
 export default NotFound;
