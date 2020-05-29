@@ -17,6 +17,7 @@ interface Props {
     label?: string;
     logout?: ReactNode;
     icon?: ReactNode;
+    children?: ReactNode;
 }
 
 const UserMenu: FC<Props> = props => {

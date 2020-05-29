@@ -5,13 +5,13 @@ type Width = CSSProperties['width'];
 
 declare module '@material-ui/core/styles/createMuiTheme' {
     interface Theme {
-        sidebar: {
+        sidebar?: {
             width: Width;
             closedWidth: Width;
         };
     }
     interface ThemeOptions {
-        sidebar: {
+        sidebar?: {
             width: Width;
             closedWidth: Width;
         };

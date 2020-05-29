@@ -83,7 +83,10 @@ const sanitizeRestProps = ({
     location,
     match,
     ...rest
-}) => rest;
+}: Partial<Props>): Omit<
+    Props,
+    keyof RouteComponentProps | 'className' | 'title'
+> => rest;
 
 NotFound.propTypes = {
     className: PropTypes.string,

@@ -85,7 +85,10 @@ const sanitizeRestProps = ({
     location,
     match,
     ...props
-}) => props;
+}: Partial<LayoutProps>): Omit<
+    LayoutProps,
+    keyof RouteComponentProps | 'title'
+> => props;
 
 interface LayoutProps extends RouteComponentProps {
     appBar?: ComponentType<any>;

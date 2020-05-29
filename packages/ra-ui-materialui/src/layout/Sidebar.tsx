@@ -1,4 +1,4 @@
-import React, { Children, cloneElement, FC } from 'react';
+import React, { Children, cloneElement, FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -55,7 +55,11 @@ const useStyles = makeStyles<Theme, StyleProps>(
     { name: 'RaSidebar' }
 );
 
-const Sidebar: FC<DrawerProps> = props => {
+interface Props extends DrawerProps {
+    children: ReactElement;
+}
+
+const Sidebar: FC<Props> = props => {
     const { children, ...rest } = props;
     const dispatch = useDispatch();
     const isXSmall = useMediaQuery<Theme>(theme =>
@@ -111,7 +115,7 @@ const Sidebar: FC<DrawerProps> = props => {
 };
 
 Sidebar.propTypes = {
-    children: PropTypes.node.isRequired,
+    children: PropTypes.element.isRequired,
 };
 
 export default Sidebar;
