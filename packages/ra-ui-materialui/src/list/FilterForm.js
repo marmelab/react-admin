@@ -56,6 +56,7 @@ const sanitizeRestProps = ({
     initialValues,
     invalid,
     modified,
+    modifiedSinceLastSubmit,
     pristine,
     pure,
     reset,
