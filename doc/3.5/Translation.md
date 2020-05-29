@@ -141,7 +141,7 @@ const i18nProvider = polyglotI18nProvider(locale =>
 The default react-admin locale is `en`, for English. If you want to display the interface in another language by default, you'll have to install a third-party package. For instance, to change the interface to French, you must install the `ra-language-french` npm package, then use it in a custom `i18nProvider`, as follows:
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { Admin, Resource } from 'react-admin';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import frenchMessages from 'ra-language-french';
@@ -215,7 +215,7 @@ If you want to contribute a new translation, feel free to submit a pull request 
 If you want to offer the ability to change locale at runtime, you must provide an `i18nProvider` that contains the messages for all possible locales:
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { Admin, Resource } from 'react-admin';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
@@ -239,7 +239,7 @@ export default App;
 Then, use the `useSetLocale` hook to change locale. For instance, the following component allows the user to switch the interface language between English and French:
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import Button from '@material-ui/core/Button';
 import { useSetLocale } from 'react-admin';
 
@@ -262,7 +262,8 @@ export default LocaleSwitcher;
 Your language switcher component probably needs to know the current locale, in order to disable/transform the button for the current language. The `useLocale` hook returns the current locale:
 
 ```jsx
-import React, { Component } from 'react';
+import * as React from 'react';
+import { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import { useLocale, useSetLocale } from 'react-admin';
 
@@ -321,7 +322,7 @@ const App = () => (
 React-admin provides a helper function named `resolveBrowserLocale()`, which detects the user's browser locale. To use it, simply pass the function as the `initialLocale` argument of `polyglotI18nProvider`.
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { 
     Admin,
     Resource,
@@ -448,7 +449,7 @@ If you need to translate messages in your own components, React-admin provides a
 
 ```jsx
 // in src/MyHelloButton.js
-import React from 'react';
+import * as React from "react";
 import { useTranslate } from 'react-admin';
 
 const MyHelloButton = () => {
@@ -483,7 +484,8 @@ If you're stuck with class components, react-admin also exports a `withTranslate
 
 ```jsx
 // in src/MyHelloButton.js
-import React, { Component } from 'react';
+import * as React from 'react';
+import { Component } from 'react';
 import { withTranslate } from 'react-admin';
 
 class MyHelloButton extends Component {

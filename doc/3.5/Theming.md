@@ -15,7 +15,7 @@ Here is an example customizing an `EditButton` component inside a `Datagrid`, us
 
 {% raw %}
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -50,7 +50,7 @@ Here is an example using the `classes` property of the `Filter` and `List` compo
 
 {% raw %}
 ```jsx
-import React from 'react';
+import * as React from "react";
 import {
     BooleanField,
     Datagrid,
@@ -146,7 +146,7 @@ Sometimes you want the format to depend on the value. The following example show
 
 {% raw %}
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
@@ -189,7 +189,7 @@ Furthermore, you may extract this highlighting strategy into an Higher Order Com
 
 {% raw %}
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
@@ -254,7 +254,7 @@ Here is an example for a responsive list of posts, displaying a `SimpleList` on 
 
 ```jsx
 // in src/posts.js
-import React from 'react';
+import * as React from "react";
 import { useMediaQuery } from '@material-ui/core';
 import { List, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
@@ -413,7 +413,7 @@ export default MyLayout;
 You can replace the default user menu by your own by setting the `userMenu` prop of the `<AppBar>` component. For instance, to add custom menu items, just decorate the default `<UserMenu>` by adding children to it:
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { AppBar, UserMenu, MenuItemLink } from 'react-admin';
 import SettingsIcon from '@material-ui/icons/Settings';
 
@@ -518,7 +518,8 @@ For more custom layouts, write a component from scratch. It must contain a `{chi
 
 ```jsx
 // in src/MyLayout.js
-import React, { useEffect } from 'react';
+import * as React from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
@@ -615,7 +616,7 @@ Here is an example customization for `<AppBar>` to include a company logo in the
 
 ```jsx
 // in src/MyAppBar.js
-import React from 'react';
+import * as React from "react";
 import { AppBar } from 'react-admin';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -657,7 +658,7 @@ To use this custom `MyAppBar` component, pass it as prop to a custom `Layout`, a
 
 ```jsx
 // in src/MyLayout.js
-import React from 'react';
+import * as React from "react";
 import { Layout } from 'react-admin';
 import MyAppBar from './MyAppBar';
 
@@ -692,7 +693,7 @@ By default, React-admin uses [Material-ui's `<AppBar>` component](https://materi
 
 ```jsx
 // in src/MyAppBar.js
-import React from 'react';
+import * as React from "react";
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -718,7 +719,8 @@ If you want to add or remove menu items, for instance to link to non-resources p
 
 ```jsx
 // in src/Menu.js
-import React, { createElement } from 'react';
+import * as React from 'react';
+import { createElement } from 'react';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@material-ui/core';
 import { MenuItemLink, getResources } from 'react-admin';
@@ -810,7 +812,8 @@ If the default active style does not suit your tastes, you can override it by pa
 
 ```jsx
 // in src/Menu.js
-import React, { createElement } from 'react';
+import * as React from 'react';
+import { createElement } from 'react';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@material-ui/core';
 import { MenuItemLink, getResources } from 'react-admin';
@@ -936,7 +939,7 @@ Whenever a client-side error happens in react-admin, the user sees a default err
 
 ```jsx
 // in src/MyError.js
-import React from 'react';
+import * as React from "react";
 import Button from '@material-ui/core/Button';
 import ErrorIcon from '@material-ui/icons/Report';
 import History from '@material-ui/icons/History';
@@ -1006,10 +1009,10 @@ Display a circular progress component with optional messages. Display the same l
 
 Supported props:
 
-Prop | Type | Default | Descriptions
----|---|---|---
-`loadingPrimary` |`String` | `ra.page.loading` | Label to use for primary loading message
-`loadingSecondary` |`String` | `ra.message.loading` | Label to use for secondary loading message
+| Prop               | Type     | Default              | Descriptions                               |
+| ------------------ | -------- | -------------------- | ------------------------------------------ |
+| `loadingPrimary`   | `String` | `ra.page.loading`    | Label to use for primary loading message   |
+| `loadingSecondary` | `String` | `ra.message.loading` | Label to use for secondary loading message |
 
 Usage:
 

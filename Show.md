@@ -25,7 +25,7 @@ Here is the minimal code necessary to display a view to show a post:
 {% raw %}
 ```jsx
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 import { Admin, Resource } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 
@@ -40,7 +40,7 @@ const App = () => (
 export default App;
 
 // in src/posts.js
-import React from 'react';
+import * as React from "react";
 import { Show, SimpleShowLayout, TextField, DateField, EditButton, RichTextField } from 'react-admin';
 
 export const PostShow = (props) => (
@@ -182,7 +182,7 @@ Instead of a custom `Show`, you can use the `ShowGuesser` to determine which fie
 
 ```jsx
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 import { Admin, Resource, ShowGuesser } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 
