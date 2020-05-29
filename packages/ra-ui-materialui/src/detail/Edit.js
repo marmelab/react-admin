@@ -4,7 +4,11 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { useEditController, ComponentPropType } from 'ra-core';
+import {
+    useEditController,
+    ComponentPropType,
+    SideEffectContext,
+} from 'ra-core';
 
 import DefaultActions from './EditActions';
 import TitleForRecord from '../layout/TitleForRecord';
@@ -70,6 +74,8 @@ Edit.propTypes = {
     resource: PropTypes.string.isRequired,
     title: PropTypes.node,
     successMessage: PropTypes.string,
+    onSuccess: PropTypes.func,
+    onFailure: PropTypes.func,
 };
 
 export const EditView = props => {
@@ -88,6 +94,8 @@ export const EditView = props => {
         redirect,
         resource,
         save,
+        setOnSuccess,
+        setOnFailure,
         saving,
         title,
         undoable,
@@ -180,6 +188,10 @@ EditView.propTypes = {
     save: PropTypes.func,
     title: PropTypes.node,
     version: PropTypes.number,
+    onSuccess: PropTypes.func,
+    onFailure: PropTypes.func,
+    setOnSuccess: PropTypes.func,
+    setOnFailure: PropTypes.func,
 };
 
 EditView.defaultProps = {
@@ -224,6 +236,10 @@ const sanitizeRestProps = ({
     permissions,
     undoable,
     successMessage,
+    onSuccess,
+    setOnSuccess,
+    onFailure,
+    setOnFailure,
     translate,
     ...rest
 }) => rest;

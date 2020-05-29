@@ -20,9 +20,11 @@ Here are all the props accepted by the `<Create>` and `<Edit>` components:
 * [`title`](#page-title)
 * [`actions`](#actions)
 * [`aside`](#aside-component)
-* [`successMessage`](#success-message)
 * [`component`](#component)
 * [`undoable`](#undoable) (`<Edit>` only)
+* [`successMessage`](#success-message)
+* [`onSuccess`](#onSuccess)
+* [`onFailure`](#onFailure)
 
 Here is the minimal code necessary to display a form to create and edit comments:
 
@@ -180,19 +182,6 @@ const Aside = ({ record }) => (
 
 **Tip**: Always test that the `record` is defined before using it, as react-admin starts rendering the UI before the API call is over.
 
-### Success message
-
-Once the `dataProvider` returns successfully after save, users see a generic notification ("Element created" / "Element updated"). You can customize this message by passing a `successMessage` prop:
-
-```jsx
-const PostEdit = props => (
-    <Edit successMessage="messages.post_saved" {...props}>
-        ...
-    </Edit>
-```
-
-**Tip**: The message will be translated.
-
 ### Component
 
 By default, the Create and Edit views render the main form inside a material-ui `<Card>` element. The actual layout of the form depends on the `Form` component you're using (`<SimpleForm>`, `<TabbedForm>`, or a custom form component).
@@ -265,6 +254,91 @@ const PostEdit = props => (
     </Edit>
 );
 ```
+
+### Success message
+
+Once the `dataProvider` returns successfully after save, users see a generic notification ("Element created" / "Element updated"). You can customize this message by passing a `successMessage` prop:
+
+```jsx
+const PostEdit = props => (
+    <Edit successMessage="messages.post_saved" {...props}>
+        ...
+    </Edit>
+```
+
+**Tip**: The message will be translated.
+
+### `onSuccess`
+
+Sometimes `successMessage` isn't enough, and you may need to completely override what should happen after the save action succeeds at the dataProvider level.
+
+By default, when the save action succeeds, react-admin shows a notification, and redirects to another page. You can override this behavior and pass custom side effects by providing a function as `onSuccess` prop:
+
+```jsx
+import React from 'react';
+import { useNotify, useRefresh, useRedirect, Edit, SimpleForm } from 'react-admin';
+
+const PostEdit = props => {
+    const notify = useNotify();
+    const refresh = useRefresh();
+    const redirect = useRedirect();
+
+    const onSuccess = ({ data }) => {
+        notify(`Changes to post "${data.title}" saved`)
+        redirect('/posts');
+        refresh();
+    };
+
+    return (
+        <Edit onSuccess={onSuccess} {...props}>
+            <SimpleForm>
+                ...
+            </SimpleForm>
+        </Edit>
+    );
+}
+```
+
+The `onSuccess` function receives the response from the dataProvider call (`dataProvider.create()` or `dataProvider.update()`), which is the created/edited record (see [the dataProvider documentation for details](./DataProviders.md#response-format))
+
+To learn more about built-in side effect hooks like `useNotify`, `useRedirect` and `useRefresh`, check the [Querying the API documentation](./Actions.md#handling-side-effects-in-usedataprovider).
+
+**Tip**: When you set the `onSuccess` prop, the `successMessage` prop is ignored.
+
+**Tip**: If you want to have different success side effects based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save and redirect to the list", and another to "save and display an empty form"), check [the `<SaveButton onSave>` prop](#using-onsave-to-alter-the-form-submission-behavior).
+
+### `onFailure`
+
+By default, when the save action fails at the dataProvider level, react-admin shows an error notification. On an Edit page with `undoable` set to `true`, it refreshes the page, too.
+
+You can override this behavior and pass custom side effects by providing a function as `onFailure` prop:
+
+```jsx
+import React from 'react';
+import { useNotify, useRefresh, useRedirect, Edit, SimpleForm } from 'react-admin';
+
+const PostEdit = props => {
+    const notify = useNotify();
+    const refresh = useRefresh();
+    const redirect = useRedirect();
+
+    const onFailure = (error) => {
+        notify(`Could not edit post: ${error.message}`)
+        redirect('/posts');
+        refresh();
+    };
+
+    return (
+        <Edit onFailure={onFailure} {...props}>
+            <SimpleForm>
+                ...
+            </SimpleForm>
+        </Edit>
+    );
+}
+```
+
+The `onFailure` function receives the error from the dataProvider call (`dataProvider.create()` or `dataProvider.update()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format))
 
 ## Prefilling a `<Create>` Record
 

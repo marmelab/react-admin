@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 // @ts-ignore
 import inflection from 'inflection';
 import { parse } from 'query-string';
@@ -13,26 +13,6 @@ import { useVersion } from '.';
 import { CRUD_CREATE } from '../actions';
 import { Record } from '../types';
 
-export interface CreateControllerProps {
-    loading: boolean;
-    loaded: boolean;
-    saving: boolean;
-    defaultTitle: string;
-    save: (
-        record: Partial<Record>,
-        redirect: RedirectionSideEffect,
-        callbacks?: {
-            onSuccess: () => void;
-            onFailure: (error: string | { message?: string }) => void;
-        }
-    ) => void;
-    resource: string;
-    basePath: string;
-    record?: Partial<Record>;
-    redirect: RedirectionSideEffect;
-    version: number;
-}
-
 export interface CreateProps {
     basePath: string;
     hasCreate?: boolean;
@@ -43,7 +23,31 @@ export interface CreateProps {
     match?: Match;
     record?: Partial<Record>;
     resource: string;
+    onSuccess?: (response: any) => void;
+    onFailure?: (error: { message?: string }) => void;
     successMessage?: string;
+}
+
+export interface CreateControllerProps {
+    loading: boolean;
+    loaded: boolean;
+    saving: boolean;
+    defaultTitle: string;
+    save: (
+        record: Partial<Record>,
+        redirect: RedirectionSideEffect,
+        callbacks?: {
+            onSuccess: (response: any) => void;
+            onFailure: (error: { message?: string }) => void;
+        }
+    ) => void;
+    setOnSuccess: (response: any) => void;
+    setOnFailure: (error?: any) => void;
+    resource: string;
+    basePath: string;
+    record?: Partial<Record>;
+    redirect: RedirectionSideEffect;
+    version: number;
 }
 
 /**
@@ -72,6 +76,8 @@ const useCreateController = (props: CreateProps): CreateControllerProps => {
         hasShow,
         hasEdit,
         successMessage,
+        onSuccess,
+        onFailure,
     } = props;
 
     const location = useLocation();
@@ -81,20 +87,32 @@ const useCreateController = (props: CreateProps): CreateControllerProps => {
     const recordToUse = getRecord(location, record);
     const version = useVersion();
 
+    const onSuccessRef = useRef(onSuccess);
+    const setOnSuccess = onSuccess => {
+        onSuccessRef.current = onSuccess;
+    };
+
+    const onFailureRef = useRef(onFailure);
+    const setOnFailure = onFailure => {
+        onFailureRef.current = onFailure;
+    };
+
     const [create, { loading: saving }] = useCreate(resource);
 
     const save = useCallback(
         (
             data: Partial<Record>,
             redirectTo = 'list',
-            { onSuccess, onFailure } = {}
+            { onSuccess: onSuccessFromSave, onFailure: onFailureFromSave } = {}
         ) =>
             create(
                 { payload: { data } },
                 {
                     action: CRUD_CREATE,
-                    onSuccess: onSuccess
-                        ? onSuccess
+                    onSuccess: onSuccessFromSave
+                        ? onSuccessFromSave
+                        : onSuccessRef.current
+                        ? onSuccessRef.current
                         : ({ data: newRecord }) => {
                               notify(
                                   successMessage || 'ra.notification.created',
@@ -110,8 +128,10 @@ const useCreateController = (props: CreateProps): CreateControllerProps => {
                                   newRecord
                               );
                           },
-                    onFailure: onFailure
-                        ? onFailure
+                    onFailure: onFailureFromSave
+                        ? onFailureFromSave
+                        : onFailureRef.current
+                        ? onFailureRef.current
                         : error => {
                               notify(
                                   typeof error === 'string'
@@ -123,7 +143,7 @@ const useCreateController = (props: CreateProps): CreateControllerProps => {
                           },
                 }
             ),
-        [create, notify, successMessage, redirect, basePath]
+        [successMessage, create, notify, redirect, basePath]
     );
 
     const resourceName = translate(`resources.${resource}.name`, {
@@ -140,6 +160,8 @@ const useCreateController = (props: CreateProps): CreateControllerProps => {
         saving,
         defaultTitle,
         save,
+        setOnSuccess,
+        setOnFailure,
         resource,
         basePath,
         record: recordToUse,

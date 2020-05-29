@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 import inflection from 'inflection';
 
 import useVersion from './useVersion';
@@ -23,6 +23,8 @@ export interface EditProps {
     id: Identifier;
     resource: string;
     undoable?: boolean;
+    onSuccess?: (response: any) => void;
+    onFailure?: (error: { message?: string }) => void;
     [key: string]: any;
 }
 
@@ -36,9 +38,11 @@ export interface EditControllerProps {
         redirect?: RedirectionSideEffect,
         callbacks?: {
             onSuccess: () => void;
-            onFailure: (error: string | { message?: string }) => void;
+            onFailure: (error: { message?: string }) => void;
         }
     ) => void;
+    setOnSuccess: (response: any) => void;
+    setOnFailure: (error?: any) => void;
     resource: string;
     basePath: string;
     record?: Record;
@@ -66,12 +70,31 @@ export interface EditControllerProps {
  */
 const useEditController = (props: EditProps): EditControllerProps => {
     useCheckMinimumRequiredProps('Edit', ['basePath', 'resource'], props);
-    const { basePath, id, resource, successMessage, undoable = true } = props;
+    const {
+        basePath,
+        id,
+        resource,
+        successMessage,
+        undoable = true,
+        onSuccess,
+        onFailure,
+    } = props;
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();
     const refresh = useRefresh();
     const version = useVersion();
+
+    const onSuccessRef = useRef(onSuccess);
+    const setOnSuccess = onSuccess => {
+        onSuccessRef.current = onSuccess;
+    };
+
+    const onFailureRef = useRef(onFailure);
+    const setOnFailure = onFailure => {
+        onFailureRef.current = onFailure;
+    };
+
     const { data: record, loading, loaded } = useGetOne(resource, id, {
         action: CRUD_GET_ONE,
         onFailure: () => {
@@ -102,14 +125,16 @@ const useEditController = (props: EditProps): EditControllerProps => {
         (
             data: Partial<Record>,
             redirectTo = DefaultRedirect,
-            { onSuccess, onFailure } = {}
+            { onSuccess: onSuccessFromSave, onFailure: onFailureFromSave } = {}
         ) =>
             update(
                 { payload: { data } },
                 {
                     action: CRUD_UPDATE,
-                    onSuccess: onSuccess
-                        ? onSuccess
+                    onSuccess: onSuccessFromSave
+                        ? onSuccessFromSave
+                        : onSuccessRef.current
+                        ? onSuccessRef.current
                         : () => {
                               notify(
                                   successMessage || 'ra.notification.updated',
@@ -121,8 +146,10 @@ const useEditController = (props: EditProps): EditControllerProps => {
                               );
                               redirect(redirectTo, basePath, data.id, data);
                           },
-                    onFailure: onFailure
-                        ? onFailure
+                    onFailure: onFailureFromSave
+                        ? onFailureFromSave
+                        : onFailureRef.current
+                        ? onFailureRef.current
                         : error => {
                               notify(
                                   typeof error === 'string'
@@ -138,7 +165,7 @@ const useEditController = (props: EditProps): EditControllerProps => {
                     undoable,
                 }
             ),
-        [update, undoable, notify, successMessage, redirect, basePath, refresh]
+        [undoable, successMessage, update, notify, redirect, basePath, refresh]
     );
 
     return {
@@ -147,6 +174,8 @@ const useEditController = (props: EditProps): EditControllerProps => {
         saving,
         defaultTitle,
         save,
+        setOnSuccess,
+        setOnFailure,
         resource,
         basePath,
         record,
