@@ -1,6 +1,6 @@
 import React from 'react';
 import expect from 'expect';
-import { act, cleanup, wait } from '@testing-library/react';
+import { act, cleanup } from '@testing-library/react';
 
 import { getRecord } from './useCreateController';
 import CreateController from './CreateController';
