@@ -74,6 +74,7 @@ Create.propTypes = {
     successMessage: PropTypes.string,
     onSuccess: PropTypes.func,
     onFailure: PropTypes.func,
+    transform: PropTypes.func,
 };
 
 export const CreateView = props => {
@@ -94,6 +95,7 @@ export const CreateView = props => {
         save,
         setOnSuccess,
         setOnFailure,
+        setTransform,
         saving,
         title,
         version,
@@ -101,13 +103,12 @@ export const CreateView = props => {
     } = props;
     useCheckMinimumRequiredProps('Create', ['children'], props);
     const classes = useStyles(props);
+    const sideEffectContextValue = useMemo(
+        () => ({ setOnSuccess, setOnFailure, setTransform }),
+        [setOnFailure, setOnSuccess, setTransform]
+    );
     return (
-        <SideEffectContext.Provider
-            value={useMemo(() => ({ setOnSuccess, setOnFailure }), [
-                setOnFailure,
-                setOnSuccess,
-            ])}
-        >
+        <SideEffectContext.Provider value={sideEffectContextValue}>
             <div
                 className={classnames('create-page', classes.root, className)}
                 {...sanitizeRestProps(rest)}
@@ -178,6 +179,7 @@ CreateView.propTypes = {
     onFailure: PropTypes.func,
     setOnSuccess: PropTypes.func,
     setOnFailure: PropTypes.func,
+    setTransform: PropTypes.func,
 };
 
 CreateView.defaultProps = {
@@ -228,6 +230,8 @@ const sanitizeRestProps = ({
     setOnSuccess,
     onFailure,
     setOnFailure,
+    transform,
+    setTransform,
     translate,
     ...rest
 }) => rest;

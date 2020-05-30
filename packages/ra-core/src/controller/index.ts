@@ -2,7 +2,6 @@ import CreateController from './CreateController';
 import EditController from './EditController';
 import ListController from './ListController';
 import ShowController from './ShowController';
-import SideEffectContext from './SideEffectContext';
 import useRecordSelection from './useRecordSelection';
 import useVersion from './useVersion';
 import useExpanded from './useExpanded';
@@ -29,7 +28,6 @@ export {
     EditController,
     ListController,
     ShowController,
-    SideEffectContext,
     useCheckMinimumRequiredProps,
     useListController,
     useEditController,
@@ -55,3 +53,4 @@ export {
 export * from './field';
 export * from './input';
 export * from './button';
+export * from './saveModifiers';
