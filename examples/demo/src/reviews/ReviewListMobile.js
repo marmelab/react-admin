@@ -29,10 +29,10 @@ const useStyles = makeStyles({
     },
 });
 
-const ReviewMobileList = ({ basePath, data, ids, loading, total }) => {
+const ReviewMobileList = ({ basePath, data, ids, loaded, total }) => {
     const classes = useStyles();
     return (
-        (loading || total > 0) && (
+        (loaded || total > 0) && (
             <List className={classes.root}>
                 {ids.map(id => (
                     <Link
