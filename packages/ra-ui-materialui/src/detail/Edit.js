@@ -77,6 +77,7 @@ Edit.propTypes = {
     onSuccess: PropTypes.func,
     onFailure: PropTypes.func,
     transform: PropTypes.func,
+    undoable: PropTypes.bool,
 };
 
 export const EditView = props => {

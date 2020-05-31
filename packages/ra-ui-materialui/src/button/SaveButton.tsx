@@ -92,19 +92,20 @@ const SaveButton: FC<SaveButtonProps> = props => {
     );
 
     const handleClick = event => {
+        // deprecated: use onSuccess and transform insted of onSave
         if (typeof onSave === 'function') {
             setOnSave(onSave);
         } else {
             // we reset to the Form default save function
             setOnSave();
         }
-        if (typeof onSuccess === 'function') {
+        if (onSuccess) {
             setOnSuccess(onSuccess);
         }
-        if (typeof onFailure === 'function') {
+        if (onFailure) {
             setOnFailure(onFailure);
         }
-        if (typeof transform === 'function') {
+        if (transform) {
             setTransform(transform);
         }
         if (saving) {
