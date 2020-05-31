@@ -5,46 +5,21 @@ title: "The Create and Edit Views"
 
 # The Create and Edit Views
 
-The Create and Edit views both display a form, initialized with an empty record (for the Create view) or with a record fetched from the API (for the Edit view). The `<Create>` and `<Edit>` components then delegate the actual rendering of the form to a form component - usually `<SimpleForm>`. This form component uses its children ([`<Input>`](./Inputs.md) components) to render each form input.
+`<Resource>` maps URLs to components - it takes care or *routing*. When you set a component as the `create` prop for a Resource, react-admin renders that component when users go to the `/[resource]/create` URL. When you set a component as the `edit` prop for a resource, react-admin renders that component when users go to the `/[resource]/:id` URL. 
 
-![post creation form](./img/create-view.png)
+```
+<Resource name="posts" create={PostCreate} edit={PostEdit} />
+                               ----------        --------
+                                    |               |
+    displayed when browsing to /posts/create        |
+                                                    |
+                    displayed when browsing to /posts/123
+```
 
-![post edition form](./img/edit-view.png)
-
-## The `<Create>` and `<Edit>` components
-
-The `<Create>` and `<Edit>` components render the page title and actions, and fetch the record from the data provider. They are not responsible for rendering the actual form - that's the job of their child component (usually `<SimpleForm>`), to which they pass the `record` as prop.
-
-Here are all the props accepted by the `<Create>` and `<Edit>` components:
-
-* [`title`](#page-title)
-* [`actions`](#actions)
-* [`aside`](#aside-component)
-* [`component`](#component)
-* [`undoable`](#undoable) (`<Edit>` only)
-* [`successMessage`](#success-message)
-* [`onSuccess`](#onSuccess)
-* [`onFailure`](#onFailure)
-
-Here is the minimal code necessary to display a form to create and edit comments:
+You can pass any component you want as `create` of `edit` props of a `<Resource>`. But you'll probably want to fetch a record based on the URL, and display a form to edit that record. That's what the `<Create>` and `<Edit>` components do. So in most cases, the component passed as `create` view uses the react-admin `<Create>` component, and the component passed as `edit` view uses the react-admin `<Edit>` component. Here is an example:
 
 {% raw %}
 ```jsx
-// in src/App.js
-import React from 'react';
-import { Admin, Resource } from 'react-admin';
-import jsonServerProvider from 'ra-data-json-server';
-
-import { PostCreate, PostEdit } from './posts';
-
-const App = () => (
-    <Admin dataProvider={jsonServerProvider('https://jsonplaceholder.typicode.com')}>
-        <Resource name="posts" create={PostCreate} edit={PostEdit} />
-    </Admin>
-);
-
-export default App;
-
 // in src/posts.js
 import React from 'react';
 import { Create, Edit, SimpleForm, TextInput, DateInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton } from 'react-admin';
@@ -88,7 +63,33 @@ That's enough to display the post edit form:
 
 **Tip**: You might find it cumbersome to repeat the same input components for both the `<Create>` and the `<Edit>` view. In practice, these two views almost never have exactly the same form inputs. For instance, in the previous snippet, the `<Edit>` views show related comments to the current post, which makes no sense for a new post. Having two separate sets of input components for the two views is, therefore, a deliberate choice. However, if you have the same set of input components, export them as a custom Form component to avoid repetition.
 
- `<Create>` accepts a `record` prop, to initialize the form based on a value object.
+React-admin injects a few props to the `create` and `edit` views: the `resource` name, the `basePath` (the root URL), the `permissions`, and, in the case of the `edit` view, the record `id`. That's why you need to pass the `props` to the `<Create>` and `<Edit>` components.
+
+## The `<Create>` and `<Edit>` components
+
+The `<Create>` and `<Edit>` components call the `dataProvider`, prepare the form submit handler, and render the page title and actions. They are not responsible for rendering the actual form - that's the job of their child component (usually `<SimpleForm>`). This form component uses its children ([`<Input>`](./Inputs.md) components) to render each form input.
+
+![post creation form](./img/create-view.png)
+
+The `<Create>` component clones its child, and passes it an empty object `{}`) as `record` prop. It also passes a callback as `save` prop, which calls `dataProvider.create()`.
+
+![post edition form](./img/edit-view.png)
+
+The `<Edit>` component calls `dataProvider.getOne()`, using the id from the URL. It also clones its child, and passes it the fetched record as `record` prop. It also passes a callback as `save` prop, which calls `dataProvider.update()`.
+
+You can customize the `<Create>` and `<Edit>` components using the following props:
+
+* [`title`](#page-title)
+* [`actions`](#actions)
+* [`aside`](#aside-component)
+* [`component`](#component)
+* [`undoable`](#undoable) (`<Edit>` only)
+* [`successMessage`](#success-message)
+* [`onSuccess`](#onSuccess)
+* [`onFailure`](#onFailure)
+* [`transform`](#transform)
+
+`<Create>` also accepts a `record` prop, to initialize the form based on a value object.
 
 ### Page Title
 
@@ -305,7 +306,7 @@ To learn more about built-in side effect hooks like `useNotify`, `useRedirect` a
 
 **Tip**: When you set the `onSuccess` prop, the `successMessage` prop is ignored.
 
-**Tip**: If you want to have different success side effects based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save and redirect to the list", and another to "save and display an empty form"), check [the `<SaveButton onSave>` prop](#using-onsave-to-alter-the-form-submission-behavior).
+**Tip**: If you want to have different success side effects based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save and redirect to the list", and another to "save and display an empty form"), you can set the `onSuccess` prop on the `<SaveButton>` component, too.
 
 ### `onFailure`
 
@@ -338,7 +339,31 @@ const PostEdit = props => {
 }
 ```
 
-The `onFailure` function receives the error from the dataProvider call (`dataProvider.create()` or `dataProvider.update()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format))
+The `onFailure` function receives the error from the dataProvider call (`dataProvider.create()` or `dataProvider.update()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format)).
+
+**Tip**: If you want to have different failure side effects based on the button clicked by the user, you can set the `onFailure` prop on the `<SaveButton>` component, too.
+
+### `transform`
+
+To transform a record after the user has submitted the form but before the record is passed to the `dataProvider`, use the `transform` prop. It expects a function taking a record as argument, and returning a modified record. For instance, to add a computed field upon creation:
+
+```jsx
+export const UserCreate = (props) => {
+    const transform = data => ({
+        ...data,
+        fullName: `${data.firstName} ${data.lastName}`
+    });
+    return (
+        <Create {...props} transform={transform}>
+            ...
+        </Create>
+    );
+}
+```
+
+The `transform` function can also return a `Promise`, which allows you to do all sorts of asynchronous calls (e.g. to the `dataProvider`) during the transformation.
+
+**Tip**: If you want to have different transformations based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save", and another to "save and notify other admins"), you can set the `transform` prop on the `<SaveButton>` component, too. See [Altering the Form Values Before Submitting](#altering-the-form-values-before-submitting) for an example.
 
 ## Prefilling a `<Create>` Record
 
@@ -1563,157 +1588,53 @@ export const UserEdit = ({ permissions, ...props }) =>
 
 ## Altering the Form Values Before Submitting
 
-Sometimes, you may want to alter the form values before actually sending them to the `dataProvider`. For those cases, you should know that every button inside a form [Toolbar](#toolbar) receive two props:
+Sometimes, you may want to alter the form values before sending them to the `dataProvider`. For those cases, use [the `transform` prop](#transform) either on the view component (`<Create>` or `<Edit>`) or on the `<SaveButton>` component. 
 
-* `handleSubmit` which calls the default form save method (provided by react-final-form)
-* `handleSubmitWithRedirect` which calls the default form save method and allows to specify a custom redirection
+In the following example, a create view for a Post displays a form with two submit buttons. Both buttons create a new record, but the 'save and notify' button should trigger an email to other admins on the server side. The `POST /posts` API route only sends the email when the request contains a special HTTP header.
 
-Decorating `handleSubmitWithRedirect` with your own logic allows you to alter the form values before submitting. For instance, to set the `average_note` field value just before submission:
-
-```jsx
-import React, { useCallback } from 'react';
-import { useForm } from 'react-final-form';
-import {
-    SaveButton,
-    Toolbar,
-    useCreate,
-    useRedirect,
-    useNotify,
-} from 'react-admin';
-
-const SaveWithNoteButton = ({ handleSubmitWithRedirect, ...props }) => {
-    const [create] = useCreate('posts');
-    const redirectTo = useRedirect();
-    const notify = useNotify();
-    const { basePath, redirect } = props;
-
-    const form = useForm();
-
-    const handleClick = useCallback(() => {
-        // change the average_note field value
-        form.change('average_note', 10);
-
-        handleSubmitWithRedirect('edit');
-    }, [form]);
-
-    // override handleSubmitWithRedirect with custom logic
-    return <SaveButton {...props} handleSubmitWithRedirect={handleClick} />;
-};
-```
-
-This button can be used in the `PostCreateToolbar` component:
+So the save button with 'save and notify' will *transform* the record before react-admin calls the `dataProvier.create()` method, adding a `notify` field:
 
 ```jsx
 const PostCreateToolbar = props => (
     <Toolbar {...props}>
+        <SaveButton submitOnEnter={true} />
         <SaveButton
-            label="post.action.save_and_show"
-            redirect="show"
-            submitOnEnter={true}
-        />
-        <SaveWithNoteButton
-            label="post.action.save_with_average_note"
-            redirect="show"
+            label="post.action.save_and_notify"
+            transform={data => ({ ...data, notify: true })}
             submitOnEnter={false}
-            variant="text"
         />
     </Toolbar>
 );
+
+const PostCreate = (props) => (
+    <Create {...props}>
+        <SimpleForm toolbar={<PostCreateToolbar />}>
+            // ...
+        </SimpleForm>
+    </Create>
+);
 ```
 
-**Tip**: Which one of `handleSubmit` and `handleSubmitWithRedirect` should you override? If you want to keep the redirection, override `handleSubmitWithRedirect` just like in the previous example. If you want to disable redirection, or handle it yourself, override `handleSubmit`.  
+Then, in the `dataProvider.create()` code, detect the presence of the `notify` field in the data, and add the HTTP header if necessary. Something like:
 
-## Using `onSave` To Alter the Form Submission Behavior
-
-The previous technique works well for altering values. But you may want to call a route before submission, or submit the form to different dataProvider methods/resources depending on the form values. And in this case, wrapping `handleSubmitWithRedirect` does not work, because you don't have control on the submission itself.
-
-Instead of *decorating* `handleSubmitWithRedirect`, you can *replace* it, and do the API call manually. You don't have to change anything in the form values in that case. So the previous example can be rewritten as:
-
-```jsx
-import React, { useCallback } from 'react';
-import { useFormState } from 'react-final-form';
-import {
-    SaveButton,
-    Toolbar,
-    useCreate,
-    useRedirect,
-    useNotify,
-} from 'react-admin';
-
-const SaveWithNoteButton = props => {
-    const [create] = useCreate('posts');
-    const redirectTo = useRedirect();
-    const notify = useNotify();
-    const { basePath, redirect } = props;
-    // get values from the form
-    const formState = useFormState();
-
-    const handleClick = useCallback(
-        () => {
-            // call dataProvider.create() manually
-            create(
-                {
-                    payload: { data: { ...formState.values, average_note: 10 } },
-                },
-                {
-                    onSuccess: ({ data: newRecord }) => {
-                        notify('ra.notification.created', 'info', {
-                            smart_count: 1,
-                        });
-                        redirectTo(redirect, basePath, newRecord.id, newRecord);
-                    },
-                }
-            );
-        },
-        [create, notify, redirectTo, basePath, formState, redirect]
-    );
-
-    return <SaveButton {...props} handleSubmitWithRedirect={handleClick} />;
-};
+```js
+const dataProvider = {
+    // ...
+    create: (resource, params) => {
+        const { notify, ...record } = params.data;
+        const headers = new Headers({
+            'Content-Type': 'application/json',
+        });
+        if (notify) {
+            headers.set('X-Notify', 'true');
+        }
+        return httpClient(`${apiUrl}/${resource}`, {
+            method: 'POST',
+            body: JSON.stringify(record),
+            headers,
+        }).then(({ json }) => ({
+            data: { ...record, id: json.id },
+        }));
+    },
+}
 ```
-
-This technique has a huge drawback, which makes it impractical: by skipping the default `handleSubmitWithRedirect`, this button doesn't trigger form validation. And unfortunately, react-final-form doesn't provide a way to trigger form validation manually.
-
-That's why react-admin provides a way to override just the data provider call and its side effects. It's called `onSave`, and here is how you would use it in the previous use case:
-
-```jsx
-import React, { useCallback } from 'react';
-import {
-    SaveButton,
-    Toolbar,
-    useCreate,
-    useRedirect,
-    useNotify,
-} from 'react-admin';
-
-const SaveWithNoteButton = props => {
-    const [create] = useCreate('posts');
-    const redirectTo = useRedirect();
-    const notify = useNotify();
-    const { basePath } = props;
-
-    const handleSave = useCallback(
-        (values, redirect) => {
-            create(
-                {
-                    payload: { data: { ...values, average_note: 10 } },
-                },
-                {
-                    onSuccess: ({ data: newRecord }) => {
-                        notify('ra.notification.created', 'info', {
-                            smart_count: 1,
-                        });
-                        redirectTo(redirect, basePath, newRecord.id, newRecord);
-                    },
-                }
-            );
-        },
-        [create, notify, redirectTo, basePath]
-    );
-
-    // set onSave props instead of handleSubmitWithRedirect
-    return <SaveButton {...props} onSave={handleSave} />;
-};
-```
-
-The `onSave` value should be a function expecting 2 arguments: the form values to save, and the redirection to perform.
