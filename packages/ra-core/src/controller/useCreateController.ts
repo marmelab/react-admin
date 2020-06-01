@@ -100,6 +100,12 @@ const useCreateController = (props: CreateProps): CreateControllerProps => {
     const recordToUse = getRecord(location, record);
     const version = useVersion();
 
+    if (process.env.NODE_ENV !== 'production' && successMessage) {
+        console.log(
+            '<Edit successMessage> prop is deprecated, use the onSuccess prop instead.'
+        );
+    }
+
     const {
         onSuccessRef,
         setOnSuccess,

@@ -84,7 +84,7 @@ You can customize the `<Create>` and `<Edit>` components using the following pro
 * [`aside`](#aside-component)
 * [`component`](#component)
 * [`undoable`](#undoable) (`<Edit>` only)
-* [`successMessage`](#success-message)
+* [`successMessage`](#success-message) (deprecated - use `onSuccess` instead)
 * [`onSuccess`](#onSuccess)
 * [`onFailure`](#onFailure)
 * [`transform`](#transform)
@@ -257,6 +257,8 @@ const PostEdit = props => (
 ```
 
 ### Success message
+
+**Deprecated**: use the `onSuccess` prop instead. See [Changing The Success or Failure Notification Message](#changing-the-success-or-failure-notification-message) for the new syntax. 
 
 Once the `dataProvider` returns successfully after save, users see a generic notification ("Element created" / "Element updated"). You can customize this message by passing a `successMessage` prop:
 
@@ -1079,6 +1081,10 @@ export const PostEdit = (props) => {
 
 This affects both the submit button, and the form submission when the user presses `ENTER` in one of the form fields.
 
+**Tip**: The `redirect` prop is ignored if you've set the `onSuccess` prop in the `<Edit>`/`<Create>` component, or in the `<SaveButton>` component.
+
+**Tip**: You may wonder why the `redirect` prop does the same thing as `onSuccess`: that's for historical reasons. The recommendd way is to change redirection using `onSuccess` rather than `redirect`. 
+
 ## Toolbar
 
 At the bottom of the form, the toolbar displays the submit button. You can override this component by setting the `toolbar` prop, to display the buttons of your choice.
@@ -1524,7 +1530,7 @@ const FormBody = ({ handleSubmit }) => {
 
 **Tip**: You can customize the message displayed in the confirm dialog by setting the `ra.message.unsaved_changes` message in your i18nProvider.
 
-## Displaying Fields or Inputs depending on the user permissions
+## Displaying Fields or Inputs Depending on the User Permissions
 
 You might want to display some fields, inputs or filters only to users with specific permissions. 
 
@@ -1585,6 +1591,56 @@ export const UserEdit = ({ permissions, ...props }) =>
     </Edit>;
 ```
 {% endraw %}
+
+## Changing The Success or Failure Notification Message
+
+Once the `dataProvider` returns successfully after save, users see a generic notification ("Element created" / "Element updated"). You can customize this message by passing a custom success side effect function as [the `<Edit onSuccess>` prop](#onsuccess):
+
+```jsx
+import { Edit, useNotify, useRedirect } from 'react-admin';
+
+const PostEdit = props => {
+    const notify = useNotify();
+    const redirect = useRedirect();
+    const onSuccess = () => {
+        notify('Post saved successfully'); // default message is 'ra.notification.updated'
+        redirect('list', props.basePath);
+    }
+    return (
+        <Edit {...props} onSuccess={onSuccess}>
+            ...
+        </Edit>
+    );
+}
+```
+
+You can do the same for error notifications, e.g. to display a different message depending on the error returned by the `dataProvider`:
+
+```jsx
+import { Edit, useNotify, useRedirect } from 'react-admin';
+
+const PostEdit = props => {
+    const notify = useNotify();
+    const redirect = useRedirect();
+    const onFailure = (error) => {
+        if (error.code == 123) {
+            notify('Could not save changes: concurrent edition in progress', 'warning');
+        } else {
+            notify('ra.notification.http_error', 'warning')
+        }
+        redirect('list', props.basePath);
+    }
+    return (
+        <Edit {...props} onFailure={onFailure}>
+            ...
+        </Edit>
+    );
+}
+```
+
+If the form has several save buttons, you can also pass a custom `onSuccess` or `onFailure` function to the `<SaveButton>` components, to have a different message and/or redirection depending on the submit button clicked.
+
+**Tip**: The notify message will be translated.
 
 ## Altering the Form Values Before Submitting
 

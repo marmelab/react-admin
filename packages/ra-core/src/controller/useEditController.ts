@@ -98,6 +98,12 @@ const useEditController = (props: EditProps): EditControllerProps => {
     const refresh = useRefresh();
     const version = useVersion();
 
+    if (process.env.NODE_ENV !== 'production' && successMessage) {
+        console.log(
+            '<Edit successMessage> prop is deprecated, use the onSuccess prop instead.'
+        );
+    }
+
     const {
         onSuccessRef,
         setOnSuccess,
