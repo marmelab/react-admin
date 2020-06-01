@@ -8,6 +8,7 @@ import {
     FormTab,
     SaveButton,
     SelectInput,
+    SelectArrayInput,
     TabbedForm,
     TextInput,
     Toolbar,
@@ -62,6 +63,18 @@ const UserEdit = ({ permissions, ...props }) => (
                             { id: 'user', name: 'User' },
                         ]}
                         defaultValue={'user'}
+                    />
+                    <SelectArrayInput
+                        source="permissions"
+                        choices={[
+                            { id: 'can_login', name: 'Can login' },
+                            { id: 'can_view_posts', name: 'Can view posts' },
+                            {
+                                id: 'can_remove_posts',
+                                name: 'Can remove posts',
+                                disabled: true,
+                            },
+                        ]}
                     />
                 </FormTab>
             )}

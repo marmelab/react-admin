@@ -161,6 +161,26 @@ describe('<SelectArrayInput />', () => {
         expect(queryByText('Can I help you?')).not.toBeNull();
     });
 
+    it('should render disable choices marked so', () => {
+        const { getByText, getByRole } = render(
+            <SelectArrayInput
+                {...defaultProps}
+                choices={[
+                    { id: 123, name: 'Text' },
+                    { id: 456, name: 'Audio' },
+                    {
+                        id: 789,
+                        name: 'Video',
+                        disabled: true,
+                    },
+                ]}
+            />
+        );
+
+        getByRole('button').click();
+        expect(getByText('Video')).toHaveStyle('pointer-events: none');
+    });
+
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
             const { container } = render(

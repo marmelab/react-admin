@@ -1137,6 +1137,28 @@ const choices = [
 ];
 ```
 
+You can set disabled values by setting the `disabled` property of one item: 
+
+```jsx
+const choices = [
+    { _id: '1', name: 'Book' },
+    { _id: '2', name: 'Video', },
+    { _id: '3', name: 'Audio', disabled: true },
+];
+<SelectArrayInput source="categories" choices={choices} optionText="name" optionValue="_id" />
+```
+
+You can use a custom field name by setting `disableValue` prop: 
+
+```jsx
+const choices = [
+    { _id: '1', name: 'Book' },
+    { _id: '2', name: 'Video' },
+    { _id: '3', name: 'Audio', not_available: true },
+];
+<SelectArrayInput source="categories" choices={choices} optionText="name" optionValue="_id" disableValue="not_available" />
+```
+
 Lastly, use the `options` attribute if you want to override any of the `<Select>` attributes:
 
 {% raw %}

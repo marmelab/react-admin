@@ -4,6 +4,7 @@ require('raf/polyfill');
  * quill requires mutationobserver, thus a shim is needed
  * */
 require('mutationobserver-shim');
+require('jest-dom/extend-expect');
 var enzyme = require('enzyme');
 var Adapter = require('enzyme-adapter-react-16');
 

@@ -37,6 +37,7 @@ const sanitizeRestProps = ({
     options,
     optionValue,
     optionText,
+    disableValue,
     perPage,
     record,
     reference,
@@ -120,6 +121,22 @@ const styles = theme =>
  *    { id: 'lifestyle', name: 'myroot.tags.lifestyle' },
  *    { id: 'photography', name: 'myroot.tags.photography' },
  * ];
+ *
+ * You can disable some choices by providing a `disableValue` field which name is `disabled` by default
+ * @example
+ * const choices = [
+ *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
+ *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
+ *    { id: 976, first_name: 'William', last_name: 'Rinkerd', disabled: true },
+ * ];
+ *
+ * @example
+ * const choices = [
+ *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
+ *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
+ *    { id: 976, first_name: 'William', last_name: 'Rinkerd', not_available: true },
+ * ];
+ * <SelectArrayInput source="gender" choices={choices} disableValue="not_available" />
  */
 export class SelectArrayInput extends Component {
     /*
@@ -159,11 +176,12 @@ export class SelectArrayInput extends Component {
     };
 
     renderMenuItem = choice => {
-        const { optionValue } = this.props;
+        const { optionValue, disableValue } = this.props;
         return (
             <MenuItem
                 key={get(choice, optionValue)}
                 value={get(choice, optionValue)}
+                disabled={get(choice, disableValue)}
             >
                 {this.renderMenuItemOption(choice)}
             </MenuItem>
@@ -262,6 +280,7 @@ SelectArrayInput.propTypes = {
         PropTypes.element,
     ]).isRequired,
     optionValue: PropTypes.string.isRequired,
+    disableValue: PropTypes.string,
     resource: PropTypes.string,
     source: PropTypes.string,
     translate: PropTypes.func.isRequired,
@@ -275,6 +294,7 @@ SelectArrayInput.defaultProps = {
     optionText: 'name',
     optionValue: 'id',
     translateChoice: true,
+    disableValue: 'disabled',
 };
 
 const EnhancedSelectArrayInput = compose(
