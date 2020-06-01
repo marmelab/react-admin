@@ -94,6 +94,11 @@ const SaveButton: FC<SaveButtonProps> = props => {
     const handleClick = event => {
         // deprecated: use onSuccess and transform insted of onSave
         if (typeof onSave === 'function') {
+            if (process.env.NODE_ENV !== 'production') {
+                console.log(
+                    '<SaveButton onSave> prop is deprecated, use the onSuccess prop instead.'
+                );
+            }
             setOnSave(onSave);
         } else {
             // we reset to the Form default save function
@@ -177,6 +182,7 @@ interface Props {
     classes?: object;
     className?: string;
     handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
+    // @deprecated
     onSave?: (values: object, redirect: RedirectionSideEffect) => void;
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
@@ -204,6 +210,7 @@ SaveButton.propTypes = {
     className: PropTypes.string,
     classes: PropTypes.object,
     handleSubmitWithRedirect: PropTypes.func,
+    // @deprecated
     onSave: PropTypes.func,
     invalid: PropTypes.bool,
     label: PropTypes.string,

@@ -1694,3 +1694,49 @@ const dataProvider = {
     },
 }
 ```
+
+## Using `onSave` To Alter the Form Submission Behavior
+
+**Deprecated**: use the `<Save onSuccess>` prop instead.
+
+React-admin provides a way to override the data provider call executed upon submission, and its side effects, in the `<SaveButton>`. It's called `onSave`, and here is how you would use it:
+
+```jsx
+import React, { useCallback } from 'react';
+import {
+    SaveButton,
+    Toolbar,
+    useCreate,
+    useRedirect,
+    useNotify,
+} from 'react-admin';
+
+const SaveWithNoteButton = props => {
+    const [create] = useCreate('posts');
+    const redirectTo = useRedirect();
+    const notify = useNotify();
+    const { basePath } = props;
+    const handleSave = useCallback(
+        (values, redirect) => {
+            create(
+                {
+                    payload: { data: { ...values, average_note: 10 } },
+                },
+                {
+                    onSuccess: ({ data: newRecord }) => {
+                        notify('ra.notification.created', 'info', {
+                            smart_count: 1,
+                        });
+                        redirectTo(redirect, basePath, newRecord.id, newRecord);
+                    },
+                }
+            );
+        },
+        [create, notify, redirectTo, basePath]
+    );
+    // set onSave props instead of handleSubmitWithRedirect
+    return <SaveButton {...props} onSave={handleSave} />;
+};
+```
+
+The `onSave` value should be a function expecting 2 arguments: the form values to save, and the redirection to perform.
