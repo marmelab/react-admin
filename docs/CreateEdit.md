@@ -84,10 +84,10 @@ You can customize the `<Create>` and `<Edit>` components using the following pro
 * [`aside`](#aside-component)
 * [`component`](#component)
 * [`undoable`](#undoable) (`<Edit>` only)
-* [`successMessage`](#success-message) (deprecated - use `onSuccess` instead)
 * [`onSuccess`](#onSuccess)
 * [`onFailure`](#onFailure)
 * [`transform`](#transform)
+* [`successMessage`](#success-message) (deprecated - use `onSuccess` instead)
 
 `<Create>` also accepts a `record` prop, to initialize the form based on a value object.
 
@@ -256,24 +256,7 @@ const PostEdit = props => (
 );
 ```
 
-### Success message
-
-**Deprecated**: use the `onSuccess` prop instead. See [Changing The Success or Failure Notification Message](#changing-the-success-or-failure-notification-message) for the new syntax. 
-
-Once the `dataProvider` returns successfully after save, users see a generic notification ("Element created" / "Element updated"). You can customize this message by passing a `successMessage` prop:
-
-```jsx
-const PostEdit = props => (
-    <Edit successMessage="messages.post_saved" {...props}>
-        ...
-    </Edit>
-```
-
-**Tip**: The message will be translated.
-
 ### `onSuccess`
-
-Sometimes `successMessage` isn't enough, and you may need to completely override what should happen after the save action succeeds at the dataProvider level.
 
 By default, when the save action succeeds, react-admin shows a notification, and redirects to another page. You can override this behavior and pass custom side effects by providing a function as `onSuccess` prop:
 
@@ -303,6 +286,22 @@ const PostEdit = props => {
 ```
 
 The `onSuccess` function receives the response from the dataProvider call (`dataProvider.create()` or `dataProvider.update()`), which is the created/edited record (see [the dataProvider documentation for details](./DataProviders.md#response-format))
+
+The default `onSuccess` function is:
+
+```jsx
+// for the <Create> component:
+() => {
+    notify('ra.notification.created', 'info', { smart_count: 1 }, undoable);
+    redirect('edit', basePath, data.id, data);
+}
+
+// for the <Edit> component: 
+() => {
+    notify('ra.notification.updated', 'info', { smart_count: 1 }, undoable);
+    redirect('list', basePath, data.id, data);
+}
+```
 
 To learn more about built-in side effect hooks like `useNotify`, `useRedirect` and `useRefresh`, check the [Querying the API documentation](./Actions.md#handling-side-effects-in-usedataprovider).
 
@@ -343,6 +342,23 @@ const PostEdit = props => {
 
 The `onFailure` function receives the error from the dataProvider call (`dataProvider.create()` or `dataProvider.update()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format)).
 
+The default `onOnFailure` function is:
+
+```jsx
+// for the <Create> component:
+(error) => {
+    notify(typeof error === 'string' ? error : error.message || 'ra.notification.http_error', 'warning');
+}
+
+// for the <Edit> component: 
+(error) => {
+    notify(typeof error === 'string' ? error : error.message || 'ra.notification.http_error', 'warning');
+    if (undoable) {
+        refresh();
+    }
+}
+```
+
 **Tip**: If you want to have different failure side effects based on the button clicked by the user, you can set the `onFailure` prop on the `<SaveButton>` component, too.
 
 ### `transform`
@@ -366,6 +382,21 @@ export const UserCreate = (props) => {
 The `transform` function can also return a `Promise`, which allows you to do all sorts of asynchronous calls (e.g. to the `dataProvider`) during the transformation.
 
 **Tip**: If you want to have different transformations based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save", and another to "save and notify other admins"), you can set the `transform` prop on the `<SaveButton>` component, too. See [Altering the Form Values Before Submitting](#altering-the-form-values-before-submitting) for an example.
+
+### Success message
+
+**Deprecated**: use the `onSuccess` prop instead. See [Changing The Success or Failure Notification Message](#changing-the-success-or-failure-notification-message) for the new syntax. 
+
+Once the `dataProvider` returns successfully after save, users see a generic notification ("Element created" / "Element updated"). You can customize this message by passing a `successMessage` prop:
+
+```jsx
+const PostEdit = props => (
+    <Edit successMessage="messages.post_saved" {...props}>
+        ...
+    </Edit>
+```
+
+**Tip**: The message will be translated.
 
 ## Prefilling a `<Create>` Record
 
