@@ -149,7 +149,7 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput, FormDataConsumer 
 </ArrayInput>
 ```
 
-`<ArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+`<ArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props) (except `format` and `parse`).
 
 ## `<AutocompleteInput>`
 
