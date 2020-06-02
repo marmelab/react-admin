@@ -86,7 +86,7 @@ const UserProfile = ({ userId }) => {
 
 - `type`: The method to call on the Data Provider, e.g. `getList`
 - `resource`: The Resource name, e.g. "posts"
-- `params`: The query parameters. Depends on the query type.
+- `payload`: The query parameters. Depends on the query type.
 
 The return value of `useQuery` is an object representing the query state, using the following keys:
 
@@ -161,7 +161,7 @@ const ApproveButton = ({ record }) => {
 
 - `type`: The method to call on the Data Provider, e.g. `update`
 - `resource`: The Resource name, e.g. "posts"
-- `params`: The query parameters. Depends on the query type.
+- `payload`: The query parameters. Depends on the query type.
 
 The return value of `useMutation` is an array with the following items:
 
