@@ -15,12 +15,53 @@ import {
     useTranslate,
     useNotify,
     RedirectionSideEffect,
+    SideEffectContext,
+    OnSuccess,
+    OnFailure,
+    TransformData,
     Record,
     FormContext,
 } from 'ra-core';
 
 import { sanitizeButtonRestProps } from './Button';
 
+/**
+ * Submit button for resource forms (Edit and Create).
+ *
+ * @typedef {Object} Props the props you can use (other props are injected by Toolbar)
+ * @prop {string} className
+ * @prop {string} label Button label. Defaults to 'ra.action.save', translated.
+ * @prop {boolean} disabled Injected by SimpleForm, which disables the SaveButton when it's pristine
+ * @prop {string} variant Material-ui variant for the button. Defaults to 'contained'.
+ * @prop {ReactElement} icon
+ * @prop {string|boolean} redirect Override of the default redirect in case of success. Can be 'list', 'show', 'edit' (for create views), or false (to stay on the creation form).
+ * @prop {function} onSave (deprecated)
+ * @prop {function} onSuccess Callback to execute instead of the default success side effects. Receives the dataProvider response as argument.
+ * @prop {function} onFailure Callback to execute instead of the default error side effects. Receives the dataProvider error response as argument.
+ * @prop {function} transform Callback to execute before calling the dataProvider. Receives the data from the form, must return that transformed data. Can be asynchronous (and return a Promise)
+ *
+ * @param {Prop} props
+ *
+ * @example // with custom redirection
+ *
+ * <SaveButton label="post.action.save_and_edit" redirect="edit" />
+ *
+ * @example // with no redirection
+ *
+ * <SaveButton label="post.action.save_and_add" redirect={false} />
+ *
+ * @example // with custom success side effect
+ *
+ * const MySaveButton = props => {
+ *     const notify = useNotify();
+ *     const redirect = useRedirect();
+ *     const onSuccess = (response) => {
+ *         notify(`Post "${response.data.title}" saved!`);
+ *         redirect('/posts');
+ *     };
+ *     return <SaveButton {...props} onSuccess={onSuccess} />;
+ * }
+ */
 const SaveButton: FC<SaveButtonProps> = props => {
     const {
         className,
@@ -37,19 +78,40 @@ const SaveButton: FC<SaveButtonProps> = props => {
         onClick,
         handleSubmitWithRedirect,
         onSave,
+        onSuccess,
+        onFailure,
+        transform,
         ...rest
     } = props;
     const classes = useStyles(props);
     const notify = useNotify();
     const translate = useTranslate();
     const { setOnSave } = useContext(FormContext);
+    const { setOnSuccess, setOnFailure, setTransform } = useContext(
+        SideEffectContext
+    );
 
     const handleClick = event => {
+        // deprecated: use onSuccess and transform insted of onSave
         if (typeof onSave === 'function') {
+            if (process.env.NODE_ENV !== 'production') {
+                console.log(
+                    '<SaveButton onSave> prop is deprecated, use the onSuccess prop instead.'
+                );
+            }
             setOnSave(onSave);
         } else {
             // we reset to the Form default save function
             setOnSave();
+        }
+        if (onSuccess) {
+            setOnSuccess(onSuccess);
+        }
+        if (onFailure) {
+            setOnFailure(onFailure);
+        }
+        if (transform) {
+            setTransform(transform);
         }
         if (saving) {
             // prevent double submission
@@ -120,7 +182,11 @@ interface Props {
     classes?: object;
     className?: string;
     handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
+    // @deprecated
     onSave?: (values: object, redirect: RedirectionSideEffect) => void;
+    onSuccess?: OnSuccess;
+    onFailure?: OnFailure;
+    transform?: TransformData;
     icon?: ReactElement;
     invalid?: boolean;
     label?: string;
@@ -144,6 +210,7 @@ SaveButton.propTypes = {
     className: PropTypes.string,
     classes: PropTypes.object,
     handleSubmitWithRedirect: PropTypes.func,
+    // @deprecated
     onSave: PropTypes.func,
     invalid: PropTypes.bool,
     label: PropTypes.string,
