@@ -108,7 +108,7 @@ const AutocompleteArrayInput: FunctionComponent<
         isRequired: isRequiredOverride,
         label,
         limitChoicesToValue,
-        margin,
+        margin = 'dense',
         matchSuggestion,
         meta: metaOverride,
         onBlur,
