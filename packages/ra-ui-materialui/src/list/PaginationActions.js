@@ -5,6 +5,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import { useTranslate } from 'ra-core';
+import classnames from 'classnames';
 
 const useStyles = makeStyles(
     theme => ({
@@ -13,6 +14,8 @@ const useStyles = makeStyles(
             color: theme.palette.text.secondary,
             marginLeft: 20,
         },
+        button: {},
+        currentPageButton: {},
         hellip: { padding: '1.2em' },
     }),
     { name: 'RaPaginationActions' }
@@ -99,7 +102,9 @@ function PaginationActions(props) {
             ) : (
                 <Button
                     size={size}
-                    className="page-number"
+                    className={classnames('page-number', classes.button, {
+                        [classes.currentPageButton]: pageNum === page + 1,
+                    })}
                     color={pageNum === page + 1 ? 'default' : color}
                     key={pageNum}
                     data-page={pageNum - 1}
