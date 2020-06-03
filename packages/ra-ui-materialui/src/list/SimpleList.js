@@ -96,7 +96,7 @@ const SimpleList = props => {
     }
 
     return (
-        (loading || total > 0) && (
+        total > 0 && (
             <List className={className} {...sanitizeListRestProps(rest)}>
                 {ids.map(id => (
                     <LinkOrNot
