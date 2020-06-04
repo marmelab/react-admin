@@ -1,4 +1,5 @@
-import React, { FunctionComponent, memo } from 'react';
+import * as React from 'react';
+import { FunctionComponent, memo } from 'react';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';

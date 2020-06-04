@@ -1,4 +1,5 @@
-import React, { FunctionComponent, isValidElement, cloneElement } from 'react';
+import * as React from 'react';
+import { FunctionComponent, isValidElement, cloneElement } from 'react';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import { makeStyles, MenuItem } from '@material-ui/core';

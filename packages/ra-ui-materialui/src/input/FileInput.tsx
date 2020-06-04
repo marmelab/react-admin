@@ -160,9 +160,10 @@ const FileInput: FunctionComponent<
         }
     };
 
-    const childrenElement = isValidElement(Children.only(children))
-        ? (Children.only(children) as ReactElement<any>)
-        : undefined;
+    const childrenElement =
+        children && isValidElement(Children.only(children))
+            ? (Children.only(children) as ReactElement<any>)
+            : undefined;
 
     const { getRootProps, getInputProps } = useDropzone({
         ...options,

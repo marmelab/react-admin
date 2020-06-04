@@ -1,4 +1,5 @@
-import React, { useEffect, useCallback } from 'react';
+import * as React from 'react';
+import { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { TablePagination, Toolbar, useMediaQuery } from '@material-ui/core';
 import {

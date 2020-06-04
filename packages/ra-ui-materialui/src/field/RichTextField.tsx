@@ -1,4 +1,5 @@
-import React, { FunctionComponent, memo } from 'react';
+import * as React from 'react';
+import { FunctionComponent, memo } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';

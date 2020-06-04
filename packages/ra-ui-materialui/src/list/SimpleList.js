@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import List from '@material-ui/core/List';
@@ -96,7 +96,7 @@ const SimpleList = props => {
     }
 
     return (
-        (loading || total > 0) && (
+        total > 0 && (
             <List className={className} {...sanitizeListRestProps(rest)}>
                 {ids.map(id => (
                     <LinkOrNot

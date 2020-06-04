@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import * as React from 'react';
+import { FC } from 'react';
 import { FunctionField } from 'react-admin';
 import { Order, FieldProps } from '../types';
 

@@ -1,4 +1,5 @@
-import React, { useCallback, FC, ReactElement } from 'react';
+import * as React from 'react';
+import { useCallback, FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import Tooltip from '@material-ui/core/Tooltip';

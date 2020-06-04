@@ -1,4 +1,5 @@
-import React, { useEffect, useCallback } from 'react';
+import * as React from 'react';
+import { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Form, FormSpy } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
@@ -55,6 +56,7 @@ const sanitizeRestProps = ({
     initialValues,
     invalid,
     modified,
+    modifiedSinceLastSubmit,
     pristine,
     pure,
     reset,

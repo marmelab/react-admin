@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { AdminProps } from 'ra-core';
 
 import AdminContext from './AdminContext';
@@ -51,7 +52,8 @@ import AdminUI from './AdminUI';
  * // you can't use <Admin>. But as it delegates to sub components,
  * // it's relatively straightforward to replace it:
  *
- * import React, { useEffect, useState } from 'react';
+ * import * as React from 'react';
+import { useEffect, useState } from 'react';
  * import {
  *     AdminContext,
  *     AdminUI,

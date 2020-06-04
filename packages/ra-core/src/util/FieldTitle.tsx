@@ -1,4 +1,5 @@
-import React, { FunctionComponent, ReactElement, memo } from 'react';
+import * as React from 'react';
+import { FunctionComponent, ReactElement, memo } from 'react';
 
 import useTranslate from '../i18n/useTranslate';
 import getFieldLabelTranslationArgs from './getFieldLabelTranslationArgs';

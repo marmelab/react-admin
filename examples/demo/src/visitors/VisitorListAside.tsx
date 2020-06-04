@@ -1,4 +1,5 @@
-import React, { FC, ChangeEvent } from 'react';
+import * as React from 'react';
+import { FC, ChangeEvent } from 'react';
 import {
     Box,
     Card,

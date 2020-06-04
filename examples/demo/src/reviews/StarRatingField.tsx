@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import * as React from 'react';
+import { FC } from 'react';
 import Icon from '@material-ui/icons/Stars';
 import { makeStyles } from '@material-ui/core';
 

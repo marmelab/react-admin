@@ -1,4 +1,5 @@
-import React, { ReactNode, FunctionComponent } from 'react';
+import * as React from 'react';
+import { ReactNode, FunctionComponent } from 'react';
 import { useFormState } from 'react-final-form';
 import { FormSubscription } from 'final-form';
 import get from 'lodash/get';

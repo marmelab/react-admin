@@ -1,4 +1,5 @@
-import React, { FC, memo } from 'react';
+import * as React from 'react';
+import { FC, memo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import AvatarField from './AvatarField';

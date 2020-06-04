@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import expect from 'expect';
 import ChipField from './ChipField';
 import { render, cleanup } from '@testing-library/react';

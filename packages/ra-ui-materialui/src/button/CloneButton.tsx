@@ -1,4 +1,5 @@
-import React, { FC, memo, ReactElement } from 'react';
+import * as React from 'react';
+import { FC, memo, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import Queue from '@material-ui/icons/Queue';
 import { Link } from 'react-router-dom';

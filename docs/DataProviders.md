@@ -116,7 +116,7 @@ Then, initialize the provider with the REST backend URL, and pass the result to 
 
 ```jsx
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 import { Admin, Resource } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
 
@@ -133,17 +133,17 @@ export default App;
 
 Here is how this Data Provider maps react-admin calls to API calls:
 
-| Method name        | API call
-|--------------------|----------------------------------------------------------------
-| `getList`          | `GET http://my.api.url/posts?sort=["title","ASC"]&range=[0, 24]&filter={"title":"bar"}`
-| `getOne`           | `GET http://my.api.url/posts/123`
-| `getMany`          | `GET http://my.api.url/posts?filter={"id":[123,456,789]}`
-| `getManyReference` | `GET http://my.api.url/posts?filter={"author_id":345}`
-| `create`           | `POST http://my.api.url/posts/123`
-| `update`           | `PUT http://my.api.url/posts/123`
-| `updateMany`       | Multiple calls to `PUT http://my.api.url/posts/123`
-| `delete`           | `DELETE http://my.api.url/posts/123`
-| `deteleMany`       | Multiple calls to `DELETE http://my.api.url/posts/123`
+| Method name        | API call                                                                                |
+| ------------------ | --------------------------------------------------------------------------------------- |
+| `getList`          | `GET http://my.api.url/posts?sort=["title","ASC"]&range=[0, 24]&filter={"title":"bar"}` |
+| `getOne`           | `GET http://my.api.url/posts/123`                                                       |
+| `getMany`          | `GET http://my.api.url/posts?filter={"id":[123,456,789]}`                               |
+| `getManyReference` | `GET http://my.api.url/posts?filter={"author_id":345}`                                  |
+| `create`           | `POST http://my.api.url/posts/123`                                                      |
+| `update`           | `PUT http://my.api.url/posts/123`                                                       |
+| `updateMany`       | Multiple calls to `PUT http://my.api.url/posts/123`                                     |
+| `delete`           | `DELETE http://my.api.url/posts/123`                                                    |
+| `deteleMany`       | Multiple calls to `DELETE http://my.api.url/posts/123`                                  |
 
 **Note**: The simple REST client expects the API to include a `Content-Range` header in the response to `getList` calls. The value must be the total number of resources in the collection. This allows react-admin to know how many pages of resources there are in total, and build the pagination controls.
 
@@ -279,7 +279,7 @@ APIs are so diverse that quite often, none of the available Data Providers suit 
 
 The methods of a Data Provider receive a request, and return a promise for a response. Both the request and the response format are standardized.
 
-### Request Format
+## Request Format
 
 Data queries require a *method* (e.g. `getOne`), a *resource* (e.g. 'posts') and a set of *parameters*.
 
@@ -287,17 +287,17 @@ Data queries require a *method* (e.g. `getOne`), a *resource* (e.g. 'posts') and
 
 Standard methods are:
 
-Method             | Usage                                           | Parameters format
------------------- | ------------------------------------------------|-------------------------------
-`getList`          | Search for resources                            | `{ pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object} }`
-`getOne`           | Read a single resource, by id                   | `{ id: {mixed} }`
-`getMany`          | Read a list of resource, by ids                 | `{ ids: {mixed[]} }`
-`getManyReference` | Read a list of resources related to another one | `{ target: {string}, id: {mixed}, pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object} }`
-`create`           | Create a single resource                        | `{ data: {Object} }`
-`update`           | Update a single resource                        | `{ id: {mixed}, data: {Object}, previousData: {Object} }`
-`updateMany`       | Update multiple resources                       | `{ ids: {mixed[]}, data: {Object} }`
-`delete`           | Delete a single resource                        | `{ id: {mixed}, previousData: {Object} }`
-`deleteMany`       | Delete multiple resources                       | `{ ids: {mixed[]} }`
+| Method             | Usage                                           | Parameters format                                                                                                                               |
+| ------------------ | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `getList`          | Search for resources                            | `{ pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object} }`                                |
+| `getOne`           | Read a single resource, by id                   | `{ id: {mixed} }`                                                                                                                               |
+| `getMany`          | Read a list of resource, by ids                 | `{ ids: {mixed[]} }`                                                                                                                            |
+| `getManyReference` | Read a list of resources related to another one | `{ target: {string}, id: {mixed}, pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object} }` |
+| `create`           | Create a single resource                        | `{ data: {Object} }`                                                                                                                            |
+| `update`           | Update a single resource                        | `{ id: {mixed}, data: {Object}, previousData: {Object} }`                                                                                       |
+| `updateMany`       | Update multiple resources                       | `{ ids: {mixed[]}, data: {Object} }`                                                                                                            |
+| `delete`           | Delete a single resource                        | `{ id: {mixed}, previousData: {Object} }`                                                                                                       |
+| `deleteMany`       | Delete multiple resources                       | `{ ids: {mixed[]} }`                                                                                                                            |
 
 Here are several examples of how react-admin can call the Data Provider:
 
@@ -333,21 +333,21 @@ dataProvider.deleteMany('posts', { ids: [123, 234] });
 
 **Tip**: If your API supports more request types, you can add more methods to the Data Provider (for instance to support upserts, aggregations, or Remote Procedure Call). React-admin won't call these methods directly, but you can call them in your own component thanks to the `useDataProvider` hook described in the [Querying the API](./Actions.md) documentation.
 
-### Response Format
+## Response Format
 
 Data Providers methods must return a Promise for an object with a `data` property.
 
-Method             | Response format
------------------- | ----------------
-`getList`          | `{ data: {Record[]}, total: {int}, validUntil?: {Date} }`
-`getOne`           | `{ data: {Record}, validUntil?: {Date} }`
-`getMany`          | `{ data: {Record[]}, validUntil?: {Date} }`
-`getManyReference` | `{ data: {Record[]}, total: {int} }`
-`create`           | `{ data: {Record} }`
-`update`           | `{ data: {Record} }`
-`updateMany`       | `{ data: {mixed[]} }` The ids which have been updated
-`delete`           | `{ data: {Record} }` The record that has been deleted
-`deleteMany`       | `{ data: {mixed[]} }` The ids of the deleted records (optional)
+| Method             | Response format                                                 |
+| ------------------ | --------------------------------------------------------------- |
+| `getList`          | `{ data: {Record[]}, total: {int}, validUntil?: {Date} }`       |
+| `getOne`           | `{ data: {Record}, validUntil?: {Date} }`                       |
+| `getMany`          | `{ data: {Record[]}, validUntil?: {Date} }`                     |
+| `getManyReference` | `{ data: {Record[]}, total: {int} }`                            |
+| `create`           | `{ data: {Record} }`                                            |
+| `update`           | `{ data: {Record} }`                                            |
+| `updateMany`       | `{ data: {mixed[]} }` The ids which have been updated           |
+| `delete`           | `{ data: {Record} }` The record that has been deleted           |
+| `deleteMany`       | `{ data: {mixed[]} }` The ids of the deleted records (optional) |
 
 A `{Record}` is an object literal with at least an `id` property, e.g. `{ id: 123, title: "hello, world" }`.
 
@@ -445,7 +445,53 @@ dataProvider.deleteMany('posts', { ids: [123, 234] })
 
 **Tip**: The `validUntil` field in the response is optional. It enables the Application cache, a client-side optimization to speed up rendering and reduce network traffic. Check [the Caching documentation](./Caching.md#application-cache) for more details.
 
-### Example Implementation
+## Error Format
+
+When the API backend returns an error, the Data Provider should return a rejected Promise containing an `Error` object. This object should contain a `status` property with the HTTP response code (404, 500, etc.). React-admin inspects this error code, and uses it for [authentication](./Authentication.md) (in case of 401 or 403 errors). Besides, react-admin displays the error `message` on screen in a temporary notification.
+
+If you use `fetchJson`, you don't need to do anything: HTTP errors are automatically decorated as expected by react-admin.
+
+If you use another HTTP client, make sure you return a rejected Promise. You can use the `HttpError` class to throw an error with status in one line:
+
+```js
+import { HttpError } from 'react-admin';
+
+export default {
+    getList: (resource, params) => {
+        return new Promise((resolve, reject) => {
+            myApiClient(url, { ...options, headers: requestHeaders })
+                .then(response =>
+                    response.text().then(text => ({
+                        status: response.status,
+                        statusText: response.statusText,
+                        headers: response.headers,
+                        body: text,
+                    }))
+                )
+                .then(({ status, statusText, headers, body }) => {
+                    let json;
+                    try {
+                        json = JSON.parse(body);
+                    } catch (e) {
+                        // not json, no big deal
+                    }
+                    if (status < 200 || status >= 300) {
+                        return reject(
+                            new HttpError(
+                                (json && json.message) || statusText,
+                                status,
+                                json
+                            )
+                        );
+                    }
+                    return resolve({ status, headers, body, json });
+                });
+        }),
+    ...
+}
+```
+
+## Example Implementation
 
 Let's say that you want to map the react-admin requests to a REST backend exposing the following API:
 
@@ -639,52 +685,6 @@ export default {
         }).then(({ json }) => ({ data: json }));
     },
 };
-```
-
-### Error Format
-
-When the API backend returns an error, the Data Provider should return a rejected Promise containing an `Error` object. This object should contain a `status` property with the HTTP response code (404, 500, etc.). React-admin inspects this error code, and uses it for [authentication](./Authentication.md) (in case of 401 or 403 errors). Besides, react-admin displays the error `message` on screen in a temporary notification.
-
-If you use `fetchJson`, you don't need to do anything: HTTP errors are automatically decorated as expected by react-admin.
-
-If you use another HTTP client, make sure you return a rejected Promise. You can use the `HttpError` class to throw an error with status in one line:
-
-```js
-import { HttpError } from 'react-admin';
-
-export default {
-    getList: (resource, params) => {
-        return new Promise((resolve, reject) => {
-            myApiClient(url, { ...options, headers: requestHeaders })
-                .then(response =>
-                    response.text().then(text => ({
-                        status: response.status,
-                        statusText: response.statusText,
-                        headers: response.headers,
-                        body: text,
-                    }))
-                )
-                .then(({ status, statusText, headers, body }) => {
-                    let json;
-                    try {
-                        json = JSON.parse(body);
-                    } catch (e) {
-                        // not json, no big deal
-                    }
-                    if (status < 200 || status >= 300) {
-                        return reject(
-                            new HttpError(
-                                (json && json.message) || statusText,
-                                status,
-                                json
-                            )
-                        );
-                    }
-                    return resolve({ status, headers, body, json });
-                });
-        }),
-    ...
-}
 ```
 
 ## Using The Data Provider In Components

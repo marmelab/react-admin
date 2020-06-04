@@ -1,7 +1,8 @@
+import * as React from 'react';
+import { FC } from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { makeStyles } from '@material-ui/core/styles';
-import React, { FC } from 'react';
 import { FieldProps, Product } from '../types';
 
 const useStyles = makeStyles({

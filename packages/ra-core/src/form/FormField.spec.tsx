@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Form } from 'react-final-form';
 import { render, fireEvent, cleanup } from '@testing-library/react';
 import FormField from './FormField';

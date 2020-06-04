@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import * as React from 'react';
+import { FC } from 'react';
 import { ReferenceField, TextField } from 'react-admin';
 import { ReferenceFieldProps } from './../types';
 

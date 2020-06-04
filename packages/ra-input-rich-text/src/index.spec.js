@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import debounce from 'lodash/debounce';
 import { render, fireEvent, waitForElement } from '@testing-library/react';
 import { Form } from 'react-final-form';

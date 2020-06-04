@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import renderHook from '../util/renderHook';
 import useFilterState from './useFilterState';
 import { render, act } from '@testing-library/react';

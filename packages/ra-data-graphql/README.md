@@ -46,7 +46,8 @@ yarn add graphql ra-data-graphql
 
 ```jsx
 // in App.js
-import React, { Component } from 'react';
+import * as React from 'react';
+import { Component } from 'react';
 import buildGraphQLProvider from 'ra-data-graphql';
 import { Admin, Resource, Delete } from 'react-admin';
 

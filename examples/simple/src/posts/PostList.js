@@ -1,4 +1,5 @@
-import React, { Children, Fragment, cloneElement, memo } from 'react';
+import * as React from 'react';
+import { Children, Fragment, cloneElement, memo } from 'react';
 import BookIcon from '@material-ui/icons/Book';
 import Chip from '@material-ui/core/Chip';
 import { useMediaQuery, makeStyles } from '@material-ui/core';

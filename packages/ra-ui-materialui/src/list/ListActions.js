@@ -1,4 +1,5 @@
-import React, { cloneElement, useMemo } from 'react';
+import * as React from 'react';
+import { cloneElement, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { sanitizeListRestProps } from 'ra-core';
 

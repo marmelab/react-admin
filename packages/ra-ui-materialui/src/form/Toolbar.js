@@ -1,4 +1,5 @@
-import React, { Children, Fragment, isValidElement } from 'react';
+import * as React from 'react';
+import { Children, Fragment, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import MuiToolbar from '@material-ui/core/Toolbar';
 import withWidth from '@material-ui/core/withWidth';

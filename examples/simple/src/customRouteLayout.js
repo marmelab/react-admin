@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { useGetList, useAuthenticated, Title } from 'react-admin';
 
 const CustomRouteLayout = () => {

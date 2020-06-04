@@ -1,4 +1,5 @@
-import React, { FC, ReactElement, SyntheticEvent, ReactNode } from 'react';
+import * as React from 'react';
+import { FC, ReactElement, SyntheticEvent, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import {
     Button as MuiButton,

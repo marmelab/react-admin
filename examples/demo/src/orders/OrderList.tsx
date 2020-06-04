@@ -1,4 +1,5 @@
-import React, { FC, Fragment, useCallback, useEffect, useState } from 'react';
+import * as React from 'react';
+import { FC, Fragment, useCallback, useEffect, useState } from 'react';
 import {
     AutocompleteInput,
     BooleanField,

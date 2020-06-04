@@ -1,6 +1,6 @@
-import React from 'react';
-import expect from 'expect';
+import * as React from 'react';
 import { render, cleanup, wait, fireEvent } from '@testing-library/react';
+import expect from 'expect';
 import {
     TestContext,
     renderWithRedux,

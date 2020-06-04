@@ -11,7 +11,7 @@ The most usual of all field components is `<TextField>`, and it displays one fie
 
 ```jsx
 // in src/posts.js
-import React from 'react';
+import * as React from "react";
 import { List, Datagrid, TextField } from 'react-admin';
 
 export const PostList = (props) => (
@@ -160,9 +160,9 @@ And here is how to display all the tags of the current post as `<Chip>` componen
 
 ### Properties
 
-| Prop | Required | Type | Default | Description |
-| ---|---|---|---|--- |
-| `fieldKey` | Optional | string | - | Name for the field to be used as key when displaying children |
+| Prop       | Required | Type   | Default | Description                                                   |
+| ---------- | -------- | ------ | ------- | ------------------------------------------------------------- |
+| `fieldKey` | Optional | string | -       | Name for the field to be used as key when displaying children |
 
 `<ArrayField>` also accepts the [common field props](./Fields.md#common-field-props).
 
@@ -209,10 +209,10 @@ import { BooleanField } from 'react-admin';
 
 ### Properties
 
-| Prop | Required | Type | Default | Description |
-| ---|---|---|---|--- |
-| `valueLabelTrue` | Optional | string | 'true' | Aria label for the truthy value |
-| `valueLabelFalse` | Optional | string | 'false' | Aria label for the falsy value |
+| Prop              | Required | Type   | Default | Description                     |
+| ----------------- | -------- | ------ | ------- | ------------------------------- |
+| `valueLabelTrue`  | Optional | string | 'true'  | Aria label for the truthy value |
+| `valueLabelFalse` | Optional | string | 'false' | Aria label for the falsy value  |
 
 `<BooleanField>` also accepts the [common field props](./Fields.md#common-field-props).
 
@@ -268,11 +268,11 @@ import { DateField } from 'react-admin';
 
 ### Properties
 
-| Prop | Required | Type | Default | Description |
-| ---|---|---|---|--- |
-| `locales` | Optional | string | '' | Override the browser locale in the date formatting. Passed as first argument to `Intl.DateTimeFormat()`. |
-| `options` | Optional | Object | - | Date formatting options. Passed as second argument to `Intl.DateTimeFormat()`.  |
-| `showTime` | Optional | boolean | false | If true, show date and time. If false, show only date |
+| Prop       | Required | Type    | Default | Description                                                                                              |
+| ---------- | -------- | ------- | ------- | -------------------------------------------------------------------------------------------------------- |
+| `locales`  | Optional | string  | ''      | Override the browser locale in the date formatting. Passed as first argument to `Intl.DateTimeFormat()`. |
+| `options`  | Optional | Object  | -       | Date formatting options. Passed as second argument to `Intl.DateTimeFormat()`.                           |
+| `showTime` | Optional | boolean | false   | If true, show date and time. If false, show only date                                                    |
 
 `<DateField>` also accepts the [common field props](./Fields.md#common-field-props).
 
@@ -326,9 +326,9 @@ import { FunctionField } from 'react-admin'
 
 ### Properties
 
-| Prop | Required | Type | Default | Description |
-| ---|---|---|---|--- |
-| `render` | Required | function |  - | A function returning a string (or an element) to display based on a record |
+| Prop     | Required | Type     | Default | Description                                                                |
+| -------- | -------- | -------- | ------- | -------------------------------------------------------------------------- |
+| `render` | Required | function | -       | A function returning a string (or an element) to display based on a record |
 
 `<FunctionField>` also accepts the [common field props](./Fields.md#common-field-props).
 
@@ -353,9 +353,9 @@ This field is also often used within the [<ImageInput />](./Inputs.md#imageinput
 
 ### Properties
 
-| Prop | Required | Type | Default | Description |
-| ---|---|---|---|--- |
-| `src` | Optional | string |  - | A function returning a string (or an element) to display based on a record |
+| Prop    | Required | Type   | Default      | Description                                                                              |
+| ------- | -------- | ------ | ------------ | ---------------------------------------------------------------------------------------- |
+| `src`   | Optional | string | -            | A function returning a string (or an element) to display based on a record               |
 | `title` | Optional | string | record.title | The name of the property containing the image source if the value is an array of objects |
 
 `<ImageField>` also accepts the [common field props](./Fields.md#common-field-props).
@@ -470,7 +470,7 @@ import { NumberField }  from 'react-admin';
 | Prop | Required | Type | Default | Description |
 | ---|---|---|---|--- |
 | `locales` | Optional | string | '' | Override the browser locale in the date formatting. Passed as first argument to `Intl.DateTimeFormat()`. |
-| `options` | Optional | Object | - | Date formatting options. Passed as second argument to `Intl.DateTimeFormat()`.  |
+| `options` | Optional | Object | - | Number formatting options. Passed as second argument to `Intl.NumberFormat()`.  |
 
 `<NumberField>` also accepts the [common field props](./Fields.md#common-field-props).
 
@@ -531,11 +531,11 @@ import { SelectField } from 'react-admin';
 
 ### Properties
 
-| Prop | Required | Type | Default | Description |
-| ---|---|---|---|--- |
-| `optionText` | Optional | `string | function | Element` | 'name' | Name of the field to use to display the matching choice, or function returning that field name, or a React element to render for that choice |
-| `optionValue` | Optional | `string` | 'id' | Name of the field to compare to the value to find the matching choice |
-| `translateChoice` | Optional | `Boolean` | true | Whether or not the choice text should be translated
+| Prop              | Required | Type                          | Default | Description                                                                                                                                  |
+| ----------------- | -------- | ----------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `optionText`      | Optional | `string | function | Element` | 'name'  | Name of the field to use to display the matching choice, or function returning that field name, or a React element to render for that choice |
+| `optionValue`     | Optional | `string`                      | 'id'    | Name of the field to compare to the value to find the matching choice                                                                        |
+| `translateChoice` | Optional | `Boolean`                     | true    | Whether or not the choice text should be translated                                                                                          |
 
 `<SelectField>` also accepts the [common field props](./Fields.md#common-field-props).
 
@@ -602,7 +602,7 @@ However, in some cases (e.g. inside a `<ReferenceField>`), you may not want the 
 For instance, if a `post` has one author from the `users` resource, referenced by a `user_id` field, here is how to fetch the `user` related to each `post` record in a list, and display the `name` for each:
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { List, Datagrid, ReferenceField, TextField, EditButton } from 'react-admin';
 
 export const PostList = (props) => (
@@ -625,12 +625,12 @@ With this configuration, `<ReferenceField>` wraps the user's name in a link to t
 
 ### Properties
 
-| Prop | Required | Type | Default | Description |
-| ---|---|---|---|--- |
-| `reference` | Required | `string` | - | The name of the resource for the referenced records, e.g. 'posts' |
-| `children` | Required | `Element` | - | The Field element used to render the referenced record |
-| `link` | Optional | `string` | 'edit' | Target of the link wrapping the rendered child |
-| `sortBy` | Optional | `string | function` | `source` | Name of the field to use for sorting when the user clicks on the column header. Set to `false` to disable the link. |
+| Prop        | Required | Type                | Default  | Description                                                                                                         |
+| ----------- | -------- | ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
+| `reference` | Required | `string`            | -        | The name of the resource for the referenced records, e.g. 'posts'                                                   |
+| `children`  | Required | `Element`           | -        | The Field element used to render the referenced record                                                              |
+| `link`      | Optional | `string`            | 'edit'   | Target of the link wrapping the rendered child                                                                      |
+| `sortBy`    | Optional | `string | function` | `source` | Name of the field to use for sorting when the user clicks on the column header. Set to `false` to disable the link. |
 
 `<ReferenceField>` also accepts the [common field props](./Fields.md#common-field-props).
 
@@ -714,7 +714,7 @@ This component fetches a list of referenced records by a reverse lookup of the c
 For instance, here is how to show the authors of the comments related to each post in a list by matching `post.id` to `comment.post_id`. We're using `<SingleFieldList>` to display an inline list using only one field for each of the referenced record:
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { List, Datagrid, ChipField, ReferenceManyField, SingleFieldList, TextField } from 'react-admin';
 
 export const PostList = (props) => (
@@ -737,15 +737,15 @@ export const PostList = (props) => (
 
 ### Properties
 
-| Prop | Required | Type | Default | Description |
-| ---|---|---|---|--- |
-| `children` | Required | `Element` | - | The Iterator element used to render the referenced records |
-| `reference` | Required | `string` | - | The name of the resource for the referenced records, e.g. 'books' |
-| `target` | Required | string | - | Target field carrying the relationship on the referenced resource, e.g. 'user_id' |
-| `filter` | Optional | `Object` | - | Filters to use when fetching the related records, passed to `getManyReference()` |
-| `pagination` | Optional | `Element` | - | Pagination element to display pagination controls. empty by dfault (no pagination) | 
-| `perPage` | Optional | `number` | 25 | Maximum number of referenced records to fetch |
-| `sort` | Optional | `{ field, order }` | `{ field: 'id', order: 'DESC' }` | Sort order to use when fetching the related records, passed to `getManyReference()` |
+| Prop         | Required | Type               | Default                          | Description                                                                         |
+| ------------ | -------- | ------------------ | -------------------------------- | ----------------------------------------------------------------------------------- |
+| `children`   | Required | `Element`          | -                                | The Iterator element used to render the referenced records                          |
+| `reference`  | Required | `string`           | -                                | The name of the resource for the referenced records, e.g. 'books'                   |
+| `target`     | Required | string             | -                                | Target field carrying the relationship on the referenced resource, e.g. 'user_id'   |
+| `filter`     | Optional | `Object`           | -                                | Filters to use when fetching the related records, passed to `getManyReference()`    |
+| `pagination` | Optional | `Element`          | -                                | Pagination element to display pagination controls. empty by dfault (no pagination)  |
+| `perPage`    | Optional | `number`           | 25                               | Maximum number of referenced records to fetch                                       |
+| `sort`       | Optional | `{ field, order }` | `{ field: 'id', order: 'DESC' }` | Sort order to use when fetching the related records, passed to `getManyReference()` |
 
 `<ReferenceManyField>` also accepts the [common field props](./Fields.md#common-field-props).
 
@@ -758,7 +758,7 @@ export const PostList = (props) => (
 You can use a `<Datagrid>` instead of a `<SingleFieldList>` - but not inside another `<Datagrid>`! This is useful if you want to display a read-only list of related records. For instance, if you want to show the `comments` related to a `post` in the post's `<Show>` view:
 
 ```jsx
-import React from "react";
+import * as React from 'react';
 import { ReferenceManyField, Datagrid, DateField, EditButton, Show, SimpleShowLayout, TextField } from "react-admin";
 
 const PostShow = props => (
@@ -831,7 +831,7 @@ Use `<ReferenceArrayField>` to display a one-to-many relationship based on an ar
 For instance, if each post contains a list of tag ids (e.g. `{ id: 1234, title: 'Lorem Ipsum', tag_ids: [1, 23, 4] }`), here is how to fetch the list of tags for each post in a list, and display the `name` for each `tag` in a `<ChipField>`:
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { List, Datagrid, ChipField, ReferenceArrayField, SingleFieldList, TextField } from 'react-admin';
 
 export const PostList = (props) => (
@@ -856,11 +856,11 @@ export const PostList = (props) => (
 
 ### Properties
 
-| Prop | Required | Type | Default | Description |
-| ---|---|---|---|--- |
-| `reference` | Required | `string` | - | The name of the resource for the referenced records, e.g. 'tags' |
-| `children` | Required | `Element` | - | The Field element used to render the referenced records |
-| `sortBy` | Optional | `string | function` | `source` | When used in a List, name of the field to use for sorting when the user clicks on the column header. Set to `false` to disable the link. |
+| Prop        | Required | Type                | Default  | Description                                                                                                                              |
+| ----------- | -------- | ------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `reference` | Required | `string`            | -        | The name of the resource for the referenced records, e.g. 'tags'                                                                         |
+| `children`  | Required | `Element`           | -        | The Field element used to render the referenced records                                                                                  |
+| `sortBy`    | Optional | `string | function` | `source` | When used in a List, name of the field to use for sorting when the user clicks on the column header. Set to `false` to disable the link. |
 
 `<ReferenceArrayField>` also accepts the [common field props](./Fields.md#common-field-props).
 
@@ -882,7 +882,7 @@ export const App = () => (
 In an Edit of Show view, you can combine `<ReferenceArrayField>` with `<Datagrid>` to display related resources in a table. For instance, to display more details about the tags related to a post in the `PostShow` view:
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { Show, SimpleShowLayout, TextField, ReferenceArrayField, Datagrid, ShowButton } from 'react-admin';
 
 export const PostShow = (props) => (
@@ -917,9 +917,9 @@ import { RichTextField } from 'react-admin';
 
 ### Properties
 
-| Prop | Required | Type | Default | Description |
-| ---|---|---|---|--- |
-| `stripTags` | Optional | `Boolean` | false | If true, remove all HTML tags and render text only |
+| Prop        | Required | Type      | Default | Description                                        |
+| ----------- | -------- | --------- | ------- | -------------------------------------------------- |
+| `stripTags` | Optional | `Boolean` | false   | If true, remove all HTML tags and render text only |
 
 `<RichTextField>` also accepts the [common field props](./Fields.md#common-field-props).
 
@@ -1067,7 +1067,7 @@ If you don't find what you need in the list above, you can write your own Field 
 For instance, here is an equivalent of react-admin's `<TextField>` component:
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import PropTypes from 'prop-types';
 
 const TextField = ({ source, record = {} }) => <span>{record[source]}</span>;
@@ -1103,7 +1103,7 @@ If you are not looking for reusability, you can create even simpler components, 
 The component will be:
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { List, Datagrid, TextField } from 'react-admin';
 
 const FullNameField = ({ record = {} }) => <span>{record.firstName} {record.lastName}</span>;
@@ -1141,7 +1141,7 @@ In a Show view, you may want to display or hide fields based on the value of ano
 For such cases, you can use the custom field approach: use the injected `record` prop, and render another Field based on the value.
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { EmailField } from 'react-admin';
 
 const ConditionalEmailField = ({ record, ...rest }) =>
@@ -1159,7 +1159,7 @@ This `ConditionalEmailField` is properly hidden when `hasEmail` is `false`. But 
 One solution is to add the label manually in the custom component:
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { Labeled, EmailField } from 'react-admin';
 
 const ConditionalEmailField = ({ record, ...rest }) =>

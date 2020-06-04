@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import expect from 'expect';
 import { render, cleanup, fireEvent } from '@testing-library/react';
 import { ThemeProvider } from '@material-ui/styles';

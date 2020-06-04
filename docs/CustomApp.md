@@ -87,7 +87,7 @@ Then, use the `<Admin>` component as you would in a standalone application. Here
 
 ```jsx
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 import { Provider } from 'react-redux';
 import { createHashHistory } from 'history';
 import { Admin, Resource } from 'react-admin';
@@ -149,7 +149,7 @@ Here is the main code for bootstrapping a barebones react-admin application with
 
 ```diff
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 import { Provider } from 'react-redux';
 import { createHashHistory } from 'history';
 +import { ConnectedRouter } from 'connected-react-router';

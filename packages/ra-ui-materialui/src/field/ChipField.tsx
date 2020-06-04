@@ -1,4 +1,5 @@
-import React, { FunctionComponent, memo } from 'react';
+import * as React from 'react';
+import { FunctionComponent, memo } from 'react';
 import get from 'lodash/get';
 import Chip, { ChipProps } from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';

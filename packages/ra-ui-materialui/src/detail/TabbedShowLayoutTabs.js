@@ -1,4 +1,5 @@
-import React, { Children, cloneElement, isValidElement } from 'react';
+import * as React from 'react';
+import { Children, cloneElement, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
 import { useLocation, useRouteMatch } from 'react-router-dom';

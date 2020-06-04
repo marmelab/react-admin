@@ -1,4 +1,5 @@
-import React, { FC, useCallback, MouseEventHandler } from 'react';
+import * as React from 'react';
+import { FC, useCallback, MouseEventHandler } from 'react';
 import PropTypes, { ReactComponentLike } from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';

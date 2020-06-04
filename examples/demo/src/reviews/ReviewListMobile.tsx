@@ -1,4 +1,5 @@
-import React, { Fragment, FC } from 'react';
+import * as React from 'react';
+import { Fragment, FC } from 'react';
 import PropTypes from 'prop-types';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -34,12 +35,12 @@ const ReviewListMobile: FC<DatagridProps<Review>> = ({
     basePath,
     data,
     ids,
-    loading,
+    loaded,
     total,
 }) => {
     const classes = useStyles();
 
-    return loading || Number(total) > 0 ? (
+    return loaded || Number(total) > 0 ? (
         <List className={classes.root}>
             {(ids as Exclude<typeof ids, undefined>).map(id => {
                 const item = (data as Exclude<typeof data, undefined>)[id];

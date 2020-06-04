@@ -1,4 +1,5 @@
-import React, { FC, memo, ReactElement } from 'react';
+import * as React from 'react';
+import { FC, memo, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ImageEye from '@material-ui/icons/RemoveRedEye';
 import { Link } from 'react-router-dom';

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import Datagrid from '../list/Datagrid';
 import ArrayField from '../field/ArrayField';
 import BooleanField from '../field/BooleanField';

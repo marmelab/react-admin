@@ -1,6 +1,6 @@
-import React from 'react';
+import * as React from 'react';
 import expect from 'expect';
-import { fireEvent, render, cleanup } from '@testing-library/react';
+import { fireEvent, render, cleanup, wait } from '@testing-library/react';
 import { Form } from 'react-final-form';
 
 import NullableBooleanInput from './NullableBooleanInput';
@@ -14,7 +14,7 @@ describe('<NullableBooleanInput />', () => {
         value: '',
     };
 
-    it('should give three different choices for true, false or unknown', () => {
+    it('should give three different choices for true, false or unknown', async () => {
         let formApi;
         const { getByText, getByRole, getAllByRole } = render(
             <Form
@@ -31,15 +31,21 @@ describe('<NullableBooleanInput />', () => {
         expect(options.length).toEqual(3);
 
         fireEvent.click(getByText('ra.boolean.null'));
-        expect(formApi.getState().values.isPublished).toBeNull();
+        await wait(() => {
+            expect(formApi.getState().values.isPublished).toBeUndefined();
+        });
 
         fireEvent.mouseDown(select);
         fireEvent.click(getByText('ra.boolean.false'));
-        expect(formApi.getState().values.isPublished).toEqual(false);
+        await wait(() => {
+            expect(formApi.getState().values.isPublished).toEqual(false);
+        });
 
         fireEvent.mouseDown(select);
         fireEvent.click(getByText('ra.boolean.true'));
-        expect(formApi.getState().values.isPublished).toEqual(true);
+        await wait(() => {
+            expect(formApi.getState().values.isPublished).toEqual(true);
+        });
     });
 
     it('should select the option "true" if value is true', () => {

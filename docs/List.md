@@ -34,7 +34,7 @@ Here is the minimal code necessary to display a list of posts:
 
 ```jsx
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 import { Admin, Resource } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 
@@ -49,7 +49,7 @@ const App = () => (
 export default App;
 
 // in src/posts.js
-import React from 'react';
+import * as React from "react";
 import { List, Datagrid, TextField } from 'react-admin';
 
 export const PostList = (props) => (
@@ -88,7 +88,8 @@ You can replace the list of default actions by your own element using the `actio
 
 {% raw %}
 ```jsx
-import React, { cloneElement, useMemo } from 'react';
+import * as React from 'react';
+import { cloneElement, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
     TopToolbar, CreateButton, ExportButton, Button, sanitizeListRestProps,
@@ -251,7 +252,8 @@ const CommentList = props => (
 Bulk action buttons are buttons that affect several records at once, like mass deletion for instance. In the `<Datagrid>` component, the bulk actions toolbar appears when a user ticks the checkboxes in the first column of the table. The user can then choose a button from the bulk actions toolbar. By default, all list views have a single bulk action button, the bulk delete button. You can add other bulk action buttons by passing a custom element as the `bulkActionButtons` prop of the `<List>` component:
 
 ```jsx
-import React, { Fragment } from 'react';
+import * as React from 'react';
+import { Fragment } from 'react';
 import Button from '@material-ui/core/Button';
 import { BulkDeleteButton } from 'react-admin';
 import ResetViewsButton from './ResetViewsButton';
@@ -288,7 +290,7 @@ Here is an example leveraging the `useUpdateMany` hook, which sets the `views` p
 
 ```jsx
 // in ./ResetViewsButton.js
-import React from 'react';
+import * as React from "react";
 import {
     Button,
     useUpdateMany,
@@ -334,7 +336,8 @@ But most of the time, bulk actions are mini-applications with a standalone user 
 
 ```jsx
 // in ./ResetViewsButton.js
-import React, { Fragment, useState } from 'react';
+import * as React from 'react';
+import { Fragment, useState } from 'react';
 import {
     Button,
     Confirm,
@@ -398,7 +401,7 @@ export default ResetViewsButton;
 
 ```diff
 // in ./ResetViewsButton.js
-import React from 'react';
+import * as React from "react";
 import {
     Button,
     Confirm,
@@ -510,7 +513,7 @@ It is possible to disable sorting for a specific field by passing a `sortable` p
 {% raw %}
 ```jsx
 // in src/posts.js
-import React from 'react';
+import * as React from "react";
 import { List, Datagrid, TextField } from 'react-admin';
 
 export const PostList = (props) => (
@@ -532,7 +535,7 @@ By default, a column is sorted by the `source` property. To define another attri
 {% raw %}
 ```jsx
 // in src/posts.js
-import React from 'react';
+import * as React from "react";
 import { List, Datagrid, TextField } from 'react-admin';
 
 export const PostList = (props) => (
@@ -870,7 +873,7 @@ For instance, if you have a list of tags, you can display a button for each cate
 
 {% raw %}
 ```jsx
-import React from 'react';
+import * as React from "react";
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import { stringify } from 'query-string';
@@ -1006,11 +1009,11 @@ Next is the form component, based on `react-final-form`. The form inputs appear 
 
 {% raw %}
 ```jsx
-import React from "react";
-import { Form } from "react-final-form";
-import { Box, Button, InputAdornment } from "@material-ui/core";
-import SearchIcon from "@material-ui/icons/Search";
-import { TextInput, NullableBooleanInput } from "react-admin";
+import * as React from 'react';
+import { Form } from 'react-final-form';
+import { Box, Button, InputAdornment } from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
+import { TextInput, NullableBooleanInput } from 'react-admin';
 
 const PostFilterForm = ({
   displayedFilters,
@@ -1098,7 +1101,7 @@ Instead of a custom `List`, you can use the `ListGuesser` to determine which fie
 
 ```jsx
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 import { Admin, Resource, ListGuesser } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 
@@ -1223,7 +1226,7 @@ It renders as many columns as it receives `<Field>` children. It uses the field 
 
 ```jsx
 // in src/posts.js
-import React from 'react';
+import * as React from "react";
 import { List, Datagrid, TextField, EditButton } from 'react-admin';
 
 export const PostList = (props) => (
@@ -1248,7 +1251,7 @@ For instance, to show the selection checkbox only for records that have a `selec
 
 ```jsx
 // in src/PostList.js
-import React from 'react';
+import * as React from "react";
 import { Datagrid, DatagridBody, List, TextField } from 'react-admin';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
@@ -1464,7 +1467,7 @@ You can customize the `<Datagrid>` styles by passing a `classes` object as prop,
 
 {% raw %}
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
@@ -1491,7 +1494,7 @@ export PostList;
 **Tip**: If you want to override the `header` and `cell` styles independently for each column, use the `headerClassName` and `cellClassName` props in `<Field>` components. For instance, to hide a certain column on small screens:
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
@@ -1624,7 +1627,7 @@ For mobile devices, a `<Datagrid>` is often unusable - there is simply not enoug
 
 ```jsx
 // in src/posts.js
-import React from 'react';
+import * as React from "react";
 import { List, SimpleList } from 'react-admin';
 
 export const PostList = (props) => (
@@ -1645,7 +1648,7 @@ export const PostList = (props) => (
 
 ```jsx
 // in src/posts.js
-import React from 'react';
+import * as React from "react";
 import { useMediaQuery } from '@material-ui/core';
 import { List, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
@@ -1674,7 +1677,7 @@ export const PostList = (props) => {
 
 ```jsx
 // in src/posts.js
-import React from 'react';
+import * as React from "react";
 import { List, SimpleList } from 'react-admin';
 
 export const PostList = (props) => (
@@ -1741,7 +1744,7 @@ You'll need to create your own iterator component as follows:
 {% raw %}
 ```jsx
 // in src/comments.js
-import React from 'react';
+import * as React from "react";
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';

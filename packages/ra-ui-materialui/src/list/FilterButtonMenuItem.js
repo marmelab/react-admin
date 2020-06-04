@@ -1,4 +1,5 @@
-import React, { forwardRef, useCallback } from 'react';
+import * as React from 'react';
+import { forwardRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import MenuItem from '@material-ui/core/MenuItem';
 import { FieldTitle } from 'ra-core';

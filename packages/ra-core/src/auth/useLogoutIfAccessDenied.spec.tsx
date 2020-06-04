@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import * as React from 'react';
+import { useState, useEffect } from 'react';
 import expect from 'expect';
 import { render, cleanup, wait } from '@testing-library/react';
 

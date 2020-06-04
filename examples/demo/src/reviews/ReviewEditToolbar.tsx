@@ -1,4 +1,5 @@
-import React, { Fragment, FC } from 'react';
+import * as React from 'react';
+import { Fragment, FC } from 'react';
 import MuiToolbar from '@material-ui/core/Toolbar';
 import { makeStyles } from '@material-ui/core/styles';
 

@@ -1,4 +1,5 @@
-import React, { memo } from 'react';
+import * as React from 'react';
+import { memo } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import TableCell from '@material-ui/core/TableCell';

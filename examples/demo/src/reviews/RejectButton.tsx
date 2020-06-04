@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import * as React from 'react';
+import { FC } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import ThumbDown from '@material-ui/icons/ThumbDown';

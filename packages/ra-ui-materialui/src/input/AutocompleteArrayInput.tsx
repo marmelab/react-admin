@@ -108,7 +108,7 @@ const AutocompleteArrayInput: FunctionComponent<
         isRequired: isRequiredOverride,
         label,
         limitChoicesToValue,
-        margin,
+        margin = 'dense',
         matchSuggestion,
         meta: metaOverride,
         onBlur,
@@ -177,8 +177,8 @@ const AutocompleteArrayInput: FunctionComponent<
     );
 
     const selectedItems = useMemo(() => values.map(getSuggestionFromValue), [
-        ...values,
         getSuggestionFromValue,
+        values,
     ]);
 
     const { getChoiceText, getChoiceValue, getSuggestions } = useSuggestions({

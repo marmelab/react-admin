@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import expect from 'expect';
 import CheckboxGroupInput from './CheckboxGroupInput';
 import { render, cleanup, fireEvent } from '@testing-library/react';

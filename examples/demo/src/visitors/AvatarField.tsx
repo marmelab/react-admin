@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import * as React from 'react';
+import { FC } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import { Customer, FieldProps } from '../types';
 
