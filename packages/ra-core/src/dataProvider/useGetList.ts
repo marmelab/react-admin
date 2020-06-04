@@ -79,7 +79,8 @@ const useGetList = <RecordType = Record>(
             get(
                 state.admin.resources,
                 [resource, 'list', 'cachedRequests', requestSignature, 'ids'],
-                state.admin.resources[resource]
+                state.admin.resources[resource] &&
+                    state.admin.resources[resource].list
                     ? state.admin.resources[resource].list.ids
                     : []
             ),
