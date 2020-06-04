@@ -55,11 +55,7 @@ const useStyles = makeStyles<Theme, StyleProps>(
     { name: 'RaSidebar' }
 );
 
-interface Props extends DrawerProps {
-    children: ReactElement;
-}
-
-const Sidebar: FC<Props> = props => {
+const Sidebar: FC<SidebarProps> = props => {
     const { children, ...rest } = props;
     const dispatch = useDispatch();
     const isXSmall = useMediaQuery<Theme>(theme =>
@@ -113,6 +109,10 @@ const Sidebar: FC<Props> = props => {
         </Drawer>
     );
 };
+
+interface SidebarProps extends DrawerProps {
+    children: ReactElement;
+}
 
 Sidebar.propTypes = {
     children: PropTypes.element.isRequired,

@@ -46,12 +46,6 @@ function goBack() {
     window.history.go(-1);
 }
 
-interface Props extends RouteComponentProps {
-    className: string;
-    title: TitleProps['defaultTitle'];
-    classes?: object;
-}
-
 const NotFound: FC<Props> = props => {
     const { className, title, ...rest } = props;
     const classes = useStyles(props);
@@ -91,6 +85,12 @@ const sanitizeRestProps = ({
     Props,
     keyof RouteComponentProps | 'className' | 'title'
 > => rest;
+
+interface Props extends RouteComponentProps {
+    className: string;
+    title: TitleProps['defaultTitle'];
+    classes?: object;
+}
 
 NotFound.propTypes = {
     className: PropTypes.string,

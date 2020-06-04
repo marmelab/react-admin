@@ -25,7 +25,7 @@ import DefaultAppBar from './AppBar';
 import DefaultSidebar from './Sidebar';
 import DefaultMenu, { MenuProps } from './Menu';
 import DefaultNotification, { NotificationProps } from './Notification';
-import DefaultError, { ErrorComponentProps } from './Error';
+import DefaultError, { ErrorProps } from './Error';
 import defaultTheme from '../defaultTheme';
 import {
     ComponentPropType,
@@ -89,27 +89,6 @@ const sanitizeRestProps = ({
     LayoutProps,
     keyof RouteComponentProps | 'title'
 > => props;
-
-interface LayoutProps extends RouteComponentProps {
-    appBar?: ComponentType<any>;
-    classes?: ClassNameMap;
-    className?: string;
-    customRoutes?: any[];
-    dashboard?: DashboardComponent;
-    error?: ComponentType<ErrorComponentProps>;
-    logout?: ReactNode;
-    menu?: ComponentType<MenuProps>;
-    notification?: ComponentType<NotificationProps>;
-    open?: boolean;
-    sidebar?: ComponentType<DrawerProps>;
-    title: TitleComponent;
-}
-
-type LayoutState = {
-    hasError?: boolean;
-    errorMessage: Error | null;
-    errorInfo: ErrorInfo | null;
-};
 
 class Layout extends Component<LayoutProps, LayoutState> {
     static propTypes = {
@@ -241,6 +220,27 @@ const LayoutWithTheme: FC<LayoutWithThemeProps> = ({
             <EnhancedLayout {...props} />
         </ThemeProvider>
     );
+};
+
+interface LayoutProps extends RouteComponentProps {
+    appBar?: ComponentType<any>;
+    classes?: ClassNameMap;
+    className?: string;
+    customRoutes?: any[];
+    dashboard?: DashboardComponent;
+    error?: ComponentType<ErrorProps>;
+    logout?: ReactNode;
+    menu?: ComponentType<MenuProps>;
+    notification?: ComponentType<NotificationProps>;
+    open?: boolean;
+    sidebar?: ComponentType<DrawerProps>;
+    title: TitleComponent;
+}
+
+type LayoutState = {
+    hasError?: boolean;
+    errorMessage: Error | null;
+    errorInfo: ErrorInfo | null;
 };
 
 LayoutWithTheme.propTypes = {

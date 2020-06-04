@@ -3,13 +3,6 @@ import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import { useTranslate, warning, TitleComponent } from 'ra-core';
 
-export interface TitleProps {
-    defaultTitle: TitleComponent;
-    className?: string;
-    record?: any;
-    title?: TitleComponent;
-}
-
 const Title: FC<TitleProps> = ({
     className,
     defaultTitle,
@@ -38,6 +31,13 @@ const Title: FC<TitleProps> = ({
     );
     return createPortal(titleElement, container);
 };
+
+export interface TitleProps {
+    defaultTitle: TitleComponent;
+    className?: string;
+    record?: any;
+    title?: TitleComponent;
+}
 
 export const TitlePropType = PropTypes.oneOfType([
     PropTypes.string,

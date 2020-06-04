@@ -15,10 +15,6 @@ import {
     useTranslate,
 } from 'ra-core';
 
-export interface NotificationProps extends Omit<SnackbarProps, 'open'> {
-    type?: string;
-}
-
 const useStyles = makeStyles(
     (theme: Theme) => ({
         error: {
@@ -108,6 +104,10 @@ const Notification: FC<NotificationProps> = props => {
         />
     );
 };
+
+export interface NotificationProps extends Omit<SnackbarProps, 'open'> {
+    type?: string;
+}
 
 Notification.propTypes = {
     type: PropTypes.string,

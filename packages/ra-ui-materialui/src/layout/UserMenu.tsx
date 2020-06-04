@@ -12,14 +12,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-
-interface Props {
-    label?: string;
-    logout?: ReactNode;
-    icon?: ReactNode;
-    children?: ReactNode;
-}
-
 const UserMenu: FC<Props> = props => {
     const [anchorEl, setAnchorEl] = useState(null);
     const translate = useTranslate();
@@ -70,6 +62,13 @@ const UserMenu: FC<Props> = props => {
         </div>
     );
 };
+
+interface Props {
+    label?: string;
+    logout?: ReactNode;
+    icon?: ReactNode;
+    children?: ReactNode;
+}
 
 UserMenu.propTypes = {
     children: PropTypes.node,

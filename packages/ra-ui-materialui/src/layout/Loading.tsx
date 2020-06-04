@@ -33,12 +33,6 @@ const useStyles = makeStyles(
     { name: 'RaLoading' }
 );
 
-interface Props {
-    className?: string;
-    loadingPrimary?: string;
-    loadingSecondary?: string;
-}
-
 const Loading: FC<Props> = props => {
     const {
         className,
@@ -57,6 +51,12 @@ const Loading: FC<Props> = props => {
         </div>
     );
 };
+
+interface Props {
+    className?: string;
+    loadingPrimary?: string;
+    loadingSecondary?: string;
+}
 
 Loading.propTypes = {
     className: PropTypes.string,

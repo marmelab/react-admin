@@ -52,15 +52,7 @@ function goBack() {
     window.history.go(-1);
 }
 
-export interface ErrorComponentProps {
-    className?: string;
-    error: Error;
-    errorInfo: ErrorInfo;
-    title: TitleProps['defaultTitle'];
-    classes?: object;
-}
-
-const Error: FC<ErrorComponentProps> = props => {
+const Error: FC<ErrorProps> = props => {
     const {
         error,
         errorInfo,
@@ -106,6 +98,14 @@ const Error: FC<ErrorComponentProps> = props => {
         </Fragment>
     );
 };
+
+export interface ErrorProps {
+    className?: string;
+    error: Error;
+    errorInfo: ErrorInfo;
+    title: TitleProps['defaultTitle'];
+    classes?: object;
+}
 
 Error.propTypes = {
     classes: PropTypes.object,
