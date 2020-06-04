@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import CardContent, { CardContentProps } from '@material-ui/core/CardContent';
@@ -30,15 +30,21 @@ const useStyles = makeStyles(
  * padding double the spacing between each CardContent, leading to too much
  * wasted space. Use this component as a CardContent alternative.
  */
-const CardContentInner: FC<CardContentProps> = props => {
-    const { className, children, ...rest } = props;
+const CardContentInner: FC<Props> = props => {
+    const { className, children } = props;
     const classes = useStyles(props);
     return (
-        <CardContent className={classnames(classes.root, className)} {...rest}>
+        <CardContent className={classnames(classes.root, className)}>
             {children}
         </CardContent>
     );
 };
+
+interface Props {
+    classes?: object;
+    className?: string;
+    children: ReactNode;
+}
 
 CardContentInner.propTypes = {
     className: PropTypes.string,
