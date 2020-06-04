@@ -30,17 +30,24 @@ const Pagination: FC<PaginationProps> = props => {
         setPage,
         setPerPage,
     } = useListContext(props);
+
+    const getNbPages = useCallback(() => Math.ceil(total / perPage) || 1, [
+        perPage,
+        total,
+    ]);
+
     useEffect(() => {
         if (page < 1 || isNaN(page)) {
             setPage(1);
+        } else if (page > getNbPages()) {
+            setPage(getNbPages());
         }
-    }, [page, setPage]);
+    }, [page, setPage, getNbPages, total, perPage]);
+
     const translate = useTranslate();
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('sm')
     );
-
-    const getNbPages = () => Math.ceil(total / perPage) || 1;
 
     /**
      * Warning: material-ui's page is 0-based
@@ -77,7 +84,8 @@ const Pagination: FC<PaginationProps> = props => {
         [translate]
     );
 
-    if (total === 0) {
+    // Avoid rendering TablePagination if "page" value is invalid
+    if (total === 0 || page > getNbPages()) {
         return loading ? <Toolbar variant="dense" /> : limit;
     }
 
