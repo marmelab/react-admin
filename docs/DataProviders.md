@@ -279,7 +279,7 @@ APIs are so diverse that quite often, none of the available Data Providers suit 
 
 The methods of a Data Provider receive a request, and return a promise for a response. Both the request and the response format are standardized.
 
-### Request Format
+## Request Format
 
 Data queries require a *method* (e.g. `getOne`), a *resource* (e.g. 'posts') and a set of *parameters*.
 
@@ -333,7 +333,7 @@ dataProvider.deleteMany('posts', { ids: [123, 234] });
 
 **Tip**: If your API supports more request types, you can add more methods to the Data Provider (for instance to support upserts, aggregations, or Remote Procedure Call). React-admin won't call these methods directly, but you can call them in your own component thanks to the `useDataProvider` hook described in the [Querying the API](./Actions.md) documentation.
 
-### Response Format
+## Response Format
 
 Data Providers methods must return a Promise for an object with a `data` property.
 
@@ -445,7 +445,53 @@ dataProvider.deleteMany('posts', { ids: [123, 234] })
 
 **Tip**: The `validUntil` field in the response is optional. It enables the Application cache, a client-side optimization to speed up rendering and reduce network traffic. Check [the Caching documentation](./Caching.md#application-cache) for more details.
 
-### Example Implementation
+## Error Format
+
+When the API backend returns an error, the Data Provider should return a rejected Promise containing an `Error` object. This object should contain a `status` property with the HTTP response code (404, 500, etc.). React-admin inspects this error code, and uses it for [authentication](./Authentication.md) (in case of 401 or 403 errors). Besides, react-admin displays the error `message` on screen in a temporary notification.
+
+If you use `fetchJson`, you don't need to do anything: HTTP errors are automatically decorated as expected by react-admin.
+
+If you use another HTTP client, make sure you return a rejected Promise. You can use the `HttpError` class to throw an error with status in one line:
+
+```js
+import { HttpError } from 'react-admin';
+
+export default {
+    getList: (resource, params) => {
+        return new Promise((resolve, reject) => {
+            myApiClient(url, { ...options, headers: requestHeaders })
+                .then(response =>
+                    response.text().then(text => ({
+                        status: response.status,
+                        statusText: response.statusText,
+                        headers: response.headers,
+                        body: text,
+                    }))
+                )
+                .then(({ status, statusText, headers, body }) => {
+                    let json;
+                    try {
+                        json = JSON.parse(body);
+                    } catch (e) {
+                        // not json, no big deal
+                    }
+                    if (status < 200 || status >= 300) {
+                        return reject(
+                            new HttpError(
+                                (json && json.message) || statusText,
+                                status,
+                                json
+                            )
+                        );
+                    }
+                    return resolve({ status, headers, body, json });
+                });
+        }),
+    ...
+}
+```
+
+## Example Implementation
 
 Let's say that you want to map the react-admin requests to a REST backend exposing the following API:
 
@@ -639,52 +685,6 @@ export default {
         }).then(({ json }) => ({ data: json }));
     },
 };
-```
-
-### Error Format
-
-When the API backend returns an error, the Data Provider should return a rejected Promise containing an `Error` object. This object should contain a `status` property with the HTTP response code (404, 500, etc.). React-admin inspects this error code, and uses it for [authentication](./Authentication.md) (in case of 401 or 403 errors). Besides, react-admin displays the error `message` on screen in a temporary notification.
-
-If you use `fetchJson`, you don't need to do anything: HTTP errors are automatically decorated as expected by react-admin.
-
-If you use another HTTP client, make sure you return a rejected Promise. You can use the `HttpError` class to throw an error with status in one line:
-
-```js
-import { HttpError } from 'react-admin';
-
-export default {
-    getList: (resource, params) => {
-        return new Promise((resolve, reject) => {
-            myApiClient(url, { ...options, headers: requestHeaders })
-                .then(response =>
-                    response.text().then(text => ({
-                        status: response.status,
-                        statusText: response.statusText,
-                        headers: response.headers,
-                        body: text,
-                    }))
-                )
-                .then(({ status, statusText, headers, body }) => {
-                    let json;
-                    try {
-                        json = JSON.parse(body);
-                    } catch (e) {
-                        // not json, no big deal
-                    }
-                    if (status < 200 || status >= 300) {
-                        return reject(
-                            new HttpError(
-                                (json && json.message) || statusText,
-                                status,
-                                json
-                            )
-                        );
-                    }
-                    return resolve({ status, headers, body, json });
-                });
-        }),
-    ...
-}
 ```
 
 ## Using The Data Provider In Components
