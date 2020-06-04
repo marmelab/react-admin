@@ -65,7 +65,7 @@ const Sidebar: FC<SidebarProps> = props => {
     const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
     const handleClose = () => dispatch(setSidebarVisibility(false));
     const toggleSidebar = () => dispatch(setSidebarVisibility(!open));
-    const classes = useStyles({ open });
+    const classes = useStyles({ ...props, open });
 
     return isXSmall ? (
         <Drawer

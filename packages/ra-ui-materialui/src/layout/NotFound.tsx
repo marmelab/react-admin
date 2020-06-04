@@ -46,8 +46,8 @@ function goBack() {
     window.history.go(-1);
 }
 
-const NotFound: FC<Props> = props => {
-    const { className, title, ...rest } = props;
+const NotFound: FC<NotFoundProps> = props => {
+    const { className, title, classes: classesOverride, ...rest } = props;
     const classes = useStyles(props);
     const translate = useTranslate();
     useAuthenticated();
@@ -81,20 +81,20 @@ const sanitizeRestProps = ({
     location,
     match,
     ...rest
-}: Partial<Props>): Omit<
-    Props,
+}: Partial<NotFoundProps>): Omit<
+    Partial<NotFoundProps>,
     keyof RouteComponentProps | 'className' | 'title'
 > => rest;
 
-interface Props extends RouteComponentProps {
+export interface NotFoundProps extends RouteComponentProps {
     className: string;
     title: TitleProps['defaultTitle'];
-    classes?: object;
+    classes?: ReturnType<typeof useStyles>;
 }
 
 NotFound.propTypes = {
     className: PropTypes.string,
-    classes: PropTypes.object,
+    classes: PropTypes.any,
     title: PropTypes.string,
 };
 

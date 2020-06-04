@@ -53,12 +53,14 @@ const Loading: FC<Props> = props => {
 };
 
 interface Props {
+    classes?: object;
     className?: string;
     loadingPrimary?: string;
     loadingSecondary?: string;
 }
 
 Loading.propTypes = {
+    classes: PropTypes.object,
     className: PropTypes.string,
     loadingPrimary: PropTypes.string,
     loadingSecondary: PropTypes.string,
