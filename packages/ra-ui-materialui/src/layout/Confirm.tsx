@@ -104,8 +104,13 @@ const Confirm: FC<ConfirmProps> = props => {
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button disabled={loading} onClick={onClose}>
-                    <CancelIcon className={classes.iconPaddingStyle} />
+                <Button
+                    disabled={loading}
+                    onClick={onClose}
+                    startIcon={
+                        <CancelIcon className={classes.iconPaddingStyle} />
+                    }
+                >
                     {translate(cancel, { _: cancel })}
                 </Button>
                 <Button
@@ -116,8 +121,10 @@ const Confirm: FC<ConfirmProps> = props => {
                         [classes.confirmPrimary]: confirmColor === 'primary',
                     })}
                     autoFocus
+                    startIcon={
+                        <ConfirmIcon className={classes.iconPaddingStyle} />
+                    }
                 >
-                    <ConfirmIcon className={classes.iconPaddingStyle} />
                     {translate(confirm, { _: confirm })}
                 </Button>
             </DialogActions>

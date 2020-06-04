@@ -69,8 +69,12 @@ const NotFound: FC<Props> = props => {
                 <div>{translate('ra.message.not_found')}.</div>
             </div>
             <div className={classes.toolbar}>
-                <Button variant="contained" onClick={goBack}>
-                    <History /> {translate('ra.action.back')}
+                <Button
+                    variant="contained"
+                    onClick={goBack}
+                    startIcon={<History />}
+                >
+                    {translate('ra.action.back')}
                 </Button>
             </div>
         </div>

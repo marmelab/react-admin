@@ -94,8 +94,12 @@ const Error: FC<ErrorComponentProps> = props => {
                     </ExpansionPanel>
                 )}
                 <div className={classes.toolbar}>
-                    <Button variant="contained" onClick={goBack}>
-                        <History /> {translate('ra.action.back')}
+                    <Button
+                        variant="contained"
+                        onClick={goBack}
+                        startIcon={<History />}
+                    >
+                        {translate('ra.action.back')}
                     </Button>
                 </div>
             </div>
