@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, cleanup } from '@testing-library/react';
+import { render, cleanup, wait } from '@testing-library/react';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ListContext } from 'ra-core';
@@ -43,19 +43,22 @@ describe('<Pagination />', () => {
             expect(queryByText('ra.navigation.no_results')).toBeNull();
         });
 
-        it('should not display a pagination limit on an out of bounds page', () => {
+        it('should display a pagination limit on an out of bounds page', async () => {
             jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+            const setPage = jest.fn().mockReturnValue(null);
             const { queryByText } = render(
                 <ThemeProvider theme={theme}>
                     <ListContext.Provider
-                        value={{ ...defaultProps, total: 10, page: 2 }}
+                        value={{ ...defaultProps, total: 10, page: 2, setPage }}
                     >
                         <Pagination />
                     </ListContext.Provider>
                 </ThemeProvider>
             );
-            // mui TablePagination displays a warning in that case, and that's normal
-            expect(queryByText('ra.navigation.no_results')).toBeNull();
+            // mui TablePagination displays no more a warning in that case
+            // Then useEffect fallback on a valid page
+            expect(queryByText('ra.navigation.no_results')).not.toBeNull();
+            await wait(expect(setPage).toBeCalledWith(1), 1000);
         });
     });
 

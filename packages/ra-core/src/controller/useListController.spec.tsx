@@ -148,7 +148,7 @@ describe('useListController', () => {
             ).toEqual({ q: true });
         });
 
-        it('should update data if permanent filters change', () => {
+        it.only('should update data if permanent filters change', () => {
             const children = jest.fn().mockReturnValue(<span>children</span>);
             const props = {
                 ...defaultProps,
@@ -166,6 +166,7 @@ describe('useListController', () => {
                                 list: {
                                     params: {},
                                     cachedRequests: {},
+                                    ids: [],
                                 },
                             },
                         },
