@@ -1,6 +1,13 @@
 # Changelog
 
-## v3.5.4
+## v3.5.6
+
+* Fix default margin in `<AutocompleteArrayInput>` ([4892](https://github.com/marmelab/react-admin/pull/4892)) ([bard](https://github.com/bard))
+* Fix `<FileInput>` when used without children ([4889](https://github.com/marmelab/react-admin/pull/4889)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix mobile version of `<ReviewList>` on the example demo ([4878](https://github.com/marmelab/react-admin/pull/4878)) ([alanpoulain](https://github.com/alanpoulain))
+* [Doc] Fix `useQuery` and `useMutation` arguments name ([4887](https://github.com/marmelab/react-admin/pull/4887)) ([WiXSL](https://github.com/WiXSL))
+
+## v3.5.5
 
 * Fix list params set via query string are lost after redirection ([4868](https://github.com/marmelab/react-admin/pull/4868)) ([djhi](https://github.com/djhi))
 * Fix failing language change in a corner case ([4854](https://github.com/marmelab/react-admin/pull/4854)) ([fzaninotto](https://github.com/fzaninotto))
@@ -11,6 +18,8 @@
 * [Doc] Fix `<NumberField>` `options` prop description ([4860](https://github.com/marmelab/react-admin/pull/4860)) ([joebordes](https://github.com/joebordes))
 * [Doc] Update link to Firestore data provider ([4856](https://github.com/marmelab/react-admin/pull/4856)) ([benwinding](https://github.com/benwinding))
 * [Doc] Fix typo in `useAuthenticated` hook usage description ([4855](https://github.com/marmelab/react-admin/pull/4855)) ([joebordes](https://github.com/joebordes))
+
+## v3.5.4 (unpublished)
 
 ## v3.5.3
 
