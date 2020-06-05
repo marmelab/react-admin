@@ -99,8 +99,8 @@ You can customize the `<Create>` and `<Edit>` components using the following pro
 * [`aside`](#aside-component)
 * [`component`](#component)
 * [`undoable`](#undoable) (`<Edit>` only)
-* [`onSuccess`](#onSuccess)
-* [`onFailure`](#onFailure)
+* [`onSuccess`](#onsuccess)
+* [`onFailure`](#onfailure)
 * [`transform`](#transform)
 * [`successMessage`](#success-message) (deprecated - use `onSuccess` instead)
 
