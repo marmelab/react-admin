@@ -1,8 +1,6 @@
 import * as React from 'react';
-import { FunctionComponent } from 'react';
-import compose from 'recompose/compose';
+import { FunctionComponent, memo } from 'react';
 import get from 'lodash/get';
-import pure from 'recompose/pure';
 import Chip, { ChipProps } from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -20,7 +18,7 @@ const useStyles = makeStyles(
 
 export const ChipField: FunctionComponent<
     FieldProps & InjectedFieldProps & ChipProps
-> = props => {
+> = memo<FieldProps & InjectedFieldProps & ChipProps>(props => {
     const {
         className,
         classes: classesOverride,
@@ -52,22 +50,15 @@ export const ChipField: FunctionComponent<
             {...sanitizeRestProps(rest)}
         />
     );
-};
+});
 
-const EnhancedChipField = compose<
-    FieldProps & InjectedFieldProps & ChipProps,
-    FieldProps & ChipProps
->(pure)(ChipField);
-
-EnhancedChipField.defaultProps = {
+ChipField.defaultProps = {
     addLabel: true,
 };
 
-EnhancedChipField.propTypes = {
+ChipField.propTypes = {
     ...ChipField.propTypes,
     ...fieldPropTypes,
 };
 
-EnhancedChipField.displayName = 'EnhancedChipField';
-
-export default EnhancedChipField;
+export default ChipField;

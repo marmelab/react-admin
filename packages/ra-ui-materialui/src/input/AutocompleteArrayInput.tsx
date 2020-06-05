@@ -177,8 +177,8 @@ const AutocompleteArrayInput: FunctionComponent<
     );
 
     const selectedItems = useMemo(() => values.map(getSuggestionFromValue), [
-        ...values,
         getSuggestionFromValue,
+        values,
     ]);
 
     const { getChoiceText, getChoiceValue, getSuggestions } = useSuggestions({

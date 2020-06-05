@@ -25,6 +25,7 @@ const frenchMessages: TranslationMessages = {
             show: 'Afficher',
             sort: 'Trier',
             undo: 'Annuler',
+            unselect: 'Désélectionner',
             expand: 'Étendre',
             close: 'Fermer',
             open_menu: 'Ouvrir le menu',

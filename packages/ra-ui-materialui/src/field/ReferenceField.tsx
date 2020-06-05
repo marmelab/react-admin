@@ -16,7 +16,7 @@ import LinearProgress from '../layout/LinearProgress';
 import Link from '../Link';
 import sanitizeRestProps from './sanitizeRestProps';
 import { ClassNameMap } from '@material-ui/styles';
-import { FieldProps, InjectedFieldProps } from './types';
+import { FieldProps, fieldPropTypes, InjectedFieldProps } from './types';
 
 interface ReferenceFieldProps extends FieldProps, InjectedFieldProps {
     children: ReactElement;
@@ -119,6 +119,7 @@ ReferenceField.propTypes = {
     reference: PropTypes.string.isRequired,
     resource: PropTypes.string,
     sortBy: PropTypes.string,
+    sortByOrder: fieldPropTypes.sortByOrder,
     source: PropTypes.string.isRequired,
     translateChoice: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     linkType: PropTypes.oneOfType([

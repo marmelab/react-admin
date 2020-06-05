@@ -6,6 +6,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import { useTranslate, sanitizeListRestProps } from 'ra-core';
 
 import TopToolbar from '../layout/TopToolbar';
@@ -36,7 +38,12 @@ const useStyles = makeStyles(
             overflowY: 'hidden',
         },
         title: {
+            display: 'flex',
             flex: '0 0 auto',
+        },
+        icon: {
+            marginLeft: '-0.5em',
+            marginRight: '0.5em',
         },
     }),
     { name: 'RaBulkActionsToolbar' }
@@ -50,6 +57,7 @@ const BulkActionsToolbar = props => {
         label,
         resource,
         selectedIds,
+        onUnselectItems,
         children,
         ...rest
     } = props;
@@ -65,6 +73,15 @@ const BulkActionsToolbar = props => {
             {...sanitizeListRestProps(rest)}
         >
             <div className={classes.title}>
+                <IconButton
+                    className={classes.icon}
+                    aria-label={translate('ra.action.unselect')}
+                    title={translate('ra.action.unselect')}
+                    onClick={onUnselectItems}
+                    size="small"
+                >
+                    <CloseIcon fontSize="small" />
+                </IconButton>
                 <Typography color="inherit" variant="subtitle1">
                     {translate(label, {
                         _: label,

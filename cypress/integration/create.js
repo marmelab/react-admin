@@ -302,6 +302,14 @@ describe('Create Page', () => {
     });
 
     it('should show rich text input error message when form is submitted', () => {
+        const values = [
+            {
+                type: 'input',
+                name: 'title',
+                value: 'Test title',
+            },
+        ];
+        CreatePage.setValues(values);
         CreatePage.submit();
         cy.get(CreatePage.elements.richTextInputError)
             .should('exist')
@@ -309,6 +317,14 @@ describe('Create Page', () => {
     });
 
     it('should not show rich text input error message when form is submitted and input is filled with text', () => {
+        const values = [
+            {
+                type: 'input',
+                name: 'title',
+                value: 'Test title',
+            },
+        ];
+        CreatePage.setValues(values);
         CreatePage.submit();
         cy.get(CreatePage.elements.richTextInputError)
             .should('exist')

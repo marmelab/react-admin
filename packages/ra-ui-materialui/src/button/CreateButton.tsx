@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { FC, ReactElement } from 'react';
+import { FC, ReactElement, memo } from 'react';
 import PropTypes from 'prop-types';
-import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import { Fab, makeStyles, useMediaQuery, Theme } from '@material-ui/core';
 import ContentAdd from '@material-ui/icons/Add';
 import classnames from 'classnames';
@@ -86,5 +85,10 @@ CreateButton.propTypes = {
     label: PropTypes.string,
 };
 
-const enhance = onlyUpdateForKeys(['basePath', 'label', 'translate']);
-export default enhance(CreateButton);
+export default memo(CreateButton, (prevProps, nextProps) => {
+    return (
+        prevProps.basePath === nextProps.basePath &&
+        prevProps.label === nextProps.label &&
+        prevProps.translate === nextProps.translate
+    );
+});

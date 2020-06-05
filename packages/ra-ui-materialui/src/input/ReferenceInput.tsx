@@ -203,7 +203,7 @@ interface ReferenceInputViewProps {
     resource: string;
     setFilter: (v: string) => void;
     setPagination: (pagination: Pagination) => void;
-    setSort: (sort: Sort) => void;
+    setSort: (sort: Sort, order?: string) => void;
     source: string;
     warning?: string;
 }

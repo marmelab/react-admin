@@ -127,7 +127,10 @@ const Datagrid = props => {
     const updateSort = useCallback(
         event => {
             event.stopPropagation();
-            setSort(event.currentTarget.dataset.sort);
+            setSort(
+                event.currentTarget.dataset.sort,
+                event.currentTarget.dataset.order
+            );
         },
         [setSort]
     );

@@ -24,6 +24,7 @@ const englishMessages: TranslationMessages = {
             show: 'Show',
             sort: 'Sort',
             undo: 'Undo',
+            unselect: 'Unselect',
             expand: 'Expand',
             close: 'Close',
             open_menu: 'Open menu',

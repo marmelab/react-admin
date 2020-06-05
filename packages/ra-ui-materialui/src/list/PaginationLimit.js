@@ -1,5 +1,5 @@
 import * as React from 'react';
-import pure from 'recompose/pure';
+import { memo } from 'react';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { useTranslate } from 'ra-core';
@@ -15,4 +15,4 @@ const PaginationLimit = () => {
     );
 };
 
-export default pure(PaginationLimit);
+export default memo(PaginationLimit);

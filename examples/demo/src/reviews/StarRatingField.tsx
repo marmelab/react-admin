@@ -21,7 +21,7 @@ const useStyles = makeStyles({
 });
 
 interface OwnProps {
-    size: 'large' | 'small';
+    size?: 'large' | 'small';
 }
 
 const StarRatingField: FC<FieldProps & OwnProps> = ({

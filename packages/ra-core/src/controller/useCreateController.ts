@@ -8,30 +8,19 @@ import { match as Match, useLocation } from 'react-router-dom';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import { useCreate } from '../dataProvider';
 import { useNotify, useRedirect, RedirectionSideEffect } from '../sideEffect';
+import {
+    OnSuccess,
+    SetOnSuccess,
+    OnFailure,
+    SetOnFailure,
+    TransformData,
+    SetTransformData,
+    useSaveModifiers,
+} from './saveModifiers';
 import { useTranslate } from '../i18n';
 import { useVersion } from '.';
 import { CRUD_CREATE } from '../actions';
 import { Record } from '../types';
-
-export interface CreateControllerProps {
-    loading: boolean;
-    loaded: boolean;
-    saving: boolean;
-    defaultTitle: string;
-    save: (
-        record: Partial<Record>,
-        redirect: RedirectionSideEffect,
-        callbacks?: {
-            onSuccess: () => void;
-            onFailure: (error: string | { message?: string }) => void;
-        }
-    ) => void;
-    resource: string;
-    basePath: string;
-    record?: Partial<Record>;
-    redirect: RedirectionSideEffect;
-    version: number;
-}
 
 export interface CreateProps {
     basePath: string;
@@ -43,7 +32,34 @@ export interface CreateProps {
     match?: Match;
     record?: Partial<Record>;
     resource: string;
+    onSuccess?: OnSuccess;
+    onFailure?: OnFailure;
+    transform?: TransformData;
     successMessage?: string;
+}
+
+export interface CreateControllerProps {
+    loading: boolean;
+    loaded: boolean;
+    saving: boolean;
+    defaultTitle: string;
+    save: (
+        record: Partial<Record>,
+        redirect: RedirectionSideEffect,
+        callbacks?: {
+            onSuccess?: OnSuccess;
+            onFailure?: OnFailure;
+            transform?: TransformData;
+        }
+    ) => void;
+    setOnSuccess: SetOnSuccess;
+    setOnFailure: SetOnFailure;
+    setTransform: SetTransformData;
+    resource: string;
+    basePath: string;
+    record?: Partial<Record>;
+    redirect: RedirectionSideEffect;
+    version: number;
 }
 
 /**
@@ -72,6 +88,9 @@ const useCreateController = (props: CreateProps): CreateControllerProps => {
         hasShow,
         hasEdit,
         successMessage,
+        onSuccess,
+        onFailure,
+        transform,
     } = props;
 
     const location = useLocation();
@@ -81,49 +100,90 @@ const useCreateController = (props: CreateProps): CreateControllerProps => {
     const recordToUse = getRecord(location, record);
     const version = useVersion();
 
+    if (process.env.NODE_ENV !== 'production' && successMessage) {
+        console.log(
+            '<Edit successMessage> prop is deprecated, use the onSuccess prop instead.'
+        );
+    }
+
+    const {
+        onSuccessRef,
+        setOnSuccess,
+        onFailureRef,
+        setOnFailure,
+        transformRef,
+        setTransform,
+    } = useSaveModifiers({ onSuccess, onFailure, transform });
+
     const [create, { loading: saving }] = useCreate(resource);
 
     const save = useCallback(
         (
             data: Partial<Record>,
             redirectTo = 'list',
-            { onSuccess, onFailure } = {}
+            {
+                onSuccess: onSuccessFromSave,
+                onFailure: onFailureFromSave,
+                transform: transformFromSave,
+            } = {}
         ) =>
-            create(
-                { payload: { data } },
-                {
-                    action: CRUD_CREATE,
-                    onSuccess: onSuccess
-                        ? onSuccess
-                        : ({ data: newRecord }) => {
-                              notify(
-                                  successMessage || 'ra.notification.created',
-                                  'info',
-                                  {
-                                      smart_count: 1,
-                                  }
-                              );
-                              redirect(
-                                  redirectTo,
-                                  basePath,
-                                  newRecord.id,
-                                  newRecord
-                              );
-                          },
-                    onFailure: onFailure
-                        ? onFailure
-                        : error => {
-                              notify(
-                                  typeof error === 'string'
-                                      ? error
-                                      : error.message ||
-                                            'ra.notification.http_error',
-                                  'warning'
-                              );
-                          },
-                }
+            Promise.resolve(
+                transformFromSave
+                    ? transformFromSave(data)
+                    : transformRef.current
+                    ? transformRef.current(data)
+                    : data
+            ).then(data =>
+                create(
+                    { payload: { data } },
+                    {
+                        action: CRUD_CREATE,
+                        onSuccess: onSuccessFromSave
+                            ? onSuccessFromSave
+                            : onSuccessRef.current
+                            ? onSuccessRef.current
+                            : ({ data: newRecord }) => {
+                                  notify(
+                                      successMessage ||
+                                          'ra.notification.created',
+                                      'info',
+                                      {
+                                          smart_count: 1,
+                                      }
+                                  );
+                                  redirect(
+                                      redirectTo,
+                                      basePath,
+                                      newRecord.id,
+                                      newRecord
+                                  );
+                              },
+                        onFailure: onFailureFromSave
+                            ? onFailureFromSave
+                            : onFailureRef.current
+                            ? onFailureRef.current
+                            : error => {
+                                  notify(
+                                      typeof error === 'string'
+                                          ? error
+                                          : error.message ||
+                                                'ra.notification.http_error',
+                                      'warning'
+                                  );
+                              },
+                    }
+                )
             ),
-        [create, notify, successMessage, redirect, basePath]
+        [
+            transformRef,
+            create,
+            onSuccessRef,
+            onFailureRef,
+            notify,
+            successMessage,
+            redirect,
+            basePath,
+        ]
     );
 
     const resourceName = translate(`resources.${resource}.name`, {
@@ -140,6 +200,9 @@ const useCreateController = (props: CreateProps): CreateControllerProps => {
         saving,
         defaultTitle,
         save,
+        setOnSuccess,
+        setOnFailure,
+        setTransform,
         resource,
         basePath,
         record: recordToUse,

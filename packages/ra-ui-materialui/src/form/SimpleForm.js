@@ -62,6 +62,7 @@ SimpleForm.propTypes = {
     save: PropTypes.func,
     saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     submitOnEnter: PropTypes.bool,
+    toolbar: PropTypes.element,
     undoable: PropTypes.bool,
     validate: PropTypes.func,
     version: PropTypes.number,

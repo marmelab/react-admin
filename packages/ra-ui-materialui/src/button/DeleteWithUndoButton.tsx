@@ -1,18 +1,14 @@
 import * as React from 'react';
-import { useCallback, FC, ReactElement, SyntheticEvent } from 'react';
+import { FC, ReactElement, ReactEventHandler, SyntheticEvent } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import ActionDelete from '@material-ui/icons/Delete';
 import classnames from 'classnames';
 import {
-    useDelete,
-    useRefresh,
-    useNotify,
-    useRedirect,
-    CRUD_DELETE,
     Record,
     RedirectionSideEffect,
+    useDeleteWithUndoController,
 } from 'ra-core';
 
 import Button, { ButtonProps } from './Button';
@@ -27,42 +23,17 @@ const DeleteWithUndoButton: FC<DeleteWithUndoButtonProps> = props => {
         resource,
         record,
         basePath,
-        redirect: redirectTo = 'list',
+        redirect = 'list',
         ...rest
     } = props;
     const classes = useStyles(props);
-    const notify = useNotify();
-    const redirect = useRedirect();
-    const refresh = useRefresh();
-
-    const [deleteOne, { loading }] = useDelete(resource, null, null, {
-        action: CRUD_DELETE,
-        onSuccess: () => {
-            notify('ra.notification.deleted', 'info', { smart_count: 1 }, true);
-            redirect(redirectTo, basePath);
-            refresh();
-        },
-        onFailure: error =>
-            notify(
-                typeof error === 'string'
-                    ? error
-                    : error.message || 'ra.notification.http_error',
-                'warning'
-            ),
-        undoable: true,
+    const { loading, handleDelete } = useDeleteWithUndoController({
+        resource,
+        record,
+        basePath,
+        redirect,
+        onClick,
     });
-    const handleDelete = useCallback(
-        event => {
-            event.stopPropagation();
-            deleteOne({
-                payload: { id: record.id, previousData: record },
-            });
-            if (typeof onClick === 'function') {
-                onClick(event);
-            }
-        },
-        [deleteOne, onClick, record]
-    );
 
     return (
         <Button
@@ -104,7 +75,7 @@ interface Props {
     className?: string;
     icon?: ReactElement;
     label?: string;
-    onClick?: (e: MouseEvent) => void;
+    onClick?: ReactEventHandler<any>;
     record?: Record;
     redirect?: RedirectionSideEffect;
     resource?: string;

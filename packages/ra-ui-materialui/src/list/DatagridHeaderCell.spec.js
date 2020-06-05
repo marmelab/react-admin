@@ -7,6 +7,25 @@ import { DatagridHeaderCell } from './DatagridHeaderCell';
 describe('<DatagridHeaderCell />', () => {
     afterEach(cleanup);
 
+    it('should accept a React element as Field label', () => {
+        const Label = () => <>Label</>;
+        const Field = () => <div />;
+        const { getByText } = render(
+            <table>
+                <tbody>
+                    <tr>
+                        <DatagridHeaderCell
+                            currentSort={{}}
+                            field={<Field source="title" label={<Label />} />}
+                            updateSort={() => true}
+                        />
+                    </tr>
+                </tbody>
+            </table>
+        );
+        expect(getByText('Label')).toBeDefined();
+    });
+
     describe('sorting on a column', () => {
         const Field = () => <div />;
         Field.defaultProps = {
@@ -46,6 +65,42 @@ describe('<DatagridHeaderCell />', () => {
                 </table>
             );
             expect(getByTitle('ra.action.sort').dataset.sort).toBe('title');
+        });
+
+        it('should be change order when field has a sortByOrder props', () => {
+            const { getByTitle } = render(
+                <table>
+                    <tbody>
+                        <tr>
+                            <DatagridHeaderCell
+                                currentSort={{}}
+                                field={
+                                    <Field sortBy="title" sortByOrder="DESC" />
+                                }
+                                updateSort={() => true}
+                            />
+                        </tr>
+                    </tbody>
+                </table>
+            );
+            expect(getByTitle('ra.action.sort').dataset.order).toBe('DESC');
+        });
+
+        it('should be keep ASC order when field has not sortByOrder props', () => {
+            const { getByTitle } = render(
+                <table>
+                    <tbody>
+                        <tr>
+                            <DatagridHeaderCell
+                                currentSort={{}}
+                                field={<Field source="title" />}
+                                updateSort={() => true}
+                            />
+                        </tr>
+                    </tbody>
+                </table>
+            );
+            expect(getByTitle('ra.action.sort').dataset.order).toBe('ASC');
         });
 
         it('should be disabled when field has no sortby and no source', () => {

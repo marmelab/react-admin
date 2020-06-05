@@ -1,11 +1,15 @@
 import * as React from 'react';
-import { Children, cloneElement } from 'react';
+import { Children, cloneElement, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { useEditController, ComponentPropType } from 'ra-core';
+import {
+    useEditController,
+    ComponentPropType,
+    SideEffectContext,
+} from 'ra-core';
 
 import DefaultActions from './EditActions';
 import TitleForRecord from '../layout/TitleForRecord';
@@ -71,6 +75,10 @@ Edit.propTypes = {
     resource: PropTypes.string.isRequired,
     title: PropTypes.node,
     successMessage: PropTypes.string,
+    onSuccess: PropTypes.func,
+    onFailure: PropTypes.func,
+    transform: PropTypes.func,
+    undoable: PropTypes.bool,
 };
 
 export const EditView = props => {
@@ -89,6 +97,9 @@ export const EditView = props => {
         redirect,
         resource,
         save,
+        setOnSuccess,
+        setOnFailure,
+        setTransform,
         saving,
         title,
         undoable,
@@ -102,65 +113,71 @@ export const EditView = props => {
         ) : (
             actions
         );
-
+    const sideEffectContextValue = useMemo(
+        () => ({ setOnSuccess, setOnFailure, setTransform }),
+        [setOnFailure, setOnSuccess, setTransform]
+    );
     if (!children) {
         return null;
     }
     return (
-        <div
-            className={classnames('edit-page', classes.root, className)}
-            {...sanitizeRestProps(rest)}
-        >
-            <TitleForRecord
-                title={title}
-                record={record}
-                defaultTitle={defaultTitle}
-            />
-            {finalActions &&
-                cloneElement(finalActions, {
-                    basePath,
-                    data: record,
-                    hasShow,
-                    hasList,
-                    resource,
-                    //  Ensure we don't override any user provided props
-                    ...finalActions.props,
-                })}
+        <SideEffectContext.Provider value={sideEffectContextValue}>
             <div
-                className={classnames(classes.main, {
-                    [classes.noActions]: !finalActions,
-                })}
+                className={classnames('edit-page', classes.root, className)}
+                {...sanitizeRestProps(rest)}
             >
-                <Content className={classes.card}>
-                    {record ? (
-                        cloneElement(Children.only(children), {
+                <TitleForRecord
+                    title={title}
+                    record={record}
+                    defaultTitle={defaultTitle}
+                />
+                {finalActions &&
+                    cloneElement(finalActions, {
+                        basePath,
+                        data: record,
+                        hasShow,
+                        hasList,
+                        resource,
+                        //  Ensure we don't override any user provided props
+                        ...finalActions.props,
+                    })}
+                <div
+                    className={classnames(classes.main, {
+                        [classes.noActions]: !finalActions,
+                    })}
+                >
+                    <Content className={classes.card}>
+                        {record ? (
+                            cloneElement(Children.only(children), {
+                                basePath,
+                                record,
+                                redirect:
+                                    typeof children.props.redirect ===
+                                    'undefined'
+                                        ? redirect
+                                        : children.props.redirect,
+                                resource,
+                                save,
+                                saving,
+                                undoable,
+                                version,
+                            })
+                        ) : (
+                            <CardContent>&nbsp;</CardContent>
+                        )}
+                    </Content>
+                    {aside &&
+                        React.cloneElement(aside, {
                             basePath,
                             record,
-                            redirect:
-                                typeof children.props.redirect === 'undefined'
-                                    ? redirect
-                                    : children.props.redirect,
                             resource,
+                            version,
                             save,
                             saving,
-                            undoable,
-                            version,
-                        })
-                    ) : (
-                        <CardContent>&nbsp;</CardContent>
-                    )}
-                </Content>
-                {aside &&
-                    React.cloneElement(aside, {
-                        basePath,
-                        record,
-                        resource,
-                        version,
-                        save,
-                        saving,
-                    })}
+                        })}
+                </div>
             </div>
-        </div>
+        </SideEffectContext.Provider>
     );
 };
 
@@ -181,6 +198,11 @@ EditView.propTypes = {
     save: PropTypes.func,
     title: PropTypes.node,
     version: PropTypes.number,
+    onSuccess: PropTypes.func,
+    onFailure: PropTypes.func,
+    setOnSuccess: PropTypes.func,
+    setOnFailure: PropTypes.func,
+    setTransform: PropTypes.func,
 };
 
 EditView.defaultProps = {
@@ -225,6 +247,12 @@ const sanitizeRestProps = ({
     permissions,
     undoable,
     successMessage,
+    onSuccess,
+    setOnSuccess,
+    onFailure,
+    setOnFailure,
+    transform,
+    setTransform,
     translate,
     ...rest
 }) => rest;

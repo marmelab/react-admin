@@ -35,7 +35,7 @@ interface Props {
     id: string;
     input: any;
     isRequired: boolean;
-    label?: string;
+    label?: string | ReactElement;
     meta: any;
     resource: string;
     source: string;
@@ -120,7 +120,7 @@ Labeled.propTypes = {
     id: PropTypes.string,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     meta: PropTypes.object,
     onChange: PropTypes.func,
     record: PropTypes.object,

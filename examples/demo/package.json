@@ -45,6 +45,7 @@
         "not op_mini all"
     ],
     "devDependencies": {
+        "@types/fetch-mock": "^7.3.2",
         "@types/classnames": "^2.2.9",
         "@types/jest": "^24.0.23",
         "@types/node": "^12.12.14",

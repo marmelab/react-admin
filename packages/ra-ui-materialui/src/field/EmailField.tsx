@@ -1,18 +1,20 @@
 import * as React from 'react';
-import { FunctionComponent, HtmlHTMLAttributes } from 'react';
+import { FunctionComponent, HtmlHTMLAttributes, memo } from 'react';
 import get from 'lodash/get';
-import pure from 'recompose/pure';
 import Typography from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { Link } from '@material-ui/core';
 
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
 
 const EmailField: FunctionComponent<
     FieldProps & InjectedFieldProps & HtmlHTMLAttributes<HTMLAnchorElement>
-> = ({ className, source, record = {}, emptyText, ...rest }) => {
+> = memo<
+    FieldProps & InjectedFieldProps & HtmlHTMLAttributes<HTMLAnchorElement>
+>(({ className, source, record = {}, emptyText, ...rest }) => {
     const value = get(record, source);
 
     if (value == null) {
@@ -29,26 +31,21 @@ const EmailField: FunctionComponent<
     }
 
     return (
-        <a
+        <Link
             className={className}
             href={`mailto:${value}`}
             onClick={stopPropagation}
             {...sanitizeRestProps(rest)}
         >
             {value}
-        </a>
+        </Link>
     );
-};
+});
 
-const EnhancedEmailField = pure<
-    FieldProps & HtmlHTMLAttributes<HTMLAnchorElement>
->(EmailField);
-
-EnhancedEmailField.defaultProps = {
+EmailField.defaultProps = {
     addLabel: true,
 };
 
-EnhancedEmailField.propTypes = fieldPropTypes;
-EnhancedEmailField.displayName = 'EnhancedEmailField';
+EmailField.propTypes = fieldPropTypes;
 
-export default EnhancedEmailField;
+export default EmailField;

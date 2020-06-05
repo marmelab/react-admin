@@ -144,6 +144,7 @@ const PostList = props => {
                     <TextField source="title" cellClassName={classes.title} />
                     <DateField
                         source="published_at"
+                        sortByOrder="DESC"
                         cellClassName={classes.publishedAt}
                     />
 
@@ -152,7 +153,7 @@ const PostList = props => {
                         label="resources.posts.fields.commentable_short"
                         sortable={false}
                     />
-                    <NumberField source="views" />
+                    <NumberField source="views" sortByOrder="DESC" />
                     <ReferenceArrayField
                         label="Tags"
                         reference="tags"
