@@ -63,7 +63,11 @@ const VisitorList = (props: any) => {
                         options={{ style: 'currency', currency: 'USD' }}
                     />
                     <DateField source="latest_purchase" showTime />
-                    <BooleanField source="has_newsletter" label="News." />
+                    <BooleanField
+                        source="has_newsletter"
+                        label="News."
+                        size="small"
+                    />
                     <SegmentsField />
                 </Datagrid>
             )}
