@@ -90,6 +90,7 @@ const Toolbar = props => {
                             invalid={invalid}
                             redirect={redirect}
                             saving={saving}
+                            pristine={pristine}
                             submitOnEnter={submitOnEnter}
                         />
                         {record && typeof record.id !== 'undefined' && (
