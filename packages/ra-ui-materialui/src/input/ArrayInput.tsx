@@ -11,12 +11,12 @@ import sanitizeRestProps from './sanitizeRestProps';
  *
  *  @example
  *
- *      import { ArrayInput, SimpleFormIterator, DateInput, UrlInput } from 'react-admin';
+ *      import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admin';
  *
  *      <ArrayInput source="backlinks">
  *          <SimpleFormIterator>
  *              <DateInput source="date" />
- *              <UrlInput source="url" />
+ *              <TextInput source="url" />
  *          </SimpleFormIterator>
  *      </ArrayInput>
  *
