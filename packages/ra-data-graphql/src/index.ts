@@ -130,11 +130,7 @@ export default async <Options extends {} = any>(
         otherOptions as Options
     );
 
-    const handle = (
-        aorFetchType: FetchType,
-        resource: string,
-        params: Record<string, any>
-    ) => {
+    const handle = (aorFetchType: FetchType, resource: string, params: any) => {
         const overriddenBuildQuery: (
             params: Record<string, any>
         ) => QueryHandler = get(
@@ -142,12 +138,20 @@ export default async <Options extends {} = any>(
             `${resource}.${sanitizeFetchType(aorFetchType)}`
         );
 
-        const { parseResponse, ...query } = overriddenBuildQuery
+        const { parseResponse = null, ...query } = overriddenBuildQuery
             ? {
                   ...buildQuery(aorFetchType, resource, params),
                   ...overriddenBuildQuery(params),
               }
             : buildQuery(aorFetchType, resource, params);
+
+        if (!parseResponse) {
+            throw new Error(
+                `Missing '${sanitizeFetchType(
+                    aorFetchType
+                )}' in the override option`
+            );
+        }
 
         const operation = getQueryOperation(query.query);
 
