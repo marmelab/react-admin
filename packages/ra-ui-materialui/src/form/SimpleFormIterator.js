@@ -73,6 +73,7 @@ const SimpleFormIterator = props => {
         source,
         disableAdd,
         disableRemove,
+        disableIndex,
         variant,
         margin,
         TransitionProps,
@@ -137,11 +138,11 @@ const SimpleFormIterator = props => {
                         {...TransitionProps}
                     >
                         <li className={classes.line}>
-                            <Typography
+                        {!disableIndex && ( <Typography
                                 variant="body1"
                                 className={classes.index}
                             >
-                                {index + 1}
+                                {index + 1})
                             </Typography>
                             <section className={classes.form}>
                                 {Children.map(children, (input, index2) =>
@@ -152,9 +153,7 @@ const SimpleFormIterator = props => {
                                             }
                                             input={cloneElement(input, {
                                                 source: input.props.source
-                                                    ? `${member}.${
-                                                          input.props.source
-                                                      }`
+                                                    ? `${member}.${input.props.source}`
                                                     : member,
                                                 index: input.props.source
                                                     ? undefined
@@ -163,10 +162,7 @@ const SimpleFormIterator = props => {
                                                     typeof input.props.label ===
                                                     'undefined'
                                                         ? input.props.source
-                                                            ? `resources.${resource}.fields.${
-                                                                  input.props
-                                                                      .source
-                                                              }`
+                                                            ? `resources.${resource}.fields.${input.props.source}`
                                                             : undefined
                                                         : input.props.label,
                                             })}
@@ -229,6 +225,7 @@ const SimpleFormIterator = props => {
 SimpleFormIterator.defaultProps = {
     disableAdd: false,
     disableRemove: false,
+    disableIndex: false,
 };
 
 SimpleFormIterator.propTypes = {
@@ -243,6 +240,7 @@ SimpleFormIterator.propTypes = {
     source: PropTypes.string,
     resource: PropTypes.string,
     translate: PropTypes.func,
+    disableIndex: PropTypes.bool,
     disableAdd: PropTypes.bool,
     disableRemove: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     TransitionProps: PropTypes.shape({}),
