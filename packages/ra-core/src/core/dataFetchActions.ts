@@ -8,7 +8,7 @@ export const UPDATE_MANY = 'UPDATE_MANY';
 export const DELETE = 'DELETE';
 export const DELETE_MANY = 'DELETE_MANY';
 
-export type FetchAction =
+export type FetchType =
     | typeof GET_LIST
     | typeof GET_ONE
     | typeof GET_MANY
@@ -32,7 +32,7 @@ export const fetchActionsWithArrayOfRecordsResponse = [
 ];
 export const fetchActionsWithTotalResponse = [GET_LIST, GET_MANY_REFERENCE];
 
-export const sanitizeFetchType = (fetchType: FetchAction | string) => {
+export const sanitizeFetchType = (fetchType: FetchType | string) => {
     switch (fetchType) {
         case GET_LIST:
             return 'getList';

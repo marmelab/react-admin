@@ -81,6 +81,7 @@ export interface GraphQLProviderOptions<OtherOptions = any> {
     mutation?:
         | MutationOptions
         | ((resource: string, raFetchType: FetchType) => MutationOptions);
+    // @deprecated
     watchQuery?:
         | WatchQueryOptions
         | ((resource: string, raFetchType: FetchType) => WatchQueryOptions);
@@ -132,10 +133,10 @@ export default async <Options extends {} = any>(
     const handle = (
         aorFetchType: FetchType,
         resource: string,
-        params: GetListParams
+        params: Record<string, any>
     ) => {
         const overriddenBuildQuery: (
-            params: GetListParams
+            params: Record<string, any>
         ) => QueryHandler = get(
             override,
             `${resource}.${sanitizeFetchType(aorFetchType)}`
