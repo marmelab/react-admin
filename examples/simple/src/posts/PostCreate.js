@@ -1,4 +1,5 @@
-import React, { useCallback, useMemo } from 'react';
+import * as React from 'react';
+import { useMemo } from 'react';
 import RichTextInput from 'ra-input-rich-text';
 import {
     ArrayInput,
@@ -16,51 +17,8 @@ import {
     TextInput,
     Toolbar,
     required,
-    useCreate,
-    useRedirect,
-    useNotify,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
-import { useFormState, FormSpy } from 'react-final-form';
-
-const SaveWithNoteButton = props => {
-    const [create] = useCreate('posts');
-    const redirectTo = useRedirect();
-    const notify = useNotify();
-    const { basePath, redirect } = props;
-
-    const formState = useFormState();
-    const handleClick = useCallback(() => {
-        if (!formState.valid) {
-            return;
-        }
-
-        create(
-            {
-                payload: {
-                    data: { ...formState.values, average_note: 10 },
-                },
-            },
-            {
-                onSuccess: ({ data: newRecord }) => {
-                    notify('ra.notification.created', 'info', {
-                        smart_count: 1,
-                    });
-                    redirectTo(redirect, basePath, newRecord.id, newRecord);
-                },
-            }
-        );
-    }, [
-        formState.valid,
-        formState.values,
-        create,
-        notify,
-        redirectTo,
-        redirect,
-        basePath,
-    ]);
-
-    return <SaveButton {...props} handleSubmitWithRedirect={handleClick} />;
-};
+import { FormSpy } from 'react-final-form';
 
 const PostCreateToolbar = props => (
     <Toolbar {...props}>
@@ -81,8 +39,9 @@ const PostCreateToolbar = props => (
             submitOnEnter={false}
             variant="text"
         />
-        <SaveWithNoteButton
+        <SaveButton
             label="post.action.save_with_average_note"
+            transform={data => ({ ...data, average_note: 10 })}
             redirect="show"
             submitOnEnter={false}
             variant="text"
@@ -132,10 +91,7 @@ const PostCreate = ({ permissions, ...props }) => {
                 <FormSpy subscription={{ values: true }}>
                     {({ values }) =>
                         values.title ? (
-                            <NumberInput
-                                source="average_note"
-                                defaultValue={5}
-                            />
+                            <NumberInput source="average_note" />
                         ) : null
                     }
                 </FormSpy>

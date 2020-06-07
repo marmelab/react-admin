@@ -1,4 +1,5 @@
-import React, { cloneElement, Children } from 'react';
+import * as React from 'react';
+import { cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
 import { isRequired, FieldTitle, composeValidators } from 'ra-core';
 import { useFieldArray } from 'react-final-form-arrays';
@@ -47,7 +48,7 @@ import sanitizeRestProps from './sanitizeRestProps';
  *
  * @see https://github.com/final-form/react-final-form-arrays
  */
-export const ArrayInput = ({
+const ArrayInput = ({
     className,
     defaultValue,
     label,

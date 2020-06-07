@@ -4,7 +4,16 @@ import { Record, Sort, RecordMap, Identifier } from '../../types';
 import { useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../sideEffect';
 
-interface ReferenceManyProps {
+/**
+ * @typedef ReferenceManyProps
+ * @type {Object}
+ * @property {Array} data: the referenced records dictionary by their ids.
+ * @property {Array} ids: the list of referenced records ids.
+ * @property {boolean} loaded: boolean indicating if the references has already be loaded loaded
+ * @property {string | false} referenceBasePath base path of the related record
+ * @property {number} total records
+ */
+export interface ReferenceManyProps {
     data: RecordMap;
     ids: Identifier[];
     loaded: boolean;
@@ -31,15 +40,6 @@ interface Options {
 }
 
 const defaultFilter = {};
-
-/**
- * @typedef ReferenceManyProps
- * @type {Object}
- * @property {Object} data: the referenced records dictionary by their ids.
- * @property {Object} ids: the list of referenced records ids.
- * @property {boolean} loaded: boolean indicating if the references has already be loaded loaded
- * @property {string | false} referenceBasePath base path of the related record
- */
 
 /**
  * Fetch reference records, and return them when avaliable
@@ -72,7 +72,7 @@ const defaultFilter = {};
  * @param {string} option.basePath basepath to current resource
  * @param {number} option.page the page number
  * @param {number} option.perPage the number of item per page
- * @param {object} option.sort the sort to apply to the referenced records
+ * @param {Object} option.sort the sort to apply to the referenced records
  *
  * @returns {ReferenceManyProps} The reference many props
  */

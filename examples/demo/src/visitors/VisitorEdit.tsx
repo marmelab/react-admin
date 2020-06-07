@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import * as React from 'react';
+import { FC } from 'react';
 import {
     DateInput,
     Edit,
@@ -8,6 +9,8 @@ import {
     Toolbar,
     useTranslate,
     FormWithRedirect,
+    required,
+    email,
 } from 'react-admin';
 import { Box, Card, CardContent, Typography } from '@material-ui/core';
 
@@ -59,6 +62,7 @@ const VisitorForm = (props: any) => {
                                             <TextInput
                                                 source="first_name"
                                                 resource="customers"
+                                                validate={requiredValidate}
                                                 fullWidth
                                             />
                                         </Box>
@@ -69,6 +73,7 @@ const VisitorForm = (props: any) => {
                                             <TextInput
                                                 source="last_name"
                                                 resource="customers"
+                                                validate={requiredValidate}
                                                 fullWidth
                                             />
                                         </Box>
@@ -77,7 +82,7 @@ const VisitorForm = (props: any) => {
                                         type="email"
                                         source="email"
                                         resource="customers"
-                                        validation={{ email: true }}
+                                        validate={[email(), required()]}
                                         fullWidth
                                     />
                                     <Box display={{ xs: 'block', sm: 'flex' }}>
@@ -89,6 +94,7 @@ const VisitorForm = (props: any) => {
                                                 source="birthday"
                                                 resource="customers"
                                                 fullWidth
+                                                helperText={false}
                                             />
                                         </Box>
                                         <Box
@@ -109,6 +115,7 @@ const VisitorForm = (props: any) => {
                                         resource="customers"
                                         multiline
                                         fullWidth
+                                        helperText={false}
                                     />
                                     <Box display={{ xs: 'block', sm: 'flex' }}>
                                         <Box
@@ -119,6 +126,7 @@ const VisitorForm = (props: any) => {
                                                 source="zipcode"
                                                 resource="customers"
                                                 fullWidth
+                                                helperText={false}
                                             />
                                         </Box>
                                         <Box
@@ -129,6 +137,7 @@ const VisitorForm = (props: any) => {
                                                 source="city"
                                                 resource="customers"
                                                 fullWidth
+                                                helperText={false}
                                             />
                                         </Box>
                                     </Box>
@@ -200,5 +209,7 @@ const VisitorForm = (props: any) => {
         />
     );
 };
+
+const requiredValidate = [required()];
 
 export default VisitorEdit;

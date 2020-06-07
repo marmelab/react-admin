@@ -20,7 +20,7 @@ One issue you may run into when attempting to render custom `Create` or `Edit` v
 Luckily, react-admin provides access to a `TestContext` wrapper component that can be used to initialise your component with many of the expected react-admin props:
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { TestContext } from 'react-admin';
 import { mount } from 'enzyme';
 import MyCustomEditView from './my-custom-edit-view';
@@ -97,7 +97,7 @@ Here is an example with Jest and Enzyme, which is testing the [User `show` page 
 
 ```jsx
 // UserShow.spec.js
-import React from 'react';
+import * as React from "react";
 import { shallow } from 'enzyme';
 import { Tab, TextField } from 'react-admin';
 

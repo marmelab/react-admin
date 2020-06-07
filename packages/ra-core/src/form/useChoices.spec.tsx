@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import expect from 'expect';
 import { render, cleanup } from '@testing-library/react';
 import useChoices from './useChoices';

@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import * as React from 'react';
+import { FC } from 'react';
 import classnames from 'classnames';
 
 import Table from '@material-ui/core/Table';
@@ -37,8 +38,10 @@ const Basket: FC<FieldProps<Order>> = ({ record }) => {
 
             return productIds
                 .map<Product>(
-                    (productId: string) =>
-                        state.admin.resources.products.data[productId]
+                    productId =>
+                        state.admin.resources.products.data[
+                            productId
+                        ] as Product
                 )
                 .filter(r => typeof r !== 'undefined')
                 .reduce(

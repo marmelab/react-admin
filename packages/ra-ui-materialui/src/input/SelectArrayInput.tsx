@@ -1,12 +1,17 @@
-import React, { FunctionComponent, useCallback } from 'react';
+import * as React from 'react';
+import {
+    FunctionComponent,
+    useCallback,
+    useRef,
+    useState,
+    useEffect,
+} from 'react';
 import PropTypes from 'prop-types';
 import {
     makeStyles,
     Select,
     MenuItem,
     InputLabel,
-    Input,
-    FilledInput,
     FormHelperText,
     FormControl,
     Chip,
@@ -26,6 +31,7 @@ import { FormControlProps } from '@material-ui/core/FormControl';
 const sanitizeRestProps = ({
     addLabel,
     allowEmpty,
+    alwaysOn,
     basePath,
     choices,
     classNamInputWithOptionsPropse,
@@ -136,37 +142,42 @@ const useStyles = makeStyles(
  */
 const SelectArrayInput: FunctionComponent<
     ChoicesProps & InputProps<SelectProps> & FormControlProps
-> = ({
-    choices = [],
-    classes: classesOverride,
-    className,
-    format,
-    helperText,
-    label,
-    margin = 'dense',
-    onBlur,
-    onChange,
-    onFocus,
-    options,
-    optionText,
-    optionValue,
-    parse,
-    resource,
-    source,
-    translateChoice,
-    validate,
-    variant = 'filled',
-    ...rest
-}) => {
-    const classes = useStyles({ classes: classesOverride });
+> = props => {
+    const {
+        choices = [],
+        classes: classesOverride,
+        className,
+        format,
+        helperText,
+        label,
+        margin = 'dense',
+        onBlur,
+        onChange,
+        onFocus,
+        options,
+        optionText,
+        optionValue,
+        parse,
+        resource,
+        source,
+        translateChoice,
+        validate,
+        variant = 'filled',
+        ...rest
+    } = props;
+    const classes = useStyles(props);
+    const inputLabel = useRef(null);
+    const [labelWidth, setLabelWidth] = useState(0);
+    useEffect(() => {
+        setLabelWidth(inputLabel.current.offsetWidth);
+    }, []);
+
     const { getChoiceText, getChoiceValue } = useChoices({
         optionText,
         optionValue,
         translateChoice,
     });
-
     const {
-        id,
         input,
         isRequired,
         meta: { error, touched },
@@ -199,7 +210,6 @@ const SelectArrayInput: FunctionComponent<
         },
         [getChoiceValue, renderMenuItemOption]
     );
-
     return (
         <FormControl
             margin={margin}
@@ -209,9 +219,8 @@ const SelectArrayInput: FunctionComponent<
             {...sanitizeRestProps(rest)}
         >
             <InputLabel
-                htmlFor={id}
-                shrink
-                variant={variant}
+                ref={inputLabel}
+                id={`${label}-outlined-label`}
                 error={touched && !!error}
             >
                 <FieldTitle
@@ -223,14 +232,8 @@ const SelectArrayInput: FunctionComponent<
             </InputLabel>
             <Select
                 autoWidth
+                labelId={`${label}-outlined-label`}
                 multiple
-                input={
-                    variant === 'standard' ? (
-                        <Input id={id} />
-                    ) : (
-                        <FilledInput id={id} />
-                    )
-                }
                 error={!!(touched && error)}
                 renderValue={(selected: any[]) => (
                     <div className={classes.chips}>
@@ -250,22 +253,20 @@ const SelectArrayInput: FunctionComponent<
                     </div>
                 )}
                 data-testid="selectArray"
-                variant={variant}
                 {...input}
                 value={input.value || []}
                 {...options}
+                labelWidth={labelWidth}
             >
                 {choices.map(renderMenuItem)}
             </Select>
-            {(touched && error) || helperText ? (
-                <FormHelperText error={touched && !!error}>
-                    <InputHelperText
-                        touched={touched}
-                        error={error}
-                        helperText={helperText}
-                    />
-                </FormHelperText>
-            ) : null}
+            <FormHelperText error={touched && !!error}>
+                <InputHelperText
+                    touched={touched}
+                    error={error}
+                    helperText={helperText}
+                />
+            </FormHelperText>
         </FormControl>
     );
 };

@@ -1,10 +1,11 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import { useTranslate } from 'ra-core';
+import classnames from 'classnames';
 
 const useStyles = makeStyles(
     theme => ({
@@ -13,22 +14,18 @@ const useStyles = makeStyles(
             color: theme.palette.text.secondary,
             marginLeft: 20,
         },
+        button: {},
+        currentPageButton: {},
         hellip: { padding: '1.2em' },
     }),
     { name: 'RaPaginationActions' }
 );
 
-function PaginationActions({
-    classes: classesOverride,
-    page,
-    rowsPerPage,
-    count,
-    onChangePage,
-    color,
-    size,
-}) {
-    const classes = useStyles({ classes: classesOverride });
+function PaginationActions(props) {
+    const { page, rowsPerPage, count, onChangePage, color, size } = props;
+    const classes = useStyles(props);
     const translate = useTranslate();
+    const theme = useTheme();
     /**
      * Warning: material-ui's page is 0-based
      */
@@ -105,7 +102,9 @@ function PaginationActions({
             ) : (
                 <Button
                     size={size}
-                    className="page-number"
+                    className={classnames('page-number', classes.button, {
+                        [classes.currentPageButton]: pageNum === page + 1,
+                    })}
                     color={pageNum === page + 1 ? 'default' : color}
                     key={pageNum}
                     data-page={pageNum - 1}
@@ -133,7 +132,11 @@ function PaginationActions({
                     onClick={prevPage}
                     className="previous-page"
                 >
-                    <ChevronLeft />
+                    {theme.direction === 'rtl' ? (
+                        <ChevronRight />
+                    ) : (
+                        <ChevronLeft />
+                    )}
                     {translate('ra.navigation.prev')}
                 </Button>
             )}
@@ -147,7 +150,11 @@ function PaginationActions({
                     className="next-page"
                 >
                     {translate('ra.navigation.next')}
-                    <ChevronRight />
+                    {theme.direction === 'rtl' ? (
+                        <ChevronLeft />
+                    ) : (
+                        <ChevronRight />
+                    )}
                 </Button>
             )}
         </div>
@@ -170,6 +177,7 @@ PaginationActions.propTypes = {
     rowsPerPage: PropTypes.number.isRequired,
     color: PropTypes.oneOf(['primary', 'secondary']),
     size: PropTypes.oneOf(['small', 'medium', 'large']),
+    theme: PropTypes.object,
 };
 
 PaginationActions.defaultProps = {

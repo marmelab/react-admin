@@ -1,13 +1,14 @@
-import React, { useCallback, useContext, FunctionComponent } from 'react';
+import * as React from 'react';
+import { useCallback, useContext, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import DownloadIcon from '@material-ui/icons/GetApp';
 import {
     fetchRelatedRecords,
     useDataProvider,
     useNotify,
-    DataProvider,
     Identifier,
     ExporterContext,
+    Exporter,
 } from 'ra-core';
 
 import Button, { ButtonProps } from './Button';
@@ -18,9 +19,11 @@ const BulkExportButton: FunctionComponent<BulkExportButtonProps> = ({
     onClick,
     label = 'ra.action.export',
     icon = defaultIcon,
+    exporter: customExporter,
     ...rest
 }) => {
-    const exporter = useContext(ExporterContext);
+    const exporterFromContext = useContext(ExporterContext);
+    const exporter = customExporter || exporterFromContext;
     const dataProvider = useDataProvider();
     const notify = useNotify();
     const handleClick = useCallback(
@@ -71,15 +74,7 @@ const sanitizeRestProps = ({
 
 interface Props {
     basePath?: string;
-    exporter?: (
-        data: any,
-        fetchRelatedRecords: (
-            data: any,
-            field: string,
-            resource: string
-        ) => Promise<any>,
-        dataProvider: DataProvider
-    ) => Promise<void>;
+    exporter?: Exporter;
     filterValues?: any;
     icon?: JSX.Element;
     label?: string;

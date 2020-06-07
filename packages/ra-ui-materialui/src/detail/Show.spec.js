@@ -1,7 +1,7 @@
-import React from 'react';
+import * as React from 'react';
 import expect from 'expect';
 import { cleanup } from '@testing-library/react';
-import { renderWithRedux } from 'ra-core';
+import { renderWithRedux, DataProviderContext } from 'ra-core';
 
 import Show from './Show';
 
@@ -18,10 +18,17 @@ describe('<Show />', () => {
 
     it('should display aside component', () => {
         const Aside = () => <div id="aside">Hello</div>;
+        const dataProvider = {
+            getOne: () => Promise.resolve({ data: { id: 123 } }),
+        };
+        const Dummy = () => <div />;
         const { queryAllByText } = renderWithRedux(
-            <Show {...defaultShowProps} aside={<Aside />}>
-                <div />
-            </Show>
+            <DataProviderContext.Provider value={dataProvider}>
+                <Show {...defaultShowProps} aside={<Aside />}>
+                    <Dummy />
+                </Show>
+            </DataProviderContext.Provider>,
+            { admin: { resources: { foo: { data: {} } } } }
         );
         expect(queryAllByText('Hello')).toHaveLength(1);
     });

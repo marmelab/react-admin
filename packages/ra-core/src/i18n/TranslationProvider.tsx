@@ -2,7 +2,6 @@ import React, {
     useCallback,
     useMemo,
     Children,
-    ReactElement,
     FunctionComponent,
 } from 'react';
 
@@ -13,7 +12,11 @@ import { I18nProvider } from '../types';
 interface Props {
     locale?: string;
     i18nProvider: I18nProvider;
-    children: ReactElement<any>;
+}
+
+interface State {
+    locale: string; // this time it's required
+    i18nProvider: I18nProvider;
 }
 
 /**
@@ -31,18 +34,15 @@ interface Props {
 const TranslationProvider: FunctionComponent<Props> = props => {
     const { i18nProvider, children } = props;
 
-    const [state, setState] = useSafeSetState({
+    const [state, setState] = useSafeSetState<State>({
         locale: i18nProvider ? i18nProvider.getLocale() : 'en',
         i18nProvider,
     });
 
     const setLocale = useCallback(
         (newLocale: string) =>
-            setState({
-                locale: newLocale,
-                i18nProvider,
-            }),
-        [i18nProvider, setState]
+            setState(state => ({ ...state, locale: newLocale })),
+        [setState]
     );
 
     // Allow locale modification by including setLocale in the context

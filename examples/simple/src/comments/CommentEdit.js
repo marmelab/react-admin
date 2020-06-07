@@ -1,7 +1,7 @@
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import React from 'react';
+import * as React from 'react';
 import {
     AutocompleteInput,
     DateInput,
@@ -32,6 +32,14 @@ const useEditStyles = makeStyles({
         maxWidth: '30em',
     },
 });
+
+const OptionRenderer = ({ record }) => (
+    <span>
+        {record.title} - {record.id}
+    </span>
+);
+
+const inputText = record => `${record.title} - ${record.id}`;
 
 const CommentEdit = props => {
     const classes = useEditStyles();
@@ -74,10 +82,15 @@ const CommentEdit = props => {
                             fullWidth
                         >
                             <AutocompleteInput
-                                optionText="title"
+                                matchSuggestion={(filterValue, suggestion) =>
+                                    true
+                                }
+                                optionText={<OptionRenderer />}
+                                inputText={inputText}
                                 options={{ fullWidth: true }}
                             />
                         </ReferenceInput>
+
                         <LinkToRelatedPost />
                         <TextInput
                             source="author.name"

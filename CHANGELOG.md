@@ -1,5 +1,335 @@
 # Changelog
 
+## v3.6.0
+
+* Add `onSuccess`, `onFailure` and `transform` to `<Create>`, `<Edit>` and `<SaveButton>` ([4881](https://github.com/marmelab/react-admin/pull/4881)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to deselect rows in one click in `<BulkActionsToolbar>` ([4859](https://github.com/marmelab/react-admin/pull/4859)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to style pagination buttons ([4891](https://github.com/marmelab/react-admin/pull/4891)) ([djhi](https://github.com/djhi))
+* Add ability to create custom `<DeleteButton>` views without rewriting the logic ([4858](https://github.com/marmelab/react-admin/pull/4858)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to use a React element as `<Field>` label ([4852](https://github.com/marmelab/react-admin/pull/4852)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `useListParams` hook to allow easier customization of List pages ([4843](https://github.com/marmelab/react-admin/pull/4843)) ([WiXSL](https://github.com/WiXSL))
+* Add support for `download`, `rel`, and `ping` attributes in `<FileField>` ([4798](https://github.com/marmelab/react-admin/pull/4798)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to use pagination and sort in `GET_MANY_REFERENCE` for `ra-data-graphcool` dataProvider ([4778](https://github.com/marmelab/react-admin/pull/4778)) ([byymster](https://github.com/byymster))
+* Add feature to disable `<SaveButton>` if the Form is pristine ([4773](https://github.com/marmelab/react-admin/pull/4773)) ([WiXSL](https://github.com/WiXSL))
+* Add `sortByOrder` prop to `<Field>` components to allow specifying the default sort order ([4518](https://github.com/marmelab/react-admin/pull/4518)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Add support for `variant=outlined` in  `<SelectArrayInput>` ([4511](https://github.com/marmelab/react-admin/pull/4511)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Add explicit error when `useGetOne` is called for an undefined resource ([4430](https://github.com/marmelab/react-admin/pull/4430)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<EmailField>` doesn't use the theme typography ([4866](https://github.com/marmelab/react-admin/pull/4866)) ([WiXSL](https://github.com/WiXSL))
+* Fix deprecated usage of `recompose` methods, feplaced by `React.memo` ([4786](https://github.com/marmelab/react-admin/pull/4786)) ([WiXSL](https://github.com/WiXSL))
+* Convert the demo `<GridList>` to TypeScript ([4870](https://github.com/marmelab/react-admin/pull/4870)) ([MohammedFaragallah](https://github.com/MohammedFaragallah))
+* Convert products demo example to TypeScript ([4758](https://github.com/marmelab/react-admin/pull/4758)) ([MohammedFaragallah](https://github.com/MohammedFaragallah))
+* Convert `<ArrayField>` component to function component. ([4536](https://github.com/marmelab/react-admin/pull/4536)) ([WiXSL](https://github.com/WiXSL))
+* Convert demo example to TypeScript ([4516](https://github.com/marmelab/react-admin/pull/4516)) ([josephktcheung](https://github.com/josephktcheung))
+
+## v3.5.6
+
+* Fix default margin in `<AutocompleteArrayInput>` ([4892](https://github.com/marmelab/react-admin/pull/4892)) ([bard](https://github.com/bard))
+* Fix `<FileInput>` when used without children ([4889](https://github.com/marmelab/react-admin/pull/4889)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix mobile version of `<ReviewList>` on the example demo ([4878](https://github.com/marmelab/react-admin/pull/4878)) ([alanpoulain](https://github.com/alanpoulain))
+* [Doc] Fix `useQuery` and `useMutation` arguments name ([4887](https://github.com/marmelab/react-admin/pull/4887)) ([WiXSL](https://github.com/WiXSL))
+
+## v3.5.5
+
+* Fix list params set via query string are lost after redirection ([4868](https://github.com/marmelab/react-admin/pull/4868)) ([djhi](https://github.com/djhi))
+* Fix failing language change in a corner case ([4854](https://github.com/marmelab/react-admin/pull/4854)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `dataProvider.delete()` input type ([4851](https://github.com/marmelab/react-admin/pull/4851)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix support for array of objects in `sanitizeEmptyValues` ([4853](https://github.com/marmelab/react-admin/pull/4853)) ([armellarcier](https://github.com/armellarcier))
+* Update examples to use latest version of material-ui and react-final-form ([4872](https://github.com/marmelab/react-admin/pull/4872)) ([djhi](https://github.com/djhi))
+* Update imports from 'react' to be future-proof ([4864](https://github.com/marmelab/react-admin/pull/4864)) ([djhi](https://github.com/djhi))
+* [Doc] Fix `<NumberField>` `options` prop description ([4860](https://github.com/marmelab/react-admin/pull/4860)) ([joebordes](https://github.com/joebordes))
+* [Doc] Update link to Firestore data provider ([4856](https://github.com/marmelab/react-admin/pull/4856)) ([benwinding](https://github.com/benwinding))
+* [Doc] Fix typo in `useAuthenticated` hook usage description ([4855](https://github.com/marmelab/react-admin/pull/4855)) ([joebordes](https://github.com/joebordes))
+
+## v3.5.4 (unpublished)
+
+## v3.5.3
+
+* Fix "Cannot set a numeric property on an objec" error in `<ReferenceArrayInput>` ([4819](https://github.com/marmelab/react-admin/pull/4819)) ([alanpoulain](https://github.com/alanpoulain))
+* Fix refresh button breaks `useGetList` result when using application cache ([4829](https://github.com/marmelab/react-admin/pull/4829)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix null value for string array field crashes dataProvider in `ra-data-graphql-simple` ([4828](https://github.com/marmelab/react-admin/pull/4828)) ([stensrud](https://github.com/stensrud))
+* Add many small improvements to the Posters Galore demo UX ([4831](https://github.com/marmelab/react-admin/pull/4831)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `dataProvider.delete()` response format documentation ([4840](https://github.com/marmelab/react-admin/pull/4840)) ([bmihelac](https://github.com/bmihelac))
+* [Doc] Fix warning about unhandled DOM attribute when integrating react-admin in another application ([4837](https://github.com/marmelab/react-admin/pull/4837)) ([smeng9](https://github.com/smeng9))
+* [Doc] Add `react-admin-firebase` to Authentication Providers ([4824](https://github.com/marmelab/react-admin/pull/4824)) ([benwinding](https://github.com/benwinding))
+* [Doc] Fix incorrect syntax for `useNotify` hook ([4822](https://github.com/marmelab/react-admin/pull/4822)) ([Aikain](https://github.com/Aikain))
+
+## v3.5.2
+
+* Fix `initialValue` is ignored in children of `<ArrayInput>` ([4810](https://github.com/marmelab/react-admin/pull/4810)) ([fzaninotto](https://github.com/fzaninotto))
+* Add new internationalization package for Brazilian Portuguese ([4812](https://github.com/marmelab/react-admin/pull/4812)) ([gucarletto](https://github.com/gucarletto))
+* [Doc] Fix outdated mention of function default value for inputs ([4802](https://github.com/marmelab/react-admin/pull/4802)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix documentation about custom previous / next pagination ([4799](https://github.com/marmelab/react-admin/pull/4799)) ([alanpoulain](https://github.com/alanpoulain))
+
+## v3.5.1
+
+* Fix broken SSR due to `<Sidebar>` open default value ([4787](https://github.com/marmelab/react-admin/pull/4787)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<ReferenceInput>` when using an object literal as `filter` prop ([4784](https://github.com/marmelab/react-admin/pull/4784)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<CheckboxGroupInputItem>` doesn't propagate `options` to `<Checkbox>` ([4772](https://github.com/marmelab/react-admin/pull/4772)) ([WiXSL](https://github.com/WiXSL))
+* Fix components / hooks error in react-devtools ([4767](https://github.com/marmelab/react-admin/pull/4767)) ([EricJin987](https://github.com/EricJin987))
+* Fix `<Edit>` view used as expand panel in `<List>` ([4762](https://github.com/marmelab/react-admin/pull/4762)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<DeleteButton>` throws an error when accessing detail page ([4742](https://github.com/marmelab/react-admin/pull/4742)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix minor typos in Caching doc ([4781](https://github.com/marmelab/react-admin/pull/4781)) ([joebordes](https://github.com/joebordes))
+* [Doc] Fix minor typos in Fields doc ([4780](https://github.com/marmelab/react-admin/pull/4780)) ([joebordes](https://github.com/joebordes))
+* [Doc] Fix minor typos in Create/Edit doc ([4779](https://github.com/marmelab/react-admin/pull/4779)) ([joebordes](https://github.com/joebordes))
+* [Doc] Fix minor typos in List doc ([4771](https://github.com/marmelab/react-admin/pull/4771)) ([joebordes](https://github.com/joebordes))
+* [Doc] Fix minor typos in Data Provider doc ([4770](https://github.com/marmelab/react-admin/pull/4770)) ([joebordes](https://github.com/joebordes))
+* [Doc] Add a list of props to all `Field` and `Input` components ([4769](https://github.com/marmelab/react-admin/pull/4769)) ([fzaninotto](https://github.com/fzaninotto))
+
+## v3.5.0
+
+* Update `<Sidebar>` default state to avoid flickering on load ([4677](https://github.com/marmelab/react-admin/pull/4677)) ([Luwangel](https://github.com/Luwangel))
+* Add support for function value of `<SimpleList>` `linkType` prop ([4708](https://github.com/marmelab/react-admin/pull/4708)) ([WiXSL](https://github.com/WiXSL))
+* Fix documentation and propType for `<SimpleList>` `linkType` prop ([4735](https://github.com/marmelab/react-admin/pull/4735)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Add a link to `<ClipboardListField>` third-party package ([4659](https://github.com/marmelab/react-admin/pull/4659)) ([OoDeLally](https://github.com/OoDeLally))
+
+## v3.4.4
+
+* Fix cryptic error message when using a `<ReferenceInput>` to a missing resource ([4744](https://github.com/marmelab/react-admin/pull/4744)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `translateChoice` warning in `<ReferenceField>` ([4738](https://github.com/marmelab/react-admin/pull/4738)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Fix error in `<AutocompleteInput>` tests due to wrong initial state ([4730](https://github.com/marmelab/react-admin/pull/4730)) ([WiXSL](https://github.com/WiXSL))
+* Fix default `total` selector in `useQueryWithStore` ([4720](https://github.com/marmelab/react-admin/pull/4720)) ([alanpoulain](https://github.com/alanpoulain))
+* [Doc] Add prisma 2 dataProvider to the docs ([4748](https://github.com/marmelab/react-admin/pull/4748)) ([macrozone](https://github.com/macrozone))
+* [Doc] Add link to the Romanian translation  ([4746](https://github.com/marmelab/react-admin/pull/4746)) ([gyhaLabs](https://github.com/gyhaLabs))
+* [Doc] Explain translate options and add notification duration to useNotify doc ([4739](https://github.com/marmelab/react-admin/pull/4739)) ([alanpoulain](https://github.com/alanpoulain))
+
+## v3.4.3
+
+* Fix race condition on the `List` page resulting in page coming back to 1 ([4718](https://github.com/marmelab/react-admin/pull/4718)) ([djhi](https://github.com/djhi))
+* Fix `initialValue` in `<SelectInput>` component causes warning ([4717](https://github.com/marmelab/react-admin/pull/4717)) ([djhi](https://github.com/djhi))
+* Fix `<FormTab>` component does not validate all props at runtime ([4501](https://github.com/marmelab/react-admin/pull/4501)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix custom `buildQuery` snippet `in ra-data-graphql` README ([4723](https://github.com/marmelab/react-admin/pull/4723)) ([bookvik](https://github.com/bookvik))
+* [Doc] Fix typo in CreateEdit documentation ([4714](https://github.com/marmelab/react-admin/pull/4714)) ([deuzu](https://github.com/deuzu))
+* [Doc] Fix typo in code comment for `checkAuth` ([4707](https://github.com/marmelab/react-admin/pull/4707)) ([martencassel](https://github.com/martencassel))
+* [Doc] Fix character case typos in docs ([4701](https://github.com/marmelab/react-admin/pull/4701)) ([WiXSL](https://github.com/WiXSL))
+
+## v3.4.2
+
+* Fix `<AutocompleteInput>` not accepting 0 as a value ([4693](https://github.com/marmelab/react-admin/pull/4693)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix helper text misalignment in `<FileInput>` preview ([4680](https://github.com/marmelab/react-admin/pull/4680)) ([oleg-andreyev](https://github.com/oleg-andreyev))
+* Fix filter error in `ra-data-graphql-simple` `getManyReference()` implementation ([4685](https://github.com/marmelab/react-admin/pull/4685)) ([jdemangeon](https://github.com/jdemangeon))
+* Fix default app `<Loading>` is not not centered vertically ([4686](https://github.com/marmelab/react-admin/pull/4686)) ([manishsundriyal](https://github.com/manishsundriyal))
+* Fix `<AutocompleteInput>` empty suggestion item height ([4691](https://github.com/marmelab/react-admin/pull/4691)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix `ra-data-graphql` uses deprecated query `introspectionQuery` ([4674](https://github.com/marmelab/react-admin/pull/4674)) ([edulecca](https://github.com/edulecca))
+* Fix css typo in `<StarRatingField>` in the demo ([4678](https://github.com/marmelab/react-admin/pull/4678)) ([kopax](https://github.com/kopax))
+* [Doc] Fix snippet in Upgrade guide regarding `<FormDataConsumer>` ([4700](https://github.com/marmelab/react-admin/pull/4700)) ([shakhal](https://github.com/shakhal))
+* [Doc] Change the Portuguese translation to a more up to date package ([4696](https://github.com/marmelab/react-admin/pull/4696)) ([henriko202](https://github.com/henriko202))
+
+## v3.4.1
+
+* Fix build broken due to full ICU package version ([4673](https://github.com/marmelab/react-admin/pull/4673)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix Simple example webpack configuration missing dependency aliases ([4663](https://github.com/marmelab/react-admin/pull/4663)) ([jdemangeon](https://github.com/jdemangeon))
+* Fix `<Field>` with null value gets rendered as "null", fix `emptyText` inconsistencies ([4661](https://github.com/marmelab/react-admin/pull/4661)) ([jdemangeon](https://github.com/jdemangeon))
+* Fix `parse` and `format` usage in `<AutocompleteArrayInput>` ([4653](https://github.com/marmelab/react-admin/pull/4653)) ([Kmaschta](https://github.com/Kmaschta))
+* Fix `permanentFilter` changes aren't reflected in List requests ([4650](https://github.com/marmelab/react-admin/pull/4650)) ([oleg-andreyev](https://github.com/oleg-andreyev))
+* Fix multiple notifications shown once the session ends ([4645](https://github.com/marmelab/react-admin/pull/4645)) ([djhi](https://github.com/djhi))
+* Fix missing `defaultValue` handling in `<ReferenceArrayInput>` ([4641](https://github.com/marmelab/react-admin/pull/4641)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `onRemove` does not fire in `<FileInput>` options ([4637](https://github.com/marmelab/react-admin/pull/4637)) ([oleg-andreyev](https://github.com/oleg-andreyev))
+* Fix error when passing custom link style to `<SingleFieldList>` ([4636](https://github.com/marmelab/react-admin/pull/4636)) ([Slavvkko](https://github.com/Slavvkko))
+* Upgrade Cypress version ([4654](https://github.com/marmelab/react-admin/pull/4654)) ([Kmaschta](https://github.com/Kmaschta))
+* [Doc] Add section about filters in List documentation ([4675](https://github.com/marmelab/react-admin/pull/4675)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix an outdated link on Translation docs ([4669](https://github.com/marmelab/react-admin/pull/4669)) ([henriko202](https://github.com/henriko202))
+* [Doc] Update `<NumberInput>` "parse" documentation for Firefox ([4652](https://github.com/marmelab/react-admin/pull/4652)) ([Kmaschta](https://github.com/Kmaschta))
+* [Doc] Update CreateEdit chapter to clarify tip about declaring form validators ([4651](https://github.com/marmelab/react-admin/pull/4651)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix `useQuery` being incorrectly referenced in `useMutation` definition docs ([4639](https://github.com/marmelab/react-admin/pull/4639)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Improve buttons sanitation explanation ([4621](https://github.com/marmelab/react-admin/pull/4621)) ([WiXSL](https://github.com/WiXSL))
+
+## v3.4.0
+
+* Add row expand state persistence in `<Datagrid>` ([4624](https://github.com/marmelab/react-admin/pull/4624)) ([fzaninotto](https://github.com/fzaninotto))
+* Add a data refresh when the App comes back from background ([4582](https://github.com/marmelab/react-admin/pull/4582)) ([fzaninotto](https://github.com/fzaninotto))
+* Add warning when leaving form with unsaved changes ([4570](https://github.com/marmelab/react-admin/pull/4570)) ([fzaninotto](https://github.com/fzaninotto))
+* Add support for `allowEmpty=false` in Filter `<Input>` components ([4500](https://github.com/marmelab/react-admin/pull/4500)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Add `color` prop to `<AppBar>`  ([4479](https://github.com/marmelab/react-admin/pull/4479)) ([WiXSL](https://github.com/WiXSL))
+* Add translation for hamburger menu tooltip ([4596](https://github.com/marmelab/react-admin/pull/4596)) ([fzaninotto](https://github.com/fzaninotto))
+* Improve buttons props sanitation  ([4574](https://github.com/marmelab/react-admin/pull/4574)) ([WiXSL](https://github.com/WiXSL))
+* Add style to `<UrlField>` ([4568](https://github.com/marmelab/react-admin/pull/4568)) ([WiXSL](https://github.com/WiXSL))
+* Convert `ra-language-english` and `ra-language-french` to typescript  ([4569](https://github.com/marmelab/react-admin/pull/4569)) ([mayteio](https://github.com/mayteio))
+* [Doc] Improve documentation on AppBar color prop.  ([4503](https://github.com/marmelab/react-admin/pull/4503)) ([WiXSL](https://github.com/WiXSL))
+
+## v3.3.4
+
+* Fix `<ExportButton>` ignores custom `exporter` prop ([4630](https://github.com/marmelab/react-admin/pull/4630)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<ReferenceInput>` `filter` prop change doesn't update filters ([4508](https://github.com/marmelab/react-admin/pull/4508)) ([tarunraj95](https://github.com/tarunraj95))
+* Fix `destroyOnUnregister` prop is ignored in `<SimpleForm>` and `<TabbedForm>` ([4595](https://github.com/marmelab/react-admin/pull/4595)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix duplicate `react-transition-group` package dependency ([4597](https://github.com/marmelab/react-admin/pull/4597)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `useState` return type in demo example `<Dashboard>` ([4590](https://github.com/marmelab/react-admin/pull/4590)) ([developerium](https://github.com/developerium))
+* Remove obsolete `getDefaultValues` function ([4620](https://github.com/marmelab/react-admin/pull/4620)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* [Doc] Add section about page controller hooks ([4608](https://github.com/marmelab/react-admin/pull/4608)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<MenuItemLink>` example so that the `leftIcon` prop uses an element ([4604](https://github.com/marmelab/react-admin/pull/4604)) ([janakact](https://github.com/janakact))
+* [Doc] Fix `addLabel` usage documentation ([4598](https://github.com/marmelab/react-admin/pull/4598)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add `react-admin-import-csv` to the Ecosystem section ([4599](https://github.com/marmelab/react-admin/pull/4599)) ([benwinding](https://github.com/benwinding))
+* [Doc] Fix data provider example on file upload ([4591](https://github.com/marmelab/react-admin/pull/4591)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fixing theming documentation for custom icons ([4581](https://github.com/marmelab/react-admin/pull/4581)) ([g3n35i5](https://github.com/g3n35i5))
+
+## v3.3.3
+
+* Fix `useGetList` after an optimistic delete when using string identifiers ([4575](https://github.com/marmelab/react-admin/pull/4575)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix "Total from response is not a number" console error in optimistic mode ([4573](https://github.com/marmelab/react-admin/pull/4573)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* [Doc] Fix Edit Toolbar docs to explain how to use a `<CreateButton>` ([4544](https://github.com/marmelab/react-admin/pull/4544)) ([agent3bood](https://github.com/agent3bood))
+* [Doc] Fix right menu when it contains too many items ([4560](https://github.com/marmelab/react-admin/pull/4560)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* [Doc] Fix code examples of `<List>` bulk action buttons ([4556](https://github.com/marmelab/react-admin/pull/4556)) ([WiXSL](https://github.com/WiXSL))
+
+## v3.3.2
+
+* Fix warning in `<SelectArrayInput>` when `alwaysOn` is true ([4561](https://github.com/marmelab/react-admin/pull/4561)) ([yelworc](https://github.com/yelworc))
+* Fix regression on filters using dot separator in source ([4545](https://github.com/marmelab/react-admin/pull/4545)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Fix `<SimpleFormIterator>` for non empty array inputs ([4535](https://github.com/marmelab/react-admin/pull/4535)) ([NikitaVlaznev](https://github.com/NikitaVlaznev))
+* Fix missing PropType for `resettable` prop in `<SelectInput>` ([4513](https://github.com/marmelab/react-admin/pull/4513)) ([WiXSL](https://github.com/WiXSL))
+* Change Fields docs menu item order to make it easier to find ([4529](https://github.com/marmelab/react-admin/pull/4529)) ([WiXSL](https://github.com/WiXSL))
+* Add link to Belarusian, Estonian, Latvian, and Lithuanian translations ([4559](https://github.com/marmelab/react-admin/pull/4559)) ([AntonLukichev](https://github.com/AntonLukichev))
+* Add link to Korean translation ([4550](https://github.com/marmelab/react-admin/pull/4550)) ([acidsound](https://github.com/acidsound))
+* [Doc] Fix `dataProvider` calls using old-style verbs instead of method ([4532](https://github.com/marmelab/react-admin/pull/4532)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix example in `<ReferenceField>` and `<SelectField>` documentation ([4530](https://github.com/marmelab/react-admin/pull/4530)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix invalid JSON in API call examples for simple rest data provider  ([4528](https://github.com/marmelab/react-admin/pull/4528)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix code sample for `<SimpleFormIterator>` when using `Field` components as child ([4527](https://github.com/marmelab/react-admin/pull/4527)) ([ValentinnDimitroff](https://github.com/ValentinnDimitroff))
+
+## v3.3.1
+
+* Fix pagination buttons are in the wrong direction in RTL languages ([4496](https://github.com/marmelab/react-admin/pull/4496)) ([alikazemkhanloo](https://github.com/alikazemkhanloo))
+* Fix `<ReferenceArrayInput>` list when filter is changed ([4494](https://github.com/marmelab/react-admin/pull/4494)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Fix rerender caused by style override ([4490](https://github.com/marmelab/react-admin/pull/4490)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix build of `ra-input-rich-text` ([4455](https://github.com/marmelab/react-admin/pull/4455)) ([teyc](https://github.com/teyc))
+* [Doc] Fix code sample in CreateEdit docs. ([4524](https://github.com/marmelab/react-admin/pull/4524)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix useless line in `ra-data-graphcool` readme ([4521](https://github.com/marmelab/react-admin/pull/4521)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* [Doc] Fix anchor text in CreateEdit list of props ([4515](https://github.com/marmelab/react-admin/pull/4515)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix Authentication docs missing `<Notification>` in `<MyLoginPage>` example ([4492](https://github.com/marmelab/react-admin/pull/4492)) ([gvillo](https://github.com/gvillo))
+* [Doc] Fix some jsDocs definitions. ([4484](https://github.com/marmelab/react-admin/pull/4484)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix link to react-final-form in CreateEdit documentation ([4483](https://github.com/marmelab/react-admin/pull/4483)) ([ekalinin](https://github.com/ekalinin))
+
+## v3.3.0
+
+* Add opt-in client-side caching layer to save on network requests, add support for optimistic rendering of multiple list pages, make `useListController` use `useGetList`, fix refresh when leaving optimistic mode ([4386](https://github.com/marmelab/react-admin/pull/4386)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to keep form validation when using custom save buttons ([4458](https://github.com/marmelab/react-admin/pull/4458)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Add support for `disabled` prop in `<BooleanInput>` ([4443](https://github.com/marmelab/react-admin/pull/4443)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Add `fieldKey` prop to `<ArrayField>` to improve performance on large arrays ([4437](https://github.com/marmelab/react-admin/pull/4437)) ([Hemant-yadav](https://github.com/Hemant-yadav))
+* Add `emptyText` prop to show a fixed string when the value of a `<Field>` is `null` ([4413](https://github.com/marmelab/react-admin/pull/4413)) ([m4theushw](https://github.com/m4theushw))
+* Fix empty filters are lost when navigating away ([4442](https://github.com/marmelab/react-admin/pull/4442)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Fix filter form inputs appear too high when there is no search input ([4481](https://github.com/marmelab/react-admin/pull/4481)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix empty item option height in `<SelectInput>` ([4480](https://github.com/marmelab/react-admin/pull/4386)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix dark theme contrast in demo ([4399](https://github.com/marmelab/react-admin/pull/4399)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Fix override of `defaultValue` in `<FormInput>`  ([4482](https://github.com/marmelab/react-admin/pull/4482)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Convert `<Field>` components to TypeScript ([4459](https://github.com/marmelab/react-admin/pull/4459)) ([josephktcheung](https://github.com/josephktcheung))
+* Convert `<SimpleFormIterator>` to function component ([4450](https://github.com/marmelab/react-admin/pull/4450)) ([WiXSL](https://github.com/WiXSL))
+* Convert remaining tests to `react-testing-library` ([4446](https://github.com/marmelab/react-admin/pull/4446)) ([m4theushw](https://github.com/m4theushw))
+* Convert `<Confirm>`, `<Layout>` and `<BulkDeleteButton>` to TypeScript ([4441](https://github.com/marmelab/react-admin/pull/4441)) ([josephktcheung](https://github.com/josephktcheung))
+* Convert `<RichTextInput>` to TypeScript ([4223](https://github.com/marmelab/react-admin/pull/4223)) ([tlaziuk](https://github.com/tlaziuk))
+* [Doc] Add documentation for using of `<Field>` components inside `<SimpleFormIterator>` ([4477](https://github.com/marmelab/react-admin/pull/4477)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* [Doc] Fix `<ReferenceInput>` documentation of `filterToQuery` prop ([4461](https://github.com/marmelab/react-admin/pull/4461)) ([leibowitz](https://github.com/leibowitz))
+
+## v3.2.4
+
+* Fix error when using `<SimpleListLoading>` directly ([4469](https://github.com/marmelab/react-admin/pull/4469)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<LoadingIndicator>` shows infinite loading after Unauthorized error ([4456](https://github.com/marmelab/react-admin/pull/4456)) ([Developerius](https://github.com/Developerius))
+* Fix `[object Object]` error in `<ArrayInput>` when using `defaultValue` or primitive value ([4394](https://github.com/marmelab/react-admin/pull/4394)) ([jdemangeon](https://github.com/jdemangeon))
+* [Doc] Fix broken images in advanced tutorials ([4467](https://github.com/marmelab/react-admin/pull/4467)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix links to JSONPlaceholder are http instead of https ([4457](https://github.com/marmelab/react-admin/pull/4457)) ([WiXSL](https://github.com/WiXSL))
+
+## v3.2.3
+
+* Fix wrong defaults for `<CoreAdminUI>` in development mode ([4432](https://github.com/marmelab/react-admin/pull/4432)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<SimpleFormIterator>` styles can't be overridden by theme ([4426](https://github.com/marmelab/react-admin/pull/4426)) ([WiXSL](https://github.com/WiXSL))
+* Fix typo in variable name in unit tests ([4427](https://github.com/marmelab/react-admin/pull/4427)) ([developerium](https://github.com/developerium))
+* Migrate Dashboard demo components to TypeScript ([4415](https://github.com/marmelab/react-admin/pull/4415)) ([developerium](https://github.com/developerium))
+* [Doc] Fix typo in Upgrade guide for custom apps ([4433](https://github.com/marmelab/react-admin/pull/4433)) ([nadeeraka](https://github.com/nadeeraka))
+
+## v3.2.2
+
+* Fix `<CloneButton>` does not work with `<TabbedForm>` ([4422](https://github.com/marmelab/react-admin/pull/4422)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Empty>` component shows incorrectly in dark theme. ([4419](https://github.com/marmelab/react-admin/pull/4419)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<List>` does not refresh after API error ([4179](https://github.com/marmelab/react-admin/pull/4179)) ([m4theushw](https://github.com/m4theushw))
+* Fix unable to submit a form using the keyboard ([4410](https://github.com/marmelab/react-admin/pull/4410)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Fix hot reload for demo example ([4252](https://github.com/marmelab/react-admin/pull/4252)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Fich rich text editor toobal colors ([4409](https://github.com/marmelab/react-admin/pull/4409)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* [Doc] Fix custom menu snippet in theming documentation ([4418](https://github.com/marmelab/react-admin/pull/4418)) ([fzaninotto](https://github.com/fzaninotto))
+
+
+## v3.2.1
+
+* Fix `<FilterForm>` layout broken by bottom margin on `Input` components ([4390](https://github.com/marmelab/react-admin/pull/4390)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<RichTextInput>` dark theme ([4384](https://github.com/marmelab/react-admin/pull/4384)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Fix `<Layout>` styles can't be overridden by theme ([4382](https://github.com/marmelab/react-admin/pull/4382)) ([leonidasv](https://github.com/leonidasv))
+
+## v3.2.0
+
+* Add the `<Empty>` component, an invite to create the first record when the list is empty ([4113](https://github.com/marmelab/react-admin/pull/4113)) ([m4theushw](https://github.com/m4theushw))
+* Add sticky header to `<Datagrid>` ([4309](https://github.com/marmelab/react-admin/pull/4309)) ([fzaninotto](https://github.com/fzaninotto))
+* Display skeleton during `<SimpleList>` initial load ([4292](https://github.com/marmelab/react-admin/pull/4292)) ([djhi](https://github.com/djhi))
+* Delay skeleton display in `<Datagrid>` and `<SimpleList>`, a la Suspense ([4294](https://github.com/marmelab/react-admin/pull/4294)) ([djhi](https://github.com/djhi))
+* Force helper text height in all `<Input>` components to avoid form layout changes upon validation ([4364](https://github.com/marmelab/react-admin/pull/4364)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Reduce the default app weight by removing the image background on the Login screen ([4342](https://github.com/marmelab/react-admin/pull/4342)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Add ability to customize the icon in the `<Logout>` button ([4229](https://github.com/marmelab/react-admin/pull/4229)) ([steurt](https://github.com/steurt))
+* Add ability to customize `<Empty>` styles using the theme ([4293](https://github.com/marmelab/react-admin/pull/4293)) ([WiXSL](https://github.com/WiXSL))
+* Add `<NullableBooleanInput displayNull` prop to force the dislay of the null option ([4365](https://github.com/marmelab/react-admin/pull/4365)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Add explicit error in `useDataProvider` hook when the `dataProvider` throws a sync error([4291](https://github.com/marmelab/react-admin/pull/4291)) ([fzaninotto](https://github.com/fzaninotto))
+* Export Reference Utilities ([4338](https://github.com/marmelab/react-admin/pull/4338)) ([djhi](https://github.com/djhi))
+* Ensure `useEditController` specifies a default redirect to its caller ([4339](https://github.com/marmelab/react-admin/pull/4339)) ([djhi](https://github.com/djhi))
+* Convert `<Menu>`, `<MenuItem>`, and `<DashboardMenuItem>` components to TypeScript ([4266](https://github.com/marmelab/react-admin/pull/4266)) ([steurt](https://github.com/steurt))
+* Fix menu size in latest version of material-ui ([4374](https://github.com/marmelab/react-admin/pull/4374)) ([fzaninotto](https://github.com/fzaninotto)) 
+* Fix Autocomplete selection display with custom Component ([4367](https://github.com/marmelab/react-admin/pull/4367)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Fix interface name starting with a lowercase letter in ReferenceFieldController ([4163](https://github.com/marmelab/react-admin/pull/4163)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix urls in 3.1.4 changelog ([4379](https://github.com/marmelab/react-admin/pull/4379)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Add PostgREST data provider to the list of third-party providers ([4380](https://github.com/marmelab/react-admin/pull/4380)) ([scheiblr](https://github.com/scheiblr))
+
+## v3.1.4
+
+* Fix default value of filters with paths not applied correctly ([4347](https://github.com/marmelab.react-admin/pull/4347)) ([djhi](https://github.com/djhi))
+* Fix Datagrid column headers don't update sort indicator when used in ReferenceManyField ([4346](https://github.com/marmelab.react-admin/pull/4346)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix typo in Create / Edit documentation ([4373](https://github.com/marmelab.react-admin/pull/4373)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix Armenian abbreviation in the translations documentation ([4371](https://github.com/marmelab.react-admin/pull/4371)) ([mrdntgrn](https://github.com/mrdntgrn))
+* [Doc] Fix instructions for contributing to react-admin in README ([4359](https://github.com/marmelab.react-admin/pull/4359)) ([PaulMest](https://github.com/PaulMest))
+* [Doc] Fix typo in `ra-data-graphcool` and `ra-data-graphql-simple` READMEs. ([4354](https://github.com/marmelab.react-admin/pull/4354)) ([kahdo](https://github.com/kahdo))
+* [Doc] Fix documentation about extending a dataProvider ([4341](https://github.com/marmelab.react-admin/pull/4341)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix upgrade documentation about form handling ([4330](https://github.com/marmelab.react-admin/pull/4330)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* [Doc] Fix custom actions example in List documentation ([4327](https://github.com/marmelab.react-admin/pull/4327)) ([Artexoid](https://github.com/Artexoid))
+
+## v3.1.3
+
+* Fix `<Menu>` overlapps the `<AppBar>` with material-ui > 4.8 ([4315](https://github.com/marmelab/react-admin/pull/4315)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix unused `filter` prop in `useGetMatchingReference` hook ([4314](https://github.com/marmelab/react-admin/pull/4314)) ([Luwangel](https://github.com/Luwangel))
+* Fix several jsDoc blocks in `ra-core` hooks ([4312](https://github.com/marmelab/react-admin/pull/4312)) ([WiXSL](https://github.com/WiXSL))
+* Fix `autoHideDuration` prop not being used in `<Notification>` component ([4311](https://github.com/marmelab/react-admin/pull/4311)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<NullableBooleanInput>` does not show initial value ([4303](https://github.com/marmelab/react-admin/pull/4303)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix typo in `useCreate` hook jsDoc ([4289](https://github.com/marmelab/react-admin/pull/4289)) ([ekalinin](https://github.com/ekalinin))
+* Fix error in `<Confirm>` due to bad prop-types package version ([4285](https://github.com/marmelab/react-admin/pull/4285)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix deprecation warnings about `<Admin>` props appearing in production ([4279](https://github.com/marmelab/react-admin/pull/4279)) ([alanpoulain](https://github.com/alanpoulain))
+* Fix warning on `catchall` page due to improper sanitization in `<NotFound>` component ([4275](https://github.com/marmelab/react-admin/pull/4275)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix custom layout documentation doesn't mention the importance of the `<Notification>` component ([4336](https://github.com/marmelab/react-admin/pull/4336)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix form customization code snippet in CreateEdit documentation ([4335](https://github.com/marmelab/react-admin/pull/4335)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix outdated mention of `aor-dependent-input` in the FAQ ([4334](https://github.com/marmelab/react-admin/pull/4334)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix missing `basePath` prop in Custom App doc ([4333](https://github.com/marmelab/react-admin/pull/4333)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<ImageInput>` and `<FileInput>` doc and explain `accept` prop ([4332](https://github.com/marmelab/react-admin/pull/4332)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix code snippet showing how to prefill forms ([4301](https://github.com/marmelab/react-admin/pull/4301)) ([nicgirault](https://github.com/nicgirault))
+* [Doc] Fix useless line breaks in the Inputs documentation  ([4278](https://github.com/marmelab/react-admin/pull/4278)) ([Luwangel](https://github.com/Luwangel))
+* [Doc] Fix link to broken tinyMCE third-party package ([4274](https://github.com/marmelab/react-admin/pull/4274)) ([Luwangel](https://github.com/Luwangel))
+
+## v3.1.2
+
+* Fix build delay in certain bundlers due to `@material-ui/icons` import ([4265](https://github.com/marmelab/react-admin/pull/4265)) ([WiXSL was merge](https://github.com/WiXSL was merge))
+* Fix list appears empty after a while ([4261](https://github.com/marmelab/react-admin/pull/4261)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix verbose code in `Resource` registration ([4257](https://github.com/marmelab/react-admin/pull/4257)) ([WiXSL](https://github.com/WiXSL))
+* Fix useless export of style hook in `Edit`, `Show`, and `List` ([4255](https://github.com/marmelab/react-admin/pull/4255)) ([WiXSL](https://github.com/WiXSL))
+* Fix 20 components exported twice (named and default) in `ra-ui-material-ui` ([4254](https://github.com/marmelab/react-admin/pull/4254)) ([WiXSL](https://github.com/WiXSL))
+* Fix custom routes not working when based on resources ([4251](https://github.com/marmelab/react-admin/pull/4251)) ([djhi](https://github.com/djhi))
+* Fix invalid DOM attribute warning when using `<EditController>`, `<ShowController>`, or `<CreateController>` ([4250](https://github.com/marmelab/react-admin/pull/4250)) ([djhi](https://github.com/djhi))
+* Fix validation message color in `<SelectArrayInput>` ([4249](https://github.com/marmelab/react-admin/pull/4249)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix ability to override `parse` and `format` props in `<DateTimeInput>` ([4246](https://github.com/marmelab/react-admin/pull/4246)) ([WiXSL](https://github.com/WiXSL))
+* Fix `initialValue` prop passed to `<Input>` elements by mistake ([4244](https://github.com/marmelab/react-admin/pull/4244)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<Router>` and `<Title>` code to allow Server-Side Rendering (SSR) ([4242](https://github.com/marmelab/react-admin/pull/4242)) ([CarsonF](https://github.com/CarsonF))
+* Fix `<DashboardMenuItem>` density differs from other menu items ([4241](https://github.com/marmelab/react-admin/pull/4241)) ([steurt](https://github.com/steurt))
+* Fix page components use injected `location` prop instead of `useLocation` hook as encouraged by `react-router` documentation ([4240](https://github.com/marmelab/react-admin/pull/4240)) ([CarsonF](https://github.com/CarsonF))
+* Fix `<DateTimeInput>` converts to value empty Object in `ra-data-graphql-simple` provider ([4238](https://github.com/marmelab/react-admin/pull/4238)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix `withTranslate` HOC uses default `translate` prop instead of the one from context ([4233](https://github.com/marmelab/react-admin/pull/4233)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix invalid DOM attribute warnings in `<CheckboxGroupInput>` ([4216](https://github.com/marmelab/react-admin/pull/4216)) ([SeanBE](https://github.com/SeanBE))
+* Fix TypeScript compilation issue in `ra-i18n-polyglot` ([4186](https://github.com/marmelab/react-admin/pull/4186)) ([WiXSL](https://github.com/WiXSL))
+* Fix GraphQL demo ([4237](https://github.com/marmelab/react-admin/pull/4237)) ([ThieryMichel](https://github.com/ThieryMichel))
+* [Doc] Fix typo in custom Save button code example ([4263](https://github.com/marmelab/react-admin/pull/4263)) ([almahdi](https://github.com/almahdi))
+* [Doc] Fix AppBar customization documentation ([4258](https://github.com/marmelab/react-admin/pull/4258)) ([michelerota](https://github.com/michelerota))
+* [Doc] Fix welcome page screenshot in tutorial ([4239](https://github.com/marmelab/react-admin/pull/4239)) ([zyhou](https://github.com/zyhou))
+* [Doc] Fix typos in Inputs and Authorization docs ([4226](https://github.com/marmelab/react-admin/pull/4226)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix snippet for creating the React app in Tutorial ([4198](https://github.com/marmelab/react-admin/pull/4198)) ([pizzafox](https://github.com/pizzafox))
+* [Doc] Add Armenian translation ([4199](https://github.com/marmelab/react-admin/pull/4199)) ([mrdntgrn](https://github.com/mrdntgrn))
+* [Doc] Add `express-sequelize-crud` to the list of data provider backends ([4150](https://github.com/marmelab/react-admin/pull/4150)) ([nicgirault](https://github.com/nicgirault))
+
 ## v3.1.1
 
 * Fix `SelectInput` doc about `emptyValue` defaultValue ([4193](https://github.com/marmelab/react-admin/pull/4193)) ([alanpoulain](https://github.com/alanpoulain))
@@ -1086,7 +1416,7 @@ For highlights about this version, read [the 2.1 release announcement post](http
 * [`TabbedForm`, `TabbedShowLayout`] Add routing support for tab navigation ([djhi](https://github.com/djhi))
 * [`SimpleForm`, `TabbedForm`] Add ability to customize the redux form ([djhi](https://github.com/djhi))
 * [`ReferenceField`] Add optional `sortBy` prop to allow sorting by another field than `id` ([ArneZsng](https://github.com/ArneZsng))
-* [`SaveButton`, `SimpleForm`, `Tabbedform`] Add support for function as `redirect` value ([fzaninotto](https://github.com/fzaninotto))
+* [`SaveButton`, `SimpleForm`, `TabbedForm`] Add support for function as `redirect` value ([fzaninotto](https://github.com/fzaninotto))
 * [`RichTextInput`] Add validation support ([fzaninotto](https://github.com/fzaninotto))
 * [`ReferenceInput`] Inject `sort`, `pagination`, and `filters` props to the child component ([fzaninotto](https://github.com/fzaninotto))
 * [`Layout`] Add ability to customize sub components (menu, appbar, notification) ([fzaninotto](https://github.com/fzaninotto))

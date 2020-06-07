@@ -1,8 +1,9 @@
 import { isValidElement, ReactElement, useEffect, useMemo } from 'react';
 import inflection from 'inflection';
 import { Location } from 'history';
-import { useSelector, shallowEqual } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import get from 'lodash/get';
 
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import useListParams from './useListParams';
@@ -12,8 +13,8 @@ import { useTranslate } from '../i18n';
 import { SORT_ASC } from '../reducer/admin/resource/list/queryReducer';
 import { CRUD_GET_LIST, ListParams } from '../actions';
 import { useNotify } from '../sideEffect';
-import { Sort, RecordMap, Identifier, ReduxState } from '../types';
-import useQueryWithStore from '../dataProvider/useQueryWithStore';
+import { Sort, RecordMap, Identifier, ReduxState, Record } from '../types';
+import useGetList from '../dataProvider/useGetList';
 
 export interface ListProps {
     // the props you can change
@@ -42,10 +43,12 @@ const defaultSort = {
     order: SORT_ASC,
 };
 
-export interface ListControllerProps {
+const defaultData = {};
+
+export interface ListControllerProps<RecordType = Record> {
     basePath: string;
     currentSort: Sort;
-    data: RecordMap;
+    data: RecordMap<RecordType>;
     defaultTitle: string;
     displayedFilters: any;
     filterValues: any;
@@ -61,10 +64,10 @@ export interface ListControllerProps {
     perPage: number;
     resource: string;
     selectedIds: Identifier[];
-    setFilters: (filters: any) => void;
+    setFilters: (filters: any, displayedFilters: any) => void;
     setPage: (page: number) => void;
     setPerPage: (page: number) => void;
-    setSort: (sort: string) => void;
+    setSort: (sort: string, order?: string) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
     total: number;
     version: number;
@@ -87,7 +90,9 @@ export interface ListControllerProps {
  *     return <ListView {...controllerProps} {...props} />;
  * }
  */
-const useListController = (props: ListProps): ListControllerProps => {
+const useListController = <RecordType = Record>(
+    props: ListProps
+): ListControllerProps<RecordType> => {
     useCheckMinimumRequiredProps('List', ['basePath', 'resource'], props);
 
     const {
@@ -124,30 +129,19 @@ const useListController = (props: ListProps): ListControllerProps => {
     const [selectedIds, selectionModifiers] = useRecordSelection(resource);
 
     /**
-     * We don't use useGetList() here because we want the list of ids to be
-     * always available for optimistic rendering, and therefore we need a
-     * custom action (CRUD_GET_LIST), a custom reducer for ids and total
-     * (admin.resources.[resource].list.ids and admin.resources.[resource].list.total)
-     * and a custom selector for these reducers.
-     * Also we don't want that calls to useGetList() in userland change
-     * the list of ids in the main List view.
+     * We want the list of ids to be always available for optimistic rendering,
+     * and therefore we need a custom action (CRUD_GET_LIST) that will be used.
      */
-    const { data: ids, total, loading, loaded } = useQueryWithStore(
+    const { ids, total, loading, loaded } = useGetList<RecordType>(
+        resource,
         {
-            type: 'getList',
-            resource,
-            payload: {
-                pagination: {
-                    page: query.page,
-                    perPage: query.perPage,
-                },
-                sort: { field: query.sort, order: query.order },
-                filter: { ...query.filter, ...filter },
-            },
+            page: query.page,
+            perPage: query.perPage,
         },
+        { field: query.sort, order: query.order },
+        { ...query.filter, ...filter },
         {
             action: CRUD_GET_LIST,
-            version,
             onFailure: error =>
                 notify(
                     typeof error === 'string'
@@ -155,22 +149,29 @@ const useListController = (props: ListProps): ListControllerProps => {
                         : error.message || 'ra.notification.http_error',
                     'warning'
                 ),
-        },
-        (state: ReduxState) =>
-            state.admin.resources[resource]
-                ? state.admin.resources[resource].list.ids
-                : null,
-        (state: ReduxState) =>
-            state.admin.resources[resource]
-                ? state.admin.resources[resource].list.total
-                : null
+        }
     );
+
     const data = useSelector(
-        (state: ReduxState) =>
-            state.admin.resources[resource]
-                ? state.admin.resources[resource].data
-                : null,
-        shallowEqual
+        (state: ReduxState): RecordMap<RecordType> =>
+            get(
+                state.admin.resources,
+                [resource, 'data'],
+                defaultData
+            ) as RecordMap<RecordType>
+    );
+
+    // When the user changes the page/sort/filter, this controller runs the
+    // useGetList hook again. While the result of this new call is loading,
+    // the ids and total are empty. To avoid rendering an empty list at that
+    // moment, we override the ids and total with the latest loaded ones.
+    const defaultIds = useSelector(
+        (state: ReduxState): Identifier[] =>
+            get(state.admin.resources, [resource, 'list', 'ids'], [])
+    );
+    const defaultTotal = useSelector(
+        (state: ReduxState): number =>
+            get(state.admin.resources, [resource, 'list', 'total'], 0)
     );
 
     useEffect(() => {
@@ -207,9 +208,10 @@ const useListController = (props: ListProps): ListControllerProps => {
         displayedFilters: query.displayedFilters,
         filterValues: query.filterValues,
         hasCreate,
-        ids,
+        hideFilter: queryModifiers.hideFilter,
+        ids: typeof total === 'undefined' ? defaultIds : ids,
+        loaded: loaded || defaultIds.length > 0,
         loading,
-        loaded,
         onSelect: selectionModifiers.select,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
@@ -218,12 +220,11 @@ const useListController = (props: ListProps): ListControllerProps => {
         resource,
         selectedIds,
         setFilters: queryModifiers.setFilters,
-        hideFilter: queryModifiers.hideFilter,
-        showFilter: queryModifiers.showFilter,
         setPage: queryModifiers.setPage,
         setPerPage: queryModifiers.setPerPage,
         setSort: queryModifiers.setSort,
-        total,
+        showFilter: queryModifiers.showFilter,
+        total: typeof total === 'undefined' ? defaultTotal : total,
         version,
     };
 };

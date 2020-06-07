@@ -24,10 +24,10 @@ You should be up and running with an empty React application on port 3000.
 
 React-admin runs in the browser, and uses APIs for fetching and storing data.
 
-We'll be using [JSONPlaceholder](http://jsonplaceholder.typicode.com/), a fake REST API designed for testing and prototyping, as the datasource for the admin. Here is what it looks like:
+We'll be using [JSONPlaceholder](https://jsonplaceholder.typicode.com/), a fake REST API designed for testing and prototyping, as the datasource for the admin. Here is what it looks like:
 
 ```
-curl http://jsonplaceholder.typicode.com/users/2
+curl https://jsonplaceholder.typicode.com/users/2
 ```
 
 ```json
@@ -64,11 +64,11 @@ Bootstrap the admin app by replacing the `src/App.js` by the following code:
 
 ```jsx
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 import { Admin } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 
-const dataProvider = jsonServerProvider('http://jsonplaceholder.typicode.com');
+const dataProvider = jsonServerProvider('https://jsonplaceholder.typicode.com');
 const App = () => <Admin dataProvider={dataProvider} />;
 
 export default App;
@@ -88,12 +88,12 @@ The `<Admin>` component expects one or more `<Resource>` child components. Each 
 
 ```diff
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 -import { Admin } from 'react-admin';
 +import { Admin, Resource, ListGuesser } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 
-const dataProvider = jsonServerProvider('http://jsonplaceholder.typicode.com');
+const dataProvider = jsonServerProvider('https://jsonplaceholder.typicode.com');
 -const App = () => <Admin dataProvider={dataProvider} />;
 +const App = () => (
 +    <Admin dataProvider={dataProvider}>
@@ -104,13 +104,13 @@ const dataProvider = jsonServerProvider('http://jsonplaceholder.typicode.com');
 export default App;
 ```
 
-The line `<Resource name="users" />` informs react-admin to fetch the "users" records from the [http://jsonplaceholder.typicode.com/users](http://jsonplaceholder.typicode.com/users) URL. `<Resource>` also defines the React components to use for each CRUD operation (`list`, `create`, `edit`, and `show`).
+The line `<Resource name="users" />` informs react-admin to fetch the "users" records from the [https://jsonplaceholder.typicode.com/users](https://jsonplaceholder.typicode.com/users) URL. `<Resource>` also defines the React components to use for each CRUD operation (`list`, `create`, `edit`, and `show`).
 
 The `list={ListGuesser}` prop means that react-admin should use the `<ListGuesser>` component to display the list of posts. This component *guesses* the format to use for the columns of the list based on the data fetched from the API:
 
 ![Users List](./img/tutorial_users_list.png)
 
-If you look at the network tab in the browser developer tools, you'll notice that the application fetched the `http://jsonplaceholder.typicode.com/users` URL, then used the results to build the Datagrid. That's basically how react-admin works.
+If you look at the network tab in the browser developer tools, you'll notice that the application fetched the `https://jsonplaceholder.typicode.com/users` URL, then used the results to build the Datagrid. That's basically how react-admin works.
 
 The list is already functional: you can reorder it by clicking on column headers, or change pages by using the bottom pagination controls. The `ra-data-json-server` data provider translates these actions to a query string that JSONPlaceholder understands.
 
@@ -124,7 +124,7 @@ Let's copy this code, and create a new `UserList` component, in a new file named
 
 ```jsx
 // in src/users.js
-import React from 'react';
+import * as React from "react";
 import { List, Datagrid, TextField, EmailField } from 'react-admin';
 
 export const UserList = props => (
@@ -169,7 +169,7 @@ The `ListGuesser` created one column for every field in the response. That's a b
 
 ```diff
 // in src/users.js
-import React from 'react';
+import * as React from "react";
 import { List, Datagrid, TextField, EmailField } from 'react-admin';
 
 export const UserList = props => (
@@ -200,7 +200,7 @@ For instance, the `website` field looks like an URL. Instead of displaying it as
 
 ```diff
 // in src/users.js
-import React from 'react';
+import * as React from "react";
 -import { List, Datagrid, TextField, EmailField } from 'react-admin';
 +import { List, Datagrid, TextField, EmailField, UrlField } from 'react-admin';
 
@@ -227,7 +227,7 @@ That means that writing a custom Field component is really straightforward. For 
 
 ```jsx
 // in src/MyUrlField.js
-import React from 'react';
+import * as React from "react";
 
 const MyUrlField = ({ record = {}, source }) =>
     <a href={record[source]}>
@@ -241,7 +241,7 @@ You can use this component in `<UserList>`, instead of react-admin's `<UrlField>
 
 ```diff
 // in src/users.js
-import React from 'react';
+import * as React from "react";
 -import { List, Datagrid, TextField, EmailField, UrlField } from 'react-admin';
 +import { List, Datagrid, TextField, EmailField } from 'react-admin';
 +import MyUrlField from './MyUrlField';
@@ -269,7 +269,7 @@ The `MyUrlField` component is a perfect opportunity to illustrate how to customi
 
 ```jsx
 // in src/MyUrlField.js
-import React from 'react';
+import * as React from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import LaunchIcon from '@material-ui/icons/Launch';
 
@@ -321,7 +321,7 @@ React-admin knows how to take advantage of these foreign keys to fetch reference
 
 ```diff
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 -import { Admin, Resource } from 'react-admin';
 +import { Admin, Resource, ListGuesser } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
@@ -343,7 +343,7 @@ The `ListGuesser` suggests using a `<ReferenceField>` for the `userId` field. Le
 
 ```jsx
 // in src/posts.js
-import React from 'react';
+import * as React from "react";
 import { List, Datagrid, TextField, ReferenceField } from 'react-admin';
 
 export const PostList = props => (
@@ -407,7 +407,7 @@ To finish the post list, place the post `id` field as first column, and remove t
 
 ```diff
 // in src/posts.js
-import React from 'react';
+import * as React from "react";
 -import { List, Datagrid, TextField, ReferenceField } from 'react-admin';
 +import { List, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
@@ -618,10 +618,8 @@ By default, react-admin displays the list page of the first `Resource` element a
 
 ```jsx
 // in src/Dashboard.js
-import React from 'react';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
+import * as React from "react";
+import { Card, CardContent, CardHeader } from '@material-ui/core';
 
 export default () => (
     <Card>
@@ -717,7 +715,7 @@ First, you should know that you don't have to use the `<Datagrid>` component as 
 
 ```jsx
 // in src/posts.js
-import React from 'react';
+import * as React from "react";
 import { List, SimpleList } from 'react-admin';
 
 export const PostList = (props) => (
@@ -741,7 +739,7 @@ That works fine on mobile, but now the desktop user experience is worse. The bes
 
 ```jsx
 // in src/posts.js
-import React from 'react';
+import * as React from "react";
 import { useMediaQuery } from '@material-ui/core';
 import { List, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
@@ -783,17 +781,17 @@ React-admin delegates every data query to a Data Provider object, which acts as 
 
 For instance, let's imagine you have to use the `my.api.url` REST API, which expects the following parameters:
 
-| Action              | Expected API request |
-|---------------------|---------------------- |
-| Get list            | `GET http://my.api.url/posts?sort=['title','ASC']&range=[0, 24]&filter={title:'bar'}` |
-| Get one record      | `GET http://my.api.url/posts/123` |
-| Get several records | `GET http://my.api.url/posts?filter={id:[123,456,789]}` |
-| Get related records | `GET http://my.api.url/posts?filter={author_id:345}` |
-| Create a record     | `POST http://my.api.url/posts/123` |
-| Update a record     | `PUT http://my.api.url/posts/123` |
-| Update records      | `PUT http://my.api.url/posts?filter={id:[123,124,125]}` |
-| Delete a record     | `DELETE http://my.api.url/posts/123` |
-| Delete records      | `DELETE http://my.api.url/posts?filter={id:[123,124,125]}` |
+| Action              | Expected API request                                                                    |
+| ------------------- | --------------------------------------------------------------------------------------- |
+| Get list            | `GET http://my.api.url/posts?sort=["title","ASC"]&range=[0, 24]&filter={"title":"bar"}` |
+| Get one record      | `GET http://my.api.url/posts/123`                                                       |
+| Get several records | `GET http://my.api.url/posts?filter={"id":[123,456,789]}`                               |
+| Get related records | `GET http://my.api.url/posts?filter={"author_id":345}`                                  |
+| Create a record     | `POST http://my.api.url/posts/123`                                                      |
+| Update a record     | `PUT http://my.api.url/posts/123`                                                       |
+| Update records      | `PUT http://my.api.url/posts?filter={"id":[123,124,125]}`                               |
+| Delete a record     | `DELETE http://my.api.url/posts/123`                                                    |
+| Delete records      | `DELETE http://my.api.url/posts?filter={"id":[123,124,125]}`                            |
 
 
 React-admin calls the Data Provider with one method for each of the actions of this list, and expects a Promise in return. These methods are called `getList`, `getOne`, `getMany`, `getManyReference`, `create`, `update`, `updateMany`, `delete`, and `deleteMany`. It's the Data Provider's job to emit HTTP requests and transform the response into the format expected by react-admin.

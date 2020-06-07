@@ -6,10 +6,10 @@ import {
 } from '../reducer/admin/resource/list/queryReducer';
 import { Sort } from '../types';
 
-interface SortProps {
+export interface SortProps {
     setSortField: (field: string) => void;
     setSortOrder: (order: string) => void;
-    setSort: (sort: Sort) => void;
+    setSort: (sort: Sort, order?: string) => void;
     sort: Sort;
 }
 
@@ -75,7 +75,7 @@ export const defaultSort = { field: 'id', order: 'DESC' };
  * @typedef SortProps
  * @type {Object}
  * @property {Object} sort: the sort object.
- * @property {String} sort.field: the sort object.
+ * @property {string} sort.field: the sort object.
  * @property {'ASC' | 'DESC'} sort.order: the sort object.
  * @property {setSort} setSort
  * @property {setSortField} setSortField
@@ -116,7 +116,8 @@ export default (initialSort: Sort = defaultSort): SortProps => {
 
     return {
         setSort: useCallback(
-            (sort: Sort) => dispatch({ type: 'SET_SORT', payload: { sort } }),
+            (sort: Sort, order?: string) =>
+                dispatch({ type: 'SET_SORT', payload: { sort, order } }),
             [dispatch]
         ),
         setSortField: useCallback(

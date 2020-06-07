@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import * as React from 'react';
+import { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import TextField, { TextFieldProps } from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -30,24 +31,27 @@ const getStringFromBoolean = (value?: boolean | null): string => {
 
 const NullableBooleanInput: FunctionComponent<
     InputProps<TextFieldProps> & Omit<TextFieldProps, 'label' | 'helperText'>
-> = ({
-    className,
-    format = getStringFromBoolean,
-    helperText,
-    label,
-    margin = 'dense',
-    onBlur,
-    onChange,
-    onFocus,
-    options,
-    parse = getBooleanFromString,
-    resource,
-    source,
-    validate,
-    variant = 'filled',
-    ...rest
-}) => {
-    const classes = useStyles({});
+> = props => {
+    const {
+        className,
+        classes: classesOverride,
+        format = getStringFromBoolean,
+        helperText,
+        label,
+        margin = 'dense',
+        onBlur,
+        onChange,
+        onFocus,
+        options,
+        displayNull,
+        parse = getBooleanFromString,
+        resource,
+        source,
+        validate,
+        variant = 'filled',
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     const translate = useTranslate();
 
     const {
@@ -63,9 +67,23 @@ const NullableBooleanInput: FunctionComponent<
         parse,
         resource,
         source,
-        type: 'checkbox',
         validate,
     });
+
+    const enhancedOptions = displayNull
+        ? {
+              ...options,
+              SelectProps: {
+                  displayEmpty: true,
+                  ...(options && options.SelectProps),
+              },
+              InputLabelProps: {
+                  shrink: true,
+                  ...(options && options.InputLabelProps),
+              },
+          }
+        : options;
+
     return (
         <TextField
             id={id}
@@ -82,17 +100,15 @@ const NullableBooleanInput: FunctionComponent<
             }
             error={!!(touched && error)}
             helperText={
-                (touched && error) || helperText ? (
-                    <InputHelperText
-                        touched={touched}
-                        error={error}
-                        helperText={helperText}
-                    />
-                ) : null
+                <InputHelperText
+                    touched={touched}
+                    error={error}
+                    helperText={helperText}
+                />
             }
             className={classnames(classes.input, className)}
             variant={variant}
-            {...options}
+            {...enhancedOptions}
             {...sanitizeRestProps(rest)}
         >
             <MenuItem value="">{translate('ra.boolean.null')}</MenuItem>

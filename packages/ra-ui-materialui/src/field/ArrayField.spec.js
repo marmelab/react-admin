@@ -1,7 +1,7 @@
-import React from 'react';
+import * as React from 'react';
 import { render, cleanup } from '@testing-library/react';
 
-import { ArrayField } from './ArrayField';
+import ArrayField from './ArrayField';
 import NumberField from './NumberField';
 import TextField from './TextField';
 import Datagrid from '../list/Datagrid';

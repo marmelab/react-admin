@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import expect from 'expect';
 import { cleanup } from '@testing-library/react';
 import { renderWithRedux } from 'ra-core';
@@ -91,6 +91,7 @@ describe('<List />', () => {
                         params: {},
                         selectedIds: [],
                         total: 0,
+                        cachedRequests: {},
                     },
                 },
             },
@@ -109,5 +110,35 @@ describe('<List />', () => {
             defaultStateForList
         );
         expect(queryAllByText('Hello')).toHaveLength(1);
+    });
+
+    it('should render an invite when the list is empty', () => {
+        const Dummy = () => <div />;
+        const { queryAllByText } = renderWithRedux(
+            <ThemeProvider theme={theme}>
+                <ListView {...defaultProps} total={0} hasCreate loaded>
+                    <Dummy />
+                </ListView>
+            </ThemeProvider>
+        );
+        expect(queryAllByText('resources.post.empty')).toHaveLength(1);
+    });
+
+    it('should not render an invite when a filter is active', () => {
+        const Dummy = () => <div />;
+        const { queryAllByText } = renderWithRedux(
+            <ThemeProvider theme={theme}>
+                <ListView
+                    {...defaultProps}
+                    filterValues={{ q: 'foo' }}
+                    total={0}
+                    hasCreate
+                    loaded
+                >
+                    <Dummy />
+                </ListView>
+            </ThemeProvider>
+        );
+        expect(queryAllByText('resources.post.empty')).toHaveLength(0);
     });
 });

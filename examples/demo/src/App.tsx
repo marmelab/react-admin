@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { Admin, Resource } from 'react-admin';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
@@ -38,10 +39,10 @@ const App = () => {
 
         const fetchDataProvider = async () => {
             restoreFetch = await fakeServerFactory(
-                process.env.REACT_APP_DATA_PROVIDER
+                process.env.REACT_APP_DATA_PROVIDER || ''
             );
             const dataProviderInstance = await dataProviderFactory(
-                process.env.REACT_APP_DATA_PROVIDER
+                process.env.REACT_APP_DATA_PROVIDER || ''
             );
             setDataProvider(
                 // GOTCHA: dataProviderInstance can be a function

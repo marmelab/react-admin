@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import {
     useReferenceArrayInputController,
@@ -89,7 +89,7 @@ import ReferenceError from './ReferenceError';
  *     <SelectArrayInput optionText="name" />
  * </ReferenceArrayInput>
  */
-export const ReferenceArrayInput = ({
+const ReferenceArrayInput = ({
     children,
     id: idOverride,
     onBlur,
@@ -115,6 +115,7 @@ export const ReferenceArrayInput = ({
         validate,
         parse,
         format,
+        ...props,
     });
 
     const controllerProps = useReferenceArrayInputController({
@@ -139,7 +140,7 @@ export const ReferenceArrayInput = ({
 };
 
 ReferenceArrayInput.propTypes = {
-    allowEmpty: PropTypes.bool.isRequired,
+    allowEmpty: PropTypes.bool,
     basePath: PropTypes.string,
     children: PropTypes.element.isRequired,
     className: PropTypes.string,
@@ -157,7 +158,6 @@ ReferenceArrayInput.propTypes = {
 };
 
 ReferenceArrayInput.defaultProps = {
-    allowEmpty: false,
     filter: {},
     filterToQuery: searchText => (searchText ? { q: searchText } : {}),
     perPage: 25,

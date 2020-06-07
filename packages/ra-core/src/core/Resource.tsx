@@ -1,4 +1,5 @@
-import React, { FunctionComponent, useEffect, useMemo } from 'react';
+import * as React from 'react';
+import { FunctionComponent, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 
@@ -44,8 +45,8 @@ const ResourceRoutes: FunctionComponent<ResourceProps> = ({
     show,
     options = defaultOptions,
 }) => {
-    const isRegistered = useSelector((state: ReduxState) =>
-        state.admin.resources[name] ? true : false
+    const isRegistered = useSelector(
+        (state: ReduxState) => !!state.admin.resources[name]
     );
 
     const basePath = match ? match.path : '';

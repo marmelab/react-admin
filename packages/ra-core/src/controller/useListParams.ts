@@ -1,7 +1,8 @@
-import { useCallback, useState, useMemo } from 'react';
+import { useCallback, useMemo, useEffect } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { parse, stringify } from 'query-string';
 import lodashDebounce from 'lodash/debounce';
+import set from 'lodash/set';
 import pickBy from 'lodash/pickBy';
 import { Location } from 'history';
 
@@ -39,8 +40,8 @@ interface Modifiers {
     changeParams: (action: any) => void;
     setPage: (page: number) => void;
     setPerPage: (pageSize: number) => void;
-    setSort: (sort: string) => void;
-    setFilters: (filters: any) => void;
+    setSort: (sort: string, order?: string) => void;
+    setFilters: (filters: any, displayedFilters: any) => void;
     hideFilter: (filterName: string) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
 }
@@ -51,6 +52,8 @@ const defaultSort = {
     field: 'id',
     order: SORT_ASC,
 };
+
+const defaultParams = {};
 
 /**
  * Get the list parameters (page, sort, filters) and modifiers.
@@ -109,12 +112,13 @@ const useListParams = ({
     perPage = 10,
     debounce = 500,
 }: ListParamsOptions): [Parameters, Modifiers] => {
-    const [displayedFilters, setDisplayedFilters] = useState({});
     const dispatch = useDispatch();
     const history = useHistory();
-
-    const { params } = useSelector(
-        (reduxState: ReduxState) => reduxState.admin.resources[resource].list,
+    const params = useSelector(
+        (reduxState: ReduxState) =>
+            reduxState.admin.resources[resource]
+                ? reduxState.admin.resources[resource].list.params
+                : defaultParams,
         shallowEqual
     );
 
@@ -127,10 +131,12 @@ const useListParams = ({
         perPage,
     ];
 
+    const queryFromLocation = parseQueryFromLocation(location);
+
     const query = useMemo(
         () =>
             getQuery({
-                location,
+                queryFromLocation,
                 params,
                 filterDefaultValues,
                 sort,
@@ -139,20 +145,34 @@ const useListParams = ({
         requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );
 
+    // On mount, if the location includes params (for example from a link like
+    // the categories products on the demo), we need to persist them in the
+    // redux state as well so that we don't loose them after a redirection back
+    // to the list
+    useEffect(() => {
+        if (Object.keys(queryFromLocation).length > 0) {
+            dispatch(changeListParams(resource, query));
+        }
+    }, []); // eslint-disable-line
+
     const changeParams = useCallback(action => {
         const newParams = queryReducer(query, action);
         history.push({
             search: `?${stringify({
                 ...newParams,
                 filter: JSON.stringify(newParams.filter),
+                displayedFilters: JSON.stringify(newParams.displayedFilters),
             })}`,
         });
         dispatch(changeListParams(resource, newParams));
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
     const setSort = useCallback(
-        (newSort: string) =>
-            changeParams({ type: SET_SORT, payload: { sort: newSort } }),
+        (sort: string, order?: string) =>
+            changeParams({
+                type: SET_SORT,
+                payload: { sort, order },
+            }),
         requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );
 
@@ -168,46 +188,59 @@ const useListParams = ({
     );
 
     const filterValues = query.filter || emptyObject;
+    const displayedFilterValues = query.displayedFilters || emptyObject;
 
     const debouncedSetFilters = lodashDebounce(
-        newFilters =>
+        (newFilters, newDisplayedFilters) => {
+            let payload = {
+                filter: removeEmpty(newFilters),
+                displayedFilters: undefined,
+            };
+            if (newDisplayedFilters) {
+                payload.displayedFilters = Object.keys(
+                    newDisplayedFilters
+                ).reduce((filters, filter) => {
+                    return newDisplayedFilters[filter]
+                        ? { ...filters, [filter]: true }
+                        : filters;
+                }, {});
+            }
             changeParams({
                 type: SET_FILTER,
-                payload: removeEmpty(newFilters),
-            }),
+                payload,
+            });
+        },
         debounce
     );
 
     const setFilters = useCallback(
-        filters => debouncedSetFilters(filters),
+        (filters, displayedFilters) =>
+            debouncedSetFilters(filters, displayedFilters),
         requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );
 
     const hideFilter = useCallback((filterName: string) => {
-        setDisplayedFilters(previousFilters => ({
-            ...previousFilters,
-            [filterName]: false,
-        }));
         const newFilters = removeKey(filterValues, filterName);
-        setFilters(newFilters);
+        const newDisplayedFilters = {
+            ...displayedFilterValues,
+            [filterName]: undefined,
+        };
+
+        setFilters(newFilters, newDisplayedFilters);
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
     const showFilter = useCallback((filterName: string, defaultValue: any) => {
-        setDisplayedFilters(previousFilters => ({
-            ...previousFilters,
+        const newFilters = set(filterValues, filterName, defaultValue);
+        const newDisplayedFilters = {
+            ...displayedFilterValues,
             [filterName]: true,
-        }));
-        if (typeof defaultValue !== 'undefined') {
-            setFilters({
-                ...filterValues,
-                [filterName]: defaultValue,
-            });
-        }
+        };
+        setFilters(newFilters, newDisplayedFilters);
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
     return [
         {
-            displayedFilters,
+            displayedFilters: displayedFilterValues,
             filterValues,
             requestSignature,
             ...query,
@@ -224,20 +257,32 @@ const useListParams = ({
     ];
 };
 
-export const validQueryParams = ['page', 'perPage', 'sort', 'order', 'filter'];
+export const validQueryParams = [
+    'page',
+    'perPage',
+    'sort',
+    'order',
+    'filter',
+    'displayedFilters',
+];
 
-export const parseQueryFromLocation = ({ search }) => {
+const parseObject = (query, field) => {
+    if (query[field] && typeof query[field] === 'string') {
+        try {
+            query[field] = JSON.parse(query[field]);
+        } catch (err) {
+            delete query[field];
+        }
+    }
+};
+
+export const parseQueryFromLocation = ({ search }): Partial<ListParams> => {
     const query = pickBy(
         parse(search),
         (v, k) => validQueryParams.indexOf(k) !== -1
     );
-    if (query.filter && typeof query.filter === 'string') {
-        try {
-            query.filter = JSON.parse(query.filter);
-        } catch (err) {
-            delete query.filter;
-        }
-    }
+    parseObject(query, 'filter');
+    parseObject(query, 'displayedFilters');
     return query;
 };
 
@@ -252,7 +297,7 @@ export const parseQueryFromLocation = ({ search }) => {
  * To check if the user has custom params, we must compare the params
  * to these initial values.
  *
- * @param {object} params
+ * @param {Object} params
  */
 export const hasCustomParams = (params: ListParams) => {
     return (
@@ -273,13 +318,12 @@ export const hasCustomParams = (params: ListParams) => {
  *   - the props passed to the List component (including the filter defaultValues)
  */
 export const getQuery = ({
-    location,
+    queryFromLocation,
     params,
     filterDefaultValues,
     sort,
     perPage,
 }) => {
-    const queryFromLocation = parseQueryFromLocation(location);
     const query: Partial<ListParams> =
         Object.keys(queryFromLocation).length > 0
             ? queryFromLocation

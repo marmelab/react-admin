@@ -92,50 +92,60 @@ interface Options {
  */
 const AutocompleteInput: FunctionComponent<
     InputProps<TextFieldProps & Options> & DownshiftProps<any>
-> = ({
-    allowEmpty,
-    className,
-    classes: classesOverride,
-    choices = [],
-    emptyText,
-    emptyValue,
-    format,
-    fullWidth,
-    helperText,
-    id: idOverride,
-    input: inputOverride,
-    isRequired: isRequiredOverride,
-    label,
-    limitChoicesToValue,
-    margin = 'dense',
-    matchSuggestion,
-    meta: metaOverride,
-    onBlur,
-    onChange,
-    onFocus,
-    options: {
-        suggestionsContainerProps,
-        labelProps,
-        InputProps,
-        ...options
-    } = {
-        suggestionsContainerProps: undefined,
-        labelProps: undefined,
-        InputProps: undefined,
-    },
-    optionText = 'name',
-    optionValue = 'id',
-    parse,
-    resource,
-    setFilter,
-    shouldRenderSuggestions: shouldRenderSuggestionsOverride,
-    source,
-    suggestionLimit,
-    translateChoice = true,
-    validate,
-    variant = 'filled',
-    ...rest
-}) => {
+> = props => {
+    const {
+        allowEmpty,
+        className,
+        classes: classesOverride,
+        choices = [],
+        emptyText,
+        emptyValue,
+        format,
+        fullWidth,
+        helperText,
+        id: idOverride,
+        input: inputOverride,
+        isRequired: isRequiredOverride,
+        label,
+        limitChoicesToValue,
+        margin = 'dense',
+        matchSuggestion,
+        meta: metaOverride,
+        onBlur,
+        onChange,
+        onFocus,
+        options: {
+            suggestionsContainerProps,
+            labelProps,
+            InputProps,
+            ...options
+        } = {
+            suggestionsContainerProps: undefined,
+            labelProps: undefined,
+            InputProps: undefined,
+        },
+        optionText = 'name',
+        inputText,
+        optionValue = 'id',
+        parse,
+        resource,
+        setFilter,
+        shouldRenderSuggestions: shouldRenderSuggestionsOverride,
+        source,
+        suggestionLimit,
+        translateChoice = true,
+        validate,
+        variant = 'filled',
+        ...rest
+    } = props;
+
+    if (isValidElement(optionText) && !inputText) {
+        throw new Error(`If the optionText prop is a React element, you must also specify the inputText prop:
+        <AutocompleteInput
+            inputText={(record) => record.title}
+        />`);
+    }
+
     warning(
         isValidElement(optionText) && !matchSuggestion,
         `If the optionText prop is a React element, you must also specify the matchSuggestion prop:
@@ -145,7 +155,7 @@ const AutocompleteInput: FunctionComponent<
         `
     );
 
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useStyles(props);
 
     let inputEl = useRef<HTMLInputElement>();
     let anchorEl = useRef<any>();
@@ -219,8 +229,22 @@ const AutocompleteInput: FunctionComponent<
 
         // If we have a value, set the filter to its text so that
         // Downshift displays it correctly
-        setFilterValue(input.value ? getChoiceText(selectedItem) : '');
-    }, [input.value, handleFilterChange, selectedItem, getChoiceText]);
+        setFilterValue(
+            typeof input.value === 'undefined' ||
+                input.value === null ||
+                selectedItem === null
+                ? ''
+                : inputText
+                ? inputText(getChoiceText(selectedItem).props.record)
+                : getChoiceText(selectedItem)
+        );
+    }, [
+        input.value,
+        handleFilterChange,
+        selectedItem,
+        getChoiceText,
+        inputText,
+    ]);
 
     const handleChange = useCallback(
         (item: any) => {
@@ -265,12 +289,19 @@ const AutocompleteInput: FunctionComponent<
     const handleBlur = useCallback(
         event => {
             handleFilterChange('');
+
             // If we had a value before, set the filter back to its text so that
             // Downshift displays it correctly
-            setFilterValue(input.value ? getChoiceText(selectedItem) : '');
+            setFilterValue(
+                input.value
+                    ? inputText
+                        ? inputText(getChoiceText(selectedItem).props.record)
+                        : getChoiceText(selectedItem)
+                    : ''
+            );
             input.onBlur(event);
         },
-        [getChoiceText, handleFilterChange, input, selectedItem]
+        [getChoiceText, handleFilterChange, input, inputText, selectedItem]
     );
 
     const handleFocus = useCallback(
@@ -318,6 +349,8 @@ const AutocompleteInput: FunctionComponent<
                     onChange,
                     onFocus,
                     ref,
+                    size,
+                    color,
                     ...inputProps
                 } = getInputProps({
                     onBlur: handleBlur,
@@ -362,19 +395,19 @@ const AutocompleteInput: FunctionComponent<
                                 htmlFor: id,
                             })}
                             helperText={
-                                (touched && error) || helperText ? (
-                                    <InputHelperText
-                                        touched={touched}
-                                        error={error}
-                                        helperText={helperText}
-                                    />
-                                ) : null
+                                <InputHelperText
+                                    touched={touched}
+                                    error={error}
+                                    helperText={helperText}
+                                />
                             }
                             variant={variant}
                             margin={margin}
                             fullWidth={fullWidth}
                             value={filterValue}
                             className={className}
+                            size={size as any}
+                            color={color as any}
                             {...inputProps}
                             {...options}
                         />

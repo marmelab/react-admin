@@ -1,6 +1,6 @@
-import React from 'react';
+import * as React from 'react';
 import expect from 'expect';
-import { FileField } from './FileField';
+import FileField from './FileField';
 import { render, cleanup } from '@testing-library/react';
 
 const defaultProps = {
@@ -15,6 +15,16 @@ describe('<FileField />', () => {
         const { container } = render(<FileField {...defaultProps} />);
         expect(container.firstChild.textContent).toEqual('');
     });
+
+    it.each([null, undefined])(
+        'should render the emptyText when value is %s',
+        url => {
+            const { queryByText } = render(
+                <FileField record={{ url }} emptyText="NA" {...defaultProps} />
+            );
+            expect(queryByText('NA')).not.toBeNull();
+        }
+    );
 
     it('should render a link with correct attributes based on `source` and `title`', () => {
         const { getByTitle } = render(

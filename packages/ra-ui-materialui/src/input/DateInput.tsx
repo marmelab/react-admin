@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import * as React from 'react';
+import { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import TextField, { TextFieldProps } from '@material-ui/core/TextField';
 import { useInput, FieldTitle, InputProps } from 'ra-core';
@@ -42,7 +43,7 @@ const getStringFromDate = (value: string | Date) => {
     return convertDateToString(new Date(value));
 };
 
-export const DateInput: FunctionComponent<
+const DateInput: FunctionComponent<
     InputProps<TextFieldProps> & Omit<TextFieldProps, 'helperText' | 'label'>
 > = ({
     format = getStringFromDate,
@@ -86,13 +87,11 @@ export const DateInput: FunctionComponent<
             type="date"
             error={!!(touched && error)}
             helperText={
-                (touched && error) || helperText ? (
-                    <InputHelperText
-                        touched={touched}
-                        error={error}
-                        helperText={helperText}
-                    />
-                ) : null
+                <InputHelperText
+                    touched={touched}
+                    error={error}
+                    helperText={helperText}
+                />
             }
             label={
                 <FieldTitle

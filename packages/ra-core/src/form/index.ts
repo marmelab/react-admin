@@ -1,5 +1,6 @@
 import addField from './addField';
 import FormDataConsumer from './FormDataConsumer';
+import FormContext from './FormContext';
 import FormField from './FormField';
 import FormWithRedirect from './FormWithRedirect';
 import useInput, { InputProps } from './useInput';
@@ -12,6 +13,7 @@ import useChoices, {
     OptionText,
 } from './useChoices';
 import useSuggestions from './useSuggestions';
+import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
 
 export {
     addField,
@@ -28,6 +30,8 @@ export {
     useInitializeFormWithRecord,
     useSuggestions,
     ValidationError,
+    FormContext,
+    useWarnWhenUnsavedChanges,
 };
 export { isRequired } from './FormField';
 export * from './validate';

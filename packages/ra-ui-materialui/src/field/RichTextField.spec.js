@@ -1,7 +1,6 @@
-import React from 'react';
+import * as React from 'react';
 import assert from 'assert';
-import { render, shallow } from 'enzyme';
-import { html } from 'cheerio';
+import { render, cleanup } from '@testing-library/react';
 import RichTextField, { removeTags } from './RichTextField';
 
 describe('stripTags', () => {
@@ -50,57 +49,82 @@ describe('stripTags', () => {
 });
 
 describe('<RichTextField />', () => {
+    afterEach(cleanup);
+
     it('should render as HTML', () => {
         const record = { body: '<h1>Hello world!</h1>' };
-        const wrapper = render(<RichTextField record={record} source="body" />);
+        const { container } = render(
+            <RichTextField record={record} source="body" />
+        );
         assert.equal(
-            html(wrapper),
-            '<span class="MuiTypography-root MuiTypography-body2"><span><h1>Hello world!</h1></span></span>'
+            container.firstChild.innerHTML,
+            '<span><h1>Hello world!</h1></span>'
         );
     });
 
     it('should handle deep fields', () => {
         const record = { foo: { body: '<h1>Hello world!</h1>' } };
-        const wrapper = render(
+        const { container } = render(
             <RichTextField record={record} source="foo.body" />
         );
         assert.equal(
-            html(wrapper),
-            '<span class="MuiTypography-root MuiTypography-body2"><span><h1>Hello world!</h1></span></span>'
+            container.firstChild.innerHTML,
+            '<span><h1>Hello world!</h1></span>'
         );
     });
 
     it('should strip HTML tags if stripTags is set to true', () => {
         const record = { body: '<h1>Hello world!</h1>' };
-        const wrapper = render(
+        const { container } = render(
             <RichTextField stripTags={true} record={record} source="body" />
         );
-        assert.equal(
-            html(wrapper),
-            '<span class="MuiTypography-root MuiTypography-body2">Hello world!</span>'
-        );
+        assert.equal(container.firstChild.innerHTML, 'Hello world!');
     });
 
     it('should not strip HTML tags if stripTags is set to false', () => {
         const record = { body: '<h1>Hello world!</h1>' };
-        const wrapper = render(
+        const { container } = render(
             <RichTextField stripTags={false} record={record} source="body" />
         );
         assert.equal(
-            html(wrapper),
-            '<span class="MuiTypography-root MuiTypography-body2"><span><h1>Hello world!</h1></span></span>'
+            container.firstChild.innerHTML,
+            '<span><h1>Hello world!</h1></span>'
         );
     });
 
-    it('should use custom className', () =>
-        assert.deepEqual(
-            shallow(
+    it('should use custom className', () => {
+        const { container } = render(
+            <RichTextField
+                record={{ foo: true }}
+                source="body"
+                className="foo"
+            />
+        );
+        assert.equal(container.firstChild.classList.contains('foo'), true);
+    });
+
+    it.each([null, undefined])(
+        'should render the emptyText when value is %s and stripTags is set to false',
+        body => {
+            const { queryByText } = render(
+                <RichTextField record={{ body }} emptyText="NA" source="body" />
+            );
+            assert.notEqual(queryByText('NA'), null);
+        }
+    );
+
+    it.each([null, undefined])(
+        'should render the emptyText when value is %s and stripTags is set to true',
+        body => {
+            const { queryByText } = render(
                 <RichTextField
-                    record={{ foo: true }}
+                    record={{ body }}
+                    emptyText="NA"
                     source="body"
-                    className="foo"
+                    stripTags
                 />
-            ).prop('className'),
-            'foo'
-        ));
+            );
+            assert.notEqual(queryByText('NA'), null);
+        }
+    );
 });

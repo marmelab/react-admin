@@ -1,4 +1,5 @@
-import React, { useState, useCallback } from 'react';
+import * as React from 'react';
+import { useState, useCallback } from 'react';
 import { cleanup, fireEvent } from '@testing-library/react';
 import omit from 'lodash/omit';
 import expect from 'expect';

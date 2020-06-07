@@ -5,7 +5,7 @@ import { Record } from '../../types';
 
 export type LinkToFunctionType = (record: Record, reference: string) => string;
 
-type LinkToType = string | boolean | LinkToFunctionType;
+export type LinkToType = string | boolean | LinkToFunctionType;
 
 interface Option {
     basePath: string;
@@ -16,15 +16,6 @@ interface Option {
     link?: LinkToType;
     linkType?: LinkToType; // deprecated, use link instead
 }
-
-/**
- * @typedef ReferenceProps
- * @type {Object}
- * @property {boolean} loading: boolean indicating if the reference is loading
- * @property {boolean} loaded: boolean indicating if the reference has loaded
- * @property {Object} referenceRecord: the referenced record.
- * @property {string | false} resourceLinkPath link to the page of the related record (depends on link) (false is no link)
- */
 
 /**
  * Get the link toward the referenced resource
@@ -51,7 +42,7 @@ interface Option {
  * @param {string} option.resource The current resource name
  * @param {string} option.source The key of the linked resource identifier
  *
- * @returns {ReferenceProps} The reference props
+ * @returns {string | false} The reference props
  */
 const getResourceLinkPath = ({
     basePath,

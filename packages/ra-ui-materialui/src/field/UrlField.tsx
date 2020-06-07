@@ -1,30 +1,42 @@
-import React, { FunctionComponent, HtmlHTMLAttributes } from 'react';
+import * as React from 'react';
+import { FunctionComponent, HtmlHTMLAttributes, memo } from 'react';
 import get from 'lodash/get';
-import pure from 'recompose/pure';
 import sanitizeRestProps from './sanitizeRestProps';
+import { Typography, Link } from '@material-ui/core';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 const UrlField: FunctionComponent<
     FieldProps & InjectedFieldProps & HtmlHTMLAttributes<HTMLAnchorElement>
-> = ({ className, source, record = {}, ...rest }) => (
-    <a
-        className={className}
-        href={get(record, source)}
-        {...sanitizeRestProps(rest)}
-    >
-        {get(record, source)}
-    </a>
-);
+> = memo<
+    FieldProps & InjectedFieldProps & HtmlHTMLAttributes<HTMLAnchorElement>
+>(({ className, emptyText, source, record = {}, ...rest }) => {
+    const value = get(record, source);
 
-const EnhancedUrlField = pure<
-    FieldProps & HtmlHTMLAttributes<HTMLAnchorElement>
->(UrlField);
+    if (value == null && emptyText) {
+        return (
+            <Typography
+                component="span"
+                variant="body2"
+                className={className}
+                {...sanitizeRestProps(rest)}
+            >
+                {emptyText}
+            </Typography>
+        );
+    }
 
-EnhancedUrlField.defaultProps = {
+    return (
+        <Link className={className} href={value} {...sanitizeRestProps(rest)}>
+            {value}
+        </Link>
+    );
+});
+
+UrlField.defaultProps = {
     addLabel: true,
 };
 
-EnhancedUrlField.propTypes = fieldPropTypes;
-EnhancedUrlField.displayName = 'EnhancedUrlField';
+UrlField.propTypes = fieldPropTypes;
+UrlField.displayName = 'UrlField';
 
-export default EnhancedUrlField;
+export default UrlField;

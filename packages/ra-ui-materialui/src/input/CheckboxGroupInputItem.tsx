@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
@@ -13,17 +13,20 @@ const useStyles = makeStyles(
     { name: 'RaCheckboxGroupInputItem' }
 );
 
-const CheckboxGroupInputItem = ({
-    id,
-    choice,
-    onChange,
-    optionText,
-    optionValue,
-    translateChoice,
-    value,
-    ...rest
-}) => {
-    const classes = useStyles({});
+const CheckboxGroupInputItem = props => {
+    const {
+        classes: classesOverride,
+        id,
+        choice,
+        onChange,
+        optionText,
+        optionValue,
+        options,
+        translateChoice,
+        value,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
     const { getChoiceText, getChoiceValue } = useChoices({
         optionText,
         optionValue,
@@ -49,6 +52,7 @@ const CheckboxGroupInputItem = ({
                             : false
                     }
                     value={String(getChoiceValue(choice))}
+                    {...options}
                     {...rest}
                 />
             }

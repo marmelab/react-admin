@@ -1,4 +1,5 @@
-import React, { Children, isValidElement } from 'react';
+import * as React from 'react';
+import { Children, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Route, useRouteMatch, useLocation } from 'react-router-dom';
@@ -17,7 +18,7 @@ import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
  *
  * @example
  *
- * import React from 'react';
+ * import * as React from "react";
  * import {
  *     Edit,
  *     TabbedForm,
@@ -64,10 +65,10 @@ import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
  *     </Edit>
  * );
  *
- * @typedef {object} Props the props you can use (other props are injected by Create or Edit)
+ * @typedef {Object} Props the props you can use (other props are injected by Create or Edit)
  * @prop {ReactElement[]} FormTab elements
- * @prop {object} initialValues
- * @prop {function} validate
+ * @prop {Object} initialValues
+ * @prop {Function} validate
  * @prop {boolean} submitOnEnter
  * @prop {string} redirect
  * @prop {ReactElement} toolbar The element displayed at the bottom of the form, contzining the SaveButton
@@ -112,33 +113,34 @@ const useStyles = makeStyles(
     { name: 'RaTabbedForm' }
 );
 
-export const TabbedFormView = ({
-    basePath,
-    children,
-    className,
-    classes: classesOverride,
-    form,
-    handleSubmit,
-    handleSubmitWithRedirect,
-    invalid,
-    pristine,
-    record,
-    redirect: defaultRedirect,
-    resource,
-    saving,
-    setRedirect,
-    submitOnEnter,
-    tabs,
-    toolbar,
-    translate,
-    undoable,
-    value,
-    variant,
-    margin,
-    ...rest
-}) => {
+export const TabbedFormView = props => {
+    const {
+        basePath,
+        children,
+        className,
+        classes: classesOverride,
+        form,
+        handleSubmit,
+        handleSubmitWithRedirect,
+        invalid,
+        pristine,
+        record,
+        redirect: defaultRedirect,
+        resource,
+        saving,
+        setRedirect,
+        submitOnEnter,
+        tabs,
+        toolbar,
+        translate,
+        undoable,
+        value,
+        variant,
+        margin,
+        ...rest
+    } = props;
     const tabsWithErrors = findTabsWithErrors(children, form.getState().errors);
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useStyles(props);
     const match = useRouteMatch();
     const location = useLocation();
 
@@ -275,6 +277,8 @@ const sanitizeRestProps = ({
     initialize,
     initialized,
     initialValues,
+    modifiedSinceLastSubmit,
+    modifiedsincelastsubmit,
     pristine,
     pure,
     redirect,
@@ -297,7 +301,7 @@ const sanitizeRestProps = ({
     valid,
     validate,
     validating,
-    _reduxForm,
+    __versions,
     ...props
 }) => props;
 

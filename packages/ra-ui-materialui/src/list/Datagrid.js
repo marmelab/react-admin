@@ -26,7 +26,12 @@ const useStyles = makeStyles(
         thead: {},
         tbody: {},
         headerRow: {},
-        headerCell: {},
+        headerCell: {
+            position: 'sticky',
+            top: 0,
+            zIndex: 2,
+            backgroundColor: theme.palette.background.paper,
+        },
         checkbox: {},
         row: {},
         clickableRow: {
@@ -88,13 +93,14 @@ const useStyles = makeStyles(
  *     </Datagrid>
  * </ReferenceManyField>
  */
-function Datagrid({ classes: classesOverride, ...props }) {
-    const classes = useStyles({ classes: classesOverride });
+const Datagrid = props => {
+    const classes = useStyles(props);
     const {
         basePath,
         optimized = false,
         body = optimized ? <PureDatagridBody /> : <DatagridBody />,
         children,
+        classes: classesOverride,
         className,
         currentSort,
         data,
@@ -121,7 +127,10 @@ function Datagrid({ classes: classesOverride, ...props }) {
     const updateSort = useCallback(
         event => {
             event.stopPropagation();
-            setSort(event.currentTarget.dataset.sort);
+            setSort(
+                event.currentTarget.dataset.sort,
+                event.currentTarget.dataset.order
+            );
         },
         [setSort]
     );
@@ -193,11 +202,17 @@ function Datagrid({ classes: classesOverride, ...props }) {
                     {expand && (
                         <TableCell
                             padding="none"
-                            className={classes.expandHeader}
+                            className={classnames(
+                                classes.headerCell,
+                                classes.expandHeader
+                            )}
                         />
                     )}
                     {hasBulkActions && (
-                        <TableCell padding="checkbox">
+                        <TableCell
+                            padding="checkbox"
+                            className={classes.headerCell}
+                        >
                             <Checkbox
                                 className="select-all"
                                 color="primary"
@@ -251,7 +266,7 @@ function Datagrid({ classes: classesOverride, ...props }) {
             )}
         </Table>
     );
-}
+};
 
 Datagrid.propTypes = {
     basePath: PropTypes.string,

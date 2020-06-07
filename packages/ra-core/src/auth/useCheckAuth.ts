@@ -34,7 +34,7 @@ import useNotify from '../sideEffect/useNotify';
  *     const [authenticated, setAuthenticated] = useState(true); // optimistic auth
  *     useEffect(() => {
  *         checkAuth({}, false)
- *              .then() => setAuthenticated(true))
+ *              .then(() => setAuthenticated(true))
  *              .catch(() => setAuthenticated(false));
  *     }, []);
  *     return authenticated ? <Bar /> : <BarNotAuthenticated />;

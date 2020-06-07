@@ -1,4 +1,5 @@
-import React, { useState, useCallback, useRef } from 'react';
+import * as React from 'react';
+import { useState, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Menu from '@material-ui/core/Menu';
 import { makeStyles } from '@material-ui/core/styles';
@@ -16,19 +17,20 @@ const useStyles = makeStyles(
     { name: 'RaFilterButton' }
 );
 
-const FilterButton = ({
-    filters,
-    displayedFilters,
-    filterValues,
-    showFilter,
-    classes: classesOverride,
-    className,
-    resource,
-    ...rest
-}) => {
+const FilterButton = props => {
+    const {
+        filters,
+        displayedFilters = {},
+        filterValues,
+        showFilter,
+        classes: classesOverride,
+        className,
+        resource,
+        ...rest
+    } = props;
     const [open, setOpen] = useState(false);
     const anchorEl = useRef();
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useStyles(props);
 
     const hiddenFilters = filters.filter(
         filterElement =>
@@ -91,7 +93,7 @@ const FilterButton = ({
 FilterButton.propTypes = {
     resource: PropTypes.string.isRequired,
     filters: PropTypes.arrayOf(PropTypes.node).isRequired,
-    displayedFilters: PropTypes.object.isRequired,
+    displayedFilters: PropTypes.object,
     filterValues: PropTypes.object.isRequired,
     showFilter: PropTypes.func.isRequired,
     classes: PropTypes.object,

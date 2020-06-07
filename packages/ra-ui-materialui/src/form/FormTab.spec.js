@@ -1,5 +1,5 @@
 import { cleanup } from '@testing-library/react';
-import React from 'react';
+import * as React from 'react';
 import expect from 'expect';
 import { renderWithRedux } from 'ra-core';
 
@@ -37,6 +37,50 @@ describe('<FormTab label="foo" />', () => {
         expect(inputElement.parentElement.parentElement.classList).toContain(
             'MuiFormControl-marginDense'
         );
+    });
+
+    it('should render a TabbedForm with FormTabs having custom props without warnings', () => {
+        const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+        const record = { name: 'foo' };
+        const { container } = renderWithRedux(
+            <TabbedForm>
+                <FormTab
+                    label="First"
+                    basePath="/posts"
+                    resource="posts"
+                    record={record}
+                    margin="none"
+                    variant="standard"
+                >
+                    <TextInput source="name" />
+                </FormTab>
+                <FormTab
+                    label="Second"
+                    basePath="/posts"
+                    resource="posts"
+                    record={record}
+                    margin="dense"
+                    variant="filled"
+                >
+                    <TextInput source="name" />
+                </FormTab>
+                <FormTab
+                    label="Third"
+                    basePath="/posts"
+                    resource="posts"
+                    record={record}
+                    margin="normal"
+                    variant="outlined"
+                >
+                    <TextInput source="name" />
+                </FormTab>
+            </TabbedForm>
+        );
+        expect(spy).not.toHaveBeenCalled();
+        expect(container).not.toBeNull();
+
+        spy.mockRestore();
     });
 
     it('should pass variant and margin to child inputs', () => {

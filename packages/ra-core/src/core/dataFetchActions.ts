@@ -8,6 +8,17 @@ export const UPDATE_MANY = 'UPDATE_MANY';
 export const DELETE = 'DELETE';
 export const DELETE_MANY = 'DELETE_MANY';
 
+export type FetchAction =
+    | typeof GET_LIST
+    | typeof GET_ONE
+    | typeof GET_MANY
+    | typeof GET_MANY_REFERENCE
+    | typeof CREATE
+    | typeof UPDATE
+    | typeof UPDATE_MANY
+    | typeof DELETE
+    | typeof DELETE_MANY;
+
 export const fetchActionsWithRecordResponse = [GET_ONE, CREATE, UPDATE];
 export const fetchActionsWithArrayOfIdentifiedRecordsResponse = [
     GET_LIST,
@@ -21,7 +32,7 @@ export const fetchActionsWithArrayOfRecordsResponse = [
 ];
 export const fetchActionsWithTotalResponse = [GET_LIST, GET_MANY_REFERENCE];
 
-export const sanitizeFetchType = (fetchType: string) => {
+export const sanitizeFetchType = (fetchType: FetchAction | string) => {
     switch (fetchType) {
         case GET_LIST:
             return 'getList';

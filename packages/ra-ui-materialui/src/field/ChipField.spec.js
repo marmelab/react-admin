@@ -1,6 +1,6 @@
-import React from 'react';
+import * as React from 'react';
 import expect from 'expect';
-import { ChipField } from './ChipField';
+import ChipField from './ChipField';
 import { render, cleanup } from '@testing-library/react';
 
 describe('<ChipField />', () => {
@@ -30,4 +30,20 @@ describe('<ChipField />', () => {
         );
         expect(getByText('foo')).not.toBeNull();
     });
+
+    it.each([null, undefined])(
+        'should render the emptyText when value is %s',
+        name => {
+            const { getByText } = render(
+                <ChipField
+                    className="className"
+                    classes={{}}
+                    source="name"
+                    record={{ name }}
+                    emptyText="NA"
+                />
+            );
+            expect(getByText('NA')).not.toBeNull();
+        }
+    );
 });

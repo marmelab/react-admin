@@ -1,12 +1,13 @@
 import { useContext, useMemo } from 'react';
 import { Dispatch } from 'redux';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 
 import DataProviderContext from './DataProviderContext';
 import validateResponseFormat from './validateResponseFormat';
 import undoableEventEmitter from './undoableEventEmitter';
 import getFetchType from './getFetchType';
 import defaultDataProvider from './defaultDataProvider';
+import { canReplyWithCache, getResultFromCache } from './replyWithCache';
 import {
     startOptimisticMode,
     stopOptimisticMode,
@@ -21,6 +22,10 @@ import {
     UseDataProviderOptions,
 } from '../types';
 import useLogoutIfAccessDenied from '../auth/useLogoutIfAccessDenied';
+
+// List of dataProvider calls emitted while in optimistic mode.
+// These calls get replayed once the dataProvider exits optimistic mode
+const optimisticCalls = [];
 
 /**
  * Hook for getting a dataProvider
@@ -40,7 +45,8 @@ import useLogoutIfAccessDenied from '../auth/useLogoutIfAccessDenied';
  *
  * @example Basic usage
  *
- * import React, { useState } from 'react';
+ * import * as React from 'react';
+import { useState } from 'react';
  * import { useDataProvider } from 'react-admin';
  *
  * const PostList = () => {
@@ -116,11 +122,15 @@ const useDataProvider = (): DataProviderProxy => {
     const isOptimistic = useSelector(
         (state: ReduxState) => state.admin.ui.optimistic
     );
+    const store = useStore<ReduxState>();
     const logoutIfAccessDenied = useLogoutIfAccessDenied();
 
     const dataProviderProxy = useMemo(() => {
         return new Proxy(dataProvider, {
             get: (target, name) => {
+                if (typeof name === 'symbol') {
+                    return;
+                }
                 return (
                     resource: string,
                     payload: any,
@@ -155,33 +165,89 @@ const useDataProvider = (): DataProviderProxy => {
                             'You must pass an onSuccess callback calling notify() to use the undoable mode'
                         );
                     }
-                    if (isOptimistic) {
-                        // in optimistic mode, all fetch actions are canceled,
-                        // so the admin uses the store without synchronization
-                        return Promise.resolve();
-                    }
 
                     const params = {
-                        type,
-                        payload,
-                        resource,
                         action,
-                        rest,
-                        onSuccess,
-                        onFailure,
                         dataProvider,
                         dispatch,
                         logoutIfAccessDenied,
+                        onFailure,
+                        onSuccess,
+                        payload,
+                        resource,
+                        rest,
+                        store,
+                        type,
+                        undoable,
                     };
-                    return undoable
-                        ? performUndoableQuery(params)
-                        : performQuery(params);
+                    if (isOptimistic) {
+                        // in optimistic mode, all fetch calls are stacked, to be
+                        // executed once the dataProvider leaves optimistic mode.
+                        // In the meantime, the admin uses data from the store.
+                        optimisticCalls.push(params);
+                        return Promise.resolve();
+                    }
+                    return doQuery(params);
                 };
             },
         });
-    }, [dataProvider, dispatch, isOptimistic, logoutIfAccessDenied]);
+    }, [dataProvider, dispatch, isOptimistic, logoutIfAccessDenied, store]);
 
     return dataProviderProxy;
+};
+
+const doQuery = ({
+    type,
+    payload,
+    resource,
+    action,
+    rest,
+    onSuccess,
+    onFailure,
+    dataProvider,
+    dispatch,
+    store,
+    undoable,
+    logoutIfAccessDenied,
+}) => {
+    const resourceState = store.getState().admin.resources[resource];
+    if (canReplyWithCache(type, payload, resourceState)) {
+        return answerWithCache({
+            type,
+            payload,
+            resource,
+            action,
+            rest,
+            onSuccess,
+            resourceState,
+            dispatch,
+        });
+    }
+    return undoable
+        ? performUndoableQuery({
+              type,
+              payload,
+              resource,
+              action,
+              rest,
+              onSuccess,
+              onFailure,
+              dataProvider,
+              dispatch,
+              logoutIfAccessDenied,
+          })
+        : performQuery({
+              type,
+              payload,
+              resource,
+              action,
+              rest,
+              onSuccess,
+              onFailure,
+              dataProvider,
+              dispatch,
+              logoutIfAccessDenied,
+          });
 };
 
 /**
@@ -243,60 +309,69 @@ const performUndoableQuery = ({
             meta: { resource, ...rest },
         });
         dispatch({ type: FETCH_START });
-        dataProvider[type](resource, payload)
-            .then(response => {
-                if (process.env.NODE_ENV !== 'production') {
-                    validateResponseFormat(response, type);
-                }
-                dispatch({
-                    type: `${action}_SUCCESS`,
-                    payload: response,
-                    requestPayload: payload,
-                    meta: {
-                        ...rest,
-                        resource,
-                        fetchResponse: getFetchType(type),
-                        fetchStatus: FETCH_END,
-                    },
-                });
-                dispatch({ type: FETCH_END });
-                if (window) {
-                    window.removeEventListener(
-                        'beforeunload',
-                        warnBeforeClosingWindow
-                    );
-                }
-                dispatch(refreshView());
-            })
-            .catch(error => {
-                if (window) {
-                    window.removeEventListener(
-                        'beforeunload',
-                        warnBeforeClosingWindow
-                    );
-                }
-                if (process.env.NODE_ENV !== 'production') {
-                    console.error(error);
-                }
-                return logoutIfAccessDenied(error).then(loggedOut => {
-                    if (loggedOut) return;
+        try {
+            dataProvider[type](resource, payload)
+                .then(response => {
+                    if (process.env.NODE_ENV !== 'production') {
+                        validateResponseFormat(response, type);
+                    }
                     dispatch({
-                        type: `${action}_FAILURE`,
-                        error: error.message ? error.message : error,
-                        payload: error.body ? error.body : null,
+                        type: `${action}_SUCCESS`,
+                        payload: response,
                         requestPayload: payload,
                         meta: {
                             ...rest,
                             resource,
                             fetchResponse: getFetchType(type),
-                            fetchStatus: FETCH_ERROR,
+                            fetchStatus: FETCH_END,
                         },
                     });
-                    dispatch({ type: FETCH_ERROR, error });
-                    onFailure && onFailure(error);
-                    throw error;
+                    dispatch({ type: FETCH_END });
+                    if (window) {
+                        window.removeEventListener(
+                            'beforeunload',
+                            warnBeforeClosingWindow
+                        );
+                    }
+                    replayOptimisticCalls();
+                })
+                .catch(error => {
+                    if (window) {
+                        window.removeEventListener(
+                            'beforeunload',
+                            warnBeforeClosingWindow
+                        );
+                    }
+                    if (process.env.NODE_ENV !== 'production') {
+                        console.error(error);
+                    }
+                    return logoutIfAccessDenied(error).then(loggedOut => {
+                        if (loggedOut) return;
+                        dispatch({
+                            type: `${action}_FAILURE`,
+                            error: error.message ? error.message : error,
+                            payload: error.body ? error.body : null,
+                            requestPayload: payload,
+                            meta: {
+                                ...rest,
+                                resource,
+                                fetchResponse: getFetchType(type),
+                                fetchStatus: FETCH_ERROR,
+                            },
+                        });
+                        dispatch({ type: FETCH_ERROR, error });
+                        onFailure && onFailure(error);
+                        throw error;
+                    });
                 });
-            });
+        } catch (e) {
+            if (process.env.NODE_ENV !== 'production') {
+                console.error(e);
+            }
+            throw new Error(
+                'The dataProvider threw an error. It should return a rejected Promise instead.'
+            );
+        }
     });
     return Promise.resolve({});
 };
@@ -306,6 +381,16 @@ const warnBeforeClosingWindow = event => {
     event.preventDefault(); // standard
     event.returnValue = ''; // Chrome
     return 'Your latest modifications are not yet sent to the server. Are you sure?'; // Old IE
+};
+
+// Replay calls recorded while in optimistic mode
+const replayOptimisticCalls = () => {
+    Promise.all(
+        optimisticCalls.map(params =>
+            Promise.resolve(doQuery.call(null, params))
+        )
+    );
+    optimisticCalls.splice(0, optimisticCalls.length);
 };
 
 /**
@@ -337,50 +422,90 @@ const performQuery = ({
         meta: { resource, ...rest },
     });
     dispatch({ type: FETCH_START });
-
-    return dataProvider[type](resource, payload)
-        .then(response => {
-            if (process.env.NODE_ENV !== 'production') {
-                validateResponseFormat(response, type);
-            }
-            dispatch({
-                type: `${action}_SUCCESS`,
-                payload: response,
-                requestPayload: payload,
-                meta: {
-                    ...rest,
-                    resource,
-                    fetchResponse: getFetchType(type),
-                    fetchStatus: FETCH_END,
-                },
-            });
-            dispatch({ type: FETCH_END });
-            onSuccess && onSuccess(response);
-            return response;
-        })
-        .catch(error => {
-            if (process.env.NODE_ENV !== 'production') {
-                console.error(error);
-            }
-            return logoutIfAccessDenied(error).then(loggedOut => {
-                if (loggedOut) return;
+    try {
+        return dataProvider[type](resource, payload)
+            .then(response => {
+                if (process.env.NODE_ENV !== 'production') {
+                    validateResponseFormat(response, type);
+                }
                 dispatch({
-                    type: `${action}_FAILURE`,
-                    error: error.message ? error.message : error,
-                    payload: error.body ? error.body : null,
+                    type: `${action}_SUCCESS`,
+                    payload: response,
                     requestPayload: payload,
                     meta: {
                         ...rest,
                         resource,
                         fetchResponse: getFetchType(type),
-                        fetchStatus: FETCH_ERROR,
+                        fetchStatus: FETCH_END,
                     },
                 });
-                dispatch({ type: FETCH_ERROR, error });
-                onFailure && onFailure(error);
-                throw error;
+                dispatch({ type: FETCH_END });
+                onSuccess && onSuccess(response);
+                return response;
+            })
+            .catch(error => {
+                if (process.env.NODE_ENV !== 'production') {
+                    console.error(error);
+                }
+                return logoutIfAccessDenied(error).then(loggedOut => {
+                    if (loggedOut) return;
+                    dispatch({
+                        type: `${action}_FAILURE`,
+                        error: error.message ? error.message : error,
+                        payload: error.body ? error.body : null,
+                        requestPayload: payload,
+                        meta: {
+                            ...rest,
+                            resource,
+                            fetchResponse: getFetchType(type),
+                            fetchStatus: FETCH_ERROR,
+                        },
+                    });
+                    dispatch({ type: FETCH_ERROR, error });
+                    onFailure && onFailure(error);
+                    throw error;
+                });
             });
-        });
+    } catch (e) {
+        if (process.env.NODE_ENV !== 'production') {
+            console.error(e);
+        }
+        throw new Error(
+            'The dataProvider threw an error. It should return a rejected Promise instead.'
+        );
+    }
+};
+
+const answerWithCache = ({
+    type,
+    payload,
+    resource,
+    action,
+    rest,
+    onSuccess,
+    resourceState,
+    dispatch,
+}) => {
+    dispatch({
+        type: action,
+        payload,
+        meta: { resource, ...rest },
+    });
+    const response = getResultFromCache(type, payload, resourceState);
+    dispatch({
+        type: `${action}_SUCCESS`,
+        payload: response,
+        requestPayload: payload,
+        meta: {
+            ...rest,
+            resource,
+            fetchResponse: getFetchType(type),
+            fetchStatus: FETCH_END,
+            fromCache: true,
+        },
+    });
+    onSuccess && onSuccess(response);
+    return Promise.resolve(response);
 };
 
 interface QueryFunctionParams {

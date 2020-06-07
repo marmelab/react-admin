@@ -15,7 +15,7 @@ dataProvider
     });
 ```
 
-It's the Data Provider's job to turns these method calls into HTTP requests, and transform the HTTP responses to the data format expected by react-admin. In technical terms, a Data Provider is an *adapter* for an API. 
+It's the Data Provider's job to turn these method calls into HTTP requests, and transform the HTTP responses to the data format expected by react-admin. In technical terms, a Data Provider is an *adapter* for an API. 
 
 And to inject a Data Provider in a react-admin application, pass it as the `dataProvider` prop of the `<Admin>` component, as follows:
 
@@ -68,23 +68,25 @@ Developers from the react-admin community have open-sourced Data Providers for m
 * **[Django Rest Framework](https://www.django-rest-framework.org/)**: [synaptic-cl/ra-data-drf](https://github.com/synaptic-cl/ra-data-drf)
 * **[Express & Sequelize](https://github.com/lalalilo/express-sequelize-crud)**: [express-sequelize-crud](https://github.com/lalalilo/express-sequelize-crud)
 * **[Feathersjs](http://www.feathersjs.com/)**: [josx/ra-data-feathers](https://github.com/josx/ra-data-feathers)
-* **[Firebase](https://firebase.google.com/docs/database)**: [aymendhaya/ra-data-firebase-client](https://github.com/aymendhaya/ra-data-firebase-client).
-* **[Firestore](https://firebase.google.com/docs/firestore)**: [rafalzawadzki/ra-data-firestore-client](https://github.com/rafalzawadzki/ra-data-firestore-client).
+* **[Firebase Firestore](https://firebase.google.com/docs/firestore)**: [benwinding/react-admin-firebase](https://github.com/benwinding/react-admin-firebase).
+* **[Firebase Realtime Database](https://firebase.google.com/docs/database)**: [aymendhaya/ra-data-firebase-client](https://github.com/aymendhaya/ra-data-firebase-client).
 * **[GraphCool](http://www.graph.cool/)**: [marmelab/ra-data-graphcool](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-graphcool) (uses [Apollo](http://www.apollodata.com/))
 * **[GraphQL](http://graphql.org/)**: [marmelab/ra-data-graphql](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-graphql) (uses [Apollo](http://www.apollodata.com/))
 * **[HAL](http://stateless.co/hal_specification.html)**: [b-social/ra-data-hal](https://github.com/b-social/ra-data-hal)
 * **[Hasura](https://github.com/hasura/graphql-engine)**: [hasura/ra-data-hasura](https://github.com/hasura/graphql-engine/tree/master/community/tools/ra-data-hasura)
-* **[Hasura GraphQL](https://github.com/hasura/graphql-engine)**: [Steams/ra-data-hasura-graphql](https://github.com/Steams/ra-data-hasura-graphql) (based on [ra-data-graphql](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-graphql))
 * **[Hydra](http://www.hydra-cg.com/) / [JSON-LD](https://json-ld.org/)**: [api-platform/admin/hydra](https://github.com/api-platform/admin/blob/master/src/hydra/dataProvider.js)
 * **[IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)**: [tykoth/ra-data-dexie](https://github.com/tykoth/ra-data-dexie)
 * **[JSON API](http://jsonapi.org/)**: [henvo/ra-jsonapi-client](https://github.com/henvo/ra-jsonapi-client)
 * **[JSON HAL](https://tools.ietf.org/html/draft-kelly-json-hal-08)**: [ra-data-json-hal](https://www.npmjs.com/package/ra-data-json-hal)
 * **[JSON server](https://github.com/typicode/json-server)**: [marmelab/ra-data-json-server](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-json-server).
-* **[Loopback](https://loopback.io/)**: [darthwesker/react-admin-loopback](https://github.com/darthwesker/react-admin-loopback)
+* **[Loopback3](https://loopback.io/lb3)**: [darthwesker/react-admin-loopback](https://github.com/darthwesker/react-admin-loopback)
+* **[Loopback4](https://loopback.io/)**: [elmaistrenko/react-admin-lb4](https://github.com/elmaistrenko/react-admin-lb4)
 * **[Moleculer Microservices](https://github.com/RancaguaInnova/moleculer-data-provider)**: [RancaguaInnova/moleculer-data-provider](https://github.com/RancaguaInnova/moleculer-data-provider)
 * **[NestJS CRUD](https://github.com/nestjsx/crud)**: [FusionWorks/react-admin-nestjsx-crud-dataprovider](https://github.com/FusionWorks/react-admin-nestjsx-crud-dataprovider)
 * **[Parse](https://parseplatform.org/)**: [almahdi/ra-data-parse](https://github.com/almahdi/ra-data-parse)
+* **[PostgREST](https://postgrest.org/)**: [raphiniert-com/ra-data-postgrest](https://github.com/raphiniert-com/ra-data-postgrest)
 * **[Prisma](https://github.com/weakky/ra-data-prisma)**: [weakky/ra-data-prisma](https://github.com/weakky/ra-data-prisma)
+* **[Prisma Version 2](https://www.prisma.io/)**: [panter/ra-data-prisma](https://github.com/panter/ra-data-prisma)
 * **[OpenCRUD](https://www.opencrud.org/)**: [weakky/ra-data-opencrud](https://github.com/Weakky/ra-data-opencrud)
 * **[REST-HAPI](https://github.com/JKHeadley/rest-hapi)**: [ra-data-rest-hapi](https://github.com/mkg20001/ra-data-rest-hapi)
 * **[Sails.js](https://sailsjs.com/)**: [mpampin/ra-data-json-sails](https://github.com/mpampin/ra-data-json-sails)
@@ -98,7 +100,6 @@ If you've written a Data Provider for another backend, and open-sourced it, plea
 * **[DynamoDb](https://github.com/abiglobalhealth/aor-dynamodb-client)**: [abiglobalhealth/aor-dynamodb-client](https://github.com/abiglobalhealth/aor-dynamodb-client)
 * **[Epilogue](https://github.com/dchester/epilogue)**: [dunghuynh/aor-epilogue-client](https://github.com/dunghuynh/aor-epilogue-client)
 * **[Parse Server](https://github.com/ParsePlatform/parse-server)**: [leperone/aor-parseserver-client](https://github.com/leperone/aor-parseserver-client)
-* **[PostgREST](http://postgrest.com/en/v0.4/)**: [tomberek/aor-postgrest-client](https://github.com/tomberek/aor-postgrest-client)
 * **[Xmysql](https://github.com/o1lab/xmysql)**: [soaserele/aor-xmysql](https://github.com/soaserele/aor-xmysql)
 
 ## Usage
@@ -115,7 +116,7 @@ Then, initialize the provider with the REST backend URL, and pass the result to 
 
 ```jsx
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 import { Admin, Resource } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
 
@@ -132,17 +133,17 @@ export default App;
 
 Here is how this Data Provider maps react-admin calls to API calls:
 
-| Method name        | API call
-|--------------------|----------------------------------------------------------------
-| `getList`          | `GET http://my.api.url/posts?sort=['title','ASC']&range=[0, 24]&filter={title:'bar'}`
-| `getOne`           | `GET http://my.api.url/posts/123`
-| `getMany`          | `GET http://my.api.url/posts?filter={id:[123,456,789]}`
-| `getManyReference` | `GET http://my.api.url/posts?filter={author_id:345}`
-| `create`           | `POST http://my.api.url/posts/123`
-| `update`           | `PUT http://my.api.url/posts/123`
-| `updateMany`       | Multiple calls to `PUT http://my.api.url/posts/123`
-| `delete`           | `DELETE http://my.api.url/posts/123`
-| `deteleMany`       | Multiple calls to `DELETE http://my.api.url/posts/123`
+| Method name        | API call                                                                                |
+| ------------------ | --------------------------------------------------------------------------------------- |
+| `getList`          | `GET http://my.api.url/posts?sort=["title","ASC"]&range=[0, 24]&filter={"title":"bar"}` |
+| `getOne`           | `GET http://my.api.url/posts/123`                                                       |
+| `getMany`          | `GET http://my.api.url/posts?filter={"id":[123,456,789]}`                               |
+| `getManyReference` | `GET http://my.api.url/posts?filter={"author_id":345}`                                  |
+| `create`           | `POST http://my.api.url/posts/123`                                                      |
+| `update`           | `PUT http://my.api.url/posts/123`                                                       |
+| `updateMany`       | Multiple calls to `PUT http://my.api.url/posts/123`                                     |
+| `delete`           | `DELETE http://my.api.url/posts/123`                                                    |
+| `deteleMany`       | Multiple calls to `DELETE http://my.api.url/posts/123`                                  |
 
 **Note**: The simple REST client expects the API to include a `Content-Range` header in the response to `getList` calls. The value must be the total number of resources in the collection. This allows react-admin to know how many pages of resources there are in total, and build the pagination controls.
 
@@ -202,12 +203,14 @@ Now all the requests to the REST API will contain the `Authorization: SRTRDFVESG
 
 ## Extending a Data Provider (Example of File Upload)
 
-As Data Providers are just objects, you can extend them with custom logic for a given method, or for a given resource. 
+As Data Providers are just objects, you can extend them with custom logic for a given method, or a given resource. 
 
 For instance, the following Data Provider extends the `ra-data-simple-rest` provider, and adds image upload support for the `update('posts')` call (react-admin offers an `<ImageInput />` component that allows image upload).
 
 ```js
-import dataProvider from 'ra-data-simple-rest';
+import simpleRestProvider from 'ra-data-simple-rest';
+
+const dataProvider = simpleRestProvider('http://path.to.my.api/');
 
 const myDataProvider = {
     ...dataProvider,
@@ -259,10 +262,10 @@ const myDataProvider = {
 const convertFileToBase64 = file =>
     new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.readAsDataURL(file.rawFile);
-
         reader.onload = () => resolve(reader.result);
         reader.onerror = reject;
+
+        reader.readAsDataURL(file.rawFile);
     });
 
 export default myDataProvider;
@@ -272,11 +275,11 @@ Using this technique, you can also combine two Data Providers for two backends i
 
 ## Writing Your Own Data Provider
 
-APIs are so diverse that quite often, none of the available Data Providers suit you API. In such cases, you'll have to write your own Data Provider. Don't worry, it usually takes only a couple hours. 
+APIs are so diverse that quite often, none of the available Data Providers suit you API. In such cases, you'll have to write your own Data Provider. Don't worry, it usually takes only a couple of hours. 
 
 The methods of a Data Provider receive a request, and return a promise for a response. Both the request and the response format are standardized.
 
-### Request Format
+## Request Format
 
 Data queries require a *method* (e.g. `getOne`), a *resource* (e.g. 'posts') and a set of *parameters*.
 
@@ -284,17 +287,17 @@ Data queries require a *method* (e.g. `getOne`), a *resource* (e.g. 'posts') and
 
 Standard methods are:
 
-Method             | Usage                                           | Parameters format
------------------- | ------------------------------------------------|-------------------------------
-`getList`          | Search for resources                            | `{ pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object} }`
-`getOne`           | Read a single resource, by id                   | `{ id: {mixed} }`
-`getMany`          | Read a list of resource, by ids                 | `{ ids: {mixed[]} }`
-`getManyReference` | Read a list of resources related to another one | `{ target: {string}, id: {mixed}, pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object} }`
-`create`           | Create a single resource                        | `{ data: {Object} }`
-`update`           | Update a single resource                        | `{ id: {mixed}, data: {Object}, previousData: {Object} }`
-`updateMany`       | Update multiple resources                       | `{ ids: {mixed[]}, data: {Object} }`
-`delete`           | Delete a single resource                        | `{ id: {mixed}, previousData: {Object} }`
-`deleteMany`       | Delete multiple resources                       | `{ ids: {mixed[]} }`
+| Method             | Usage                                           | Parameters format                                                                                                                               |
+| ------------------ | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `getList`          | Search for resources                            | `{ pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object} }`                                |
+| `getOne`           | Read a single resource, by id                   | `{ id: {mixed} }`                                                                                                                               |
+| `getMany`          | Read a list of resource, by ids                 | `{ ids: {mixed[]} }`                                                                                                                            |
+| `getManyReference` | Read a list of resources related to another one | `{ target: {string}, id: {mixed}, pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object} }` |
+| `create`           | Create a single resource                        | `{ data: {Object} }`                                                                                                                            |
+| `update`           | Update a single resource                        | `{ id: {mixed}, data: {Object}, previousData: {Object} }`                                                                                       |
+| `updateMany`       | Update multiple resources                       | `{ ids: {mixed[]}, data: {Object} }`                                                                                                            |
+| `delete`           | Delete a single resource                        | `{ id: {mixed}, previousData: {Object} }`                                                                                                       |
+| `deleteMany`       | Delete multiple resources                       | `{ ids: {mixed[]} }`                                                                                                                            |
 
 Here are several examples of how react-admin can call the Data Provider:
 
@@ -330,21 +333,21 @@ dataProvider.deleteMany('posts', { ids: [123, 234] });
 
 **Tip**: If your API supports more request types, you can add more methods to the Data Provider (for instance to support upserts, aggregations, or Remote Procedure Call). React-admin won't call these methods directly, but you can call them in your own component thanks to the `useDataProvider` hook described in the [Querying the API](./Actions.md) documentation.
 
-### Response Format
+## Response Format
 
 Data Providers methods must return a Promise for an object with a `data` property.
 
-Method             | Response format
------------------- | ----------------
-`getList`          | `{ data: {Record[]}, total: {int} }`
-`getOne`           | `{ data: {Record} }`
-`getMany`          | `{ data: {Record[]} }`
-`getManyReference` | `{ data: {Record[]}, total: {int} }`
-`create`           | `{ data: {Record} }`
-`update`           | `{ data: {Record} }`
-`updateMany`       | `{ data: {mixed[]} }` The ids which have been updated
-`delete`           | `{ data: {Record|null} }` The record that has been deleted (optional)
-`deleteMany`       | `{ data: {mixed[]} }` The ids of the deleted records (optional)
+| Method             | Response format                                                 |
+| ------------------ | --------------------------------------------------------------- |
+| `getList`          | `{ data: {Record[]}, total: {int}, validUntil?: {Date} }`       |
+| `getOne`           | `{ data: {Record}, validUntil?: {Date} }`                       |
+| `getMany`          | `{ data: {Record[]}, validUntil?: {Date} }`                     |
+| `getManyReference` | `{ data: {Record[]}, total: {int} }`                            |
+| `create`           | `{ data: {Record} }`                                            |
+| `update`           | `{ data: {Record} }`                                            |
+| `updateMany`       | `{ data: {mixed[]} }` The ids which have been updated           |
+| `delete`           | `{ data: {Record} }` The record that has been deleted           |
+| `deleteMany`       | `{ data: {mixed[]} }` The ids of the deleted records (optional) |
 
 A `{Record}` is an object literal with at least an `id` property, e.g. `{ id: 123, title: "hello, world" }`.
 
@@ -438,17 +441,64 @@ dataProvider.deleteMany('posts', { ids: [123, 234] })
 // {
 //     data: [123, 234]
 // }
-
 ```
 
-### Example Implementation
+**Tip**: The `validUntil` field in the response is optional. It enables the Application cache, a client-side optimization to speed up rendering and reduce network traffic. Check [the Caching documentation](./Caching.md#application-cache) for more details.
+
+## Error Format
+
+When the API backend returns an error, the Data Provider should return a rejected Promise containing an `Error` object. This object should contain a `status` property with the HTTP response code (404, 500, etc.). React-admin inspects this error code, and uses it for [authentication](./Authentication.md) (in case of 401 or 403 errors). Besides, react-admin displays the error `message` on screen in a temporary notification.
+
+If you use `fetchJson`, you don't need to do anything: HTTP errors are automatically decorated as expected by react-admin.
+
+If you use another HTTP client, make sure you return a rejected Promise. You can use the `HttpError` class to throw an error with status in one line:
+
+```js
+import { HttpError } from 'react-admin';
+
+export default {
+    getList: (resource, params) => {
+        return new Promise((resolve, reject) => {
+            myApiClient(url, { ...options, headers: requestHeaders })
+                .then(response =>
+                    response.text().then(text => ({
+                        status: response.status,
+                        statusText: response.statusText,
+                        headers: response.headers,
+                        body: text,
+                    }))
+                )
+                .then(({ status, statusText, headers, body }) => {
+                    let json;
+                    try {
+                        json = JSON.parse(body);
+                    } catch (e) {
+                        // not json, no big deal
+                    }
+                    if (status < 200 || status >= 300) {
+                        return reject(
+                            new HttpError(
+                                (json && json.message) || statusText,
+                                status,
+                                json
+                            )
+                        );
+                    }
+                    return resolve({ status, headers, body, json });
+                });
+        }),
+    ...
+}
+```
+
+## Example Implementation
 
 Let's say that you want to map the react-admin requests to a REST backend exposing the following API:
 
 ```
 # getList
 
-GET http://path.to.my.api/posts?sort=['title','ASC']&range=[0, 4]&filter={author_id:12}
+GET http://path.to.my.api/posts?sort=["title","ASC"]&range=[0, 4]&filter={"author_id":12}
 
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -471,7 +521,7 @@ Content-Type: application/json
 
 # getMany
 
-GET http://path.to.my.api/posts?filter={id:[123,124,125]}
+GET http://path.to.my.api/posts?filter={"id":[123,124,125]}
 
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -483,7 +533,7 @@ Content-Type: application/json
 
 # getManyReference
 
-GET http://path.to.my.api/comments?sort=['created_at','DESC']&range=[0, 24]&filter={post_id:123}
+GET http://path.to.my.api/comments?sort=["created_at","DESC"]&range=[0, 24]&filter={"post_id":123}
 
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -514,7 +564,7 @@ Content-Type: application/json
 
 # updateMany
 
-PUT http://path.to.my.api/posts?filter={id:[123,124,125]}
+PUT http://path.to.my.api/posts?filter={"id":[123,124,125]}
 { "title": "hello, world!" }
 
 HTTP/1.1 200 OK
@@ -531,7 +581,7 @@ Content-Type: application/json
 
 # deleteMany
 
-DELETE http://path.to.my.api/posts?filter={id:[123,124,125]}
+DELETE http://path.to.my.api/posts?filter={"id":[123,124,125]}
 
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -636,10 +686,6 @@ export default {
     },
 };
 ```
-
-### Error Format
-
-When the API backend returns an error, the Data Provider should `throw` an `Error` object. This object should contain a `status` property with the HTTP response code (404, 500, etc.). React-admin inspects this error code, and uses it for [authentication](./Authentication.md) (in case of 401 or 403 errors). Besides, react-admin displays the error `message` on screen in a temporary notification.
 
 ## Using The Data Provider In Components
 

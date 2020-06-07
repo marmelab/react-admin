@@ -3,42 +3,14 @@ import uniq from 'lodash/uniq';
 import {
     CRUD_GET_LIST_SUCCESS,
     CrudGetListSuccessAction,
-    CRUD_GET_ONE_SUCCESS,
     CrudGetOneSuccessAction,
     CRUD_CREATE_SUCCESS,
     CrudCreateSuccessAction,
 } from '../../../../actions';
-import getFetchedAt from '../../../../util/getFetchedAt';
 import { DELETE, DELETE_MANY } from '../../../../core';
 import { Identifier } from '../../../../types';
 
 type IdentifierArray = Identifier[];
-
-export interface IdentifierArrayWithDate extends IdentifierArray {
-    fetchedAt?: Date;
-}
-
-type State = IdentifierArrayWithDate;
-
-export const addRecordIdsFactory = getFetchedAtCallback => (
-    newRecordIds: IdentifierArrayWithDate = [],
-    oldRecordIds: IdentifierArrayWithDate
-): IdentifierArrayWithDate => {
-    const newFetchedAt = getFetchedAtCallback(
-        newRecordIds,
-        oldRecordIds.fetchedAt
-    );
-    const recordIds = uniq(
-        oldRecordIds.filter(id => !!newFetchedAt[id]).concat(newRecordIds)
-    );
-
-    Object.defineProperty(recordIds, 'fetchedAt', {
-        value: newFetchedAt,
-    }); // non enumerable by default
-    return recordIds;
-};
-
-const addRecordIds = addRecordIdsFactory(getFetchedAt);
 
 type ActionTypes =
     | CrudGetListSuccessAction
@@ -50,7 +22,19 @@ type ActionTypes =
           meta: any;
       };
 
-const idsReducer: Reducer<State> = (
+/**
+ * List of the ids of the latest loaded page, regardless of params
+ *
+ * When loading a the list for the first time, useListController grabs the ids
+ * from the cachedRequests reducer (not this ids reducer). It's only when the user
+ * changes page, sort, or filter, that the useListController hook uses the ids
+ * reducer, so as to show the previous list of results while loading the new
+ * list (intead of displaying a blank page each time the list params change).
+ *
+ * @see useListController
+ *
+ */
+const idsReducer: Reducer<IdentifierArray> = (
     previousState = [],
     action: ActionTypes
 ) => {
@@ -62,24 +46,15 @@ const idsReducer: Reducer<State> = (
             if (index === -1) {
                 return previousState;
             }
-            const newState = [
+            return [
                 ...previousState.slice(0, index),
                 ...previousState.slice(index + 1),
             ];
-
-            Object.defineProperty(newState, 'fetchedAt', {
-                value: previousState.fetchedAt,
-            });
-
-            return newState;
         }
         if (action.meta.fetch === DELETE_MANY) {
             const newState = previousState.filter(
                 el => !action.payload.ids.includes(el)
             );
-            Object.defineProperty(newState, 'fetchedAt', {
-                value: previousState.fetchedAt,
-            });
 
             return newState;
         }
@@ -87,10 +62,9 @@ const idsReducer: Reducer<State> = (
 
     switch (action.type) {
         case CRUD_GET_LIST_SUCCESS:
-            return addRecordIds(action.payload.data.map(({ id }) => id), []);
-        case CRUD_GET_ONE_SUCCESS:
+            return action.payload.data.map(({ id }) => id);
         case CRUD_CREATE_SUCCESS:
-            return addRecordIds([action.payload.data.id], previousState);
+            return uniq([action.payload.data.id, ...previousState]);
         default:
             return previousState;
     }

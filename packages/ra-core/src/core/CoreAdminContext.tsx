@@ -1,4 +1,5 @@
-import React, { FunctionComponent, ComponentType, useContext } from 'react';
+import * as React from 'react';
+import { FunctionComponent, ComponentType, useContext } from 'react';
 import { Provider, ReactReduxContext } from 'react-redux';
 import { History } from 'history';
 import { createHashHistory } from 'history';
@@ -73,9 +74,13 @@ React-admin requires a valid dataProvider function to work.`);
             <AuthContext.Provider value={finalAuthProvider}>
                 <DataProviderContext.Provider value={finalDataProvider}>
                     <TranslationProvider i18nProvider={i18nProvider}>
-                        <ConnectedRouter history={finalHistory}>
-                            {children}
-                        </ConnectedRouter>
+                        {typeof window !== 'undefined' ? (
+                            <ConnectedRouter history={finalHistory}>
+                                {children}
+                            </ConnectedRouter>
+                        ) : (
+                            children
+                        )}
                     </TranslationProvider>
                 </DataProviderContext.Provider>
             </AuthContext.Provider>

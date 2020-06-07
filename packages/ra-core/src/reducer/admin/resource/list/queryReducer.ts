@@ -43,7 +43,14 @@ const queryReducer: Reducer<ListParams> = (
             return { ...previousState, page: 1, perPage: payload };
 
         case SET_FILTER: {
-            return { ...previousState, page: 1, filter: payload };
+            return {
+                ...previousState,
+                page: 1,
+                filter: payload.filter,
+                displayedFilters: payload.displayedFilters
+                    ? payload.displayedFilters
+                    : previousState.displayedFilters,
+            };
         }
 
         default:

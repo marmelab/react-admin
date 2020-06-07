@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import * as React from 'react';
+import { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Field, FieldProps, FieldRenderProps } from 'react-final-form';
 import { Validator, composeValidators } from './validate';
@@ -24,7 +25,7 @@ interface Props
     validate?: Validator | Validator[];
 }
 
-export const FormField: FunctionComponent<Props> = ({
+const FormField: FunctionComponent<Props> = ({
     id,
     input,
     validate,

@@ -27,12 +27,14 @@ const useNotify = () => {
             message: string,
             type: NotificationType = 'info',
             messageArgs: any = {},
-            undoable: boolean = false
+            undoable: boolean = false,
+            autoHideDuration?: number
         ) => {
             dispatch(
                 showNotification(message, type, {
                     messageArgs,
                     undoable,
+                    autoHideDuration,
                 })
             );
         },

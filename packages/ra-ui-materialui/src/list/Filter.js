@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { sanitizeListRestProps } from 'ra-core';
@@ -15,7 +15,7 @@ const useStyles = makeStyles(
 );
 
 const Filter = props => {
-    const classes = useStyles({ classes: props.classes });
+    const classes = useStyles(props);
     const renderButton = () => {
         const {
             classes: classesOverride,

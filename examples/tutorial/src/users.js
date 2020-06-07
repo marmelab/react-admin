@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { useMediaQuery } from '@material-ui/core';
 import { SimpleList, List, Datagrid, EmailField, TextField } from 'react-admin';
 

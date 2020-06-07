@@ -1,9 +1,14 @@
-import React, { Children, cloneElement } from 'react';
+import * as React from 'react';
+import { Children, cloneElement, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { useCheckMinimumRequiredProps, useCreateController } from 'ra-core';
+import {
+    useCheckMinimumRequiredProps,
+    useCreateController,
+    SideEffectContext,
+} from 'ra-core';
 
 import TitleForRecord from '../layout/TitleForRecord';
 
@@ -26,7 +31,7 @@ import TitleForRecord from '../layout/TitleForRecord';
  * @example
  *
  * // in src/posts.js
- * import React from 'react';
+ * import * as React from "react";
  * import { Create, SimpleForm, TextInput } from 'react-admin';
  *
  * export const PostCreate = (props) => (
@@ -38,7 +43,7 @@ import TitleForRecord from '../layout/TitleForRecord';
  * );
  *
  * // in src/App.js
- * import React from 'react';
+ * import * as React from "react";
  * import { Admin, Resource } from 'react-admin';
  *
  * import { PostCreate } from './posts';
@@ -68,6 +73,9 @@ Create.propTypes = {
     record: PropTypes.object,
     hasList: PropTypes.bool,
     successMessage: PropTypes.string,
+    onSuccess: PropTypes.func,
+    onFailure: PropTypes.func,
+    transform: PropTypes.func,
 };
 
 export const CreateView = props => {
@@ -86,61 +94,70 @@ export const CreateView = props => {
         redirect,
         resource,
         save,
+        setOnSuccess,
+        setOnFailure,
+        setTransform,
         saving,
         title,
         version,
         ...rest
     } = props;
     useCheckMinimumRequiredProps('Create', ['children'], props);
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useStyles(props);
+    const sideEffectContextValue = useMemo(
+        () => ({ setOnSuccess, setOnFailure, setTransform }),
+        [setOnFailure, setOnSuccess, setTransform]
+    );
     return (
-        <div
-            className={classnames('create-page', classes.root, className)}
-            {...sanitizeRestProps(rest)}
-        >
-            <TitleForRecord
-                title={title}
-                record={record}
-                defaultTitle={defaultTitle}
-            />
-            {actions &&
-                cloneElement(actions, {
-                    basePath,
-                    resource,
-                    hasList,
-                    //  Ensure we don't override any user provided props
-                    ...actions.props,
-                })}
+        <SideEffectContext.Provider value={sideEffectContextValue}>
             <div
-                className={classnames(classes.main, {
-                    [classes.noActions]: !actions,
-                })}
+                className={classnames('create-page', classes.root, className)}
+                {...sanitizeRestProps(rest)}
             >
-                <Content className={classes.card}>
-                    {cloneElement(Children.only(children), {
+                <TitleForRecord
+                    title={title}
+                    record={record}
+                    defaultTitle={defaultTitle}
+                />
+                {actions &&
+                    cloneElement(actions, {
                         basePath,
-                        record,
-                        redirect:
-                            typeof children.props.redirect === 'undefined'
-                                ? redirect
-                                : children.props.redirect,
                         resource,
-                        save,
-                        saving,
-                        version,
+                        hasList,
+                        //  Ensure we don't override any user provided props
+                        ...actions.props,
                     })}
-                </Content>
-                {aside &&
-                    cloneElement(aside, {
-                        basePath,
-                        record,
-                        resource,
-                        save,
-                        saving,
-                        version,
+                <div
+                    className={classnames(classes.main, {
+                        [classes.noActions]: !actions,
                     })}
+                >
+                    <Content className={classes.card}>
+                        {cloneElement(Children.only(children), {
+                            basePath,
+                            record,
+                            redirect:
+                                typeof children.props.redirect === 'undefined'
+                                    ? redirect
+                                    : children.props.redirect,
+                            resource,
+                            save,
+                            saving,
+                            version,
+                        })}
+                    </Content>
+                    {aside &&
+                        cloneElement(aside, {
+                            basePath,
+                            record,
+                            resource,
+                            save,
+                            saving,
+                            version,
+                        })}
+                </div>
             </div>
-        </div>
+        </SideEffectContext.Provider>
     );
 };
 
@@ -159,6 +176,11 @@ CreateView.propTypes = {
     resource: PropTypes.string,
     save: PropTypes.func,
     title: PropTypes.node,
+    onSuccess: PropTypes.func,
+    onFailure: PropTypes.func,
+    setOnSuccess: PropTypes.func,
+    setOnFailure: PropTypes.func,
+    setTransform: PropTypes.func,
 };
 
 CreateView.defaultProps = {
@@ -205,6 +227,12 @@ const sanitizeRestProps = ({
     locale,
     permissions,
     successMessage,
+    onSuccess,
+    setOnSuccess,
+    onFailure,
+    setOnFailure,
+    transform,
+    setTransform,
     translate,
     ...rest
 }) => rest;

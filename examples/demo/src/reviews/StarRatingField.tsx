@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import * as React from 'react';
+import { FC } from 'react';
 import Icon from '@material-ui/icons/Stars';
 import { makeStyles } from '@material-ui/core';
 
@@ -15,12 +16,12 @@ const useStyles = makeStyles({
     },
     small: {
         width: 15,
-        haight: 15,
+        height: 15,
     },
 });
 
 interface OwnProps {
-    size: 'large' | 'small';
+    size?: 'large' | 'small';
 }
 
 const StarRatingField: FC<FieldProps & OwnProps> = ({

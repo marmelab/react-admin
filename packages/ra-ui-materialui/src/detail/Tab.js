@@ -1,4 +1,5 @@
-import React, { isValidElement } from 'react';
+import * as React from 'react';
+import { isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import MuiTab from '@material-ui/core/Tab';
@@ -26,7 +27,7 @@ const sanitizeRestProps = ({
  *
  * @example
  *     // in src/posts.js
- *     import React from 'react';
+ *     import * as React from "react";
  *     import FavoriteIcon from '@material-ui/icons/Favorite';
  *     import PersonPinIcon from '@material-ui/icons/PersonPin';
  *     import { Show, TabbedShowLayout, Tab, TextField } from 'react-admin';
@@ -46,7 +47,7 @@ const sanitizeRestProps = ({
  *     );
  *
  *     // in src/App.js
- *     import React from 'react';
+ *     import * as React from "react";
  *     import { Admin, Resource } from 'react-admin';
  *
  *     import { PostShow } from './posts';

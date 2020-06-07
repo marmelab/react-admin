@@ -1,5 +1,5 @@
-import React, { FunctionComponent } from 'react';
-import pure from 'recompose/pure';
+import * as React from 'react';
+import { FunctionComponent, ReactElement, memo } from 'react';
 
 import useTranslate from '../i18n/useTranslate';
 import getFieldLabelTranslationArgs from './getFieldLabelTranslationArgs';
@@ -8,7 +8,7 @@ interface Props {
     isRequired?: boolean;
     resource?: string;
     source?: string;
-    label?: string;
+    label?: string | ReactElement;
 }
 
 export const FieldTitle: FunctionComponent<Props> = ({
@@ -18,10 +18,17 @@ export const FieldTitle: FunctionComponent<Props> = ({
     isRequired,
 }) => {
     const translate = useTranslate();
+    if (label && typeof label !== 'string') {
+        return label;
+    }
     return (
         <span>
             {translate(
-                ...getFieldLabelTranslationArgs({ label, resource, source })
+                ...getFieldLabelTranslationArgs({
+                    label: label as string,
+                    resource,
+                    source,
+                })
             )}
             {isRequired && ' *'}
         </span>
@@ -31,4 +38,4 @@ export const FieldTitle: FunctionComponent<Props> = ({
 // wat? TypeScript looses the displayName if we don't set it explicitly
 FieldTitle.displayName = 'FieldTitle';
 
-export default pure(FieldTitle);
+export default memo(FieldTitle);

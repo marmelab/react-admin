@@ -1,6 +1,6 @@
 import expect from 'expect';
 import { render, cleanup } from '@testing-library/react';
-import React from 'react';
+import * as React from 'react';
 
 import { FieldTitle } from './FieldTitle';
 import TestTranslationProvider from '../i18n/TestTranslationProvider';

@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import * as React from 'react';
+import { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import TextField, { TextFieldProps } from '@material-ui/core/TextField';
 import { useInput, FieldTitle, InputProps } from 'ra-core';
@@ -63,7 +64,7 @@ const parseDateTime = (value: string) => new Date(value);
 /**
  * Input component for entering a date and a time with timezone, using the browser locale
  */
-export const DateTimeInput: FunctionComponent<
+const DateTimeInput: FunctionComponent<
     InputProps<TextFieldProps> & Omit<TextFieldProps, 'helperText' | 'label'>
 > = ({
     format = formatDateTime,
@@ -107,13 +108,11 @@ export const DateTimeInput: FunctionComponent<
             margin={margin}
             error={!!(touched && error)}
             helperText={
-                (touched && error) || helperText ? (
-                    <InputHelperText
-                        touched={touched}
-                        error={error}
-                        helperText={helperText}
-                    />
-                ) : null
+                <InputHelperText
+                    touched={touched}
+                    error={error}
+                    helperText={helperText}
+                />
             }
             label={
                 <FieldTitle

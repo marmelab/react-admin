@@ -8,6 +8,7 @@ export interface ListParams {
     page: number;
     perPage: number;
     filter: any;
+    displayedFilters: any;
 }
 
 export interface ChangeListParamsAction {
@@ -54,6 +55,33 @@ export const toggleListItem = (
     id: any
 ): ToggleListItemAction => ({
     type: TOGGLE_LIST_ITEM,
+    payload: id,
+    meta: { resource },
+});
+
+export const TOGGLE_LIST_ITEM_EXPAND = 'RA/TOGGLE_LIST_ITEM_EXPAND';
+
+export interface ToggleListItemExpandAction {
+    readonly type: typeof TOGGLE_LIST_ITEM_EXPAND;
+    readonly payload: Identifier;
+    readonly meta: { resource: string };
+}
+
+/**
+ * Action creator to toggle the expanded state of a list item
+ *
+ * @param {string} resource The resource name, e.g. 'posts'
+ * @param {string|integer} id The record identifier, e.g. 123
+ *
+ * @example
+ *
+ * const onToggleItem = () => dispatch(toggleListItemExpand('posts', 123));
+ */
+export const toggleListItemExpand = (
+    resource: string,
+    id: Identifier
+): ToggleListItemExpandAction => ({
+    type: TOGGLE_LIST_ITEM_EXPAND,
     payload: id,
     meta: { resource },
 });

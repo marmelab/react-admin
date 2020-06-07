@@ -1,6 +1,6 @@
-import React from 'react';
+import * as React from 'react';
 import expect from 'expect';
-import { render, cleanup } from '@testing-library/react';
+import { render, cleanup, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import { TestTranslationProvider } from 'ra-core';
 
@@ -30,17 +30,14 @@ describe('<SelectArrayInput />', () => {
     });
 
     it('should use the input parameter value as the initial input value', () => {
-        const { getByLabelText } = render(
+        const { getByDisplayValue } = render(
             <Form
                 initialValues={{ categories: ['programming', 'lifestyle'] }}
                 onSubmit={jest.fn()}
                 render={() => <SelectArrayInput {...defaultProps} />}
             />
         );
-        const input = getByLabelText(
-            'resources.posts.fields.categories'
-        ) as HTMLInputElement;
-        expect(input.value).toBe('programming,lifestyle');
+        expect(getByDisplayValue('programming,lifestyle')).not.toBeNull();
     });
 
     it('should reveal choices on click', () => {
@@ -53,14 +50,14 @@ describe('<SelectArrayInput />', () => {
         expect(queryByText('Programming')).toBeNull();
         expect(queryByText('Lifestyle')).toBeNull();
         expect(queryByText('Photography')).toBeNull();
-        getByRole('button').click();
+        fireEvent.mouseDown(getByRole('button'));
         expect(queryByText('Programming')).not.toBeNull();
         expect(queryByText('Lifestyle')).not.toBeNull();
         expect(queryByText('Photography')).not.toBeNull();
     });
 
     it('should use optionValue as value identifier', () => {
-        const { getByRole, getByText, getByLabelText } = render(
+        const { getByRole, getByText, getByDisplayValue } = render(
             <Form
                 onSubmit={jest.fn()}
                 render={() => (
@@ -74,15 +71,13 @@ describe('<SelectArrayInput />', () => {
                 )}
             />
         );
-        getByRole('button').click();
-        getByText('Programming').click();
-        expect(getByLabelText('resources.posts.fields.categories').value).toBe(
-            'programming'
-        );
+        fireEvent.mouseDown(getByRole('button'));
+        fireEvent.click(getByText('Programming'));
+        expect(getByDisplayValue('programming')).not.toBeNull();
     });
 
     it('should use optionValue including "." as value identifier', () => {
-        const { getByRole, getByText, getByLabelText } = render(
+        const { getByRole, getByText, getByDisplayValue } = render(
             <Form
                 onSubmit={jest.fn()}
                 render={() => (
@@ -99,11 +94,9 @@ describe('<SelectArrayInput />', () => {
                 )}
             />
         );
-        getByRole('button').click();
-        getByText('Programming').click();
-        expect(getByLabelText('resources.posts.fields.categories').value).toBe(
-            'programming'
-        );
+        fireEvent.mouseDown(getByRole('button'));
+        fireEvent.click(getByText('Programming'));
+        expect(getByDisplayValue('programming')).not.toBeNull();
     });
 
     it('should use optionText with a string value as text identifier', () => {
@@ -119,7 +112,7 @@ describe('<SelectArrayInput />', () => {
                 )}
             />
         );
-        getByRole('button').click();
+        fireEvent.mouseDown(getByRole('button'));
         expect(queryByText('Programming')).not.toBeNull();
     });
 
@@ -141,7 +134,7 @@ describe('<SelectArrayInput />', () => {
                 )}
             />
         );
-        getByRole('button').click();
+        fireEvent.mouseDown(getByRole('button'));
         expect(queryByText('Programming')).not.toBeNull();
     });
 
@@ -158,7 +151,7 @@ describe('<SelectArrayInput />', () => {
                 )}
             />
         );
-        getByRole('button').click();
+        fireEvent.mouseDown(getByRole('button'));
         expect(queryByText('Programming')).not.toBeNull();
     });
 
@@ -176,7 +169,7 @@ describe('<SelectArrayInput />', () => {
                 )}
             />
         );
-        getByRole('button').click();
+        fireEvent.mouseDown(getByRole('button'));
         expect(queryByText('Programming')).not.toBeNull();
     });
 
@@ -189,7 +182,7 @@ describe('<SelectArrayInput />', () => {
                 />
             </TestTranslationProvider>
         );
-        getByRole('button').click();
+        fireEvent.mouseDown(getByRole('button'));
         expect(queryByText('**Programming**')).not.toBeNull();
         expect(queryByText('**Lifestyle**')).not.toBeNull();
     });

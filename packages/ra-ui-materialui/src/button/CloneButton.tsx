@@ -1,6 +1,6 @@
-import React, { FC, ReactElement } from 'react';
+import * as React from 'react';
+import { FC, memo, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import shouldUpdate from 'recompose/shouldUpdate';
 import Queue from '@material-ui/icons/Queue';
 import { Link } from 'react-router-dom';
 import { stringify } from 'query-string';
@@ -29,7 +29,7 @@ export const CloneButton: FC<CloneButtonProps> = ({
         }
         label={label}
         onClick={stopPropagation}
-        {...sanitizeRestProps(rest)}
+        {...rest}
     >
         {icon}
     </Button>
@@ -41,17 +41,6 @@ const defaultIcon = <Queue />;
 const stopPropagation = e => e.stopPropagation();
 
 const omitId = ({ id, ...rest }: Record) => rest;
-
-const sanitizeRestProps = ({
-    // the next 6 props are injected by Toolbar
-    handleSubmit,
-    handleSubmitWithRedirect,
-    invalid,
-    pristine,
-    saving,
-    submitOnEnter,
-    ...rest
-}: any) => rest;
 
 interface Props {
     basePath?: string;
@@ -68,13 +57,4 @@ CloneButton.propTypes = {
     record: PropTypes.any,
 };
 
-const enhance = shouldUpdate(
-    (props: Props, nextProps: Props) =>
-        (props.record &&
-            nextProps.record &&
-            props.record !== nextProps.record) ||
-        props.basePath !== nextProps.basePath ||
-        (props.record == null && nextProps.record != null)
-);
-
-export default enhance(CloneButton);
+export default memo(CloneButton);

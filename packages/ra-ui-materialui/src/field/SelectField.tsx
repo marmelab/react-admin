@@ -1,7 +1,7 @@
-import React, { FunctionComponent } from 'react';
+import * as React from 'react';
+import { FunctionComponent, memo } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import pure from 'recompose/pure';
 import { ChoicesProps, useChoices } from 'ra-core';
 import Typography from '@material-ui/core/Typography';
 
@@ -69,42 +69,54 @@ import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  */
 export const SelectField: FunctionComponent<
     ChoicesProps & FieldProps & InjectedFieldProps
-> = ({
-    className,
-    source,
-    record,
-    choices,
-    optionValue,
-    optionText,
-    translateChoice,
-    ...rest
-}) => {
-    const value = get(record, source);
-    const { getChoiceText, getChoiceValue } = useChoices({
-        optionText,
+> = memo<ChoicesProps & FieldProps & InjectedFieldProps>(
+    ({
+        className,
+        emptyText,
+        source,
+        record,
+        choices,
         optionValue,
+        optionText,
         translateChoice,
-    });
+        ...rest
+    }) => {
+        const value = get(record, source);
+        const { getChoiceText, getChoiceValue } = useChoices({
+            optionText,
+            optionValue,
+            translateChoice,
+        });
 
-    const choice = choices.find(choice => getChoiceValue(choice) === value);
+        const choice = choices.find(choice => getChoiceValue(choice) === value);
 
-    if (!choice) {
-        return null;
+        if (!choice) {
+            return emptyText ? (
+                <Typography
+                    component="span"
+                    variant="body2"
+                    className={className}
+                    {...sanitizeRestProps(rest)}
+                >
+                    {emptyText}
+                </Typography>
+            ) : null;
+        }
+
+        let choiceText = getChoiceText(choice);
+
+        return (
+            <Typography
+                component="span"
+                variant="body2"
+                className={className}
+                {...sanitizeRestProps(rest)}
+            >
+                {choiceText}
+            </Typography>
+        );
     }
-
-    let choiceText = getChoiceText(choice);
-
-    return (
-        <Typography
-            component="span"
-            variant="body2"
-            className={className}
-            {...sanitizeRestProps(rest)}
-        >
-            {choiceText}
-        </Typography>
-    );
-};
+);
 
 SelectField.defaultProps = {
     optionText: 'name',
@@ -112,13 +124,12 @@ SelectField.defaultProps = {
     translateChoice: true,
 };
 
-const EnhancedSelectField = pure(SelectField);
-
-EnhancedSelectField.defaultProps = {
+SelectField.defaultProps = {
     addLabel: true,
 };
 
-EnhancedSelectField.propTypes = {
+SelectField.propTypes = {
+    // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
     choices: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -131,6 +142,6 @@ EnhancedSelectField.propTypes = {
     translateChoice: PropTypes.bool,
 };
 
-EnhancedSelectField.displayName = 'EnhancedSelectField';
+SelectField.displayName = 'SelectField';
 
-export default EnhancedSelectField;
+export default SelectField;

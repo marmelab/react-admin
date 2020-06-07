@@ -62,7 +62,7 @@ export const hideFetchedAt = (
  * The cached data is displayed before fetching, and stale data is removed
  * only once fresh data is fetched.
  */
-export const addRecords = (
+export const addRecordsAndRemoveOutdated = (
     newRecords: Record[] = [],
     oldRecords: RecordSetWithDate
 ): RecordSetWithDate => {
@@ -88,19 +88,67 @@ export const addRecords = (
 };
 
 /**
+ * Add new records to the pool, without touching the other ones.
+ */
+export const addRecords = (
+    newRecords: Record[] = [],
+    oldRecords: RecordSetWithDate
+): RecordSetWithDate => {
+    const newRecordsById = { ...oldRecords };
+    newRecords.forEach(record => {
+        newRecordsById[record.id] = isEqual(record, oldRecords[record.id])
+            ? (oldRecords[record.id] as Record)
+            : record;
+    });
+
+    const updatedFetchedAt = getFetchedAt(
+        newRecords.map(({ id }) => id),
+        oldRecords.fetchedAt
+    );
+
+    Object.defineProperty(newRecordsById, 'fetchedAt', {
+        value: { ...oldRecords.fetchedAt, ...updatedFetchedAt },
+        enumerable: false,
+    });
+
+    return newRecordsById;
+};
+
+export const addOneRecord = (
+    newRecord: Record,
+    oldRecords: RecordSetWithDate,
+    date = new Date()
+): RecordSetWithDate => {
+    const newRecordsById = {
+        ...oldRecords,
+        [newRecord.id]: isEqual(newRecord, oldRecords[newRecord.id])
+            ? oldRecords[newRecord.id] // do not change the record to avoid a redraw
+            : newRecord,
+    };
+
+    return Object.defineProperty(newRecordsById, 'fetchedAt', {
+        value: { ...oldRecords.fetchedAt, [newRecord.id]: date },
+        enumerable: false,
+    });
+};
+
+const includesNotStrict = (items, element) =>
+    items.some(item => item == element); // eslint-disable-line eqeqeq
+
+/**
  * Remove records from the pool
  */
-const removeRecords = (
+export const removeRecords = (
     removedRecordIds: Identifier[] = [],
     oldRecords: RecordSetWithDate
 ): RecordSetWithDate => {
     const records = Object.entries(oldRecords)
-        .filter(([key]) => !removedRecordIds.includes(key))
+        .filter(([key]) => !includesNotStrict(removedRecordIds, key))
         .reduce((obj, [key, val]) => ({ ...obj, [key]: val }), {
             fetchedAt: {}, // TypeScript warns later if this is not defined
         });
     records.fetchedAt = Object.entries(oldRecords.fetchedAt)
-        .filter(([key]) => !removedRecordIds.includes(key))
+        .filter(([key]) => !includesNotStrict(removedRecordIds, key))
         .reduce((obj, [key, val]) => ({ ...obj, [key]: val }), {});
 
     return hideFetchedAt(records);
@@ -118,14 +166,14 @@ const dataReducer: Reducer<RecordSetWithDate> = (
                 ...previousState[payload.id],
                 ...payload.data,
             };
-            return addRecords([updatedRecord], previousState);
+            return addOneRecord(updatedRecord, previousState);
         }
         if (meta.fetch === UPDATE_MANY) {
             const updatedRecords = payload.ids.map(id => ({
                 ...previousState[id],
                 ...payload.data,
             }));
-            return addRecords(updatedRecords, previousState);
+            return addRecordsAndRemoveOutdated(updatedRecords, previousState);
         }
         if (meta.fetch === DELETE) {
             return removeRecords([payload.id], previousState);
@@ -140,13 +188,14 @@ const dataReducer: Reducer<RecordSetWithDate> = (
 
     switch (meta.fetchResponse) {
         case GET_LIST:
+            return addRecordsAndRemoveOutdated(payload.data, previousState);
         case GET_MANY:
         case GET_MANY_REFERENCE:
             return addRecords(payload.data, previousState);
-        case GET_ONE:
         case UPDATE:
         case CREATE:
-            return addRecords([payload.data], previousState);
+        case GET_ONE:
+            return addOneRecord(payload.data, previousState);
         default:
             return previousState;
     }

@@ -17,16 +17,21 @@ import {
     CREATE,
     UPDATE,
     DELETE,
+    DELETE_MANY,
+    UPDATE_MANY,
+    sanitizeFetchType,
+    DataProvider,
+    FetchType,
+    GetListParams,
 } from 'ra-core';
-import { LegacyDataProvider } from 'ra-core/lib';
 
 import buildApolloClient, { BuildClientOptions } from './buildApolloClient';
-import { OperationName } from './constants';
 import defaultResolveIntrospection, {
     IntrospectedSchema,
     IntrospectionOptions,
 } from './introspection';
 
+export * from './introspection';
 export * from './constants';
 
 const defaultOptions: Partial<GraphQLProviderOptions> = {
@@ -66,21 +71,21 @@ export interface GraphQLProviderOptions<OtherOptions = any> {
         schema: IntrospectedSchema,
         otherOptions: OtherOptions
     ) => (
-        raFetchType: OperationName,
+        raFetchType: FetchType,
         resourceName: string,
-        params: any
+        params: GetListParams
     ) => QueryHandler;
     query?:
         | QueryOptions
-        | ((resource: string, raFetchType: OperationName) => QueryOptions);
+        | ((resource: string, raFetchType: FetchType) => QueryOptions);
     mutation?:
         | MutationOptions
-        | ((resource: string, raFetchType: OperationName) => MutationOptions);
+        | ((resource: string, raFetchType: FetchType) => MutationOptions);
     watchQuery?:
         | WatchQueryOptions
-        | ((resource: string, raFetchType: OperationName) => WatchQueryOptions);
+        | ((resource: string, raFetchType: FetchType) => WatchQueryOptions);
     // @deprecated
-    override?: Record<string, (params: any) => QueryHandler>;
+    override?: Record<string, (params: GetListParams) => QueryHandler>;
 }
 
 interface QueryHandler {
@@ -91,7 +96,7 @@ interface QueryHandler {
 
 export default async <Options extends {} = any>(
     options: Options & GraphQLProviderOptions<Options>
-): Promise<LegacyDataProvider> => {
+): Promise<DataProvider> => {
     const {
         client: clientObject,
         clientOptions,
@@ -124,10 +129,16 @@ export default async <Options extends {} = any>(
         otherOptions as Options
     );
 
-    const raDataProvider = (aorFetchType, resource, params) => {
-        const overriddenBuildQuery: (params: any) => QueryHandler = get(
+    const handle = (
+        aorFetchType: FetchType,
+        resource: string,
+        params: GetListParams
+    ) => {
+        const overriddenBuildQuery: (
+            params: GetListParams
+        ) => QueryHandler = get(
             override,
-            `${resource}.${aorFetchType}`
+            `${resource}.${sanitizeFetchType(aorFetchType)}`
         );
 
         const { parseResponse, ...query } = overriddenBuildQuery
@@ -160,24 +171,18 @@ export default async <Options extends {} = any>(
         return client.mutate(apolloQuery).then(parseResponse);
     };
 
-    raDataProvider.observeRequest = (aorFetchType, resource, params) => {
-        const { parseResponse, ...query } = buildQuery(
-            aorFetchType,
-            resource,
-            params
-        );
-
-        const apolloQuery = {
-            ...query,
-            ...getOptions(otherOptions.watchQuery, aorFetchType, resource),
-        };
-
-        return client.watchQuery(apolloQuery).map(parseResponse);
+    return {
+        getList: (resource, params) => handle(GET_LIST, resource, params),
+        getOne: (resource, params) => handle(GET_ONE, resource, params),
+        getMany: (resource, params) => handle(GET_MANY, resource, params),
+        getManyReference: (resource, params) =>
+            handle(GET_MANY_REFERENCE, resource, params),
+        update: (resource, params) => handle(UPDATE, resource, params),
+        updateMany: (resource, params) => handle(UPDATE_MANY, resource, params),
+        create: (resource, params) => handle(CREATE, resource, params),
+        delete: (resource, params) => handle(DELETE, resource, params),
+        deleteMany: (resource, params) => handle(DELETE_MANY, resource, params),
     };
-
-    raDataProvider.saga = () => {};
-
-    return raDataProvider;
 };
 
 const getQueryOperation = (query: DocumentNode): OperationTypeNode => {

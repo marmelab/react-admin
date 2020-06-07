@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { useField } from 'react-final-form';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';

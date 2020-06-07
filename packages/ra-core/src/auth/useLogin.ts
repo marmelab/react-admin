@@ -29,8 +29,9 @@ import { useLocation, useHistory } from 'react-router-dom';
 const useLogin = (): Login => {
     const authProvider = useAuthProvider();
     const location = useLocation();
+    const locationState = location.state as any;
     const history = useHistory();
-    const nextPathName = location.state && location.state.nextPathname;
+    const nextPathName = locationState && locationState.nextPathname;
 
     const login = useCallback(
         (params: any = {}, pathName = defaultAuthParams.afterLoginUrl) =>
@@ -55,7 +56,7 @@ const useLogin = (): Login => {
 /**
  * Log a user in by calling the authProvider.login() method
  *
- * @param {object} params Login parameters to pass to the authProvider. May contain username/email, password, etc
+ * @param {Object} params Login parameters to pass to the authProvider. May contain username/email, password, etc
  * @param {string} pathName The path to redirect to after login. By default, redirects to the home page, or to the last page visited after deconnexion.
  *
  * @return {Promise} The authProvider response

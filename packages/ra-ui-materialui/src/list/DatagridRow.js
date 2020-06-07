@@ -11,7 +11,7 @@ import React, {
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { TableCell, TableRow, Checkbox } from '@material-ui/core';
-import { linkToRecord } from 'ra-core';
+import { linkToRecord, useExpanded } from 'ra-core';
 import isEqual from 'lodash/isEqual';
 
 import DatagridCell from './DatagridCell';
@@ -45,7 +45,7 @@ const DatagridRow = ({
     selectable,
     ...rest
 }) => {
-    const [expanded, setExpanded] = useState(false);
+    const [expanded, toggleExpanded] = useExpanded(resource, id);
     const [nbColumns, setNbColumns] = useState(
         computeNbColumns(expand, children, hasBulkActions)
     );
@@ -63,10 +63,10 @@ const DatagridRow = ({
 
     const handleToggleExpand = useCallback(
         event => {
-            setExpanded(!expanded);
+            toggleExpanded();
             event.stopPropagation();
         },
-        [expanded]
+        [toggleExpanded]
     );
     const handleToggleSelection = useCallback(
         event => {

@@ -1,4 +1,5 @@
-import React, { useCallback, FunctionComponent } from 'react';
+import * as React from 'react';
+import { useCallback, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -32,6 +33,7 @@ const sanitizeRestProps = ({
     filterToQuery,
     formClassName,
     initializeForm,
+    initialValue,
     input,
     isRequired,
     label,
@@ -145,31 +147,33 @@ const SelectInput: FunctionComponent<
     ChoicesProps &
         InputProps<TextFieldProps> &
         Omit<TextFieldProps, 'label' | 'helperText'>
-> = ({
-    allowEmpty,
-    choices = [],
-    className,
-    disableValue,
-    emptyText,
-    emptyValue,
-    format,
-    helperText,
-    label,
-    onBlur,
-    onChange,
-    onFocus,
-    options,
-    optionText,
-    optionValue,
-    parse,
-    resource,
-    source,
-    translateChoice,
-    validate,
-    ...rest
-}) => {
+> = props => {
+    const {
+        allowEmpty,
+        choices = [],
+        classes: classesOverride,
+        className,
+        disableValue,
+        emptyText,
+        emptyValue,
+        format,
+        helperText,
+        label,
+        onBlur,
+        onChange,
+        onFocus,
+        options,
+        optionText,
+        optionValue,
+        parse,
+        resource,
+        source,
+        translateChoice,
+        validate,
+        ...rest
+    } = props;
     const translate = useTranslate();
-    const classes = useStyles({});
+    const classes = useStyles(props);
     const { getChoiceText, getChoiceValue } = useChoices({
         optionText,
         optionValue,
@@ -196,6 +200,8 @@ const SelectInput: FunctionComponent<
     const renderEmptyItemOption = useCallback(() => {
         return React.isValidElement(emptyText)
             ? React.cloneElement(emptyText)
+            : emptyText === ''
+            ? ' ' // em space, forces the display of an empty line of normal height
             : translate(emptyText, { _: emptyText });
     }, [emptyText, translate]);
 
@@ -223,13 +229,11 @@ const SelectInput: FunctionComponent<
             clearAlwaysVisible
             error={!!(touched && error)}
             helperText={
-                (touched && error) || helperText ? (
-                    <InputHelperText
-                        touched={touched}
-                        error={error}
-                        helperText={helperText}
-                    />
-                ) : null
+                <InputHelperText
+                    touched={touched}
+                    error={error}
+                    helperText={helperText}
+                />
             }
             {...options}
             {...sanitizeRestProps(rest)}
@@ -258,7 +262,7 @@ const SelectInput: FunctionComponent<
 };
 
 SelectInput.propTypes = {
-    allowEmpty: PropTypes.bool.isRequired,
+    allowEmpty: PropTypes.bool,
     emptyText: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     emptyValue: PropTypes.any,
     choices: PropTypes.arrayOf(PropTypes.object),
@@ -273,13 +277,13 @@ SelectInput.propTypes = {
     ]).isRequired,
     optionValue: PropTypes.string.isRequired,
     disableValue: PropTypes.string,
+    resettable: PropTypes.bool,
     resource: PropTypes.string,
     source: PropTypes.string,
     translateChoice: PropTypes.bool,
 };
 
 SelectInput.defaultProps = {
-    allowEmpty: false,
     emptyText: '',
     emptyValue: '',
     options: {},

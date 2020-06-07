@@ -1,5 +1,5 @@
 import { useShowController } from 'ra-core';
-import React from 'react';
+import * as React from 'react';
 import {
     ArrayField,
     BooleanField,

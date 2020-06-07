@@ -1,11 +1,15 @@
-import React, { cloneElement } from 'react';
+import * as React from 'react';
+import { cloneElement } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import { useTranslate, warning } from 'ra-core';
 
 const Title = ({ className, defaultTitle, locale, record, title, ...rest }) => {
     const translate = useTranslate();
-    const container = document.getElementById('react-admin-title');
+    const container =
+        typeof document !== 'undefined'
+            ? document.getElementById('react-admin-title')
+            : null;
     if (!container) return null;
     warning(!defaultTitle && !title, 'Missing title prop in <Title> element');
 

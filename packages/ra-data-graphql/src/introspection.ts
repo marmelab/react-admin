@@ -3,14 +3,14 @@ import {
     IntrospectionField,
     IntrospectionObjectType,
     IntrospectionQuery,
-    introspectionQuery,
     IntrospectionType,
+    getIntrospectionQuery,
 } from 'graphql';
 import gql from 'graphql-tag';
 import { IntrospectionSchema } from 'graphql/utilities/introspectionQuery';
-import { GET_LIST, GET_ONE } from 'ra-core';
+import { GET_LIST, GET_ONE, FetchType } from 'ra-core';
 
-import { ALL_TYPES, OperationName } from './constants';
+import { ALL_TYPES } from './constants';
 
 export const filterTypesByIncludeExclude = ({
     include,
@@ -39,9 +39,7 @@ export const filterTypesByIncludeExclude = ({
 
 export interface IntrospectionOptions {
     schema?: IntrospectionSchema;
-    operationNames: {
-        [Op in OperationName]?: (type: IntrospectionType) => string
-    };
+    operationNames: { [Op in FetchType]?: (type: IntrospectionType) => string };
     include?: Filter;
     exclude?: Filter;
 }
@@ -60,7 +58,7 @@ export type IntrospectedResource = {
     GET_LIST: IntrospectionField;
     GET_ONE: IntrospectionField;
 } & Record<
-    Exclude<OperationName, 'GET_LIST' | 'GET_ONE'>,
+    Exclude<FetchType, 'GET_LIST' | 'GET_ONE'>,
     IntrospectionField | undefined
 >;
 
@@ -78,7 +76,7 @@ export default async (
               .query<IntrospectionQuery>({
                   fetchPolicy: 'network-only',
                   query: gql`
-                      ${introspectionQuery}
+                      ${getIntrospectionQuery()}
                   `,
               })
               .then(({ data: { __schema } }) => __schema);

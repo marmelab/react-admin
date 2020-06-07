@@ -1,10 +1,11 @@
 import expect from 'expect';
-import { cleanup } from '@testing-library/react';
-import React from 'react';
+import { cleanup, fireEvent } from '@testing-library/react';
+import * as React from 'react';
 import { renderWithRedux } from 'ra-core';
 
 import FilterForm, { mergeInitialValuesWithDefaultValues } from './FilterForm';
 import TextInput from '../input/TextInput';
+import SelectInput from '../input/SelectInput';
 
 describe('<FilterForm />', () => {
     const defaultProps = {
@@ -36,6 +37,92 @@ describe('<FilterForm />', () => {
         expect(queryAllByLabelText('Title')).toHaveLength(1);
         expect(queryAllByLabelText('Name')).toHaveLength(1);
         cleanup();
+    });
+
+    describe('allowEmpty', () => {
+        it('should keep allowEmpty true if undefined', () => {
+            const filters = [
+                <SelectInput
+                    label="SelectWithUndefinedAllowEmpty"
+                    choices={[{ title: 'yes', id: 1 }, { title: 'no', id: 0 }]}
+                    source="test"
+                    optionText="title"
+                />,
+            ];
+            const displayedFilters = {
+                test: true,
+            };
+
+            const { queryAllByRole, queryByLabelText } = renderWithRedux(
+                <FilterForm
+                    {...defaultProps}
+                    filters={filters}
+                    displayedFilters={displayedFilters}
+                />
+            );
+
+            const select = queryByLabelText('SelectWithUndefinedAllowEmpty');
+            fireEvent.mouseDown(select);
+            const options = queryAllByRole('option');
+            expect(options.length).toEqual(3);
+            cleanup();
+        });
+
+        it('should keep allowEmpty false', () => {
+            const filters = [
+                <SelectInput
+                    label="SelectWithFalseAllowEmpty"
+                    allowEmpty={false}
+                    choices={[{ title: 'yes', id: 1 }, { title: 'no', id: 0 }]}
+                    source="test"
+                    optionText="title"
+                />,
+            ];
+            const displayedFilters = {
+                test: true,
+            };
+
+            const { queryAllByRole, queryByLabelText } = renderWithRedux(
+                <FilterForm
+                    {...defaultProps}
+                    filters={filters}
+                    displayedFilters={displayedFilters}
+                />
+            );
+            const select = queryByLabelText('SelectWithFalseAllowEmpty');
+            fireEvent.mouseDown(select);
+            const options = queryAllByRole('option');
+            expect(options.length).toEqual(2);
+            cleanup();
+        });
+
+        it('should keep allowEmpty true', () => {
+            const filters = [
+                <SelectInput
+                    label="SelectWithTrueAllowEmpty"
+                    allowEmpty={true}
+                    choices={[{ title: 'yes', id: 1 }, { title: 'no', id: 0 }]}
+                    source="test"
+                    optionText="title"
+                />,
+            ];
+            const displayedFilters = {
+                test: true,
+            };
+
+            const { queryAllByRole, queryByLabelText } = renderWithRedux(
+                <FilterForm
+                    {...defaultProps}
+                    filters={filters}
+                    displayedFilters={displayedFilters}
+                />
+            );
+            const select = queryByLabelText('SelectWithTrueAllowEmpty');
+            fireEvent.mouseDown(select);
+            const options = queryAllByRole('option');
+            expect(options.length).toEqual(3);
+            cleanup();
+        });
     });
 
     describe('mergeInitialValuesWithDefaultValues', () => {

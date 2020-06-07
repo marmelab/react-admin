@@ -141,7 +141,7 @@ const i18nProvider = polyglotI18nProvider(locale =>
 The default react-admin locale is `en`, for English. If you want to display the interface in another language by default, you'll have to install a third-party package. For instance, to change the interface to French, you must install the `ra-language-french` npm package, then use it in a custom `i18nProvider`, as follows:
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { Admin, Resource } from 'react-admin';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import frenchMessages from 'ra-language-french';
@@ -162,7 +162,9 @@ export default App;
 You can find translation packages for the following languages:
 
 - Arabic (`ar`): [developerium/ra-language-arabic](https://github.com/developerium/ra-language-arabic)
-- Armenian (`ar`): [mrdntgrn/ra-language-armenian](https://github.com/mrdntgrn/ra-language-armenian)
+- Armenian (`am`): [mrdntgrn/ra-language-armenian](https://github.com/mrdntgrn/ra-language-armenian)
+- Belarusian (`be`): [tui-ru/ra-language-belarusian](https://github.com/tui-ru/ra-language-belarusian)
+- Brazilian Portuguese (`pt-br`): [gucarletto/ra-language-pt-br](https://github.com/gucarletto/ra-language-pt-br)
 - Bulgarian (`bg`): [ptodorov0/ra-language-bulgarian](https://github.com/ptodorov0/ra-language-bulgarian)
 - Catalan (`ca`): [sergioedo/ra-language-catalan](https://github.com/sergioedo/ra-language-catalan)
 - Chinese (`zh-TW`): [areyliu6/ra-language-chinese-traditional](https://github.com/areyliu6/ra-language-chinese-traditional)
@@ -171,6 +173,7 @@ You can find translation packages for the following languages:
 - Danish (`da`): [nikri/ra-language-danish](https://github.com/nikri/ra-language-danish)
 - Dutch (`nl`): [nickwaelkens/ra-language-dutch](https://github.com/nickwaelkens/ra-language-dutch)
 - English (`en`): [marmelab/ra-language-english](https://github.com/marmelab/react-admin/tree/master/packages/ra-language-english)
+- Estonian (`et`): [tui-ru/ra-language-estonian](https://github.com/tui-ru/ra-language-estonian)
 - Farsi (`fa`): [hamidfzm/ra-language-farsi](https://github.com/hamidfzm/ra-language-farsi)
 - Finnish (`fi`): [aikain/ra-language-finnish](https://github.com/aikain/ra-language-finnish)
 - French (`fr`): [marmelab/ra-language-french](https://github.com/marmelab/react-admin/tree/master/packages/ra-language-french)
@@ -180,9 +183,13 @@ You can find translation packages for the following languages:
 - Indonesian (`id`): [ronadi/ra-language-indonesian](https://github.com/ronadi/ra-language-indonesian)
 - Italian (`it`): [stefsava/ra-italian](https://github.com/stefsava/ra-italian)
 - Japanese (`ja`): [bicstone/ra-language-japanese](https://github.com/bicstone/ra-language-japanese)
+- Korean (`ko`): [acidsound/ra-language-korean](https://github.com/acidsound/ra-language-korean)
+- Latvian (`lv`): [tui-ru/ra-language-latvian](https://github.com/tui-ru/ra-language-latvian)
+- Lithuanian (`lt`): [tui-ru/ra-language-lithuanian](https://github.com/tui-ru/ra-language-lithuanian)
 - Norwegian (`no`): [jon-harald/ra-language-norwegian](https://github.com/jon-harald/ra-language-norwegian)
 - Polish (`pl`): [tskorupka/ra-language-polish](https://github.com/tskorupka/ra-language-polish)
-- Portuguese (`pt`): [marquesgabriel/ra-language-portuguese](https://github.com/marquesgabriel/ra-language-portuguese)
+- Portuguese (`pt`): [henriko202/ra-language-portuguese](https://github.com/henriko202/ra-language-portuguese)
+- Romanian (`ro`): [gyhaLabs/ra-language-romanian](https://github.com/gyhaLabs/ra-language-romanian)
 - Russian (`ru`): [klucherev/ra-language-russian](https://github.com/klucherev/ra-language-russian)
 - Slovak (`sk`): [zavadpe/ra-language-slovak](https://github.com/zavadpe/ra-language-slovak)
 - Spanish (`es`): [blackboxvision/ra-language-spanish](https://github.com/BlackBoxVision/ra-language-spanish)
@@ -208,7 +215,7 @@ If you want to contribute a new translation, feel free to submit a pull request 
 If you want to offer the ability to change locale at runtime, you must provide an `i18nProvider` that contains the messages for all possible locales:
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { Admin, Resource } from 'react-admin';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
@@ -232,7 +239,7 @@ export default App;
 Then, use the `useSetLocale` hook to change locale. For instance, the following component allows the user to switch the interface language between English and French:
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import Button from '@material-ui/core/Button';
 import { useSetLocale } from 'react-admin';
 
@@ -255,7 +262,8 @@ export default LocaleSwitcher;
 Your language switcher component probably needs to know the current locale, in order to disable/transform the button for the current language. The `useLocale` hook returns the current locale:
 
 ```jsx
-import React, { Component } from 'react';
+import * as React from 'react';
+import { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import { useLocale, useSetLocale } from 'react-admin';
 
@@ -314,7 +322,7 @@ const App = () => (
 React-admin provides a helper function named `resolveBrowserLocale()`, which detects the user's browser locale. To use it, simply pass the function as the `initialLocale` argument of `polyglotI18nProvider`.
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { 
     Admin,
     Resource,
@@ -367,7 +375,7 @@ The `message` returned by the `polyglotI18nProvider` function argument should be
 
 All core translations are in the `ra` namespace, in order to prevent collisions with your own custom translations. The root key used at runtime is determined by the value of the `locale` prop.
 
-The default messages are available [here](https://github.com/marmelab/react-admin/blob/master/packages/ra-language-english/index.js).
+The default messages are available [here](https://github.com/marmelab/react-admin/blob/master/packages/ra-language-english/src/index.ts).
 
 ## Translating Resource and Field Names
 
@@ -441,7 +449,7 @@ If you need to translate messages in your own components, React-admin provides a
 
 ```jsx
 // in src/MyHelloButton.js
-import React from 'react';
+import * as React from "react";
 import { useTranslate } from 'react-admin';
 
 const MyHelloButton = () => {
@@ -476,7 +484,8 @@ If you're stuck with class components, react-admin also exports a `withTranslate
 
 ```jsx
 // in src/MyHelloButton.js
-import React, { Component } from 'react';
+import * as React from 'react';
+import { Component } from 'react';
 import { withTranslate } from 'react-admin';
 
 class MyHelloButton extends Component {
@@ -564,7 +573,7 @@ export default {
 By default, react-admin translates the notification messages. You can pass variables for polyglot interpolation with custom notifications. For example:
 
 ```js
-notify('myroot.hello.world', 'info', { messageArgs: { name: 'Planet Earth' } });
+notify('myroot.hello.world', 'info', { name: 'Planet Earth' });
 ```
 
 Assuming you have the following in your custom messages:
@@ -581,6 +590,15 @@ const messages = {
     },
 };
 ```
+
+## Translating The Empty Page
+
+React-admin uses the keys `ra.page.empty` and `ra.page.invite` when displaying the page inviting the user to create the first record.
+
+If you want to override these messages in a specific resource you can add the following keys to your translation:
+
+- `resources.${resourceName}.empty` for the primary message (e.g. "No posts yet.")
+- `resources.${resourceName}.invite` for the message inviting the user to create one (e.g. "Do you want to create one?")
 
 ## Silencing Translation Warnings
 

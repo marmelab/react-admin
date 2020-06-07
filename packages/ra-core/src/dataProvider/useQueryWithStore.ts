@@ -1,8 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 
 import useDataProvider from './useDataProvider';
+import useVersion from '../controller/useVersion';
 import getFetchType from './getFetchType';
 import { useSafeSetState } from '../util/hooks';
 import { ReduxState } from '../types';
@@ -11,6 +12,14 @@ export interface Query {
     type: string;
     resource: string;
     payload: object;
+}
+
+export interface StateResult {
+    data?: any;
+    total?: number;
+    error?: any;
+    loading: boolean;
+    loaded: boolean;
 }
 
 export interface QueryOptions {
@@ -48,7 +57,12 @@ const defaultDataSelector = query => (state: ReduxState) => {
         : undefined;
 };
 
-const defaultTotalSelector = () => null;
+const defaultTotalSelector = query => (state: ReduxState) => {
+    const key = JSON.stringify({ ...query, type: getFetchType(query.type) });
+    return state.admin.customQueries[key]
+        ? state.admin.customQueries[key].total
+        : null;
+};
 
 /**
  * Fetch the data provider through Redux, return the value from the store.
@@ -70,8 +84,8 @@ const defaultTotalSelector = () => null;
  * @param {string} options.action Redux action type
  * @param {Function} options.onSuccess Side effect function to be executed upon success of failure, e.g. { onSuccess: response => refresh() } }
  * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) } }
- * @param {function} dataSelector Redux selector to get the result. Required.
- * @param {function} totalSelector Redux selector to get the total (optional, only for LIST queries)
+ * @param {Function} dataSelector Redux selector to get the result. Required.
+ * @param {Function} totalSelector Redux selector to get the total (optional, only for LIST queries)
  *
  * @returns The current request state. Destructure as { data, total, error, loading, loaded }.
  *
@@ -98,7 +112,7 @@ const useQueryWithStore = (
     query: Query,
     options: QueryOptions = { action: 'CUSTOM_QUERY' },
     dataSelector: (state: ReduxState) => any = defaultDataSelector(query),
-    totalSelector: (state: ReduxState) => number = defaultTotalSelector
+    totalSelector: (state: ReduxState) => number = defaultTotalSelector(query)
 ): {
     data?: any;
     total?: number;
@@ -107,29 +121,60 @@ const useQueryWithStore = (
     loaded: boolean;
 } => {
     const { type, resource, payload } = query;
+    const version = useVersion(); // used to allow force reload
+    const requestSignature = JSON.stringify({ query, options, version });
+    const requestSignatureRef = useRef(requestSignature);
     const data = useSelector(dataSelector);
     const total = useSelector(totalSelector);
-    const [state, setState] = useSafeSetState({
+    const [state, setState]: [
+        StateResult,
+        (StateResult) => void
+    ] = useSafeSetState({
         data,
         total,
         error: null,
         loading: true,
         loaded: data !== undefined && !isEmptyList(data),
     });
-    if (!isEqual(state.data, data) || state.total !== total) {
-        if (isNaN(total)) {
-            console.error(
-                'Total from response is not a number. Please check your dataProvider or the API.'
-            );
-        } else {
+
+    useEffect(() => {
+        if (requestSignatureRef.current !== requestSignature) {
+            // request has changed, reset the loading state
+            requestSignatureRef.current = requestSignature;
             setState({
-                ...state,
                 data,
                 total,
-                loaded: true,
+                error: null,
+                loading: true,
+                loaded: data !== undefined && !isEmptyList(data),
             });
         }
-    }
+    }, [data, requestSignature, setState, total]);
+
+    useEffect(() => {
+        const signaturesAreEqual =
+            requestSignatureRef.current === requestSignature;
+
+        if (
+            signaturesAreEqual &&
+            (!isEqual(state.data, data) || state.total !== total)
+        ) {
+            // the dataProvider response arrived in the Redux store
+            if (typeof total !== 'undefined' && isNaN(total)) {
+                console.error(
+                    'Total from response is not a number. Please check your dataProvider or the API.'
+                );
+            } else {
+                setState(prevState => ({
+                    ...prevState,
+                    data,
+                    total,
+                    loaded: true,
+                }));
+            }
+        }
+    }, [data, requestSignature, setState, state, total]);
+
     const dataProvider = useDataProvider();
     useEffect(() => {
         setState(prevState => ({ ...prevState, loading: true }));
@@ -142,6 +187,10 @@ const useQueryWithStore = (
                 // through the data and total selectors.
                 // In addition, if the query is optimistic, the response
                 // will be empty, so it should not be used at all.
+                if (requestSignature !== requestSignatureRef.current) {
+                    return;
+                }
+
                 setState(prevState => ({
                     ...prevState,
                     error: null,
@@ -150,6 +199,9 @@ const useQueryWithStore = (
                 }));
             })
             .catch(error => {
+                if (requestSignature !== requestSignatureRef.current) {
+                    return;
+                }
                 setState({
                     error,
                     loading: false,
@@ -157,7 +209,7 @@ const useQueryWithStore = (
                 });
             });
         // deep equality, see https://github.com/facebook/react/issues/14476#issuecomment-471199055
-    }, [JSON.stringify({ query, options })]); // eslint-disable-line
+    }, [requestSignature]); // eslint-disable-line
 
     return state;
 };

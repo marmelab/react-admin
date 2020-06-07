@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import mediaQuery from 'css-mediaquery';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';

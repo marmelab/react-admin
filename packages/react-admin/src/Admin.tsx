@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { AdminProps } from 'ra-core';
 
 import AdminContext from './AdminContext';
@@ -51,7 +52,8 @@ import AdminUI from './AdminUI';
  * // you can't use <Admin>. But as it delegates to sub components,
  * // it's relatively straightforward to replace it:
  *
- * import React, { useEffect, useState } from 'react';
+ * import * as React from 'react';
+import { useEffect, useState } from 'react';
  * import {
  *     AdminContext,
  *     AdminUI,
@@ -104,7 +106,7 @@ const Admin: FunctionComponent<AdminProps> = ({
     theme,
     title = 'React Admin',
 }) => {
-    if (appLayout) {
+    if (appLayout && process.env.NODE_ENV !== 'production') {
         console.warn(
             'You are using deprecated prop "appLayout", it was replaced by "layout", see https://github.com/marmelab/react-admin/issues/2918'
         );
@@ -114,7 +116,7 @@ const Admin: FunctionComponent<AdminProps> = ({
             'You passed true to the loginPage prop. You must either pass false to disable it or a component class to customize it'
         );
     }
-    if (locale) {
+    if (locale && process.env.NODE_ENV !== 'production') {
         console.warn(
             'You are using deprecated prop "locale". You must now pass the initial locale to your i18nProvider'
         );

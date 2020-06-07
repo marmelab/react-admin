@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import inflection from 'inflection';
 
 import getValuesFromRecords from './getValuesFromRecords';
@@ -71,8 +71,8 @@ const hasType = (type, types) => typeof types[type] !== 'undefined';
  *     );
  *     // null
  *
- * @param {String} name Property name, e.g. 'date_of_birth'
- * @param {[mixed]} values an array of values from which to determine the type, e.g. [12, 34.4, 43]
+ * @param {string} name Property name, e.g. 'date_of_birth'
+ * @param {any[]} values an array of values from which to determine the type, e.g. [12, 34.4, 43]
  * @param {Object} types A set of components indexed by type. The string type is the only required one
  *
  * @return InferredElement

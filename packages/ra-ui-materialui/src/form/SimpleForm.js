@@ -1,4 +1,5 @@
-import React, { Children } from 'react';
+import * as React from 'react';
+import { Children } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { FormWithRedirect } from 'ra-core';
@@ -14,7 +15,7 @@ import CardContentInner from '../layout/CardContentInner';
  *
  * @example
  *
- * import React from 'react';
+ * import * as React from "react";
  * import { Create, Edit, SimpleForm, TextInput, DateInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton } from 'react-admin';
  * import RichTextInput from 'ra-input-rich-text';
  *
@@ -29,10 +30,10 @@ import CardContentInner from '../layout/CardContentInner';
  *     </Create>
  * );
  *
- * @typedef {object} Props the props you can use (other props are injected by Create or Edit)
+ * @typedef {Object} Props the props you can use (other props are injected by Create or Edit)
  * @prop {ReactElement[]} children Input elements
- * @prop {object} initialValues
- * @prop {function} validate
+ * @prop {Object} initialValues
+ * @prop {Function} validate
  * @prop {boolean} submitOnEnter
  * @prop {string} redirect
  * @prop {ReactElement} toolbar The element displayed at the bottom of the form, contzining the SaveButton
@@ -61,6 +62,7 @@ SimpleForm.propTypes = {
     save: PropTypes.func,
     saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     submitOnEnter: PropTypes.bool,
+    toolbar: PropTypes.element,
     undoable: PropTypes.bool,
     validate: PropTypes.func,
     version: PropTypes.number,
@@ -175,6 +177,8 @@ const sanitizeRestProps = ({
     initialize,
     initialized,
     initialValues,
+    modifiedSinceLastSubmit,
+    modifiedsincelastsubmit,
     pristine,
     pure,
     redirect,
@@ -197,7 +201,7 @@ const sanitizeRestProps = ({
     valid,
     validate,
     validating,
-    _reduxForm,
+    __versions,
     ...props
 }) => props;
 

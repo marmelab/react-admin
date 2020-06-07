@@ -15,7 +15,7 @@ Here is an example customizing an `EditButton` component inside a `Datagrid`, us
 
 {% raw %}
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -50,7 +50,7 @@ Here is an example using the `classes` property of the `Filter` and `List` compo
 
 {% raw %}
 ```jsx
-import React from 'react';
+import * as React from "react";
 import {
     BooleanField,
     Datagrid,
@@ -146,7 +146,7 @@ Sometimes you want the format to depend on the value. The following example show
 
 {% raw %}
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
@@ -189,7 +189,7 @@ Furthermore, you may extract this highlighting strategy into an Higher Order Com
 
 {% raw %}
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
@@ -254,7 +254,7 @@ Here is an example for a responsive list of posts, displaying a `SimpleList` on 
 
 ```jsx
 // in src/posts.js
-import React from 'react';
+import * as React from "react";
 import { useMediaQuery } from '@material-ui/core';
 import { List, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
@@ -413,7 +413,7 @@ export default MyLayout;
 You can replace the default user menu by your own by setting the `userMenu` prop of the `<AppBar>` component. For instance, to add custom menu items, just decorate the default `<UserMenu>` by adding children to it:
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { AppBar, UserMenu, MenuItemLink } from 'react-admin';
 import SettingsIcon from '@material-ui/icons/Settings';
 
@@ -463,9 +463,9 @@ const MyCustomIcon = () => {
     )
 };
 
-const MyUserMenu = props => (<UserMenu {...props} icon={MyCustomIcon} />);
+const MyUserMenu = props => (<UserMenu {...props} icon={<MyCustomIcon />} />);
 
-const MyAppBar = props => <AppBar {...props} userMenu={MyUserMenu} />;
+const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
 ```
 {% endraw %}
 
@@ -518,7 +518,8 @@ For more custom layouts, write a component from scratch. It must contain a `{chi
 
 ```jsx
 // in src/MyLayout.js
-import React, { useEffect } from 'react';
+import * as React from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
@@ -605,6 +606,8 @@ MyLayout.propTypes = {
 export default MyLayout;
 ```
 
+**Tip**: Don't forget to render a `<Notification>` component in your custom layout, otherwise the undoable updates will never be sent to the server. That's because part of the "undo" logic of react-admin lies in the `<Notification>` component.  
+
 ## Customizing the AppBar Content
 
 By default, the react-admin `<AppBar>` component displays the page title. You can override this default by passing children to `<AppBar>` - they will replace the default title. And if you still want to include the page title, make sure you include an element with id `react-admin-title` in the top bar (this uses [React Portals](https://reactjs.org/docs/portals.html)). 
@@ -613,7 +616,7 @@ Here is an example customization for `<AppBar>` to include a company logo in the
 
 ```jsx
 // in src/MyAppBar.js
-import React from 'react';
+import * as React from "react";
 import { AppBar } from 'react-admin';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -655,7 +658,7 @@ To use this custom `MyAppBar` component, pass it as prop to a custom `Layout`, a
 
 ```jsx
 // in src/MyLayout.js
-import React from 'react';
+import * as React from "react";
 import { Layout } from 'react-admin';
 import MyAppBar from './MyAppBar';
 
@@ -679,6 +682,9 @@ const App = () => (
 
 ![custom AppBar](./img/custom_appbar.png)
 
+
+**Tip**: You can change the color of the `<AppBar>` by setting the `color` prop to `default`, `inherit`, `primary`, `secondary` or `transparent`. The default value is `secondary`.
+
 ## Replacing The AppBar
 
 For more drastic changes of the top component, you will probably want to create an `<AppBar>` from scratch instead of just passing children to react-admin's `<AppBar>`. 
@@ -687,7 +693,7 @@ By default, React-admin uses [Material-ui's `<AppBar>` component](https://materi
 
 ```jsx
 // in src/MyAppBar.js
-import React from 'react';
+import * as React from "react";
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -713,11 +719,12 @@ If you want to add or remove menu items, for instance to link to non-resources p
 
 ```jsx
 // in src/Menu.js
-import React, { createElement } from 'react';
+import * as React from 'react';
+import { createElement } from 'react';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@material-ui/core';
 import { MenuItemLink, getResources } from 'react-admin';
-import { withRouter } from 'react-router-dom';
+import DefaultIcon from '@material-ui/icons/ViewList';
 import LabelIcon from '@material-ui/icons/Label';
 
 const Menu = ({ onMenuClick, logout }) => {
@@ -730,8 +737,13 @@ const Menu = ({ onMenuClick, logout }) => {
                 <MenuItemLink
                     key={resource.name}
                     to={`/${resource.name}`}
-                    primaryText={resource.options && resource.options.label || resource.name}
-                    leftIcon={createElement(resource.icon)}
+                    primaryText={
+                        (resource.options && resource.options.label) ||
+                        resource.name
+                    }
+                    leftIcon={
+                        resource.icon ? <resource.icon /> : <DefaultIcon />
+                    }
                     onClick={onMenuClick}
                     sidebarIsOpen={open}
                 />
@@ -748,7 +760,7 @@ const Menu = ({ onMenuClick, logout }) => {
     );
 };
 
-export default withRouter(Menu);
+export default Menu;
 ```
 
 **Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views.
@@ -800,7 +812,8 @@ If the default active style does not suit your tastes, you can override it by pa
 
 ```jsx
 // in src/Menu.js
-import React, { createElement } from 'react';
+import * as React from 'react';
+import { createElement } from 'react';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@material-ui/core';
 import { MenuItemLink, getResources } from 'react-admin';
@@ -842,15 +855,39 @@ export default withRouter(Menu);
 
 ### Changing the Background Image
 
-By default, the login page displays a random background image changing every day. If you want to change that background image, you can use the default Login page component and pass an image URL as the `backgroundImage` prop.
+By default, the login page displays a gradient background. If you want to change the background, you can use the default Login page component and pass an image URL as the `backgroundImage` prop.
 
 ```jsx
 import { Admin, Login } from 'react-admin';
 
-const MyLoginPage = () => <Login backgroundImage="/background.jpg" />;
+const MyLoginPage = () => (
+    <Login
+        // A random image that changes everyday
+        backgroundImage="https://source.unsplash.com/random/1600x900/daily"
+    />
+);
 
 const App = () => (
     <Admin loginPage={MyLoginPage}>
+        // ...
+    </Admin>
+);
+```
+
+## Using a Custom Logout Button
+
+### Changing the Icon
+
+It is possible to use a completely [custom logout button](./Authentication.md#the-datagrid-component) or you can simply override some properties of the default button. If you want to change the icon, you can use the default `<Logout>` component and pass a different icon as the `icon` prop.
+
+```jsx
+import { Admin, Logout } from 'react-admin';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+
+const MyLogoutButton = props => <Logout {...props} icon={<ExitToAppIcon/>} />;
+
+const App = () => (
+    <Admin logoutButton={MyLogoutButton}>
         // ...
     </Admin>
 );
@@ -864,7 +901,7 @@ You can override the notification component, for instance to change the notifica
 // in src/MyNotification.js
 import { Notification } from 'react-admin';
 
-const MyNotification = props => <Notification {...props}autoHideDuration={5000} />;
+const MyNotification = props => <Notification {...props} autoHideDuration={5000} />;
 
 export default MyNotification;
 ```
@@ -902,7 +939,7 @@ Whenever a client-side error happens in react-admin, the user sees a default err
 
 ```jsx
 // in src/MyError.js
-import React from 'react';
+import * as React from "react";
 import Button from '@material-ui/core/Button';
 import ErrorIcon from '@material-ui/icons/Report';
 import History from '@material-ui/icons/History';
@@ -972,10 +1009,10 @@ Display a circular progress component with optional messages. Display the same l
 
 Supported props:
 
-Prop | Type | Default | Descriptions
----|---|---|---
-`loadingPrimary` |`String` | `ra.page.loading` | Label to use for primary loading message
-`loadingSecondary` |`String` | `ra.message.loading` | Label to use for secondary loading message
+| Prop               | Type     | Default              | Descriptions                               |
+| ------------------ | -------- | -------------------- | ------------------------------------------ |
+| `loadingPrimary`   | `String` | `ra.page.loading`    | Label to use for primary loading message   |
+| `loadingSecondary` | `String` | `ra.message.loading` | Label to use for secondary loading message |
 
 Usage:
 

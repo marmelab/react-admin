@@ -65,6 +65,11 @@ const prepareParams = (params, queryType, introspectionResults) => {
             return;
         }
 
+        if (param instanceof Date) {
+            result[key] = param.toISOString();
+            return;
+        }
+
         if (
             param instanceof Object &&
             !Array.isArray(param) &&
@@ -79,7 +84,11 @@ const prepareParams = (params, queryType, introspectionResults) => {
             return;
         }
 
-        if (param instanceof Object && !Array.isArray(param)) {
+        if (
+            param instanceof Object &&
+            !param instanceof Date &&
+            !Array.isArray(param)
+        ) {
             result[key] = prepareParams(param, queryType, introspectionResults);
             return;
         }
@@ -261,14 +270,18 @@ export default introspectionResults => (
                 filter: { ids: preparedParams.ids },
             };
         case GET_MANY_REFERENCE: {
-            const parts = preparedParams.target.split('.');
             let variables = buildGetListVariables(introspectionResults)(
                 resource,
                 aorFetchType,
                 preparedParams,
                 queryType
             );
-            variables.filter[`${parts[0]}Id`] = preparedParams.id;
+
+            variables.filter = {
+                ...variables.filter,
+                [preparedParams.target]: preparedParams.id,
+            };
+
             return variables;
         }
         case GET_ONE:

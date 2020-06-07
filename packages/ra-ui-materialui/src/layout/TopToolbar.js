@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import Toolbar from '@material-ui/core/Toolbar';
 import { makeStyles } from '@material-ui/core/styles';
@@ -29,8 +29,9 @@ const useStyles = makeStyles(
     { name: 'RaTopToolbar' }
 );
 
-const TopToolbar = ({ className, children, ...rest }) => {
-    const classes = useStyles();
+const TopToolbar = props => {
+    const { className, children, ...rest } = props;
+    const classes = useStyles(props);
     return (
         <Toolbar className={classnames(classes.root, className)} {...rest}>
             {children}

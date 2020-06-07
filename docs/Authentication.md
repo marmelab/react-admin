@@ -212,7 +212,7 @@ For all these cases, it's up to you to implement your own `LoginPage` component,
 
 ```jsx
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 import { Admin } from 'react-admin';
 
 import MyLoginPage from './MyLoginPage';
@@ -229,8 +229,9 @@ Use the `useLogin` and `useLogout` hooks in your custom `LoginPage` and `LogoutB
 
 ```jsx
 // in src/MyLoginPage.js
-import React, { useState } from 'react';
-import { useLogin, useNotify } from 'react-admin';
+import * as React from 'react';
+import { useState } from 'react';
+import { useLogin, useNotify, Notification } from 'react-admin';
 import { ThemeProvider } from '@material-ui/styles';
 
 const MyLoginPage = ({ theme }) => {
@@ -250,6 +251,7 @@ const MyLoginPage = ({ theme }) => {
                 <input name="email" type="email" value={email} onChange={e => setEmail(e.target.value)} /> 
                 <input name="password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
             </form>
+            <Notification />
         </ThemeProvider>
     );
 };
@@ -257,7 +259,8 @@ const MyLoginPage = ({ theme }) => {
 export default MyLoginPage;
 
 // in src/MyLogoutButton.js
-import React, { forwardRef } from 'react';
+import * as React from 'react';
+import { forwardRef } from 'react';
 import { useLogout } from 'react-admin';
 import MenuItem from '@material-ui/core/MenuItem';
 import ExitIcon from '@material-ui/icons/PowerSettingsNew';
@@ -289,7 +292,7 @@ export default MyLogoutButton;
 
 ## `useAuthenticated()` Hook
 
-If you add [custom pages](./Actions.md), of if you [create an admin app from scratch](./CustomApp.md), you may need to secure access to pages manually. That's the purpose of the `useAuthenticated()` hook, which calls the `authProvider.checkAuth()` method on mount, and redirects to login if it returns a rejected Promise.
+If you add [custom pages](./Actions.md), or if you [create an admin app from scratch](./CustomApp.md), you may need to secure access to pages manually. That's the purpose of the `useAuthenticated()` hook, which calls the `authProvider.checkAuth()` method on mount, and redirects to login if it returns a rejected Promise.
 
 ```jsx
 // in src/MyPage.js

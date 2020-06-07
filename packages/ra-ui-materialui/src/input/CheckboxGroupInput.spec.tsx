@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import expect from 'expect';
 import CheckboxGroupInput from './CheckboxGroupInput';
 import { render, cleanup, fireEvent } from '@testing-library/react';
@@ -147,7 +147,7 @@ describe('<CheckboxGroupInput />', () => {
                 render={() => (
                     <CheckboxGroupInput
                         {...defaultProps}
-                        optionText={<Foobar />}
+                        optionText={<Foobar record={{}} />}
                         choices={[{ id: 'foo', foobar: 'Bar' }]}
                     />
                 )}
@@ -223,17 +223,21 @@ describe('<CheckboxGroupInput />', () => {
                     render={() => <CheckboxGroupInput {...defaultProps} />}
                 />
             );
-            expect(container.querySelector('p')).toBeNull();
+            expect(container.querySelector('p').innerHTML).toBe(
+                '<span>​</span>'
+            );
         });
 
-        it('should not be displayed if field has been touched but is valid', () => {
+        it('should be empty if field has been touched but is valid', () => {
             const { container } = render(
                 <Form
                     onSubmit={jest.fn}
                     render={() => <CheckboxGroupInput {...defaultProps} />}
                 />
             );
-            expect(container.querySelector('p')).toBeNull();
+            expect(container.querySelector('p').innerHTML).toBe(
+                '<span>​</span>'
+            );
         });
 
         it('should be displayed if field has been touched and is invalid', () => {

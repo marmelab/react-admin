@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import IconButton from '@material-ui/core/IconButton';
 import ActionHide from '@material-ui/icons/HighlightOff';
@@ -17,16 +17,10 @@ const useStyles = makeStyles(
     { name: 'RaFilterFormInput' }
 );
 
-const FilterFormInput = ({
-    filterElement,
-    handleHide,
-    classes: classesOverride,
-    resource,
-    variant,
-    margin,
-}) => {
+const FilterFormInput = props => {
+    const { filterElement, handleHide, resource, variant, margin } = props;
     const translate = useTranslate();
-    const classes = useStyles({ classes: classesOverride });
+    const classes = useStyles(props);
     return (
         <div
             data-source={filterElement.props.source}
@@ -43,11 +37,17 @@ const FilterFormInput = ({
                 </IconButton>
             )}
             {React.cloneElement(filterElement, {
-                allowEmpty: true,
+                allowEmpty:
+                    filterElement.props.allowEmpty === undefined
+                        ? true
+                        : filterElement.props.allowEmpty,
                 resource,
                 record: emptyRecord,
                 variant,
                 margin,
+                helperText: false,
+                // ignore defaultValue in Field because it was already set in Form (via mergedInitialValuesWithDefaultValues)
+                defaultValue: undefined,
             })}
             <div className={classes.spacer}>&nbsp;</div>
         </div>

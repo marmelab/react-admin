@@ -10,6 +10,15 @@ import {
     useRefresh,
     RedirectionSideEffect,
 } from '../sideEffect';
+import {
+    OnSuccess,
+    SetOnSuccess,
+    OnFailure,
+    SetOnFailure,
+    TransformData,
+    SetTransformData,
+    useSaveModifiers,
+} from './saveModifiers';
 import { useGetOne, useUpdate } from '../dataProvider';
 import { useTranslate } from '../i18n';
 import { CRUD_GET_ONE, CRUD_UPDATE } from '../actions';
@@ -23,6 +32,9 @@ export interface EditProps {
     id: Identifier;
     resource: string;
     undoable?: boolean;
+    onSuccess?: OnSuccess;
+    onFailure?: OnFailure;
+    transform?: TransformData;
     [key: string]: any;
 }
 
@@ -35,13 +47,18 @@ export interface EditControllerProps {
         data: Record,
         redirect?: RedirectionSideEffect,
         callbacks?: {
-            onSuccess: () => void;
-            onFailure: (error: string | { message?: string }) => void;
+            onSuccess?: OnSuccess;
+            onFailure?: OnFailure;
+            transform?: TransformData;
         }
     ) => void;
+    setOnSuccess: SetOnSuccess;
+    setOnFailure: SetOnFailure;
+    setTransform: SetTransformData;
     resource: string;
     basePath: string;
     record?: Record;
+    redirect: RedirectionSideEffect;
     version: number;
     successMessage?: string;
 }
@@ -65,14 +82,38 @@ export interface EditControllerProps {
  */
 const useEditController = (props: EditProps): EditControllerProps => {
     useCheckMinimumRequiredProps('Edit', ['basePath', 'resource'], props);
-    const { basePath, id, resource, successMessage, undoable = true } = props;
+    const {
+        basePath,
+        id,
+        resource,
+        successMessage,
+        undoable = true,
+        onSuccess,
+        onFailure,
+        transform,
+    } = props;
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();
     const refresh = useRefresh();
     const version = useVersion();
+
+    if (process.env.NODE_ENV !== 'production' && successMessage) {
+        console.log(
+            '<Edit successMessage> prop is deprecated, use the onSuccess prop instead.'
+        );
+    }
+
+    const {
+        onSuccessRef,
+        setOnSuccess,
+        onFailureRef,
+        setOnFailure,
+        transformRef,
+        setTransform,
+    } = useSaveModifiers({ onSuccess, onFailure, transform });
+
     const { data: record, loading, loaded } = useGetOne(resource, id, {
-        version, // used to force reload
         action: CRUD_GET_ONE,
         onFailure: () => {
             notify('ra.notification.item_doesnt_exist', 'warning');
@@ -101,40 +142,73 @@ const useEditController = (props: EditProps): EditControllerProps => {
     const save = useCallback(
         (
             data: Partial<Record>,
-            redirectTo = 'list',
-            { onSuccess, onFailure } = {}
-        ) =>
-            update(
-                { payload: { data } },
-                {
-                    action: CRUD_UPDATE,
-                    onSuccess: onSuccess
-                        ? onSuccess
-                        : () => {
-                              notify(
-                                  successMessage || 'ra.notification.updated',
-                                  'info',
-                                  {
-                                      smart_count: 1,
-                                  },
-                                  undoable
-                              );
-                              redirect(redirectTo, basePath, data.id, data);
-                          },
-                    onFailure: onFailure
-                        ? onFailure
-                        : error =>
-                              notify(
-                                  typeof error === 'string'
-                                      ? error
-                                      : error.message ||
-                                            'ra.notification.http_error',
-                                  'warning'
-                              ),
-                    undoable,
-                }
-            ),
-        [basePath, notify, redirect, undoable, update, successMessage]
+            redirectTo = DefaultRedirect,
+            {
+                onSuccess: onSuccessFromSave,
+                onFailure: onFailureFromSave,
+                transform: transformFromSave,
+            } = {}
+        ) => {
+            Promise.resolve(
+                transformFromSave
+                    ? transformFromSave(data)
+                    : transformRef.current
+                    ? transformRef.current(data)
+                    : data
+            ).then(data =>
+                update(
+                    { payload: { data } },
+                    {
+                        action: CRUD_UPDATE,
+                        onSuccess: onSuccessFromSave
+                            ? onSuccessFromSave
+                            : onSuccessRef.current
+                            ? onSuccessRef.current
+                            : () => {
+                                  notify(
+                                      successMessage ||
+                                          'ra.notification.updated',
+                                      'info',
+                                      {
+                                          smart_count: 1,
+                                      },
+                                      undoable
+                                  );
+                                  redirect(redirectTo, basePath, data.id, data);
+                              },
+                        onFailure: onFailureFromSave
+                            ? onFailureFromSave
+                            : onFailureRef.current
+                            ? onFailureRef.current
+                            : error => {
+                                  notify(
+                                      typeof error === 'string'
+                                          ? error
+                                          : error.message ||
+                                                'ra.notification.http_error',
+                                      'warning'
+                                  );
+                                  if (undoable) {
+                                      refresh();
+                                  }
+                              },
+                        undoable,
+                    }
+                )
+            );
+        },
+        [
+            transformRef,
+            update,
+            onSuccessRef,
+            onFailureRef,
+            undoable,
+            notify,
+            successMessage,
+            redirect,
+            basePath,
+            refresh,
+        ]
     );
 
     return {
@@ -143,11 +217,17 @@ const useEditController = (props: EditProps): EditControllerProps => {
         saving,
         defaultTitle,
         save,
+        setOnSuccess,
+        setOnFailure,
+        setTransform,
         resource,
         basePath,
         record,
+        redirect: DefaultRedirect,
         version,
     };
 };
 
 export default useEditController;
+
+const DefaultRedirect = 'list';
