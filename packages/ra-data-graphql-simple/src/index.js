@@ -1,6 +1,6 @@
 import merge from 'lodash/merge';
 import buildDataProvider from 'ra-data-graphql';
-import { DELETE, DELETE_MANY, UPDATE, UPDATE_MANY } from 'ra-core';
+import { DELETE, UPDATE } from 'ra-core';
 
 import defaultBuildQuery from './buildQuery';
 const defaultOptions = {
@@ -12,10 +12,11 @@ export const buildQuery = defaultBuildQuery;
 export default options => {
     return buildDataProvider(merge({}, defaultOptions, options)).then(
         defaultDataProvider => {
-            return (fetchType, resource, params) => {
-                // This provider does not support multiple deletions so instead we send multiple DELETE requests
+            return {
+                ...defaultDataProvider,
+                // This provider does not support multiple deletions so instead we send multiple UPDATE requests
                 // This can be optimized using the apollo-link-batch-http link
-                if (fetchType === DELETE_MANY) {
+                deleteMany: (resource, params) => {
                     const { ids, ...otherParams } = params;
                     return Promise.all(
                         ids.map(id =>
@@ -32,10 +33,10 @@ export default options => {
 
                         return { data };
                     });
-                }
-                // This provider does not support multiple deletions so instead we send multiple UPDATE requests
+                },
+                // This provider does not support multiple updates so instead we send multiple UPDATE requests
                 // This can be optimized using the apollo-link-batch-http link
-                if (fetchType === UPDATE_MANY) {
+                updateMany: (resource, params) => {
                     const { ids, data, ...otherParams } = params;
                     return Promise.all(
                         ids.map(id =>
@@ -55,9 +56,7 @@ export default options => {
 
                         return { data };
                     });
-                }
-
-                return defaultDataProvider(fetchType, resource, params);
+                },
             };
         }
     );

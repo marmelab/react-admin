@@ -5,9 +5,9 @@ import {
     IntrospectionQuery,
     IntrospectionType,
     getIntrospectionQuery,
+    IntrospectionSchema,
 } from 'graphql';
 import gql from 'graphql-tag';
-import { IntrospectionSchema } from 'graphql/utilities/introspectionQuery';
 import { GET_LIST, GET_ONE, FetchType } from 'ra-core';
 
 import { ALL_TYPES } from './constants';
