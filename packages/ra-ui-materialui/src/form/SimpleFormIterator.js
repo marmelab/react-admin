@@ -138,12 +138,14 @@ const SimpleFormIterator = props => {
                         {...TransitionProps}
                     >
                         <li className={classes.line}>
-                        {!disableIndex && ( <Typography
-                                variant="body1"
-                                className={classes.index}
-                            >
-                                {index + 1})
-                            </Typography>
+                            {!disableIndex && (
+                                <Typography
+                                    variant="body1"
+                                    className={classes.index}
+                                >
+                                    {index + 1}
+                                </Typography>
+                            )}
                             <section className={classes.form}>
                                 {Children.map(children, (input, index2) =>
                                     isValidElement(input) ? (
@@ -153,7 +155,9 @@ const SimpleFormIterator = props => {
                                             }
                                             input={cloneElement(input, {
                                                 source: input.props.source
-                                                    ? `${member}.${input.props.source}`
+                                                    ? `${member}.${
+                                                          input.props.source
+                                                      }`
                                                     : member,
                                                 index: input.props.source
                                                     ? undefined
@@ -162,7 +166,10 @@ const SimpleFormIterator = props => {
                                                     typeof input.props.label ===
                                                     'undefined'
                                                         ? input.props.source
-                                                            ? `resources.${resource}.fields.${input.props.source}`
+                                                            ? `resources.${resource}.fields.${
+                                                                  input.props
+                                                                      .source
+                                                              }`
                                                             : undefined
                                                         : input.props.label,
                                             })}
