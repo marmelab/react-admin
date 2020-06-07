@@ -8,7 +8,6 @@ import {
     UPDATE_MANY,
     DELETE,
     DELETE_MANY,
-    FetchType,
 } from 'ra-core';
 
 export const QUERY_TYPES = [GET_LIST, GET_MANY, GET_MANY_REFERENCE, GET_ONE];
@@ -19,4 +18,4 @@ export const MUTATION_TYPES = [
     UPDATE_MANY,
     DELETE_MANY,
 ];
-export const ALL_TYPES = [...QUERY_TYPES, ...MUTATION_TYPES] as FetchType[];
+export const ALL_TYPES = [...QUERY_TYPES, ...MUTATION_TYPES] as string[];
