@@ -134,8 +134,8 @@ export const ArrayField: FunctionComponent<
         fieldKey,
         ...rest
     }) => {
-        const [ids, setIds] = useState();
-        const [data, setData] = useState();
+        const [ids, setIds] = useState(initialState.ids);
+        const [data, setData] = useState(initialState.data);
 
         useEffect(() => {
             const { ids, data } = getDataAndIds(record, source, fieldKey);
