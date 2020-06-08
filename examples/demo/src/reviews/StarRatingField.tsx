@@ -9,6 +9,7 @@ const useStyles = makeStyles({
     root: {
         opacity: 0.87,
         whiteSpace: 'nowrap',
+        display: 'flex',
     },
     large: {
         width: 20,
@@ -30,7 +31,7 @@ const StarRatingField: FC<FieldProps & OwnProps> = ({
 }) => {
     const classes = useStyles();
     return record ? (
-        <span>
+        <span className={classes.root}>
             {Array(record.rating)
                 .fill(true)
                 .map((_, i) => (

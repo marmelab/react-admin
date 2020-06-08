@@ -1,5 +1,26 @@
 # Changelog
 
+## v3.6.0
+
+* Add `onSuccess`, `onFailure` and `transform` to `<Create>`, `<Edit>` and `<SaveButton>` ([4881](https://github.com/marmelab/react-admin/pull/4881)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to deselect rows in one click in `<BulkActionsToolbar>` ([4859](https://github.com/marmelab/react-admin/pull/4859)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to style pagination buttons ([4891](https://github.com/marmelab/react-admin/pull/4891)) ([djhi](https://github.com/djhi))
+* Add ability to create custom `<DeleteButton>` views without rewriting the logic ([4858](https://github.com/marmelab/react-admin/pull/4858)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to use a React element as `<Field>` label ([4852](https://github.com/marmelab/react-admin/pull/4852)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `useListParams` hook to allow easier customization of List pages ([4843](https://github.com/marmelab/react-admin/pull/4843)) ([WiXSL](https://github.com/WiXSL))
+* Add support for `download`, `rel`, and `ping` attributes in `<FileField>` ([4798](https://github.com/marmelab/react-admin/pull/4798)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to use pagination and sort in `GET_MANY_REFERENCE` for `ra-data-graphcool` dataProvider ([4778](https://github.com/marmelab/react-admin/pull/4778)) ([byymster](https://github.com/byymster))
+* Add feature to disable `<SaveButton>` if the Form is pristine ([4773](https://github.com/marmelab/react-admin/pull/4773)) ([WiXSL](https://github.com/WiXSL))
+* Add `sortByOrder` prop to `<Field>` components to allow specifying the default sort order ([4518](https://github.com/marmelab/react-admin/pull/4518)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Add support for `variant=outlined` in  `<SelectArrayInput>` ([4511](https://github.com/marmelab/react-admin/pull/4511)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Add explicit error when `useGetOne` is called for an undefined resource ([4430](https://github.com/marmelab/react-admin/pull/4430)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<EmailField>` doesn't use the theme typography ([4866](https://github.com/marmelab/react-admin/pull/4866)) ([WiXSL](https://github.com/WiXSL))
+* Fix deprecated usage of `recompose` methods, feplaced by `React.memo` ([4786](https://github.com/marmelab/react-admin/pull/4786)) ([WiXSL](https://github.com/WiXSL))
+* Convert the demo `<GridList>` to TypeScript ([4870](https://github.com/marmelab/react-admin/pull/4870)) ([MohammedFaragallah](https://github.com/MohammedFaragallah))
+* Convert products demo example to TypeScript ([4758](https://github.com/marmelab/react-admin/pull/4758)) ([MohammedFaragallah](https://github.com/MohammedFaragallah))
+* Convert `<ArrayField>` component to function component. ([4536](https://github.com/marmelab/react-admin/pull/4536)) ([WiXSL](https://github.com/WiXSL))
+* Convert demo example to TypeScript ([4516](https://github.com/marmelab/react-admin/pull/4516)) ([josephktcheung](https://github.com/josephktcheung))
+
 ## v3.5.6
 
 * Fix default margin in `<AutocompleteArrayInput>` ([4892](https://github.com/marmelab/react-admin/pull/4892)) ([bard](https://github.com/bard))
