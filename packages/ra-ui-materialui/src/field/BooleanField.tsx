@@ -17,11 +17,16 @@ interface Props extends FieldProps {
     valueLabelFalse?: string;
 }
 
-const useStyles = makeStyles({
-    root: {
-        display: 'flex',
+const useStyles = makeStyles(
+    {
+        root: {
+            display: 'flex',
+        },
     },
-});
+    {
+        name: 'RaBooleanField',
+    }
+);
 
 export const BooleanField: FunctionComponent<
     Props & InjectedFieldProps & TypographyProps
