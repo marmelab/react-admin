@@ -20,7 +20,7 @@ export default options => {
                     const { ids, ...otherParams } = params;
                     return Promise.all(
                         ids.map(id =>
-                            defaultDataProvider(DELETE, resource, {
+                            defaultDataProvider.delete(resource, {
                                 id,
                                 ...otherParams,
                             })
@@ -40,7 +40,7 @@ export default options => {
                     const { ids, data, ...otherParams } = params;
                     return Promise.all(
                         ids.map(id =>
-                            defaultDataProvider(UPDATE, resource, {
+                            defaultDataProvider.update(resource, {
                                 data: {
                                     id,
                                     ...data,
