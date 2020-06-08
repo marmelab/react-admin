@@ -2,9 +2,10 @@ import * as React from 'react';
 import { FunctionComponent, memo } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
+import classnames from 'classnames';
 import FalseIcon from '@material-ui/icons/Clear';
 import TrueIcon from '@material-ui/icons/Done';
-import { Tooltip, Typography } from '@material-ui/core';
+import { Tooltip, Typography, makeStyles } from '@material-ui/core';
 import { TypographyProps } from '@material-ui/core/Typography';
 import { useTranslate } from 'ra-core';
 
@@ -16,10 +17,21 @@ interface Props extends FieldProps {
     valueLabelFalse?: string;
 }
 
+const useStyles = makeStyles(
+    {
+        root: {
+            display: 'flex',
+        },
+    },
+    {
+        name: 'RaBooleanField',
+    }
+);
+
 export const BooleanField: FunctionComponent<
     Props & InjectedFieldProps & TypographyProps
-> = memo<Props & InjectedFieldProps & TypographyProps>(
-    ({
+> = memo<Props & InjectedFieldProps & TypographyProps>(props => {
+    const {
         className,
         classes: classesOverride,
         emptyText,
@@ -28,47 +40,46 @@ export const BooleanField: FunctionComponent<
         valueLabelTrue,
         valueLabelFalse,
         ...rest
-    }) => {
-        const translate = useTranslate();
-        const value = get(record, source);
-        let ariaLabel = value ? valueLabelTrue : valueLabelFalse;
+    } = props;
+    const translate = useTranslate();
+    const classes = useStyles(props);
+    const value = get(record, source);
+    let ariaLabel = value ? valueLabelTrue : valueLabelFalse;
 
-        if (!ariaLabel) {
-            ariaLabel =
-                value === false ? 'ra.boolean.false' : 'ra.boolean.true';
-        }
+    if (!ariaLabel) {
+        ariaLabel = value === false ? 'ra.boolean.false' : 'ra.boolean.true';
+    }
 
-        if (value === false || value === true) {
-            return (
-                <Typography
-                    component="span"
-                    variant="body2"
-                    className={className}
-                    {...sanitizeRestProps(rest)}
-                >
-                    <Tooltip title={translate(ariaLabel, { _: ariaLabel })}>
-                        {value === true ? (
-                            <TrueIcon data-testid="true" />
-                        ) : (
-                            <FalseIcon data-testid="false" />
-                        )}
-                    </Tooltip>
-                </Typography>
-            );
-        }
-
+    if (value === false || value === true) {
         return (
             <Typography
                 component="span"
                 variant="body2"
-                className={className}
+                className={classnames(classes.root, className)}
                 {...sanitizeRestProps(rest)}
             >
-                {emptyText}
+                <Tooltip title={translate(ariaLabel, { _: ariaLabel })}>
+                    {value === true ? (
+                        <TrueIcon data-testid="true" fontSize="small" />
+                    ) : (
+                        <FalseIcon data-testid="false" fontSize="small" />
+                    )}
+                </Tooltip>
             </Typography>
         );
     }
-);
+
+    return (
+        <Typography
+            component="span"
+            variant="body2"
+            className={className}
+            {...sanitizeRestProps(rest)}
+        >
+            {emptyText}
+        </Typography>
+    );
+});
 
 BooleanField.defaultProps = {
     addLabel: true,
