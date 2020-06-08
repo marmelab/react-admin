@@ -15,6 +15,8 @@ const convertStringToNumber = value => {
 
 interface Props {
     step?: string | number;
+    min?: string | number;
+    max?: string | number;
 }
 
 /**
@@ -46,6 +48,8 @@ const NumberInput: FunctionComponent<
     resource,
     source,
     step,
+    min,
+    max,
     validate,
     variant = 'filled',
     inputProps: overrideInputProps,
@@ -69,7 +73,7 @@ const NumberInput: FunctionComponent<
         ...rest,
     });
 
-    const inputProps = { ...overrideInputProps, step };
+    const inputProps = { ...overrideInputProps, step, min, max };
 
     return (
         <TextField
