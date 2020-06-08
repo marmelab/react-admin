@@ -1,6 +1,5 @@
 import merge from 'lodash/merge';
 import buildDataProvider from 'ra-data-graphql';
-import { DELETE, UPDATE } from 'ra-core';
 
 import defaultBuildQuery from './buildQuery';
 
