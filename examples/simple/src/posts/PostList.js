@@ -163,7 +163,7 @@ const PostList = props => {
                         headerClassName={classes.hiddenOnSmallScreens}
                     >
                         <SingleFieldList>
-                            <ChipField source="name" />
+                            <ChipField source="name" size="small" />
                         </SingleFieldList>
                     </ReferenceArrayField>
                     <PostListActionToolbar>

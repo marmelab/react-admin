@@ -98,6 +98,7 @@ const AutocompleteInput: FunctionComponent<
         className,
         classes: classesOverride,
         choices = [],
+        disabled,
         emptyText,
         emptyValue,
         format,
@@ -401,6 +402,7 @@ const AutocompleteInput: FunctionComponent<
                                     helperText={helperText}
                                 />
                             }
+                            disabled={disabled}
                             variant={variant}
                             margin={margin}
                             fullWidth={fullWidth}
