@@ -59,6 +59,12 @@ const getOptions = (options, aorFetchType, resource) => {
     return options;
 };
 
+interface QueryHandler {
+    query: DocumentNode;
+    variables: Record<string, any>;
+    parseResponse: (response: ApolloQueryResult<any> | FetchResult) => any;
+}
+
 export type QueryBuilder<OtherOptions = any> = (
     schema: IntrospectedSchema,
     otherOptions?: OtherOptions
@@ -91,15 +97,15 @@ export interface GraphQLProviderOptions<OtherOptions = any> {
     override?: Record<string, (params: GetListParams) => QueryHandler>;
 }
 
-interface QueryHandler {
-    query: DocumentNode;
-    variables: Record<string, any>;
-    parseResponse: (response: ApolloQueryResult<any> | FetchResult) => any;
-}
+// cache parsed introspection schema.
+// we can reuse it when extend data provider without refetching graphql schema from server again
+export type GraphQLDataProvider = DataProvider & {
+    readonly introspectedSchema: IntrospectedSchema;
+};
 
 export default async <Options extends {} = any>(
     options: Options & GraphQLProviderOptions<Options>
-): Promise<DataProvider> => {
+): Promise<GraphQLDataProvider> => {
     const {
         client: clientObject,
         clientOptions,
@@ -179,6 +185,7 @@ export default async <Options extends {} = any>(
     };
 
     return {
+        introspectedSchema: introspectionResults,
         getList: (resource, params) => handle(GET_LIST, resource, params),
         getOne: (resource, params) => handle(GET_ONE, resource, params),
         getMany: (resource, params) => handle(GET_MANY, resource, params),
