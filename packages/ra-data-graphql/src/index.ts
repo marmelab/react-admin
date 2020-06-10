@@ -59,6 +59,15 @@ const getOptions = (options, aorFetchType, resource) => {
     return options;
 };
 
+export type QueryBuilder<OtherOptions = any> = (
+    schema: IntrospectedSchema,
+    otherOptions?: OtherOptions
+) => (
+    raFetchType: FetchType,
+    resourceName: string,
+    params: GetListParams
+) => QueryHandler;
+
 export interface GraphQLProviderOptions<OtherOptions = any> {
     client?: ApolloClient<unknown>;
     clientOptions?: BuildClientOptions<unknown>;
@@ -67,14 +76,7 @@ export interface GraphQLProviderOptions<OtherOptions = any> {
         client: ApolloClient<unknown>,
         options: IntrospectionOptions
     ) => Promise<IntrospectedSchema> | IntrospectedSchema;
-    buildQuery: (
-        schema: IntrospectedSchema,
-        otherOptions: OtherOptions
-    ) => (
-        raFetchType: FetchType,
-        resourceName: string,
-        params: GetListParams
-    ) => QueryHandler;
+    buildQuery: QueryBuilder<OtherOptions>;
     query?:
         | QueryOptions
         | ((resource: string, raFetchType: FetchType) => QueryOptions);
