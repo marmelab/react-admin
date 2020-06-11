@@ -26,7 +26,7 @@ const RadioButtonGroupInputItem = ({
         value,
     });
 
-    const nodeId = `${source}_${label}`;
+    const nodeId = `${source}_${value}`;
 
     return (
         <FormControlLabel
