@@ -14,6 +14,7 @@ import ListActions from './ListActions';
 import ListGuesser from './ListGuesser';
 import ListToolbar from './ListToolbar';
 import Pagination from './Pagination';
+import PaginationActions from './PaginationActions';
 import PaginationLimit from './PaginationLimit';
 import Placeholder from './Placeholder';
 import SimpleList from './SimpleList';
@@ -38,6 +39,7 @@ export {
     ListGuesser,
     ListToolbar,
     Pagination,
+    PaginationActions,
     PaginationLimit,
     Placeholder,
     PureDatagridBody,
