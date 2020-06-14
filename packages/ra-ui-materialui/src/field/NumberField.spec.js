@@ -1,5 +1,5 @@
 import * as React from 'react';
-import assert from 'assert';
+import expect from 'expect';
 import { render, cleanup } from '@testing-library/react';
 import NumberField from './NumberField';
 
@@ -8,12 +8,12 @@ describe('<NumberField />', () => {
 
     it('should return null when the record is not set', () => {
         const { container } = render(<NumberField source="foo" />);
-        assert.equal(container.firstChild, null);
+        expect(container.firstChild).toBeNull();
     });
 
     it('should return null when the record has no value for the source', () => {
         const { container } = render(<NumberField record={{}} source="foo" />);
-        assert.equal(container.firstChild, null);
+        expect(container.firstChild).toBeNull();
     });
 
     it.each([null, undefined])(
@@ -22,7 +22,7 @@ describe('<NumberField />', () => {
             const { getByText } = render(
                 <NumberField record={{ foo }} emptyText="NA" source="foo" />
             );
-            assert.notEqual(getByText('NA'), null);
+            expect(getByText('NA')).not.toBeNull();
         }
     );
 
@@ -30,7 +30,7 @@ describe('<NumberField />', () => {
         const { queryByText } = render(
             <NumberField record={{ foo: 1 }} source="foo" />
         );
-        assert.notEqual(queryByText('1'), null);
+        expect(queryByText('1')).not.toBeNull();
     });
 
     it('should pass the options prop to Intl.NumberFormat', () => {
@@ -42,7 +42,7 @@ describe('<NumberField />', () => {
                 options={{ minimumFractionDigits: 2 }}
             />
         );
-        assert.notEqual(queryByText('1.00'), null);
+        expect(queryByText('1.00')).not.toBeNull();
     });
 
     it('should use the locales props as an argument to Intl.NumberFormat', () => {
@@ -54,14 +54,14 @@ describe('<NumberField />', () => {
                 options={{ minimumFractionDigits: 2 }}
             />
         );
-        assert.notEqual(queryByText('1,00'), null);
+        expect(queryByText('1,00')).not.toBeNull();
     });
 
     it('should use custom className', () => {
         const { container } = render(
             <NumberField record={{ foo: true }} source="foo" className="foo" />
         );
-        assert.ok(container.firstChild.classList.contains('foo'));
+        expect(container.firstChild.classList.contains('foo')).toBe(true);
     });
 
     it('should handle deep fields', () => {
@@ -69,6 +69,6 @@ describe('<NumberField />', () => {
             <NumberField record={{ foo: { bar: 2 } }} source="foo.bar" />
         );
 
-        assert.notEqual(queryByText('2'), null);
+        expect(queryByText('2')).not.toBeNull();
     });
 });

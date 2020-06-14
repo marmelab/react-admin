@@ -1,8 +1,19 @@
 import * as React from 'react';
-import assert from 'assert';
+import expect from 'expect';
 
 import ReferenceManyFieldController from './ReferenceManyFieldController';
 import renderWithRedux from '../../util/renderWithRedux';
+
+// Ignore warnings about act()
+// See https://github.com/testing-library/react-testing-library/issues/281,
+// https://github.com/facebook/react/issues/14769
+const originalError = console.error;
+jest.spyOn(console, 'error').mockImplementation((...args) => {
+    if (/Warning.*not wrapped in act/.test(args[0])) {
+        return;
+    }
+    originalError.call(console, ...args);
+});
 
 describe('<ReferenceManyFieldController />', () => {
     it('should set loaded to false when related records are not yet fetched', () => {
@@ -37,7 +48,7 @@ describe('<ReferenceManyFieldController />', () => {
                 },
             }
         );
-        assert.deepEqual(dispatch.mock.calls[0], [
+        expect(dispatch.mock.calls[0]).toEqual([
             {
                 meta: {
                     relatedTo: 'foo_bar@foo_id_undefined',
@@ -95,8 +106,8 @@ describe('<ReferenceManyFieldController />', () => {
                 },
             }
         );
-        assert.deepEqual(children.mock.calls[0][0].data, data);
-        assert.deepEqual(children.mock.calls[0][0].ids, [1, 2]);
+        expect(children.mock.calls[0][0].data).toEqual(data);
+        expect(children.mock.calls[0][0].ids).toEqual([1, 2]);
     });
 
     it('should support record with string identifier', () => {
@@ -135,11 +146,11 @@ describe('<ReferenceManyFieldController />', () => {
                 },
             }
         );
-        assert.deepEqual(children.mock.calls[0][0].data, {
+        expect(children.mock.calls[0][0].data).toEqual({
             'abc-1': { id: 'abc-1', title: 'hello' },
             'abc-2': { id: 'abc-2', title: 'world' },
         });
-        assert.deepEqual(children.mock.calls[0][0].ids, ['abc-1', 'abc-2']);
+        expect(children.mock.calls[0][0].ids).toEqual(['abc-1', 'abc-2']);
     });
 
     it('should support custom source', () => {
@@ -183,7 +194,7 @@ describe('<ReferenceManyFieldController />', () => {
             }
         );
 
-        assert.deepEqual(dispatch.mock.calls[0], [
+        expect(dispatch.mock.calls[0]).toEqual([
             {
                 meta: {
                     relatedTo: 'posts_comments@post_id_1',
@@ -237,7 +248,7 @@ describe('<ReferenceManyFieldController />', () => {
         rerender(<ControllerWrapper sort={{ field: 'id', order: 'ASC' }} />);
         expect(dispatch).toBeCalledTimes(6);
 
-        assert.deepEqual(dispatch.mock.calls[0], [
+        expect(dispatch.mock.calls[0]).toEqual([
             {
                 meta: {
                     relatedTo: 'foo_bar@foo_id_1',
@@ -254,7 +265,7 @@ describe('<ReferenceManyFieldController />', () => {
             },
         ]);
 
-        assert.deepEqual(dispatch.mock.calls[3], [
+        expect(dispatch.mock.calls[3]).toEqual([
             {
                 meta: {
                     relatedTo: 'foo_bar@foo_id_1',
