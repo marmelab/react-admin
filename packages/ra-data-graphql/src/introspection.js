@@ -42,8 +42,8 @@ export default async (client, options) => {
 
     const queries = schema.types.reduce((acc, type) => {
         if (
-            type.name !== schema.queryType.name &&
-            type.name !== schema.mutationType.name
+            type.name !== (schema.queryType && schema.queryType.name) &&
+            type.name !== (schema.mutationType && schema.mutationType.name)
         )
             return acc;
 
@@ -52,8 +52,8 @@ export default async (client, options) => {
 
     const types = schema.types.filter(
         type =>
-            type.name !== schema.queryType.name &&
-            type.name !== schema.mutationType.name
+            type.name !== (schema.queryType && schema.queryType.name) &&
+            type.name !== (schema.mutationType && schema.mutationType.name)
     );
 
     const isResource = type =>
