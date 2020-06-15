@@ -1,4 +1,4 @@
-import assert from 'assert';
+import expect from 'expect';
 
 import oneToManyReducer, { nameRelatedTo } from './oneToMany';
 import { DELETE, DELETE_MANY } from '../../../core';
@@ -7,30 +7,28 @@ import { UNDOABLE } from '../../../actions';
 describe('oneToMany', () => {
     describe('oneToMany', () => {
         it('should name relation based on reference, id, resource and target', () => {
-            assert.equal(
-                nameRelatedTo('reference', 'id', 'resource', 'target'),
-                'resource_reference@target_id'
-            );
-            assert.equal(
-                nameRelatedTo('comments', '6', 'posts', 'id'),
+            expect(
+                nameRelatedTo('reference', 'id', 'resource', 'target')
+            ).toEqual('resource_reference@target_id');
+            expect(nameRelatedTo('comments', '6', 'posts', 'id')).toEqual(
                 'posts_comments@id_6'
             );
         });
 
         it('should incorporate filter to the name if any', () => {
-            assert.equal(
+            expect(
                 nameRelatedTo('reference', 'id', 'resource', 'target', {
                     filter1: 'value1',
                     filter2: false,
-                }),
+                })
+            ).toEqual(
                 'resource_reference@target_id?filter1="value1"&filter2=false'
             );
-            assert.equal(
+            expect(
                 nameRelatedTo('comments', '6', 'posts', 'id', {
                     active: true,
-                }),
-                'posts_comments@id_6?active=true'
-            );
+                })
+            ).toEqual('posts_comments@id_6?active=true');
         });
 
         it('should remove reference deleted optimistically', () => {
