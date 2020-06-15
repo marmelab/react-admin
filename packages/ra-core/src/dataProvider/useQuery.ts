@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useSafeSetState } from '../util/hooks';
 import useDataProvider from './useDataProvider';
 import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDeclarativeSideEffects';
+import useVersion from '../controller/useVersion';
 
 /**
  * Call the data provider on mount
@@ -69,6 +70,8 @@ import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDecl
 const useQuery = (query: Query, options: QueryOptions = {}): UseQueryValue => {
     const { type, resource, payload } = query;
     const { withDeclarativeSideEffectsSupport, ...rest } = options;
+    const version = useVersion(); // used to allow force reload
+    const requestSignature = JSON.stringify({ query, options: rest, version });
     const [state, setState] = useSafeSetState<UseQueryValue>({
         data: undefined,
         error: null,
@@ -109,8 +112,7 @@ const useQuery = (query: Query, options: QueryOptions = {}): UseQueryValue => {
                 });
             });
     }, [
-        // deep equality, see https://github.com/facebook/react/issues/14476#issuecomment-471199055
-        JSON.stringify({ query, options: rest }),
+        requestSignature,
         dataProvider,
         dataProviderWithDeclarativeSideEffects,
         setState,
