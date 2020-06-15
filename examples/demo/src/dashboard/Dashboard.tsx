@@ -194,36 +194,36 @@ const Dashboard: FC = () => {
             </div>
         </div>
     ) : (
-        <div style={styles.flex}>
-            <div style={styles.leftCol}>
-                <div style={styles.flex}>
-                    <MonthlyRevenue value={revenue} />
-                    <NbNewOrders value={nbNewOrders} />
+        <>
+            <Welcome />
+            <div style={styles.flex}>
+                <div style={styles.leftCol}>
+                    <div style={styles.flex}>
+                        <MonthlyRevenue value={revenue} />
+                        <NbNewOrders value={nbNewOrders} />
+                    </div>
+                    <div style={styles.singleCol}>
+                        <OrderChart orders={recentOrders} />
+                    </div>
+                    <div style={styles.singleCol}>
+                        <PendingOrders
+                            orders={pendingOrders}
+                            customers={pendingOrdersCustomers}
+                        />
+                    </div>
                 </div>
-                <div style={styles.singleCol}>
-                    <Welcome />
-                </div>
-                <div style={styles.singleCol}>
-                    <OrderChart orders={recentOrders} />
-                </div>
-                <div style={styles.singleCol}>
-                    <PendingOrders
-                        orders={pendingOrders}
-                        customers={pendingOrdersCustomers}
-                    />
+                <div style={styles.rightCol}>
+                    <div style={styles.flex}>
+                        <PendingReviews
+                            nb={nbPendingReviews}
+                            reviews={pendingReviews}
+                            customers={pendingReviewsCustomers}
+                        />
+                        <NewCustomers />
+                    </div>
                 </div>
             </div>
-            <div style={styles.rightCol}>
-                <div style={styles.flex}>
-                    <PendingReviews
-                        nb={nbPendingReviews}
-                        reviews={pendingReviews}
-                        customers={pendingReviewsCustomers}
-                    />
-                    <NewCustomers />
-                </div>
-            </div>
-        </div>
+        </>
     );
 };
 
