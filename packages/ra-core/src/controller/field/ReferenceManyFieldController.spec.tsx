@@ -4,17 +4,6 @@ import expect from 'expect';
 import ReferenceManyFieldController from './ReferenceManyFieldController';
 import renderWithRedux from '../../util/renderWithRedux';
 
-// Ignore warnings about act()
-// See https://github.com/testing-library/react-testing-library/issues/281,
-// https://github.com/facebook/react/issues/14769
-const originalError = console.error;
-jest.spyOn(console, 'error').mockImplementation((...args) => {
-    if (/Warning.*not wrapped in act/.test(args[0])) {
-        return;
-    }
-    originalError.call(console, ...args);
-});
-
 describe('<ReferenceManyFieldController />', () => {
     it('should set loaded to false when related records are not yet fetched', () => {
         const children = jest.fn().mockReturnValue('children');
