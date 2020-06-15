@@ -1,4 +1,4 @@
-import assert from 'assert';
+import expect from 'expect';
 import {
     toggleSidebar,
     setSidebarVisibility,
@@ -13,42 +13,36 @@ describe('ui reducer', () => {
         viewVersion: 0,
     };
     it('should return hidden sidebar by default', () => {
-        assert.deepEqual(defaultState, reducer(undefined, { type: 'foo' }));
+        expect(reducer(undefined, { type: 'foo' })).toEqual(defaultState);
     });
     it('should toggle sidebar visibility upon TOGGLE_SIDEBAR', () => {
-        assert.deepEqual(
-            { ...defaultState, sidebarOpen: false },
+        expect({ ...defaultState, sidebarOpen: false }).toEqual(
             reducer({ ...defaultState, sidebarOpen: true }, toggleSidebar())
         );
-        assert.deepEqual(
-            { ...defaultState, sidebarOpen: true },
+        expect({ ...defaultState, sidebarOpen: true }).toEqual(
             reducer({ ...defaultState, sidebarOpen: false }, toggleSidebar())
         );
     });
     it('should set sidebar visibility upon SET_SIDEBAR_VISIBILITY', () => {
-        assert.deepEqual(
-            { ...defaultState, sidebarOpen: false },
+        expect({ ...defaultState, sidebarOpen: false }).toEqual(
             reducer(
                 { ...defaultState, sidebarOpen: true },
                 setSidebarVisibility(false)
             )
         );
-        assert.deepEqual(
-            { ...defaultState, sidebarOpen: true },
+        expect({ ...defaultState, sidebarOpen: true }).toEqual(
             reducer(
                 { ...defaultState, sidebarOpen: true },
                 setSidebarVisibility(true)
             )
         );
-        assert.deepEqual(
-            { ...defaultState, sidebarOpen: false },
+        expect({ ...defaultState, sidebarOpen: false }).toEqual(
             reducer(
                 { ...defaultState, sidebarOpen: false },
                 setSidebarVisibility(false)
             )
         );
-        assert.deepEqual(
-            { ...defaultState, sidebarOpen: true },
+        expect({ ...defaultState, sidebarOpen: true }).toEqual(
             reducer(
                 { ...defaultState, sidebarOpen: false },
                 setSidebarVisibility(true)
@@ -56,9 +50,10 @@ describe('ui reducer', () => {
         );
     });
     it('should increment the viewVersion upon REFRESH_VIEW', () => {
-        assert.deepEqual(
-            { optimistic: false, sidebarOpen: false, viewVersion: 1 },
-            reducer(undefined, refreshView())
-        );
+        expect({
+            optimistic: false,
+            sidebarOpen: false,
+            viewVersion: 1,
+        }).toEqual(reducer(undefined, refreshView()));
     });
 });

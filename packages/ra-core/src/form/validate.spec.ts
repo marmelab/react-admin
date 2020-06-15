@@ -1,4 +1,4 @@
-import assert from 'assert';
+import expect from 'expect';
 
 import {
     required,
@@ -15,12 +15,11 @@ import {
 
 describe('Validators', () => {
     const test = (validator, inputs, message) =>
-        assert.deepEqual(
+        expect(
             inputs
                 .map(input => validator(input, null))
-                .map(error => (error && error.message ? error.message : error)),
-            Array(...Array(inputs.length)).map(() => message)
-        );
+                .map(error => (error && error.message ? error.message : error))
+        ).toEqual(Array(...Array(inputs.length)).map(() => message));
 
     describe('composeValidators', () => {
         it('Correctly composes validators passed as an array', () => {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import assert from 'assert';
+import expect from 'expect';
 import { render, cleanup, getNodeText } from '@testing-library/react';
 import TextField from './TextField';
 
@@ -13,10 +13,9 @@ describe('<TextField />', () => {
         const { queryByText } = render(
             <TextField record={record} source="title" />
         );
-        assert.notEqual(
-            queryByText("I'm sorry, Dave. I'm afraid I can't do that."),
-            null
-        );
+        expect(
+            queryByText("I'm sorry, Dave. I'm afraid I can't do that.")
+        ).not.toBeNull();
     });
 
     it.each([null, undefined])(
@@ -30,7 +29,7 @@ describe('<TextField />', () => {
                     source="title"
                 />
             );
-            assert.notEqual(queryByText("Sorry, there's nothing here"), null);
+            expect("Sorry, there's nothing here").not.toBeNull();
         }
     );
 
@@ -41,7 +40,7 @@ describe('<TextField />', () => {
             const { container } = render(
                 <TextField record={record} source="title" />
             );
-            assert.strictEqual(getNodeText(container), '');
+            expect(getNodeText(container)).toStrictEqual('');
         }
     );
 
@@ -52,10 +51,9 @@ describe('<TextField />', () => {
         const { queryByText } = render(
             <TextField record={record} source="foo.title" />
         );
-        assert.notEqual(
-            queryByText("I'm sorry, Dave. I'm afraid I can't do that."),
-            null
-        );
+        expect(
+            queryByText("I'm sorry, Dave. I'm afraid I can't do that.")
+        ).not.toBeNull();
     });
 
     it('should render the emptyText when value is null', () => {
@@ -63,6 +61,6 @@ describe('<TextField />', () => {
         const { queryByText } = render(
             <TextField record={record} source="title" emptyText="NA" />
         );
-        assert.notEqual(queryByText('NA'), null);
+        expect(queryByText('NA')).not.toBeNull();
     });
 });

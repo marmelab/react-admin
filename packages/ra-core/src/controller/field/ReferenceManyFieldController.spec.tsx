@@ -1,11 +1,13 @@
 import * as React from 'react';
-import assert from 'assert';
+import { cleanup, wait } from '@testing-library/react';
+import expect from 'expect';
 
 import ReferenceManyFieldController from './ReferenceManyFieldController';
 import renderWithRedux from '../../util/renderWithRedux';
 
 describe('<ReferenceManyFieldController />', () => {
-    it('should set loaded to false when related records are not yet fetched', () => {
+    afterEach(cleanup);
+    it('should set loaded to false when related records are not yet fetched', async () => {
         const children = jest.fn().mockReturnValue('children');
         const { dispatch } = renderWithRedux(
             <ReferenceManyFieldController
@@ -37,7 +39,8 @@ describe('<ReferenceManyFieldController />', () => {
                 },
             }
         );
-        assert.deepEqual(dispatch.mock.calls[0], [
+        await wait();
+        expect(dispatch.mock.calls[0]).toEqual([
             {
                 meta: {
                     relatedTo: 'foo_bar@foo_id_undefined',
@@ -55,7 +58,7 @@ describe('<ReferenceManyFieldController />', () => {
         ]);
     });
 
-    it('should pass data and ids to children function', () => {
+    it('should pass data and ids to children function', async () => {
         const children = jest.fn().mockReturnValue('children');
         const data = {
             1: { id: 1, title: 'hello' },
@@ -95,11 +98,12 @@ describe('<ReferenceManyFieldController />', () => {
                 },
             }
         );
-        assert.deepEqual(children.mock.calls[0][0].data, data);
-        assert.deepEqual(children.mock.calls[0][0].ids, [1, 2]);
+        await wait();
+        expect(children.mock.calls[0][0].data).toEqual(data);
+        expect(children.mock.calls[0][0].ids).toEqual([1, 2]);
     });
 
-    it('should support record with string identifier', () => {
+    it('should support record with string identifier', async () => {
         const children = jest.fn().mockReturnValue('children');
         renderWithRedux(
             <ReferenceManyFieldController
@@ -135,14 +139,15 @@ describe('<ReferenceManyFieldController />', () => {
                 },
             }
         );
-        assert.deepEqual(children.mock.calls[0][0].data, {
+        await wait();
+        expect(children.mock.calls[0][0].data).toEqual({
             'abc-1': { id: 'abc-1', title: 'hello' },
             'abc-2': { id: 'abc-2', title: 'world' },
         });
-        assert.deepEqual(children.mock.calls[0][0].ids, ['abc-1', 'abc-2']);
+        expect(children.mock.calls[0][0].ids).toEqual(['abc-1', 'abc-2']);
     });
 
-    it('should support custom source', () => {
+    it('should support custom source', async () => {
         const children = jest.fn(({ data }) =>
             data && data.length > 0 ? data.length : null
         );
@@ -182,8 +187,8 @@ describe('<ReferenceManyFieldController />', () => {
                 },
             }
         );
-
-        assert.deepEqual(dispatch.mock.calls[0], [
+        await wait();
+        expect(dispatch.mock.calls[0]).toEqual([
             {
                 meta: {
                     relatedTo: 'posts_comments@post_id_1',
@@ -209,7 +214,7 @@ describe('<ReferenceManyFieldController />', () => {
         });
     });
 
-    it('should call crudGetManyReference when its props changes', () => {
+    it('should call crudGetManyReference when its props changes', async () => {
         const ControllerWrapper = props => (
             <ReferenceManyFieldController
                 record={{ id: 1 }}
@@ -232,12 +237,11 @@ describe('<ReferenceManyFieldController />', () => {
                 },
             },
         });
-
         expect(dispatch).toBeCalledTimes(3); // CRUD_GET_MANY_REFERENCE, CRUD_GET_MANY_REFERENCE_LOADING, FETCH_START
         rerender(<ControllerWrapper sort={{ field: 'id', order: 'ASC' }} />);
         expect(dispatch).toBeCalledTimes(6);
-
-        assert.deepEqual(dispatch.mock.calls[0], [
+        await wait();
+        expect(dispatch.mock.calls[0]).toEqual([
             {
                 meta: {
                     relatedTo: 'foo_bar@foo_id_1',
@@ -254,7 +258,7 @@ describe('<ReferenceManyFieldController />', () => {
             },
         ]);
 
-        assert.deepEqual(dispatch.mock.calls[3], [
+        expect(dispatch.mock.calls[3]).toEqual([
             {
                 meta: {
                     relatedTo: 'foo_bar@foo_id_1',

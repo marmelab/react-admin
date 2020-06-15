@@ -1,4 +1,4 @@
-import assert from 'assert';
+import expect from 'expect';
 import {
     HIDE_NOTIFICATION,
     SHOW_NOTIFICATION,
@@ -8,11 +8,12 @@ import reducer from './notifications';
 
 describe('notifications reducer', () => {
     it('should return empty notification by default', () => {
-        assert.deepEqual([], reducer(undefined, { type: 'foo' }));
+        expect(reducer(undefined, { type: 'foo' })).toEqual([]);
     });
     it('should set autoHideDuration when passed in payload', () => {
-        assert.deepEqual(
-            [{ message: 'test', type: 'info', autoHideDuration: 1337 }],
+        expect([
+            { message: 'test', type: 'info', autoHideDuration: 1337 },
+        ]).toEqual(
             reducer(undefined, {
                 type: SHOW_NOTIFICATION,
                 payload: {
@@ -24,8 +25,7 @@ describe('notifications reducer', () => {
         );
     });
     it('should set text and type upon SHOW_NOTIFICATION', () => {
-        assert.deepEqual(
-            [{ message: 'foo', type: 'warning' }],
+        expect([{ message: 'foo', type: 'warning' }]).toEqual(
             reducer(undefined, {
                 type: SHOW_NOTIFICATION,
                 payload: {
@@ -36,8 +36,7 @@ describe('notifications reducer', () => {
         );
     });
     it('should have no elements upon last HIDE_NOTIFICATION', () => {
-        assert.deepEqual(
-            [],
+        expect([]).toEqual(
             reducer([{ message: 'foo', type: 'warning' as NotificationType }], {
                 type: HIDE_NOTIFICATION,
             })
@@ -48,8 +47,7 @@ describe('notifications reducer', () => {
             { message: 'foo', type: 'info' as NotificationType },
             { message: 'bar', type: 'info' as NotificationType },
         ];
-        assert.equal(
-            notifications.length - 1,
+        expect(notifications.length - 1).toEqual(
             reducer(notifications, {
                 type: HIDE_NOTIFICATION,
             }).length
