@@ -13,7 +13,7 @@ describe('ui reducer', () => {
         viewVersion: 0,
     };
     it('should return hidden sidebar by default', () => {
-        expect(defaultState).toEqual(reducer(undefined, { type: 'foo' }));
+        expect(reducer(undefined, { type: 'foo' })).toEqual(defaultState);
     });
     it('should toggle sidebar visibility upon TOGGLE_SIDEBAR', () => {
         expect({ ...defaultState, sidebarOpen: false }).toEqual(

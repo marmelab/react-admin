@@ -8,7 +8,7 @@ import reducer from './notifications';
 
 describe('notifications reducer', () => {
     it('should return empty notification by default', () => {
-        expect([]).toEqual(reducer(undefined, { type: 'foo' }));
+        expect(reducer(undefined, { type: 'foo' })).toEqual([]);
     });
     it('should set autoHideDuration when passed in payload', () => {
         expect([

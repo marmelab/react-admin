@@ -78,11 +78,11 @@ describe('createHeadersFromOptions', () => {
         };
 
         const headersWithMethod = createHeadersFromOptions(optionsWithMethod);
-        expect(headersWithMethod.get('Content-Type')).toStrictEqual(null);
+        expect(headersWithMethod.get('Content-Type')).toBeNull();
 
         const headersWithoutMethod = createHeadersFromOptions(
             optionsWithoutMethod
         );
-        expect(headersWithoutMethod.get('Content-Type')).toStrictEqual(null);
+        expect(headersWithoutMethod.get('Content-Type')).toBeNull();
     });
 });
