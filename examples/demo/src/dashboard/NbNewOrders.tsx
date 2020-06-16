@@ -15,8 +15,7 @@ interface Props {
 const useStyles = makeStyles({
     main: {
         flex: '1',
-        marginLeft: '1em',
-        marginTop: 20,
+        margin: '0.5em 0 0 0.5em',
     },
     card: {
         overflow: 'inherit',

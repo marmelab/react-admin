@@ -19,8 +19,8 @@ import { Customer } from '../types';
 const useStyles = makeStyles({
     main: {
         flex: '1',
-        marginLeft: '1em',
-        marginTop: 20,
+        marginLeft: '0.5em',
+        marginTop: '0.5em',
     },
     card: {
         padding: '16px 0',

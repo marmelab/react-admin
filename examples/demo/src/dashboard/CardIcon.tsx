@@ -12,15 +12,15 @@ interface Props {
 const useStyles = makeStyles({
     card: {
         float: 'left',
-        margin: '-20px 20px 0 15px',
+        margin: '15px 20px 0 15px',
         zIndex: 100,
-        borderRadius: 3,
+        borderRadius: 50,
     },
     icon: {
         float: 'right',
-        width: 54,
-        height: 54,
-        padding: 14,
+        width: 32,
+        height: 32,
+        padding: '0.5em',
         color: '#fff',
     },
 });

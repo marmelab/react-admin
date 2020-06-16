@@ -27,8 +27,8 @@ interface Props {
 const useStyles = makeStyles(theme => ({
     main: {
         flex: '1',
-        marginRight: '1em',
-        marginTop: 20,
+        marginRight: '0.5em',
+        marginTop: '0.5em',
     },
     titleLink: { textDecoration: 'none', color: 'inherit' },
     card: {

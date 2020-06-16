@@ -4,8 +4,6 @@ import {
     Box,
     Card,
     CardActions,
-    CardContent,
-    CardMedia,
     Button,
     Grid,
     Typography,
@@ -15,26 +13,25 @@ import CodeIcon from '@material-ui/icons/Code';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTranslate } from 'react-admin';
 
-const mediaUrl = `https://marmelab.com/posters/beard-${parseInt(
-    (Math.random() * 10).toString(),
-    10
-) + 1}.jpeg`;
+import backgroundImage from './welcome_bg.png';
+import publishArticleImage from './welcome_illustration.svg';
 
 const useStyles = makeStyles(theme => ({
     root: {
-        backgroundColor: '#6f4bf0',
+        background: `url(${backgroundImage}) no-repeat #6f4ceb`,
         color: '#fff',
         padding: 20,
         marginTop: theme.spacing(2),
-        marginBottom: theme.spacing(2),
+        marginBottom: '0.5em',
     },
     media: {
-        background: `url(${mediaUrl}) top right / cover`,
+        background: `url(${publishArticleImage}) top right / cover`,
         marginLeft: 'auto',
     },
     actions: {
         '& a': {
             backgroundColor: '#fff',
+            marginRight: '1em',
             '& span': {
                 color: theme.palette.primary.main,
             },
@@ -47,36 +44,38 @@ const Welcome: FC = () => {
     const classes = useStyles();
     return (
         <Card className={classes.root}>
-            <Grid container>
-                <Grid item xs={6}>
+            <Box display="flex">
+                <Box flex="1">
                     <Typography variant="h5" component="h2" gutterBottom>
                         {translate('pos.dashboard.welcome.title')}
                     </Typography>
-                    <Typography variant="body1" component="p" gutterBottom>
-                        {translate('pos.dashboard.welcome.subtitle')}
-                    </Typography>
+                    <Box maxWidth="40em">
+                        <Typography variant="body1" component="p" gutterBottom>
+                            {translate('pos.dashboard.welcome.subtitle')}
+                        </Typography>
+                    </Box>
                     <CardActions className={classes.actions}>
                         <Button
                             variant="contained"
                             href="https://marmelab.com/react-admin"
+                            startIcon={<HomeIcon />}
                         >
-                            <HomeIcon style={{ paddingRight: '0.5em' }} />
                             {translate('pos.dashboard.welcome.aor_button')}
                         </Button>
                         <Button
                             variant="contained"
                             href="https://marmelab.com/react-admin"
+                            startIcon={<CodeIcon />}
                         >
-                            <HomeIcon style={{ paddingRight: '0.5em' }} />
                             {translate('pos.dashboard.welcome.demo_button')}
                         </Button>
                     </CardActions>
-                </Grid>
-                <Grid item xs={2} />
-                <Grid item xs={4}>
+                </Box>
+
+                <Box width={{ xs: 0, sm: 0, md: '15em' }} overflow="hidden">
                     <Box height="9em" width="15em" className={classes.media} />
-                </Grid>
-            </Grid>
+                </Box>
+            </Box>
         </Card>
     );
 };
