@@ -18,4 +18,4 @@ export const MUTATION_TYPES = [
     UPDATE_MANY,
     DELETE_MANY,
 ];
-export const ALL_TYPES = [...QUERY_TYPES, ...MUTATION_TYPES] as string[];
+export const ALL_TYPES = [...QUERY_TYPES, ...MUTATION_TYPES];
