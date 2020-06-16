@@ -47,6 +47,8 @@ const styles = {
     singleCol: { marginTop: '1em', marginBottom: '1em' },
 };
 
+const Spacer = () => <span style={{ width: '1em' }} />;
+
 const Dashboard: FC = () => {
     const [state, setState] = useState<State>({});
     const version = useVersion();
@@ -55,7 +57,7 @@ const Dashboard: FC = () => {
         theme.breakpoints.down('xs')
     );
     const isSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('sm')
+        theme.breakpoints.down('md')
     );
 
     const fetchOrders = useCallback(async () => {
@@ -156,22 +158,17 @@ const Dashboard: FC = () => {
     return isXSmall ? (
         <div>
             <div style={styles.flexColumn as CSSProperties}>
-                <div style={{ marginBottom: '2em' }}>
-                    <Welcome />
-                </div>
-                <div style={styles.flex}>
-                    <MonthlyRevenue value={revenue} />
-                    <NbNewOrders value={nbNewOrders} />
-                </div>
-                <div style={styles.singleCol}>
-                    <OrderChart orders={recentOrders} />
-                </div>
-                <div style={styles.flex}>
-                    <PendingOrders
-                        orders={pendingOrders}
-                        customers={pendingOrdersCustomers}
-                    />
-                </div>
+                <Welcome />
+
+                <MonthlyRevenue value={revenue} />
+                <NbNewOrders value={nbNewOrders} />
+
+                <OrderChart orders={recentOrders} />
+
+                <PendingOrders
+                    orders={pendingOrders}
+                    customers={pendingOrdersCustomers}
+                />
             </div>
         </div>
     ) : isSmall ? (
@@ -181,6 +178,7 @@ const Dashboard: FC = () => {
             </div>
             <div style={styles.flex}>
                 <MonthlyRevenue value={revenue} />
+                <Spacer />
                 <NbNewOrders value={nbNewOrders} />
             </div>
             <div style={styles.singleCol}>
@@ -200,6 +198,7 @@ const Dashboard: FC = () => {
                 <div style={styles.leftCol}>
                     <div style={styles.flex}>
                         <MonthlyRevenue value={revenue} />
+                        <Spacer />
                         <NbNewOrders value={nbNewOrders} />
                     </div>
                     <div style={styles.singleCol}>
@@ -219,6 +218,7 @@ const Dashboard: FC = () => {
                             reviews={pendingReviews}
                             customers={pendingReviewsCustomers}
                         />
+                        <Spacer />
                         <NewCustomers />
                     </div>
                 </div>

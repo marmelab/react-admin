@@ -13,7 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import { useTranslate, useQueryWithStore } from 'react-admin';
 
-import CardIcon from './CardIcon';
+import CardWithIcon from './CardWithIcon';
 import { Customer } from '../types';
 
 const useStyles = makeStyles({
@@ -66,45 +66,34 @@ const NewCustomers = () => {
 
     const nb = visitors ? visitors.reduce((nb: number) => ++nb, 0) : 0;
     return (
-        <div className={classes.main}>
-            <CardIcon Icon={CustomerIcon} bgColor="#4caf50" />
-            <Card className={classes.card}>
-                <Typography className={classes.title} color="textSecondary">
-                    {translate('pos.dashboard.new_customers')}
-                </Typography>
-                <Typography
-                    variant="h5"
-                    component="h2"
-                    className={classes.value}
-                >
-                    {nb}
-                </Typography>
-                <Divider />
-                <List>
-                    {visitors
-                        ? visitors.map((record: Customer) => (
-                              <ListItem
-                                  button
-                                  to={`/customers/${record.id}`}
-                                  component={Link}
-                                  key={record.id}
-                              >
-                                  <ListItemAvatar>
-                                      <Avatar
-                                          src={`${record.avatar}?size=32x32`}
-                                      />
-                                  </ListItemAvatar>
-                                  <ListItemText
-                                      primary={`${record.first_name} ${
-                                          record.last_name
-                                      }`}
-                                  />
-                              </ListItem>
-                          ))
-                        : null}
-                </List>
-            </Card>
-        </div>
+        <CardWithIcon
+            icon={CustomerIcon}
+            color="#746DA0"
+            title={translate('pos.dashboard.new_customers')}
+            subtitle={nb}
+        >
+            <List>
+                {visitors
+                    ? visitors.map((record: Customer) => (
+                          <ListItem
+                              button
+                              to={`/customers/${record.id}`}
+                              component={Link}
+                              key={record.id}
+                          >
+                              <ListItemAvatar>
+                                  <Avatar src={`${record.avatar}?size=32x32`} />
+                              </ListItemAvatar>
+                              <ListItemText
+                                  primary={`${record.first_name} ${
+                                      record.last_name
+                                  }`}
+                              />
+                          </ListItem>
+                      ))
+                    : null}
+            </List>
+        </CardWithIcon>
     );
 };
 

@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
         color: '#fff',
         padding: 20,
         marginTop: theme.spacing(2),
-        marginBottom: '0.5em',
+        marginBottom: '1em',
     },
     media: {
         background: `url(${publishArticleImage}) top right / cover`,
