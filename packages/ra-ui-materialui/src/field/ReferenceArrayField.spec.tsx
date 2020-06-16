@@ -12,14 +12,16 @@ describe('<ReferenceArrayField />', () => {
     it('should render a loading indicator when related records are not yet fetched', () => {
         const { queryAllByRole } = render(
             <ReferenceArrayFieldView
-                record={{ barIds: [1, 2] }}
+                record={{ id: 123, barIds: [1, 2] }}
                 resource="foo"
                 reference="bar"
                 source="barIds"
                 basePath=""
+                referenceBasePath=""
                 data={null}
                 ids={[1, 2]}
                 loaded={false}
+                loading={true}
             >
                 <SingleFieldList>
                     <TextField source="title" />
@@ -37,14 +39,16 @@ describe('<ReferenceArrayField />', () => {
         const { queryAllByRole, container, getByText } = render(
             <MemoryRouter>
                 <ReferenceArrayFieldView
-                    record={{ barIds: [1, 2] }}
+                    record={{ id: 123, barIds: [1, 2] }}
                     resource="foo"
                     reference="bar"
                     source="barIds"
                     basePath=""
+                    referenceBasePath=""
                     data={data}
                     ids={[1, 2]}
                     loaded={true}
+                    loading={false}
                 >
                     <SingleFieldList>
                         <TextField source="title" />
@@ -61,14 +65,16 @@ describe('<ReferenceArrayField />', () => {
     it('should render nothing when there are no related records', () => {
         const { queryAllByRole, container } = render(
             <ReferenceArrayFieldView
-                record={{ barIds: [1, 2] }}
+                record={{ id: 123, barIds: [1, 2] }}
                 resource="foo"
                 reference="bar"
                 source="barIds"
                 basePath=""
+                referenceBasePath=""
                 data={{}}
                 ids={[]}
                 loaded={true}
+                loading={false}
             >
                 <SingleFieldList>
                     <TextField source="title" />
@@ -87,13 +93,15 @@ describe('<ReferenceArrayField />', () => {
         const { queryAllByRole, container, getByText } = render(
             <MemoryRouter>
                 <ReferenceArrayFieldView
-                    record={{ barIds: ['abc-1', 'abc-2'] }}
+                    record={{ id: 123, barIds: ['abc-1', 'abc-2'] }}
                     resource="foo"
                     reference="bar"
                     source="barIds"
                     basePath=""
+                    referenceBasePath=""
                     data={data}
                     loaded={true}
+                    loading={false}
                     ids={['abc-1', 'abc-2']}
                 >
                     <SingleFieldList>
@@ -116,12 +124,14 @@ describe('<ReferenceArrayField />', () => {
         const { queryAllByRole, container, getByText } = render(
             <MemoryRouter>
                 <ReferenceArrayFieldView
-                    record={{ barIds: [1, 2] }}
+                    record={{ id: 123, barIds: [1, 2] }}
                     resource="foo"
                     reference="bar"
                     source="barIds"
                     basePath=""
+                    referenceBasePath=""
                     data={data}
+                    loading={false}
                     loaded={true}
                     ids={[1, 2]}
                 >
@@ -145,15 +155,17 @@ describe('<ReferenceArrayField />', () => {
         const { container } = render(
             <MemoryRouter>
                 <ReferenceArrayFieldView
-                    record={{ barIds: [1, 2] }}
+                    record={{ id: 123, barIds: [1, 2] }}
                     className="myClass"
                     resource="foo"
                     reference="bar"
                     source="barIds"
                     basePath=""
+                    referenceBasePath=""
                     data={data}
                     ids={[1, 2]}
                     loaded={true}
+                    loading={false}
                 >
                     <SingleFieldList>
                         <TextField source="title" />

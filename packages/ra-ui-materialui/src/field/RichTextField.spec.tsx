@@ -52,42 +52,42 @@ describe('<RichTextField />', () => {
     afterEach(cleanup);
 
     it('should render as HTML', () => {
-        const record = { body: '<h1>Hello world!</h1>' };
+        const record = { id: 123, body: '<h1>Hello world!</h1>' };
         const { container } = render(
             <RichTextField record={record} source="body" />
         );
         assert.equal(
-            container.firstChild.innerHTML,
+            container.children[0].innerHTML,
             '<span><h1>Hello world!</h1></span>'
         );
     });
 
     it('should handle deep fields', () => {
-        const record = { foo: { body: '<h1>Hello world!</h1>' } };
+        const record = { id: 123, foo: { body: '<h1>Hello world!</h1>' } };
         const { container } = render(
             <RichTextField record={record} source="foo.body" />
         );
         assert.equal(
-            container.firstChild.innerHTML,
+            container.children[0].innerHTML,
             '<span><h1>Hello world!</h1></span>'
         );
     });
 
     it('should strip HTML tags if stripTags is set to true', () => {
-        const record = { body: '<h1>Hello world!</h1>' };
+        const record = { id: 123, body: '<h1>Hello world!</h1>' };
         const { container } = render(
             <RichTextField stripTags={true} record={record} source="body" />
         );
-        assert.equal(container.firstChild.innerHTML, 'Hello world!');
+        assert.equal(container.children[0].innerHTML, 'Hello world!');
     });
 
     it('should not strip HTML tags if stripTags is set to false', () => {
-        const record = { body: '<h1>Hello world!</h1>' };
+        const record = { id: 123, body: '<h1>Hello world!</h1>' };
         const { container } = render(
             <RichTextField stripTags={false} record={record} source="body" />
         );
         assert.equal(
-            container.firstChild.innerHTML,
+            container.children[0].innerHTML,
             '<span><h1>Hello world!</h1></span>'
         );
     });
@@ -95,19 +95,23 @@ describe('<RichTextField />', () => {
     it('should use custom className', () => {
         const { container } = render(
             <RichTextField
-                record={{ foo: true }}
+                record={{ id: 123, foo: true }}
                 source="body"
                 className="foo"
             />
         );
-        assert.equal(container.firstChild.classList.contains('foo'), true);
+        assert.equal(container.children[0].classList.contains('foo'), true);
     });
 
     it.each([null, undefined])(
         'should render the emptyText when value is %s and stripTags is set to false',
         body => {
             const { queryByText } = render(
-                <RichTextField record={{ body }} emptyText="NA" source="body" />
+                <RichTextField
+                    record={{ id: 123, body }}
+                    emptyText="NA"
+                    source="body"
+                />
             );
             assert.notEqual(queryByText('NA'), null);
         }
@@ -118,7 +122,7 @@ describe('<RichTextField />', () => {
         body => {
             const { queryByText } = render(
                 <RichTextField
-                    record={{ body }}
+                    record={{ id: 123, body }}
                     emptyText="NA"
                     source="body"
                     stripTags

@@ -12,7 +12,7 @@ describe('<ChipField />', () => {
                 className="className"
                 classes={{}}
                 source="name"
-                record={{ name: 'foo' }}
+                record={{ id: 123, name: 'foo' }}
             />
         );
         expect(getByText('foo')).not.toBeNull();
@@ -24,7 +24,7 @@ describe('<ChipField />', () => {
                 className="className"
                 classes={{}}
                 source="name"
-                record={{ name: 'foo' }}
+                record={{ id: 123, name: 'foo' }}
                 label="bar"
             />
         );
@@ -39,7 +39,7 @@ describe('<ChipField />', () => {
                     className="className"
                     classes={{}}
                     source="name"
-                    record={{ name }}
+                    record={{ id: 123, name }}
                     emptyText="NA"
                 />
             );

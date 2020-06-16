@@ -7,13 +7,6 @@ import { ReferenceArrayProps, useReferenceArrayFieldController } from 'ra-core';
 import { fieldPropTypes, FieldProps, InjectedFieldProps } from './types';
 import { ClassNameMap } from '@material-ui/styles';
 
-interface ReferenceArrayFieldProps extends FieldProps, InjectedFieldProps {
-    reference: string;
-    classes?: Partial<ClassNameMap<ReferenceArrayFieldClassKey>>;
-    children: ReactElement;
-    resource?: string;
-}
-
 /**
  * A container component that fetches records from another resource specified
  * by an array of *ids* in current record.
@@ -46,7 +39,6 @@ interface ReferenceArrayFieldProps extends FieldProps, InjectedFieldProps {
  * </ReferenceArrayField>
  *
  */
-
 const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
     const { children, basePath, reference, resource, record, source } = props;
 
@@ -92,20 +84,21 @@ ReferenceArrayField.defaultProps = {
     addLabel: true,
 };
 
+export interface ReferenceArrayFieldProps
+    extends FieldProps,
+        InjectedFieldProps {
+    reference: string;
+    classes?: Partial<ClassNameMap<ReferenceArrayFieldClassKey>>;
+    children: ReactElement;
+    resource?: string;
+}
+
 const useStyles = makeStyles(
     theme => ({
         progress: { marginTop: theme.spacing(2) },
     }),
     { name: 'RaReferenceArrayField' }
 );
-
-type ReferenceArrayFieldClassKey = 'progress';
-
-interface ReferenceArrayFieldViewProps extends FieldProps, ReferenceArrayProps {
-    children: ReactElement;
-    classes?: Partial<ClassNameMap<ReferenceArrayFieldClassKey>>;
-    reference: string;
-}
 
 export const ReferenceArrayFieldView: FC<
     ReferenceArrayFieldViewProps
@@ -145,6 +138,12 @@ ReferenceArrayFieldView.propTypes = {
     reference: PropTypes.string.isRequired,
     referenceBasePath: PropTypes.string,
 };
+
+type ReferenceArrayFieldClassKey = 'progress';
+
+export interface ReferenceArrayFieldViewProps
+    extends ReferenceArrayFieldProps,
+        ReferenceArrayProps {}
 
 const PureReferenceArrayFieldView = memo(ReferenceArrayFieldView);
 

@@ -20,7 +20,7 @@ describe('<ArrayField />', () => {
     it('should not fail for empty records', () => {
         const { queryByText } = render(
             <TestContext>
-                <ArrayField source="arr" resource="posts" record={{}}>
+                <ArrayField source="arr" resource="posts" record={{ id: 123 }}>
                     <DummyIterator />
                 </ArrayField>
             </TestContext>
@@ -38,6 +38,7 @@ describe('<ArrayField />', () => {
                     source="arr"
                     resource="posts"
                     record={{
+                        id: 123,
                         arr: [{ id: 123, foo: 'bar' }, { id: 456, foo: 'baz' }],
                     }}
                 >

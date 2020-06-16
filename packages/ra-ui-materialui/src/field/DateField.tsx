@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FunctionComponent, memo } from 'react';
+import { FC, memo } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
@@ -16,12 +16,6 @@ const toLocaleStringSupportsLocales = (() => {
     }
     return false;
 })();
-
-interface Props extends FieldProps {
-    locales?: string | string[];
-    options?: object;
-    showTime?: boolean;
-}
 
 /**
  * Display a date value as a locale string.
@@ -47,9 +41,7 @@ interface Props extends FieldProps {
  * // renders the record { id: 1234, new Date('2012-11-07') } as
  * <span>mercredi 7 novembre 2012</span>
  */
-export const DateField: FunctionComponent<
-    Props & InjectedFieldProps & TypographyProps
-> = memo<Props & InjectedFieldProps & TypographyProps>(
+export const DateField: FC<DateFieldProps> = memo<DateFieldProps>(
     ({
         className,
         emptyText,
@@ -114,5 +106,14 @@ DateField.propTypes = {
     options: PropTypes.object,
     showTime: PropTypes.bool,
 };
+
+export interface DateFieldProps
+    extends FieldProps,
+        InjectedFieldProps,
+        TypographyProps {
+    locales?: string | string[];
+    options?: object;
+    showTime?: boolean;
+}
 
 export default DateField;
