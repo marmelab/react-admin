@@ -6,9 +6,12 @@ describe('<FunctionField />', () => {
     afterEach(cleanup);
 
     it('should render using the render function', () => {
-        const record = { foo: 'bar' };
+        const record = { id: 123, foo: 'bar' };
         const { queryByText } = render(
-            <FunctionField record={record} render={r => r.foo.substr(0, 2)} />
+            <FunctionField
+                record={record}
+                render={r => r && r.foo.substr(0, 2)}
+            />
         );
         expect(queryByText('ba')).not.toBeNull();
     });
@@ -16,8 +19,8 @@ describe('<FunctionField />', () => {
     it('should use custom className', () => {
         const { queryByText } = render(
             <FunctionField
-                record={{ foo: 'bar' }}
-                render={r => r.foo}
+                record={{ id: 123, foo: 'bar' }}
+                render={r => r && r.foo}
                 className="foo"
             />
         );

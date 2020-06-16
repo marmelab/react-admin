@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 type TextAlign = 'right' | 'left';
 type SortOrder = 'ASC' | 'DESC';
+
 export interface FieldProps {
     addLabel?: boolean;
     sortBy?: string;
@@ -22,6 +23,7 @@ export interface FieldProps {
 export interface InjectedFieldProps {
     basePath?: string;
     record?: Record;
+    resource?: string;
 }
 
 export const fieldPropTypes = {

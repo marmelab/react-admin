@@ -1,25 +1,9 @@
-import {
-    FunctionComponent,
-    cloneElement,
-    Children,
-    useEffect,
-    useState,
-    memo,
-} from 'react';
+import { FC, cloneElement, Children, useEffect, useState, memo } from 'react';
 import get from 'lodash/get';
 import { Identifier } from 'ra-core';
 
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import PropTypes from 'prop-types';
-
-interface ArrayFieldProps {
-    fieldKey?: string;
-}
-
-interface State {
-    data: object;
-    ids: Identifier[];
-}
 
 const initialState = {
     data: {},
@@ -121,9 +105,7 @@ const getDataAndIds = (record: object, source: string, fieldKey: string) => {
  *     )
  *     TagsField.defaultProps = { addLabel: true };
  */
-export const ArrayField: FunctionComponent<
-    ArrayFieldProps & FieldProps & InjectedFieldProps
-> = memo<ArrayFieldProps & FieldProps & InjectedFieldProps>(
+export const ArrayField: FC<ArrayFieldProps> = memo<ArrayFieldProps>(
     ({
         addLabel,
         basePath,
@@ -163,5 +145,14 @@ ArrayField.propTypes = {
     ...fieldPropTypes,
     fieldKey: PropTypes.string,
 };
+
+export interface ArrayFieldProps extends FieldProps, InjectedFieldProps {
+    fieldKey?: string;
+}
+
+interface State {
+    data: object;
+    ids: Identifier[];
+}
 
 export default ArrayField;
