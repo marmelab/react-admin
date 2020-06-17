@@ -81,22 +81,22 @@ export default async (
               })
               .then(({ data: { __schema } }) => __schema);
 
-    const queries: IntrospectionField[] = schema.types.reduce((acc, type) => {
-        if (
-            type.name !== schema.queryType.name &&
-            type.name !== schema.mutationType.name
-        )
-            return acc;
+    const [queries, types] = schema.types.reduce<
+        [IntrospectionField[], IntrospectionType[]]
+    >(
+        ([qs, ts], type) => {
+            if (
+                type.name !== (schema.queryType && schema.queryType.name) &&
+                type.name !== (schema.mutationType && schema.mutationType.name)
+            ) {
+                return [qs, [...ts, type]];
+            }
 
-        const { fields = [] } = type as IntrospectionObjectType;
+            const { fields = [] } = type as IntrospectionObjectType;
 
-        return [...acc, ...fields];
-    }, []);
-
-    const types = schema.types.filter(
-        type =>
-            type.name !== schema.queryType.name &&
-            type.name !== schema.mutationType.name
+            return [[...qs, ...fields], ts];
+        },
+        [[], []]
     );
 
     const isResource = (type: IntrospectionType) =>
