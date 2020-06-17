@@ -1,8 +1,9 @@
 import * as React from 'react';
+import { FC } from 'react';
 import expect from 'expect';
 import { render, cleanup } from '@testing-library/react';
 
-import { TestTranslationProvider, renderWithRedux } from 'ra-core';
+import { Record, TestTranslationProvider, renderWithRedux } from 'ra-core';
 import SelectField from './SelectField';
 
 describe('<SelectField />', () => {
@@ -20,14 +21,14 @@ describe('<SelectField />', () => {
 
     it('should return null when the record has no value for the source', () => {
         const { container } = render(
-            <SelectField {...defaultProps} record={{}} />
+            <SelectField {...defaultProps} record={{ id: 123 }} />
         );
         expect(container.firstChild).toBeNull();
     });
 
     it('should return null when the record has a value for the source not in the choices', () => {
         const { container } = render(
-            <SelectField {...defaultProps} record={{ foo: 2 }} />
+            <SelectField {...defaultProps} record={{ id: 123, foo: 2 }} />
         );
         expect(container.firstChild).toBeNull();
     });
@@ -35,7 +36,7 @@ describe('<SelectField />', () => {
     it('should render the emptyText when the value for the source is not in the choices', () => {
         const { queryByText } = render(
             <SelectField
-                record={{ foo: 2 }}
+                record={{ id: 123, foo: 2 }}
                 emptyText="Option not found"
                 {...defaultProps}
             />
@@ -45,7 +46,7 @@ describe('<SelectField />', () => {
 
     it('should render the choice', () => {
         const { queryAllByText } = render(
-            <SelectField {...defaultProps} record={{ foo: 0 }} />
+            <SelectField {...defaultProps} record={{ id: 123, foo: 0 }} />
         );
         expect(queryAllByText('hello')).toHaveLength(1);
     });
@@ -54,11 +55,11 @@ describe('<SelectField />', () => {
         const { container } = render(
             <SelectField
                 {...defaultProps}
-                record={{ foo: 1 }}
+                record={{ id: 123, foo: 1 }}
                 className="lorem"
             />
         );
-        expect(container.firstChild.className).toContain('lorem');
+        expect(container.children[0].className).toContain('lorem');
     });
 
     it('should handle deep fields', () => {
@@ -66,7 +67,7 @@ describe('<SelectField />', () => {
             <SelectField
                 {...defaultProps}
                 source="foo.bar"
-                record={{ foo: { bar: 0 } }}
+                record={{ id: 123, foo: { bar: 0 } }}
             />
         );
         expect(queryAllByText('hello')).toHaveLength(1);
@@ -76,7 +77,7 @@ describe('<SelectField />', () => {
         const { queryAllByText } = render(
             <SelectField
                 {...defaultProps}
-                record={{ foo: 0 }}
+                record={{ id: 123, foo: 0 }}
                 optionValue="foobar"
                 choices={[{ foobar: 0, name: 'hello' }]}
             />
@@ -88,7 +89,7 @@ describe('<SelectField />', () => {
         const { queryAllByText } = render(
             <SelectField
                 {...defaultProps}
-                record={{ foo: 0 }}
+                record={{ id: 123, foo: 0 }}
                 optionText="foobar"
                 choices={[{ id: 0, foobar: 'hello' }]}
             />
@@ -100,8 +101,8 @@ describe('<SelectField />', () => {
         const { queryAllByText } = render(
             <SelectField
                 {...defaultProps}
-                record={{ foo: 0 }}
-                optionText={choice => choice.foobar}
+                record={{ id: 123, foo: 0 }}
+                optionText={(choice: any) => choice.foobar}
                 choices={[{ id: 0, foobar: 'hello' }]}
             />
         );
@@ -109,11 +110,13 @@ describe('<SelectField />', () => {
     });
 
     it('should use optionText with an element value as text identifier', () => {
-        const Foobar = ({ record }) => <span>{record.foobar}</span>;
+        const Foobar: FC<{ record?: Record }> = ({ record }) => (
+            <span>{record.foobar}</span>
+        );
         const { queryAllByText } = render(
             <SelectField
                 {...defaultProps}
-                record={{ foo: 0 }}
+                record={{ id: 123, foo: 0 }}
                 optionText={<Foobar />}
                 choices={[{ id: 0, foobar: 'hello' }]}
             />
@@ -124,7 +127,7 @@ describe('<SelectField />', () => {
     it('should translate the choice by default', () => {
         const { queryAllByText } = renderWithRedux(
             <TestTranslationProvider messages={{ hello: 'bonjour' }}>
-                <SelectField {...defaultProps} record={{ foo: 0 }} />
+                <SelectField {...defaultProps} record={{ id: 123, foo: 0 }} />
             </TestTranslationProvider>
         );
         expect(queryAllByText('hello')).toHaveLength(0);
@@ -136,7 +139,7 @@ describe('<SelectField />', () => {
             <TestTranslationProvider messages={{ hello: 'bonjour' }}>
                 <SelectField
                     {...defaultProps}
-                    record={{ foo: 0 }}
+                    record={{ id: 123, foo: 0 }}
                     translateChoice={false}
                 />
             </TestTranslationProvider>

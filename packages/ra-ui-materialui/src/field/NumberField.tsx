@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FunctionComponent, memo } from 'react';
+import { FC, memo } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
@@ -12,11 +12,6 @@ const hasNumberFormat = !!(
     Intl &&
     typeof Intl.NumberFormat === 'function'
 );
-
-interface Props extends FieldProps {
-    locales?: string | string[];
-    options?: object;
-}
 
 /**
  * Display a numeric value as a locale string.
@@ -46,9 +41,7 @@ interface Props extends FieldProps {
  * // renders the record { id: 1234, price: 25.99 } as
  * <span>25,99 $US</span>
  */
-export const NumberField: FunctionComponent<
-    Props & InjectedFieldProps & TypographyProps
-> = memo<Props & InjectedFieldProps & TypographyProps>(
+export const NumberField: FC<NumberFieldProps> = memo<NumberFieldProps>(
     ({
         className,
         emptyText,
@@ -109,5 +102,13 @@ NumberField.propTypes = {
     ]),
     options: PropTypes.object,
 };
+
+export interface NumberFieldProps
+    extends FieldProps,
+        InjectedFieldProps,
+        TypographyProps {
+    locales?: string | string[];
+    options?: object;
+}
 
 export default NumberField;

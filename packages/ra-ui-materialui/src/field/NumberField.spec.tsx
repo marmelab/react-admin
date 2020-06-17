@@ -12,7 +12,9 @@ describe('<NumberField />', () => {
     });
 
     it('should return null when the record has no value for the source', () => {
-        const { container } = render(<NumberField record={{}} source="foo" />);
+        const { container } = render(
+            <NumberField record={{ id: 123 }} source="foo" />
+        );
         assert.equal(container.firstChild, null);
     });
 
@@ -20,7 +22,11 @@ describe('<NumberField />', () => {
         'should render the emptyText when value is %s',
         foo => {
             const { getByText } = render(
-                <NumberField record={{ foo }} emptyText="NA" source="foo" />
+                <NumberField
+                    record={{ id: 123, foo }}
+                    emptyText="NA"
+                    source="foo"
+                />
             );
             assert.notEqual(getByText('NA'), null);
         }
@@ -28,7 +34,7 @@ describe('<NumberField />', () => {
 
     it('should render a number', () => {
         const { queryByText } = render(
-            <NumberField record={{ foo: 1 }} source="foo" />
+            <NumberField record={{ id: 123, foo: 1 }} source="foo" />
         );
         assert.notEqual(queryByText('1'), null);
     });
@@ -36,7 +42,7 @@ describe('<NumberField />', () => {
     it('should pass the options prop to Intl.NumberFormat', () => {
         const { queryByText } = render(
             <NumberField
-                record={{ foo: 1 }}
+                record={{ id: 123, foo: 1 }}
                 source="foo"
                 locales="en-US"
                 options={{ minimumFractionDigits: 2 }}
@@ -48,7 +54,7 @@ describe('<NumberField />', () => {
     it('should use the locales props as an argument to Intl.NumberFormat', () => {
         const { queryByText } = render(
             <NumberField
-                record={{ foo: 1 }}
+                record={{ id: 123, foo: 1 }}
                 source="foo"
                 locales="fr-FR"
                 options={{ minimumFractionDigits: 2 }}
@@ -59,14 +65,21 @@ describe('<NumberField />', () => {
 
     it('should use custom className', () => {
         const { container } = render(
-            <NumberField record={{ foo: true }} source="foo" className="foo" />
+            <NumberField
+                record={{ id: 123, foo: true }}
+                source="foo"
+                className="foo"
+            />
         );
-        assert.ok(container.firstChild.classList.contains('foo'));
+        assert.ok(container.children[0].classList.contains('foo'));
     });
 
     it('should handle deep fields', () => {
         const { queryByText } = render(
-            <NumberField record={{ foo: { bar: 2 } }} source="foo.bar" />
+            <NumberField
+                record={{ id: 123, foo: { bar: 2 } }}
+                source="foo.bar"
+            />
         );
 
         assert.notEqual(queryByText('2'), null);

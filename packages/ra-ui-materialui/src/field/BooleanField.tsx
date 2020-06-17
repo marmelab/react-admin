@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FunctionComponent, memo } from 'react';
+import { FC, memo } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import classnames from 'classnames';
@@ -12,11 +12,6 @@ import { useTranslate } from 'ra-core';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import sanitizeRestProps from './sanitizeRestProps';
 
-interface Props extends FieldProps {
-    valueLabelTrue?: string;
-    valueLabelFalse?: string;
-}
-
 const useStyles = makeStyles(
     {
         root: {
@@ -28,58 +23,59 @@ const useStyles = makeStyles(
     }
 );
 
-export const BooleanField: FunctionComponent<
-    Props & InjectedFieldProps & TypographyProps
-> = memo<Props & InjectedFieldProps & TypographyProps>(props => {
-    const {
-        className,
-        classes: classesOverride,
-        emptyText,
-        source,
-        record = {},
-        valueLabelTrue,
-        valueLabelFalse,
-        ...rest
-    } = props;
-    const translate = useTranslate();
-    const classes = useStyles(props);
-    const value = get(record, source);
-    let ariaLabel = value ? valueLabelTrue : valueLabelFalse;
+export const BooleanField: FC<BooleanFieldProps> = memo<BooleanFieldProps>(
+    props => {
+        const {
+            className,
+            classes: classesOverride,
+            emptyText,
+            source,
+            record = {},
+            valueLabelTrue,
+            valueLabelFalse,
+            ...rest
+        } = props;
+        const translate = useTranslate();
+        const classes = useStyles(props);
+        const value = get(record, source);
+        let ariaLabel = value ? valueLabelTrue : valueLabelFalse;
 
-    if (!ariaLabel) {
-        ariaLabel = value === false ? 'ra.boolean.false' : 'ra.boolean.true';
-    }
+        if (!ariaLabel) {
+            ariaLabel =
+                value === false ? 'ra.boolean.false' : 'ra.boolean.true';
+        }
 
-    if (value === false || value === true) {
+        if (value === false || value === true) {
+            return (
+                <Typography
+                    component="span"
+                    variant="body2"
+                    className={classnames(classes.root, className)}
+                    {...sanitizeRestProps(rest)}
+                >
+                    <Tooltip title={translate(ariaLabel, { _: ariaLabel })}>
+                        {value === true ? (
+                            <TrueIcon data-testid="true" fontSize="small" />
+                        ) : (
+                            <FalseIcon data-testid="false" fontSize="small" />
+                        )}
+                    </Tooltip>
+                </Typography>
+            );
+        }
+
         return (
             <Typography
                 component="span"
                 variant="body2"
-                className={classnames(classes.root, className)}
+                className={className}
                 {...sanitizeRestProps(rest)}
             >
-                <Tooltip title={translate(ariaLabel, { _: ariaLabel })}>
-                    {value === true ? (
-                        <TrueIcon data-testid="true" fontSize="small" />
-                    ) : (
-                        <FalseIcon data-testid="false" fontSize="small" />
-                    )}
-                </Tooltip>
+                {emptyText}
             </Typography>
         );
     }
-
-    return (
-        <Typography
-            component="span"
-            variant="body2"
-            className={className}
-            {...sanitizeRestProps(rest)}
-        >
-            {emptyText}
-        </Typography>
-    );
-});
+);
 
 BooleanField.defaultProps = {
     addLabel: true,
@@ -92,5 +88,13 @@ BooleanField.propTypes = {
     valueLabelFalse: PropTypes.string,
     valueLabelTrue: PropTypes.string,
 };
+
+export interface BooleanFieldProps
+    extends FieldProps,
+        InjectedFieldProps,
+        TypographyProps {
+    valueLabelTrue?: string;
+    valueLabelFalse?: string;
+}
 
 export default BooleanField;

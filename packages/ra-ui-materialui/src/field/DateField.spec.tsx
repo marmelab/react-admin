@@ -12,14 +12,16 @@ describe('<DateField />', () => {
     });
 
     it('should return null when the record has no value for the source', () => {
-        const { container } = render(<DateField record={{}} source="foo" />);
+        const { container } = render(
+            <DateField record={{ id: 123 }} source="foo" />
+        );
         assert.equal(container.firstChild, null);
     });
 
     it('should render a date', () => {
         const { queryByText } = render(
             <DateField
-                record={{ foo: new Date('2017-04-23') }}
+                record={{ id: 123, foo: new Date('2017-04-23') }}
                 source="foo"
                 locales="en-US"
             />
@@ -32,7 +34,7 @@ describe('<DateField />', () => {
     it('should render a date and time when the showtime prop is passed', () => {
         const { queryByText } = render(
             <DateField
-                record={{ foo: new Date('2017-04-23 23:05') }}
+                record={{ id: 123, foo: new Date('2017-04-23 23:05') }}
                 showTime
                 source="foo"
                 locales="en-US"
@@ -54,7 +56,7 @@ describe('<DateField />', () => {
 
         const { queryByText } = render(
             <DateField
-                record={{ foo: date }}
+                record={{ id: 123, foo: date }}
                 source="foo"
                 locales="en-US"
                 options={options}
@@ -70,7 +72,7 @@ describe('<DateField />', () => {
     it('should use the locales props as an argument to toLocaleString', () => {
         const { queryByText } = render(
             <DateField
-                record={{ foo: new Date('2017-04-23') }}
+                record={{ id: 123, foo: new Date('2017-04-23') }}
                 source="foo"
                 locales="fr-FR"
             />
@@ -83,20 +85,20 @@ describe('<DateField />', () => {
     it('should use custom className', () => {
         const { container } = render(
             <DateField
-                record={{ foo: new Date('01/01/2016') }}
+                record={{ id: 123, foo: new Date('01/01/2016') }}
                 source="foo"
                 locales="en-US"
                 className="foo"
             />
         );
 
-        assert.ok(container.firstChild.classList.contains('foo'));
+        assert.ok(container.children[0].classList.contains('foo'));
     });
 
     it('should handle deep fields', () => {
         const { queryByText } = render(
             <DateField
-                record={{ foo: { bar: new Date('01/01/2016') } }}
+                record={{ id: 123, foo: { bar: new Date('01/01/2016') } }}
                 source="foo.bar"
                 locales="en-US"
             />
@@ -111,7 +113,7 @@ describe('<DateField />', () => {
         foo => {
             const { queryByText } = render(
                 <DateField
-                    record={{ foo }}
+                    record={{ id: 123, foo }}
                     source="foo"
                     locales="fr-FR"
                     emptyText="NA"

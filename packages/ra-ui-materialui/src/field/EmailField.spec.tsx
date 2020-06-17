@@ -9,22 +9,22 @@ describe('<EmailField />', () => {
     afterEach(cleanup);
 
     it('should render as Mui Link', () => {
-        const record = { foo: url };
+        const record = { id: 123, foo: url };
         const { getByText } = render(
             <EmailField record={record} source="foo" />
         );
-        const link = getByText(url);
+        const link = getByText(url) as HTMLAnchorElement;
         expect(link.tagName).toEqual('A');
         expect(link.href).toEqual(`mailto:${url}`);
         expect(link.innerHTML).toEqual(url);
     });
 
     it('should handle deep fields', () => {
-        const record = { foo: { bar: url } };
+        const record = { id: 123, foo: { bar: url } };
         const { getByText } = render(
             <EmailField record={record} source="foo.bar" />
         );
-        const link = getByText(url);
+        const link = getByText(url) as HTMLAnchorElement;
         expect(link.tagName).toEqual('A');
         expect(link.href).toEqual(`mailto:${url}`);
         expect(link.innerHTML).toEqual(url);
@@ -32,11 +32,11 @@ describe('<EmailField />', () => {
 
     it('should display an email (mailto) link', () => {
         const halUrl = 'hal@kubrickcorp.com';
-        const record = { email: halUrl };
+        const record = { id: 123, email: halUrl };
         const { getByText } = render(
             <EmailField record={record} source="email" />
         );
-        const link = getByText(halUrl);
+        const link = getByText(halUrl) as HTMLAnchorElement;
         expect(link.tagName).toEqual('A');
         expect(link.href).toEqual(`mailto:${halUrl}`);
         expect(link.innerHTML).toEqual(halUrl);
@@ -45,7 +45,7 @@ describe('<EmailField />', () => {
     it('should use custom className', () => {
         const { getByText } = render(
             <EmailField
-                record={{ email: url }}
+                record={{ id: 123, email: url }}
                 source="email"
                 className="foo"
             />
@@ -58,14 +58,20 @@ describe('<EmailField />', () => {
         'should render the emptyText when value is %s',
         foo => {
             const { queryByText } = render(
-                <EmailField record={{ foo }} source="foo" emptyText="NA" />
+                <EmailField
+                    record={{ id: 123, foo }}
+                    source="foo"
+                    emptyText="NA"
+                />
             );
             expect(queryByText('NA')).not.toBeNull();
         }
     );
 
     it('should return null when the record has no value for the source and no emptyText', () => {
-        const { container } = render(<EmailField record={{}} source="foo" />);
+        const { container } = render(
+            <EmailField record={{ id: 123 }} source="foo" />
+        );
         expect(container.firstChild).toBeNull();
     });
 });

@@ -4,7 +4,7 @@ import BooleanField from './BooleanField';
 import { render, cleanup } from '@testing-library/react';
 
 const defaultProps = {
-    record: { published: true },
+    record: { id: 123, published: true },
     source: 'published',
     resource: 'posts',
     classes: {},
@@ -32,7 +32,10 @@ describe('<BooleanField />', () => {
 
     it('should display cross and falsy text if value is false', () => {
         const { queryByTitle } = render(
-            <BooleanField {...defaultProps} record={{ published: false }} />
+            <BooleanField
+                {...defaultProps}
+                record={{ id: 123, published: false }}
+            />
         );
         expect(queryByTitle('ra.boolean.true')).toBeNull();
         expect(queryByTitle('ra.boolean.false')).not.toBeNull();
@@ -43,7 +46,7 @@ describe('<BooleanField />', () => {
         const { queryByTitle } = render(
             <BooleanField
                 {...defaultProps}
-                record={{ published: false }}
+                record={{ id: 123, published: false }}
                 valueLabelFalse="Has not been published"
             />
         );
@@ -53,7 +56,10 @@ describe('<BooleanField />', () => {
 
     it('should not display anything if value is null', () => {
         const { queryByTitle } = render(
-            <BooleanField {...defaultProps} record={{ published: null }} />
+            <BooleanField
+                {...defaultProps}
+                record={{ id: 123, published: null }}
+            />
         );
         expect(queryByTitle('ra.boolean.true')).toBeNull();
         expect(queryByTitle('ra.boolean.false')).toBeNull();
@@ -65,7 +71,7 @@ describe('<BooleanField />', () => {
             const { queryByTitle, queryByText } = render(
                 <BooleanField
                     {...defaultProps}
-                    record={{ published }}
+                    record={{ id: 123, published }}
                     emptyText="NA"
                 />
             );
@@ -79,18 +85,18 @@ describe('<BooleanField />', () => {
         const { container } = render(
             <BooleanField
                 {...defaultProps}
-                record={{ foo: true }}
+                record={{ id: 123, foo: true }}
                 className="foo"
             />
         );
-        expect(container.firstChild.classList.contains('foo')).toBe(true);
+        expect(container.children[0].classList.contains('foo')).toBe(true);
     });
 
     it('should handle deep fields', () => {
         const { queryByTitle } = render(
             <BooleanField
                 {...defaultProps}
-                record={{ foo: { bar: true } }}
+                record={{ id: 123, foo: { bar: true } }}
                 source="foo.bar"
             />
         );

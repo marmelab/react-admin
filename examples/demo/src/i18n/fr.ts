@@ -24,7 +24,7 @@ const customFrenchMessages: TranslationMessages = {
                     'par %{customer_name}, un poster |||| par %{customer_name}, %{nb_items} posters',
             },
             welcome: {
-                title: 'Bienvenue sur la démo de react-admin',
+                title: 'Bienvenue sur la démo e-commerce de react-admin',
                 subtitle:
                     "Ceci est le back-office d'un magasin de posters imaginaire. N'hésitez pas à explorer et à modifier les données. La démo s'exécute en local dans votre navigateur, et se remet à zéro chaque fois que vous rechargez la page.",
                 aor_button: 'Site web de react-admin',
