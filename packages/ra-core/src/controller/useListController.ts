@@ -21,11 +21,10 @@ export interface ListProps {
     filter?: object;
     filters?: ReactElement<any>;
     filterDefaultValues?: object;
-    pagination?: ReactElement<any>;
     perPage?: number;
     sort?: Sort;
     // the props managed by react-admin
-    basePath: string;
+    basePath?: string;
     debounce?: number;
     hasCreate?: boolean;
     hasEdit?: boolean;
@@ -33,8 +32,7 @@ export interface ListProps {
     hasShow?: boolean;
     location?: Location;
     path?: string;
-    query: ListParams;
-    resource: string;
+    resource?: string;
     [key: string]: any;
 }
 

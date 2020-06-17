@@ -7,7 +7,7 @@ import {
     InferredElement,
 } from 'ra-core';
 
-import { ListView } from './List';
+import ListView from './ListView';
 import listFieldTypes from './listFieldTypes';
 
 const ListViewGuesser = props => {
