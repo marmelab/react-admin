@@ -6,6 +6,7 @@ import DatagridBody, { PureDatagridBody } from './DatagridBody';
 import DatagridRow, { PureDatagridRow } from './DatagridRow';
 import DatagridHeaderCell from './DatagridHeaderCell';
 import DatagridCell from './DatagridCell';
+import ExpandRowButton from './ExpandRowButton';
 import Filter from './Filter';
 import FilterButton from './FilterButton';
 import FilterForm from './FilterForm';
@@ -30,6 +31,7 @@ export {
     DatagridRow,
     DatagridHeaderCell,
     DatagridCell,
+    ExpandRowButton,
     Filter,
     FilterButton,
     FilterForm,
