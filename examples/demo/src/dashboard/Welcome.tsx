@@ -69,7 +69,7 @@ const Welcome: FC = () => {
                         </Button>
                         <Button
                             variant="contained"
-                            href="https://marmelab.com/react-admin"
+                            href="https://github.com/marmelab/react-admin/tree/master/examples/demo"
                             startIcon={<CodeIcon />}
                         >
                             {translate('pos.dashboard.welcome.demo_button')}
