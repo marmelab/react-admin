@@ -48,6 +48,7 @@ const styles = {
 };
 
 const Spacer = () => <span style={{ width: '1em' }} />;
+const VerticalSpacer = () => <span style={{ height: '1em' }} />;
 
 const Dashboard: FC = () => {
     const [state, setState] = useState<State>({});
@@ -159,12 +160,10 @@ const Dashboard: FC = () => {
         <div>
             <div style={styles.flexColumn as CSSProperties}>
                 <Welcome />
-
                 <MonthlyRevenue value={revenue} />
+                <VerticalSpacer />
                 <NbNewOrders value={nbNewOrders} />
-
-                <OrderChart orders={recentOrders} />
-
+                <VerticalSpacer />
                 <PendingOrders
                     orders={pendingOrders}
                     customers={pendingOrdersCustomers}

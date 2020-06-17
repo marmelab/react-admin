@@ -13,8 +13,8 @@ const NbNewOrders: FC<Props> = ({ value }) => {
     const translate = useTranslate();
     return (
         <CardWithIcon
+            to="/commands"
             icon={ShoppingCartIcon}
-            color="#B2AD3F"
             title={translate('pos.dashboard.new_orders')}
             subtitle={value}
         />

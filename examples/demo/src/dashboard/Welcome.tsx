@@ -18,7 +18,10 @@ import publishArticleImage from './welcome_illustration.svg';
 
 const useStyles = makeStyles(theme => ({
     root: {
-        background: `url(${backgroundImage}) no-repeat #6f4ceb`,
+        background:
+            theme.palette.type === 'dark'
+                ? '#535353'
+                : `url(${backgroundImage}) no-repeat #6f4ceb`,
         color: '#fff',
         padding: 20,
         marginTop: theme.spacing(2),
@@ -29,11 +32,13 @@ const useStyles = makeStyles(theme => ({
         marginLeft: 'auto',
     },
     actions: {
-        '& a': {
-            backgroundColor: '#fff',
-            marginRight: '1em',
-            '& span': {
-                color: theme.palette.primary.main,
+        [theme.breakpoints.down('md')]: {
+            padding: 0,
+            flexWrap: 'wrap',
+            '& a': {
+                marginTop: '1em',
+                marginLeft: '0!important',
+                marginRight: '1em',
             },
         },
     },
@@ -72,7 +77,11 @@ const Welcome: FC = () => {
                     </CardActions>
                 </Box>
 
-                <Box width={{ xs: 0, sm: 0, md: '15em' }} overflow="hidden">
+                <Box
+                    display={{ xs: 'none', sm: 'none', md: 'block' }}
+                    width="15em"
+                    overflow="hidden"
+                >
                     <Box height="9em" width="15em" className={classes.media} />
                 </Box>
             </Box>

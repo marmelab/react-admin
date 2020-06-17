@@ -67,8 +67,8 @@ const NewCustomers = () => {
     const nb = visitors ? visitors.reduce((nb: number) => ++nb, 0) : 0;
     return (
         <CardWithIcon
+            to="/customers"
             icon={CustomerIcon}
-            color="#746DA0"
             title={translate('pos.dashboard.new_customers')}
             subtitle={nb}
         >

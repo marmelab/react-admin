@@ -19,13 +19,37 @@ export const lightTheme = {
             contrastText: '#fff',
         },
         background: {
-            default: '#f6f6ff',
+            default: '#fcfcfe',
         },
     },
     shape: {
         borderRadius: 10,
     },
     overrides: {
+        RaMenuItemLink: {
+            root: {
+                borderLeft: '3px solid #fff',
+            },
+            active: {
+                borderLeft: '3px solid #4f3cc9',
+            },
+        },
+        MuiPaper: {
+            elevation1: {
+                boxShadow: 'none',
+            },
+            root: {
+                border: '1px solid #e0e0e3',
+                backgroundClip: 'padding-box',
+            },
+        },
+        MuiButton: {
+            contained: {
+                backgroundColor: '#fff',
+                color: '#4f3cc9',
+                boxShadow: 'none',
+            },
+        },
         MuiAppBar: {
             colorSecondary: {
                 color: '#808080',

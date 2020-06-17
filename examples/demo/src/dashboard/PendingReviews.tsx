@@ -40,8 +40,8 @@ const PendingReviews: FC<Props> = ({ reviews = [], customers = {}, nb }) => {
     const translate = useTranslate();
     return (
         <CardWithIcon
+            to="/reviews"
             icon={CommentIcon}
-            color="#5A518F"
             title={translate('pos.dashboard.pending_reviews')}
             subtitle={nb}
         >
@@ -68,9 +68,7 @@ const PendingReviews: FC<Props> = ({ reviews = [], customers = {}, nb }) => {
                         </ListItemAvatar>
 
                         <ListItemText
-                            primary={
-                                <StarRatingField record={record} size="small" />
-                            }
+                            primary={<StarRatingField record={record} />}
                             secondary={record.comment}
                             className={classes.listItemText}
                             style={{ paddingRight: 0 }}
