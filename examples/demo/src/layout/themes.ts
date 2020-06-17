@@ -56,6 +56,14 @@ export const lightTheme = {
                 backgroundColor: '#fff',
             },
         },
+        MuiLinearProgress: {
+            colorPrimary: {
+                backgroundColor: '#f5f5f5',
+            },
+            barColorPrimary: {
+                backgroundColor: '#d7d7d7',
+            },
+        },
         MuiFilledInput: {
             root: {
                 backgroundColor: 'rgba(0, 0, 0, 0.04)',
