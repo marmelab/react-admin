@@ -24,7 +24,7 @@ const customEnglishMessages: TranslationMessages = {
                     'by %{customer_name}, one item |||| by %{customer_name}, %{nb_items} items',
             },
             welcome: {
-                title: 'Welcome to react-admin demo',
+                title: 'Welcome to the react-admin e-commerce demo',
                 subtitle:
                     "This is the admin of an imaginary poster shop. Feel free to explore and modify the data - it's local to your computer, and will reset each time you reload.",
                 aor_button: 'react-admin site',
