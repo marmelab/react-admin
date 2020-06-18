@@ -49,7 +49,7 @@ const emptyParams = {};
  *     );
  */
 const useAuthState = (params: any = emptyParams): State => {
-    const [state, setState] = useSafeSetState({
+    const [state, setState] = useSafeSetState<State>({
         loading: true,
         loaded: false,
         authenticated: true, // optimistic
@@ -64,6 +64,7 @@ const useAuthState = (params: any = emptyParams): State => {
                 setState({ loading: false, loaded: true, authenticated: false })
             );
     }, [checkAuth, params, setState]);
+
     return state;
 };
 

@@ -124,7 +124,7 @@ const useMutation = (
     query?: Mutation,
     options?: MutationOptions
 ): UseMutationValue => {
-    const [state, setState] = useSafeSetState({
+    const [state, setState] = useSafeSetState<UseMutationState>({
         data: null,
         error: null,
         total: null,
@@ -204,15 +204,17 @@ export interface MutationOptions {
     withDeclarativeSideEffectsSupport?: boolean;
 }
 
+export interface UseMutationState {
+    data?: any;
+    total?: number;
+    error?: any;
+    loading: boolean;
+    loaded: boolean;
+}
+
 export type UseMutationValue = [
     (query?: Partial<Mutation>, options?: Partial<MutationOptions>) => void,
-    {
-        data?: any;
-        total?: number;
-        error?: any;
-        loading: boolean;
-        loaded: boolean;
-    }
+    UseMutationState
 ];
 
 /**
