@@ -148,7 +148,7 @@ describe('useListController', () => {
             ).toEqual({ q: true });
         });
 
-        it.only('should update data if permanent filters change', () => {
+        it('should update data if permanent filters change', () => {
             const children = jest.fn().mockReturnValue(<span>children</span>);
             const props = {
                 ...defaultProps,
