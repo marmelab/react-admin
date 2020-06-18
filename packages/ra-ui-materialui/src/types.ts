@@ -39,7 +39,7 @@ export interface ListProps extends ResourceComponentProps {
     right?: ReactElement;
     sort?: Sort;
     title?: string | ReactElement;
-    top?: ReactElement;
+    top?: ReactElement | false;
 }
 
 export interface ResourceMatch {
