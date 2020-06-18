@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Children, cloneElement } from 'react';
+import { FC } from 'react';
+import { Children, ReactNode, cloneElement, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -8,8 +9,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import { useTranslate, sanitizeListRestProps } from 'ra-core';
+import { useTranslate, sanitizeListRestProps, useListContext } from 'ra-core';
 
+import { ClassesOverride } from '../types';
 import TopToolbar from '../layout/TopToolbar';
 
 const useStyles = makeStyles(
@@ -49,18 +51,20 @@ const useStyles = makeStyles(
     { name: 'RaBulkActionsToolbar' }
 );
 
-const BulkActionsToolbar = props => {
+const BulkActionsToolbar: FC<BulkActionsToolbarProps> = props => {
     const {
-        basePath,
         classes: classesOverride,
-        filterValues,
-        label,
-        resource,
-        selectedIds,
-        onUnselectItems,
+        label = 'ra.action.bulk_actions',
         children,
         ...rest
     } = props;
+    const {
+        basePath,
+        filterValues,
+        resource,
+        selectedIds,
+        onUnselectItems,
+    } = useListContext();
     const classes = useStyles(props);
     const translate = useTranslate();
 
@@ -91,12 +95,14 @@ const BulkActionsToolbar = props => {
             </div>
             <TopToolbar>
                 {Children.map(children, child =>
-                    cloneElement(Children.only(child), {
-                        basePath,
-                        filterValues,
-                        resource,
-                        selectedIds,
-                    })
+                    isValidElement(child)
+                        ? cloneElement(child, {
+                              basePath,
+                              filterValues,
+                              resource,
+                              selectedIds,
+                          })
+                        : null
                 )}
             </TopToolbar>
         </Toolbar>
@@ -106,15 +112,13 @@ const BulkActionsToolbar = props => {
 BulkActionsToolbar.propTypes = {
     children: PropTypes.node,
     classes: PropTypes.object,
-    basePath: PropTypes.string,
-    filterValues: PropTypes.object,
     label: PropTypes.string,
-    resource: PropTypes.string,
-    selectedIds: PropTypes.array,
 };
 
-BulkActionsToolbar.defaultProps = {
-    label: 'ra.action.bulk_actions',
-};
+export interface BulkActionsToolbarProps {
+    children?: ReactNode;
+    classes?: ClassesOverride<typeof useStyles>;
+    label?: string;
+}
 
 export default BulkActionsToolbar;
