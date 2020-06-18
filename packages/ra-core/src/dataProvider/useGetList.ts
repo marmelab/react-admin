@@ -71,18 +71,11 @@ const useGetList = <RecordType = Record>(
         { type: 'getList', resource, payload: { pagination, sort, filter } },
         options,
         // data selector (may return [])
-        // We don't want the list to reset to first page after a bulk delete if the current page still exists
-        // But CrudDeleteMany reset all "cachedRequests" for this resource.
-        // It caused ids to be empty, and useListController to automatically reset to page 1
-        // Now, it "cachedRequests" is undefined, we try default ids before setting an empty ids array
         (state: ReduxState): Identifier[] =>
             get(
                 state.admin.resources,
                 [resource, 'list', 'cachedRequests', requestSignature, 'ids'],
-                state.admin.resources[resource] &&
-                    state.admin.resources[resource].list
-                    ? state.admin.resources[resource].list.ids
-                    : []
+                []
             ),
         // total selector (may return undefined)
         (state: ReduxState): number =>
