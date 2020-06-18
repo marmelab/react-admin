@@ -123,7 +123,7 @@ const LoginForm: FunctionComponent<Props> = props => {
                             variant="contained"
                             type="submit"
                             color="primary"
-                            disabled={!!loading}
+                            disabled={loading}
                             className={classes.button}
                         >
                             {loading && (

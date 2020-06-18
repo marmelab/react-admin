@@ -90,7 +90,7 @@ const useGetMany = (
     const data = useSelector((state: ReduxState) =>
         selectMany(state, resource, ids)
     );
-    const [state, setState] = useSafeSetState<UseGetManyResult>({
+    const [state, setState] = useSafeSetState({
         data,
         error: null,
         loading: ids.length !== 0,
