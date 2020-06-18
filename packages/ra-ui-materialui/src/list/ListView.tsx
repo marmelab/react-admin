@@ -61,16 +61,17 @@ export const ListView: FC<ListViewProps> = props => {
 
     const renderList = () => (
         <>
-            {top ??
-                ((filters || actions) && (
-                    <ListToolbar
-                        filters={filters}
-                        {...listContext} // deprecated, use ListContext instead
-                        actions={actions}
-                        exporter={exporter} // deprecated, use ExporterContext instead
-                        permanentFilter={filter}
-                    />
-                ))}
+            {top !== null && top !== undefined
+                ? top
+                : (filters || actions) && (
+                      <ListToolbar
+                          filters={filters}
+                          {...listContext} // deprecated, use ListContext instead
+                          actions={actions}
+                          exporter={exporter} // deprecated, use ExporterContext instead
+                          permanentFilter={filter}
+                      />
+                  )}
             <div className={classes.main}>
                 {left}
                 <Content
