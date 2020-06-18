@@ -1,10 +1,12 @@
 import * as React from 'react';
+import { FC } from 'react';
+import { Typography, makeStyles } from '@material-ui/core';
 import Inbox from '@material-ui/icons/Inbox';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/styles';
-import { useTranslate } from 'ra-core';
-import { CreateButton } from '../button';
+import { useTranslate, useListContext } from 'ra-core';
 import inflection from 'inflection';
+
+import { ClassesOverride } from '../types';
+import { CreateButton } from '../button';
 
 const useStyles = makeStyles(
     theme => ({
@@ -29,8 +31,8 @@ const useStyles = makeStyles(
     { name: 'RaEmpty' }
 );
 
-const Empty = props => {
-    const { resource, basePath } = props;
+const Empty: FC<EmptyProps> = props => {
+    const { resource, basePath } = useListContext();
     const classes = useStyles(props);
     const translate = useTranslate();
 
@@ -66,5 +68,9 @@ const Empty = props => {
         </>
     );
 };
+
+export interface EmptyProps {
+    classes?: ClassesOverride<typeof useStyles>;
+}
 
 export default Empty;
