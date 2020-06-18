@@ -1,13 +1,15 @@
 import * as React from 'react';
-import { cloneElement, memo } from 'react';
+import { cloneElement, memo, FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import TableBody from '@material-ui/core/TableBody';
+import { TableBody, TableBodyProps } from '@material-ui/core';
 import classnames from 'classnames';
 import isEqual from 'lodash/isEqual';
+import { Identifier, Record, RecordMap } from 'ra-core';
 
 import DatagridRow, { PureDatagridRow } from './DatagridRow';
+import useDatagridStyles from './useDatagridStyles';
 
-const DatagridBody = ({
+const DatagridBody: FC<DatagridBodyRow> = ({
     basePath,
     children,
     classes,
@@ -23,8 +25,6 @@ const DatagridBody = ({
     rowClick,
     rowStyle,
     selectedIds,
-    styles,
-    version,
     isRowSelectable,
     ...rest
 }) => (
@@ -61,10 +61,12 @@ const DatagridBody = ({
 
 DatagridBody.propTypes = {
     basePath: PropTypes.string,
-    classes: PropTypes.object,
+    classes: PropTypes.any,
     className: PropTypes.string,
     children: PropTypes.node,
+    // @ts-ignore
     data: PropTypes.object.isRequired,
+    // @ts-ignore
     expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     hasBulkActions: PropTypes.bool.isRequired,
     hover: PropTypes.bool,
@@ -77,7 +79,6 @@ DatagridBody.propTypes = {
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     styles: PropTypes.object,
     isRowSelectable: PropTypes.func,
-    version: PropTypes.number,
 };
 
 DatagridBody.defaultProps = {
@@ -86,7 +87,41 @@ DatagridBody.defaultProps = {
     ids: [],
     row: <DatagridRow />,
 };
+
+type RowClickFunction = (
+    id: Identifier,
+    basePath: string,
+    record: Record
+) => string;
+
+export interface DatagridBodyRow extends Omit<TableBodyProps, 'classes'> {
+    basePath?: string;
+    classes?: ReturnType<typeof useDatagridStyles>;
+    className?: string;
+    data?: RecordMap;
+    expand?:
+        | ReactElement
+        | FC<{
+              basePath: string;
+              id: Identifier;
+              record: Record;
+              resource: string;
+          }>;
+    hasBulkActions?: boolean;
+    hover?: boolean;
+    ids?: Identifier[];
+    onToggleItem?: (id: Identifier) => void;
+    record?: Record;
+    resource?: string;
+    row?: ReactElement;
+    rowClick?: string | RowClickFunction;
+    rowStyle?: (record: Record, index: number) => any;
+    selectedIds?: Identifier[];
+    isRowSelectable?: (record: Record) => boolean | boolean;
+}
+
 // trick material-ui Table into thinking this is one of the child type it supports
+// @ts-ignore
 DatagridBody.muiName = 'TableBody';
 
 const areEqual = (prevProps, nextProps) => {
@@ -96,8 +131,11 @@ const areEqual = (prevProps, nextProps) => {
 };
 
 export const PureDatagridBody = memo(DatagridBody, areEqual);
+
 // trick material-ui Table into thinking this is one of the child type it supports
+// @ts-ignore
 PureDatagridBody.muiName = 'TableBody';
+// @ts-ignore
 PureDatagridBody.defaultProps = {
     row: <PureDatagridRow />,
 };

@@ -1,65 +1,34 @@
-import React, {
+import * as React from 'react';
+import {
     isValidElement,
     Children,
     cloneElement,
     useCallback,
+    FC,
+    ReactElement,
 } from 'react';
 import PropTypes from 'prop-types';
-import { sanitizeListRestProps } from 'ra-core';
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Checkbox from '@material-ui/core/Checkbox';
+import {
+    sanitizeListRestProps,
+    useListContext,
+    Identifier,
+    Record,
+} from 'ra-core';
+import {
+    Checkbox,
+    Table,
+    TableProps,
+    TableCell,
+    TableHead,
+    TableRow,
+} from '@material-ui/core';
 import classnames from 'classnames';
 
 import DatagridHeaderCell from './DatagridHeaderCell';
 import DatagridLoading from './DatagridLoading';
 import DatagridBody, { PureDatagridBody } from './DatagridBody';
-
-const useStyles = makeStyles(
-    theme => ({
-        table: {
-            tableLayout: 'auto',
-        },
-        thead: {},
-        tbody: {},
-        headerRow: {},
-        headerCell: {
-            position: 'sticky',
-            top: 0,
-            zIndex: 2,
-            backgroundColor: theme.palette.background.paper,
-        },
-        checkbox: {},
-        row: {},
-        clickableRow: {
-            cursor: 'pointer',
-        },
-        rowEven: {},
-        rowOdd: {},
-        rowCell: {},
-        expandHeader: {
-            padding: 0,
-            width: theme.spacing(6),
-        },
-        expandIconCell: {
-            width: theme.spacing(6),
-        },
-        expandIcon: {
-            padding: theme.spacing(1),
-            transform: 'rotate(-90deg)',
-            transition: theme.transitions.create('transform', {
-                duration: theme.transitions.duration.shortest,
-            }),
-        },
-        expanded: {
-            transform: 'rotate(0deg)',
-        },
-    }),
-    { name: 'RaDatagrid' }
-);
+import useDatagridStyles from './useDatagridStyles';
+import { ClassesOverride } from '../types';
 
 /**
  * The Datagrid component renders a list of records as a table.
@@ -93,36 +62,38 @@ const useStyles = makeStyles(
  *     </Datagrid>
  * </ReferenceManyField>
  */
-const Datagrid = props => {
-    const classes = useStyles(props);
+const Datagrid: FC<DatagridProps> = props => {
+    const classes = useDatagridStyles(props);
     const {
-        basePath,
         optimized = false,
         body = optimized ? <PureDatagridBody /> : <DatagridBody />,
         children,
         classes: classesOverride,
         className,
+        expand,
+        hasBulkActions = false,
+        hover,
+        isRowSelectable,
+        rowClick,
+        rowStyle,
+        size = 'small',
+        ...rest
+    } = props;
+
+    const {
+        basePath,
         currentSort,
         data,
-        expand,
-        hasBulkActions,
-        hover,
         ids,
-        loading,
         loaded,
         onSelect,
         onToggleItem,
         resource,
-        rowClick,
-        rowStyle,
         selectedIds,
         setSort,
-        size = 'small',
         total,
-        isRowSelectable,
         version,
-        ...rest
-    } = props;
+    } = useListContext();
 
     const updateSort = useCallback(
         event => {
@@ -233,9 +204,10 @@ const Datagrid = props => {
                                 field={field}
                                 isSorting={
                                     currentSort.field ===
-                                    (field.props.sortBy || field.props.source)
+                                    ((field.props as any).sortBy ||
+                                        (field.props as any).source)
                                 }
-                                key={field.props.source || index}
+                                key={(field.props as any).source || index}
                                 resource={resource}
                                 updateSort={updateSort}
                             />
@@ -278,29 +250,50 @@ Datagrid.propTypes = {
         field: PropTypes.string,
         order: PropTypes.string,
     }),
-    data: PropTypes.object.isRequired,
+    data: PropTypes.object,
+    // @ts-ignore
     expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
-    hasBulkActions: PropTypes.bool.isRequired,
+    hasBulkActions: PropTypes.bool,
     hover: PropTypes.bool,
-    ids: PropTypes.arrayOf(PropTypes.any).isRequired,
+    ids: PropTypes.arrayOf(PropTypes.any),
     loading: PropTypes.bool,
     onSelect: PropTypes.func,
     onToggleItem: PropTypes.func,
     resource: PropTypes.string,
     rowClick: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     rowStyle: PropTypes.func,
-    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
+    selectedIds: PropTypes.arrayOf(PropTypes.any),
     setSort: PropTypes.func,
     total: PropTypes.number,
     version: PropTypes.number,
     isRowSelectable: PropTypes.func,
 };
 
-Datagrid.defaultProps = {
-    data: {},
-    hasBulkActions: false,
-    ids: [],
-    selectedIds: [],
-};
+type RowClickFunction = (
+    id: Identifier,
+    basePath: string,
+    record: Record
+) => string;
+
+export interface DatagridProps extends Omit<TableProps, 'size' | 'classes'> {
+    body?: ReactElement;
+    classes?: ClassesOverride<typeof useDatagridStyles>;
+    className?: string;
+    expand?:
+        | ReactElement
+        | FC<{
+              basePath: string;
+              id: Identifier;
+              record: Record;
+              resource: string;
+          }>;
+    hasBulkActions?: boolean;
+    hover?: boolean;
+    isRowSelectable?: (record: Record) => boolean | boolean;
+    optimized?: boolean;
+    rowClick?: string | RowClickFunction;
+    rowStyle?: (record: Record, index: number) => any;
+    size?: 'medium' | 'small';
+}
 
 export default Datagrid;
