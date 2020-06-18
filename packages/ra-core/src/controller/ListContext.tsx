@@ -47,7 +47,6 @@ const ListContext = createContext<ListControllerProps>({
     setSort: null,
     showFilter: null,
     total: null,
-    version: null,
 });
 
 ListContext.displayName = 'ListContext';

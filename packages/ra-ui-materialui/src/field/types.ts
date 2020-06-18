@@ -22,6 +22,7 @@ export interface FieldProps {
 export interface InjectedFieldProps {
     basePath?: string;
     record?: Record;
+    resource?: string;
 }
 
 export const fieldPropTypes = {

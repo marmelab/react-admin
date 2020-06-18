@@ -6,13 +6,13 @@ import useSortState from '../useSortState';
 import usePaginationState from '../usePaginationState';
 
 interface ChildrenFuncParams {
+    basePath: string;
     currentSort: Sort;
     data: RecordMap;
     ids: Identifier[];
     loaded: boolean;
     page: number;
     perPage: number;
-    referenceBasePath: string;
     setPage: (page: number) => void;
     setPerPage: (perPage: number) => void;
     setSort: (field: string) => void;
@@ -60,7 +60,7 @@ export const ReferenceManyFieldController: FunctionComponent<Props> = ({
         data,
         ids,
         loaded,
-        referenceBasePath,
+        basePath: referenceBasePath,
         total,
     } = useReferenceManyFieldController({
         resource,
@@ -82,7 +82,7 @@ export const ReferenceManyFieldController: FunctionComponent<Props> = ({
         loaded,
         page,
         perPage,
-        referenceBasePath,
+        basePath: referenceBasePath,
         setPage,
         setPerPage,
         setSort: setSortField,

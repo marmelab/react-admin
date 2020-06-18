@@ -9,12 +9,9 @@ import PropTypes from 'prop-types';
 import {
     Filter,
     Sort,
-    usePaginationState,
     useReferenceManyFieldController,
-    useSortState,
-    ReferenceManyProps,
-    PaginationProps,
-    SortProps,
+    ListContext,
+    ListControllerProps,
 } from 'ra-core';
 import { FieldProps, fieldPropTypes, InjectedFieldProps } from './types';
 
@@ -66,63 +63,49 @@ import { FieldProps, fieldPropTypes, InjectedFieldProps } from './types';
  */
 export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
     const {
-        children,
-        sort: initialSort,
-        perPage: initialPerPage,
-        resource,
-        reference,
-        record,
-        target,
-        filter,
-        source,
         basePath,
+        children,
+        filter,
+        perPage,
+        record,
+        reference,
+        resource,
+        sort,
+        source,
+        target,
     } = props;
     if (React.Children.count(children) !== 1) {
         throw new Error(
             '<ReferenceManyField> only accepts a single child (like <Datagrid>)'
         );
     }
-    const { sort, setSortField } = useSortState(initialSort);
-    const { page, perPage, setPage, setPerPage } = usePaginationState({
-        perPage: initialPerPage,
-    });
 
     const controllerProps = useReferenceManyFieldController({
-        resource,
-        reference,
-        record,
-        target,
-        filter,
-        source,
         basePath,
-        page,
+        filter,
+        page: 1,
         perPage,
+        record,
+        reference,
+        resource,
         sort,
+        source,
+        target,
     });
 
     return (
-        <ReferenceManyFieldView
-            {...props}
-            {...{
-                currentSort: sort,
-                page,
-                perPage,
-                setPage,
-                setPerPage,
-                setSort: setSortField,
-                ...controllerProps,
-            }}
-        />
+        <ListContext.Provider value={controllerProps}>
+            <ReferenceManyFieldView {...props} {...controllerProps} />
+        </ListContext.Provider>
     );
 };
 
 interface ReferenceManyFieldProps extends FieldProps, InjectedFieldProps {
     children: ReactElement;
     filter?: Filter;
-    sort?: Sort;
     perPage?: number;
     reference: string;
-    resource?: string;
+    sort?: Sort;
     target: string;
 }
 
@@ -156,6 +139,7 @@ ReferenceManyField.defaultProps = {
 };
 
 export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = ({
+    basePath,
     children,
     className,
     currentSort,
@@ -166,7 +150,6 @@ export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = ({
     pagination,
     perPage,
     reference,
-    referenceBasePath,
     setPage,
     setPerPage,
     setSort,
@@ -179,7 +162,7 @@ export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = ({
             ids,
             loaded,
             data,
-            basePath: referenceBasePath,
+            basePath,
             currentSort,
             setSort,
             total,
@@ -198,17 +181,15 @@ export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = ({
 
 interface ReferenceManyFieldViewProps
     extends FieldProps,
-        InjectedFieldProps,
-        Partial<ReferenceManyProps>,
-        Pick<PaginationProps, 'page' | 'perPage' | 'setPage' | 'setPerPage'> {
+        Omit<InjectedFieldProps, 'basePath' | 'resource'>,
+        ListControllerProps {
     children: ReactElement;
-    currentSort?: Sort;
     pagination?: ReactElement;
     reference?: string;
-    setSort?: SortProps['setSortField'];
 }
 
 ReferenceManyFieldView.propTypes = {
+    basePath: PropTypes.string,
     children: PropTypes.element,
     className: PropTypes.string,
     currentSort: PropTypes.exact({
@@ -220,7 +201,6 @@ ReferenceManyFieldView.propTypes = {
     loaded: PropTypes.bool,
     pagination: PropTypes.element,
     reference: PropTypes.string,
-    referenceBasePath: PropTypes.string,
     setSort: PropTypes.func,
 };
 

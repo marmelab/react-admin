@@ -7,6 +7,14 @@ import ListContext from './ListContext';
  *
  * Must be used within a <ListContext.Provider>
  */
-const useListContext = () => useContext(ListContext);
+const useListContext = () => {
+    const context = useContext(ListContext);
+    if (!context.basePath) {
+        throw new Error(
+            'This component must be used inside a <ListContext.Provider>'
+        );
+    }
+    return context;
+};
 
 export default useListContext;

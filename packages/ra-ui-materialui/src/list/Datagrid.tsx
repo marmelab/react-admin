@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import {
     sanitizeListRestProps,
     useListContext,
+    useVersion,
     Identifier,
     Record,
 } from 'ra-core';
@@ -92,8 +93,8 @@ const Datagrid: FC<DatagridProps> = props => {
         selectedIds,
         setSort,
         total,
-        version,
     } = useListContext();
+    const version = useVersion();
 
     const updateSort = useCallback(
         event => {

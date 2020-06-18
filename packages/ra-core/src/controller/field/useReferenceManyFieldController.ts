@@ -1,8 +1,10 @@
 import get from 'lodash/get';
+import { useCallback } from 'react';
 
-import { Record, Sort, RecordMap, Identifier } from '../../types';
+import { useSafeSetState, removeEmpty } from '../../util';
 import { useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../sideEffect';
+import { Record, Sort, RecordMap, Identifier } from '../../types';
 
 /**
  * @typedef ReferenceManyProps
@@ -13,12 +15,30 @@ import { useNotify } from '../../sideEffect';
  * @property {string | false} referenceBasePath base path of the related record
  * @property {number} total records
  */
-export interface ReferenceManyProps {
-    data: RecordMap;
+export interface ReferenceManyProps<RecordType = Record> {
+    basePath: string;
+    currentSort: Sort;
+    data: RecordMap<RecordType>;
+    defaultTitle: string;
+    displayedFilters: any;
+    filterValues: any;
+    hasCreate: boolean;
+    hideFilter: (filterName: string) => void;
     ids: Identifier[];
-    loaded: boolean;
     loading: boolean;
-    referenceBasePath: string;
+    loaded: boolean;
+    onSelect: (ids: Identifier[]) => void;
+    onToggleItem: (id: Identifier) => void;
+    onUnselectItems: () => void;
+    page: number;
+    perPage: number;
+    resource: string;
+    selectedIds: Identifier[];
+    setFilters: (filters: any, displayedFilters: any) => void;
+    setPage: (page: number) => void;
+    setPerPage: (page: number) => void;
+    setSort: (sort: string, order?: string) => void;
+    showFilter: (filterName: string, defaultValue: any) => void;
     total: number;
 }
 
@@ -84,12 +104,105 @@ const useReferenceManyFieldController = ({
     filter = defaultFilter,
     source,
     basePath,
-    page,
-    perPage,
-    sort = { field: 'id', order: 'DESC' },
+    page: initialPage,
+    perPage: initialPerPage,
+    sort: initialSort = { field: 'id', order: 'DESC' },
 }: Options): ReferenceManyProps => {
-    const referenceId = get(record, source);
     const notify = useNotify();
+
+    // pagination logic
+    const [page, setPage] = useSafeSetState<number>(initialPage);
+    const [perPage, setPerPage] = useSafeSetState<number>(initialPerPage);
+
+    // sort logic
+    const [sort, setSortObject] = useSafeSetState<Sort>(initialSort);
+    const setSort = useCallback(
+        (field: string, order: string = 'ASC') => {
+            setSortObject(previousState => ({
+                field,
+                order:
+                    field === previousState.field
+                        ? previousState.order === 'ASC'
+                            ? 'DESC'
+                            : 'ASC'
+                        : order,
+            }));
+            setPage(1);
+        },
+        [setPage, setSortObject]
+    );
+
+    // selection logic
+    const [selectedIds, setSelectedIds] = useSafeSetState<Identifier[]>([]);
+    const onSelect = useCallback(
+        (newIds: Identifier[]) => {
+            setSelectedIds(newIds);
+        },
+        [setSelectedIds]
+    );
+    const onToggleItem = useCallback(
+        (id: Identifier) => {
+            setSelectedIds(previousState => {
+                const index = previousState.indexOf(id);
+                if (index > -1) {
+                    return [
+                        ...previousState.slice(0, index),
+                        ...previousState.slice(index + 1),
+                    ];
+                } else {
+                    return [...previousState, id];
+                }
+            });
+        },
+        [setSelectedIds]
+    );
+    const onUnselectItems = useCallback(() => {
+        setSelectedIds([]);
+    }, [setSelectedIds]);
+
+    // filter logic
+    const [displayedFilters, setDisplayedFilters] = useSafeSetState<{
+        [key: string]: boolean;
+    }>({});
+    const [filterValues, setFilterValues] = useSafeSetState<{
+        [key: string]: any;
+    }>(filter);
+    const hideFilter = useCallback(
+        (filterName: string) => {
+            setDisplayedFilters(previousState => {
+                const { [filterName]: _, ...newState } = previousState;
+                return newState;
+            });
+            setFilterValues(previousState => {
+                const { [filterName]: _, ...newState } = previousState;
+                return newState;
+            });
+        },
+        [setDisplayedFilters, setFilterValues]
+    );
+    const showFilter = useCallback(
+        (filterName: string, defaultValue: any) => {
+            setDisplayedFilters(previousState => ({
+                previousState,
+                [filterName]: true,
+            }));
+            setFilterValues(previousState => ({
+                previousState,
+                [filterName]: defaultValue,
+            }));
+        },
+        [setDisplayedFilters, setFilterValues]
+    );
+    const setFilters = useCallback(
+        (filters, displayedFilters) => {
+            setFilterValues(removeEmpty(filters));
+            setDisplayedFilters(displayedFilters);
+            setPage(1);
+        },
+        [setDisplayedFilters, setFilterValues, setPage]
+    );
+
+    const referenceId = get(record, source);
     const { data, ids, total, loading, loaded } = useGetManyReference(
         reference,
         target,
@@ -109,14 +222,30 @@ const useReferenceManyFieldController = ({
         }
     );
 
-    const referenceBasePath = basePath.replace(resource, reference);
-
     return {
+        basePath: basePath.replace(resource, reference),
+        currentSort: sort,
         data,
+        defaultTitle: null,
+        displayedFilters,
+        filterValues,
+        hasCreate: false,
+        hideFilter,
         ids,
         loaded,
         loading,
-        referenceBasePath,
+        onSelect,
+        onToggleItem,
+        onUnselectItems,
+        page,
+        perPage,
+        resource,
+        selectedIds,
+        setFilters,
+        setPage,
+        setPerPage,
+        setSort,
+        showFilter,
         total,
     };
 };

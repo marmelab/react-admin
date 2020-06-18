@@ -10,6 +10,7 @@ import {
     defaultExporter,
     ListControllerProps,
     useListContext,
+    useVersion,
 } from 'ra-core';
 
 import Title, { TitlePropType } from '../layout/Title';
@@ -46,7 +47,6 @@ export const ListView: FC<ListViewProps> = props => {
     const classes = useStyles(props);
     const {
         defaultTitle,
-        version,
         total,
         loaded,
         loading,
@@ -54,6 +54,7 @@ export const ListView: FC<ListViewProps> = props => {
         filterValues,
         selectedIds,
     } = listContext;
+    const version = useVersion();
 
     // @deprecated to be removed in 4.0
     // we inject listContext several times, for backwards compatibility reasons
@@ -267,7 +268,6 @@ const sanitizeRestProps: (
     showFilter,
     sort,
     total,
-    version,
     ...rest
 }) => rest;
 
