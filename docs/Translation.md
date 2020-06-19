@@ -613,15 +613,11 @@ To do this, simply add a `forcedCaseName` key next to the `name` key in tour tra
 ```json
 resources: {
         comments: {
-            name: 'Comment |||| Comments',
-            forcedCaseName: 'Comment |||| Comments',
+            name: 'Kommentar |||| Kommentare',
+            forcedCaseName: 'Kommentar |||| Kommentare',
             fields: {
-                body: 'Body',
-                created_at: 'Created at',
-                post_id: 'Posts',
-                author: {
-                    name: 'Author',
-                },
+                id: 'Id',
+                name: 'Bezeichnung',
             },
         },
 ```
