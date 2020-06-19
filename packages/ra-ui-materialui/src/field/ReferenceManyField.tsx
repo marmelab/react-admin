@@ -1,10 +1,4 @@
-import React, {
-    FC,
-    Fragment,
-    cloneElement,
-    Children,
-    ReactElement,
-} from 'react';
+import React, { FC, cloneElement, Children, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     Filter,
@@ -37,7 +31,7 @@ import { FieldProps, fieldPropTypes, InjectedFieldProps } from './types';
  *     </SingleFieldList>
  * </ReferenceManyField>
  *
- * By default, restricts the possible values to 25. You can extend this limit
+ * By default, restricts the displayed values to 25. You can extend this limit
  * by setting the `perPage` prop.
  *
  * @example
@@ -66,6 +60,7 @@ export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
         basePath,
         children,
         filter,
+        page = 1,
         perPage,
         record,
         reference,
@@ -74,6 +69,7 @@ export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
         source,
         target,
     } = props;
+
     if (React.Children.count(children) !== 1) {
         throw new Error(
             '<ReferenceManyField> only accepts a single child (like <Datagrid>)'
@@ -83,7 +79,7 @@ export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
     const controllerProps = useReferenceManyFieldController({
         basePath,
         filter,
-        page: 1,
+        page,
         perPage,
         record,
         reference,
@@ -103,6 +99,7 @@ export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
 interface ReferenceManyFieldProps extends FieldProps, InjectedFieldProps {
     children: ReactElement;
     filter?: Filter;
+    page?: number;
     perPage?: number;
     reference: string;
     sort?: Sort;
@@ -138,54 +135,31 @@ ReferenceManyField.defaultProps = {
     addLabel: true,
 };
 
-export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = ({
-    basePath,
-    children,
-    className,
-    currentSort,
-    data,
-    ids,
-    loaded,
-    page,
-    pagination,
-    perPage,
-    reference,
-    setPage,
-    setPerPage,
-    setSort,
-    total,
-}) => (
-    <Fragment>
-        {cloneElement(Children.only(children), {
-            className,
-            resource: reference,
-            ids,
-            loaded,
-            data,
-            basePath,
-            currentSort,
-            setSort,
-            total,
-        })}
-        {pagination &&
-            total !== undefined &&
-            cloneElement(pagination, {
-                page,
-                perPage,
-                setPage,
-                setPerPage,
-                total,
+export const ReferenceManyFieldView: FC<
+    ReferenceManyFieldViewProps
+> = props => {
+    const { children, pagination, reference, ...rest } = props;
+    return (
+        <>
+            {cloneElement(Children.only(children), {
+                ...rest,
+                resource: reference,
             })}
-    </Fragment>
-);
+            {pagination &&
+                props.total !== undefined &&
+                cloneElement(pagination, rest)}
+        </>
+    );
+};
 
-interface ReferenceManyFieldViewProps
-    extends FieldProps,
-        Omit<InjectedFieldProps, 'basePath' | 'resource'>,
+export interface ReferenceManyFieldViewProps
+    extends Omit<
+            ReferenceManyFieldProps,
+            'basePath' | 'resource' | 'page' | 'perPage'
+        >,
         ListControllerProps {
     children: ReactElement;
     pagination?: ReactElement;
-    reference?: string;
 }
 
 ReferenceManyFieldView.propTypes = {

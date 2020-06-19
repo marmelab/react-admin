@@ -159,6 +159,7 @@ const PostList = props => {
                         reference="tags"
                         source="tags"
                         sortBy="tags.name"
+                        sort={{ field: 'name', order: 'ASC' }}
                         cellClassName={classes.hiddenOnSmallScreens}
                         headerClassName={classes.hiddenOnSmallScreens}
                     >

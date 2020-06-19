@@ -5,42 +5,7 @@ import { useSafeSetState, removeEmpty } from '../../util';
 import { useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../sideEffect';
 import { Record, Sort, RecordMap, Identifier } from '../../types';
-
-/**
- * @typedef ReferenceManyProps
- * @type {Object}
- * @property {Array} data: the referenced records dictionary by their ids.
- * @property {Array} ids: the list of referenced records ids.
- * @property {boolean} loaded: boolean indicating if the references has already be loaded loaded
- * @property {string | false} referenceBasePath base path of the related record
- * @property {number} total records
- */
-export interface ReferenceManyProps<RecordType = Record> {
-    basePath: string;
-    currentSort: Sort;
-    data: RecordMap<RecordType>;
-    defaultTitle: string;
-    displayedFilters: any;
-    filterValues: any;
-    hasCreate: boolean;
-    hideFilter: (filterName: string) => void;
-    ids: Identifier[];
-    loading: boolean;
-    loaded: boolean;
-    onSelect: (ids: Identifier[]) => void;
-    onToggleItem: (id: Identifier) => void;
-    onUnselectItems: () => void;
-    page: number;
-    perPage: number;
-    resource: string;
-    selectedIds: Identifier[];
-    setFilters: (filters: any, displayedFilters: any) => void;
-    setPage: (page: number) => void;
-    setPerPage: (page: number) => void;
-    setSort: (sort: string, order?: string) => void;
-    showFilter: (filterName: string, defaultValue: any) => void;
-    total: number;
-}
+import { ListControllerProps } from '../useListController';
 
 interface Options {
     basePath: string;
@@ -48,13 +13,13 @@ interface Options {
     filter?: any;
     ids?: any[];
     loaded?: boolean;
-    page: number;
-    perPage: number;
+    page?: number;
+    perPage?: number;
     record?: Record;
     reference: string;
     resource: string;
     sort?: Sort;
-    source: string;
+    source?: string;
     target: string;
     total?: number;
 }
@@ -107,7 +72,7 @@ const useReferenceManyFieldController = ({
     page: initialPage,
     perPage: initialPerPage,
     sort: initialSort = { field: 'id', order: 'DESC' },
-}: Options): ReferenceManyProps => {
+}: Options): ListControllerProps => {
     const notify = useNotify();
 
     // pagination logic
