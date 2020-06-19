@@ -24,10 +24,6 @@ import { ListProps } from '../types';
 
 export const ListView: FC<ListViewProps> = props => {
     const {
-        top,
-        left,
-        right,
-        bottom,
         actions,
         aside,
         filter,
@@ -62,19 +58,16 @@ export const ListView: FC<ListViewProps> = props => {
 
     const renderList = () => (
         <>
-            {top !== null && top !== undefined
-                ? top
-                : (filters || actions) && (
-                      <ListToolbar
-                          filters={filters}
-                          {...listContext} // deprecated, use ListContext instead
-                          actions={actions}
-                          exporter={exporter} // deprecated, use ExporterContext instead
-                          permanentFilter={filter}
-                      />
-                  )}
+            {(filters || actions) && (
+                <ListToolbar
+                    filters={filters}
+                    {...listContext} // deprecated, use ListContext instead
+                    actions={actions}
+                    exporter={exporter} // deprecated, use ExporterContext instead
+                    permanentFilter={filter}
+                />
+            )}
             <div className={classes.main}>
-                {left}
                 <Content
                     className={classnames(classes.content, {
                         [classes.bulkActionsDisplayed]: selectedIds.length > 0,
@@ -94,10 +87,8 @@ export const ListView: FC<ListViewProps> = props => {
                         })}
                     {pagination && cloneElement(pagination, listContext)}
                 </Content>
-                {right}
                 {aside && cloneElement(aside, listContext)}
             </div>
-            {bottom}
         </>
     );
 

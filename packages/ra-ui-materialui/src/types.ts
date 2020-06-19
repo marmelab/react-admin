@@ -23,7 +23,6 @@ export interface ListProps extends ResourceComponentProps {
     children: ReactNode;
     actions?: ReactElement;
     aside?: ReactElement;
-    bottom?: ReactElement;
     bulkActionButtons?: ReactElement | false;
     classes?: any;
     className?: string;
@@ -33,13 +32,10 @@ export interface ListProps extends ResourceComponentProps {
     filter?: any;
     filterDefaultValues?: any;
     filters?: ReactElement;
-    left?: ReactElement;
     pagination?: ReactElement | false;
     perPage?: number;
-    right?: ReactElement;
     sort?: Sort;
     title?: string | ReactElement;
-    top?: ReactElement | false;
 }
 
 export interface ResourceMatch {
