@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Children, cloneElement, FC, memo, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import { makeStyles } from '@material-ui/core/styles';
+import { LinearProgress, makeStyles } from '@material-ui/core';
 import {
     ListContext,
     ListControllerProps,
@@ -12,6 +11,7 @@ import {
 } from 'ra-core';
 
 import { fieldPropTypes, FieldProps, InjectedFieldProps } from './types';
+import sanitizeRestProps from './sanitizeRestProps';
 import { ClassNameMap } from '@material-ui/styles';
 
 /**
@@ -153,7 +153,7 @@ interface ReferenceArrayFieldViewProps
             ReferenceArrayFieldProps,
             'basePath' | 'resource' | 'page' | 'perPage'
         >,
-        ListControllerProps { }
+        ListControllerProps {}
 
 export const ReferenceArrayFieldView: FC<
     ReferenceArrayFieldViewProps
@@ -168,13 +168,13 @@ export const ReferenceArrayFieldView: FC<
     return (
         <>
             {cloneElement(Children.only(children), {
-                ...rest,
+                ...sanitizeRestProps(rest),
                 className,
                 resource: reference,
             })}{' '}
             {pagination &&
                 props.total !== undefined &&
-                cloneElement(pagination, rest)}
+                cloneElement(pagination, sanitizeRestProps(rest))}
         </>
     );
 };

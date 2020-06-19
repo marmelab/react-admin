@@ -68,7 +68,9 @@ const useReferenceArrayFieldController = ({
             ),
     });
 
-    const [finalData, setFinalData] = useSafeSetState<RecordMap>(data);
+    const [finalData, setFinalData] = useSafeSetState<RecordMap>(
+        indexById(data)
+    );
     const [finalIds, setFinalIds] = useSafeSetState<Identifier[]>(ids);
 
     // pagination logic

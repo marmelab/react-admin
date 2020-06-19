@@ -1,16 +1,28 @@
 import * as React from 'react';
+import { FC, ReactNode, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import Avatar from '@material-ui/core/Avatar';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import { makeStyles } from '@material-ui/core/styles';
+import {
+    Avatar,
+    List,
+    ListProps,
+    ListItem,
+    ListItemAvatar,
+    ListItemIcon,
+    ListItemSecondaryAction,
+    ListItemText,
+    makeStyles,
+} from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import { linkToRecord, sanitizeListRestProps } from 'ra-core';
+import {
+    linkToRecord,
+    sanitizeListRestProps,
+    useListContext,
+    Record,
+    Identifier,
+} from 'ra-core';
+
 import SimpleListLoading from './SimpleListLoading';
+import { ClassesOverride } from '../types';
 
 const useStyles = makeStyles(
     {
@@ -19,67 +31,52 @@ const useStyles = makeStyles(
     { name: 'RaSimpleList' }
 );
 
-const useLinkOrNotStyles = makeStyles(
-    {
-        link: {
-            textDecoration: 'none',
-            color: 'inherit',
-        },
-    },
-    { name: 'RaLinkOrNot' }
-);
-
-const LinkOrNot = ({
-    classes: classesOverride,
-    linkType,
-    basePath,
-    id,
-    children,
-    record,
-}) => {
-    const classes = useLinkOrNotStyles({ classes: classesOverride });
-    const link =
-        typeof linkType === 'function' ? linkType(record, id) : linkType;
-
-    return link === 'edit' || link === true ? (
-        <Link to={linkToRecord(basePath, id)} className={classes.link}>
-            {children}
-        </Link>
-    ) : link === 'show' ? (
-        <Link
-            to={`${linkToRecord(basePath, id)}/show`}
-            className={classes.link}
-        >
-            {children}
-        </Link>
-    ) : (
-        <span>{children}</span>
-    );
-};
-
-const SimpleList = props => {
+/**
+ * The <SimpleList> component renders a list of records as a material-ui <List>.
+ * It is usually used as a child of react-admin's <List> and <ReferenceManyField> components.
+ *
+ * Also widely used on Mobile.
+ *
+ * Props:
+ * - primaryText: function returning a React element (or some text) based on the record
+ * - secondaryText: same
+ * - tertiaryText: same
+ * - leftAvatar: function returning a React element based on the record
+ * - leftIcon: same
+ * - rightAvatar: same
+ * - rightIcon: same
+ * - linkType: 'edit' or 'show', or a function returning 'edit' or 'show' based on the record
+ *
+ * @example // Display all posts as a List
+ *
+ * export const PostList = (props) => (
+ *     <List {...props}>
+ *         <SimpleList
+ *             primaryText={record => record.title}
+ *             secondaryText={record => `${record.views} views`}
+ *             tertiaryText={record =>
+ *                 new Date(record.published_at).toLocaleDateString()
+ *             }
+ *          />
+ *     </List>
+ * );
+ */
+const SimpleList: FC<SimpleListProps> = props => {
     const {
-        basePath,
         className,
         classes: classesOverride,
-        data,
         hasBulkActions,
-        ids,
-        loaded,
-        loading,
         leftAvatar,
         leftIcon,
-        linkType,
-        onToggleItem,
+        linkType = 'edit',
         primaryText,
         rightAvatar,
         rightIcon,
         secondaryText,
-        selectedIds,
         tertiaryText,
-        total,
         ...rest
     } = props;
+    const { basePath, data, ids, loaded, total } = useListContext(props);
     const classes = useStyles(props);
 
     if (loaded === false) {
@@ -106,6 +103,7 @@ const SimpleList = props => {
                         key={id}
                         record={data[id]}
                     >
+                        {/* @ts-ignore-line */}
                         <ListItem button={!!linkType}>
                             {leftIcon && (
                                 <ListItemIcon>
@@ -155,32 +153,88 @@ const SimpleList = props => {
 };
 
 SimpleList.propTypes = {
-    basePath: PropTypes.string,
     className: PropTypes.string,
     classes: PropTypes.object,
-    data: PropTypes.object,
-    hasBulkActions: PropTypes.bool.isRequired,
-    ids: PropTypes.array,
     leftAvatar: PropTypes.func,
     leftIcon: PropTypes.func,
     linkType: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.bool,
         PropTypes.func,
-    ]).isRequired,
-    onToggleItem: PropTypes.func,
+    ]),
     primaryText: PropTypes.func,
     rightAvatar: PropTypes.func,
     rightIcon: PropTypes.func,
     secondaryText: PropTypes.func,
-    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
     tertiaryText: PropTypes.func,
 };
 
-SimpleList.defaultProps = {
-    linkType: 'edit',
-    hasBulkActions: false,
-    selectedIds: [],
+export type FunctionToElement = (
+    record: Record,
+    id: Identifier
+) => ReactElement;
+
+export interface SimpleListProps extends Omit<ListProps, 'classes'> {
+    className?: string;
+    classes?: ClassesOverride<typeof useStyles>;
+    hasBulkActions?: boolean;
+    leftAvatar?: FunctionToElement;
+    leftIcon?: FunctionToElement;
+    primaryText?: FunctionToElement;
+    linkType?: string | FunctionLinkType | boolean;
+    rightAvatar?: FunctionToElement;
+    rightIcon?: FunctionToElement;
+    secondaryText?: FunctionToElement;
+    tertiaryText?: FunctionToElement;
+}
+
+const useLinkOrNotStyles = makeStyles(
+    {
+        link: {
+            textDecoration: 'none',
+            color: 'inherit',
+        },
+    },
+    { name: 'RaLinkOrNot' }
+);
+
+const LinkOrNot: FC<LinkOrNotProps> = ({
+    classes: classesOverride,
+    linkType,
+    basePath,
+    id,
+    children,
+    record,
+}) => {
+    const classes = useLinkOrNotStyles({ classes: classesOverride });
+    const link =
+        typeof linkType === 'function' ? linkType(record, id) : linkType;
+
+    return link === 'edit' || link === true ? (
+        <Link to={linkToRecord(basePath, id)} className={classes.link}>
+            {children}
+        </Link>
+    ) : link === 'show' ? (
+        <Link
+            to={`${linkToRecord(basePath, id)}/show`}
+            className={classes.link}
+        >
+            {children}
+        </Link>
+    ) : (
+        <span>{children}</span>
+    );
 };
+
+export type FunctionLinkType = (record: Record, id: Identifier) => string;
+
+export interface LinkOrNotProps {
+    classes?: ClassesOverride<typeof useLinkOrNotStyles>;
+    linkType?: string | FunctionLinkType | boolean;
+    basePath: string;
+    id: Identifier;
+    record: Record;
+    children: ReactNode;
+}
 
 export default SimpleList;
