@@ -64,7 +64,7 @@ const BulkActionsToolbar: FC<BulkActionsToolbarProps> = props => {
         resource,
         selectedIds,
         onUnselectItems,
-    } = useListContext();
+    } = useListContext(props);
     const classes = useStyles(props);
     const translate = useTranslate();
 

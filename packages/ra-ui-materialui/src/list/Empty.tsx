@@ -32,7 +32,7 @@ const useStyles = makeStyles(
 );
 
 const Empty: FC<EmptyProps> = props => {
-    const { resource, basePath } = useListContext();
+    const { resource, basePath } = useListContext(props);
     const classes = useStyles(props);
     const translate = useTranslate();
 

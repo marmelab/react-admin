@@ -41,7 +41,7 @@ const ListToolbar: FC<ListToolbarProps> = props => {
         exporter,
         ...rest
     } = props;
-    const { filterValues } = useListContext();
+    const { filterValues } = useListContext(props);
     const classes = useStyles(props);
     return (
         <Toolbar className={classes.toolbar}>

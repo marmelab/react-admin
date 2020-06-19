@@ -43,7 +43,7 @@ export const ListView: FC<ListViewProps> = props => {
         empty,
         ...rest
     } = props;
-    const listContext = useListContext();
+    const listContext = useListContext(props);
     const classes = useStyles(props);
     const {
         defaultTitle,

@@ -20,12 +20,8 @@ import DefaultPaginationLimit from './PaginationLimit';
 
 const emptyArray = [];
 
-const Pagination: FC<PaginationProps> = ({
-    rowsPerPageOptions,
-    actions,
-    limit,
-    ...rest
-}) => {
+const Pagination: FC<PaginationProps> = props => {
+    const { rowsPerPageOptions, actions, limit, ...rest } = props;
     const {
         loading,
         page,
@@ -33,7 +29,7 @@ const Pagination: FC<PaginationProps> = ({
         total,
         setPage,
         setPerPage,
-    } = useListContext();
+    } = useListContext(props);
     useEffect(() => {
         if (page < 1 || isNaN(page)) {
             setPage(1);

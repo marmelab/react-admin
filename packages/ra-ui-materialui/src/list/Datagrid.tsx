@@ -93,7 +93,7 @@ const Datagrid: FC<DatagridProps> = props => {
         selectedIds,
         setSort,
         total,
-    } = useListContext();
+    } = useListContext(props);
     const version = useVersion();
 
     const updateSort = useCallback(
