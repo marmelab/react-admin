@@ -608,7 +608,7 @@ ie: `Are you sure you want to delete this comment?`
 This have been done to have a correct syntax in english, but you may want to force it elseway to match with another language, like German where names are always capitalized.  
 ie: `Sind Sie sicher, dass Sie diesen Kommentar löschen möchten?`
 
-To do this, simply add a `forcedCaseName` key next to the `name` key in tour translation file.
+To do this, simply add a `forcedCaseName` key next to the `name` key in your translation file.
 
 ```js
 resources: {
