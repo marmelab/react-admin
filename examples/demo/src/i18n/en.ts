@@ -40,6 +40,7 @@ const customEnglishMessages: TranslationMessages = {
     resources: {
         customers: {
             name: 'Customer |||| Customers',
+            forcedCaseName: 'Customer |||| Customers',
             fields: {
                 commands: 'Orders',
                 first_seen: 'First seen',
@@ -81,6 +82,7 @@ const customEnglishMessages: TranslationMessages = {
         },
         commands: {
             name: 'Order |||| Orders',
+            forcedCaseName: 'Order |||| Orders',
             amount: '1 order |||| %{smart_count} orders',
             title: 'Order %{reference}',
             fields: {
@@ -103,6 +105,7 @@ const customEnglishMessages: TranslationMessages = {
         },
         invoices: {
             name: 'Invoice |||| Invoices',
+            forcedCaseName: 'Invoice |||| Invoices',
             fields: {
                 date: 'Invoice date',
                 customer_id: 'Customer',
@@ -115,6 +118,7 @@ const customEnglishMessages: TranslationMessages = {
         },
         products: {
             name: 'Poster |||| Posters',
+            forcedCaseName: 'Poster |||| Posters',
             fields: {
                 category_id: 'Category',
                 height_gte: 'Min height',
@@ -139,12 +143,14 @@ const customEnglishMessages: TranslationMessages = {
         },
         categories: {
             name: 'Category |||| Categories',
+            forcedCaseName: 'Category |||| Categories',
             fields: {
                 products: 'Products',
             },
         },
         reviews: {
             name: 'Review |||| Reviews',
+            forcedCaseName: 'Review |||| Reviews',
             amount: '1 review |||| %{smart_count} reviews',
             relative_to_poster: 'Review on poster',
             detail: 'Review detail',
@@ -170,7 +176,8 @@ const customEnglishMessages: TranslationMessages = {
             },
         },
         segments: {
-            name: 'Segments',
+            name: 'Segment || Segments',
+            forcedCaseName: 'Segment || Segments',
             fields: {
                 customers: 'Customers',
                 name: 'Name',

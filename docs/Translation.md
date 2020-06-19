@@ -600,6 +600,39 @@ If you want to override these messages in a specific resource you can add the fo
 - `resources.${resourceName}.empty` for the primary message (e.g. "No posts yet.")
 - `resources.${resourceName}.invite` for the message inviting the user to create one (e.g. "Do you want to create one?")
 
+## Specific case in Confirm messages and Empty Page
+
+In confirm messages and in the empty page, the resource name translations are automatically set to lower case.
+ie: `Are you sure you want to delete this comment?`
+
+This have been done to have a correct syntax in english language, but you ay want to force it elseway to match with another language, like German where names are always capitalized.
+ie: `Sind Sie sicher, dass Sie diesen Kommentar löschen möchten?`
+
+To do this, simply add a `forcedCaseName` key next to the `name` key in tour translation file.
+
+```json
+resources: {
+        comments: {
+            name: 'Comment |||| Comments',
+            forcedCaseName: 'Comment |||| Comments',
+            fields: {
+                body: 'Body',
+                created_at: 'Created at',
+                post_id: 'Posts',
+                author: {
+                    name: 'Author',
+                },
+            },
+        },
+```
+
+React-admin uses the keys `ra.page.empty` and `ra.page.invite` when displaying the page inviting the user to create the first record.
+
+If you want to override these messages in a specific resource you can add the following keys to your translation:
+
+- `resources.${resourceName}.empty` for the primary message (e.g. "No posts yet.")
+- `resources.${resourceName}.invite` for the message inviting the user to create one (e.g. "Do you want to create one?")
+
 ## Silencing Translation Warnings
 
 By default, the `polyglotI18nProvider` logs a warning in the console each time it is called with a message that can't be found in the current translations. This is a Polyglot feature that helps tracking missing translation messages.
