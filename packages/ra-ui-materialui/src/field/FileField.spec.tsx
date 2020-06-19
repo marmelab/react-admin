@@ -20,7 +20,11 @@ describe('<FileField />', () => {
         'should render the emptyText when value is %s',
         url => {
             const { queryByText } = render(
-                <FileField record={{ url }} emptyText="NA" {...defaultProps} />
+                <FileField
+                    record={{ id: 123, url }}
+                    emptyText="NA"
+                    {...defaultProps}
+                />
             );
             expect(queryByText('NA')).not.toBeNull();
         }
@@ -31,6 +35,7 @@ describe('<FileField />', () => {
             <FileField
                 {...defaultProps}
                 record={{
+                    id: 123,
                     url: 'http://foo.com/bar.jpg',
                     title: 'Hello world!',
                 }}
@@ -38,7 +43,7 @@ describe('<FileField />', () => {
             />
         );
 
-        const link = getByTitle('Hello world!');
+        const link = getByTitle('Hello world!') as HTMLAnchorElement;
         expect(link.href).toEqual('http://foo.com/bar.jpg');
         expect(link.title).toEqual('Hello world!');
     });
@@ -48,6 +53,7 @@ describe('<FileField />', () => {
             <FileField
                 {...defaultProps}
                 record={{
+                    id: 123,
                     file: {
                         url: 'http://foo.com/bar.jpg',
                         title: 'Hello world!',
@@ -58,7 +64,7 @@ describe('<FileField />', () => {
             />
         );
 
-        const link = getByTitle('Hello world!');
+        const link = getByTitle('Hello world!') as HTMLAnchorElement;
         expect(link.href).toEqual('http://foo.com/bar.jpg');
         expect(link.title).toEqual('Hello world!');
     });
@@ -68,6 +74,7 @@ describe('<FileField />', () => {
             <FileField
                 {...defaultProps}
                 record={{
+                    id: 123,
                     url: 'http://foo.com/bar.jpg',
                 }}
                 title="Hello world!"
@@ -83,6 +90,7 @@ describe('<FileField />', () => {
             <FileField
                 {...defaultProps}
                 record={{
+                    id: 123,
                     url: 'http://foo.com/bar.jpg',
                     title: 'Hello world!',
                 }}
@@ -91,7 +99,7 @@ describe('<FileField />', () => {
             />
         );
 
-        const link = getByTitle('Hello world!');
+        const link = getByTitle('Hello world!') as HTMLAnchorElement;
         expect(link.target).toEqual('_blank');
     });
 
@@ -100,6 +108,7 @@ describe('<FileField />', () => {
             <FileField
                 {...defaultProps}
                 record={{
+                    id: 123,
                     files: [
                         {
                             url: 'http://foo.com/bar.jpg',
@@ -117,8 +126,8 @@ describe('<FileField />', () => {
             />
         );
 
-        const firstLink = getByTitle('Hello world!');
-        const secondLink = getByTitle('Bye world!');
+        const firstLink = getByTitle('Hello world!') as HTMLAnchorElement;
+        const secondLink = getByTitle('Bye world!') as HTMLAnchorElement;
         expect(firstLink.href).toEqual('http://foo.com/bar.jpg');
         expect(firstLink.title).toEqual('Hello world!');
         expect(secondLink.href).toEqual('http://bar.com/foo.jpg');
@@ -129,11 +138,11 @@ describe('<FileField />', () => {
         const { container } = render(
             <FileField
                 {...defaultProps}
-                record={{ foo: true }}
+                record={{ id: 123, foo: true }}
                 source="email"
                 className="foo"
             />
         );
-        expect(container.firstChild.classList.contains('foo')).toBe(true);
+        expect(container.children[0].classList.contains('foo')).toBe(true);
     });
 });

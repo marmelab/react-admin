@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FunctionComponent, memo } from 'react';
+import { FC, memo } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
@@ -9,13 +9,7 @@ import { InjectedFieldProps, FieldProps, fieldPropTypes } from './types';
 export const removeTags = (input: string) =>
     input ? input.replace(/<[^>]+>/gm, '') : '';
 
-interface Props extends FieldProps {
-    stripTags: boolean;
-}
-
-const RichTextField: FunctionComponent<
-    Props & InjectedFieldProps & TypographyProps
-> = memo<Props & InjectedFieldProps & TypographyProps>(
+const RichTextField: FC<RichTextFieldProps> = memo<RichTextFieldProps>(
     ({ className, emptyText, source, record = {}, stripTags, ...rest }) => {
         const value = get(record, source);
 
@@ -49,6 +43,13 @@ RichTextField.propTypes = {
     ...fieldPropTypes,
     stripTags: PropTypes.bool,
 };
+
+export interface RichTextFieldProps
+    extends FieldProps,
+        InjectedFieldProps,
+        TypographyProps {
+    stripTags?: boolean;
+}
 
 RichTextField.displayName = 'RichTextField';
 

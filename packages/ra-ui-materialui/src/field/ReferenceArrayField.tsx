@@ -132,6 +132,7 @@ interface ReferenceArrayFieldProps extends FieldProps, InjectedFieldProps {
     classes?: Partial<ClassNameMap<ReferenceArrayFieldClassKey>>;
     filter?: Filter;
     page?: number;
+    pagination?: ReactElement;
     perPage?: number;
     reference: string;
     resource?: string;
@@ -152,11 +153,7 @@ interface ReferenceArrayFieldViewProps
             ReferenceArrayFieldProps,
             'basePath' | 'resource' | 'page' | 'perPage'
         >,
-        ListControllerProps {
-    children: ReactElement;
-    classes?: Partial<ClassNameMap<ReferenceArrayFieldClassKey>>;
-    pagination?: ReactElement;
-}
+        ListControllerProps { }
 
 export const ReferenceArrayFieldView: FC<
     ReferenceArrayFieldViewProps

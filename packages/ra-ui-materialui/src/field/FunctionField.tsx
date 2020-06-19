@@ -1,22 +1,23 @@
 import * as React from 'react';
-import { FunctionComponent, memo } from 'react';
+import { FC, memo } from 'react';
+import { Record } from 'ra-core';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
-interface Props extends FieldProps {
-    render: (record: object, source: string) => any;
-}
-
 /**
+ * Field using a render function
+ *
  * @example
- * <FunctionField source="last_name" label="Name" render={record => `${record.first_name} ${record.last_name}`} />
+ * <FunctionField
+ *     source="last_name" // used for sorting
+ *     label="Name"
+ *     render={record => record && `${record.first_name} ${record.last_name}`}
+ * />
  */
-const FunctionField: FunctionComponent<
-    Props & InjectedFieldProps & TypographyProps
-> = memo<Props & InjectedFieldProps & TypographyProps>(
-    ({ className, record = {}, source, render, ...rest }) =>
+const FunctionField: FC<FunctionFieldProps> = memo<FunctionFieldProps>(
+    ({ className, record, source = '', render, ...rest }) =>
         record ? (
             <Typography
                 component="span"
@@ -38,5 +39,12 @@ FunctionField.propTypes = {
     ...Typography.propTypes,
     ...fieldPropTypes,
 };
+
+export interface FunctionFieldProps
+    extends FieldProps,
+        InjectedFieldProps,
+        TypographyProps {
+    render: (record?: Record, source?: string) => any;
+}
 
 export default FunctionField;

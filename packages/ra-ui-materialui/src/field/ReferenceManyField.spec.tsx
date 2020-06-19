@@ -8,6 +8,15 @@ import SingleFieldList from '../list/SingleFieldList';
 
 describe('<ReferenceManyField />', () => {
     afterEach(cleanup);
+    const defaultProps = {
+        resource: 'foo',
+        reference: 'bar',
+        referenceBasePath: 'posts',
+        page: 1,
+        perPage: 10,
+        setPage: () => null,
+        setPerPage: () => null,
+    };
 
     it('should render a list of the child component', () => {
         const data = {
@@ -18,9 +27,7 @@ describe('<ReferenceManyField />', () => {
         const { queryAllByRole } = render(
             <Router history={history}>
                 <ReferenceManyFieldView
-                    resource="foo"
-                    reference="bar"
-                    referenceBasePath="posts"
+                    {...defaultProps}
                     data={data}
                     ids={[1, 2]}
                 >
@@ -41,13 +48,7 @@ describe('<ReferenceManyField />', () => {
 
     it('should render nothing when there are no related records', () => {
         const { queryAllByRole } = render(
-            <ReferenceManyFieldView
-                resource="foo"
-                reference="bar"
-                referenceBasePath="posts"
-                data={{}}
-                ids={[]}
-            >
+            <ReferenceManyFieldView {...defaultProps} data={{}} ids={[]}>
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
@@ -66,9 +67,7 @@ describe('<ReferenceManyField />', () => {
         const { queryAllByRole } = render(
             <Router history={history}>
                 <ReferenceManyFieldView
-                    resource="foo"
-                    reference="bar"
-                    referenceBasePath="posts"
+                    {...defaultProps}
                     data={data}
                     ids={['abc-1', 'abc-2']}
                 >
@@ -96,9 +95,7 @@ describe('<ReferenceManyField />', () => {
         const { queryAllByRole } = render(
             <Router history={history}>
                 <ReferenceManyFieldView
-                    resource="foo"
-                    reference="bar"
-                    referenceBasePath="posts"
+                    {...defaultProps}
                     data={data}
                     ids={[1, 2]}
                 >

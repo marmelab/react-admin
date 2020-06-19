@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 type TextAlign = 'right' | 'left';
 type SortOrder = 'ASC' | 'DESC';
+
 export interface FieldProps {
     addLabel?: boolean;
     sortBy?: string;

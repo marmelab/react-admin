@@ -9,23 +9,24 @@ describe('<UrlField />', () => {
     afterEach(cleanup);
 
     it('should render a link', () => {
-        const record = { website: url };
+        const record = { id: 123, website: url };
         const { getByText } = render(
             <UrlField record={record} source="website" />
         );
-        const link = getByText(url);
+        const link = getByText(url) as HTMLAnchorElement;
         expect(link.tagName).toEqual('A');
         expect(link.href).toEqual(url);
     });
 
     it('should handle deep fields', () => {
         const record = {
+            id: 123,
             foo: { website: url },
         };
         const { getByText } = render(
             <UrlField record={record} source="foo.website" />
         );
-        const link = getByText(url);
+        const link = getByText(url) as HTMLAnchorElement;
         expect(link.href).toEqual(url);
     });
 
@@ -34,7 +35,7 @@ describe('<UrlField />', () => {
         url => {
             const { getByText } = render(
                 <UrlField
-                    record={{ url }}
+                    record={{ id: 123, url }}
                     className="foo"
                     source="url"
                     emptyText="NA"

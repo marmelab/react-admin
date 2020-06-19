@@ -20,7 +20,11 @@ describe('<ImageField />', () => {
         'should render the emptyText when value is %s',
         url => {
             const { queryByText } = render(
-                <ImageField record={{ url }} emptyText="NA" {...defaultProps} />
+                <ImageField
+                    record={{ id: 123, url }}
+                    emptyText="NA"
+                    {...defaultProps}
+                />
             );
             expect(queryByText('NA')).not.toBeNull();
         }
@@ -31,6 +35,7 @@ describe('<ImageField />', () => {
             <ImageField
                 {...defaultProps}
                 record={{
+                    id: 123,
                     url: 'http://foo.com/bar.jpg',
                     title: 'Hello world!',
                 }}
@@ -38,7 +43,7 @@ describe('<ImageField />', () => {
             />
         );
 
-        const img = getByRole('img');
+        const img = getByRole('img') as HTMLImageElement;
         expect(img.src).toEqual('http://foo.com/bar.jpg');
         expect(img.alt).toEqual('Hello world!');
         expect(img.title).toEqual('Hello world!');
@@ -49,6 +54,7 @@ describe('<ImageField />', () => {
             <ImageField
                 {...defaultProps}
                 record={{
+                    id: 123,
                     picture: {
                         url: 'http://foo.com/bar.jpg',
                         title: 'Hello world!',
@@ -59,7 +65,7 @@ describe('<ImageField />', () => {
             />
         );
 
-        const img = getByRole('img');
+        const img = getByRole('img') as HTMLImageElement;
         expect(img.src).toEqual('http://foo.com/bar.jpg');
         expect(img.alt).toEqual('Hello world!');
         expect(img.title).toEqual('Hello world!');
@@ -70,13 +76,14 @@ describe('<ImageField />', () => {
             <ImageField
                 {...defaultProps}
                 record={{
+                    id: 123,
                     url: 'http://foo.com/bar.jpg',
                 }}
                 title="Hello world!"
             />
         );
 
-        const img = getByRole('img');
+        const img = getByRole('img') as HTMLImageElement;
         expect(img.alt).toEqual('Hello world!');
         expect(img.title).toEqual('Hello world!');
     });
@@ -86,6 +93,7 @@ describe('<ImageField />', () => {
             <ImageField
                 {...defaultProps}
                 record={{
+                    id: 123,
                     pictures: [
                         {
                             url: 'http://foo.com/bar.jpg',
@@ -103,7 +111,7 @@ describe('<ImageField />', () => {
             />
         );
 
-        const imgs = queryAllByRole('img');
+        const imgs = queryAllByRole('img') as HTMLImageElement[];
         expect(imgs[0].src).toEqual('http://foo.com/bar.jpg');
         expect(imgs[0].alt).toEqual('Hello world!');
         expect(imgs[0].title).toEqual('Hello world!');
@@ -117,11 +125,11 @@ describe('<ImageField />', () => {
             <ImageField
                 {...defaultProps}
                 source="foo"
-                record={{ foo: 'http://example.com' }}
+                record={{ id: 123, foo: 'http://example.com' }}
                 className="foo"
             />
         );
 
-        expect(container.firstChild.classList.contains('foo')).toBe(true);
+        expect(container.children[0].classList.contains('foo')).toBe(true);
     });
 });

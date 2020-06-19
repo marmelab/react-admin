@@ -14,7 +14,7 @@ describe('<ReferenceField />', () => {
         it('should display a loader on mount if the reference is not in the store', () => {
             const { queryByRole, container } = renderWithRedux(
                 <ReferenceField
-                    record={{ postId: 123 }}
+                    record={{ id: 123, postId: 123 }}
                     resource="comments"
                     source="postId"
                     reference="posts"
@@ -32,7 +32,7 @@ describe('<ReferenceField />', () => {
             const { queryByRole, container } = renderWithRedux(
                 <MemoryRouter>
                     <ReferenceField
-                        record={{ postId: 123 }}
+                        record={{ id: 123, postId: 123 }}
                         resource="comments"
                         source="postId"
                         reference="posts"
@@ -63,10 +63,11 @@ describe('<ReferenceField />', () => {
                 ),
             };
             const { queryByRole, container } = renderWithRedux(
+                // @ts-ignore-line
                 <DataProviderContext.Provider value={dataProvider}>
                     <MemoryRouter>
                         <ReferenceField
-                            record={{ postId: 123 }}
+                            record={{ id: 123, postId: 123 }}
                             resource="comments"
                             source="postId"
                             reference="posts"
@@ -95,9 +96,10 @@ describe('<ReferenceField />', () => {
                 getMany: jest.fn(() => Promise.resolve({ data: [] })),
             };
             const { queryByRole, container } = renderWithRedux(
+                // @ts-ignore-line
                 <DataProviderContext.Provider value={dataProvider}>
                     <ReferenceField
-                        record={{ postId: 123 }}
+                        record={{ id: 123, postId: 123 }}
                         resource="comments"
                         source="postId"
                         reference="posts"
@@ -119,9 +121,10 @@ describe('<ReferenceField />', () => {
                 getMany: jest.fn(() => Promise.reject(new Error())),
             };
             const { queryByRole, container } = renderWithRedux(
+                // @ts-ignore-line
                 <DataProviderContext.Provider value={dataProvider}>
                     <ReferenceField
-                        record={{ postId: 123 }}
+                        record={{ id: 123, postId: 123 }}
                         resource="comments"
                         source="postId"
                         reference="posts"
@@ -142,7 +145,7 @@ describe('<ReferenceField />', () => {
         const { container, getByText } = renderWithRedux(
             <MemoryRouter>
                 <ReferenceField
-                    record={{ postId: 123 }}
+                    record={{ id: 123, postId: 123 }}
                     resource="comments"
                     source="postId"
                     reference="posts"
@@ -174,10 +177,11 @@ describe('<ReferenceField />', () => {
             ),
         };
         const { dispatch } = renderWithRedux(
+            // @ts-ignore-line
             <DataProviderContext.Provider value={dataProvider}>
                 <MemoryRouter>
                     <ReferenceField
-                        record={{ postId: 123 }}
+                        record={{ id: 123, postId: 123 }}
                         resource="comments"
                         source="postId"
                         reference="posts"
@@ -200,9 +204,10 @@ describe('<ReferenceField />', () => {
             getMany: jest.fn(() => Promise.reject('boo')),
         };
         const { getByRole } = renderWithRedux(
+            // @ts-ignore-line
             <DataProviderContext.Provider value={dataProvider}>
                 <ReferenceField
-                    record={{ postId: 123 }}
+                    record={{ id: 123, postId: 123 }}
                     resource="comments"
                     source="postId"
                     reference="posts"
@@ -223,7 +228,7 @@ describe('<ReferenceField />', () => {
             const { container } = render(
                 <MemoryRouter>
                     <ReferenceFieldView
-                        record={{ postId: 123 }}
+                        record={{ id: 123, postId: 123 }}
                         source="postId"
                         referenceRecord={{ id: 123, title: 'foo' }}
                         reference="posts"
@@ -231,6 +236,7 @@ describe('<ReferenceField />', () => {
                         resourceLinkPath="/posts/123"
                         basePath="/comments"
                         loaded={true}
+                        loading={false}
                     >
                         <TextField source="title" />
                     </ReferenceFieldView>
@@ -244,13 +250,14 @@ describe('<ReferenceField />', () => {
         it('should render no link when resourceLinkPath is not specified', () => {
             const { container } = render(
                 <ReferenceFieldView
-                    record={{ fooId: 123 }}
+                    record={{ id: 123, fooId: 123 }}
                     source="fooId"
                     referenceRecord={{ id: 123, title: 'foo' }}
                     reference="bar"
                     basePath="/foo"
                     resourceLinkPath={false}
                     loaded={true}
+                    loading={false}
                 >
                     <TextField source="title" />
                 </ReferenceFieldView>

@@ -1,14 +1,12 @@
 import * as React from 'react';
-import { FunctionComponent, memo } from 'react';
+import { FC, memo } from 'react';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
-const TextField: FunctionComponent<
-    FieldProps & InjectedFieldProps & TypographyProps
-> = memo<FieldProps & InjectedFieldProps & TypographyProps>(
+const TextField: FC<TextFieldProps> = memo<TextFieldProps>(
     ({ className, source, record = {}, emptyText, ...rest }) => {
         const value = get(record, source);
 
@@ -39,5 +37,10 @@ TextField.propTypes = {
     ...Typography.propTypes,
     ...fieldPropTypes,
 };
+
+export interface TextFieldProps
+    extends FieldProps,
+        InjectedFieldProps,
+        TypographyProps {}
 
 export default TextField;
