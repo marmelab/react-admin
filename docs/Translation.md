@@ -610,7 +610,7 @@ ie: `Sind Sie sicher, dass Sie diesen Kommentar löschen möchten?`
 
 To do this, simply add a `forcedCaseName` key next to the `name` key in tour translation file.
 
-```json
+```js
 resources: {
     comments: {
         name: 'Kommentar |||| Kommentare',
