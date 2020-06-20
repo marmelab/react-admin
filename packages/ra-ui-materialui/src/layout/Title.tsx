@@ -30,12 +30,14 @@ const Title = <R extends Record, T>(
     return createPortal(titleElement, container);
 };
 
+export declare type TitleProp<T> = string | React.ReactElement<T>;
+
 export declare type TitleProps<R extends Record, T> = {
     defaultTitle?: string;
     className?: string;
     locale?: string;
     record?: R;
-    title?: string | React.ReactElement<T>;
+    title?: TitleProp<T>;
 } & T;
 
 export const TitlePropType = PropTypes.oneOfType([
