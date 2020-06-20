@@ -2,9 +2,11 @@ import React, { FC } from 'react';
 import { cloneElement } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
-import { useTranslate, warning } from 'ra-core';
+import { Record, useTranslate, warning } from 'ra-core';
 
-const Title: FC<TitleProps> = props => {
+const Title = <R extends Record, T>(
+    props: TitleProps<R, T>
+): React.ReactElement<TitleProps<R, T>> => {
     const { className, defaultTitle, locale, record, title, ...rest } = props;
     const translate = useTranslate();
     const container =
@@ -28,13 +30,13 @@ const Title: FC<TitleProps> = props => {
     return createPortal(titleElement, container);
 };
 
-export interface TitleProps<R = {}> {
+export declare type TitleProps<R extends Record, T> = {
     defaultTitle?: string;
     className?: string;
     locale?: string;
     record?: R;
-    title?: string | React.ReactElement;
-}
+    title?: string | React.ReactElement<T>;
+} & T;
 
 export const TitlePropType = PropTypes.oneOfType([
     PropTypes.string,
