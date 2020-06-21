@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { Fragment } from 'react';
+import { useTranslate } from 'ra-core';
+import React, { Fragment, FC } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Button from '@material-ui/core/Button';
@@ -10,11 +10,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import ErrorIcon from '@material-ui/icons/Report';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import History from '@material-ui/icons/History';
+import { ClassNameMap } from '@material-ui/styles';
 
-import Title, { TitlePropType } from './Title';
-import { useTranslate } from 'ra-core';
+import Title from './Title';
 
-const useStyles = makeStyles(
+const useStyles: (props?: any) => ClassNameMap<ErrorClassKey> = makeStyles(
     theme => ({
         container: {
             display: 'flex',
@@ -53,7 +53,7 @@ function goBack() {
     window.history.go(-1);
 }
 
-const Error = props => {
+const ErrorComponent: FC<ErrorProps> = props => {
     const {
         error,
         errorInfo,
@@ -89,7 +89,7 @@ const Error = props => {
                 <div className={classes.toolbar}>
                     <Button
                         variant="contained"
-                        icon={<History />}
+                        startIcon={<History />}
                         onClick={goBack}
                     >
                         {translate('ra.action.back')}
@@ -100,12 +100,37 @@ const Error = props => {
     );
 };
 
-Error.propTypes = {
-    classes: PropTypes.object,
+export declare type ErrorClassKey =
+    | 'container'
+    | 'icon'
+    | 'toolbar'
+    | 'title'
+    | 'panel'
+    | 'panelDetails';
+
+export interface ErrorProps {
+    classes?: Record<ErrorClassKey, string>;
+    className?: string;
+    error: Error;
+    errorInfo?: Record<'componentStack', string>;
+    title?: string;
+}
+
+ErrorComponent.propTypes = {
+    classes: PropTypes.exact({
+        container: PropTypes.string.isRequired,
+        icon: PropTypes.string.isRequired,
+        toolbar: PropTypes.string.isRequired,
+        title: PropTypes.string.isRequired,
+        panel: PropTypes.string.isRequired,
+        panelDetails: PropTypes.string.isRequired,
+    }),
     className: PropTypes.string,
-    error: PropTypes.object.isRequired,
-    errorInfo: PropTypes.object,
-    title: TitlePropType,
+    error: PropTypes.instanceOf(Error).isRequired,
+    errorInfo: PropTypes.exact({
+        componentStack: PropTypes.any.isRequired,
+    }),
+    title: PropTypes.string,
 };
 
-export default Error;
+export default ErrorComponent;
