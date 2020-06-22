@@ -602,7 +602,7 @@ If you want to override these messages in a specific resource you can add the fo
 
 ## Specific case in Confirm messages and Empty Page
 
-In confirm messages and in the empty page, the resource name translations are automatically set to lower case.  
+In confirm messages and in the empty page, the resource name appears in the middle of sentences, and react-admin automatically sets the resource name translation to lower case.  
 ie: `Are you sure you want to delete this comment?`
 
 This have been done to have a correct syntax in english, but you may want to force it elseway to match with another language, like German where names are always capitalized.  
