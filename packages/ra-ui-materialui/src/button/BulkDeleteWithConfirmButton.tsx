@@ -109,13 +109,19 @@ const BulkDeleteWithConfirmButton: FC<
                 content={confirmContent}
                 translateOptions={{
                     smart_count: selectedIds.length,
-                    name: inflection.humanize(
-                        translate(`resources.${resource}.name`, {
-                            smart_count: selectedIds.length,
-                            _: inflection.inflect(resource, selectedIds.length),
-                        }),
-                        true
-                    ),
+                    name: translate(`resources.${resource}.forcedCaseName`, {
+                        smart_count: selectedIds.length,
+                        _: inflection.humanize(
+                            translate(`resources.${resource}.name`, {
+                                smart_count: selectedIds.length,
+                                _: inflection.inflect(
+                                    resource,
+                                    selectedIds.length
+                                ),
+                            }),
+                            true
+                        ),
+                    }),
                 }}
                 onConfirm={handleDelete}
                 onClose={handleDialogClose}

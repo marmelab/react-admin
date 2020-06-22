@@ -600,6 +600,29 @@ If you want to override these messages in a specific resource you can add the fo
 - `resources.${resourceName}.empty` for the primary message (e.g. "No posts yet.")
 - `resources.${resourceName}.invite` for the message inviting the user to create one (e.g. "Do you want to create one?")
 
+## Specific case in Confirm messages and Empty Page
+
+In confirm messages and in the empty page, the resource name appears in the middle of sentences, and react-admin automatically sets the resource name translation to lower case.  
+
+> Are you sure you want to delete this comment?
+
+This works in English, but you may want to display resources in another way to match with language rules, like in German, where names are always capitalized.  
+ie: `Sind Sie sicher, dass Sie diesen Kommentar löschen möchten?`
+
+To do this, simply add a `forcedCaseName` key next to the `name` key in your translation file.
+
+```js
+resources: {
+    comments: {
+        name: 'Kommentar |||| Kommentare',
+        forcedCaseName: 'Kommentar |||| Kommentare',
+        fields: {
+            id: 'Id',
+            name: 'Bezeichnung',
+        },
+    },
+```
+
 ## Silencing Translation Warnings
 
 By default, the `polyglotI18nProvider` logs a warning in the console each time it is called with a message that can't be found in the current translations. This is a Polyglot feature that helps tracking missing translation messages.
