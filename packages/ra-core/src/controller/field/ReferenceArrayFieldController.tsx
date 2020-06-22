@@ -24,7 +24,13 @@ interface Props {
  */
 const ReferenceArrayFieldController: FunctionComponent<Props> = props => {
     const { children, ...rest } = props;
-    const controllerProps = useReferenceArrayFieldController(rest);
+    const controllerProps = useReferenceArrayFieldController({
+        sort: {
+            field: 'id',
+            order: 'ASC',
+        },
+        ...rest,
+    });
     return children(controllerProps);
 };
 

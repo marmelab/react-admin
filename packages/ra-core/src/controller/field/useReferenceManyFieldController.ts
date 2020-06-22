@@ -1,5 +1,6 @@
 import get from 'lodash/get';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
+import isEqual from 'lodash/isEqual';
 
 import { useSafeSetState, removeEmpty } from '../../util';
 import { useGetManyReference } from '../../dataProvider';
@@ -75,9 +76,29 @@ const useReferenceManyFieldController = ({
 }: Options): ListControllerProps => {
     const notify = useNotify();
 
+    const stateParams = useRef({
+        page: initialPage,
+        perPage: initialPerPage,
+        sort: initialSort,
+        filter,
+    });
+
     // pagination logic
     const [page, setPage] = useSafeSetState<number>(initialPage);
     const [perPage, setPerPage] = useSafeSetState<number>(initialPerPage);
+    // handle pagination props change
+    useEffect(() => {
+        if (initialPage !== stateParams.current.page) {
+            stateParams.current.page = initialPage;
+            setPage(initialPage);
+        }
+    }, [initialPage, setPage]);
+    useEffect(() => {
+        if (initialPerPage !== stateParams.current.perPage) {
+            stateParams.current.perPage = initialPerPage;
+            setPerPage(initialPerPage);
+        }
+    }, [initialPerPage, setPerPage]);
 
     // sort logic
     const [sort, setSortObject] = useSafeSetState<Sort>(initialSort);
@@ -96,6 +117,13 @@ const useReferenceManyFieldController = ({
         },
         [setPage, setSortObject]
     );
+    // handle sort props change
+    useEffect(() => {
+        if (!isEqual(initialSort, stateParams.current.sort)) {
+            stateParams.current.sort = initialSort;
+            setSortObject(initialSort);
+        }
+    }, [initialSort, setSortObject]);
 
     // selection logic
     const [selectedIds, setSelectedIds] = useSafeSetState<Identifier[]>([]);
@@ -166,9 +194,16 @@ const useReferenceManyFieldController = ({
         },
         [setDisplayedFilters, setFilterValues, setPage]
     );
+    // handle filter prop change
+    useEffect(() => {
+        if (!isEqual(filter, stateParams.current.filter)) {
+            stateParams.current.filter = filter;
+            setFilterValues(filter);
+        }
+    });
 
     const referenceId = get(record, source);
-    const { data, ids, total, loading, loaded } = useGetManyReference(
+    const { data, ids, total, error, loading, loaded } = useGetManyReference(
         reference,
         target,
         referenceId,
@@ -193,6 +228,7 @@ const useReferenceManyFieldController = ({
         data,
         defaultTitle: null,
         displayedFilters,
+        error,
         filterValues,
         hasCreate: false,
         hideFilter,

@@ -1,6 +1,15 @@
-import { FC, cloneElement, Children, useEffect, useState, memo } from 'react';
+import * as React from 'react';
+import {
+    FC,
+    cloneElement,
+    Children,
+    useEffect,
+    useState,
+    memo,
+    ReactElement,
+} from 'react';
 import get from 'lodash/get';
-import { Identifier } from 'ra-core';
+import { Identifier, ListContext } from 'ra-core';
 
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import PropTypes from 'prop-types';
@@ -111,6 +120,7 @@ export const ArrayField: FC<ArrayFieldProps> = memo<ArrayFieldProps>(
         basePath,
         children,
         record,
+        resource,
         sortable,
         source,
         fieldKey,
@@ -126,14 +136,45 @@ export const ArrayField: FC<ArrayFieldProps> = memo<ArrayFieldProps>(
         }, [record, source, fieldKey]);
 
         // @ts-ignore
-        return cloneElement(Children.only(children), {
-            ids,
-            data,
-            loading: false,
-            basePath,
-            currentSort: {},
-            ...rest,
-        });
+        return (
+            <ListContext.Provider
+                value={{
+                    ids,
+                    data,
+                    loading: false,
+                    basePath,
+                    selectedIds: [],
+                    currentSort: { field: null, order: null },
+                    displayedFilters: null,
+                    filterValues: null,
+                    hasCreate: null,
+                    hideFilter: null,
+                    loaded: null,
+                    onSelect: null,
+                    onToggleItem: null,
+                    onUnselectItems: null,
+                    page: null,
+                    perPage: null,
+                    resource,
+                    setFilters: null,
+                    setPage: null,
+                    setPerPage: null,
+                    setSort: null,
+                    showFilter: null,
+                    total: null,
+                }}
+            >
+                {cloneElement(Children.only(children), {
+                    ids,
+                    data,
+                    loading: false,
+                    basePath,
+                    currentSort: {},
+                    resource,
+                    ...rest,
+                })}
+            </ListContext.Provider>
+        );
     }
 );
 
@@ -148,6 +189,7 @@ ArrayField.propTypes = {
 
 export interface ArrayFieldProps extends FieldProps, InjectedFieldProps {
     fieldKey?: string;
+    children: ReactElement;
 }
 
 interface State {

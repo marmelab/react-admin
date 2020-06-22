@@ -64,7 +64,7 @@ ListToolbar.propTypes = {
 
 export interface ListToolbarProps
     extends Omit<ToolbarProps, 'classes' | 'onSelect'> {
-    actions?: ReactElement;
+    actions?: ReactElement | false;
     classes?: ClassesOverride<typeof useStyles>;
     filters?: ReactElement;
     exporter?: Exporter | false;

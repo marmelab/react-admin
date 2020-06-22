@@ -11,7 +11,7 @@ describe('<ReferenceManyField />', () => {
     const defaultProps = {
         resource: 'foo',
         reference: 'bar',
-        referenceBasePath: 'posts',
+        basePath: 'posts',
         page: 1,
         perPage: 10,
         setPage: () => null,

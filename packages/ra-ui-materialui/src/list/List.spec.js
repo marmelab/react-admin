@@ -1,13 +1,14 @@
 import * as React from 'react';
 import expect from 'expect';
 import { cleanup } from '@testing-library/react';
-import { renderWithRedux } from 'ra-core';
+import { renderWithRedux, ListContext } from 'ra-core';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { MemoryRouter } from 'react-router-dom';
 
 import defaultTheme from '../defaultTheme.ts';
-import List, { ListView } from './List';
+import List from './List';
+import ListView from './ListView';
 
 const theme = createMuiTheme(defaultTheme);
 
@@ -36,9 +37,11 @@ describe('<List />', () => {
         const Datagrid = () => <div>datagrid</div>;
         const { container } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <ListView {...defaultProps}>
-                    <Datagrid />
-                </ListView>
+                <ListContext.Provider value={defaultProps}>
+                    <ListView>
+                        <Datagrid />
+                    </ListView>
+                </ListContext.Provider>
             </ThemeProvider>
         );
         expect(container.querySelectorAll('.list-page')).toHaveLength(1);

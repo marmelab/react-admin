@@ -25,8 +25,12 @@ interface Props {
  * @see useReferenceManyFieldController
  */
 export const ReferenceManyFieldController: FunctionComponent<Props> = props => {
-    const { children, ...rest } = props;
-    const controllerProps = useReferenceManyFieldController(rest);
+    const { children, page = 1, perPage = 25, ...rest } = props;
+    const controllerProps = useReferenceManyFieldController({
+        page,
+        perPage,
+        ...rest,
+    });
     return children(controllerProps);
 };
 

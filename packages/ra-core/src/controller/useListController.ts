@@ -30,7 +30,7 @@ export interface ListProps {
     filterDefaultValues?: object;
     perPage?: number;
     sort?: Sort;
-    exporter?: Exporter;
+    exporter?: Exporter | false;
     // the props managed by react-admin
     basePath?: string;
     debounce?: number;
@@ -55,8 +55,9 @@ export interface ListControllerProps<RecordType = Record> {
     basePath: string;
     currentSort: Sort;
     data: RecordMap<RecordType>;
-    defaultTitle: string;
+    defaultTitle?: string;
     displayedFilters: any;
+    error?: any;
     exporter?: Exporter | false;
     filterValues: any;
     hasCreate: boolean;
@@ -138,7 +139,7 @@ const useListController = <RecordType = Record>(
      * We want the list of ids to be always available for optimistic rendering,
      * and therefore we need a custom action (CRUD_GET_LIST) that will be used.
      */
-    const { ids, total, loading, loaded } = useGetList<RecordType>(
+    const { ids, total, error, loading, loaded } = useGetList<RecordType>(
         resource,
         {
             page: query.page,
@@ -212,6 +213,7 @@ const useListController = <RecordType = Record>(
         data,
         defaultTitle,
         displayedFilters: query.displayedFilters,
+        error,
         exporter,
         filterValues: query.filterValues,
         hasCreate,
@@ -241,6 +243,7 @@ export const injectedProps = [
     'data',
     'defaultTitle',
     'displayedFilters',
+    'error',
     'exporter',
     'filterValues',
     'hasCreate',

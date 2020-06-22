@@ -1,5 +1,6 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import get from 'lodash/get';
+import isEqual from 'lodash/isEqual';
 
 import { useSafeSetState, removeEmpty } from '../../util';
 import { Record, RecordMap, Identifier, Sort } from '../../types';
@@ -58,7 +59,7 @@ const useReferenceArrayFieldController = ({
 }: Option): ListControllerProps => {
     const notify = useNotify();
     const ids = get(record, source) || [];
-    const { data, loading, loaded } = useGetMany(reference, ids, {
+    const { data, error, loading, loaded } = useGetMany(reference, ids, {
         onFailure: error =>
             notify(
                 typeof error === 'string'
@@ -73,9 +74,29 @@ const useReferenceArrayFieldController = ({
     );
     const [finalIds, setFinalIds] = useSafeSetState<Identifier[]>(ids);
 
+    const stateParams = useRef({
+        page: initialPage,
+        perPage: initialPerPage,
+        sort: initialSort,
+        filter,
+    });
+
     // pagination logic
     const [page, setPage] = useSafeSetState<number>(initialPage);
     const [perPage, setPerPage] = useSafeSetState<number>(initialPerPage);
+    // handle pagination props change
+    useEffect(() => {
+        if (initialPage !== stateParams.current.page) {
+            stateParams.current.page = initialPage;
+            setPage(initialPage);
+        }
+    }, [initialPage, setPage]);
+    useEffect(() => {
+        if (initialPerPage !== stateParams.current.perPage) {
+            stateParams.current.perPage = initialPerPage;
+            setPerPage(initialPerPage);
+        }
+    }, [initialPerPage, setPerPage]);
 
     // sort logic
     const [sort, setSortObject] = useSafeSetState<Sort>(initialSort);
@@ -94,6 +115,13 @@ const useReferenceArrayFieldController = ({
         },
         [setPage, setSortObject]
     );
+    // handle sort props change
+    useEffect(() => {
+        if (!isEqual(initialSort, stateParams.current.sort)) {
+            stateParams.current.sort = initialSort;
+            setSortObject(initialSort);
+        }
+    }, [initialSort, setSortObject]);
 
     // selection logic
     const [selectedIds, setSelectedIds] = useSafeSetState<Identifier[]>([]);
@@ -164,6 +192,13 @@ const useReferenceArrayFieldController = ({
         },
         [setDisplayedFilters, setFilterValues, setPage]
     );
+    // handle filter prop change
+    useEffect(() => {
+        if (!isEqual(filter, stateParams.current.filter)) {
+            stateParams.current.filter = filter;
+            setFilterValues(filter);
+        }
+    });
 
     // We do all the data processing (filtering, sorting, paginating) client-side
     useEffect(() => {
@@ -212,6 +247,7 @@ const useReferenceArrayFieldController = ({
         currentSort: sort,
         data: finalData,
         defaultTitle: null,
+        error,
         displayedFilters,
         filterValues,
         hasCreate: false,
