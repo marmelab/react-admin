@@ -12,7 +12,6 @@ export const messages = {
     resources: {
         posts: {
             name: 'Post |||| Posts',
-            forcedCaseName: 'Post |||| Posts',
             fields: {
                 average_note: 'Average note',
                 body: 'Body',
@@ -34,7 +33,6 @@ export const messages = {
         },
         comments: {
             name: 'Comment |||| Comments',
-            forcedCaseName: 'Comment |||| Comments',
             fields: {
                 body: 'Body',
                 created_at: 'Created at',
@@ -46,7 +44,6 @@ export const messages = {
         },
         users: {
             name: 'User |||| Users',
-            forcedCaseName: 'User |||| Users',
             fields: {
                 name: 'Name',
                 role: 'Role',
