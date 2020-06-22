@@ -140,11 +140,12 @@ ReferenceManyField.defaultProps = {
 export const ReferenceManyFieldView: FC<
     ReferenceManyFieldViewProps
 > = props => {
-    const { children, pagination, reference, ...rest } = props;
+    const { basePath, children, pagination, reference, ...rest } = props;
     return (
         <>
             {cloneElement(Children.only(children), {
                 ...sanitizeRestProps(rest),
+                basePath,
                 resource: reference,
             })}
             {pagination &&
