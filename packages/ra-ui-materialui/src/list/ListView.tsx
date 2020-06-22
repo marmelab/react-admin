@@ -108,7 +108,8 @@ export const ListView: FC<ListViewProps> = props => {
 };
 
 ListView.propTypes = {
-    actions: PropTypes.element,
+    // @ts-ignore-line
+    actions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     aside: PropTypes.element,
     basePath: PropTypes.string,
     // @ts-ignore-line

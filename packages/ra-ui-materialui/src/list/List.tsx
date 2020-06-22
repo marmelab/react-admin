@@ -69,7 +69,8 @@ const List: FC<ListProps> = props => {
 
 List.propTypes = {
     // the props you can change
-    actions: PropTypes.element,
+    // @ts-ignore-line
+    actions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     aside: PropTypes.element,
     // @ts-ignore-line
     bulkActionButtons: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
@@ -79,7 +80,8 @@ List.propTypes = {
     filter: PropTypes.object,
     filterDefaultValues: PropTypes.object,
     filters: PropTypes.element,
-    pagination: PropTypes.element,
+    // @ts-ignore-line
+    pagination: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     perPage: PropTypes.number.isRequired,
     //@ts-ignore-line
     sort: PropTypes.shape({

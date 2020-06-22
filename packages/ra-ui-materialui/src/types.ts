@@ -21,7 +21,7 @@ export interface ResourceComponentProps<
 
 export interface ListProps extends ResourceComponentProps {
     children: ReactNode;
-    actions?: ReactElement;
+    actions?: ReactElement | false;
     aside?: ReactElement;
     bulkActionButtons?: ReactElement | false;
     classes?: any;
