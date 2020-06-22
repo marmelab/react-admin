@@ -7,7 +7,9 @@ import {
     ListContext,
     ListControllerProps,
 } from 'ra-core';
+
 import { FieldProps, fieldPropTypes, InjectedFieldProps } from './types';
+import sanitizeRestProps from './sanitizeRestProps';
 
 /**
  * Render related records to the current one.
@@ -142,7 +144,7 @@ export const ReferenceManyFieldView: FC<
     return (
         <>
             {cloneElement(Children.only(children), {
-                ...rest,
+                ...sanitizeRestProps(rest),
                 resource: reference,
             })}
             {pagination &&
