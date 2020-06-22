@@ -5,6 +5,7 @@ import lodashDebounce from 'lodash/debounce';
 import set from 'lodash/set';
 import pickBy from 'lodash/pickBy';
 import { Location } from 'history';
+import { useHistory } from 'react-router-dom';
 
 import queryReducer, {
     SET_FILTER,
@@ -14,17 +15,19 @@ import queryReducer, {
     SORT_ASC,
 } from '../reducer/admin/resource/list/queryReducer';
 import { changeListParams, ListParams } from '../actions/listActions';
-import { Sort, ReduxState } from '../types';
+import { Sort, ReduxState, Filter } from '../types';
 import removeEmpty from '../util/removeEmpty';
 import removeKey from '../util/removeKey';
-import { useHistory } from 'react-router-dom';
 
 interface ListParamsOptions {
     resource: string;
     location: Location;
     perPage?: number;
     sort?: Sort;
-    filterDefaultValues?: object;
+    // default value for a filter when displayed but not yet set
+    filterDefaultValues?: Filter;
+    // permanent filter which always overrides the user entry
+    filter?: Filter;
     debounce?: number;
 }
 
@@ -108,6 +111,7 @@ const useListParams = ({
     resource,
     location,
     filterDefaultValues,
+    filter, // permanent filter
     sort = defaultSort,
     perPage = 10,
     debounce = 500,
@@ -187,7 +191,10 @@ const useListParams = ({
         requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );
 
-    const filterValues = query.filter || emptyObject;
+    const filterValues = useMemo(
+        () => ({ ...(query.filter || emptyObject), ...filter }),
+        [filter, query.filter]
+    );
     const displayedFilterValues = query.displayedFilters || emptyObject;
 
     const debouncedSetFilters = lodashDebounce(

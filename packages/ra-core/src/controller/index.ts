@@ -2,6 +2,7 @@ import CreateController from './CreateController';
 import EditController from './EditController';
 import ListController from './ListController';
 import ListContext from './ListContext';
+import ListBase from './ListBase';
 import ShowController from './ShowController';
 import useRecordSelection from './useRecordSelection';
 import useVersion from './useVersion';
@@ -28,6 +29,7 @@ export {
     sanitizeListRestProps,
     CreateController,
     EditController,
+    ListBase,
     ListController,
     ListContext,
     ShowController,

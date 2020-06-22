@@ -1,11 +1,6 @@
 import * as React from 'react';
 import { Fragment, useState } from 'react';
-import {
-    useListController,
-    ListContext,
-    useListContext,
-    EditButton,
-} from 'react-admin';
+import { ListBase, useListContext, EditButton } from 'react-admin';
 import {
     Box,
     List,
@@ -19,15 +14,13 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
 const TagList = props => (
-    <ListContext.Provider
-        value={useListController({ perPage: 1000, ...props })}
-    >
+    <ListBase perPage={1000} {...props}>
         <Box maxWidth="20em" marginTop="1em">
             <Card>
                 <Tree />
             </Card>
         </Box>
-    </ListContext.Provider>
+    </ListBase>
 );
 
 const Tree = () => {

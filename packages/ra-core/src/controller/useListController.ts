@@ -8,21 +8,29 @@ import get from 'lodash/get';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import useListParams from './useListParams';
 import useRecordSelection from './useRecordSelection';
-import useVersion from './useVersion';
 import { useTranslate } from '../i18n';
 import { SORT_ASC } from '../reducer/admin/resource/list/queryReducer';
 import { CRUD_GET_LIST } from '../actions';
 import { useNotify } from '../sideEffect';
-import { Sort, RecordMap, Identifier, ReduxState, Record } from '../types';
+import {
+    Filter,
+    Sort,
+    RecordMap,
+    Identifier,
+    ReduxState,
+    Record,
+    Exporter,
+} from '../types';
 import useGetList from '../dataProvider/useGetList';
 
 export interface ListProps {
     // the props you can change
-    filter?: object;
+    filter?: Filter;
     filters?: ReactElement<any>;
     filterDefaultValues?: object;
     perPage?: number;
     sort?: Sort;
+    exporter?: Exporter;
     // the props managed by react-admin
     basePath?: string;
     debounce?: number;
@@ -49,6 +57,7 @@ export interface ListControllerProps<RecordType = Record> {
     data: RecordMap<RecordType>;
     defaultTitle: string;
     displayedFilters: any;
+    exporter?: Exporter | false;
     filterValues: any;
     hasCreate: boolean;
     hideFilter: (filterName: string) => void;
@@ -94,6 +103,7 @@ const useListController = <RecordType = Record>(
 
     const {
         basePath,
+        exporter,
         resource,
         hasCreate,
         filterDefaultValues,
@@ -202,6 +212,7 @@ const useListController = <RecordType = Record>(
         data,
         defaultTitle,
         displayedFilters: query.displayedFilters,
+        exporter,
         filterValues: query.filterValues,
         hasCreate,
         hideFilter: queryModifiers.hideFilter,
@@ -230,6 +241,7 @@ export const injectedProps = [
     'data',
     'defaultTitle',
     'displayedFilters',
+    'exporter',
     'filterValues',
     'hasCreate',
     'hideFilter',

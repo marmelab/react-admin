@@ -8,9 +8,9 @@ import { ListControllerProps } from './useListController';
  *
  * Must be used within a <ListContext.Provider>
  */
-const useListContext = (props: any): ListControllerProps => {
+const useListContext = (props?: any): ListControllerProps => {
     const context = useContext(ListContext);
-    if (!context.basePath) {
+    if (!context.resource) {
         /**
          * The element isn't inside a <ListContext.Provider>
          *

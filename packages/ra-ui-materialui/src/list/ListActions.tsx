@@ -1,30 +1,32 @@
 import * as React from 'react';
 import { cloneElement, useMemo, FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { sanitizeListRestProps, Identifier, Sort, Exporter } from 'ra-core';
+import {
+    sanitizeListRestProps,
+    Identifier,
+    Sort,
+    Exporter,
+    useListContext,
+} from 'ra-core';
 import { ToolbarProps } from '@material-ui/core';
 
 import TopToolbar from '../layout/TopToolbar';
 import { CreateButton, ExportButton } from '../button';
 
-const ListActions: FC<ListActionsProps> = ({
-    currentSort,
-    className,
-    resource,
-    filters,
-    displayedFilters,
-    exporter,
-    filterValues,
-    permanentFilter,
-    hasCreate,
-    basePath,
-    selectedIds,
-    onUnselectItems,
-    showFilter,
-    total,
-    ...rest
-}) =>
-    useMemo(
+const ListActions: FC<ListActionsProps> = props => {
+    const { className, exporter, filters, ...rest } = props;
+    const {
+        currentSort,
+        resource,
+        displayedFilters,
+        filterValues,
+        hasCreate,
+        basePath,
+        selectedIds,
+        showFilter,
+        total,
+    } = useListContext(props);
+    return useMemo(
         () => (
             <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
                 {filters &&
@@ -41,13 +43,14 @@ const ListActions: FC<ListActionsProps> = ({
                         disabled={total === 0}
                         resource={resource}
                         sort={currentSort}
-                        filter={{ ...filterValues, ...permanentFilter }}
+                        filterValues={filterValues}
                     />
                 )}
             </TopToolbar>
         ),
         [resource, displayedFilters, filterValues, selectedIds, filters, total] // eslint-disable-line react-hooks/exhaustive-deps
     );
+};
 
 ListActions.propTypes = {
     basePath: PropTypes.string,

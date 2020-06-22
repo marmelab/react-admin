@@ -103,8 +103,7 @@ const SimpleList: FC<SimpleListProps> = props => {
                         key={id}
                         record={data[id]}
                     >
-                        {/* @ts-ignore-line */}
-                        <ListItem button={!!linkType}>
+                        <ListItem button={!!linkType as any}>
                             {leftIcon && (
                                 <ListItemIcon>
                                     {leftIcon(data[id], id)}

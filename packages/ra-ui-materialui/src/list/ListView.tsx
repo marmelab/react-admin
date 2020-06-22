@@ -6,10 +6,10 @@ import classnames from 'classnames';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     ComponentPropType,
-    ExporterContext,
     defaultExporter,
     ListControllerProps,
     useListContext,
+    getListControllerProps,
     useVersion,
 } from 'ra-core';
 
@@ -26,7 +26,6 @@ export const ListView: FC<ListViewProps> = props => {
     const {
         actions,
         aside,
-        filter,
         filters,
         bulkActionButtons,
         pagination,
@@ -39,6 +38,7 @@ export const ListView: FC<ListViewProps> = props => {
         empty,
         ...rest
     } = props;
+    const controllerProps = getListControllerProps(props); // deprecated, to be removed in v4
     const listContext = useListContext(props);
     const classes = useStyles(props);
     const {
@@ -52,19 +52,14 @@ export const ListView: FC<ListViewProps> = props => {
     } = listContext;
     const version = useVersion();
 
-    // @deprecated to be removed in 4.0
-    // we inject listContext several times, for backwards compatibility reasons
-    // children should use useListContext instead to grab the controller props
-
     const renderList = () => (
         <>
             {(filters || actions) && (
                 <ListToolbar
                     filters={filters}
-                    {...listContext} // deprecated, use ListContext instead
+                    {...controllerProps} // deprecated, use ListContext instead, to be removed in v4
                     actions={actions}
-                    exporter={exporter} // deprecated, use ExporterContext instead
-                    permanentFilter={filter}
+                    exporter={exporter} // deprecated, use ListContext instead, to be removed in v4
                 />
             )}
             <div className={classes.main}>
@@ -75,14 +70,14 @@ export const ListView: FC<ListViewProps> = props => {
                     key={version}
                 >
                     {bulkActionButtons !== false && bulkActionButtons && (
-                        <BulkActionsToolbar {...listContext}>
+                        <BulkActionsToolbar {...controllerProps}>
                             {bulkActionButtons}
                         </BulkActionsToolbar>
                     )}
                     {children &&
                         // @ts-ignore-line
                         cloneElement(Children.only(children), {
-                            ...listContext,
+                            ...controllerProps, // deprecated, use ListContext instead, to be removed in v4
                             hasBulkActions: bulkActionButtons !== false,
                         })}
                     {pagination && cloneElement(pagination, listContext)}
@@ -100,17 +95,15 @@ export const ListView: FC<ListViewProps> = props => {
         !Object.keys(filterValues).length;
 
     return (
-        <ExporterContext.Provider value={exporter}>
-            <div
-                className={classnames('list-page', classes.root, className)}
-                {...sanitizeRestProps(rest)}
-            >
-                <Title title={title} defaultTitle={defaultTitle} />
-                {shouldRenderEmptyPage
-                    ? cloneElement(empty, listContext)
-                    : renderList()}
-            </div>
-        </ExporterContext.Provider>
+        <div
+            className={classnames('list-page', classes.root, className)}
+            {...sanitizeRestProps(rest)}
+        >
+            <Title title={title} defaultTitle={defaultTitle} />
+            {shouldRenderEmptyPage
+                ? cloneElement(empty, listContext)
+                : renderList()}
+        </div>
     );
 };
 
