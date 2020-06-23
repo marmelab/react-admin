@@ -229,7 +229,11 @@ const useReferenceArrayFieldController = ({
         // 3. paginate
         finalData = finalData.slice((page - 1) * perPage, page * perPage);
         setFinalData(indexById(finalData));
-        setFinalIds(finalData.map(data => data.id));
+        setFinalIds(
+            finalData
+                .filter(data => typeof data !== 'undefined')
+                .map(data => data.id)
+        );
     }, [
         data,
         filterValues,
