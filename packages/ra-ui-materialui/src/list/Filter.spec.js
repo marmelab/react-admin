@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { render, cleanup } from '@testing-library/react';
+import { ListContext } from 'ra-core';
+
 import TextInput from '../input/TextInput';
 import Filter from './Filter';
 
@@ -18,9 +20,11 @@ describe('<Filter />', () => {
 
         it('should render a <FilterForm /> component', () => {
             const { queryByLabelText } = render(
-                <Filter {...defaultProps}>
-                    <TextInput source="title" />
-                </Filter>
+                <ListContext.Provider value={defaultProps}>
+                    <Filter>
+                        <TextInput source="title" />
+                    </Filter>
+                </ListContext.Provider>
             );
 
             expect(
@@ -30,9 +34,16 @@ describe('<Filter />', () => {
 
         it('should pass `filterValues` as `initialValues` props', () => {
             const { getByDisplayValue } = render(
-                <Filter {...defaultProps} filterValues={{ title: 'Lorem' }}>
-                    <TextInput source="title" />
-                </Filter>
+                <ListContext.Provider
+                    value={{
+                        ...defaultProps,
+                        filterValues: { title: 'Lorem' },
+                    }}
+                >
+                    <Filter>
+                        <TextInput source="title" />
+                    </Filter>
+                </ListContext.Provider>
             );
 
             expect(getByDisplayValue('Lorem')).not.toBeNull();
