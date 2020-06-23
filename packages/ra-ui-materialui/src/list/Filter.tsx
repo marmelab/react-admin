@@ -1,10 +1,12 @@
 import * as React from 'react';
+import { FC, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { sanitizeListRestProps, useListContext } from 'ra-core';
 
 import FilterForm from './FilterForm';
 import FilterButton from './FilterButton';
+import { ClassesOverride } from '../types';
 
 const useStyles = makeStyles(
     {
@@ -14,7 +16,14 @@ const useStyles = makeStyles(
     { name: 'RaFilter' }
 );
 
-const Filter = props => {
+export interface FilterProps {
+    context?: string;
+    variant?: string;
+    classes: ClassesOverride<typeof useStyles>;
+    children: ReactNode;
+}
+
+const Filter: FC<FilterProps> = props => {
     const classes = useStyles(props);
     const {
         resource,
