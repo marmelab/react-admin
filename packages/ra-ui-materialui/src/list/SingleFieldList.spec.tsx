@@ -2,6 +2,7 @@ import * as React from 'react';
 import { render, cleanup } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
+import { ListContext } from 'ra-core';
 
 import SingleFieldList from './SingleFieldList';
 import ChipField from '../field/ChipField';
@@ -20,17 +21,21 @@ describe('<SingleFieldList />', () => {
 
     it('should render a link to the Edit page of the related record by default', () => {
         const { queryAllByRole } = renderWithRouter(
-            <SingleFieldList
-                ids={[1, 2]}
-                data={{
-                    1: { id: 1, title: 'foo' },
-                    2: { id: 2, title: 'bar' },
+            <ListContext.Provider
+                value={{
+                    ids: [1, 2],
+                    data: {
+                        1: { id: 1, title: 'foo' },
+                        2: { id: 2, title: 'bar' },
+                    },
+                    resource: 'posts',
+                    basePath: '/posts',
                 }}
-                resource="posts"
-                basePath="/posts"
             >
-                <ChipField source="title" />
-            </SingleFieldList>
+                <SingleFieldList>
+                    <ChipField source="title" />
+                </SingleFieldList>
+            </ListContext.Provider>
         );
         const linkElements = queryAllByRole('link');
         expect(linkElements).toHaveLength(2);
@@ -42,40 +47,48 @@ describe('<SingleFieldList />', () => {
 
     it('should render a link to the Edit page of the related record when the resource contains slashes', () => {
         const { queryAllByRole } = renderWithRouter(
-            <SingleFieldList
-                ids={[1, 2]}
-                data={{
-                    1: { id: 1, title: 'foo' },
-                    2: { id: 2, title: 'bar' },
+            <ListContext.Provider
+                value={{
+                    ids: [1, 2],
+                    data: {
+                        1: { id: 1, title: 'foo' },
+                        2: { id: 2, title: 'bar' },
+                    },
+                    resource: 'posts/foo',
+                    basePath: '/posts/foo',
                 }}
-                resource="posts"
-                basePath="/posts"
             >
-                <ChipField source="title" />
-            </SingleFieldList>
+                <SingleFieldList>
+                    <ChipField source="title" />
+                </SingleFieldList>
+            </ListContext.Provider>
         );
         const linkElements = queryAllByRole('link');
         expect(linkElements).toHaveLength(2);
         expect(linkElements.map(link => link.getAttribute('href'))).toEqual([
-            '/posts/1',
-            '/posts/2',
+            '/posts/foo/1',
+            '/posts/foo/2',
         ]);
     });
 
     it('should render a link to the Edit page of the related record when the resource is named edit or show', () => {
         ['edit', 'show'].forEach(action => {
             const { queryAllByRole } = renderWithRouter(
-                <SingleFieldList
-                    ids={[1, 2]}
-                    data={{
-                        1: { id: 1, title: 'foo' },
-                        2: { id: 2, title: 'bar' },
+                <ListContext.Provider
+                    value={{
+                        ids: [1, 2],
+                        data: {
+                            1: { id: 1, title: 'foo' },
+                            2: { id: 2, title: 'bar' },
+                        },
+                        resource: action,
+                        basePath: `/${action}`,
                     }}
-                    resource={action}
-                    basePath={`/${action}`}
                 >
-                    <ChipField source="title" />
-                </SingleFieldList>
+                    <SingleFieldList>
+                        <ChipField source="title" />
+                    </SingleFieldList>
+                </ListContext.Provider>
             );
             const linkElements = queryAllByRole('link');
             expect(linkElements).toHaveLength(2);
@@ -88,18 +101,21 @@ describe('<SingleFieldList />', () => {
 
     it('should render a link to the Show page of the related record when the linkType is show', () => {
         const { queryAllByRole } = renderWithRouter(
-            <SingleFieldList
-                ids={[1, 2]}
-                data={{
-                    1: { id: 1, title: 'foo' },
-                    2: { id: 2, title: 'bar' },
+            <ListContext.Provider
+                value={{
+                    ids: [1, 2],
+                    data: {
+                        1: { id: 1, title: 'foo' },
+                        2: { id: 2, title: 'bar' },
+                    },
+                    resource: 'prefix/bar',
+                    basePath: '/prefix/bar',
                 }}
-                resource="prefix/bar"
-                basePath="/prefix/bar"
-                linkType="show"
             >
-                <ChipField source="title" />
-            </SingleFieldList>
+                <SingleFieldList linkType="show">
+                    <ChipField source="title" />
+                </SingleFieldList>
+            </ListContext.Provider>
         );
 
         const linkElements = queryAllByRole('link');
@@ -113,18 +129,21 @@ describe('<SingleFieldList />', () => {
     it('should render a link to the Edit page of the related record when the resource is named edit or show and linkType is show', () => {
         ['edit', 'show'].forEach(action => {
             const { queryAllByRole } = renderWithRouter(
-                <SingleFieldList
-                    ids={[1, 2]}
-                    data={{
-                        1: { id: 1, title: 'foo' },
-                        2: { id: 2, title: 'bar' },
+                <ListContext.Provider
+                    value={{
+                        ids: [1, 2],
+                        data: {
+                            1: { id: 1, title: 'foo' },
+                            2: { id: 2, title: 'bar' },
+                        },
+                        resource: action,
+                        basePath: `/${action}`,
                     }}
-                    resource={action}
-                    basePath={`/${action}`}
-                    linkType="show"
                 >
-                    <ChipField source="title" />
-                </SingleFieldList>
+                    <SingleFieldList linkType="show">
+                        <ChipField source="title" />
+                    </SingleFieldList>
+                </ListContext.Provider>
             );
             const linkElements = queryAllByRole('link');
             expect(linkElements).toHaveLength(2);
@@ -137,18 +156,21 @@ describe('<SingleFieldList />', () => {
 
     it('should render no link when the linkType is false', () => {
         const { queryAllByRole, queryByText } = renderWithRouter(
-            <SingleFieldList
-                ids={[1, 2]}
-                data={{
-                    1: { id: 1, title: 'foo' },
-                    2: { id: 2, title: 'bar' },
+            <ListContext.Provider
+                value={{
+                    ids: [1, 2],
+                    data: {
+                        1: { id: 1, title: 'foo' },
+                        2: { id: 2, title: 'bar' },
+                    },
+                    resource: 'bar',
+                    basePath: '/bar',
                 }}
-                resource="bar"
-                basePath="/bar"
-                linkType={false}
             >
-                <ChipField source="title" />
-            </SingleFieldList>
+                <SingleFieldList linkType={false}>
+                    <ChipField source="title" />
+                </SingleFieldList>
+            </ListContext.Provider>
         );
 
         const linkElements = queryAllByRole('link');

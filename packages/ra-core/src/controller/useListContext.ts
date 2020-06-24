@@ -23,7 +23,7 @@ const useListContext = (props?: any): ListControllerProps => {
          */
         if (process.env.NODE_ENV !== 'production') {
             console.log(
-                "List components must be used inside a <ListContext.Provider>. Relying on props rather than context to get List data and callbacks is deprecated and won't be supported in react-admin version 4."
+                "List components must be used inside a <ListContext.Provider>. Relying on props rather than context to get List data and callbacks is deprecated and won't be supported in the next major version of react-admin."
             );
         }
         return props;
