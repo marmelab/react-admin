@@ -1,5 +1,13 @@
 # Changelog
 
+## v3.6.2
+
+* Fix `createAdminStore` warning on SSR and tests ([4970](https://github.com/marmelab/react-admin/pull/4970)) ([hammadj](https://github.com/hammadj))
+* Fix message in delete confirmation dialog does not respect German name capitalization rule ([4957](https://github.com/marmelab/react-admin/pull/4957)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Fix `<ExpandRowButton>` is not exported in `ra-ui-material-ui` ([4950](https://github.com/marmelab/react-admin/pull/4950)) ([floo51](https://github.com/floo51))
+* Fix `useQuery` does not run again after calling `refresh` ([4945](https://github.com/marmelab/react-admin/pull/4945)) ([fzaninotto](https://github.com/fzaninotto))
+* Update unit tests to use `assert` instead of `expect` ([4941](https://github.com/marmelab/react-admin/pull/4941)) ([WiXSL](https://github.com/WiXSL))
+
 ## v3.6.1
 
 * Fix "name not found" error in `ra-data-graphql` data provider when `queryType` or `mutationType` do not exist in the schema ([4940](https://github.com/marmelab/react-admin/pull/4940)) ([braco](https://github.com/braco))
