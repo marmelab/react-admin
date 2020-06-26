@@ -1,5 +1,6 @@
 import expect from 'expect';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core/styles';
 import { cleanup, render } from '@testing-library/react';
 import * as React from 'react';
 import { createMemoryHistory } from 'history';

@@ -2,7 +2,8 @@ import { render, cleanup } from '@testing-library/react';
 import * as React from 'react';
 import expect from 'expect';
 import { TestContext } from 'ra-core';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core/styles';
 import DeleteWithUndoButton from './DeleteWithUndoButton';
 
 const theme = createMuiTheme();

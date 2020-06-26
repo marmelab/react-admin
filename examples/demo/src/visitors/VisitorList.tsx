@@ -10,7 +10,8 @@ import {
     NumberField,
     SearchInput,
 } from 'react-admin';
-import { useMediaQuery, makeStyles, Theme } from '@material-ui/core';
+import { useMediaQuery, Theme } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 import SegmentsField from './SegmentsField';
 import SegmentInput from './SegmentInput';

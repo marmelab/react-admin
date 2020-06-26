@@ -2,7 +2,7 @@ import * as React from 'react';
 import expect from 'expect';
 import { render, cleanup } from '@testing-library/react';
 import { ThemeProvider } from '@material-ui/styles';
-import { createMuiTheme } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core/styles';
 import { ListContext } from 'ra-core';
 
 import Pagination from './Pagination';

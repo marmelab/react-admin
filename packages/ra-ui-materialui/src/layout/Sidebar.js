@@ -2,7 +2,8 @@ import * as React from 'react';
 import { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { Drawer, makeStyles, useMediaQuery } from '@material-ui/core';
+import { Drawer, useMediaQuery } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import lodashGet from 'lodash/get';
 import { setSidebarVisibility } from 'ra-core';
 

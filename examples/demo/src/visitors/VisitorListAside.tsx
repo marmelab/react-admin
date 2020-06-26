@@ -4,7 +4,6 @@ import {
     Box,
     Card,
     CardContent,
-    makeStyles,
     Typography,
     IconButton,
     InputAdornment,
@@ -13,6 +12,8 @@ import {
     ListItemText,
     ListItemSecondaryAction,
 } from '@material-ui/core';
+
+import { makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOnOutlined';
