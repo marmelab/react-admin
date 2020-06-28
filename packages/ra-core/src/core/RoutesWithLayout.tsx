@@ -5,6 +5,7 @@ import React, {
     FunctionComponent,
 } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import WithPermissions from '../auth/WithPermissions';
 import {
@@ -13,6 +14,7 @@ import {
     CatchAllComponent,
     TitleComponent,
     DashboardComponent,
+    ReduxState,
 } from '../types';
 
 interface Props {
@@ -35,6 +37,12 @@ const RoutesWithLayout: FunctionComponent<Props> = ({
         childrenAsArray.length > 0
             ? (childrenAsArray[0] as React.ReactElement<any>)
             : null;
+    // In order to let the Dashboard component use Redux-based dataProvider
+    // hooks like useGetOne, we must wait for the resource registration before
+    // displaying the dashboard.
+    const resourcesAreRegistered = useSelector(
+        (state: ReduxState) => Object.keys(state.admin.resources).length > 0
+    );
 
     return (
         <Switch>
@@ -55,19 +63,21 @@ const RoutesWithLayout: FunctionComponent<Props> = ({
                 />
             ))}
             {dashboard ? (
-                <Route
-                    exact
-                    path="/"
-                    render={routeProps => (
-                        <WithPermissions
-                            authParams={{
-                                route: 'dashboard',
-                            }}
-                            component={dashboard}
-                            {...routeProps}
-                        />
-                    )}
-                />
+                resourcesAreRegistered ? (
+                    <Route
+                        exact
+                        path="/"
+                        render={routeProps => (
+                            <WithPermissions
+                                authParams={{
+                                    route: 'dashboard',
+                                }}
+                                component={dashboard}
+                                {...routeProps}
+                            />
+                        )}
+                    />
+                ) : null
             ) : firstChild ? (
                 <Route
                     exact
