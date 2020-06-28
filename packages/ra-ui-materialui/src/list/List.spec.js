@@ -103,8 +103,9 @@ describe('<List />', () => {
             </ThemeProvider>,
             defaultStateForList
         );
-        await wait();
-        expect(queryAllByText('resources.posts.empty')).toHaveLength(1);
+        await wait(() => {
+            expect(queryAllByText('resources.posts.empty')).toHaveLength(1);
+        });
     });
 
     it('should not render an invite when a filter is active', async () => {
@@ -122,7 +123,8 @@ describe('<List />', () => {
             </ThemeProvider>,
             defaultStateForList
         );
-        await wait();
-        expect(queryAllByText('resources.posts.empty')).toHaveLength(1);
+        await wait(() => {
+            expect(queryAllByText('resources.posts.empty')).toHaveLength(1);
+        });
     });
 });
