@@ -77,7 +77,9 @@ const RoutesWithLayout: FunctionComponent<Props> = ({
                             />
                         )}
                     />
-                ) : null
+                ) : (
+                    <></>
+                )
             ) : firstChild ? (
                 <Route
                     exact
