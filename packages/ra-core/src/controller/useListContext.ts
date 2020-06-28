@@ -4,9 +4,60 @@ import ListContext from './ListContext';
 import { ListControllerProps } from './useListController';
 
 /**
- * Hook to read the list controller props.
+ * Hook to read the list controller props from the ListContext.
  *
- * Must be used within a <ListContext.Provider>
+ * Must be used within a <ListContext.Provider> (e.g. as a descendent of <List>
+ * or <ListBase>).
+ *
+ * @see useListController for the list of props
+ *
+ * @example // custom list view
+ *
+ * import { useListContext } from 'react-admin';
+ *
+ * const MyList = () => {
+ *     const { data, id, loaded } = useListContext();
+ *     if (!loaded) {
+ *         return <>Loading...</>;
+ *     }
+ *     const records = ids.map(id => data[id]);
+ *     return (
+ *         <ul>
+ *             {records.map(record => (
+ *                 <li key={record.id}>{record.name}</li>
+ *             ))}
+ *         </ul>
+ *     );
+ * }
+ *
+ * @example // custom pagination
+ *
+ * import { useListContext } from 'react-admin';
+ * import { Button, Toolbar } from '@material-ui/core';
+ * import ChevronLeft from '@material-ui/icons/ChevronLeft';
+ * import ChevronRight from '@material-ui/icons/ChevronRight';
+ *
+ * const PrevNextPagination = () => {
+ *     const { page, perPage, total, setPage } = useListContext();
+ *     const nbPages = Math.ceil(total / perPage) || 1;
+ *     return (
+ *         nbPages > 1 &&
+ *             <Toolbar>
+ *                 {page > 1 &&
+ *                     <Button color="primary" key="prev" onClick={() => setPage(page - 1)}>
+ *                         <ChevronLeft />
+ *                         Prev
+ *                     </Button>
+ *                 }
+ *                 {page !== nbPages &&
+ *                     <Button color="primary" key="next" onClick={() => setPage(page + 1)}>
+ *                         Next
+ *                         <ChevronRight />
+ *                     </Button>
+ *                 }
+ *             </Toolbar>
+ *     );
+ * }
  */
 const useListContext = (props?: any): ListControllerProps => {
     const context = useContext(ListContext);
