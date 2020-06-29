@@ -24,6 +24,8 @@ import useShowController, { ShowControllerProps } from './useShowController';
 import useReference, { UseReferenceProps } from './useReference';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import useListParams from './useListParams';
+import useSelectionState from './useSelectionState';
+
 export {
     getListControllerProps,
     sanitizeListRestProps,
@@ -42,9 +44,10 @@ export {
     useVersion,
     useExpanded,
     useFilterState,
-    useSortState,
     usePaginationState,
     useReference,
+    useSelectionState,
+    useSortState,
     useListContext,
     useListParams,
     ListControllerProps,

@@ -7,6 +7,9 @@ import { Record, RecordMap, Identifier, Sort } from '../../types';
 import { useGetMany } from '../../dataProvider';
 import { ListControllerProps } from '../useListController';
 import { useNotify } from '../../sideEffect';
+import usePaginationState from '../usePaginationState';
+import useSelectionState from '../useSelectionState';
+import useSortState from '../useSortState';
 
 interface Option {
     basePath: string;
@@ -74,84 +77,32 @@ const useReferenceArrayFieldController = ({
     );
     const [finalIds, setFinalIds] = useSafeSetState<Identifier[]>(ids);
 
-    const stateParams = useRef({
+    // pagination logic
+    const { page, setPage, perPage, setPerPage } = usePaginationState({
         page: initialPage,
         perPage: initialPerPage,
-        sort: initialSort,
-        filter,
     });
 
-    // pagination logic
-    const [page, setPage] = useSafeSetState<number>(initialPage);
-    const [perPage, setPerPage] = useSafeSetState<number>(initialPerPage);
-    // handle pagination props change
-    useEffect(() => {
-        if (initialPage !== stateParams.current.page) {
-            stateParams.current.page = initialPage;
-            setPage(initialPage);
-        }
-    }, [initialPage, setPage]);
-    useEffect(() => {
-        if (initialPerPage !== stateParams.current.perPage) {
-            stateParams.current.perPage = initialPerPage;
-            setPerPage(initialPerPage);
-        }
-    }, [initialPerPage, setPerPage]);
-
     // sort logic
-    const [sort, setSortObject] = useSafeSetState<Sort>(initialSort);
+    const { sort, setSort: setSortObject } = useSortState(initialSort);
     const setSort = useCallback(
         (field: string, order: string = 'ASC') => {
-            setSortObject(previousState => ({
-                field,
-                order:
-                    field === previousState.field
-                        ? previousState.order === 'ASC'
-                            ? 'DESC'
-                            : 'ASC'
-                        : order,
-            }));
+            setSortObject({ field, order });
             setPage(1);
         },
         [setPage, setSortObject]
     );
-    // handle sort props change
-    useEffect(() => {
-        if (!isEqual(initialSort, stateParams.current.sort)) {
-            stateParams.current.sort = initialSort;
-            setSortObject(initialSort);
-        }
-    }, [initialSort, setSortObject]);
 
     // selection logic
-    const [selectedIds, setSelectedIds] = useSafeSetState<Identifier[]>([]);
-    const onSelect = useCallback(
-        (newIds: Identifier[]) => {
-            setSelectedIds(newIds);
-        },
-        [setSelectedIds]
-    );
-    const onToggleItem = useCallback(
-        (id: Identifier) => {
-            setSelectedIds(previousState => {
-                const index = previousState.indexOf(id);
-                if (index > -1) {
-                    return [
-                        ...previousState.slice(0, index),
-                        ...previousState.slice(index + 1),
-                    ];
-                } else {
-                    return [...previousState, id];
-                }
-            });
-        },
-        [setSelectedIds]
-    );
-    const onUnselectItems = useCallback(() => {
-        setSelectedIds([]);
-    }, [setSelectedIds]);
+    const {
+        selectedIds,
+        onSelect,
+        onToggleItem,
+        onUnselectItems,
+    } = useSelectionState();
 
     // filter logic
+    const filterRef = useRef(filter);
     const [displayedFilters, setDisplayedFilters] = useSafeSetState<{
         [key: string]: boolean;
     }>({});
@@ -194,8 +145,8 @@ const useReferenceArrayFieldController = ({
     );
     // handle filter prop change
     useEffect(() => {
-        if (!isEqual(filter, stateParams.current.filter)) {
-            stateParams.current.filter = filter;
+        if (!isEqual(filter, filterRef.current)) {
+            filterRef.current = filter;
             setFilterValues(filter);
         }
     });
