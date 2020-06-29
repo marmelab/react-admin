@@ -154,11 +154,11 @@ const useReferenceArrayFieldController = ({
     // We do all the data processing (filtering, sorting, paginating) client-side
     useEffect(() => {
         if (!loaded) return;
-        let finalData = data;
+        let tempData = [...data];
         // 1. filter
         Object.keys(filterValues).forEach(
             (filterName: string): void => {
-                finalData = finalData.filter(
+                tempData = tempData.filter(
                     record =>
                         // eslint-disable-next-line eqeqeq
                         get(record, filterName) == filterValues[filterName]
@@ -167,7 +167,7 @@ const useReferenceArrayFieldController = ({
         );
         // 2. sort
         if (sort.field) {
-            finalData = finalData.sort((a, b) => {
+            tempData = tempData.sort((a, b) => {
                 if (get(a, sort.field) > get(b, sort.field)) {
                     return sort.order === 'ASC' ? 1 : -1;
                 }
@@ -178,10 +178,10 @@ const useReferenceArrayFieldController = ({
             });
         }
         // 3. paginate
-        finalData = finalData.slice((page - 1) * perPage, page * perPage);
-        setFinalData(indexById(finalData));
+        tempData = tempData.slice((page - 1) * perPage, page * perPage);
+        setFinalData(indexById(tempData));
         setFinalIds(
-            finalData
+            tempData
                 .filter(data => typeof data !== 'undefined')
                 .map(data => data.id)
         );
