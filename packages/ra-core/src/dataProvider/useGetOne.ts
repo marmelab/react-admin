@@ -1,3 +1,5 @@
+import get from 'lodash/get';
+
 import { Identifier, Record, ReduxState } from '../types';
 import useQueryWithStore from './useQueryWithStore';
 
@@ -40,12 +42,17 @@ const useGetOne = (
         { type: 'getOne', resource, payload: { id } },
         options,
         (state: ReduxState) => {
-            if (!state.admin.resources[resource]) {
+            if (
+                // resources are registered
+                Object.keys(state.admin.resources).length > 0 &&
+                // no registered resource mathing the query
+                !state.admin.resources[resource]
+            ) {
                 throw new Error(
                     `No <Resource> defined for "${resource}". useGetOne() relies on the Redux store, so it cannot work if you don't include a <Resource>.`
                 );
             }
-            return state.admin.resources[resource].data[id];
+            return get(state, ['admin', 'resources', resource, 'data', id]);
         }
     );
 
