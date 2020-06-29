@@ -5,7 +5,7 @@ title: "The List View"
 
 # The List View
 
-The List view displays a list of records fetched from the API. The entry point for this view is the `<List>` component, which takes care of fetching the data. Then, it puts that data in a context so that it's available for its descedents - usually `<Datagrid>`, which then delegates the rendering of each record property to [`<Field>`](./Fields.md) components.
+The List view displays a list of records fetched from the API. The entry point for this view is the `<List>` component, which takes care of fetching the data. Then, it puts that data in a context so that it's available for its descendants - usually `<Datagrid>`, which then delegates the rendering of each record property to [`<Field>`](./Fields.md) components.
 
 ![The List View](./img/list-view.png)
 
@@ -1125,7 +1125,7 @@ React-admin provides guessers for the List view (`<ListGuesser>`), the Edit view
 
 ## `useListContext`
 
-The `<List>` component takes care of fetching the data, and puts that data in a context so that it's available for its descendqnts. In fact, it puts a lot of variables in the context because the List page is complex: based on the URL, the `<List>` component deduces filters, pagination, ordering, it provides callbacks to update them. 
+The `<List>` component takes care of fetching the data, and puts that data in a context so that it's available for its descendants. In fact, it puts a lot of variables in the context because the List page is complex: based on the URL, the `<List>` component deduces filters, pagination, ordering, it provides callbacks to update them. 
 
 Any component can grab that data using the `useListContext` hook. As a matter of fact, react-admin's `<Datagrid>`, `<Filter>`, and `<Pagination>` components all use the `useListContext` hook. Here is what it returns:
 
@@ -1237,7 +1237,7 @@ As you can see, the controller part of the List view is handled by a hook called
 
 ## The `<Datagrid>` component
 
-The `Datagrid` component renders a list of records as a table. It is usually used as a descendqnt of the [`<List>`](#the-list-component) and [`<ReferenceManyField>`](./Fields.md#referencemanyfield) components. Outside of these components, it must be used inside a `ListContext`.
+The `Datagrid` component renders a list of records as a table. It is usually used as a descendant of the [`<List>`](#the-list-component) and [`<ReferenceManyField>`](./Fields.md#referencemanyfield) components. Outside of these components, it must be used inside a `ListContext`.
 
 Here are all the props accepted by the component:
 
