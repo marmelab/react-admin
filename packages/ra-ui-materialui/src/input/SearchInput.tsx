@@ -23,6 +23,11 @@ const SearchInput: FunctionComponent<
     const { classes: classesOverride, ...rest } = props;
     const translate = useTranslate();
     const classes = useStyles(props);
+    if (props.label) {
+        throw new Error(
+            "<SearchInput> isn't designed to be used with a label prop. Use <TextInput> if you need a label."
+        );
+    }
 
     return (
         <TextInput
