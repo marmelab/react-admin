@@ -1,7 +1,12 @@
 import * as React from 'react';
 import { useCallback, FunctionComponent, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { ListItemIcon, MenuItem, makeStyles } from '@material-ui/core';
+import {
+    ListItemIcon,
+    MenuItem,
+    useMediaQuery,
+    makeStyles,
+} from '@material-ui/core';
 import { MenuItemProps } from '@material-ui/core/MenuItem';
 import { Theme } from '@material-ui/core/styles';
 
@@ -41,6 +46,9 @@ const LogoutWithRef: FunctionComponent<
         ...rest
     } = props;
     const classes = useStyles(props);
+    const isXSmall = useMediaQuery((theme: Theme) =>
+        theme.breakpoints.down('xs')
+    );
     const translate = useTranslate();
     const logout = useLogout();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -53,6 +61,7 @@ const LogoutWithRef: FunctionComponent<
             className={classnames('logout', classes.menuItem, className)}
             onClick={handleClick}
             ref={ref}
+            component={isXSmall ? 'span' : 'li'}
             {...rest}
         >
             <ListItemIcon className={classes.icon}>
