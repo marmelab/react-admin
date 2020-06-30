@@ -31,11 +31,11 @@ describe('<ReferenceArrayFieldController />', () => {
                 },
             }
         );
-        expect(children.mock.calls[0][0]).toEqual({
+        expect(children.mock.calls[0][0]).toMatchObject({
+            basePath: '',
             currentSort: { field: 'id', order: 'ASC' },
             loaded: false,
             loading: true,
-            referenceBasePath: '',
             data: {},
             ids: [1, 2],
             error: null,
@@ -71,11 +71,11 @@ describe('<ReferenceArrayFieldController />', () => {
             }
         );
 
-        expect(children.mock.calls[0][0]).toEqual({
+        expect(children.mock.calls[0][0]).toMatchObject({
+            basePath: '',
             currentSort: { field: 'id', order: 'ASC' },
             loaded: false,
             loading: true,
-            referenceBasePath: '',
             data: {
                 2: {
                     id: 2,
@@ -112,11 +112,11 @@ describe('<ReferenceArrayFieldController />', () => {
                 },
             }
         );
-        expect(children.mock.calls[0][0]).toEqual({
+        expect(children.mock.calls[0][0]).toMatchObject({
+            basePath: '',
             currentSort: { field: 'id', order: 'ASC' },
             loaded: true,
             loading: true,
-            referenceBasePath: '',
             data: {
                 1: { id: 1, title: 'hello' },
                 2: { id: 2, title: 'world' },
@@ -151,11 +151,11 @@ describe('<ReferenceArrayFieldController />', () => {
                 },
             }
         );
-        expect(children.mock.calls[0][0]).toEqual({
+        expect(children.mock.calls[0][0]).toMatchObject({
+            basePath: '',
             currentSort: { field: 'id', order: 'ASC' },
             loaded: true,
             loading: true,
-            referenceBasePath: '',
             data: {
                 'abc-1': { id: 'abc-1', title: 'hello' },
                 'abc-2': { id: 'abc-2', title: 'world' },

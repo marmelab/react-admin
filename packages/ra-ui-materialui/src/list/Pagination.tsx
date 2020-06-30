@@ -1,9 +1,16 @@
 import * as React from 'react';
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { TablePagination, Toolbar, useMediaQuery } from '@material-ui/core';
+import {
+    TablePagination,
+    TablePaginationBaseProps,
+    Toolbar,
+    useMediaQuery,
+    Theme,
+} from '@material-ui/core';
 import {
     useTranslate,
+    useListContext,
     sanitizeListRestProps,
     ComponentPropType,
 } from 'ra-core';
@@ -13,25 +20,25 @@ import DefaultPaginationLimit from './PaginationLimit';
 
 const emptyArray = [];
 
-const Pagination = ({
-    loading,
-    page,
-    perPage,
-    rowsPerPageOptions,
-    total,
-    setPage,
-    setPerPage,
-    actions,
-    limit,
-    ...rest
-}) => {
+const Pagination: FC<PaginationProps> = props => {
+    const { rowsPerPageOptions, actions, limit, ...rest } = props;
+    const {
+        loading,
+        page,
+        perPage,
+        total,
+        setPage,
+        setPerPage,
+    } = useListContext(props);
     useEffect(() => {
         if (page < 1 || isNaN(page)) {
             setPage(1);
         }
     }, [page, setPage]);
     const translate = useTranslate();
-    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+    const isSmall = useMediaQuery((theme: Theme) =>
+        theme.breakpoints.down('sm')
+    );
 
     const getNbPages = () => Math.ceil(total / perPage) || 1;
 
@@ -108,21 +115,20 @@ const Pagination = ({
 
 Pagination.propTypes = {
     actions: ComponentPropType,
-    ids: PropTypes.array,
     limit: PropTypes.element,
-    loading: PropTypes.bool,
-    page: PropTypes.number,
-    perPage: PropTypes.number,
     rowsPerPageOptions: PropTypes.arrayOf(PropTypes.number),
-    setPage: PropTypes.func,
-    setPerPage: PropTypes.func,
-    total: PropTypes.number,
 };
 
 Pagination.defaultProps = {
-    rowsPerPageOptions: [5, 10, 25],
     actions: DefaultPaginationActions,
     limit: <DefaultPaginationLimit />,
+    rowsPerPageOptions: [5, 10, 25],
 };
+
+export interface PaginationProps extends TablePaginationBaseProps {
+    rowsPerPageOptions?: number[];
+    actions?: FC;
+    limit?: ReactElement;
+}
 
 export default React.memo(Pagination);

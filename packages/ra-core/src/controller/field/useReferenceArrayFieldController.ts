@@ -1,35 +1,30 @@
-import { useMemo } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import get from 'lodash/get';
+import isEqual from 'lodash/isEqual';
 
-import { Record, RecordMap, Identifier } from '../../types';
+import { useSafeSetState, removeEmpty } from '../../util';
+import { Record, RecordMap, Identifier, Sort } from '../../types';
 import { useGetMany } from '../../dataProvider';
-
-/**
- * @typedef ReferenceArrayProps
- * @type {Object}
- * @property {Array} ids the list of ids.
- * @property {Object} data Object holding the reference data by their ids
- * @property {Object} error the error returned by the dataProvider
- * @property {boolean} loading is the reference currently loading
- * @property {boolean} loaded has the reference already been loaded
- * @property {string} referenceBasePath basePath of the reference
- */
-export interface ReferenceArrayProps {
-    ids: Identifier[];
-    data: RecordMap;
-    error?: any;
-    loading: boolean;
-    loaded: boolean;
-    referenceBasePath: string;
-}
+import { ListControllerProps } from '../useListController';
+import { useNotify } from '../../sideEffect';
+import usePaginationState from '../usePaginationState';
+import useSelectionState from '../useSelectionState';
+import useSortState from '../useSortState';
 
 interface Option {
     basePath: string;
+    filter?: any;
+    page?: number;
+    perPage?: number;
     record?: Record;
     reference: string;
     resource: string;
+    sort?: Sort;
     source: string;
 }
+
+const defaultFilter = {};
+const defaultSort = { field: null, order: null };
 
 /**
  * Hook that fetches records from another resource specified
@@ -55,26 +50,180 @@ interface Option {
  * @returns {ReferenceArrayProps} The reference props
  */
 const useReferenceArrayFieldController = ({
-    resource,
-    reference,
     basePath,
+    filter = defaultFilter,
+    page: initialPage = 1,
+    perPage: initialPerPage = 1000,
     record,
+    reference,
+    resource,
+    sort: initialSort = defaultSort,
     source,
-}: Option): ReferenceArrayProps => {
+}: Option): ListControllerProps => {
+    const notify = useNotify();
     const ids = get(record, source) || [];
-    const { data, error, loading, loaded } = useGetMany(reference, ids);
-    const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
+    const { data, error, loading, loaded } = useGetMany(reference, ids, {
+        onFailure: error =>
+            notify(
+                typeof error === 'string'
+                    ? error
+                    : error.message || 'ra.notification.http_error',
+                'warning'
+            ),
+    });
+
+    const [finalData, setFinalData] = useSafeSetState<RecordMap>(
+        indexById(data)
+    );
+    const [finalIds, setFinalIds] = useSafeSetState<Identifier[]>(ids);
+
+    // pagination logic
+    const { page, setPage, perPage, setPerPage } = usePaginationState({
+        page: initialPage,
+        perPage: initialPerPage,
+    });
+
+    // sort logic
+    const { sort, setSort: setSortObject } = useSortState(initialSort);
+    const setSort = useCallback(
+        (field: string, order: string = 'ASC') => {
+            setSortObject({ field, order });
+            setPage(1);
+        },
+        [setPage, setSortObject]
+    );
+
+    // selection logic
+    const {
+        selectedIds,
+        onSelect,
+        onToggleItem,
+        onUnselectItems,
+    } = useSelectionState();
+
+    // filter logic
+    const filterRef = useRef(filter);
+    const [displayedFilters, setDisplayedFilters] = useSafeSetState<{
+        [key: string]: boolean;
+    }>({});
+    const [filterValues, setFilterValues] = useSafeSetState<{
+        [key: string]: any;
+    }>(filter);
+    const hideFilter = useCallback(
+        (filterName: string) => {
+            setDisplayedFilters(previousState => {
+                const { [filterName]: _, ...newState } = previousState;
+                return newState;
+            });
+            setFilterValues(previousState => {
+                const { [filterName]: _, ...newState } = previousState;
+                return newState;
+            });
+        },
+        [setDisplayedFilters, setFilterValues]
+    );
+    const showFilter = useCallback(
+        (filterName: string, defaultValue: any) => {
+            setDisplayedFilters(previousState => ({
+                previousState,
+                [filterName]: true,
+            }));
+            setFilterValues(previousState => ({
+                previousState,
+                [filterName]: defaultValue,
+            }));
+        },
+        [setDisplayedFilters, setFilterValues]
+    );
+    const setFilters = useCallback(
+        (filters, displayedFilters) => {
+            setFilterValues(removeEmpty(filters));
+            setDisplayedFilters(displayedFilters);
+            setPage(1);
+        },
+        [setDisplayedFilters, setFilterValues, setPage]
+    );
+    // handle filter prop change
+    useEffect(() => {
+        if (!isEqual(filter, filterRef.current)) {
+            filterRef.current = filter;
+            setFilterValues(filter);
+        }
+    });
+
+    // We do all the data processing (filtering, sorting, paginating) client-side
+    useEffect(() => {
+        if (!loaded) return;
+        // 1. filter
+        let tempData = data.filter(record =>
+            Object.entries(filterValues).every(
+                ([filterName, filterValue]) =>
+                    // eslint-disable-next-line eqeqeq
+                    filterValue == get(record, filterName)
+            )
+        );
+        // 2. sort
+        if (sort.field) {
+            tempData = tempData.sort((a, b) => {
+                if (get(a, sort.field) > get(b, sort.field)) {
+                    return sort.order === 'ASC' ? 1 : -1;
+                }
+                if (get(a, sort.field) < get(b, sort.field)) {
+                    return sort.order === 'ASC' ? -1 : 1;
+                }
+                return 0;
+            });
+        }
+        // 3. paginate
+        tempData = tempData.slice((page - 1) * perPage, page * perPage);
+        setFinalData(indexById(tempData));
+        setFinalIds(
+            tempData
+                .filter(data => typeof data !== 'undefined')
+                .map(data => data.id)
+        );
+    }, [
+        data,
+        filterValues,
+        loaded,
+        page,
+        perPage,
+        setFinalData,
+        setFinalIds,
+        sort.field,
+        sort.order,
+    ]);
+
     return {
-        ids,
-        data: useMemo(() => indexById(data), [data]),
+        basePath: basePath.replace(resource, reference),
+        currentSort: sort,
+        data: finalData,
+        defaultTitle: null,
         error,
+        displayedFilters,
+        filterValues,
+        hasCreate: false,
+        hideFilter,
+        ids: finalIds,
         loaded,
         loading,
-        referenceBasePath,
+        onSelect,
+        onToggleItem,
+        onUnselectItems,
+        page,
+        perPage,
+        resource,
+        selectedIds,
+        setFilters,
+        setPage,
+        setPerPage,
+        setSort,
+        showFilter,
+        total: finalIds.length,
     };
 };
 
-const indexById = (records: Record[] = []) =>
+const indexById = (records: Record[] = []): RecordMap =>
     records
         .filter(r => typeof r !== 'undefined')
         .reduce((prev, current) => {

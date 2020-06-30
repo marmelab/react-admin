@@ -5,15 +5,13 @@ title: "The List View"
 
 # The List View
 
-The List view displays a list of records fetched from the API. The entry point for this view is the `<List>` component, which takes care of fetching the data. Then, it passes the data to an iterator view - usually `<Datagrid>`, which then delegates the rendering of each record property to [`<Field>`](./Fields.md) components.
+The List view displays a list of records fetched from the API. The entry point for this view is the `<List>` component, which takes care of fetching the data. Then, it puts that data in a context so that it's available for its descendants - usually `<Datagrid>`, which then delegates the rendering of each record property to [`<Field>`](./Fields.md) components.
 
 ![The List View](./img/list-view.png)
 
 ## The `<List>` Component
 
-The `<List>` component renders the list layout (title, buttons, filters, pagination), and fetches the list of records from the REST API. It then delegates the rendering of the list of records to its child component. Usually, it's a `<Datagrid>`, responsible for displaying a table with one row for each post.
-
-**Tip**: In Redux terms, `<List>` is a connected component, and `<Datagrid>` is a dumb component.
+The `<List>` component fetches the list of records from the data provider, and renders the list layout (title, buttons, filters, pagination). It delegates the rendering of the list of records to its child component. Usually, it's a `<Datagrid>`, responsible for displaying a table with one row for each post.
 
 Here are all the props accepted by the `<List>` component:
 
@@ -92,58 +90,60 @@ import * as React from 'react';
 import { cloneElement, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
-    TopToolbar, CreateButton, ExportButton, Button, sanitizeListRestProps,
+    useListContext;
+    TopToolbar,
+    CreateButton,
+    ExportButton,
+    Button,
+    sanitizeListRestProps,
 } from 'react-admin';
 import IconEvent from '@material-ui/icons/Event';
 
-const ListActions = ({
-    currentSort,
-    className,
-    resource,
-    filters,
-    displayedFilters,
-    exporter, // you can hide ExportButton if exporter = (null || false)
-    filterValues,
-    permanentFilter,
-    hasCreate, // you can hide CreateButton if hasCreate = false
-    basePath,
-    selectedIds,
-    onUnselectItems,
-    showFilter,
-    maxResults,
-    total,
-    ...rest
-}) => (
-    <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
-        {filters && cloneElement(filters, {
-            resource,
-            showFilter,
-            displayedFilters,
-            filterValues,
-            context: 'button',
-        })}
-        <CreateButton basePath={basePath} />
-        <ExportButton
-            disabled={total === 0}
-            resource={resource}
-            sort={currentSort}
-            filter={{ ...filterValues, ...permanentFilter }}
-            exporter={exporter}
-            maxResults={maxResults}
-        />
-        {/* Add your custom actions */}
-        <Button
-            onClick={() => { alert('Your custom action'); }}
-            label="Show calendar"
-        >
-            <IconEvent />
-        </Button>
-    </TopToolbar>
-);
-
-ListActions.defaultProps = {
-    selectedIds: [],
-    onUnselectItems: () => null,
+const ListActions = (props) => {
+    const {
+        className,
+        exporter,
+        filters,
+        maxResults,
+        ...rest
+    } = props;
+    const {
+        currentSort,
+        resource,
+        displayedFilters,
+        filterValues,
+        hasCreate,
+        basePath,
+        selectedIds,
+        showFilter,
+        total,
+    } = useListContext();
+    return (
+        <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
+            {filters && cloneElement(filters, {
+                resource,
+                showFilter,
+                displayedFilters,
+                filterValues,
+                context: 'button',
+            })}
+            <CreateButton basePath={basePath} />
+            <ExportButton
+                disabled={total === 0}
+                resource={resource}
+                sort={currentSort}
+                filterValues={filterValues}
+                maxResults={maxResults}
+            />
+            {/* Add your custom actions */}
+            <Button
+                onClick={() => { alert('Your custom action'); }}
+                label="Show calendar"
+            >
+                <IconEvent />
+            </Button>
+        </TopToolbar>
+    );
 };
 
 export const PostList = (props) => (
@@ -154,8 +154,7 @@ export const PostList = (props) => (
 ```
 {% endraw %}
 
-
-You can also use such a custom `ListActions` prop to omit or reorder buttons based on permissions. Just pass the `permissions` down from the `List` component:
+You can also use such a custom `<ListActions>` component to omit or reorder buttons based on permissions. Just pass the `permissions` down from the `List` component:
 
 ```jsx
 export const PostList = ({ permissions, ...props }) => (
@@ -178,8 +177,6 @@ By default, clicking this button will:
 The columns of the CSV file match all the fields of the records in the `dataProvider` response. That means that the export doesn't take into account the selection and ordering of fields in your `<List>` via `Field` components. If you want to customize the result, pass a custom `exporter` function to the `<List>`. This function will receive the data from the `dataProvider` (after step 1) and replace steps 2-3 (i.e. it's in charge of transforming, converting, and downloading the file).
 
 **Tip**: For CSV conversion, you can import [jsonexport](https://github.com/kauegimenes/jsonexport#browser-import-examples), a CSV to JSON converter which is already a react-admin dependency. And for CSV download, take advantage of react-admin's `downloadCSV` function.
-
-**Tip**: You may also remove the `<ExportButton>` by passing `false` to the `exporter` prop: `exporter={false}`
 
 Here is an example for a Posts exporter, omitting, adding, and reordering fields:
 
@@ -246,6 +243,8 @@ const CommentList = props => (
 **Tip**: React-admin also provides a `<BulkExportButton>` component that depends on the `exporter`, and that you can use in the `bulkActionButtons` prop of the `<List>` component.
 
 **Tip**: For complex (or large) exports, fetching all the related records and assembling them client-side can be slow. In that case, create the CSV on the server side, and replace the `<ExportButton>` component by a custom one, fetching the CSV route.
+
+**Tip**: You may also remove the `<ExportButton>` by passing `false` to the `exporter` prop: `exporter={false}`
 
 ### Bulk Action Buttons
 
@@ -467,11 +466,6 @@ The filter component must be a `<Filter>` with `<Input>` children.
 
 **Tip**: Don't mix up this `filters` prop, expecting a React element, with the `filter` props, which expects an object to define permanent filters (see below).
 
-The `Filter` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
-
-* `form`: applied to the root element when rendering as a form.
-* `button`: applied to the root element when rendering as a button.
-
 Children of the `<Filter>` form are regular inputs. `<Filter>` hides them all by default, except those that have the `alwaysOn` prop.
 
 For more details about the `filters` prop, see the [Filtering the List](#filtering-the-list) section below. 
@@ -508,7 +502,7 @@ export const PostList = (props) => (
 
 ### Disabling Sorting
 
-It is possible to disable sorting for a specific field by passing a `sortable` property set to `false`:
+It is possible to disable sorting for a specific `<Field>` by passing a `sortable` property set to `false`:
 
 {% raw %}
 ```jsx
@@ -530,7 +524,7 @@ export const PostList = (props) => (
 
 ### Specify Sort Field
 
-By default, a column is sorted by the `source` property. To define another attribute to sort by, set it via the `sortBy` property:
+By default, a column is sorted by the `source` property. To define another attribute to sort by, set it via the `<Field sortBy>` property:
 
 {% raw %}
 ```jsx
@@ -558,7 +552,7 @@ export const PostList = (props) => (
 
 ### Specify Sort Order
 
-By default, when the user clicks on a column header, the list becomes sorted in the ascending order. You change this behavior by setting the `sortByOrder` prop to `"DESC"`:
+By default, when the user clicks on a column header, the list becomes sorted in the ascending order. You change this behavior by setting the `sortByOrder` prop to `"DESC"` in a `<Datagrid>` `<Field>`:
 
 ```jsx
 // in src/posts.js
@@ -585,7 +579,7 @@ export const PostList = (props) => (
 
 ### Permanent Filter
 
-You can choose to always filter the list, without letting the user disable this filter - for instance to display only published posts. Write the filter to be passed to the REST client in the `filter` props:
+You can choose to always filter the list, without letting the user disable this filter - for instance to display only published posts. Write the filter to be passed to the data provider in the `filter` props:
 
 {% raw %}
 ```jsx
@@ -598,7 +592,7 @@ export const PostList = (props) => (
 ```
 {% endraw %}
 
-The actual filter parameter sent to the REST client is the result of the combination of the *user* filters (the ones set through the `filters` component form), and the *permanent* filter. The user cannot override the permanent filters set by way of `filter`.
+The actual filter parameter sent to the data provider is the result of the combination of the *user* filters (the ones set through the `filters` component form), and the *permanent* filter. The user cannot override the permanent filters set by way of `filter`.
 
 ### Filter Default Values
 
@@ -628,7 +622,7 @@ export const PostList = (props) => (
 **Tip**: The `filter` and `filterDefaultValues` props have one key difference: the `filterDefaultValues` can be overridden by the user, while the `filter` values are always sent to the data provider. Or, to put it otherwise:
 
 ```js
-const filterSentToDataProvider = { ...filterDefaultValues, ...filterChosenByUser, ...filters };
+const filterSentToDataProvider = { ...filterDefaultValues, ...filterChosenByUser, ...filter };
 ```
 
 ### Aside component
@@ -654,7 +648,7 @@ const PostList = props => (
 ```
 {% endraw %}
 
-The `aside` component receives the same props as the `List` child component, including the following:
+The `aside` component can call the `useListContext()` hook to receive the same props as the `List` child component, including the following:
 
 * `basePath`,
 * `currentSort`,
@@ -673,14 +667,17 @@ That means you can display additional details of the current list in the aside c
 
 {% raw %}
 ```jsx
-const Aside = ({ data, ids }) => (
-    <div style={{ width: 200, margin: '1em' }}>
-        <Typography variant="h6">Posts stats</Typography>
-        <Typography variant="body2">
-            Total views: {ids.map(id => data[id]).reduce((sum, post) => sum + post.views, 0)}
-        </Typography>
-    </div>
-);
+const Aside = () => {
+    const { data, ids } = useListContext();
+    return (
+        <div style={{ width: 200, margin: '1em' }}>
+            <Typography variant="h6">Posts stats</Typography>
+            <Typography variant="body2">
+                Total views: {ids.map(id => data[id]).reduce((sum, post) => sum + post.views, 0)}
+            </Typography>
+        </div>
+    );
+};
 ```
 {% endraw %}
 
@@ -695,20 +692,23 @@ You can use the `empty` prop to replace that page by a custom component:
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { CreateButton, List } from 'react-admin';
+import { CreateButton, List, useListContext } from 'react-admin';
 
-const Empty = ({ basePath, resource }) => (
-    <Box textAlign="center" m={1}>
-        <Typography variant="h4" paragraph>
-            No products available
-        </Typography>
-        <Typography variant="body1">
-            Create one or import from a file
-        </Typography>
-        <CreateButton basePath={basePath} />
-        <Button onClick={...}>Import</Button>
-    </Box>
-);
+const Empty = () => {
+    const { basePath, resource } = useListContext();
+    return (
+        <Box textAlign="center" m={1}>
+            <Typography variant="h4" paragraph>
+                No products available
+            </Typography>
+            <Typography variant="body1">
+                Create one or import from a file
+            </Typography>
+            <CreateButton basePath={basePath} />
+            <Button onClick={...}>Import</Button>
+        </Box>
+    );
+}
 
 const ProductList = props => (
     <List empty={<Empty />} {...props}>
@@ -718,7 +718,7 @@ const ProductList = props => (
 ```
 {% endraw %}
 
-The `empty` component receives the same props as the `List` child component, including the following:
+The `empty` component can call the `useListContext()` hook to receive the same props as the `List` child component, including the following:
 
 -   `basePath`,
 -   `currentSort`,
@@ -737,7 +737,7 @@ The `empty` component receives the same props as the `List` child component, inc
 
 By default, the List view renders the main content area inside a material-ui `<Card>` element. The actual layout of the list depends on the child component you're using (`<Datagrid>`, `<SimpleList>`, or a custom layout component).
 
-Some layouts also use `Card`, in which case the user ends up seeing a card inside a card, which is bad UI. To avoid that, you can override the main area container by passing a `component` prop:
+Some List layouts display each record in a `<Card>`, in which case the user ends up seeing a card inside a card, which is bad UI. To avoid that, you can override the main area container by passing a `component` prop:
 
 ```jsx
 // use a div as root component
@@ -762,11 +762,9 @@ The default value for the `component` prop is `Card`.
 The `List` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
 
 * `root`: alternative to using `className`. Applied to the root element.
-* `header`: applied to the page header
 * `actions`: applied to the actions container
+* `main`: applied to the main container
 * `noResults`: applied to the component shown when there is no result
-
-Here is an example of how you can override some of these classes:
 
 You can customize the list styles by passing a `classes` object as prop, through `useStyles()`. Here is an example:
 
@@ -797,14 +795,14 @@ export PostList;
 
 ## Filtering The List
 
-One of the most important features of the List page is the ability to filter the results. React-admin does its best to offer a powerful feature functionality, and to get out of the way when you want to go further. 
+One of the most important features of the List page is the ability to filter the results. React-admin does its best to offer a powerful filter functionality, and to get out of the way when you want to go further. 
 
 ![List Filters](./img/list_filter.gif)
 
 The next sections explain hows to use the filter functionality:
 
 - [Filter Query Parameter](#filter-query-parameter)
-- [The `filter` Prop](#the-filter-prop)
+- [The `filters` Prop](#the-filters-prop)
 - [Linking To A Pre-Filtered List](#linking-to-a-pre-filtered-list)
 - [Full-Text Search](#full-text-search)
 - [Quick Filters](#quick-filters)
@@ -826,7 +824,7 @@ filter={"commentable":true,"q":"lorem "}
 
 You can change the filters by updating the query parameter, e.g. using the `<Link>` component or the `history.push()` method from `react-router`. 
 
-### The `filter` Prop
+### The `filters` Prop
 
 To facilitate the display and update of the filter, the `<List>` component exposes a `filters` prop. 
 
@@ -965,7 +963,7 @@ By default, the filter form doesn't provide a submit button, and submits automat
 
 React-admin doesn't provide any component for that, but it's a good opportunity to illustrate the internals of the `<Filter>` component. We'll actually provide an alternative implementation to `<Filter>`.
 
-As explained earlier, `<List>` clones the `filters` element twice. It passes special props to the element to let it interact with the URI query parameter more easily:
+As explained earlier, `<List>` clones the `filters` element twice - once to display the filter button, and once to display the filter form. This `filters` element can use the `useListContext` hook to interact with the URI query parameter more easily. the hook returns the following constants:
 
 - `filterValues`: Value of the filters based on the URI, e.g. `{"commentable":true,"q":"lorem "}`
 - `setFilters()`: Callback to set the filter values, e.g. `setFilters({"commentable":true})`
@@ -973,7 +971,7 @@ As explained earlier, `<List>` clones the `filters` element twice. It passes spe
 - `showFilter()`: Callback to display an additional filter in the form, e.g. `showFilter('views')`
 - `hideFilter()`: Callback to hide a filter in the form, e.g. `hideFilter('title')`
 
-First, let's create a Filter component that renders either a button or a form depending on the context:
+Let's use this knowledge to write a custom `<Filter>` element that filters on submit. First, let's create a `<Filter>` component rendering either a button or a form depending on the `context`:
 
 ```jsx
 const PostFilter = props => {
@@ -985,22 +983,26 @@ const PostFilter = props => {
 };
 ```
 
-The `<PostListFilterButton>` will simply show the filter form on click. We'll take advantage of the `showFilter` prop injected to the Filter component:
+The `<PostListFilterButton>` simply shows the filter form on click. We'll take advantage of the `showFilter` function:
 
 ```jsx
+import { useListContext } from 'react-admin';
 import { Button } from "@material-ui/core";
 import ContentFilter from "@material-ui/icons/FilterList";
 
-const PostFilterButton = ({ showFilter }) => (
-  <Button
-    size="small"
-    color="primary"
-    onClick={() => showFilter("main")}
-    startIcon={<ContentFilter />}
-  >
-    Filter
-  </Button>
-);
+const PostFilterButton = () => {
+    const { showFilter } = useListContext();
+    return (
+        <Button
+            size="small"
+            color="primary"
+            onClick={() => showFilter("main")}
+            startIcon={<ContentFilter />}
+        >
+            Filter
+        </Button>
+    );
+};
 ```
 
 Normally, `showFilter()` adds one input to the `displayedFilters` list. As the filter form will be entirely hidden or shown, we use `showFilter()` with a virtual "main" input, which represents the entire form. 
@@ -1013,72 +1015,73 @@ import * as React from 'react';
 import { Form } from 'react-final-form';
 import { Box, Button, InputAdornment } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
-import { TextInput, NullableBooleanInput } from 'react-admin';
+import { TextInput, NullableBooleanInput, useListContext } from 'react-admin';
 
-const PostFilterForm = ({
-  displayedFilters,
-  filterValues,
-  setFilters,
-  hideFilter,
-  open
-}) => {
-  if (!displayedFilters.main) return null;
+const PostFilterForm = ({ open }) => {
+    const {
+        displayedFilters,
+        filterValues,
+        setFilters,
+        hideFilter,
+    } = useListContext();
 
-  const onSubmit = values => {
-    if (Object.keys(values).length > 0) {
-      setFilters(values);
-    } else {
-      hideFilter("main");
-    }
-  };
+    if (!displayedFilters.main) return null;
 
-  const resetFilter = () => {
-    setFilters({}, []);
-  };
+    const onSubmit = values => {
+        if (Object.keys(values).length > 0) {
+            setFilters(values);
+        } else {
+            hideFilter("main");
+        }
+    };
 
-return (
-    <div>
-      <Form onSubmit={onSubmit} initialValues={filterValues}>
-        {({ handleSubmit }) => (
-          <form onSubmit={handleSubmit}>
-            <Box mt={8} />
-            <Box display="flex" alignItems="flex-end" mb={1}>
-              <Box component="span" mr={2}>
-                {/* Full-text search filter. We don't use <SearchFilter> to force a large form input */}
-                <TextInput
-                  resettable
-                  helperText={false}
-                  source="q"
-                  label="Search"
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment>
-                        <SearchIcon color="disabled" />
-                      </InputAdornment>
-                    )
-                  }}
-                />
-              </Box>
-              <Box component="span" mr={2}>
-                {/* Commentable filter */}
-                <NullableBooleanInput helperText={false} source="commentable" />
-              </Box>
-              <Box component="span" mr={2} mb={1.5}>
-                <Button variant="outlined" color="primary" type="submit">
-                  Filter
-                </Button>
-              </Box>
-              <Box component="span" mb={1.5}>
-                <Button variant="outlined" onClick={resetFilter}>
-                  Close
-                </Button>
-              </Box>
-            </Box>
-          </form>
-        )}
-      </Form>
-    </div>
-  );
+    const resetFilter = () => {
+        setFilters({}, []);
+    };
+
+    return (
+        <div>
+        <Form onSubmit={onSubmit} initialValues={filterValues}>
+            {({ handleSubmit }) => (
+            <form onSubmit={handleSubmit}>
+                <Box mt={8} />
+                <Box display="flex" alignItems="flex-end" mb={1}>
+                <Box component="span" mr={2}>
+                    {/* Full-text search filter. We don't use <SearchFilter> to force a large form input */}
+                    <TextInput
+                    resettable
+                    helperText={false}
+                    source="q"
+                    label="Search"
+                    InputProps={{
+                        endAdornment: (
+                        <InputAdornment>
+                            <SearchIcon color="disabled" />
+                        </InputAdornment>
+                        )
+                    }}
+                    />
+                </Box>
+                <Box component="span" mr={2}>
+                    {/* Commentable filter */}
+                    <NullableBooleanInput helperText={false} source="commentable" />
+                </Box>
+                <Box component="span" mr={2} mb={1.5}>
+                    <Button variant="outlined" color="primary" type="submit">
+                    Filter
+                    </Button>
+                </Box>
+                <Box component="span" mb={1.5}>
+                    <Button variant="outlined" onClick={resetFilter}>
+                    Close
+                    </Button>
+                </Box>
+                </Box>
+            </form>
+            )}
+        </Form>
+        </div>
+    );
 };
 ```
 {% endraw %}
@@ -1112,90 +1115,72 @@ const App = () => (
 );
 ```
 
-Just like `List`, `ListGuesser` fetches the data. It then analyzes the response, and guesses the fields it should use to display a basic `Datagrid` with the data. It also dumps the components it has guessed in the console, where you can copy it into your own code. Use this feature to quickly bootstrap a `List` on top of an existing API, without adding the fields one by one.
+Just like `<List>`, `<ListGuesser>` fetches the data. It then analyzes the response, and guesses the fields it should use to display a basic `<Datagrid>` with the data. It also dumps the components it has guessed in the console, so you can copy it into your own code. Use this feature to quickly bootstrap a `<List>` on top of an existing API, without adding the fields one by one.
 
 ![Guessed List](./img/guessed-list.png)
 
-React-admin provides guessers for the `List` view (`ListGuesser`), the `Edit` view (`EditGuesser`), and the `Show` view (`ShowGuesser`).
+React-admin provides guessers for the List view (`<ListGuesser>`), the Edit view (`<EditGuesser>`), and the Show view (`<ShowGuesser>`).
 
-**Tip**: Do not use the guessers in production. They are slower than manually-defined components, because they have to infer types based on the content. Besides, the guesses are not always perfect.
+**Tip**: Do not use the guessers in production. They are slower than manually-defined components, because they have to infer types based on the content. Besides, the guessers are not always perfect.
 
-## `useListController`
+## `useListContext`
 
-The `<List>` components takes care of two things:
+The `<List>` component takes care of fetching the data, and puts that data in a context so that it's available for its descendants. In fact, it puts a lot of variables in the context because the List page is complex: based on the URL, the `<List>` component deduces filters, pagination, ordering, it provides callbacks to update them. 
 
-1. (the "controller") Fetching data based on the URL and transforming it
-2. (the "view") Rendering the page title, the actions, the content and aside areas 
+Any component can grab that data using the `useListContext` hook. As a matter of fact, react-admin's `<Datagrid>`, `<Filter>`, and `<Pagination>` components all use the `useListContext` hook. Here is what it returns:
 
-In some cases, you may want to customize the view entirely (i.e. keep the code for step 1, and provide your own code for step 2). For these cases, react-admin provides a hook called `useListController()`, which contains just the controller part of the `<List>`.
+```jsx
+const {
+    // fetched data
+    data, // an id-based dictionary of the list data, e.g. { 123: { id: 123, title: 'hello world' }, 456: { ... } }
+    ids, // an array listing the ids of the records in the list, e.g [123, 456, ...]
+    total, // the total number of results for the current filters, excluding pagination. Useful to build the pagination controls. e.g. 23 
+    loaded, // boolean that is false until the data is available
+    loading, // boolean that is true on mount, and false once the data was fetched
+    // pagination
+    page, // the current page. Starts at 1
+    setPage, // a callback to change the page, e.g. setPage(3)
+    perPage, // the number of results per page. Defaults to 25
+    setPerPage, // a callback to change the number of results per page, e.g. setPerPage(25)
+    // sorting
+    currentSort, // a sort object { field, order }, e.g. { field: 'date', order: 'DESC' } 
+    setSort, // a callback to change the sort, e.g. setSort('name', 'ASC')
+    // filtering
+    filterValues, // a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
+    setFilters, // a callback to update the filters, e.g. setFilters(filters, displayedFilters)
+    displayedFilters, // a dictionary of the displayed filters, e.g. { title: true, nationality: true }
+    showFilter, // a callback to show one of the filters, e.g. showFilter('title', defaultValue)
+    hideFilter, // a callback to hide one of the filters, e.g. hidefilter('title')
+    // row selection
+    selectedIds, // an array listing the ids of the selcted rows, e.g. [123, 456]
+    onSelect, // callback to change the list of selected rows, e.g onSelect([456, 789])
+    onToggleItem, // callback to toggle the selection of a given record based on its id, e.g. onToggleItem(456)
+    onUnselectItems, // callback to clear the selection, e.g. onUnselectItems();
+    // misc
+    basePath, // deduced from the location, useful for action buttons
+    defaultTitle, // the translated title based on the resource, e.g. 'Posts'
+    resource, // the resource name, deduced from the location. e.g. 'posts'
+} = useListContext();
+```
 
-This hook takes one object as input (the props passed to a `<List>` component) and returns the fetched data and callbacks for the List view. In fact, it returns a lot of variables because the List page is complex: based on the URL, the List controller deduces filters, pagination, ordering, it provides callbacks to update them, it fetches the data, etc. 
+## `ListBase`
 
-You can use `useListController()` to create your own custom List view, like this one:
+In addition to fetching the list data, the `<List>` component renders the page title, the actions, the content and aside areas. You may want to display a record list in an entirely different layout, i.e. use only the data fetching part of `<List>` and not the view layout. In that case, you should use `<ListBase>`.
+
+`<ListBase>` fetches the data and puts it in a `ListContext`, then renders its child.
+
+You can use `ListBase` to create your own custom List component, like this one:
 
 ```jsx
 import { 
-    useListController,
+    Datagrid,
+    ListBase,
     ListToolbar,
     BulkActionsToolbar,
     Pagination,
-    Datagrid
+    useListContext,
 } from 'react-admin';
-
-const MyList = props => {
-    const controllerProps = useListController(props);
-    const {
-        // fetched data
-        data, // an id-based dictionary of the list data, e.g. { 123: { id: 123, title: 'hello world' }, 456: { ... } }
-        ids, // an array listing the ids of the records in the list, e.g [123, 456, ...]
-        total, // the total number of results for the current filters, excluding pagination. Useful to build the pagination controls. e.g. 23 
-        loaded, // boolean that is false until the data is available
-        loading, // boolean that is true on mount, and false once the data was fetched
-        // pagination
-        page, // the current page. Starts at 1
-        perPage, // the number of results per page. Defaults to 25
-        setPage, // a callback to change the page, e.g. setPage(3)
-        setPerPage, // a callback to change the number of results per page, e.g. setPerPage(25)
-        // sorting
-        currentSort, // a sort object { field, order }, e.g. { field: 'date', order: 'DESC' } 
-        setSort, // a callback to change the sort, e.g. setSort('name', 'ASC')
-        // filtering
-        displayedFilters, // a dictionary of the displayed filters, e.g. { title: true, nationality: true }
-        filterValues, // a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
-        setFilters, // a callback to update the filters, e.g. setFilters(filters, displayedFilters)
-        showFilter, // a callback to show one of the filters, e.g. showFilter('title', defaultValue)
-        hideFilter, // a callback to hide one of the filters, e.g. hidefilter('title')
-        // row selection
-        selectedIds, // an array listing the ids of the selcted rows, e.g. [123, 456]
-        onSelect, // callback to change the list of selected rows, e.g onSelect([456, 789])
-        onToggleItem, // callback to toggle the selection of a given record based on its id, e.g. onToggleItem(456)
-        onUnselectItems, // callback to clear the selection, e.g. onUnselectItems();
-        // misc
-        basePath, // deduced from the location, useful for action buttons
-        defaultTitle, // the translated title based on the resource, e.g. 'Posts'
-        resource, // the resource name, deduced from the location. e.g. 'posts'
-        version, // integer used by the refresh feature
-    } = controllerProps;
-    return (
-        <div>
-            <h1>{defaultTitle}</h1>
-            <ListToolbar
-                    filters={props.filters}
-                    {...controllerProps}
-                    actions={props.actions}
-                    permanentFilter={props.filter}
-                />
-            <BulkActionsToolbar {...controllerProps}>
-                {props.bulkActionButtons}
-            </BulkActionsToolbar>
-            {cloneElement(children, {
-                ...controllerProps,
-                hasBulkActions: props.bulkActionButtons !== false,
-            })}
-            <Pagination {...controllerProps} />
-        </div>
-    );
-}
+import Card from '@material-ui/core/Card';
 
 const PostList = props => (
     <MyList {...props}>
@@ -1203,16 +1188,56 @@ const PostList = props => (
             ...
         </Datagrid>
     </MyList>
-)
+);
+
+const MyList = props => (
+    <ListBase>
+        <h1>{props.title}</h1>
+        <ListToolbar
+            filters={props.filters}
+            actions={props.actions}
+        />
+        <Card>
+            <BulkActionsToolbar>
+                {props.bulkActionButtons}
+            </BulkActionsToolbar>
+            {cloneElement(children, {
+                hasBulkActions: props.bulkActionButtons !== false,
+            })}
+            <Pagination />
+        </Card>
+    </ListBase>
+);
 ```
 
-This custom List view has no aside component - it's up to you to add it in pure React.
+This custom List component has no aside component - it's up to you to add it in pure React.
 
 **Tip**: You don't have to clone the child element. If you can't reuse an existing list view component like `<Datagrid>` or `<SimpleList>`, feel free to write the form code inside your custom `MyList` component. 
 
+## `useListController`
+
+As explained above, `<ListBase>` fetches the data and puts it in a `ListContext`, then renders its child. In fact, the `ListBase` code is super simple:
+
+```jsx
+import * as React from 'react';
+import { useListController, ListContext } from 'react-admin';
+
+const ListBase = ({ children, ...props }) => (
+    <ListContext.Provider value={useListController(props)}>
+        {children}
+    </ListContext.Provider>
+);
+
+export default ListBase;
+```
+
+As you can see, the controller part of the List view is handled by a hook called `useListController`. If you don't want to use the `ListContext` in your custom List view, you can call `useListController` directly to access the list data. It returns the same object as the one documented in [`useListContext`](#uselistcontext) above.
+
+**Tip**: If your custom List view doesn't use a `ListContext.Provider`, you can't use `<Datagrid>`, `<SimpleList>`, `<Pagination>`, etc. All these components rely on the `ListContext`.
+
 ## The `<Datagrid>` component
 
-The `Datagrid` component renders a list of records as a table. It is usually used as a child of the [`<List>`](#the-list-component) and [`<ReferenceManyField>`](./Fields.md#referencemanyfield) components.
+The `Datagrid` component renders a list of records as a table. It is usually used as a descendant of the [`<List>`](#the-list-component) and [`<ReferenceManyField>`](./Fields.md#referencemanyfield) components. Outside of these components, it must be used inside a `ListContext`.
 
 Here are all the props accepted by the component:
 
@@ -1241,13 +1266,13 @@ export const PostList = (props) => (
 );
 ```
 
-The `Datagrid` is an *iterator* component: it receives an array of ids, and a data store, and is supposed to iterate over the ids to display each record. Another example of iterator component is [`<SingleFieldList>`](#the-singlefieldlist-component).
+The `<Datagrid>` is an **iterator** component: it gets an array of ids and a data store from the `ListContext`, and iterates over the ids to display each record. Another example of iterator component is [`<SingleFieldList>`](#the-singlefieldlist-component).
 
 ### Body element
 
-By default, `<Datagrid>` renders its body using `<DatagridBody>`, an internal react-admin component. You can pass a custom component as the `row` prop to override that default. And by the way, `<DatagridBody>` has a `row` property set to `<DatagridRow>` by default for the same purpose. `<DatagridRow>` receives the row `record`, the `resource`, and a copy of the `<Datagrid>` children. That means you can create custom datagrid logic without copying several components from the react-admin source.
+By default, `<Datagrid>` renders its body using `<DatagridBody>`, an internal react-admin component. You can pass a custom component as the `body` prop to override that default. And by the way, `<DatagridBody>` has a `row` prop set to `<DatagridRow>` by default for the same purpose. `<DatagridRow>` receives the row `record`, the `resource`, and a copy of the `<Datagrid>` children. That means you can create custom datagrid logic without copying several components from the react-admin source.
 
-For instance, to show the selection checkbox only for records that have a `selectable` field set to `true`, you can override `<DatagridRow>` and `<DatagridBody>` as follows:
+For instance, the `<Datagrid isRowselectable>` prop allows to hide the selection checkbox for some records. To show a *disabled* checkbox instead of hiding it, you can override `<DatagridRow>` and `<DatagridBody>` as follows:
 
 ```jsx
 // in src/PostList.js
@@ -1261,10 +1286,11 @@ const MyDatagridRow = ({ record, resource, id, onToggleItem, children, selected,
     <TableRow key={id}>
         {/* first column: selection checkbox */}
         <TableCell padding="none">
-            {record.selectable && <Checkbox
+            <Checkbox
+                disabled={record.selectable}
                 checked={selected}
                 onClick={() => onToggleItem(id)}
-            />}
+            />
         </TableCell>
         {/* data columns based on children */}
         {React.Children.map(children, field => (
@@ -1296,7 +1322,7 @@ export default PostList;
 
 ### Row Style Function
 
-You can customize the `<Datagrid>` row style (applied to the `<tr>` element) based on the record, thanks to the `rowStyle` prop, which expects a function.
+You can customize the `<Datagrid>` row style (applied to the `<tr>` element) based on the record, thanks to the `rowStyle` prop, which expects a function. React-admin calls this function for each row, passing the current record and index as arguments. The function should return a style object, which react-admin uses as a `<tr style>` prop. 
 
 For instance, this allows to apply a custom background to the entire row if one value of the record - like its number of views - passes a certain threshold.
 
@@ -1623,7 +1649,25 @@ const CustomList = () => {
 
 ## The `<SimpleList>` component
 
-For mobile devices, a `<Datagrid>` is often unusable - there is simply not enough space to display several columns. The convention in that case is to use a simple list, with only one column per row. The `<SimpleList>` component serves that purpose, leveraging [material-ui's `<List>` and `<ListItem>` components](https://material-ui.com/components/lists/). You can use it as `<List>` or `<ReferenceManyField>` child:
+For mobile devices, a `<Datagrid>` is often unusable - there is simply not enough space to display several columns. The convention in that case is to use a simple list, with only one column per row. The `<SimpleList>` component serves that purpose, leveraging [material-ui's `<List>` and `<ListItem>` components](https://material-ui.com/components/lists/). `<SimpleList>` is an **iterator** component: it gets an array of ids and a data store from the `ListContext`, and iterates over the ids to display each record.
+
+### Properties
+
+| Prop        | Required | Type                | Default  | Description                                                                                                                              |
+| ----------- | -------- | ------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `primaryText` | Required | `function`        | -        | Passed as `<ListItemText primary>` prop |
+| `secondaryText` | Optional | `function`        | -       | Passed as `<ListItemText secondary>` prop |
+| `tertiaryText` | Optional | `function`        | -        | Passed as a complement to `<ListItemText primary>` with a custom style |
+| `linkType` | Optional | `string | function | false` | `edit`   | Target of the `<ListItem>` link. Set to `false` to disable the link. Set to a function `(record, id) => string` to have the link target vary per record.  |
+| `leftAvatar` | Optional | `function`         | -        | When present, the `<ListItem>` renders a `<ListItemAvatar>` before the `<ListItemText>` |
+| `leftIcon` | Optional | `function`           | -        | When present, the `<ListItem>` renders a `<ListIcon>` before the `<ListItemText>` |
+| `rightAvatar` | Optional | `function`        | -        | When present, the `<ListItem>` renders a `<ListItemAvatar>` after the `<ListItemText>` |
+| `rightIcon` | Optional | `function`          | -        | When present, the `<ListItem>` renders a `<ListIcon>` after the `<ListItemText>` |
+| `className` | Optional | `string`            | -        | Applied to the root element |
+    
+### Usage
+
+You can use `<SimpleList>` as `<List>` or `<ReferenceManyField>` child:
 
 ```jsx
 // in src/posts.js
@@ -1642,7 +1686,7 @@ export const PostList = (props) => (
 );
 ```
 
-`<SimpleList>` iterates over the list data. For each record, it executes the `primaryText`, `secondaryText`, `linkType`, `leftAvatar`, `leftIcon`, `rightAvatar`, and `rightIcon` props function, and passes the result as the corresponding `<ListItem>` prop.
+For each record, `<SimpleList>` executes the `primaryText`, `secondaryText`, `linkType`, `leftAvatar`, `leftIcon`, `rightAvatar`, and `rightIcon` props functions, and creates a `<ListItem>` with the result.
 
 **Tip**: To use a `<SimpleList>` on small screens and a `<Datagrid>` on larger screens, use material-ui's `useMediaQuery` hook:
 
@@ -1696,7 +1740,9 @@ Setting the `linkType` prop to `false` (boolean, not string) removes the link in
 
 ## The `<SingleFieldList>` component
 
-When you want to display only one property of a list of records, instead of using a `<Datagrid>`, use the `<SingleFieldList>`. It expects a single `<Field>` as child. It's especially useful for `<ReferenceManyField>` or `<ReferenceArrayField>` components:
+When you want to display only one property of a list of records, instead of using a `<Datagrid>`, use the `<SingleFieldList>`. It expects a single `<Field>` as child. `<SingleFieldList>` is an **iterator** component: it gets an array of ids and a data store from the `ListContext`, and iterates over the ids to display each record.
+
+It's especially useful for `<ReferenceManyField>` or `<ReferenceArrayField>` components:
 
 ```jsx
 // Display all the tags for the current post
@@ -1730,7 +1776,7 @@ When you want to display only one property of a list of records, instead of usin
 
 ## Using a Custom Iterator
 
-A `<List>` can delegate to any iterator component - `<Datagrid>` is just one example. An iterator component must accept at least two props:
+A `<List>` can delegate to any iterator component - `<Datagrid>` is just one example. An iterator component can get the data to display from [the `useListContext` hook](#useListContext). The data comes in two constants:
 
 - `ids` is an array of the ids currently displayed in the list
 - `data` is an object of all the fetched data for this resource, indexed by id.
@@ -1744,14 +1790,10 @@ You'll need to create your own iterator component as follows:
 {% raw %}
 ```jsx
 // in src/comments.js
-import * as React from "react";
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
-import Avatar from '@material-ui/core/Avatar';
-import PersonIcon from '@material-ui/core/Avatar';
-import { List, TextField, DateField, ReferenceField, EditButton } from "react-admin";
+import * as React from 'react';
+import { useListContext, List, TextField, DateField, ReferenceField, EditButton } from 'react-admin';
+import { Card, CardActions, CardContent, CardHeader, Avatar } from '@material-ui/core';
+import PersonIcon from '@material-ui/icons/Person';
 
 const cardStyle = {
     width: 300,
@@ -1760,34 +1802,33 @@ const cardStyle = {
     display: 'inline-block',
     verticalAlign: 'top'
 };
-const CommentGrid = ({ ids, data, basePath }) => (
-    <div style={{ margin: '1em' }}>
-    {ids.map(id =>
-        <Card key={id} style={cardStyle}>
-            <CardHeader
-                title={<TextField record={data[id]} source="author.name" />}
-                subheader={<DateField record={data[id]} source="created_at" />}
-                avatar={<Avatar icon={<PersonIcon />} />}
-            />
-            <CardContent>
-                <TextField record={data[id]} source="body" />
-            </CardContent>
-            <CardContent>
-                about&nbsp;
-                <ReferenceField label="Post" resource="comments" record={data[id]} source="post_id" reference="posts" basePath={basePath}>
-                    <TextField source="title" />
-                </ReferenceField>
-            </CardContent>
-            <CardActions style={{ textAlign: 'right' }}>
-                <EditButton resource="posts" basePath={basePath} record={data[id]} />
-            </CardActions>
-        </Card>
-    )}
-    </div>
-);
-CommentGrid.defaultProps = {
-    data: {},
-    ids: [],
+const CommentGrid = () => {
+    const { ids, data, basePath } = useListContext();
+    return (
+        <div style={{ margin: '1em' }}>
+        {ids.map(id =>
+            <Card key={id} style={cardStyle}>
+                <CardHeader
+                    title={<TextField record={data[id]} source="author.name" />}
+                    subheader={<DateField record={data[id]} source="created_at" />}
+                    avatar={<Avatar icon={<PersonIcon />} />}
+                />
+                <CardContent>
+                    <TextField record={data[id]} source="body" />
+                </CardContent>
+                <CardContent>
+                    about&nbsp;
+                    <ReferenceField label="Post" resource="comments" record={data[id]} source="post_id" reference="posts" basePath={basePath}>
+                        <TextField source="title" />
+                    </ReferenceField>
+                </CardContent>
+                <CardActions style={{ textAlign: 'right' }}>
+                    <EditButton resource="posts" basePath={basePath} record={data[id]} />
+                </CardActions>
+            </Card>
+        )}
+        </div>
+    );
 };
 
 export const CommentList = (props) => (
@@ -1798,9 +1839,9 @@ export const CommentList = (props) => (
 ```
 {% endraw %}
 
-As you can see, nothing prevents you from using `<Field>` components inside your own components... provided you inject the current `record`. Also, notice that components building links require the `basePath` component, which is also injected.
+As you can see, nothing prevents you from using `<Field>` components inside your own components... provided you inject the current `record`. Also, notice that components building links require the `basePath` component, which is also available from `useListContext`.
 
-## Displaying Fields depending on the user permissions
+## Displaying Fields Depending On The User Permissions
 
 You might want to display some fields or filters only to users with specific permissions. 
 
@@ -1852,16 +1893,16 @@ export const UserList = ({ permissions, ...props }) => {
 
 ## Pagination
 
-Here are all the props required by the <Pagination> component:
+The `<Pagination>` gest the following constants from [the `useListContext` hook](#useListContext):
 
 * `page`: The current page number (integer). First page is `1`.
 * `perPage`: The number of records per page.
 * `setPage`: `function(page: number) => void`. A function that set the current page number.
 * `total`: The total number of records.
-* `actions`: A component that displays the pagination buttons (default: `PaginationActions`)
+* `actions`: A component that displays the pagination buttons (default: `<PaginationActions>`)
 * `limit`: An element that is displayed if there is no data to show (default: `<PaginationLimit>`)
 
-You don't need to fill these props when you pass the `Pagination` component to the `List` component through the `pagination` prop: `<List pagination={<Pagination />}>`.
+You don't need to fill these props when you pass the `<Pagination>` component to the `<List>` component through the `pagination` prop: `<List pagination={<Pagination />}>`.
 
 You can also replace the default pagination element by your own. For instance, you can modify the default pagination by adjusting the "rows per page" selector.
 
@@ -1883,12 +1924,13 @@ export const PostList = (props) => (
 Alternately, if you want to replace the default pagination by a "<previous - next>" pagination, create a pagination component like the following:
 
 ```jsx
-import Button from '@material-ui/core/Button';
-import Toolbar from '@material-ui/core/Toolbar';
+import { useListContext } from 'react-admin';
+import { Button, Toolbar } from '@material-ui/core';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 
-const PostPagination = ({ page, perPage, total, setPage }) => {
+const PostPagination = () => {
+    const { page, perPage, total, setPage } = useListContext();
     const nbPages = Math.ceil(total / perPage) || 1;
     return (
         nbPages > 1 &&

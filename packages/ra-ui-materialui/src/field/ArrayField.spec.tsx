@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { render, cleanup } from '@testing-library/react';
+import { TestContext } from 'ra-core';
 
 import ArrayField from './ArrayField';
 import NumberField from './NumberField';
 import TextField from './TextField';
 import Datagrid from '../list/Datagrid';
-import { TestContext } from 'ra-core';
 
 describe('<ArrayField />', () => {
     afterEach(cleanup);

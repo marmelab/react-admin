@@ -6,6 +6,7 @@ const sanitizeRestProps: (props: any) => any = ({
     className,
     emptyText,
     formClassName,
+    fullWidth,
     headerClassName,
     label,
     linkType,

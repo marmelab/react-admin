@@ -1,10 +1,12 @@
 import * as React from 'react';
+import { FC, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { sanitizeListRestProps } from 'ra-core';
+import { sanitizeListRestProps, useListContext } from 'ra-core';
 
 import FilterForm from './FilterForm';
 import FilterButton from './FilterButton';
+import { ClassesOverride } from '../types';
 
 const useStyles = makeStyles(
     {
@@ -14,18 +16,28 @@ const useStyles = makeStyles(
     { name: 'RaFilter' }
 );
 
-const Filter = props => {
+export interface FilterProps {
+    context?: string;
+    variant?: string;
+    classes: ClassesOverride<typeof useStyles>;
+    children: ReactNode;
+}
+
+const Filter: FC<FilterProps> = props => {
     const classes = useStyles(props);
+    const {
+        resource,
+        showFilter,
+        hideFilter,
+        setFilters,
+        displayedFilters,
+        filterValues,
+    } = useListContext(props);
     const renderButton = () => {
         const {
             classes: classesOverride,
             context,
-            resource,
             children,
-            showFilter,
-            hideFilter,
-            displayedFilters,
-            filterValues,
             variant,
             ...rest
         } = props;
@@ -44,18 +56,7 @@ const Filter = props => {
     };
 
     const renderForm = () => {
-        const {
-            classes: classesOverride,
-            context,
-            resource,
-            children,
-            hideFilter,
-            displayedFilters,
-            showFilter,
-            filterValues,
-            setFilters,
-            ...rest
-        } = props;
+        const { classes: classesOverride, context, children, ...rest } = props;
 
         return (
             <FilterForm
@@ -78,12 +79,6 @@ Filter.propTypes = {
     children: PropTypes.node,
     classes: PropTypes.object,
     context: PropTypes.oneOf(['form', 'button']),
-    displayedFilters: PropTypes.object,
-    filterValues: PropTypes.object,
-    hideFilter: PropTypes.func,
-    setFilters: PropTypes.func,
-    showFilter: PropTypes.func,
-    resource: PropTypes.string.isRequired,
 };
 
 export default Filter;

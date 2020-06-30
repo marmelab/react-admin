@@ -7,16 +7,24 @@ import React, {
     useEffect,
     useCallback,
     memo,
+    FC,
+    ReactElement,
 } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { TableCell, TableRow, Checkbox } from '@material-ui/core';
-import { linkToRecord, useExpanded } from 'ra-core';
+import {
+    TableCell,
+    TableRow,
+    TableRowProps,
+    Checkbox,
+} from '@material-ui/core';
+import { linkToRecord, useExpanded, Identifier, Record } from 'ra-core';
 import isEqual from 'lodash/isEqual';
+import { useHistory } from 'react-router-dom';
 
 import DatagridCell from './DatagridCell';
 import ExpandRowButton from './ExpandRowButton';
-import { useHistory } from 'react-router-dom';
+import useDatagridStyles from './useDatagridStyles';
 
 const computeNbColumns = (expand, children, hasBulkActions) =>
     expand
@@ -25,9 +33,9 @@ const computeNbColumns = (expand, children, hasBulkActions) =>
           React.Children.toArray(children).filter(child => !!child).length // non-null children
         : 0; // we don't need to compute columns if there is no expand panel;
 
-const defaultClasses = {};
+const defaultClasses = { expandIconCell: '', checkbox: '', rowCell: '' };
 
-const DatagridRow = ({
+const DatagridRow: FC<DatagridRowProps> = ({
     basePath,
     children,
     classes = defaultClasses,
@@ -151,9 +159,10 @@ const DatagridRow = ({
                 {React.Children.map(children, (field, index) =>
                     isValidElement(field) ? (
                         <DatagridCell
-                            key={`${id}-${field.props.source || index}`}
+                            key={`${id}-${(field.props as any).source ||
+                                index}`}
                             className={classnames(
-                                `column-${field.props.source}`,
+                                `column-${(field.props as any).source}`,
                                 classes.rowCell
                             )}
                             record={record}
@@ -167,6 +176,7 @@ const DatagridRow = ({
                     <TableCell colSpan={nbColumns}>
                         {isValidElement(expand)
                             ? cloneElement(expand, {
+                                  // @ts-ignore
                                   record,
                                   basePath,
                                   resource,
@@ -188,15 +198,18 @@ const DatagridRow = ({
 DatagridRow.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.node,
-    classes: PropTypes.object,
+    classes: PropTypes.any,
     className: PropTypes.string,
+    // @ts-ignore
     expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     hasBulkActions: PropTypes.bool.isRequired,
     hover: PropTypes.bool,
     id: PropTypes.any,
     onToggleItem: PropTypes.func,
-    record: PropTypes.object.isRequired,
+    // @ts-ignore
+    record: PropTypes.object,
     resource: PropTypes.string,
+    // @ts-ignore
     rowClick: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     selected: PropTypes.bool,
     style: PropTypes.object,
@@ -206,10 +219,38 @@ DatagridRow.propTypes = {
 DatagridRow.defaultProps = {
     hasBulkActions: false,
     hover: true,
-    record: {},
     selected: false,
     selectable: true,
 };
+
+export interface DatagridRowProps
+    extends Omit<TableRowProps, 'id' | 'classes'> {
+    classes?: ReturnType<typeof useDatagridStyles>;
+    basePath?: string;
+    className?: string;
+    expand?:
+        | ReactElement
+        | FC<{
+              basePath: string;
+              id: Identifier;
+              record: Record;
+              resource: string;
+          }>;
+    hasBulkActions?: boolean;
+    hover?: boolean;
+    id?: Identifier;
+    onToggleItem?: (id: Identifier) => void;
+    record?: Record;
+    resource?: string;
+    rowClick?: (
+        id: Identifier,
+        basePath: string,
+        record: Record
+    ) => string | string;
+    selected?: boolean;
+    style?: any;
+    selectable?: boolean;
+}
 
 const areEqual = (prevProps, nextProps) => {
     const { children: _, ...prevPropsWithoutChildren } = prevProps;

@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { cloneElement, Children } from 'react';
+import { cloneElement, Children, HtmlHTMLAttributes, FC } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { makeStyles } from '@material-ui/core/styles';
-import { linkToRecord } from 'ra-core';
+import { linkToRecord, sanitizeListRestProps, useListContext } from 'ra-core';
 
 import Link from '../Link';
+import { ClassesOverride } from '../types';
 
 const useStyles = makeStyles(
     theme => ({
@@ -23,14 +24,6 @@ const useStyles = makeStyles(
 
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
-
-const sanitizeRestProps = ({
-    currentSort,
-    setSort,
-    loading,
-    loaded,
-    ...props
-}) => props;
 
 // Our handleClick does nothing as we wrap the children inside a Link but it is
 // required by ChipField, which uses a Chip from material-ui.
@@ -69,19 +62,16 @@ const handleClick = () => {};
  *     </SingleFieldList>
  * </ReferenceManyField>
  */
-function SingleFieldList(props) {
+const SingleFieldList: FC<SingleFieldListProps> = props => {
     const {
         classes: classesOverride,
         className,
-        ids,
-        data,
-        loaded,
-        resource,
-        basePath,
         children,
-        linkType,
+        linkType = 'edit',
         ...rest
     } = props;
+    const { ids, data, loaded, resource, basePath } = useListContext(props);
+
     const classes = useStyles(props);
 
     if (loaded === false) {
@@ -91,7 +81,7 @@ function SingleFieldList(props) {
     return (
         <div
             className={classnames(classes.root, className)}
-            {...sanitizeRestProps(rest)}
+            {...sanitizeListRestProps(rest)}
         >
             {ids.map(id => {
                 const resourceLinkPath = !linkType
@@ -126,7 +116,7 @@ function SingleFieldList(props) {
             })}
         </div>
     );
-}
+};
 
 SingleFieldList.propTypes = {
     basePath: PropTypes.string,
@@ -135,14 +125,17 @@ SingleFieldList.propTypes = {
     className: PropTypes.string,
     data: PropTypes.object,
     ids: PropTypes.array,
-    linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
-        .isRequired,
+    // @ts-ignore
+    linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     resource: PropTypes.string,
 };
 
-SingleFieldList.defaultProps = {
-    classes: {},
-    linkType: 'edit',
-};
+export interface SingleFieldListProps
+    extends HtmlHTMLAttributes<HTMLDivElement> {
+    className?: string;
+    classes?: ClassesOverride<typeof useStyles>;
+    linkType?: string | false;
+    children: React.ReactElement;
+}
 
 export default SingleFieldList;

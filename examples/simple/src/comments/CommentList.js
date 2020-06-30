@@ -16,10 +16,13 @@ import {
 } from '@material-ui/core';
 import jsonExport from 'jsonexport/dist';
 import {
+    ListBase,
+    ListToolbar,
+    ListActions,
+    useListContext,
     DateField,
     EditButton,
     Filter,
-    List,
     PaginationLimit,
     ReferenceField,
     ReferenceInput,
@@ -66,7 +69,8 @@ const exporter = (records, fetchRelatedRecords) =>
         });
     });
 
-const CommentPagination = ({ loading, ids, page, perPage, total, setPage }) => {
+const CommentPagination = () => {
+    const { loading, ids, page, perPage, total, setPage } = useListContext();
     const translate = useTranslate();
     const nbPages = Math.ceil(total / perPage) || 1;
     if (!loading && (total === 0 || (ids && !ids.length))) {
@@ -121,7 +125,8 @@ const useListStyles = makeStyles(theme => ({
     },
 }));
 
-const CommentGrid = ({ ids, data, basePath }) => {
+const CommentGrid = () => {
+    const { ids, data, basePath } = useListContext();
     const translate = useTranslate();
     const classes = useListStyles();
 
@@ -200,7 +205,6 @@ const CommentMobileList = props => (
             new Date(record.created_at).toLocaleDateString()
         }
         leftAvatar={() => <PersonIcon />}
-        {...props}
     />
 );
 
@@ -208,16 +212,14 @@ const CommentList = props => {
     const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
 
     return (
-        <List
-            {...props}
-            perPage={6}
-            exporter={exporter}
-            filters={<CommentFilter />}
-            pagination={<CommentPagination />}
-            component="div"
-        >
+        <ListBase perPage={6} exporter={exporter} {...props}>
+            <ListToolbar
+                filters={<CommentFilter />}
+                actions={<ListActions />}
+            />
             {isSmall ? <CommentMobileList /> : <CommentGrid />}
-        </List>
+            <CommentPagination />
+        </ListBase>
     );
 };
 

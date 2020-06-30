@@ -65,7 +65,11 @@ const PostShow = props => {
                     />
                 </Tab>
                 <Tab label="post.form.miscellaneous">
-                    <ReferenceArrayField reference="tags" source="tags">
+                    <ReferenceArrayField
+                        reference="tags"
+                        source="tags"
+                        sort={{ field: 'name', order: 'ASC' }}
+                    >
                         <SingleFieldList>
                             <ChipField source="name" />
                         </SingleFieldList>
