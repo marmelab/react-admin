@@ -154,16 +154,13 @@ const useReferenceArrayFieldController = ({
     // We do all the data processing (filtering, sorting, paginating) client-side
     useEffect(() => {
         if (!loaded) return;
-        let tempData = [...data];
         // 1. filter
-        Object.keys(filterValues).forEach(
-            (filterName: string): void => {
-                tempData = tempData.filter(
-                    record =>
-                        // eslint-disable-next-line eqeqeq
-                        get(record, filterName) == filterValues[filterName]
-                );
-            }
+        let tempData = data.filter(record =>
+            Object.entries(filterValues).every(
+                ([filterName, filterValue]) =>
+                    // eslint-disable-next-line eqeqeq
+                    filterValue == get(record, filterName)
+            )
         );
         // 2. sort
         if (sort.field) {
