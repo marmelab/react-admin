@@ -143,7 +143,7 @@ Here is how this Data Provider maps react-admin calls to API calls:
 | `update`           | `PUT http://my.api.url/posts/123`                                                       |
 | `updateMany`       | Multiple calls to `PUT http://my.api.url/posts/123`                                     |
 | `delete`           | `DELETE http://my.api.url/posts/123`                                                    |
-| `deteleMany`       | Multiple calls to `DELETE http://my.api.url/posts/123`                                  |
+| `deleteMany`       | Multiple calls to `DELETE http://my.api.url/posts/123`                                  |
 
 **Note**: The simple REST client expects the API to include a `Content-Range` header in the response to `getList` calls. The value must be the total number of resources in the collection. This allows react-admin to know how many pages of resources there are in total, and build the pagination controls.
 
