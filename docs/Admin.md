@@ -29,8 +29,6 @@ Here are all the props accepted by the component:
 
 - [The `<Admin>` Component](#the-admin-component)
   - [`dataProvider`](#dataprovider)
-  - [`authProvider`](#authprovider)
-  - [`i18nProvider`](#internationalization)
   - [`title`](#title)
   - [`dashboard`](#dashboard)
   - [`catchAll`](#catchall)
@@ -40,6 +38,7 @@ Here are all the props accepted by the component:
   - [`customReducers`](#customreducers)
   - [`customSagas`](#customsagas)
   - [`customRoutes`](#customroutes)
+  - [`authProvider`](#authprovider)
   - [`loginPage`](#loginpage)
   - [`logoutButton`](#logoutbutton)
   - [`initialState`](#initialstate)
@@ -313,6 +312,7 @@ export default (previousState = 0, { type, payload }) => {
 To register this reducer in the `<Admin>` app, simply pass it in the `customReducers` prop:
 
 {% raw %}
+
 ```jsx
 // in src/App.js
 import * as React from "react";
@@ -328,6 +328,7 @@ const App = () => (
 
 export default App;
 ```
+
 {% endraw %}
 
 Now the state will look like:
@@ -442,7 +443,7 @@ const Foo = () => (
 export default Foo;
 ```
 
-**Tip**: Custom routes can be [a `<Redirect>` route](https://reacttraining.com/react-router/web/api/Redirect), too. 
+**Tip**: Custom routes can be [a `<Redirect>` route](https://reacttraining.com/react-router/web/api/Redirect), too.
 
 ## `authProvider`
 
@@ -532,7 +533,6 @@ const App = () => (
     </Admin>
 );
 ```
-
 
 ## `history`
 
