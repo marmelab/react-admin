@@ -29,6 +29,8 @@ Here are all the props accepted by the component:
 
 - [The `<Admin>` Component](#the-admin-component)
   - [`dataProvider`](#dataprovider)
+  - [`authProvider`](#authprovider)
+  - [`i18nProvider`](#i18nprovider)
   - [`title`](#title)
   - [`dashboard`](#dashboard)
   - [`catchAll`](#catchall)
@@ -38,12 +40,10 @@ Here are all the props accepted by the component:
   - [`customReducers`](#customreducers)
   - [`customSagas`](#customsagas)
   - [`customRoutes`](#customroutes)
-  - [`authProvider`](#authprovider)
   - [`loginPage`](#loginpage)
   - [`logoutButton`](#logoutbutton)
   - [`initialState`](#initialstate)
   - [`history`](#history)
-  - [Internationalization](#internationalization)
   - [Declaring resources at runtime](#declaring-resources-at-runtime)
   - [Using react-admin without `<Admin>` and `<Resource>`](#using-react-admin-without-admin-and-resource)
 
@@ -66,6 +66,32 @@ const dataProvider = {
 ```
 
 The `dataProvider` is also the ideal place to add custom HTTP headers, authentication, etc. The [Data Providers Chapter](./DataProviders.md) of the documentation lists available data providers, and explains how to build your own.
+
+## `authProvider`
+
+The `authProvider` prop expect an object with 5 methods, each returning a Promise, to control the authentication strategy:
+
+```jsx
+const authProvider = {
+    login: params => Promise.resolve(),
+    logout: params => Promise.resolve(),
+    checkAuth: params => Promise.resolve(),
+    checkError: error => Promise.resolve(),
+    getPermissions: params => Promise.resolve(),
+};
+
+const App = () => (
+    <Admin authProvider={authProvider} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        ...
+    </Admin>
+);
+```
+
+The [Authentication documentation](./Authentication.md) explains how to implement these functions in detail.
+
+## `i18nProvider`
+
+The `i18nProvider` props let you translate the GUI. The [Translation Documentation](./Translation.md) details this process.
 
 ## `title`
 
@@ -443,28 +469,6 @@ export default Foo;
 
 **Tip**: Custom routes can be [a `<Redirect>` route](https://reacttraining.com/react-router/web/api/Redirect), too.
 
-## `authProvider`
-
-The `authProvider` prop expect an object with 5 methods, each returning a Promise, to control the authentication strategy:
-
-```jsx
-const authProvider = {
-    login: params => Promise.resolve(),
-    logout: params => Promise.resolve(),
-    checkAuth: params => Promise.resolve(),
-    checkError: error => Promise.resolve(),
-    getPermissions: params => Promise.resolve(),
-};
-
-const App = () => (
-    <Admin authProvider={authProvider} dataProvider={simpleRestProvider('http://path.to.my.api')}>
-        ...
-    </Admin>
-);
-```
-
-The [Authentication documentation](./Authentication.md) explains how to implement these functions in detail.
-
 ## `loginPage`
 
 If you want to customize the Login page, or switch to another authentication strategy than a username/password form, pass a component of your own as the `loginPage` prop. React-admin will display this component whenever the `/login` route is called.
@@ -550,10 +554,6 @@ const App = () => (
     </Admin>
 );
 ```
-
-## Internationalization
-
-The `i18nProvider` props let you translate the GUI. The [Translation Documentation](./Translation.md) details this process.
 
 ## Declaring resources at runtime
 
