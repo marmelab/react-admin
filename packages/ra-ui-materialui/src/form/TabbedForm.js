@@ -71,7 +71,7 @@ import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
  * @prop {Function} validate
  * @prop {boolean} submitOnEnter
  * @prop {string} redirect
- * @prop {ReactElement} toolbar The element displayed at the bottom of the form, contzining the SaveButton
+ * @prop {ReactElement} toolbar The element displayed at the bottom of the form, containing the SaveButton
  * @prop {string} variant Apply variant to all inputs. Possible values are 'standard', 'outlined', and 'filled' (default)
  * @prop {string} margin Apply variant to all inputs. Possible values are 'none', 'normal', and 'dense' (default)
  *
