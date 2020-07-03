@@ -142,7 +142,7 @@ const SaveButton: FC<SaveButtonProps> = props => {
             onClick={handleClick}
             color={saving ? 'default' : 'primary'}
             aria-label={displayedLabel}
-            disabled={disabled || pristine}
+            disabled={disabled}
             {...sanitizeButtonRestProps(rest)}
         >
             {saving ? (
