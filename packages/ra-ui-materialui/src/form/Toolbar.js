@@ -47,6 +47,43 @@ const useStyles = makeStyles(
 const valueOrDefault = (value, defaultValue) =>
     typeof value === 'undefined' ? defaultValue : value;
 
+/**
+ * The Toolbar displayed at the bottom of forms.
+ *
+ * @example Never disable the <SaveButton />
+ *
+ * import * as React from 'react';
+ * import {
+ *     Create,
+ *     DateInput,
+ *     TextInput,
+ *     SimpleForm,
+ *     Toolbar,
+ *     required,
+ * } from 'react-admin';
+ *
+ * const now = new Date();
+ * const defaultSort = { field: 'title', order: 'ASC' };
+ *
+ * const CommentCreate = props => (
+ *     <Create {...props}>
+ *         <SimpleForm redirect={false} toolbar={<Toolbar disabled={false} />}>
+ *             <TextInput
+ *                 source="author.name"
+ *                 fullWidth
+ *             />
+ *             <DateInput source="created_at" defaultValue={now} />
+ *             <TextInput source="body" fullWidth={true} multiline={true} />
+ *         </SimpleForm>
+ *     </Create>
+ * );
+ *
+ * @typedef {Object} Props the props you can use (other props are injected by the <SimpleForm>)
+ * @prop {ReactElement[]} children Customize the buttons you want to display in the <Toolbar>.
+ * @prop {boolean} disabled Disable the default <SaveButton>. It it's not defined, the <SaveButton> will be disabled using the `pristine` prop.
+ * @prop {string} width Apply the mobile or the desktop classes depending on the width. Pass "xs" to display the mobile version.
+ *
+ */
 const Toolbar = props => {
     const {
         basePath,
