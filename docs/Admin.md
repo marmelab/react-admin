@@ -314,7 +314,6 @@ export default (previousState = 0, { type, payload }) => {
 To register this reducer in the `<Admin>` app, simply pass it in the `customReducers` prop:
 
 {% raw %}
-
 ```jsx
 // in src/App.js
 import * as React from "react";
@@ -330,7 +329,6 @@ const App = () => (
 
 export default App;
 ```
-
 {% endraw %}
 
 Now the state will look like:
