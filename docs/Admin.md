@@ -557,9 +557,9 @@ The `i18nProvider` props let you translate the GUI. The [Translation Documentati
 
 ## Declaring resources at runtime
 
-You might want to dynamically define the resources when the app starts.
+You might want to dynamically define the resources when the app starts. To do so, you have two options: using a function as `<Admin>` child, or unplugging it to use a combinaison of `AdminContext` and `<AdminUI>` instead.
 
-### Use a Function As its Child
+### Using a Function As `<Admin>` Child
 
 The `<Admin>` component accepts a function as its child and this function can return a Promise. If you also defined an `authProvider`, the child function will receive the result of a call to `authProvider.getPermissions()` (you can read more about this in the [Authorization](./Authorization.md) chapter).
 
@@ -596,13 +596,13 @@ const App = () => (
 );
 ```
 
-### Unplug the <Admin> using the `<AdminContext>` and the `<AdminUI>`
+### Unplugging the <Admin> using `<AdminContext>` and `<AdminUI>`
 
-Setting Resources dynamically is still very cumbersome: even if `<Admin>` accepts [a function as child](#declaring-resources-at-runtime), this function can't execute hooks.
+Setting Resources dynamically using the children-as-function syntax may not be enough in all cases, because this function can't execute hooks.
 
-So it's impossible, for instance, to have a dynamic list of resources based on a call to the dataProvider (since the dataProvider is only defined after the Admin component renders).
+So it's impossible, for instance, to have a dynamic list of resources based on a call to the `dataProvider` (since the `dataProvider` is only defined after the `<Admin>` component renders).
 
-To do so, you have to build your own <Admin> component using both the <AdminContext> and the <AdminUI> (as we do internally). It's straightforward.
+To overcome this limitation, you can build your own `<Admin>` component using two lower-level components: `<AdminContext>` (responsible for putting the providers in contexts) and `<AdminUI>` (responsible for displaying the UI). Here is an example:
 
 ``` jsx
 import * as React, { useEffect, useState } from 'react';
@@ -621,7 +621,8 @@ function AsyncResources() {
     const dataProvider = useDataProvider();
 
     useEffect(() => {
-        dataProvider.introspect().then(r => setResources(r));
+        // Note that the `getResources` is not provided by react-admin. You have to implement your own custom verb.
+        dataProvider.getResources().then(r => setResources(r));
     }, []);
 
     return (
