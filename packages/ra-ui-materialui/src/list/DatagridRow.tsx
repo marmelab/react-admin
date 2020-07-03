@@ -82,7 +82,7 @@ const DatagridRow: FC<DatagridRowProps> = ({
             onToggleItem(id);
             event.stopPropagation();
         },
-        [id, onToggleItem]
+        [id, onToggleItem, selectable]
     );
     const handleClick = useCallback(
         async event => {
