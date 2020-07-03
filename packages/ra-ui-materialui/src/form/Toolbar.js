@@ -57,6 +57,7 @@ const Toolbar = props => {
         handleSubmitWithRedirect,
         invalid,
         pristine,
+        disabled,
         record,
         redirect,
         resource,
@@ -67,6 +68,7 @@ const Toolbar = props => {
         ...rest
     } = props;
     const classes = useStyles(props);
+
     return (
         <Fragment>
             <MuiToolbar
@@ -87,6 +89,7 @@ const Toolbar = props => {
                             handleSubmitWithRedirect={
                                 handleSubmitWithRedirect || handleSubmit
                             }
+                            disabled={disabled}
                             invalid={invalid}
                             redirect={redirect}
                             saving={saving}
