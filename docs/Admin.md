@@ -45,8 +45,6 @@ Here are all the props accepted by the component:
   - [`history`](#history)
   - [Internationalization](#internationalization)
   - [Declaring resources at runtime](#declaring-resources-at-runtime)
-    - [Use a Function As its Child](#use-a-function-as-its-child)
-    - [Unplug the <Admin> using the `<AdminContext>` and the `<AdminUI>`](#unplug-the-admin-using-the-admincontext-and-the-adminui)
   - [Using react-admin without `<Admin>` and `<Resource>`](#using-react-admin-without-admin-and-resource)
 
 ## `dataProvider`
