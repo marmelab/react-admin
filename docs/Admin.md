@@ -45,6 +45,8 @@ Here are all the props accepted by the component:
   - [`history`](#history)
   - [Internationalization](#internationalization)
   - [Declaring resources at runtime](#declaring-resources-at-runtime)
+    - [Use a Function As its Child](#use-a-function-as-its-child)
+    - [Unplug the <Admin> using the `<AdminContext>` and the `<AdminUI>`](#unplug-the-admin-using-the-admincontext-and-the-adminui)
   - [Using react-admin without `<Admin>` and `<Resource>`](#using-react-admin-without-admin-and-resource)
 
 ## `dataProvider`
@@ -559,13 +561,16 @@ The `i18nProvider` props let you translate the GUI. The [Translation Documentati
 
 ## Declaring resources at runtime
 
-You might want to dynamically define the resources when the app starts. The `<Admin>` component accepts a function as its child and this function can return a Promise. If you also defined an `authProvider`, the child function will receive the result of a call to `authProvider.getPermissions()` (you can read more about this in the [Authorization](./Authorization.md) chapter).
+You might want to dynamically define the resources when the app starts.
+
+### Use a Function As its Child
+
+The `<Admin>` component accepts a function as its child and this function can return a Promise. If you also defined an `authProvider`, the child function will receive the result of a call to `authProvider.getPermissions()` (you can read more about this in the [Authorization](./Authorization.md) chapter).
 
 For instance, getting the resource from an API might look like:
 
 ```jsx
 import * as React from "react";
-
 import { Admin, Resource } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
 
@@ -593,6 +598,44 @@ const App = () => (
         {fetchResources}
     </Admin>
 );
+```
+
+### Unplug the <Admin> using the `<AdminContext>` and the `<AdminUI>`
+
+Setting Resources dynamically is still very cumbersome: even if `<Admin>` accepts [a function as child](#declaring-resources-at-runtime), this function can't execute hooks.
+
+So it's impossible, for instance, to have a dynamic list of resources based on a call to the dataProvider (since the dataProvider is only defined after the Admin component renders).
+
+To do so, you have to build your own <Admin> component using both the <AdminContext> and the <AdminUI> (as we do internally). It's straightforward.
+
+``` jsx
+import * as React, { useEffect, useState } from 'react';
+import { AdminContext, AdminUI, Resource, ListGuesser, useDataProvider } from 'react-admin';
+
+function App() {
+    return (
+        <AdminContext dataProvider={myDataProvider}>
+            <AsyncResources />
+        </AdminContext>
+    );
+}
+
+function AsyncResources() {
+    const [resources, setResources] = useState([]);
+    const dataProvider = useDataProvider();
+
+    useEffect(() => {
+        dataProvider.introspect().then(r => setResources(r));
+    }, []);
+
+    return (
+        <AdminUI>
+            {resources.map(resource => (
+                <Resource name={resource.name} key={resource.key} list={ListGuesser} />
+            ))}
+        </AdminUI>
+    );
+}
 ```
 
 ## Using react-admin without `<Admin>` and `<Resource>`
