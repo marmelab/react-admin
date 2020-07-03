@@ -89,7 +89,7 @@ const Toolbar = props => {
                             handleSubmitWithRedirect={
                                 handleSubmitWithRedirect || handleSubmit
                             }
-                            disabled={disabled}
+                            disabled={valueOrDefault(disabled, pristine)}
                             invalid={invalid}
                             redirect={redirect}
                             saving={saving}
