@@ -78,7 +78,7 @@ const DatagridRow: FC<DatagridRowProps> = ({
     );
     const handleToggleSelection = useCallback(
         event => {
-            if (!!selectable) return;
+            if (!selectable) return;
             onToggleItem(id);
             event.stopPropagation();
         },
