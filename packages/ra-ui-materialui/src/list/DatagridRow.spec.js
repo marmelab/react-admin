@@ -104,7 +104,7 @@ describe('<DatagridRow />', () => {
             expect(onToggleItem.mock.calls.length).toEqual(1);
         });
 
-        it("should not execute the onToggleItem function if the row is not selectable", () => {
+        it('should not execute the onToggleItem function if the row is not selectable', () => {
             const onToggleItem = jest.fn();
             const { getByText } = renderWithRouter(
                 <DatagridRow
