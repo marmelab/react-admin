@@ -100,8 +100,8 @@ const Aside: FC = props => {
                 />
                 {isSelected && (
                     <ListItemSecondaryAction>
-                        <IconButton size="small">
-                            <CancelIcon onClick={addFilter} />
+                        <IconButton size="small" onClick={addFilter}>
+                            <CancelIcon />
                         </IconButton>
                     </ListItemSecondaryAction>
                 )}
