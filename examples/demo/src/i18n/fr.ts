@@ -186,7 +186,7 @@ const customFrenchMessages: TranslationMessages = {
             },
         },
         segments: {
-            name: 'Segments',
+            name: 'Segment |||| Segments',
             fields: {
                 customers: 'Clients',
                 name: 'Nom',

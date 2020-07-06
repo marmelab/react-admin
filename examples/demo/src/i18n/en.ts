@@ -170,7 +170,7 @@ const customEnglishMessages: TranslationMessages = {
             },
         },
         segments: {
-            name: 'Segment || Segments',
+            name: 'Segment |||| Segments',
             fields: {
                 customers: 'Customers',
                 name: 'Name',
