@@ -1,48 +1,43 @@
 import * as React from 'react';
-import assert from 'assert';
+import expect from 'expect';
 import { render, cleanup } from '@testing-library/react';
 import RichTextField, { removeTags } from './RichTextField';
 
 describe('stripTags', () => {
     it('should strip HTML tags from input', () => {
-        assert.equal(removeTags('<h1>Hello world!</h1>'), 'Hello world!');
-        assert.equal(removeTags('<p>Cake is a lie</p>'), 'Cake is a lie');
+        expect(removeTags('<h1>Hello world!</h1>')).toEqual('Hello world!');
+        expect(removeTags('<p>Cake is a lie</p>')).toEqual('Cake is a lie');
     });
 
     it('should strip HTML tags even with attributes', () => {
-        assert.equal(
-            removeTags('<a href="http://www.zombo.com">Zombo</a>'),
+        expect(removeTags('<a href="http://www.zombo.com">Zombo</a>')).toEqual(
             'Zombo'
         );
-        assert.equal(
+        expect(
             removeTags(
                 '<a target="_blank" href="http://www.zombo.com">Zombo</a>'
-            ),
-            'Zombo'
-        );
+            )
+        ).toEqual('Zombo');
     });
 
     it('should strip HTML tags splitted on several lines', () => {
-        assert.equal(
+        expect(
             removeTags(`<a
             href="http://www.zombo.com"
-        >Zombo</a>`),
-            'Zombo'
-        );
+        >Zombo</a>`)
+        ).toEqual('Zombo');
     });
 
     it('should strip HTML embedded tags', () => {
-        assert.equal(
+        expect(
             removeTags(
                 '<marquee><a href="http://www.zombo.com">Zombo</a></marquee>'
-            ),
-            'Zombo'
-        );
+            )
+        ).toEqual('Zombo');
     });
 
     it('should strip HTML tags even if they are malformed', () => {
-        assert.equal(
-            removeTags('<p>All our base is belong to us.<p>'),
+        expect(removeTags('<p>All our base is belong to us.<p>')).toEqual(
             'All our base is belong to us.'
         );
     });
@@ -56,8 +51,7 @@ describe('<RichTextField />', () => {
         const { container } = render(
             <RichTextField record={record} source="body" />
         );
-        assert.equal(
-            container.children[0].innerHTML,
+        expect(container.children[0].innerHTML).toEqual(
             '<span><h1>Hello world!</h1></span>'
         );
     });
@@ -67,8 +61,7 @@ describe('<RichTextField />', () => {
         const { container } = render(
             <RichTextField record={record} source="foo.body" />
         );
-        assert.equal(
-            container.children[0].innerHTML,
+        expect(container.children[0].innerHTML).toEqual(
             '<span><h1>Hello world!</h1></span>'
         );
     });
@@ -78,7 +71,7 @@ describe('<RichTextField />', () => {
         const { container } = render(
             <RichTextField stripTags={true} record={record} source="body" />
         );
-        assert.equal(container.children[0].innerHTML, 'Hello world!');
+        expect(container.children[0].innerHTML).toEqual('Hello world!');
     });
 
     it('should not strip HTML tags if stripTags is set to false', () => {
@@ -86,8 +79,7 @@ describe('<RichTextField />', () => {
         const { container } = render(
             <RichTextField stripTags={false} record={record} source="body" />
         );
-        assert.equal(
-            container.children[0].innerHTML,
+        expect(container.children[0].innerHTML).toEqual(
             '<span><h1>Hello world!</h1></span>'
         );
     });
@@ -100,7 +92,7 @@ describe('<RichTextField />', () => {
                 className="foo"
             />
         );
-        assert.equal(container.children[0].classList.contains('foo'), true);
+        expect(container.children[0].classList.contains('foo')).toBe(true);
     });
 
     it.each([null, undefined])(
@@ -113,7 +105,7 @@ describe('<RichTextField />', () => {
                     source="body"
                 />
             );
-            assert.notEqual(queryByText('NA'), null);
+            expect(queryByText('NA')).not.toBeNull();
         }
     );
 
@@ -128,7 +120,7 @@ describe('<RichTextField />', () => {
                     stripTags
                 />
             );
-            assert.notEqual(queryByText('NA'), null);
+            expect(queryByText('NA')).not.toBeNull();
         }
     );
 });

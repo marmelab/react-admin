@@ -30,7 +30,7 @@ Here are all the props accepted by the component:
 - [The `<Admin>` Component](#the-admin-component)
   - [`dataProvider`](#dataprovider)
   - [`authProvider`](#authprovider)
-  - [`i18nProvider`](#internationalization)
+  - [`i18nProvider`](#i18nprovider)
   - [`title`](#title)
   - [`dashboard`](#dashboard)
   - [`catchAll`](#catchall)
@@ -44,7 +44,6 @@ Here are all the props accepted by the component:
   - [`logoutButton`](#logoutbutton)
   - [`initialState`](#initialstate)
   - [`history`](#history)
-  - [Internationalization](#internationalization)
   - [Declaring resources at runtime](#declaring-resources-at-runtime)
   - [Using react-admin without `<Admin>` and `<Resource>`](#using-react-admin-without-admin-and-resource)
 
@@ -67,6 +66,32 @@ const dataProvider = {
 ```
 
 The `dataProvider` is also the ideal place to add custom HTTP headers, authentication, etc. The [Data Providers Chapter](./DataProviders.md) of the documentation lists available data providers, and explains how to build your own.
+
+## `authProvider`
+
+The `authProvider` prop expect an object with 5 methods, each returning a Promise, to control the authentication strategy:
+
+```jsx
+const authProvider = {
+    login: params => Promise.resolve(),
+    logout: params => Promise.resolve(),
+    checkAuth: params => Promise.resolve(),
+    checkError: error => Promise.resolve(),
+    getPermissions: params => Promise.resolve(),
+};
+
+const App = () => (
+    <Admin authProvider={authProvider} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        ...
+    </Admin>
+);
+```
+
+The [Authentication documentation](./Authentication.md) explains how to implement these functions in detail.
+
+## `i18nProvider`
+
+The `i18nProvider` props let you translate the GUI. The [Translation Documentation](./Translation.md) details this process.
 
 ## `title`
 
@@ -442,29 +467,7 @@ const Foo = () => (
 export default Foo;
 ```
 
-**Tip**: Custom routes can be [a `<Redirect>` route](https://reacttraining.com/react-router/web/api/Redirect), too. 
-
-## `authProvider`
-
-The `authProvider` prop expect an object with 5 methods, each returning a Promise, to control the authentication strategy:
-
-```jsx
-const authProvider = {
-    login: params => Promise.resolve(),
-    logout: params => Promise.resolve(),
-    checkAuth: params => Promise.resolve(),
-    checkError: error => Promise.resolve(),
-    getPermissions: params => Promise.resolve(),
-};
-
-const App = () => (
-    <Admin authProvider={authProvider} dataProvider={simpleRestProvider('http://path.to.my.api')}>
-        ...
-    </Admin>
-);
-```
-
-The [Authentication documentation](./Authentication.md) explains how to implement these functions in detail.
+**Tip**: Custom routes can be [a `<Redirect>` route](https://reacttraining.com/react-router/web/api/Redirect), too.
 
 ## `loginPage`
 
@@ -533,7 +536,6 @@ const App = () => (
 );
 ```
 
-
 ## `history`
 
 By default, react-admin creates URLs using a hash sign (e.g. "myadmin.acme.com/#/posts/123"). The hash portion of the URL (i.e. `#/posts/123` in the example) contains the main application route. This strategy has the benefit of working without a server, and with legacy web browsers. But you may want to use another routing strategy, e.g. to allow server-side rendering.
@@ -553,19 +555,18 @@ const App = () => (
 );
 ```
 
-## Internationalization
-
-The `i18nProvider` props let you translate the GUI. The [Translation Documentation](./Translation.md) details this process.
-
 ## Declaring resources at runtime
 
-You might want to dynamically define the resources when the app starts. The `<Admin>` component accepts a function as its child and this function can return a Promise. If you also defined an `authProvider`, the child function will receive the result of a call to `authProvider.getPermissions()` (you can read more about this in the [Authorization](./Authorization.md) chapter).
+You might want to dynamically define the resources when the app starts. To do so, you have two options: using a function as `<Admin>` child, or unplugging it to use a combinaison of `AdminContext` and `<AdminUI>` instead.
+
+### Using a Function As `<Admin>` Child
+
+The `<Admin>` component accepts a function as its child and this function can return a Promise. If you also defined an `authProvider`, the child function will receive the result of a call to `authProvider.getPermissions()` (you can read more about this in the [Authorization](./Authorization.md) chapter).
 
 For instance, getting the resource from an API might look like:
 
 ```jsx
 import * as React from "react";
-
 import { Admin, Resource } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
 
@@ -593,6 +594,45 @@ const App = () => (
         {fetchResources}
     </Admin>
 );
+```
+
+### Unplugging the <Admin> using `<AdminContext>` and `<AdminUI>`
+
+Setting Resources dynamically using the children-as-function syntax may not be enough in all cases, because this function can't execute hooks.
+
+So it's impossible, for instance, to have a dynamic list of resources based on a call to the `dataProvider` (since the `dataProvider` is only defined after the `<Admin>` component renders).
+
+To overcome this limitation, you can build your own `<Admin>` component using two lower-level components: `<AdminContext>` (responsible for putting the providers in contexts) and `<AdminUI>` (responsible for displaying the UI). Here is an example:
+
+``` jsx
+import * as React, { useEffect, useState } from 'react';
+import { AdminContext, AdminUI, Resource, ListGuesser, useDataProvider } from 'react-admin';
+
+function App() {
+    return (
+        <AdminContext dataProvider={myDataProvider}>
+            <AsyncResources />
+        </AdminContext>
+    );
+}
+
+function AsyncResources() {
+    const [resources, setResources] = useState([]);
+    const dataProvider = useDataProvider();
+
+    useEffect(() => {
+        // Note that the `getResources` is not provided by react-admin. You have to implement your own custom verb.
+        dataProvider.getResources().then(r => setResources(r));
+    }, []);
+
+    return (
+        <AdminUI>
+            {resources.map(resource => (
+                <Resource name={resource.name} key={resource.key} list={ListGuesser} />
+            ))}
+        </AdminUI>
+    );
+}
 ```
 
 ## Using react-admin without `<Admin>` and `<Resource>`

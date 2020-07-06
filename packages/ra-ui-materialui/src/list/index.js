@@ -6,6 +6,7 @@ import DatagridBody, { PureDatagridBody } from './DatagridBody';
 import DatagridRow, { PureDatagridRow } from './DatagridRow';
 import DatagridHeaderCell from './DatagridHeaderCell';
 import DatagridCell from './DatagridCell';
+import ExpandRowButton from './ExpandRowButton';
 import Filter from './Filter';
 import FilterButton from './FilterButton';
 import FilterForm from './FilterForm';
@@ -15,6 +16,7 @@ import ListGuesser from './ListGuesser';
 import ListToolbar from './ListToolbar';
 import ListView from './ListView';
 import Pagination from './Pagination';
+import PaginationActions from './PaginationActions';
 import PaginationLimit from './PaginationLimit';
 import Placeholder from './Placeholder';
 import SimpleList from './SimpleList';
@@ -30,6 +32,7 @@ export {
     DatagridRow,
     DatagridHeaderCell,
     DatagridCell,
+    ExpandRowButton,
     Filter,
     FilterButton,
     FilterForm,
@@ -39,6 +42,7 @@ export {
     ListGuesser,
     ListToolbar,
     Pagination,
+    PaginationActions,
     PaginationLimit,
     Placeholder,
     PureDatagridBody,

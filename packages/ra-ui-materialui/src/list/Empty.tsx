@@ -36,13 +36,16 @@ const Empty: FC<EmptyProps> = props => {
     const classes = useStyles(props);
     const translate = useTranslate();
 
-    const resourceName = inflection.humanize(
-        translate(`resources.${resource}.name`, {
-            smart_count: 0,
-            _: inflection.pluralize(resource),
-        }),
-        true
-    );
+    const resourceName = translate(`resources.${resource}.forcedCaseName`, {
+        smart_count: 0,
+        _: inflection.humanize(
+            translate(`resources.${resource}.name`, {
+                smart_count: 0,
+                _: inflection.pluralize(resource),
+            }),
+            true
+        ),
+    });
 
     const emptyMessage = translate('ra.page.empty', { name: resourceName });
     const inviteMessage = translate('ra.page.invite');

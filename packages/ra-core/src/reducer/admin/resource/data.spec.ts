@@ -1,4 +1,4 @@
-import assert from 'assert';
+import expect from 'expect';
 
 import {
     DELETE,
@@ -42,17 +42,17 @@ describe('data reducer', () => {
             );
 
             // @ts-ignore
-            assert.deepEqual(getFetchedAt.mock.calls[0], [
+            expect(getFetchedAt.mock.calls[0]).toEqual([
                 ['record1', 'record2'],
                 oldFetchedAt,
             ]);
 
-            assert.deepEqual(newState, {
+            expect(newState).toEqual({
                 record1: { id: 'record1' },
                 record2: { id: 'record2' },
             });
 
-            assert.deepEqual(newState.fetchedAt, {
+            expect(newState.fetchedAt).toEqual({
                 record1: date1,
                 record2: date2,
             });
@@ -76,7 +76,7 @@ describe('data reducer', () => {
                 oldRecords
             );
 
-            assert.deepEqual(newState, {
+            expect(newState).toEqual({
                 record1: { id: 'record1' },
                 record2: { id: 'record2' },
             });
@@ -100,7 +100,7 @@ describe('data reducer', () => {
                 oldRecords
             );
 
-            assert.deepEqual(newState, {
+            expect(newState).toEqual({
                 record1: { id: 'record1' },
                 record2: { id: 'record2' },
                 record3: { id: 'record3' },
@@ -127,7 +127,7 @@ describe('data reducer', () => {
                 oldRecords
             );
 
-            assert.deepEqual(newState, {
+            expect(newState).toEqual({
                 record1: { id: 'record1', title: 'new title' },
                 record2: { id: 'record2' },
             });
@@ -155,14 +155,14 @@ describe('data reducer', () => {
 
             const newState = addRecords(newRecords, oldRecords);
 
-            assert.deepEqual(newState, {
+            expect(newState).toEqual({
                 record1: { id: 'record1', title: 'title 1' },
                 record2: { id: 'record2', title: 'title 2' },
                 new_record1: { id: 'new_record1', title: 'new title 1' },
                 new_record2: { id: 'new_record2', title: 'new title 2' },
             });
 
-            assert.deepEqual(newState.fetchedAt, {
+            expect(newState.fetchedAt).toEqual({
                 record1: before,
                 record2: before,
                 new_record1: now,
@@ -190,13 +190,13 @@ describe('data reducer', () => {
 
             const newState = addRecords(newRecords, oldRecords);
 
-            assert.deepEqual(newState, {
+            expect(newState).toEqual({
                 record1: { id: 'record1', title: 'title 1' },
                 record2: { id: 'record2', title: 'updated title 2' },
                 new_record1: { id: 'new_record1', title: 'new title 1' },
             });
 
-            assert.deepEqual(newState.fetchedAt, {
+            expect(newState.fetchedAt).toEqual({
                 record1: before,
                 record2: now,
                 new_record1: now,
@@ -221,13 +221,13 @@ describe('data reducer', () => {
 
             const newState = addRecords(newRecords, oldRecords);
 
-            assert.deepEqual(newState, {
+            expect(newState).toEqual({
                 record1: { id: 'record1', title: 'title 1' },
                 record2: { id: 'record2', title: 'title 2' },
             });
-            assert.equal(newState.record1, oldRecords.record1);
+            expect(newState.record1).toEqual(oldRecords.record1);
 
-            assert.deepEqual(newState.fetchedAt, {
+            expect(newState.fetchedAt).toEqual({
                 record1: now,
                 record2: before,
             });
@@ -247,13 +247,13 @@ describe('data reducer', () => {
 
             const newState = addOneRecord(newRecord, oldRecords, now);
 
-            assert.deepEqual(newState, {
+            expect(newState).toEqual({
                 record1: { id: 'record1', title: 'title 1' },
                 record2: { id: 'record2', title: 'title 2' },
                 new_record: { id: 'new_record', title: 'new title' },
             });
 
-            assert.deepEqual(newState.fetchedAt, {
+            expect(newState.fetchedAt).toEqual({
                 record1: before,
                 record2: before,
                 new_record: now,
@@ -272,12 +272,12 @@ describe('data reducer', () => {
 
             const newState = addOneRecord(newRecord, oldRecords, now);
 
-            assert.deepEqual(newState, {
+            expect(newState).toEqual({
                 record1: { id: 'record1', title: 'new title' },
                 record2: { id: 'record2', title: 'title 2' },
             });
 
-            assert.deepEqual(newState.fetchedAt, {
+            expect(newState.fetchedAt).toEqual({
                 record1: now,
                 record2: before,
             });
@@ -295,11 +295,11 @@ describe('data reducer', () => {
 
             const newState = removeRecords([1], oldRecords);
 
-            assert.deepEqual(newState, {
+            expect(newState).toEqual({
                 0: { id: 0, title: 'title 1' },
             });
 
-            assert.deepEqual(newState.fetchedAt, {
+            expect(newState.fetchedAt).toEqual({
                 0: before,
             });
         });
@@ -314,11 +314,11 @@ describe('data reducer', () => {
 
             const newState = removeRecords(['record2'], oldRecords);
 
-            assert.deepEqual(newState, {
+            expect(newState).toEqual({
                 record1: { id: 'record1', title: 'title 1' },
             });
 
-            assert.deepEqual(newState.fetchedAt, {
+            expect(newState.fetchedAt).toEqual({
                 record1: before,
             });
         });
@@ -333,11 +333,11 @@ describe('data reducer', () => {
 
             const newState = removeRecords(['1'], oldRecords);
 
-            assert.deepEqual(newState, {
+            expect(newState).toEqual({
                 '0': { id: 0, title: 'title 1' },
             });
 
-            assert.deepEqual(newState.fetchedAt, {
+            expect(newState.fetchedAt).toEqual({
                 '0': before,
             });
         });
@@ -365,11 +365,11 @@ describe('data reducer', () => {
                     optimistic: true,
                 },
             });
-            assert.deepEqual(newState, {
+            expect(newState).toEqual({
                 record1: { id: 'record1', prop: 'value' },
                 record3: { id: 'record3', prop: 'value' },
             });
-            assert.deepEqual(newState.fetchedAt, {
+            expect(newState.fetchedAt).toEqual({
                 record1: now,
                 record3: now,
             });
@@ -397,10 +397,10 @@ describe('data reducer', () => {
                     optimistic: true,
                 },
             });
-            assert.deepEqual(newState, {
+            expect(newState).toEqual({
                 record1: { id: 'record1', prop: 'value' },
             });
-            assert.deepEqual(newState.fetchedAt, {
+            expect(newState.fetchedAt).toEqual({
                 record1: now,
             });
         });
@@ -427,15 +427,15 @@ describe('data reducer', () => {
                     optimistic: true,
                 },
             });
-            assert.deepEqual(newState, {
+            expect(newState).toEqual({
                 record1: { id: 'record1', prop: 'value' },
                 record2: { id: 'record2', prop: 'new value' },
                 record3: { id: 'record3', prop: 'value' },
             });
-            assert.deepEqual(newState.fetchedAt.record1, before);
-            assert.deepEqual(newState.fetchedAt.record3, before);
+            expect(newState.fetchedAt.record1).toEqual(before);
+            expect(newState.fetchedAt.record3).toEqual(before);
 
-            assert.notDeepEqual(newState.fetchedAt.record2, before);
+            expect(newState.fetchedAt.record2).not.toEqual(before);
         });
     });
 
@@ -461,15 +461,15 @@ describe('data reducer', () => {
                     fetchStatus: FETCH_END,
                 },
             });
-            assert.deepEqual(newState, {
+            expect(newState).toEqual({
                 record1: { id: 'record1', prop: 'value' },
                 record2: { id: 'record2', prop: 'new value' },
                 record3: { id: 'record3', prop: 'value' },
             });
-            assert.deepEqual(newState.fetchedAt.record1, before);
-            assert.deepEqual(newState.fetchedAt.record3, before);
+            expect(newState.fetchedAt.record1).toEqual(before);
+            expect(newState.fetchedAt.record3).toEqual(before);
 
-            assert.notDeepEqual(newState.fetchedAt.record2, before);
+            expect(newState.fetchedAt.record2).not.toEqual(before);
         });
     });
 
@@ -508,17 +508,17 @@ describe('data reducer', () => {
                     fetchStatus: FETCH_END,
                 },
             });
-            assert.deepEqual(newState, {
+            expect(newState).toEqual({
                 record1: { id: 'record1', prop: 'value' },
                 record2: { id: 'record2', prop: 'updated value' },
                 record3: { id: 'record3', prop: 'value' },
                 new_record: { id: 'new_record', prop: 'new value' },
             });
-            assert.deepEqual(newState.fetchedAt.record1, before);
-            assert.deepEqual(newState.fetchedAt.record3, before);
+            expect(newState.fetchedAt.record1).toEqual(before);
+            expect(newState.fetchedAt.record3).toEqual(before);
 
-            assert.notDeepEqual(newState.fetchedAt.record2, before);
-            assert.notDeepEqual(newState.fetchedAt.new_record, before);
+            expect(newState.fetchedAt.record2).not.toEqual(before);
+            expect(newState.fetchedAt.new_record).not.toEqual(before);
         });
     });
 });

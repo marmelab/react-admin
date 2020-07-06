@@ -28,6 +28,7 @@ export interface TranslationMessages extends StringMap {
             show: string;
             sort: string;
             undo: string;
+            unselect: string;
             expand: string;
             close: string;
             open_menu: string;

@@ -73,13 +73,16 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
                 title={confirmTitle}
                 content={confirmContent}
                 translateOptions={{
-                    name: inflection.humanize(
-                        translate(`resources.${resource}.name`, {
-                            smart_count: 1,
-                            _: inflection.singularize(resource),
-                        }),
-                        true
-                    ),
+                    name: translate(`resources.${resource}.forcedCaseName`, {
+                        smart_count: 1,
+                        _: inflection.humanize(
+                            translate(`resources.${resource}.name`, {
+                                smart_count: 1,
+                                _: inflection.singularize(resource),
+                            }),
+                            true
+                        ),
+                    }),
                     id: record.id,
                 }}
                 onConfirm={handleDelete}
