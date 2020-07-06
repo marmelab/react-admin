@@ -78,10 +78,11 @@ const DatagridRow: FC<DatagridRowProps> = ({
     );
     const handleToggleSelection = useCallback(
         event => {
+            if (!selectable) return;
             onToggleItem(id);
             event.stopPropagation();
         },
-        [id, onToggleItem]
+        [id, onToggleItem, selectable]
     );
     const handleClick = useCallback(
         async event => {
