@@ -1,5 +1,15 @@
 # Changelog
 
+## v3.7.0
+
+* Add `useListContext()`, which greatly simplifies the development of custom `<List>` views ([4952](https://github.com/marmelab/react-admin/pull/4952)) ([fzaninotto](https://github.com/fzaninotto))
+* Add real product names to ecommerce demo ([4997](https://github.com/marmelab/react-admin/pull/4997)) ([fzaninotto](https://github.com/fzaninotto))
+* Add custom theme to ecommerce demo (should be more welcoming to people hostile to material design) ([4948](https://github.com/marmelab/react-admin/pull/4948)) ([fzaninotto](https://github.com/fzaninotto))
+* Add support for `<AutocompleteInput disabled` ([4915](https://github.com/marmelab/react-admin/pull/4915)) ([fancyaction](https://github.com/fancyaction))
+* Update `<BooleanField>` height to match other fields ([4901](https://github.com/marmelab/react-admin/pull/4901)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix incompatibility between `<Datagrid rowClick="toggleSelection">` and `selectable="false"` ([5006](https://github.com/marmelab/react-admin/pull/5006)) ([WiXSL](https://github.com/WiXSL))
+* Fix typing of Field components ([4947](https://github.com/marmelab/react-admin/pull/4947)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v3.6.3
 
 * Fix `<SearchInput>` with label prop renders incorrectly ([4995](https://github.com/marmelab/react-admin/pull/4995)) ([fzaninotto](https://github.com/fzaninotto))
