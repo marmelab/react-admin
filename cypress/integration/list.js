@@ -100,7 +100,10 @@ describe('List Page', () => {
             ListPagePosts.logout();
             LoginPage.login('admin', 'password');
             ListPagePosts.showFilter('title');
-            ListPagePosts.setFilterValue('title', 'quis culpa impedit');
+            ListPagePosts.setFilterValue(
+                'title',
+                'Omnis voluptate enim similique est possimus'
+            );
             cy.contains('1-1 of 1');
 
             cy.get('[href="#/users"]').click();
@@ -108,7 +111,9 @@ describe('List Page', () => {
             cy.get('[href="#/posts"]').click();
 
             cy.get(ListPagePosts.elements.filter('title')).should(el =>
-                expect(el).to.have.value('quis culpa impedit')
+                expect(el).to.have.value(
+                    'Omnis voluptate enim similique est possimus'
+                )
             );
             ListPagePosts.setFilterValue('title', '');
             ListPagePosts.waitUntilDataLoaded();
