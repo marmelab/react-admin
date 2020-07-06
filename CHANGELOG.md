@@ -1,5 +1,15 @@
 # Changelog
 
+## v3.6.3
+
+* Fix `<SearchInput>` with label prop renders incorrectly ([4995](https://github.com/marmelab/react-admin/pull/4995)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<LogoutButton>` should not render as a `<li>` in Mobile menu ([4994](https://github.com/marmelab/react-admin/pull/4994)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `useGetOne()` throws exception when used in `<Dashboard>` ([4990](https://github.com/marmelab/react-admin/pull/4990)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix missing type for `ra.action.unselect` translation message ([4987](https://github.com/marmelab/react-admin/pull/4987)) ([bicstone](https://github.com/bicstone))
+* [Doc] Fix missing documentation about `<AdminContext>` and `<AdminUI>` components to build admins with a dynamic list or resources ([5004](https://github.com/marmelab/react-admin/pull/5004)) ([Luwangel](https://github.com/Luwangel))
+* [Doc] Fix typo in `dataProvider` usage documentation ([5000](https://github.com/marmelab/react-admin/pull/5000)) ([tranln025](https://github.com/tranln025))
+* [Doc] Fix description of react-admin in readme ([4979](https://github.com/marmelab/react-admin/pull/4979)) ([christiaanwesterbeek](https://github.com/christiaanwesterbeek))
+
 ## v3.6.2
 
 * Fix `createAdminStore` warning on SSR and tests ([4970](https://github.com/marmelab/react-admin/pull/4970)) ([hammadj](https://github.com/hammadj))
