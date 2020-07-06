@@ -5,7 +5,6 @@ import List from '@material-ui/core/List';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
 import Collapse from '@material-ui/core/Collapse';
 import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
