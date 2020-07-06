@@ -105,20 +105,12 @@ describe('List Page', () => {
                 'Omnis voluptate enim similique est possimus'
             );
             cy.contains('1-1 of 1');
-
             cy.get('[href="#/users"]').click();
-
             cy.get('[href="#/posts"]').click();
-
             cy.get(ListPagePosts.elements.filter('title')).should(el =>
                 expect(el).to.have.value(
                     'Omnis voluptate enim similique est possimus'
                 )
-            );
-            ListPagePosts.setFilterValue('title', '');
-            ListPagePosts.waitUntilDataLoaded();
-            cy.get(ListPagePosts.elements.filter('title')).should(
-                el => expect(el).to.exist
             );
         });
 
