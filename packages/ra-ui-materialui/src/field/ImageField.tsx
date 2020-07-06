@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FunctionComponent } from 'react';
+import { FC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import { makeStyles } from '@material-ui/core/styles';
@@ -23,13 +23,13 @@ const useStyles = makeStyles(
     { name: 'RaImageField' }
 );
 
-interface Props extends FieldProps {
+export interface ImageFieldProps extends FieldProps, InjectedFieldProps {
     src?: string;
     title?: string;
     classes?: object;
 }
 
-const ImageField: FunctionComponent<Props & InjectedFieldProps> = props => {
+const ImageField: FC<ImageFieldProps> = props => {
     const {
         className,
         classes: classesOverride,

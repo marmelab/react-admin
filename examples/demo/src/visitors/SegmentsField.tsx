@@ -28,6 +28,7 @@ const SegmentsField: FC<FieldProps<Customer>> = ({ record }) => {
 
                     return segment ? (
                         <Chip
+                            size="small"
                             key={segment.id}
                             className={classes.chip}
                             label={translate(segment.name)}

@@ -236,6 +236,7 @@ const Aside: FC = props => {
                         <FilterButton
                             value={{ groups: segment.id }}
                             label={segment.name}
+                            key={segment.id}
                         />
                     ))}
                 </List>

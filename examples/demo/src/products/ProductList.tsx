@@ -66,7 +66,7 @@ const ProductList: FC<ListComponentProps> = props => (
         filters={<ProductFilter />}
         perPage={20}
         pagination={<Pagination rowsPerPageOptions={[10, 20, 40]} />}
-        sort={{ field: 'id', order: 'ASC' }}
+        sort={{ field: 'reference', order: 'ASC' }}
     >
         <GridList />
     </List>

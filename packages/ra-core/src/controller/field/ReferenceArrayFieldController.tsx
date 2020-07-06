@@ -1,23 +1,20 @@
-import { FunctionComponent, ReactNode, ReactElement } from 'react';
+import { FunctionComponent, ReactElement } from 'react';
 
 import useReferenceArrayFieldController from './useReferenceArrayFieldController';
-import { Identifier, RecordMap, Record, Sort } from '../..';
-
-interface ChildrenFuncParams {
-    loaded: boolean;
-    ids: Identifier[];
-    data: RecordMap;
-    referenceBasePath: string;
-    currentSort: Sort;
-}
+import { ListControllerProps } from '../useListController';
+import { Record, Sort } from '../../types';
 
 interface Props {
     basePath: string;
-    children: (params: ChildrenFuncParams) => ReactNode;
+    filter?: any;
+    page?: number;
+    perPage?: number;
     record?: Record;
     reference: string;
     resource: string;
+    sort?: Sort;
     source: string;
+    children: (params: ListControllerProps) => ReactElement<any>;
 }
 
 /**
@@ -25,27 +22,16 @@ interface Props {
  *
  * @see useReferenceArrayFieldController
  */
-const ReferenceArrayFieldController: FunctionComponent<Props> = ({
-    resource,
-    reference,
-    basePath,
-    record,
-    source,
-    children,
-}) => {
-    return children({
-        currentSort: {
+const ReferenceArrayFieldController: FunctionComponent<Props> = props => {
+    const { children, ...rest } = props;
+    const controllerProps = useReferenceArrayFieldController({
+        sort: {
             field: 'id',
             order: 'ASC',
         },
-        ...useReferenceArrayFieldController({
-            resource,
-            reference,
-            basePath,
-            record,
-            source,
-        }),
-    }) as ReactElement<any>;
+        ...rest,
+    });
+    return children(controllerProps);
 };
 
 export default ReferenceArrayFieldController;

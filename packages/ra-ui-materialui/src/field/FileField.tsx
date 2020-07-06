@@ -22,7 +22,7 @@ import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  *     <a href="doc.pdf" title="Presentation">Presentation</a>
  * </div>
  */
-const FileField: FC<FileFieldProps & InjectedFieldProps> = props => {
+const FileField: FC<FileFieldProps> = props => {
     const {
         className,
         classes: classesOverride,
@@ -119,7 +119,7 @@ const useStyles = makeStyles(
     { name: 'RaFileField' }
 );
 
-export interface FileFieldProps extends FieldProps {
+export interface FileFieldProps extends FieldProps, InjectedFieldProps {
     src?: string;
     title?: string;
     target?: string;

@@ -104,6 +104,22 @@ describe('<DatagridRow />', () => {
             expect(onToggleItem.mock.calls.length).toEqual(1);
         });
 
+        it('should not execute the onToggleItem function if the row is not selectable', () => {
+            const onToggleItem = jest.fn();
+            const { getByText } = renderWithRouter(
+                <DatagridRow
+                    {...defaultProps}
+                    selectable={false}
+                    onToggleItem={onToggleItem}
+                    rowClick="toggleSelection"
+                >
+                    <TitleField />
+                </DatagridRow>
+            );
+            fireEvent.click(getByText('hello'));
+            expect(onToggleItem).not.toHaveBeenCalled();
+        });
+
         it('should redirect to the custom path if onRowClick is a string', () => {
             const path = '/foo/bar';
             const { getByText, history } = renderWithRouter(
