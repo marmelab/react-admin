@@ -1,42 +1,23 @@
 import { getStatusForInput as getDataStatus } from './referenceDataStatus';
 import useTranslate from '../../i18n/useTranslate';
-import { SortPayload, Record, PaginationPayload } from '../../types';
+import {
+    FilterPayload,
+    Identifier,
+    PaginationPayload,
+    Record,
+    RecordMap,
+    SortPayload,
+} from '../../types';
 import useReference from '../useReference';
 import useGetMatchingReferences from './useGetMatchingReferences';
 import usePaginationState from '../usePaginationState';
 import { useSortState } from '..';
 import useFilterState from '../useFilterState';
+import useSelectionState from '../useSelectionState';
 
 const defaultReferenceSource = (resource: string, source: string) =>
     `${resource}@${source}`;
 const defaultFilter = {};
-
-export interface ReferenceInputValue {
-    choices: Record[];
-    error?: string;
-    loading: boolean;
-    pagination: PaginationPayload;
-    setFilter: (filter: string) => void;
-    filter: any;
-    setPagination: (pagination: PaginationPayload) => void;
-    setSort: (sort: SortPayload) => void;
-    sort: SortPayload;
-    warning?: string;
-}
-
-interface Option {
-    allowEmpty?: boolean;
-    filter?: any;
-    filterToQuery?: (filter: string) => any;
-    input?: any;
-    perPage?: number;
-    record?: Record;
-    reference: string;
-    referenceSource?: typeof defaultReferenceSource;
-    resource?: string;
-    sort?: SortPayload;
-    source: string;
-}
 
 /**
  * A hook for choosing a reference record. Useful for foreign keys.
@@ -78,7 +59,7 @@ interface Option {
  */
 const useReferenceInputController = ({
     input,
-    perPage = 25,
+    perPage: initialPerPage = 25,
     filter = defaultFilter,
     reference,
     filterToQuery,
@@ -89,18 +70,34 @@ const useReferenceInputController = ({
 }: Option): ReferenceInputValue => {
     const translate = useTranslate();
 
-    const { pagination, setPagination } = usePaginationState({ perPage });
+    const {
+        pagination,
+        setPagination,
+        page,
+        setPage,
+        perPage,
+        setPerPage,
+    } = usePaginationState({ perPage: initialPerPage });
     const { sort, setSort } = useSortState(sortOverride);
-
-    const { filter: filterValue, setFilter } = useFilterState({
+    const { filter: filterValues, setFilter } = useFilterState({
         permanentFilter: filter,
         filterToQuery,
     });
+    const {
+        selectedIds,
+        onSelect,
+        onToggleItem,
+        onUnselectItems,
+    } = useSelectionState();
 
-    const { matchingReferences } = useGetMatchingReferences({
+    const {
+        matchingReferences,
+        loading: possibleValuesLoading,
+        error: possibleValuesError,
+    } = useGetMatchingReferences({
         reference,
         referenceSource,
-        filter: filterValue,
+        filter: filterValues,
         pagination,
         sort,
         resource,
@@ -108,7 +105,12 @@ const useReferenceInputController = ({
         id: input.value,
     });
 
-    const { referenceRecord } = useReference({
+    const {
+        referenceRecord,
+        error: referenceError,
+        loading: referenceLoading,
+        loaded: referenceLoaded,
+    } = useReference({
         id: input.value,
         reference,
     });
@@ -121,10 +123,48 @@ const useReferenceInputController = ({
     });
 
     return {
+        possibleValues: {
+            // should match the ListContext shape
+            data: matchingReferences.reduce((acc, item) => {
+                acc[item.id] = item;
+                return acc;
+            }, {}),
+            ids: matchingReferences.map(item => item.id),
+            // total: ??, <= now that's a problem
+            error: possibleValuesError,
+            // loaded: ??,
+            loading: possibleValuesLoading,
+            page,
+            setPage,
+            perPage,
+            setPerPage,
+            currentSort: sort,
+            setSort,
+            filterValues,
+            setFilter,
+            selectedIds,
+            onSelect,
+            onToggleItem,
+            onUnselectItems,
+            resource,
+        },
+        referenceRecord: {
+            data: referenceRecord,
+            loaded: referenceLoaded,
+            loading: referenceLoading,
+            error: referenceError,
+        },
+        dataStatus: {
+            error: dataStatus.error,
+            loading: dataStatus.waiting,
+            warning: dataStatus.warning,
+        },
         choices: dataStatus.choices,
+        // kept for backwards compatibility
+        // @deprecated to be removed in 4.0
         error: dataStatus.error,
         loading: dataStatus.waiting,
-        filter: filterValue,
+        filter: filterValues,
         setFilter,
         pagination,
         setPagination,
@@ -133,5 +173,62 @@ const useReferenceInputController = ({
         warning: dataStatus.warning,
     };
 };
+
+export interface ReferenceInputValue {
+    possibleValues: {
+        loading: boolean;
+        error?: any;
+        ids: Identifier[];
+        data?: RecordMap;
+        filterValues: FilterPayload;
+        setFilter: (filter: string) => void;
+        page: number;
+        setPage: (page: number) => void;
+        perPage: number;
+        setPerPage: (perPage: number) => void;
+        currentSort: SortPayload;
+        setSort: (sort: SortPayload) => void;
+        selectedIds: Identifier[];
+        onSelect: (ids: Identifier[]) => void;
+        onToggleItem: (id: Identifier) => void;
+        onUnselectItems: () => void;
+        resource: string;
+    };
+    referenceRecord: {
+        data?: Record;
+        loaded: boolean;
+        loading: boolean;
+        error?: any;
+    };
+    dataStatus: {
+        error?: any;
+        loading: boolean;
+        warning?: string;
+    };
+    choices: Record[];
+    error?: string;
+    loading: boolean;
+    pagination: PaginationPayload;
+    setFilter: (filter: string) => void;
+    filter: any;
+    setPagination: (pagination: PaginationPayload) => void;
+    setSort: (sort: SortPayload) => void;
+    sort: SortPayload;
+    warning?: string;
+}
+
+interface Option {
+    allowEmpty?: boolean;
+    filter?: any;
+    filterToQuery?: (filter: string) => any;
+    input?: any;
+    perPage?: number;
+    record?: Record;
+    reference: string;
+    referenceSource?: typeof defaultReferenceSource;
+    resource: string;
+    sort?: SortPayload;
+    source: string;
+}
 
 export default useReferenceInputController;
