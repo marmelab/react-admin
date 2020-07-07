@@ -7,13 +7,8 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import {
-    Card,
-    Avatar,
-    createMuiTheme,
-    makeStyles,
-    Theme,
-} from '@material-ui/core';
+import { Card, Avatar, Theme } from '@material-ui/core';
+import { createMuiTheme, makeStyles } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import LockIcon from '@material-ui/icons/Lock';
 import { StaticContext } from 'react-router';

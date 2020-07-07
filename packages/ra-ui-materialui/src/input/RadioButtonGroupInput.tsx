@@ -2,12 +2,12 @@ import * as React from 'react';
 import { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import {
-    makeStyles,
     FormControl,
     FormHelperText,
     FormLabel,
     RadioGroup,
 } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { RadioGroupProps } from '@material-ui/core/RadioGroup';
 import { FormControlProps } from '@material-ui/core/FormControl';
 import get from 'lodash/get';

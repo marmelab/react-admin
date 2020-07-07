@@ -4,7 +4,7 @@ import Chip from '@material-ui/core/Chip';
 import { useTranslate } from 'react-admin';
 import segments from '../segments/data';
 import { FieldProps, Customer } from '../types';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
     main: {

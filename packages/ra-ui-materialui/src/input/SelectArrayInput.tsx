@@ -8,7 +8,6 @@ import {
 } from 'react';
 import PropTypes from 'prop-types';
 import {
-    makeStyles,
     Select,
     MenuItem,
     InputLabel,
@@ -16,6 +15,7 @@ import {
     FormControl,
     Chip,
 } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import {
     FieldTitle,

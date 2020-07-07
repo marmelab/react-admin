@@ -6,9 +6,9 @@ import {
     Tooltip,
     IconButton,
     useMediaQuery,
-    makeStyles,
     PropTypes as MuiPropTypes,
 } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { ButtonProps as MuiButtonProps } from '@material-ui/core/Button';
 import { Theme } from '@material-ui/core';
 import classnames from 'classnames';
