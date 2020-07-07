@@ -108,7 +108,7 @@ You can customize the `<Create>` and `<Edit>` components using the following pro
 
 ### Page Title
 
-By default, the title for the Create view is "Create [resource_name]", and the title for the Edit view is "Edit [resource_name] #[record_id]".
+By default, the title for the `Create` view is "Create [resource_name]", and the title for the `Edit` view is "Edit [resource_name] #[record_id]".
 
 You can customize this title by specifying a custom `title` prop:
 
@@ -196,11 +196,11 @@ const Aside = ({ record }) => (
 ```
 {% endraw %}
 
-**Tip**: Always test that the `record` is defined before using it, as react-admin starts rendering the UI before the API call is over.
+**Tip**: Always test the `record` is defined before using it, as react-admin starts rendering the UI before the API call is over.
 
 ### Component
 
-By default, the Create and Edit views render the main form inside a material-ui `<Card>` element. The actual layout of the form depends on the `Form` component you're using (`<SimpleForm>`, `<TabbedForm>`, or a custom form component).
+By default, the `Create` and `Edit` views render the main form inside a material-ui `<Card>` element. The actual layout of the form depends on the `Form` component you're using (`<SimpleForm>`, `<TabbedForm>`, or a custom form component).
 
 Some form layouts also use `Card`, in which case the user ends up seeing a card inside a card, which is bad UI. To avoid that, you can override the main form container by passing a `component` prop :
 
@@ -226,7 +226,7 @@ The default value for the `component` prop is `Card`.
 
 By default, the Save and Delete actions are undoable, i.e. react-admin only sends the related request to the data provider after a short delay, during which the user can cancel the action. This is part of the "optimistic rendering" strategy of react-admin ; it makes the user interactions more reactive.
 
-You can disable this behavior by setting `undoable={false}`. With that setting, clicking on the Delete button displays a confirmation dialog. Both the Save and the Delete actions become blocking and delay the refresh of the screen until the data provider responds.
+You can disable this behavior by setting `undoable={false}`. With that setting, clicking on the Delete button displays a confirmation dialog. Both the `Save` and `Delete` actions become blocking and delay the refresh of the screen until the data provider responds.
 
 ```jsx
 const PostEdit = props => (
@@ -533,7 +533,7 @@ In some cases, you may want to customize the view entirely (i.e. keep the code f
 
 ### `useCreateController`
 
-This hook takes one object as input (the props passed to a `<Create>` component) and returns the save callback for the Create view, as well as some pre-computed values. You can use it to create your own custom Create view, like this one:
+This hook takes one object as input (the props passed to a `<Create>` component) and returns the save callback for the `Create` view, as well as some pre-computed values. You can use it to create your own custom `Create` view, like this one:
 
 ```jsx
 import { useCreateController, SimpleForm } from 'react-admin';
@@ -1137,8 +1137,8 @@ At the bottom of the form, the toolbar displays the submit button. You can overr
 
 The most common use case is to display two submit buttons in the `<Create>` view:
 
-- one that creates and redirects to the `<Show>` view of the new resource, and
-- one that redirects to a blank `<Create>` view after creation (allowing bulk creation)
+- One that creates and redirects to the `<Show>` view of the new resource, and
+- One that redirects to a blank `<Create>` view after creation (allowing bulk creation)
 
 ![Form toolbar](./img/form-toolbar.png)
 
@@ -1297,7 +1297,7 @@ export const PostEdit = (props) => (
 
 ### `formClassName`
 
-The input components are wrapped inside a `div` to ensure a good looking form by default. You can pass a `formClassName` prop to the input components to customize the style of this `div`. For example, here is how to display two inputs on the same line:
+The input components are wrapped inside a `div` to ensure a good-looking form by default. You can pass a `formClassName` prop to the input components to customize the style of this `div`. For example, here is how to display two inputs on the same line:
 
 ```jsx
 import * as React from "react";
@@ -1533,7 +1533,7 @@ const defaultSubscription = {
 
 ## Warning About Unsaved Changes
 
-React-admin keeps track of the form state, so it can detect when the user leaves an Edit or Create page with unsaved changes. To avoid data loss, you can use this ability to ask the user to confirm before leaving a page with unsaved changes. 
+React-admin keeps track of the form state, so it can detect when the user leaves an `Edit` or `Create` page with unsaved changes. To avoid data loss, you can use this ability to ask the user to confirm before leaving a page with unsaved changes. 
 
 ![Warn About Unsaved Changes](./img/warn_when_unsaved_changes.png)
 

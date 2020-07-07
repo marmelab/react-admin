@@ -49,7 +49,7 @@ See the [Data Provider](./DataProviders.md#available-providers) page.
 - [ra-customizable-datagrid](https://github.com/fizix-io/ra-customizable-datagrid): plugin that allows to hide / show columns dynamically.
 - [FusionWorks/react-admin-google-maps](https://github.com/FusionWorks/react-admin-google-maps): Input/view components for displaying location using Google Maps.
 - [api-platform/admin](https://api-platform.com/docs/admin): create a fully featured admin using React Admin for API supporting the [Hydra Core Vocabulary](http://www.hydra-cg.com/), including but not limited to APIs created using the [API Platform framework](https://api-platform.com)
-- [zifnab87/ra-component-factory](https://github.com/zifnab87/ra-component-factory): centralized configuration of immutability/visibility of fields/menu-links/action buttons, easy re-ordering of fields/properties and tab reorganization based on permission roles
+- [zifnab87/ra-component-factory](https://github.com/zifnab87/ra-component-factory): a centralized configuration of immutability/visibility of fields/menu-links/action buttons, easy re-ordering of fields/properties and tab reorganization based on permission roles
 - [ctbucha/bs-react-admin](https://github.com/ctbucha/bs-react-admin): [BuckleScript](https://bucklescript.github.io/) bindings for React Admin.
 - [dryhten/ra-resource-aggregator](https://github.com/dryhten/ra-resource-aggregator): Resource aggregator for react-admin. It allows you to edit/create/delete multiple resources in the same view.
 - [Dev XP demo (YouTube)](https://youtu.be/nHkVxDEnB3g): How to make changes to the core React Admin project locally

@@ -145,7 +145,7 @@ export default App;
 
 The `<Admin>` component takes care of defining the store (unless you provide one, as seen above), of setting the Translation and Authentication contexts, and of bootstrapping the Router. In case you need to override any of these, you can use your own component instead of `<Admin>`.
 
-Here is the main code for bootstrapping a barebones react-admin application without `<Admin>`:
+Here is the main code for bootstrapping a barebone react-admin application without `<Admin>`:
 
 ```diff
 // in src/App.js

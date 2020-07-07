@@ -150,7 +150,7 @@ const Aside = ({ record }) => (
 ```
 {% endraw %}
 
-**Tip**: Always test that the `record` is defined before using it, as react-admin starts rendering the UI before the API call is over.
+**Tip**: Always test the `record` is defined before using it, as react-admin starts rendering the UI before the API call is over.
 
 ### Component
 

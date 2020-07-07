@@ -54,7 +54,7 @@ At this point, your component should `mount` without errors and you can unit tes
 
 ## Enabling reducers to ensure actions are dispatched
 
-If your component relies on a a reducer, you can enable reducers using the `enableReducers` prop:
+If your component relies on a reducer, you can enable reducers using the `enableReducers` prop:
 
 ```jsx
 myCustomEditView = mount(

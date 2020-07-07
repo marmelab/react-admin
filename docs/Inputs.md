@@ -211,13 +211,13 @@ const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
 
 ```jsx
 const choices = [
-   { id: 123, first_name: 'Leo', last_name: 'Tolstoi' avatar='/pengouin' },
-   { id: 456, first_name: 'Jane', last_name: 'Austen' avatar='/panda' },
+   { id: 123, first_name: 'Leo', last_name: 'Tolstoi', avatar:'/pengouin' },
+   { id: 456, first_name: 'Jane', last_name: 'Austen', avatar:'/panda' },
 ];
 const OptionRenderer = choice => (
     <span>
         <img src={choice.avatar}>
-        {choice.first_name} {choice.last_name}
+        `${choice.first_name} ${choice.last_name}`
     </span>
 );
 const inputText = choice => `${choice.first_name} ${choice.last_name}`;
@@ -248,7 +248,7 @@ In that case, set the `translateChoice` prop to `false`.
 If you want to limit the initial choices shown to the current value only, you can set the `limitChoicesToValue` prop.
 
 When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set).
-Ex. `<AutocompleteInput shouldRenderSuggestions={(val) => { return val.trim().length > 2 }} />` would not render any suggestions until the 3rd character was entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
+Ex. `<AutocompleteInput shouldRenderSuggestions={(val) => { return val.trim().length > 2 }} />` would not render any suggestions until the 3rd character has been entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
 
 `<AutocompleteInput>` renders a [material-ui `<TextField>` component](https://material-ui.com/api/text-field/). Use the `options` attribute to override any of the `<TextField>` attributes:
 
@@ -270,7 +270,7 @@ import { AutocompleteInput, ReferenceInput } from 'react-admin';
 </ReferenceInput>
 ```
 
-Lastly, would you need to override the props of the suggestions container (a `Popper` element), you can specify them using the `options.suggestionsContainerProps`. For example:
+Lastly, would you need to override the props of the suggestion's container (a `Popper` element), you can specify them using the `options.suggestionsContainerProps`. For example:
 
 {% raw %}
 ```jsx
@@ -355,7 +355,7 @@ However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the 
 ```
 
 When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set).
-Ex. `<AutocompleteArrayInput shouldRenderSuggestions={(val) => { return val.trim().length > 2 }} />` would not render any suggestions until the 3rd character was entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
+Ex. `<AutocompleteArrayInput shouldRenderSuggestions={(val) => { return val.trim().length > 2 }} />` would not render any suggestions until the 3rd character has been entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
 
 Lastly, `<AutocompleteArrayInput>` renders a [material-ui `<TextField>` component](https://material-ui.com/api/text-field/). Use the `options` attribute to override any of the `<TextField>` attributes:
 
@@ -378,7 +378,7 @@ import { AutocompleteArrayInput, ReferenceArrayInput } from 'react-admin';
 </ReferenceArrayInput>
 ```
 
-If you need to override the props of the suggestions container (a `Popper` element), you can specify them using the `options.suggestionsContainerProps`. For example:
+If you need to override the props of the suggestion's container (a `Popper` element), you can specify them using the `options.suggestionsContainerProps`. For example:
 
 {% raw %}
 ```jsx
@@ -427,7 +427,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 
 Refer to [Material UI Switch documentation](https://material-ui.com/api/switch) for more details.
 
-`<NullableBooleanInput />` renders as a dropdown list, allowing to choose between `true`, `false`, and `null` values.
+`<NullableBooleanInput />` renders as a dropdown list, allowing choosing between `true`, `false`, and `null` values.
 
 ```jsx
 import { NullableBooleanInput } from 'react-admin';
@@ -633,7 +633,7 @@ Note that the image upload returns a [File](https://developer.mozilla.org/en/doc
 
 ## `<FileInput>`
 
-`<FileInput>` allows to upload files using [react-dropzone](https://github.com/okonet/react-dropzone).
+`<FileInput>` allows uploading files using [react-dropzone](https://github.com/okonet/react-dropzone).
 
 ![FileInput](./img/file-input.png)
 
@@ -683,7 +683,7 @@ Note that the file upload returns a [File](https://developer.mozilla.org/en/docs
 
 ## `<NumberInput>`
 
-`<NumberInput>` translates to a HTML `<input type="number">`. It is necessary for numeric values because of a [known React bug](https://github.com/facebook/react/issues/1425), which prevents using the more generic [`<TextInput>`](#textinput) in that case.
+`<NumberInput>` translates to an HTML `<input type="number">`. It is necessary for numeric values because of a [known React bug](https://github.com/facebook/react/issues/1425), which prevents using the more generic [`<TextInput>`](#textinput) in that case.
 
 ```jsx
 import { NumberInput } from 'react-admin';
@@ -1434,7 +1434,7 @@ You can find components for react-admin in third-party repositories.
 
 ## Writing Your Own Input Component
 
-If you need a more specific input type, you can write it directly in React. You'll have to rely on react-final-form's [`<Field>`](https://final-form.org/docs/react-final-form/api/Field) component, or its [`useField`](https://final-form.org/docs/react-final-form/api/useField) hook, so as to handle the value update cycle.
+If you need a more specific input type, you can write it directly in React. You'll have to rely on react-final-form's [`<Field>`](https://final-form.org/docs/react-final-form/api/Field) component, or its [`useField`](https://final-form.org/docs/react-final-form/api/useField) hook, to handle the value update cycle.
 
 For instance, let's write a component to edit the latitude and longitude of the current record:
 
@@ -1736,7 +1736,7 @@ const PostEdit = (props) => (
                             getSource, // A function to get the valid source inside an ArrayInput
                             ...rest,
                         }) =>
-                            scopedFormData.name ? (
+                            scopedFormData && scopedFormData.name ? (
                                 <SelectInput
                                     source={getSource('role')} // Will translate to "authors[0].role"
                                     choices={['main', 'coauthor']}
@@ -1754,7 +1754,7 @@ const PostEdit = (props) => (
 
 ## Hiding Inputs Based On Other Inputs
 
-You may want to display or hide inputs base on the value of another input - for instance, show an `email` input only if the `hasEmail` boolean input is ticked to `true`.
+You may want to display or hide inputs base on the value of another input - for instance, show an `email` input only if the `hasEmail` boolean input has been ticked to `true`.
 
 For such cases, you can use the approach described above, using the `<FormDataConsumer>` component.
 
