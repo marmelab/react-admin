@@ -1,4 +1,6 @@
 import lodashMemoize from 'lodash/memoize';
+import format from 'date-fns/format';
+import isString from 'lodash/isString';
 
 /* eslint-disable no-underscore-dangle */
 /* @link http://stackoverflow.com/questions/46155/validate-email-address-in-javascript */
@@ -177,6 +179,64 @@ export const maxValue = memoize(
         !isEmpty(value) && value > max
             ? getMessage(message, { max }, value, values)
             : undefined
+);
+
+/**
+ * Minimal Date validator
+ *
+ * Returns an error if the value is before the parameter date
+ *
+ * @param {string} min
+ * @param {string|function} message
+ *
+ * @example
+ *
+ * const fooValidators = [minDate(new Date(), 'Should be after today')];
+ * <DateInput name="foo" validate={fooValidators} />
+ */
+export const minDate = memoize(
+    (min, message = 'ra.validation.minDate', formatString = 'yyyy-MM-dd') => (
+        value,
+        values
+    ) => {
+        return !isEmpty(value) && new Date(value) < new Date(min)
+            ? getMessage(
+                  message,
+                  { min: format(new Date(min), formatString) },
+                  value,
+                  values
+              )
+            : undefined;
+    }
+);
+
+/**
+ * Maximum Date validator
+ *
+ * Returns an error if the value is after the parameter date
+ *
+ * @param {string} max
+ * @param {string|function} message
+ *
+ * @example
+ *
+ * const fooValidators = [maxDate(new Date(), 'Should be before today')];
+ * <DateInput name="foo" validate={fooValidators} />
+ */
+export const maxDate = memoize(
+    (max, message = 'ra.validation.maxDate', formatString = 'yyyy-MM-dd') => (
+        value,
+        values
+    ) => {
+        return !isEmpty(value) && new Date(value) > new Date(max)
+            ? getMessage(
+                  message,
+                  { max: format(new Date(max), formatString) },
+                  value,
+                  values
+              )
+            : undefined;
+    }
 );
 
 /**
