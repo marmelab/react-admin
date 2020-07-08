@@ -185,7 +185,7 @@ export const PostList = props => (
 ```
 {% endraw %}
 
-Furthermore, you may extract this highlighting strategy into an Higher Order Component if you'd like to reuse it for other components as well:
+Furthermore, you may extract this highlighting strategy into a Higher Order Component if you'd like to reuse it for other components as well:
 
 {% raw %}
 ```jsx
@@ -310,7 +310,7 @@ const App = () => (
 
 ## Writing a Custom Theme
 
-If you need more fine tuning, you'll need to write your own `theme` object, following [Material UI themes documentation](https://material-ui.com/customization/themes/). Material UI merges custom theme objects with the default theme.
+If you need more fine-tuning, you'll need to write your own `theme` object, following [Material UI themes documentation](https://material-ui.com/customization/themes/). Material UI merges custom theme objects with the default theme.
 
 ```jsx
 import { createMuiTheme } from '@material-ui/core/styles';

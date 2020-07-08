@@ -487,7 +487,7 @@ You can also disable it completely along with the `/login` route by passing `fal
 
 See The [Authentication documentation](./Authentication.md#customizing-the-login-and-logout-components) for more details.
 
-**Tip**: Before considering to write your own login page component, please take a look at how to change the default [background image](./Theming.md#using-a-custom-login-page) or the [Material UI theme](#theme). See the [Authentication documentation](./Authentication.md#customizing-the-login-and-logout-components) for more details.
+**Tip**: Before considering writing your own login page component, please take a look at how to change the default [background image](./Theming.md#using-a-custom-login-page) or the [Material UI theme](#theme). See the [Authentication documentation](./Authentication.md#customizing-the-login-and-logout-components) for more details.
 
 ## `logoutButton`
 

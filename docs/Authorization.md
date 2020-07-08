@@ -5,7 +5,7 @@ title: "Authorization"
 
 # Authorization
 
-Some applications may require fine grained permissions to enable or disable access to certain features. Since there are many different possible strategies (single role, multiple roles or rights, ACLs, etc.), react-admin simply provides hooks to execute your own authorization code.
+Some applications may require fine-grained permissions to enable or disable access to certain features. Since there are many possible strategies (single role, multiple roles or rights, ACLs, etc.), react-admin simply provides hooks to execute your own authorization code.
 
 By default, a react-admin app doesn't check authorization. However, if needed, it will rely on the `authProvider` introduced in the [Authentication documentation](./Authentication.md) to do so. You should read that chapter first.
 

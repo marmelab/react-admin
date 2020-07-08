@@ -76,7 +76,7 @@ For instance, if the end-user displays a list of posts, then clicks on a post in
 2. Call `dataProvider.getList('posts')`, and store the result in the Redux store
 3. Re-render the List with the data from the Redux store
 4. When the user clicks on a post, display immediately the post from the Redux store (optimistic rendering)
-5. Check that the post of id 123 is still valid, and as it's the case, end here
+5. Check the post of id 123 is still valid, and as it's the case, end here
 
 The application cache uses the semantics of the `dataProvider` verb. That means that requests for a list (`getList`) also populate the cache for individual records (`getOne`, `getMany`). That also means that write requests (`create`, `udpate`, `updateMany`, `delete`, `deleteMany`) invalidate the list cache - because after an update, for instance, the ordering of items can be changed.
 
@@ -145,7 +145,7 @@ const cacheDataProviderProxy = (dataProvider, duration =  5 * 60 * 1000) =>
 export default cacheDataProviderProxy(dataProvider);
 ```
 
-**Tip**: As caching responses for a fixed period of time is a common pattern, react-admin exports this `cacheDataProviderProxy` wrapper, so you can write the following instead:
+**Tip**: As caching responses for a fixed period is a common pattern, react-admin exports this `cacheDataProviderProxy` wrapper, so you can write the following instead:
 
 ```jsx
 // in src/dataProvider.js

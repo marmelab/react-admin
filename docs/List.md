@@ -846,7 +846,7 @@ The component passed as `filters` should know how to render differently accordin
 That's the case of the react-admin `<Filter>` component: 
 
 - `<Filter context="form">` renders an inline form based on its children which must be `<Input>` components
-- `<Filter context="button">` renders a dropdown allowing to enable filters based on the `source` prop of its children. 
+- `<Filter context="button">` renders a dropdown allowing enabling filters based on the `source` prop of its children. 
 
 ```jsx
 const PostFilter = (props) => (
