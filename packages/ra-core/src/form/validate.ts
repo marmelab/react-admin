@@ -185,8 +185,9 @@ export const maxValue = memoize(
  *
  * Returns an error if the value is before the parameter date
  *
- * @param {string} min
+ * @param {date} min
  * @param {string|function} message
+ * @param {string} formatString
  *
  * @example
  *
@@ -194,7 +195,7 @@ export const maxValue = memoize(
  * <DateInput name="foo" validate={fooValidators} />
  */
 export const minDate = memoize(
-    (min, message = 'ra.validation.minDate', formatString = 'yyyy-MM-dd') => (
+    (min, message = 'ra.validation.minDate', formatString = 'YYYY-MM-DD') => (
         value,
         values
     ) => {
@@ -214,8 +215,9 @@ export const minDate = memoize(
  *
  * Returns an error if the value is after the parameter date
  *
- * @param {string} max
+ * @param {date} max
  * @param {string|function} message
+ * @param {string} formatString
  *
  * @example
  *
@@ -223,7 +225,7 @@ export const minDate = memoize(
  * <DateInput name="foo" validate={fooValidators} />
  */
 export const maxDate = memoize(
-    (max, message = 'ra.validation.maxDate', formatString = 'yyyy-MM-dd') => (
+    (max, message = 'ra.validation.maxDate', formatString = 'YYYY-MM-DD') => (
         value,
         values
     ) => {
