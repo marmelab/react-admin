@@ -150,6 +150,18 @@ const customFrenchMessages: TranslationMessages = {
                 description: 'Description',
                 reviews: 'Commentaires',
             },
+            filters: {
+                categories: 'Catégories',
+                stock: 'Stock',
+                no_stock: 'En rupture',
+                low_stock: 'Stock bas',
+                enough_stock: 'Normal',
+                sales: 'Ventes',
+                best_sellers: 'Meilleures ventes',
+                average_sellers: 'Moyennes',
+                low_sellers: 'Peu vendu',
+                never_sold: 'Jamais vendu',
+            },
         },
         categories: {
             name: 'Catégorie |||| Catégories',

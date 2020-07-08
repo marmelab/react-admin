@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FC } from 'react';
-import Chip from '@material-ui/core/Chip';
+import { Chip, useMediaQuery, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { InputProps } from 'ra-core';
 import {
@@ -13,8 +13,10 @@ import {
     SelectInput,
     useTranslate,
 } from 'react-admin';
+
 import { FilterProps, ListComponentProps } from '../types';
 import GridList from './GridList';
+import Aside from './Aside';
 
 const useQuickFilterStyles = makeStyles(theme => ({
     root: {
@@ -60,16 +62,24 @@ export const ProductFilter: FC<FilterProps<FilterParams>> = props => (
     </Filter>
 );
 
-const ProductList: FC<ListComponentProps> = props => (
-    <List
-        {...props}
-        filters={<ProductFilter />}
-        perPage={20}
-        pagination={<Pagination rowsPerPageOptions={[10, 20, 40]} />}
-        sort={{ field: 'reference', order: 'ASC' }}
-    >
-        <GridList />
-    </List>
+const Container: FC = ({ children }) => (
+    <div style={{ width: 'calc(100% - 16em)' }}>{children}</div>
 );
 
+const ProductList: FC<ListComponentProps> = props => {
+    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
+    return (
+        <List
+            {...props}
+            filters={isSmall ? <ProductFilter /> : null}
+            aside={isSmall ? null : <Aside />}
+            perPage={20}
+            pagination={<Pagination rowsPerPageOptions={[10, 20, 40]} />}
+            sort={{ field: 'reference', order: 'ASC' }}
+            component={Container}
+        >
+            <GridList />
+        </List>
+    );
+};
 export default ProductList;

@@ -136,6 +136,18 @@ const customEnglishMessages: TranslationMessages = {
                 description: 'Description',
                 reviews: 'Reviews',
             },
+            filters: {
+                categories: 'Categories',
+                stock: 'Stock',
+                no_stock: 'Empty',
+                low_stock: 'Low',
+                enough_stock: 'Normal',
+                sales: 'Sales',
+                best_sellers: 'Best sellers',
+                average_sellers: 'Average',
+                low_sellers: 'Low',
+                never_sold: 'Never sold',
+            },
         },
         categories: {
             name: 'Category |||| Categories',

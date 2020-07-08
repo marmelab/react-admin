@@ -12,11 +12,7 @@ import { DatagridProps, Product } from '../types';
 import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        margin: '-2px',
-    },
     gridList: {
-        width: '100%',
         margin: 0,
     },
     tileBar: {
@@ -53,20 +49,18 @@ const LoadingGridList: FC<GridProps & { nbItems?: number }> = ({
 }) => {
     const classes = useStyles();
     return (
-        <div className={classes.root}>
-            <MuiGridList
-                cellHeight={180}
-                cols={getColsForWidth(width)}
-                className={classes.gridList}
-            >
-                {' '}
-                {times(nbItems, key => (
-                    <GridListTile key={key}>
-                        <div className={classes.placeholder} />
-                    </GridListTile>
-                ))}
-            </MuiGridList>
-        </div>
+        <MuiGridList
+            cellHeight={180}
+            cols={getColsForWidth(width)}
+            className={classes.gridList}
+        >
+            {' '}
+            {times(nbItems, key => (
+                <GridListTile key={key}>
+                    <div className={classes.placeholder} />
+                </GridListTile>
+            ))}
+        </MuiGridList>
     );
 };
 
@@ -76,43 +70,41 @@ const LoadedGridList: FC<GridProps> = ({ ids, data, basePath, width }) => {
     if (!ids || !data) return null;
 
     return (
-        <div className={classes.root}>
-            <MuiGridList
-                cellHeight={180}
-                cols={getColsForWidth(width)}
-                className={classes.gridList}
-            >
-                {ids.map(id => (
-                    <GridListTile
-                        // @ts-ignore
-                        component={Link}
-                        key={id}
-                        to={linkToRecord(basePath, data[id].id)}
-                    >
-                        <img src={data[id].thumbnail} alt="" />
-                        <GridListTileBar
-                            className={classes.tileBar}
-                            title={data[id].reference}
-                            subtitle={
-                                <span>
-                                    {data[id].width}x{data[id].height},{' '}
-                                    <NumberField
-                                        className={classes.price}
-                                        source="price"
-                                        record={data[id]}
-                                        color="inherit"
-                                        options={{
-                                            style: 'currency',
-                                            currency: 'USD',
-                                        }}
-                                    />
-                                </span>
-                            }
-                        />
-                    </GridListTile>
-                ))}
-            </MuiGridList>
-        </div>
+        <MuiGridList
+            cellHeight={180}
+            cols={getColsForWidth(width)}
+            className={classes.gridList}
+        >
+            {ids.map(id => (
+                <GridListTile
+                    // @ts-ignore
+                    component={Link}
+                    key={id}
+                    to={linkToRecord(basePath, data[id].id)}
+                >
+                    <img src={data[id].thumbnail} alt="" />
+                    <GridListTileBar
+                        className={classes.tileBar}
+                        title={data[id].reference}
+                        subtitle={
+                            <span>
+                                {data[id].width}x{data[id].height},{' '}
+                                <NumberField
+                                    className={classes.price}
+                                    source="price"
+                                    record={data[id]}
+                                    color="inherit"
+                                    options={{
+                                        style: 'currency',
+                                        currency: 'USD',
+                                    }}
+                                />
+                            </span>
+                        }
+                    />
+                </GridListTile>
+            ))}
+        </MuiGridList>
     );
 };
 

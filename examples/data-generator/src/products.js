@@ -195,9 +195,10 @@ export default db => {
                         (index + 1) +
                         '.jpeg',
                     description: lorem.paragraph(),
-                    stock: weightedBoolean(20)
+                    stock: weightedBoolean(10)
                         ? 0
-                        : random.number({ min: 0, max: 250 }),
+                        : random.number({ min: 0, max: 150 }),
+                    sales: 0,
                 };
             }),
         ],

@@ -124,6 +124,11 @@ const ProductEdit: FC<EditComponentProps> = props => {
                         className={classes.stock}
                         validate={requiredValidate}
                     />
+                    <NumberInput
+                        source="sales"
+                        className={classes.stock}
+                        validate={requiredValidate}
+                    />
                 </FormTab>
                 <FormTab
                     label="resources.products.tabs.description"

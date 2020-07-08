@@ -175,7 +175,7 @@ const FilterListItem: FC<{ label: string; value: any }> = props => {
             className={classes.listItem}
         >
             <ListItemText
-                primary={translate(label)}
+                primary={translate(label, { _: label })}
                 className={classes.listItemText}
             />
             {isSelected && (
