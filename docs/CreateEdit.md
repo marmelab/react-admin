@@ -919,6 +919,8 @@ Alternatively, you can specify a `validate` prop directly in `<Input>` component
 * `required(message)` if the field is mandatory,
 * `minValue(min, message)` to specify a minimum value for integers,
 * `maxValue(max, message)` to specify a maximum value for integers,
+* `minDate(min, message)` to specify a minimum value for date,
+* `maxDate(max, message)` to specify a maximum value for date,
 * `minLength(min, message)` to specify a minimum length for strings,
 * `maxLength(max, message)` to specify a maximum length for strings,
 * `number(message)` to check that the input is a valid number,
@@ -935,6 +937,7 @@ import {
     maxLength,
     minValue,
     maxValue,
+    minDate,
     number,
     regex,
     email,
@@ -946,6 +949,7 @@ const validateEmail = email();
 const validateAge = [number(), minValue(18)];
 const validateZipCode = regex(/^\d{5}$/, 'Must be a valid Zip Code');
 const validateSex = choices(['m', 'f'], 'Must be Male or Female');
+const validateDate = [minDate(new Date())];
 
 export const UserCreate = (props) => (
     <Create {...props}>
@@ -958,6 +962,7 @@ export const UserCreate = (props) => (
                 { id: 'm', name: 'Male' },
                 { id: 'f', name: 'Female' },
             ]} validate={validateSex}/>
+            <DateInput label="Birthdate" source="birthdate" validate={validateDate} />
         </SimpleForm>
     </Create>
 );
