@@ -108,11 +108,17 @@ const Aside: FC = props => {
                 >
                     <FilterListItem
                         label="ra.boolean.true"
-                        value={{ has_ordered: true }}
+                        value={{
+                            nb_commands_gte: 1,
+                            nb_commands_lte: undefined,
+                        }}
                     />
                     <FilterListItem
                         label="ra.boolean.false"
-                        value={{ has_ordered: false }}
+                        value={{
+                            nb_commands_gte: undefined,
+                            nb_commands_lte: 0,
+                        }}
                     />
                 </FilterList>
 
