@@ -1,6 +1,5 @@
 import lodashMemoize from 'lodash/memoize';
 import format from 'date-fns/format';
-import isString from 'lodash/isString';
 
 /* eslint-disable no-underscore-dangle */
 /* @link http://stackoverflow.com/questions/46155/validate-email-address-in-javascript */
