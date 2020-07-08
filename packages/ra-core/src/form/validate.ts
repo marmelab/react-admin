@@ -198,16 +198,15 @@ export const minDate = memoize(
     (min, message = 'ra.validation.minDate', formatString = 'YYYY-MM-DD') => (
         value,
         values
-    ) => {
-        return !isEmpty(value) && new Date(value) < new Date(min)
+    ) =>
+        !isEmpty(value) && new Date(value) < new Date(min)
             ? getMessage(
                   message,
                   { min: format(new Date(min), formatString) },
                   value,
                   values
               )
-            : undefined;
-    }
+            : undefined
 );
 
 /**
@@ -228,16 +227,15 @@ export const maxDate = memoize(
     (max, message = 'ra.validation.maxDate', formatString = 'YYYY-MM-DD') => (
         value,
         values
-    ) => {
-        return !isEmpty(value) && new Date(value) > new Date(max)
+    ) =>
+        !isEmpty(value) && new Date(value) > new Date(max)
             ? getMessage(
                   message,
                   { max: format(new Date(max), formatString) },
                   value,
                   values
               )
-            : undefined;
-    }
+            : undefined
 );
 
 /**
