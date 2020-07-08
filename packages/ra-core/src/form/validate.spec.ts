@@ -205,7 +205,7 @@ describe('Validators', () => {
             });
         });
     });
-    describe.only('minDate', () => {
+    describe('minDate', () => {
         const nowDate = new Date();
         it('should return undefined if the value is empty', () => {
             test(minDate(nowDate), [undefined, '', null], undefined);
@@ -214,6 +214,7 @@ describe('Validators', () => {
             test(
                 minDate(nowDate),
                 [
+                    nowDate,
                     addDays(nowDate, 1),
                     addHours(nowDate, 1),
                     addMinutes(nowDate, 1),
@@ -248,29 +249,44 @@ describe('Validators', () => {
         });
     });
     describe('maxDate', () => {
+        const nowDate = new Date();
         it('should return undefined if the value is empty', () => {
-            test(maxDate(5), [undefined, '', null], undefined);
+            test(maxDate(nowDate), [undefined, '', null], undefined);
         });
-        it('should return undefined if the value is equal or less than the given maximum', () => {
-            test(maxDate(5), [5, 4, 4.5, '4'], undefined);
-        });
-        it('should return an error message if the value is higher than the given maximum', () => {
-            test(maxDate(10), [11, 10.5, '11'], 'ra.validation.maxDate');
-        });
-        it('should return undefined if the value is 0', () => {
-            test(maxDate(10), [0], undefined);
-        });
-        it('should allow message to be a callback', () => {
-            const message = jest.fn(() => 'ra.validation.maxDate');
+        it('should return undefined if the value is equal or before the given maximum date', () => {
             test(
-                maxDate(10, message),
-                [11, 10.5, '11'],
+                maxDate(nowDate),
+                [
+                    nowDate,
+                    subDays(nowDate, 1),
+                    subHours(nowDate, 1),
+                    subMinutes(nowDate, 1),
+                ],
+                undefined
+            );
+        });
+        it('should return an error message if the value is after the given maximum date', () => {
+            test(
+                maxDate(nowDate),
+                [
+                    addDays(nowDate, 1),
+                    addHours(nowDate, 1),
+                    addMinutes(nowDate, 1),
+                ],
                 'ra.validation.maxDate'
             );
-            expect(message).toHaveBeenCalledTimes(3);
+        });
+        it('should show message with date format string', () => {
+            const message = jest.fn(() => 'ra.validation.maxDate');
+            test(
+                maxDate(nowDate, message, 'yyyy.MM.dd'),
+                [addDays(nowDate, 1)],
+                'ra.validation.maxDate'
+            );
+            expect(message).toHaveBeenCalledTimes(1);
             expect(message).toHaveBeenLastCalledWith({
-                args: { max: 10 },
-                value: '11',
+                args: { max: format(nowDate, 'yyyy.MM.dd') },
+                value: addDays(nowDate, 1),
                 values: null,
             });
         });
