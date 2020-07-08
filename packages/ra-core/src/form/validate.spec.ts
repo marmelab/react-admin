@@ -1,13 +1,5 @@
 import expect from 'expect';
-import {
-    addDays,
-    addHours,
-    addMinutes,
-    subDays,
-    subHours,
-    subMinutes,
-    format,
-} from 'date-fns';
+import format from 'date-fns/format';
 
 import {
     required,
@@ -208,29 +200,31 @@ describe('Validators', () => {
         });
     });
     describe('minDate', () => {
-        const nowDate = new Date();
+        const baseDate = new Date(1996, 1 /* Feb */, 24, 12);
         it('should return undefined if the value is empty', () => {
-            test(minDate(nowDate), [undefined, '', null], undefined);
+            test(minDate(baseDate), [undefined, '', null], undefined);
         });
         it('should return undefined if the value is equal or after the given minimal date', () => {
             test(
-                minDate(nowDate),
+                minDate(baseDate),
                 [
-                    nowDate,
-                    addDays(nowDate, 1),
-                    addHours(nowDate, 1),
-                    addMinutes(nowDate, 1),
+                    baseDate,
+                    new Date(1996, 1, 24, 13),
+                    new Date(1996, 1, 25),
+                    new Date(1996, 2 /* Mar */, 24),
+                    new Date(1997, 1, 24),
                 ],
                 undefined
             );
         });
         it('should return an error message if the value is before the given minimal date', () => {
             test(
-                minDate(nowDate),
+                minDate(baseDate),
                 [
-                    subDays(nowDate, 1),
-                    subHours(nowDate, 1),
-                    subMinutes(nowDate, 1),
+                    new Date(1996, 1, 24, 11),
+                    new Date(1996, 1, 23),
+                    new Date(1996, 0 /* Jan */, 24),
+                    new Date(1995, 1, 24),
                 ],
                 'ra.validation.minDate'
             );
@@ -238,42 +232,44 @@ describe('Validators', () => {
         it('should show message with date format string', () => {
             const message = jest.fn(() => 'ra.validation.minDate');
             test(
-                minDate(nowDate, message, 'yyyy.MM.dd'),
-                [subDays(nowDate, 1)],
+                minDate(baseDate, message, 'yyyy.MM.dd'),
+                [new Date(1996, 1, 23)],
                 'ra.validation.minDate'
             );
             expect(message).toHaveBeenCalledTimes(1);
             expect(message).toHaveBeenLastCalledWith({
-                args: { min: format(nowDate, 'yyyy.MM.dd') },
-                value: subDays(nowDate, 1),
+                args: { min: format(baseDate, 'yyyy.MM.dd') },
+                value: new Date(1996, 1, 23),
                 values: null,
             });
         });
     });
     describe('maxDate', () => {
-        const nowDate = new Date();
+        const baseDate = new Date(1996, 1 /* Feb */, 24, 12);
         it('should return undefined if the value is empty', () => {
-            test(maxDate(nowDate), [undefined, '', null], undefined);
+            test(maxDate(baseDate), [undefined, '', null], undefined);
         });
         it('should return undefined if the value is equal or before the given maximum date', () => {
             test(
-                maxDate(nowDate),
+                maxDate(baseDate),
                 [
-                    nowDate,
-                    subDays(nowDate, 1),
-                    subHours(nowDate, 1),
-                    subMinutes(nowDate, 1),
+                    baseDate,
+                    new Date(1996, 1, 24, 11),
+                    new Date(1996, 1, 23),
+                    new Date(1996, 0 /* Jan */, 24),
+                    new Date(1995, 1, 24),
                 ],
                 undefined
             );
         });
         it('should return an error message if the value is after the given maximum date', () => {
             test(
-                maxDate(nowDate),
+                maxDate(baseDate),
                 [
-                    addDays(nowDate, 1),
-                    addHours(nowDate, 1),
-                    addMinutes(nowDate, 1),
+                    new Date(1996, 1, 24, 13),
+                    new Date(1996, 1, 25),
+                    new Date(1996, 2 /* Mar */, 24),
+                    new Date(1997, 1, 24),
                 ],
                 'ra.validation.maxDate'
             );
@@ -281,14 +277,14 @@ describe('Validators', () => {
         it('should show message with date format string', () => {
             const message = jest.fn(() => 'ra.validation.maxDate');
             test(
-                maxDate(nowDate, message, 'yyyy.MM.dd'),
-                [addDays(nowDate, 1)],
+                maxDate(baseDate, message, 'yyyy.MM.dd'),
+                [new Date(1996, 1, 25)],
                 'ra.validation.maxDate'
             );
             expect(message).toHaveBeenCalledTimes(1);
             expect(message).toHaveBeenLastCalledWith({
-                args: { max: format(nowDate, 'yyyy.MM.dd') },
-                value: addDays(nowDate, 1),
+                args: { max: format(baseDate, 'yyyy.MM.dd') },
+                value: new Date(1996, 1, 25),
                 values: null,
             });
         });
