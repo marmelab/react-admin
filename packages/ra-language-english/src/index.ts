@@ -133,6 +133,8 @@ const englishMessages: TranslationMessages = {
             maxLength: 'Must be %{max} characters or less',
             minValue: 'Must be at least %{min}',
             maxValue: 'Must be %{max} or less',
+            minDate: 'Must be equal or after %{min}',
+            maxDate: 'Must be equal or before %{max}',
             number: 'Must be a number',
             email: 'Must be a valid email',
             oneOf: 'Must be one of: %{options}',

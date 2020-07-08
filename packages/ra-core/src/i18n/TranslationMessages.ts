@@ -136,6 +136,8 @@ export interface TranslationMessages extends StringMap {
             maxLength: string;
             minValue: string;
             maxValue: string;
+            minDate: string;
+            maxDate: string;
             number: string;
             email: string;
             oneOf: string;
