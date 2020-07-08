@@ -1,11 +1,13 @@
 import expect from 'expect';
-import addDays from 'date-fns/add_days';
-import addHours from 'date-fns/add_hours';
-import addMinutes from 'date-fns/add_minutes';
-import subDays from 'date-fns/sub_days';
-import subHours from 'date-fns/sub_hours';
-import subMinutes from 'date-fns/sub_minutes';
-import format from 'date-fns/format';
+import {
+    addDays,
+    addHours,
+    addMinutes,
+    subDays,
+    subHours,
+    subMinutes,
+    format,
+} from 'date-fns';
 
 import {
     required,
