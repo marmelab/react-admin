@@ -1,4 +1,11 @@
 import expect from 'expect';
+import addDays from 'date-fns/add_days';
+import addHours from 'date-fns/add_hours';
+import addMinutes from 'date-fns/add_minutes';
+import subDays from 'date-fns/sub_days';
+import subHours from 'date-fns/sub_hours';
+import subMinutes from 'date-fns/sub_minutes';
+import format from 'date-fns/format';
 
 import {
     required,
@@ -6,6 +13,8 @@ import {
     maxLength,
     minValue,
     maxValue,
+    minDate,
+    maxDate,
     number,
     regex,
     email,
@@ -187,6 +196,76 @@ describe('Validators', () => {
                 maxValue(10, message),
                 [11, 10.5, '11'],
                 'ra.validation.maxValue'
+            );
+            expect(message).toHaveBeenCalledTimes(3);
+            expect(message).toHaveBeenLastCalledWith({
+                args: { max: 10 },
+                value: '11',
+                values: null,
+            });
+        });
+    });
+    describe.only('minDate', () => {
+        const nowDate = new Date();
+        it('should return undefined if the value is empty', () => {
+            test(minDate(nowDate), [undefined, '', null], undefined);
+        });
+        it('should return undefined if the value is equal or after the given minimal date', () => {
+            test(
+                minDate(nowDate),
+                [
+                    addDays(nowDate, 1),
+                    addHours(nowDate, 1),
+                    addMinutes(nowDate, 1),
+                ],
+                undefined
+            );
+        });
+        it('should return an error message if the value is before the given minimal date', () => {
+            test(
+                minDate(nowDate),
+                [
+                    subDays(nowDate, 1),
+                    subHours(nowDate, 1),
+                    subMinutes(nowDate, 1),
+                ],
+                'ra.validation.minDate'
+            );
+        });
+        it('should show message with date format string', () => {
+            const message = jest.fn(() => 'ra.validation.minDate');
+            test(
+                minDate(nowDate, message, 'yyyy.MM.dd'),
+                [subDays(nowDate, 1)],
+                'ra.validation.minDate'
+            );
+            expect(message).toHaveBeenCalledTimes(1);
+            expect(message).toHaveBeenLastCalledWith({
+                args: { min: format(nowDate, 'yyyy.MM.dd') },
+                value: subDays(nowDate, 1),
+                values: null,
+            });
+        });
+    });
+    describe('maxDate', () => {
+        it('should return undefined if the value is empty', () => {
+            test(maxDate(5), [undefined, '', null], undefined);
+        });
+        it('should return undefined if the value is equal or less than the given maximum', () => {
+            test(maxDate(5), [5, 4, 4.5, '4'], undefined);
+        });
+        it('should return an error message if the value is higher than the given maximum', () => {
+            test(maxDate(10), [11, 10.5, '11'], 'ra.validation.maxDate');
+        });
+        it('should return undefined if the value is 0', () => {
+            test(maxDate(10), [0], undefined);
+        });
+        it('should allow message to be a callback', () => {
+            const message = jest.fn(() => 'ra.validation.maxDate');
+            test(
+                maxDate(10, message),
+                [11, 10.5, '11'],
+                'ra.validation.maxDate'
             );
             expect(message).toHaveBeenCalledTimes(3);
             expect(message).toHaveBeenLastCalledWith({
