@@ -138,6 +138,8 @@ const frenchMessages: TranslationMessages = {
             maxLength: 'Maximum %{max} caractères',
             minValue: 'Minimum %{min}',
             maxValue: 'Maximum %{max}',
+            minDate: 'Minimum %{min} date',
+            maxDate: 'Maximum %{max} date',
             number: 'Doit être un nombre',
             email: 'Doit être un email',
             oneOf: 'Doit être au choix: %{options}',
