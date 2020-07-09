@@ -81,27 +81,35 @@ const Aside: FC = () => {
                     icon={<BarChartIcon />}
                 >
                     <FilterListItem
-                        label="resources.products.filters.enough_stock"
+                        label="resources.products.filters.no_stock"
                         value={{
-                            stock_lte: undefined,
-                            stock_gt: 10,
-                            stock: undefined,
+                            stock_lt: undefined,
+                            stock_gt: undefined,
+                            stock: 0,
                         }}
                     />
                     <FilterListItem
                         label="resources.products.filters.low_stock"
                         value={{
-                            stock_lte: 10,
+                            stock_lt: 10,
                             stock_gt: 0,
                             stock: undefined,
                         }}
                     />
                     <FilterListItem
-                        label="resources.products.filters.no_stock"
+                        label="resources.products.filters.average_stock"
                         value={{
-                            stock_lte: undefined,
-                            stock_gt: undefined,
-                            stock: 0,
+                            stock_lt: 50,
+                            stock_gt: 9,
+                            stock: undefined,
+                        }}
+                    />
+                    <FilterListItem
+                        label="resources.products.filters.enough_stock"
+                        value={{
+                            stock_lt: undefined,
+                            stock_gt: 49,
+                            stock: undefined,
                         }}
                     />
                 </FilterList>

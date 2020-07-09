@@ -140,9 +140,10 @@ const customEnglishMessages: TranslationMessages = {
             filters: {
                 categories: 'Categories',
                 stock: 'Stock',
-                no_stock: 'Empty',
-                low_stock: 'Low',
-                enough_stock: 'Normal',
+                no_stock: 'Out of stock',
+                low_stock: '1 - 9 items',
+                average_stock: '10 - 49 items',
+                enough_stock: '50 items & more',
                 sales: 'Sales',
                 best_sellers: 'Best sellers',
                 average_sellers: 'Average',

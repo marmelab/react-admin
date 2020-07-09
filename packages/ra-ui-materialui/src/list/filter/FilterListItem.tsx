@@ -180,8 +180,8 @@ const FilterListItem: FC<{ label: string; value: any }> = props => {
             />
             {isSelected && (
                 <ListItemSecondaryAction>
-                    <IconButton size="small">
-                        <CancelIcon onClick={toggleFilter} />
+                    <IconButton size="small" onClick={toggleFilter}>
+                        <CancelIcon />
                     </IconButton>
                 </ListItemSecondaryAction>
             )}
