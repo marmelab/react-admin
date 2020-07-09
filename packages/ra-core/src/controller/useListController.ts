@@ -12,6 +12,7 @@ import { useTranslate } from '../i18n';
 import { SORT_ASC } from '../reducer/admin/resource/list/queryReducer';
 import { CRUD_GET_LIST } from '../actions';
 import { useNotify } from '../sideEffect';
+import defaultExporter from '../export/defaultExporter';
 import {
     Filter,
     Sort,
@@ -104,7 +105,7 @@ const useListController = <RecordType = Record>(
 
     const {
         basePath,
-        exporter,
+        exporter = defaultExporter,
         resource,
         hasCreate,
         filterDefaultValues,
