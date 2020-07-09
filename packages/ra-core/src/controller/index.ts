@@ -3,6 +3,7 @@ import EditController from './EditController';
 import ListController from './ListController';
 import ListContext from './ListContext';
 import ListFilterContext from './ListFilterContext';
+import ListPaginationContext from './ListPaginationContext';
 import ListSortContext from './ListSortContext';
 import ListBase from './ListBase';
 import ShowController from './ShowController';
@@ -28,8 +29,9 @@ import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import useListParams from './useListParams';
 import useSelectionState from './useSelectionState';
 import ListContextProvider from './ListContextProvider';
-import useListSortContext from './useListSortContext';
 import useListFilterContext from './useListFilterContext';
+import useListPaginationContext from './useListPaginationContext';
+import useListSortContext from './useListSortContext';
 
 export {
     getListControllerProps,
@@ -40,6 +42,7 @@ export {
     ListController,
     ListContext,
     ListFilterContext,
+    ListPaginationContext,
     ListSortContext,
     ListContextProvider,
     ShowController,
@@ -58,6 +61,7 @@ export {
     useSortState,
     useListContext,
     useListFilterContext,
+    useListPaginationContext,
     useListSortContext,
     useListParams,
     ListControllerProps,

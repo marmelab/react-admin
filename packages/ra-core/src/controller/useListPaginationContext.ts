@@ -1,6 +1,8 @@
 import { useContext } from 'react';
 
-import ListSortContext, { ListSortContextValue } from './ListSortContext';
+import ListPaginationContext, {
+    ListPaginationContextValue,
+} from './ListPaginationContext';
 
 /**
  * Hook to read the list controller props from the ListContext.
@@ -8,19 +10,22 @@ import ListSortContext, { ListSortContextValue } from './ListSortContext';
  * Must be used within a <ListContextProvider> (e.g. as a descendent of <List>
  * or <ListBase>).
  *
- * @typedef {Object} ListSortContextValue
- * @prop {Object}   currentSort a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
- * @prop {Function} setSort a callback to change the sort, e.g. setSort('name', 'ASC')
+ * @typedef {Object} ListPaginationContextValue
+ * @prop {integer}  total the total number of results for the current filters, excluding pagination. Useful to build the pagination controls. e.g. 23
+ * @prop {integer}  page the current page. Starts at 1
+ * @prop {Function} setPage a callback to change the page, e.g. setPage(3)
+ * @prop {integer}  perPage the number of results per page. Defaults to 25
+ * @prop {Function} setPerPage a callback to change the number of results per page, e.g. setPerPage(25)
  *
- * @returns {ListSortContextValue} list controller props
+ * @returns {ListPaginationContextValue} list controller props
  *
  * @see useListController for how it is filled
  */
-const useListSortContext = (props?: any): ListSortContextValue => {
-    const context = useContext(ListSortContext);
-    if (!context.setSort) {
+const useListPaginationContext = (props?: any): ListPaginationContextValue => {
+    const context = useContext(ListPaginationContext);
+    if (!context.setPage) {
         /**
-         * The element isn't inside a <ListSortContext.Provider>
+         * The element isn't inside a <ListPaginationContext.Provider>
          *
          * This may only happen when using Datagrid / SimpleList / SingleFieldList components
          * outside of a List / ReferenceManyField / ReferenceArrayField -
@@ -39,4 +44,4 @@ const useListSortContext = (props?: any): ListSortContextValue => {
     return context;
 };
 
-export default useListSortContext;
+export default useListPaginationContext;

@@ -3,10 +3,10 @@ import pick from 'lodash/pick';
 import { ListControllerProps } from './useListController';
 
 /**
- * Context to store the result of the useListController() hook.
+ * Context to store the sort part of the useListController() result.
  *
  * Use the useListSortContext() hook to read the context. That's what many
- * List components do in react-admn (e.g. <Datagrid>, <Filter>, <Pagination>).
+ * List components do in react-admn (e.g. <SortButton>).
  *
  * @typedef {Object} ListSortContextValue
  * @prop {Object}   currentSort a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }

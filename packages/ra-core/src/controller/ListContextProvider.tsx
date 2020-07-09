@@ -2,6 +2,9 @@ import * as React from 'react';
 import ListContext from './ListContext';
 import ListFilterContext, { usePickFilterContext } from './ListFilterContext';
 import ListSortContext, { usePickSortContext } from './ListSortContext';
+import ListPaginationContext, {
+    usePickPaginationContext,
+} from './ListPaginationContext';
 
 /**
  * Create a List Context and several thematic List subcontext.
@@ -34,7 +37,11 @@ const ListContextProvider = ({ value, children }) => (
     <ListContext.Provider value={value}>
         <ListFilterContext.Provider value={usePickFilterContext(value)}>
             <ListSortContext.Provider value={usePickSortContext(value)}>
-                {children}
+                <ListPaginationContext.Provider
+                    value={usePickPaginationContext(value)}
+                >
+                    {children}
+                </ListPaginationContext.Provider>
             </ListSortContext.Provider>
         </ListFilterContext.Provider>
     </ListContext.Provider>

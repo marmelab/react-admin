@@ -3,7 +3,7 @@ import pick from 'lodash/pick';
 import { ListControllerProps } from './useListController';
 
 /**
- * Context to store the result of the useListController() hook related to filters.
+ * Context to store the filter part of the useListController() result.
  *
  * Use the useListFilterContext() hook to read the context. That's what many
  * List components do in react-admn (e.g. <Filter>, <FilterListItem>).

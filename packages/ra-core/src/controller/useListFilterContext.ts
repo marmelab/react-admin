@@ -5,7 +5,7 @@ import ListFilterContext, { ListFilterContextValue } from './ListFilterContext';
 /**
  * Hook to read the list controller props from the ListContext.
  *
- * Must be used within a <ListContext.Provider> (e.g. as a descendent of <List>
+ * Must be used within a <ListContextProvider> (e.g. as a descendent of <List>
  * or <ListBase>).
  *
  * @typedef {Object} ListFilterContextValue
@@ -34,7 +34,7 @@ const useListFilterContext = (props?: any): ListFilterContextValue => {
          */
         if (process.env.NODE_ENV !== 'production') {
             console.log(
-                "List components must be used inside a <ListContext.Provider>. Relying on props rather than context to get List data and callbacks is deprecated and won't be supported in the next major version of react-admin."
+                "List components must be used inside a <ListContextProvider>. Relying on props rather than context to get List data and callbacks is deprecated and won't be supported in the next major version of react-admin."
             );
         }
         return props;

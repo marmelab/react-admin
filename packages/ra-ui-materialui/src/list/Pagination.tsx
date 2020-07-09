@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 import {
     useTranslate,
-    useListContext,
+    useListPaginationContext,
     sanitizeListRestProps,
     ComponentPropType,
 } from 'ra-core';
@@ -29,7 +29,7 @@ const Pagination: FC<PaginationProps> = props => {
         total,
         setPage,
         setPerPage,
-    } = useListContext(props);
+    } = useListPaginationContext(props);
     useEffect(() => {
         if (page < 1 || isNaN(page)) {
             setPage(1);
