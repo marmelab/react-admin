@@ -12,7 +12,7 @@ import {
 import SortIcon from '@material-ui/icons/Sort';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { shallowEqual } from 'react-redux';
-import { useListContext, useTranslate } from 'ra-core';
+import { useListSortContext, useTranslate } from 'ra-core';
 import { Labeled } from '../input';
 
 /**
@@ -44,7 +44,7 @@ const SortButton: FC<{ fields: string[]; label?: string }> = ({
     fields,
     label = 'ra.sort.sort_by',
 }) => {
-    const { currentSort, setSort } = useListContext();
+    const { currentSort, setSort } = useListSortContext();
     const translate = useTranslate();
     const isXSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('xs')

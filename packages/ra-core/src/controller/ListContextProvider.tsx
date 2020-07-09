@@ -1,6 +1,7 @@
 import * as React from 'react';
 import ListContext from './ListContext';
 import ListFilterContext, { usePickFilterContext } from './ListFilterContext';
+import ListSortContext, { usePickSortContext } from './ListSortContext';
 
 /**
  * Create a List Context and several thematic List subcontext.
@@ -32,7 +33,9 @@ import ListFilterContext, { usePickFilterContext } from './ListFilterContext';
 const ListContextProvider = ({ value, children }) => (
     <ListContext.Provider value={value}>
         <ListFilterContext.Provider value={usePickFilterContext(value)}>
-            {children}
+            <ListSortContext.Provider value={usePickSortContext(value)}>
+                {children}
+            </ListSortContext.Provider>
         </ListFilterContext.Provider>
     </ListContext.Provider>
 );

@@ -2,6 +2,8 @@ import CreateController from './CreateController';
 import EditController from './EditController';
 import ListController from './ListController';
 import ListContext from './ListContext';
+import ListFilterContext from './ListFilterContext';
+import ListSortContext from './ListSortContext';
 import ListBase from './ListBase';
 import ShowController from './ShowController';
 import useRecordSelection from './useRecordSelection';
@@ -26,6 +28,7 @@ import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import useListParams from './useListParams';
 import useSelectionState from './useSelectionState';
 import ListContextProvider from './ListContextProvider';
+import useListSortContext from './useListSortContext';
 import useListFilterContext from './useListFilterContext';
 
 export {
@@ -36,6 +39,8 @@ export {
     ListBase,
     ListController,
     ListContext,
+    ListFilterContext,
+    ListSortContext,
     ListContextProvider,
     ShowController,
     useCheckMinimumRequiredProps,
@@ -53,6 +58,7 @@ export {
     useSortState,
     useListContext,
     useListFilterContext,
+    useListSortContext,
     useListParams,
     ListControllerProps,
     EditControllerProps,
