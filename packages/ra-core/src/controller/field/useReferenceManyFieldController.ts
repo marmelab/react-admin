@@ -160,7 +160,7 @@ const useReferenceManyFieldController = ({
         referenceId,
         { page, perPage },
         sort,
-        filter,
+        filterValues,
         resource,
         {
             onFailure: error =>
