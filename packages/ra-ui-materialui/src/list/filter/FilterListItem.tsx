@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import {
     IconButton,
     ListItem,
@@ -8,7 +8,8 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import CancelIcon from '@material-ui/icons/CancelOutlined';
-import { useTranslate, useListContext } from 'ra-core';
+import { useTranslate, useListFilterContext } from 'ra-core';
+import { shallowEqual } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
     listItem: {
@@ -142,7 +143,7 @@ const useStyles = makeStyles(theme => ({
  */
 const FilterListItem: FC<{ label: string; value: any }> = props => {
     const { label, value } = props;
-    const { filterValues, setFilters } = useListContext();
+    const { filterValues, setFilters } = useListFilterContext();
     const translate = useTranslate();
     const classes = useStyles(props);
 
@@ -189,4 +190,8 @@ const FilterListItem: FC<{ label: string; value: any }> = props => {
     );
 };
 
-export default FilterListItem;
+const arePropsEqual = (prevProps, nextProps) =>
+    prevProps.label === nextProps.label &&
+    shallowEqual(prevProps.value, nextProps.value);
+
+export default memo(FilterListItem, arePropsEqual);

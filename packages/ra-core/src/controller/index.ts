@@ -25,6 +25,8 @@ import useReference, { UseReferenceProps } from './useReference';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import useListParams from './useListParams';
 import useSelectionState from './useSelectionState';
+import ListContextProvider from './ListContextProvider';
+import useListFilterContext from './useListFilterContext';
 
 export {
     getListControllerProps,
@@ -34,6 +36,7 @@ export {
     ListBase,
     ListController,
     ListContext,
+    ListContextProvider,
     ShowController,
     useCheckMinimumRequiredProps,
     useListController,
@@ -49,6 +52,7 @@ export {
     useSelectionState,
     useSortState,
     useListContext,
+    useListFilterContext,
     useListParams,
     ListControllerProps,
     EditControllerProps,

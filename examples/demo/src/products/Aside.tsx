@@ -15,7 +15,6 @@ import {
 const useStyles = makeStyles(theme => ({
     root: {
         [theme.breakpoints.up('sm')]: {
-            order: -1,
             width: '15em',
             marginRight: '1em',
             overflow: 'initial',

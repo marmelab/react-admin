@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { FC, ChangeEvent } from 'react';
+import { FC, ChangeEvent, memo } from 'react';
 import { InputAdornment } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { Form } from 'react-final-form';
-import { useTranslate, useListContext } from 'react-admin';
+import { useTranslate, useListFilterContext } from 'ra-core';
 
 import TextInput from '../../input/TextInput';
 
@@ -24,15 +24,15 @@ import TextInput from '../../input/TextInput';
  */
 const FilterLiveSearch: FC<{ source: string }> = props => {
     const { source = 'q', ...rest } = props;
-    const { filterValues, setFilters } = useListContext();
+    const { filterValues, setFilters } = useListFilterContext();
     const translate = useTranslate();
 
     const onSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target) {
-            setFilters({ ...filterValues, [source]: event.target.value });
+            setFilters({ ...filterValues, [source]: event.target.value }, null);
         } else {
             const { [source]: _, ...filters } = filterValues;
-            setFilters(filters);
+            setFilters(filters, null);
         }
     };
 
@@ -61,4 +61,4 @@ const FilterLiveSearch: FC<{ source: string }> = props => {
     );
 };
 
-export default FilterLiveSearch;
+export default memo(FilterLiveSearch);

@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { Chip, useMediaQuery, Theme } from '@material-ui/core';
+import { Box, Chip, useMediaQuery, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { InputProps } from 'ra-core';
 import {
     Filter,
-    List,
+    ListBase,
     NumberInput,
     Pagination,
     ReferenceInput,
@@ -66,33 +66,38 @@ export const ProductFilter: FC<FilterProps<FilterParams>> = props => (
     </Filter>
 );
 
-const Container: FC = ({ children }) => (
-    <div style={{ width: 'calc(100% - 16em)' }}>{children}</div>
-);
-
-const ListActions: FC<any> = props => (
+const ListActions: FC<any> = ({ isSmall }) => (
     <TopToolbar>
+        {isSmall && <ProductFilter context="button" />}
         <SortButton fields={['reference', 'sales', 'stock']} />
-        <CreateButton basePath={props.basePath} />
-        <ExportButton exporter={props.exporter} />
+        <CreateButton basePath="/products" />
+        <ExportButton />
     </TopToolbar>
 );
 
 const ProductList: FC<ListComponentProps> = props => {
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
     return (
-        <List
-            {...props}
+        <ListBase
             filters={isSmall ? <ProductFilter /> : null}
-            aside={isSmall ? null : <Aside />}
             perPage={20}
-            pagination={<Pagination rowsPerPageOptions={[10, 20, 40]} />}
             sort={{ field: 'reference', order: 'ASC' }}
-            actions={<ListActions />}
-            component={Container}
+            {...props}
         >
-            <GridList />
-        </List>
+            <ListActions isSmall={isSmall} />
+            {isSmall && (
+                <Box m={1}>
+                    <ProductFilter context="form" />
+                </Box>
+            )}
+            <Box display="flex">
+                <Aside />
+                <Box width={isSmall ? 'auto' : 'calc(100% - 16em)'}>
+                    <GridList />
+                    <Pagination rowsPerPageOptions={[10, 20, 40]} />
+                </Box>
+            </Box>
+        </ListBase>
     );
 };
 export default ProductList;

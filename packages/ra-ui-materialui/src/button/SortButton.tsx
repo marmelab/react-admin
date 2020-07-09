@@ -1,9 +1,19 @@
 import * as React from 'react';
-import { FC } from 'react';
-import { Button, Menu, MenuItem } from '@material-ui/core';
+import { FC, memo } from 'react';
+import {
+    Button,
+    Menu,
+    MenuItem,
+    Tooltip,
+    IconButton,
+    useMediaQuery,
+    Theme,
+} from '@material-ui/core';
 import SortIcon from '@material-ui/icons/Sort';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import { shallowEqual } from 'react-redux';
 import { useListContext, useTranslate } from 'ra-core';
+import { Labeled } from '../input';
 
 /**
  * A button allowing to change the sort field and order.
@@ -26,13 +36,19 @@ import { useListContext, useTranslate } from 'ra-core';
  *     <TopToolbar>
  *         <SortButton fields={['reference', 'sales', 'stock']} />
  *         <CreateButton basePath={props.basePath} />
- *         <ExportButton exporter={props.exporter} />
+ *         <ExportButton />
  *     </TopToolbar>
  * );
  */
-const SortButton: FC<{ fields: string[] }> = ({ fields }) => {
+const SortButton: FC<{ fields: string[]; label?: string }> = ({
+    fields,
+    label = 'ra.sort.sort_by',
+}) => {
     const { currentSort, setSort } = useListContext();
     const translate = useTranslate();
+    const isXSmall = useMediaQuery((theme: Theme) =>
+        theme.breakpoints.down('xs')
+    );
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -55,24 +71,37 @@ const SortButton: FC<{ fields: string[] }> = ({ fields }) => {
         setAnchorEl(null);
     };
 
+    const buttonLabel = translate(label, {
+        field: translate(`resources.products.fields.${currentSort.field}`),
+        order: translate(`ra.sort.${currentSort.order}`),
+        _: label,
+    });
+
     return (
         <>
-            <Button
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-                color="primary"
-                onClick={handleClick}
-                startIcon={<SortIcon />}
-                endIcon={<ArrowDropDownIcon />}
-                size="small"
-            >
-                {translate('ra.sort.sort_by', {
-                    field: translate(
-                        `resources.products.fields.${currentSort.field}`
-                    ),
-                    order: translate(`ra.sort.${currentSort.order}`),
-                })}
-            </Button>
+            {isXSmall ? (
+                <Tooltip title={buttonLabel}>
+                    <IconButton
+                        aria-label={buttonLabel}
+                        color="primary"
+                        onClick={handleClick}
+                    >
+                        <SortIcon />
+                    </IconButton>
+                </Tooltip>
+            ) : (
+                <Button
+                    aria-controls="simple-menu"
+                    aria-haspopup="true"
+                    color="primary"
+                    onClick={handleClick}
+                    startIcon={<SortIcon />}
+                    endIcon={<ArrowDropDownIcon />}
+                    size="small"
+                >
+                    {buttonLabel}
+                </Button>
+            )}
             <Menu
                 id="simple-menu"
                 anchorEl={anchorEl}
@@ -103,4 +132,7 @@ const SortButton: FC<{ fields: string[] }> = ({ fields }) => {
 
 const inverseOrder = (sort: string) => (sort === 'ASC' ? 'DESC' : 'ASC');
 
-export default SortButton;
+const arePropsEqual = (prevProps, nextProps) =>
+    shallowEqual(prevProps.fields, nextProps.fields);
+
+export default memo(SortButton, arePropsEqual);
