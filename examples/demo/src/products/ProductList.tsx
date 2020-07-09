@@ -11,10 +11,14 @@ import {
     ReferenceInput,
     SearchInput,
     SelectInput,
+    TopToolbar,
+    CreateButton,
+    ExportButton,
     useTranslate,
 } from 'react-admin';
 
 import { FilterProps, ListComponentProps } from '../types';
+import SortButton from './SortButton';
 import GridList from './GridList';
 import Aside from './Aside';
 
@@ -66,6 +70,14 @@ const Container: FC = ({ children }) => (
     <div style={{ width: 'calc(100% - 16em)' }}>{children}</div>
 );
 
+const ListActions: FC = props => (
+    <TopToolbar {...props}>
+        <SortButton />
+        <CreateButton />
+        <ExportButton />
+    </TopToolbar>
+);
+
 const ProductList: FC<ListComponentProps> = props => {
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
     return (
@@ -76,6 +88,7 @@ const ProductList: FC<ListComponentProps> = props => {
             perPage={20}
             pagination={<Pagination rowsPerPageOptions={[10, 20, 40]} />}
             sort={{ field: 'reference', order: 'ASC' }}
+            actions={<ListActions />}
             component={Container}
         >
             <GridList />
