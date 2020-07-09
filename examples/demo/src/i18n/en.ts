@@ -123,6 +123,7 @@ const customEnglishMessages: TranslationMessages = {
                 image: 'Image',
                 price: 'Price',
                 reference: 'Reference',
+                sales: 'Sales',
                 stock_lte: 'Low Stock',
                 stock: 'Stock',
                 thumbnail: 'Thumbnail',

@@ -106,6 +106,11 @@ export interface TranslationMessages extends StringMap {
             next: string;
             prev: string;
         };
+        sort: {
+            sort_by: string;
+            ASC: string;
+            DESC: string;
+        };
         auth: {
             [key: string]: StringMap | string;
             auth_check_error: string;

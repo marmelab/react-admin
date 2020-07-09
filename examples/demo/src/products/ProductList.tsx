@@ -14,11 +14,11 @@ import {
     TopToolbar,
     CreateButton,
     ExportButton,
+    SortButton,
     useTranslate,
 } from 'react-admin';
 
 import { FilterProps, ListComponentProps } from '../types';
-import SortButton from './SortButton';
 import GridList from './GridList';
 import Aside from './Aside';
 
@@ -70,11 +70,11 @@ const Container: FC = ({ children }) => (
     <div style={{ width: 'calc(100% - 16em)' }}>{children}</div>
 );
 
-const ListActions: FC = props => (
-    <TopToolbar {...props}>
-        <SortButton />
-        <CreateButton />
-        <ExportButton />
+const ListActions: FC<any> = props => (
+    <TopToolbar>
+        <SortButton fields={['reference', 'sales', 'stock']} />
+        <CreateButton basePath={props.basePath} />
+        <ExportButton exporter={props.exporter} />
     </TopToolbar>
 );
 

@@ -28,6 +28,7 @@ const ExportButton: FunctionComponent<ExportButtonProps> = props => {
         resource,
         currentSort,
         exporter: exporterFromContext,
+        total,
     } = useListContext(props);
     const exporter = customExporter || exporterFromContext;
     const dataProvider = useDataProvider();
@@ -75,6 +76,7 @@ const ExportButton: FunctionComponent<ExportButtonProps> = props => {
         <Button
             onClick={handleClick}
             label={label}
+            disabled={total === 0}
             {...sanitizeRestProps(rest)}
         >
             {icon}
@@ -112,7 +114,7 @@ ExportButton.propTypes = {
     filterValues: PropTypes.object,
     label: PropTypes.string,
     maxResults: PropTypes.number,
-    resource: PropTypes.string.isRequired,
+    resource: PropTypes.string,
     sort: PropTypes.exact({
         field: PropTypes.string,
         order: PropTypes.string,

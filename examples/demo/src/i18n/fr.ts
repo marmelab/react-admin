@@ -137,6 +137,7 @@ const customFrenchMessages: TranslationMessages = {
                 image: 'Photo',
                 price: 'Prix',
                 reference: 'Référence',
+                sales: 'Ventes',
                 stock_lte: 'Stock faible',
                 stock: 'Stock',
                 thumbnail: 'Aperçu',
