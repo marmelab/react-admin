@@ -1,5 +1,18 @@
 # Changelog
 
+## v3.7.1
+
+* Fix `<ExportButton>` fails to export data when using default exporter ([5032](https://github.com/marmelab/react-admin/pull/5032)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<ReferenceManyField>` does not pass the right `resource` to its children ([5029](https://github.com/marmelab/react-admin/pull/5029)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `setFilter` fails on `<ReferenceManyField>` ([5025](https://github.com/marmelab/react-admin/pull/5025)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<CreateButton>` does not update when `to` prop changes ([5014](https://github.com/marmelab/react-admin/pull/5014)) ([rkfg](https://github.com/rkfg))
+* Fix import errors when tree-shaking @material-ui ([4983](https://github.com/marmelab/react-admin/pull/4983)) ([rassie](https://github.com/rassie))
+* Add data and auth providers for AWS Amplify ([5011](https://github.com/marmelab/react-admin/pull/5011)) ([MrHertal](https://github.com/MrHertal))
+* [Doc] Fix unused import in `<EditButton>` usage example ([5033](https://github.com/marmelab/react-admin/pull/5033)) ([jpetitcolas](https://github.com/jpetitcolas))
+* [Doc] Fix typo in auth code index comment ([5019](https://github.com/marmelab/react-admin/pull/5019)) ([damner](https://github.com/damner))
+* [Doc] Fix many grammar errors and typos in documentation ([5017](https://github.com/marmelab/react-admin/pull/5017)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix typo in `ra-data-simple-rest` documentation ([5013](https://github.com/marmelab/react-admin/pull/5013)) ([thekevinbrown](https://github.com/thekevinbrown))
+
 ## v3.7.0
 
 * Add `useListContext()`, which greatly simplifies the development of custom `<List>` views ([4952](https://github.com/marmelab/react-admin/pull/4952)) ([fzaninotto](https://github.com/fzaninotto))
