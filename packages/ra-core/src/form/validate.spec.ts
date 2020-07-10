@@ -1,5 +1,4 @@
 import expect from 'expect';
-import format from 'date-fns/format';
 
 import {
     required,
@@ -229,17 +228,48 @@ describe('Validators', () => {
                 'ra.validation.minDate'
             );
         });
-        it('should show message with date format string', () => {
+        it('should show message with formatted date', () => {
             const message = jest.fn(() => 'ra.validation.minDate');
+            const pastDate = new Date(1996, 1, 23);
             test(
-                minDate(baseDate, message, 'yyyy.MM.dd'),
-                [new Date(1996, 1, 23)],
+                minDate(baseDate, message),
+                [pastDate],
                 'ra.validation.minDate'
             );
             expect(message).toHaveBeenCalledTimes(1);
             expect(message).toHaveBeenLastCalledWith({
-                args: { min: format(baseDate, 'yyyy.MM.dd') },
-                value: new Date(1996, 1, 23),
+                args: {
+                    min: new Intl.DateTimeFormat(navigator.language).format(
+                        baseDate
+                    ),
+                },
+                value: pastDate,
+                values: null,
+            });
+        });
+        it('should show message with formatted date with options', () => {
+            const message = jest.fn(() => 'ra.validation.minDate');
+            const pastDate = new Date(1996, 1, 23);
+            const options = {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+            };
+            test(
+                minDate(baseDate, message, options),
+                [pastDate],
+                'ra.validation.minDate'
+            );
+            expect(message).toHaveBeenLastCalledWith({
+                args: {
+                    min: new Intl.DateTimeFormat(
+                        navigator.language,
+                        options
+                    ).format(baseDate),
+                },
+                value: pastDate,
                 values: null,
             });
         });
@@ -276,15 +306,46 @@ describe('Validators', () => {
         });
         it('should show message with date format string', () => {
             const message = jest.fn(() => 'ra.validation.maxDate');
+            const futureDate = new Date(1996, 1, 25);
             test(
-                maxDate(baseDate, message, 'yyyy.MM.dd'),
-                [new Date(1996, 1, 25)],
+                maxDate(baseDate, message),
+                [futureDate],
                 'ra.validation.maxDate'
             );
             expect(message).toHaveBeenCalledTimes(1);
             expect(message).toHaveBeenLastCalledWith({
-                args: { max: format(baseDate, 'yyyy.MM.dd') },
-                value: new Date(1996, 1, 25),
+                args: {
+                    max: new Intl.DateTimeFormat(navigator.language).format(
+                        baseDate
+                    ),
+                },
+                value: futureDate,
+                values: null,
+            });
+        });
+        it('should show message with formatted date with options', () => {
+            const message = jest.fn(() => 'ra.validation.maxDate');
+            const futureDate = new Date(1996, 1, 25);
+            const options = {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+            };
+            test(
+                maxDate(baseDate, message, options),
+                [futureDate],
+                'ra.validation.maxDate'
+            );
+            expect(message).toHaveBeenLastCalledWith({
+                args: {
+                    max: new Intl.DateTimeFormat(
+                        navigator.language,
+                        options
+                    ).format(baseDate),
+                },
+                value: futureDate,
                 values: null,
             });
         });
