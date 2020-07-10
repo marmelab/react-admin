@@ -9,7 +9,7 @@ built with [Apollo](http://www.apollodata.com/)
 
 This is a very low level library which is not meant to be used directly unless you really want full control or are building a custom GraphQL data provider.
 
-It provides the foundations for other GraphQL data provider packages such as `ra-data-graphcool` or `ra-data-graphql-simple`
+It provides the foundations for other GraphQL data provider packages such as `ra-data-graphql-simple`
 
 ## About GraphQL and Apollo
 

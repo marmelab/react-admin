@@ -63,7 +63,6 @@
     // "references": [
     //     { "path": "./packages/ra-core" },
     //     { "path": "./packages/ra-data-fakerest" },
-    //     { "path": "./packages/ra-data-graphcool" },
     //     { "path": "./packages/ra-data-graphql" },
     //     { "path": "./packages/ra-data-graphql-simple" },
     //     { "path": "./packages/ra-data-json-server" },
