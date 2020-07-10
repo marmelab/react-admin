@@ -139,7 +139,7 @@ const frenchMessages: TranslationMessages = {
             minValue: 'Minimum %{min}',
             maxValue: 'Maximum %{max}',
             minDate: 'Au plus tôt %{min}',
-            maxDate: 'Maximum %{max} date',
+            maxDate: 'Au plus tard %{max}',
             number: 'Doit être un nombre',
             email: 'Doit être un email',
             oneOf: 'Doit être au choix: %{options}',
