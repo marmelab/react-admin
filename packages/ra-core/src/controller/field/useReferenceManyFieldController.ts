@@ -191,7 +191,7 @@ const useReferenceManyFieldController = ({
         onUnselectItems,
         page,
         perPage,
-        resource,
+        resource: reference,
         selectedIds,
         setFilters,
         setPage,
