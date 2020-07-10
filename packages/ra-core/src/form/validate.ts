@@ -1,5 +1,4 @@
 import lodashMemoize from 'lodash/memoize';
-import format from 'date-fns/format';
 
 /* eslint-disable no-underscore-dangle */
 /* @link http://stackoverflow.com/questions/46155/validate-email-address-in-javascript */
@@ -187,7 +186,7 @@ export const maxValue = memoize(
  *
  * @param {date} min
  * @param {string|function} message
- * @param {string} formatString
+ * @param {object} formatOptions
  *
  * @example
  *
@@ -195,16 +194,22 @@ export const maxValue = memoize(
  * <DateInput name="foo" validate={fooValidators} />
  */
 export const minDate = memoize(
-    (min, message = 'ra.validation.minDate', formatString = 'YYYY-MM-DD') => (
+    (min, message = 'ra.validation.minDate', formatOptions = {}) => (
         value,
         values
     ) => {
-        const inputValue = new Date(value);
-        inputValue.setSeconds(0);
-        return !isEmpty(value) && inputValue < new Date(min)
+        const input = new Date(value);
+        input.setSeconds(0);
+
+        return !isEmpty(value) && input < new Date(min)
             ? getMessage(
                   message,
-                  { min: format(new Date(min), formatString) },
+                  {
+                      min: new Intl.DateTimeFormat(
+                          navigator.language,
+                          formatOptions
+                      ).format(new Date(min)),
+                  },
                   value,
                   values
               )
@@ -219,7 +224,7 @@ export const minDate = memoize(
  *
  * @param {date} max
  * @param {string|function} message
- * @param {string} formatString
+ * @param {object} formatOptions
  *
  * @example
  *
@@ -227,16 +232,21 @@ export const minDate = memoize(
  * <DateInput name="foo" validate={fooValidators} />
  */
 export const maxDate = memoize(
-    (max, message = 'ra.validation.maxDate', formatString = 'YYYY-MM-DD') => (
+    (max, message = 'ra.validation.maxDate', formatOptions = {}) => (
         value,
         values
     ) => {
-        const inputValue = new Date(value);
-        inputValue.setSeconds(0);
-        return !isEmpty(value) && inputValue > new Date(max)
+        const input = new Date(value);
+        input.setSeconds(0);
+        return !isEmpty(value) && input > new Date(max)
             ? getMessage(
                   message,
-                  { max: format(new Date(max), formatString) },
+                  {
+                      max: new Intl.DateTimeFormat(
+                          navigator.language,
+                          formatOptions
+                      ).format(new Date(max)),
+                  },
                   value,
                   values
               )
