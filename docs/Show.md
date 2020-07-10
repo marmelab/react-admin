@@ -41,7 +41,7 @@ export default App;
 
 // in src/posts.js
 import * as React from "react";
-import { Show, SimpleShowLayout, TextField, DateField, EditButton, RichTextField } from 'react-admin';
+import { Show, SimpleShowLayout, TextField, DateField, RichTextField } from 'react-admin';
 
 export const PostShow = (props) => (
     <Show {...props}>
