@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Drawer, makeStyles, useMediaQuery } from '@material-ui/core';
 import lodashGet from 'lodash/get';
-import { setSidebarVisibility } from 'ra-core';
+import { setSidebarVisibility, ReduxState } from 'ra-core';
+import { ClassesOverride, Theme } from '../types';
 
 export const DRAWER_WIDTH = 240;
 export const CLOSED_DRAWER_WIDTH = 55;
@@ -15,7 +16,7 @@ const useStyles = makeStyles(
             position: 'relative',
             height: 'auto',
             overflowX: 'hidden',
-            width: props =>
+            width: (props: SidebarProps & { open?: boolean }) =>
                 props.open
                     ? lodashGet(theme, 'sidebar.width', DRAWER_WIDTH)
                     : lodashGet(
@@ -46,7 +47,7 @@ const useStyles = makeStyles(
     { name: 'RaSidebar' }
 );
 
-const Sidebar = props => {
+const Sidebar: React.FC<SidebarProps> = props => {
     const {
         children,
         closedSize,
@@ -54,11 +55,23 @@ const Sidebar = props => {
         classes: classesOverride,
         ...rest
     } = props;
+
+    if (
+        process.env.NODE_ENV !== 'production' &&
+        (closedSize !== undefined || size !== undefined)
+    ) {
+        console.warn(
+            'DEPRECATED: "closedSize" and "size" have been deprecated in 3.0 - https://github.com/marmelab/react-admin/blob/master/UPGRADE.md#the-sidebar-width-must-be-set-through-the-theme'
+        );
+    }
+
     const dispatch = useDispatch();
-    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
-    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
-    const open = useSelector(state => state.admin.ui.sidebarOpen);
-    useSelector(state => state.locale); // force redraw on locale change
+    const isXSmall = useMediaQuery<Theme>(theme =>
+        theme.breakpoints.down('xs')
+    );
+    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
+    const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
+    useSelector((state: ReduxState) => state.locale); // force redraw on locale change
     const handleClose = () => dispatch(setSidebarVisibility(false));
     const toggleSidebar = () => dispatch(setSidebarVisibility(!open));
     const classes = useStyles({ ...props, open });
@@ -105,6 +118,13 @@ const Sidebar = props => {
         </Drawer>
     );
 };
+
+interface SidebarProps {
+    children: React.ReactNode;
+    classes: ClassesOverride<typeof useStyles>;
+    closedSize?: unknown;
+    size?: unknown;
+}
 
 Sidebar.propTypes = {
     children: PropTypes.node.isRequired,
