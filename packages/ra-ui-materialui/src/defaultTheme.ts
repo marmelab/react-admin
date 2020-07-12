@@ -1,4 +1,6 @@
-export default {
+import { ThemeOptions } from './types';
+
+const defaultTheme: ThemeOptions = {
     palette: {
         secondary: {
             light: '#6ec6ff',
@@ -27,3 +29,5 @@ export default {
         },
     },
 };
+
+export default defaultTheme;

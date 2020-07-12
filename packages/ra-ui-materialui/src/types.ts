@@ -3,6 +3,13 @@ import { usePermissions, Exporter, Sort } from 'ra-core';
 import { RouteComponentProps } from 'react-router-dom';
 import { StaticContext } from 'react-router';
 import { LocationState } from 'history';
+import { ThemeOptions as MUIThemeOptions } from '@material-ui/core';
+import {
+    Variant,
+    TypographyStyleOptions,
+    FontStyleOptions,
+} from '@material-ui/core/styles/createTypography';
+import { Palette } from '@material-ui/core/styles/createPalette';
 
 export interface ResourceComponentProps<
     Params extends { [K in keyof Params]?: string } = {},
@@ -42,6 +49,23 @@ export interface ResourceMatch {
     id: string;
     [k: string]: string;
 }
+
+export interface TypographyOptions
+    extends Partial<
+        Record<Variant | 'title', TypographyStyleOptions> & FontStyleOptions
+    > {}
+
+export type ThemeOptions =
+    | MUIThemeOptions
+    | {
+          sidebar?: {
+              width: number;
+              closedWidth: number;
+          };
+          typography?:
+              | TypographyOptions
+              | ((palette: Palette) => TypographyOptions);
+      };
 
 /**
  * Generic type for the classes prop allowing to override material-ui styles
