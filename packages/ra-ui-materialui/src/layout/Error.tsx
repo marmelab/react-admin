@@ -1,5 +1,5 @@
 import { useTranslate } from 'ra-core';
-import React, { Fragment, FC } from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Button from '@material-ui/core/Button';
@@ -10,11 +10,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import ErrorIcon from '@material-ui/icons/Report';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import History from '@material-ui/icons/History';
-import { ClassNameMap } from '@material-ui/styles';
 
 import Title from './Title';
+import { ClassesOverride } from '../types';
 
-const useStyles: (props?: any) => ClassNameMap<ErrorClassKey> = makeStyles(
+const useStyles = makeStyles(
     theme => ({
         container: {
             display: 'flex',
@@ -53,7 +53,7 @@ function goBack() {
     window.history.go(-1);
 }
 
-const ErrorComponent: FC<ErrorProps> = props => {
+const ErrorComponent: React.FC<ErrorProps> = props => {
     const {
         error,
         errorInfo,
@@ -65,7 +65,7 @@ const ErrorComponent: FC<ErrorProps> = props => {
     const classes = useStyles(props);
     const translate = useTranslate();
     return (
-        <Fragment>
+        <React.Fragment>
             <Title defaultTitle={title} />
             <div className={classnames(classes.container, className)} {...rest}>
                 <h1 className={classes.title} role="alert">
@@ -96,20 +96,12 @@ const ErrorComponent: FC<ErrorProps> = props => {
                     </Button>
                 </div>
             </div>
-        </Fragment>
+        </React.Fragment>
     );
 };
 
-export declare type ErrorClassKey =
-    | 'container'
-    | 'icon'
-    | 'toolbar'
-    | 'title'
-    | 'panel'
-    | 'panelDetails';
-
 export interface ErrorProps {
-    classes?: Record<ErrorClassKey, string>;
+    classes?: ClassesOverride<typeof useStyles>;
     className?: string;
     error: Error;
     errorInfo?: Record<'componentStack', string>;
