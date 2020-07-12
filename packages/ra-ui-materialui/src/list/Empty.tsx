@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { Typography, makeStyles } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import Inbox from '@material-ui/icons/Inbox';
 import { useTranslate, useListContext } from 'ra-core';
 import inflection from 'inflection';
