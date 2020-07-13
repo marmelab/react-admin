@@ -396,7 +396,7 @@ describe('<AutocompleteArrayInput />', () => {
             expect(setFilter).toHaveBeenCalledWith('p');
             formApi.change('tags', ['p']);
             await waitForDomChange();
-            expect(setFilter).toHaveBeenCalledTimes(3);
+            expect(setFilter).toHaveBeenCalledTimes(2);
             expect(setFilter).toHaveBeenCalledWith('');
         });
 
@@ -432,7 +432,7 @@ describe('<AutocompleteArrayInput />', () => {
             expect(setFilter).toHaveBeenCalledWith('p');
             formApi.change('tags', ['p']);
             await waitForDomChange();
-            expect(setFilter).toHaveBeenCalledTimes(3);
+            expect(setFilter).toHaveBeenCalledTimes(2);
             expect(setFilter).toHaveBeenCalledWith('');
         });
 
