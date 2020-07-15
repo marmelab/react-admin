@@ -1,7 +1,7 @@
 export default url => ({
     elements: {
         body: 'body',
-        deleteButton: '.ra-delete-button',
+        deleteButton: '[class*="RaDeleteWithUndoButton"]',
         input: (name, type = 'input') => {
             if (type === 'rich-text-input') {
                 return `.ra-input-${name} .ql-editor`;
