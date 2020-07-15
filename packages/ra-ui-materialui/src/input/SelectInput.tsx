@@ -44,6 +44,7 @@ const sanitizeRestProps = ({
     optionValue,
     optionText,
     disableValue,
+    pagination,
     perPage,
     record,
     reference,
