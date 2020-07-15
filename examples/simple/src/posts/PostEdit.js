@@ -28,11 +28,12 @@ import {
     number,
     required,
     FormDataConsumer,
+    DeleteButton,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import PostTitle from './PostTitle';
 import TagReferenceInput from './TagReferenceInput';
 
-const EditActions = ({ basePath, data, hasShow }) => (
+const EditActions = ({ basePath, data, hasShow, resource }) => (
     <TopToolbar>
         <CloneButton
             className="button-clone"
@@ -40,6 +41,12 @@ const EditActions = ({ basePath, data, hasShow }) => (
             record={data}
         />
         {hasShow && <ShowButton basePath={basePath} record={data} />}
+        <DeleteButton
+            basePath={basePath}
+            record={data}
+            resource={resource}
+            undoable={false}
+        />
     </TopToolbar>
 );
 

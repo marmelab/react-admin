@@ -83,7 +83,7 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
                             true
                         ),
                     }),
-                    id: record.id,
+                    id: record ? record.id : null,
                 }}
                 onConfirm={handleDelete}
                 onClose={handleDialogClose}
