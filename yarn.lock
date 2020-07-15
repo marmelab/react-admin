@@ -1771,13 +1771,6 @@
     "@types/react" "*"
     "@types/recharts-scale" "*"
 
-"@types/recompose@^0.27.0":
-  version "0.27.1"
-  resolved "https://registry.yarnpkg.com/@types/recompose/-/recompose-0.27.1.tgz#eafe5a80b6bdce2108c025bbf19d030136aad894"
-  integrity sha512-5bT3OMz9HHHwvRSMQaDGN8tWbpCxQfsZXlcy5HLexEEqkSJ9PBZfVMA6HANDbshOvn4kNS75SjQSJLJv5LJHxw==
-  dependencies:
-    "@types/react" "*"
-
 "@types/sinon-chai@3.2.3":
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/@types/sinon-chai/-/sinon-chai-3.2.3.tgz#afe392303dda95cc8069685d1e537ff434fa506e"
