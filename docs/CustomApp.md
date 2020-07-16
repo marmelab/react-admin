@@ -150,23 +150,26 @@ Here is the main code for bootstrapping a barebone react-admin application witho
 ```diff
 // in src/App.js
 import * as React from "react";
++import PropTypes from "prop-types";
 import { Provider } from 'react-redux';
 import { createHashHistory } from 'history';
 +import { ConnectedRouter } from 'connected-react-router';
 +import { Switch, Route } from 'react-router-dom';
 +import withContext from 'recompose/withContext';
 -import { Admin, Resource } from 'react-admin';
-+import { AuthContext, DataProviderContext, TranslationProvider, Resource } from 'react-admin';
++import { AuthContext, DataProviderContext, TranslationProvider, Resource, Notification } from 'react-admin';
 import restProvider from 'ra-data-simple-rest';
 import defaultMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 +import { ThemeProvider } from '@material-ui/styles';
++import { createMuiTheme } from "@material-ui/core/styles";
 +import AppBar from '@material-ui/core/AppBar';
 +import Toolbar from '@material-ui/core/Toolbar';
 +import Typography from '@material-ui/core/Typography';
 
 import createAdminStore from './createAdminStore';
 import messages from './i18n';
+import authProvider from './myAuthProvider';
 
 // your app components
 import Dashboard from './Dashboard';
@@ -176,7 +179,6 @@ import { UserList, UserEdit, UserCreate } from './User';
 
 // dependency injection
 const dataProvider = restProvider('http://path.to.my.api/');
-const authProvider = () => Promise.resolve();
 const i18nProvider = polyglotI18nProvider(locale => {
     if (locale !== 'en') {
         return messages[locale];
@@ -184,6 +186,7 @@ const i18nProvider = polyglotI18nProvider(locale => {
     return defaultMessages;
 });
 const history = createHashHistory();
+const theme = createMuiTheme();
 
 const App = () => (
     <Provider
@@ -204,7 +207,7 @@ const App = () => (
 +       <AuthContext.Provider value={authProvider}>
 +       <DataProviderContext.Provider value={dataProvider}>
 +       <TranslationProvider
-+           locale={locale}
++           locale="en"
 +           i18nProvider={i18nProvider}
 +       >
 +           <ThemeProvider>
@@ -233,6 +236,7 @@ const App = () => (
 +                       <Route exact path="/users/:id" render={(routeProps) => <UsersEdit resource="users" basePath={routeProps.match.url} id={decodeURIComponent((routeProps.match).params.id)} {...routeProps} />} />
 +                   </Switch>
 +               </ConnectedRouter>
++               <Notification />
 +           </ThemeProvider>
 +       </TranslationProvider>
 +       </DataProviderContext.Provider>
@@ -244,12 +248,14 @@ const App = () => (
 -export default App;
 +export default withContext(
 +   {
-+       authProvider: PropTypes.func,
++       authProvider: PropTypes.object,
 +   },
 +   () => ({ authProvider })
 +)(App);
 ```
 
 Note that this example still uses `<Resource>`, because this component lazily initializes the store for the resource data.
+
+Currently the `<Notification>` component is required (See [issue #5026](https://github.com/marmelab/react-admin/issues/5026)).
 
 This application has no sidebar, no theming, no [auth control](./Authentication.md#useauthenticated-hook) - it's up to you to add these. From there on, you can customize pretty much anything you want.
