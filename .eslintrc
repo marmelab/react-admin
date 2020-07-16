@@ -24,13 +24,8 @@
                 "paths": [
                     {
                         "name": "@material-ui/core",
-                        "importNames": ["makeStyles"],
-                        "message": "Please import makeStyles from @material-ui/core/styles instead. See https://material-ui.com/guides/minimizing-bundle-size/#option-2 for more information"
-                    },
-                    {
-                        "name": "@material-ui/core",
-                        "importNames": ["createMuiTheme"],
-                        "message": "Please import createMuiTheme from @material-ui/core/styles instead. See https://material-ui.com/guides/minimizing-bundle-size/#option-2 for more information"
+                        "importNames": ["makeStyles", "createMuiTheme"],
+                        "message": "Please import from @material-ui/core/styles instead. See https://material-ui.com/guides/minimizing-bundle-size/#option-2 for more information"
                     }
                 ]
             }

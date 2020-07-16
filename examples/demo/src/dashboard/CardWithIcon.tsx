@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { FC, createElement } from 'react';
-import { Card, makeStyles, Box, Typography, Divider } from '@material-ui/core';
+import { Card, Box, Typography, Divider } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 
 import cartouche from './cartouche.png';
