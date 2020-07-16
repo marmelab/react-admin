@@ -79,13 +79,14 @@ const valueOrDefault = (value, defaultValue) =>
  * );
  *
  * @typedef {Object} Props the props you can use (other props are injected by the <SimpleForm>)
+ * @prop {boolean} alwaysEnableSaveButton Enable the default <SaveButton>. It it's not defined, the <SaveButton> will be disabled using the `pristine` prop.
  * @prop {ReactElement[]} children Customize the buttons you want to display in the <Toolbar>.
- * @prop {boolean} disabled Disable the default <SaveButton>. It it's not defined, the <SaveButton> will be disabled using the `pristine` prop.
  * @prop {string} width Apply the mobile or the desktop classes depending on the width. Pass "xs" to display the mobile version.
  *
  */
 const Toolbar = props => {
     const {
+        alwaysEnableSaveButton,
         basePath,
         children,
         className,
@@ -94,7 +95,6 @@ const Toolbar = props => {
         handleSubmitWithRedirect,
         invalid,
         pristine,
-        disabled,
         record,
         redirect,
         resource,
@@ -126,7 +126,10 @@ const Toolbar = props => {
                             handleSubmitWithRedirect={
                                 handleSubmitWithRedirect || handleSubmit
                             }
-                            disabled={valueOrDefault(disabled, pristine)}
+                            disabled={valueOrDefault(
+                                !alwaysEnableSaveButton,
+                                pristine
+                            )}
                             invalid={invalid}
                             redirect={redirect}
                             saving={saving}
