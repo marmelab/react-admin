@@ -86,6 +86,7 @@ Developers from the react-admin community have open-sourced Data Providers for m
 * **[NestJS CRUD](https://github.com/nestjsx/crud)**: [FusionWorks/react-admin-nestjsx-crud-dataprovider](https://github.com/FusionWorks/react-admin-nestjsx-crud-dataprovider)
 * **[Parse](https://parseplatform.org/)**: [almahdi/ra-data-parse](https://github.com/almahdi/ra-data-parse)
 * **[PostgREST](https://postgrest.org/)**: [raphiniert-com/ra-data-postgrest](https://github.com/raphiniert-com/ra-data-postgrest)
+* **[PostGraphile](https://www.graphile.org/postgraphile/)**: [bowlingx/ra-postgraphile](https://github.com/BowlingX/ra-postgraphile)
 * **[Prisma](https://github.com/weakky/ra-data-prisma)**: [weakky/ra-data-prisma](https://github.com/weakky/ra-data-prisma)
 * **[Prisma Version 2](https://www.prisma.io/)**: [panter/ra-data-prisma](https://github.com/panter/ra-data-prisma)
 * **[OpenCRUD](https://www.opencrud.org/)**: [weakky/ra-data-opencrud](https://github.com/Weakky/ra-data-opencrud)
