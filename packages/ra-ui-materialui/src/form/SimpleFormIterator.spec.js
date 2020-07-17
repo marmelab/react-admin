@@ -212,7 +212,7 @@ describe('<SimpleFormIterator />', () => {
         });
     });
 
-    it('should not display add buttom if custom addButton is passed', () => {
+    it('should not display add button if custom addButton is passed', () => {
         const { queryAllByText } = renderWithRedux(
             <SimpleForm>
                 <ArrayInput source="emails">
