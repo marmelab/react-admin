@@ -79,30 +79,38 @@
             </nav>
         </div>
     </header>
-    <div class="super-container lightgrey">
+
+    <main>
+      <div class="super-container lightgrey">
         <div class="container" style="min-height: calc(100vh - 337px); justify-content: flex-start;">
-            <h3 class="title has-subtitle">Thanks for your purchase!</h3>
-            <p class="subtitle">
-                We're currently packing your module and will send further instructions to your mail shortly.
-            </p>
-            <p class="subtitle"
-                style="text-align: center; display: flex; justify-content: center; opacity: 1; margin-bottom: 0; padding-bottom: 0;">
-                <a class="primary-button" href="..">BACK TO REACT-ADMIN WEBSITE</a>
-            </p>
-            <p class="subtitle" style="margin-top: 0; font-size: 12px; font-weight: normal;">
-                in case anything happens, <a href="mailto:info@marmelab.com">contact us</a>
-            </p>
+          <h3 class="title has-subtitle">Thanks for your purchase!</h3>
+          <p class="subtitle">
+              We're currently packing your module and will send further instructions to your mail shortly.
+          </p>
+          <p class="subtitle"
+              style="text-align: center; display: flex; justify-content: center; opacity: 1; margin-bottom: 0; padding-bottom: 0;">
+              <a class="primary-button" href="..">BACK TO REACT-ADMIN WEBSITE</a>
+          </p>
+          <p class="subtitle" style="margin-top: 0; font-size: 12px; font-weight: normal;">
+              in case anything happens, <a href="mailto:info@marmelab.com">contact us</a>
+          </p>
         </div>
-    </div>
-    <div class="super-container white" style="padding: 0;">
+      </div>
+    </main>
+
+    <footer>
+      <div class="super-container white" style="padding: 0;">
         <div class="container">
-            <p class="copy">
-                Copyright &copy;2016-2019 Marmelab -
-                <a href="mailto:info@marmelab.com">Contact Us</a>
-            </p>
+          <p class="copy">
+            Copyright &copy;2016-<span id="copyright-date">2019</span> Marmelab -
+            <a href="mailto:info@marmelab.com">Contact Us</a>
+          </p>
         </div>
-    </div>
+      </div>
+    </footer>
+
     <script src="../assets/githubstars.js" defer></script>
+    <script src="../assets/generate-copyright-date.js" defer></script>
 </body>
 
 </html>
