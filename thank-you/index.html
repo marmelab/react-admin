@@ -1,7 +1,7 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
 
-<head>
+<html lang="en">
+  <head>
     <title>React Admin</title>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
@@ -29,70 +29,96 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://marmelab.com/react-admin" />
     <meta property="og:image" content="https://marmelab.com/react-admin/assets/logo.png" />
-</head>
+  </head>
 
-<body>
+  <body>
     <header>
-        <div class="container">
-            <nav>
-                <a href="." id="logo">
-                    <img src="../assets/logo.svg" class="lego" alt="React Admin Home Page" />
-                </a>
-                <div id="menu">
-                    <label for="hamburger">
-                        &#9776;
-                    </label>
-                    <input type="checkbox" id="hamburger" />
-
-                    <div id="menu-content">
-                        <a href="./Readme.html" class="menu-item" class="menu-item">
-                            Documentation
-                        </a>
-                        <a href="https://marmelab.com/react-admin-demo" class="menu-item">
-                            Demo
-                        </a>
-                        <a href="https://marmelab.com/en/blog/#react-admin" class="menu-item">
-                            Blog
-                        </a>
-                        <a href="https://github.com/marmelab/react-admin" class="menu-item github">
-                            <svg viewBox="0 0 256 250" preserveAspectRatio="xMidYMid">
-                                <path
-                                    d="M128.001 0C57.317 0 0 57.307 0 128.001c0 56.554 36.676 104.535 87.535 121.46 6.397 1.185 8.746-2.777 8.746-6.158 0-3.052-.12-13.135-.174-23.83-35.61 7.742-43.124-15.103-43.124-15.103-5.823-14.795-14.213-18.73-14.213-18.73-11.613-7.944.876-7.78.876-7.78 12.853.902 19.621 13.19 19.621 13.19 11.417 19.568 29.945 13.911 37.249 10.64 1.149-8.272 4.466-13.92 8.127-17.116-28.431-3.236-58.318-14.212-58.318-63.258 0-13.975 5-25.394 13.188-34.358-1.329-3.224-5.71-16.242 1.24-33.874 0 0 10.749-3.44 35.21 13.121 10.21-2.836 21.16-4.258 32.038-4.307 10.878.049 21.837 1.47 32.066 4.307 24.431-16.56 35.165-13.12 35.165-13.12 6.967 17.63 2.584 30.65 1.255 33.873 8.207 8.964 13.173 20.383 13.173 34.358 0 49.163-29.944 59.988-58.447 63.157 4.591 3.972 8.682 11.762 8.682 23.704 0 17.126-.148 30.91-.148 35.126 0 3.407 2.304 7.398 8.792 6.14C219.37 232.5 256 184.537 256 128.002 256 57.307 198.691 0 128.001 0zm-80.06 182.34c-.282.636-1.283.827-2.194.39-.929-.417-1.45-1.284-1.15-1.922.276-.655 1.279-.838 2.205-.399.93.418 1.46 1.293 1.139 1.931zm6.296 5.618c-.61.566-1.804.303-2.614-.591-.837-.892-.994-2.086-.375-2.66.63-.566 1.787-.301 2.626.591.838.903 1 2.088.363 2.66zm4.32 7.188c-.785.545-2.067.034-2.86-1.104-.784-1.138-.784-2.503.017-3.05.795-.547 2.058-.055 2.861 1.075.782 1.157.782 2.522-.019 3.08zm7.304 8.325c-.701.774-2.196.566-3.29-.49-1.119-1.032-1.43-2.496-.726-3.27.71-.776 2.213-.558 3.315.49 1.11 1.03 1.45 2.505.701 3.27zm9.442 2.81c-.31 1.003-1.75 1.459-3.199 1.033-1.448-.439-2.395-1.613-2.103-2.626.301-1.01 1.747-1.484 3.207-1.028 1.446.436 2.396 1.602 2.095 2.622zm10.744 1.193c.036 1.055-1.193 1.93-2.715 1.95-1.53.034-2.769-.82-2.786-1.86 0-1.065 1.202-1.932 2.733-1.958 1.522-.03 2.768.818 2.768 1.868zm10.555-.405c.182 1.03-.875 2.088-2.387 2.37-1.485.271-2.861-.365-3.05-1.386-.184-1.056.893-2.114 2.376-2.387 1.514-.263 2.868.356 3.061 1.403z">
-                                </path>
-                            </svg>
-                            Github
-                        </a>
-                        <a class="github-stars" href="https://github.com/marmelab/react-admin">
-                            <div>
-                                <svg viewBox="0 0 500 625" style="height: 15px; margin-top: 3px;">
-                                    <path
-                                        d="M382.4 307.1c-2.7 2.7-3.6 6.2-3.6 9.8l19.6 112.3c1.8 10.7-2.7 22.3-11.6 28.5s-20.5 7.1-31.2 2.7l-100.8-52.6c-3.6-1.8-7.1-1.8-10.7 0l-100.8 52.6c-4.5 2.7-8.9 3.6-13.4 3.6-6.2 0-11.6-1.8-16.9-5.3-8.9-6.2-13.4-17.8-11.6-28.5L121 317.8c.9-3.6-.9-7.1-3.6-9.8l-82-80.2c-8-8-10.7-19.6-7.1-30.3 3.6-10.7 12.5-17.8 23.2-19.6L164 160.8c3.6-.9 7.1-2.7 8.9-6.2l50.8-102.5C229 42.2 238.9 36 249.6 36c11.6 0 21.4 6.2 25.9 16.1l50.8 102.5c1.8 3.6 4.5 5.4 8.9 6.2l112.4 16c11.6 1.8 20.5 8.9 24.1 19.6 3.6 10.7.9 22.3-7.1 30.3l-82.2 80.4z">
-                                    </path>
-                                </svg>
-                            </div>
-                            <div id="github-stars-content">
-                                10000
-                            </div>
-                        </a>
-                    </div>
+      <div class="container">
+        <nav>
+          <a href="." id="logo">
+            <img
+              src="../assets/logo.svg"
+              class="lego"
+              alt="React Admin Home Page"
+            />
+          </a>
+          <div id="menu">
+            <label for="hamburger">
+              &#9776;
+            </label>
+            <input type="checkbox" id="hamburger" />
+            <div id="menu-content">
+              <a href="./Readme.html" class="menu-item" class="menu-item">
+                Documentation
+              </a>
+              <a href="https://marmelab.com/react-admin-demo" class="menu-item">
+                Demo
+              </a>
+              <a href="https://marmelab.com/en/blog/#react-admin" class="menu-item">
+                Blog
+              </a>
+              <a href="https://github.com/marmelab/react-admin" class="menu-item github">
+                <svg viewBox="0 0 256 250" preserveAspectRatio="xMidYMid">
+                  <path
+                    d="M128.001 0C57.317 0 0 57.307 0 128.001c0 56.554 36.676 104.535 87.535 121.46 6.397 1.185 8.746-2.777 8.746-6.158 0-3.052-.12-13.135-.174-23.83-35.61 7.742-43.124-15.103-43.124-15.103-5.823-14.795-14.213-18.73-14.213-18.73-11.613-7.944.876-7.78.876-7.78 12.853.902 19.621 13.19 19.621 13.19 11.417 19.568 29.945 13.911 37.249 10.64 1.149-8.272 4.466-13.92 8.127-17.116-28.431-3.236-58.318-14.212-58.318-63.258 0-13.975 5-25.394 13.188-34.358-1.329-3.224-5.71-16.242 1.24-33.874 0 0 10.749-3.44 35.21 13.121 10.21-2.836 21.16-4.258 32.038-4.307 10.878.049 21.837 1.47 32.066 4.307 24.431-16.56 35.165-13.12 35.165-13.12 6.967 17.63 2.584 30.65 1.255 33.873 8.207 8.964 13.173 20.383 13.173 34.358 0 49.163-29.944 59.988-58.447 63.157 4.591 3.972 8.682 11.762 8.682 23.704 0 17.126-.148 30.91-.148 35.126 0 3.407 2.304 7.398 8.792 6.14C219.37 232.5 256 184.537 256 128.002 256 57.307 198.691 0 128.001 0zm-80.06 182.34c-.282.636-1.283.827-2.194.39-.929-.417-1.45-1.284-1.15-1.922.276-.655 1.279-.838 2.205-.399.93.418 1.46 1.293 1.139 1.931zm6.296 5.618c-.61.566-1.804.303-2.614-.591-.837-.892-.994-2.086-.375-2.66.63-.566 1.787-.301 2.626.591.838.903 1 2.088.363 2.66zm4.32 7.188c-.785.545-2.067.034-2.86-1.104-.784-1.138-.784-2.503.017-3.05.795-.547 2.058-.055 2.861 1.075.782 1.157.782 2.522-.019 3.08zm7.304 8.325c-.701.774-2.196.566-3.29-.49-1.119-1.032-1.43-2.496-.726-3.27.71-.776 2.213-.558 3.315.49 1.11 1.03 1.45 2.505.701 3.27zm9.442 2.81c-.31 1.003-1.75 1.459-3.199 1.033-1.448-.439-2.395-1.613-2.103-2.626.301-1.01 1.747-1.484 3.207-1.028 1.446.436 2.396 1.602 2.095 2.622zm10.744 1.193c.036 1.055-1.193 1.93-2.715 1.95-1.53.034-2.769-.82-2.786-1.86 0-1.065 1.202-1.932 2.733-1.958 1.522-.03 2.768.818 2.768 1.868zm10.555-.405c.182 1.03-.875 2.088-2.387 2.37-1.485.271-2.861-.365-3.05-1.386-.184-1.056.893-2.114 2.376-2.387 1.514-.263 2.868.356 3.061 1.403z"
+                  ></path>
+                </svg>
+                Github
+              </a>
+              <a
+                class="github-stars"
+                href="https://github.com/marmelab/react-admin"
+              >
+                <div>
+                  <svg
+                    viewBox="0 0 500 625"
+                    style="height: 15px; margin-top: 3px;"
+                  >
+                    <path
+                      d="M382.4 307.1c-2.7 2.7-3.6 6.2-3.6 9.8l19.6 112.3c1.8 10.7-2.7 22.3-11.6 28.5s-20.5 7.1-31.2 2.7l-100.8-52.6c-3.6-1.8-7.1-1.8-10.7 0l-100.8 52.6c-4.5 2.7-8.9 3.6-13.4 3.6-6.2 0-11.6-1.8-16.9-5.3-8.9-6.2-13.4-17.8-11.6-28.5L121 317.8c.9-3.6-.9-7.1-3.6-9.8l-82-80.2c-8-8-10.7-19.6-7.1-30.3 3.6-10.7 12.5-17.8 23.2-19.6L164 160.8c3.6-.9 7.1-2.7 8.9-6.2l50.8-102.5C229 42.2 238.9 36 249.6 36c11.6 0 21.4 6.2 25.9 16.1l50.8 102.5c1.8 3.6 4.5 5.4 8.9 6.2l112.4 16c11.6 1.8 20.5 8.9 24.1 19.6 3.6 10.7.9 22.3-7.1 30.3l-82.2 80.4z"
+                    ></path>
+                  </svg>
                 </div>
-            </nav>
-        </div>
+                <div id="github-stars-content">
+                  10000
+                </div>
+              </a>
+            </div>
+          </div>
+        </nav>
+      </div>
     </header>
 
     <main>
       <div class="super-container lightgrey">
-        <div class="container" style="min-height: calc(100vh - 337px); justify-content: flex-start;">
+        <div
+          class="container"
+          style="min-height: calc(100vh - 337px); justify-content: flex-start;"
+        >
           <h3 class="title has-subtitle">Thanks for your purchase!</h3>
           <p class="subtitle">
-              We're currently packing your module and will send further instructions to your mail shortly.
+            We're currently packing your module and will send further
+            instructions to your mail shortly.
           </p>
-          <p class="subtitle"
-              style="text-align: center; display: flex; justify-content: center; opacity: 1; margin-bottom: 0; padding-bottom: 0;">
-              <a class="primary-button" href="..">BACK TO REACT-ADMIN WEBSITE</a>
+          <p
+            class="subtitle"
+            style="
+              text-align: center;
+              display: flex;
+              justify-content: center;
+              opacity: 1;
+              margin-bottom: 0;
+              padding-bottom: 0;
+            "
+          >
+            <a class="primary-button" href="..">BACK TO REACT-ADMIN WEBSITE</a>
           </p>
-          <p class="subtitle" style="margin-top: 0; font-size: 12px; font-weight: normal;">
-              in case anything happens, <a href="mailto:info@marmelab.com">contact us</a>
+          <p
+            class="subtitle"
+            style="margin-top: 0; font-size: 12px; font-weight: normal;"
+          >
+            in case anything happens,
+            <a href="mailto:info@marmelab.com">contact us</a>
           </p>
         </div>
       </div>
@@ -102,7 +128,8 @@
       <div class="super-container white" style="padding: 0;">
         <div class="container">
           <p class="copy">
-            Copyright &copy;2016-<span id="copyright-date">2019</span> Marmelab -
+            Copyright &copy;2016-<span id="copyright-date">2019</span> Marmelab
+            -
             <a href="mailto:info@marmelab.com">Contact Us</a>
           </p>
         </div>
@@ -111,6 +138,5 @@
 
     <script src="../assets/githubstars.js" defer></script>
     <script src="../assets/generate-copyright-date.js" defer></script>
-</body>
-
+  </body>
 </html>
