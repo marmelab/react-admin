@@ -125,6 +125,7 @@ nav {
 .menu-item:hover {
   color: var(--yellowkindof);
   fill: var(--yellowkindof);
+  text-decoration: underline;
 }
 
 .github-stars {
@@ -156,6 +157,10 @@ nav {
 .github-stars div:nth-child(2) {
   padding: 5px;
   font-size: 12px;
+}
+
+.enterprise-edition {
+  color: var(--yellowkindof);
 }
 
 #menu-content {
