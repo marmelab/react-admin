@@ -596,7 +596,7 @@ const App = () => (
 );
 ```
 
-### Unplugging the <Admin> using `<AdminContext>` and `<AdminUI>`
+### Unplugging the `<Admin>` using `<AdminContext>` and `<AdminUI>`
 
 Setting Resources dynamically using the children-as-function syntax may not be enough in all cases, because this function can't execute hooks.
 
