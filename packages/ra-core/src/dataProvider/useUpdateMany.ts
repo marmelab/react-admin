@@ -30,7 +30,7 @@ import { Identifier } from '../types';
  */
 const useUpdateMany = (
     resource: string,
-    ids: [Identifier],
+    ids: Identifier[],
     data: any,
     options?: any
 ) =>
