@@ -1191,7 +1191,7 @@ const PostEditToolbar = props => (
 export const PostEdit = (props) => (
     <Edit {...props}>
         <SimpleForm toolbar={<PostEditToolbar />}>
-            ...
+            // ...
         </SimpleForm>
     </Edit>
 );
@@ -1251,7 +1251,7 @@ You can customize each row in a `<SimpleForm>` or in a `<TabbedForm>` by passing
 
 You can find more about these props in [the Input documentation](./Inputs.md#common-input-props).
 
-You can also [wrap inputs inside containers](#custom-row-container), or [create a custom Form component](#custom-form-component), alternative to `<SimpleForm>` or `<TabbedForm>`. 
+You can also [wrap inputs inside containers](#custom-row-container), or [create a custom Form component](#custom-form-component), alternative to `<SimpleForm>` or `<TabbedForm>`.
 
 ### Variant
 
