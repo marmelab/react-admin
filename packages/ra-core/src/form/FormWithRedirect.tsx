@@ -32,6 +32,7 @@ import { RedirectionSideEffect } from '../sideEffect';
  * @prop {Function} save
  * @prop {boolean} submitOnEnter
  * @prop {string} redirect
+ * @prop {boolean} sanitizeEmptyValues
  *
  * @param {Prop} props
  */
@@ -97,9 +98,21 @@ const FormWithRedirect: FC<FormWithRedirectOwnProps & FormProps> = ({
             typeof redirect.current === undefined
                 ? props.redirect
                 : redirect.current;
-        const finalValues = sanitizeEmptyValues(finalInitialValues, values);
 
-        onSave.current(finalValues, finalRedirect);
+        const shouldSanitizeEmptyValues =
+            typeof props.sanitizeEmptyValues === 'undefined'
+                ? true
+                : props.sanitizeEmptyValues;
+
+        if (shouldSanitizeEmptyValues) {
+            const sanitizedValues = sanitizeEmptyValues(
+                finalInitialValues,
+                values
+            );
+            onSave.current(sanitizedValues, finalRedirect);
+        } else {
+            onSave.current(values, finalRedirect);
+        }
     };
 
     return (
@@ -151,6 +164,7 @@ export interface FormWithRedirectOwnProps {
     saving: boolean;
     version: number;
     warnWhenUnsavedChanges?: boolean;
+    sanitizeEmptyValues?: boolean;
 }
 
 const defaultSubscription = {
