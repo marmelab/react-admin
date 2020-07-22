@@ -106,6 +106,10 @@ const Toolbar = props => {
     } = props;
     const classes = useStyles(props);
 
+    // Use form pristine to enable or disable the save button
+    // if alwaysEnableSaveButton is undefined
+    const disabled = !valueOrDefault(alwaysEnableSaveButton, !pristine);
+
     return (
         <Fragment>
             <MuiToolbar
@@ -126,10 +130,7 @@ const Toolbar = props => {
                             handleSubmitWithRedirect={
                                 handleSubmitWithRedirect || handleSubmit
                             }
-                            disabled={valueOrDefault(
-                                !alwaysEnableSaveButton,
-                                pristine
-                            )}
+                            disabled={disabled}
                             invalid={invalid}
                             redirect={redirect}
                             saving={saving}
