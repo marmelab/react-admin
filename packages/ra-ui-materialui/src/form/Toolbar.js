@@ -47,8 +47,46 @@ const useStyles = makeStyles(
 const valueOrDefault = (value, defaultValue) =>
     typeof value === 'undefined' ? defaultValue : value;
 
+/**
+ * The Toolbar displayed at the bottom of forms.
+ *
+ * @example Always enable the <SaveButton />
+ *
+ * import * as React from 'react';
+ * import {
+ *     Create,
+ *     DateInput,
+ *     TextInput,
+ *     SimpleForm,
+ *     Toolbar,
+ *     required,
+ * } from 'react-admin';
+ *
+ * const now = new Date();
+ * const defaultSort = { field: 'title', order: 'ASC' };
+ *
+ * const CommentCreate = props => (
+ *     <Create {...props}>
+ *         <SimpleForm redirect={false} toolbar={<Toolbar alwaysEnableSaveButton={true} />}>
+ *             <TextInput
+ *                 source="author.name"
+ *                 fullWidth
+ *             />
+ *             <DateInput source="created_at" defaultValue={now} />
+ *             <TextInput source="body" fullWidth={true} multiline={true} />
+ *         </SimpleForm>
+ *     </Create>
+ * );
+ *
+ * @typedef {Object} Props the props you can use (other props are injected by the <SimpleForm>)
+ * @prop {boolean} alwaysEnableSaveButton Force enabling the <SaveButton>. It it's not defined, the <SaveButton> will be enabled using the `pristine` prop (disabled if pristine, enabled otherwise).
+ * @prop {ReactElement[]} children Customize the buttons you want to display in the <Toolbar>.
+ * @prop {string} width Apply the mobile or the desktop classes depending on the width. Pass "xs" to display the mobile version.
+ *
+ */
 const Toolbar = props => {
     const {
+        alwaysEnableSaveButton,
         basePath,
         children,
         className,
@@ -67,6 +105,11 @@ const Toolbar = props => {
         ...rest
     } = props;
     const classes = useStyles(props);
+
+    // Use form pristine to enable or disable the save button
+    // if alwaysEnableSaveButton is undefined
+    const disabled = !valueOrDefault(alwaysEnableSaveButton, !pristine);
+
     return (
         <Fragment>
             <MuiToolbar
@@ -87,6 +130,7 @@ const Toolbar = props => {
                             handleSubmitWithRedirect={
                                 handleSubmitWithRedirect || handleSubmit
                             }
+                            disabled={disabled}
                             invalid={invalid}
                             redirect={redirect}
                             saving={saving}

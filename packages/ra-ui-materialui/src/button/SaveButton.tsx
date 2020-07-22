@@ -28,10 +28,10 @@ import { sanitizeButtonRestProps } from './Button';
 /**
  * Submit button for resource forms (Edit and Create).
  *
- * @typedef {Object} Props the props you can use (other props are injected by Toolbar)
+ * @typedef {Object} Props the props you can use (other props are injected by the <Toolbar>)
  * @prop {string} className
  * @prop {string} label Button label. Defaults to 'ra.action.save', translated.
- * @prop {boolean} disabled Injected by SimpleForm, which disables the SaveButton when it's pristine
+ * @prop {boolean} disabled Disable the button.
  * @prop {string} variant Material-ui variant for the button. Defaults to 'contained'.
  * @prop {ReactElement} icon
  * @prop {string|boolean} redirect Override of the default redirect in case of success. Can be 'list', 'show', 'edit' (for create views), or false (to stay on the creation form).
@@ -69,7 +69,6 @@ const SaveButton: FC<SaveButtonProps> = props => {
         invalid,
         label = 'ra.action.save',
         disabled,
-        pristine,
         redirect,
         saving,
         submitOnEnter,
@@ -142,7 +141,7 @@ const SaveButton: FC<SaveButtonProps> = props => {
             onClick={handleClick}
             color={saving ? 'default' : 'primary'}
             aria-label={displayedLabel}
-            disabled={disabled || pristine}
+            disabled={disabled}
             {...sanitizeButtonRestProps(rest)}
         >
             {saving ? (
@@ -191,7 +190,7 @@ interface Props {
     invalid?: boolean;
     label?: string;
     onClick?: () => void;
-    pristine?: boolean;
+    disabled?: boolean;
     redirect?: RedirectionSideEffect;
     saving?: boolean;
     submitOnEnter?: boolean;
@@ -214,7 +213,6 @@ SaveButton.propTypes = {
     onSave: PropTypes.func,
     invalid: PropTypes.bool,
     label: PropTypes.string,
-    pristine: PropTypes.bool,
     redirect: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.bool,

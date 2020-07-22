@@ -1173,7 +1173,7 @@ export const PostCreate = (props) => (
 );
 ```
 
-Another use case is to remove the `<DeleteButton>` from the toolbar in an edit view. In that case, create a custom toolbar containing only the `<SaveButton>` as a child;
+Another use case is to remove the `<DeleteButton>` from the toolbar in an edit view. In that case, create a custom toolbar containing only the `<SaveButton>` as a child:
 
 ```jsx
 import * as React from "react";
@@ -1188,6 +1188,21 @@ const PostEditToolbar = props => (
 export const PostEdit = (props) => (
     <Edit {...props}>
         <SimpleForm toolbar={<PostEditToolbar />}>
+            ...
+        </SimpleForm>
+    </Edit>
+);
+```
+
+By default the `<SaveButton>` is disabled when the form is `pristine`. You can bypass this behavior and always enable it without recreating the whole `<Toolbar>`:
+
+```jsx
+import * as React from 'react';
+import { Edit, SimpleForm, Toolbar } from 'react-admin';
+
+export const PostEdit = (props) => (
+    <Edit {...props}>
+        <SimpleForm toolbar={<Toolbar alwaysEnableSaveButton />}>
             ...
         </SimpleForm>
     </Edit>
@@ -1248,7 +1263,7 @@ You can customize each row in a `<SimpleForm>` or in a `<TabbedForm>` by passing
 
 You can find more about these props in [the Input documentation](./Inputs.md#common-input-props).
 
-You can also [wrap inputs inside containers](#custom-row-container), or [create a custom Form component](#custom-form-component), alternative to `<SimpleForm>` or `<TabbedForm>`. 
+You can also [wrap inputs inside containers](#custom-row-container), or [create a custom Form component](#custom-form-component), alternative to `<SimpleForm>` or `<TabbedForm>`.
 
 ### Variant
 
