@@ -116,32 +116,34 @@ class Layout extends Component {
         } = this.props;
         const { hasError, errorMessage, errorInfo } = this.state;
         return (
-            <div
-                className={classnames('layout', classes.root, className)}
-                {...sanitizeRestProps(props)}
-            >
-                <div className={classes.appFrame}>
-                    {createElement(appBar, { title, open, logout })}
-                    <main className={classes.contentWithSidebar}>
-                        {createElement(sidebar, {
-                            children: createElement(menu, {
-                                logout,
-                                hasDashboard: !!dashboard,
-                            }),
-                        })}
-                        <div className={classes.content}>
-                            {hasError
-                                ? createElement(error, {
-                                      error: errorMessage,
-                                      errorInfo,
-                                      title,
-                                  })
-                                : children}
-                        </div>
-                    </main>
-                    {createElement(notification)}
+            <>
+                <div
+                    className={classnames('layout', classes.root, className)}
+                    {...sanitizeRestProps(props)}
+                >
+                    <div className={classes.appFrame}>
+                        {createElement(appBar, { title, open, logout })}
+                        <main className={classes.contentWithSidebar}>
+                            {createElement(sidebar, {
+                                children: createElement(menu, {
+                                    logout,
+                                    hasDashboard: !!dashboard,
+                                }),
+                            })}
+                            <div className={classes.content}>
+                                {hasError
+                                    ? createElement(error, {
+                                          error: errorMessage,
+                                          errorInfo,
+                                          title,
+                                      })
+                                    : children}
+                            </div>
+                        </main>
+                    </div>
                 </div>
-            </div>
+                {createElement(notification)}
+            </>
         );
     }
 }
