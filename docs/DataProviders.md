@@ -488,9 +488,10 @@ export default {
                     }
                     return resolve({ status, headers, body, json });
                 });
-        }),
-    ...
-}
+        });
+    },
+    // ...
+};
 ```
 
 ## Example Implementation

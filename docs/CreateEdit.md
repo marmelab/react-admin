@@ -174,8 +174,9 @@ const Aside = () => (
 
 const PostEdit = props => (
     <Edit aside={<Aside />} {...props}>
-        ...
+       // ...
     </Edit>
+);
 ```
 {% endraw %}
 
@@ -231,8 +232,9 @@ You can disable this behavior by setting `undoable={false}`. With that setting, 
 ```jsx
 const PostEdit = props => (
     <Edit undoable={false} {...props}>
-        ...
+        // ...
     </Edit>
+);
 ```
 
 **Tip**: If you want a confirmation dialog for the Delete button but don't mind undoable Edits, then pass a [custom toolbar](#toolbar) to the form, as follows:
@@ -407,8 +409,9 @@ Once the `dataProvider` returns successfully after save, users see a generic not
 ```jsx
 const PostEdit = props => (
     <Edit successMessage="messages.post_saved" {...props}>
-        ...
+        // ...
     </Edit>
+);
 ```
 
 **Tip**: The message will be translated.
@@ -712,7 +715,7 @@ Here are all the props accepted by the `<TabbedForm>` component:
 * [`validate`](#validation)
 * [`submitOnEnter`](#submit-on-enter)
 * [`redirect`](#redirection-after-submission)
-* [`tabs`](#tabbed-form-tabs)
+* [`tabs`](#tabbedformtabs)
 * [`toolbar`](#toolbar)
 * [`variant`](#variant)
 * [`margin`](#margin)
@@ -1116,10 +1119,10 @@ You can also pass a custom route (e.g. "/home") or a function as `redirect` prop
 // redirect to the related Author show page
 const redirect = (basePath, id, data) => `/author/${data.author_id}/show`;
 
-export const PostEdit = (props) => {
+export const PostEdit = (props) => (
     <Edit {...props}>
         <SimpleForm redirect={redirect}>
-            ...
+            // ...
         </SimpleForm>
     </Edit>
 );
@@ -1173,7 +1176,7 @@ export const PostCreate = (props) => (
 );
 ```
 
-Another use case is to remove the `<DeleteButton>` from the toolbar in an edit view. In that case, create a custom toolbar containing only the `<SaveButton>` as a child;
+Another use case is to remove the `<DeleteButton>` from the toolbar in an edit view. In that case, create a custom toolbar containing only the `<SaveButton>` as a child:
 
 ```jsx
 import * as React from "react";

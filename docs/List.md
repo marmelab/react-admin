@@ -1883,9 +1883,9 @@ export const UserList = ({ permissions, ...props }) => {
                     <ShowButton />
                 </Datagrid>
             )}
-        </List>;
+        </List>
     )
-}
+};
 ```
 {% endraw %}
 
@@ -1893,7 +1893,7 @@ export const UserList = ({ permissions, ...props }) => {
 
 ## Pagination
 
-The `<Pagination>` gest the following constants from [the `useListContext` hook](#useListContext):
+The `<Pagination>` gest the following constants from [the `useListContext` hook](#uselistcontext):
 
 * `page`: The current page number (integer). First page is `1`.
 * `perPage`: The number of records per page.

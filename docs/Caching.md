@@ -121,7 +121,7 @@ It's your responsibility to determine the validity date based on the API respons
 
 For instance, to have a `dataProvider` declare responses for `getOne`, `getMany`, and `getList` valid for 5 minutes, you can wrap it in the following proxy:
 
-```jsx
+```ts
 // in src/dataProvider.js
 import simpleRestProvider from 'ra-data-simple-rest';
 
