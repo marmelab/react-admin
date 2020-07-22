@@ -50,7 +50,7 @@ const valueOrDefault = (value, defaultValue) =>
 /**
  * The Toolbar displayed at the bottom of forms.
  *
- * @example Never disable the <SaveButton />
+ * @example Always enable the <SaveButton />
  *
  * import * as React from 'react';
  * import {
@@ -67,7 +67,7 @@ const valueOrDefault = (value, defaultValue) =>
  *
  * const CommentCreate = props => (
  *     <Create {...props}>
- *         <SimpleForm redirect={false} toolbar={<Toolbar disabled={false} />}>
+ *         <SimpleForm redirect={false} toolbar={<Toolbar alwaysEnableSaveButton={true} />}>
  *             <TextInput
  *                 source="author.name"
  *                 fullWidth
