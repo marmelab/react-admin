@@ -80,7 +80,7 @@ For instance, if the end-user displays a list of posts, then clicks on a post in
 
 The application cache uses the semantics of the `dataProvider` verb. That means that requests for a list (`getList`) also populate the cache for individual records (`getOne`, `getMany`). That also means that write requests (`create`, `udpate`, `updateMany`, `delete`, `deleteMany`) invalidate the list cache - because after an update, for instance, the ordering of items can be changed.
 
-So the application cache uses expiration caching together with a deeper knowledge of the data model, to allow longer expirations without the risk of displaying stale data. It especially fits admins for API backends with a small number of users (because with a large number of users, there is a high chance that a record kept in the client-side cache for a few minutes may be updated on the backend by another user). It also works with GraphQL APIs. 
+So the application cache uses expiration caching together with a deeper knowledge of the data model, to allow longer expirations without the risk of displaying stale data. It especially fits admins for API backends with a small number of users (because with a large number of users, there is a high chance a record kept in the client-side cache for a few minutes may be updated on the backend by another user). It also works with GraphQL APIs. 
 
 To enable it, the `dataProvider` response must include a `validUntil` key, containing the date until which the record(s) is (are) valid.
 

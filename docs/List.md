@@ -1776,7 +1776,7 @@ It's especially useful for `<ReferenceManyField>` or `<ReferenceArrayField>` com
 
 ## Using a Custom Iterator
 
-A `<List>` can delegate to any iterator component - `<Datagrid>` is just one example. An iterator component can get the data to display from [the `useListContext` hook](#useListContext). The data comes in two constants:
+A `<List>` can delegate to any iterator component - `<Datagrid>` is just one example. An iterator component can get the data to display from [the `useListContext` hook](#uselistcontext). The data comes in two constants:
 
 - `ids` is an array of the ids currently displayed in the list
 - `data` is an object of all the fetched data for this resource, indexed by id.
