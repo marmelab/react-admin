@@ -184,6 +184,10 @@ const useListController = <RecordType = Record>(
 
     const finalIds = typeof total === 'undefined' ? defaultIds : ids;
 
+    const totalPages = useMemo(() => {
+        return Math.ceil(total / query.perPage) || 1;
+    }, [query, total]);
+
     useEffect(() => {
         if (
             query.page <= 0 ||
@@ -237,6 +241,7 @@ const useListController = <RecordType = Record>(
         setSort: queryModifiers.setSort,
         showFilter: queryModifiers.showFilter,
         total: typeof total === 'undefined' ? defaultTotal : total,
+        totalPages,
     };
 };
 
@@ -268,6 +273,7 @@ export const injectedProps = [
     'setSort',
     'showFilter',
     'total',
+    'totalPages',
     'version',
 ];
 

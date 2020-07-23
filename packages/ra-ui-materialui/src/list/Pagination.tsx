@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useMemo, useCallback, FC, ReactElement } from 'react';
+import { useCallback, FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     TablePagination,
@@ -25,23 +25,12 @@ const Pagination: FC<PaginationProps> = props => {
     const {
         loading,
         page,
+        nbPages,
         perPage,
         total,
         setPage,
         setPerPage,
     } = useListContext(props);
-
-    const nbPages = useMemo(() => {
-        return Math.ceil(total / perPage) || 1;
-    }, [perPage, total]);
-
-    useEffect(() => {
-        if (page < 1 || isNaN(page)) {
-            setPage(1);
-        } else if (page > nbPages) {
-            setPage(nbPages);
-        }
-    }, [page, nbPages, total, perPage, setPage]);
 
     const translate = useTranslate();
     const isSmall = useMediaQuery((theme: Theme) =>
