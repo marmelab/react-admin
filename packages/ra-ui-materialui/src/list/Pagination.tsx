@@ -43,7 +43,7 @@ const Pagination: FC<PaginationProps> = props => {
     const handlePageChange = useCallback(
         (event, page) => {
             event && event.stopPropagation();
-            if (page < 0 || page >= totalPages) {
+            if (page < 0 || page > totalPages - 1) {
                 throw new Error(
                     translate('ra.navigation.page_out_of_boundaries', {
                         page: page + 1,
