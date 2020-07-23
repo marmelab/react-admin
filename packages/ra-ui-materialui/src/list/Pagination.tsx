@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useCallback, FC, ReactElement } from 'react';
+import { useEffect, useMemo, useCallback, FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     TablePagination,
@@ -31,18 +31,17 @@ const Pagination: FC<PaginationProps> = props => {
         setPerPage,
     } = useListContext(props);
 
-    const getNbPages = useCallback(() => Math.ceil(total / perPage) || 1, [
-        perPage,
-        total,
-    ]);
+    const nbPages = useMemo(() => {
+        return Math.ceil(total / perPage) || 1;
+    }, [perPage, total]);
 
     useEffect(() => {
         if (page < 1 || isNaN(page)) {
             setPage(1);
-        } else if (page > getNbPages()) {
-            setPage(getNbPages());
+        } else if (page > nbPages) {
+            setPage(nbPages);
         }
-    }, [page, setPage, getNbPages, total, perPage]);
+    }, [page, nbPages, total, perPage, setPage]);
 
     const translate = useTranslate();
     const isSmall = useMediaQuery((theme: Theme) =>
@@ -55,7 +54,7 @@ const Pagination: FC<PaginationProps> = props => {
     const handlePageChange = useCallback(
         (event, page) => {
             event && event.stopPropagation();
-            if (page < 0 || page > getNbPages() - 1) {
+            if (page < 0 || page > nbPages - 1) {
                 throw new Error(
                     translate('ra.navigation.page_out_of_boundaries', {
                         page: page + 1,
@@ -85,7 +84,7 @@ const Pagination: FC<PaginationProps> = props => {
     );
 
     // Avoid rendering TablePagination if "page" value is invalid
-    if (total === 0 || page > getNbPages()) {
+    if (total === 0 || page > nbPages) {
         return loading ? <Toolbar variant="dense" /> : limit;
     }
 
