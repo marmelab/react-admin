@@ -193,10 +193,22 @@ const useListController = <RecordType = Record>(
             query.page <= 0 ||
             (!loading && query.page > 1 && (finalIds || []).length === 0)
         ) {
-            // query for a page that doesn't exist, set page to 1
+            // Query for a page that doesn't exist, set page to 1
             queryModifiers.setPage(1);
+        } else if (!loading && query.page > totalPages) {
+            // Query for a page out of bounds, set page to the last existing page
+            // It occurs when deleting the last element of the last page
+            queryModifiers.setPage(totalPages);
         }
-    }, [loading, query.page, finalIds, queryModifiers, total, defaultIds]);
+    }, [
+        loading,
+        query,
+        finalIds,
+        queryModifiers,
+        total,
+        totalPages,
+        defaultIds,
+    ]);
 
     const currentSort = useMemo(
         () => ({
