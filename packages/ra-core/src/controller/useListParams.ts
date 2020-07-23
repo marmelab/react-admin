@@ -343,11 +343,9 @@ export const getQuery = ({
         query.order = sort.order;
     }
     if (query.perPage == null) {
-        console.log('perPage');
         query.perPage = perPage;
     }
     if (query.page == null) {
-        console.log('page');
         query.page = 1;
     }
 
