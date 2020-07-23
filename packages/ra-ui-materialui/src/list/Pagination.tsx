@@ -25,7 +25,7 @@ const Pagination: FC<PaginationProps> = props => {
     const {
         loading,
         page,
-        nbPages,
+        totalPages,
         perPage,
         total,
         setPage,
@@ -43,7 +43,7 @@ const Pagination: FC<PaginationProps> = props => {
     const handlePageChange = useCallback(
         (event, page) => {
             event && event.stopPropagation();
-            if (page < 0 || page > nbPages - 1) {
+            if (page < 0 || page >= totalPages) {
                 throw new Error(
                     translate('ra.navigation.page_out_of_boundaries', {
                         page: page + 1,
@@ -73,7 +73,7 @@ const Pagination: FC<PaginationProps> = props => {
     );
 
     // Avoid rendering TablePagination if "page" value is invalid
-    if (total === 0 || page > nbPages) {
+    if (total === 0 || page > totalPages) {
         return loading ? <Toolbar variant="dense" /> : limit;
     }
 

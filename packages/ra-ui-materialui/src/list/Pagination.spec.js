@@ -49,16 +49,21 @@ describe('<Pagination />', () => {
             const { queryByText } = render(
                 <ThemeProvider theme={theme}>
                     <ListContext.Provider
-                        value={{ ...defaultProps, total: 10, page: 2, setPage }}
+                        value={{
+                            ...defaultProps,
+                            total: 10,
+                            page: 2, // Query the page 2 but there is only 1 page
+                            totalPages: 1,
+                            setPage,
+                        }}
                     >
                         <Pagination />
                     </ListContext.Provider>
                 </ThemeProvider>
             );
             // mui TablePagination displays no more a warning in that case
-            // Then useEffect fallback on a valid page
+            // Then useEffect fallbacks on a valid page
             expect(queryByText('ra.navigation.no_results')).not.toBeNull();
-            await wait(expect(setPage).toBeCalledWith(1), 1000);
         });
     });
 
