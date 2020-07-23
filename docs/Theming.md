@@ -878,11 +878,11 @@ const App = () => (
 
 ### Changing the Icon
 
-It is possible to use a completely [custom logout button](./Authentication.md#the-datagrid-component) or you can simply override some properties of the default button. If you want to change the icon, you can use the default `<Logout>` component and pass a different icon as the `icon` prop.
+It is possible to use a completely [custom logout button](./Admin.md#logoutbutton) or you can simply override some properties of the default button. If you want to change the icon, you can use the default `<Logout>` component and pass a different icon as the `icon` prop.
 
 ```jsx
 import { Admin, Logout } from 'react-admin';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const MyLogoutButton = props => <Logout {...props} icon={<ExitToAppIcon/>} />;
 

@@ -11,7 +11,7 @@ You will use translation features mostly via the `i18nProvider`, and a set of ho
 
 **Tip**: We'll use a bit of custom vocabulary in this chapter:
  
-- "i18n" is a shorter way to write "internationalization" (an "i" followed by 18 letters followed by n) 
+- "i18n" is a shorter way to write "internationalization" (an "i" followed by 18 letters followed by "n") 
 - "locale" is a concept similar to languages, but it also includes the concept of country. For instance, there are several English locales (like `en_us` and `en_gb`) because US and UK citizens don't use exactly the same language. For react-admin, the "locale" is just a key for your i18nProvider, so it can have any value you want.
 
 ## Introducing the `i18nProvider`
