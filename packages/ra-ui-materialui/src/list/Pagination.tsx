@@ -52,7 +52,7 @@ const Pagination: FC<PaginationProps> = props => {
             }
             setPage(page + 1);
         },
-        [total, perPage, setPage, translate] // eslint-disable-line react-hooks/exhaustive-deps
+        [totalPages, setPage, translate]
     );
 
     const handlePerPageChange = useCallback(
@@ -73,7 +73,7 @@ const Pagination: FC<PaginationProps> = props => {
     );
 
     // Avoid rendering TablePagination if "page" value is invalid
-    if (total === 0 || page > totalPages) {
+    if (total === 0 || page < 0 || page > totalPages) {
         return loading ? <Toolbar variant="dense" /> : limit;
     }
 
