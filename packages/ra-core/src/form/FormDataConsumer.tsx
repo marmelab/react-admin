@@ -97,7 +97,7 @@ export const FormDataConsumerView: FunctionComponent<Props> = ({
 
     warning(
         typeof index !== 'undefined' && ret && !getSourceHasBeenCalled,
-        `You're using a FormDataConsumer inside an ArrayInput and you did not called the getSource function supplied by the FormDataConsumer component. This is required for your inputs to get the proper source.
+        `You're using a FormDataConsumer inside an ArrayInput and you did not call the getSource function supplied by the FormDataConsumer component. This is required for your inputs to get the proper source.
 
 <ArrayInput source="users">
     <SimpleFormIterator>
