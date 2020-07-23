@@ -43,7 +43,7 @@ describe('<Pagination />', () => {
             expect(queryByText('ra.navigation.no_results')).toBeNull();
         });
 
-        it('should display a pagination limit on an out of bounds page', async () => {
+        it('should display a pagination limit on an out of bounds page (more than total pages)', async () => {
             jest.spyOn(console, 'error').mockImplementationOnce(() => {});
             const setPage = jest.fn().mockReturnValue(null);
             const { queryByText } = render(
@@ -53,6 +53,29 @@ describe('<Pagination />', () => {
                             ...defaultProps,
                             total: 10,
                             page: 2, // Query the page 2 but there is only 1 page
+                            totalPages: 1,
+                            setPage,
+                        }}
+                    >
+                        <Pagination />
+                    </ListContext.Provider>
+                </ThemeProvider>
+            );
+            // mui TablePagination displays no more a warning in that case
+            // Then useEffect fallbacks on a valid page
+            expect(queryByText('ra.navigation.no_results')).not.toBeNull();
+        });
+
+        it('should display a pagination limit on an out of bounds page (less than 0)', async () => {
+            jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+            const setPage = jest.fn().mockReturnValue(null);
+            const { queryByText } = render(
+                <ThemeProvider theme={theme}>
+                    <ListContext.Provider
+                        value={{
+                            ...defaultProps,
+                            total: 10,
+                            page: -2, // Query the page -2 😱
                             totalPages: 1,
                             setPage,
                         }}
