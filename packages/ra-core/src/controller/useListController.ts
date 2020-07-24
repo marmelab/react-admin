@@ -202,7 +202,7 @@ const useListController = <RecordType = Record>(
         }
     }, [
         loading,
-        query,
+        query.page,
         finalIds,
         queryModifiers,
         total,
