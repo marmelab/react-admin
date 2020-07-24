@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useMemo, useEffect, useRef } from 'react';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 
@@ -194,6 +194,12 @@ const useReferenceArrayFieldController = ({
         sort.order,
     ]);
 
+    const total = finalIds.length;
+
+    const totalPages = useMemo(() => {
+        return Math.ceil(total / perPage) || 1;
+    }, [perPage, total]);
+
     return {
         basePath: basePath.replace(resource, reference),
         currentSort: sort,
@@ -219,7 +225,8 @@ const useReferenceArrayFieldController = ({
         setPerPage,
         setSort,
         showFilter,
-        total: finalIds.length,
+        total,
+        totalPages,
     };
 };
 

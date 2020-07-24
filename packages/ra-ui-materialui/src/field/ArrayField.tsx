@@ -135,7 +135,6 @@ export const ArrayField: FC<ArrayFieldProps> = memo<ArrayFieldProps>(
             setData(data);
         }, [record, source, fieldKey]);
 
-        // @ts-ignore
         return (
             <ListContext.Provider
                 value={{
@@ -162,6 +161,7 @@ export const ArrayField: FC<ArrayFieldProps> = memo<ArrayFieldProps>(
                     setSort: null,
                     showFilter: null,
                     total: null,
+                    totalPages: null,
                 }}
             >
                 {cloneElement(Children.only(children), {

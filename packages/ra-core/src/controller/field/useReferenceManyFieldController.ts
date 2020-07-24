@@ -1,5 +1,5 @@
 import get from 'lodash/get';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useMemo, useEffect, useRef } from 'react';
 import isEqual from 'lodash/isEqual';
 
 import { useSafeSetState, removeEmpty } from '../../util';
@@ -173,6 +173,10 @@ const useReferenceManyFieldController = ({
         }
     );
 
+    const totalPages = useMemo(() => {
+        return Math.ceil(total / perPage) || 1;
+    }, [perPage, total]);
+
     return {
         basePath: basePath.replace(resource, reference),
         currentSort: sort,
@@ -199,6 +203,7 @@ const useReferenceManyFieldController = ({
         setSort,
         showFilter,
         total,
+        totalPages,
     };
 };
 
