@@ -53,7 +53,7 @@ describe('<Pagination />', () => {
                             ...defaultProps,
                             total: 10,
                             page: 2, // Query the page 2 but there is only 1 page
-                            totalPages: 1,
+                            perPage: 10,
                             setPage,
                         }}
                     >
@@ -76,7 +76,7 @@ describe('<Pagination />', () => {
                             ...defaultProps,
                             total: 10,
                             page: -2, // Query the page -2 😱
-                            totalPages: 1,
+                            perPage: 10,
                             setPage,
                         }}
                     >

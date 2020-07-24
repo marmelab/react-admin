@@ -14,7 +14,6 @@ import { ListControllerProps } from './useListController';
  * @prop {boolean}  loaded boolean that is false until the data is available
  * @prop {boolean}  loading boolean that is true on mount, and false once the data was fetched
  * @prop {integer}  page the current page. Starts at 1
- * @prop {integer}  totalPages the total number of pages for the current filters. Corresponds to total / perPage.
  * @prop {Function} setPage a callback to change the page, e.g. setPage(3)
  * @prop {integer}  perPage the number of results per page. Defaults to 25
  * @prop {Function} setPerPage a callback to change the number of results per page, e.g. setPerPage(25)
@@ -79,7 +78,6 @@ const ListContext = createContext<ListControllerProps>({
     setSort: null,
     showFilter: null,
     total: null,
-    totalPages: null,
 });
 
 ListContext.displayName = 'ListContext';

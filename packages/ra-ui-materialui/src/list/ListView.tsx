@@ -253,7 +253,6 @@ const sanitizeRestProps: (
     showFilter,
     sort,
     total,
-    totalPages,
     ...rest
 }) => rest;
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useCallback, FC, ReactElement } from 'react';
+import { useCallback, useMemo, FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     TablePagination,
@@ -25,7 +25,6 @@ const Pagination: FC<PaginationProps> = props => {
     const {
         loading,
         page,
-        totalPages,
         perPage,
         total,
         setPage,
@@ -36,6 +35,10 @@ const Pagination: FC<PaginationProps> = props => {
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('sm')
     );
+
+    const totalPages = useMemo(() => {
+        return Math.ceil(total / perPage) || 1;
+    }, [perPage, total]);
 
     /**
      * Warning: material-ui's page is 0-based

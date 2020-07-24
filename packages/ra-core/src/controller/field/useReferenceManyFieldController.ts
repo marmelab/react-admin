@@ -173,10 +173,6 @@ const useReferenceManyFieldController = ({
         }
     );
 
-    const totalPages = useMemo(() => {
-        return Math.ceil(total / perPage) || 1;
-    }, [perPage, total]);
-
     return {
         basePath: basePath.replace(resource, reference),
         currentSort: sort,
@@ -203,7 +199,6 @@ const useReferenceManyFieldController = ({
         setSort,
         showFilter,
         total,
-        totalPages,
     };
 };
 
