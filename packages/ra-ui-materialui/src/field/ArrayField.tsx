@@ -135,7 +135,6 @@ export const ArrayField: FC<ArrayFieldProps> = memo<ArrayFieldProps>(
             setData(data);
         }, [record, source, fieldKey]);
 
-        // @ts-ignore
         return (
             <ListContext.Provider
                 value={{

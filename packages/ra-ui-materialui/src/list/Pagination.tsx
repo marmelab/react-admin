@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useCallback, FC, ReactElement } from 'react';
+import { useCallback, useMemo, FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     TablePagination,
@@ -30,17 +30,15 @@ const Pagination: FC<PaginationProps> = props => {
         setPage,
         setPerPage,
     } = useListContext(props);
-    useEffect(() => {
-        if (page < 1 || isNaN(page)) {
-            setPage(1);
-        }
-    }, [page, setPage]);
+
     const translate = useTranslate();
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('sm')
     );
 
-    const getNbPages = () => Math.ceil(total / perPage) || 1;
+    const totalPages = useMemo(() => {
+        return Math.ceil(total / perPage) || 1;
+    }, [perPage, total]);
 
     /**
      * Warning: material-ui's page is 0-based
@@ -48,7 +46,7 @@ const Pagination: FC<PaginationProps> = props => {
     const handlePageChange = useCallback(
         (event, page) => {
             event && event.stopPropagation();
-            if (page < 0 || page > getNbPages() - 1) {
+            if (page < 0 || page > totalPages - 1) {
                 throw new Error(
                     translate('ra.navigation.page_out_of_boundaries', {
                         page: page + 1,
@@ -57,7 +55,7 @@ const Pagination: FC<PaginationProps> = props => {
             }
             setPage(page + 1);
         },
-        [total, perPage, setPage, translate] // eslint-disable-line react-hooks/exhaustive-deps
+        [totalPages, setPage, translate]
     );
 
     const handlePerPageChange = useCallback(
@@ -77,7 +75,8 @@ const Pagination: FC<PaginationProps> = props => {
         [translate]
     );
 
-    if (total === 0) {
+    // Avoid rendering TablePagination if "page" value is invalid
+    if (total === 0 || page < 1 || page > totalPages) {
         return loading ? <Toolbar variant="dense" /> : limit;
     }
 

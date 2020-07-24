@@ -1,4 +1,4 @@
-import { getQuery } from './useListParams';
+import { getQuery, getNumberOrDefault } from './useListParams';
 import {
     SORT_DESC,
     SORT_ASC,
@@ -154,6 +154,32 @@ describe('useListParams', () => {
                     city: 'Nancy',
                 },
             });
+        });
+    });
+
+    describe('getNumberOrDefault', () => {
+        it('should return the parsed number', () => {
+            const result = getNumberOrDefault('29', 2);
+
+            expect(result).toEqual(29);
+        });
+
+        it('should return the default number when passing a not valid number', () => {
+            const result = getNumberOrDefault('covfefe', 2);
+
+            expect(result).toEqual(2);
+        });
+
+        it('should return the default number when passing an undefined number', () => {
+            const result = getNumberOrDefault(undefined, 2);
+
+            expect(result).toEqual(2);
+        });
+
+        it('should not return the default number when passing "0"', () => {
+            const result = getNumberOrDefault('0', 2);
+
+            expect(result).toEqual(0);
         });
     });
 });
