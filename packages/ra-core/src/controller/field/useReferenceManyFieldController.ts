@@ -1,5 +1,5 @@
 import get from 'lodash/get';
-import { useCallback, useMemo, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import isEqual from 'lodash/isEqual';
 
 import { useSafeSetState, removeEmpty } from '../../util';

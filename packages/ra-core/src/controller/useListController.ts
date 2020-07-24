@@ -186,7 +186,7 @@ const useListController = <RecordType = Record>(
 
     const totalPages = useMemo(() => {
         return Math.ceil(total / query.perPage) || 1;
-    }, [query, total]);
+    }, [query.perPage, total]);
 
     useEffect(() => {
         if (

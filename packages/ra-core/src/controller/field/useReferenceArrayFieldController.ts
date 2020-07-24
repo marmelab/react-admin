@@ -194,8 +194,6 @@ const useReferenceArrayFieldController = ({
         sort.order,
     ]);
 
-    const total = finalIds.length;
-
     return {
         basePath: basePath.replace(resource, reference),
         currentSort: sort,
@@ -221,7 +219,7 @@ const useReferenceArrayFieldController = ({
         setPerPage,
         setSort,
         showFilter,
-        total,
+        total: finalIds.length,
     };
 };
 
