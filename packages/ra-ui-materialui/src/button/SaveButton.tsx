@@ -92,7 +92,7 @@ const SaveButton: FC<SaveButtonProps> = props => {
     );
 
     const handleClick = event => {
-        // deprecated: use onSuccess and transform insted of onSave
+        // deprecated: use onSuccess and transform instead of onSave
         if (typeof onSave === 'function') {
             if (process.env.NODE_ENV !== 'production') {
                 console.log(
