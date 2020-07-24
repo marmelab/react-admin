@@ -79,7 +79,7 @@ export interface ListControllerProps<RecordType = Record> {
     setSort: (sort: string, order?: string) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
     total: number;
-    totalPages: number;
+    totalPages?: number;
 }
 
 /**
