@@ -1,4 +1,4 @@
-import { shallowEqual } from 'recompose';
+import { shallowEqual } from 'react-redux';
 
 const isObject = obj =>
     obj && Object.prototype.toString.call(obj) === '[object Object]';
