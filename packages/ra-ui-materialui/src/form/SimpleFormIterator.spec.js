@@ -212,7 +212,7 @@ describe('<SimpleFormIterator />', () => {
         });
     });
 
-    it('should not display add button if custom addButton is passed', () => {
+    it('should not display the default add button if a custom add button is passed', () => {
         const { queryAllByText } = renderWithRedux(
             <SimpleForm>
                 <ArrayInput source="emails">
@@ -228,7 +228,7 @@ describe('<SimpleFormIterator />', () => {
         expect(queryAllByText('ra.action.add').length).toBe(0);
     });
 
-    it('should not display remove button if custom removeButton is passed', () => {
+    it('should not display the default remove button if a custom remove button is passed', () => {
         const { queryAllByText } = renderWithRedux(
             <SimpleForm record={{ emails: [{ email: '' }] }}>
                 <ArrayInput source="emails">
@@ -245,7 +245,7 @@ describe('<SimpleFormIterator />', () => {
         expect(queryAllByText('ra.action.remove').length).toBe(0);
     });
 
-    it('should display custom add button if custom addButton is passed', () => {
+    it('should display the custom add button', () => {
         const { getByText } = renderWithRedux(
             <SimpleForm>
                 <ArrayInput source="emails">
@@ -262,7 +262,7 @@ describe('<SimpleFormIterator />', () => {
         expect(getByText('Custom Add Button')).toBeDefined();
     });
 
-    it('should display custom remove button if custom removeButton is passed', () => {
+    it('should display the custom remove button', () => {
         const { getByText } = renderWithRedux(
             <SimpleForm record={{ emails: [{ email: '' }] }}>
                 <ArrayInput source="emails">
@@ -279,7 +279,7 @@ describe('<SimpleFormIterator />', () => {
         expect(getByText('Custom Remove Button')).toBeDefined();
     });
 
-    it('should call onClick method, when custom add button is clicked', async () => {
+    it('should call the onClick method when the custom add button is clicked', async () => {
         const onClick = jest.fn();
         const { getByText } = renderWithRedux(
             <SimpleForm>
@@ -299,7 +299,7 @@ describe('<SimpleFormIterator />', () => {
         expect(onClick).toHaveBeenCalled();
     });
 
-    it('should call onClick method, when custom remove button is clicked', async () => {
+    it('should call the onClick method when the custom remove button is clicked', async () => {
         const onClick = jest.fn();
         const { getByText } = renderWithRedux(
             <SimpleForm record={{ emails: [{ email: '' }] }}>

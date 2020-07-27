@@ -133,7 +133,7 @@ You can also use `addButton` and `removeButton` props to pass your custom add an
 import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admin';
 
 <ArrayInput source="backlinks">
-    <SimpleFormIterator  addButton={<CustomAddButton />} addButton={<CustomRemoveButton />}>
+    <SimpleFormIterator addButton={<CustomAddButton />} addButton={<CustomRemoveButton />}>
         <DateInput source="date" />
         <TextInput source="url" />
     </SimpleFormIterator>
