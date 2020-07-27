@@ -63,8 +63,32 @@ const useStyles = makeStyles(
     { name: 'RaSimpleFormIterator' }
 );
 
+const DefaultAddButton = props => {
+    const classes = useStyles(props);
+    const translate = useTranslate();
+    return (
+        <Button size="small" {...props}>
+            <AddIcon className={classes.leftIcon} />
+            {translate('ra.action.add')}
+        </Button>
+    );
+};
+
+const DefaultRemoveButton = props => {
+    const classes = useStyles(props);
+    const translate = useTranslate();
+    return (
+        <Button size="small" {...props}>
+            <CloseIcon className={classes.leftIcon} />
+            {translate('ra.action.remove')}
+        </Button>
+    );
+};
+
 const SimpleFormIterator = props => {
     const {
+        addButton = <DefaultAddButton />,
+        removeButton = <DefaultRemoveButton />,
         basePath,
         children,
         fields,
@@ -79,7 +103,6 @@ const SimpleFormIterator = props => {
         TransitionProps,
         defaultValue,
     } = props;
-    const translate = useTranslate();
     const classes = useStyles(props);
 
     // We need a unique id for each field for a proper enter/exit animation
@@ -119,6 +142,25 @@ const SimpleFormIterator = props => {
     const addField = () => {
         ids.current.push(nextId.current++);
         fields.push(undefined);
+    };
+
+    // add field and call the onClick event of the button passed as addButton prop
+    const handleAddButtonClick = originalOnClickHandler => event => {
+        addField();
+        if (originalOnClickHandler) {
+            originalOnClickHandler(event);
+        }
+    };
+
+    // remove field and call the onClick event of the button passed as removeButton prop
+    const handleRemoveButtonClick = (
+        originalOnClickHandler,
+        index
+    ) => event => {
+        removeField(index)();
+        if (originalOnClickHandler) {
+            originalOnClickHandler(event);
+        }
     };
 
     const records = get(record, source);
@@ -187,19 +229,16 @@ const SimpleFormIterator = props => {
                                 disableRemove
                             ) && (
                                 <span className={classes.action}>
-                                    <Button
-                                        className={classNames(
+                                    {cloneElement(removeButton, {
+                                        onClick: handleRemoveButtonClick(
+                                            removeButton.props.onClick,
+                                            index
+                                        ),
+                                        className: classNames(
                                             'button-remove',
                                             `button-remove-${source}-${index}`
-                                        )}
-                                        size="small"
-                                        onClick={removeField(index)}
-                                    >
-                                        <CloseIcon
-                                            className={classes.leftIcon}
-                                        />
-                                        {translate('ra.action.remove')}
-                                    </Button>
+                                        ),
+                                    })}
                                 </span>
                             )}
                         </li>
@@ -209,17 +248,15 @@ const SimpleFormIterator = props => {
             {!disableAdd && (
                 <li className={classes.line}>
                     <span className={classes.action}>
-                        <Button
-                            className={classNames(
+                        {cloneElement(addButton, {
+                            onClick: handleAddButtonClick(
+                                addButton.props.onClick
+                            ),
+                            className: classNames(
                                 'button-add',
                                 `button-add-${source}`
-                            )}
-                            size="small"
-                            onClick={addField}
-                        >
-                            <AddIcon className={classes.leftIcon} />
-                            {translate('ra.action.add')}
-                        </Button>
+                            ),
+                        })}
                     </span>
                 </li>
             )}
@@ -234,6 +271,8 @@ SimpleFormIterator.defaultProps = {
 
 SimpleFormIterator.propTypes = {
     defaultValue: PropTypes.any,
+    addButton: PropTypes.element,
+    removeButton: PropTypes.element,
     basePath: PropTypes.string,
     children: PropTypes.node,
     classes: PropTypes.object,
