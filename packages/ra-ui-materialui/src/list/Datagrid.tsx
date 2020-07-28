@@ -100,7 +100,7 @@ const Datagrid: FC<DatagridProps> = props => {
         event => {
             event.stopPropagation();
             setSort(
-                event.currentTarget.dataset.sort,
+                event.currentTarget.dataset.field,
                 event.currentTarget.dataset.order
             );
         },

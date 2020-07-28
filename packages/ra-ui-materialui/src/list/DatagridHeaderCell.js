@@ -61,7 +61,7 @@ export const DatagridHeaderCell = props => {
                             (field.props.sortBy || field.props.source)
                         }
                         direction={currentSort.order === 'ASC' ? 'asc' : 'desc'}
-                        data-sort={field.props.sortBy || field.props.source}
+                        data-field={field.props.sortBy || field.props.source}
                         data-order={field.props.sortByOrder || 'ASC'}
                         onClick={updateSort}
                         classes={classes}
