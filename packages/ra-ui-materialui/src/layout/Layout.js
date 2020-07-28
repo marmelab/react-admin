@@ -16,6 +16,7 @@ import {
 } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { ComponentPropType } from 'ra-core';
+import compose from 'lodash/flowRight';
 
 import DefaultAppBar from './AppBar';
 import DefaultSidebar from './Sidebar';
@@ -23,15 +24,6 @@ import DefaultMenu from './Menu';
 import DefaultNotification from './Notification';
 import DefaultError from './Error';
 import defaultTheme from '../defaultTheme';
-
-/**
- * Copied from https://github.com/acdlite/recompose/blob/master/src/packages/recompose/compose.js
- * It needs to be removed when migrating this component to hooks.
- *
- * @param  {...any} funcs Functions to compose
- */
-const compose = (...funcs) =>
-    funcs.reduce((a, b) => (...args) => a(b(...args)), arg => arg);
 
 const styles = theme =>
     createStyles({
