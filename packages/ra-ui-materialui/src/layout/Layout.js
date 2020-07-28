@@ -15,7 +15,8 @@ import {
     createStyles,
 } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-import compose from 'recompose/compose';
+import { ComponentPropType } from 'ra-core';
+import compose from 'lodash/flowRight';
 
 import DefaultAppBar from './AppBar';
 import DefaultSidebar from './Sidebar';
@@ -23,7 +24,6 @@ import DefaultMenu from './Menu';
 import DefaultNotification from './Notification';
 import DefaultError from './Error';
 import defaultTheme from '../defaultTheme';
-import { ComponentPropType } from 'ra-core';
 
 const styles = theme =>
     createStyles({

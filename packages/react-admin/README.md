@@ -27,7 +27,7 @@ A frontend Framework for building admin applications running in the browser on t
 * Super easy to extend and override (it's just React components)
 * Highly customizable interface
 * Can connect to multiple backends
-* Leverages the best libraries in the React ecosystem (Redux, redux-form, redux-saga, material-ui, recompose)
+* Leverages the best libraries in the React ecosystem (Redux, redux-form, redux-saga, material-ui)
 * Can be included in another React app
 * Inspired by the popular [ng-admin](https://github.com/marmelab/ng-admin) library (also by marmelab)
 
@@ -123,7 +123,7 @@ export const PostCreate = (props) => (
 );
 ```
 
-## Does It Work With My API?
+## Does It Work With My API
 
 Yes.
 
