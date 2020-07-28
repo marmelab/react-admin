@@ -36,6 +36,9 @@ const styles = theme =>
             position: 'relative',
             minWidth: 'fit-content',
             width: '100%',
+            color: theme.palette.getContrastText(
+                theme.palette.background.default
+            ),
         },
         appFrame: {
             display: 'flex',
