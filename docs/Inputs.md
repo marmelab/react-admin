@@ -605,9 +605,9 @@ import { DateTimeInput } from 'react-admin';
 
 ### Usage
 
-Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and `maxSize` props. `accept` must be a valid [MIME type](http://www.iana.org/assignments/media-types/media-types.xhtml) according to [input element specification](https://www.w3.org/wiki/HTML/Elements/input/file) or a valid file extension. If `multiple` is set to false and additional files are droppped, all files besides the first will be rejected. Any file which does not have a size in the [`minSize`, `maxSize`] range, will be rejected as well.
+Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and `maxSize` props. `accept` must be a valid [MIME type](http://www.iana.org/assignments/media-types/media-types.xhtml) according to [input element specification](https://www.w3.org/wiki/HTML/Elements/input/file) or a valid file extension. If `multiple` is set to false and additional files are dropped, all files besides the first will be rejected. Any file which does not have a size in the [`minSize`, `maxSize`] range, will be rejected as well.
 
-`<ImageInput>` delegates the preview of currently selected images to its child. `<ImageInput>` clones its child as many times as there are selected images, passing the image as the `record` prop. To preview a simple list of image thubnails, you can use `<ImageField>` as child, as follows:
+`<ImageInput>` delegates the preview of currently selected images to its child. `<ImageInput>` clones its child as many times as there are selected images, passing the image as the `record` prop. To preview a simple list of image thumbnails, you can use `<ImageField>` as child, as follows:
 
 ```jsx
 <ImageInput source="pictures" label="Related pictures" accept="image/*">
@@ -655,7 +655,7 @@ Note that the image upload returns a [File](https://developer.mozilla.org/en/doc
 
 ### Usage
 
-Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and `maxSize` props. `accept` must be a valid [MIME type](http://www.iana.org/assignments/media-types/media-types.xhtml) according to [input element specification](https://www.w3.org/wiki/HTML/Elements/input/file) or a valid file extension. If `multiple` is set to false and additional files are droppped, all files besides the first will be rejected. Any file which does not have a size in the [`minSize`, `maxSize`] range, will be rejected as well.
+Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and `maxSize` props. `accept` must be a valid [MIME type](http://www.iana.org/assignments/media-types/media-types.xhtml) according to [input element specification](https://www.w3.org/wiki/HTML/Elements/input/file) or a valid file extension. If `multiple` is set to false and additional files are dropped, all files besides the first will be rejected. Any file which does not have a size in the [`minSize`, `maxSize`] range, will be rejected as well.
 
 `FileInput` delegates the preview of currently selected files to its child. `FileInput` clones its child as many times as there are selected files, passing the file as the `record` prop. To preview a simple list of files names, you can use `<FileField>` as child, as follows:
 

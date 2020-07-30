@@ -90,7 +90,7 @@ import * as React from 'react';
 import { cloneElement, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
-    useListContext;
+    useListContext,
     TopToolbar,
     CreateButton,
     ExportButton,
@@ -196,7 +196,7 @@ const exporter = posts => {
     }, (err, csv) => {
         downloadCSV(csv, 'posts'); // download as 'posts.csv` file
     });
-})
+};
 
 const PostList = props => (
     <List {...props} exporter={exporter}>
@@ -705,10 +705,10 @@ const Empty = () => {
                 Create one or import from a file
             </Typography>
             <CreateButton basePath={basePath} />
-            <Button onClick={...}>Import</Button>
+            <Button onClick={/* ... */}>Import</Button>
         </Box>
     );
-}
+};
 
 const ProductList = props => (
     <List empty={<Empty />} {...props}>
@@ -789,7 +789,7 @@ const PostList = props => {
     );
 }
 
-export PostList;
+export default PostList;
 ```
 {% endraw %}
 
@@ -1513,7 +1513,7 @@ const PostList = props => {
     );
 }
 
-export PostList;
+export default PostList;
 ```
 {% endraw %}
 
@@ -1608,8 +1608,8 @@ const CustomList = () => {
     const [page, setPage] = useState(1);
     const perPage = 50;
     const { data, total, loading, error } = useQuery({
-        type: 'GET_LIST'
-        resource: 'posts'
+        type: 'GET_LIST',
+        resource: 'posts',
         payload: {
             pagination: { page, perPage },
             sort: { field: 'id', order: 'ASC' },
@@ -1893,7 +1893,7 @@ export const UserList = ({ permissions, ...props }) => {
 
 ## Pagination
 
-The `<Pagination>` gest the following constants from [the `useListContext` hook](#uselistcontext):
+The `<Pagination>` gets the following constants from [the `useListContext` hook](#uselistcontext):
 
 * `page`: The current page number (integer). First page is `1`.
 * `perPage`: The number of records per page.
