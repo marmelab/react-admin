@@ -557,7 +557,7 @@ const App = () => (
 
 ## Declaring resources at runtime
 
-You might want to dynamically define the resources when the app starts. To do so, you have two options: using a function as `<Admin>` child, or unplugging it to use a combinaison of `AdminContext` and `<AdminUI>` instead.
+You might want to dynamically define the resources when the app starts. To do so, you have two options: using a function as `<Admin>` child, or unplugging it to use a combination of `AdminContext` and `<AdminUI>` instead.
 
 ### Using a Function As `<Admin>` Child
 

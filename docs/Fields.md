@@ -412,7 +412,7 @@ This field is also often used within an [<FileInput />](./Inputs.md#fileinput) c
 | `src` | Optional | `string` |  - | A function returning a string (or an element) to display based on a record |
 | `title` | Optional | `string` | record.title | The name of the property containing the image source if the value is an array of objects |
 | `target` | Optional | `string` | - | The link target. Set to "_blank" to open the file on a new tab |
-| `download` | Optional | `boolan | string` | - | Prompts the user to save the linked URL instead of navigating to it |
+| `download` | Optional | `boolean | string` | - | Prompts the user to save the linked URL instead of navigating to it |
 | `ping` | Optional | `string` | - | A space-separated list of URLs. When the link is followed, the browser will send POST requests with the body PING to the URLs. Typically for tracking. |
 | `rel` | Optional | `string` | - | The relationship of the linked URL as space-separated link types (e.g. 'noopener', 'canonical', etc.). |
 
@@ -743,7 +743,7 @@ export const PostList = (props) => (
 | `reference`  | Required | `string`           | -                                | The name of the resource for the referenced records, e.g. 'books'                   |
 | `target`     | Required | string             | -                                | Target field carrying the relationship on the referenced resource, e.g. 'user_id'   |
 | `filter`     | Optional | `Object`           | -                                | Filters to use when fetching the related records, passed to `getManyReference()`    |
-| `pagination` | Optional | `Element`          | -                                | Pagination element to display pagination controls. empty by dfault (no pagination)  |
+| `pagination` | Optional | `Element`          | -                                | Pagination element to display pagination controls. empty by default (no pagination)  |
 | `perPage`    | Optional | `number`           | 25                               | Maximum number of referenced records to fetch                                       |
 | `sort`       | Optional | `{ field, order }` | `{ field: 'id', order: 'DESC' }` | Sort order to use when fetching the related records, passed to `getManyReference()` |
 
@@ -862,7 +862,7 @@ export const PostList = (props) => (
 | `children`  | Required | `Element`           | -        | The Field element used to render the referenced records |
 | `sortBy`    | Optional | `string | function` | `source` | When used in a List, name of the field to use for sorting when the user clicks on the column header. Set to `false` to disable the link. |
 | `filter`    | Optional | `Object`           | -        | Filters to use when fetching the related records (the filtering is done client-side) |
-| `pagination` | Optional | `Element`          | -        | Pagination element to display pagination controls. empty by dfault (no pagination) |
+| `pagination` | Optional | `Element`          | -        | Pagination element to display pagination controls. empty by default (no pagination) |
 | `perPage`   | Optional | `number`           | 1000      | Maximum number of results to display |
 | `sort`      | Optional | `{ field, order }` | `{ field: 'id', order: 'DESC' }` | Sort order to use when displaying the related records (the sort is done client-side) |
 
