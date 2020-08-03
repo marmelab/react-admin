@@ -199,8 +199,8 @@ const Datagrid: FC<DatagridProps> = props => {
                             />
                         </TableCell>
                     )}
-                    {Children.map(children, (field, index) => {
-                        return isValidElement(field) ? (
+                    {Children.map(children, (field, index) =>
+                        isValidElement(field) ? (
                             <DatagridHeaderCell
                                 className={classes.headerCell}
                                 currentSort={currentSort}
@@ -214,8 +214,8 @@ const Datagrid: FC<DatagridProps> = props => {
                                 resource={resource}
                                 updateSort={updateSort}
                             />
-                        ) : null;
-                    })}
+                        ) : null
+                    )}
                 </TableRow>
             </TableHead>
             {cloneElement(
