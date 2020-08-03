@@ -74,7 +74,7 @@ import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
  * @prop {ReactElement} toolbar The element displayed at the bottom of the form, containing the SaveButton
  * @prop {string} variant Apply variant to all inputs. Possible values are 'standard', 'outlined', and 'filled' (default)
  * @prop {string} margin Apply variant to all inputs. Possible values are 'none', 'normal', and 'dense' (default)
- * @prop {boolean} scrollable The multiple tabs becomes scrollable when they go beyond form witdh
+ * @prop {boolean} scrollable The tabs become scrollable when they extend beyond the witdh of the form
  *
  * @param {Prop} props
  */
@@ -108,7 +108,7 @@ const useStyles = makeStyles(
         errorTabButton: { color: theme.palette.error.main },
         content: {
             paddingTop: props =>
-                props.scrollable ? 48 + theme.spacing(1) : theme.spacing(1),
+                props.scrollable ? theme.spacing(7) : theme.spacing(1), // When using scrollable tabs, let enougth height to tab content
             paddingLeft: theme.spacing(2),
             paddingRight: theme.spacing(2),
         },
