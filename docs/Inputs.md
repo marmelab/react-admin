@@ -216,7 +216,7 @@ const choices = [
 ];
 const OptionRenderer = choice => (
     <span>
-        <img src={choice.avatar}/>
+        <img src={choice.avatar} />
         `${choice.first_name} ${choice.last_name}`
     </span>
 );
