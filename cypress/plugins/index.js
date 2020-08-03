@@ -6,6 +6,8 @@ module.exports = on => {
         webpackOptions: require('../webpack.config'),
     };
     on('before:browser:launch', (browser = {}, launchOptions) => {
+        // Fix for Cypress 4:
+        // https://docs.cypress.io/api/plugins/browser-launch-api.html#Usage
         if (browser.name === 'chrome') {
             launchOptions.args.push(
                 '--disable-blink-features=RootLayerScrolling'
