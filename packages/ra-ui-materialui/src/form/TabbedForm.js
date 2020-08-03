@@ -113,7 +113,7 @@ const useStyles = makeStyles(
             paddingRight: theme.spacing(2),
         },
         scrollableDivider: {
-            marginTop: 48,
+            marginTop: theme.spacing(6),
             position: 'absolute',
             width: '100%',
         },
