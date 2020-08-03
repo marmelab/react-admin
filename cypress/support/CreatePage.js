@@ -96,7 +96,7 @@ export default url => ({
     },
 
     gotoTab(index) {
-        cy.get(this.elements.tab(index)).click();
+        cy.get(this.elements.tab(index)).click({ force: true });
     },
 
     logout() {
