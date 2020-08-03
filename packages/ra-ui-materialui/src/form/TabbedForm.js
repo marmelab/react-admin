@@ -178,6 +178,7 @@ export const TabbedFormView = props => {
                 {
                     classes,
                     url,
+                    title: 'FormTabRow',
                     tabsWithErrors,
                     ...scrollableProps,
                 },

@@ -94,7 +94,7 @@ describe('<TabbedForm />', () => {
     });
 
     it('should have scroll buttons when too much Tabs />', () => {
-        const { queryByLabelText } = renderWithRedux(
+        const { queryByLabelText, queryByTitle } = renderWithRedux(
             <MemoryRouter initialEntries={['/']}>
                 <TabbedForm
                     style={{
@@ -115,11 +115,15 @@ describe('<TabbedForm />', () => {
 
         const tabs = queryByLabelText('Form-tabs');
 
-        expect(tabs.children).toHaveLength(4);
+        expect(tabs.children).toHaveLength(7);
+
+        const tabRow = queryByTitle('FormTabRow');
+
+        expect(tabRow.children).toHaveLength(4);
     });
 
     it('should not have scroll buttons when too much Tabs />', () => {
-        const { queryByLabelText } = renderWithRedux(
+        const { queryByLabelText, queryByTitle } = renderWithRedux(
             <MemoryRouter initialEntries={['/']}>
                 <TabbedForm
                     style={{
@@ -141,6 +145,10 @@ describe('<TabbedForm />', () => {
 
         const tabs = queryByLabelText('Form-tabs');
 
-        expect(tabs.children).toHaveLength(1);
+        expect(tabs.children).toHaveLength(7);
+
+        const tabRow = queryByTitle('FormTabRow');
+
+        expect(tabRow.children).toHaveLength(1);
     });
 });

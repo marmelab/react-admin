@@ -9,7 +9,7 @@ export const getTabFullPath = (tab, index, baseUrl) =>
         tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
     }`;
 
-const TabbedShowLayoutTabs = ({ classes, children, ...rest }) => {
+const TabbedShowLayoutTabs = ({ classes, children, scrollable, ...rest }) => {
     const location = useLocation();
     const match = useRouteMatch();
 
@@ -17,7 +17,7 @@ const TabbedShowLayoutTabs = ({ classes, children, ...rest }) => {
     // so we can use it as a way to determine the current tab
     const value = location.pathname;
 
-    const scrollableProps = rest.scrollable
+    const scrollableProps = scrollable
         ? { className: classes.scrollableTabs }
         : {};
 

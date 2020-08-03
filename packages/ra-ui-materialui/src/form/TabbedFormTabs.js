@@ -14,6 +14,7 @@ const TabbedFormTabs = ({
     classes,
     url,
     tabsWithErrors,
+    scrollable,
     ...rest
 }) => {
     const location = useLocation();
@@ -34,7 +35,7 @@ const TabbedFormTabs = ({
         ? location.pathname
         : validTabPaths[0];
 
-    const scrollableProps = rest.scrollable
+    const scrollableProps = scrollable
         ? { className: classes.scrollableTabs }
         : {};
 
