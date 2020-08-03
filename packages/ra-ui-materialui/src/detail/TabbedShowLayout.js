@@ -29,7 +29,7 @@ const useStyles = makeStyles(
     theme => ({
         content: {
             paddingTop: props =>
-                props.scrollable ? theme.spacing(7) : theme.spacing(1), // When using scrollable tabs, let enough height for the tab content
+                props.scrollable ? theme.spacing(7) : theme.spacing(1), // When using scrollable tabs, leave enough height for the tab content
             paddingLeft: theme.spacing(2),
             paddingRight: theme.spacing(2),
         },
