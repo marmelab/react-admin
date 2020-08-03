@@ -691,7 +691,7 @@ const BodyField = ({ record }) => (
 const PostEdit = (props) => (
     <Create {...props}>
         <SimpleForm>
-            <IdentifierField addLabel label="Identifier"> {/* SimpleForm will add a label */}
+            <IdentifierField addLabel label="Identifier" /> {/* SimpleForm will add a label */}
             <TextField source="title" /> {/* SimpleForm will add a label, too (TextField has addLabel:true in defaultProps) */}
             <BodyField /> {/* SimpleForm will NOT add a label */}
             <NumberInput source="nb_views" /> {/* SimpleForm will NOT add a label */}
@@ -798,11 +798,11 @@ const BodyField = ({ record }) => (
     </Identifier>
 );
 
-const PostEdit = (props) => (
+const PostEdit = props => (
     <Create {...props}>
         <TabbedForm>
             <FormTab label="main">
-                <IdentifierField addLabel label="Identifier"> {/* FormTab will add a label */}
+                <IdentifierField addLabel label="Identifier" /> {/* FormTab will add a label */}
                 <TextField source="title" /> {/* FormTab will add a label, too (TextField has addLabel:true) in defaultProps */}
                 <BodyField /> {/* FormTab will NOT add a label */}
                 <NumberInput source="nb_views" /> {/* FormTab will NOT add a label */}

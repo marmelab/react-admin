@@ -56,7 +56,7 @@ Additional props are passed down to the underlying component (usually a material
 
 **Tip**: If you edit a record with a complex structure, you can use a path as the `source` parameter. For instance, if the API returns the following 'book' record:
 
-```jsx
+```json
 {
     id: 1234,
     title: 'War and Peace',
@@ -96,7 +96,7 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admi
 
  `<ArrayInput>` allows editing of embedded arrays, like the `backlinks` field in the following `post` record:
 
-```js
+```json
 {
   id: 123,
   backlinks: [
@@ -216,7 +216,7 @@ const choices = [
 ];
 const OptionRenderer = choice => (
     <span>
-        <img src={choice.avatar}>
+        <img src={choice.avatar}/>
         `${choice.first_name} ${choice.last_name}`
     </span>
 );
@@ -845,7 +845,7 @@ Use `<ReferenceArrayInput>` to edit an array of reference values, i.e. to let us
 
 For instance, if the post object has many tags, a post resource may look like:
 
-```js
+```json
 {
     id: 1234,
     tag_ids: [1, 23, 4]
@@ -1261,7 +1261,7 @@ import { SelectArrayInput } from 'react-admin';
 You can also customize the properties to use for the option name and value,
 thanks to the `optionText` and `optionValue` attributes.
 
-```js
+```jsx
 const choices = [
    { _id: '1', name: 'Book', plural_name: 'Books' },
    { _id: '2', name: 'Video', plural_name: 'Videos' },
@@ -1272,7 +1272,7 @@ const choices = [
 
 `optionText` also accepts a function, so you can shape the option text at will:
 
-```js
+```jsx
 const choices = [
    { id: '1', name: 'Book', quantity: 23 },
    { id: '2', name: 'Video', quantity: 56 },
@@ -1640,7 +1640,7 @@ const PersonEdit = props => (
             />
         </SimpleForm>
     </Edit>
-)
+);
 ```
 
 ## Linking Two Inputs
@@ -1734,7 +1734,7 @@ const PostEdit = (props) => (
                             formData, // The whole form data
                             scopedFormData, // The data for this item of the ArrayInput
                             getSource, // A function to get the valid source inside an ArrayInput
-                            ...rest,
+                            ...rest
                         }) =>
                             scopedFormData && scopedFormData.name ? (
                                 <SelectInput

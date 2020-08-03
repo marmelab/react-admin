@@ -316,7 +316,7 @@ For more details on custom layouts, check [the Theming documentation](./Theming.
 
 The `<Admin>` app uses [Redux](http://redux.js.org/) to manage state. The state has the following keys:
 
-```js
+```json
 {
     admin: { /*...*/ }, // used by react-admin
     routing: { /*...*/ }, // used by connected-react-router
@@ -357,7 +357,7 @@ export default App;
 
 Now the state will look like:
 
-```js
+```json
 {
     admin: { /*...*/ }, // used by react-admin
     routing: { /*...*/ }, // used by connected-react-router

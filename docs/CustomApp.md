@@ -39,7 +39,7 @@ export default ({
     const reducer = combineReducers({
         admin: adminReducer,
         router: connectRouter(history),
-        { /* add your own reducers here */ },
+        // add your own reducers here
     });
     const resettableAppReducer = (state, action) =>
         reducer(action.type !== USER_LOGOUT ? state : undefined, action);
