@@ -318,8 +318,8 @@ The `<Admin>` app uses [Redux](http://redux.js.org/) to manage state. The state 
 
 ```json
 {
-    admin: { /*...*/ }, // used by react-admin
-    routing: { /*...*/ }, // used by connected-react-router
+    "admin": { /*...*/ }, // used by react-admin
+    "routing": { /*...*/ }, // used by connected-react-router
 }
 ```
 
@@ -359,9 +359,9 @@ Now the state will look like:
 
 ```json
 {
-    admin: { /*...*/ }, // used by react-admin
-    routing: { /*...*/ }, // used by connected-react-router
-    bitcoinRate: 123, // managed by rateReducer
+    "admin": { /*...*/ }, // used by react-admin
+    "routing": { /*...*/ }, // used by connected-react-router
+    "bitcoinRate": 123, // managed by rateReducer
 }
 ```
 

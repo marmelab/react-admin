@@ -58,11 +58,11 @@ Additional props are passed down to the underlying component (usually a material
 
 ```json
 {
-    id: 1234,
-    title: 'War and Peace',
-    author: {
-        firstName: 'Leo',
-        lastName: 'Tolstoi'
+    "id": 1234,
+    "title": "War and Peace",
+    "author": {
+        "firstName": "Leo",
+        "lastName": "Tolstoi"
     }
 }
 ```
@@ -98,15 +98,15 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admi
 
 ```json
 {
-  id: 123,
-  backlinks: [
+  "id": 123,
+  "backlinks": [
         {
-            date: '2012-08-10T00:00:00.000Z',
-            url: 'http://example.com/foo/bar.html',
+            "date": "2012-08-10T00:00:00.000Z",
+            "url": "http://example.com/foo/bar.html",
         },
         {
-            date: '2012-08-14T00:00:00.000Z',
-            url: 'https://blog.johndoe.com/2012/08/12/foobar.html',
+            "date": "2012-08-14T00:00:00.000Z",
+            "url": "https://blog.johndoe.com/2012/08/12/foobar.html",
         }
    ]
 }
@@ -847,8 +847,8 @@ For instance, if the post object has many tags, a post resource may look like:
 
 ```json
 {
-    id: 1234,
-    tag_ids: [1, 23, 4]
+    "id": 1234,
+    "tag_ids": [1, 23, 4]
 }
 ```
 
