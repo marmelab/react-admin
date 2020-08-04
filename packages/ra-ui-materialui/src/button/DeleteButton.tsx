@@ -12,7 +12,7 @@ import DeleteWithConfirmButton from './DeleteWithConfirmButton';
  *
  * @typedef {Object} Props the props you can use (other props are injected if you used it in the <Toolbar>)
  * @param {Prop} props
- * @prop {boolean} undoable Confirm the deletion using an undo button in a notification or a confirm dialog. Defaults to 'false'.
+ * @prop {boolean} undoable Confirm the deletion using an undo button in a notification or a confirmation dialog. Defaults to 'false'.
  * @prop {string} className
  * @prop {string} label Button label. Defaults to 'ra.action.delete, translated.
  * @prop {boolean} disabled Disable the button.
