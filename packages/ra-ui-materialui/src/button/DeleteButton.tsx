@@ -7,6 +7,41 @@ import { ButtonProps } from './Button';
 import DeleteWithUndoButton from './DeleteWithUndoButton';
 import DeleteWithConfirmButton from './DeleteWithConfirmButton';
 
+/**
+ * Delete button used to delete a single record. Used by default in the <Toolbar> of edit and show views.
+ *
+ * @typedef {Object} Props the props you can use (other props are injected if you used it in the <Toolbar>)
+ * @param {Prop} props
+ * @prop {boolean} undoable Confirm the deletion using an undo button in a notification or a confirm dialog. Defaults to 'false'.
+ * @prop {string} className
+ * @prop {string} label Button label. Defaults to 'ra.action.delete, translated.
+ * @prop {boolean} disabled Disable the button.
+ * @prop {string} variant Material-ui variant for the button. Defaults to 'contained'.
+ * @prop {ReactElement} icon Override the icon. Default to the Delete icon from material-ui.
+ *
+ * @example Usage in the <TopToolbar> of an <Edit> form
+ *
+ * import * as React from 'react';
+ * import { Edit, DeleteButton, TopToolbar } from 'react-admin';
+ *
+ * const EditActions = props => {
+ *     const { basePath, data, resource } = props;
+ *     return (
+ *         <TopToolbar>
+ *             <DeleteButton
+ *                 basePath={basePath}
+ *                 record={data}
+ *                 resource={resource}
+ *                 undoable={false} // Renders the <DeleteWithConfirmButton>
+ *             />
+ *         </TopToolbar>
+ *     );
+ * };
+ *
+ * const Edit = props => {
+ *     return <Edit actions={<EditActions />} {...props} />;
+ * };
+ */
 const DeleteButton: FC<DeleteButtonProps> = ({
     undoable,
     record,

@@ -99,6 +99,7 @@ title: "Reference"
 * `<Title>`
 * [`translate`](./Translation.md#withtranslate-hoc)
 * `<Toolbar>`
+* `<TopToolbar>`
 * [`<UrlField>`](./Fields.md#urlfield)
 * [`useAuthenticated`](./Authentication.md#useauthenticated-hook)
 * `useAuthProvider`
