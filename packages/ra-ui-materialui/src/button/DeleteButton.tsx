@@ -7,12 +7,20 @@ import { ButtonProps } from './Button';
 import DeleteWithUndoButton from './DeleteWithUndoButton';
 import DeleteWithConfirmButton from './DeleteWithConfirmButton';
 
-const DeleteButton: FC<DeleteButtonProps> = ({ undoable, ...props }) =>
-    undoable ? (
-        <DeleteWithUndoButton {...props} />
+const DeleteButton: FC<DeleteButtonProps> = ({
+    undoable,
+    record,
+    ...props
+}) => {
+    if (!record || record.id == null) {
+        return null;
+    }
+    return undoable ? (
+        <DeleteWithUndoButton record={record} {...props} />
     ) : (
-        <DeleteWithConfirmButton {...props} />
+        <DeleteWithConfirmButton record={record} {...props} />
     );
+};
 
 interface Props {
     basePath?: string;
