@@ -10,7 +10,7 @@ import DeleteWithConfirmButton from './DeleteWithConfirmButton';
 /**
  * Delete button used to delete a single record. Used by default in the <Toolbar> of edit and show views.
  *
- * @typedef {Object} Props the props you can use (other props are injected if you used it in the <Toolbar>)
+ * @typedef {Object} Props The props you can use (other props are injected if you used it in the <Toolbar>)
  * @param {Prop} props
  * @prop {boolean} undoable Confirm the deletion using an undo button in a notification or a confirmation dialog. Defaults to 'false'.
  * @prop {string} className
