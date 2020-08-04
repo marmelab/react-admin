@@ -8,7 +8,7 @@ import DeleteWithUndoButton from './DeleteWithUndoButton';
 import DeleteWithConfirmButton from './DeleteWithConfirmButton';
 
 /**
- * Delete button used to delete a single record. Used by default in the <Toolbar> of edit and show views.
+ * Button used to delete a single record. Added by default by the <Toolbar> of edit and show views.
  *
  * @typedef {Object} Props The props you can use (other props are injected if you used it in the <Toolbar>)
  * @param {Prop} props
