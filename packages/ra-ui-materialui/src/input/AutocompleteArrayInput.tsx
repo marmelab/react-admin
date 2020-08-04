@@ -218,7 +218,7 @@ const AutocompleteArrayInput: FunctionComponent<
     // would have to first clear the input before seeing any other choices
     useEffect(() => {
         handleFilterChange('');
-    }, [...values, handleFilterChange]);
+    }, [values.join(','), handleFilterChange]);
 
     const handleKeyDown = useCallback(
         (event: React.KeyboardEvent) => {
