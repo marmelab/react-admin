@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
 import { clearState } from '../actions/clearActions';
 import { useHistory } from 'react-router-dom';
+import { LocationDescriptorObject } from 'history';
 
 /**
  * Get a callback for calling the authProvider.logout() method,
@@ -45,13 +46,23 @@ const useLogout = (): Logout => {
         (params = {}, redirectTo = defaultAuthParams.loginUrl) =>
             authProvider.logout(params).then(redirectToFromProvider => {
                 dispatch(clearState());
-                history.push({
-                    pathname: redirectToFromProvider || redirectTo,
-                    state: {
-                        nextPathname:
-                            history.location && history.location.pathname,
-                    },
-                });
+                // redirectTo can contain a query string, e.g '/login?foo=bar'
+                // we must split the redirectTo to pass a structured location to history.push()
+                const redirectToParts = (
+                    redirectToFromProvider || redirectTo
+                ).split('?');
+                const newLocation: LocationDescriptorObject = {
+                    pathname: redirectToParts[0],
+                };
+                if (history.location && history.location.pathname) {
+                    newLocation.state = {
+                        nextPathname: history.location.pathname,
+                    };
+                }
+                if (redirectToParts[1]) {
+                    newLocation.search = redirectToParts[1];
+                }
+                history.push(newLocation);
                 return redirectToFromProvider;
             }),
         [authProvider, history, dispatch]
