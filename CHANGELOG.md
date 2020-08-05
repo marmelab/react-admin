@@ -1,5 +1,31 @@
 # Changelog
 
+## v3.7.2
+
+* Fix `authProvider.checkAuth()` support for redirection with query string ([5115](https://github.com/marmelab/react-admin/pull/5115)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `ra-input-rich-text` dark theme compatibility ([5113](https://github.com/marmelab/react-admin/pull/5113)) ([manishprivet](https://github.com/manishprivet))
+* Full height `<Layout>` & `<Sidebar>` margins ([5111](https://github.com/marmelab/react-admin/pull/5111)) ([djhi](https://github.com/djhi))
+* Fix error when passing an undefined record to the `<DeleteButton>` ([5110](https://github.com/marmelab/react-admin/pull/5110)) ([Luwangel](https://github.com/Luwangel))
+* Fix `<Placeholder>` component `className` value order ([5109](https://github.com/marmelab/react-admin/pull/5109)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<BulkDeleteButton>` confirmation dialog does not close after success when using `<Datagrid>` in a non-list page ([5097](https://github.com/marmelab/react-admin/pull/5097)) ([Luwangel](https://github.com/Luwangel))
+* Fix `<BooleanInput>` label in filters does not use theme color ([5092](https://github.com/marmelab/react-admin/pull/5092)) ([djhi](https://github.com/djhi))
+* Fix typo in `<FormDataConsumer>` warning ([5080](https://github.com/marmelab/react-admin/pull/5080)) ([Hemant-yadav](https://github.com/Hemant-yadav))
+* Fix CORS issue in simple example CodeSandbox ([5068](https://github.com/marmelab/react-admin/pull/5068)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Fix `useUpdateMany` argument type ([5067](https://github.com/marmelab/react-admin/pull/5067)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<ReferenceInput>` adds a buggy `pagination` DOM property to the inner `<SelectInput>` ([5053](https://github.com/marmelab/react-admin/pull/5053)) ([Luwangel](https://github.com/Luwangel))
+* Replace `recompose`'s `shallowEqual` with `react-redux`'s `shallowEqual` ([5051](https://github.com/marmelab/react-admin/pull/5051)) ([WiXSL](https://github.com/WiXSL))
+* Fix warning about `useEffect` in `<AutocompleteArrayInput>` ([5044](https://github.com/marmelab/react-admin/pull/5044)) ([helenwilliamson](https://github.com/helenwilliamson))
+* Fix ESLint `@material-ui/core` rule configuration ([5042](https://github.com/marmelab/react-admin/pull/5042)) ([rassie](https://github.com/rassie))
+* Fix warning when deleting last element on last page in data table ([4894](https://github.com/marmelab/react-admin/pull/4894)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* [Doc] Fix various typos in code samples ([5107](https://github.com/marmelab/react-admin/pull/5107)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix various typos in descriptions ([5100](https://github.com/marmelab/react-admin/pull/5100)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix outdated NestJS data provider ([5091](https://github.com/marmelab/react-admin/pull/5091)) ([rayman1104](https://github.com/rayman1104))
+* [Doc] Fix typo in `authProvider` comment ([5084](https://github.com/marmelab/react-admin/pull/5084)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix typo in `<SaveButton>` comment ([5083](https://github.com/marmelab/react-admin/pull/5083)) ([adrien-may](https://github.com/adrien-may))
+* [Doc] Fix various typos ([5075](https://github.com/marmelab/react-admin/pull/5075)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix title formatting in the `<Admin>` component documentation ([5061](https://github.com/marmelab/react-admin/pull/5061)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Add `ra-postgraphile` for `PostGraphile` as Data Provider ([5060](https://github.com/marmelab/react-admin/pull/5060)) ([BowlingX](https://github.com/BowlingX))
+
 ## v3.7.1
 
 * Fix `<ExportButton>` fails to export data when using default exporter ([5032](https://github.com/marmelab/react-admin/pull/5032)) ([fzaninotto](https://github.com/fzaninotto))
