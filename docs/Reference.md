@@ -45,6 +45,9 @@ title: "Reference"
 * [`<Filter>`](./List.md#filters)
 * `<FilterButton>`
 * `<FilterForm>`
+* [`<FilterList>`](./List.md#the-filterlist-sidebar)
+* [`<FilterListItem>`](./List.md#the-filterlist-sidebar)
+* [`<FilterLiveSearch>`](./List.md#live-search)
 * [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs)
 * [`<FormTab>`](./CreateEdit.md#the-tabbedform-component)
 * [`<FunctionField>`](./Fields.md#functionfield)

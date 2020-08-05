@@ -5,7 +5,7 @@ title: "The List View"
 
 # The List View
 
-The List view displays a list of records fetched from the API. The entry point for this view is the `<List>` component, which takes care of fetching the data. Then, it puts that data in a context so that it's available for its descendants - usually `<Datagrid>`, which then delegates the rendering of each record property to [`<Field>`](./Fields.md) components.
+The List view displays a list of records fetched from the API. The entry point for this view is the `<List>` component, which takes care of fetching the data. Then, it puts that data in a `ListContext` so that it's available for its descendants - usually `<Datagrid>`, which then delegates the rendering of each record property to [`<Field>`](./Fields.md) components.
 
 ![The List View](./img/list-view.png)
 
@@ -20,10 +20,10 @@ Here are all the props accepted by the `<List>` component:
 * [`exporter`](#exporter)
 * [`bulkActionButtons`](#bulk-action-buttons)
 * [`filters`](#filters) (a React element used to display the filter form)
+* [`filterDefaultValues`](#filter-default-values) (the default values for `alwaysOn` filters)
 * [`perPage`](#records-per-page)
 * [`sort`](#default-sort-field)
 * [`filter`](#permanent-filter) (the permanent filter used in the REST request)
-* [`filterDefaultValues`](#filter-default-values) (the default values for `alwaysOn` filters)
 * [`pagination`](#pagination)
 * [`aside`](#aside-component)
 * [`empty`](#empty-page)
@@ -81,6 +81,8 @@ export const PostList = (props) => (
 The title can be either a string or an element of your own.
 
 ### Actions
+
+![Actions Toolbar](./img/actions-toolbar.png)
 
 You can replace the list of default actions by your own element using the `actions` prop:
 
@@ -166,6 +168,8 @@ export const PostList = ({ permissions, ...props }) => (
 
 ### Exporter
 
+![Export Button](./img/export-button.gif)
+
 Among the default list actions, react-admin includes an `<ExportButton>`. This button is disabled when there is no record in the current `<List>`.
 
 By default, clicking this button will:
@@ -248,6 +252,8 @@ const CommentList = props => (
 
 ### Bulk Action Buttons
 
+![Bulk Action Buttons](./img/bulk-actions-toolbar.gif)
+
 Bulk action buttons are buttons that affect several records at once, like mass deletion for instance. In the `<Datagrid>` component, the bulk actions toolbar appears when a user ticks the checkboxes in the first column of the table. The user can then choose a button from the bulk actions toolbar. By default, all list views have a single bulk action button, the bulk delete button. You can add other bulk action buttons by passing a custom element as the `bulkActionButtons` prop of the `<List>` component:
 
 ```jsx
@@ -271,8 +277,6 @@ export const PostList = (props) => (
     </List>
 );
 ```
-
-![Bulk Action Buttons](./img/bulk-actions-toolbar.gif)
 
 **Tip**: React-admin provides 2 components that you can use in `bulkActionButtons`: `<BulkDeleteButton>`, and `<BulkExportButton>`.
 
@@ -445,6 +449,8 @@ const ResetViewsButton = ({ selectedIds }) => {
 
 ### Filters
 
+![List Filters](./img/list_filter.gif)
+
 You can add a filter component to the list using the `filters` prop:
 
 ```jsx
@@ -469,6 +475,37 @@ The filter component must be a `<Filter>` with `<Input>` children.
 Children of the `<Filter>` form are regular inputs. `<Filter>` hides them all by default, except those that have the `alwaysOn` prop.
 
 For more details about the `filters` prop, see the [Filtering the List](#filtering-the-list) section below. 
+
+### Filter Default Values
+
+To set default values to filters, you can either pass an object literal as the `filterDefaultValues` prop of the `<List>` element, or use the `defaultValue` prop of any input component.
+
+There is one exception: inputs with `alwaysOn` don't accept `defaultValue`. You have to use the `filterDefaultValues` for those.
+
+{% raw %}
+```jsx
+// in src/posts.js
+const PostFilter = (props) => (
+    <Filter {...props}>
+        <TextInput label="Search" source="q" alwaysOn />
+        <BooleanInput source="is_published" alwaysOn />
+        <TextInput source="title" defaultValue="Hello, World!" />
+    </Filter>
+);
+
+export const PostList = (props) => (
+    <List {...props} filters={<PostFilter />} filterDefaultValues={{ is_published: true }}>
+        ...
+    </List>
+);
+```
+{% endraw %}
+
+**Tip**: The `filter` and `filterDefaultValues` props have one key difference: the `filterDefaultValues` can be overridden by the user, while the `filter` values are always sent to the data provider. Or, to put it otherwise:
+
+```js
+const filterSentToDataProvider = { ...filterDefaultValues, ...filterChosenByUser, ...filter };
+```
 
 ### Records Per Page
 
@@ -593,37 +630,6 @@ export const PostList = (props) => (
 {% endraw %}
 
 The actual filter parameter sent to the data provider is the result of the combination of the *user* filters (the ones set through the `filters` component form), and the *permanent* filter. The user cannot override the permanent filters set by way of `filter`.
-
-### Filter Default Values
-
-To set default values to filters, you can either pass an object literal as the `filterDefaultValues` prop of the `<List>` element, or use the `defaultValue` prop of any input component.
-
-There is one exception: inputs with `alwaysOn` don't accept `defaultValue`. You have to use the `filterDefaultValues` for those.
-
-{% raw %}
-```jsx
-// in src/posts.js
-const PostFilter = (props) => (
-    <Filter {...props}>
-        <TextInput label="Search" source="q" alwaysOn />
-        <BooleanInput source="is_published" alwaysOn />
-        <TextInput source="title" defaultValue="Hello, World!" />
-    </Filter>
-);
-
-export const PostList = (props) => (
-    <List {...props} filters={<PostFilter />} filterDefaultValues={{ is_published: true }}>
-        ...
-    </List>
-);
-```
-{% endraw %}
-
-**Tip**: The `filter` and `filterDefaultValues` props have one key difference: the `filterDefaultValues` can be overridden by the user, while the `filter` values are always sent to the data provider. Or, to put it otherwise:
-
-```js
-const filterSentToDataProvider = { ...filterDefaultValues, ...filterChosenByUser, ...filter };
-```
 
 ### Aside component
 
@@ -795,18 +801,33 @@ export PostList;
 
 ## Filtering The List
 
+<table><tbody><tr style="border:none">
+<td style="width:50%;border:none;">
+<a title="<Filter> Button/Form Combo" href="./img/list_filter.gif"><img src="./img/list_filter.gif" /></a>
+</td>
+<td style="width:50%;border:none;">
+<a title="<FilterList> Sidebar" href="./img/filter-sidebar.gif"><img src="./img/filter-sidebar.gif" /></a>
+</td>
+</tr></tbody></table>
+
 One of the most important features of the List page is the ability to filter the results. React-admin does its best to offer a powerful filter functionality, and to get out of the way when you want to go further. 
 
-![List Filters](./img/list_filter.gif)
-
-The next sections explain hows to use the filter functionality:
+The next sections explain hows to use the filter functionality. And first, a few explanations about the inner workings of filters:
 
 - [Filter Query Parameter](#filter-query-parameter)
-- [The `filters` Prop](#the-filters-prop)
 - [Linking To A Pre-Filtered List](#linking-to-a-pre-filtered-list)
-- [Full-Text Search](#full-text-search)
-- [Quick Filters](#quick-filters)
-- [Filter On Submit](#filter-on-submit)
+
+React-admin proposes several UI components to let users to see and modify filters, and gives you the tools to build custom ones.
+
+- The `<Filter>` Button/Form Combo
+  - [Usage](#the-filter-buttonform-combo)
+  - [Full-Text Search](#full-text-search)
+  - [Quick Filters](#quick-filters)
+  - [Filter On Submit](#filter-on-submit)
+- The `<FilterList>` Sidebar
+  - [Usage](#the-filterlist-sidebar)
+  - [Full-Text Search](#live-search)
+- Building Your Own Filter
 
 ### Filter Query Parameter
 
@@ -823,43 +844,6 @@ filter={"commentable":true,"q":"lorem "}
 ```
 
 You can change the filters by updating the query parameter, e.g. using the `<Link>` component or the `history.push()` method from `react-router`. 
-
-### The `filters` Prop
-
-To facilitate the display and update of the filter, the `<List>` component exposes a `filters` prop. 
-
-```jsx
-export const PostList = (props) => (
-    <List {...props} filters={<PostFilter />}>
-        ...
-    </List>
-);
-```
-
-`<List>` clones the component passed as `filters` twice:
-
-- once with the prop `context="form"`, to render the filter *form*
-- once with the prop `context="button"`, to render the filter *button*
-
-The component passed as `filters` should know how to render differently according to the `context` prop. 
-
-That's the case of the react-admin `<Filter>` component: 
-
-- `<Filter context="form">` renders an inline form based on its children which must be `<Input>` components
-- `<Filter context="button">` renders a dropdown allowing to enable filters based on the `source` prop of its children. 
-
-```jsx
-const PostFilter = (props) => (
-    <Filter {...props}>
-        <TextInput label="Search" source="q" alwaysOn />
-        <TextInput label="Title" source="title" defaultValue="Hello, World!" />
-    </Filter>
-);
-```
-
-Children of the `<Filter>` form are regular inputs. `<Filter>` hides them all by default, except those that have the `alwaysOn` prop.
-
-**Tip**: For technical reasons, react-admin does not accept children of `<Filter>` having both a `defaultValue` and `alwaysOn`. To set default values for always on filters, use the [`filterDefaultValues`](#filter-default-values) prop of the <List> component instead.
 
 **Tip**: Once a user sets a filter, react-admin persists the filter value in the application state, so that when the user comes back to the list, they should see the filtered list. That's a design choice.
 
@@ -904,11 +888,54 @@ You can use this button e.g. as a child of `<Datagrid>`. You can also create a c
 
 **Tip**: You have to pass *all* the query string parameters - not just `filter`. That's a current limitation of react-admin.
 
+### The `<Filter>` Button/Form Combo
+
+![List Filters](./img/list_filter.gif)
+
+The default appearance for filters is an inline form displayed on top of the list. Users also see a dropdown button allowing to add more inputs to that form. This functionality relies on the `<Filter>` component: 
+
+```jsx
+import { Filter, TextInput } from 'react-admin';
+
+const PostFilter = (props) => (
+    <Filter {...props}>
+        <TextInput label="Search" source="q" alwaysOn />
+        <TextInput label="Title" source="title" defaultValue="Hello, World!" />
+    </Filter>
+);
+```
+
+Children of the `<Filter>` component are regular inputs. That means you can build sophisticated filters based on references, array values, etc. `<Filter>` hides all inputs in the filter form by default, except those that have the `alwaysOn` prop.
+
+**Tip**: For technical reasons, react-admin does not accept children of `<Filter>` having both a `defaultValue` and `alwaysOn`. To set default values for always on filters, use the [`filterDefaultValues`](#filter-default-values) prop of the <List> component instead.
+
+To inject the filter form in a `<List>`, use the `filters` prop:
+
+```jsx
+export const PostList = (props) => (
+    <List {...props} filters={<PostFilter />}>
+        ...
+    </List>
+);
+```
+
+`<List>` clones the component passed as `filters` twice:
+
+- once with the prop `context="form"`, to render the filter *form*
+- once with the prop `context="button"`, to render the filter *button*
+
+The component passed as `filters` should know how to render differently according to the `context` prop. 
+
+That's the case of the react-admin `<Filter>` component: 
+
+- `<Filter context="form">` renders an inline form based on its children which must be `<Input>` components
+- `<Filter context="button">` renders a dropdown allowing to enable filters based on the `source` prop of its children. 
+
 ### Full-Text Search
 
-In addition to [the usual input types](./Inputs.md) (`<TextInput>`, `<SelectInput>`, `<ReferenceInput>`, etc.), you can use the `<SearchInput>`, which is designed especially for the filter form. It's like a `<TextInput resettable>` with a magnifier glass icon - exactly the type of input users look for when they want to do a full-text search. 
-
 ![`<SearchInput>`](./img/search_input.gif)
+
+In addition to [the usual input types](./Inputs.md) (`<TextInput>`, `<SelectInput>`, `<ReferenceInput>`, etc.), you can use the `<SearchInput>`, which is designed especially for the filter form. It's like a `<TextInput resettable>` with a magnifier glass icon - exactly the type of input users look for when they want to do a full-text search. 
 
 ```jsx
 import { Filter, SearchInput, TextInput } from 'react-admin';
@@ -924,10 +951,11 @@ In the example given above, the `q` filter triggers a full-text search on all fi
 
 ### Quick Filters
 
-Users usually dislike using their keyboard to filter a list (especially on mobile). A good way to satisfy this user requirement is to turn filters into *quick filter*. A Quick filter is a filter with a non-editable `defaultValue`. Users can only enable or disable them. 
-
 ![`<QuickFilter>`](./img/quick_filters.gif)
 
+Users usually dislike using their keyboard to filter a list (especially on mobile). A good way to satisfy this user requirement is to turn filters into *quick filter*. A Quick filter is a filter with a non-editable `defaultValue`. Users can only enable or disable them. 
+
+Here is how to implement a generic `<QuickFilter>` component:
 ```jsx
 import { Filter, SearchInput } from 'react-admin';
 import { makeStyles, Chip } from '@material-ui/core';
@@ -957,13 +985,13 @@ const PostFilter = props => (
 
 ### Filter On Submit
 
-By default, the filter form doesn't provide a submit button, and submits automatically after the user has finished interacting with the form. This provides a smooth user experience, but for some APIs, it can cause too many calls. In that case, the solution is to add a submit button to the filter form.
-
 ![Filters with submit button](./img/filter_with_submit.gif)
+
+By default, the filter form doesn't provide a submit button, and submits automatically after the user has finished interacting with the form. This provides a smooth user experience, but for some APIs, it can cause too many calls. In that case, the solution is to add a submit button to the filter form.
 
 React-admin doesn't provide any component for that, but it's a good opportunity to illustrate the internals of the `<Filter>` component. We'll actually provide an alternative implementation to `<Filter>`.
 
-As explained earlier, `<List>` clones the `filters` element twice - once to display the filter button, and once to display the filter form. This `filters` element can use the `useListContext` hook to interact with the URI query parameter more easily. the hook returns the following constants:
+As explained earlier, `<List>` clones the `filters` element twice - once to display the filter button, and once to display the filter form. This `filters` element can use the `useListContext` hook to interact with the URI query parameter more easily. The hook returns the following constants:
 
 - `filterValues`: Value of the filters based on the URI, e.g. `{"commentable":true,"q":"lorem "}`
 - `setFilters()`: Callback to set the filter values, e.g. `setFilters({"commentable":true})`
@@ -1098,6 +1126,196 @@ export const PostList = (props) => (
 
 You can use a similar approach to customize the list filter completely, e.g. to display the filters in a sidebar, or as a line in the datagrid, etc.
 
+### The `<FilterList>` Sidebar
+
+![Filter Sidebar](./img/filter-sidebar.gif)
+
+An alternative UI to the `<Filter>` Button/Form Combo is the FilterList Sidebar. Similar to what users usually see on e-commerce websites, it's a panel with many simple filters that can be enabled and combined using the mouse. The user experience is better than the Button/Form Combo, because the filter values are explicit, and it doesn't require typing anything in a form. But it's a bit less powerful, as only filters with a finite set of values (or intervals) can be used in the `<FilterList>`.
+
+The `<FilterList>` component expects a list of `<FilterListItem>` as children. Each `<FilterListItem>` defines a filter `label` and a `value`, which is merged with the current filter value when enabled by the user. Here is an example usage for a list of customers:
+
+```jsx
+import * as React from 'react';
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOnOutlined';
+import MailIcon from '@material-ui/icons/MailOutline';
+import LocalOfferIcon from '@material-ui/icons/LocalOfferOutlined';
+import { FilterList, FilterListItem } from 'react-admin';
+import {
+    endOfYesterday,
+    startOfWeek,
+    subWeeks,
+    startOfMonth,
+    subMonths,
+} from 'date-fns';
+
+import segments from '../segments/data';
+
+const LastVisitedFilter = () => (
+    <FilterList label="Last visited" icon={<AccessTimeIcon />}>
+        <FilterListItem
+            label="Today"
+            value={{
+                last_seen_gte: endOfYesterday().toISOString(),
+                last_seen_lte: undefined,
+            }}
+        />
+        <FilterListItem
+            label="This week"
+            value={{
+                last_seen_gte: startOfWeek(new Date()).toISOString(),
+                last_seen_lte: undefined,
+            }}
+        />
+        <FilterListItem
+            label="Last week"
+            value={{
+                last_seen_gte: subWeeks(startOfWeek(new Date()), 1).toISOString(),
+                last_seen_lte: startOfWeek(new Date()).toISOString(),
+            }}
+        />
+        <FilterListItem
+            label="This month"
+            value={{
+                last_seen_gte: startOfMonth(new Date()).toISOString(),
+                last_seen_lte: undefined,
+            }}
+        />
+        <FilterListItem
+            label="Last month"
+            value={{
+                last_seen_gte: subMonths(startOfMonth(new Date()),1).toISOString(),
+                last_seen_lte: startOfMonth(new Date()).toISOString(),
+            }}
+        />
+        <FilterListItem
+            label="Earlier"
+            value={{
+                last_seen_gte: undefined,
+                last_seen_lte: subMonths(startOfMonth(new Date()),1).toISOString(),
+            }}
+        />
+    </FilterList>
+);
+const HasOrderedFilter = () => (
+    <FilterList
+        label="Has ordered"
+        icon={<MonetizationOnIcon />}
+    >
+        <FilterListItem
+            label="True"
+            value={{
+                nb_commands_gte: 1,
+                nb_commands_lte: undefined,
+            }}
+        />
+        <FilterListItem
+            label="False"
+            value={{
+                nb_commands_gte: undefined,
+                nb_commands_lte: 0,
+            }}
+        />
+    </FilterList>
+);
+const HasNewsletterFilter = () => (
+    <FilterList
+        label="Has newsletter"
+        icon={<MailIcon />}
+    >
+        <FilterListItem
+            label="True"
+            value={{ has_newsletter: true }}
+        />
+        <FilterListItem
+            label="False"
+            value={{ has_newsletter: false }}
+        />
+    </FilterList>
+);
+const SegmentFilter = () => (
+    <FilterList
+        label="Segment"
+        icon={<LocalOfferIcon />}
+    >
+        {segments.map(segment => (
+            <FilterListItem
+                label={segment.name}
+                key={segment.id}
+                value={{ groups: segment.id }}
+            />
+        ))}
+    </FilterList>
+);
+```
+
+You can place these `<FilterList>` anywhere inside a `<List>`. The most common case is to put them in a sidebar that is on the left hand side of the datagrid. You can use the `aside` property for that:
+
+```jsx
+import * as React from 'react';
+import { Card as MuiCard, CardContent, withStyles } from '@material-ui/core';
+
+import { LastVisitedFilter, HasOrderedFilter, HasNewsletterFilter, SegmentFilter } from './filters';
+
+const Card = withStyles(theme => ({
+    root: {
+        [theme.breakpoints.up('sm')]: {
+            order: -1, // display on the left rather than on the right of the list
+            width: '15em',
+            marginRight: '1em',
+        },
+        [theme.breakpoints.down('sm')]: {
+            display: 'none',
+        },
+    },
+}))(MuiCard);
+
+const FilterSidebar = () => (
+    <Card>
+        <CardContent>
+            <LastVisitedFilter />
+            <HasOrderedFilter />
+            <HasNewsletterFilter />
+            <SegmentFilter />
+        </CardContent>
+    </Card>
+);
+
+const CustomerList = props => (
+    <List aside={<FilterSidebar />}>
+        // ...
+    </List>
+)
+```
+
+**Tip**: The `<FilterList>` Sidebar is not a good UI for small screens. You can choose to hide it on small screens (as in the previous example). A good tradeoff is to use `<FilterList>` on large screens, and the `<Filter>` Button/Form combo on Mobile.
+
+### Live Search
+
+![Filter Live Search](./img/filter-live-search.gif)
+
+The filter sidebar is not a form. Therefore, if your users need to enter complex filters, you'll have to recreate a filter form using react-final-form (see the [Filter on submit](#filter-on-submit) section above for an example). However, if you only need one text input with a filter-as-you-type behavior, you'll find the `<FilterLiveSearch>` component convenient. 
+
+It outputs a form containing a single `<SearchInput>`, which modifies the page filter on change. That's usually what users expect for a full-text filter. `<FilterLiveSearch>` only needs a `source` field.
+
+So for instance, to add a search filter on the customer full name, add the following line to the Sidebar:
+
+```diff
++import { FilterLiveSearch } from 'react-admin';
+
+const FilterSidebar = () => (
+    <Card>
+        <CardContent>
++           <FilterLiveSearch source="full_name" />
+            <LastVisitedFilter />
+            <HasOrderedFilter />
+            <HasNewsletterFilter />
+            <SegmentFilter />
+        </CardContent>
+    </Card>
+);
+```
+
 ## The `<ListGuesser>` component
 
 Instead of a custom `List`, you can use the `ListGuesser` to determine which fields to use based on the data returned by the API.
@@ -1125,7 +1343,7 @@ React-admin provides guessers for the List view (`<ListGuesser>`), the Edit view
 
 ## `useListContext`
 
-The `<List>` component takes care of fetching the data, and puts that data in a context so that it's available for its descendants. In fact, it puts a lot of variables in the context because the List page is complex: based on the URL, the `<List>` component deduces filters, pagination, ordering, it provides callbacks to update them. 
+The `<List>` component takes care of fetching the data, and puts that data in a context called `ListContext` so that it's available for its descendants. In fact, it puts a lot of variables in the context because the List page is complex: based on the URL, the `<List>` component deduces filters, pagination, ordering, it provides callbacks to update them. 
 
 Any component can grab that data using the `useListContext` hook. As a matter of fact, react-admin's `<Datagrid>`, `<Filter>`, and `<Pagination>` components all use the `useListContext` hook. Here is what it returns:
 
