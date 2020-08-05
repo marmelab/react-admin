@@ -513,7 +513,7 @@ describe('Query', () => {
 
     it('should fetch again when refreshing', async () => {
         let dispatchSpy;
-        let historyForAssertions: History;
+        let historyForAssertions: History; // eslint-disable-line @typescript-eslint/no-unused-vars
 
         const dataProvider = {
             mytype: jest.fn(() => Promise.resolve({ data: { foo: 'bar' } })),
