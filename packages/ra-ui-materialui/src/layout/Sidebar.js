@@ -83,6 +83,7 @@ const Sidebar = props => {
                 className: drawerPaper,
             }}
             onClose={toggleSidebar}
+            classes={classes}
             {...rest}
         >
             {cloneElement(Children.only(children), {
@@ -97,6 +98,7 @@ const Sidebar = props => {
                 className: drawerPaper,
             }}
             onClose={toggleSidebar}
+            classes={classes}
             {...rest}
         >
             {cloneElement(Children.only(children), {
@@ -111,6 +113,7 @@ const Sidebar = props => {
                 className: drawerPaper,
             }}
             onClose={toggleSidebar}
+            classes={classes}
             {...rest}
         >
             {children}
