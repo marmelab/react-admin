@@ -11,6 +11,18 @@ export const CLOSED_DRAWER_WIDTH = 55;
 
 const useStyles = makeStyles(
     theme => ({
+        root: {},
+        docked: {},
+        paper: {},
+        paperAnchorLeft: {},
+        paperAnchorRight: {},
+        paperAnchorTop: {},
+        paperAnchorBottom: {},
+        paperAnchorDockedLeft: {},
+        paperAnchorDockedTop: {},
+        paperAnchorDockedRight: {},
+        paperAnchorDockedBottom: {},
+        modal: {},
         drawerPaper: {
             position: 'relative',
             height: 'auto',
@@ -61,14 +73,14 @@ const Sidebar = props => {
     useSelector(state => state.locale); // force redraw on locale change
     const handleClose = () => dispatch(setSidebarVisibility(false));
     const toggleSidebar = () => dispatch(setSidebarVisibility(!open));
-    const classes = useStyles({ ...props, open });
+    const { drawerPaper, ...classes } = useStyles({ ...props, open });
 
     return isXSmall ? (
         <Drawer
             variant="temporary"
             open={open}
             PaperProps={{
-                className: classes.drawerPaper,
+                className: drawerPaper,
             }}
             onClose={toggleSidebar}
             {...rest}
@@ -82,7 +94,7 @@ const Sidebar = props => {
             variant="permanent"
             open={open}
             PaperProps={{
-                className: classes.drawerPaper,
+                className: drawerPaper,
             }}
             onClose={toggleSidebar}
             {...rest}
@@ -96,7 +108,7 @@ const Sidebar = props => {
             variant="permanent"
             open={open}
             PaperProps={{
-                className: classes.drawerPaper,
+                className: drawerPaper,
             }}
             onClose={toggleSidebar}
             {...rest}
