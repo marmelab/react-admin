@@ -14,7 +14,7 @@ const useStyles = makeStyles(
     theme => ({
         drawerPaper: {
             position: 'relative',
-            height: 'auto',
+            height: '100%',
             overflowX: 'hidden',
             width: props =>
                 props.open
