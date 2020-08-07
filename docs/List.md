@@ -823,11 +823,10 @@ React-admin proposes several UI components to let users to see and modify filter
   - [Usage](#the-filter-buttonform-combo)
   - [Full-Text Search](#full-text-search)
   - [Quick Filters](#quick-filters)
-  - [Filter On Submit](#filter-on-submit)
 - The `<FilterList>` Sidebar
   - [Usage](#the-filterlist-sidebar)
   - [Full-Text Search](#live-search)
-- Building Your Own Filter
+- [Building A Custom Filter](#building-a-custom-filter)
 
 ### Filter Query Parameter
 
@@ -982,149 +981,6 @@ const PostFilter = props => (
 ```
 
 **Tip**: It's currently not possible to use two quick filters for the same source. 
-
-### Filter On Submit
-
-![Filters with submit button](./img/filter_with_submit.gif)
-
-By default, the filter form doesn't provide a submit button, and submits automatically after the user has finished interacting with the form. This provides a smooth user experience, but for some APIs, it can cause too many calls. In that case, the solution is to add a submit button to the filter form.
-
-React-admin doesn't provide any component for that, but it's a good opportunity to illustrate the internals of the `<Filter>` component. We'll actually provide an alternative implementation to `<Filter>`.
-
-As explained earlier, `<List>` clones the `filters` element twice - once to display the filter button, and once to display the filter form. This `filters` element can use the `useListContext` hook to interact with the URI query parameter more easily. The hook returns the following constants:
-
-- `filterValues`: Value of the filters based on the URI, e.g. `{"commentable":true,"q":"lorem "}`
-- `setFilters()`: Callback to set the filter values, e.g. `setFilters({"commentable":true})`
-- `displayedFilters`: Names of the filters displayed in the form, e.g. `['commentable','title']`
-- `showFilter()`: Callback to display an additional filter in the form, e.g. `showFilter('views')`
-- `hideFilter()`: Callback to hide a filter in the form, e.g. `hideFilter('title')`
-
-Let's use this knowledge to write a custom `<Filter>` element that filters on submit. First, let's create a `<Filter>` component rendering either a button or a form depending on the `context`:
-
-```jsx
-const PostFilter = props => {
-  return props.context === "button" ? (
-    <PostFilterButton {...props} />
-  ) : (
-    <PostFilterForm {...props} />
-  );
-};
-```
-
-The `<PostListFilterButton>` simply shows the filter form on click. We'll take advantage of the `showFilter` function:
-
-```jsx
-import { useListContext } from 'react-admin';
-import { Button } from "@material-ui/core";
-import ContentFilter from "@material-ui/icons/FilterList";
-
-const PostFilterButton = () => {
-    const { showFilter } = useListContext();
-    return (
-        <Button
-            size="small"
-            color="primary"
-            onClick={() => showFilter("main")}
-            startIcon={<ContentFilter />}
-        >
-            Filter
-        </Button>
-    );
-};
-```
-
-Normally, `showFilter()` adds one input to the `displayedFilters` list. As the filter form will be entirely hidden or shown, we use `showFilter()` with a virtual "main" input, which represents the entire form. 
-
-Next is the form component, based on `react-final-form`. The form inputs appear directly in the form, and the form submission triggers the `setFilters()` callback passed as parameter:
-
-{% raw %}
-```jsx
-import * as React from 'react';
-import { Form } from 'react-final-form';
-import { Box, Button, InputAdornment } from '@material-ui/core';
-import SearchIcon from '@material-ui/icons/Search';
-import { TextInput, NullableBooleanInput, useListContext } from 'react-admin';
-
-const PostFilterForm = ({ open }) => {
-    const {
-        displayedFilters,
-        filterValues,
-        setFilters,
-        hideFilter,
-    } = useListContext();
-
-    if (!displayedFilters.main) return null;
-
-    const onSubmit = values => {
-        if (Object.keys(values).length > 0) {
-            setFilters(values);
-        } else {
-            hideFilter("main");
-        }
-    };
-
-    const resetFilter = () => {
-        setFilters({}, []);
-    };
-
-    return (
-        <div>
-        <Form onSubmit={onSubmit} initialValues={filterValues}>
-            {({ handleSubmit }) => (
-            <form onSubmit={handleSubmit}>
-                <Box mt={8} />
-                <Box display="flex" alignItems="flex-end" mb={1}>
-                <Box component="span" mr={2}>
-                    {/* Full-text search filter. We don't use <SearchFilter> to force a large form input */}
-                    <TextInput
-                    resettable
-                    helperText={false}
-                    source="q"
-                    label="Search"
-                    InputProps={{
-                        endAdornment: (
-                        <InputAdornment>
-                            <SearchIcon color="disabled" />
-                        </InputAdornment>
-                        )
-                    }}
-                    />
-                </Box>
-                <Box component="span" mr={2}>
-                    {/* Commentable filter */}
-                    <NullableBooleanInput helperText={false} source="commentable" />
-                </Box>
-                <Box component="span" mr={2} mb={1.5}>
-                    <Button variant="outlined" color="primary" type="submit">
-                    Filter
-                    </Button>
-                </Box>
-                <Box component="span" mb={1.5}>
-                    <Button variant="outlined" onClick={resetFilter}>
-                    Close
-                    </Button>
-                </Box>
-                </Box>
-            </form>
-            )}
-        </Form>
-        </div>
-    );
-};
-```
-{% endraw %}
-
-To finish, we pass the `<PostFilter>` component to the `<List>` component using the `filters` prop:
-
-```jsx
-export const PostList = (props) => (
-    <List {...props} filters={<PostFilter />}>
-        ...
-    </List>
-);
-```
-
-You can use a similar approach to customize the list filter completely, e.g. to display the filters in a sidebar, or as a line in the datagrid, etc.
 
 ### The `<FilterList>` Sidebar
 
@@ -1315,6 +1171,153 @@ const FilterSidebar = () => (
     </Card>
 );
 ```
+
+### Building a Custom Filter
+
+![Filters with submit button](./img/filter_with_submit.gif)
+
+If neither the `<Filter>` button/form combo or the `<FilterList>` sidebar match your need, you can always build your own. React-admin provides shortcuts to facilitate the development of custom filters.
+
+For instance, by default, the filter button/form combo doesn't provide a submit button, and submits automatically after the user has finished interacting with the form. This provides a smooth user experience, but for some APIs, it can cause too many calls. 
+
+In that case, the solution is process the filter when users click on a submit button, rather than when they type values in form inputs. React-admin doesn't provide any component for that, but it's a good opportunity to illustrate the internals of the filter functionality. We'll actually provide an alternative implementation to the `<Filter>` button/form combo.
+
+The new filter element can use the `useListContext()` hook to interact with the URI query parameter more easily. The hook returns the following constants:
+
+- `filterValues`: Value of the filters based on the URI, e.g. `{"commentable":true,"q":"lorem "}`
+- `setFilters()`: Callback to set the filter values, e.g. `setFilters({"commentable":true})`
+- `displayedFilters`: Names of the filters displayed in the form, e.g. `['commentable','title']`
+- `showFilter()`: Callback to display an additional filter in the form, e.g. `showFilter('views')`
+- `hideFilter()`: Callback to hide a filter in the form, e.g. `hideFilter('title')`
+
+Let's use this knowledge to write a custom `<Filter>` component that filters on submit.
+
+As explained earlier, `<List>` clones the element passed as `filters` prop twice - once to display the filter *button*, and once to display the filter *form*. So first, let's create a `<Filter>` component rendering either a button or a form depending on the `context`:
+
+```jsx
+const PostFilter = props => {
+  return props.context === "button" ? (
+    <PostFilterButton {...props} />
+  ) : (
+    <PostFilterForm {...props} />
+  );
+};
+```
+
+The `<PostListFilterButton>` simply shows the filter form on click. We'll take advantage of the `showFilter` function:
+
+```jsx
+import { useListContext } from 'react-admin';
+import { Button } from "@material-ui/core";
+import ContentFilter from "@material-ui/icons/FilterList";
+
+const PostFilterButton = () => {
+    const { showFilter } = useListContext();
+    return (
+        <Button
+            size="small"
+            color="primary"
+            onClick={() => showFilter("main")}
+            startIcon={<ContentFilter />}
+        >
+            Filter
+        </Button>
+    );
+};
+```
+
+Normally, `showFilter()` adds one input to the `displayedFilters` list. As the filter form will be entirely hidden or shown, we use `showFilter()` with a virtual "main" input, which represents the entire form. 
+
+Next is the form component, based on `react-final-form`. The form inputs appear directly in the form, and the form submission triggers the `setFilters()` callback passed as parameter:
+
+{% raw %}
+```jsx
+import * as React from 'react';
+import { Form } from 'react-final-form';
+import { Box, Button, InputAdornment } from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
+import { TextInput, NullableBooleanInput, useListContext } from 'react-admin';
+
+const PostFilterForm = ({ open }) => {
+    const {
+        displayedFilters,
+        filterValues,
+        setFilters,
+        hideFilter,
+    } = useListContext();
+
+    if (!displayedFilters.main) return null;
+
+    const onSubmit = values => {
+        if (Object.keys(values).length > 0) {
+            setFilters(values);
+        } else {
+            hideFilter("main");
+        }
+    };
+
+    const resetFilter = () => {
+        setFilters({}, []);
+    };
+
+    return (
+        <div>
+        <Form onSubmit={onSubmit} initialValues={filterValues}>
+            {({ handleSubmit }) => (
+            <form onSubmit={handleSubmit}>
+                <Box mt={8} />
+                <Box display="flex" alignItems="flex-end" mb={1}>
+                <Box component="span" mr={2}>
+                    {/* Full-text search filter. We don't use <SearchFilter> to force a large form input */}
+                    <TextInput
+                    resettable
+                    helperText={false}
+                    source="q"
+                    label="Search"
+                    InputProps={{
+                        endAdornment: (
+                        <InputAdornment>
+                            <SearchIcon color="disabled" />
+                        </InputAdornment>
+                        )
+                    }}
+                    />
+                </Box>
+                <Box component="span" mr={2}>
+                    {/* Commentable filter */}
+                    <NullableBooleanInput helperText={false} source="commentable" />
+                </Box>
+                <Box component="span" mr={2} mb={1.5}>
+                    <Button variant="outlined" color="primary" type="submit">
+                    Filter
+                    </Button>
+                </Box>
+                <Box component="span" mb={1.5}>
+                    <Button variant="outlined" onClick={resetFilter}>
+                    Close
+                    </Button>
+                </Box>
+                </Box>
+            </form>
+            )}
+        </Form>
+        </div>
+    );
+};
+```
+{% endraw %}
+
+To finish, we pass the `<PostFilter>` component to the `<List>` component using the `filters` prop:
+
+```jsx
+export const PostList = (props) => (
+    <List {...props} filters={<PostFilter />}>
+        ...
+    </List>
+);
+```
+
+You can use a similar approach to customize the list filter completely, e.g. to display the filters in a sidebar, or as a line in the datagrid, etc.
 
 ## The `<ListGuesser>` component
 
