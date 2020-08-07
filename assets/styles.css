@@ -143,6 +143,7 @@ nav {
   text-decoration: none;
   display: flex;
 }
+
 .github-stars:hover {
   fill: var(--white);
   color: var(--white);
@@ -154,6 +155,7 @@ nav {
   padding: 2px 8px;
   height: 20px;
 }
+
 .github-stars div:nth-child(2) {
   padding: 5px;
   font-size: 12px;
@@ -431,7 +433,8 @@ nav {
 
 .card {
   background-color: white;
-  border-radius: 15px;
+  border-radius: 5px;
+  overflow: hidden;
   width: 220px;
   padding: 40px;
   margin: 30px;
@@ -484,16 +487,15 @@ nav {
 .card > a,
 .primary-button {
   display: block;
-  margin-top: 1em;
   align-self: auto;
-  margin-bottom: 0.4em;
   padding: 10px 30px;
+  margin-top: 1em;
+  margin-bottom: 0.4em;
   border: 1px solid var(--magenta);
   border-radius: 5px;
   background: none;
   font-size: 1.1em;
   text-align: center;
-  color: var(--yellowkindof);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   cursor: pointer;
   font-family: "Roboto", sans-serif;
