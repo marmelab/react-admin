@@ -47,7 +47,7 @@ const LogoutWithRef: FunctionComponent<
     const translate = useTranslate();
     const logout = useLogout();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const handleClick = useCallback(() => logout(redirectTo), [
+    const handleClick = useCallback(() => logout(null, redirectTo, false), [
         redirectTo,
         logout,
     ]);
