@@ -13,7 +13,6 @@ import SortIcon from '@material-ui/icons/Sort';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { shallowEqual } from 'react-redux';
 import { useListSortContext, useTranslate } from 'ra-core';
-import { Labeled } from '../input';
 
 /**
  * A button allowing to change the sort field and order.

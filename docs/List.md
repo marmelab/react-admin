@@ -537,82 +537,7 @@ export const PostList = (props) => (
 
 `sort` defines the *default* sort order ; the list remains sortable by clicking on column headers.
 
-### Disabling Sorting
-
-It is possible to disable sorting for a specific `<Field>` by passing a `sortable` property set to `false`:
-
-{% raw %}
-```jsx
-// in src/posts.js
-import * as React from "react";
-import { List, Datagrid, TextField } from 'react-admin';
-
-export const PostList = (props) => (
-    <List {...props}>
-        <Datagrid>
-            <TextField source="id" sortable={false} />
-            <TextField source="title" />
-            <TextField source="body" />
-        </Datagrid>
-    </List>
-);
-```
-{% endraw %}
-
-### Specify Sort Field
-
-By default, a column is sorted by the `source` property. To define another attribute to sort by, set it via the `<Field sortBy>` property:
-
-{% raw %}
-```jsx
-// in src/posts.js
-import * as React from "react";
-import { List, Datagrid, TextField } from 'react-admin';
-
-export const PostList = (props) => (
-    <List {...props}>
-        <Datagrid>
-            <ReferenceField label="Post" source="id" reference="posts" sortBy="title">
-                <TextField source="title" />
-            </ReferenceField>
-            <FunctionField
-                label="Author"
-                sortBy="last_name"
-                render={record => `${record.author.first_name} ${record.author.last_name}`}
-            />
-            <TextField source="body" />
-        </Datagrid>
-    </List>
-);
-```
-{% endraw %}
-
-### Specify Sort Order
-
-By default, when the user clicks on a column header, the list becomes sorted in the ascending order. You change this behavior by setting the `sortByOrder` prop to `"DESC"` in a `<Datagrid>` `<Field>`:
-
-```jsx
-// in src/posts.js
-import React from 'react';
-import { List, Datagrid, TextField } from 'react-admin';
-
-export const PostList = (props) => (
-    <List {...props}>
-        <Datagrid>
-            <ReferenceField label="Post" source="id" reference="posts" sortByOrder="DESC">
-                <TextField source="title" />
-            </ReferenceField>
-            <FunctionField
-                label="Author"
-                sortBy="last_name"
-                sortByOrder="DESC"
-                render={record => `${record.author.first_name} ${record.author.last_name}`}
-            />
-            <TextField source="body" />
-        </Datagrid>
-    </List>
-);
-```
+For more details on list sort, see the [Sorting The List](#sorting-the-list) section below. 
 
 ### Permanent Filter
 
@@ -630,6 +555,25 @@ export const PostList = (props) => (
 {% endraw %}
 
 The actual filter parameter sent to the data provider is the result of the combination of the *user* filters (the ones set through the `filters` component form), and the *permanent* filter. The user cannot override the permanent filters set by way of `filter`.
+
+### Pagination
+
+The `pagination` prop allows to replace the default pagination controls by your own.
+
+```jsx
+// in src/MyPagination.js
+import { Pagination, List } from 'react-admin';
+
+const PostPagination = props => <Pagination rowsPerPageOptions={[10, 25, 50, 100]} {...props} />;
+
+export const PostList = (props) => (
+    <List {...props} pagination={<PostPagination />}>
+        ...
+    </List>
+);
+```
+
+See [Paginating the List](#paginating-the-list) below for details.
 
 ### Aside component
 
@@ -1319,7 +1263,378 @@ export const PostList = (props) => (
 
 You can use a similar approach to customize the list filter completely, e.g. to display the filters in a sidebar, or as a line in the datagrid, etc.
 
-## The `<ListGuesser>` component
+## Sorting The List
+
+<table><tbody><tr style="border:none">
+<td style="width:55%;border:none;">
+<a title="<Datagrid> column sort" href="./img/sort-column-header.gif"><img src="./img/sort-column-header.gif" /></a>
+</td>
+<td style="width:45%;border:none;">
+<a title="<SortButton> Component" href="./img/sort-button.gif"><img src="./img/sort-button.gif" /></a>
+</td>
+</tr></tbody></table>
+
+React-admin does its best to offer a powerful sort functionality, and to get out of the way when you want to go further. 
+
+The next sections explain hows to use the sort functionality. And first, a few explanations about the inner workings of sorting in react-admin:
+
+- [Sort Query Parameter](#sort-query-parameter)
+- [Linking To A Pre-Sorted List](#linking-to-a-pre-sorted-list)
+
+React-admin proposes several UI components to let users to see and modify sort parameters, and gives you the tools to build custom ones.
+
+- The `<Datagrid>` Column Headers
+  - [Usage](#using-datagrid-headers-to-modify-list-sort)
+  - [Disabling Sorting](#disabling-sorting)
+  - [Specifying A Sort Field](#specifying-a-sort-field)
+  - [Specifying The Sort Order](#specifying-the-sort-order)
+- The `<SortButton>` Component
+  - [Usage](#the-sortbutton-component)
+- [Building A Custom Sort Control](#building-a-custom-sort-control)
+
+### Sort Query Parameter
+
+Just like for the filters, the List view uses the `sort` and `order` query parameters to determine the sort field and order passed to `dataProvider.getList()`.
+
+Here is a typical List URL:
+
+> https://myadmin.dev/#/posts?displayedFilters=%7B%22commentable%22%3Atrue%7D&filter=%7B%22commentable%22%3Atrue%2C%22q%22%3A%22lorem%20%22%7D&order=DESC&page=1&perPage=10&sort=published_at
+
+Once decoded, this URL reveals the intended sort:
+
+```
+sort=published_at
+order=DESC
+```
+
+### Linking to a Pre-Sorted List
+
+As the sort values are taken from the URL, you can link to a pre-sorted list by setting the `sort` and `order` query parameters.
+
+For instance, if you have a list of posts ordered by publication date, and you want to provide a button to sort the list by number of views descendent:
+
+{% raw %}
+```jsx
+import * as React from "react";
+import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
+import { stringify } from 'query-string';
+
+const SortByViews = () => (
+    <Button
+        color="primary"
+        component={Link}
+        to={{
+            pathname: '/posts',
+            search: stringify({
+                page: 1,
+                perPage: 25,
+                sort: 'nb_views',
+                order: 'DESC',
+                filter: {},
+            }),
+        }}
+    >
+        Sort by views 
+    </Button>
+);
+```
+{% endraw %}
+
+**Tip**: You have to pass *all* the query string parameters - not just `sort` and `order`. That's a current limitation of react-admin.
+
+### Using Datagrid Headers To Modify List Sort
+
+![Sort Column Header](./img/sort-column-header.gif)
+
+If you're using a `<Datagrid>` inside the List view, then the column headers are buttons allowing users to change the list sort field and order. This feature requires no configuration and works out fo the box. The next sections explain how you can disable of modify the field used for sorting on a particular column.
+
+### Disabling Sorting
+
+It is possible to disable sorting for a specific `<Field>` by passing a `sortable` property set to `false`:
+
+{% raw %}
+```jsx
+// in src/posts.js
+import * as React from "react";
+import { List, Datagrid, TextField } from 'react-admin';
+
+export const PostList = (props) => (
+    <List {...props}>
+        <Datagrid>
+            <TextField source="id" sortable={false} />
+            <TextField source="title" />
+            <TextField source="body" />
+        </Datagrid>
+    </List>
+);
+```
+{% endraw %}
+
+### Specifying A Sort Field
+
+By default, a column is sorted by the `source` property. To define another attribute to sort by, set it via the `<Field sortBy>` property:
+
+{% raw %}
+```jsx
+// in src/posts.js
+import * as React from "react";
+import { List, Datagrid, TextField } from 'react-admin';
+
+export const PostList = (props) => (
+    <List {...props}>
+        <Datagrid>
+            <ReferenceField label="Post" source="id" reference="posts" sortBy="title">
+                <TextField source="title" />
+            </ReferenceField>
+            <FunctionField
+                label="Author"
+                sortBy="last_name"
+                render={record => `${record.author.first_name} ${record.author.last_name}`}
+            />
+            <TextField source="body" />
+        </Datagrid>
+    </List>
+);
+```
+{% endraw %}
+
+### Specifying The Sort Order
+
+By default, when the user clicks on a column header, the list becomes sorted in the ascending order. You change this behavior by setting the `sortByOrder` prop to `"DESC"` in a `<Datagrid>` `<Field>`:
+
+```jsx
+// in src/posts.js
+import React from 'react';
+import { List, Datagrid, TextField } from 'react-admin';
+
+export const PostList = (props) => (
+    <List {...props}>
+        <Datagrid>
+            <ReferenceField label="Post" source="id" reference="posts" sortByOrder="DESC">
+                <TextField source="title" />
+            </ReferenceField>
+            <FunctionField
+                label="Author"
+                sortBy="last_name"
+                sortByOrder="DESC"
+                render={record => `${record.author.first_name} ${record.author.last_name}`}
+            />
+            <TextField source="body" />
+        </Datagrid>
+    </List>
+);
+```
+
+### The `<SortButton>` Component
+
+![Sort Button](./img/sort-button.gif)
+
+Some List views don't have a natural UI for sorting - e.g. the `<SimpleList>`, or a list of images, don't have column headers like the `<Datagrid>`. For these cases, react-admin offers the `<SortButton>`, which displays a drodown list of fields that the user can choose to sort on.
+
+`<SortButton>` expects one prop: `fields`, the list of fields it should allows to sort on. For instance, here is how to offer a button to sort on the `reference`, `sales`, and `stock` fields:
+
+```jsx
+import { TopToolbar, SortButton, CreateButton, ExportButton } from 'react-admin';
+
+const ListActions: FC<any> = () => (
+    <TopToolbar>
+        <SortButton fields={['reference', 'sales', 'stock']} />
+        <CreateButton basePath="/products" />
+        <ExportButton />
+    </TopToolbar>
+);
+```
+
+### Building a Custom Sort Control
+
+When neither the `<Datagrid>` or the `<SortButton>` fit your UI needs, you have to write a custom sort control. As with custom filters, this boils down to grabbing the required data and callbacks from the `ListContext`. Let's use the `<SortButton>` source as an example usage of `currentSort` and `setSort`:
+
+```jsx
+import * as React from 'react';
+import { Button, Menu, MenuItem, Tooltip, IconButton } from '@material-ui/core';
+import SortIcon from '@material-ui/icons/Sort';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import { useListSortContext, useTranslate } from 'react-admin';
+
+const SortButton = ({ fields }) => {
+    // currentSort is an object { field, order } containing the current sort
+    // setSort is a callback (field, order) => void allowing to change the sort field and order
+    const { currentSort, setSort } = useListSortContext();
+    // rely on the translations to display labels like 'Sort by sales descending'
+    const translate = useTranslate();
+    // open/closed state for dropdown
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    // mouse handlers
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    const handleChangeSort = (event) => {
+        const field = event.currentTarget.dataset.sort;
+        setSort(
+            field,
+            field === currentSort.field
+                ? inverseOrder(currentSort.order)
+                : 'ASC'
+        );
+        setAnchorEl(null);
+    };
+
+    // English stranslation is 'Sort by %{field} %{order}'
+    const buttonLabel = translate('ra.sort.sort_by', {
+        field: translate(`resources.products.fields.${currentSort.field}`),
+        order: translate(`ra.sort.${currentSort.order}`),
+    });
+
+    return (<>
+        <Button
+            aria-controls="simple-menu"
+            aria-haspopup="true"
+            color="primary"
+            onClick={handleClick}
+            startIcon={<SortIcon />}
+            endIcon={<ArrowDropDownIcon />}
+            size="small"
+        >
+            {buttonLabel}
+        </Button>
+        <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+        >
+            {fields.map(field => (
+                <MenuItem
+                    onClick={handleChangeSort}
+                    // store the sort field in the element dataset to avoid creating a new click handler for each item (better for performance)
+                    data-sort={field}
+                    key={field}
+                >
+                    {translate(`resources.products.fields.${field}`)}{' '}
+                    {translate(
+                        `ra.sort.${
+                            currentSort.field === field
+                                ? inverseOrder(currentSort.order)
+                                : 'ASC'
+                        }`
+                    )}
+                </MenuItem>
+            ))}
+        </Menu>
+    </>);
+};
+
+const inverseOrder = (sort: string) => (sort === 'ASC' ? 'DESC' : 'ASC');
+
+export default SortButton;
+```
+
+## Paginating the List
+
+### The `<Pagination>` Component
+
+![Pagination buttons](./img/pagination-buttons.gif)
+
+By default, the `<List>` uses the `<Pagination>` component for pagination. This component displays buttons to navigate between pages, including buttons for the surrounding pages.
+
+By decorating this component, you can create your own variant with a different set of perPage options.
+
+```jsx
+// in src/MyPagination.js
+import { Pagination } from 'react-admin';
+
+const PostPagination = props => <Pagination rowsPerPageOptions={[10, 25, 50, 100]} {...props} />;
+```
+
+Then, to use this component instead of the default `<Pagination>`, use the `<List pagination>` prop:
+
+```jsx
+import { List } from 'react-admin';
+import PostPagination from './PostPagination';
+
+export const PostList = (props) => (
+    <List {...props} pagination={<PostPagination />}>
+        ...
+    </List>
+);
+```
+
+**Tip**: Pass an empty array to `rowsPerPageOptions` to disable the rows per page selection.
+
+### Building a Custom Pagination Control
+
+The `<Pagination>` component gets the following constants from [the `useListContext` hook](#useListContext):
+
+* `page`: The current page number (integer). First page is `1`.
+* `perPage`: The number of records per page.
+* `setPage`: `function(page: number) => void`. A function that set the current page number.
+* `total`: The total number of records.
+* `actions`: A component that displays the pagination buttons (default: `<PaginationActions>`)
+* `limit`: An element that is displayed if there is no data to show (default: `<PaginationLimit>`)
+
+If you want to replace the default pagination by a "<previous - next>" pagination, create a pagination component like the following:
+
+```jsx
+import { useListContext } from 'react-admin';
+import { Button, Toolbar } from '@material-ui/core';
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import ChevronRight from '@material-ui/icons/ChevronRight';
+
+const PostPagination = () => {
+    const { page, perPage, total, setPage } = useListContext();
+    const nbPages = Math.ceil(total / perPage) || 1;
+    return (
+        nbPages > 1 &&
+            <Toolbar>
+                {page > 1 &&
+                    <Button color="primary" key="prev" onClick={() => setPage(page - 1)}>
+                        <ChevronLeft />
+                        Prev
+                    </Button>
+                }
+                {page !== nbPages &&
+                    <Button color="primary" key="next" onClick={() => setPage(page + 1)}>
+                        Next
+                        <ChevronRight />
+                    </Button>
+                }
+            </Toolbar>
+    );
+}
+
+export const PostList = (props) => (
+    <List {...props} pagination={<PostPagination />}>
+        ...
+    </List>
+);
+```
+
+But if you just want to change the color property of the pagination button, you can extend the existing components:
+
+```jsx
+import {
+    List,
+    Pagination as RaPagination,
+    PaginationActions as RaPaginationActions,
+} from 'react-admin';
+
+export const PaginationActions = props => <RaPaginationActions {...props} color="secondary" />;
+
+export const Pagination = props => <RaPagination {...props} ActionsComponent={PaginationActions} />;
+
+export const UserList = props => (
+    <List {...props} pagination={<Pagination />}>
+    </List>
+);
+```
+
+## The `<ListGuesser>` Component
 
 Instead of a custom `List`, you can use the `ListGuesser` to determine which fields to use based on the data returned by the API.
 
@@ -1441,12 +1756,12 @@ As explained above, `<ListBase>` fetches the data and puts it in a `ListContext`
 
 ```jsx
 import * as React from 'react';
-import { useListController, ListContext } from 'react-admin';
+import { useListController, ListContextProvider } from 'react-admin';
 
 const ListBase = ({ children, ...props }) => (
-    <ListContext.Provider value={useListController(props)}>
+    <ListContextProvider value={useListController(props)}>
         {children}
-    </ListContext.Provider>
+    </ListContextProvider>
 );
 
 export default ListBase;
@@ -1454,9 +1769,11 @@ export default ListBase;
 
 As you can see, the controller part of the List view is handled by a hook called `useListController`. If you don't want to use the `ListContext` in your custom List view, you can call `useListController` directly to access the list data. It returns the same object as the one documented in [`useListContext`](#uselistcontext) above.
 
-**Tip**: If your custom List view doesn't use a `ListContext.Provider`, you can't use `<Datagrid>`, `<SimpleList>`, `<Pagination>`, etc. All these components rely on the `ListContext`.
+**Tip**: If your custom List view doesn't use a `ListContextProvider`, you can't use `<Datagrid>`, `<SimpleList>`, `<Pagination>`, etc. All these components rely on the `ListContext`.
 
 ## The `<Datagrid>` component
+
+![The `<Datagrid>` component](./img/tutorial_post_list_less_columns.png)
 
 The `Datagrid` component renders a list of records as a table. It is usually used as a descendant of the [`<List>`](#the-list-component) and [`<ReferenceManyField>`](./Fields.md#referencemanyfield) components. Outside of these components, it must be used inside a `ListContext`.
 
@@ -1598,6 +1915,8 @@ const postRowClick = (id, basePath, record) => fetchUserRights().then(({ canEdit
 
 ### `expand`
 
+![expandable panel](./img/datagrid_expand.gif)
+
 To show more data from the resource without adding too many columns, you can show data in an expandable panel below the row on demand, using the `expand` prop. For instance, this code shows the `body` of a post in an expandable panel:
 
 {% raw %}
@@ -1618,8 +1937,6 @@ const PostList = props => (
     </List>
 )
 ```
-
-![expandable panel](./img/datagrid_expand.gif)
 
 The `expand` prop expects a component as value. When the user chooses to expand the row, the Datagrid renders the component and passes the current `record`, `id`, and `resource`.
 
@@ -1870,6 +2187,8 @@ const CustomList = () => {
 
 ## The `<SimpleList>` component
 
+<a href="./img/simple-list.gif"><img src="./img/simple-list.gif" style="height:300px" alt="The `<SimpleList>` component"></a>
+
 For mobile devices, a `<Datagrid>` is often unusable - there is simply not enough space to display several columns. The convention in that case is to use a simple list, with only one column per row. The `<SimpleList>` component serves that purpose, leveraging [material-ui's `<List>` and `<ListItem>` components](https://material-ui.com/components/lists/). `<SimpleList>` is an **iterator** component: it gets an array of ids and a data store from the `ListContext`, and iterates over the ids to display each record.
 
 ### Properties
@@ -2112,88 +2431,3 @@ export const UserList = ({ permissions, ...props }) => {
 
 **Tip**: Note how the `permissions` prop is passed down to the custom `filters` component.
 
-## Pagination
-
-The `<Pagination>` gest the following constants from [the `useListContext` hook](#useListContext):
-
-* `page`: The current page number (integer). First page is `1`.
-* `perPage`: The number of records per page.
-* `setPage`: `function(page: number) => void`. A function that set the current page number.
-* `total`: The total number of records.
-* `actions`: A component that displays the pagination buttons (default: `<PaginationActions>`)
-* `limit`: An element that is displayed if there is no data to show (default: `<PaginationLimit>`)
-
-You don't need to fill these props when you pass the `<Pagination>` component to the `<List>` component through the `pagination` prop: `<List pagination={<Pagination />}>`.
-
-You can also replace the default pagination element by your own. For instance, you can modify the default pagination by adjusting the "rows per page" selector.
-
-```jsx
-// in src/MyPagination.js
-import { Pagination, List } from 'react-admin';
-
-const PostPagination = props => <Pagination rowsPerPageOptions={[10, 25, 50, 100]} {...props} />;
-
-export const PostList = (props) => (
-    <List {...props} pagination={<PostPagination />}>
-        ...
-    </List>
-);
-```
-
-**Tip**: Pass an empty array to `rowsPerPageOptions` to disable the rows per page selection.
-
-Alternately, if you want to replace the default pagination by a "<previous - next>" pagination, create a pagination component like the following:
-
-```jsx
-import { useListContext } from 'react-admin';
-import { Button, Toolbar } from '@material-ui/core';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
-
-const PostPagination = () => {
-    const { page, perPage, total, setPage } = useListContext();
-    const nbPages = Math.ceil(total / perPage) || 1;
-    return (
-        nbPages > 1 &&
-            <Toolbar>
-                {page > 1 &&
-                    <Button color="primary" key="prev" onClick={() => setPage(page - 1)}>
-                        <ChevronLeft />
-                        Prev
-                    </Button>
-                }
-                {page !== nbPages &&
-                    <Button color="primary" key="next" onClick={() => setPage(page + 1)}>
-                        Next
-                        <ChevronRight />
-                    </Button>
-                }
-            </Toolbar>
-    );
-}
-
-export const PostList = (props) => (
-    <List {...props} pagination={<PostPagination />}>
-        ...
-    </List>
-);
-```
-
-But if you just want to change the color property of the pagination button, you can extend the existing components:
-
-```jsx
-import {
-    List,
-    Pagination as RaPagination,
-    PaginationActions as RaPaginationActions,
-} from 'react-admin';
-
-export const PaginationActions = props => <RaPaginationActions {...props} color="secondary" />;
-
-export const Pagination = props => <RaPagination {...props} ActionsComponent={PaginationActions} />;
-
-export const UserList = props => (
-    <List {...props} pagination={<Pagination />}>
-    </List>
-);
-```

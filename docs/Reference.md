@@ -67,7 +67,7 @@ title: "Reference"
 * [`<NullableBooleanInput>`](./Inputs.md#booleaninput-and-nullablebooleaninput)
 * [`<NumberField>`](./Fields.md#numberfield)
 * [`<NumberInput>`](./Inputs.md#numberinput)
-* [`<Pagination>`](./List.md#pagination)
+* [`<Pagination>`](./List.md#the-pagination-component)
 * [`<PasswordInput>`](./Inputs.md#passwordinput)
 * [`<Query>`](./Actions.md#legacy-components-query-mutation-and-withdataprovider)
 * [`<RadioButtonGroupInput>`](./Inputs.md#radiobuttongroupinput)
@@ -93,6 +93,7 @@ title: "Reference"
 * [`<SimpleList>`](./List.md#the-simplelist-component)
 * [`<SimpleShowLayout>`](./Show.md#the-simpleshowlayout-component)
 * [`<SingleFieldList>`](./List.md#the-singlefieldlist-component)
+* [`<SortButton>`](./List.md#the-sortbutton-component)
 * `<Tab>`
 * [`<TabbedForm>`](./CreateEdit.md#the-tabbedform-component)
 * [`<TabbedShowLayout>`](./Show.md#the-tabbedshowlayout-component)
