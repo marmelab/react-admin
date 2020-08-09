@@ -8,6 +8,7 @@ import React, {
     FunctionComponent,
 } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import RoutesWithLayout from './RoutesWithLayout';
 import { useLogout, useGetPermissions, useAuthState } from '../auth';
@@ -21,6 +22,7 @@ import {
     ResourceProps,
     RenderResourcesFunction,
     ResourceElement,
+    ReduxState,
 } from '../types';
 
 export interface AdminRouterProps extends LayoutProps {
@@ -39,6 +41,10 @@ const CoreAdminRouter: FunctionComponent<AdminRouterProps> = props => {
     const { authenticated } = useAuthState();
     const oneSecondHasPassed = useTimeout(1000);
     const [computedChildren, setComputedChildren] = useSafeSetState<State>([]);
+    const resourcesAreRegistered: boolean = useSelector(
+        (state: ReduxState) => Object.keys(state.admin.resources).length > 0
+    );
+
     useEffect(() => {
         if (typeof props.children === 'function') {
             initializeResources();
@@ -145,18 +151,19 @@ const CoreAdminRouter: FunctionComponent<AdminRouterProps> = props => {
                     })
             )}
             <Switch>
-                {customRoutes
-                    .filter(route => route.props.noLayout)
-                    .map((route, key) =>
-                        cloneElement(route, {
-                            key,
-                            render: routeProps =>
-                                renderCustomRoutesWithoutLayout(
-                                    route,
-                                    routeProps
-                                ),
-                        })
-                    )}
+                {resourcesAreRegistered &&
+                    customRoutes
+                        .filter(route => route.props.noLayout)
+                        .map((route, key) =>
+                            cloneElement(route, {
+                                key,
+                                render: routeProps =>
+                                    renderCustomRoutesWithoutLayout(
+                                        route,
+                                        routeProps
+                                    ),
+                            })
+                        )}
                 <Route
                     path="/"
                     render={() =>
@@ -171,9 +178,12 @@ const CoreAdminRouter: FunctionComponent<AdminRouterProps> = props => {
                             },
                             <RoutesWithLayout
                                 catchAll={catchAll}
-                                customRoutes={customRoutes.filter(
-                                    route => !route.props.noLayout
-                                )}
+                                customRoutes={
+                                    resourcesAreRegistered &&
+                                    customRoutes.filter(
+                                        route => !route.props.noLayout
+                                    )
+                                }
                                 dashboard={dashboard}
                                 title={title}
                             >
