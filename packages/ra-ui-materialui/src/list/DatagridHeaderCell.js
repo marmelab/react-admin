@@ -36,6 +36,7 @@ export const DatagridHeaderCell = props => {
     } = props;
     const classes = useStyles(props);
     const translate = useTranslate();
+
     return (
         <TableCell
             className={classnames(className, field.props.headerClassName)}
@@ -60,7 +61,8 @@ export const DatagridHeaderCell = props => {
                             (field.props.sortBy || field.props.source)
                         }
                         direction={currentSort.order === 'ASC' ? 'asc' : 'desc'}
-                        data-sort={field.props.sortBy || field.props.source}
+                        data-sort={field.props.sortBy || field.props.source} // @deprecated. Use data-field instead.
+                        data-field={field.props.sortBy || field.props.source}
                         data-order={field.props.sortByOrder || 'ASC'}
                         onClick={updateSort}
                         classes={classes}
@@ -97,11 +99,11 @@ DatagridHeaderCell.propTypes = {
     updateSort: PropTypes.func.isRequired,
 };
 
-export default memo(
-    DatagridHeaderCell,
-    (props, nextProps) =>
+export default memo(DatagridHeaderCell, (props, nextProps) => {
+    return (
         props.updateSort === nextProps.updateSort &&
-        props.currentSort.sort === nextProps.currentSort.sort &&
+        props.currentSort.field === nextProps.currentSort.field &&
         props.currentSort.order === nextProps.currentSort.order &&
         !(nextProps.isSorting && props.sortable !== nextProps.sortable)
-);
+    );
+});
