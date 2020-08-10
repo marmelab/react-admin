@@ -43,7 +43,11 @@ const useLogout = (): Logout => {
     const history = useHistory();
 
     const logout = useCallback(
-        (params = {}, redirectTo = defaultAuthParams.loginUrl) =>
+        (
+            params = {},
+            redirectTo = defaultAuthParams.loginUrl,
+            redirectToCurrentLocationAfterLogin = true
+        ) =>
             authProvider.logout(params).then(redirectToFromProvider => {
                 dispatch(clearState());
                 // redirectTo can contain a query string, e.g '/login?foo=bar'
@@ -54,7 +58,11 @@ const useLogout = (): Logout => {
                 const newLocation: LocationDescriptorObject = {
                     pathname: redirectToParts[0],
                 };
-                if (history.location && history.location.pathname) {
+                if (
+                    redirectToCurrentLocationAfterLogin &&
+                    history.location &&
+                    history.location.pathname
+                ) {
                     newLocation.state = {
                         nextPathname: history.location.pathname,
                     };
@@ -91,9 +99,14 @@ const useLogout = (): Logout => {
  *
  * @param {Object} params The parameters to pass to the authProvider
  * @param {string} redirectTo The path name to redirect the user to (optional, defaults to login)
+ * @param {boolean} redirectToCurrentLocationAfterLogin Whether the button shall record the current location to redirect to it after login. true by default.
  *
  * @return {Promise} The authProvider response
  */
-type Logout = (params?: any, redirectTo?: string) => Promise<any>;
+type Logout = (
+    params?: any,
+    redirectTo?: string,
+    redirectToCurrentLocationAfterLogin?: boolean
+) => Promise<any>;
 
 export default useLogout;
