@@ -761,7 +761,7 @@ The next sections explain hows to use the filter functionality. And first, a few
 - [Filter Query Parameter](#filter-query-parameter)
 - [Linking To A Pre-Filtered List](#linking-to-a-pre-filtered-list)
 
-React-admin proposes several UI components to let users to see and modify filters, and gives you the tools to build custom ones.
+React-admin proposes several UI components to let users see and modify filters, and gives you the tools to build custom ones.
 
 - The `<Filter>` Button/Form Combo
   - [Usage](#the-filter-buttonform-combo)
@@ -1124,7 +1124,7 @@ If neither the `<Filter>` button/form combo or the `<FilterList>` sidebar match 
 
 For instance, by default, the filter button/form combo doesn't provide a submit button, and submits automatically after the user has finished interacting with the form. This provides a smooth user experience, but for some APIs, it can cause too many calls. 
 
-In that case, the solution is process the filter when users click on a submit button, rather than when they type values in form inputs. React-admin doesn't provide any component for that, but it's a good opportunity to illustrate the internals of the filter functionality. We'll actually provide an alternative implementation to the `<Filter>` button/form combo.
+In that case, the solution is to process the filter when users click on a submit button, rather than when they type values in form inputs. React-admin doesn't provide any component for that, but it's a good opportunity to illustrate the internals of the filter functionality. We'll actually provide an alternative implementation to the `<Filter>` button/form combo.
 
 The new filter element can use the `useListContext()` hook to interact with the URI query parameter more easily. The hook returns the following constants:
 
@@ -2430,4 +2430,3 @@ export const UserList = ({ permissions, ...props }) => {
 {% endraw %}
 
 **Tip**: Note how the `permissions` prop is passed down to the custom `filters` component.
-
