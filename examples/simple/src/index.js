@@ -14,7 +14,6 @@ import Layout from './Layout';
 import posts from './posts';
 import users from './users';
 import tags from './tags';
-import Dashboard from './Dashboard';
 
 render(
     <Admin
@@ -23,7 +22,6 @@ render(
         i18nProvider={i18nProvider}
         title="Example Admin"
         layout={Layout}
-        dashboard={Dashboard}
         customRoutes={[
             <Route
                 exact
