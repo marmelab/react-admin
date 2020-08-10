@@ -342,12 +342,13 @@ export const getQuery = ({
         query.sort = sort.field;
         query.order = sort.order;
     }
-    if (!query.perPage) {
+    if (query.perPage == null) {
         query.perPage = perPage;
     }
-    if (!query.page) {
+    if (query.page == null) {
         query.page = 1;
     }
+
     return {
         ...query,
         page: getNumberOrDefault(query.page, 1),
@@ -358,9 +359,13 @@ export const getQuery = ({
 export const getNumberOrDefault = (
     possibleNumber: string | number | undefined,
     defaultValue: number
-) =>
-    (typeof possibleNumber === 'string'
-        ? parseInt(possibleNumber, 10)
-        : possibleNumber) || defaultValue;
+) => {
+    const parsedNumber =
+        typeof possibleNumber === 'string'
+            ? parseInt(possibleNumber, 10)
+            : possibleNumber;
+
+    return isNaN(parsedNumber) ? defaultValue : parsedNumber;
+};
 
 export default useListParams;

@@ -148,17 +148,7 @@ const useQueryWithStore = (
                 loading: true,
                 loaded: data !== undefined && !isEmptyList(data),
             });
-        }
-    }, [data, requestSignature, setState, total]);
-
-    useEffect(() => {
-        const signaturesAreEqual =
-            requestSignatureRef.current === requestSignature;
-
-        if (
-            signaturesAreEqual &&
-            (!isEqual(state.data, data) || state.total !== total)
-        ) {
+        } else if (!isEqual(state.data, data) || state.total !== total) {
             // the dataProvider response arrived in the Redux store
             if (typeof total !== 'undefined' && isNaN(total)) {
                 console.error(
@@ -173,7 +163,7 @@ const useQueryWithStore = (
                 }));
             }
         }
-    }, [data, requestSignature, setState, state, total]);
+    }, [data, requestSignature, setState, state.data, state.total, total]);
 
     const dataProvider = useDataProvider();
     useEffect(() => {

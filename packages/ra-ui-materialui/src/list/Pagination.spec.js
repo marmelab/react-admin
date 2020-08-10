@@ -2,7 +2,7 @@ import * as React from 'react';
 import expect from 'expect';
 import { render, cleanup } from '@testing-library/react';
 import { ThemeProvider } from '@material-ui/styles';
-import { createMuiTheme } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core/styles';
 import { ListPaginationContext } from 'ra-core';
 
 import Pagination from './Pagination';
@@ -47,19 +47,50 @@ describe('<Pagination />', () => {
             expect(queryByText('ra.navigation.no_results')).toBeNull();
         });
 
-        it('should not display a pagination limit on an out of bounds page', () => {
+        it('should display a pagination limit on an out of bounds page (more than total pages)', async () => {
             jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+            const setPage = jest.fn().mockReturnValue(null);
             const { queryByText } = render(
                 <ThemeProvider theme={theme}>
                     <ListPaginationContext.Provider
-                        value={{ ...defaultProps, total: 10, page: 2 }}
+                        value={{
+                            ...defaultProps,
+                            total: 10,
+                            page: 2, // Query the page 2 but there is only 1 page
+                            perPage: 10,
+                            setPage,
+                        }}
                     >
                         <Pagination />
                     </ListPaginationContext.Provider>
                 </ThemeProvider>
             );
-            // mui TablePagination displays a warning in that case, and that's normal
-            expect(queryByText('ra.navigation.no_results')).toBeNull();
+            // mui TablePagination displays no more a warning in that case
+            // Then useEffect fallbacks on a valid page
+            expect(queryByText('ra.navigation.no_results')).not.toBeNull();
+        });
+
+        it('should display a pagination limit on an out of bounds page (less than 0)', async () => {
+            jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+            const setPage = jest.fn().mockReturnValue(null);
+            const { queryByText } = render(
+                <ThemeProvider theme={theme}>
+                    <ListPaginationContext.Provider
+                        value={{
+                            ...defaultProps,
+                            total: 10,
+                            page: -2, // Query the page -2 😱
+                            perPage: 10,
+                            setPage,
+                        }}
+                    >
+                        <Pagination />
+                    </ListPaginationContext.Provider>
+                </ThemeProvider>
+            );
+            // mui TablePagination displays no more a warning in that case
+            // Then useEffect fallbacks on a valid page
+            expect(queryByText('ra.navigation.no_results')).not.toBeNull();
         });
     });
 

@@ -39,7 +39,7 @@ export default ({
     const reducer = combineReducers({
         admin: adminReducer,
         router: connectRouter(history),
-        { /* add your own reducers here */ },
+        // add your own reducers here
     });
     const resettableAppReducer = (state, action) =>
         reducer(action.type !== USER_LOGOUT ? state : undefined, action);
@@ -145,28 +145,31 @@ export default App;
 
 The `<Admin>` component takes care of defining the store (unless you provide one, as seen above), of setting the Translation and Authentication contexts, and of bootstrapping the Router. In case you need to override any of these, you can use your own component instead of `<Admin>`.
 
-Here is the main code for bootstrapping a barebones react-admin application without `<Admin>`:
+Here is the main code for bootstrapping a barebone react-admin application without `<Admin>`:
 
 ```diff
 // in src/App.js
 import * as React from "react";
++import PropTypes from "prop-types";
 import { Provider } from 'react-redux';
 import { createHashHistory } from 'history';
 +import { ConnectedRouter } from 'connected-react-router';
 +import { Switch, Route } from 'react-router-dom';
 +import withContext from 'recompose/withContext'; // You should add recompose/withContext to your dependencies
 -import { Admin, Resource } from 'react-admin';
-+import { AuthContext, DataProviderContext, TranslationProvider, Resource } from 'react-admin';
++import { AuthContext, DataProviderContext, TranslationProvider, Resource, Notification } from 'react-admin';
 import restProvider from 'ra-data-simple-rest';
 import defaultMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 +import { ThemeProvider } from '@material-ui/styles';
++import { createMuiTheme } from "@material-ui/core/styles";
 +import AppBar from '@material-ui/core/AppBar';
 +import Toolbar from '@material-ui/core/Toolbar';
 +import Typography from '@material-ui/core/Typography';
 
 import createAdminStore from './createAdminStore';
 import messages from './i18n';
+import authProvider from './myAuthProvider';
 
 // your app components
 import Dashboard from './Dashboard';
@@ -176,7 +179,6 @@ import { UserList, UserEdit, UserCreate } from './User';
 
 // dependency injection
 const dataProvider = restProvider('http://path.to.my.api/');
-const authProvider = () => Promise.resolve();
 const i18nProvider = polyglotI18nProvider(locale => {
     if (locale !== 'en') {
         return messages[locale];
@@ -184,6 +186,7 @@ const i18nProvider = polyglotI18nProvider(locale => {
     return defaultMessages;
 });
 const history = createHashHistory();
+const theme = createMuiTheme();
 
 const App = () => (
     <Provider
@@ -204,7 +207,7 @@ const App = () => (
 +       <AuthContext.Provider value={authProvider}>
 +       <DataProviderContext.Provider value={dataProvider}>
 +       <TranslationProvider
-+           locale={locale}
++           locale="en"
 +           i18nProvider={i18nProvider}
 +       >
 +           <ThemeProvider>
@@ -233,6 +236,7 @@ const App = () => (
 +                       <Route exact path="/users/:id" render={(routeProps) => <UsersEdit resource="users" basePath={routeProps.match.url} id={decodeURIComponent((routeProps.match).params.id)} {...routeProps} />} />
 +                   </Switch>
 +               </ConnectedRouter>
++               <Notification />
 +           </ThemeProvider>
 +       </TranslationProvider>
 +       </DataProviderContext.Provider>
@@ -244,7 +248,7 @@ const App = () => (
 -export default App;
 +export default withContext(
 +   {
-+       authProvider: PropTypes.func,
++       authProvider: PropTypes.object,
 +   },
 +   () => ({ authProvider })
 +)(App);

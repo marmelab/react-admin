@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import { shallowEqual, useSelector } from 'react-redux';
 // @ts-ignore
 import inflection from 'inflection';
-import { makeStyles, useMediaQuery, Theme } from '@material-ui/core';
+import { useMediaQuery, Theme } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import DefaultIcon from '@material-ui/icons/ViewList';
 import classnames from 'classnames';
 import { getResources, useTranslate, Translate, ReduxState } from 'ra-core';
@@ -13,13 +14,20 @@ import DashboardMenuItem from './DashboardMenuItem';
 import MenuItemLink from './MenuItemLink';
 
 const useStyles = makeStyles(
-    {
+    theme => ({
         main: {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'flex-start',
+            marginTop: '0.5em',
+            [theme.breakpoints.only('xs')]: {
+                marginTop: 0,
+            },
+            [theme.breakpoints.up('md')]: {
+                marginTop: '1.5em',
+            },
         },
-    },
+    }),
     { name: 'RaMenu' }
 );
 

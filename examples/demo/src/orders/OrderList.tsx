@@ -15,14 +15,9 @@ import {
     TextField,
     TextInput,
 } from 'react-admin';
-import {
-    makeStyles,
-    useMediaQuery,
-    Divider,
-    Tabs,
-    Tab,
-    Theme,
-} from '@material-ui/core';
+import { useMediaQuery, Divider, Tabs, Tab, Theme } from '@material-ui/core';
+
+import { makeStyles } from '@material-ui/core/styles';
 
 import NbItemsField from './NbItemsField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';

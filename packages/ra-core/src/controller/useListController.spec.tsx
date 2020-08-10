@@ -166,6 +166,7 @@ describe('useListController', () => {
                                 list: {
                                     params: {},
                                     cachedRequests: {},
+                                    ids: [],
                                 },
                             },
                         },

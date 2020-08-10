@@ -1,4 +1,4 @@
-// Authenticatd by default
+// Authenticated by default
 export default {
     login: ({ username, password }) => {
         if (username === 'login' && password === 'password') {

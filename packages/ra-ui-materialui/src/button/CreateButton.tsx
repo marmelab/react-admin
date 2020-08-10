@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { FC, ReactElement, memo } from 'react';
 import PropTypes from 'prop-types';
-import { Fab, makeStyles, useMediaQuery, Theme } from '@material-ui/core';
+import { Fab, useMediaQuery, Theme } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import ContentAdd from '@material-ui/icons/Add';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
@@ -89,6 +90,7 @@ export default memo(CreateButton, (prevProps, nextProps) => {
     return (
         prevProps.basePath === nextProps.basePath &&
         prevProps.label === nextProps.label &&
-        prevProps.translate === nextProps.translate
+        prevProps.translate === nextProps.translate &&
+        prevProps.to === nextProps.to
     );
 });

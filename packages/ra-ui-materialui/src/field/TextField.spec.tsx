@@ -23,7 +23,7 @@ describe('<TextField />', () => {
         'should display emptyText prop if provided for %s value',
         value => {
             const record = { id: 123, title: value };
-            const { queryByText } = render(
+            render(
                 <TextField
                     emptyText="Sorry, there's nothing here"
                     record={record}

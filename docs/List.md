@@ -92,7 +92,7 @@ import * as React from 'react';
 import { cloneElement, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
-    useListContext;
+    useListContext,
     TopToolbar,
     CreateButton,
     ExportButton,
@@ -200,7 +200,7 @@ const exporter = posts => {
     }, (err, csv) => {
         downloadCSV(csv, 'posts'); // download as 'posts.csv` file
     });
-})
+};
 
 const PostList = props => (
     <List {...props} exporter={exporter}>
@@ -655,10 +655,10 @@ const Empty = () => {
                 Create one or import from a file
             </Typography>
             <CreateButton basePath={basePath} />
-            <Button onClick={...}>Import</Button>
+            <Button onClick={/* ... */}>Import</Button>
         </Box>
     );
-}
+};
 
 const ProductList = props => (
     <List empty={<Empty />} {...props}>
@@ -739,7 +739,7 @@ const PostList = props => {
     );
 }
 
-export PostList;
+export default PostList;
 ```
 {% endraw %}
 
@@ -872,7 +872,7 @@ The component passed as `filters` should know how to render differently accordin
 That's the case of the react-admin `<Filter>` component: 
 
 - `<Filter context="form">` renders an inline form based on its children which must be `<Input>` components
-- `<Filter context="button">` renders a dropdown allowing to enable filters based on the `source` prop of its children. 
+- `<Filter context="button">` renders a dropdown allowing enabling filters based on the `source` prop of its children. 
 
 ### Full-Text Search
 
@@ -1569,7 +1569,7 @@ export const PostList = (props) => (
 
 ### Building a Custom Pagination Control
 
-The `<Pagination>` component gets the following constants from [the `useListContext` hook](#useListContext):
+The `<Pagination>` component gets the following constants from [the `useListContext` hook](#uselistcontext):
 
 * `page`: The current page number (integer). First page is `1`.
 * `perPage`: The number of records per page.
@@ -2051,7 +2051,7 @@ const PostList = props => {
     );
 }
 
-export PostList;
+export default PostList;
 ```
 {% endraw %}
 
@@ -2146,8 +2146,8 @@ const CustomList = () => {
     const [page, setPage] = useState(1);
     const perPage = 50;
     const { data, total, loading, error } = useQuery({
-        type: 'GET_LIST'
-        resource: 'posts'
+        type: 'GET_LIST',
+        resource: 'posts',
         payload: {
             pagination: { page, perPage },
             sort: { field: 'id', order: 'ASC' },
@@ -2316,7 +2316,7 @@ It's especially useful for `<ReferenceManyField>` or `<ReferenceArrayField>` com
 
 ## Using a Custom Iterator
 
-A `<List>` can delegate to any iterator component - `<Datagrid>` is just one example. An iterator component can get the data to display from [the `useListContext` hook](#useListContext). The data comes in two constants:
+A `<List>` can delegate to any iterator component - `<Datagrid>` is just one example. An iterator component can get the data to display from [the `useListContext` hook](#uselistcontext). The data comes in two constants:
 
 - `ids` is an array of the ids currently displayed in the list
 - `data` is an object of all the fetched data for this resource, indexed by id.
@@ -2423,9 +2423,9 @@ export const UserList = ({ permissions, ...props }) => {
                     <ShowButton />
                 </Datagrid>
             )}
-        </List>;
+        </List>
     )
-}
+};
 ```
 {% endraw %}
 

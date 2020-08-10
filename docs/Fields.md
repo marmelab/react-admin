@@ -181,7 +181,7 @@ If the array value contains a lot of items, you may experience slowdowns in the 
 </ArrayField>
 ```
 
-**Tip**: If you need to render a collection in a custom way, it's often simpler to write your own component:
+**Tip**: If you need to render a custom collection, it's often simpler to write your own component:
 
 ```jsx
 const TagsField = ({ record }) => (
@@ -219,7 +219,7 @@ import { BooleanField } from 'react-admin';
 
 ### Usage
 
-The `<BooleanField>` includes a tooltip text for accessibility (or to query in end to end tests). By default, it is the translated value ('true' or 'false' in English).
+The `<BooleanField>` includes a tooltip text for accessibility (or to query in "end to end" tests). By default, it is the translated value ('true' or 'false' in English).
 
 If you need to override it, you can use the `valueLabelTrue` and `valueLabelFalse` props, which both accept a string. These strings may be translation keys:
 
@@ -320,7 +320,7 @@ import { EmailField } from 'react-admin';
 If you need a special function to render a field, `<FunctionField>` is the perfect match. It passes the `record` to a `render` function supplied by the developer. For instance, to display the full name of a `user` record based on `first_name` and `last_name` properties:
 
 ```jsx
-import { FunctionField } from 'react-admin'
+import { FunctionField } from 'react-admin';
 
 <FunctionField label="Name" render={record => `${record.first_name} ${record.last_name}`} />
 ```
@@ -413,7 +413,7 @@ This field is also often used within an [<FileInput />](./Inputs.md#fileinput) c
 | `src` | Optional | `string` |  - | A function returning a string (or an element) to display based on a record |
 | `title` | Optional | `string` | record.title | The name of the property containing the image source if the value is an array of objects |
 | `target` | Optional | `string` | - | The link target. Set to "_blank" to open the file on a new tab |
-| `download` | Optional | `boolan | string` | - | Prompts the user to save the linked URL instead of navigating to it |
+| `download` | Optional | `boolean | string` | - | Prompts the user to save the linked URL instead of navigating to it |
 | `ping` | Optional | `string` | - | A space-separated list of URLs. When the link is followed, the browser will send POST requests with the body PING to the URLs. Typically for tracking. |
 | `rel` | Optional | `string` | - | The relationship of the linked URL as space-separated link types (e.g. 'noopener', 'canonical', etc.). |
 
@@ -479,7 +479,7 @@ import { NumberField }  from 'react-admin';
 
 `<NumberField>` uses `Intl.NumberFormat()` if available, passing the `locales` and `options` props as arguments. This allows a perfect display of decimals, currencies, percentages, etc.
 
-If Intl is not available, it outputs number as is (and ignores the `locales` and `options` props).
+If Intl is not available, it outputs numbers as is (and ignores the `locales` and `options` props).
 
 {% raw %}
 ```jsx
@@ -545,7 +545,7 @@ import { SelectField } from 'react-admin';
 By default, the text is built by:
 
 - finding a choice where the 'id' property equals the field value
-- using the 'name' property an the option text
+- using the 'name' property and the option text
 
 You can also customize the properties to use for the lookup value and text, thanks to the `optionValue` and `optionText` attributes.
 
@@ -744,7 +744,7 @@ export const PostList = (props) => (
 | `reference`  | Required | `string`           | -                                | The name of the resource for the referenced records, e.g. 'books'                   |
 | `target`     | Required | string             | -                                | Target field carrying the relationship on the referenced resource, e.g. 'user_id'   |
 | `filter`     | Optional | `Object`           | -                                | Filters to use when fetching the related records, passed to `getManyReference()`    |
-| `pagination` | Optional | `Element`          | -                                | Pagination element to display pagination controls. empty by dfault (no pagination)  |
+| `pagination` | Optional | `Element`          | -                                | Pagination element to display pagination controls. empty by default (no pagination)  |
 | `perPage`    | Optional | `number`           | 25                               | Maximum number of referenced records to fetch                                       |
 | `sort`       | Optional | `{ field, order }` | `{ field: 'id', order: 'DESC' }` | Sort order to use when fetching the related records, passed to `getManyReference()` |
 
@@ -863,7 +863,7 @@ export const PostList = (props) => (
 | `children`  | Required | `Element`           | -        | The Field element used to render the referenced records |
 | `sortBy`    | Optional | `string | function` | `source` | When used in a List, name of the field to use for sorting when the user clicks on the column header. Set to `false` to disable the link. |
 | `filter`    | Optional | `Object`           | -        | Filters to use when fetching the related records (the filtering is done client-side) |
-| `pagination` | Optional | `Element`          | -        | Pagination element to display pagination controls. empty by dfault (no pagination) |
+| `pagination` | Optional | `Element`          | -        | Pagination element to display pagination controls. empty by default (no pagination) |
 | `perPage`   | Optional | `number`           | 1000      | Maximum number of results to display |
 | `sort`      | Optional | `{ field, order }` | `{ field: 'id', order: 'DESC' }` | Sort order to use when displaying the related records (the sort is done client-side) |
 
@@ -940,7 +940,7 @@ import { RichTextField } from 'react-admin';
 
 ## `<TextField>`
 
-The most simple of all fields, `<TextField>` simply displays the record property as plain text.
+The simplest of all fields, `<TextField>` simply displays the record property as plain text.
 
 ```jsx
 import { TextField } from 'react-admin';
@@ -1039,7 +1039,7 @@ export const ProductList = (props) => (
     </List>
 );
 // renders in the table header as
-<th class="[class name generated by JSS]"><button>Price</button></td>
+<th class="[class name generated by JSS]"><button>Price</button></th>
 ```
 {% endraw %}
 
@@ -1157,9 +1157,9 @@ const ConditionalEmailField = ({ record, ...rest }) =>
 export default ConditionalEmailField;
 ```
 
-**Tip**: Always check that the `record` is defined before inspecting its properties, as react-admin displays the `Show` view *before* fetching the record from the data provider. So the first time it renders the show view for a resource, the `record` is `undefined`.
+**Tip**: Always check the `record` is defined before inspecting its properties, as react-admin displays the `Show` view *before* fetching the record from the data provider. So the first time it renders the show view for a resource, the `record` is `undefined`.
 
-This `ConditionalEmailField` is properly hidden when `hasEmail` is `false`. But when `hasEmail` is `true`, the Show layout renders it... without label. And if you add a `addLabel` default prop, the `Show` layout will render the label regardless of the `hasEmail` value...
+This `ConditionalEmailField` is properly hidden when `hasEmail` is `false`. But when `hasEmail` is `true`, the Show layout renders it... without a label. And if you add a `addLabel` default prop, the `Show` layout will render the label regardless of the `hasEmail` value...
 
 One solution is to add the label manually in the custom component:
 
@@ -1181,7 +1181,7 @@ export default ConditionalEmailField;
 
 This comes with a drawback, though: the `<ConditionalEmailField>` cannot be used in a List view anymore, as it will always have a label. If you want to reuse the custom component in a List, this isn't the right solution.
 
-An alternative solution is to split the `<Show>` component. Under the hood, the `<Show>` component is composed of two sub components: the `<ShowController>` component, which fetches the record, and the `<ShowView>`, which is responsible for rendering the view title, actions, and children. `<ShowController>` uses the *render props* pattern:
+An alternative solution is to split the `<Show>` component. Under the hood, the `<Show>` component is composed of two sub-components: the `<ShowController>` component, which fetches the record, and the `<ShowView>`, which is responsible for rendering the view title, actions, and children. `<ShowController>` uses the *render props* pattern:
 
 ```jsx
 // inside react-admin

@@ -12,8 +12,8 @@ import {
     Grid,
     Toolbar,
     useMediaQuery,
-    makeStyles,
 } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import jsonExport from 'jsonexport/dist';
 import {
     ListBase,

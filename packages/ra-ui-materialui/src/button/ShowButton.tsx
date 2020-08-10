@@ -50,7 +50,7 @@ const PureShowButton = memo(
     (props: Props, nextProps: Props) =>
         (props.record && nextProps.record
             ? props.record.id === nextProps.record.id
-            : props.record == nextProps.record) &&
+            : props.record == nextProps.record) && // eslint-disable-line eqeqeq
         props.basePath === nextProps.basePath
 );
 

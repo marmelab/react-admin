@@ -5,7 +5,8 @@ import get from 'lodash/get';
 import classnames from 'classnames';
 import FalseIcon from '@material-ui/icons/Clear';
 import TrueIcon from '@material-ui/icons/Done';
-import { Tooltip, Typography, makeStyles } from '@material-ui/core';
+import { Tooltip, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { TypographyProps } from '@material-ui/core/Typography';
 import { useTranslate } from 'ra-core';
 

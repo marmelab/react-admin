@@ -2,7 +2,8 @@ import * as React from 'react';
 import { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { Drawer, makeStyles, useMediaQuery } from '@material-ui/core';
+import { Drawer, useMediaQuery } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import lodashGet from 'lodash/get';
 import { setSidebarVisibility } from 'ra-core';
 
@@ -25,7 +26,7 @@ const useStyles = makeStyles(
         modal: {},
         drawerPaper: {
             position: 'relative',
-            height: 'auto',
+            height: '100%',
             overflowX: 'hidden',
             width: props =>
                 props.open
@@ -40,7 +41,6 @@ const useStyles = makeStyles(
                 duration: theme.transitions.duration.leavingScreen,
             }),
             backgroundColor: 'transparent',
-            marginTop: '0.5em',
             borderRight: 'none',
             [theme.breakpoints.only('xs')]: {
                 marginTop: 0,
@@ -50,7 +50,6 @@ const useStyles = makeStyles(
             },
             [theme.breakpoints.up('md')]: {
                 border: 'none',
-                marginTop: '1.5em',
             },
             zIndex: 'inherit',
         },

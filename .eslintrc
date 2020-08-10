@@ -17,6 +17,18 @@
     ],
     "rules": {
         "no-use-before-define": "off",
-        "prettier/prettier": "error"
+        "prettier/prettier": "error",
+        "no-restricted-imports": [
+            "error",
+            {
+                "paths": [
+                    {
+                        "name": "@material-ui/core",
+                        "importNames": ["makeStyles", "createMuiTheme"],
+                        "message": "Please import from @material-ui/core/styles instead. See https://material-ui.com/guides/minimizing-bundle-size/#option-2 for more information"
+                    }
+                ]
+            }
+        ]
     }
 }

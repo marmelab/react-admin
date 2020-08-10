@@ -16,7 +16,7 @@ This tutorial explains how to add a button on a show or edit page to create a ne
 
 ## Custom Forms and UI for related records
 
-This tutorial explains how to have a create, show or edit view of a referenced resource inside a modal or a sliding side panel.
+This tutorial explains how to have a `create`, `show` or `edit` view of a referenced resource inside a modal or a sliding side panel.
 
 ![Screencast](https://marmelab.com/images/blog/react-admin/react-admin-tutorials-custom-forms-related-records-quick-preview.gif)
 

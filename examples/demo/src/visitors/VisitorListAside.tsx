@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { Card as MuiCard, CardContent, withStyles } from '@material-ui/core';
+import { Card as MuiCard, CardContent } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOnOutlined';
 import MailIcon from '@material-ui/icons/MailOutline';

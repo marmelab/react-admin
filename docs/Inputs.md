@@ -56,13 +56,13 @@ Additional props are passed down to the underlying component (usually a material
 
 **Tip**: If you edit a record with a complex structure, you can use a path as the `source` parameter. For instance, if the API returns the following 'book' record:
 
-```jsx
+```json
 {
-    id: 1234,
-    title: 'War and Peace',
-    author: {
-        firstName: 'Leo',
-        lastName: 'Tolstoi'
+    "id": 1234,
+    "title": "War and Peace",
+    "author": {
+        "firstName": "Leo",
+        "lastName": "Tolstoi"
     }
 }
 ```
@@ -96,17 +96,17 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admi
 
  `<ArrayInput>` allows editing of embedded arrays, like the `backlinks` field in the following `post` record:
 
-```js
+```json
 {
-  id: 123,
-  backlinks: [
+  "id": 123,
+  "backlinks": [
         {
-            date: '2012-08-10T00:00:00.000Z',
-            url: 'http://example.com/foo/bar.html',
+            "date": "2012-08-10T00:00:00.000Z",
+            "url": "http://example.com/foo/bar.html",
         },
         {
-            date: '2012-08-14T00:00:00.000Z',
-            url: 'https://blog.johndoe.com/2012/08/12/foobar.html',
+            "date": "2012-08-14T00:00:00.000Z",
+            "url": "https://blog.johndoe.com/2012/08/12/foobar.html",
         }
    ]
 }
@@ -224,12 +224,12 @@ const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
 
 ```jsx
 const choices = [
-   { id: 123, first_name: 'Leo', last_name: 'Tolstoi' avatar='/pengouin' },
-   { id: 456, first_name: 'Jane', last_name: 'Austen' avatar='/panda' },
+   { id: 123, first_name: 'Leo', last_name: 'Tolstoi', avatar:'/pengouin' },
+   { id: 456, first_name: 'Jane', last_name: 'Austen', avatar:'/panda' },
 ];
 const OptionRenderer = choice => (
     <span>
-        <img src={choice.avatar}>
+        <img src={choice.avatar} />
         {choice.first_name} {choice.last_name}
     </span>
 );
@@ -261,7 +261,7 @@ In that case, set the `translateChoice` prop to `false`.
 If you want to limit the initial choices shown to the current value only, you can set the `limitChoicesToValue` prop.
 
 When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set).
-Ex. `<AutocompleteInput shouldRenderSuggestions={(val) => { return val.trim().length > 2 }} />` would not render any suggestions until the 3rd character was entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
+Ex. `<AutocompleteInput shouldRenderSuggestions={(val) => { return val.trim().length > 2 }} />` would not render any suggestions until the 3rd character has been entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
 
 `<AutocompleteInput>` renders a [material-ui `<TextField>` component](https://material-ui.com/api/text-field/). Use the `options` attribute to override any of the `<TextField>` attributes:
 
@@ -283,7 +283,7 @@ import { AutocompleteInput, ReferenceInput } from 'react-admin';
 </ReferenceInput>
 ```
 
-Lastly, would you need to override the props of the suggestions container (a `Popper` element), you can specify them using the `options.suggestionsContainerProps`. For example:
+Lastly, would you need to override the props of the suggestion's container (a `Popper` element), you can specify them using the `options.suggestionsContainerProps`. For example:
 
 {% raw %}
 ```jsx
@@ -368,7 +368,7 @@ However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the 
 ```
 
 When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set).
-Ex. `<AutocompleteArrayInput shouldRenderSuggestions={(val) => { return val.trim().length > 2 }} />` would not render any suggestions until the 3rd character was entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
+Ex. `<AutocompleteArrayInput shouldRenderSuggestions={(val) => { return val.trim().length > 2 }} />` would not render any suggestions until the 3rd character has been entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
 
 Lastly, `<AutocompleteArrayInput>` renders a [material-ui `<TextField>` component](https://material-ui.com/api/text-field/). Use the `options` attribute to override any of the `<TextField>` attributes:
 
@@ -391,7 +391,7 @@ import { AutocompleteArrayInput, ReferenceArrayInput } from 'react-admin';
 </ReferenceArrayInput>
 ```
 
-If you need to override the props of the suggestions container (a `Popper` element), you can specify them using the `options.suggestionsContainerProps`. For example:
+If you need to override the props of the suggestion's container (a `Popper` element), you can specify them using the `options.suggestionsContainerProps`. For example:
 
 {% raw %}
 ```jsx
@@ -440,7 +440,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 
 Refer to [Material UI Switch documentation](https://material-ui.com/api/switch) for more details.
 
-`<NullableBooleanInput />` renders as a dropdown list, allowing to choose between `true`, `false`, and `null` values.
+`<NullableBooleanInput />` renders as a dropdown list, allowing choosing between `true`, `false`, and `null` values.
 
 ```jsx
 import { NullableBooleanInput } from 'react-admin';
@@ -618,9 +618,9 @@ import { DateTimeInput } from 'react-admin';
 
 ### Usage
 
-Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and `maxSize` props. `accept` must be a valid [MIME type](http://www.iana.org/assignments/media-types/media-types.xhtml) according to [input element specification](https://www.w3.org/wiki/HTML/Elements/input/file) or a valid file extension. If `multiple` is set to false and additional files are droppped, all files besides the first will be rejected. Any file which does not have a size in the [`minSize`, `maxSize`] range, will be rejected as well.
+Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and `maxSize` props. `accept` must be a valid [MIME type](http://www.iana.org/assignments/media-types/media-types.xhtml) according to [input element specification](https://www.w3.org/wiki/HTML/Elements/input/file) or a valid file extension. If `multiple` is set to false and additional files are dropped, all files besides the first will be rejected. Any file which does not have a size in the [`minSize`, `maxSize`] range, will be rejected as well.
 
-`<ImageInput>` delegates the preview of currently selected images to its child. `<ImageInput>` clones its child as many times as there are selected images, passing the image as the `record` prop. To preview a simple list of image thubnails, you can use `<ImageField>` as child, as follows:
+`<ImageInput>` delegates the preview of currently selected images to its child. `<ImageInput>` clones its child as many times as there are selected images, passing the image as the `record` prop. To preview a simple list of image thumbnails, you can use `<ImageField>` as child, as follows:
 
 ```jsx
 <ImageInput source="pictures" label="Related pictures" accept="image/*">
@@ -646,7 +646,7 @@ Note that the image upload returns a [File](https://developer.mozilla.org/en/doc
 
 ## `<FileInput>`
 
-`<FileInput>` allows to upload files using [react-dropzone](https://github.com/okonet/react-dropzone).
+`<FileInput>` allows uploading files using [react-dropzone](https://github.com/okonet/react-dropzone).
 
 ![FileInput](./img/file-input.png)
 
@@ -668,7 +668,7 @@ Note that the image upload returns a [File](https://developer.mozilla.org/en/doc
 
 ### Usage
 
-Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and `maxSize` props. `accept` must be a valid [MIME type](http://www.iana.org/assignments/media-types/media-types.xhtml) according to [input element specification](https://www.w3.org/wiki/HTML/Elements/input/file) or a valid file extension. If `multiple` is set to false and additional files are droppped, all files besides the first will be rejected. Any file which does not have a size in the [`minSize`, `maxSize`] range, will be rejected as well.
+Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and `maxSize` props. `accept` must be a valid [MIME type](http://www.iana.org/assignments/media-types/media-types.xhtml) according to [input element specification](https://www.w3.org/wiki/HTML/Elements/input/file) or a valid file extension. If `multiple` is set to false and additional files are dropped, all files besides the first will be rejected. Any file which does not have a size in the [`minSize`, `maxSize`] range, will be rejected as well.
 
 `FileInput` delegates the preview of currently selected files to its child. `FileInput` clones its child as many times as there are selected files, passing the file as the `record` prop. To preview a simple list of files names, you can use `<FileField>` as child, as follows:
 
@@ -696,7 +696,7 @@ Note that the file upload returns a [File](https://developer.mozilla.org/en/docs
 
 ## `<NumberInput>`
 
-`<NumberInput>` translates to a HTML `<input type="number">`. It is necessary for numeric values because of a [known React bug](https://github.com/facebook/react/issues/1425), which prevents using the more generic [`<TextInput>`](#textinput) in that case.
+`<NumberInput>` translates to an HTML `<input type="number">`. It is necessary for numeric values because of a [known React bug](https://github.com/facebook/react/issues/1425), which prevents using the more generic [`<TextInput>`](#textinput) in that case.
 
 ```jsx
 import { NumberInput } from 'react-admin';
@@ -858,10 +858,10 @@ Use `<ReferenceArrayInput>` to edit an array of reference values, i.e. to let us
 
 For instance, if the post object has many tags, a post resource may look like:
 
-```js
+```json
 {
-    id: 1234,
-    tag_ids: [1, 23, 4]
+    "id": 1234,
+    "tag_ids": [1, 23, 4]
 }
 ```
 
@@ -1274,7 +1274,7 @@ import { SelectArrayInput } from 'react-admin';
 You can also customize the properties to use for the option name and value,
 thanks to the `optionText` and `optionValue` attributes.
 
-```js
+```jsx
 const choices = [
    { _id: '1', name: 'Book', plural_name: 'Books' },
    { _id: '2', name: 'Video', plural_name: 'Videos' },
@@ -1285,7 +1285,7 @@ const choices = [
 
 `optionText` also accepts a function, so you can shape the option text at will:
 
-```js
+```jsx
 const choices = [
    { id: '1', name: 'Book', quantity: 23 },
    { id: '2', name: 'Video', quantity: 56 },
@@ -1447,7 +1447,7 @@ You can find components for react-admin in third-party repositories.
 
 ## Writing Your Own Input Component
 
-If you need a more specific input type, you can write it directly in React. You'll have to rely on react-final-form's [`<Field>`](https://final-form.org/docs/react-final-form/api/Field) component, or its [`useField`](https://final-form.org/docs/react-final-form/api/useField) hook, so as to handle the value update cycle.
+If you need a more specific input type, you can write it directly in React. You'll have to rely on react-final-form's [`<Field>`](https://final-form.org/docs/react-final-form/api/Field) component, or its [`useField`](https://final-form.org/docs/react-final-form/api/useField) hook, to handle the value update cycle.
 
 For instance, let's write a component to edit the latitude and longitude of the current record:
 
@@ -1653,7 +1653,7 @@ const PersonEdit = props => (
             />
         </SimpleForm>
     </Edit>
-)
+);
 ```
 
 ## Linking Two Inputs
@@ -1747,9 +1747,9 @@ const PostEdit = (props) => (
                             formData, // The whole form data
                             scopedFormData, // The data for this item of the ArrayInput
                             getSource, // A function to get the valid source inside an ArrayInput
-                            ...rest,
+                            ...rest
                         }) =>
-                            scopedFormData.name ? (
+                            scopedFormData && scopedFormData.name ? (
                                 <SelectInput
                                     source={getSource('role')} // Will translate to "authors[0].role"
                                     choices={['main', 'coauthor']}
@@ -1767,7 +1767,7 @@ const PostEdit = (props) => (
 
 ## Hiding Inputs Based On Other Inputs
 
-You may want to display or hide inputs base on the value of another input - for instance, show an `email` input only if the `hasEmail` boolean input is ticked to `true`.
+You may want to display or hide inputs base on the value of another input - for instance, show an `email` input only if the `hasEmail` boolean input has been ticked to `true`.
 
 For such cases, you can use the approach described above, using the `<FormDataConsumer>` component.
 

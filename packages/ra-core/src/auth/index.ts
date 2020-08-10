@@ -17,7 +17,7 @@ export {
     AuthContext,
     useAuthProvider,
     convertLegacyAuthProvider,
-    // low-vevel hooks for calling a particular verb on the authProvider
+    // low-level hooks for calling a particular verb on the authProvider
     useLogin,
     useLogout,
     useCheckAuth,

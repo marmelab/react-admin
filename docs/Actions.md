@@ -252,7 +252,7 @@ The specialized hooks based on `useMutation` return a callback:
 
 ## Handling Side Effects In `useDataProvider`
 
-`useDataProvider` returns a `dataProvider` object. Each call to its method return a Promise, allowing to add business logic on success in `then()`, and on failure in `catch()`.
+`useDataProvider` returns a `dataProvider` object. Each call to its method return a Promise, allowing adding business logic on success in `then()`, and on failure in `catch()`.
 
 For instance, here is another version of the `<ApproveButton>`  based on `useDataProvider` that notifies the user of success or failure using the bottom notification banner:
 
@@ -282,7 +282,7 @@ const ApproveButton = ({ record }) => {
 
 Fetching data is called a *side effect*, since it calls the outside world, and is asynchronous. Usual actions may have other side effects, like showing a notification, or redirecting the user to another page. React-admin provides the following hooks to handle most common side effects:
 
-- `useNotify`: Return a function to display a notification. The arguments should be a message (it can be a translation key), a level (either `info` or `warning`), an options object to pass to the `translate()` function (in the case of the default i18n provider, using Polyglot.js, it will be the interpolation options used for passing variables), a boolean to set to `true` if the notification should contain an "undo" button and a number corresponding to the notification duration.
+- `useNotify`: Return a function to display a notification. The arguments should be a message (it can be a translation key), a level (either `info` or `warning`), an `options` object to pass to the `translate` function (in the case of the default i18n provider, using Polyglot.js, it will be the interpolation options used for passing variables), a boolean to set to `true` if the notification should contain an "undo" button and a number corresponding to the notification duration.
 - `useRedirect`: Return a function to redirect the user to another page. The arguments should be the path to redirect the user to, and the current `basePath`.
 - `useRefresh`: Return a function to force a rerender of the current view (equivalent to pressing the Refresh button).
 - `useUnselectAll`: Return a function to unselect all lines in the current `Datagrid`. Pass the name of the resource as argument.
@@ -326,7 +326,7 @@ For its own fetch actions, react-admin uses an approach called *optimistic rende
 
 As a bonus, while the success notification is displayed, users have the ability to cancel the action *before* the data provider is even called.
 
-You can benefit from optimistic rendering when you call the `useMutation` hook, too. You just need to pass `undoable: true` in the options parameter:
+You can benefit from optimistic rendering when you call the `useMutation` hook, too. You just need to pass `undoable: true` in the `options` parameter:
 
 ```diff
 import * as React from "react";
@@ -558,7 +558,7 @@ Note that these components are implemented in react-admin using the hooks descri
 
 ## Querying The API With `fetch`
 
-`useQuery`, `useMutation` and `useDataProvider` are "the react-admin way" to query the API, but nothing prevents you from using `fetch` if you want. For instance, when you don't want to add some routing logic to the data provider for a RPC method on your API, that makes perfect sense.
+`useQuery`, `useMutation` and `useDataProvider` are "the react-admin way" to query the API, but nothing prevents you from using `fetch` if you want. For instance, when you don't want to add some routing logic to the data provider for an RPC method on your API, that makes perfect sense.
 
 There is no special react-admin sauce in that case. Here is an example implementation of calling `fetch` in a component:
 

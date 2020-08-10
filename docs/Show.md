@@ -41,7 +41,7 @@ export default App;
 
 // in src/posts.js
 import * as React from "react";
-import { Show, SimpleShowLayout, TextField, DateField, EditButton, RichTextField } from 'react-admin';
+import { Show, SimpleShowLayout, TextField, DateField, RichTextField } from 'react-admin';
 
 export const PostShow = (props) => (
     <Show {...props}>
@@ -150,7 +150,7 @@ const Aside = ({ record }) => (
 ```
 {% endraw %}
 
-**Tip**: Always test that the `record` is defined before using it, as react-admin starts rendering the UI before the API call is over.
+**Tip**: Always test the `record` is defined before using it, as react-admin starts rendering the UI before the API call is over.
 
 ### Component
 

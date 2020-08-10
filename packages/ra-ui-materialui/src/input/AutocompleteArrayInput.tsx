@@ -9,7 +9,8 @@ import React, {
 import Downshift, { DownshiftProps } from 'downshift';
 import classNames from 'classnames';
 import get from 'lodash/get';
-import { makeStyles, TextField, Chip } from '@material-ui/core';
+import { TextField, Chip } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { TextFieldProps } from '@material-ui/core/TextField';
 import {
     useInput,
@@ -217,7 +218,7 @@ const AutocompleteArrayInput: FunctionComponent<
     // would have to first clear the input before seeing any other choices
     useEffect(() => {
         handleFilterChange('');
-    }, [...values, handleFilterChange]);
+    }, [values.join(','), handleFilterChange]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const handleKeyDown = useCallback(
         (event: React.KeyboardEvent) => {

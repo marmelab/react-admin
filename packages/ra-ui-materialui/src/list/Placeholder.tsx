@@ -21,7 +21,7 @@ interface Props {
 const Placeholder: FC<Props> = props => {
     const classes = useStyles(props);
     return (
-        <div className={classnames(props.className, classes.root)}>&nbsp;</div>
+        <div className={classnames(classes.root, props.className)}>&nbsp;</div>
     );
 };
 

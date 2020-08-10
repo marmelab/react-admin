@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
 import { clearState } from '../actions/clearActions';
 import { useHistory } from 'react-router-dom';
+import { LocationDescriptorObject } from 'history';
 
 /**
  * Get a callback for calling the authProvider.logout() method,
@@ -42,16 +43,34 @@ const useLogout = (): Logout => {
     const history = useHistory();
 
     const logout = useCallback(
-        (params = {}, redirectTo = defaultAuthParams.loginUrl) =>
+        (
+            params = {},
+            redirectTo = defaultAuthParams.loginUrl,
+            redirectToCurrentLocationAfterLogin = true
+        ) =>
             authProvider.logout(params).then(redirectToFromProvider => {
                 dispatch(clearState());
-                history.push({
-                    pathname: redirectToFromProvider || redirectTo,
-                    state: {
-                        nextPathname:
-                            history.location && history.location.pathname,
-                    },
-                });
+                // redirectTo can contain a query string, e.g '/login?foo=bar'
+                // we must split the redirectTo to pass a structured location to history.push()
+                const redirectToParts = (
+                    redirectToFromProvider || redirectTo
+                ).split('?');
+                const newLocation: LocationDescriptorObject = {
+                    pathname: redirectToParts[0],
+                };
+                if (
+                    redirectToCurrentLocationAfterLogin &&
+                    history.location &&
+                    history.location.pathname
+                ) {
+                    newLocation.state = {
+                        nextPathname: history.location.pathname,
+                    };
+                }
+                if (redirectToParts[1]) {
+                    newLocation.search = redirectToParts[1];
+                }
+                history.push(newLocation);
                 return redirectToFromProvider;
             }),
         [authProvider, history, dispatch]
@@ -80,9 +99,14 @@ const useLogout = (): Logout => {
  *
  * @param {Object} params The parameters to pass to the authProvider
  * @param {string} redirectTo The path name to redirect the user to (optional, defaults to login)
+ * @param {boolean} redirectToCurrentLocationAfterLogin Whether the button shall record the current location to redirect to it after login. true by default.
  *
  * @return {Promise} The authProvider response
  */
-type Logout = (params?: any, redirectTo?: string) => Promise<any>;
+type Logout = (
+    params?: any,
+    redirectTo?: string,
+    redirectToCurrentLocationAfterLogin?: boolean
+) => Promise<any>;
 
 export default useLogout;
