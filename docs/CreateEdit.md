@@ -1581,7 +1581,7 @@ const FormBody = ({ handleSubmit }) => {
 
 ## Setting Empty Values To Null
 
-`<SimpleForm>` and `<TabbedForm>` recreates deleted or missing attributes based on its `initialValues` in order to send them to the data provider with a `null` value, as most APIs requires all attributes for a given record, even if they are nullable.
+`<SimpleForm>` and `<TabbedForm>` recreate deleted or missing attributes based on its `initialValues` in order to send them to the data provider with a `null` value, as most APIs requires all attributes for a given record, even if they are nullable.
 
 It is possible to opt-out this default behavior by passing the `sanitizeEmptyValues` prop:
 
