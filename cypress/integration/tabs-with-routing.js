@@ -11,6 +11,7 @@ describe('Tabs with routing', () => {
         ShowPage.navigate();
         ShowPage.logout();
         LoginPage.login('admin', 'password');
+        ShowPage.navigate();
         cy.url().then(url => expect(url).to.contain('#/users'));
     });
 
