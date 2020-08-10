@@ -27,6 +27,7 @@ describe('Authentication', () => {
         ListPage.navigate();
         ListPage.logout();
         LoginPage.login('login', 'password');
+        ListPage.navigate();
         cy.url().then(url => expect(url).to.contain('/#/posts'));
     });
 });
