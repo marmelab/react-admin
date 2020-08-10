@@ -651,6 +651,7 @@ Here are all the props you can set on the `<SimpleForm>` component:
 * [`variant`](#variant)
 * [`margin`](#margin)
 * [`warnWhenUnsavedChanges`](#warning-about-unsaved-changes)
+* [`sanitizeEmptyValues`](#setting-empty-values-to-null)
 
 ```jsx
 export const PostCreate = (props) => (
@@ -700,6 +701,7 @@ const PostEdit = (props) => (
 );
 ```
 
+
 ## The `<TabbedForm>` component
 
 Just like `<SimpleForm>`, `<TabbedForm>` receives the `record` prop, renders the actual form, and handles form validation on submit. However, the `<TabbedForm>` component renders inputs grouped by tab. The tabs are set by using `<FormTab>` components, which expect a `label` and an `icon` prop.
@@ -722,6 +724,7 @@ Here are all the props accepted by the `<TabbedForm>` component:
 * `save`: The function invoked when the form is submitted. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
 * `saving`: A boolean indicating whether a save operation is ongoing. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
 * [`warnWhenUnsavedChanges`](#warning-about-unsaved-changes)
+* [`sanitizeEmptyValues`](#setting-empty-values-to-null)
 
 {% raw %}
 ```jsx
@@ -1578,6 +1581,23 @@ const FormBody = ({ handleSubmit }) => {
 ```
 
 **Tip**: You can customize the message displayed in the confirm dialog by setting the `ra.message.unsaved_changes` message in your i18nProvider.
+
+## Setting Empty Values To Null
+
+`<SimpleForm>` and `<TabbedForm>` recreate deleted or missing attributes based on its `initialValues` in order to send them to the data provider with a `null` value, as most APIs requires all attributes for a given record, even if they are nullable.
+
+It is possible to opt-out this default behavior by passing the `sanitizeEmptyValues` prop:
+
+```jsx
+export const PostEdit = (props) => (
+    <Edit {...props}>
+        <SimpleForm sanitizeEmptyValues={false}>
+            <TextInput source="title" />
+            <JsonInput source="body" />
+        </SimpleForm>
+    </Edit>
+);
+```
 
 ## Displaying Fields or Inputs Depending on the User Permissions
 

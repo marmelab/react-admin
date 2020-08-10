@@ -74,6 +74,7 @@ import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
  * @prop {ReactElement} toolbar The element displayed at the bottom of the form, contzining the SaveButton
  * @prop {string} variant Apply variant to all inputs. Possible values are 'standard', 'outlined', and 'filled' (default)
  * @prop {string} margin Apply variant to all inputs. Possible values are 'none', 'normal', and 'dense' (default)
+ * @prop {boolean} sanitizeEmptyValues Wether or not deleted record attributes should be recreated with a `null` value (default: true)
  *
  * @param {Prop} props
  */
@@ -99,6 +100,7 @@ TabbedForm.propTypes = {
     submitOnEnter: PropTypes.bool,
     undoable: PropTypes.bool,
     validate: PropTypes.func,
+    sanitizeEmptyValues: PropTypes.bool,
 };
 
 const useStyles = makeStyles(
