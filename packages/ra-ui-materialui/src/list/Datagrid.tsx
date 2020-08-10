@@ -101,13 +101,15 @@ const Datagrid: FC<DatagridProps> = props => {
             event.stopPropagation();
             const newField = event.currentTarget.dataset.field;
             const newOrder =
-                currentSort.field === newField &&
-                event.currentTarget.dataset.order === 'ASC'
-                    ? 'DESC'
-                    : 'ASC';
+                currentSort.field === newField
+                    ? currentSort.order === 'ASC'
+                        ? 'DESC'
+                        : 'ASC'
+                    : event.currentTarget.dataset.order;
+
             setSort(newField, newOrder);
         },
-        [currentSort.field, setSort]
+        [currentSort.field, currentSort.order, setSort]
     );
 
     const handleSelectAll = useCallback(
