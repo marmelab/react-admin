@@ -23,6 +23,8 @@ import SimpleList from './SimpleList';
 import SimpleListLoading from './SimpleListLoading';
 import SingleFieldList from './SingleFieldList';
 
+export * from './filter';
+
 export {
     BulkActionsToolbar,
     BulkDeleteAction,

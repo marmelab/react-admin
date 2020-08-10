@@ -14,6 +14,13 @@ export default function(db) {
         customer.nb_commands++;
     });
 
+    // set product sales
+    db.commands.forEach(command => {
+        command.basket.forEach(item => {
+            db.products[item.product_id].sales += item.quantity;
+        });
+    });
+
     // add 'collector' group
     const customersBySpending = db.commands.reduce((customers, command) => {
         if (!customers[command.customer_id]) {

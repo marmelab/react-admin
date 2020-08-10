@@ -45,6 +45,9 @@ title: "Reference"
 * [`<Filter>`](./List.md#filters)
 * `<FilterButton>`
 * `<FilterForm>`
+* [`<FilterList>`](./List.md#the-filterlist-sidebar)
+* [`<FilterListItem>`](./List.md#the-filterlist-sidebar)
+* [`<FilterLiveSearch>`](./List.md#live-search)
 * [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs)
 * [`<FormTab>`](./CreateEdit.md#the-tabbedform-component)
 * [`<FunctionField>`](./Fields.md#functionfield)
@@ -64,7 +67,7 @@ title: "Reference"
 * [`<NullableBooleanInput>`](./Inputs.md#booleaninput-and-nullablebooleaninput)
 * [`<NumberField>`](./Fields.md#numberfield)
 * [`<NumberInput>`](./Inputs.md#numberinput)
-* [`<Pagination>`](./List.md#pagination)
+* [`<Pagination>`](./List.md#the-pagination-component)
 * [`<PasswordInput>`](./Inputs.md#passwordinput)
 * [`<Query>`](./Actions.md#legacy-components-query-mutation-and-withdataprovider)
 * [`<RadioButtonGroupInput>`](./Inputs.md#radiobuttongroupinput)
@@ -90,6 +93,7 @@ title: "Reference"
 * [`<SimpleList>`](./List.md#the-simplelist-component)
 * [`<SimpleShowLayout>`](./Show.md#the-simpleshowlayout-component)
 * [`<SingleFieldList>`](./List.md#the-singlefieldlist-component)
+* [`<SortButton>`](./List.md#the-sortbutton-component)
 * `<Tab>`
 * [`<TabbedForm>`](./CreateEdit.md#the-tabbedform-component)
 * [`<TabbedShowLayout>`](./Show.md#the-tabbedshowlayout-component)

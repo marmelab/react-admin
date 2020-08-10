@@ -3,7 +3,7 @@ import { Children, cloneElement, FC, memo, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { LinearProgress, makeStyles } from '@material-ui/core';
 import {
-    ListContext,
+    ListContextProvider,
     ListControllerProps,
     useReferenceArrayFieldController,
     Sort,
@@ -101,9 +101,9 @@ const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
         source,
     });
     return (
-        <ListContext.Provider value={controllerProps}>
+        <ListContextProvider value={controllerProps}>
             <PureReferenceArrayFieldView {...props} {...controllerProps} />
-        </ListContext.Provider>
+        </ListContextProvider>
     );
 };
 

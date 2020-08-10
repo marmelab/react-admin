@@ -104,6 +104,11 @@ const englishMessages: TranslationMessages = {
             next: 'Next',
             prev: 'Prev',
         },
+        sort: {
+            sort_by: 'Sort by %{field} %{order}',
+            ASC: 'ascending',
+            DESC: 'descending',
+        },
         auth: {
             auth_check_error: 'Please login to continue',
             user_menu: 'Profile',

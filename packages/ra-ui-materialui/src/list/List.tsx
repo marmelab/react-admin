@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {
     useCheckMinimumRequiredProps,
     useListController,
-    ListContext,
+    ListContextProvider,
 } from 'ra-core';
 
 import { TitlePropType } from '../layout/Title';
@@ -61,9 +61,9 @@ const List: FC<ListProps> = props => {
     useCheckMinimumRequiredProps('List', ['children'], props);
     const controllerProps = useListController(props);
     return (
-        <ListContext.Provider value={controllerProps}>
+        <ListContextProvider value={controllerProps}>
             <ListView {...props} {...controllerProps} />
-        </ListContext.Provider>
+        </ListContextProvider>
     );
 };
 

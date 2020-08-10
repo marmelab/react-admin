@@ -4,7 +4,7 @@ import {
     Filter,
     Sort,
     useReferenceManyFieldController,
-    ListContext,
+    ListContextProvider,
     ListControllerProps,
 } from 'ra-core';
 
@@ -92,9 +92,9 @@ export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
     });
 
     return (
-        <ListContext.Provider value={controllerProps}>
+        <ListContextProvider value={controllerProps}>
             <ReferenceManyFieldView {...props} {...controllerProps} />
-        </ListContext.Provider>
+        </ListContextProvider>
     );
 };
 

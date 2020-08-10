@@ -108,6 +108,11 @@ const frenchMessages: TranslationMessages = {
             next: 'Suivant',
             prev: 'Précédent',
         },
+        sort: {
+            sort_by: 'Trier par %{field} %{order}',
+            ASC: 'croissant',
+            DESC: 'décroissant',
+        },
         auth: {
             auth_check_error: 'Merci de vous connecter pour continuer',
             user_menu: 'Profil',

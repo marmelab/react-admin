@@ -5,18 +5,13 @@ import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import { makeStyles } from '@material-ui/core/styles';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
-import { linkToRecord } from 'ra-core';
-import { NumberField } from 'react-admin';
+import { linkToRecord, NumberField, useListContext } from 'react-admin';
 import { Link } from 'react-router-dom';
 import { DatagridProps, Product } from '../types';
 import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        margin: '-2px',
-    },
     gridList: {
-        width: '100%',
         margin: 0,
     },
     tileBar: {
@@ -53,72 +48,75 @@ const LoadingGridList: FC<GridProps & { nbItems?: number }> = ({
 }) => {
     const classes = useStyles();
     return (
-        <div className={classes.root}>
-            <MuiGridList
-                cellHeight={180}
-                cols={getColsForWidth(width)}
-                className={classes.gridList}
-            >
-                {' '}
-                {times(nbItems, key => (
-                    <GridListTile key={key}>
-                        <div className={classes.placeholder} />
-                    </GridListTile>
-                ))}
-            </MuiGridList>
-        </div>
+        <MuiGridList
+            cellHeight={180}
+            cols={getColsForWidth(width)}
+            className={classes.gridList}
+        >
+            {' '}
+            {times(nbItems, key => (
+                <GridListTile key={key}>
+                    <div className={classes.placeholder} />
+                </GridListTile>
+            ))}
+        </MuiGridList>
     );
 };
 
-const LoadedGridList: FC<GridProps> = ({ ids, data, basePath, width }) => {
+const LoadedGridList: FC<GridProps> = ({ width }) => {
+    const { ids, data, basePath } = useListContext();
     const classes = useStyles();
 
     if (!ids || !data) return null;
 
     return (
-        <div className={classes.root}>
-            <MuiGridList
-                cellHeight={180}
-                cols={getColsForWidth(width)}
-                className={classes.gridList}
-            >
-                {ids.map(id => (
-                    <GridListTile
-                        // @ts-ignore
-                        component={Link}
-                        key={id}
-                        to={linkToRecord(basePath, data[id].id)}
-                    >
-                        <img src={data[id].thumbnail} alt="" />
-                        <GridListTileBar
-                            className={classes.tileBar}
-                            title={data[id].reference}
-                            subtitle={
-                                <span>
-                                    {data[id].width}x{data[id].height},{' '}
-                                    <NumberField
-                                        className={classes.price}
-                                        source="price"
-                                        record={data[id]}
-                                        color="inherit"
-                                        options={{
-                                            style: 'currency',
-                                            currency: 'USD',
-                                        }}
-                                    />
-                                </span>
-                            }
-                        />
-                    </GridListTile>
-                ))}
-            </MuiGridList>
-        </div>
+        <MuiGridList
+            cellHeight={180}
+            cols={getColsForWidth(width)}
+            className={classes.gridList}
+        >
+            {ids.map((id: string) => (
+                <GridListTile
+                    // @ts-ignore
+                    component={Link}
+                    key={id}
+                    to={linkToRecord(basePath, data[id].id)}
+                >
+                    <img src={data[id].thumbnail} alt="" />
+                    <GridListTileBar
+                        className={classes.tileBar}
+                        title={data[id].reference}
+                        subtitle={
+                            <span>
+                                {data[id].width}x{data[id].height},{' '}
+                                <NumberField
+                                    className={classes.price}
+                                    source="price"
+                                    record={data[id]}
+                                    color="inherit"
+                                    options={{
+                                        style: 'currency',
+                                        currency: 'USD',
+                                    }}
+                                />
+                            </span>
+                        }
+                    />
+                </GridListTile>
+            ))}
+        </MuiGridList>
     );
 };
 
 interface GridProps extends DatagridProps<Product>, WithWidth {}
 
-const GridList: FC<GridProps> = ({ loaded, ...props }) =>
-    loaded ? <LoadedGridList {...props} /> : <LoadingGridList {...props} />;
+const GridList: FC<WithWidth> = ({ width }) => {
+    const { loaded } = useListContext();
+    return loaded ? (
+        <LoadedGridList width={width} />
+    ) : (
+        <LoadingGridList width={width} />
+    );
+};
 
 export default withWidth()(GridList);
