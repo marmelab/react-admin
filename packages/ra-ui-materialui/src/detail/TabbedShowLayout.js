@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Divider from '@material-ui/core/Divider';
 import { Route } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import classnames from 'classnames';
 import { useRouteMatch } from 'react-router-dom';
 import { escapePath } from 'ra-core';
 
@@ -16,7 +15,6 @@ const sanitizeRestProps = ({
     record,
     resource,
     basePath,
-    scrollable,
     version,
     initialValues,
     staticContext,
@@ -28,22 +26,9 @@ const sanitizeRestProps = ({
 const useStyles = makeStyles(
     theme => ({
         content: {
-            paddingTop: props =>
-                props.scrollable ? theme.spacing(7) : theme.spacing(1), // When using scrollable tabs, leave enough height for the tab content
+            paddingTop: theme.spacing(1),
             paddingLeft: theme.spacing(2),
             paddingRight: theme.spacing(2),
-        },
-        scrollableDivider: {
-            marginTop: theme.spacing(6),
-            position: 'absolute',
-            width: '100%',
-        },
-        scrollableTabs: {
-            position: 'absolute',
-            width: '100%',
-        },
-        formRelative: {
-            position: 'relative',
         },
     }),
     { name: 'RaTabbedShowLayout' }
@@ -96,7 +81,6 @@ const TabbedShowLayout = props => {
         className,
         record,
         resource,
-        scrollable,
         version,
         value,
         tabs,
@@ -106,23 +90,11 @@ const TabbedShowLayout = props => {
 
     const classes = useStyles(props);
 
-    const scrollableProps = scrollable
-        ? { scrollable: true, scrollButtons: 'on', variant: 'scrollable' }
-        : {};
-
     return (
-        <div
-            className={classnames(className, classes.formRelative)}
-            key={version}
-            {...sanitizeRestProps(rest)}
-        >
-            {cloneElement(tabs, { classes, ...scrollableProps }, children)}
+        <div className={className} key={version} {...sanitizeRestProps(rest)}>
+            {cloneElement(tabs, {}, children)}
 
-            <Divider
-                className={classnames({
-                    [classes.scrollableDivider]: scrollable,
-                })}
-            />
+            <Divider />
             <div className={classes.content}>
                 {Children.map(children, (tab, index) =>
                     tab && isValidElement(tab) ? (
@@ -155,7 +127,6 @@ TabbedShowLayout.propTypes = {
     record: PropTypes.object,
     resource: PropTypes.string,
     basePath: PropTypes.string,
-    scrollable: PropTypes.bool,
     value: PropTypes.number,
     version: PropTypes.number,
     tabs: PropTypes.element,
@@ -163,7 +134,6 @@ TabbedShowLayout.propTypes = {
 
 TabbedShowLayout.defaultProps = {
     tabs: <TabbedShowLayoutTabs />,
-    scrollable: true,
 };
 
 export default TabbedShowLayout;
