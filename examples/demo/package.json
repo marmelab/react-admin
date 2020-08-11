@@ -28,7 +28,6 @@
         "react-router-dom": "^5.1.0",
         "react-scripts": "^3.0.0",
         "recharts": "^1.8.5",
-        "recompose": "~0.26.0",
         "redux-saga": "^1.0.0"
     },
     "scripts": {

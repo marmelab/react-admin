@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 import {
     useTranslate,
-    useListContext,
+    useListPaginationContext,
     sanitizeListRestProps,
     ComponentPropType,
 } from 'ra-core';
@@ -29,8 +29,7 @@ const Pagination: FC<PaginationProps> = props => {
         total,
         setPage,
         setPerPage,
-    } = useListContext(props);
-
+    } = useListPaginationContext(props);
     const translate = useTranslate();
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('sm')

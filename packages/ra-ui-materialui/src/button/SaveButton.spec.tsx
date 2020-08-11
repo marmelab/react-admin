@@ -23,6 +23,7 @@ const invalidButtonDomProps = {
     handleSubmitWithRedirect: jest.fn(),
     invalid: false,
     onSave: jest.fn(),
+    disabled: true,
     pristine: false,
     record: { id: 123, foo: 'bar' },
     redirect: 'list',
@@ -58,7 +59,7 @@ describe('<SaveButton />', () => {
         const { getByLabelText } = render(
             <TestContext>
                 <ThemeProvider theme={theme}>
-                    <SaveButton pristine={true} />
+                    <SaveButton disabled={true} />
                 </ThemeProvider>
             </TestContext>
         );

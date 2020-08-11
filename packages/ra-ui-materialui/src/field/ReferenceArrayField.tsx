@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { LinearProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-    ListContext,
+    ListContextProvider,
     ListControllerProps,
     useReferenceArrayFieldController,
     Sort,
@@ -102,9 +102,9 @@ const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
         source,
     });
     return (
-        <ListContext.Provider value={controllerProps}>
+        <ListContextProvider value={controllerProps}>
             <PureReferenceArrayFieldView {...props} {...controllerProps} />
-        </ListContext.Provider>
+        </ListContextProvider>
     );
 };
 

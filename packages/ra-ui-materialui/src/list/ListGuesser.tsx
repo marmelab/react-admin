@@ -5,7 +5,7 @@ import {
     useListController,
     getElementsFromRecords,
     InferredElement,
-    ListContext,
+    ListContextProvider,
 } from 'ra-core';
 
 import ListView, { ListViewProps } from './ListView';
@@ -35,9 +35,9 @@ import { ListProps } from '../types';
 const ListGuesser: FC<ListProps> = props => {
     const controllerProps = useListController(props);
     return (
-        <ListContext.Provider value={controllerProps}>
+        <ListContextProvider value={controllerProps}>
             <ListViewGuesser {...props} {...controllerProps} />
-        </ListContext.Provider>
+        </ListContextProvider>
     );
 };
 

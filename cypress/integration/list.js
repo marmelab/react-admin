@@ -78,6 +78,7 @@ describe('List Page', () => {
         it('should keep filters when navigating away and going back on given page', () => {
             ListPagePosts.logout();
             LoginPage.login('admin', 'password');
+            ListPagePosts.navigate();
             ListPagePosts.setFilterValue('q', 'quis culpa impedit');
             cy.contains('1-1 of 1');
 
@@ -99,6 +100,7 @@ describe('List Page', () => {
         it('should keep added filters when emptying it after navigating away and back', () => {
             ListPagePosts.logout();
             LoginPage.login('admin', 'password');
+            ListPagePosts.navigate();
             ListPagePosts.showFilter('title');
             ListPagePosts.setFilterValue(
                 'title',

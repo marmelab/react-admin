@@ -1300,7 +1300,7 @@ The undo feature is partially implemented in the `Notification` component. If yo
 // in src/MyNotification.js
 import * as React from "react";
 import { connect } from 'react-redux';
-import compose from 'recompose/compose';
+import compose from 'lodash/flowRight';
 import classnames from 'classnames';
 import Snackbar from "@material-ui/core/Snackbar";
 import { withStyles, createStyles } from "@material-ui/core";

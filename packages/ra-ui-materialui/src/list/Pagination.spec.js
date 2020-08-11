@@ -3,7 +3,7 @@ import expect from 'expect';
 import { render, cleanup } from '@testing-library/react';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
-import { ListContext } from 'ra-core';
+import { ListPaginationContext } from 'ra-core';
 
 import Pagination from './Pagination';
 import DeviceTestWrapper from '../layout/DeviceTestWrapper';
@@ -24,9 +24,11 @@ describe('<Pagination />', () => {
         it('should display a pagination limit when there is no result', () => {
             const { queryByText } = render(
                 <ThemeProvider theme={theme}>
-                    <ListContext.Provider value={{ ...defaultProps, total: 0 }}>
+                    <ListPaginationContext.Provider
+                        value={{ ...defaultProps, total: 0 }}
+                    >
                         <Pagination />
-                    </ListContext.Provider>
+                    </ListPaginationContext.Provider>
                 </ThemeProvider>
             );
             expect(queryByText('ra.navigation.no_results')).not.toBeNull();
@@ -35,9 +37,11 @@ describe('<Pagination />', () => {
         it('should not display a pagination limit when there are results', () => {
             const { queryByText } = render(
                 <ThemeProvider theme={theme}>
-                    <ListContext.Provider value={{ ...defaultProps, total: 1 }}>
+                    <ListPaginationContext.Provider
+                        value={{ ...defaultProps, total: 1 }}
+                    >
                         <Pagination />
-                    </ListContext.Provider>
+                    </ListPaginationContext.Provider>
                 </ThemeProvider>
             );
             expect(queryByText('ra.navigation.no_results')).toBeNull();
@@ -48,7 +52,7 @@ describe('<Pagination />', () => {
             const setPage = jest.fn().mockReturnValue(null);
             const { queryByText } = render(
                 <ThemeProvider theme={theme}>
-                    <ListContext.Provider
+                    <ListPaginationContext.Provider
                         value={{
                             ...defaultProps,
                             total: 10,
@@ -58,7 +62,7 @@ describe('<Pagination />', () => {
                         }}
                     >
                         <Pagination />
-                    </ListContext.Provider>
+                    </ListPaginationContext.Provider>
                 </ThemeProvider>
             );
             // mui TablePagination displays no more a warning in that case
@@ -71,7 +75,7 @@ describe('<Pagination />', () => {
             const setPage = jest.fn().mockReturnValue(null);
             const { queryByText } = render(
                 <ThemeProvider theme={theme}>
-                    <ListContext.Provider
+                    <ListPaginationContext.Provider
                         value={{
                             ...defaultProps,
                             total: 10,
@@ -81,7 +85,7 @@ describe('<Pagination />', () => {
                         }}
                     >
                         <Pagination />
-                    </ListContext.Provider>
+                    </ListPaginationContext.Provider>
                 </ThemeProvider>
             );
             // mui TablePagination displays no more a warning in that case
@@ -94,7 +98,7 @@ describe('<Pagination />', () => {
         it('should display a next button when there are more results', () => {
             const { queryByText } = render(
                 <ThemeProvider theme={theme}>
-                    <ListContext.Provider
+                    <ListPaginationContext.Provider
                         value={{
                             ...defaultProps,
                             perPage: 1,
@@ -103,7 +107,7 @@ describe('<Pagination />', () => {
                         }}
                     >
                         <Pagination rowsPerPageOptions={[1]} />
-                    </ListContext.Provider>
+                    </ListPaginationContext.Provider>
                 </ThemeProvider>
             );
             expect(queryByText('ra.navigation.next')).not.toBeNull();
@@ -111,7 +115,7 @@ describe('<Pagination />', () => {
         it('should not display a next button when there are no more results', () => {
             const { queryByText } = render(
                 <ThemeProvider theme={theme}>
-                    <ListContext.Provider
+                    <ListPaginationContext.Provider
                         value={{
                             ...defaultProps,
                             perPage: 1,
@@ -120,7 +124,7 @@ describe('<Pagination />', () => {
                         }}
                     >
                         <Pagination rowsPerPageOptions={[1]} />
-                    </ListContext.Provider>
+                    </ListPaginationContext.Provider>
                 </ThemeProvider>
             );
             expect(queryByText('ra.navigation.next')).toBeNull();
@@ -128,7 +132,7 @@ describe('<Pagination />', () => {
         it('should display a prev button when there are previous results', () => {
             const { queryByText } = render(
                 <ThemeProvider theme={theme}>
-                    <ListContext.Provider
+                    <ListPaginationContext.Provider
                         value={{
                             ...defaultProps,
                             perPage: 1,
@@ -137,7 +141,7 @@ describe('<Pagination />', () => {
                         }}
                     >
                         <Pagination rowsPerPageOptions={[1]} />
-                    </ListContext.Provider>
+                    </ListPaginationContext.Provider>
                 </ThemeProvider>
             );
             expect(queryByText('ra.navigation.prev')).not.toBeNull();
@@ -145,7 +149,7 @@ describe('<Pagination />', () => {
         it('should not display a prev button when there are no previous results', () => {
             const { queryByText } = render(
                 <ThemeProvider theme={theme}>
-                    <ListContext.Provider
+                    <ListPaginationContext.Provider
                         value={{
                             ...defaultProps,
                             perPage: 1,
@@ -154,7 +158,7 @@ describe('<Pagination />', () => {
                         }}
                     >
                         <Pagination rowsPerPageOptions={[1]} />
-                    </ListContext.Provider>
+                    </ListPaginationContext.Provider>
                 </ThemeProvider>
             );
             expect(queryByText('ra.navigation.prev')).toBeNull();
@@ -165,7 +169,7 @@ describe('<Pagination />', () => {
         it('should not render a rowsPerPage choice', () => {
             const { queryByText } = render(
                 <DeviceTestWrapper width="sm">
-                    <ListContext.Provider
+                    <ListPaginationContext.Provider
                         value={{
                             ...defaultProps,
                             page: 2,
@@ -174,7 +178,7 @@ describe('<Pagination />', () => {
                         }}
                     >
                         <Pagination />
-                    </ListContext.Provider>
+                    </ListPaginationContext.Provider>
                 </DeviceTestWrapper>
             );
             expect(queryByText('ra.navigation.page_rows_per_page')).toBeNull();
@@ -185,7 +189,7 @@ describe('<Pagination />', () => {
         it('should render rowsPerPage choice', () => {
             const { queryByText } = render(
                 <DeviceTestWrapper width="lg">
-                    <ListContext.Provider
+                    <ListPaginationContext.Provider
                         value={{
                             ...defaultProps,
                             page: 2,
@@ -194,7 +198,7 @@ describe('<Pagination />', () => {
                         }}
                     >
                         <Pagination width="md" />
-                    </ListContext.Provider>
+                    </ListPaginationContext.Provider>
                 </DeviceTestWrapper>
             );
 

@@ -71,9 +71,10 @@ import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
  * @prop {Function} validate
  * @prop {boolean} submitOnEnter
  * @prop {string} redirect
- * @prop {ReactElement} toolbar The element displayed at the bottom of the form, contzining the SaveButton
+ * @prop {ReactElement} toolbar The element displayed at the bottom of the form, containing the SaveButton
  * @prop {string} variant Apply variant to all inputs. Possible values are 'standard', 'outlined', and 'filled' (default)
  * @prop {string} margin Apply variant to all inputs. Possible values are 'none', 'normal', and 'dense' (default)
+ * @prop {boolean} scrollable The tabs become scrollable when they extend beyond the witdh of the form
  * @prop {boolean} sanitizeEmptyValues Wether or not deleted record attributes should be recreated with a `null` value (default: true)
  *
  * @param {Prop} props
@@ -100,6 +101,7 @@ TabbedForm.propTypes = {
     submitOnEnter: PropTypes.bool,
     undoable: PropTypes.bool,
     validate: PropTypes.func,
+    scrollable: PropTypes.bool,
     sanitizeEmptyValues: PropTypes.bool,
 };
 
@@ -107,9 +109,22 @@ const useStyles = makeStyles(
     theme => ({
         errorTabButton: { color: theme.palette.error.main },
         content: {
-            paddingTop: theme.spacing(1),
+            paddingTop: props =>
+                props.scrollable ? theme.spacing(7) : theme.spacing(1), // When using scrollable tabs, leave enough height for the tab content
             paddingLeft: theme.spacing(2),
             paddingRight: theme.spacing(2),
+        },
+        scrollableDivider: {
+            marginTop: theme.spacing(6),
+            position: 'absolute',
+            width: '100%',
+        },
+        scrollableTabs: {
+            position: 'absolute',
+            width: '100%',
+        },
+        formRelative: {
+            position: 'relative',
         },
     }),
     { name: 'RaTabbedForm' }
@@ -130,6 +145,7 @@ export const TabbedFormView = props => {
         redirect: defaultRedirect,
         resource,
         saving,
+        scrollable = true,
         setRedirect,
         submitOnEnter,
         tabs,
@@ -147,9 +163,16 @@ export const TabbedFormView = props => {
     const location = useLocation();
 
     const url = match ? match.url : location.pathname;
+    const scrollableProps = scrollable
+        ? { scrollable: true, scrollButtons: 'on', variant: 'scrollable' }
+        : {};
     return (
         <form
-            className={classnames('tabbed-form', className)}
+            className={classnames(
+                'tabbed-form',
+                className,
+                classes.formRelative
+            )}
             {...sanitizeRestProps(rest)}
         >
             {React.cloneElement(
@@ -157,11 +180,17 @@ export const TabbedFormView = props => {
                 {
                     classes,
                     url,
+                    title: 'FormTabRow',
                     tabsWithErrors,
+                    ...scrollableProps,
                 },
                 children
             )}
-            <Divider />
+            <Divider
+                className={classnames({
+                    [classes.scrollableDivider]: scrollable,
+                })}
+            />
             <div className={classes.content}>
                 {/* All tabs are rendered (not only the one in focus), to allow validation
                 on tabs not in focus. The tabs receive a `hidden` property, which they'll
@@ -287,6 +316,7 @@ const sanitizeRestProps = ({
     reset,
     resetSection,
     save,
+    scrollable,
     staticContext,
     submit,
     submitAsSideEffect,

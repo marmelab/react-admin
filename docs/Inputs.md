@@ -127,6 +127,19 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admi
 </ArrayInput>
 ```
 
+You can also use `addButton` and `removeButton` props to pass your custom add and remove buttons to `SimpleFormIterator`.
+
+```jsx
+import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admin';
+
+<ArrayInput source="backlinks">
+    <SimpleFormIterator addButton={<CustomAddButton />} removeButton={<CustomRemoveButton />}>
+        <DateInput source="date" />
+        <TextInput source="url" />
+    </SimpleFormIterator>
+</ArrayInput>
+```
+
 **Note**: `SimpleFormIterator` only accepts `Input` components as children. If you want to use some `Fields` instead, you have to use a `<FormDataConsumer>` to get the correct source, as follows:
 
 ```jsx
@@ -217,7 +230,7 @@ const choices = [
 const OptionRenderer = choice => (
     <span>
         <img src={choice.avatar} />
-        `${choice.first_name} ${choice.last_name}`
+        {choice.first_name} {choice.last_name}
     </span>
 );
 const inputText = choice => `${choice.first_name} ${choice.last_name}`;

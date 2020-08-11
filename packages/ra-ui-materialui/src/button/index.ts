@@ -13,6 +13,7 @@ import ExportButton from './ExportButton';
 import ListButton from './ListButton';
 import SaveButton from './SaveButton';
 import ShowButton from './ShowButton';
+import SortButton from './SortButton';
 import RefreshButton from './RefreshButton';
 import RefreshIconButton from './RefreshIconButton';
 
@@ -32,6 +33,7 @@ export {
     ListButton,
     SaveButton,
     ShowButton,
+    SortButton,
     RefreshButton,
     RefreshIconButton,
 };

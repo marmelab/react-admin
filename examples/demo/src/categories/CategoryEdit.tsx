@@ -52,6 +52,7 @@ const CategoryEdit = (props: any) => (
                         options={{ minimumFractionDigits: 2 }}
                     />
                     <NumberField source="stock" />
+                    <NumberField source="sales" />
                     <EditButton />
                 </Datagrid>
             </ReferenceManyField>

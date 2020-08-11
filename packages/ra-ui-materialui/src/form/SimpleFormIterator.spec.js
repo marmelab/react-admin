@@ -211,4 +211,113 @@ describe('<SimpleFormIterator />', () => {
             ).toEqual([{ email: 'bar@foo.com' }]);
         });
     });
+
+    it('should not display the default add button if a custom add button is passed', () => {
+        const { queryAllByText } = renderWithRedux(
+            <SimpleForm>
+                <ArrayInput source="emails">
+                    <SimpleFormIterator
+                        translate={x => x}
+                        addButton={<button>Custom Add Button</button>}
+                    >
+                        <TextInput source="email" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        );
+        expect(queryAllByText('ra.action.add').length).toBe(0);
+    });
+
+    it('should not display the default remove button if a custom remove button is passed', () => {
+        const { queryAllByText } = renderWithRedux(
+            <SimpleForm record={{ emails: [{ email: '' }] }}>
+                <ArrayInput source="emails">
+                    <SimpleFormIterator
+                        translate={x => x}
+                        removeButton={<button>Custom Remove Button</button>}
+                    >
+                        <TextInput source="email" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        );
+
+        expect(queryAllByText('ra.action.remove').length).toBe(0);
+    });
+
+    it('should display the custom add button', () => {
+        const { getByText } = renderWithRedux(
+            <SimpleForm>
+                <ArrayInput source="emails">
+                    <SimpleFormIterator
+                        translate={x => x}
+                        addButton={<button>Custom Add Button</button>}
+                    >
+                        <TextInput source="email" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        );
+
+        expect(getByText('Custom Add Button')).toBeDefined();
+    });
+
+    it('should display the custom remove button', () => {
+        const { getByText } = renderWithRedux(
+            <SimpleForm record={{ emails: [{ email: '' }] }}>
+                <ArrayInput source="emails">
+                    <SimpleFormIterator
+                        translate={x => x}
+                        removeButton={<button>Custom Remove Button</button>}
+                    >
+                        <TextInput source="email" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        );
+
+        expect(getByText('Custom Remove Button')).toBeDefined();
+    });
+
+    it('should call the onClick method when the custom add button is clicked', async () => {
+        const onClick = jest.fn();
+        const { getByText } = renderWithRedux(
+            <SimpleForm>
+                <ArrayInput source="emails">
+                    <SimpleFormIterator
+                        translate={x => x}
+                        addButton={
+                            <button onClick={onClick}>Custom Add Button</button>
+                        }
+                    >
+                        <TextInput source="email" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        );
+        fireEvent.click(getByText('Custom Add Button'));
+        expect(onClick).toHaveBeenCalled();
+    });
+
+    it('should call the onClick method when the custom remove button is clicked', async () => {
+        const onClick = jest.fn();
+        const { getByText } = renderWithRedux(
+            <SimpleForm record={{ emails: [{ email: '' }] }}>
+                <ArrayInput source="emails">
+                    <SimpleFormIterator
+                        translate={x => x}
+                        removeButton={
+                            <button onClick={onClick}>
+                                Custom Remove Button
+                            </button>
+                        }
+                    >
+                        <TextInput source="email" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        );
+        fireEvent.click(getByText('Custom Remove Button'));
+        expect(onClick).toHaveBeenCalled();
+    });
 });

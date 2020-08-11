@@ -17,6 +17,8 @@ import {
     TextInput,
     Toolbar,
     required,
+    FileInput,
+    FileField,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import { FormSpy } from 'react-final-form';
 
@@ -85,6 +87,13 @@ const PostCreate = ({ permissions, ...props }) => {
                     return errors;
                 }}
             >
+                <FileInput
+                    source="pdffile"
+                    label="PDF-Template"
+                    accept="application/pdf"
+                >
+                    <FileField source="src" title="title" />
+                </FileInput>
                 <TextInput autoFocus source="title" />
                 <TextInput source="teaser" fullWidth={true} multiline={true} />
                 <RichTextInput source="body" validate={required()} />

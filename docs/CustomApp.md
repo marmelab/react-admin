@@ -155,7 +155,7 @@ import { Provider } from 'react-redux';
 import { createHashHistory } from 'history';
 +import { ConnectedRouter } from 'connected-react-router';
 +import { Switch, Route } from 'react-router-dom';
-+import withContext from 'recompose/withContext';
++import withContext from 'recompose/withContext'; // You should add recompose/withContext to your dependencies
 -import { Admin, Resource } from 'react-admin';
 +import { AuthContext, DataProviderContext, TranslationProvider, Resource, Notification } from 'react-admin';
 import restProvider from 'ra-data-simple-rest';

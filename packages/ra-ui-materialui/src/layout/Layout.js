@@ -15,7 +15,8 @@ import {
     createStyles,
 } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-import compose from 'recompose/compose';
+import { ComponentPropType } from 'ra-core';
+import compose from 'lodash/flowRight';
 
 import DefaultAppBar from './AppBar';
 import DefaultSidebar from './Sidebar';
@@ -23,7 +24,6 @@ import DefaultMenu from './Menu';
 import DefaultNotification from './Notification';
 import DefaultError from './Error';
 import defaultTheme from '../defaultTheme';
-import { ComponentPropType } from 'ra-core';
 
 const styles = theme =>
     createStyles({
@@ -120,32 +120,34 @@ class Layout extends Component {
         } = this.props;
         const { hasError, errorMessage, errorInfo } = this.state;
         return (
-            <div
-                className={classnames('layout', classes.root, className)}
-                {...sanitizeRestProps(props)}
-            >
-                <div className={classes.appFrame}>
-                    {createElement(appBar, { title, open, logout })}
-                    <main className={classes.contentWithSidebar}>
-                        {createElement(sidebar, {
-                            children: createElement(menu, {
-                                logout,
-                                hasDashboard: !!dashboard,
-                            }),
-                        })}
-                        <div className={classes.content}>
-                            {hasError
-                                ? createElement(error, {
-                                      error: errorMessage,
-                                      errorInfo,
-                                      title,
-                                  })
-                                : children}
-                        </div>
-                    </main>
-                    {createElement(notification)}
+            <>
+                <div
+                    className={classnames('layout', classes.root, className)}
+                    {...sanitizeRestProps(props)}
+                >
+                    <div className={classes.appFrame}>
+                        {createElement(appBar, { title, open, logout })}
+                        <main className={classes.contentWithSidebar}>
+                            {createElement(sidebar, {
+                                children: createElement(menu, {
+                                    logout,
+                                    hasDashboard: !!dashboard,
+                                }),
+                            })}
+                            <div className={classes.content}>
+                                {hasError
+                                    ? createElement(error, {
+                                          error: errorMessage,
+                                          errorInfo,
+                                          title,
+                                      })
+                                    : children}
+                            </div>
+                        </main>
+                    </div>
                 </div>
-            </div>
+                {createElement(notification)}
+            </>
         );
     }
 }

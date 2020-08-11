@@ -9,7 +9,7 @@ import {
     ReactElement,
 } from 'react';
 import get from 'lodash/get';
-import { Identifier, ListContext } from 'ra-core';
+import { Identifier, ListContextProvider } from 'ra-core';
 
 import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import PropTypes from 'prop-types';
@@ -136,7 +136,7 @@ export const ArrayField: FC<ArrayFieldProps> = memo<ArrayFieldProps>(
         }, [record, source, fieldKey]);
 
         return (
-            <ListContext.Provider
+            <ListContextProvider
                 value={{
                     ids,
                     data,
@@ -172,7 +172,7 @@ export const ArrayField: FC<ArrayFieldProps> = memo<ArrayFieldProps>(
                     resource,
                     ...rest,
                 })}
-            </ListContext.Provider>
+            </ListContextProvider>
         );
     }
 );

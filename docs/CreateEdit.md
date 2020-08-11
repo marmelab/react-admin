@@ -724,6 +724,7 @@ Here are all the props accepted by the `<TabbedForm>` component:
 * `save`: The function invoked when the form is submitted. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
 * `saving`: A boolean indicating whether a save operation is ongoing. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
 * [`warnWhenUnsavedChanges`](#warning-about-unsaved-changes)
+* `scrollable`: A boolean, `true` by default. `<TabbedForm>` uses Material UI scrollable buttons when there are too many tabs to display. If you prefer the screen to expand with the tabs, set it to `false`.
 * [`sanitizeEmptyValues`](#setting-empty-values-to-null)
 
 {% raw %}
@@ -1195,6 +1196,21 @@ export const PostEdit = (props) => (
     <Edit {...props}>
         <SimpleForm toolbar={<PostEditToolbar />}>
             // ...
+        </SimpleForm>
+    </Edit>
+);
+```
+
+By default the `<SaveButton>` is disabled when the form is `pristine`. You can bypass this behavior and always enable it without recreating the whole `<Toolbar>`:
+
+```jsx
+import * as React from 'react';
+import { Edit, SimpleForm, Toolbar } from 'react-admin';
+
+export const PostEdit = (props) => (
+    <Edit {...props}>
+        <SimpleForm toolbar={<Toolbar alwaysEnableSaveButton />}>
+            ...
         </SimpleForm>
     </Edit>
 );

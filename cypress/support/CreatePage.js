@@ -68,7 +68,7 @@ export default url => ({
     },
 
     submitWithKeyboard() {
-        cy.get('input:first').type('{enter}');
+        cy.get("input[type='text']:first").type('{enter}');
         cy.get(this.elements.snackbar);
         cy.get(this.elements.body).click(); // dismiss notification
         cy.wait(200); // let the notification disappear (could block further submits)
@@ -96,7 +96,7 @@ export default url => ({
     },
 
     gotoTab(index) {
-        cy.get(this.elements.tab(index)).click();
+        cy.get(this.elements.tab(index)).click({ force: true });
     },
 
     logout() {

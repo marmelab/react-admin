@@ -1,6 +1,6 @@
 import * as React from 'react';
 import useListController from './useListController';
-import ListContext from './ListContext';
+import ListContextProvider from './ListContextProvider';
 
 /**
  * Call useListController and put the value in a ListContext
@@ -37,9 +37,9 @@ import ListContext from './ListContext';
  * );
  */
 const ListBase = ({ children, ...props }) => (
-    <ListContext.Provider value={useListController(props)}>
+    <ListContextProvider value={useListController(props)}>
         {children}
-    </ListContext.Provider>
+    </ListContextProvider>
 );
 
 export default ListBase;

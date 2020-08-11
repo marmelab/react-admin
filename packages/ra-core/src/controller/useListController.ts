@@ -8,10 +8,11 @@ import get from 'lodash/get';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import useListParams from './useListParams';
 import useRecordSelection from './useRecordSelection';
-import { useTranslate } from '../i18n';
+import useTranslate from '../i18n/useTranslate';
+import useNotify from '../sideEffect/useNotify';
+import useGetList from '../dataProvider/useGetList';
 import { SORT_ASC } from '../reducer/admin/resource/list/queryReducer';
 import { CRUD_GET_LIST } from '../actions';
-import { useNotify } from '../sideEffect';
 import defaultExporter from '../export/defaultExporter';
 import {
     Filter,
@@ -22,7 +23,6 @@ import {
     Record,
     Exporter,
 } from '../types';
-import useGetList from '../dataProvider/useGetList';
 
 export interface ListProps {
     // the props you can change
