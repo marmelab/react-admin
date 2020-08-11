@@ -15,7 +15,9 @@ import {
     CreateButton,
     ExportButton,
     SortButton,
+    Title,
     useTranslate,
+    useListContext,
 } from 'react-admin';
 
 import { FilterProps, ListComponentProps } from '../types';
@@ -84,6 +86,16 @@ const ProductList: FC<ListComponentProps> = props => {
             sort={{ field: 'reference', order: 'ASC' }}
             {...props}
         >
+            <ProductListView isSmall={isSmall} />
+        </ListBase>
+    );
+};
+
+const ProductListView: FC<{ isSmall: boolean }> = ({ isSmall }) => {
+    const { defaultTitle } = useListContext();
+    return (
+        <>
+            <Title defaultTitle={defaultTitle} />
             <ListActions isSmall={isSmall} />
             {isSmall && (
                 <Box m={1}>
@@ -97,7 +109,7 @@ const ProductList: FC<ListComponentProps> = props => {
                     <Pagination rowsPerPageOptions={[10, 20, 40]} />
                 </Box>
             </Box>
-        </ListBase>
+        </>
     );
 };
 export default ProductList;

@@ -29,9 +29,9 @@ const LinkToRelatedProducts: FC<FieldProps<Category>> = ({ record }) => {
                 pathname: '/products',
                 search: stringify({
                     page: 1,
-                    perPage: 25,
-                    sort: 'id',
-                    order: 'DESC',
+                    perPage: 20,
+                    sort: 'reference',
+                    order: 'ASC',
                     filter: JSON.stringify({ category_id: record.id }),
                 }),
             }}

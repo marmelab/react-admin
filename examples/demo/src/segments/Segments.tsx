@@ -23,7 +23,9 @@ const Segments: FC = () => {
     const classes = useStyles();
     return (
         <Card className={classes.root}>
-            <Title title={translate('resources.segments.name')} />
+            <Title
+                title={translate('resources.segments.name', { smart_count: 2 })}
+            />
             <Table size="small">
                 <TableHead>
                     <TableRow>
