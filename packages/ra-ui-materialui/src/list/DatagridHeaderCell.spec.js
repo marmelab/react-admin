@@ -47,7 +47,7 @@ describe('<DatagridHeaderCell />', () => {
                     </tbody>
                 </table>
             );
-            expect(getByTitle('ra.action.sort').dataset.sort).toBe('title');
+            expect(getByTitle('ra.action.sort').dataset.field).toBe('title');
         });
 
         it('should be enabled when field has a sortBy props', () => {
@@ -64,7 +64,7 @@ describe('<DatagridHeaderCell />', () => {
                     </tbody>
                 </table>
             );
-            expect(getByTitle('ra.action.sort').dataset.sort).toBe('title');
+            expect(getByTitle('ra.action.sort').dataset.field).toBe('title');
         });
 
         it('should be change order when field has a sortByOrder props', () => {

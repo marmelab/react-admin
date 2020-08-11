@@ -75,6 +75,7 @@ import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
  * @prop {string} variant Apply variant to all inputs. Possible values are 'standard', 'outlined', and 'filled' (default)
  * @prop {string} margin Apply variant to all inputs. Possible values are 'none', 'normal', and 'dense' (default)
  * @prop {boolean} scrollable The tabs become scrollable when they extend beyond the witdh of the form
+ * @prop {boolean} sanitizeEmptyValues Wether or not deleted record attributes should be recreated with a `null` value (default: true)
  *
  * @param {Prop} props
  */
@@ -101,6 +102,7 @@ TabbedForm.propTypes = {
     undoable: PropTypes.bool,
     validate: PropTypes.func,
     scrollable: PropTypes.bool,
+    sanitizeEmptyValues: PropTypes.bool,
 };
 
 const useStyles = makeStyles(
