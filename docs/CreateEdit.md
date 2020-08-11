@@ -724,7 +724,6 @@ Here are all the props accepted by the `<TabbedForm>` component:
 * `save`: The function invoked when the form is submitted. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
 * `saving`: A boolean indicating whether a save operation is ongoing. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
 * [`warnWhenUnsavedChanges`](#warning-about-unsaved-changes)
-* `scrollable`: A boolean, `true` by default. `<TabbedForm>` uses Material UI scrollable buttons when there are too many tabs to display. If you prefer the screen to expand with the tabs, set it to `false`.
 * [`sanitizeEmptyValues`](#setting-empty-values-to-null)
 
 {% raw %}

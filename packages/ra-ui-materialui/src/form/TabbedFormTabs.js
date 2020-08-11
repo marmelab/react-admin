@@ -14,7 +14,6 @@ const TabbedFormTabs = ({
     classes,
     url,
     tabsWithErrors,
-    scrollable,
     ...rest
 }) => {
     const location = useLocation();
@@ -35,18 +34,8 @@ const TabbedFormTabs = ({
         ? location.pathname
         : validTabPaths[0];
 
-    const scrollableProps = scrollable
-        ? { className: classes.scrollableTabs }
-        : {};
-
     return (
-        <Tabs
-            aria-label="Form-tabs"
-            value={tabValue}
-            indicatorColor="primary"
-            {...scrollableProps}
-            {...rest}
-        >
+        <Tabs value={tabValue} indicatorColor="primary" {...rest}>
             {Children.map(children, (tab, index) => {
                 if (!isValidElement(tab)) return null;
 
