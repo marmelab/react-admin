@@ -5,7 +5,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
 
 import FilterButton from './FilterButton';
-import TextInput from '../input/TextInput';
+import TextInput from '../../input/TextInput';
 
 const theme = createMuiTheme();
 

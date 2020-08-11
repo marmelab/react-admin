@@ -4,8 +4,8 @@ import * as React from 'react';
 import { renderWithRedux } from 'ra-core';
 
 import FilterForm, { mergeInitialValuesWithDefaultValues } from './FilterForm';
-import TextInput from '../input/TextInput';
-import SelectInput from '../input/SelectInput';
+import TextInput from '../../input/TextInput';
+import SelectInput from '../../input/SelectInput';
 
 describe('<FilterForm />', () => {
     const defaultProps = {

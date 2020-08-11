@@ -6,7 +6,7 @@ import { sanitizeListRestProps, useListContext } from 'ra-core';
 
 import FilterForm from './FilterForm';
 import FilterButton from './FilterButton';
-import { ClassesOverride } from '../types';
+import { ClassesOverride } from '../../types';
 
 const useStyles = makeStyles(
     {

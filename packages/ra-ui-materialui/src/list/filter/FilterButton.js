@@ -8,7 +8,7 @@ import classnames from 'classnames';
 import lodashGet from 'lodash/get';
 
 import FilterButtonMenuItem from './FilterButtonMenuItem';
-import Button from '../button/Button';
+import Button from '../../button/Button';
 
 const useStyles = makeStyles(
     {

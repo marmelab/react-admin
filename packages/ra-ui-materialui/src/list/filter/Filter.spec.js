@@ -2,7 +2,7 @@ import * as React from 'react';
 import { render, cleanup } from '@testing-library/react';
 import { ListContext } from 'ra-core';
 
-import TextInput from '../input/TextInput';
+import TextInput from '../../input/TextInput';
 import Filter from './Filter';
 
 describe('<Filter />', () => {
