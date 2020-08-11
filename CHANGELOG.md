@@ -1,5 +1,28 @@
 # Changelog
 
+## v3.8.0
+
+* [BC Break] Remove dependency on `recompose` - add it to your `packages.json` if your code depends on `recompose` ([5088](https://github.com/marmelab/react-admin/pull/5088)) ([Luwangel](https://github.com/Luwangel))
+* [BC Break] Remove `ra-data-graphcool` dataProvider. The graph.cool service is discontinued anyway. ([5015](https://github.com/marmelab/react-admin/pull/5015)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `<FilterList>` and `<SortButton>` components, split `<ListContext>` for better performance ([5031](https://github.com/marmelab/react-admin/pull/5031)) ([fzaninotto](https://github.com/fzaninotto))
+* Add abilility to make `<Sidebar>` full height ([5119](https://github.com/marmelab/react-admin/pull/5119)) ([djhi](https://github.com/djhi))
+* Add ability to opt out of `sanitizeEmptyValues` in `<SimpleForm>` and `<TabbedForm>` ([5077](https://github.com/marmelab/react-admin/pull/5077)) ([Kmaschta](https://github.com/Kmaschta))
+* Add ability to make the `<SaveButton>` not disabled by default ([5002](https://github.com/marmelab/react-admin/pull/5002)) ([Luwangel](https://github.com/Luwangel))
+* Add ability to cutomize Add and Remove buttons in `<SimpleFormIterator>` ([4818](https://github.com/marmelab/react-admin/pull/4818)) ([manishsundriyal](https://github.com/manishsundriyal))
+* Add scroll buttons to Tabs when they go beyond the available space ([4538](https://github.com/marmelab/react-admin/pull/4538)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Fix bad type for `useQuery` options (`onError` -> `onFailure`) ([5130](https://github.com/marmelab/react-admin/pull/5130)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<ReferenceInput>` throws exception on custom pages ([5129](https://github.com/marmelab/react-admin/pull/5129)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `TypeError` when suggested element in `<AutocompleteInput>` is empty ([5125](https://github.com/marmelab/react-admin/pull/5125)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<LogoutButton>` memorizes last visited page ([5124](https://github.com/marmelab/react-admin/pull/5124)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Sidebar>` component classes ([5121](https://github.com/marmelab/react-admin/pull/5121)) ([WiXSL](https://github.com/WiXSL))
+* Fix sorting a list using a `<Datagrid>` inside a `<ReferenceManyField>` ([5094](https://github.com/marmelab/react-admin/pull/5094)) ([Luwangel](https://github.com/Luwangel))
+* Fix "Deprecated findDOMNode" warning in `StrictMode` ([5079](https://github.com/marmelab/react-admin/pull/5079)) ([pietro909](https://github.com/pietro909))
+* Fix notifications appear under confirm dialog ([5073](https://github.com/marmelab/react-admin/pull/5073)) ([JulienMattiussi](https://github.com/JulienMattiussi))
+* Fix eslint version ([5055](https://github.com/marmelab/react-admin/pull/5055)) ([WiXSL](https://github.com/WiXSL))
+* Remove recompose dependency from `ra-core` and `demo` projects ([5087](https://github.com/marmelab/react-admin/pull/5087)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix a typo about the `<SimpleFormIterator>` ([5095](https://github.com/marmelab/react-admin/pull/5095)) ([Luwangel](https://github.com/Luwangel))
+* [Doc] Fix the "Not Using the `<Admin>` Components" code ([5058](https://github.com/marmelab/react-admin/pull/5058)) ([srosset81](https://github.com/srosset81))
+
 ## v3.7.2
 
 * Fix `authProvider.checkAuth()` support for redirection with query string ([5115](https://github.com/marmelab/react-admin/pull/5115)) ([fzaninotto](https://github.com/fzaninotto))
