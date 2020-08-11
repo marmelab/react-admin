@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Fragment, useState } from 'react';
-import { ListBase, useListContext, EditButton } from 'react-admin';
+import { ListBase, useListContext, EditButton, Title } from 'react-admin';
 import {
     Box,
     List,
@@ -24,7 +24,7 @@ const TagList = props => (
 );
 
 const Tree = () => {
-    const { ids, data } = useListContext();
+    const { ids, data, defaultTitle } = useListContext();
     const [openChildren, setOpenChildren] = useState([]);
     const toggleNode = node =>
         setOpenChildren(state => {
@@ -43,6 +43,7 @@ const Tree = () => {
         nodes.filter(node => node.parent_id === root.id);
     return (
         <List>
+            <Title defaultTitle={defaultTitle} />
             {roots.map(root => (
                 <SubTree
                     key={root.id}
@@ -57,7 +58,14 @@ const Tree = () => {
     );
 };
 
-const SubTree = ({ level, root, getChildNodes, openChildren, toggleNode }) => {
+const SubTree = ({
+    level,
+    root,
+    getChildNodes,
+    openChildren,
+    toggleNode,
+    defaultTitle,
+}) => {
     const childNodes = getChildNodes(root);
     const hasChildren = childNodes.length > 0;
     const open = openChildren.includes(root.id);

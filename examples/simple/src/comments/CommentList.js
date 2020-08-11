@@ -19,7 +19,6 @@ import {
     ListBase,
     ListToolbar,
     ListActions,
-    useListContext,
     DateField,
     EditButton,
     Filter,
@@ -31,7 +30,9 @@ import {
     ShowButton,
     SimpleList,
     TextField,
+    Title,
     downloadCSV,
+    useListContext,
     useTranslate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
@@ -208,18 +209,25 @@ const CommentMobileList = props => (
     />
 );
 
-const CommentList = props => {
-    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+const CommentList = props => (
+    <ListBase perPage={6} exporter={exporter} {...props}>
+        <ListView />
+    </ListBase>
+);
 
+const ListView = () => {
+    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+    const { defaultTitle } = useListContext();
     return (
-        <ListBase perPage={6} exporter={exporter} {...props}>
+        <>
+            <Title defaultTitle={defaultTitle} />
             <ListToolbar
                 filters={<CommentFilter />}
                 actions={<ListActions />}
             />
             {isSmall ? <CommentMobileList /> : <CommentGrid />}
             <CommentPagination />
-        </ListBase>
+        </>
     );
 };
 
