@@ -1,5 +1,10 @@
 # Changelog
 
+## v3.8.1
+
+* Fix warning about duplicate filter files with different case in esm build ([5036](https://github.com/marmelab/react-admin/pull/5036)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix various typos and anchors ([5137](https://github.com/marmelab/react-admin/pull/5137)) ([WiXSL](https://github.com/WiXSL))
+
 ## v3.8.0
 
 * [BC Break] Remove dependency on `recompose` - add it to your `packages.json` if your code depends on `recompose` ([5088](https://github.com/marmelab/react-admin/pull/5088)) ([Luwangel](https://github.com/Luwangel))
