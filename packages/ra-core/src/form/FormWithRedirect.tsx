@@ -55,6 +55,7 @@ const FormWithRedirect: FC<FormWithRedirectOwnProps & FormProps> = ({
     validateOnBlur,
     version,
     warnWhenUnsavedChanges,
+    sanitizeEmptyValues: shouldSanitizeEmptyValues = true,
     ...props
 }) => {
     let redirect = useRef(props.redirect);
@@ -98,11 +99,6 @@ const FormWithRedirect: FC<FormWithRedirectOwnProps & FormProps> = ({
             typeof redirect.current === undefined
                 ? props.redirect
                 : redirect.current;
-
-        const shouldSanitizeEmptyValues =
-            typeof props.sanitizeEmptyValues === 'undefined'
-                ? true
-                : props.sanitizeEmptyValues;
 
         if (shouldSanitizeEmptyValues) {
             const sanitizedValues = sanitizeEmptyValues(
