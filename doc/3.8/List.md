@@ -1094,7 +1094,7 @@ const CustomerList = props => (
 
 ![Filter Live Search](./img/filter-live-search.gif)
 
-The filter sidebar is not a form. Therefore, if your users need to enter complex filters, you'll have to recreate a filter form using react-final-form (see the [Filter on submit](#filter-on-submit) section above for an example). However, if you only need one text input with a filter-as-you-type behavior, you'll find the `<FilterLiveSearch>` component convenient. 
+The filter sidebar is not a form. Therefore, if your users need to enter complex filters, you'll have to recreate a filter form using react-final-form (see the [Filter on submit](#building-a-custom-filter) section below for an example). However, if you only need one text input with a filter-as-you-type behavior, you'll find the `<FilterLiveSearch>` component convenient. 
 
 It outputs a form containing a single `<SearchInput>`, which modifies the page filter on change. That's usually what users expect for a full-text filter. `<FilterLiveSearch>` only needs a `source` field.
 
@@ -1434,7 +1434,7 @@ Some List views don't have a natural UI for sorting - e.g. the `<SimpleList>`, o
 
 `<SortButton>` expects one prop: `fields`, the list of fields it should allows to sort on. For instance, here is how to offer a button to sort on the `reference`, `sales`, and `stock` fields:
 
-```jsx
+```tsx
 import { TopToolbar, SortButton, CreateButton, ExportButton } from 'react-admin';
 
 const ListActions: FC<any> = () => (
@@ -1450,7 +1450,7 @@ const ListActions: FC<any> = () => (
 
 When neither the `<Datagrid>` or the `<SortButton>` fit your UI needs, you have to write a custom sort control. As with custom filters, this boils down to grabbing the required data and callbacks from the `ListContext`. Let's use the `<SortButton>` source as an example usage of `currentSort` and `setSort`:
 
-```jsx
+```tsx
 import * as React from 'react';
 import { Button, Menu, MenuItem, Tooltip, IconButton } from '@material-ui/core';
 import SortIcon from '@material-ui/icons/Sort';

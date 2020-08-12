@@ -1135,7 +1135,7 @@ This affects both the submit button, and the form submission when the user press
 
 **Tip**: The `redirect` prop is ignored if you've set the `onSuccess` prop in the `<Edit>`/`<Create>` component, or in the `<SaveButton>` component.
 
-**Tip**: You may wonder why the `redirect` prop does the same thing as `onSuccess`: that's for historical reasons. The recommendd way is to change redirection using `onSuccess` rather than `redirect`. 
+**Tip**: You may wonder why the `redirect` prop does the same thing as `onSuccess`: that's for historical reasons. The recommended way is to change redirection using `onSuccess` rather than `redirect`. 
 
 ## Toolbar
 
