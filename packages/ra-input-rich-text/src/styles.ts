@@ -53,7 +53,7 @@ export default (theme: Theme): StyleRules<string, any> => ({
                     backgroundColor: theme.palette.primary.main,
                 },
 
-                '& p:not(:last-child)': {
+                '& p:last-child': {
                     marginBottom: '1rem',
                 },
 
