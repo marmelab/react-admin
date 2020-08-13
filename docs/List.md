@@ -934,6 +934,7 @@ An alternative UI to the `<Filter>` Button/Form Combo is the FilterList Sidebar.
 
 The `<FilterList>` component expects a list of `<FilterListItem>` as children. Each `<FilterListItem>` defines a filter `label` and a `value`, which is merged with the current filter value when enabled by the user. Here is an example usage for a list of customers:
 
+{% raw %}
 ```jsx
 import * as React from 'react';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
@@ -1048,6 +1049,7 @@ const SegmentFilter = () => (
     </FilterList>
 );
 ```
+{% endraw %}
 
 You can place these `<FilterList>` anywhere inside a `<List>`. The most common case is to put them in a sidebar that is on the left hand side of the datagrid. You can use the `aside` property for that:
 
@@ -2193,17 +2195,17 @@ For mobile devices, a `<Datagrid>` is often unusable - there is simply not enoug
 
 ### Properties
 
-| Prop        | Required | Type                | Default  | Description                                                                                                                              |
-| ----------- | -------- | ------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `primaryText` | Required | `Function`        | -        | Passed as `<ListItemText primary>` prop |
-| `secondaryText` | Optional | `Function`        | -       | Passed as `<ListItemText secondary>` prop |
-| `tertiaryText` | Optional | `Function`        | -        | Passed as a complement to `<ListItemText primary>` with a custom style |
-| `linkType` | Optional | `string` &#124; `Function` &#124; `false` | `edit`   | Target of the `<ListItem>` link. Set to `false` to disable the link. Set to a function `(record, id) => string` to have the link target vary per record.  |
-| `leftAvatar` | Optional | `Function`         | -        | When present, the `<ListItem>` renders a `<ListItemAvatar>` before the `<ListItemText>` |
-| `leftIcon` | Optional | `Function`           | -        | When present, the `<ListItem>` renders a `<ListIcon>` before the `<ListItemText>` |
-| `rightAvatar` | Optional | `Function`        | -        | When present, the `<ListItem>` renders a `<ListItemAvatar>` after the `<ListItemText>` |
-| `rightIcon` | Optional | `Function`          | -        | When present, the `<ListItem>` renders a `<ListIcon>` after the `<ListItemText>` |
-| `className` | Optional | `string`            | -        | Applied to the root element |
+| Prop            | Required | Type                                      | Default | Description                                                                                                                                              |
+| --------------- | -------- | ----------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `primaryText`   | Required | `Function`                                | -       | Passed as `<ListItemText primary>` prop                                                                                                                  |
+| `secondaryText` | Optional | `Function`                                | -       | Passed as `<ListItemText secondary>` prop                                                                                                                |
+| `tertiaryText`  | Optional | `Function`                                | -       | Passed as a complement to `<ListItemText primary>` with a custom style                                                                                   |
+| `linkType`      | Optional | `string` &#124; `Function` &#124; `false` | `edit`  | Target of the `<ListItem>` link. Set to `false` to disable the link. Set to a function `(record, id) => string` to have the link target vary per record. |
+| `leftAvatar`    | Optional | `Function`                                | -       | When present, the `<ListItem>` renders a `<ListItemAvatar>` before the `<ListItemText>`                                                                  |
+| `leftIcon`      | Optional | `Function`                                | -       | When present, the `<ListItem>` renders a `<ListIcon>` before the `<ListItemText>`                                                                        |
+| `rightAvatar`   | Optional | `Function`                                | -       | When present, the `<ListItem>` renders a `<ListItemAvatar>` after the `<ListItemText>`                                                                   |
+| `rightIcon`     | Optional | `Function`                                | -       | When present, the `<ListItem>` renders a `<ListIcon>` after the `<ListItemText>`                                                                         |
+| `className`     | Optional | `string`                                  | -       | Applied to the root element                                                                                                                              |
     
 ### Usage
 
