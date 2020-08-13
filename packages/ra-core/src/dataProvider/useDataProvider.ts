@@ -273,7 +273,9 @@ const performUndoableQuery = ({
 }: QueryFunctionParams) => {
     dispatch(startOptimisticMode());
     if (window) {
-        window.addEventListener('beforeunload', warnBeforeClosingWindow);
+        window.addEventListener('beforeunload', warnBeforeClosingWindow, {
+            capture: true,
+        });
     }
     dispatch({
         type: action,

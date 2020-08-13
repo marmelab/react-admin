@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-
 import { useRefresh } from '../sideEffect';
 
 /**
@@ -23,7 +22,9 @@ const useRefreshWhenVisible = (delay = 1000 * 60 * 5) => {
                 lastHiddenTime = null;
             }
         };
-        document.addEventListener('visibilitychange', handleVisibilityChange);
+        document.addEventListener('visibilitychange', handleVisibilityChange, {
+            capture: true,
+        });
         return () =>
             document.removeEventListener(
                 'visibilitychange',
