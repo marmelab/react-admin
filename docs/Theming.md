@@ -1009,10 +1009,10 @@ Display a circular progress component with optional messages. Display the same l
 
 Supported props:
 
-| Prop               | Type     | Default              | Descriptions                               |
-| ------------------ | -------- | -------------------- | ------------------------------------------ |
-| `loadingPrimary`   | `String` | `ra.page.loading`    | Label to use for primary loading message   |
-| `loadingSecondary` | `String` | `ra.message.loading` | Label to use for secondary loading message |
+| Prop               | Required | Type      | Default              | Descriptions                               |
+| ------------------ | -------- | --------- | -------------------- | ------------------------------------------ |
+| `loadingPrimary`   | Optional | `string`  | `ra.page.loading`    | Label to use for primary loading message   |
+| `loadingSecondary` | Optional | `string`  | `ra.message.loading` | Label to use for secondary loading message |
 
 Usage:
 
