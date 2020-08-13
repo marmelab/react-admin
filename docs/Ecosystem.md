@@ -55,3 +55,4 @@ See the [Data Provider](./DataProviders.md#available-providers) page.
 - [dryhten/ra-resource-aggregator](https://github.com/dryhten/ra-resource-aggregator): Resource aggregator for react-admin. It allows you to edit/create/delete multiple resources in the same view.
 - [Dev XP demo (YouTube)](https://youtu.be/nHkVxDEnB3g): How to make changes to the core React Admin project locally
 - [react-admin-import-csv](https://github.com/benwinding/react-admin-import-csv): A csv file import button for react-admin.
+- [@bb-tech/ra-treemenu](https://github.com/BigBasket/ra-treemenu): A tree-like menu implementation which enables quick and easy integration of a hierarchical menu structure in react-admin.
