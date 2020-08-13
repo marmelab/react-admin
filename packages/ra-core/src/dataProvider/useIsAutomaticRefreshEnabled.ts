@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { ReduxState } from 'ra-core';
+import { ReduxState } from '../types';
 
 const useIsAutomaticRefreshEnabled = () => {
     const automaticRefreshEnabled = useSelector<ReduxState>(
