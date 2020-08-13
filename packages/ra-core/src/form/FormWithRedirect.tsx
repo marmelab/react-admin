@@ -11,7 +11,7 @@ import FormContext from './FormContext';
 import { Record } from '../types';
 import { RedirectionSideEffect } from '../sideEffect';
 import { useDispatch } from 'react-redux';
-import { setAutomaticRefresh } from '../actions';
+import { setAutomaticRefresh } from '../actions/uiActions';
 
 /**
  * Wrapper around react-final-form's Form to handle redirection on submit,
