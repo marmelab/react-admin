@@ -71,8 +71,8 @@ const SortButton: FC<{ fields: string[]; label?: string }> = ({
     };
 
     const buttonLabel = translate(label, {
-        field: translate(`resources.products.fields.${currentSort.field}`),
-        order: translate(`ra.sort.${currentSort.order}`),
+        field: currentSort.field,
+        order: currentSort.order,
         _: label,
     });
 
@@ -114,7 +114,7 @@ const SortButton: FC<{ fields: string[]; label?: string }> = ({
                         data-sort={field}
                         key={field}
                     >
-                        {translate(`resources.products.fields.${field}`)}{' '}
+                        {translate(field, { _: field })}{' '}
                         {translate(
                             `ra.sort.${
                                 currentSort.field === field
