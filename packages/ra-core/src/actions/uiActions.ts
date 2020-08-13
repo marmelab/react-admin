@@ -31,3 +31,15 @@ export interface RefreshViewAction {
 export const refreshView = (): RefreshViewAction => ({
     type: REFRESH_VIEW,
 });
+
+export const SET_AUTOMATIC_REFRESH = 'RA/SET_AUTOMATIC_REFRESH';
+
+export interface SetAutomaticRefreshAction {
+    readonly type: typeof SET_AUTOMATIC_REFRESH;
+    readonly payload: boolean;
+}
+
+export const setAutomaticRefresh = (enabled: boolean) => ({
+    type: SET_AUTOMATIC_REFRESH,
+    payload: enabled,
+});

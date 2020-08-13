@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
 import { useRefresh } from '../sideEffect';
+import useIsAutomaticRefreshEnabled from './useIsAutomaticRefreshEnabled';
 
 /**
  * Trigger a refresh of the page when the page comes back from background after a certain delay
@@ -9,9 +10,14 @@ import { useRefresh } from '../sideEffect';
  */
 const useRefreshWhenVisible = (delay = 1000 * 60 * 5) => {
     const refresh = useRefresh();
+    const automaticRefreshEnabled = useIsAutomaticRefreshEnabled();
+
     useEffect(() => {
         let lastHiddenTime;
         const handleVisibilityChange = () => {
+            if (!automaticRefreshEnabled) {
+                return;
+            }
             if (document.hidden) {
                 // tab goes hidden
                 lastHiddenTime = Date.now();
@@ -29,7 +35,7 @@ const useRefreshWhenVisible = (delay = 1000 * 60 * 5) => {
                 'visibilitychange',
                 handleVisibilityChange
             );
-    }, [delay, refresh]);
+    }, [automaticRefreshEnabled, delay, refresh]);
 };
 
 export default useRefreshWhenVisible;
