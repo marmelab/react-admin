@@ -285,6 +285,7 @@ export type LegacyDataProvider = (
 export interface ReduxState {
     admin: {
         ui: {
+            automaticRefreshEnabled: boolean;
             optimistic: boolean;
             sidebarOpen: boolean;
             viewVersion: number;

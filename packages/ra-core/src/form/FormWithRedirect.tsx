@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, useRef, useCallback, useMemo } from 'react';
+import { FC, useRef, useCallback, useEffect, useMemo } from 'react';
 import { Form, FormProps } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 
@@ -10,6 +10,8 @@ import getFormInitialValues from './getFormInitialValues';
 import FormContext from './FormContext';
 import { Record } from '../types';
 import { RedirectionSideEffect } from '../sideEffect';
+import { useDispatch } from 'react-redux';
+import { setAutomaticRefresh } from '../actions';
 
 /**
  * Wrapper around react-final-form's Form to handle redirection on submit,
@@ -174,6 +176,11 @@ const FormView = ({ render, warnWhenUnsavedChanges, ...props }) => {
     // if record changes (after a getOne success or a refresh), the form must be updated
     useInitializeFormWithRecord(props.record);
     useWarnWhenUnsavedChanges(warnWhenUnsavedChanges);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(setAutomaticRefresh(props.pristine));
+    }, [dispatch, props.pristine]);
 
     const { redirect, setRedirect, handleSubmit } = props;
 

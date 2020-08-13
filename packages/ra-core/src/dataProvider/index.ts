@@ -22,6 +22,7 @@ import useCreate from './useCreate';
 import useDelete from './useDelete';
 import useDeleteMany from './useDeleteMany';
 import useRefreshWhenVisible from './useRefreshWhenVisible';
+import useIsAutomaticRefreshEnabled from './useIsAutomaticRefreshEnabled';
 
 export {
     cacheDataProviderProxy,
@@ -48,4 +49,5 @@ export {
     useQueryWithStore,
     useRefreshWhenVisible,
     withDataProvider,
+    useIsAutomaticRefreshEnabled,
 };
