@@ -175,7 +175,7 @@ If you want this button to look like a Back button, you can pass a custom label 
 ```jsx
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 
-const EditActions = ({ basePath, data }) => (
+const PostEditActions = ({ basePath, data }) => (
     <TopToolbar>
         <ListButton basePath={basePath} label="Back" icon={<ChevronLeft />} />
         <ShowButton basePath={basePath} record={data} />
