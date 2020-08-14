@@ -114,7 +114,7 @@ const SortButton: FC<{ fields: string[]; label?: string }> = ({
                         data-sort={field}
                         key={field}
                     >
-                        {translate(`resources.${resource}.fields.${field}`}{' '}
+                        {translate(`resources.${resource}.fields.${field}`)}{' '}
                         {translate(
                             `ra.sort.${
                                 currentSort.field === field
