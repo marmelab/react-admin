@@ -683,7 +683,7 @@ The `empty` component can call the `useListContext()` hook to receive the same p
 -   `total`,
 -   `version`,
 
-You can also set the `empty` props value to `false` to bypass empty page display and render an empty list instead.
+You can also set the `empty` props value to `false` to bypass the empty page display and render an empty list instead.
 
 ```
 import { List } from 'react-admin';
