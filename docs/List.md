@@ -683,6 +683,18 @@ The `empty` component can call the `useListContext()` hook to receive the same p
 -   `total`,
 -   `version`,
 
+You can also set the `empty` props value to `false` to bypass empty page display and render an empty list instead.
+
+```
+import { List } from 'react-admin';
+
+const ProductList = props => (
+    <List empty={false} {...props}>
+        ...
+    </List>
+);
+```
+
 ### Component
 
 By default, the List view renders the main content area inside a material-ui `<Card>` element. The actual layout of the list depends on the child component you're using (`<Datagrid>`, `<SimpleList>`, or a custom layout component).
