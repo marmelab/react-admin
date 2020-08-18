@@ -43,10 +43,10 @@ header {
 
 #lego {
   position: absolute;
-  z-index: 1;
+  z-index: 0;
   bottom: 120px;
   left: 0;
-  height: 70%;
+  height: 60%;
 }
 
 #logo {
@@ -630,5 +630,11 @@ nav {
 
   #hamburger:checked ~ div {
     height: calc(100vh - 120px);
+  }
+}
+
+@media (max-width: 1280px) {
+  #lego {
+    display: none;
   }
 }
