@@ -632,3 +632,9 @@ nav {
     height: calc(100vh - 120px);
   }
 }
+
+@media (max-width: 1280px) {
+  #lego {
+    display: none;
+  }
+}
