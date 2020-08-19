@@ -20,7 +20,7 @@ This Data Provider fits REST APIs using simple GET parameters for filters and so
 | `getOne`           | `GET http://my.api.url/posts/123`                                                       |
 | `getMany`          | `GET http://my.api.url/posts?filter={"id":[123,456,789]}`                               |
 | `getManyReference` | `GET http://my.api.url/posts?filter={"author_id":345}`                                  |
-| `create`           | `POST http://my.api.url/posts/123`                                                      |
+| `create`           | `POST http://my.api.url/posts`                                                          |
 | `update`           | `PUT http://my.api.url/posts/123`                                                       |
 | `updateMany`       | Multiple calls to `PUT http://my.api.url/posts/123`                                     |
 | `delete`           | `DELETE http://my.api.url/posts/123`                                                    |
@@ -28,13 +28,13 @@ This Data Provider fits REST APIs using simple GET parameters for filters and so
 
 **Note**: The simple REST data provider expects the API to include a `Content-Range` header in the response to `getList` calls. The value must be the total number of resources in the collection. This allows react-admin to know how many pages of resources there are in total, and build the pagination controls.
 
-```
+```txt
 Content-Range: posts 0-24/319
 ```
 
 If your API is on another domain as the JS code, you'll need to whitelist this header with an `Access-Control-Expose-Headers` [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) header.
 
-```
+```txt
 Access-Control-Expose-Headers: Content-Range
 ```
 
