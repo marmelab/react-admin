@@ -100,7 +100,7 @@ export const ListView: FC<ListViewProps> = props => {
             {...sanitizeRestProps(rest)}
         >
             <Title title={title} defaultTitle={defaultTitle} />
-            {shouldRenderEmptyPage
+            {shouldRenderEmptyPage && empty !== false
                 ? cloneElement(empty, listContext)
                 : renderList()}
         </div>
