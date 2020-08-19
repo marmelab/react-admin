@@ -462,10 +462,16 @@ import { NullableBooleanInput } from 'react-admin';
 />
 ```
 
+Also you need to provide your own label for null value.
+
 ```jsx
+import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 
 englishMessages.ra.boolean.null = 'Null label';
+const i18nProvider = polyglotI18nProvider(() => englishMessages, 'en');
+
+<Admin i18nProvider={i18nProvider}></Admin>
 ```
 
 ![NullableBooleanInput](./img/nullable-boolean-input-null-label.png)
