@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Children, isValidElement } from 'react';
+import { Children, isValidElement, FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Route, useRouteMatch, useLocation } from 'react-router-dom';
@@ -78,7 +78,7 @@ import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
  *
  * @param {Prop} props
  */
-const TabbedForm = props => (
+const TabbedForm: FC<any> = props => (
     <FormWithRedirect
         {...props}
         render={formProps => <TabbedFormView {...formProps} />}
@@ -169,7 +169,7 @@ export const TabbedFormView = props => {
                 See https://github.com/marmelab/react-admin/issues/1866 */}
                 {Children.map(
                     children,
-                    (tab, index) =>
+                    (tab: ReactElement, index) =>
                         tab && (
                             <Route
                                 exact
@@ -178,7 +178,7 @@ export const TabbedFormView = props => {
                                 )}
                             >
                                 {routeProps =>
-                                    isValidElement(tab)
+                                    isValidElement<any>(tab)
                                         ? React.cloneElement(tab, {
                                               intent: 'content',
                                               resource,
@@ -308,7 +308,7 @@ const sanitizeRestProps = ({
 }) => props;
 
 export const findTabsWithErrors = (children, errors) => {
-    return Children.toArray(children).reduce((acc, child) => {
+    return Children.toArray(children).reduce((acc: any[], child) => {
         if (!isValidElement(child)) {
             return acc;
         }

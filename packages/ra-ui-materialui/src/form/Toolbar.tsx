@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Children, Fragment, isValidElement } from 'react';
+import { Children, Fragment, isValidElement, ReactElement, FC } from 'react';
 import PropTypes from 'prop-types';
 import MuiToolbar from '@material-ui/core/Toolbar';
 import withWidth from '@material-ui/core/withWidth';
@@ -84,7 +84,7 @@ const valueOrDefault = (value, defaultValue) =>
  * @prop {string} width Apply the mobile or the desktop classes depending on the width. Pass "xs" to display the mobile version.
  *
  */
-const Toolbar = props => {
+const Toolbar: FC<any> = props => {
     const {
         alwaysEnableSaveButton,
         basePath,
@@ -134,7 +134,6 @@ const Toolbar = props => {
                             invalid={invalid}
                             redirect={redirect}
                             saving={saving}
-                            pristine={pristine}
                             submitOnEnter={submitOnEnter}
                         />
                         {record && typeof record.id !== 'undefined' && (
@@ -147,8 +146,8 @@ const Toolbar = props => {
                         )}
                     </div>
                 ) : (
-                    Children.map(children, button =>
-                        button && isValidElement(button)
+                    Children.map(children, (button: ReactElement) =>
+                        button && isValidElement<any>(button)
                             ? React.cloneElement(button, {
                                   basePath,
                                   handleSubmit: valueOrDefault(

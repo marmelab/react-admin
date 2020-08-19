@@ -42,7 +42,7 @@ describe('<FormTab label="foo" />', () => {
     it('should render a TabbedForm with FormTabs having custom props without warnings', () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-        const record = { name: 'foo' };
+        const record = { id: 'gazebo', name: 'foo' };
         const { container } = renderWithRedux(
             <TabbedForm>
                 <FormTab

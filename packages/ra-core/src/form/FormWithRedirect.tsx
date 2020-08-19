@@ -38,7 +38,9 @@ import { setAutomaticRefresh } from '../actions/uiActions';
  *
  * @param {Prop} props
  */
-const FormWithRedirect: FC<FormWithRedirectOwnProps & FormProps> = ({
+const FormWithRedirect: FC<
+    FormWithRedirectOwnProps & Omit<FormProps, 'onSubmit'>
+> = ({
     debug,
     decorators,
     defaultValue,
@@ -150,7 +152,7 @@ const FormWithRedirect: FC<FormWithRedirectOwnProps & FormProps> = ({
 export interface FormWithRedirectOwnProps {
     defaultValue?: any;
     record?: Record;
-    save: (
+    save?: (
         data: Partial<Record>,
         redirectTo: RedirectionSideEffect,
         options?: {
@@ -158,9 +160,9 @@ export interface FormWithRedirectOwnProps {
             onFailure?: (error: any) => void;
         }
     ) => void;
-    redirect: RedirectionSideEffect;
-    saving: boolean;
-    version: number;
+    redirect?: RedirectionSideEffect;
+    saving?: boolean;
+    version?: number;
     warnWhenUnsavedChanges?: boolean;
     sanitizeEmptyValues?: boolean;
 }
@@ -172,7 +174,12 @@ const defaultSubscription = {
     invalid: true,
 };
 
-const FormView = ({ render, warnWhenUnsavedChanges, ...props }) => {
+const FormView = ({
+    render,
+    warnWhenUnsavedChanges,
+    setRedirect,
+    ...props
+}) => {
     // if record changes (after a getOne success or a refresh), the form must be updated
     useInitializeFormWithRecord(props.record);
     useWarnWhenUnsavedChanges(warnWhenUnsavedChanges);
@@ -182,7 +189,7 @@ const FormView = ({ render, warnWhenUnsavedChanges, ...props }) => {
         dispatch(setAutomaticRefresh(props.pristine));
     }, [dispatch, props.pristine]);
 
-    const { redirect, setRedirect, handleSubmit } = props;
+    const { redirect, handleSubmit } = props;
 
     /**
      * We want to let developers define the redirection target from inside the form,

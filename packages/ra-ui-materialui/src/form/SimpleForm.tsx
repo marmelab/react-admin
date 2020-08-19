@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { Children } from 'react';
+import { Children, FC, ReactElement, HtmlHTMLAttributes } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { FormWithRedirect } from 'ra-core';
+import { FormWithRedirect, Record, RedirectionSideEffect } from 'ra-core';
+import { FormProps, FormRenderProps } from 'react-final-form';
 
 import FormInput from './FormInput';
 import Toolbar from './Toolbar';
@@ -39,11 +40,11 @@ import CardContentInner from '../layout/CardContentInner';
  * @prop {ReactElement} toolbar The element displayed at the bottom of the form, containing the SaveButton
  * @prop {string} variant Apply variant to all inputs. Possible values are 'standard', 'outlined', and 'filled' (default)
  * @prop {string} margin Apply variant to all inputs. Possible values are 'none', 'normal', and 'dense' (default)
- * @prop {boolean} sanitizeEmptyValues Wether or not deleted record attributes should be recreated with a `null` value (default: true)
+ * @prop {boolean} sanitizeEmptyValues Whether or not deleted record attributes should be recreated with a `null` value (default: true)
  *
  * @param {Prop} props
  */
-const SimpleForm = props => (
+const SimpleForm: FC<SimpleFormProps> = props => (
     <FormWithRedirect
         {...props}
         render={formProps => <SimpleFormView {...formProps} />}
@@ -52,8 +53,8 @@ const SimpleForm = props => (
 
 SimpleForm.propTypes = {
     children: PropTypes.node,
-    defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
     initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    // @ts-ignore
     record: PropTypes.object,
     redirect: PropTypes.oneOfType([
         PropTypes.string,
@@ -70,7 +71,25 @@ SimpleForm.propTypes = {
     sanitizeEmptyValues: PropTypes.bool,
 };
 
-const SimpleFormView = ({
+export interface SimpleFormProps
+    extends Omit<FormProps, 'onSubmit'>,
+        Omit<HtmlHTMLAttributes<HTMLFormElement>, 'onSubmit' | 'children'> {
+    basePath?: string;
+    className?: string;
+    initialValues?: any;
+    margin?: 'none' | 'normal' | 'dense';
+    record?: Record;
+    redirect?: RedirectionSideEffect;
+    resource?: string;
+    sanitizeEmptyValues?: boolean;
+    submitOnEnter?: boolean;
+    toolbar?: ReactElement;
+    undoable?: boolean;
+    variant?: 'standard' | 'outlined' | 'filled';
+    warnWhenUnsavedChanges?: boolean;
+}
+
+const SimpleFormView: FC<SimpleFormViewProps> = ({
     basePath,
     children,
     className,
@@ -96,7 +115,7 @@ const SimpleFormView = ({
         <CardContentInner>
             {Children.map(
                 children,
-                input =>
+                (input: ReactElement) =>
                     input && (
                         <FormInput
                             basePath={basePath}
@@ -133,6 +152,7 @@ SimpleFormView.propTypes = {
     handleSubmit: PropTypes.func, // passed by react-final-form
     invalid: PropTypes.bool,
     pristine: PropTypes.bool,
+    // @ts-ignore
     record: PropTypes.object,
     resource: PropTypes.string,
     redirect: PropTypes.oneOfType([
@@ -148,62 +168,54 @@ SimpleFormView.propTypes = {
     validate: PropTypes.func,
 };
 
+export interface SimpleFormViewProps extends FormRenderProps {
+    basePath?: string;
+    className?: string;
+    margin?: 'none' | 'normal' | 'dense';
+    handleSubmitWithRedirect?: (redirectTo: RedirectionSideEffect) => void;
+    record?: Record;
+    redirect?: RedirectionSideEffect;
+    resource?: string;
+    save?: () => void;
+    saving?: boolean;
+    toolbar?: ReactElement;
+    undoable?: boolean;
+    variant?: 'standard' | 'outlined' | 'filled';
+    submitOnEnter?: boolean;
+    __versions?: any; // react-final-form internal prop, missing in their type
+}
+
 SimpleFormView.defaultProps = {
     submitOnEnter: true,
     toolbar: <Toolbar />,
 };
 
 const sanitizeRestProps = ({
-    anyTouched,
-    array,
-    asyncBlurFields,
-    asyncValidate,
-    asyncValidating,
-    autofill,
-    blur,
-    change,
-    clearAsyncError,
-    clearFields,
-    clearSubmit,
-    clearSubmitErrors,
-    destroy,
+    active,
     dirty,
     dirtyFields,
     dirtyFieldsSinceLastSubmit,
     dirtySinceLastSubmit,
-    dispatch,
+    error,
+    errors,
     form,
-    handleSubmit,
     hasSubmitErrors,
     hasValidationErrors,
-    initialize,
-    initialized,
     initialValues,
+    modified = null,
     modifiedSinceLastSubmit,
-    modifiedsincelastsubmit,
-    pristine,
-    pure,
-    redirect,
-    reset,
-    resetSection,
-    save,
-    setRedirect,
-    submit,
+    save = null,
     submitError,
     submitErrors,
-    submitAsSideEffect,
     submitFailed,
     submitSucceeded,
     submitting,
-    touch,
-    translate,
-    triggerSubmit,
-    undoable,
-    untouch,
+    touched = null,
     valid,
-    validate,
     validating,
-    __versions,
+    values,
+    visited = null,
+    __versions = null,
     ...props
 }) => props;
 

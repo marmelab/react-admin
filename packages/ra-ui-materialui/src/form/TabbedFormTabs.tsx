@@ -1,15 +1,16 @@
 import * as React from 'react';
-import { Children, cloneElement, isValidElement } from 'react';
+import {
+    Children,
+    cloneElement,
+    isValidElement,
+    FC,
+    ReactElement,
+} from 'react';
 import PropTypes from 'prop-types';
-import Tabs from '@material-ui/core/Tabs';
+import Tabs, { TabsProps } from '@material-ui/core/Tabs';
 import { useLocation } from 'react-router-dom';
 
-export const getTabFullPath = (tab, index, baseUrl) =>
-    `${baseUrl}${
-        tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
-    }`;
-
-const TabbedFormTabs = ({
+const TabbedFormTabs: FC<TabbedFormTabsProps> = ({
     children,
     classes,
     url,
@@ -36,8 +37,8 @@ const TabbedFormTabs = ({
 
     return (
         <Tabs value={tabValue} indicatorColor="primary" {...rest}>
-            {Children.map(children, (tab, index) => {
-                if (!isValidElement(tab)) return null;
+            {Children.map(children, (tab: ReactElement, index) => {
+                if (!isValidElement<any>(tab)) return null;
 
                 // Builds the full tab tab which is the concatenation of the last matched route in the
                 // TabbedShowLayout hierarchy (ex: '/posts/create', '/posts/12', , '/posts/12/show')
@@ -65,5 +66,20 @@ TabbedFormTabs.propTypes = {
     url: PropTypes.string,
     tabsWithErrors: PropTypes.arrayOf(PropTypes.string),
 };
+
+export const getTabFullPath = (
+    tab: ReactElement,
+    index: number,
+    baseUrl: string
+): string =>
+    `${baseUrl}${
+        tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
+    }`;
+
+export interface TabbedFormTabsProps extends Omit<TabsProps, 'value'> {
+    classes?: any;
+    url?: string;
+    tabsWithErrors?: string[];
+}
 
 export default TabbedFormTabs;

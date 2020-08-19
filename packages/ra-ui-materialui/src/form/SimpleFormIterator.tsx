@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { Children, cloneElement, isValidElement, useRef } from 'react';
+import {
+    Children,
+    cloneElement,
+    isValidElement,
+    useRef,
+    ReactElement,
+    FC,
+} from 'react';
 import PropTypes from 'prop-types';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import get from 'lodash/get';
@@ -12,7 +19,7 @@ import AddIcon from '@material-ui/icons/AddCircleOutline';
 import { useTranslate, ValidationError } from 'ra-core';
 import classNames from 'classnames';
 
-import FormInput from '../form/FormInput';
+import FormInput from './FormInput';
 
 const useStyles = makeStyles(
     theme => ({
@@ -85,7 +92,7 @@ const DefaultRemoveButton = props => {
     );
 };
 
-const SimpleFormIterator = props => {
+const SimpleFormIterator: FC<any> = props => {
     const {
         addButton = <DefaultAddButton />,
         removeButton = <DefaultRemoveButton />,
@@ -187,41 +194,47 @@ const SimpleFormIterator = props => {
                                 {index + 1}
                             </Typography>
                             <section className={classes.form}>
-                                {Children.map(children, (input, index2) =>
-                                    isValidElement(input) ? (
-                                        <FormInput
-                                            basePath={
-                                                input.props.basePath || basePath
-                                            }
-                                            input={cloneElement(input, {
-                                                source: input.props.source
-                                                    ? `${member}.${
-                                                          input.props.source
-                                                      }`
-                                                    : member,
-                                                index: input.props.source
-                                                    ? undefined
-                                                    : index2,
-                                                label:
-                                                    typeof input.props.label ===
-                                                    'undefined'
-                                                        ? input.props.source
-                                                            ? `resources.${resource}.fields.${
-                                                                  input.props
-                                                                      .source
-                                                              }`
-                                                            : undefined
-                                                        : input.props.label,
-                                            })}
-                                            record={
-                                                (records && records[index]) ||
-                                                {}
-                                            }
-                                            resource={resource}
-                                            variant={variant}
-                                            margin={margin}
-                                        />
-                                    ) : null
+                                {Children.map(
+                                    children,
+                                    (input: ReactElement, index2) =>
+                                        isValidElement<any>(input) ? (
+                                            <FormInput
+                                                basePath={
+                                                    input.props.basePath ||
+                                                    basePath
+                                                }
+                                                input={cloneElement(input, {
+                                                    source: input.props.source
+                                                        ? `${member}.${
+                                                              input.props.source
+                                                          }`
+                                                        : member,
+                                                    index: input.props.source
+                                                        ? undefined
+                                                        : index2,
+                                                    label:
+                                                        typeof input.props
+                                                            .label ===
+                                                        'undefined'
+                                                            ? input.props.source
+                                                                ? `resources.${resource}.fields.${
+                                                                      input
+                                                                          .props
+                                                                          .source
+                                                                  }`
+                                                                : undefined
+                                                            : input.props.label,
+                                                })}
+                                                record={
+                                                    (records &&
+                                                        records[index]) ||
+                                                    {}
+                                                }
+                                                resource={resource}
+                                                variant={variant}
+                                                margin={margin}
+                                            />
+                                        ) : null
                                 )}
                             </section>
                             {!disableRemoveField(

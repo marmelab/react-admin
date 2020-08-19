@@ -1,8 +1,10 @@
+import { Record } from 'ra-core';
+
 export default function getFormInitialValues(
-    initialValues,
-    defaultValue,
-    record
-) {
+    initialValues: any,
+    defaultValue: DefaultValue,
+    record: Record
+): any {
     let finalInitialValues = {
         ...initialValues,
         ...record,
@@ -28,3 +30,9 @@ export default function getFormInitialValues(
 
     return finalInitialValues;
 }
+
+interface DefaultValueObject {
+    [key: string]: any;
+}
+type DefaultValueFunction = (record: Record) => DefaultValueObject;
+type DefaultValue = DefaultValueObject | DefaultValueFunction;

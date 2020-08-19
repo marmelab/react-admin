@@ -25,7 +25,7 @@ describe('<TabbedForm />', () => {
     });
 
     it('should pass submitOnEnter to <Toolbar />', () => {
-        const Toolbar = ({ submitOnEnter }) => (
+        const Toolbar = ({ submitOnEnter }: any) => (
             <p>submitOnEnter: {submitOnEnter.toString()}</p>
         );
 
