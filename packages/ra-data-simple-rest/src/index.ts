@@ -37,14 +37,23 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
     getList: (resource, params) => {
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
+
+        const rangeStart = (page - 1) * perPage;
+        const rangeEnd = page * perPage - 1;
+
         const query = {
             sort: JSON.stringify([field, order]),
-            range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+            range: JSON.stringify([rangeStart, rangeEnd]),
             filter: JSON.stringify(params.filter),
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
 
-        return httpClient(url).then(({ headers, json }) => {
+        return httpClient(url, {
+            // Chrome doesn't return `Content-Range` header if no `Range` is provided in the request.
+            headers: new Headers({
+                Range: `${resource}=${rangeStart}-${rangeEnd}`,
+            }),
+        }).then(({ headers, json }) => {
             if (!headers.has('content-range')) {
                 throw new Error(
                     'The Content-Range header is missing in the HTTP Response. The simple REST data provider expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare Content-Range in the Access-Control-Expose-Headers header?'
