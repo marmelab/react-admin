@@ -26,7 +26,7 @@ describe('<SimpleFormIterator />', () => {
         const { getByText } = renderWithRedux(
             <SimpleForm>
                 <ArrayInput source="emails">
-                    <SimpleFormIterator translate={x => x}>
+                    <SimpleFormIterator>
                         <TextInput source="email" />
                     </SimpleFormIterator>
                 </ArrayInput>
@@ -40,7 +40,7 @@ describe('<SimpleFormIterator />', () => {
         const { queryAllByText } = renderWithRedux(
             <SimpleForm>
                 <ArrayInput source="emails">
-                    <SimpleFormIterator translate={x => x} disableAdd>
+                    <SimpleFormIterator disableAdd>
                         <TextInput source="email" />
                     </SimpleFormIterator>
                 </ArrayInput>
@@ -60,7 +60,7 @@ describe('<SimpleFormIterator />', () => {
                     }}
                 >
                     <ArrayInput source="emails">
-                        <SimpleFormIterator translate={x => x} disableRemove>
+                        <SimpleFormIterator disableRemove>
                             <TextInput source="email" />
                         </SimpleFormIterator>
                     </ArrayInput>
@@ -79,7 +79,7 @@ describe('<SimpleFormIterator />', () => {
         } = renderWithRedux(
             <SimpleForm>
                 <ArrayInput source="emails">
-                    <SimpleFormIterator translate={x => x}>
+                    <SimpleFormIterator>
                         <TextInput source="email" />
                     </SimpleFormIterator>
                 </ArrayInput>
@@ -127,7 +127,7 @@ describe('<SimpleFormIterator />', () => {
         } = renderWithRedux(
             <SimpleForm>
                 <ArrayInput source="emails">
-                    <SimpleFormIterator translate={x => x}>
+                    <SimpleFormIterator>
                         <TextInput source="email" label="CustomLabel" />
                     </SimpleFormIterator>
                 </ArrayInput>
@@ -162,7 +162,7 @@ describe('<SimpleFormIterator />', () => {
         } = renderWithRedux(
             <SimpleForm>
                 <ArrayInput source="emails">
-                    <SimpleFormIterator translate={x => x}>
+                    <SimpleFormIterator>
                         <TextInput
                             source="email"
                             label="CustomLabel"
@@ -200,7 +200,7 @@ describe('<SimpleFormIterator />', () => {
             <ThemeProvider theme={theme}>
                 <SimpleForm record={{ id: 'whatever', emails }}>
                     <ArrayInput source="emails">
-                        <SimpleFormIterator translate={x => x}>
+                        <SimpleFormIterator>
                             <TextInput source="email" />
                         </SimpleFormIterator>
                     </ArrayInput>
@@ -242,7 +242,6 @@ describe('<SimpleFormIterator />', () => {
             <SimpleForm>
                 <ArrayInput source="emails">
                     <SimpleFormIterator
-                        translate={x => x}
                         addButton={<button>Custom Add Button</button>}
                     >
                         <TextInput source="email" />
@@ -261,7 +260,6 @@ describe('<SimpleFormIterator />', () => {
                 >
                     <ArrayInput source="emails">
                         <SimpleFormIterator
-                            translate={x => x}
                             removeButton={<button>Custom Remove Button</button>}
                         >
                             <TextInput source="email" />
@@ -279,7 +277,6 @@ describe('<SimpleFormIterator />', () => {
             <SimpleForm>
                 <ArrayInput source="emails">
                     <SimpleFormIterator
-                        translate={x => x}
                         addButton={<button>Custom Add Button</button>}
                     >
                         <TextInput source="email" />
@@ -299,7 +296,6 @@ describe('<SimpleFormIterator />', () => {
                 >
                     <ArrayInput source="emails">
                         <SimpleFormIterator
-                            translate={x => x}
                             removeButton={<button>Custom Remove Button</button>}
                         >
                             <TextInput source="email" />
@@ -319,7 +315,6 @@ describe('<SimpleFormIterator />', () => {
                 <SimpleForm>
                     <ArrayInput source="emails">
                         <SimpleFormIterator
-                            translate={x => x}
                             addButton={
                                 <button onClick={onClick}>
                                     Custom Add Button
@@ -345,7 +340,6 @@ describe('<SimpleFormIterator />', () => {
                 >
                     <ArrayInput source="emails">
                         <SimpleFormIterator
-                            translate={x => x}
                             removeButton={
                                 <button onClick={onClick}>
                                     Custom Remove Button

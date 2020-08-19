@@ -16,8 +16,9 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/RemoveCircleOutline';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
-import { useTranslate, ValidationError } from 'ra-core';
+import { useTranslate, ValidationError, Record } from 'ra-core';
 import classNames from 'classnames';
+import { FieldArrayRenderProps } from 'react-final-form-arrays';
 
 import FormInput from './FormInput';
 
@@ -92,7 +93,7 @@ const DefaultRemoveButton = props => {
     );
 };
 
-const SimpleFormIterator: FC<any> = props => {
+const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
     const {
         addButton = <DefaultAddButton />,
         removeButton = <DefaultRemoveButton />,
@@ -175,7 +176,7 @@ const SimpleFormIterator: FC<any> = props => {
         <ul className={classes.root}>
             {submitFailed && typeof error !== 'object' && error && (
                 <FormHelperText error>
-                    <ValidationError error={error} />
+                    <ValidationError error={error as string} />
                 </FormHelperText>
             )}
             <TransitionGroup component={null}>
@@ -290,8 +291,10 @@ SimpleFormIterator.propTypes = {
     children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
+    // @ts-ignore
     fields: PropTypes.object,
     meta: PropTypes.object,
+    // @ts-ignore
     record: PropTypes.object,
     source: PropTypes.string,
     resource: PropTypes.string,
@@ -300,5 +303,28 @@ SimpleFormIterator.propTypes = {
     disableRemove: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     TransitionProps: PropTypes.shape({}),
 };
+
+type DisableRemoveFunction = (record: Record) => boolean;
+
+export interface SimpleFormIteratorProps
+    extends Partial<Omit<FieldArrayRenderProps<any, HTMLElement>, 'meta'>> {
+    addButton?: ReactElement;
+    basePath?: string;
+    defaultValue?: any;
+    disableAdd?: boolean;
+    disableRemove?: boolean | DisableRemoveFunction;
+    margin?: 'none' | 'normal' | 'dense';
+    meta?: {
+        // the type defined in FieldArrayRenderProps says error is boolean, which is wrong.
+        error?: any;
+        submitFailed?: boolean;
+    };
+    record?: Record;
+    removeButton?: ReactElement;
+    resource?: string;
+    source?: string;
+    TransitionProps?: any;
+    variant?: 'standard' | 'outlined' | 'filled';
+}
 
 export default SimpleFormIterator;
