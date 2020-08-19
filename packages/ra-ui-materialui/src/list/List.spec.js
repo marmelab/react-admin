@@ -108,6 +108,26 @@ describe('<List />', () => {
         });
     });
 
+    it('should not render an invite when the list is empty with an empty prop set to false', async () => {
+        const Dummy = () => <div />;
+        const dataProvider = {
+            getList: jest.fn(() => Promise.resolve({ data: [], total: 0 })),
+        };
+        const { queryAllByText } = renderWithRedux(
+            <ThemeProvider theme={theme}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <List {...defaultProps} empty={false}>
+                        <Dummy />
+                    </List>
+                </DataProviderContext.Provider>
+            </ThemeProvider>,
+            defaultStateForList
+        );
+        await wait(() => {
+            expect(queryAllByText('resources.posts.empty')).toHaveLength(0);
+        });
+    });
+
     it('should not render an invite when a filter is active', async () => {
         const Dummy = () => <div />;
         const dataProvider = {
