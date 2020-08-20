@@ -12,7 +12,7 @@ export const weightedArrayElement = (values, weights) =>
 export const weightedBoolean = likelyhood =>
     faker.random.number(99) < likelyhood;
 
-export const randomDate = (minDate, maxDate) => {
+export const randomDate = (minDate?: Date, maxDate?: Date) => {
     const minTs =
         minDate instanceof Date
             ? minDate.getTime()
