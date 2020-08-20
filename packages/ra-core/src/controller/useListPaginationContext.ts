@@ -16,6 +16,7 @@ import ListPaginationContext, {
  * @prop {Function} setPage a callback to change the page, e.g. setPage(3)
  * @prop {integer}  perPage the number of results per page. Defaults to 25
  * @prop {Function} setPerPage a callback to change the number of results per page, e.g. setPerPage(25)
+ * @prop {string}   resource the resource name, deduced from the location. e.g. 'posts'
  *
  * @returns {ListPaginationContextValue} list controller props
  *

@@ -11,6 +11,7 @@ import { ListControllerProps } from './useListController';
  * @typedef {Object} ListSortContextValue
  * @prop {Object}   currentSort a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
  * @prop {Function} setSort a callback to change the sort, e.g. setSort('name', 'ASC')
+ * @prop {string}   resource the resource name, deduced from the location. e.g. 'posts'
  *
  * @typedef Props
  * @prop {ListSortContextValue} value
@@ -36,18 +37,19 @@ import { ListControllerProps } from './useListController';
 const ListSortContext = createContext<ListSortContextValue>({
     currentSort: null,
     setSort: null,
+    resource: null,
 });
 
 export type ListSortContextValue = Pick<
     ListControllerProps,
-    'currentSort' | 'setSort'
+    'currentSort' | 'setSort' | 'resource'
 >;
 
 export const usePickSortContext = (
     context: ListControllerProps
 ): ListSortContextValue =>
     useMemo(
-        () => pick(context, ['currentSort', 'setSort']),
+        () => pick(context, ['currentSort', 'setSort', 'resource']),
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [context.currentSort, context.setSort]
     );

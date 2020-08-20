@@ -14,6 +14,7 @@ import { ListControllerProps } from './useListController';
  * @prop {Object}   displayedFilters a dictionary of the displayed filters, e.g. { title: true, nationality: true }
  * @prop {Function} showFilter a callback to show one of the filters, e.g. showFilter('title', defaultValue)
  * @prop {Function} hideFilter a callback to hide one of the filters, e.g. hidefilter('title')
+ * @prop {string}   resource the resource name, deduced from the location. e.g. 'posts'
  *
  * @typedef Props
  * @prop {ListFilterContextValue} value
@@ -42,6 +43,7 @@ const ListFilterContext = createContext<ListFilterContextValue>({
     hideFilter: null,
     setFilters: null,
     showFilter: null,
+    resource: null,
 });
 
 export type ListFilterContextValue = Pick<
@@ -51,6 +53,7 @@ export type ListFilterContextValue = Pick<
     | 'hideFilter'
     | 'setFilters'
     | 'showFilter'
+    | 'resource'
 >;
 
 export const usePickFilterContext = (
@@ -64,6 +67,7 @@ export const usePickFilterContext = (
                 'hideFilter',
                 'setFilters',
                 'showFilter',
+                'resource',
             ]),
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [
