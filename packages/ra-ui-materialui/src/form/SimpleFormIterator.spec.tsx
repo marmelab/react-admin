@@ -1,11 +1,15 @@
 import { cleanup, fireEvent, wait, getByText } from '@testing-library/react';
 import * as React from 'react';
 import { renderWithRedux } from 'ra-core';
+import { ThemeProvider } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 import SimpleFormIterator from './SimpleFormIterator';
 import TextInput from '../input/TextInput';
 import { ArrayInput } from '../input';
 import SimpleForm from './SimpleForm';
+
+const theme = createMuiTheme();
 
 describe('<SimpleFormIterator />', () => {
     // bypass confirm leave form with unsaved changes
@@ -22,7 +26,7 @@ describe('<SimpleFormIterator />', () => {
         const { getByText } = renderWithRedux(
             <SimpleForm>
                 <ArrayInput source="emails">
-                    <SimpleFormIterator translate={x => x}>
+                    <SimpleFormIterator>
                         <TextInput source="email" />
                     </SimpleFormIterator>
                 </ArrayInput>
@@ -36,7 +40,7 @@ describe('<SimpleFormIterator />', () => {
         const { queryAllByText } = renderWithRedux(
             <SimpleForm>
                 <ArrayInput source="emails">
-                    <SimpleFormIterator translate={x => x} disableAdd>
+                    <SimpleFormIterator disableAdd>
                         <TextInput source="email" />
                     </SimpleFormIterator>
                 </ArrayInput>
@@ -48,13 +52,20 @@ describe('<SimpleFormIterator />', () => {
 
     it('should not display remove button if disableRemove is truthy', () => {
         const { queryAllByText } = renderWithRedux(
-            <SimpleForm record={{ emails: [{ email: '' }, { email: '' }] }}>
-                <ArrayInput source="emails">
-                    <SimpleFormIterator translate={x => x} disableRemove>
-                        <TextInput source="email" />
-                    </SimpleFormIterator>
-                </ArrayInput>
-            </SimpleForm>
+            <ThemeProvider theme={theme}>
+                <SimpleForm
+                    record={{
+                        id: 'whatever',
+                        emails: [{ email: '' }, { email: '' }],
+                    }}
+                >
+                    <ArrayInput source="emails">
+                        <SimpleFormIterator disableRemove>
+                            <TextInput source="email" />
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </SimpleForm>
+            </ThemeProvider>
         );
 
         expect(queryAllByText('ra.action.remove').length).toBe(0);
@@ -68,7 +79,7 @@ describe('<SimpleFormIterator />', () => {
         } = renderWithRedux(
             <SimpleForm>
                 <ArrayInput source="emails">
-                    <SimpleFormIterator translate={x => x}>
+                    <SimpleFormIterator>
                         <TextInput source="email" />
                     </SimpleFormIterator>
                 </ArrayInput>
@@ -100,7 +111,9 @@ describe('<SimpleFormIterator />', () => {
         );
 
         expect(
-            inputElements.map(inputElement => ({ email: inputElement.value }))
+            inputElements.map((inputElement: HTMLInputElement) => ({
+                email: inputElement.value,
+            }))
         ).toEqual([{ email: '' }, { email: '' }]);
 
         expect(queryAllByText('ra.action.remove').length).toBe(2);
@@ -114,8 +127,8 @@ describe('<SimpleFormIterator />', () => {
         } = renderWithRedux(
             <SimpleForm>
                 <ArrayInput source="emails">
-                    <SimpleFormIterator translate={x => x}>
-                        <TextInput label="CustomLabel" />
+                    <SimpleFormIterator>
+                        <TextInput source="email" label="CustomLabel" />
                     </SimpleFormIterator>
                 </ArrayInput>
             </SimpleForm>
@@ -132,9 +145,11 @@ describe('<SimpleFormIterator />', () => {
 
         const inputElements = queryAllByLabelText('CustomLabel');
 
-        expect(inputElements.map(inputElement => inputElement.value)).toEqual([
-            '',
-        ]);
+        expect(
+            inputElements.map(
+                (inputElement: HTMLInputElement) => inputElement.value
+            )
+        ).toEqual(['']);
 
         expect(queryAllByText('ra.action.remove').length).toBe(1);
     });
@@ -147,8 +162,12 @@ describe('<SimpleFormIterator />', () => {
         } = renderWithRedux(
             <SimpleForm>
                 <ArrayInput source="emails">
-                    <SimpleFormIterator translate={x => x}>
-                        <TextInput label="CustomLabel" defaultValue={5} />
+                    <SimpleFormIterator>
+                        <TextInput
+                            source="email"
+                            label="CustomLabel"
+                            defaultValue={5}
+                        />
                     </SimpleFormIterator>
                 </ArrayInput>
             </SimpleForm>
@@ -165,9 +184,11 @@ describe('<SimpleFormIterator />', () => {
 
         const inputElements = queryAllByLabelText('CustomLabel');
 
-        expect(inputElements.map(inputElement => inputElement.value)).toEqual([
-            '5',
-        ]);
+        expect(
+            inputElements.map(
+                (inputElement: HTMLInputElement) => inputElement.value
+            )
+        ).toEqual(['5']);
 
         expect(queryAllByText('ra.action.remove').length).toBe(1);
     });
@@ -176,13 +197,15 @@ describe('<SimpleFormIterator />', () => {
         const emails = [{ email: 'foo@bar.com' }, { email: 'bar@foo.com' }];
 
         const { queryAllByLabelText } = renderWithRedux(
-            <SimpleForm record={{ emails }}>
-                <ArrayInput source="emails">
-                    <SimpleFormIterator translate={x => x}>
-                        <TextInput source="email" />
-                    </SimpleFormIterator>
-                </ArrayInput>
-            </SimpleForm>
+            <ThemeProvider theme={theme}>
+                <SimpleForm record={{ id: 'whatever', emails }}>
+                    <ArrayInput source="emails">
+                        <SimpleFormIterator>
+                            <TextInput source="email" />
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </SimpleForm>
+            </ThemeProvider>
         );
 
         const inputElements = queryAllByLabelText(
@@ -190,7 +213,9 @@ describe('<SimpleFormIterator />', () => {
         );
 
         expect(
-            inputElements.map(inputElement => ({ email: inputElement.value }))
+            inputElements.map((inputElement: HTMLInputElement) => ({
+                email: inputElement.value,
+            }))
         ).toEqual(emails);
 
         const removeFirstButton = getByText(
@@ -205,7 +230,7 @@ describe('<SimpleFormIterator />', () => {
             );
 
             expect(
-                inputElements.map(inputElement => ({
+                inputElements.map((inputElement: HTMLInputElement) => ({
                     email: inputElement.value,
                 }))
             ).toEqual([{ email: 'bar@foo.com' }]);
@@ -217,7 +242,6 @@ describe('<SimpleFormIterator />', () => {
             <SimpleForm>
                 <ArrayInput source="emails">
                     <SimpleFormIterator
-                        translate={x => x}
                         addButton={<button>Custom Add Button</button>}
                     >
                         <TextInput source="email" />
@@ -230,16 +254,19 @@ describe('<SimpleFormIterator />', () => {
 
     it('should not display the default remove button if a custom remove button is passed', () => {
         const { queryAllByText } = renderWithRedux(
-            <SimpleForm record={{ emails: [{ email: '' }] }}>
-                <ArrayInput source="emails">
-                    <SimpleFormIterator
-                        translate={x => x}
-                        removeButton={<button>Custom Remove Button</button>}
-                    >
-                        <TextInput source="email" />
-                    </SimpleFormIterator>
-                </ArrayInput>
-            </SimpleForm>
+            <ThemeProvider theme={theme}>
+                <SimpleForm
+                    record={{ id: 'whatever', emails: [{ email: '' }] }}
+                >
+                    <ArrayInput source="emails">
+                        <SimpleFormIterator
+                            removeButton={<button>Custom Remove Button</button>}
+                        >
+                            <TextInput source="email" />
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </SimpleForm>
+            </ThemeProvider>
         );
 
         expect(queryAllByText('ra.action.remove').length).toBe(0);
@@ -250,7 +277,6 @@ describe('<SimpleFormIterator />', () => {
             <SimpleForm>
                 <ArrayInput source="emails">
                     <SimpleFormIterator
-                        translate={x => x}
                         addButton={<button>Custom Add Button</button>}
                     >
                         <TextInput source="email" />
@@ -264,16 +290,19 @@ describe('<SimpleFormIterator />', () => {
 
     it('should display the custom remove button', () => {
         const { getByText } = renderWithRedux(
-            <SimpleForm record={{ emails: [{ email: '' }] }}>
-                <ArrayInput source="emails">
-                    <SimpleFormIterator
-                        translate={x => x}
-                        removeButton={<button>Custom Remove Button</button>}
-                    >
-                        <TextInput source="email" />
-                    </SimpleFormIterator>
-                </ArrayInput>
-            </SimpleForm>
+            <ThemeProvider theme={theme}>
+                <SimpleForm
+                    record={{ id: 'whatever', emails: [{ email: '' }] }}
+                >
+                    <ArrayInput source="emails">
+                        <SimpleFormIterator
+                            removeButton={<button>Custom Remove Button</button>}
+                        >
+                            <TextInput source="email" />
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </SimpleForm>
+            </ThemeProvider>
         );
 
         expect(getByText('Custom Remove Button')).toBeDefined();
@@ -282,18 +311,21 @@ describe('<SimpleFormIterator />', () => {
     it('should call the onClick method when the custom add button is clicked', async () => {
         const onClick = jest.fn();
         const { getByText } = renderWithRedux(
-            <SimpleForm>
-                <ArrayInput source="emails">
-                    <SimpleFormIterator
-                        translate={x => x}
-                        addButton={
-                            <button onClick={onClick}>Custom Add Button</button>
-                        }
-                    >
-                        <TextInput source="email" />
-                    </SimpleFormIterator>
-                </ArrayInput>
-            </SimpleForm>
+            <ThemeProvider theme={theme}>
+                <SimpleForm>
+                    <ArrayInput source="emails">
+                        <SimpleFormIterator
+                            addButton={
+                                <button onClick={onClick}>
+                                    Custom Add Button
+                                </button>
+                            }
+                        >
+                            <TextInput source="email" />
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </SimpleForm>
+            </ThemeProvider>
         );
         fireEvent.click(getByText('Custom Add Button'));
         expect(onClick).toHaveBeenCalled();
@@ -302,20 +334,23 @@ describe('<SimpleFormIterator />', () => {
     it('should call the onClick method when the custom remove button is clicked', async () => {
         const onClick = jest.fn();
         const { getByText } = renderWithRedux(
-            <SimpleForm record={{ emails: [{ email: '' }] }}>
-                <ArrayInput source="emails">
-                    <SimpleFormIterator
-                        translate={x => x}
-                        removeButton={
-                            <button onClick={onClick}>
-                                Custom Remove Button
-                            </button>
-                        }
-                    >
-                        <TextInput source="email" />
-                    </SimpleFormIterator>
-                </ArrayInput>
-            </SimpleForm>
+            <ThemeProvider theme={theme}>
+                <SimpleForm
+                    record={{ id: 'whatever', emails: [{ email: '' }] }}
+                >
+                    <ArrayInput source="emails">
+                        <SimpleFormIterator
+                            removeButton={
+                                <button onClick={onClick}>
+                                    Custom Remove Button
+                                </button>
+                            }
+                        >
+                            <TextInput source="email" />
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </SimpleForm>
+            </ThemeProvider>
         );
         fireEvent.click(getByText('Custom Remove Button'));
         expect(onClick).toHaveBeenCalled();

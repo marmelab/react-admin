@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { Children, cloneElement, isValidElement, useRef } from 'react';
+import {
+    Children,
+    cloneElement,
+    isValidElement,
+    useRef,
+    ReactElement,
+    FC,
+} from 'react';
 import PropTypes from 'prop-types';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import get from 'lodash/get';
@@ -9,10 +16,11 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/RemoveCircleOutline';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
-import { useTranslate, ValidationError } from 'ra-core';
+import { useTranslate, ValidationError, Record } from 'ra-core';
 import classNames from 'classnames';
+import { FieldArrayRenderProps } from 'react-final-form-arrays';
 
-import FormInput from '../form/FormInput';
+import FormInput from './FormInput';
 
 const useStyles = makeStyles(
     theme => ({
@@ -85,7 +93,7 @@ const DefaultRemoveButton = props => {
     );
 };
 
-const SimpleFormIterator = props => {
+const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
     const {
         addButton = <DefaultAddButton />,
         removeButton = <DefaultRemoveButton />,
@@ -168,7 +176,7 @@ const SimpleFormIterator = props => {
         <ul className={classes.root}>
             {submitFailed && typeof error !== 'object' && error && (
                 <FormHelperText error>
-                    <ValidationError error={error} />
+                    <ValidationError error={error as string} />
                 </FormHelperText>
             )}
             <TransitionGroup component={null}>
@@ -187,41 +195,47 @@ const SimpleFormIterator = props => {
                                 {index + 1}
                             </Typography>
                             <section className={classes.form}>
-                                {Children.map(children, (input, index2) =>
-                                    isValidElement(input) ? (
-                                        <FormInput
-                                            basePath={
-                                                input.props.basePath || basePath
-                                            }
-                                            input={cloneElement(input, {
-                                                source: input.props.source
-                                                    ? `${member}.${
-                                                          input.props.source
-                                                      }`
-                                                    : member,
-                                                index: input.props.source
-                                                    ? undefined
-                                                    : index2,
-                                                label:
-                                                    typeof input.props.label ===
-                                                    'undefined'
-                                                        ? input.props.source
-                                                            ? `resources.${resource}.fields.${
-                                                                  input.props
-                                                                      .source
-                                                              }`
-                                                            : undefined
-                                                        : input.props.label,
-                                            })}
-                                            record={
-                                                (records && records[index]) ||
-                                                {}
-                                            }
-                                            resource={resource}
-                                            variant={variant}
-                                            margin={margin}
-                                        />
-                                    ) : null
+                                {Children.map(
+                                    children,
+                                    (input: ReactElement, index2) =>
+                                        isValidElement<any>(input) ? (
+                                            <FormInput
+                                                basePath={
+                                                    input.props.basePath ||
+                                                    basePath
+                                                }
+                                                input={cloneElement(input, {
+                                                    source: input.props.source
+                                                        ? `${member}.${
+                                                              input.props.source
+                                                          }`
+                                                        : member,
+                                                    index: input.props.source
+                                                        ? undefined
+                                                        : index2,
+                                                    label:
+                                                        typeof input.props
+                                                            .label ===
+                                                        'undefined'
+                                                            ? input.props.source
+                                                                ? `resources.${resource}.fields.${
+                                                                      input
+                                                                          .props
+                                                                          .source
+                                                                  }`
+                                                                : undefined
+                                                            : input.props.label,
+                                                })}
+                                                record={
+                                                    (records &&
+                                                        records[index]) ||
+                                                    {}
+                                                }
+                                                resource={resource}
+                                                variant={variant}
+                                                margin={margin}
+                                            />
+                                        ) : null
                                 )}
                             </section>
                             {!disableRemoveField(
@@ -277,8 +291,10 @@ SimpleFormIterator.propTypes = {
     children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
+    // @ts-ignore
     fields: PropTypes.object,
     meta: PropTypes.object,
+    // @ts-ignore
     record: PropTypes.object,
     source: PropTypes.string,
     resource: PropTypes.string,
@@ -287,5 +303,28 @@ SimpleFormIterator.propTypes = {
     disableRemove: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     TransitionProps: PropTypes.shape({}),
 };
+
+type DisableRemoveFunction = (record: Record) => boolean;
+
+export interface SimpleFormIteratorProps
+    extends Partial<Omit<FieldArrayRenderProps<any, HTMLElement>, 'meta'>> {
+    addButton?: ReactElement;
+    basePath?: string;
+    defaultValue?: any;
+    disableAdd?: boolean;
+    disableRemove?: boolean | DisableRemoveFunction;
+    margin?: 'none' | 'normal' | 'dense';
+    meta?: {
+        // the type defined in FieldArrayRenderProps says error is boolean, which is wrong.
+        error?: any;
+        submitFailed?: boolean;
+    };
+    record?: Record;
+    removeButton?: ReactElement;
+    resource?: string;
+    source?: string;
+    TransitionProps?: any;
+    variant?: 'standard' | 'outlined' | 'filled';
+}
 
 export default SimpleFormIterator;

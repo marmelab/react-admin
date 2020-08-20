@@ -1,24 +1,16 @@
 import * as React from 'react';
+import { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 import MuiTab from '@material-ui/core/Tab';
 import classnames from 'classnames';
-import { useTranslate } from 'ra-core';
+import { useTranslate, Record } from 'ra-core';
 
 import FormInput from './FormInput';
 
-const sanitizeRestProps = ({
-    contentClassName,
-    label,
-    icon,
-    value,
-    translate,
-    ...rest
-}) => rest;
-
 const hiddenStyle = { display: 'none' };
 
-const FormTab = ({
+const FormTab: FC<FormTabProps> = ({
     basePath,
     className,
     contentClassName,
@@ -46,7 +38,7 @@ const FormTab = ({
             className={classnames('form-tab', className)}
             component={Link}
             to={{ ...location, pathname: value }}
-            {...sanitizeRestProps(rest)}
+            {...rest}
         />
     );
 
@@ -54,7 +46,7 @@ const FormTab = ({
         <span style={hidden ? hiddenStyle : null} className={contentClassName}>
             {React.Children.map(
                 children,
-                input =>
+                (input: ReactElement) =>
                     input && (
                         <FormInput
                             basePath={basePath}
@@ -83,11 +75,27 @@ FormTab.propTypes = {
     label: PropTypes.string.isRequired,
     margin: PropTypes.oneOf(['none', 'dense', 'normal']),
     path: PropTypes.string,
+    // @ts-ignore
     record: PropTypes.object,
     resource: PropTypes.string,
     value: PropTypes.string,
     variant: PropTypes.oneOf(['standard', 'outlined', 'filled']),
 };
+
+export interface FormTabProps {
+    basePath?: string;
+    className?: string;
+    contentClassName?: string;
+    hidden?: boolean;
+    icon?: ReactElement;
+    intent?: 'header' | 'content';
+    label: string;
+    margin?: 'none' | 'normal' | 'dense';
+    record?: Record;
+    resource?: string;
+    value?: string;
+    variant?: 'standard' | 'outlined' | 'filled';
+}
 
 FormTab.displayName = 'FormTab';
 

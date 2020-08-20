@@ -35,28 +35,17 @@ describe('<SimpleForm />', () => {
     });
 
     it('should pass submitOnEnter to <Toolbar />', () => {
-        const handleSubmit = () => {};
-        const Toolbar = ({ submitOnEnter }) => (
+        const Toolbar = ({ submitOnEnter }: any): any => (
             <p>submitOnEnter: {submitOnEnter.toString()}</p>
         );
 
         const { queryByText, rerender } = renderWithRedux(
-            <SimpleForm
-                submitOnEnter={false}
-                handleSubmit={handleSubmit}
-                toolbar={<Toolbar />}
-            />
+            <SimpleForm submitOnEnter={false} toolbar={<Toolbar />} />
         );
 
         expect(queryByText('submitOnEnter: false')).not.toBeNull();
 
-        rerender(
-            <SimpleForm
-                submitOnEnter
-                handleSubmit={handleSubmit}
-                toolbar={<Toolbar />}
-            />
-        );
+        rerender(<SimpleForm submitOnEnter toolbar={<Toolbar />} />);
 
         expect(queryByText('submitOnEnter: true')).not.toBeNull();
     });

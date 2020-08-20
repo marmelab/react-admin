@@ -1,15 +1,28 @@
 import * as React from 'react';
-import { Children, isValidElement } from 'react';
+import {
+    Children,
+    isValidElement,
+    FC,
+    ReactElement,
+    HtmlHTMLAttributes,
+} from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Route, useRouteMatch, useLocation } from 'react-router-dom';
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
-import { escapePath, FormWithRedirect } from 'ra-core';
+import {
+    escapePath,
+    FormWithRedirect,
+    Record,
+    RedirectionSideEffect,
+} from 'ra-core';
+import { FormProps, FormRenderProps } from 'react-final-form';
 import get from 'lodash/get';
 
 import Toolbar from './Toolbar';
 import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
+import { ClassesOverride } from '../types';
 
 /**
  * Form layout where inputs are divided by tab, one input per line.
@@ -78,7 +91,7 @@ import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
  *
  * @param {Prop} props
  */
-const TabbedForm = props => (
+const TabbedForm: FC<TabbedFormProps> = props => (
     <FormWithRedirect
         {...props}
         render={formProps => <TabbedFormView {...formProps} />}
@@ -87,8 +100,8 @@ const TabbedForm = props => (
 
 TabbedForm.propTypes = {
     children: PropTypes.node,
-    defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
     initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    // @ts-ignore
     record: PropTypes.object,
     redirect: PropTypes.oneOfType([
         PropTypes.string,
@@ -103,6 +116,25 @@ TabbedForm.propTypes = {
     sanitizeEmptyValues: PropTypes.bool,
 };
 
+export interface TabbedFormProps
+    extends Omit<FormProps, 'onSubmit'>,
+        Omit<HtmlHTMLAttributes<HTMLFormElement>, 'onSubmit' | 'children'> {
+    basePath?: string;
+    className?: string;
+    initialValues?: any;
+    margin?: 'none' | 'normal' | 'dense';
+    record?: Record;
+    redirect?: RedirectionSideEffect;
+    resource?: string;
+    sanitizeEmptyValues?: boolean;
+    submitOnEnter?: boolean;
+    tabs?: ReactElement;
+    toolbar?: ReactElement;
+    undoable?: boolean;
+    variant?: 'standard' | 'outlined' | 'filled';
+    warnWhenUnsavedChanges?: boolean;
+}
+
 const useStyles = makeStyles(
     theme => ({
         errorTabButton: { color: theme.palette.error.main },
@@ -115,7 +147,7 @@ const useStyles = makeStyles(
     { name: 'RaTabbedForm' }
 );
 
-export const TabbedFormView = props => {
+export const TabbedFormView: FC<TabbedFormViewProps> = props => {
     const {
         basePath,
         children,
@@ -130,13 +162,10 @@ export const TabbedFormView = props => {
         redirect: defaultRedirect,
         resource,
         saving,
-        setRedirect,
         submitOnEnter,
         tabs,
         toolbar,
-        translate,
         undoable,
-        value,
         variant,
         margin,
         ...rest
@@ -169,7 +198,7 @@ export const TabbedFormView = props => {
                 See https://github.com/marmelab/react-admin/issues/1866 */}
                 {Children.map(
                     children,
-                    (tab, index) =>
+                    (tab: ReactElement, index) =>
                         tab && (
                             <Route
                                 exact
@@ -178,7 +207,7 @@ export const TabbedFormView = props => {
                                 )}
                             >
                                 {routeProps =>
-                                    isValidElement(tab)
+                                    isValidElement<any>(tab)
                                         ? React.cloneElement(tab, {
                                               intent: 'content',
                                               resource,
@@ -227,6 +256,7 @@ TabbedFormView.propTypes = {
     location: PropTypes.object,
     match: PropTypes.object,
     pristine: PropTypes.bool,
+    // @ts-ignore
     record: PropTypes.object,
     redirect: PropTypes.oneOfType([
         PropTypes.string,
@@ -253,62 +283,55 @@ TabbedFormView.defaultProps = {
     toolbar: <Toolbar />,
 };
 
+export interface TabbedFormViewProps extends FormRenderProps {
+    basePath?: string;
+    classes?: ClassesOverride<typeof useStyles>;
+    className?: string;
+    margin?: 'none' | 'normal' | 'dense';
+    handleSubmitWithRedirect?: (redirectTo: RedirectionSideEffect) => void;
+    record?: Record;
+    redirect?: RedirectionSideEffect;
+    resource?: string;
+    save?: () => void;
+    saving?: boolean;
+    tabs?: ReactElement;
+    toolbar?: ReactElement;
+    undoable?: boolean;
+    variant?: 'standard' | 'outlined' | 'filled';
+    submitOnEnter?: boolean;
+    __versions?: any; // react-final-form internal prop, missing in their type
+}
+
 const sanitizeRestProps = ({
-    anyTouched,
-    array,
-    asyncBlurFields,
-    asyncValidate,
-    asyncValidating,
-    autofill,
-    blur,
-    change,
-    clearAsyncError,
-    clearFields,
-    clearSubmit,
-    clearSubmitErrors,
-    destroy,
+    active,
     dirty,
     dirtyFields,
     dirtyFieldsSinceLastSubmit,
     dirtySinceLastSubmit,
-    dispatch,
-    form,
-    handleSubmit,
+    error,
+    errors,
     hasSubmitErrors,
     hasValidationErrors,
-    initialize,
-    initialized,
     initialValues,
+    modified = null,
     modifiedSinceLastSubmit,
-    modifiedsincelastsubmit,
-    pristine,
-    pure,
-    redirect,
-    reset,
-    resetSection,
-    save,
-    staticContext,
-    submit,
-    submitAsSideEffect,
+    save = null,
     submitError,
     submitErrors,
     submitFailed,
     submitSucceeded,
     submitting,
-    touch,
-    translate,
-    triggerSubmit,
-    undoable,
-    untouch,
+    touched = null,
     valid,
-    validate,
     validating,
-    __versions,
+    values,
+    visited = null,
+    __versions = null,
     ...props
 }) => props;
 
 export const findTabsWithErrors = (children, errors) => {
-    return Children.toArray(children).reduce((acc, child) => {
+    return Children.toArray(children).reduce((acc: any[], child) => {
         if (!isValidElement(child)) {
             return acc;
         }
