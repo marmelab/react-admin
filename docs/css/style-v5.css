@@ -49,6 +49,11 @@ footer {
     line-height: initial;
 }
 
+.sidenav {
+    height: 100%;
+    padding-bottom: 1em;
+}
+
 .sidenav.sidenav-fixed li {
     line-height: 44px;
 }
