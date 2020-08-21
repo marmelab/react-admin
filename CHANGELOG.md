@@ -1,5 +1,26 @@
 # Changelog
 
+## v3.8.2
+
+* Add ability to disable the `<Empty>` page in `<List>` ([5165](https://github.com/marmelab/react-admin/pull/5165)) ([jdemangeon](https://github.com/jdemangeon))
+* Fix `<Edit>` form has wrong `pristine` state when coming from a Create form ([5146](https://github.com/marmelab/react-admin/pull/5146)) ([djhi](https://github.com/djhi))
+* Fix `<ListContext>` subcontexts lack `resource` data ([5176](https://github.com/marmelab/react-admin/pull/5176)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix missing `range` header in `ra-data-simple-rest` `getList` request ([5164](https://github.com/marmelab/react-admin/pull/5164)) ([jpetitcolas](https://github.com/jpetitcolas))
+* Fix `<SortButton>` label does not use `resource` name ([5159](https://github.com/marmelab/react-admin/pull/5159)) ([WiXSL](https://github.com/WiXSL))
+* Fix webpack warnings about incorrect imports ([5156](https://github.com/marmelab/react-admin/pull/5156)) ([djhi](https://github.com/djhi))
+* Fix Automatic Refresh in `<Create>` and `<Edit>` if the form is `dirty` ([5152](https://github.com/marmelab/react-admin/pull/5152)) ([djhi](https://github.com/djhi))
+* Fix `addEventListener` calls for compatibility with React v17 ([5147](https://github.com/marmelab/react-admin/pull/5147)) ([WiXSL](https://github.com/WiXSL))
+* Fix DOM warning in `<SimpleForm>` and `<TabbedForm>` ([5143](https://github.com/marmelab/react-admin/pull/5143)) ([Kmaschta](https://github.com/Kmaschta))
+* Convert `Form` components to TypeScript ([5170](https://github.com/marmelab/react-admin/pull/5170)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix sidebar navigation on Firefox ([5175](https://github.com/marmelab/react-admin/pull/5175)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix missing mention of i18n messages in `<NullableBooleanInput>` usage ([5172](https://github.com/marmelab/react-admin/pull/5172)) ([sliterok](https://github.com/sliterok))
+* [Doc] Fix wrong create verb request format in the `ra-data-simple-rest` data provider ([5171](https://github.com/marmelab/react-admin/pull/5171)) ([Luwangel](https://github.com/Luwangel))
+* [Doc] Add example for how to add a custom back button ([5155](https://github.com/marmelab/react-admin/pull/5155)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add `ra-treemenu` to the ecosystem ([5153](https://github.com/marmelab/react-admin/pull/5153)) ([harshit-budhraja](https://github.com/harshit-budhraja))
+* [Doc] Fix markdown of props tables ([5150](https://github.com/marmelab/react-admin/pull/5150)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix missing `<RichTextInput>` options documentation ([5145](https://github.com/marmelab/react-admin/pull/5145)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix documentation link hidden on small screens ([5167](https://github.com/marmelab/react-admin/pull/5167)) ([Luwangel](https://github.com/Luwangel))
+
 ## v3.8.1
 
 * Fix warning about duplicate filter files with different case in esm build ([5036](https://github.com/marmelab/react-admin/pull/5036)) ([fzaninotto](https://github.com/fzaninotto))
