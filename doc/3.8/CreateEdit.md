@@ -157,6 +157,32 @@ export const PostEdit = (props) => (
 );
 ```
 
+A common customization is to add a button to go back to the List. Use the `<ListButton>` for that:
+
+```jsx
+import { TopToolbar, ListButton, ShowButton } from 'react-admin';
+
+const PostEditActions = ({ basePath, data }) => (
+    <TopToolbar>
+        <ListButton basePath={basePath} />
+        <ShowButton basePath={basePath} record={data} />
+    </TopToolbar>
+);
+```
+
+If you want this button to look like a Back button, you can pass a custom label and icon to the ListButton:
+
+```jsx
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
+
+const PostEditActions = ({ basePath, data }) => (
+    <TopToolbar>
+        <ListButton basePath={basePath} label="Back" icon={<ChevronLeft />} />
+        <ShowButton basePath={basePath} record={data} />
+    </TopToolbar>
+);
+```
+
 ### Aside component
 
 You may want to display additional information on the side of the form. Use the `aside` prop for that, passing the component of your choice:

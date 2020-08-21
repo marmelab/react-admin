@@ -683,6 +683,18 @@ The `empty` component can call the `useListContext()` hook to receive the same p
 -   `total`,
 -   `version`,
 
+You can also set the `empty` props value to `false` to bypass the empty page display and render an empty list instead.
+
+```
+import { List } from 'react-admin';
+
+const ProductList = props => (
+    <List empty={false} {...props}>
+        ...
+    </List>
+);
+```
+
 ### Component
 
 By default, the List view renders the main content area inside a material-ui `<Card>` element. The actual layout of the list depends on the child component you're using (`<Datagrid>`, `<SimpleList>`, or a custom layout component).
@@ -934,6 +946,7 @@ An alternative UI to the `<Filter>` Button/Form Combo is the FilterList Sidebar.
 
 The `<FilterList>` component expects a list of `<FilterListItem>` as children. Each `<FilterListItem>` defines a filter `label` and a `value`, which is merged with the current filter value when enabled by the user. Here is an example usage for a list of customers:
 
+{% raw %}
 ```jsx
 import * as React from 'react';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
@@ -1048,6 +1061,7 @@ const SegmentFilter = () => (
     </FilterList>
 );
 ```
+{% endraw %}
 
 You can place these `<FilterList>` anywhere inside a `<List>`. The most common case is to put them in a sidebar that is on the left hand side of the datagrid. You can use the `aside` property for that:
 
@@ -1573,7 +1587,7 @@ The `<Pagination>` component gets the following constants from [the `useListCont
 
 * `page`: The current page number (integer). First page is `1`.
 * `perPage`: The number of records per page.
-* `setPage`: `function(page: number) => void`. A function that set the current page number.
+* `setPage`: `Function(page: number) => void`. A function that set the current page number.
 * `total`: The total number of records.
 * `actions`: A component that displays the pagination buttons (default: `<PaginationActions>`)
 * `limit`: An element that is displayed if there is no data to show (default: `<PaginationLimit>`)
@@ -2193,17 +2207,17 @@ For mobile devices, a `<Datagrid>` is often unusable - there is simply not enoug
 
 ### Properties
 
-| Prop        | Required | Type                | Default  | Description                                                                                                                              |
-| ----------- | -------- | ------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `primaryText` | Required | `function`        | -        | Passed as `<ListItemText primary>` prop |
-| `secondaryText` | Optional | `function`        | -       | Passed as `<ListItemText secondary>` prop |
-| `tertiaryText` | Optional | `function`        | -        | Passed as a complement to `<ListItemText primary>` with a custom style |
-| `linkType` | Optional | `string | function | false` | `edit`   | Target of the `<ListItem>` link. Set to `false` to disable the link. Set to a function `(record, id) => string` to have the link target vary per record.  |
-| `leftAvatar` | Optional | `function`         | -        | When present, the `<ListItem>` renders a `<ListItemAvatar>` before the `<ListItemText>` |
-| `leftIcon` | Optional | `function`           | -        | When present, the `<ListItem>` renders a `<ListIcon>` before the `<ListItemText>` |
-| `rightAvatar` | Optional | `function`        | -        | When present, the `<ListItem>` renders a `<ListItemAvatar>` after the `<ListItemText>` |
-| `rightIcon` | Optional | `function`          | -        | When present, the `<ListItem>` renders a `<ListIcon>` after the `<ListItemText>` |
-| `className` | Optional | `string`            | -        | Applied to the root element |
+| Prop            | Required | Type                                      | Default | Description                                                                                                                                              |
+| --------------- | -------- | ----------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `primaryText`   | Required | `Function`                                | -       | Passed as `<ListItemText primary>` prop                                                                                                                  |
+| `secondaryText` | Optional | `Function`                                | -       | Passed as `<ListItemText secondary>` prop                                                                                                                |
+| `tertiaryText`  | Optional | `Function`                                | -       | Passed as a complement to `<ListItemText primary>` with a custom style                                                                                   |
+| `linkType`      | Optional | `string` &#124; `Function` &#124; `false` | `edit`  | Target of the `<ListItem>` link. Set to `false` to disable the link. Set to a function `(record, id) => string` to have the link target vary per record. |
+| `leftAvatar`    | Optional | `Function`                                | -       | When present, the `<ListItem>` renders a `<ListItemAvatar>` before the `<ListItemText>`                                                                  |
+| `leftIcon`      | Optional | `Function`                                | -       | When present, the `<ListItem>` renders a `<ListIcon>` before the `<ListItemText>`                                                                        |
+| `rightAvatar`   | Optional | `Function`                                | -       | When present, the `<ListItem>` renders a `<ListItemAvatar>` after the `<ListItemText>`                                                                   |
+| `rightIcon`     | Optional | `Function`                                | -       | When present, the `<ListItem>` renders a `<ListIcon>` after the `<ListItemText>`                                                                         |
+| `className`     | Optional | `string`                                  | -       | Applied to the root element                                                                                                                              |
     
 ### Usage
 
@@ -2236,7 +2250,7 @@ import * as React from "react";
 import { useMediaQuery } from '@material-ui/core';
 import { List, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
-export const PostList = (props) => {
+export const PostList = props => {
     const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
     return (
         <List {...props}>
@@ -2249,7 +2263,7 @@ export const PostList = (props) => {
                 />
             ) : (
                 <Datagrid>
-                    ...
+                    //...
                 </Datagrid>
             )}
         </List>
@@ -2264,7 +2278,7 @@ export const PostList = (props) => {
 import * as React from "react";
 import { List, SimpleList } from 'react-admin';
 
-export const PostList = (props) => (
+export const PostList = props => (
     <List {...props}>
         <SimpleList
             primaryText={record => record.title}
