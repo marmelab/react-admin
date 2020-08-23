@@ -165,7 +165,7 @@ export default {
     login: ({ username, password }) => { /* ... */ },
     getIdentity: () => { /* ... */ },
     logout: () => {
-        localStorage.removeItem('token');
+        localStorage.removeItem('auth');
         return Promise.resolve();
     },
     // ...
@@ -195,7 +195,7 @@ export default {
     checkError: (error) => {
         const status = error.status;
         if (status === 401 || status === 403) {
-            localStorage.removeItem('token');
+            localStorage.removeItem('auth');
             return Promise.reject();
         }
         return Promise.resolve();
@@ -212,7 +212,7 @@ Redirecting to the login page whenever a REST response uses a 401 status code is
 
 Fortunately, each time the user navigates, react-admin calls the `authProvider.checkAuth()` method, so it's the ideal place to validate the credentials.
 
-For instance, to check for the existence of the token in local storage:
+For instance, to check for the existence of the authentication data in local storage:
 
 ```js
 // in src/authProvider.js
@@ -221,7 +221,7 @@ export default {
     getIdentity: () => { /* ... */ },
     logout: () => { /* ... */ },
     checkError: (error) => { /* ... */ },
-    checkAuth: () => localStorage.getItem('token')
+    checkAuth: () => localStorage.getItem('auth')
         ? Promise.resolve()
         : Promise.reject(),
     // ...
@@ -237,7 +237,7 @@ export default {
     getIdentity: () => { /* ... */ },
     logout: () => { /* ... */ },
     checkError: (error) => { /* ... */ },
-    checkAuth: () => localStorage.getItem('token')
+    checkAuth: () => localStorage.getItem('auth')
         ? Promise.resolve()
         : Promise.reject({ redirectTo: '/no-access' }),
     // ...
