@@ -5,9 +5,9 @@ title: "Authentication"
 
 # Authentication
 
-![Logout button](./img/login.gif)
+![Login](./img/login.gif)
 
-React-admin lets you secure your admin app with the authentication strategy of your choice. Since there are many possible strategies (Basic Auth, JWT, OAuth, etc.), react-admin simply provides hooks to execute your own authentication code.
+React-admin lets you secure your admin app with the authentication strategy of your choice. Since there are many possible strategies (Basic Auth, JWT, OAuth, etc.), react-admin delegates authentication logic to your `authProvider`, and provides hooks to execute your authentication code.
 
 ## The `authProvider`
 
@@ -33,6 +33,7 @@ const authProvider = {
     checkAuth: params => Promise.resolve(),
     checkError: error => Promise.resolve(),
     getPermissions: params => Promise.resolve(),
+    getIdentity: () => Promise.resolve(),
 };
 ```
 
@@ -66,8 +67,8 @@ const authProvider = {
                 }
                 return response.json();
             })
-            .then(({ token }) => {
-                localStorage.setItem('token', token);
+            .then(auth => {
+                localStorage.setItem('auth', JSON.stringify(auth));
             });
     },
     // ...
@@ -94,7 +95,7 @@ const httpClient = (url, options = {}) => {
     if (!options.headers) {
         options.headers = new Headers({ Accept: 'application/json' });
     }
-    const token = localStorage.getItem('token');
+    const { token } = JSON.parse(localStorage.getItem('auth'));
     options.headers.set('Authorization', `Bearer ${token}`);
     return fetchUtils.fetchJson(url, options);
 };
@@ -111,6 +112,47 @@ Now the admin is secured: The user can be authenticated and use their credential
 
 If you have a custom REST client, don't forget to add credentials yourself.
 
+## User Identity 
+
+React-admin displays the current user name and avatar on the top right side of the screen. To enable this feature, implement the `getIdentity` method in the `authProvider`:
+
+```js
+// in src/authProvider.js
+const authProvider = {
+    login: ({ username, password }) => { /* ... */ },
+    getIdentity: () => {
+        const { id, fullName, avatar } = JSON.parse(localStorage.getItem('auth'));
+        return { id, fullName, avatar };
+    }
+    // ...
+};
+
+export default authProvider;
+```
+
+React-admin uses the `fullName` and the `avatar` (an image source, or a data-uri) in the App Bar:
+
+![User identity](./img/identity.png)
+
+**Tip**: You can use the `id` field to identify the current user in your code, by calling the `useGetIdentity` hook:
+
+```jsx
+import { useGetIdentity, useGetOne } from 'react-admin';
+
+const PostDetail = ({ id }) => {
+    const { data: post, loading: postLoading } = useGetOne('posts', id);
+    const { identity, loading: identityLoading } = useGetIdentity();
+    if (postLoading || identityLoading) return <>Loading...</>;
+    if (!post.lockedBy || post.lockedBy === identity.id) {
+        // post isn't locked, or is locked by me
+        return <PostEdit post={post} />
+    } else {
+        // post is locked by someone else and cannot be edited
+        return <PostShow post={post} />
+    }
+}
+```
+
 ## Logout Configuration
 
 As soon as you provide an `authProvider` prop to `<Admin>`, react-admin displays a logout button in the top bar (or in the menu on mobile). When the user clicks on the logout button, this calls the `authProvider.logout()` method, and removes potentially sensitive data from the Redux store. Then the user gets redirected to the login page.
@@ -121,6 +163,7 @@ So it's the responsibility of the `authProvider` to clean up the current authent
 // in src/authProvider.js
 export default {
     login: ({ username, password }) => { /* ... */ },
+    getIdentity: () => { /* ... */ },
     logout: () => {
         localStorage.removeItem('token');
         return Promise.resolve();
@@ -147,6 +190,7 @@ For instance, to redirect the user to the login page for both 401 and 403 codes:
 // in src/authProvider.js
 export default {
     login: ({ username, password }) => { /* ... */ },
+    getIdentity: () => { /* ... */ },
     logout: () => { /* ... */ },
     checkError: (error) => {
         const status = error.status;
@@ -174,6 +218,7 @@ For instance, to check for the existence of the token in local storage:
 // in src/authProvider.js
 export default {
     login: ({ username, password }) => { /* ... */ },
+    getIdentity: () => { /* ... */ },
     logout: () => { /* ... */ },
     checkError: (error) => { /* ... */ },
     checkAuth: () => localStorage.getItem('token')
@@ -189,6 +234,7 @@ If the promise is rejected, react-admin redirects by default to the `/login` pag
 // in src/authProvider.js
 export default {
     login: ({ username, password }) => { /* ... */ },
+    getIdentity: () => { /* ... */ },
     logout: () => { /* ... */ },
     checkError: (error) => { /* ... */ },
     checkAuth: () => localStorage.getItem('token')

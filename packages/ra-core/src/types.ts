@@ -53,16 +53,23 @@ export type I18nProvider = {
     [key: string]: any;
 };
 
+export interface UserIdentity {
+    id: Identifier;
+    fullName?: string;
+    avatar?: string;
+    [key: string]: any;
+}
+
 /**
  * authProvider types
  */
-
 export type AuthProvider = {
     login: (params: any) => Promise<any>;
     logout: (params: any) => Promise<void | string>;
     checkAuth: (params: any) => Promise<void>;
     checkError: (error: any) => Promise<void>;
     getPermissions: (params: any) => Promise<any>;
+    getIdentity?: () => Promise<UserIdentity>;
     [key: string]: any;
 };
 
