@@ -128,7 +128,9 @@ ReferenceArrayField.defaultProps = {
     addLabel: true,
 };
 
-interface ReferenceArrayFieldProps extends FieldProps, InjectedFieldProps {
+export interface ReferenceArrayFieldProps
+    extends FieldProps,
+        InjectedFieldProps {
     children: ReactElement;
     classes?: Partial<ClassNameMap<ReferenceArrayFieldClassKey>>;
     filter?: Filter;
@@ -147,9 +149,9 @@ const useStyles = makeStyles(
     { name: 'RaReferenceArrayField' }
 );
 
-type ReferenceArrayFieldClassKey = 'progress';
+export type ReferenceArrayFieldClassKey = 'progress';
 
-interface ReferenceArrayFieldViewProps
+export interface ReferenceArrayFieldViewProps
     extends Omit<
             ReferenceArrayFieldProps,
             'basePath' | 'resource' | 'page' | 'perPage'

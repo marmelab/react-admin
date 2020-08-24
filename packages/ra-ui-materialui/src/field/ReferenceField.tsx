@@ -129,7 +129,7 @@ ReferenceField.defaultProps = {
     link: 'edit',
 };
 
-interface ReferenceFieldProps extends FieldProps, InjectedFieldProps {
+export interface ReferenceFieldProps extends FieldProps, InjectedFieldProps {
     children: ReactElement;
     classes?: Partial<ClassNameMap<ReferenceFieldClassKey>>;
     reference: string;
@@ -237,9 +237,9 @@ ReferenceFieldView.propTypes = {
     translateChoice: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
 };
 
-type ReferenceFieldClassKey = 'link';
+export type ReferenceFieldClassKey = 'link';
 
-interface ReferenceFieldViewProps
+export interface ReferenceFieldViewProps
     extends FieldProps,
         InjectedFieldProps,
         UseReferenceProps {

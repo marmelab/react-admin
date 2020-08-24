@@ -13,12 +13,6 @@ const convertStringToNumber = value => {
     return isNaN(float) ? null : float;
 };
 
-interface Props {
-    step?: string | number;
-    min?: string | number;
-    max?: string | number;
-}
-
 /**
  * An Input component for a number
  *
@@ -31,11 +25,7 @@ interface Props {
  *
  * The object passed as `options` props is passed to the material-ui <TextField> component
  */
-const NumberInput: FunctionComponent<
-    Props &
-        InputProps<TextFieldProps> &
-        Omit<TextFieldProps, 'label' | 'helperText'>
-> = ({
+const NumberInput: FunctionComponent<NumberInputProps> = ({
     format,
     helperText,
     label,
@@ -117,5 +107,21 @@ NumberInput.defaultProps = {
     step: 'any',
     textAlign: 'right',
 };
+
+export interface NumberInputProps
+    extends InputProps<TextFieldProps>,
+        Omit<
+            TextFieldProps,
+            | 'label'
+            | 'helperText'
+            | 'onChange'
+            | 'onBlur'
+            | 'onFocus'
+            | 'defaultValue'
+        > {
+    step?: string | number;
+    min?: string | number;
+    max?: string | number;
+}
 
 export default NumberInput;
