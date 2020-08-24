@@ -1,8 +1,11 @@
 import * as React from 'react';
+import { ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import CardContent from '@material-ui/core/CardContent';
 import { makeStyles } from '@material-ui/core/styles';
+
+import { ClassesOverride } from '../types';
 
 const useStyles = makeStyles(
     theme => ({
@@ -30,7 +33,7 @@ const useStyles = makeStyles(
  * padding double the spacing between each CardContent, leading to too much
  * wasted space. Use this component as a CardContent alternative.
  */
-const CardContentInner = props => {
+const CardContentInner = (props: CardContentInnerProps): JSX.Element => {
     const { className, children } = props;
     const classes = useStyles(props);
     return (
@@ -45,5 +48,11 @@ CardContentInner.propTypes = {
     classes: PropTypes.object,
     children: PropTypes.node,
 };
+
+export interface CardContentInnerProps {
+    className?: string;
+    children: ReactNode;
+    classes?: ClassesOverride<typeof useStyles>;
+}
 
 export default CardContentInner;

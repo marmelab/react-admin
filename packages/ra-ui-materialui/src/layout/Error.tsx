@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Fragment } from 'react';
+import { Fragment, HtmlHTMLAttributes, ErrorInfo } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Button from '@material-ui/core/Button';
@@ -10,9 +10,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import ErrorIcon from '@material-ui/icons/Report';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import History from '@material-ui/icons/History';
+import { useTranslate } from 'ra-core';
 
 import Title, { TitlePropType } from './Title';
-import { useTranslate } from 'ra-core';
+import { ClassesOverride } from '../types';
 
 const useStyles = makeStyles(
     theme => ({
@@ -53,7 +54,7 @@ function goBack() {
     window.history.go(-1);
 }
 
-const Error = props => {
+const Error = (props: ErrorProps): JSX.Element => {
     const {
         error,
         errorInfo,
@@ -89,7 +90,7 @@ const Error = props => {
                 <div className={classes.toolbar}>
                     <Button
                         variant="contained"
-                        icon={<History />}
+                        startIcon={<History />}
                         onClick={goBack}
                     >
                         {translate('ra.action.back')}
@@ -108,4 +109,11 @@ Error.propTypes = {
     title: TitlePropType,
 };
 
+export interface ErrorProps extends HtmlHTMLAttributes<HTMLDivElement> {
+    classes?: ClassesOverride<typeof useStyles>;
+    className?: string;
+    error: any;
+    errorInfo?: ErrorInfo;
+    title?: string;
+}
 export default Error;

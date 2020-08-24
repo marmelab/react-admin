@@ -12,7 +12,7 @@ export const Responsive = ({
     large,
     width,
     ...rest
-}) => {
+}: ResponsiveProps): JSX.Element => {
     let element;
     switch (width) {
         case 'xs':
@@ -56,6 +56,14 @@ export const Responsive = ({
 
     return element ? React.cloneElement(element, rest) : null;
 };
+
+export interface ResponsiveProps {
+    xsmall?: JSX.Element;
+    small?: JSX.Element;
+    medium?: JSX.Element;
+    large?: JSX.Element;
+    width?: string;
+}
 
 Responsive.propTypes = {
     xsmall: PropTypes.element,

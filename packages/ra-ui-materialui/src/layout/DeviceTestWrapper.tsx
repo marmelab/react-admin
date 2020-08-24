@@ -14,7 +14,10 @@ import { createMuiTheme } from '@material-ui/core/styles';
  *     <MyResponsiveComponent />
  * <DeviceTestWrapper>
  */
-const DeviceTestWrapper = ({ width = 'md', children }) => {
+const DeviceTestWrapper = ({
+    width = 'md',
+    children,
+}: DeviceTestWrapperProps): JSX.Element => {
     const theme = createMuiTheme();
 
     // Use https://github.com/ericf/css-mediaquery as ponyfill.
@@ -36,5 +39,10 @@ const DeviceTestWrapper = ({ width = 'md', children }) => {
         </ThemeProvider>
     );
 };
+
+export interface DeviceTestWrapperProps {
+    width: 'md' | 'xs' | 'sm' | 'lg' | 'xl';
+    children: JSX.Element;
+}
 
 export default DeviceTestWrapper;

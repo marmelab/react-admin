@@ -62,7 +62,11 @@ const NotFound = props => {
                 <div>{translate('ra.message.not_found')}.</div>
             </div>
             <div className={classes.toolbar}>
-                <Button variant="contained" icon={<History />} onClick={goBack}>
+                <Button
+                    variant="contained"
+                    startIcon={<History />}
+                    onClick={goBack}
+                >
                     {translate('ra.action.back')}
                 </Button>
             </div>
