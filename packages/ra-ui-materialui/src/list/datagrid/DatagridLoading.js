@@ -1,17 +1,20 @@
 import * as React from 'react';
 import { memo } from 'react';
 import PropTypes from 'prop-types';
-import Table from '@material-ui/core/Table';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import TableBody from '@material-ui/core/TableBody';
+import {
+    Table,
+    TableCell,
+    TableHead,
+    TableRow,
+    TableBody,
+    IconButton,
+    Checkbox,
+} from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import IconButton from '@material-ui/core/IconButton';
-import Checkbox from '@material-ui/core/Checkbox';
 import classnames from 'classnames';
-import Placeholder from './Placeholder';
 import { useTimeout } from 'ra-core';
+
+import Placeholder from '../Placeholder';
 
 const times = (nbChildren, fn) =>
     Array.from({ length: nbChildren }, (_, key) => fn(key));

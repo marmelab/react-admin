@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { cleanup, fireEvent, wait } from '@testing-library/react';
 import { renderWithRedux, linkToRecord } from 'ra-core';
-
-import DatagridRow from './DatagridRow';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
+
+import DatagridRow from './DatagridRow';
 
 const TitleField = ({ record }) => <span>{record.title}</span>;
 const ExpandPanel = () => <span>expanded</span>;
