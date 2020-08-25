@@ -3,8 +3,11 @@ import { memo } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { TableCell, TableSortLabel, Tooltip } from '@material-ui/core';
+import { TableCellProps } from '@material-ui/core/TableCell';
 import { makeStyles } from '@material-ui/core/styles';
-import { FieldTitle, useTranslate } from 'ra-core';
+import { FieldTitle, useTranslate, Sort } from 'ra-core';
+
+import { ClassesOverride } from '../../types';
 
 // remove the sort icons when not active
 const useStyles = makeStyles(
@@ -21,7 +24,9 @@ const useStyles = makeStyles(
     { name: 'RaDatagridHeaderCell' }
 );
 
-export const DatagridHeaderCell = props => {
+export const DatagridHeaderCell = (
+    props: DatagridHeaderCellProps
+): JSX.Element => {
     const {
         className,
         classes: classesOverride,
@@ -92,16 +97,27 @@ DatagridHeaderCell.propTypes = {
         order: PropTypes.string,
     }).isRequired,
     isSorting: PropTypes.bool,
-    sortable: PropTypes.bool,
     resource: PropTypes.string,
     updateSort: PropTypes.func.isRequired,
 };
 
-export default memo(DatagridHeaderCell, (props, nextProps) => {
-    return (
+export interface DatagridHeaderCellProps
+    extends Omit<TableCellProps, 'classes'> {
+    className?: string;
+    classes?: ClassesOverride<typeof useStyles>;
+    field?: JSX.Element;
+    isSorting?: boolean;
+    resource: string;
+    currentSort: Sort;
+    updateSort: (event: any) => void;
+}
+
+export default memo(
+    DatagridHeaderCell,
+    (props, nextProps) =>
         props.updateSort === nextProps.updateSort &&
         props.currentSort.field === nextProps.currentSort.field &&
         props.currentSort.order === nextProps.currentSort.order &&
-        !(nextProps.isSorting && props.sortable !== nextProps.sortable)
-    );
-});
+        props.isSorting === nextProps.isSorting &&
+        props.resource === nextProps.resource
+);

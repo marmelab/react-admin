@@ -6,7 +6,9 @@ import { Router } from 'react-router-dom';
 
 import DatagridRow from './DatagridRow';
 
-const TitleField = ({ record }) => <span>{record.title}</span>;
+const TitleField = ({ record }: any): JSX.Element => (
+    <span>{record.title}</span>
+);
 const ExpandPanel = () => <span>expanded</span>;
 
 // remove validateDomNesting warnings by react-testing-library

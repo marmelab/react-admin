@@ -243,15 +243,17 @@ export interface DatagridRowProps
     onToggleItem?: (id: Identifier) => void;
     record?: Record;
     resource?: string;
-    rowClick?: (
-        id: Identifier,
-        basePath: string,
-        record: Record
-    ) => string | string;
+    rowClick?: RowClickFunction | string;
     selected?: boolean;
     style?: any;
     selectable?: boolean;
 }
+
+export type RowClickFunction = (
+    id: Identifier,
+    basePath: string,
+    record: Record
+) => string;
 
 const areEqual = (prevProps, nextProps) => {
     const { children: _, ...prevPropsWithoutChildren } = prevProps;
