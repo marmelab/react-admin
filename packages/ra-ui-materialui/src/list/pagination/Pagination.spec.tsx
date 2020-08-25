@@ -6,7 +6,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import { ListPaginationContext } from 'ra-core';
 
 import Pagination from './Pagination';
-import DeviceTestWrapper from '../layout/DeviceTestWrapper';
+import DeviceTestWrapper from '../../layout/DeviceTestWrapper';
 
 const theme = createMuiTheme();
 
@@ -16,6 +16,8 @@ describe('<Pagination />', () => {
         page: 1,
         perPage: 10,
         setPage: () => null,
+        loading: false,
+        setPerPage: () => {},
     };
 
     afterEach(cleanup);
@@ -197,7 +199,7 @@ describe('<Pagination />', () => {
                             total: 15,
                         }}
                     >
-                        <Pagination width="md" />
+                        <Pagination />
                     </ListPaginationContext.Provider>
                 </DeviceTestWrapper>
             );
