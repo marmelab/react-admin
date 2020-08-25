@@ -4,18 +4,22 @@ import React, {
     useEffect,
     useRef,
     useState,
+    ErrorInfo,
+    ComponentType,
+    HtmlHTMLAttributes,
 } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { withRouter } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import {
     createMuiTheme,
     withStyles,
     createStyles,
 } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-import { ComponentPropType } from 'ra-core';
+import { ThemeOptions } from '@material-ui/core';
+import { ComponentPropType, CustomRoutes, DashboardComponent } from 'ra-core';
 import compose from 'lodash/flowRight';
 
 import DefaultAppBar from './AppBar';
@@ -78,9 +82,9 @@ const sanitizeRestProps = ({
     location,
     match,
     ...props
-}) => props;
+}: RestProps) => props;
 
-class Layout extends Component {
+class Layout extends Component<LayoutProps, LayoutState> {
     state = { hasError: false, errorMessage: null, errorInfo: null };
 
     constructor(props) {
@@ -150,32 +154,80 @@ class Layout extends Component {
             </>
         );
     }
+
+    static propTypes = {
+        appBar: ComponentPropType,
+        children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
+        classes: PropTypes.object,
+        className: PropTypes.string,
+        customRoutes: PropTypes.array,
+        dashboard: ComponentPropType,
+        error: ComponentPropType,
+        history: PropTypes.object.isRequired,
+        logout: PropTypes.element,
+        menu: ComponentPropType,
+        notification: ComponentPropType,
+        open: PropTypes.bool,
+        sidebar: ComponentPropType,
+        title: PropTypes.node.isRequired,
+    };
+
+    static defaultProps = {
+        appBar: DefaultAppBar,
+        error: DefaultError,
+        menu: DefaultMenu,
+        notification: DefaultNotification,
+        sidebar: DefaultSidebar,
+    };
 }
 
-Layout.propTypes = {
-    appBar: ComponentPropType,
-    children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    customRoutes: PropTypes.array,
-    dashboard: ComponentPropType,
-    error: ComponentPropType,
-    history: PropTypes.object.isRequired,
-    logout: PropTypes.element,
-    menu: ComponentPropType,
-    notification: ComponentPropType,
-    open: PropTypes.bool,
-    sidebar: ComponentPropType,
-    title: PropTypes.node.isRequired,
-};
+export interface LayoutProps
+    extends RouteComponentProps,
+        HtmlHTMLAttributes<HTMLDivElement> {
+    className?: string;
+    classes?: any;
+    customRoutes?: CustomRoutes;
+    appBar?: ComponentType<{
+        title?: string;
+        open?: boolean;
+        logout?: JSX.Element;
+    }>;
+    sidebar?: ComponentType<{ children: JSX.Element }>;
+    menu?: ComponentType<{ logout?: JSX.Element; hasDashboard?: boolean }>;
+    error?: ComponentType<{
+        error?: string;
+        errorInfo?: React.ErrorInfo;
+        title?: string;
+    }>;
+    dashboard?: DashboardComponent;
+    notification?: ComponentType;
+    logout?: JSX.Element;
+    title?: string;
+    open?: boolean;
+}
 
-Layout.defaultProps = {
-    appBar: DefaultAppBar,
-    error: DefaultError,
-    menu: DefaultMenu,
-    notification: DefaultNotification,
-    sidebar: DefaultSidebar,
-};
+export type RestProps = Omit<
+    LayoutProps,
+    | 'appBar'
+    | 'children'
+    | 'classes'
+    | 'className'
+    | 'customRoutes'
+    | 'error'
+    | 'dashboard'
+    | 'logout'
+    | 'menu'
+    | 'notification'
+    | 'open'
+    | 'sidebar'
+    | 'title'
+>;
+
+export interface LayoutState {
+    hasError: boolean;
+    errorMessage: string;
+    errorInfo: ErrorInfo;
+}
 
 const mapStateToProps = state => ({
     open: state.admin.ui.sidebarOpen,
@@ -190,7 +242,10 @@ const EnhancedLayout = compose(
     withStyles(styles, { name: 'RaLayout' })
 )(Layout);
 
-const LayoutWithTheme = ({ theme: themeOverride, ...props }) => {
+const LayoutWithTheme = ({
+    theme: themeOverride,
+    ...props
+}: LayoutWithThemeProps): JSX.Element => {
     const themeProp = useRef(themeOverride);
     const [theme, setTheme] = useState(createMuiTheme(themeOverride));
 
@@ -215,5 +270,9 @@ LayoutWithTheme.propTypes = {
 LayoutWithTheme.defaultProps = {
     theme: defaultTheme,
 };
+
+interface LayoutWithThemeProps extends LayoutProps {
+    theme?: ThemeOptions;
+}
 
 export default LayoutWithTheme;

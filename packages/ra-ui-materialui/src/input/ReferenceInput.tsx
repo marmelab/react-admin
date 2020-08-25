@@ -20,17 +20,6 @@ import LinearProgress from '../layout/LinearProgress';
 import Labeled from './Labeled';
 import ReferenceError from './ReferenceError';
 
-interface Props {
-    allowEmpty: boolean;
-    basePath: string;
-    children: ReactElement;
-    classes: any;
-    className: string;
-    label: string;
-    reference: string;
-    resource: string;
-    [key: string]: any;
-}
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
  *
@@ -110,7 +99,7 @@ interface Props {
  *     <AutocompleteInput optionText="title" />
  * </ReferenceInput>
  */
-const ReferenceInput: FunctionComponent<Props & InputProps> = ({
+const ReferenceInput: FunctionComponent<ReferenceInputProps> = ({
     format,
     onBlur,
     onChange,
@@ -165,6 +154,18 @@ ReferenceInput.defaultProps = {
     sort: { field: 'id', order: 'DESC' },
 };
 
+export interface ReferenceInputProps extends InputProps {
+    allowEmpty: boolean;
+    basePath: string;
+    children: ReactElement;
+    classes: any;
+    className: string;
+    label: string;
+    reference: string;
+    resource: string;
+    [key: string]: any;
+}
+
 const sanitizeRestProps = ({
     choices,
     className,
@@ -184,7 +185,7 @@ const sanitizeRestProps = ({
     ...rest
 }: any) => sanitizeInputProps(rest);
 
-interface ReferenceInputViewProps {
+export interface ReferenceInputViewProps {
     allowEmpty?: boolean;
     basePath: string;
     children: ReactElement;

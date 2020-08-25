@@ -47,7 +47,7 @@ const UserMenu = props => {
             >
                 {Children.map(children, menuItem =>
                     isValidElement(menuItem)
-                        ? cloneElement(menuItem, {
+                        ? cloneElement<any>(menuItem, {
                               onClick: handleClose,
                           })
                         : null

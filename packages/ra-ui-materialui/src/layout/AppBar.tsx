@@ -10,7 +10,9 @@ import {
     Tooltip,
     Typography,
     useMediaQuery,
+    Theme,
 } from '@material-ui/core';
+import { AppBarProps as MuiAppBarProps } from '@material-ui/core/AppBar';
 
 import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -19,6 +21,7 @@ import { toggleSidebar, useTranslate } from 'ra-core';
 import LoadingIndicator from './LoadingIndicator';
 import DefaultUserMenu from './UserMenu';
 import HideOnScroll from './HideOnScroll';
+import { ClassesOverride } from '../types';
 
 const useStyles = makeStyles(
     theme => ({
@@ -80,13 +83,12 @@ const useStyles = makeStyles(
  *    );
  *};
  */
-const AppBar = props => {
+const AppBar = (props: AppBarProps): JSX.Element => {
     const {
         children,
         classes: classesOverride,
         className,
         color = 'secondary',
-        logo,
         logout,
         open,
         title,
@@ -95,7 +97,9 @@ const AppBar = props => {
     } = props;
     const classes = useStyles(props);
     const dispatch = useDispatch();
-    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+    const isXSmall = useMediaQuery<Theme>(theme =>
+        theme.breakpoints.down('xs')
+    );
     const translate = useTranslate();
 
     return (
@@ -151,6 +155,7 @@ const AppBar = props => {
 
 AppBar.propTypes = {
     children: PropTypes.node,
+    // @ts-ignore
     classes: PropTypes.object,
     className: PropTypes.string,
     color: PropTypes.oneOf([
@@ -168,5 +173,13 @@ AppBar.propTypes = {
 AppBar.defaultProps = {
     userMenu: <DefaultUserMenu />,
 };
+
+export interface AppBarProps extends Omit<MuiAppBarProps, 'title' | 'classes'> {
+    classes?: ClassesOverride<typeof useStyles>;
+    logout?: JSX.Element;
+    open?: boolean;
+    title?: string | JSX.Element;
+    userMenu?: JSX.Element;
+}
 
 export default AppBar;
