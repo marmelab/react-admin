@@ -12,8 +12,8 @@ import {
 } from 'ra-core';
 
 import { fieldPropTypes, FieldProps, InjectedFieldProps } from './types';
+import { ClassesOverride } from '../types';
 import sanitizeRestProps from './sanitizeRestProps';
-import { ClassNameMap } from '@material-ui/styles';
 
 /**
  * A container component that fetches records from another resource specified
@@ -132,7 +132,7 @@ export interface ReferenceArrayFieldProps
     extends FieldProps,
         InjectedFieldProps {
     children: ReactElement;
-    classes?: Partial<ClassNameMap<ReferenceArrayFieldClassKey>>;
+    classes?: ClassesOverride<typeof useStyles>;
     filter?: Filter;
     page?: number;
     pagination?: ReactElement;
@@ -149,14 +149,14 @@ const useStyles = makeStyles(
     { name: 'RaReferenceArrayField' }
 );
 
-export type ReferenceArrayFieldClassKey = 'progress';
-
 export interface ReferenceArrayFieldViewProps
     extends Omit<
             ReferenceArrayFieldProps,
             'basePath' | 'resource' | 'page' | 'perPage'
         >,
-        ListControllerProps {}
+        ListControllerProps {
+    classes?: ClassesOverride<typeof useStyles>;
+}
 
 export const ReferenceArrayFieldView: FC<
     ReferenceArrayFieldViewProps
