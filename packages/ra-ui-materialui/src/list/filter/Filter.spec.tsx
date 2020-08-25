@@ -9,7 +9,7 @@ describe('<Filter />', () => {
     afterEach(cleanup);
 
     describe('With form context', () => {
-        const defaultProps = {
+        const defaultProps: any = {
             context: 'form',
             resource: 'posts',
             setFilters: jest.fn(),

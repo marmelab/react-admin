@@ -1,7 +1,13 @@
 import * as React from 'react';
-import { useEffect, useCallback } from 'react';
+import {
+    useEffect,
+    useCallback,
+    Children,
+    HtmlHTMLAttributes,
+    ReactNode,
+} from 'react';
 import PropTypes from 'prop-types';
-import { Form, FormSpy } from 'react-final-form';
+import { Form, FormRenderProps, FormSpy } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 import classnames from 'classnames';
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,6 +15,7 @@ import lodashSet from 'lodash/set';
 import lodashGet from 'lodash/get';
 
 import FilterFormInput from './FilterFormInput';
+import { ClassesOverride } from '../../types';
 
 const useStyles = makeStyles(
     theme => ({
@@ -26,63 +33,51 @@ const useStyles = makeStyles(
 );
 
 const sanitizeRestProps = ({
-    anyTouched,
-    asyncValidate,
-    asyncValidating,
-    autofill,
-    blur,
-    change,
-    clearAsyncError,
-    clearFields,
-    clearSubmit,
-    clearSubmitErrors,
-    destroy,
+    active,
     dirty,
     dirtyFields,
     dirtyFieldsSinceLastSubmit,
     dirtySinceLastSubmit,
-    dispatch,
-    displayedFilters,
+    error,
     errors,
-    filters,
     filterValues,
     form,
     handleSubmit,
     hasSubmitErrors,
     hasValidationErrors,
-    hideFilter,
-    initialize,
-    initialized,
-    initialValues,
     invalid,
     modified,
     modifiedSinceLastSubmit,
     pristine,
-    pure,
-    reset,
-    resetSection,
-    save,
-    setFilter,
     setFilters,
-    submit,
-    submitAsSideEffect,
     submitError,
     submitErrors,
     submitFailed,
     submitSucceeded,
     submitting,
-    touch,
     touched,
-    triggerSubmit,
-    untouch,
     valid,
-    validate,
     validating,
     values,
     visited,
-    __versions,
     ...props
-}) => props;
+}: Partial<FilterFormProps>) => props;
+
+export interface FilterFormProps
+    extends Omit<FormRenderProps, 'initialValues'>,
+        Omit<HtmlHTMLAttributes<HTMLFormElement>, 'children'> {
+    classes?: ClassesOverride<typeof useStyles>;
+    className?: string;
+    resource?: string;
+    filterValues: any;
+    hideFilter: (filterName: string) => void;
+    setFilters: (filters: any, displayedFilters: any) => void;
+    displayedFilters: any;
+    filters: ReactNode[];
+    initialValues?: any;
+    margin?: 'none' | 'normal' | 'dense';
+    variant?: 'standard' | 'outlined' | 'filled';
+}
 
 export const FilterForm = ({
     classes = {},
@@ -95,9 +90,9 @@ export const FilterForm = ({
     hideFilter,
     initialValues,
     ...rest
-}) => {
+}: FilterFormProps) => {
     useEffect(() => {
-        filters.forEach(filter => {
+        filters.forEach((filter: JSX.Element) => {
             if (filter.props.alwaysOn && filter.props.defaultValue) {
                 throw new Error(
                     'Cannot use alwaysOn and defaultValue on a filter input. Please set the filterDefaultValues props on the <List> element instead.'
@@ -108,7 +103,7 @@ export const FilterForm = ({
 
     const getShownFilters = () =>
         filters.filter(
-            filterElement =>
+            (filterElement: JSX.Element) =>
                 filterElement.props.alwaysOn ||
                 displayedFilters[filterElement.props.source] ||
                 typeof lodashGet(initialValues, filterElement.props.source) !==
@@ -126,7 +121,7 @@ export const FilterForm = ({
             {...sanitizeRestProps(rest)}
             onSubmit={handleSubmit}
         >
-            {getShownFilters().map(filterElement => (
+            {getShownFilters().map((filterElement: JSX.Element) => (
                 <FilterFormInput
                     key={filterElement.props.source}
                     filterElement={filterElement}
@@ -162,17 +157,17 @@ export const mergeInitialValuesWithDefaultValues = ({
 }) => ({
     ...filters
         .filter(
-            filterElement =>
+            (filterElement: JSX.Element) =>
                 filterElement.props.alwaysOn && filterElement.props.defaultValue
         )
         .reduce(
-            (acc, filterElement) =>
+            (acc, filterElement: JSX.Element) =>
                 lodashSet(
                     { ...acc },
                     filterElement.props.source,
                     filterElement.props.defaultValue
                 ),
-            {}
+            {} as any
         ),
     ...initialValues,
 });
