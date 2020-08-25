@@ -5,7 +5,7 @@ import { TestContext } from 'ra-core';
 import ArrayField from './ArrayField';
 import NumberField from './NumberField';
 import TextField from './TextField';
-import Datagrid from '../list/Datagrid';
+import Datagrid from '../list/datagrid/Datagrid';
 
 describe('<ArrayField />', () => {
     afterEach(cleanup);
