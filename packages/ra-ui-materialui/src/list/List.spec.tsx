@@ -6,7 +6,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { MemoryRouter } from 'react-router-dom';
 
-import defaultTheme from '../defaultTheme.ts';
+import defaultTheme from '../defaultTheme';
 import List from './List';
 
 const theme = createMuiTheme(defaultTheme);
@@ -21,6 +21,9 @@ describe('<List />', () => {
         hasShow: true,
         resource: 'posts',
         basePath: '/posts',
+        history: {} as any,
+        location: {} as any,
+        match: (() => {}) as any,
     };
 
     const defaultStateForList = {
@@ -92,7 +95,7 @@ describe('<List />', () => {
         const Dummy = () => <div />;
         const dataProvider = {
             getList: jest.fn(() => Promise.resolve({ data: [], total: 0 })),
-        };
+        } as any;
         const { queryAllByText } = renderWithRedux(
             <ThemeProvider theme={theme}>
                 <DataProviderContext.Provider value={dataProvider}>
@@ -112,7 +115,7 @@ describe('<List />', () => {
         const Dummy = () => <div />;
         const dataProvider = {
             getList: jest.fn(() => Promise.resolve({ data: [], total: 0 })),
-        };
+        } as any;
         const { queryAllByText } = renderWithRedux(
             <ThemeProvider theme={theme}>
                 <DataProviderContext.Provider value={dataProvider}>
@@ -132,7 +135,7 @@ describe('<List />', () => {
         const Dummy = () => <div />;
         const dataProvider = {
             getList: jest.fn(() => Promise.resolve({ data: [], total: 0 })),
-        };
+        } as any;
         const { queryAllByText } = renderWithRedux(
             <ThemeProvider theme={theme}>
                 <DataProviderContext.Provider value={dataProvider}>

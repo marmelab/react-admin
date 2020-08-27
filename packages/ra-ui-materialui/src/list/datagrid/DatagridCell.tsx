@@ -1,19 +1,8 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import TableCell from '@material-ui/core/TableCell';
+import TableCell, { TableCellProps } from '@material-ui/core/TableCell';
 import classnames from 'classnames';
-
-const sanitizeRestProps = ({
-    cellClassName,
-    className,
-    field,
-    formClassName,
-    headerClassName,
-    record,
-    basePath,
-    resource,
-    ...rest
-}) => rest;
+import { Record } from 'ra-core';
 
 const DatagridCell = ({
     className,
@@ -22,11 +11,11 @@ const DatagridCell = ({
     basePath,
     resource,
     ...rest
-}) => (
+}: DatagridCellProps): JSX.Element => (
     <TableCell
         className={classnames(className, field.props.cellClassName)}
         align={field.props.textAlign}
-        {...sanitizeRestProps(rest)}
+        {...rest}
     >
         {React.cloneElement(field, {
             record,
@@ -43,6 +32,13 @@ DatagridCell.propTypes = {
     basePath: PropTypes.string,
     resource: PropTypes.string,
 };
+
+export interface DatagridCellProps extends TableCellProps {
+    className?: string;
+    field?: JSX.Element;
+    basePath?: string;
+    record?: Record;
+}
 
 // wat? TypeScript looses the displayName if we don't set it explicitly
 DatagridCell.displayName = 'DatagridCell';

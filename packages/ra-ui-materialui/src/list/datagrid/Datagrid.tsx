@@ -29,7 +29,7 @@ import DatagridHeaderCell from './DatagridHeaderCell';
 import DatagridLoading from './DatagridLoading';
 import DatagridBody, { PureDatagridBody } from './DatagridBody';
 import useDatagridStyles from './useDatagridStyles';
-import { ClassesOverride } from '../types';
+import { ClassesOverride } from '../../types';
 
 /**
  * The Datagrid component renders a list of records as a table.

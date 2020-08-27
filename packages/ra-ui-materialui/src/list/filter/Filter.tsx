@@ -19,7 +19,7 @@ const useStyles = makeStyles(
 export interface FilterProps {
     context?: string;
     variant?: string;
-    classes: ClassesOverride<typeof useStyles>;
+    classes?: ClassesOverride<typeof useStyles>;
     children: ReactNode;
 }
 

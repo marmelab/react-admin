@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { useState, useCallback, useRef } from 'react';
+import {
+    useState,
+    useCallback,
+    useRef,
+    ReactNode,
+    HtmlHTMLAttributes,
+} from 'react';
 import PropTypes from 'prop-types';
 import Menu from '@material-ui/core/Menu';
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,6 +15,7 @@ import lodashGet from 'lodash/get';
 
 import FilterButtonMenuItem from './FilterButtonMenuItem';
 import Button from '../../button/Button';
+import { ClassesOverride } from '../../types';
 
 const useStyles = makeStyles(
     {
@@ -17,7 +24,7 @@ const useStyles = makeStyles(
     { name: 'RaFilterButton' }
 );
 
-const FilterButton = props => {
+const FilterButton = (props: FilterButtonProps): JSX.Element => {
     const {
         filters,
         displayedFilters = {},
@@ -33,7 +40,7 @@ const FilterButton = props => {
     const classes = useStyles(props);
 
     const hiddenFilters = filters.filter(
-        filterElement =>
+        (filterElement: JSX.Element) =>
             !filterElement.props.alwaysOn &&
             !displayedFilters[filterElement.props.source] &&
             typeof lodashGet(filterValues, filterElement.props.source) ===
@@ -77,10 +84,10 @@ const FilterButton = props => {
                 anchorEl={anchorEl.current}
                 onClose={handleRequestClose}
             >
-                {hiddenFilters.map(filterElement => (
+                {hiddenFilters.map((filterElement: JSX.Element) => (
                     <FilterButtonMenuItem
                         key={filterElement.props.source}
-                        filter={filterElement.props}
+                        filter={filterElement}
                         resource={resource}
                         onShow={handleShow}
                     />
@@ -99,5 +106,15 @@ FilterButton.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
 };
+
+export interface FilterButtonProps extends HtmlHTMLAttributes<HTMLDivElement> {
+    classes?: ClassesOverride<typeof useStyles>;
+    className?: string;
+    resource?: string;
+    filterValues: any;
+    showFilter: (filterName: string, defaultValue: any) => void;
+    displayedFilters: any;
+    filters: ReactNode[];
+}
 
 export default FilterButton;

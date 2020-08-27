@@ -59,6 +59,8 @@ FilterFormInput.propTypes = {
     handleHide: PropTypes.func,
     classes: PropTypes.object,
     resource: PropTypes.string,
+    margin: PropTypes.string,
+    variant: PropTypes.string,
 };
 
 export default FilterFormInput;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Datagrid from './Datagrid';
+import Datagrid from './datagrid/Datagrid';
 import SingleFieldList from './SingleFieldList';
 import ArrayField from '../field/ArrayField';
 import BooleanField from '../field/BooleanField';

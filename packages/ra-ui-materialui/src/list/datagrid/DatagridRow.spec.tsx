@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { cleanup, fireEvent, wait } from '@testing-library/react';
 import { renderWithRedux, linkToRecord } from 'ra-core';
-
-import DatagridRow from './DatagridRow';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 
-const TitleField = ({ record }) => <span>{record.title}</span>;
+import DatagridRow from './DatagridRow';
+
+const TitleField = ({ record }: any): JSX.Element => (
+    <span>{record.title}</span>
+);
 const ExpandPanel = () => <span>expanded</span>;
 
 // remove validateDomNesting warnings by react-testing-library

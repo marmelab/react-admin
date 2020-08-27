@@ -1,17 +1,22 @@
 import * as React from 'react';
-import { memo } from 'react';
+import { ReactElement, FC, memo } from 'react';
 import PropTypes from 'prop-types';
-import Table from '@material-ui/core/Table';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import TableBody from '@material-ui/core/TableBody';
+import {
+    Table,
+    TableCell,
+    TableHead,
+    TableRow,
+    TableBody,
+    IconButton,
+    Checkbox,
+} from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import IconButton from '@material-ui/core/IconButton';
-import Checkbox from '@material-ui/core/Checkbox';
 import classnames from 'classnames';
-import Placeholder from './Placeholder';
-import { useTimeout } from 'ra-core';
+import { useTimeout, Identifier, Record } from 'ra-core';
+
+import useDatagridStyles from './useDatagridStyles';
+import Placeholder from '../Placeholder';
+import { ClassesOverride } from '../../types';
 
 const times = (nbChildren, fn) =>
     Array.from({ length: nbChildren }, (_, key) => fn(key));
@@ -24,7 +29,7 @@ const DatagridLoading = ({
     nbChildren,
     nbFakeLines = 5,
     size,
-}) => {
+}: DatagridLoadingProps): JSX.Element => {
     const oneSecondHasPassed = useTimeout(1000);
 
     return oneSecondHasPassed ? (
@@ -110,5 +115,22 @@ DatagridLoading.propTypes = {
     nbFakeLines: PropTypes.number,
     size: PropTypes.oneOf(['small', 'medium']),
 };
+
+export interface DatagridLoadingProps {
+    className?: string;
+    classes?: ClassesOverride<typeof useDatagridStyles>;
+    expand?:
+        | ReactElement
+        | FC<{
+              basePath: string;
+              id: Identifier;
+              record: Record;
+              resource: string;
+          }>;
+    hasBulkActions?: boolean;
+    nbChildren: number;
+    nbFakeLines?: number;
+    size?: 'small' | 'medium';
+}
 
 export default memo(DatagridLoading);
