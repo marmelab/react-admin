@@ -11,6 +11,7 @@ import useChoices, {
     ChoicesProps,
     OptionTextElement,
     OptionText,
+    UseChoicesOptions,
 } from './useChoices';
 import useSuggestions from './useSuggestions';
 import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
@@ -32,6 +33,7 @@ export {
     ValidationError,
     FormContext,
     useWarnWhenUnsavedChanges,
+    UseChoicesOptions,
 };
 export { isRequired } from './FormField';
 export * from './validate';
