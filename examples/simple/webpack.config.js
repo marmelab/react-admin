@@ -1,7 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
-const IgnoreNotFoundExportPlugin = require('ignore-not-found-export-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
     .BundleAnalyzerPlugin;
 
@@ -27,32 +25,6 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/index.html',
         }),
-        new HardSourceWebpackPlugin(),
-        // required because of https://github.com/babel/babel/issues/7640
-        new IgnoreNotFoundExportPlugin([
-            'CallbackSideEffect',
-            'ChoicesProps',
-            'InputProps',
-            'NotificationSideEffect',
-            'OptionText',
-            'OptionTextElement',
-            'RedirectionSideEffect',
-            'RefreshSideEffect',
-            'AdminUIProps',
-            'AdminContextProps',
-            'AdminRouterProps',
-            'ReferenceArrayProps',
-            'ReferenceManyProps',
-            'LinkToType',
-            'FormContext',
-            'UseReferenceProps',
-            'SortProps',
-            'PaginationProps',
-            'CreateControllerProps',
-            'EditControllerProps',
-            'ShowControllerProps',
-            'ListControllerProps',
-        ]),
     ].concat(
         process.env.NODE_ENV === 'development'
             ? [new BundleAnalyzerPlugin()]

@@ -17,16 +17,20 @@ import useChoices, {
 import useSuggestions from './useSuggestions';
 import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
 
-export {
-    addField,
+export type {
     ChoicesProps,
     ChoicesInputProps,
-    FormDataConsumer,
-    FormField,
-    FormWithRedirect,
     InputProps,
     OptionTextElement,
     OptionText,
+    UseChoicesOptions,
+};
+
+export {
+    addField,
+    FormDataConsumer,
+    FormField,
+    FormWithRedirect,
     sanitizeEmptyValues,
     useChoices,
     useInput,
@@ -35,7 +39,6 @@ export {
     ValidationError,
     FormContext,
     useWarnWhenUnsavedChanges,
-    UseChoicesOptions,
 };
 export { isRequired } from './FormField';
 export * from './validate';

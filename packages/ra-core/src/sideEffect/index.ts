@@ -12,19 +12,22 @@ import useNotify from './useNotify';
 import useRefresh from './useRefresh';
 import useUnselectAll from './useUnselectAll';
 
+export type {
+    CallbackSideEffect,
+    NotificationSideEffect,
+    RedirectionSideEffect,
+    RefreshSideEffect,
+};
+
 export {
     adminSaga,
     authSaga,
     callbackSaga,
-    CallbackSideEffect,
     fetchSaga,
     notificationSaga,
-    NotificationSideEffect,
     redirectionSaga,
-    RedirectionSideEffect,
     accumulateSaga,
     refreshSaga,
-    RefreshSideEffect,
     undoSaga,
     useRedirect,
     useNotify,

@@ -164,16 +164,19 @@ const useMutation = (
                 .then(({ data, total }) => {
                     setState({
                         data,
-                        total,
-                        loading: false,
+                        error: null,
                         loaded: true,
+                        loading: false,
+                        total,
                     });
                 })
                 .catch(errorFromResponse => {
                     setState({
+                        data: null,
                         error: errorFromResponse,
-                        loading: false,
                         loaded: false,
+                        loading: false,
+                        total: null,
                     });
                 });
         },
