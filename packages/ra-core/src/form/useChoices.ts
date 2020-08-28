@@ -3,11 +3,21 @@ import get from 'lodash/get';
 
 import { useTranslate } from '../i18n';
 import { Record } from '../types';
+import { InputProps } from '.';
 
 export type OptionTextElement = ReactElement<{
     record: Record;
 }>;
 export type OptionText = (choice: object) => string | OptionTextElement;
+
+export interface ChoicesInputProps<T = any>
+    extends Omit<InputProps<T>, 'source'> {
+    // Optional as choices inputs can be used inside Reference inputs which inject the source
+    source?: string;
+
+    // Optional as choices inputs can be used inside Reference inputs which inject the choices
+    choices?: object[];
+}
 
 export interface ChoicesProps {
     choices: object[];

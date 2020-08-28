@@ -9,6 +9,7 @@ import useInitializeFormWithRecord from './useInitializeFormWithRecord';
 import sanitizeEmptyValues from './sanitizeEmptyValues';
 import useChoices, {
     ChoicesProps,
+    ChoicesInputProps,
     OptionTextElement,
     OptionText,
     UseChoicesOptions,
@@ -19,6 +20,7 @@ import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
 export {
     addField,
     ChoicesProps,
+    ChoicesInputProps,
     FormDataConsumer,
     FormField,
     FormWithRedirect,
