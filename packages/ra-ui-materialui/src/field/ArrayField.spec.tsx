@@ -39,7 +39,10 @@ describe('<ArrayField />', () => {
                     resource="posts"
                     record={{
                         id: 123,
-                        arr: [{ id: 123, foo: 'bar' }, { id: 456, foo: 'baz' }],
+                        arr: [
+                            { id: 123, foo: 'bar' },
+                            { id: 456, foo: 'baz' },
+                        ],
                     }}
                 >
                     <DummyIterator />

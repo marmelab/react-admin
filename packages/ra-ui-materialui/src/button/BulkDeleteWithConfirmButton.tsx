@@ -34,9 +34,7 @@ const useStyles = makeStyles(
     { name: 'RaBulkDeleteWithConfirmButton' }
 );
 
-const BulkDeleteWithConfirmButton: FC<
-    BulkDeleteWithConfirmButtonProps
-> = props => {
+const BulkDeleteWithConfirmButton: FC<BulkDeleteWithConfirmButtonProps> = props => {
     const {
         basePath,
         classes: classesOverride,

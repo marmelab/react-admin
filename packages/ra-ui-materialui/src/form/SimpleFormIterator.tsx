@@ -206,9 +206,7 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
                                                 }
                                                 input={cloneElement(input, {
                                                     source: input.props.source
-                                                        ? `${member}.${
-                                                              input.props.source
-                                                          }`
+                                                        ? `${member}.${input.props.source}`
                                                         : member,
                                                     index: input.props.source
                                                         ? undefined
@@ -218,11 +216,7 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
                                                             .label ===
                                                         'undefined'
                                                             ? input.props.source
-                                                                ? `resources.${resource}.fields.${
-                                                                      input
-                                                                          .props
-                                                                          .source
-                                                                  }`
+                                                                ? `resources.${resource}.fields.${input.props.source}`
                                                                 : undefined
                                                             : input.props.label,
                                                 })}

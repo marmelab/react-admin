@@ -115,7 +115,10 @@ describe('inferElementFromValues', () => {
         expect(
             inferElementFromValues(
                 'foo',
-                [[{ bar: 1 }, { bar: 2 }], [{ bar: 3 }, { bar: 4 }]],
+                [
+                    [{ bar: 1 }, { bar: 2 }],
+                    [{ bar: 3 }, { bar: 4 }],
+                ],
                 types
             ).getElement()
         ).toEqual(<Good source="foo">{[<Dummy key="0" source="bar" />]}</Good>);
@@ -126,7 +129,14 @@ describe('inferElementFromValues', () => {
             string: { component: Good },
         };
         expect(
-            inferElementFromValues('foo', [[1, 2], [3, 4]], types).getElement()
+            inferElementFromValues(
+                'foo',
+                [
+                    [1, 2],
+                    [3, 4],
+                ],
+                types
+            ).getElement()
         ).toEqual(<Good source="foo" />);
     });
     it('should return a boolean field for boolean values', () => {
@@ -263,7 +273,10 @@ describe('inferElementFromValues', () => {
         expect(
             inferElementFromValues(
                 'foo',
-                [{ bar: 1, baz: 2 }, { bar: 3, baz: 4 }],
+                [
+                    { bar: 1, baz: 2 },
+                    { bar: 3, baz: 4 },
+                ],
                 types
             ).getElement()
         ).toEqual(<Good source="foo.bar" />);

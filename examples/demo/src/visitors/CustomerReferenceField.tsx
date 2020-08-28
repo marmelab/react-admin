@@ -5,9 +5,10 @@ import { ReferenceField } from 'react-admin';
 import FullNameField from './FullNameField';
 import { ReferenceFieldProps } from '../types';
 
-const CustomerReferenceField: FC<
-    Omit<ReferenceFieldProps, 'reference' | 'children'>
-> = props => (
+const CustomerReferenceField: FC<Omit<
+    ReferenceFieldProps,
+    'reference' | 'children'
+>> = props => (
     <ReferenceField source="customer_id" reference="customers" {...props}>
         <FullNameField />
     </ReferenceField>

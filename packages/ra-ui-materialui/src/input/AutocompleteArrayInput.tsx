@@ -410,9 +410,11 @@ const AutocompleteArrayInput: FunctionComponent<
                                 onBlur,
                                 onChange: event => {
                                     handleFilterChange(event);
-                                    onChange!(event as React.ChangeEvent<
-                                        HTMLInputElement
-                                    >);
+                                    onChange!(
+                                        event as React.ChangeEvent<
+                                            HTMLInputElement
+                                        >
+                                    );
                                 },
                                 onFocus,
                             }}

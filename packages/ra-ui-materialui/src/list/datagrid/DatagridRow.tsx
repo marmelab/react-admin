@@ -160,8 +160,9 @@ const DatagridRow: FC<DatagridRowProps> = ({
                 {React.Children.map(children, (field, index) =>
                     isValidElement(field) ? (
                         <DatagridCell
-                            key={`${id}-${(field.props as any).source ||
-                                index}`}
+                            key={`${id}-${
+                                (field.props as any).source || index
+                            }`}
                             className={classnames(
                                 `column-${(field.props as any).source}`,
                                 classes.rowCell

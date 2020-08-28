@@ -383,9 +383,11 @@ const AutocompleteInput: FunctionComponent<
                                 onChange: event => {
                                     handleFilterChange(event);
                                     setFilterValue(event.target.value);
-                                    onChange!(event as React.ChangeEvent<
-                                        HTMLInputElement
-                                    >);
+                                    onChange!(
+                                        event as React.ChangeEvent<
+                                            HTMLInputElement
+                                        >
+                                    );
                                 },
                                 onFocus,
                             }}

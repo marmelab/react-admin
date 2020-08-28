@@ -26,9 +26,7 @@ export const buildQueryFactory = (
 
         if (!queryType) {
             throw new Error(
-                `No query or mutation matching fetch type ${aorFetchType} could be found for resource ${
-                    resource.type.name
-                }`
+                `No query or mutation matching fetch type ${aorFetchType} could be found for resource ${resource.type.name}`
             );
         }
 
