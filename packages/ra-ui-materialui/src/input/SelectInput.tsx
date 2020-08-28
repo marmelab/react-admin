@@ -8,9 +8,9 @@ import {
     useInput,
     FieldTitle,
     useTranslate,
-    InputProps,
-    ChoicesProps,
+    ChoicesInputProps,
     useChoices,
+    warning,
 } from 'ra-core';
 
 import ResettableTextField from './ResettableTextField';
@@ -145,8 +145,7 @@ const useStyles = makeStyles(
  *
  */
 const SelectInput: FunctionComponent<
-    ChoicesProps &
-        InputProps<TextFieldProps> &
+    ChoicesInputProps<TextFieldProps> &
         Omit<TextFieldProps, 'label' | 'helperText'>
 > = props => {
     const {
@@ -175,6 +174,17 @@ const SelectInput: FunctionComponent<
     } = props;
     const translate = useTranslate();
     const classes = useStyles(props);
+
+    warning(
+        source === undefined,
+        `If you're not wrapping the SelectInput inside a ReferenceInput, you must provide the source prop`
+    );
+
+    warning(
+        choices === undefined,
+        `If you're not wrapping the SelectInput inside a ReferenceInput, you must provide the choices prop`
+    );
+
     const { getChoiceText, getChoiceValue } = useChoices({
         optionText,
         optionValue,
