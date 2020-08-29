@@ -1,7 +1,14 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import TableCell from '@material-ui/core/TableCell';
+import TableCell, { TableCellProps } from '@material-ui/core/TableCell';
 import classnames from 'classnames';
+
+export type DatagridCellProps = {
+    field: React.ReactElement;
+    record: Record<string, any>;
+    basePath: string;
+    resource: string;
+} & TableCellProps;
 
 const sanitizeRestProps = ({
     cellClassName,
@@ -13,17 +20,14 @@ const sanitizeRestProps = ({
     basePath,
     resource,
     ...rest
-}) => rest;
+}: Record<string, any>) => rest;
 
-const DatagridCell = ({
-    className,
-    field,
-    record,
-    basePath,
-    resource,
-    ...rest
-}) => (
+const DatagridCell: React.FC<DatagridCellProps> = React.forwardRef<
+    HTMLTableCellElement,
+    DatagridCellProps
+>(({ className, field, record, basePath, resource, ...rest }, ref) => (
     <TableCell
+        ref={ref}
         className={classnames(className, field.props.cellClassName)}
         align={field.props.textAlign}
         {...sanitizeRestProps(rest)}
@@ -34,7 +38,7 @@ const DatagridCell = ({
             resource,
         })}
     </TableCell>
-);
+));
 
 DatagridCell.propTypes = {
     className: PropTypes.string,
