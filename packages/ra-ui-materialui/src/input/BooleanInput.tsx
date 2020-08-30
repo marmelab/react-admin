@@ -32,7 +32,7 @@ const BooleanInput: FunctionComponent<
 }) => {
     const {
         id,
-        input: { onChange: finalFormOnChange, type, value, ...inputProps },
+        input: { onChange: finalFormOnChange, value, ...inputProps },
         isRequired,
         meta: { error, touched },
     } = useInput({
@@ -43,7 +43,6 @@ const BooleanInput: FunctionComponent<
         parse,
         resource,
         source,
-        type: 'checkbox',
         validate,
         ...rest,
     });
