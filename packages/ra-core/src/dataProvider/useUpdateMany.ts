@@ -14,7 +14,7 @@ import { Identifier } from '../types';
  * @param resource The resource name, e.g. 'posts'
  * @param ids The resource identifiers, e.g. [123, 456]
  * @param data The updates to merge into all records, e.g. { views: 10 }
- * @param options Options object to pass to the dataProvider. May include side effects to be executed upon success of failure, e.g. { onSuccess: { refresh: true } }
+ * @param options Options object to pass to the dataProvider. May include side effects to be executed upon success or failure, e.g. { onSuccess: { refresh: true } }
  *
  * @returns The current request state. Destructure as [update, { data, error, loading, loaded }].
  *

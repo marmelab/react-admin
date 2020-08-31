@@ -18,7 +18,7 @@ import useQueryWithStore from './useQueryWithStore';
  *
  * @param resource The resource name, e.g. 'posts'
  * @param id The resource identifier, e.g. 123
- * @param options Options object to pass to the dataProvider. May include side effects to be executed upon success of failure, e.g. { onSuccess: { refresh: true } }
+ * @param options Options object to pass to the dataProvider. May include side effects to be executed upon success or failure, e.g. { onSuccess: { refresh: true } }
  *
  * @returns The current request state. Destructure as { data, error, loading, loaded }.
  *
