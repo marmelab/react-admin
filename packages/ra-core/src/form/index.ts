@@ -9,6 +9,7 @@ import useInitializeFormWithRecord from './useInitializeFormWithRecord';
 import sanitizeEmptyValues from './sanitizeEmptyValues';
 import useChoices, {
     ChoicesProps,
+    ChoicesInputProps,
     OptionTextElement,
     OptionText,
     UseChoicesOptions,
@@ -16,15 +17,20 @@ import useChoices, {
 import useSuggestions from './useSuggestions';
 import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
 
-export {
-    addField,
+export type {
     ChoicesProps,
-    FormDataConsumer,
-    FormField,
-    FormWithRedirect,
+    ChoicesInputProps,
     InputProps,
     OptionTextElement,
     OptionText,
+    UseChoicesOptions,
+};
+
+export {
+    addField,
+    FormDataConsumer,
+    FormField,
+    FormWithRedirect,
     sanitizeEmptyValues,
     useChoices,
     useInput,
@@ -33,7 +39,6 @@ export {
     ValidationError,
     FormContext,
     useWarnWhenUnsavedChanges,
-    UseChoicesOptions,
 };
 export { isRequired } from './FormField';
 export * from './validate';

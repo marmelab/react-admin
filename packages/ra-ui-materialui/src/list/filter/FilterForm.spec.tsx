@@ -44,7 +44,10 @@ describe('<FilterForm />', () => {
             const filters = [
                 <SelectInput
                     label="SelectWithUndefinedAllowEmpty"
-                    choices={[{ title: 'yes', id: 1 }, { title: 'no', id: 0 }]}
+                    choices={[
+                        { title: 'yes', id: 1 },
+                        { title: 'no', id: 0 },
+                    ]}
                     source="test"
                     optionText="title"
                 />,
@@ -73,7 +76,10 @@ describe('<FilterForm />', () => {
                 <SelectInput
                     label="SelectWithFalseAllowEmpty"
                     allowEmpty={false}
-                    choices={[{ title: 'yes', id: 1 }, { title: 'no', id: 0 }]}
+                    choices={[
+                        { title: 'yes', id: 1 },
+                        { title: 'no', id: 0 },
+                    ]}
                     source="test"
                     optionText="title"
                 />,
@@ -101,7 +107,10 @@ describe('<FilterForm />', () => {
                 <SelectInput
                     label="SelectWithTrueAllowEmpty"
                     allowEmpty={true}
-                    choices={[{ title: 'yes', id: 1 }, { title: 'no', id: 0 }]}
+                    choices={[
+                        { title: 'yes', id: 1 },
+                        { title: 'no', id: 0 },
+                    ]}
                     source="test"
                     optionText="title"
                 />,

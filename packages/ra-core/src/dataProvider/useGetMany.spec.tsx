@@ -187,7 +187,10 @@ describe('useGetMany', () => {
         const dataProvider = {
             getMany: jest.fn(() =>
                 Promise.resolve({
-                    data: [{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }],
+                    data: [
+                        { id: 1, title: 'foo' },
+                        { id: 2, title: 'bar' },
+                    ],
                 })
             ),
         };
@@ -209,7 +212,10 @@ describe('useGetMany', () => {
         );
         await new Promise(resolve => setTimeout(resolve, 10));
         expect(hookValue.mock.calls.pop()[0]).toEqual({
-            data: [{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }],
+            data: [
+                { id: 1, title: 'foo' },
+                { id: 2, title: 'bar' },
+            ],
             loading: false,
             loaded: true,
             error: null,
@@ -221,7 +227,10 @@ describe('useGetMany', () => {
         const dataProvider = {
             getMany: jest.fn(() =>
                 Promise.resolve({
-                    data: [{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }],
+                    data: [
+                        { id: 1, title: 'foo' },
+                        { id: 2, title: 'bar' },
+                    ],
                 })
             ),
         };
@@ -302,7 +311,10 @@ describe('useGetMany', () => {
                 )
                 .mockReturnValueOnce(
                     Promise.resolve({
-                        data: [{ id: 3, foo: 1 }, { id: 4, foo: 2 }],
+                        data: [
+                            { id: 3, foo: 1 },
+                            { id: 4, foo: 2 },
+                        ],
                     })
                 ),
         };
@@ -323,11 +335,17 @@ describe('useGetMany', () => {
         await new Promise(resolve => setTimeout(resolve, 10));
         expect(onSuccess1).toBeCalledTimes(1);
         expect(onSuccess1.mock.calls.pop()[0]).toEqual({
-            data: [{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }],
+            data: [
+                { id: 1, title: 'foo' },
+                { id: 2, title: 'bar' },
+            ],
         });
         expect(onSuccess2).toBeCalledTimes(1);
         expect(onSuccess2.mock.calls.pop()[0]).toEqual({
-            data: [{ id: 3, foo: 1 }, { id: 4, foo: 2 }],
+            data: [
+                { id: 3, foo: 1 },
+                { id: 4, foo: 2 },
+            ],
         });
     });
 
@@ -336,7 +354,10 @@ describe('useGetMany', () => {
         const dataProvider = {
             getMany: jest.fn(() =>
                 Promise.resolve({
-                    data: [{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }],
+                    data: [
+                        { id: 1, title: 'foo' },
+                        { id: 2, title: 'bar' },
+                    ],
                 })
             ),
         };

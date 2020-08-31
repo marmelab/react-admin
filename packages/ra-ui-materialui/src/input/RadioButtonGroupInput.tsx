@@ -11,7 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { RadioGroupProps } from '@material-ui/core/RadioGroup';
 import { FormControlProps } from '@material-ui/core/FormControl';
 import get from 'lodash/get';
-import { useInput, FieldTitle, InputProps, ChoicesProps } from 'ra-core';
+import { useInput, FieldTitle, ChoicesInputProps, warning } from 'ra-core';
 
 import sanitizeRestProps from './sanitizeRestProps';
 import InputHelperText from './InputHelperText';
@@ -87,7 +87,7 @@ const useStyles = makeStyles(
  * The object passed as `options` props is passed to the material-ui <RadioButtonGroup> component
  */
 const RadioButtonGroupInput: FunctionComponent<
-    ChoicesProps & InputProps<RadioGroupProps> & FormControlProps
+    ChoicesInputProps<RadioGroupProps> & FormControlProps
 > = props => {
     const {
         choices = [],
@@ -111,6 +111,16 @@ const RadioButtonGroupInput: FunctionComponent<
         ...rest
     } = props;
     const classes = useStyles(props);
+
+    warning(
+        source === undefined,
+        `If you're not wrapping the RadioButtonGroupInput inside a ReferenceInput, you must provide the source prop`
+    );
+
+    warning(
+        choices === undefined,
+        `If you're not wrapping the RadioButtonGroupInput inside a ReferenceInput, you must provide the choices prop`
+    );
 
     const {
         id,

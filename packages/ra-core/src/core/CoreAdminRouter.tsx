@@ -132,18 +132,20 @@ const CoreAdminRouter: FunctionComponent<AdminRouterProps> = props => {
 
     return (
         <div>
-            {// Render every resources children outside the React Router Switch
-            // as we need all of them and not just the one rendered
-            Children.map(
-                childrenToRender,
-                (child: React.ReactElement<ResourceProps>) =>
-                    cloneElement(child, {
-                        key: child.props.name,
-                        // The context prop instructs the Resource component to not render anything
-                        // but simply to register itself as a known resource
-                        intent: 'registration',
-                    })
-            )}
+            {
+                // Render every resources children outside the React Router Switch
+                // as we need all of them and not just the one rendered
+                Children.map(
+                    childrenToRender,
+                    (child: React.ReactElement<ResourceProps>) =>
+                        cloneElement(child, {
+                            key: child.props.name,
+                            // The context prop instructs the Resource component to not render anything
+                            // but simply to register itself as a known resource
+                            intent: 'registration',
+                        })
+                )
+            }
             <Switch>
                 {customRoutes
                     .filter(route => route.props.noLayout)

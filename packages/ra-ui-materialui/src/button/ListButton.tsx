@@ -12,7 +12,7 @@ const ListButton: FC<ListButtonProps> = ({
     icon = defaultIcon,
     ...rest
 }) => (
-    <Button component={Link} to={basePath} label={label} {...rest as any}>
+    <Button component={Link} to={basePath} label={label} {...(rest as any)}>
         {icon}
     </Button>
 );

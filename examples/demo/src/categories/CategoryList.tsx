@@ -42,9 +42,7 @@ const CategoryGrid: FC<ListControllerProps<Category>> = props => {
                 <Grid key={id} xs={12} sm={6} md={4} lg={3} xl={2} item>
                     <Card>
                         <CardMedia
-                            image={`https://marmelab.com/posters/${
-                                data[id].name
-                            }-1.jpeg`}
+                            image={`https://marmelab.com/posters/${data[id].name}-1.jpeg`}
                             className={classes.media}
                         />
                         <CardContent className={classes.title}>

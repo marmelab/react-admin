@@ -11,7 +11,10 @@ describe('<SelectField />', () => {
 
     const defaultProps = {
         source: 'foo',
-        choices: [{ id: 0, name: 'hello' }, { id: 1, name: 'world' }],
+        choices: [
+            { id: 0, name: 'hello' },
+            { id: 1, name: 'world' },
+        ],
     };
 
     it('should return null when the record is not set', () => {

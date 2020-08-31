@@ -6,7 +6,7 @@ import {
 } from 'react-final-form';
 import { Validator, composeValidators } from './validate';
 import isRequired from './isRequired';
-import { useCallback, ChangeEvent } from 'react';
+import { useCallback, ChangeEvent, FocusEvent } from 'react';
 
 export interface InputProps<T = any>
     extends Omit<
@@ -18,9 +18,9 @@ export interface InputProps<T = any>
     id?: string;
     defaultValue?: any;
     validate?: Validator | Validator[];
-    onBlur?: (event: FocusEvent) => void;
+    onBlur?: (event: FocusEvent<T>) => void;
     onChange?: (event: ChangeEvent | any) => void;
-    onFocus?: (event: FocusEvent) => void;
+    onFocus?: (event: FocusEvent<T>) => void;
     options?: T;
     input?: FieldInputProps<any, HTMLElement>;
     meta?: any;

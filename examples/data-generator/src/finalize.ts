@@ -1,6 +1,6 @@
 import { weightedBoolean } from './utils';
 
-export default function(db) {
+export default function (db) {
     // set latest purchase date
     db.commands.forEach(command => {
         let customer = db.customers[command.customer_id];

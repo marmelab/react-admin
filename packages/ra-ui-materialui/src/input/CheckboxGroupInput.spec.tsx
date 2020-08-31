@@ -9,7 +9,10 @@ describe('<CheckboxGroupInput />', () => {
     const defaultProps = {
         source: 'tags',
         resource: 'posts',
-        choices: [{ id: 'ang', name: 'Angular' }, { id: 'rct', name: 'React' }],
+        choices: [
+            { id: 'ang', name: 'Angular' },
+            { id: 'rct', name: 'React' },
+        ],
     };
 
     afterEach(cleanup);

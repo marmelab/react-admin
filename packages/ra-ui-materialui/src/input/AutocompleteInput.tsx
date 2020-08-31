@@ -15,7 +15,7 @@ import { TextFieldProps } from '@material-ui/core/TextField';
 import {
     useInput,
     FieldTitle,
-    InputProps,
+    ChoicesInputProps,
     useSuggestions,
     warning,
 } from 'ra-core';
@@ -92,7 +92,8 @@ interface Options {
  * <AutocompleteInput source="author_id" options={{ color: 'secondary', InputLabelProps: { shrink: true } }} />
  */
 const AutocompleteInput: FunctionComponent<
-    InputProps<TextFieldProps & Options> & DownshiftProps<any>
+    ChoicesInputProps<TextFieldProps & Options> &
+        Omit<DownshiftProps<any>, 'onChange'>
 > = props => {
     const {
         allowEmpty,
@@ -155,6 +156,16 @@ const AutocompleteInput: FunctionComponent<
     matchSuggestion={(filterValue, suggestion) => true}
 />
         `
+    );
+
+    warning(
+        source === undefined,
+        `If you're not wrapping the AutocompleteInput inside a ReferenceInput, you must provide the source prop`
+    );
+
+    warning(
+        choices === undefined,
+        `If you're not wrapping the AutocompleteInput inside a ReferenceInput, you must provide the choices prop`
     );
 
     const classes = useStyles(props);
@@ -372,9 +383,11 @@ const AutocompleteInput: FunctionComponent<
                                 onChange: event => {
                                     handleFilterChange(event);
                                     setFilterValue(event.target.value);
-                                    onChange!(event as React.ChangeEvent<
-                                        HTMLInputElement
-                                    >);
+                                    onChange!(
+                                        event as React.ChangeEvent<
+                                            HTMLInputElement
+                                        >
+                                    );
                                 },
                                 onFocus,
                             }}

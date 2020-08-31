@@ -137,9 +137,7 @@ ReferenceManyField.defaultProps = {
     addLabel: true,
 };
 
-export const ReferenceManyFieldView: FC<
-    ReferenceManyFieldViewProps
-> = props => {
+export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = props => {
     const { basePath, children, pagination, reference, ...rest } = props;
     return (
         <>

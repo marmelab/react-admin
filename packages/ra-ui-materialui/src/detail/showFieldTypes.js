@@ -27,7 +27,9 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             </ArrayField>
         ),
         representation: (props, children) =>
-            `<ArrayField source="${props.source}"><Datagrid>${children
+            `<ArrayField source="${
+                props.source
+            }"><Datagrid>${children
                 .map(child => child.getRepresentation())
                 .join('\n')}</Datagrid></ArrayField>`,
     },
@@ -54,9 +56,7 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
     reference: {
         component: ReferenceField,
         representation: props =>
-            `<ReferenceField source="${props.source}" reference="${
-                props.reference
-            }"><TextField source="id" /></ReferenceField>`,
+            `<ReferenceField source="${props.source}" reference="${props.reference}"><TextField source="id" /></ReferenceField>`,
     },
     referenceChild: {
         component: props => <TextField source="id" {...props} />, // eslint-disable-line react/display-name
@@ -65,9 +65,7 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
     referenceArray: {
         component: ReferenceArrayField,
         representation: props =>
-            `<ReferenceArrayField source="${props.source}" reference="${
-                props.reference
-            }"><TextField source="id" /></ReferenceArrayField>`,
+            `<ReferenceArrayField source="${props.source}" reference="${props.reference}"><TextField source="id" /></ReferenceArrayField>`,
     },
     referenceArrayChild: {
         component: props => <TextField source="id" {...props} />, // eslint-disable-line react/display-name

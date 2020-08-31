@@ -4,8 +4,8 @@ import isEqual from 'lodash/isEqual';
 // thanks Kent C Dodds for the following helpers
 
 export function useSafeSetState<T>(
-    initialState?: any
-): [T, (args: any) => void] {
+    initialState?: T
+): [T, React.Dispatch<React.SetStateAction<T>>] {
     const [state, setState] = useState(initialState);
 
     const mountedRef = useRef(false);
@@ -14,7 +14,11 @@ export function useSafeSetState<T>(
         return () => (mountedRef.current = false);
     }, []);
     const safeSetState = useCallback(
-        args => mountedRef.current && setState(args),
+        args => {
+            if (mountedRef.current) {
+                return setState(args);
+            }
+        },
         [mountedRef, setState]
     );
 

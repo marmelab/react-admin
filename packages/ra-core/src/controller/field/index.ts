@@ -11,6 +11,8 @@ import { ListControllerProps } from '../useListController';
 export type ReferenceArrayProps = ListControllerProps;
 export type ReferenceManyProps = ListControllerProps;
 
+export type { LinkToType };
+
 export {
     useReferenceArrayFieldController,
     ReferenceArrayFieldController,
@@ -18,5 +20,4 @@ export {
     getResourceLinkPath,
     useReferenceManyFieldController,
     ReferenceManyFieldController,
-    LinkToType,
 };

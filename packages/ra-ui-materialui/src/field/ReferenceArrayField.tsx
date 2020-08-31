@@ -158,9 +158,7 @@ export interface ReferenceArrayFieldViewProps
     classes?: ClassesOverride<typeof useStyles>;
 }
 
-export const ReferenceArrayFieldView: FC<
-    ReferenceArrayFieldViewProps
-> = props => {
+export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props => {
     const { children, pagination, className, reference, ...rest } = props;
     const classes = useStyles(props);
 

@@ -10,7 +10,7 @@ function* handleRefresh() {
     yield put(refreshView());
 }
 
-export default function*() {
+export default function* () {
     yield takeEvery(
         action => action.meta && action.meta.refresh,
         handleRefresh

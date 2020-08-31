@@ -205,9 +205,7 @@ describe('List Page', () => {
             ListPagePosts.logout();
             LoginPage.login('user', 'password');
             ListPageUsers.navigate();
-            cy.contains('Annamarie Mayer')
-                .parents('tr')
-                .click();
+            cy.contains('Annamarie Mayer').parents('tr').click();
             cy.contains('Summary').should(el => expect(el).to.exist);
         });
     });

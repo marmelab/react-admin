@@ -53,7 +53,7 @@ const getErrorMessage = (error, defaultMessage) =>
         : error.message;
 
 export const handleLogin = (authProvider: AuthProvider) =>
-    function*(action) {
+    function* (action) {
         const { payload, meta } = action;
         try {
             yield put({ type: USER_LOGIN_LOADING });
@@ -77,7 +77,7 @@ export const handleLogin = (authProvider: AuthProvider) =>
     };
 
 export const handleCheck = (authProvider: AuthProvider) =>
-    function*(action) {
+    function* (action) {
         const { payload, meta } = action;
         try {
             yield call([authProvider, 'checkAuth'], payload);
@@ -102,7 +102,7 @@ export const handleCheck = (authProvider: AuthProvider) =>
     };
 
 export const handleLogout = (authProvider: AuthProvider) =>
-    function*(action) {
+    function* (action) {
         const { payload } = action;
         const redirectTo = yield call([authProvider, 'logout'], undefined);
         yield put(
@@ -112,7 +112,7 @@ export const handleLogout = (authProvider: AuthProvider) =>
     };
 
 export const handleFetchError = (authProvider: AuthProvider) =>
-    function*(action) {
+    function* (action) {
         const { error } = action;
         try {
             yield call([authProvider, 'checkError'], error);

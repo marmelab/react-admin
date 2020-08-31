@@ -33,6 +33,16 @@ import useListFilterContext from './useListFilterContext';
 import useListPaginationContext from './useListPaginationContext';
 import useListSortContext from './useListSortContext';
 
+export type {
+    ListControllerProps,
+    EditControllerProps,
+    CreateControllerProps,
+    ShowControllerProps,
+    UseReferenceProps,
+    PaginationProps,
+    SortProps,
+};
+
 export {
     getListControllerProps,
     sanitizeListRestProps,
@@ -64,13 +74,6 @@ export {
     useListPaginationContext,
     useListSortContext,
     useListParams,
-    ListControllerProps,
-    EditControllerProps,
-    CreateControllerProps,
-    ShowControllerProps,
-    UseReferenceProps,
-    PaginationProps,
-    SortProps,
 };
 
 export * from './field';

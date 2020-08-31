@@ -62,10 +62,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
             return {
                 data: json,
                 total: parseInt(
-                    headers
-                        .get('content-range')
-                        .split('/')
-                        .pop(),
+                    headers.get('content-range').split('/').pop(),
                     10
                 ),
             };
@@ -107,10 +104,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
             return {
                 data: json,
                 total: parseInt(
-                    headers
-                        .get('content-range')
-                        .split('/')
-                        .pop(),
+                    headers.get('content-range').split('/').pop(),
                     10
                 ),
             };

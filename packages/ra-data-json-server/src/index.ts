@@ -55,10 +55,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
             return {
                 data: json,
                 total: parseInt(
-                    headers
-                        .get('x-total-count')
-                        .split('/')
-                        .pop(),
+                    headers.get('x-total-count').split('/').pop(),
                     10
                 ),
             };
@@ -100,10 +97,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
             return {
                 data: json,
                 total: parseInt(
-                    headers
-                        .get('x-total-count')
-                        .split('/')
-                        .pop(),
+                    headers.get('x-total-count').split('/').pop(),
                     10
                 ),
             };

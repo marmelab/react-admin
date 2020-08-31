@@ -12,7 +12,11 @@ describe('accumulate saga', () => {
             const accumulations = {};
             const finalize = finalizeFactory(tasks, accumulations);
 
-            const saga = accumulateFactory(tasks, accumulations, finalize)({
+            const saga = accumulateFactory(
+                tasks,
+                accumulations,
+                finalize
+            )({
                 payload: { resource: 'posts', ids: [1, 2] },
                 meta: { accumulate: crudGetMany },
             });
@@ -34,7 +38,11 @@ describe('accumulate saga', () => {
             };
             const finalize = finalizeFactory(tasks, accumulations);
 
-            const saga = accumulateFactory(tasks, accumulations, finalize)({
+            const saga = accumulateFactory(
+                tasks,
+                accumulations,
+                finalize
+            )({
                 payload: { resource: 'posts', ids: [2, 3] },
                 meta: { accumulate: crudGetMany },
             });
@@ -77,7 +85,11 @@ describe('accumulate saga', () => {
             const accumulations = {};
             const finalize = finalizeFactory(tasks, accumulations);
 
-            const saga = accumulateFactory(tasks, accumulations, finalize)({
+            const saga = accumulateFactory(
+                tasks,
+                accumulations,
+                finalize
+            )({
                 type: 'ACCUMULATE_ACTION',
                 payload: { ids: [1, 2] },
                 meta: {
@@ -105,7 +117,11 @@ describe('accumulate saga', () => {
             const accumulations = { posts: [1, 2] };
             const finalize = finalizeFactory(tasks, accumulations);
 
-            const saga = accumulateFactory(tasks, accumulations, finalize)({
+            const saga = accumulateFactory(
+                tasks,
+                accumulations,
+                finalize
+            )({
                 type: 'ACCUMULATE_ACTION',
                 payload: { ids: [3, 4] },
                 meta: {

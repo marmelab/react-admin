@@ -99,7 +99,7 @@ export const accumulateFactory = (tasks, accumulations, finalize) =>
         tasks[key] = yield fork(finalize, key, action.meta.accumulate);
     };
 
-export default function*() {
+export default function* () {
     /**
      * Example
      *

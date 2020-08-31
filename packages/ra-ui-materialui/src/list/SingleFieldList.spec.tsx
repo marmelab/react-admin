@@ -92,9 +92,9 @@ describe('<SingleFieldList />', () => {
             );
             const linkElements = queryAllByRole('link');
             expect(linkElements).toHaveLength(2);
-            expect(linkElements.map(link => link.getAttribute('href'))).toEqual(
-                [`/${action}/1`, `/${action}/2`]
-            );
+            expect(
+                linkElements.map(link => link.getAttribute('href'))
+            ).toEqual([`/${action}/1`, `/${action}/2`]);
             cleanup();
         });
     });
@@ -147,9 +147,9 @@ describe('<SingleFieldList />', () => {
             );
             const linkElements = queryAllByRole('link');
             expect(linkElements).toHaveLength(2);
-            expect(linkElements.map(link => link.getAttribute('href'))).toEqual(
-                [`/${action}/1/show`, `/${action}/2/show`]
-            );
+            expect(
+                linkElements.map(link => link.getAttribute('href'))
+            ).toEqual([`/${action}/1/show`, `/${action}/2/show`]);
             cleanup();
         });
     });
