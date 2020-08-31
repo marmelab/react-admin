@@ -45,7 +45,7 @@ const useGetIdentity = () => {
     });
     const authProvider = useAuthProvider();
     useEffect(() => {
-        if (typeof authProvider.getIdentity === 'function') {
+        if (authProvider && typeof authProvider.getIdentity === 'function') {
             const callAuthProvider = async () => {
                 try {
                     const identity = await authProvider.getIdentity();
