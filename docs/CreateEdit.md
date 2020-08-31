@@ -334,13 +334,13 @@ The default `onSuccess` function is:
 
 ```jsx
 // for the <Create> component:
-() => {
+({ data }) => {
     notify('ra.notification.created', 'info', { smart_count: 1 }, undoable);
     redirect('edit', basePath, data.id, data);
 }
 
 // for the <Edit> component: 
-() => {
+({ data }) => {
     notify('ra.notification.updated', 'info', { smart_count: 1 }, undoable);
     redirect('list', basePath, data.id, data);
 }
