@@ -406,13 +406,14 @@ const replayOptimisticCalls = async () => {
     // We must perform any undoable queries first so that the effects of previous undoable
     // queries do not conflict with this one.
 
-    // We only handle all sideeffects queries if there are no more undoable queries
+    // We only handle all side effects queries if there are no more undoable queries
     if (undoableOptimisticCalls.length > 0) {
         clone = [...undoableOptimisticCalls];
+        undoableOptimisticCalls.splice(0, undoableOptimisticCalls.length);
+
         await Promise.all(
             clone.map(params => Promise.resolve(doQuery.call(null, params)))
         );
-        undoableOptimisticCalls.splice(0, undoableOptimisticCalls.length);
     } else {
         clone = [...optimisticCalls];
         optimisticCalls.splice(0, optimisticCalls.length);
