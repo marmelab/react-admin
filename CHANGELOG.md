@@ -1,5 +1,19 @@
 # Changelog
 
+## v3.8.3
+
+* Fix Optimistic Effects Handling ([5212](https://github.com/marmelab/react-admin)) ([djhi](https://github.com/djhi))
+* Fix props & TypeScript related warnings in webpack, upgrade to TypeScript 4 ([5198](https://github.com/marmelab/react-admin)) ([djhi](https://github.com/djhi))
+* Fix missing `useChoices` Types ([5193](https://github.com/marmelab/react-admin)) ([djhi](https://github.com/djhi))
+* Fix cursor pointer in `<ChipField>` when wrapped in `<ReferenceField>` ([5186](https://github.com/marmelab/react-admin)) ([smeng9](https://github.com/smeng9))
+* Add easy dev setup with Gitpod in README ([5213](https://github.com/marmelab/react-admin)) ([fzaninotto](https://github.com/fzaninotto))
+* Migrate remaining `ra-ui-materialui/List` components to TypeScript ([5187](https://github.com/marmelab/react-admin)) ([fzaninotto](https://github.com/fzaninotto))
+* Migrate `ra-ui-materialui/Layout` components to typescript  RFR([5183](https://github.com/marmelab/react-admin)) ([fzaninotto](https://github.com/fzaninotto))
+* Migrate `data-generator` package to TypeScript  RFR([5174](https://github.com/marmelab/react-admin)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `onSuccess` function examples missing data parameter ([5214](https://github.com/marmelab/react-admin)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix specialized hooks definitions missiong `options` parameter ([5207](https://github.com/marmelab/react-admin)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix typos in jsDoc params of dataProvider hooks ([5206](https://github.com/marmelab/react-admin)) ([WiXSL](https://github.com/WiXSL))
+
 ## v3.8.2
 
 * Add ability to disable the `<Empty>` page in `<List>` ([5165](https://github.com/marmelab/react-admin/pull/5165)) ([jdemangeon](https://github.com/jdemangeon))
