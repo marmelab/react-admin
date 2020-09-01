@@ -237,18 +237,18 @@ const ApproveButton = ({ record }) => {
 
 The specialized hooks based on `useQuery` execute on mount:
 
-* `useGetList(resource, pagination, sort, filters)`
-* `useGetOne(resource, id)`
-* `useGetMany(resource, ids)`
-* `useGetManyReference(resource, target, id, pagination, sort, filter, referencingResource)`
+* `useGetList(resource, pagination, sort, filter, options)`
+* `useGetOne(resource, id, options)`
+* `useGetMany(resource, ids, options)`
+* `useGetManyReference(resource, target, id, pagination, sort, filter, referencingResource, options)`
 
 The specialized hooks based on `useMutation` return a callback:
 
-* `useCreate(resource, data)`
-* `useUpdate(resource, id, data, previousData)`
-* `useUpdateMany(resource, ids, data)`
-* `useDelete(resource, id)`
-* `useDeleteMany(resource, ids)`
+* `useCreate(resource, data, options)`
+* `useUpdate(resource, id, data, previousData, options)`
+* `useUpdateMany(resource, ids, data, options)`
+* `useDelete(resource, id, previousData, options)`
+* `useDeleteMany(resource, ids, options)`
 
 ## Handling Side Effects In `useDataProvider`
 
