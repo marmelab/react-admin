@@ -7,8 +7,8 @@
         "test": "node ./start.js"
     },
     "devDependencies": {
-        "@cypress/webpack-preprocessor": "^5.0.0",
-        "cypress": "^4.3.0",
-        "cypress-skip-and-only-ui": "^1.2.6"
+        "@cypress/webpack-preprocessor": "^5.4.5",
+        "cypress": "^5.1.0",
+        "cypress-skip-and-only-ui": "^1.2.7"
     }
 }
