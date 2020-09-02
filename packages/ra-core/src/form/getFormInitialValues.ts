@@ -10,19 +10,19 @@ export default function getFormInitialValues(
     }
 
     return {
-        ...getValues(defaultValue),
-        ...getValues(initialValues),
+        ...getValues(defaultValue, record),
+        ...getValues(initialValues, record),
         ...record,
     };
 }
 
-function getValues(values) {
+function getValues(values, record) {
     if (typeof values === 'object') {
         return values;
     }
 
     if (typeof values === 'function') {
-        return values();
+        return values(record);
     }
 
     return {};
