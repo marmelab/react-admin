@@ -35,5 +35,37 @@ describe('Data Simple REST Client', () => {
                 }
             );
         });
+
+        it('should use a custom http header to retrieve the number of items in the collection', async () => {
+            const httpClient = jest.fn(() =>
+                Promise.resolve({
+                    headers: new Headers({
+                        'x-total-count': '42',
+                    }),
+                    json: [{ id: 1 }],
+                    status: 200,
+                    body: '',
+                })
+            );
+            const client = simpleClient(
+                'http://localhost:3000',
+                httpClient,
+                'X-Total-Count'
+            );
+
+            const result = await client.getList('posts', {
+                filter: {},
+                pagination: {
+                    page: 1,
+                    perPage: 10,
+                },
+                sort: {
+                    field: 'title',
+                    order: 'desc',
+                },
+            });
+
+            expect(result.total).toEqual(42);
+        });
     });
 });
