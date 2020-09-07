@@ -105,7 +105,7 @@ Now all the requests to the REST API will contain the `Authorization: SRTRDFVESG
 
 Historically, Simple REST Data Provider uses the http `Content-Range` header to retrieve the number of items in a collection. But this is a *hack* of the [primary role of this header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Range).
 
-And this can be problematic, for example within an infrastructure using a Varnish that may use, modify or delete this header. We also have feedback indicating that using this header is problematic when you host your application on [Versel](https://vercel.com/).
+However this can be problematic, for example within an infrastructure using a Varnish that may use, modify or delete this header. We also have feedback indicating that using this header is problematic when you host your application on [Vercel](https://vercel.com/).
 
 The solution is to use another http header to return the number of collection's items, the other header commonly used for this is `X-Total-Count`. So if you use `X-Total-Count`, you will have to :
 
