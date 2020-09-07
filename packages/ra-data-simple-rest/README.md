@@ -107,7 +107,7 @@ Historically, Simple REST Data Provider uses the http `Content-Range` header to 
 
 However this can be problematic, for example within an infrastructure using a Varnish that may use, modify or delete this header. We also have feedback indicating that using this header is problematic when you host your application on [Vercel](https://vercel.com/).
 
-The solution is to use another http header to return the number of collection's items, the other header commonly used for this is `X-Total-Count`. So if you use `X-Total-Count`, you will have to :
+The solution is to use another http header to return the number of collection's items. The other header commonly used for this is `X-Total-Count`. So if you use `X-Total-Count`, you will have to :
 
 * Whitelist this header with an `Access-Control-Expose-Headers` [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) header.
 
