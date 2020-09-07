@@ -10,7 +10,11 @@ const emptyRecord = {};
 
 const useStyles = makeStyles(
     theme => ({
-        body: { display: 'flex', alignItems: 'flex-end' },
+        body: {
+            display: 'flex',
+            alignItems: 'flex-end',
+            pointerEvents: 'auto',
+        },
         spacer: { width: theme.spacing(2) },
         hideButton: {},
     }),
