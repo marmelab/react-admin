@@ -20,6 +20,7 @@ const useStyles = makeStyles(
             alignItems: 'flex-end',
             flexWrap: 'wrap',
             minHeight: theme.spacing(10),
+            pointerEvents: 'none',
         },
         clearFix: { clear: 'right' },
     }),
