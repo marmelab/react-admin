@@ -394,6 +394,8 @@ const AutocompleteArrayInput: FunctionComponent<
                                         className={classNames({
                                             [classes.chipContainerFilled]:
                                                 variant === 'filled',
+                                            [classes.chipContainerOutlined]:
+                                                variant === 'outlined',
                                         })}
                                     >
                                         {selectedItems.map((item, index) => (
@@ -518,6 +520,9 @@ const useStyles = makeStyles(
             },
             chipContainerFilled: {
                 margin: '27px 12px 10px 0',
+            },
+            chipContainerOutlined: {
+                margin: '12px 12px 10px 0',
             },
             inputRoot: {
                 flexWrap: 'wrap',
