@@ -1423,7 +1423,7 @@ import { TextInput } from 'react-admin';
 
 ## Transforming Input Value to/from Record
 
-The data format returned by the input component may not be what your API desires. Since React-admin uses react-final-form, we can use its [`parse()`](https://github.com/final-form/react-final-form#parse-value-any-name-string--any) and [`format()`](https://github.com/final-form/react-final-form#format-value-any-name-string--any) functions to transform the input value when saving to and loading from the record.
+The data format returned by the input component may not be what your API desires. Since React-admin uses react-final-form, we can use its [`parse`](https://final-form.org/docs/react-final-form/types/FieldProps#parse) and [`format`](https://final-form.org/docs/react-final-form/types/FieldProps#format) functions to transform the input value when saving to and loading from the record.
 
 Mnemonic for the two functions:
 
@@ -1686,7 +1686,7 @@ const PersonEdit = props => (
 
 Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
 
-React-admin relies on react-final-form, so you can grab the current form values using react-final-form [useFormState](https://github.com/final-form/react-final-form#useformstate) hook. Alternatively, you can use the react-admin `<FormDataConsumer>` component, which grabs the form values, and passes them to a child function.
+React-admin relies on react-final-form, so you can grab the current form values using react-final-form [useFormState](https://final-form.org/docs/react-final-form/api/useFormState) hook. Alternatively, you can use the react-admin `<FormDataConsumer>` component, which grabs the form values, and passes them to a child function.
 
 This facilitates the implementation of linked inputs:
 
