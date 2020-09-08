@@ -1582,7 +1582,7 @@ const LatLngInput = () => (
 
 **Tip**: Material-ui's `<TextField>` component already includes a label, so you don't need to use `<Labeled>` in this case.
 
-`useField()` returns two values: `input` and `meta`. To learn more about these props, please refer to [the `useField()` hook documentation](https://final-form.org/docs/react-final-form/api/useField) in the react-final-form website.
+`useField()` returns two values: `input` and `meta`. To learn more about these props, please refer to the [`useField`](https://final-form.org/docs/react-final-form/api/useField) hook documentation in the react-final-form website.
 
 Instead of HTML `input` elements or material-ui components, you can use react-admin input components, like `<NumberInput>` for instance. React-admin components already use `useField()`, and already include a label, so you don't need either `useField()` or `<Labeled>` when using them:
 
@@ -1716,7 +1716,7 @@ const OrderEdit = (props) => (
 - `scopedFormData`: an object containing the current values of the currently rendered item from the `ArrayInput`
 - `getSource`: a function which will translate the source into a valid one for the `ArrayInput`
 
-Would you need to update an input when another one changes, use the `useForm` hook from `react-final-form`. For example, a country input that resets a city input on change.
+Would you need to update an input when another one changes, use the [`useForm`](https://final-form.org/docs/react-final-form/api/useForm) hook from `react-final-form`. For example, a country input that resets a city input on change.
 
 ```jsx
 import * as React from 'react';
