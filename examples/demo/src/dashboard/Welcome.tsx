@@ -72,11 +72,11 @@ const Welcome: FC = () => {
 
                 <Box
                     display={{ xs: 'none', sm: 'none', md: 'block' }}
-                    width="15em"
+                    className={classes.media}
+                    width="16em"
+                    height="9em"
                     overflow="hidden"
-                >
-                    <Box height="9em" width="15em" className={classes.media} />
-                </Box>
+                />
             </Box>
         </Card>
     );
