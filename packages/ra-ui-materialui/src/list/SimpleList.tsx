@@ -74,6 +74,7 @@ const SimpleList: FC<SimpleListProps> = props => {
         rightIcon,
         secondaryText,
         tertiaryText,
+        rowStyle,
         ...rest
     } = props;
     const { basePath, data, ids, loaded, total } = useListContext(props);
@@ -95,7 +96,7 @@ const SimpleList: FC<SimpleListProps> = props => {
     return (
         total > 0 && (
             <List className={className} {...sanitizeListRestProps(rest)}>
-                {ids.map(id => (
+                {ids.map((id, rowIndex) => (
                     <LinkOrNot
                         linkType={linkType}
                         basePath={basePath}
@@ -103,7 +104,10 @@ const SimpleList: FC<SimpleListProps> = props => {
                         key={id}
                         record={data[id]}
                     >
-                        <ListItem button={!!linkType as any}>
+                        <ListItem
+                            button={!!linkType as any}
+                            style={rowStyle ? rowStyle(data[id], rowIndex) : null}
+                        >
                             {leftIcon && (
                                 <ListItemIcon>
                                     {leftIcon(data[id], id)}
@@ -221,8 +225,8 @@ const LinkOrNot: FC<LinkOrNotProps> = ({
             {children}
         </Link>
     ) : (
-        <span>{children}</span>
-    );
+                <span>{children}</span>
+            );
 };
 
 export type FunctionLinkType = (record: Record, id: Identifier) => string;
