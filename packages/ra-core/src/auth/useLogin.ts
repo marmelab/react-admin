@@ -34,9 +34,12 @@ const useLogin = (): Login => {
     const nextPathName = locationState && locationState.nextPathname;
 
     const login = useCallback(
-        (params: any = {}, pathName = defaultAuthParams.afterLoginUrl) =>
+        (params: any = {}, pathName) =>
             authProvider.login(params).then(ret => {
-                history.push(nextPathName || pathName);
+                const redirectUrl = pathName
+                    ? pathName
+                    : nextPathName || defaultAuthParams.afterLoginUrl;
+                history.push(redirectUrl);
                 return ret;
             }),
         [authProvider, history, nextPathName]
