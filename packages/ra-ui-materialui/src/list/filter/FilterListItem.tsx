@@ -156,13 +156,10 @@ const FilterListItem: FC<{ label: string; value: any }> = props => {
         setFilters({ ...filterValues, ...value }, null);
     };
     const removeFilter = () => {
-        const inverseValue = Object.keys(value).reduce(
-            (acc, key) => {
-                acc[key] = undefined;
-                return acc;
-            },
-            {} as any
-        );
+        const inverseValue = Object.keys(value).reduce((acc, key) => {
+            acc[key] = undefined;
+            return acc;
+        }, {} as any);
         setFilters({ ...filterValues, ...inverseValue }, null);
     };
 

@@ -19,7 +19,7 @@ const ShowButton: FC<ShowButtonProps> = ({
         to={`${linkToRecord(basePath, record && record.id)}/show`}
         label={label}
         onClick={stopPropagation}
-        {...rest as any}
+        {...(rest as any)}
     >
         {icon}
     </Button>

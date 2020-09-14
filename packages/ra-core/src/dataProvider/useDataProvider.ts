@@ -26,6 +26,7 @@ import useLogoutIfAccessDenied from '../auth/useLogoutIfAccessDenied';
 // List of dataProvider calls emitted while in optimistic mode.
 // These calls get replayed once the dataProvider exits optimistic mode
 const optimisticCalls = [];
+const undoableOptimisticCalls = [];
 
 /**
  * Hook for getting a dataProvider
@@ -184,7 +185,11 @@ const useDataProvider = (): DataProviderProxy => {
                         // in optimistic mode, all fetch calls are stacked, to be
                         // executed once the dataProvider leaves optimistic mode.
                         // In the meantime, the admin uses data from the store.
-                        optimisticCalls.push(params);
+                        if (undoable) {
+                            undoableOptimisticCalls.push(params);
+                        } else {
+                            optimisticCalls.push(params);
+                        }
                         return Promise.resolve();
                     }
                     return doQuery(params);
@@ -300,7 +305,10 @@ const performUndoableQuery = ({
             if (window) {
                 window.removeEventListener(
                     'beforeunload',
-                    warnBeforeClosingWindow
+                    warnBeforeClosingWindow,
+                    {
+                        capture: true,
+                    }
                 );
             }
             return;
@@ -332,7 +340,10 @@ const performUndoableQuery = ({
                     if (window) {
                         window.removeEventListener(
                             'beforeunload',
-                            warnBeforeClosingWindow
+                            warnBeforeClosingWindow,
+                            {
+                                capture: true,
+                            }
                         );
                     }
                     replayOptimisticCalls();
@@ -341,7 +352,10 @@ const performUndoableQuery = ({
                     if (window) {
                         window.removeEventListener(
                             'beforeunload',
-                            warnBeforeClosingWindow
+                            warnBeforeClosingWindow,
+                            {
+                                capture: true,
+                            }
                         );
                     }
                     if (process.env.NODE_ENV !== 'production') {
@@ -386,13 +400,28 @@ const warnBeforeClosingWindow = event => {
 };
 
 // Replay calls recorded while in optimistic mode
-const replayOptimisticCalls = () => {
-    Promise.all(
-        optimisticCalls.map(params =>
-            Promise.resolve(doQuery.call(null, params))
-        )
-    );
-    optimisticCalls.splice(0, optimisticCalls.length);
+const replayOptimisticCalls = async () => {
+    let clone;
+
+    // We must perform any undoable queries first so that the effects of previous undoable
+    // queries do not conflict with this one.
+
+    // We only handle all side effects queries if there are no more undoable queries
+    if (undoableOptimisticCalls.length > 0) {
+        clone = [...undoableOptimisticCalls];
+        undoableOptimisticCalls.splice(0, undoableOptimisticCalls.length);
+
+        await Promise.all(
+            clone.map(params => Promise.resolve(doQuery.call(null, params)))
+        );
+    } else {
+        clone = [...optimisticCalls];
+        optimisticCalls.splice(0, optimisticCalls.length);
+
+        await Promise.all(
+            clone.map(params => Promise.resolve(doQuery.call(null, params)))
+        );
+    }
 };
 
 /**

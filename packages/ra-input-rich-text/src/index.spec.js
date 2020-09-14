@@ -16,7 +16,7 @@ describe('RichTextInput', () => {
         document.getSelection = () => {
             return {
                 removeAllRanges: () => {},
-                getRangeAt: function() {},
+                getRangeAt: function () {},
             };
         };
     });

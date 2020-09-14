@@ -1,0 +1,3 @@
+tasks:
+  - init: make install
+    command: make run

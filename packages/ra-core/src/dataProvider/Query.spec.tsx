@@ -513,7 +513,6 @@ describe('Query', () => {
 
     it('should fetch again when refreshing', async () => {
         let dispatchSpy;
-        let historyForAssertions: History; // eslint-disable-line @typescript-eslint/no-unused-vars
 
         const dataProvider = {
             mytype: jest.fn(() => Promise.resolve({ data: { foo: 'bar' } })),
@@ -535,7 +534,6 @@ describe('Query', () => {
                     <TestContext enableReducers>
                         {({ store, history }) => {
                             dispatchSpy = jest.spyOn(store, 'dispatch');
-                            historyForAssertions = history;
                             return (
                                 <Query type="mytype" resource="foo">
                                     {() => <Button />}

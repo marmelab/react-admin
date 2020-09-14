@@ -40,8 +40,9 @@ class InferredElement {
         if (this.type.representation) {
             return this.type.representation(this.props, this.children);
         }
-        return `<${this.type.component.displayName ||
-            this.type.component.name} source="${this.props.source}" />`;
+        return `<${
+            this.type.component.displayName || this.type.component.name
+        } source="${this.props.source}" />`;
     }
 }
 

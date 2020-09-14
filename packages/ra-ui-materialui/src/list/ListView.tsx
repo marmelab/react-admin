@@ -15,7 +15,7 @@ import {
 
 import Title, { TitlePropType } from '../layout/Title';
 import ListToolbar from './ListToolbar';
-import DefaultPagination from './Pagination';
+import DefaultPagination from './pagination/Pagination';
 import BulkDeleteButton from '../button/BulkDeleteButton';
 import BulkActionsToolbar from './BulkActionsToolbar';
 import DefaultActions from './ListActions';
@@ -100,7 +100,7 @@ export const ListView: FC<ListViewProps> = props => {
             {...sanitizeRestProps(rest)}
         >
             <Title title={title} defaultTitle={defaultTitle} />
-            {shouldRenderEmptyPage
+            {shouldRenderEmptyPage && empty !== false
                 ? cloneElement(empty, listContext)
                 : renderList()}
         </div>

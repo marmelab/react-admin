@@ -35,7 +35,7 @@ const referenceSource = (resource, source) => `${resource}@${source}`;
  * @param {Object} filter The request filters, e.g. { title: 'hello, world' }
  * @param {string} source The field in resource containing the ids of the referenced records, e.g. 'tag_ids'
  * @param {string} referencingResource The resource name, e.g. 'posts'. Used to build a cache key
- * @param {Object} options Options object to pass to the dataProvider. May include side effects to be executed upon success of failure, e.g. { onSuccess: { refresh: true } }
+ * @param {Object} options Options object to pass to the dataProvider. May include side effects to be executed upon success or failure, e.g. { onSuccess: { refresh: true } }
  *
  * @returns The current request state. Destructure as { data, total, ids, error, loading, loaded }.
  *

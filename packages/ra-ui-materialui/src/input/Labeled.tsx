@@ -27,7 +27,7 @@ const useStyles = makeStyles(
     { name: 'RaLabeled' }
 );
 
-interface Props {
+export interface LabeledProps {
     children: ReactElement;
     className?: string;
     classes?: object;
@@ -56,7 +56,7 @@ interface Props {
  *     <FooComponent source="title" />
  * </Labeled>
  */
-const Labeled: FunctionComponent<Props> = props => {
+const Labeled: FunctionComponent<LabeledProps> = props => {
     const {
         children,
         className,

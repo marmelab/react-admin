@@ -5,7 +5,7 @@ import { TestContext } from 'ra-core';
 import ArrayField from './ArrayField';
 import NumberField from './NumberField';
 import TextField from './TextField';
-import Datagrid from '../list/Datagrid';
+import Datagrid from '../list/datagrid/Datagrid';
 
 describe('<ArrayField />', () => {
     afterEach(cleanup);
@@ -39,7 +39,10 @@ describe('<ArrayField />', () => {
                     resource="posts"
                     record={{
                         id: 123,
-                        arr: [{ id: 123, foo: 'bar' }, { id: 456, foo: 'baz' }],
+                        arr: [
+                            { id: 123, foo: 'bar' },
+                            { id: 456, foo: 'baz' },
+                        ],
                     }}
                 >
                     <DummyIterator />

@@ -11,7 +11,7 @@ import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 const useStyles = makeStyles(
     {
-        chip: { margin: 4 },
+        chip: { margin: 4, cursor: 'inherit' },
     },
     { name: 'RaChipField' }
 );

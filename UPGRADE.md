@@ -1085,7 +1085,7 @@ const PostFilter = props =>
 
 ## `<Form>` `defaultValue` Prop Was Renamed To `initialValues`
 
-This is actually to be consistent with the underlying form library ([final-form](https://final-form.org/docs/react-final-form))
+This is actually to be consistent with the underlying form library ([final-form](https://final-form.org/docs/react-final-form/getting-started))
 
 ```diff
 // for SimpleForm

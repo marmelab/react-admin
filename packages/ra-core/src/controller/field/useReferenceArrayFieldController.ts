@@ -125,11 +125,11 @@ const useReferenceArrayFieldController = ({
     const showFilter = useCallback(
         (filterName: string, defaultValue: any) => {
             setDisplayedFilters(previousState => ({
-                previousState,
+                ...previousState,
                 [filterName]: true,
             }));
             setFilterValues(previousState => ({
-                previousState,
+                ...previousState,
                 [filterName]: defaultValue,
             }));
         },

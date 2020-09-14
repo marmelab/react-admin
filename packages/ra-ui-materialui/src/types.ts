@@ -27,7 +27,7 @@ export interface ListProps extends ResourceComponentProps {
     classes?: any;
     className?: string;
     component?: FC<{ className?: string }>;
-    empty?: ReactElement;
+    empty?: ReactElement | false;
     exporter?: Exporter | false;
     filter?: any;
     filterDefaultValues?: any;

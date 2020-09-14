@@ -15,8 +15,8 @@ import {
 import LinearProgress from '../layout/LinearProgress';
 import Link from '../Link';
 import sanitizeRestProps from './sanitizeRestProps';
-import { ClassNameMap } from '@material-ui/styles';
 import { FieldProps, fieldPropTypes, InjectedFieldProps } from './types';
+import { ClassesOverride } from '../types';
 
 /**
  * Fetch reference record, and delegate rendering to child component.
@@ -129,9 +129,9 @@ ReferenceField.defaultProps = {
     link: 'edit',
 };
 
-interface ReferenceFieldProps extends FieldProps, InjectedFieldProps {
+export interface ReferenceFieldProps extends FieldProps, InjectedFieldProps {
     children: ReactElement;
-    classes?: Partial<ClassNameMap<ReferenceFieldClassKey>>;
+    classes?: ClassesOverride<typeof useStyles>;
     reference: string;
     resource?: string;
     source: string;
@@ -237,13 +237,11 @@ ReferenceFieldView.propTypes = {
     translateChoice: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
 };
 
-type ReferenceFieldClassKey = 'link';
-
-interface ReferenceFieldViewProps
+export interface ReferenceFieldViewProps
     extends FieldProps,
         InjectedFieldProps,
         UseReferenceProps {
-    classes?: Partial<ClassNameMap<ReferenceFieldClassKey>>;
+    classes?: ClassesOverride<typeof useStyles>;
     reference: string;
     resource?: string;
     translateChoice?: Function | boolean;

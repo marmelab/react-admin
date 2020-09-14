@@ -65,9 +65,7 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
     referenceArray: {
         component: ReferenceArrayInput,
         representation: props =>
-            `<ReferenceArrayInput source="${props.source}" reference="${
-                props.reference
-            }"><TextInput source="id" /></ReferenceArrayInput>`,
+            `<ReferenceArrayInput source="${props.source}" reference="${props.reference}"><TextInput source="id" /></ReferenceArrayInput>`,
     },
     referenceArrayChild: {
         component: props => <SelectInput optionText="id" {...props} />, // eslint-disable-line react/display-name

@@ -8,7 +8,7 @@ export default {
         },
     },
     typography: {
-        title: {
+        h6: {
             fontWeight: 400,
         },
     },

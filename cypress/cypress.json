@@ -8,5 +8,7 @@
     "videosFolder": "videos",
     "viewportWidth": 1280,
     "viewportHeight": 720,
-    "blacklistHosts": ["source.unsplash.com"]
+    "blockHosts": [
+        "source.unsplash.com"
+    ]
 }

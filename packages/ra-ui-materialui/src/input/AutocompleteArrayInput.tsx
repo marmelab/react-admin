@@ -15,7 +15,7 @@ import { TextFieldProps } from '@material-ui/core/TextField';
 import {
     useInput,
     FieldTitle,
-    InputProps,
+    ChoicesInputProps,
     useSuggestions,
     warning,
 } from 'ra-core';
@@ -92,7 +92,8 @@ interface Options {
  * <AutocompleteArrayInput source="author_id" options={{ color: 'secondary' }} />
  */
 const AutocompleteArrayInput: FunctionComponent<
-    InputProps<TextFieldProps & Options> & DownshiftProps<any>
+    ChoicesInputProps<TextFieldProps & Options> &
+        Omit<DownshiftProps<any>, 'onChange'>
 > = props => {
     const {
         allowDuplicates,
@@ -137,10 +138,20 @@ const AutocompleteArrayInput: FunctionComponent<
     warning(
         isValidElement(optionText) && !matchSuggestion,
         `If the optionText prop is a React element, you must also specify the matchSuggestion prop:
-<AutocompleteInput
+<AutocompleteArrayInput
     matchSuggestion={(filterValue, suggestion) => true}
 />
         `
+    );
+
+    warning(
+        source === undefined,
+        `If you're not wrapping the AutocompleteArrayInput inside a ReferenceArrayInput, you must provide the source prop`
+    );
+
+    warning(
+        choices === undefined,
+        `If you're not wrapping the AutocompleteArrayInput inside a ReferenceArrayInput, you must provide the choices prop`
     );
 
     const classes = useStyles(props);
@@ -383,6 +394,8 @@ const AutocompleteArrayInput: FunctionComponent<
                                         className={classNames({
                                             [classes.chipContainerFilled]:
                                                 variant === 'filled',
+                                            [classes.chipContainerOutlined]:
+                                                variant === 'outlined',
                                         })}
                                     >
                                         {selectedItems.map((item, index) => (
@@ -399,9 +412,11 @@ const AutocompleteArrayInput: FunctionComponent<
                                 onBlur,
                                 onChange: event => {
                                     handleFilterChange(event);
-                                    onChange!(event as React.ChangeEvent<
-                                        HTMLInputElement
-                                    >);
+                                    onChange!(
+                                        event as React.ChangeEvent<
+                                            HTMLInputElement
+                                        >
+                                    );
                                 },
                                 onFocus,
                             }}
@@ -505,6 +520,9 @@ const useStyles = makeStyles(
             },
             chipContainerFilled: {
                 margin: '27px 12px 10px 0',
+            },
+            chipContainerOutlined: {
+                margin: '12px 12px 10px 0',
             },
             inputRoot: {
                 flexWrap: 'wrap',

@@ -44,13 +44,10 @@ const Basket: FC<FieldProps<Order>> = ({ record }) => {
                         ] as Product
                 )
                 .filter(r => typeof r !== 'undefined')
-                .reduce(
-                    (prev, next) => {
-                        prev[next.id] = next;
-                        return prev;
-                    },
-                    {} as { [key: string]: Product }
-                );
+                .reduce((prev, next) => {
+                    prev[next.id] = next;
+                    return prev;
+                }, {} as { [key: string]: Product });
         }
     );
 

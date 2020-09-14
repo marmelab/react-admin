@@ -72,10 +72,7 @@ export default (
                 total:
                     countHeader === 'Content-Range'
                         ? parseInt(
-                              headers
-                                  .get('content-range')
-                                  .split('/')
-                                  .pop(),
+                              headers.get('content-range').split('/').pop(),
                               10
                           )
                         : parseInt(headers.get(countHeader.toLowerCase())),
@@ -133,10 +130,7 @@ export default (
                 total:
                     countHeader === 'Content-Range'
                         ? parseInt(
-                              headers
-                                  .get('content-range')
-                                  .split('/')
-                                  .pop(),
+                              headers.get('content-range').split('/').pop(),
                               10
                           )
                         : parseInt(headers.get(countHeader.toLowerCase())),

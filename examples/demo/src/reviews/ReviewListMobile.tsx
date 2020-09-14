@@ -76,9 +76,7 @@ const ReviewListMobile: FC<DatagridProps<Review>> = ({
                                         >
                                             <FunctionField
                                                 render={(record: Customer) =>
-                                                    `${record.first_name} ${
-                                                        record.last_name
-                                                    }`
+                                                    `${record.first_name} ${record.last_name}`
                                                 }
                                                 variant="subtitle1"
                                                 className={classes.inline}

@@ -34,7 +34,10 @@ describe('getSuggestions', () => {
         expect(
             getSuggestions({
                 ...defaultOptions,
-                choices: [{ id: 0, value: '0' }, { id: 1, value: 'one' }],
+                choices: [
+                    { id: 0, value: '0' },
+                    { id: 1, value: 'one' },
+                ],
             })('0')
         ).toEqual([{ id: 0, value: '0' }]);
     });
@@ -68,7 +71,10 @@ describe('getSuggestions', () => {
                 limitChoicesToValue: false,
                 selectedItem: choices[0],
             })('o') // should not filter 'two'
-        ).toEqual([{ id: 2, value: 'two' }, { id: 3, value: 'three' }]);
+        ).toEqual([
+            { id: 2, value: 'two' },
+            { id: 3, value: 'three' },
+        ]);
     });
 
     it('should filter choices according to the currently selected value if selectedItem is not an array and limitChoicesToValue is true', () => {
@@ -100,7 +106,10 @@ describe('getSuggestions', () => {
                 ...defaultOptions,
                 suggestionLimit: 2,
             })('')
-        ).toEqual([{ id: 1, value: 'one' }, { id: 2, value: 'two' }]);
+        ).toEqual([
+            { id: 1, value: 'one' },
+            { id: 2, value: 'two' },
+        ]);
 
         expect(
             getSuggestions({
@@ -142,6 +151,9 @@ describe('getSuggestions', () => {
                 allowDuplicates: true,
                 selectedItem: [choices[0]],
             })('o')
-        ).toEqual([{ id: 1, value: 'one' }, { id: 2, value: 'two' }]);
+        ).toEqual([
+            { id: 1, value: 'one' },
+            { id: 2, value: 'two' },
+        ]);
     });
 });

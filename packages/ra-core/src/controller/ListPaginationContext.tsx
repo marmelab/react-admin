@@ -15,6 +15,7 @@ import { ListControllerProps } from './useListController';
  * @prop {Function} setPage a callback to change the page, e.g. setPage(3)
  * @prop {integer}  perPage the number of results per page. Defaults to 25
  * @prop {Function} setPerPage a callback to change the number of results per page, e.g. setPerPage(25)
+ * @prop {string}   resource the resource name, deduced from the location. e.g. 'posts'
  *
  * @typedef Props
  * @prop {ListPaginationContextValue} value
@@ -44,13 +45,20 @@ const ListPaginationContext = createContext<ListPaginationContextValue>({
     setPage: null,
     setPerPage: null,
     total: null,
+    resource: null,
 });
 
 ListPaginationContext.displayName = 'ListPaginationContext';
 
 export type ListPaginationContextValue = Pick<
     ListControllerProps,
-    'loading' | 'page' | 'perPage' | 'setPage' | 'setPerPage' | 'total'
+    | 'loading'
+    | 'page'
+    | 'perPage'
+    | 'setPage'
+    | 'setPerPage'
+    | 'total'
+    | 'resource'
 >;
 
 export const usePickPaginationContext = (
@@ -65,6 +73,7 @@ export const usePickPaginationContext = (
                 'setPage',
                 'setPerPage',
                 'total',
+                'resource',
             ]),
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [

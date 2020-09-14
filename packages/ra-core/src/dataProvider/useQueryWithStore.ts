@@ -82,7 +82,7 @@ const defaultTotalSelector = query => (state: ReduxState) => {
  * @param {Object} query.payload The payload object, e.g; { post_id: 12 }
  * @param {Object} options
  * @param {string} options.action Redux action type
- * @param {Function} options.onSuccess Side effect function to be executed upon success of failure, e.g. { onSuccess: response => refresh() } }
+ * @param {Function} options.onSuccess Side effect function to be executed upon success or failure, e.g. { onSuccess: response => refresh() } }
  * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) } }
  * @param {Function} dataSelector Redux selector to get the result. Required.
  * @param {Function} totalSelector Redux selector to get the total (optional, only for LIST queries)

@@ -58,7 +58,8 @@ const ListToolbar: FC<ListToolbarProps> = props => {
 ListToolbar.propTypes = {
     classes: PropTypes.object,
     filters: PropTypes.element,
-    actions: PropTypes.element,
+    // @ts-ignore
+    actions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     // @ts-ignore
     exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
 };

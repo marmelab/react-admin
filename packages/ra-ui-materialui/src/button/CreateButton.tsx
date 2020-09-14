@@ -43,7 +43,7 @@ const CreateButton: FC<CreateButtonProps> = props => {
             className={className}
             label={label}
             variant={variant}
-            {...rest as any}
+            {...(rest as any)}
         >
             {icon}
         </Button>

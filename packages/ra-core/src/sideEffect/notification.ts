@@ -48,7 +48,7 @@ function* handleNotification({
     );
 }
 
-export default function*() {
+export default function* () {
     yield takeEvery(
         // @ts-ignore
         action => action.meta && action.meta.notification,

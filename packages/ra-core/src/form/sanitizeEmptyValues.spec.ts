@@ -47,9 +47,9 @@ describe('sanitizeEmptyValues', () => {
     });
     it('should accept object values in arrays', () => {
         const obj = [{ foo: 1 }, { foo: 2 }];
-        expect(sanitizeEmptyValues({ obj }, { obj: [{ foo: 1 }, {}] })).toEqual(
-            { obj: [{ foo: 1 }, { foo: null }] }
-        );
+        expect(
+            sanitizeEmptyValues({ obj }, { obj: [{ foo: 1 }, {}] })
+        ).toEqual({ obj: [{ foo: 1 }, { foo: null }] });
         expect(sanitizeEmptyValues({}, { obj })).toEqual({ obj });
     });
     it('should accept adding objects in arrays', () => {

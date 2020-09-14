@@ -95,13 +95,9 @@ describe('Edit Page', () => {
             EditPostTagsPage.clickInput('tags', 'reference-array-input');
 
             // Music should not be visible in the list after filter reset
-            cy.get('div[role=listbox]')
-                .contains('Music')
-                .should('not.exist');
+            cy.get('div[role=listbox]').contains('Music').should('not.exist');
 
-            cy.get('div[role=listbox]')
-                .contains('Photo')
-                .should('exist');
+            cy.get('div[role=listbox]').contains('Photo').should('exist');
         });
     });
 

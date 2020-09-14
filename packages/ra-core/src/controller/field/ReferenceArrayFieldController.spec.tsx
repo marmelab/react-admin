@@ -170,7 +170,10 @@ describe('<ReferenceArrayFieldController />', () => {
         const dataProvider = {
             getMany: jest.fn(() =>
                 Promise.resolve({
-                    data: [{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }],
+                    data: [
+                        { id: 1, title: 'foo' },
+                        { id: 2, title: 'bar' },
+                    ],
                 })
             ),
         };
