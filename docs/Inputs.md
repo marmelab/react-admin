@@ -1660,7 +1660,7 @@ const SexInput = props => {
         meta: { touched, error }
     } = useInput(props);
 
-    return <>
+    return (
         <Select
             label="Sex"
             {...input}
@@ -1668,7 +1668,7 @@ const SexInput = props => {
             <MenuItem value="M">Male</MenuItem>
             <MenuItem value="F">Female</MenuItem>
         </Select>
-    </>;    
+    );
 };
 export default SexInput;
 ```
