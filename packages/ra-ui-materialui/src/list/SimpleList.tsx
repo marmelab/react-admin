@@ -190,7 +190,7 @@ export interface SimpleListProps extends Omit<ListProps, 'classes'> {
     rightIcon?: FunctionToElement;
     secondaryText?: FunctionToElement;
     tertiaryText?: FunctionToElement;
-    rowStyle?: FunctionToElement;
+    rowStyle?:  (record: Record, index: number) => any;
 }
 
 const useLinkOrNotStyles = makeStyles(
