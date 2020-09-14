@@ -1616,10 +1616,11 @@ import { useInput, required } from 'react-admin';
 
 const BoundedTextField = props => {
     const {
-        input: { name, onChange },
+        input: { name, onChange, ...rest },
         meta: { touched, error },
         isRequired
     } = useInput(props);
+
     return (
         <TextField
             name={name}
@@ -1628,38 +1629,46 @@ const BoundedTextField = props => {
             error={!!(touched && error)}
             helperText={touched && error}
             required={isRequired}
+            {...rest}
         />
     );
 };
-const LatLngInput = () => (
-    <span>
-        <BoundedTextField source="lat" label="latitude" validate={[required()]} />
-        &nbsp;
-        <BoundedTextField source="lng" label="longitude" validate={[required()]} />
-    </span>
-);
+const LatLngInput = props => {
+    const {source, ...rest} = props;
+
+    return (
+        <span>
+            <BoundedTextField source="lat" label="Latitude" validate={required()} {...rest} />
+            &nbsp;
+            <BoundedTextField source="lng" label="Longitude" validate={required()} {...rest} />
+        </span>
+    );
+};
 ```
 
-Here is another example, this time using a material-ui `SelectField` component:
+Here is another example, this time using a material-ui `Select` component:
 
 ```jsx
 // in SexInput.js
-import SelectField from '@material-ui/core/SelectField';
+import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { useInput } from 'react-admin';
 
 const SexInput = props => {
-    const { input, meta: { touched, error } } = useInput(props);
-    return (
-        <SelectField
-            floatingLabelText="Sex"
-            errorText={touched && error}
+    const {
+        input,
+        meta: { touched, error }
+    } = useInput(props);
+
+    return <>
+        <Select
+            label="Sex"
             {...input}
         >
-            <MenuItem value="M" primaryText="Male" />
-            <MenuItem value="F" primaryText="Female" />
-        </SelectField>
-    );
+            <MenuItem value="M">Male</MenuItem>
+            <MenuItem value="F">Female</MenuItem>
+        </Select>
+    </>;    
 };
 export default SexInput;
 ```
@@ -1667,13 +1676,14 @@ export default SexInput;
 **Tip**: `useInput` accepts all arguments that you can pass to `useField`. That means that components using `useInput` accept props like [`format`](https://final-form.org/docs/react-final-form/types/FieldProps#format) and [`parse`](https://final-form.org/docs/react-final-form/types/FieldProps#parse), to convert values from the form to the input, and vice-versa:
 
 ```jsx
-const parse = value => // ...
-const format = value => // ...
+const parse = value => {/* ... */};
+const format = value => {/* ... */};
 
 const PersonEdit = props => (
     <Edit {...props}>
         <SimpleForm>
-            <SexInput source="sex"
+            <SexInput
+                source="sex"
                 format={formValue => formValue === 0 ? 'M' : 'F'}
                 parse={inputValue => inputValue === 'M' ? 0 : 1}
             />
