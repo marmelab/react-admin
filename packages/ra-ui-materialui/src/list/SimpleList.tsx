@@ -170,6 +170,7 @@ SimpleList.propTypes = {
     rightIcon: PropTypes.func,
     secondaryText: PropTypes.func,
     tertiaryText: PropTypes.func,
+    rowStyle: PropTypes.func,
 };
 
 export type FunctionToElement = (
@@ -189,6 +190,7 @@ export interface SimpleListProps extends Omit<ListProps, 'classes'> {
     rightIcon?: FunctionToElement;
     secondaryText?: FunctionToElement;
     tertiaryText?: FunctionToElement;
+    rowStyle?: FunctionToElement;
 }
 
 const useLinkOrNotStyles = makeStyles(
