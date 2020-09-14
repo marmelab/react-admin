@@ -1,6 +1,6 @@
 import { ReactElement, FunctionComponent } from 'react';
 
-import { Record, Sort } from '../../types';
+import { Record, SortPayload } from '../../types';
 import useReferenceManyFieldController from './useReferenceManyFieldController';
 import { ListControllerProps } from '../useListController';
 
@@ -13,7 +13,7 @@ interface Props {
     record?: Record;
     reference: string;
     resource: string;
-    sort?: Sort;
+    sort?: SortPayload;
     source: string;
     target: string;
     total?: number;

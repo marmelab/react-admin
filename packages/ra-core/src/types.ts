@@ -25,14 +25,14 @@ export interface RecordMap<RecordType = Record> {
     [id: number]: RecordType;
 }
 
-export interface Sort {
+export interface SortPayload {
     field: string;
     order: string;
 }
-export interface Filter {
+export interface FilterPayload {
     [k: string]: any;
 }
-export interface Pagination {
+export interface PaginationPayload {
     page: number;
     perPage: number;
 }
@@ -120,8 +120,8 @@ export type DataProvider = {
 };
 
 export interface GetListParams {
-    pagination: Pagination;
-    sort: Sort;
+    pagination: PaginationPayload;
+    sort: SortPayload;
     filter: any;
 }
 export interface GetListResult {
@@ -149,8 +149,8 @@ export interface GetManyResult {
 export interface GetManyReferenceParams {
     target: string;
     id: Identifier;
-    pagination: Pagination;
-    sort: Sort;
+    pagination: PaginationPayload;
+    sort: SortPayload;
     filter: any;
 }
 export interface GetManyReferenceResult {

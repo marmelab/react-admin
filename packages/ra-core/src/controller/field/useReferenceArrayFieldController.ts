@@ -3,7 +3,7 @@ import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 
 import { useSafeSetState, removeEmpty } from '../../util';
-import { Record, RecordMap, Identifier, Sort } from '../../types';
+import { Record, RecordMap, Identifier, SortPayload } from '../../types';
 import { useGetMany } from '../../dataProvider';
 import { ListControllerProps } from '../useListController';
 import { useNotify } from '../../sideEffect';
@@ -19,7 +19,7 @@ interface Option {
     record?: Record;
     reference: string;
     resource: string;
-    sort?: Sort;
+    sort?: SortPayload;
     source: string;
 }
 
