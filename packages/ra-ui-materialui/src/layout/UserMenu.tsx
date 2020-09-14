@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 
 const useStyles = makeStyles(theme => ({
+    user: {},
     userButton: {
         textTransform: 'none',
     },
