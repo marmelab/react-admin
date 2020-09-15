@@ -296,7 +296,6 @@ const performUndoableQuery = ({
             optimistic: true,
         },
     });
-    onSuccess && onSuccess({});
     undoableEventEmitter.once('end', ({ isUndo }) => {
         dispatch(stopOptimisticMode());
         if (isUndo) {
@@ -389,6 +388,8 @@ const performUndoableQuery = ({
             );
         }
     });
+    onSuccess && onSuccess({});
+
     return Promise.resolve({});
 };
 
