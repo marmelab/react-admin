@@ -4,6 +4,7 @@ import {
     RouteComponentProps,
     match as Match,
 } from 'react-router-dom';
+import { ThemeOptions } from '@material-ui/core';
 import { Location, History } from 'history';
 
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
@@ -371,9 +372,12 @@ export type DashboardComponent = ComponentType<WithPermissionsChildrenParams>;
 
 export interface LayoutProps {
     dashboard?: DashboardComponent;
-    logout: ReactNode;
-    menu: ComponentType;
-    theme: object;
+    logout?: ReactNode;
+    menu?: ComponentType<{
+        logout?: ReactNode;
+        hasDashboard?: boolean;
+    }>;
+    theme?: ThemeOptions;
     title?: TitleComponent;
 }
 
@@ -424,7 +428,7 @@ export interface AdminProps {
     loginPage?: LoginComponent | boolean;
     logoutButton?: ComponentType;
     menu?: ComponentType;
-    theme?: object;
+    theme?: ThemeOptions;
     title?: TitleComponent;
 }
 

@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { TableCell, TableSortLabel, Tooltip } from '@material-ui/core';
 import { TableCellProps } from '@material-ui/core/TableCell';
 import { makeStyles } from '@material-ui/core/styles';
-import { FieldTitle, useTranslate, Sort } from 'ra-core';
+import { FieldTitle, useTranslate, SortPayload } from 'ra-core';
 
 import { ClassesOverride } from '../../types';
 
@@ -108,7 +108,7 @@ export interface DatagridHeaderCellProps
     field?: JSX.Element;
     isSorting?: boolean;
     resource: string;
-    currentSort: Sort;
+    currentSort: SortPayload;
     updateSort: (event: any) => void;
 }
 

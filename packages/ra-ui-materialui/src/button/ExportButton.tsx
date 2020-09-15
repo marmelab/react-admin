@@ -7,9 +7,9 @@ import {
     useDataProvider,
     useNotify,
     useListContext,
-    Sort,
+    SortPayload,
     Exporter,
-    Filter,
+    FilterPayload,
 } from 'ra-core';
 import Button, { ButtonProps } from './Button';
 
@@ -97,13 +97,13 @@ const sanitizeRestProps = ({
 interface Props {
     basePath?: string;
     exporter?: Exporter;
-    filterValues?: Filter;
+    filterValues?: FilterPayload;
     icon?: JSX.Element;
     label?: string;
     maxResults?: number;
     onClick?: (e: Event) => void;
     resource?: string;
-    sort?: Sort;
+    sort?: SortPayload;
 }
 
 export type ExportButtonProps = Props & ButtonProps;
