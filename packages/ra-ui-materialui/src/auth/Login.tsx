@@ -13,19 +13,21 @@ import { ThemeProvider } from '@material-ui/styles';
 import LockIcon from '@material-ui/icons/Lock';
 import { StaticContext } from 'react-router';
 import { useHistory } from 'react-router-dom';
-import { useCheckAuth } from 'ra-core';
+import { useCheckAuth, TitleComponent } from 'ra-core';
 
 import defaultTheme from '../defaultTheme';
 import Notification from '../layout/Notification';
 import DefaultLoginForm from './LoginForm';
 
-interface Props {
+export interface LoginProps
+    extends Omit<HtmlHTMLAttributes<HTMLDivElement>, 'title'> {
     backgroundImage?: string;
-    children: ReactNode;
+    children?: ReactNode;
     classes?: object;
     className?: string;
     staticContext?: StaticContext;
-    theme: object;
+    theme?: object;
+    title?: TitleComponent;
 }
 
 const useStyles = makeStyles(
@@ -76,11 +78,10 @@ const useStyles = makeStyles(
  *        </Admin>
  *     );
  */
-const Login: React.FunctionComponent<
-    Props & HtmlHTMLAttributes<HTMLDivElement>
-> = props => {
+const Login: React.FunctionComponent<LoginProps> = props => {
     const {
         theme,
+        title,
         classes: classesOverride,
         className,
         children,

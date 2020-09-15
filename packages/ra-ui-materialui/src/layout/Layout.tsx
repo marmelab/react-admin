@@ -5,6 +5,8 @@ import React, {
     useRef,
     useState,
     ErrorInfo,
+    ReactElement,
+    ReactNode,
     ComponentType,
     HtmlHTMLAttributes,
 } from 'react';
@@ -19,7 +21,7 @@ import {
 } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { ThemeOptions } from '@material-ui/core';
-import { ComponentPropType, CustomRoutes, DashboardComponent } from 'ra-core';
+import { ComponentPropType, CustomRoutes, LayoutProps } from 'ra-core';
 import compose from 'lodash/flowRight';
 
 import DefaultAppBar from './AppBar';
@@ -84,7 +86,7 @@ const sanitizeRestProps = ({
     ...props
 }: RestProps) => props;
 
-class Layout extends Component<LayoutProps, LayoutState> {
+class Layout extends Component<MuiLayoutProps, LayoutState> {
     state = { hasError: false, errorMessage: null, errorInfo: null };
 
     constructor(props) {
@@ -181,33 +183,30 @@ class Layout extends Component<LayoutProps, LayoutState> {
     };
 }
 
-export interface LayoutProps
-    extends RouteComponentProps,
-        HtmlHTMLAttributes<HTMLDivElement> {
+export interface MuiLayoutProps
+    extends LayoutProps,
+        RouteComponentProps,
+        Omit<HtmlHTMLAttributes<HTMLDivElement>, 'title'> {
     className?: string;
     classes?: any;
     customRoutes?: CustomRoutes;
     appBar?: ComponentType<{
-        title?: string;
+        title?: string | ReactElement<any>;
         open?: boolean;
-        logout?: JSX.Element;
+        logout?: ReactNode;
     }>;
     sidebar?: ComponentType<{ children: JSX.Element }>;
-    menu?: ComponentType<{ logout?: JSX.Element; hasDashboard?: boolean }>;
     error?: ComponentType<{
         error?: string;
         errorInfo?: React.ErrorInfo;
-        title?: string;
+        title?: string | ReactElement<any>;
     }>;
-    dashboard?: DashboardComponent;
     notification?: ComponentType;
-    logout?: JSX.Element;
-    title?: string;
     open?: boolean;
 }
 
 export type RestProps = Omit<
-    LayoutProps,
+    MuiLayoutProps,
     | 'appBar'
     | 'children'
     | 'classes'

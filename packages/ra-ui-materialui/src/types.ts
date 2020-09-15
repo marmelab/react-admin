@@ -1,5 +1,5 @@
 import { FC, ReactElement, ReactNode } from 'react';
-import { usePermissions, Exporter, Sort } from 'ra-core';
+import { usePermissions, Exporter, SortPayload } from 'ra-core';
 import { RouteComponentProps } from 'react-router-dom';
 import { StaticContext } from 'react-router';
 import { LocationState } from 'history';
@@ -34,7 +34,7 @@ export interface ListProps extends ResourceComponentProps {
     filters?: ReactElement;
     pagination?: ReactElement | false;
     perPage?: number;
-    sort?: Sort;
+    sort?: SortPayload;
     title?: string | ReactElement;
 }
 

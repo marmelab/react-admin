@@ -1,8 +1,8 @@
 import React, { FC, cloneElement, Children, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
-    Filter,
-    Sort,
+    FilterPayload,
+    SortPayload,
     useReferenceManyFieldController,
     ListContextProvider,
     ListControllerProps,
@@ -100,11 +100,11 @@ export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
 
 interface ReferenceManyFieldProps extends FieldProps, InjectedFieldProps {
     children: ReactElement;
-    filter?: Filter;
+    filter?: FilterPayload;
     page?: number;
     perPage?: number;
     reference: string;
-    sort?: Sort;
+    sort?: SortPayload;
     target: string;
 }
 

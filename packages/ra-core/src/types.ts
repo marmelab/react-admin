@@ -4,6 +4,7 @@ import {
     RouteComponentProps,
     match as Match,
 } from 'react-router-dom';
+import { ThemeOptions } from '@material-ui/core';
 import { Location, History } from 'history';
 
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
@@ -25,14 +26,14 @@ export interface RecordMap<RecordType = Record> {
     [id: number]: RecordType;
 }
 
-export interface Sort {
+export interface SortPayload {
     field: string;
     order: string;
 }
-export interface Filter {
+export interface FilterPayload {
     [k: string]: any;
 }
-export interface Pagination {
+export interface PaginationPayload {
     page: number;
     perPage: number;
 }
@@ -120,8 +121,8 @@ export type DataProvider = {
 };
 
 export interface GetListParams {
-    pagination: Pagination;
-    sort: Sort;
+    pagination: PaginationPayload;
+    sort: SortPayload;
     filter: any;
 }
 export interface GetListResult {
@@ -149,8 +150,8 @@ export interface GetManyResult {
 export interface GetManyReferenceParams {
     target: string;
     id: Identifier;
-    pagination: Pagination;
-    sort: Sort;
+    pagination: PaginationPayload;
+    sort: SortPayload;
     filter: any;
 }
 export interface GetManyReferenceResult {
@@ -371,9 +372,12 @@ export type DashboardComponent = ComponentType<WithPermissionsChildrenParams>;
 
 export interface LayoutProps {
     dashboard?: DashboardComponent;
-    logout: ReactNode;
-    menu: ComponentType;
-    theme: object;
+    logout?: ReactNode;
+    menu?: ComponentType<{
+        logout?: ReactNode;
+        hasDashboard?: boolean;
+    }>;
+    theme?: ThemeOptions;
     title?: TitleComponent;
 }
 
@@ -424,7 +428,7 @@ export interface AdminProps {
     loginPage?: LoginComponent | boolean;
     logoutButton?: ComponentType;
     menu?: ComponentType;
-    theme?: object;
+    theme?: ThemeOptions;
     title?: TitleComponent;
 }
 

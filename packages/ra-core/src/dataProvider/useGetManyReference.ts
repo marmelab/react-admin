@@ -1,6 +1,11 @@
 import { useSelector, shallowEqual } from 'react-redux';
 import { CRUD_GET_MANY_REFERENCE } from '../actions/dataActions/crudGetManyReference';
-import { Pagination, Sort, Identifier, ReduxState } from '../types';
+import {
+    PaginationPayload,
+    SortPayload,
+    Identifier,
+    ReduxState,
+} from '../types';
 import useQueryWithStore from './useQueryWithStore';
 import {
     getReferences,
@@ -59,8 +64,8 @@ const useGetManyReference = (
     resource: string,
     target: string,
     id: Identifier,
-    pagination: Pagination,
-    sort: Sort,
+    pagination: PaginationPayload,
+    sort: SortPayload,
     filter: object,
     referencingResource: string,
     options?: any

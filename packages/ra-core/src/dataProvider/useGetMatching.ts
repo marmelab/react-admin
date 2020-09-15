@@ -2,7 +2,13 @@ import { useSelector } from 'react-redux';
 import get from 'lodash/get';
 
 import { CRUD_GET_MATCHING } from '../actions/dataActions/crudGetMatching';
-import { Identifier, Pagination, Sort, Record, ReduxState } from '../types';
+import {
+    Identifier,
+    PaginationPayload,
+    SortPayload,
+    Record,
+    ReduxState,
+} from '../types';
 import useQueryWithStore from './useQueryWithStore';
 import {
     getReferenceResource,
@@ -62,8 +68,8 @@ const referenceSource = (resource, source) => `${resource}@${source}`;
  */
 const useGetMatching = (
     resource: string,
-    pagination: Pagination,
-    sort: Sort,
+    pagination: PaginationPayload,
+    sort: SortPayload,
     filter: object,
     source: string,
     referencingResource: string,

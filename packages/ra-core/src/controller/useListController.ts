@@ -15,8 +15,8 @@ import { SORT_ASC } from '../reducer/admin/resource/list/queryReducer';
 import { CRUD_GET_LIST } from '../actions';
 import defaultExporter from '../export/defaultExporter';
 import {
-    Filter,
-    Sort,
+    FilterPayload,
+    SortPayload,
     RecordMap,
     Identifier,
     ReduxState,
@@ -26,11 +26,11 @@ import {
 
 export interface ListProps {
     // the props you can change
-    filter?: Filter;
+    filter?: FilterPayload;
     filters?: ReactElement<any>;
     filterDefaultValues?: object;
     perPage?: number;
-    sort?: Sort;
+    sort?: SortPayload;
     exporter?: Exporter | false;
     // the props managed by react-admin
     basePath?: string;
@@ -54,7 +54,7 @@ const defaultData = {};
 
 export interface ListControllerProps<RecordType = Record> {
     basePath: string;
-    currentSort: Sort;
+    currentSort: SortPayload;
     data: RecordMap<RecordType>;
     defaultTitle?: string;
     displayedFilters: any;

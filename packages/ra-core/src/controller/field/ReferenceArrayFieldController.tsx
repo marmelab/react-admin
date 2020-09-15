@@ -2,7 +2,7 @@ import { FunctionComponent, ReactElement } from 'react';
 
 import useReferenceArrayFieldController from './useReferenceArrayFieldController';
 import { ListControllerProps } from '../useListController';
-import { Record, Sort } from '../../types';
+import { Record, SortPayload } from '../../types';
 
 interface Props {
     basePath: string;
@@ -12,7 +12,7 @@ interface Props {
     record?: Record;
     reference: string;
     resource: string;
-    sort?: Sort;
+    sort?: SortPayload;
     source: string;
     children: (params: ListControllerProps) => ReactElement<any>;
 }
