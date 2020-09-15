@@ -56,7 +56,7 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                             e && e.redirectTo
                                 ? e.redirectTo
                                 : error && error.redirectTo
-                                ? error.redirectto
+                                ? error.redirectTo
                                 : undefined;
                         logout({}, redirectTo);
                         notify('ra.notification.logged_out', 'warning');
