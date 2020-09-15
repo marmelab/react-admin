@@ -3,7 +3,7 @@
     "compilerOptions": {
         "outDir": "lib",
         "rootDir": "src",
-        "declaration": true,
+        "declaration": false,
         "allowJs": false
     },
     "exclude": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.spec.js"],
