@@ -180,11 +180,16 @@ const useListController = <RecordType = Record>(
         get(state.admin.resources, [resource, 'list', 'total'], 0)
     );
 
+    // Since the total can be empty during the loading phase
+    // We need to override that total with the latest loaded one
+    // This way, the useEffect bellow won't reset the page to 1
+    const finalTotal = typeof total === 'undefined' ? defaultTotal : total;
+
     const finalIds = typeof total === 'undefined' ? defaultIds : ids;
 
     const totalPages = useMemo(() => {
-        return Math.ceil(total / query.perPage) || 1;
-    }, [query.perPage, total]);
+        return Math.ceil(finalTotal / query.perPage) || 1;
+    }, [query.perPage, finalTotal]);
 
     useEffect(() => {
         if (
