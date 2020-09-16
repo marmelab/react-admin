@@ -1706,6 +1706,10 @@ export const UserEdit = ({ permissions, ...props }) =>
 
 Once the `dataProvider` returns successfully after save, users see a generic notification ("Element created" / "Element updated"). You can customize this message by passing a custom success side effect function as [the `<Edit onSuccess>` prop](#onsuccess):
 
+Per default, when saving is executed with optimistic rendering, the `onSuccess` callback is directly called. To change it, you need to pass `undoable={false}` to your `<Edit />` or `<Create />` component. Then, the `onSuccess` callback will be called at the end of the dataProvider call.
+
+In addition, saved object will not be available as an argument to the `onSuccess` callback method when `undoable` feature is enabled.
+
 ```jsx
 import { Edit, useNotify, useRedirect } from 'react-admin';
 
