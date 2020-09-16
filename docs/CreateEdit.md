@@ -1708,7 +1708,7 @@ Once the `dataProvider` returns successfully after save, users see a generic not
 
 By default, when saving with optimistic rendering, the `onSuccess` callback is called immediately. To change that, you need to pass `undoable={false}` to your `<Edit />` or `<Create />` component. The `onSuccess` callback will be then called at the end of the dataProvider call.
 
-In addition, saved object will not be available as an argument to the `onSuccess` callback method when `undoable` feature is enabled.
+In addition, the saved object will not be available as an argument of the `onSuccess` callback method when `undoable` feature is enabled.
 
 ```jsx
 import { Edit, useNotify, useRedirect } from 'react-admin';
