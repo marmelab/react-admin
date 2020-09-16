@@ -105,7 +105,7 @@ describe('useCheckAuth', () => {
         expect(queryByText('not authenticated')).not.toBeNull();
     });
 
-    it('should logout whitout showing a notification', async () => {
+    it('should logout whitout showing a notification when disableNotification is true', async () => {
         const { queryByText } = render(
             <AuthContext.Provider value={authProvider}>
                 <TestComponent params={{ token: false }} disableNotification />
