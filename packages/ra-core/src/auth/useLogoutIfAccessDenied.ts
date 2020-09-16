@@ -30,7 +30,7 @@ let authCheckPromise;
  *     useEffect(() => {
  *         dataProvider.getOne('secret', { id: 123 })
  *             .catch(error => {
- *                  logoutIfaccessDenied(error);
+ *                  logoutIfAccessDenied(error);
  *                  notify('server error', 'warning');
  *              })
  *     }, []);
@@ -83,7 +83,7 @@ const logoutIfAccessDeniedWithoutProvider = () => Promise.resolve(false);
  * If the authProvider rejects the call, logs the user out and shows a logged out notification.
  *
  * @param {Error} error An Error object (usually returned by the dataProvider)
- * @param {boolean} disableNotification Avoid showing a notification after the user is logged out. False by default.
+ * @param {boolean} disableNotification Avoid showing a notification after the user is logged out. false by default.
  *
  * @return {Promise} Resolved to true if there was a logout, false otherwise
  */
