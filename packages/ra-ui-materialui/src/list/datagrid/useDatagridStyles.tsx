@@ -13,6 +13,12 @@ const useDatagridStyles = makeStyles(
             top: 0,
             zIndex: 2,
             backgroundColor: theme.palette.background.paper,
+            '&:first-child': {
+                borderTopLeftRadius: theme.shape.borderRadius,
+            },
+            '&:last-child': {
+                borderTopRightRadius: theme.shape.borderRadius,
+            },
         },
         checkbox: {},
         row: {},
