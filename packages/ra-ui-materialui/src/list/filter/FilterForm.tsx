@@ -14,7 +14,6 @@ import { ClassesOverride } from '../../types';
 const useStyles = makeStyles(
     theme => ({
         form: {
-            marginTop: -theme.spacing(2),
             paddingTop: 0,
             display: 'flex',
             alignItems: 'flex-end',
