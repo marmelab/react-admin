@@ -255,7 +255,7 @@ const useListController = <RecordType = Record>(
         setPerPage: queryModifiers.setPerPage,
         setSort: queryModifiers.setSort,
         showFilter: queryModifiers.showFilter,
-        total: typeof total === 'undefined' ? defaultTotal : total,
+        total: finalTotal,
     };
 };
 
