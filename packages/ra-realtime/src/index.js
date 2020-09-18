@@ -1,66 +1,66 @@
-import { LOCATION_CHANGE } from 'react-router-redux';
-import { takeLatest, call, put, take, cancelled } from 'redux-saga/effects';
-import { CRUD_GET_LIST, CRUD_GET_ONE, FETCH_START, FETCH_END } from 'ra-core';
-import omit from 'lodash/omit';
+import { LOCATION_CHANGE } from "connected-react-router";
+import { takeLatest, call, put, take, cancelled } from "redux-saga/effects";
+import { CRUD_GET_LIST, CRUD_GET_ONE, FETCH_START, FETCH_END } from "ra-core";
+import omit from "lodash/omit";
 
-import buildAction from './buildAction';
-import createObserverChannel from './createObserverChannel';
+import buildAction, { getFetchType } from "./buildAction";
+import createObserverChannel from "./createObserverChannel";
 
-export const watchCrudActionsFactory = observeRequest =>
-    function* watchCrudActions(action) {
-        const {
-            payload: params,
-            meta: { fetch: fetchType, resource },
-        } = action;
-        const observer = yield call(
-            observeRequest,
-            fetchType,
-            resource,
-            params
-        );
+export const watchCrudActionsFactory = (observeRequest) =>
+  function* watchCrudActions(action) {
+    const {
+      payload: params,
+      meta: { resource }
+    } = action;
 
-        if (!observer) return;
+    const fetchType = getFetchType(action.type);
 
-        const realtimeChannel = yield call(createObserverChannel, observer);
+    if (!fetchType) return;
 
-        try {
-            while (true) {
-                // eslint-disable-line
-                const payload = yield take(realtimeChannel);
-                const { type, payload: requestPayload, meta } = action;
+    const observer = yield call(observeRequest, fetchType, resource, params);
 
-                yield [
-                    put({
-                        type: `${type}_LOADING`,
-                        payload: requestPayload,
-                        meta: omit(meta, 'fetch'),
-                    }),
-                    put({ type: FETCH_START }),
-                ];
+    if (!observer) return;
 
-                const raAction = yield call(buildAction, action, payload);
+    const realtimeChannel = yield call(createObserverChannel, observer);
 
-                yield put(raAction);
+    try {
+      while (true) {
+        // eslint-disable-line
+        const payload = yield take(realtimeChannel);
+        const { type, payload: requestPayload, meta } = action;
 
-                yield put({ type: FETCH_END });
-            }
-        } finally {
-            if (yield cancelled() && realtimeChannel) {
-                realtimeChannel.close();
-            }
-        }
-    };
+        yield [
+          put({
+            type: `${type}_LOADING`,
+            payload: requestPayload,
+            meta: omit(meta, "fetch")
+          }),
+          put({ type: FETCH_START })
+        ];
 
-export const watchLocationChangeFactory = watchCrudActions =>
-    function* watchLocationChange() {
-        yield takeLatest([CRUD_GET_LIST, CRUD_GET_ONE], watchCrudActions);
-    };
+        const raAction = yield call(buildAction, action, payload);
 
-export default observeQuery =>
-    function* realtimeSaga() {
-        const watchCrudActions = watchCrudActionsFactory(observeQuery);
-        yield takeLatest(
-            LOCATION_CHANGE,
-            watchLocationChangeFactory(watchCrudActions)
-        );
-    };
+        yield put(raAction);
+
+        yield put({ type: FETCH_END });
+      }
+    } finally {
+      if (yield cancelled() && realtimeChannel) {
+        realtimeChannel.close();
+      }
+    }
+  };
+
+export const watchLocationChangeFactory = (watchCrudActions) =>
+  function* watchLocationChange() {
+    yield takeLatest([CRUD_GET_LIST, CRUD_GET_ONE], watchCrudActions);
+  };
+
+export default (observeQuery) =>
+  function* realtimeSaga() {
+    const watchCrudActions = watchCrudActionsFactory(observeQuery);
+    yield takeLatest(
+      LOCATION_CHANGE,
+      watchLocationChangeFactory(watchCrudActions)
+    );
+  };
