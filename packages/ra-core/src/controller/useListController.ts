@@ -173,18 +173,22 @@ const useListController = <RecordType = Record>(
     // useGetList hook again. While the result of this new call is loading,
     // the ids and total are empty. To avoid rendering an empty list at that
     // moment, we override the ids and total with the latest loaded ones.
-    const defaultIds = useSelector((state: ReduxState): Identifier[] =>
-        get(state.admin.resources, [resource, 'list', 'ids'], [])
+    const defaultIds = useSelector(
+        (state: ReduxState): Identifier[] =>
+            get(state.admin.resources, [resource, 'list', 'ids'], [])
     );
-    const defaultTotal = useSelector((state: ReduxState): number =>
-        get(state.admin.resources, [resource, 'list', 'total'], 0)
+    const defaultTotal = useSelector(
+        (state: ReduxState): number =>
+            get(state.admin.resources, [resource, 'list', 'total'], 0)
     );
 
     const finalIds = typeof total === 'undefined' ? defaultIds : ids;
 
+    const totalOrDefault = typeof total === 'undefined' ? defaultTotal : total;
+
     const totalPages = useMemo(() => {
-        return Math.ceil(total / query.perPage) || 1;
-    }, [query.perPage, total]);
+        return Math.ceil(totalOrDefault / query.perPage) || 1;
+    }, [query.perPage, totalOrDefault]);
 
     useEffect(() => {
         if (
@@ -250,7 +254,7 @@ const useListController = <RecordType = Record>(
         setPerPage: queryModifiers.setPerPage,
         setSort: queryModifiers.setSort,
         showFilter: queryModifiers.showFilter,
-        total: typeof total === 'undefined' ? defaultTotal : total,
+        total: totalOrDefault,
     };
 };
 
