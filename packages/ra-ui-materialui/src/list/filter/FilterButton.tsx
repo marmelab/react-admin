@@ -33,6 +33,7 @@ const FilterButton = (props: FilterButtonProps): JSX.Element => {
         classes: classesOverride,
         className,
         resource,
+        buttonProps,
         ...rest
     } = props;
     const [open, setOpen] = useState(false);
@@ -76,6 +77,7 @@ const FilterButton = (props: FilterButtonProps): JSX.Element => {
                 className="add-filter"
                 label="ra.action.add_filter"
                 onClick={handleClickButton}
+                {...buttonProps}
             >
                 <ContentFilter />
             </Button>
@@ -105,6 +107,7 @@ FilterButton.propTypes = {
     showFilter: PropTypes.func.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
+    buttonProps: PropTypes.object,
 };
 
 export interface FilterButtonProps extends HtmlHTMLAttributes<HTMLDivElement> {
@@ -115,6 +118,7 @@ export interface FilterButtonProps extends HtmlHTMLAttributes<HTMLDivElement> {
     showFilter: (filterName: string, defaultValue: any) => void;
     displayedFilters: any;
     filters: ReactNode[];
+    buttonProps: any;
 }
 
 export default FilterButton;
