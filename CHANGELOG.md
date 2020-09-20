@@ -18,7 +18,7 @@
 
 * Fix margin-top on `<Filter>` that creates an invisible overlay ([5234](https://github.com/marmelab/react-admin/pull/5234)) ([JulienMattiussi](https://github.com/JulienMattiussi))
 * Fix support for function value in `<Form initialValues>` ([5222](https://github.com/marmelab/react-admin/pull/5222)) ([djhi](https://github.com/djhi))
-* Fix  proptypes warning in `<ListToolBar>` ([5230](https://github.com/marmelab/react-admin/pull/5230)) ([zyhou](https://github.com/zyhou))
+* Fix proptypes warning in `<ListToolBar>` ([5230](https://github.com/marmelab/react-admin/pull/5230)) ([zyhou](https://github.com/zyhou))
 * Fix vulnerability in simple example due to `serve` package ([5227](https://github.com/marmelab/react-admin/pull/5227)) ([fzaninotto](https://github.com/fzaninotto))
 * Fix Firefox support in end-to-end tests ([5223](https://github.com/marmelab/react-admin/pull/5223)) ([djhi](https://github.com/djhi))
 * [Doc] Fix changelog typos ([5219](https://github.com/marmelab/react-admin/pull/5219)) ([WiXSL](https://github.com/WiXSL))

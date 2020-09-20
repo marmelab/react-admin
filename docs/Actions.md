@@ -113,7 +113,7 @@ As a reminder, here are the read query types handled by Data Providers:
 
 ## `useQueryWithStore` Hook
 
-React-admin exposes a more powerful version of `useQuery`. `useQueryWithStore` persist the response from the `dataProvider` in the internal react-admin Redux store, so that result remains available if the hook is called again in the future.  
+React-admin exposes a more powerful version of `useQuery`. `useQueryWithStore` persist the response from the `dataProvider` in the internal react-admin Redux store, so that result remains available if the hook is called again in the future.
 
 You can use this hook to show the cached result immediately on mount, while the updated result is fetched from the API. This is called optimistic rendering.
 

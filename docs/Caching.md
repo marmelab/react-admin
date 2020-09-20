@@ -26,7 +26,7 @@ In step 4, react-admin displays the post *before* fetching it, because it's alre
 
 Optimistic rendering improves user experience by displaying stale data while getting fresh data from the API, but it does not reduce the ecological footprint of an app, as the web app still makes API requests on every page. 
 
-**Tip**: This design choice explains why react-admin requires that all data provider methods return records of the same shape for a given resource. Otherwise, if the posts returned by `getList()` contain fewer fields than the posts returned by `getOne()`, in the previous scenario, the user will see an incomplete post at step 4.  
+**Tip**: This design choice explains why react-admin requires that all data provider methods return records of the same shape for a given resource. Otherwise, if the posts returned by `getList()` contain fewer fields than the posts returned by `getOne()`, in the previous scenario, the user will see an incomplete post at step 4.
 
 ## HTTP Cache
 

@@ -1,6 +1,6 @@
 # Upgrade to 3.0
 
-We took advantage of the major release to fix all the problems in react-admin that required a breaking change. As a consequence, you'll need to do many small changes in the code of existing react-admin v2 applications. Follow this step-by-step guide to upgrade to react-admin v3.  
+We took advantage of the major release to fix all the problems in react-admin that required a breaking change. As a consequence, you'll need to do many small changes in the code of existing react-admin v2 applications. Follow this step-by-step guide to upgrade to react-admin v3.
 
 ## Upgrade all react-admin packages
 
@@ -28,7 +28,7 @@ In the `packages.json`, upgrade ALL react-admin related dependencies to 3.0.0. T
     },
 ```
 
-Failing to upgrade one of the `ra-` packages will result in a duplication of the react-admin package in two incompatible versions, and cause hard-to-debug bugs.  
+Failing to upgrade one of the `ra-` packages will result in a duplication of the react-admin package in two incompatible versions, and cause hard-to-debug bugs.
 
 ## Increased version requirement for key dependencies
 
