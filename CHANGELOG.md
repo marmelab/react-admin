@@ -2,17 +2,17 @@
 
 ## v3.8.5
 
-* Fix ugly rounded corners in `<Datagrid>` Header ([5264](https://github.com/marmelab/react-admin/5264)) ([djhi](https://github.com/djhi))
-* Fix unexpected page change in `<List>` ([5263](https://github.com/marmelab/react-admin/5263)) ([jdemangeon](https://github.com/jdemangeon))
-* Fix syntax error in `useLogoutIfAccessDenied` hook ([5254](https://github.com/marmelab/react-admin/5254)) ([WiXSL](https://github.com/WiXSL))
-* Fix `useLogin` optional `pathName` cannot be reached ([5248](https://github.com/marmelab/react-admin/5248)) ([bardeutsch](https://github.com/bardeutsch))
-* Fix `<AutocompleteArrayInput />` chips input when `variant=outlined` ([5238](https://github.com/marmelab/react-admin/5238)) ([m4theushw](https://github.com/m4theushw))
-* Fix welcome banner style in the ecommerce demo ([5236](https://github.com/marmelab/react-admin/5236)) ([Luwangel](https://github.com/Luwangel))
-* [Doc] Add links to new advanced tutorials ([5261](https://github.com/marmelab/react-admin/5261)) ([djhi](https://github.com/djhi))
-* [Doc] Improve explanation of `onSuccess` callback execution in `<Edit undoable>` component ([5260](https://github.com/marmelab/react-admin/5260)) ([jdemangeon](https://github.com/jdemangeon))
-* [Doc] Improved Form examples. ([5250](https://github.com/marmelab/react-admin/5250)) ([WiXSL](https://github.com/WiXSL))
-* [Doc] Fix outdated Catalan translation link ([5245](https://github.com/marmelab/react-admin/5245)) ([joshf](https://github.com/joshf))
-* [Doc] Fix `react-final-form` links ([5239](https://github.com/marmelab/react-admin/5239)) ([WiXSL](https://github.com/WiXSL))
+* Fix ugly rounded corners in `<Datagrid>` Header ([5264](https://github.com/marmelab/react-admin/pull/5264)) ([djhi](https://github.com/djhi))
+* Fix unexpected page change in `<List>` ([5263](https://github.com/marmelab/react-admin/pull/5263)) ([jdemangeon](https://github.com/jdemangeon))
+* Fix syntax error in `useLogoutIfAccessDenied` hook ([5254](https://github.com/marmelab/react-admin/pull/5254)) ([WiXSL](https://github.com/WiXSL))
+* Fix `useLogin` optional `pathName` cannot be reached ([5248](https://github.com/marmelab/react-admin/pull/5248)) ([bardeutsch](https://github.com/bardeutsch))
+* Fix `<AutocompleteArrayInput />` chips input when `variant=outlined` ([5238](https://github.com/marmelab/react-admin/pull/5238)) ([m4theushw](https://github.com/m4theushw))
+* Fix welcome banner style in the ecommerce demo ([5236](https://github.com/marmelab/react-admin/pull/5236)) ([Luwangel](https://github.com/Luwangel))
+* [Doc] Add links to new advanced tutorials ([5261](https://github.com/marmelab/react-admin/pull/5261)) ([djhi](https://github.com/djhi))
+* [Doc] Improve explanation of `onSuccess` callback execution in `<Edit undoable>` component ([5260](https://github.com/marmelab/react-admin/pull/5260)) ([jdemangeon](https://github.com/jdemangeon))
+* [Doc] Improved Form examples. ([5250](https://github.com/marmelab/react-admin/pull/5250)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix outdated Catalan translation link ([5245](https://github.com/marmelab/react-admin/pull/5245)) ([joshf](https://github.com/joshf))
+* [Doc] Fix `react-final-form` links ([5239](https://github.com/marmelab/react-admin/pull/5239)) ([WiXSL](https://github.com/WiXSL))
 
 ## v3.8.4
 
