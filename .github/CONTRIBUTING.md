@@ -4,7 +4,7 @@ So you want to contribute to react-admin? Awesome! Thank you in advance for your
 
 ## Asking Questions
 
-For how-to questions and other non-issues, please use [StackOverflow](http://stackoverflow.com/questions/tagged/react-admin) instead of Github issues. There is a StackOverflow tag called "react-admin" that you can use to tag your questions.
+For how-to questions and other non-issues, please use [StackOverflow](https://stackoverflow.com/questions/tagged/react-admin) instead of Github issues. There is a StackOverflow tag called "react-admin" that you can use to tag your questions.
 
 ## Opening an Issue
 

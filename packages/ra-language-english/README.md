@@ -28,4 +28,4 @@ const i18nProvider = polyglotI18nProvider(locale => messages[locale]);
 
 ## License
 
-This translation is licensed under the MIT License, and sponsored by [marmelab](http://marmelab.com).
+This translation is licensed under the MIT License, and sponsored by [marmelab](https://marmelab.com).

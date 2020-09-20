@@ -103,4 +103,4 @@ Now all the requests to the REST API will contain the `Authorization: SRTRDFVESG
 
 ## License
 
-This data provider is licensed under the MIT License, and sponsored by [marmelab](http://marmelab.com).
+This data provider is licensed under the MIT License, and sponsored by [marmelab](https://marmelab.com).
