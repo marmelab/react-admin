@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useCallback, useRef } from 'react';
-import { Pagination } from '../types';
+import { PaginationPayload } from '../types';
 
 /**
  * @typedef PaginationProps
@@ -13,16 +13,16 @@ import { Pagination } from '../types';
 export interface PaginationProps {
     page: number;
     perPage: number;
-    pagination: Pagination;
+    pagination: PaginationPayload;
     setPage: (page: number) => void;
     setPerPage: (perPage: number) => void;
-    setPagination: (pagination: Pagination) => void;
+    setPagination: (pagination: PaginationPayload) => void;
 }
 
 const paginationReducer = (
-    prevState: Pagination,
-    nextState: Partial<Pagination>
-): Pagination => {
+    prevState: PaginationPayload,
+    nextState: Partial<PaginationPayload>
+): PaginationPayload => {
     return {
         ...prevState,
         ...nextState,

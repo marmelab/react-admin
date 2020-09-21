@@ -8,6 +8,7 @@ import WithPermissions from './WithPermissions';
 import useLogin from './useLogin';
 import useLogout from './useLogout';
 import useCheckAuth from './useCheckAuth';
+import useGetIdentity from './useGetIdentity';
 import useGetPermissions from './useGetPermissions';
 import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
 import convertLegacyAuthProvider from './convertLegacyAuthProvider';
@@ -21,6 +22,7 @@ export {
     useLogin,
     useLogout,
     useCheckAuth,
+    useGetIdentity,
     useGetPermissions,
     // hooks with state management
     usePermissions,

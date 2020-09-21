@@ -5,7 +5,7 @@ import {
     ReactElement,
 } from 'react';
 
-import { Sort, Record } from '../../types';
+import { SortPayload, Record } from '../../types';
 import useReferenceInputController, {
     ReferenceInputValue,
 } from './useReferenceInputController';
@@ -22,7 +22,7 @@ interface Props {
     reference: string;
     referenceSource?: (resource: string, source: string) => string;
     resource: string;
-    sort?: Sort;
+    sort?: SortPayload;
     source: string;
     onChange: () => void;
 }

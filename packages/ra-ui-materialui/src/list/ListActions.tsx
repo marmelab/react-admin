@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {
     sanitizeListRestProps,
     Identifier,
-    Sort,
+    SortPayload,
     Exporter,
     useListContext,
 } from 'ra-core';
@@ -74,7 +74,7 @@ ListActions.defaultProps = {
 };
 
 interface ListActionsProps extends ToolbarProps {
-    currentSort?: Sort;
+    currentSort?: SortPayload;
     className?: string;
     resource?: string;
     filters?: ReactElement<any>;

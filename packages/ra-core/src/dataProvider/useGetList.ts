@@ -2,8 +2,8 @@ import { useSelector, shallowEqual } from 'react-redux';
 import get from 'lodash/get';
 
 import {
-    Pagination,
-    Sort,
+    PaginationPayload,
+    SortPayload,
     ReduxState,
     Identifier,
     Record,
@@ -53,8 +53,8 @@ const defaultData = {};
  */
 const useGetList = <RecordType = Record>(
     resource: string,
-    pagination: Pagination,
-    sort: Sort,
+    pagination: PaginationPayload,
+    sort: SortPayload,
     filter: object,
     options?: any
 ): {

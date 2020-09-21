@@ -7,7 +7,12 @@ import {
     getPossibleReferenceValues,
     getReferenceResource,
 } from '../../reducer';
-import { Pagination, Sort, Record, Filter } from '../../types';
+import {
+    PaginationPayload,
+    SortPayload,
+    Record,
+    FilterPayload,
+} from '../../types';
 import { useDeepCompareEffect } from '../../util/hooks';
 
 interface UseMatchingReferencesOption {
@@ -15,9 +20,9 @@ interface UseMatchingReferencesOption {
     referenceSource: (resource: string, source: string) => string;
     resource: string;
     source: string;
-    filter: Filter;
-    pagination: Pagination;
-    sort: Sort;
+    filter: FilterPayload;
+    pagination: PaginationPayload;
+    sort: SortPayload;
     id: string;
 }
 

@@ -3,11 +3,12 @@ import { useState, useEffect } from 'react';
 import expect from 'expect';
 import { render, cleanup, wait } from '@testing-library/react';
 
-import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
+import useCheckAuth from './useCheckAuth';
 import AuthContext from './AuthContext';
 import useLogout from './useLogout';
 import useNotify from '../sideEffect/useNotify';
 import { AuthProvider } from '../types';
+import { defaultAuthParams } from './useAuthProvider';
 
 jest.mock('./useLogout');
 jest.mock('../sideEffect/useNotify');
@@ -17,19 +18,27 @@ useLogout.mockImplementation(() => logout);
 const notify = jest.fn();
 useNotify.mockImplementation(() => notify);
 
+const defaultParams = {};
+
 const TestComponent = ({
-    error,
-    disableNotification,
+    params = defaultParams,
+    logoutOnFailure = true,
+    redirectTo = defaultAuthParams.loginUrl,
+    disableNotification = false,
 }: {
-    error?: any;
+    params?: any;
+    logoutOnFailure?: boolean;
+    redirectTo?: string;
     disableNotification?: boolean;
 }) => {
-    const [loggedOut, setLoggedOut] = useState(false);
-    const logoutIfAccessDenied = useLogoutIfAccessDenied();
+    const [authenticated, setAuthenticated] = useState(true);
+    const checkAuth = useCheckAuth();
     useEffect(() => {
-        logoutIfAccessDenied(error, disableNotification).then(setLoggedOut);
-    }, [error, disableNotification, logoutIfAccessDenied]);
-    return <div>{loggedOut ? '' : 'logged in'}</div>;
+        checkAuth(params, logoutOnFailure, redirectTo, disableNotification)
+            .then(() => setAuthenticated(true))
+            .catch(error => setAuthenticated(false));
+    }, [params, logoutOnFailure, redirectTo, disableNotification]);
+    return <div>{authenticated ? 'authenticated' : 'not authenticated'}</div>;
 };
 
 let loggedIn = true;
@@ -40,85 +49,71 @@ const authProvider: AuthProvider = {
         loggedIn = false;
         return Promise.resolve();
     },
-    checkAuth: () =>
-        loggedIn ? Promise.resolve() : Promise.reject('bad method'),
+    checkAuth: params => (params.token ? Promise.resolve() : Promise.reject()),
     checkError: params => {
         if (params instanceof Error && params.message === 'denied') {
             return Promise.reject(new Error('logout'));
         }
         return Promise.resolve();
     },
-    getPermissions: () => Promise.reject('bad method'),
+    getPermissions: () => Promise.reject('not authenticated'),
 };
 
-describe('useLogoutIfAccessDenied', () => {
+describe('useCheckAuth', () => {
     afterEach(() => {
         logout.mockClear();
         notify.mockClear();
         cleanup();
     });
 
-    it('should not logout if passed no error', async () => {
+    it('should not logout if has credentials', async () => {
         const { queryByText } = render(
             <AuthContext.Provider value={authProvider}>
-                <TestComponent />
+                <TestComponent params={{ token: true }} />
             </AuthContext.Provider>
         );
         await wait();
         expect(logout).toHaveBeenCalledTimes(0);
         expect(notify).toHaveBeenCalledTimes(0);
-        expect(queryByText('logged in')).not.toBeNull();
+        expect(queryByText('authenticated')).not.toBeNull();
     });
 
-    it('should not log out if passed an error that does not make the authProvider throw', async () => {
+    it('should logout if has no credentials', async () => {
         const { queryByText } = render(
             <AuthContext.Provider value={authProvider}>
-                <TestComponent error={new Error()} />
-            </AuthContext.Provider>
-        );
-        await wait();
-        expect(logout).toHaveBeenCalledTimes(0);
-        expect(notify).toHaveBeenCalledTimes(0);
-        expect(queryByText('logged in')).not.toBeNull();
-    });
-
-    it('should logout if passed an error that makes the authProvider throw', async () => {
-        const { queryByText } = render(
-            <AuthContext.Provider value={authProvider}>
-                <TestComponent error={new Error('denied')} />
+                <TestComponent params={{ token: false }} />
             </AuthContext.Provider>
         );
         await wait();
         expect(logout).toHaveBeenCalledTimes(1);
         expect(notify).toHaveBeenCalledTimes(1);
-        expect(queryByText('logged in')).toBeNull();
+        expect(queryByText('authenticated')).toBeNull();
     });
 
-    it('should not send multiple notifications if already logged out', async () => {
-        const { queryByText } = render(
-            <AuthContext.Provider value={authProvider}>
-                <TestComponent error={new Error('denied')} />
-                <TestComponent error={new Error('denied')} />
-            </AuthContext.Provider>
-        );
-        await wait();
-        expect(logout).toHaveBeenCalledTimes(1);
-        expect(notify).toHaveBeenCalledTimes(1);
-        expect(queryByText('logged in')).toBeNull();
-    });
-
-    it('should logout whitout showing a notification', async () => {
+    it('should not logout if has no credentials and passed logoutOnFailure as false', async () => {
         const { queryByText } = render(
             <AuthContext.Provider value={authProvider}>
                 <TestComponent
-                    error={new Error('denied')}
-                    disableNotification
+                    params={{ token: false }}
+                    logoutOnFailure={false}
                 />
             </AuthContext.Provider>
         );
         await wait();
+        expect(logout).toHaveBeenCalledTimes(0);
+        expect(notify).toHaveBeenCalledTimes(0);
+        expect(queryByText('not authenticated')).not.toBeNull();
+    });
+
+    it('should logout whitout showing a notification when disableNotification is true', async () => {
+        const { queryByText } = render(
+            <AuthContext.Provider value={authProvider}>
+                <TestComponent params={{ token: false }} disableNotification />
+            </AuthContext.Provider>
+        );
+        await wait();
         expect(logout).toHaveBeenCalledTimes(1);
         expect(notify).toHaveBeenCalledTimes(0);
-        expect(queryByText('logged in')).toBeNull();
+        expect(queryByText('authenticated')).toBeNull();
     });
 });

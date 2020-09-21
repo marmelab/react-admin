@@ -15,7 +15,7 @@ import queryReducer, {
     SORT_ASC,
 } from '../reducer/admin/resource/list/queryReducer';
 import { changeListParams, ListParams } from '../actions/listActions';
-import { Sort, ReduxState, Filter } from '../types';
+import { SortPayload, ReduxState, FilterPayload } from '../types';
 import removeEmpty from '../util/removeEmpty';
 import removeKey from '../util/removeKey';
 
@@ -23,11 +23,11 @@ interface ListParamsOptions {
     resource: string;
     location: Location;
     perPage?: number;
-    sort?: Sort;
+    sort?: SortPayload;
     // default value for a filter when displayed but not yet set
-    filterDefaultValues?: Filter;
+    filterDefaultValues?: FilterPayload;
     // permanent filter which always overrides the user entry
-    filter?: Filter;
+    filter?: FilterPayload;
     debounce?: number;
 }
 

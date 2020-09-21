@@ -101,6 +101,40 @@ const httpClient = (url, options = {}) => {
 
 Now all the requests to the REST API will contain the `Authorization: SRTRDFVESGNJYTUKTYTHRG` header.
 
+## Note about Content-Range
+
+Historically, Simple REST Data Provider uses the http `Content-Range` header to retrieve the number of items in a collection. But this is a *hack* of the [primary role of this header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Range).
+
+However this can be problematic, for example within an infrastructure using a Varnish that may use, modify or delete this header. We also have feedback indicating that using this header is problematic when you host your application on [Vercel](https://vercel.com/).
+
+The solution is to use another http header to return the number of collection's items. The other header commonly used for this is `X-Total-Count`. So if you use `X-Total-Count`, you will have to :
+
+* Whitelist this header with an `Access-Control-Expose-Headers` [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) header.
+
+```
+Access-Control-Expose-Headers: X-Total-Count
+```
+
+* Use the third parameter of `simpleRestProvider` to specify the name of the header to use :
+  
+```jsx
+// in src/App.js
+import * as React from "react";
+import { Admin, Resource } from 'react-admin';
+import { fetchUtils } from 'ra-core';
+import simpleRestProvider from 'ra-data-simple-rest';
+
+import { PostList } from './posts';
+
+const App = () => (
+    <Admin dataProvider={simpleRestProvider('http://path.to.my.api/', fetchUtils.fetchJson, 'X-Total-Count')}>
+        <Resource name="posts" list={PostList} />
+    </Admin>
+);
+
+export default App;
+```
+
 ## License
 
 This data provider is licensed under the MIT License, and sponsored by [marmelab](https://marmelab.com).

@@ -30,7 +30,7 @@ let authCheckPromise;
  *     useEffect(() => {
  *         dataProvider.getOne('secret', { id: 123 })
  *             .catch(error => {
- *                  logoutIfaccessDenied(error);
+ *                  logoutIfAccessDenied(error);
  *                  notify('server error', 'warning');
  *              })
  *     }, []);
@@ -42,7 +42,7 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
     const logout = useLogout();
     const notify = useNotify();
     const logoutIfAccessDenied = useCallback(
-        (error?: any) => {
+        (error?: any, disableNotification?: boolean) => {
             // Sometimes, a component might trigger multiple simultaneous
             // dataProvider calls which all fail and call this function.
             // To avoid having multiple notifications, we first verify if
@@ -59,7 +59,8 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                                 ? error.redirectTo
                                 : undefined;
                         logout({}, redirectTo);
-                        notify('ra.notification.logged_out', 'warning');
+                        !disableNotification &&
+                            notify('ra.notification.logged_out', 'warning');
                         return true;
                     })
                     .finally(() => {
@@ -82,9 +83,13 @@ const logoutIfAccessDeniedWithoutProvider = () => Promise.resolve(false);
  * If the authProvider rejects the call, logs the user out and shows a logged out notification.
  *
  * @param {Error} error An Error object (usually returned by the dataProvider)
+ * @param {boolean} disableNotification Avoid showing a notification after the user is logged out. false by default.
  *
  * @return {Promise} Resolved to true if there was a logout, false otherwise
  */
-type LogoutIfAccessDenied = (error?: any) => Promise<boolean>;
+type LogoutIfAccessDenied = (
+    error?: any,
+    disableNotification?: boolean
+) => Promise<boolean>;
 
 export default useLogoutIfAccessDenied;

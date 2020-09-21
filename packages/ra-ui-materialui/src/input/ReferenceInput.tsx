@@ -10,8 +10,8 @@ import {
     useInput,
     useReferenceInputController,
     InputProps,
-    Pagination,
-    Sort,
+    PaginationPayload,
+    SortPayload,
     warning as warningLog,
 } from 'ra-core';
 
@@ -203,8 +203,8 @@ export interface ReferenceInputViewProps {
     reference: string;
     resource: string;
     setFilter: (v: string) => void;
-    setPagination: (pagination: Pagination) => void;
-    setSort: (sort: Sort, order?: string) => void;
+    setPagination: (pagination: PaginationPayload) => void;
+    setSort: (sort: SortPayload, order?: string) => void;
     source: string;
     warning?: string;
 }

@@ -9,54 +9,64 @@ import { Identifier, Record, RecordMap } from 'ra-core';
 import DatagridRow, { PureDatagridRow } from './DatagridRow';
 import useDatagridStyles from './useDatagridStyles';
 
-const DatagridBody: FC<DatagridBodyRow> = ({
-    basePath,
-    children,
-    classes,
-    className,
-    data,
-    expand,
-    hasBulkActions,
-    hover,
-    ids,
-    onToggleItem,
-    resource,
-    row,
-    rowClick,
-    rowStyle,
-    selectedIds,
-    isRowSelectable,
-    ...rest
-}) => (
-    <TableBody className={classnames('datagrid-body', className)} {...rest}>
-        {ids.map((id, rowIndex) =>
-            cloneElement(
-                row,
-                {
-                    basePath,
-                    classes,
-                    className: classnames(classes.row, {
-                        [classes.rowEven]: rowIndex % 2 === 0,
-                        [classes.rowOdd]: rowIndex % 2 !== 0,
-                        [classes.clickableRow]: rowClick,
-                    }),
-                    expand,
-                    hasBulkActions,
-                    hover,
-                    id,
-                    key: id,
-                    onToggleItem,
-                    record: data[id],
-                    resource,
-                    rowClick,
-                    selectable: !isRowSelectable || isRowSelectable(data[id]),
-                    selected: selectedIds.includes(id),
-                    style: rowStyle ? rowStyle(data[id], rowIndex) : null,
-                },
-                children
-            )
-        )}
-    </TableBody>
+const DatagridBody: FC<DatagridBodyRow> = React.forwardRef(
+    (
+        {
+            basePath,
+            children,
+            classes,
+            className,
+            data,
+            expand,
+            hasBulkActions,
+            hover,
+            ids,
+            onToggleItem,
+            resource,
+            row,
+            rowClick,
+            rowStyle,
+            selectedIds,
+            isRowSelectable,
+            ...rest
+        },
+        ref
+    ) => (
+        <TableBody
+            ref={ref}
+            className={classnames('datagrid-body', className)}
+            {...rest}
+        >
+            {ids.map((id, rowIndex) =>
+                cloneElement(
+                    row,
+                    {
+                        basePath,
+                        classes,
+                        className: classnames(classes.row, {
+                            [classes.rowEven]: rowIndex % 2 === 0,
+                            [classes.rowOdd]: rowIndex % 2 !== 0,
+                            [classes.clickableRow]: rowClick,
+                        }),
+                        expand,
+                        hasBulkActions,
+                        hover,
+                        id,
+                        key: id,
+                        onToggleItem,
+                        record: data[id],
+                        resource,
+                        rowClick,
+                        selectable:
+                            !isRowSelectable || isRowSelectable(data[id]),
+                        selected: selectedIds.includes(id),
+                        style: rowStyle ? rowStyle(data[id], rowIndex) : null,
+                    },
+                    children
+                )
+            )}
+        </TableBody>
+    )
 );
 
 DatagridBody.propTypes = {
@@ -117,7 +127,7 @@ export interface DatagridBodyRow extends Omit<TableBodyProps, 'classes'> {
     rowClick?: string | RowClickFunction;
     rowStyle?: (record: Record, index: number) => any;
     selectedIds?: Identifier[];
-    isRowSelectable?: (record: Record) => boolean | boolean;
+    isRowSelectable?: (record: Record) => boolean;
 }
 
 // trick material-ui Table into thinking this is one of the child type it supports
