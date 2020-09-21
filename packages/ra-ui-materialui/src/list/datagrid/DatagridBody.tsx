@@ -127,7 +127,7 @@ export interface DatagridBodyRow extends Omit<TableBodyProps, 'classes'> {
     rowClick?: string | RowClickFunction;
     rowStyle?: (record: Record, index: number) => any;
     selectedIds?: Identifier[];
-    isRowSelectable?: (record: Record) => boolean | boolean;
+    isRowSelectable?: (record: Record) => boolean;
 }
 
 // trick material-ui Table into thinking this is one of the child type it supports
