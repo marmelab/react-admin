@@ -12,7 +12,7 @@ npm install --save ra-data-json-server
 
 ## REST Dialect
 
-This Data Provider fits REST APIs powered by [JSON Server](https://github.com/typicode/json-server), such as [JSONPlaceholder](http://jsonplaceholder.typicode.com/).
+This Data Provider fits REST APIs powered by [JSON Server](https://github.com/typicode/json-server), such as [JSONPlaceholder](https://jsonplaceholder.typicode.com/).
 
 | Method             | API calls                                                                                               |
 | ------------------ | ------------------------------------------------------------------------------------------------------- |
@@ -102,4 +102,4 @@ Now all the requests to the REST API will contain the `Authorization: SRTRDFVESG
 
 ## License
 
-This data provider is licensed under the MIT License, and sponsored by [marmelab](http://marmelab.com).
+This data provider is licensed under the MIT License, and sponsored by [marmelab](https://marmelab.com).

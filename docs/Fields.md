@@ -305,7 +305,7 @@ This component accepts a `showTime` attribute (`false` by default) to force the 
 
 See [Intl.DateTimeFormat documentation](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Date/toLocaleDateString) for the `options` prop syntax.
 
-**Tip**: If you need more formatting options than what `Intl.DateTimeFormat` can provide, build your own field component leveraging a third-party library like [moment.js](http://momentjs.com/).
+**Tip**: If you need more formatting options than what `Intl.DateTimeFormat` can provide, build your own field component leveraging a third-party library like [moment.js](https://momentjs.com/).
 
 ## `<EmailField>`
 

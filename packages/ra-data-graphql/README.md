@@ -1,7 +1,7 @@
 # ra-data-graphql
 
 A GraphQL data provider for [react-admin](https://github.com/marmelab/react-admin/)
-built with [Apollo](http://www.apollodata.com/)
+built with [Apollo](https://www.apollodata.com/)
 
 - [Installation](#installation)
 - [Usage](#installation)
@@ -100,9 +100,9 @@ buildGraphQLProvider({
 });
 ```
 
-You can pass any options supported by the [ApolloClient](http://dev.apollodata.com/core/apollo-client-api.html#apollo-client) constructor with the addition of `uri` which can be specified so that we create the network interface for you.
+You can pass any options supported by the [ApolloClient](https://www.apollographql.com/docs/react/api/core/ApolloClient/) constructor with the addition of `uri` which can be specified so that we create the network interface for you.
 
-You can also supply your own [ApolloClient](http://dev.apollodata.com/core/apollo-client-api.html#apollo-client) instance directly with:
+You can also supply your own [ApolloClient](https://www.apollographql.com/docs/react/api/core/ApolloClient/) instance directly with:
 
 ```js
 buildGraphQLProvider({ client: myClient });

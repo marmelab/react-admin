@@ -2255,9 +2255,9 @@ See the [v0.5.0 announcement in the marmelab blog](http://marmelab.com/blog/2016
 * [BC Break] Pass Headers object to `restClient`
 * Add loads of documentation
 * Use `source` as implicit `label` in fields and input components
-* Add `<RichTextField>` and `<RichTextInput>` components (powered by [quill](http://quilljs.com/))
+* Add `<RichTextField>` and `<RichTextInput>` components (powered by [quill](https://quilljs.com/))
 * Add `<UrlField>` component
-* Add Form Validation in `<Edit>` and `<Create>` views (powered by [redux-form](http://redux-form.com/))
+* Add Form Validation in `<Edit>` and `<Create>` views (powered by [redux-form](https://redux-form.com/))
 * Add material-ui theme support in the `<Admin>` component (by [fnberta](https://github.com/fnberta))
 * Add option to show date with time (by [fnberta](https://github.com/fnberta))
 * Add UUID support (by [bjet007](https://github.com/bjet007))
