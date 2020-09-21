@@ -296,7 +296,7 @@ export interface DatagridProps extends Omit<TableProps, 'size' | 'classes'> {
           }>;
     hasBulkActions?: boolean;
     hover?: boolean;
-    isRowSelectable?: (record: Record) => boolean | boolean;
+    isRowSelectable?: (record: Record) => boolean;
     optimized?: boolean;
     rowClick?: string | RowClickFunction;
     rowStyle?: (record: Record, index: number) => any;
