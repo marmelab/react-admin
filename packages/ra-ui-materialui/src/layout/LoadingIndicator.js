@@ -32,7 +32,7 @@ const LoadingIndicator = props => {
             {...rest}
         />
     ) : (
-        <RefreshIconButton className={classes.icon} />
+        <RefreshIconButton className={classNames(classes.icon, className)} />
     );
 };
 
