@@ -394,3 +394,12 @@ ul.sidenav code {
     margin: 10px 0 10px 20px;
     font-size: 16px;
 }
+
+.markdown-section .icon {
+    box-shadow: none;
+    margin: 0;
+    width: 32px;
+    height: 32px;
+    transform: translate(0, 40%);
+    margin-top: -16px;
+}

@@ -1465,6 +1465,9 @@ const dateParser = v => {
 
 You can find components for react-admin in third-party repositories.
 
+- [MarkdownInput](https://marmelab.com/ra-enterprise/modules/ra-markdown) from [@react-admin/ra-markdown](https://marmelab.com/ra-enterprise/modules/ra-markdown) <img class="icon" src="./img/premium.svg" /> An [ra-enterprise](https://marmelab.com/ra-enterprise) component which allows to edit markdown content with a WYSIWYG editor.
+- [DualListInput](https://marmelab.com/ra-enterprise/modules/ra-relationships#duallistinput) from [@react-admin/ra-relationships](https://marmelab.com/ra-enterprise/modules/ra-relationships) <img class="icon" src="./img/premium.svg" /> An [ra-enterprise](https://marmelab.com/ra-enterprise) component which allows to select from a list of choices using two lists.
+- [ReferenceManyToManyInput](https://marmelab.com/ra-enterprise/modules/ra-relationships#referencemanytomanyinput) from [@react-admin/ra-relationships](https://marmelab.com/ra-enterprise/modules/ra-relationships) <img class="icon" src="./img/premium.svg" /> An [ra-enterprise](https://marmelab.com/ra-enterprise) component which allows to create, edit or remove relationships between two resources sharing an associative table.
 - [vascofg/react-admin-color-input](https://github.com/vascofg/react-admin-color-input): a color input using [React Color](https://casesandberg.github.io/react-color/), a collection of color pickers.
 - [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs): a collection of Date Inputs, based on [material-ui-pickers](https://material-ui-pickers.firebaseapp.com/)
 - [maluramichael/ra-input-markdown](https://github.com/maluramichael/ra-input-markdown): a markdown editor, based on [react-mde](https://github.com/andrerpena/react-mde) and [showdown](https://github.com/showdownjs/showdown)
