@@ -1,5 +1,6 @@
 import { FC, ReactElement, ElementType } from 'react';
 import {
+    Identifier,
     Exporter,
     SortPayload,
     Record as RaRecord,
@@ -61,6 +62,13 @@ export interface ShowProps extends ResourceComponentPropsWithId {
     className?: string;
     component?: ElementType;
     title?: string | ReactElement;
+}
+
+export interface BulkActionProps {
+    basePath?: string;
+    filterValues?: any;
+    resource?: string;
+    selectedIds?: Identifier[];
 }
 
 /**

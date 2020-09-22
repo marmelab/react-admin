@@ -14,6 +14,7 @@ import {
 } from 'ra-core';
 
 import Button, { ButtonProps } from './Button';
+import { BulkActionProps } from '../types';
 
 const useStyles = makeStyles(
     theme => ({
@@ -97,15 +98,11 @@ const sanitizeRestProps = ({
 }: Omit<BulkDeleteWithUndoButtonProps, 'resource' | 'selectedIds' | 'icon'>) =>
     rest;
 
-interface Props {
-    basePath?: string;
-    filterValues?: any;
-    icon: ReactElement;
-    resource: string;
-    selectedIds: Identifier[];
+export interface BulkDeleteWithUndoButtonProps
+    extends BulkActionProps,
+        ButtonProps {
+    icon?: ReactElement;
 }
-
-export type BulkDeleteWithUndoButtonProps = Props & ButtonProps;
 
 BulkDeleteWithUndoButton.propTypes = {
     basePath: PropTypes.string,

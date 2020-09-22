@@ -110,13 +110,6 @@ export interface ToolbarProps<T extends Record = Record> {
     undoable?: boolean;
 }
 
-export interface BulkActionProps<Params = {}> {
-    basePath?: string;
-    filterValues?: Params;
-    resource?: string;
-    selectedIds?: Identifier[];
-}
-
 export interface FilterProps<Params = {}> {
     classes?: ClassNameMap<FilterClassKey>;
     context?: 'form' | 'button';

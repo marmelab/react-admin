@@ -13,6 +13,7 @@ import {
     FunctionField,
     TextField,
     useListContext,
+    Record,
 } from 'react-admin';
 
 import AvatarField from '../visitors/AvatarField';
@@ -70,8 +71,16 @@ const ReviewListMobile = () => {
                                             link={false}
                                         >
                                             <FunctionField
-                                                render={(record: Customer) =>
-                                                    `${record.first_name} ${record.last_name}`
+                                                render={(record?: Record) =>
+                                                    record
+                                                        ? `${
+                                                              (record as Customer)
+                                                                  .first_name
+                                                          } ${
+                                                              (record as Customer)
+                                                                  .last_name
+                                                          }`
+                                                        : ''
                                                 }
                                                 variant="subtitle1"
                                                 className={classes.inline}

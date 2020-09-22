@@ -47,6 +47,7 @@ const ReviewListDesktop: FC<ReviewListDesktopProps> = ({
     return (
         <Datagrid
             rowClick="edit"
+            // @ts-ignore
             rowStyle={selectedRow ? rowStyle(selectedRow, theme) : undefined}
             classes={{
                 headerRow: classes.headerRow,

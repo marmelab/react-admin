@@ -10,11 +10,15 @@ import {
     useRefresh,
     useUnselectAll,
     CRUD_UPDATE_MANY,
+    BulkActionProps,
+    Identifier,
 } from 'react-admin';
 
-import { BulkActionProps } from '../types';
+const noSelection: Identifier[] = [];
 
-const BulkRejectButton: FC<BulkActionProps> = ({ selectedIds }) => {
+const BulkRejectButton: FC<BulkActionProps> = ({
+    selectedIds = noSelection,
+}) => {
     const notify = useNotify();
     const refresh = useRefresh();
     const unselectAll = useUnselectAll('reviews');

@@ -1,17 +1,22 @@
 import * as React from 'react';
 import { Fragment, useCallback, FC } from 'react';
 import classnames from 'classnames';
-import { BulkDeleteButton, List, ListProps } from 'react-admin';
+import {
+    BulkDeleteButton,
+    List,
+    ListProps,
+    BulkActionProps,
+} from 'react-admin';
 import { Route, RouteChildrenProps, useHistory } from 'react-router-dom';
 import { Drawer, useMediaQuery, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+
 import BulkAcceptButton from './BulkAcceptButton';
 import BulkRejectButton from './BulkRejectButton';
 import ReviewListMobile from './ReviewListMobile';
 import ReviewListDesktop from './ReviewListDesktop';
 import ReviewFilter from './ReviewFilter';
 import ReviewEdit from './ReviewEdit';
-import { BulkActionProps } from '../types';
 
 const ReviewsBulkActionButtons: FC<BulkActionProps> = props => (
     <Fragment>
@@ -40,7 +45,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const ReviewList: FC<ListProps<{ id: string }>> = props => {
+const ReviewList: FC<ListProps> = props => {
     const classes = useStyles();
     const isXSmall = useMediaQuery<Theme>(theme =>
         theme.breakpoints.down('xs')
