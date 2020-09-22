@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, memo } from 'react';
+import { FC, memo, ElementType } from 'react';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 
@@ -41,6 +41,9 @@ TextField.propTypes = {
 export interface TextFieldProps
     extends FieldProps,
         InjectedFieldProps,
-        TypographyProps {}
+        TypographyProps {
+    // TypographyProps do not expose the component props, see https://github.com/mui-org/material-ui/issues/19512
+    component?: ElementType<any>;
+}
 
 export default TextField;

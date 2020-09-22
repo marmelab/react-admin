@@ -4,14 +4,10 @@ import {
     ReduxState,
     Record,
     Identifier,
-    usePermissions,
     RedirectionSideEffect,
+    ListControllerProps,
 } from 'ra-core';
-import { RouteComponentProps } from 'react-router-dom';
-import { StaticContext } from 'react-router';
-import * as H from 'history';
 import { ClassNameMap } from '@material-ui/core/styles/withStyles';
-import { ListControllerProps } from 'ra-core/esm/controller/useListController';
 import { FormRenderProps } from 'react-final-form';
 
 export type ThemeName = 'light' | 'dark';
@@ -98,11 +94,6 @@ export interface Review extends Record {
     product_id: Identifier;
 }
 
-export interface ResourceMatch {
-    id: string;
-    [k: string]: string;
-}
-
 type FilterClassKey = 'button' | 'form';
 
 export interface ToolbarProps<T extends Record = Record> {
@@ -140,47 +131,6 @@ export interface FilterProps<Params = {}> {
 export interface DatagridProps<RecordType = Record>
     extends Partial<ListControllerProps<RecordType>> {
     hasBulkActions?: boolean;
-}
-
-export interface ResourceComponentProps<
-    Params extends { [K in keyof Params]?: string } = {},
-    C extends StaticContext = StaticContext,
-    S = H.LocationState
-> extends RouteComponentProps<Params, C, S> {
-    resource: string;
-    options: object;
-    hasList: boolean;
-    hasEdit: boolean;
-    hasShow: boolean;
-    hasCreate: boolean;
-    permissions: ReturnType<typeof usePermissions>['permissions'];
-}
-
-export interface ListComponentProps<Params = {}>
-    extends ResourceComponentProps<Params> {}
-
-export interface EditComponentProps<
-    Params extends ResourceMatch = { id: string },
-    C extends StaticContext = StaticContext,
-    S = H.LocationState
-> extends ResourceComponentProps<Params, C, S> {
-    id: string;
-}
-
-export interface ShowComponentProps<
-    Params extends ResourceMatch = { id: string },
-    C extends StaticContext = StaticContext,
-    S = H.LocationState
-> extends ResourceComponentProps<Params, C, S> {
-    id: string;
-}
-
-export interface CreateComponentProps<
-    Params extends ResourceMatch = { id: string },
-    C extends StaticContext = StaticContext,
-    S = H.LocationState
-> extends ResourceComponentProps<Params, C, S> {
-    id: string;
 }
 
 declare global {

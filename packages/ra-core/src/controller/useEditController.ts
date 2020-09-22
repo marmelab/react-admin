@@ -30,7 +30,7 @@ export interface EditProps {
     hasShow?: boolean;
     hasList?: boolean;
     id: Identifier;
-    resource: string;
+    resource?: string;
     undoable?: boolean;
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;

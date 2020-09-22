@@ -17,6 +17,7 @@ export interface FieldProps {
     headerClassName?: string;
     textAlign?: TextAlign;
     emptyText?: string;
+    fullWidth?: boolean;
 }
 
 // Props injected by react-admin

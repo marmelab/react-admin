@@ -33,7 +33,7 @@ interface Option {
     record?: Record;
     reference: string;
     referenceSource?: typeof defaultReferenceSource;
-    resource: string;
+    resource?: string;
     sort?: SortPayload;
     source: string;
 }

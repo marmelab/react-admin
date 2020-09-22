@@ -15,6 +15,7 @@ import {
     TextField,
     TextInput,
     required,
+    EditProps,
 } from 'react-admin';
 import { InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -24,7 +25,7 @@ import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from '../reviews/StarRatingField';
 import Poster from './Poster';
 import { styles as createStyles } from './ProductCreate';
-import { Product, EditComponentProps } from '../types';
+import { Product } from '../types';
 
 interface ProductTitleProps {
     record?: Product;
@@ -47,7 +48,7 @@ const useStyles = makeStyles({
     },
 });
 
-const ProductEdit: FC<EditComponentProps> = props => {
+const ProductEdit: FC<EditProps> = props => {
     const classes = useStyles();
     return (
         <Edit {...props} title={<ProductTitle />}>

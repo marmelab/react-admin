@@ -6,7 +6,7 @@ import { InputProps } from 'ra-core';
 import segments from '../segments/data';
 
 interface Props extends Omit<InputProps, 'source'> {
-    source?: string;
+    source: string;
 }
 
 const SegmentsInput: FC<Props> = ({ addField, ...rest }) => {

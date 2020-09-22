@@ -98,7 +98,9 @@ export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
     );
 };
 
-interface ReferenceManyFieldProps extends FieldProps, InjectedFieldProps {
+export interface ReferenceManyFieldProps
+    extends FieldProps,
+        InjectedFieldProps {
     children: ReactElement;
     filter?: FilterPayload;
     page?: number;

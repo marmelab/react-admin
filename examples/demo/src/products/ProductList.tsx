@@ -18,9 +18,10 @@ import {
     Title,
     useTranslate,
     useListContext,
+    ListProps,
 } from 'react-admin';
 
-import { FilterProps, ListComponentProps } from '../types';
+import { FilterProps } from '../types';
 import GridList from './GridList';
 import Aside from './Aside';
 
@@ -77,7 +78,7 @@ const ListActions: FC<any> = ({ isSmall }) => (
     </TopToolbar>
 );
 
-const ProductList: FC<ListComponentProps> = props => {
+const ProductList: FC<ListProps> = props => {
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
     return (
         <ListBase

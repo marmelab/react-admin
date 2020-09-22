@@ -6,6 +6,7 @@ import {
     TextInput,
     SimpleForm,
     DateField,
+    EditProps,
 } from 'react-admin';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -16,7 +17,6 @@ import ProductReferenceField from '../products/ProductReferenceField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from './StarRatingField';
 import ReviewEditToolbar from './ReviewEditToolbar';
-import { EditComponentProps } from '../types';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-interface Props extends EditComponentProps {
+interface Props extends EditProps {
     onCancel: () => void;
 }
 

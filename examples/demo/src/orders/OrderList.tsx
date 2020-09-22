@@ -14,6 +14,8 @@ import {
     SearchInput,
     TextField,
     TextInput,
+    ListProps,
+    DatagridProps,
 } from 'react-admin';
 import { useMediaQuery, Divider, Tabs, Tab, Theme } from '@material-ui/core';
 
@@ -22,14 +24,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import NbItemsField from './NbItemsField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import MobileGrid from './MobileGrid';
-import {
-    Customer,
-    FilterProps,
-    OrderStatus,
-    DatagridProps,
-    Order,
-    ListComponentProps,
-} from '../types';
+import { Customer, FilterProps, OrderStatus, Order } from '../types';
 import { Identifier } from 'ra-core';
 
 interface FilterParams {
@@ -205,7 +200,7 @@ const TabbedDatagrid: FC<TabbedDatagridProps> = ({
     );
 };
 
-const OrderList: FC<ListComponentProps> = props => (
+const OrderList: FC<ListProps> = props => (
     <List
         {...props}
         filterDefaultValues={{ status: 'ordered' }}
