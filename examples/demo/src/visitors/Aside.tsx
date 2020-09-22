@@ -65,13 +65,13 @@ interface EventListProps {
 }
 const EventList: FC<EventListProps> = ({ record, basePath }) => {
     const translate = useTranslate();
-    const { data: orders, ids: orderIds } = useGetList(
+    const { data: orders, ids: orderIds } = useGetList<OrderRecord>(
         'commands',
         { page: 1, perPage: 100 },
         { field: 'date', order: 'DESC' },
         { customer_id: record && record.id }
     );
-    const { data: reviews, ids: reviewIds } = useGetList(
+    const { data: reviews, ids: reviewIds } = useGetList<ReviewRecord>(
         'reviews',
         { page: 1, perPage: 100 },
         { field: 'date', order: 'DESC' },
@@ -110,7 +110,7 @@ const EventList: FC<EventListProps> = ({ record, basePath }) => {
                                         />
                                     </Box>
                                 </Box>
-                                {orderIds.length > 0 && (
+                                {orderIds && orderIds.length > 0 && (
                                     <Box display="flex">
                                         <Box mr="1em">
                                             <order.icon
@@ -152,7 +152,7 @@ const EventList: FC<EventListProps> = ({ record, basePath }) => {
                                         />
                                     </Box>
                                 </Box>
-                                {reviewIds.length > 0 && (
+                                {reviewIds && reviewIds.length > 0 && (
                                     <Box display="flex">
                                         <Box mr="1em">
                                             <review.icon
@@ -205,21 +205,27 @@ interface AsideEvent {
 }
 
 const mixOrdersAndReviews = (
-    orders: RecordMap<OrderRecord>,
-    orderIds: Identifier[],
-    reviews: RecordMap<ReviewRecord>,
-    reviewIds: Identifier[]
+    orders?: RecordMap<OrderRecord>,
+    orderIds?: Identifier[],
+    reviews?: RecordMap<ReviewRecord>,
+    reviewIds?: Identifier[]
 ): AsideEvent[] => {
-    const eventsFromOrders = orderIds.map<AsideEvent>(id => ({
-        type: 'order',
-        date: orders[id].date,
-        data: orders[id],
-    }));
-    const eventsFromReviews = reviewIds.map<AsideEvent>(id => ({
-        type: 'review',
-        date: reviews[id].date,
-        data: reviews[id],
-    }));
+    const eventsFromOrders =
+        orderIds && orders
+            ? orderIds.map<AsideEvent>(id => ({
+                  type: 'order',
+                  date: orders[id].date,
+                  data: orders[id],
+              }))
+            : [];
+    const eventsFromReviews =
+        reviewIds && reviews
+            ? reviewIds.map<AsideEvent>(id => ({
+                  type: 'review',
+                  date: reviews[id].date,
+                  data: reviews[id],
+              }))
+            : [];
     const events = eventsFromOrders.concat(eventsFromReviews);
     events.sort(
         (e1, e2) => new Date(e1.date).getTime() - new Date(e2.date).getTime()

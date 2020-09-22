@@ -128,11 +128,6 @@ export interface FilterProps<Params = {}> {
     resource?: string;
 }
 
-export interface DatagridProps<RecordType = Record>
-    extends Partial<ListControllerProps<RecordType>> {
-    hasBulkActions?: boolean;
-}
-
 declare global {
     interface Window {
         restServer: any;

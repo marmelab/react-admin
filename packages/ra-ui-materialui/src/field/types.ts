@@ -15,6 +15,7 @@ export interface FieldProps {
     className?: string;
     cellClassName?: string;
     headerClassName?: string;
+    formClassName?: string;
     textAlign?: TextAlign;
     emptyText?: string;
     fullWidth?: boolean;

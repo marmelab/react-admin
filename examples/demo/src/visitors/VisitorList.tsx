@@ -53,7 +53,7 @@ const VisitorList = (props: any) => {
             ) : (
                 <Datagrid optimized rowClick="edit">
                     <CustomerLinkField />
-                    <DateField source="last_seen" type="date" />
+                    <DateField source="last_seen" />
                     <NumberField
                         source="nb_commands"
                         label="resources.customers.fields.commands"
@@ -64,11 +64,7 @@ const VisitorList = (props: any) => {
                         options={{ style: 'currency', currency: 'USD' }}
                     />
                     <DateField source="latest_purchase" showTime />
-                    <BooleanField
-                        source="has_newsletter"
-                        label="News."
-                        size="small"
-                    />
+                    <BooleanField source="has_newsletter" label="News." />
                     <SegmentsField />
                 </Datagrid>
             )}

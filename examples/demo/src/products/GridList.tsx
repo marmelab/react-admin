@@ -5,9 +5,13 @@ import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import { makeStyles } from '@material-ui/core/styles';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
-import { linkToRecord, NumberField, useListContext } from 'react-admin';
+import {
+    linkToRecord,
+    NumberField,
+    useListContext,
+    DatagridProps,
+} from 'react-admin';
 import { Link } from 'react-router-dom';
-import { DatagridProps, Product } from '../types';
 import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
 
 const useStyles = makeStyles(theme => ({

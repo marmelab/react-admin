@@ -1,15 +1,18 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { Datagrid, DateField, TextField } from 'react-admin';
+import {
+    Identifier,
+    Datagrid,
+    DateField,
+    TextField,
+    DatagridProps,
+} from 'react-admin';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 import ProductReferenceField from '../products/ProductReferenceField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from './StarRatingField';
-
 import rowStyle from './rowStyle';
-import { DatagridProps } from './../types';
-import { Identifier } from 'ra-core';
 
 const useListStyles = makeStyles({
     headerRow: {

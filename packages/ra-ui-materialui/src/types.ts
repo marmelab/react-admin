@@ -1,4 +1,4 @@
-import { FC, ReactElement } from 'react';
+import { FC, ReactElement, ElementType } from 'react';
 import {
     Exporter,
     SortPayload,
@@ -14,7 +14,7 @@ export interface ListProps extends ResourceComponentProps {
     bulkActionButtons?: ReactElement | false;
     classes?: any;
     className?: string;
-    component?: FC<{ className?: string }>;
+    component?: ElementType;
     empty?: ReactElement | false;
     exporter?: Exporter | false;
     filter?: any;
@@ -32,7 +32,7 @@ export interface EditProps extends ResourceComponentPropsWithId {
     aside?: ReactElement;
     classes?: any;
     className?: string;
-    component?: FC<{ className?: string }>;
+    component?: ElementType;
     undoable?: boolean;
     onSuccess?: (data: RaRecord) => void;
     onFailure?: (error: any) => void;
@@ -46,7 +46,7 @@ export interface CreateProps extends ResourceComponentPropsWithId {
     aside?: ReactElement;
     classes?: any;
     className?: string;
-    component?: FC<{ className?: string }>;
+    component?: ElementType;
     onSuccess?: (data: RaRecord) => void;
     onFailure?: (error: any) => void;
     transform?: (data: RaRecord) => RaRecord;
@@ -59,7 +59,7 @@ export interface ShowProps extends ResourceComponentPropsWithId {
     aside?: ReactElement;
     classes?: any;
     className?: string;
-    component?: FC<{ className?: string }>;
+    component?: ElementType;
     title?: string | ReactElement;
 }
 

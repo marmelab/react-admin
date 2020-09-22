@@ -2,6 +2,7 @@ import { useContext } from 'react';
 
 import ListContext from './ListContext';
 import { ListControllerProps } from './useListController';
+import { Record } from '../types';
 
 /**
  * Hook to read the list controller props from the ListContext.
@@ -86,7 +87,9 @@ import { ListControllerProps } from './useListController';
  *     );
  * }
  */
-const useListContext = (props?: any): ListControllerProps => {
+const useListContext = <RecordType extends Record = Record>(
+    props?: any
+): ListControllerProps<RecordType> => {
     const context = useContext(ListContext);
     if (!context.resource) {
         /**
@@ -106,6 +109,7 @@ const useListContext = (props?: any): ListControllerProps => {
         }
         return props;
     }
+    // @ts-ignore
     return context;
 };
 

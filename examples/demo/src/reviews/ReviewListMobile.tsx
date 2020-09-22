@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Fragment, FC } from 'react';
+import { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -12,10 +12,10 @@ import {
     ReferenceField,
     FunctionField,
     TextField,
+    useListContext,
 } from 'react-admin';
 
 import AvatarField from '../visitors/AvatarField';
-import { DatagridProps } from '../types';
 import { Review, Customer } from './../types';
 
 const useStyles = makeStyles({
@@ -31,14 +31,9 @@ const useStyles = makeStyles({
     },
 });
 
-const ReviewListMobile: FC<DatagridProps<Review>> = ({
-    basePath,
-    data,
-    ids,
-    loaded,
-    total,
-}) => {
+const ReviewListMobile = () => {
     const classes = useStyles();
+    const { basePath, data, ids, loaded, total } = useListContext<Review>();
 
     return loaded || Number(total) > 0 ? (
         <List className={classes.root}>

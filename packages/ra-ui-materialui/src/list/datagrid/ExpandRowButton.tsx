@@ -5,7 +5,12 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import classNames from 'classnames';
 import { useTranslate } from 'ra-core';
 
-const ExpandRowButton = ({ classes, expanded, expandContentId, ...props }) => {
+const ExpandRowButton = ({
+    classes,
+    expanded,
+    expandContentId,
+    ...props
+}: ExpandRowButtonProps) => {
     const translate = useTranslate();
     return (
         <IconButton
@@ -26,5 +31,12 @@ const ExpandRowButton = ({ classes, expanded, expandContentId, ...props }) => {
         </IconButton>
     );
 };
+
+export interface ExpandRowButtonProps {
+    classes?: any;
+    expanded: boolean;
+    expandContentId: string;
+    onClick?: (event: any) => void;
+}
 
 export default memo(ExpandRowButton);

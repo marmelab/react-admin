@@ -72,11 +72,7 @@ const MobileGrid: FC<Props> = ({ ids, data, basePath }) => {
                                 'resources.customers.fields.last_seen_gte'
                             )}
                             &nbsp;
-                            <DateField
-                                record={data[id]}
-                                source="last_seen"
-                                type="date"
-                            />
+                            <DateField record={data[id]} source="last_seen" />
                         </div>
                         <div>
                             {translate(

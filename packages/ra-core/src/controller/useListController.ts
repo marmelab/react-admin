@@ -52,7 +52,7 @@ const defaultSort = {
 
 const defaultData = {};
 
-export interface ListControllerProps<RecordType = Record> {
+export interface ListControllerProps<RecordType extends Record = Record> {
     basePath: string;
     currentSort: SortPayload;
     data: RecordMap<RecordType>;
@@ -98,7 +98,7 @@ export interface ListControllerProps<RecordType = Record> {
  *     return <ListView {...controllerProps} {...props} />;
  * }
  */
-const useListController = <RecordType = Record>(
+const useListController = <RecordType extends Record = Record>(
     props: ListProps
 ): ListControllerProps<RecordType> => {
     useCheckMinimumRequiredProps('List', ['basePath', 'resource'], props);
