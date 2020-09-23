@@ -1,9 +1,7 @@
 // in src/comments.js
 import * as React from 'react';
 import { FC } from 'react';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
+import { Card, CardHeader, CardContent } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     DateField,
@@ -12,10 +10,12 @@ import {
     TextField,
     BooleanField,
     useTranslate,
+    RecordMap,
+    Identifier,
+    Record,
 } from 'react-admin';
 
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
-import { RecordMap, Identifier, Record } from 'ra-core';
 
 const useListStyles = makeStyles(theme => ({
     card: {

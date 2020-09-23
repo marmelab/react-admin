@@ -31,7 +31,7 @@ export interface CreateProps {
     location?: Location;
     match?: Match;
     record?: Partial<Record>;
-    resource: string;
+    resource?: string;
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
     transform?: TransformData;

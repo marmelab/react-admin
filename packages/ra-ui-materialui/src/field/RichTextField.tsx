@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 import sanitizeRestProps from './sanitizeRestProps';
-import { InjectedFieldProps, FieldProps, fieldPropTypes } from './types';
+import { InjectedFieldProps, PublicFieldProps, fieldPropTypes } from './types';
 
 export const removeTags = (input: string) =>
     input ? input.replace(/<[^>]+>/gm, '') : '';
@@ -45,7 +45,7 @@ RichTextField.propTypes = {
 };
 
 export interface RichTextFieldProps
-    extends FieldProps,
+    extends PublicFieldProps,
         InjectedFieldProps,
         TypographyProps {
     stripTags?: boolean;

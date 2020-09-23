@@ -21,9 +21,11 @@ import {
     TransformData,
     Record,
     FormContext,
+    HandleSubmitWithRedirect,
 } from 'ra-core';
 
 import { sanitizeButtonRestProps } from './Button';
+import { FormRenderProps } from 'react-final-form';
 
 /**
  * Submit button for resource forms (Edit and Create).
@@ -180,7 +182,9 @@ const useStyles = makeStyles(
 interface Props {
     classes?: object;
     className?: string;
-    handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
+    handleSubmitWithRedirect?:
+        | HandleSubmitWithRedirect
+        | FormRenderProps['handleSubmit'];
     // @deprecated
     onSave?: (values: object, redirect: RedirectionSideEffect) => void;
     onSuccess?: OnSuccess;

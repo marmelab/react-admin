@@ -3,7 +3,7 @@ import { FC } from 'react';
 import Icon from '@material-ui/icons/Stars';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { FieldProps } from '../types';
+import { FieldProps } from 'react-admin';
 
 const useStyles = makeStyles({
     root: {

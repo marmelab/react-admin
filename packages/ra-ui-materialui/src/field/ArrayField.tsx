@@ -11,7 +11,7 @@ import {
 import get from 'lodash/get';
 import { Identifier, ListContextProvider } from 'ra-core';
 
-import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import PropTypes from 'prop-types';
 
 const initialState = {
@@ -186,7 +186,7 @@ ArrayField.propTypes = {
     fieldKey: PropTypes.string,
 };
 
-export interface ArrayFieldProps extends FieldProps, InjectedFieldProps {
+export interface ArrayFieldProps extends PublicFieldProps, InjectedFieldProps {
     fieldKey?: string;
     children: ReactElement;
 }

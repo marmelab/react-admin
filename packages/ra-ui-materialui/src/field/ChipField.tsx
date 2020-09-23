@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
 import sanitizeRestProps from './sanitizeRestProps';
-import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 const useStyles = makeStyles(
     {
@@ -60,7 +60,7 @@ ChipField.propTypes = {
 };
 
 export interface ChipFieldProps
-    extends FieldProps,
+    extends PublicFieldProps,
         InjectedFieldProps,
         Omit<ChipProps, 'label'> {}
 

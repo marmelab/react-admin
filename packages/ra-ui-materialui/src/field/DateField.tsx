@@ -5,7 +5,7 @@ import get from 'lodash/get';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
-import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 const toLocaleStringSupportsLocales = (() => {
     // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString
@@ -108,7 +108,7 @@ DateField.propTypes = {
 };
 
 export interface DateFieldProps
-    extends FieldProps,
+    extends PublicFieldProps,
         InjectedFieldProps,
         TypographyProps {
     locales?: string | string[];

@@ -3,11 +3,11 @@ import { FC } from 'react';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
-import { useTranslate } from 'react-admin';
+import { useTranslate, FieldProps } from 'react-admin';
 import { stringify } from 'query-string';
 
 import products from '../products';
-import { FieldProps, Category } from '../types';
+import { Category } from '../types';
 
 const useStyles = makeStyles({
     icon: { paddingRight: '0.5em' },

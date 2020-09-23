@@ -33,11 +33,11 @@ import useQueryWithStore from './useQueryWithStore';
  *     return <div>User {data.username}</div>;
  * };
  */
-const useGetOne = (
+const useGetOne = <RecordType extends Record = Record>(
     resource: string,
     id: Identifier,
     options?: any
-): UseGetOneHookValue =>
+): UseGetOneHookValue<RecordType> =>
     useQueryWithStore(
         { type: 'getOne', resource, payload: { id } },
         options,
@@ -56,8 +56,8 @@ const useGetOne = (
         }
     );
 
-export type UseGetOneHookValue = {
-    data?: Record;
+export type UseGetOneHookValue<RecordType extends Record = Record> = {
+    data?: RecordType;
     loading: boolean;
     loaded: boolean;
     error?: any;

@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import classnames from 'classnames';
 
 import sanitizeRestProps from './sanitizeRestProps';
-import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 const useStyles = makeStyles(
     {
@@ -23,7 +23,7 @@ const useStyles = makeStyles(
     { name: 'RaImageField' }
 );
 
-export interface ImageFieldProps extends FieldProps, InjectedFieldProps {
+export interface ImageFieldProps extends PublicFieldProps, InjectedFieldProps {
     src?: string;
     title?: string;
     classes?: object;

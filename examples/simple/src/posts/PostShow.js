@@ -1,4 +1,3 @@
-import { useShowController } from 'ra-core';
 import * as React from 'react';
 import {
     ArrayField,
@@ -19,7 +18,8 @@ import {
     TabbedShowLayout,
     TextField,
     UrlField,
-} from 'react-admin'; // eslint-disable-line import/no-unresolved
+    useShowController,
+} from 'react-admin';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import PostTitle from './PostTitle';

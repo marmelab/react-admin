@@ -1,18 +1,22 @@
 // in src/comments.js
 import * as React from 'react';
+import { FC } from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import { makeStyles } from '@material-ui/core/styles';
-
-import { DateField, EditButton, useTranslate, NumberField } from 'react-admin';
+import {
+    DateField,
+    EditButton,
+    useTranslate,
+    NumberField,
+    Identifier,
+} from 'react-admin';
 
 import AvatarField from './AvatarField';
 import ColoredNumberField from './ColoredNumberField';
 import SegmentsField from './SegmentsField';
-import { Identifier } from 'ra-core';
 import { Customer } from '../types';
-import { FC } from 'react';
 
 const useStyles = makeStyles(theme => ({
     root: { margin: '1em' },
@@ -72,11 +76,7 @@ const MobileGrid: FC<Props> = ({ ids, data, basePath }) => {
                                 'resources.customers.fields.last_seen_gte'
                             )}
                             &nbsp;
-                            <DateField
-                                record={data[id]}
-                                source="last_seen"
-                                type="date"
-                            />
+                            <DateField record={data[id]} source="last_seen" />
                         </div>
                         <div>
                             {translate(

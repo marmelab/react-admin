@@ -7,12 +7,14 @@ import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import {
     useEditController,
+    EditControllerProps,
     ComponentPropType,
     SideEffectContext,
 } from 'ra-core';
 
 import DefaultActions from './EditActions';
 import TitleForRecord from '../layout/TitleForRecord';
+import { EditProps } from '../types';
 
 /**
  * Page component for the Edit view
@@ -59,7 +61,9 @@ import TitleForRecord from '../layout/TitleForRecord';
  * );
  * export default App;
  */
-const Edit = props => <EditView {...props} {...useEditController(props)} />;
+const Edit = (props: EditProps): JSX.Element => (
+    <EditView {...props} {...useEditController(props)} />
+);
 
 Edit.propTypes = {
     actions: PropTypes.element,
@@ -81,7 +85,11 @@ Edit.propTypes = {
     undoable: PropTypes.bool,
 };
 
-export const EditView = props => {
+interface EditViewProps
+    extends EditProps,
+        Omit<EditControllerProps, 'resource'> {}
+
+export const EditView = (props: EditViewProps) => {
     const {
         actions,
         aside,
@@ -227,33 +235,19 @@ const useStyles = makeStyles(
 );
 
 const sanitizeRestProps = ({
-    data,
-    hasCreate,
-    hasEdit,
-    hasList,
-    hasShow,
-    id,
-    loading,
-    loaded,
-    saving,
-    resource,
-    title,
-    version,
-    match,
-    location,
+    hasCreate = null,
+    hasEdit = null,
     history,
-    options,
-    locale,
-    permissions,
-    undoable,
-    successMessage,
-    onSuccess,
-    setOnSuccess,
-    onFailure,
-    setOnFailure,
-    transform,
-    setTransform,
-    translate,
+    id,
+    loaded,
+    loading,
+    location,
+    match,
+    onFailure = null,
+    onSuccess = null,
+    options = null,
+    permissions = null,
+    successMessage = null,
     ...rest
 }) => rest;
 

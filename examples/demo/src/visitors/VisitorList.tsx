@@ -1,11 +1,14 @@
 import * as React from 'react';
+import { FC } from 'react';
 import {
     BooleanField,
     Datagrid,
     DateField,
     DateInput,
     Filter,
+    FilterProps,
     List,
+    ListProps,
     NullableBooleanInput,
     NumberField,
     SearchInput,
@@ -20,7 +23,7 @@ import ColoredNumberField from './ColoredNumberField';
 import MobileGrid from './MobileGrid';
 import VisitorListAside from './VisitorListAside';
 
-const VisitorFilter = (props: any) => (
+const VisitorFilter = (props: Omit<FilterProps, 'children'>) => (
     <Filter {...props}>
         <SearchInput source="q" alwaysOn />
         <DateInput source="last_seen_gte" />
@@ -34,7 +37,7 @@ const useStyles = makeStyles({
     nb_commands: { color: 'purple' },
 });
 
-const VisitorList = (props: any) => {
+const VisitorList: FC<ListProps> = (props: any) => {
     const classes = useStyles();
     const isXsmall = useMediaQuery<Theme>(theme =>
         theme.breakpoints.down('xs')
@@ -53,7 +56,7 @@ const VisitorList = (props: any) => {
             ) : (
                 <Datagrid optimized rowClick="edit">
                     <CustomerLinkField />
-                    <DateField source="last_seen" type="date" />
+                    <DateField source="last_seen" />
                     <NumberField
                         source="nb_commands"
                         label="resources.customers.fields.commands"
@@ -64,11 +67,7 @@ const VisitorList = (props: any) => {
                         options={{ style: 'currency', currency: 'USD' }}
                     />
                     <DateField source="latest_purchase" showTime />
-                    <BooleanField
-                        source="has_newsletter"
-                        label="News."
-                        size="small"
-                    />
+                    <BooleanField source="has_newsletter" label="News." />
                     <SegmentsField />
                 </Datagrid>
             )}

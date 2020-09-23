@@ -6,7 +6,7 @@ import { ChoicesProps, useChoices } from 'ra-core';
 import Typography from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
-import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 /**
  * Display a value in an enumeration
@@ -142,7 +142,7 @@ SelectField.propTypes = {
 
 export interface SelectFieldProps
     extends ChoicesProps,
-        FieldProps,
+        PublicFieldProps,
         InjectedFieldProps {}
 
 SelectField.displayName = 'SelectField';

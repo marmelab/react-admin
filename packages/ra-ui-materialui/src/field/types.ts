@@ -5,7 +5,11 @@ import PropTypes from 'prop-types';
 type TextAlign = 'right' | 'left';
 type SortOrder = 'ASC' | 'DESC';
 
-export interface FieldProps {
+export interface FieldProps<RecordType extends Record = Record>
+    extends PublicFieldProps,
+        InjectedFieldProps<RecordType> {}
+
+export interface PublicFieldProps {
     addLabel?: boolean;
     sortBy?: string;
     sortByOrder?: SortOrder;
@@ -15,14 +19,16 @@ export interface FieldProps {
     className?: string;
     cellClassName?: string;
     headerClassName?: string;
+    formClassName?: string;
     textAlign?: TextAlign;
     emptyText?: string;
+    fullWidth?: boolean;
 }
 
 // Props injected by react-admin
-export interface InjectedFieldProps {
+export interface InjectedFieldProps<RecordType extends Record = Record> {
     basePath?: string;
-    record?: Record;
+    record?: RecordType;
     resource?: string;
 }
 

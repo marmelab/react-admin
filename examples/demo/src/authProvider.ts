@@ -1,4 +1,4 @@
-import { AuthProvider } from 'ra-core';
+import { AuthProvider } from 'react-admin';
 
 const authProvider: AuthProvider = {
     login: ({ username }) => {

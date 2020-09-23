@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { ComponentType, FC, memo, ReactElement } from 'react';
+import { FC, memo } from 'react';
 import { SvgIconComponent } from '@material-ui/icons';
-import PropTypes, { ReactComponentLike } from 'prop-types';
+import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import classnames from 'classnames';
 import DoneIcon from '@material-ui/icons/Done';
@@ -11,7 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { TypographyProps } from '@material-ui/core/Typography';
 import { useTranslate } from 'ra-core';
 
-import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import sanitizeRestProps from './sanitizeRestProps';
 
 const useStyles = makeStyles(
@@ -98,7 +98,7 @@ BooleanField.propTypes = {
 };
 
 export interface BooleanFieldProps
-    extends FieldProps,
+    extends PublicFieldProps,
         InjectedFieldProps,
         TypographyProps {
     valueLabelTrue?: string;

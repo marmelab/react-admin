@@ -28,6 +28,7 @@ const ConfigurationMenu = forwardRef<any, any>((props, ref) => {
             primaryText={translate('pos.configuration')}
             leftIcon={<SettingsIcon />}
             onClick={props.onClick}
+            sidebarIsOpen
         />
     );
 });

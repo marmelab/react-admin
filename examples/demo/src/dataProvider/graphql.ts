@@ -2,7 +2,7 @@ import { ApolloQueryResult } from 'apollo-client';
 import buildApolloClient, {
     buildQuery as buildQueryFactory,
 } from 'ra-data-graphql-simple';
-import { DELETE, LegacyDataProvider } from 'ra-core';
+import { DELETE, LegacyDataProvider } from 'react-admin';
 import gql from 'graphql-tag';
 import {
     IntrospectionField,

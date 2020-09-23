@@ -74,7 +74,7 @@ List.propTypes = {
     aside: PropTypes.element,
     // @ts-ignore-line
     bulkActionButtons: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    children: PropTypes.node,
+    children: PropTypes.element,
     classes: PropTypes.object,
     className: PropTypes.string,
     filter: PropTypes.object,

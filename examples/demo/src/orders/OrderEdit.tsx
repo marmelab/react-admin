@@ -9,9 +9,10 @@ import {
     SelectInput,
     SimpleForm,
     useTranslate,
+    EditProps,
 } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
-import { Order, Customer, EditComponentProps } from '../types';
+import { Order, Customer } from '../types';
 
 import Basket from './Basket';
 
@@ -34,7 +35,7 @@ const useEditStyles = makeStyles({
     root: { alignItems: 'flex-start' },
 });
 
-const OrderEdit: FC<EditComponentProps> = props => {
+const OrderEdit: FC<EditProps> = props => {
     const classes = useEditStyles();
     return (
         <Edit
