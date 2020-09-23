@@ -3,6 +3,7 @@ import { FC } from 'react';
 import {
     Datagrid,
     Edit,
+    EditProps,
     EditButton,
     FieldProps,
     NumberField,
@@ -26,7 +27,7 @@ const CategoryTitle: FC<FieldProps<Category>> = ({ record }) => {
     ) : null;
 };
 
-const CategoryEdit = (props: any) => (
+const CategoryEdit: FC<EditProps> = props => (
     <Edit title={<CategoryTitle />} {...props}>
         <SimpleForm>
             <TextInput source="name" />

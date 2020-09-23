@@ -3,23 +3,23 @@ import { FC } from 'react';
 import { Box, Chip, useMediaQuery, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import {
+    CreateButton,
+    ExportButton,
     Filter,
+    FilterProps,
+    InputProps,
     ListBase,
+    ListProps,
     NumberInput,
     Pagination,
     ReferenceInput,
     SearchInput,
     SelectInput,
-    TopToolbar,
-    CreateButton,
-    ExportButton,
     SortButton,
     Title,
-    useTranslate,
+    TopToolbar,
     useListContext,
-    ListProps,
-    FilterProps,
-    InputProps,
+    useTranslate,
 } from 'react-admin';
 
 import GridList from './GridList';

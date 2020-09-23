@@ -6,6 +6,7 @@ import {
     DateField,
     DateInput,
     Filter,
+    FilterProps,
     List,
     ListProps,
     NullableBooleanInput,
@@ -22,7 +23,7 @@ import ColoredNumberField from './ColoredNumberField';
 import MobileGrid from './MobileGrid';
 import VisitorListAside from './VisitorListAside';
 
-const VisitorFilter = (props: any) => (
+const VisitorFilter = (props: Omit<FilterProps, 'children'>) => (
     <Filter {...props}>
         <SearchInput source="q" alwaysOn />
         <DateInput source="last_seen_gte" />

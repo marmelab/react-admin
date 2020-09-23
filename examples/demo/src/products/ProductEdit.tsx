@@ -5,17 +5,17 @@ import {
     DateField,
     Edit,
     EditButton,
+    EditProps,
     FormTab,
     NumberInput,
     Pagination,
     ReferenceInput,
     ReferenceManyField,
+    required,
     SelectInput,
     TabbedForm,
     TextField,
     TextInput,
-    required,
-    EditProps,
 } from 'react-admin';
 import { InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';

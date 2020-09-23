@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { EditButton, List, ListControllerProps } from 'react-admin';
+import { EditButton, List, ListProps, useListContext } from 'react-admin';
 import inflection from 'inflection';
 import {
     Grid,
@@ -31,9 +31,9 @@ const useStyles = makeStyles({
     },
 });
 
-const CategoryGrid: FC<ListControllerProps<Category>> = props => {
+const CategoryGrid: FC = props => {
     const classes = useStyles(props);
-    const { data, ids } = props;
+    const { data, ids } = useListContext<Category>();
     return ids ? (
         <Grid container spacing={2} className={classes.root}>
             {ids.map(id => (
@@ -68,7 +68,7 @@ const CategoryGrid: FC<ListControllerProps<Category>> = props => {
     ) : null;
 };
 
-const CategoryList = (props: any) => (
+const CategoryList: FC<ListProps> = props => (
     <List
         {...props}
         sort={{ field: 'name', order: 'ASC' }}
@@ -77,8 +77,6 @@ const CategoryList = (props: any) => (
         component="div"
         actions={false}
     >
-        {/* 
-        // @ts-ignore */}
         <CategoryGrid />
     </List>
 );
