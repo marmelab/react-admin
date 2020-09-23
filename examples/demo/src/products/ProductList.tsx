@@ -2,7 +2,6 @@ import * as React from 'react';
 import { FC } from 'react';
 import { Box, Chip, useMediaQuery, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { InputProps } from 'ra-core';
 import {
     Filter,
     ListBase,
@@ -20,6 +19,7 @@ import {
     useListContext,
     ListProps,
     FilterProps,
+    InputProps,
 } from 'react-admin';
 
 import GridList from './GridList';

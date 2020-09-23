@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { EditButton, List } from 'react-admin';
-import { ListControllerProps } from 'ra-core';
+import { EditButton, List, ListControllerProps } from 'react-admin';
 import inflection from 'inflection';
 import {
     Grid,
@@ -11,7 +10,6 @@ import {
     CardActions,
     Typography,
 } from '@material-ui/core';
-
 import { makeStyles } from '@material-ui/core/styles';
 
 import LinkToRelatedProducts from './LinkToRelatedProducts';

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { FC } from 'react';
+import PropTypes from 'prop-types';
 import {
     NumberField,
     TextField,
@@ -7,8 +8,10 @@ import {
     useTranslate,
     useGetList,
     linkToRecord,
+    Record,
+    RecordMap,
+    Identifier,
 } from 'react-admin';
-import PropTypes from 'prop-types';
 import {
     Tooltip,
     Typography,
@@ -22,13 +25,12 @@ import {
 import { Link } from 'react-router-dom';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import ContentCreate from '@material-ui/icons/Create';
-import order from '../orders';
-import review from '../reviews';
 import { makeStyles } from '@material-ui/core/styles';
 
+import order from '../orders';
+import review from '../reviews';
 import ProductReferenceField from '../products/ProductReferenceField';
 import StarRatingField from '../reviews/StarRatingField';
-import { Record, RecordMap, Identifier } from 'ra-core';
 import { Order as OrderRecord, Review as ReviewRecord } from '../types';
 
 const useAsideStyles = makeStyles(theme => ({
