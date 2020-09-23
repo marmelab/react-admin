@@ -19,13 +19,13 @@ export interface ShowProps {
     [key: string]: any;
 }
 
-export interface ShowControllerProps {
+export interface ShowControllerProps<RecordType extends Record = Record> {
     loading: boolean;
     loaded: boolean;
     defaultTitle: string;
     resource: string;
     basePath: string;
-    record?: Record;
+    record?: RecordType;
     version: number;
 }
 
@@ -46,7 +46,9 @@ export interface ShowControllerProps {
  *     return <ShowView {...controllerProps} {...props} />;
  * }
  */
-const useShowController = (props: ShowProps): ShowControllerProps => {
+const useShowController = <RecordType extends Record = Record>(
+    props: ShowProps
+): ShowControllerProps<RecordType> => {
     useCheckMinimumRequiredProps('Show', ['basePath', 'resource'], props);
     const { basePath, id, resource } = props;
     const translate = useTranslate();
@@ -54,14 +56,18 @@ const useShowController = (props: ShowProps): ShowControllerProps => {
     const redirect = useRedirect();
     const refresh = useRefresh();
     const version = useVersion();
-    const { data: record, loading, loaded } = useGetOne(resource, id, {
-        action: CRUD_GET_ONE,
-        onFailure: () => {
-            notify('ra.notification.item_doesnt_exist', 'warning');
-            redirect('list', basePath);
-            refresh();
-        },
-    });
+    const { data: record, loading, loaded } = useGetOne<RecordType>(
+        resource,
+        id,
+        {
+            action: CRUD_GET_ONE,
+            onFailure: () => {
+                notify('ra.notification.item_doesnt_exist', 'warning');
+                redirect('list', basePath);
+                refresh();
+            },
+        }
+    );
 
     const resourceName = translate(`resources.${resource}.name`, {
         smart_count: 1,

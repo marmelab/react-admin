@@ -1,6 +1,10 @@
 import * as React from 'react';
-import { FC, useRef, useCallback, useEffect, useMemo } from 'react';
-import { Form, FormProps } from 'react-final-form';
+import { FC, useRef, useCallback, useEffect, useMemo, ReactNode } from 'react';
+import {
+    Form,
+    FormProps,
+    FormRenderProps as FinalFormFormRenderProps,
+} from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 
 import useInitializeFormWithRecord from './useInitializeFormWithRecord';
@@ -129,8 +133,7 @@ const FormWithRedirect: FC<FormWithRedirectProps> = ({
                 subscription={subscription} // don't redraw entire form each time one field changes
                 validate={validate}
                 validateOnBlur={validateOnBlur}
-            >
-                {formProps => (
+                render={formProps => (
                     <FormView
                         {...props}
                         {...formProps}
@@ -142,18 +145,21 @@ const FormWithRedirect: FC<FormWithRedirectProps> = ({
                         warnWhenUnsavedChanges={warnWhenUnsavedChanges}
                     />
                 )}
-            </Form>
+            />
         </FormContext.Provider>
     );
 };
 
 export type FormWithRedirectProps = FormWithRedirectOwnProps &
-    Omit<FormProps, 'onSubmit'>;
+    Omit<FormProps, 'onSubmit' | 'active'>;
 
 export interface FormWithRedirectOwnProps {
     defaultValue?: any;
     record?: Record;
     redirect?: RedirectionSideEffect;
+    render: (
+        props: Omit<FormViewProps, 'render' | 'setRedirect'>
+    ) => React.ReactElement<any, any>;
     save?: (
         data: Partial<Record>,
         redirectTo: RedirectionSideEffect,
@@ -175,7 +181,19 @@ const defaultSubscription = {
     invalid: true,
 };
 
-const FormView = ({
+export type SetRedirect = (redirect: RedirectionSideEffect) => void;
+export type HandleSubmitWithRedirect = (
+    redirect?: RedirectionSideEffect
+) => void;
+interface FormViewProps
+    extends FormWithRedirectOwnProps,
+        Omit<FinalFormFormRenderProps, 'render' | 'active'> {
+    handleSubmitWithRedirect?: HandleSubmitWithRedirect;
+    setRedirect: SetRedirect;
+    warnWhenUnsavedChanges?: boolean;
+}
+
+const FormView: FC<FormViewProps> = ({
     render,
     warnWhenUnsavedChanges,
     setRedirect,

@@ -18,6 +18,7 @@ import RichTextField, { RichTextFieldProps } from './RichTextField';
 import SelectField, { SelectFieldProps } from './SelectField';
 import TextField, { TextFieldProps } from './TextField';
 import UrlField, { UrlFieldProps } from './UrlField';
+import { FieldProps } from './types';
 
 export {
     ArrayField,
@@ -55,4 +56,5 @@ export type {
     SelectFieldProps,
     TextFieldProps,
     UrlFieldProps,
+    FieldProps,
 };

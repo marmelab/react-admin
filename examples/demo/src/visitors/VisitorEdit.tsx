@@ -12,6 +12,7 @@ import {
     FormWithRedirect,
     required,
     email,
+    FieldProps,
 } from 'react-admin';
 import { Box, Card, CardContent, Typography } from '@material-ui/core';
 
@@ -19,7 +20,7 @@ import Aside from './Aside';
 import FullNameField from './FullNameField';
 import SegmentsInput from './SegmentsInput';
 import { validatePasswords } from './VisitorCreate';
-import { Customer, FieldProps } from '../types';
+import { Customer } from '../types';
 
 const VisitorEdit: FC<EditProps> = props => {
     return (

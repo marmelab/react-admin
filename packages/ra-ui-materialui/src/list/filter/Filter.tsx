@@ -17,10 +17,10 @@ const useStyles = makeStyles(
 );
 
 export interface FilterProps {
-    context?: string;
-    variant?: string;
-    classes?: ClassesOverride<typeof useStyles>;
     children: ReactNode;
+    classes?: ClassesOverride<typeof useStyles>;
+    context?: 'form' | 'button';
+    variant?: string;
 }
 
 const Filter: FC<FilterProps> = props => {

@@ -10,9 +10,9 @@ import {
     Paper,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Link, useTranslate, useQueryWithStore } from 'react-admin';
+import { Link, FieldProps, useTranslate, useQueryWithStore } from 'react-admin';
 
-import { FieldProps, AppState, Order, Product } from '../types';
+import { AppState, Order, Product } from '../types';
 
 const useStyles = makeStyles({
     container: { minWidth: '35em', marginLeft: '1em' },

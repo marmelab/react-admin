@@ -4,8 +4,10 @@ import SimpleForm from './SimpleForm';
 import SimpleFormIterator from './SimpleFormIterator';
 import TabbedForm from './TabbedForm';
 import TabbedFormTabs from './TabbedFormTabs';
-import Toolbar from './Toolbar';
+import Toolbar, { ToolbarProps } from './Toolbar';
 import getFormInitialValues from './getFormInitialValues';
+
+export type { ToolbarProps };
 
 export {
     FormInput,

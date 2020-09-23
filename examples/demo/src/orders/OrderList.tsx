@@ -19,6 +19,7 @@ import {
     useListContext,
     ListContextProvider,
     Identifier,
+    FilterProps,
 } from 'react-admin';
 import { useMediaQuery, Divider, Tabs, Tab, Theme } from '@material-ui/core';
 
@@ -27,19 +28,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import NbItemsField from './NbItemsField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import MobileGrid from './MobileGrid';
-import { Customer, FilterProps, OrderStatus } from '../types';
+import { Customer } from '../types';
 
-interface FilterParams {
-    q?: string;
-    customer_id?: string;
-    date_gte?: string;
-    date_lte?: string;
-    total_gte?: string;
-    returned?: boolean;
-    status?: OrderStatus;
-}
-
-const OrderFilter: FC<FilterProps<FilterParams>> = props => (
+const OrderFilter: FC<Omit<FilterProps, 'children'>> = props => (
     <Filter {...props}>
         <SearchInput source="q" alwaysOn />
         <ReferenceInput source="customer_id" reference="customers">

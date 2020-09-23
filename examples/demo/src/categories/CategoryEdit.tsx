@@ -4,6 +4,7 @@ import {
     Datagrid,
     Edit,
     EditButton,
+    FieldProps,
     NumberField,
     ReferenceManyField,
     SimpleForm,
@@ -13,7 +14,7 @@ import {
 
 import ThumbnailField from '../products/ThumbnailField';
 import ProductRefField from '../products/ProductRefField';
-import { FieldProps, Category } from '../types';
+import { Category } from '../types';
 
 const CategoryTitle: FC<FieldProps<Category>> = ({ record }) => {
     const translate = useTranslate();

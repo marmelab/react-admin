@@ -118,7 +118,7 @@ TabbedForm.propTypes = {
 };
 
 export interface TabbedFormProps
-    extends FormWithRedirectProps,
+    extends Omit<FormWithRedirectProps, 'render'>,
         Omit<
             HtmlHTMLAttributes<HTMLFormElement>,
             'defaultValue' | 'onSubmit' | 'children'

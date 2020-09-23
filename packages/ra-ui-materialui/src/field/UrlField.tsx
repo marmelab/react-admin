@@ -3,7 +3,7 @@ import { FC, HtmlHTMLAttributes, memo } from 'react';
 import get from 'lodash/get';
 import sanitizeRestProps from './sanitizeRestProps';
 import { Typography, Link } from '@material-ui/core';
-import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 const UrlField: FC<UrlFieldProps> = memo<UrlFieldProps>(
     ({ className, emptyText, source, record = {}, ...rest }) => {
@@ -42,7 +42,7 @@ UrlField.propTypes = fieldPropTypes;
 UrlField.displayName = 'UrlField';
 
 export interface UrlFieldProps
-    extends FieldProps,
+    extends PublicFieldProps,
         InjectedFieldProps,
         HtmlHTMLAttributes<HTMLAnchorElement> {}
 

@@ -1,14 +1,4 @@
-import { ReactChildren } from 'react';
-import {
-    useListController,
-    ReduxState,
-    Record,
-    Identifier,
-    RedirectionSideEffect,
-    ListControllerProps,
-} from 'ra-core';
-import { ClassNameMap } from '@material-ui/core/styles/withStyles';
-import { FormRenderProps } from 'react-final-form';
+import { ReduxState, Record, Identifier } from 'ra-core';
 
 export type ThemeName = 'light' | 'dark';
 
@@ -64,26 +54,7 @@ export interface BasketItem {
     quantity: number;
 }
 
-/**
- * Types to eventually add in react-admin
- */
-export interface FieldProps<T extends Record = Record> {
-    addLabel?: boolean;
-    label?: string;
-    record?: T;
-    source?: string;
-    resource?: string;
-    basePath?: string;
-    formClassName?: string;
-}
-
-export interface ReferenceFieldProps<T extends Record = Record>
-    extends FieldProps<T> {
-    reference: string;
-    children: ReactChildren;
-    link?: string | false;
-    sortBy?: string;
-}
+export interface Invoice extends Record {}
 
 export type ReviewStatus = 'accepted' | 'pending' | 'rejected';
 
@@ -92,33 +63,6 @@ export interface Review extends Record {
     status: ReviewStatus;
     customer_id: Identifier;
     product_id: Identifier;
-}
-
-type FilterClassKey = 'button' | 'form';
-
-export interface ToolbarProps<T extends Record = Record> {
-    handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
-    handleSubmit?: FormRenderProps['handleSubmit'];
-    invalid?: boolean;
-    pristine?: boolean;
-    saving?: boolean;
-    submitOnEnter?: boolean;
-    redirect?: RedirectionSideEffect;
-    basePath?: string;
-    record?: T;
-    resource?: string;
-    undoable?: boolean;
-}
-
-export interface FilterProps<Params = {}> {
-    classes?: ClassNameMap<FilterClassKey>;
-    context?: 'form' | 'button';
-    displayedFilters?: { [K in keyof Params]?: boolean };
-    filterValues?: Params;
-    hideFilter?: ReturnType<typeof useListController>['hideFilter'];
-    setFilters?: ReturnType<typeof useListController>['setFilters'];
-    showFilter?: ReturnType<typeof useListController>['showFilter'];
-    resource?: string;
 }
 
 declare global {

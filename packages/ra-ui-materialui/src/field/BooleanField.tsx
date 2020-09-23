@@ -11,7 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { TypographyProps } from '@material-ui/core/Typography';
 import { useTranslate } from 'ra-core';
 
-import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import sanitizeRestProps from './sanitizeRestProps';
 
 const useStyles = makeStyles(
@@ -98,7 +98,7 @@ BooleanField.propTypes = {
 };
 
 export interface BooleanFieldProps
-    extends FieldProps,
+    extends PublicFieldProps,
         InjectedFieldProps,
         TypographyProps {
     valueLabelTrue?: string;

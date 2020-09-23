@@ -77,7 +77,7 @@ SimpleForm.propTypes = {
 };
 
 export interface SimpleFormProps
-    extends FormWithRedirectProps,
+    extends Omit<FormWithRedirectProps, 'render'>,
         Omit<
             HtmlHTMLAttributes<HTMLFormElement>,
             'defaultValue' | 'onSubmit' | 'children'

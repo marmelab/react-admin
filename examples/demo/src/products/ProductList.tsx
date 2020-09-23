@@ -19,9 +19,9 @@ import {
     useTranslate,
     useListContext,
     ListProps,
+    FilterProps,
 } from 'react-admin';
 
-import { FilterProps } from '../types';
 import GridList from './GridList';
 import Aside from './Aside';
 
@@ -37,17 +37,7 @@ const QuickFilter: FC<InputProps> = ({ label }) => {
     return <Chip className={classes.root} label={translate(label)} />;
 };
 
-interface FilterParams {
-    q?: string;
-    category_id?: string;
-    width_gte?: number;
-    width_lte?: number;
-    height_gte?: number;
-    height_lte?: number;
-    stock_lte?: number;
-}
-
-export const ProductFilter: FC<FilterProps<FilterParams>> = props => (
+export const ProductFilter: FC<Omit<FilterProps, 'children'>> = props => (
     <Filter {...props}>
         <SearchInput source="q" alwaysOn />
         <ReferenceInput

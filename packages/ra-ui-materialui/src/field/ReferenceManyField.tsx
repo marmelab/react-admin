@@ -8,7 +8,7 @@ import {
     ListControllerProps,
 } from 'ra-core';
 
-import { FieldProps, fieldPropTypes, InjectedFieldProps } from './types';
+import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
 import sanitizeRestProps from './sanitizeRestProps';
 
 /**
@@ -99,7 +99,7 @@ export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
 };
 
 export interface ReferenceManyFieldProps
-    extends FieldProps,
+    extends PublicFieldProps,
         InjectedFieldProps {
     children: ReactElement;
     filter?: FilterPayload;

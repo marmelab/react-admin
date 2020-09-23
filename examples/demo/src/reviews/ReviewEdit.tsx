@@ -16,6 +16,7 @@ import ProductReferenceField from '../products/ProductReferenceField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from './StarRatingField';
 import ReviewEditToolbar from './ReviewEditToolbar';
+import { Review } from '../types';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -48,7 +49,7 @@ interface Props extends EditProps {
 
 const ReviewEdit: FC<Props> = ({ onCancel, ...props }) => {
     const classes = useStyles();
-    const controllerProps = useEditController(props);
+    const controllerProps = useEditController<Review>(props);
     const translate = useTranslate();
     if (!controllerProps.record) {
         return null;

@@ -38,7 +38,7 @@ export interface EditProps {
     [key: string]: any;
 }
 
-export interface EditControllerProps {
+export interface EditControllerProps<RecordType extends Record = Record> {
     loading: boolean;
     loaded: boolean;
     saving: boolean;
@@ -57,7 +57,7 @@ export interface EditControllerProps {
     setTransform: SetTransformData;
     resource: string;
     basePath: string;
-    record?: Record;
+    record?: RecordType;
     redirect: RedirectionSideEffect;
     version: number;
     successMessage?: string;
@@ -80,7 +80,9 @@ export interface EditControllerProps {
  *     return <EditView {...controllerProps} {...props} />;
  * }
  */
-const useEditController = (props: EditProps): EditControllerProps => {
+const useEditController = <RecordType extends Record = Record>(
+    props: EditProps
+): EditControllerProps<RecordType> => {
     useCheckMinimumRequiredProps('Edit', ['basePath', 'resource'], props);
     const {
         basePath,
@@ -113,14 +115,18 @@ const useEditController = (props: EditProps): EditControllerProps => {
         setTransform,
     } = useSaveModifiers({ onSuccess, onFailure, transform });
 
-    const { data: record, loading, loaded } = useGetOne(resource, id, {
-        action: CRUD_GET_ONE,
-        onFailure: () => {
-            notify('ra.notification.item_doesnt_exist', 'warning');
-            redirect('list', basePath);
-            refresh();
-        },
-    });
+    const { data: record, loading, loaded } = useGetOne<RecordType>(
+        resource,
+        id,
+        {
+            action: CRUD_GET_ONE,
+            onFailure: () => {
+                notify('ra.notification.item_doesnt_exist', 'warning');
+                redirect('list', basePath);
+                refresh();
+            },
+        }
+    );
 
     const resourceName = translate(`resources.${resource}.name`, {
         smart_count: 1,
