@@ -402,4 +402,6 @@ ul.sidenav code {
     height: 32px;
     transform: translate(0, 40%);
     margin-top: -16px;
+    margin-left: -4px;
+    margin-right: -4px;
 }

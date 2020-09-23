@@ -5,14 +5,16 @@ title: "Ecosystem"
 
 # Ecosystem
 
-- [List Related Components](#list-related-components)
-- [Inputs and Fields](#inputs-and-fields)
-- [Translations](#translations)
-- [Authentication Providers](#authentication-providers)
-- [Authorization Management](#authorization-management)
-- [Data Providers](#data-providers)
-- [User Interface](#user-interface)
-- [Miscellaneous](#miscellaneous)
+- [Ecosystem](#ecosystem)
+  - [List Related Components](#list-related-components)
+  - [Fields](#fields)
+  - [Inputs](#inputs)
+  - [Translations](#translations)
+  - [Authentication Providers](#authentication-providers)
+  - [Authorization Management](#authorization-management)
+  - [Data Providers](#data-providers)
+  - [User Interface](#user-interface)
+  - [Miscellaneous](#miscellaneous)
 
 ## List Related Components
 
@@ -50,10 +52,10 @@ See the [Data Provider](./DataProviders.md#available-providers) page.
 
 ## Miscellaneous
 
-- [@react-admin/ra-preferences](https://marmelab.com/ra-enterprise/modules/ra-preferences) <img class="icon" src="./img/premium.svg" /> An [ra-enterprise](https://marmelab.com/ra-enterprise) module which persists user preferences (language, theme, filters, datagrid columns, sidebar position, etc) in local storage.
-- [@react-admin/ra-navigation](https://marmelab.com/ra-enterprise/modules/ra-navigation) <img class="icon" src="./img/premium.svg" /> An [ra-enterprise](https://marmelab.com/ra-enterprise) module which offers specialized UI components (`<Breadcrumb>`, `<MultiLevelMenu>`) and hooks (`useDefineAppLocation`, `useAppLocationstate`) to organize pages in a tree structure, and provide navigation widgets () to help users find their way in that structure.
-- [@react-admin/ra-realtime](https://marmelab.com/ra-enterprise/modules/ra-realtime) <img class="icon" src="./img/premium.svg" /> An [ra-enterprise](https://marmelab.com/ra-enterprise) module which provides hooks and UI components to lock records, live update views when a change occurs in the background, and notify the user of these events.
-- [@react-admin/ra-tour](https://marmelab.com/ra-enterprise/modules/ra-tour) <img class="icon" src="./img/premium.svg" /> An [ra-enterprise](https://marmelab.com/ra-enterprise) module which provides a way to guide users through tutorials to showcase and explain important features of your interfaces.
+- [@react-admin/ra-preferences](https://marmelab.com/ra-enterprise/modules/ra-preferences) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) module which persists user preferences (language, theme, filters, datagrid columns, sidebar position, etc) in local storage.
+- [@react-admin/ra-navigation](https://marmelab.com/ra-enterprise/modules/ra-navigation) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) module which offers specialized UI components (`<Breadcrumb>`, `<MultiLevelMenu>`) and hooks (`useDefineAppLocation`, `useAppLocationstate`) to organize pages in a tree structure, and provide navigation widgets () to help users find their way in that structure.
+- [@react-admin/ra-realtime](https://marmelab.com/ra-enterprise/modules/ra-realtime) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) module which provides hooks and UI components to lock records, live update views when a change occurs in the background, and notify the user of these events.
+- [@react-admin/ra-tour](https://marmelab.com/ra-enterprise/modules/ra-tour) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) module which provides a way to guide users through tutorials to showcase and explain important features of your interfaces.
 - [FusionWorks/react-admin-google-maps](https://github.com/FusionWorks/react-admin-google-maps): Input/view components for displaying location using Google Maps.
 - [api-platform/admin](https://api-platform.com/docs/admin): create a fully featured admin using React Admin for API supporting the [Hydra Core Vocabulary](https://www.hydra-cg.com/), including but not limited to APIs created using the [API Platform framework](https://api-platform.com)
 - [zifnab87/ra-component-factory](https://github.com/zifnab87/ra-component-factory): a centralized configuration of immutability/visibility of fields/menu-links/action buttons, easy re-ordering of fields/properties and tab reorganization based on permission roles

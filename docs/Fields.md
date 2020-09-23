@@ -1064,8 +1064,8 @@ PriceField.defaultProps = {
 
 You can find components for react-admin in third-party repositories.
 
-- [MarkdownField](https://marmelab.com/ra-enterprise/modules/ra-markdown#markdownfield) from [@react-admin/ra-markdown](https://marmelab.com/ra-enterprise/modules/ra-markdown) <img class="icon" src="./img/premium.svg" /> An [ra-enterprise](https://marmelab.com/ra-enterprise) component which can display markdown content.
-- [ReferenceManyToManyField](https://marmelab.com/ra-enterprise/modules/ra-relationships#referencemanytomanyfield) from [@react-admin/ra-relationships](https://marmelab.com/ra-enterprise/modules/ra-relationships) <img class="icon" src="./img/premium.svg" /> An [ra-enterprise](https://marmelab.com/ra-enterprise) component which fetches a list of referenced records by lookup in an associative table, and passes the records down to its child component, which must be an iterator component.
+- [MarkdownField](https://marmelab.com/ra-enterprise/modules/ra-markdown#markdownfield) from [@react-admin/ra-markdown](https://marmelab.com/ra-enterprise/modules/ra-markdown) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) component which can display markdown content.
+- [ReferenceManyToManyField](https://marmelab.com/ra-enterprise/modules/ra-relationships#referencemanytomanyfield) from [@react-admin/ra-relationships](https://marmelab.com/ra-enterprise/modules/ra-relationships) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) component which fetches a list of referenced records by lookup in an associative table, and passes the records down to its child component, which must be an iterator component.
 - [OoDeLally/react-admin-clipboard-list-field](https://github.com/OoDeLally/react-admin-clipboard-list-field): a quick and customizable copy-to-clipboard field.
 
 ## Writing Your Own Field Component
