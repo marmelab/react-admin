@@ -1,4 +1,4 @@
-import { FC, ReactElement, ElementType } from 'react';
+import { ReactElement, ElementType } from 'react';
 import {
     Identifier,
     Exporter,

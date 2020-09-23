@@ -12,7 +12,6 @@ import {
     useNotify,
     useUnselectAll,
     CRUD_DELETE_MANY,
-    Identifier,
 } from 'ra-core';
 
 import Confirm from '../layout/Confirm';

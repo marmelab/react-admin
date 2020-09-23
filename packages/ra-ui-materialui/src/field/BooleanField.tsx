@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { ComponentType, FC, memo, ReactElement } from 'react';
+import { FC, memo } from 'react';
 import { SvgIconComponent } from '@material-ui/icons';
-import PropTypes, { ReactComponentLike } from 'prop-types';
+import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import classnames from 'classnames';
 import DoneIcon from '@material-ui/icons/Done';

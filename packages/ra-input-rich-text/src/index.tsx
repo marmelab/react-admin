@@ -74,6 +74,7 @@ const RichTextInput: FunctionComponent<Props> = props => {
 
     const lastValueChange = useRef(value);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const onTextChange = useCallback(
         debounce(() => {
             const value =
@@ -83,7 +84,7 @@ const RichTextInput: FunctionComponent<Props> = props => {
             lastValueChange.current = value;
             onChange(value);
         }, 500),
-        []
+        [onChange]
     );
 
     useEffect(() => {

@@ -147,6 +147,7 @@ const ReferenceArrayInputController: FunctionComponent<Props> = ({
         source,
     });
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const debouncedSetFilter = useCallback(debounce(setFilter, 500), [
         setFilter,
     ]);

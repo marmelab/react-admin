@@ -37,16 +37,13 @@ const TestComponent = ({
         checkAuth(params, logoutOnFailure, redirectTo, disableNotification)
             .then(() => setAuthenticated(true))
             .catch(error => setAuthenticated(false));
-    }, [params, logoutOnFailure, redirectTo, disableNotification]);
+    }, [params, logoutOnFailure, redirectTo, disableNotification, checkAuth]);
     return <div>{authenticated ? 'authenticated' : 'not authenticated'}</div>;
 };
-
-let loggedIn = true;
 
 const authProvider: AuthProvider = {
     login: () => Promise.reject('bad method'),
     logout: () => {
-        loggedIn = false;
         return Promise.resolve();
     },
     checkAuth: params => (params.token ? Promise.resolve() : Promise.reject()),
