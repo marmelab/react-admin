@@ -44,7 +44,7 @@ export interface EditControllerProps {
     saving: boolean;
     defaultTitle: string;
     save: (
-        data: Record,
+        data: Partial<Record>,
         redirect?: RedirectionSideEffect,
         callbacks?: {
             onSuccess?: OnSuccess;

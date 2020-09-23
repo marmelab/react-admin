@@ -38,9 +38,7 @@ import { setAutomaticRefresh } from '../actions/uiActions';
  *
  * @param {Prop} props
  */
-const FormWithRedirect: FC<
-    FormWithRedirectOwnProps & Omit<FormProps, 'onSubmit'>
-> = ({
+const FormWithRedirect: FC<FormWithRedirectProps> = ({
     debug,
     decorators,
     defaultValue,
@@ -149,9 +147,13 @@ const FormWithRedirect: FC<
     );
 };
 
+export type FormWithRedirectProps = FormWithRedirectOwnProps &
+    Omit<FormProps, 'onSubmit'>;
+
 export interface FormWithRedirectOwnProps {
     defaultValue?: any;
     record?: Record;
+    redirect?: RedirectionSideEffect;
     save?: (
         data: Partial<Record>,
         redirectTo: RedirectionSideEffect,
@@ -160,11 +162,10 @@ export interface FormWithRedirectOwnProps {
             onFailure?: (error: any) => void;
         }
     ) => void;
-    redirect?: RedirectionSideEffect;
+    sanitizeEmptyValues?: boolean;
     saving?: boolean;
     version?: number;
     warnWhenUnsavedChanges?: boolean;
-    sanitizeEmptyValues?: boolean;
 }
 
 const defaultSubscription = {

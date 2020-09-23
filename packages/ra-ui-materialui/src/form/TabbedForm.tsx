@@ -14,10 +14,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
     escapePath,
     FormWithRedirect,
+    FormWithRedirectProps,
     Record,
     RedirectionSideEffect,
 } from 'ra-core';
-import { FormProps, FormRenderProps } from 'react-final-form';
+import { FormRenderProps } from 'react-final-form';
 import get from 'lodash/get';
 
 import Toolbar from './Toolbar';
@@ -109,7 +110,7 @@ TabbedForm.propTypes = {
         PropTypes.func,
     ]),
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
-    saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+    saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
     undoable: PropTypes.bool,
     validate: PropTypes.func,
@@ -117,8 +118,11 @@ TabbedForm.propTypes = {
 };
 
 export interface TabbedFormProps
-    extends Omit<FormProps, 'onSubmit'>,
-        Omit<HtmlHTMLAttributes<HTMLFormElement>, 'onSubmit' | 'children'> {
+    extends FormWithRedirectProps,
+        Omit<
+            HtmlHTMLAttributes<HTMLFormElement>,
+            'defaultValue' | 'onSubmit' | 'children'
+        > {
     basePath?: string;
     className?: string;
     initialValues?: any;

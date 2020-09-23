@@ -1,6 +1,8 @@
 import * as React from 'react';
+import { FC } from 'react';
 import {
     Create,
+    CreateProps,
     DateInput,
     SimpleForm,
     TextInput,
@@ -48,7 +50,7 @@ export const validatePasswords = ({
     return errors;
 };
 
-const VisitorCreate = (props: any) => {
+const VisitorCreate: FC<CreateProps> = props => {
     const classes = useStyles();
 
     return (

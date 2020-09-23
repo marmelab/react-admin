@@ -21,7 +21,7 @@ import SegmentsInput from './SegmentsInput';
 import { validatePasswords } from './VisitorCreate';
 import { Customer, FieldProps } from '../types';
 
-const VisitorEdit = (props: EditProps) => {
+const VisitorEdit: FC<EditProps> = props => {
     return (
         <Edit
             title={<VisitorTitle />}

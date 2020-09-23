@@ -2,8 +2,13 @@ import * as React from 'react';
 import { Children, FC, ReactElement, HtmlHTMLAttributes } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { FormWithRedirect, Record, RedirectionSideEffect } from 'ra-core';
-import { FormProps, FormRenderProps } from 'react-final-form';
+import {
+    FormWithRedirect,
+    FormWithRedirectProps,
+    Record,
+    RedirectionSideEffect,
+} from 'ra-core';
+import { FormRenderProps } from 'react-final-form';
 
 import FormInput from './FormInput';
 import Toolbar from './Toolbar';
@@ -62,7 +67,7 @@ SimpleForm.propTypes = {
         PropTypes.func,
     ]),
     save: PropTypes.func,
-    saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+    saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
     toolbar: PropTypes.element,
     undoable: PropTypes.bool,
@@ -72,29 +77,20 @@ SimpleForm.propTypes = {
 };
 
 export interface SimpleFormProps
-    extends Omit<FormProps, 'onSubmit'>,
-        Omit<HtmlHTMLAttributes<HTMLFormElement>, 'onSubmit' | 'children'> {
+    extends FormWithRedirectProps,
+        Omit<
+            HtmlHTMLAttributes<HTMLFormElement>,
+            'defaultValue' | 'onSubmit' | 'children'
+        > {
     basePath?: string;
     className?: string;
     initialValues?: any;
     margin?: 'none' | 'normal' | 'dense';
-    record?: Record;
-    redirect?: RedirectionSideEffect;
     resource?: string;
-    sanitizeEmptyValues?: boolean;
-    save?: (
-        data: Partial<Record>,
-        redirectTo: RedirectionSideEffect,
-        options?: {
-            onSuccess?: (data?: any) => void;
-            onFailure?: (error: any) => void;
-        }
-    ) => void;
     submitOnEnter?: boolean;
     toolbar?: ReactElement;
     undoable?: boolean;
     variant?: 'standard' | 'outlined' | 'filled';
-    warnWhenUnsavedChanges?: boolean;
 }
 
 const SimpleFormView: FC<SimpleFormViewProps> = ({

@@ -41,7 +41,7 @@ export interface EditProps extends ResourceComponentPropsWithId {
     title?: string | ReactElement;
 }
 
-export interface CreateProps extends ResourceComponentPropsWithId {
+export interface CreateProps extends ResourceComponentProps {
     children?: ReactElement;
     actions?: ReactElement | false;
     aside?: ReactElement;

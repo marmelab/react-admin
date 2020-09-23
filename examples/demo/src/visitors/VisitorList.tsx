@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { FC } from 'react';
 import {
     BooleanField,
     Datagrid,
@@ -6,6 +7,7 @@ import {
     DateInput,
     Filter,
     List,
+    ListProps,
     NullableBooleanInput,
     NumberField,
     SearchInput,
@@ -34,7 +36,7 @@ const useStyles = makeStyles({
     nb_commands: { color: 'purple' },
 });
 
-const VisitorList = (props: any) => {
+const VisitorList: FC<ListProps> = (props: any) => {
     const classes = useStyles();
     const isXsmall = useMediaQuery<Theme>(theme =>
         theme.breakpoints.down('xs')

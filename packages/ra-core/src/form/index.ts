@@ -2,7 +2,7 @@ import addField from './addField';
 import FormDataConsumer from './FormDataConsumer';
 import FormContext from './FormContext';
 import FormField from './FormField';
-import FormWithRedirect from './FormWithRedirect';
+import FormWithRedirect, { FormWithRedirectProps } from './FormWithRedirect';
 import useInput, { InputProps } from './useInput';
 import ValidationError from './ValidationError';
 import useInitializeFormWithRecord from './useInitializeFormWithRecord';
@@ -20,6 +20,7 @@ import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
 export type {
     ChoicesProps,
     ChoicesInputProps,
+    FormWithRedirectProps,
     InputProps,
     OptionTextElement,
     OptionText,
