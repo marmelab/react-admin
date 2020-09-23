@@ -97,7 +97,7 @@ export interface Review extends Record {
 type FilterClassKey = 'button' | 'form';
 
 export interface ToolbarProps<T extends Record = Record> {
-    handleSubmitWithRedirect?: (redirect: RedirectionSideEffect) => void;
+    handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
     handleSubmit?: FormRenderProps['handleSubmit'];
     invalid?: boolean;
     pristine?: boolean;

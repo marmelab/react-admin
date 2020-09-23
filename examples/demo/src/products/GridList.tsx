@@ -10,6 +10,7 @@ import {
     NumberField,
     useListContext,
     DatagridProps,
+    Identifier,
 } from 'react-admin';
 import { Link } from 'react-router-dom';
 import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
@@ -79,7 +80,7 @@ const LoadedGridList: FC<GridProps> = ({ width }) => {
             cols={getColsForWidth(width)}
             className={classes.gridList}
         >
-            {ids.map((id: string) => (
+            {ids.map((id: Identifier) => (
                 <GridListTile
                     // @ts-ignore
                     component={Link}
@@ -112,7 +113,7 @@ const LoadedGridList: FC<GridProps> = ({ width }) => {
     );
 };
 
-interface GridProps extends DatagridProps<Product>, WithWidth {}
+interface GridProps extends DatagridProps, WithWidth {}
 
 const GridList: FC<WithWidth> = ({ width }) => {
     const { loaded } = useListContext();

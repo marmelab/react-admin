@@ -127,6 +127,14 @@ export interface TabbedFormProps
     redirect?: RedirectionSideEffect;
     resource?: string;
     sanitizeEmptyValues?: boolean;
+    save?: (
+        data: Partial<Record>,
+        redirectTo: RedirectionSideEffect,
+        options?: {
+            onSuccess?: (data?: any) => void;
+            onFailure?: (error: any) => void;
+        }
+    ) => void;
     submitOnEnter?: boolean;
     tabs?: ReactElement;
     toolbar?: ReactElement;

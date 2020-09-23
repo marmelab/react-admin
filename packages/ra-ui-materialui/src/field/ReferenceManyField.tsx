@@ -104,6 +104,7 @@ export interface ReferenceManyFieldProps
     children: ReactElement;
     filter?: FilterPayload;
     page?: number;
+    pagination?: ReactElement;
     perPage?: number;
     reference: string;
     sort?: SortPayload;
@@ -162,7 +163,6 @@ export interface ReferenceManyFieldViewProps
         >,
         ListControllerProps {
     children: ReactElement;
-    pagination?: ReactElement;
 }
 
 ReferenceManyFieldView.propTypes = {

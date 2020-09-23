@@ -18,7 +18,7 @@ import ReviewListDesktop from './ReviewListDesktop';
 import ReviewFilter from './ReviewFilter';
 import ReviewEdit from './ReviewEdit';
 
-const ReviewsBulkActionButtons: FC<BulkActionProps> = props => (
+const ReviewsBulkActionButtons = (props: BulkActionProps) => (
     <Fragment>
         <BulkAcceptButton {...props} />
         <BulkRejectButton {...props} />
