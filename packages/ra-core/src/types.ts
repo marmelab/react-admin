@@ -387,12 +387,14 @@ export type LoginComponent = ComponentType<LoginComponentProps>;
 export type DashboardComponent = ComponentType<WithPermissionsChildrenParams>;
 
 export interface LayoutProps {
+    appBar?: ComponentType;
     dashboard?: DashboardComponent;
     logout?: ReactNode;
     menu?: ComponentType<{
         logout?: ReactNode;
         hasDashboard?: boolean;
     }>;
+    sideBar?: ComponentType;
     theme?: ThemeOptions;
     title?: TitleComponent;
 }

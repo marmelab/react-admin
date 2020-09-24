@@ -1,13 +1,13 @@
 import FormInput from './FormInput';
 import FormTab from './FormTab';
-import SimpleForm from './SimpleForm';
+import SimpleForm, { SimpleFormProps } from './SimpleForm';
 import SimpleFormIterator from './SimpleFormIterator';
-import TabbedForm from './TabbedForm';
+import TabbedForm, { TabbedFormProps } from './TabbedForm';
 import TabbedFormTabs from './TabbedFormTabs';
 import Toolbar, { ToolbarProps } from './Toolbar';
 import getFormInitialValues from './getFormInitialValues';
 
-export type { ToolbarProps };
+export type { SimpleFormProps, TabbedFormProps, ToolbarProps };
 
 export {
     FormInput,

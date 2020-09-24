@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Children, cloneElement, isValidElement } from 'react';
+import { Children, cloneElement, FC, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
 import { useLocation, useRouteMatch } from 'react-router-dom';
@@ -9,7 +9,7 @@ export const getTabFullPath = (tab, index, baseUrl) =>
         tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
     }`;
 
-const TabbedShowLayoutTabs = ({ children, ...rest }) => {
+const TabbedShowLayoutTabs: FC = ({ children, ...rest }) => {
     const location = useLocation();
     const match = useRouteMatch();
 

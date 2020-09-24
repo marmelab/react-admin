@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { Children, isValidElement, cloneElement } from 'react';
+import { Children, isValidElement, cloneElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { Record } from 'ra-core';
 
 import CardContentInner from '../layout/CardContentInner';
 import Labeled from '../input/Labeled';
@@ -16,7 +17,7 @@ const sanitizeRestProps = ({
     initialValues,
     translate,
     ...rest
-}) => rest;
+}: any) => rest;
 
 /**
  * Simple Layout for a Show view, showing fields in one column.
@@ -58,14 +59,14 @@ const SimpleShowLayout = ({
     resource,
     version,
     ...rest
-}) => (
+}: SimpleShowLayoutProps) => (
     <CardContentInner
         className={className}
         key={version}
         {...sanitizeRestProps(rest)}
     >
         {Children.map(children, field =>
-            field && isValidElement(field) ? (
+            field && isValidElement<any>(field) ? (
                 <div
                     key={field.props.source}
                     className={classnames(
@@ -98,6 +99,15 @@ const SimpleShowLayout = ({
         )}
     </CardContentInner>
 );
+
+export interface SimpleShowLayoutProps {
+    basePath?: string;
+    className?: string;
+    children: ReactNode;
+    record?: Record;
+    resource?: string;
+    version?: number;
+}
 
 SimpleShowLayout.propTypes = {
     basePath: PropTypes.string,

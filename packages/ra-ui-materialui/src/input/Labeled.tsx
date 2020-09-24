@@ -32,13 +32,13 @@ export interface LabeledProps {
     className?: string;
     classes?: object;
     fullWidth?: boolean;
-    id: string;
-    input: any;
-    isRequired: boolean;
+    id?: string;
+    input?: any;
+    isRequired?: boolean;
     label?: string | ReactElement;
-    meta: any;
-    resource: string;
-    source: string;
+    meta?: any;
+    resource?: string;
+    source?: string;
     [key: string]: any;
 }
 /**

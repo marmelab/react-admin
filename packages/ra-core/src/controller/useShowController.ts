@@ -15,7 +15,7 @@ export interface ShowProps {
     hasShow?: boolean;
     hasList?: boolean;
     id: Identifier;
-    resource: string;
+    resource?: string;
     [key: string]: any;
 }
 

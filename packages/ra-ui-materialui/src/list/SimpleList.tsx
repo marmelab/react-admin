@@ -171,7 +171,7 @@ SimpleList.propTypes = {
 export type FunctionToElement = (
     record: Record,
     id: Identifier
-) => ReactElement;
+) => ReactElement | string;
 
 export interface SimpleListProps extends Omit<ListProps, 'classes'> {
     className?: string;
