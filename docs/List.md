@@ -2401,8 +2401,6 @@ You can find components for react-admin in third-party repositories.
 
 - [ra-editable-datagrid](https://marmelab.com/ra-enterprise/modules/ra-editable-datagrid) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) component which offers an "edit-in-place" experience in a `<Datagrid>`.
 - [ra-tree](https://marmelab.com/ra-enterprise/modules/ra-tree) <img class="icon" src="./img/premium.svg" />: tree hooks and components from the [ra-enterprise](https://marmelab.com/ra-enterprise) package. This module is agnostic as to how you store the tree structure in the backend side.
-- [marmelab/ra-tree-ui-materialui](https://github.com/marmelab/react-admin/blob/master/packages/ra-tree-ui-materialui/): components to show data represented as a tree. Only compatible with react-admin v2.
-- [marmelab/ra-tree-core](https://github.com/marmelab/react-admin/blob/master/packages/ra-tree-core/): components providing the logic but no UI to show data represented as a tree. Only compatible with react-admin v2.
 - [ra-customizable-datagrid](https://github.com/fizix-io/ra-customizable-datagrid): plugin that allows to hide / show columns dynamically.
 
 ## Displaying Fields Depending On The User Permissions

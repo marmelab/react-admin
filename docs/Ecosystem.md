@@ -5,7 +5,6 @@ title: "Ecosystem"
 
 # Ecosystem
 
-- [Ecosystem](#ecosystem)
   - [List Related Components](#list-related-components)
   - [Fields](#fields)
   - [Inputs](#inputs)
