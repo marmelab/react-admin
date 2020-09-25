@@ -14554,29 +14554,6 @@ rc@^1.0.1, rc@^1.1.6:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-admin@next:
-  version "3.9.0-beta.1"
-  resolved "https://registry.yarnpkg.com/react-admin/-/react-admin-3.9.0-beta.1.tgz#b23fb8647115d594c8f21f6918c5838ab74d601b"
-  integrity sha512-kNieDYyWeW4zs0yS8zzhv9BXOpJqroHEvTzABrupYtPrU6Z8CX+iBrgyAGehVu2NruCZB+kDGRRkdcnbyVg57A==
-  dependencies:
-    "@material-ui/core" "^4.3.3"
-    "@material-ui/icons" "^4.2.1"
-    "@material-ui/styles" "^4.3.3"
-    connected-react-router "^6.5.2"
-    final-form "^4.18.5"
-    final-form-arrays "^3.0.1"
-    ra-core "^3.9.0-beta.1"
-    ra-i18n-polyglot "^3.9.0-beta.1"
-    ra-language-english "^3.9.0-beta.1"
-    ra-ui-materialui "^3.9.0-beta.1"
-    react-final-form "^6.3.3"
-    react-final-form-arrays "^3.1.1"
-    react-redux "^7.1.0"
-    react-router "^5.1.0"
-    react-router-dom "^5.1.0"
-    redux "^3.7.2 || ^4.0.3"
-    redux-saga "^1.0.0"
-
 react-app-polyfill@^1.0.4, react-app-polyfill@^1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/react-app-polyfill/-/react-app-polyfill-1.0.6.tgz#890f8d7f2842ce6073f030b117de9130a5f385f0"
