@@ -43,7 +43,7 @@
         "ra-language-english": "^3.9.0-beta.1",
         "ra-language-french": "^3.9.0-beta.1",
         "react": "^16.9.0",
-        "react-admin": "next",
+        "react-admin": "^3.9.0-beta.1",
         "react-dom": "^16.9.0"
     }
 }
