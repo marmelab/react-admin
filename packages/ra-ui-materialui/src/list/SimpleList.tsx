@@ -106,7 +106,11 @@ const SimpleList: FC<SimpleListProps> = props => {
                     >
                         <ListItem
                             button={!!linkType as any}
-                            style={rowStyle ? rowStyle(data[id], rowIndex) : null}
+                            style={
+                                rowStyle
+                                    ? rowStyle(data[id], rowIndex)
+                                    : undefined
+                            }
                         >
                             {leftIcon && (
                                 <ListItemIcon>
@@ -190,7 +194,7 @@ export interface SimpleListProps extends Omit<ListProps, 'classes'> {
     rightIcon?: FunctionToElement;
     secondaryText?: FunctionToElement;
     tertiaryText?: FunctionToElement;
-    rowStyle?:  (record: Record, index: number) => any;
+    rowStyle?: (record: Record, index: number) => any;
 }
 
 const useLinkOrNotStyles = makeStyles(
@@ -227,8 +231,8 @@ const LinkOrNot: FC<LinkOrNotProps> = ({
             {children}
         </Link>
     ) : (
-                <span>{children}</span>
-            );
+        <span>{children}</span>
+    );
 };
 
 export type FunctionLinkType = (record: Record, id: Identifier) => string;
