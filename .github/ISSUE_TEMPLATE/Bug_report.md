@@ -4,7 +4,7 @@ about: Something isn't working as expected. Please tell us!
 
 ---
 
-<!-- Please do not submit support requests or "How to" questions here. For that, go to [Stack Overflow](http://stackoverflow.com/questions/tagged/react-admin). -->
+<!-- Please do not submit support requests or "How to" questions here. For that, go to [Stack Overflow](https://stackoverflow.com/questions/tagged/react-admin). -->
 
 **What you were expecting:**
 <!-- Describe what the behavior would be without the bug. -->

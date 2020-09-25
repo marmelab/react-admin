@@ -5,10 +5,15 @@ import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { useShowController, ReferenceField, TextField } from 'react-admin';
+import {
+    useShowController,
+    ReferenceField,
+    TextField,
+    FieldProps,
+} from 'react-admin';
 
 import Basket from '../orders/Basket';
-import { FieldProps, Customer } from '../types';
+import { Customer, Invoice } from '../types';
 
 const CustomerField: FC<FieldProps<Customer>> = ({ record }) =>
     record ? (
@@ -22,7 +27,7 @@ const CustomerField: FC<FieldProps<Customer>> = ({ record }) =>
     ) : null;
 
 const InvoiceShow = (props: any) => {
-    const { record } = useShowController(props);
+    const { record } = useShowController<Invoice>(props);
     const classes = useStyles();
 
     if (!record) return null;

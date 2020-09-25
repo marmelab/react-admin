@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Fragment, FC } from 'react';
+import { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -12,10 +12,11 @@ import {
     ReferenceField,
     FunctionField,
     TextField,
+    useListContext,
+    Record,
 } from 'react-admin';
 
 import AvatarField from '../visitors/AvatarField';
-import { DatagridProps } from '../types';
 import { Review, Customer } from './../types';
 
 const useStyles = makeStyles({
@@ -31,14 +32,9 @@ const useStyles = makeStyles({
     },
 });
 
-const ReviewListMobile: FC<DatagridProps<Review>> = ({
-    basePath,
-    data,
-    ids,
-    loaded,
-    total,
-}) => {
+const ReviewListMobile = () => {
     const classes = useStyles();
+    const { basePath, data, ids, loaded, total } = useListContext<Review>();
 
     return loaded || Number(total) > 0 ? (
         <List className={classes.root}>
@@ -75,8 +71,16 @@ const ReviewListMobile: FC<DatagridProps<Review>> = ({
                                             link={false}
                                         >
                                             <FunctionField
-                                                render={(record: Customer) =>
-                                                    `${record.first_name} ${record.last_name}`
+                                                render={(record?: Record) =>
+                                                    record
+                                                        ? `${
+                                                              (record as Customer)
+                                                                  .first_name
+                                                          } ${
+                                                              (record as Customer)
+                                                                  .last_name
+                                                          }`
+                                                        : ''
                                                 }
                                                 variant="subtitle1"
                                                 className={classes.inline}

@@ -4,18 +4,19 @@ import PropTypes from 'prop-types';
 import { Field, withTypes } from 'react-final-form';
 import { useLocation } from 'react-router-dom';
 
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import TextField from '@material-ui/core/TextField';
+import {
+    Avatar,
+    Button,
+    Card,
+    CardActions,
+    CircularProgress,
+    TextField,
+} from '@material-ui/core';
 import { createMuiTheme, makeStyles } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import LockIcon from '@material-ui/icons/Lock';
+import { Notification, useTranslate, useLogin, useNotify } from 'react-admin';
 
-import { Notification } from 'react-admin';
-import { useTranslate, useLogin, useNotify } from 'ra-core';
 import { lightTheme } from './themes';
 
 const useStyles = makeStyles(theme => ({

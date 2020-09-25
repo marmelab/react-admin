@@ -1,6 +1,6 @@
 import { getStatusForInput as getDataStatus } from './referenceDataStatus';
 import useTranslate from '../../i18n/useTranslate';
-import { Sort, Record, Pagination } from '../../types';
+import { SortPayload, Record, PaginationPayload } from '../../types';
 import useReference from '../useReference';
 import useGetMatchingReferences from './useGetMatchingReferences';
 import usePaginationState from '../usePaginationState';
@@ -15,12 +15,12 @@ export interface ReferenceInputValue {
     choices: Record[];
     error?: string;
     loading: boolean;
-    pagination: Pagination;
+    pagination: PaginationPayload;
     setFilter: (filter: string) => void;
     filter: any;
-    setPagination: (pagination: Pagination) => void;
-    setSort: (sort: Sort) => void;
-    sort: Sort;
+    setPagination: (pagination: PaginationPayload) => void;
+    setSort: (sort: SortPayload) => void;
+    sort: SortPayload;
     warning?: string;
 }
 
@@ -33,8 +33,8 @@ interface Option {
     record?: Record;
     reference: string;
     referenceSource?: typeof defaultReferenceSource;
-    resource: string;
-    sort?: Sort;
+    resource?: string;
+    sort?: SortPayload;
     source: string;
 }
 

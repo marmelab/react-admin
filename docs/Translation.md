@@ -100,7 +100,7 @@ const i18nProvider = {
 };
 ```
 
-But this is too naive: react-admin expects that i18nProviders support string interpolation for translation, and asynchronous message loading for locale change. That's why react-admin bundles an `i18nProvider` *factory* called `polyglotI18nProvider`. This factory relies on [polyglot.js](http://airbnb.io/polyglot.js/), which uses JSON files for translations. It only expects one argument: a function returning a list of messages based on a locale passed as argument. 
+But this is too naive: react-admin expects that i18nProviders support string interpolation for translation, and asynchronous message loading for locale change. That's why react-admin bundles an `i18nProvider` *factory* called `polyglotI18nProvider`. This factory relies on [polyglot.js](https://airbnb.io/polyglot.js/), which uses JSON files for translations. It only expects one argument: a function returning a list of messages based on a locale passed as argument. 
 
 So the previous provider can be written as:
 
@@ -166,7 +166,7 @@ You can find translation packages for the following languages:
 - Belarusian (`be`): [tui-ru/ra-language-belarusian](https://github.com/tui-ru/ra-language-belarusian)
 - Brazilian Portuguese (`pt-br`): [gucarletto/ra-language-pt-br](https://github.com/gucarletto/ra-language-pt-br)
 - Bulgarian (`bg`): [ptodorov0/ra-language-bulgarian](https://github.com/ptodorov0/ra-language-bulgarian)
-- Catalan (`ca`): [sergioedo/ra-language-catalan](https://github.com/sergioedo/ra-language-catalan)
+- Catalan (`ca`): [joshf/ra-language-catalan](https://github.com/joshf/ra-language-catalan)
 - Chinese (`zh-TW`): [areyliu6/ra-language-chinese-traditional](https://github.com/areyliu6/ra-language-chinese-traditional)
 - Chinese (`zh`): [chen4w/ra-language-chinese](https://github.com/chen4w/ra-language-chinese)
 - Czech (`cs`): [binao/ra-language-czech](https://github.com/binao/ra-language-czech)
@@ -412,7 +412,7 @@ This lets you translate your own resource and field names by passing a `messages
 }
 ```
 
-As you can see, [polyglot pluralization](http://airbnb.io/polyglot.js/#pluralization) is used here, but it is optional.
+As you can see, [polyglot pluralization](https://airbnb.io/polyglot.js/#pluralization) is used here, but it is optional.
 
 Using `resources` keys is an alternative to using the `label` prop in Field and Input components, with the advantage of supporting translation.
 
@@ -526,7 +526,7 @@ translate('not_yet_translated', { _: 'Default translation' });
 => 'Default translation'
 ```
 
-To find more detailed examples, please refer to [http://airbnb.io/polyglot.js/](http://airbnb.io/polyglot.js/)
+To find more detailed examples, please refer to [https://airbnb.io/polyglot.js/](https://airbnb.io/polyglot.js/)
 
 ## Translating Validation Errors
 
@@ -602,11 +602,11 @@ If you want to override these messages in a specific resource you can add the fo
 
 ## Specific case in Confirm messages and Empty Page
 
-In confirm messages and in the empty page, the resource name appears in the middle of sentences, and react-admin automatically sets the resource name translation to lower case.  
+In confirm messages and in the empty page, the resource name appears in the middle of sentences, and react-admin automatically sets the resource name translation to lower case.
 
 > Are you sure you want to delete this comment?
 
-This works in English, but you may want to display resources in another way to match with language rules, like in German, where names are always capitalized.  
+This works in English, but you may want to display resources in another way to match with language rules, like in German, where names are always capitalized.
 ie: `Sind Sie sicher, dass Sie diesen Kommentar löschen möchten?`
 
 To do this, simply add a `forcedCaseName` key next to the `name` key in your translation file.

@@ -5,7 +5,7 @@ import isEqual from 'lodash/isEqual';
 import { useSafeSetState, removeEmpty } from '../../util';
 import { useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../sideEffect';
-import { Record, Sort, RecordMap } from '../../types';
+import { Record, SortPayload, RecordMap } from '../../types';
 import { ListControllerProps } from '../useListController';
 import usePaginationState from '../usePaginationState';
 import useSelectionState from '../useSelectionState';
@@ -22,7 +22,7 @@ interface Options {
     record?: Record;
     reference: string;
     resource: string;
-    sort?: Sort;
+    sort?: SortPayload;
     source?: string;
     target: string;
     total?: number;

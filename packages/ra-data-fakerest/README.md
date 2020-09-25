@@ -103,4 +103,4 @@ This data provider uses [FakeRest](https://github.com/marmelab/FakeRest) under t
 
 ## License
 
-This data provider is licensed under the MIT License, and sponsored by [marmelab](http://marmelab.com).
+This data provider is licensed under the MIT License, and sponsored by [marmelab](https://marmelab.com).

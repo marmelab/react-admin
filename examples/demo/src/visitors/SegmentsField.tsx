@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { FC } from 'react';
 import Chip from '@material-ui/core/Chip';
-import { useTranslate } from 'react-admin';
+import { useTranslate, FieldProps } from 'react-admin';
 import segments from '../segments/data';
-import { FieldProps, Customer } from '../types';
+import { Customer } from '../types';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({

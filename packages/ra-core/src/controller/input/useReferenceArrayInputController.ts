@@ -2,7 +2,12 @@ import { useMemo, useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 import difference from 'lodash/difference';
-import { Pagination, Record, Sort, ReduxState } from '../../types';
+import {
+    PaginationPayload,
+    Record,
+    SortPayload,
+    ReduxState,
+} from '../../types';
 import { useGetMany } from '../../dataProvider';
 import { FieldInputProps } from 'react-final-form';
 import useGetMatching from '../../dataProvider/useGetMatching';
@@ -206,8 +211,8 @@ interface ReferenceArrayInputProps {
     loading: boolean;
     loaded: boolean;
     setFilter: (filter: any) => void;
-    setPagination: (pagination: Pagination) => void;
-    setSort: (sort: Sort) => void;
+    setPagination: (pagination: PaginationPayload) => void;
+    setSort: (sort: SortPayload) => void;
 }
 
 interface Option {
@@ -220,7 +225,7 @@ interface Option {
     record?: Record;
     reference: string;
     resource: string;
-    sort?: Sort;
+    sort?: SortPayload;
     source: string;
 }
 

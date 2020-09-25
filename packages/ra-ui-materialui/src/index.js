@@ -10,3 +10,5 @@ export * from './input';
 export * from './layout';
 export * from './list';
 export { Link, defaultTheme };
+
+export * from './types';

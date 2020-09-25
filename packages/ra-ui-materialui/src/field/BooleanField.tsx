@@ -1,16 +1,17 @@
 import * as React from 'react';
 import { FC, memo } from 'react';
+import { SvgIconComponent } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import classnames from 'classnames';
-import FalseIcon from '@material-ui/icons/Clear';
-import TrueIcon from '@material-ui/icons/Done';
+import DoneIcon from '@material-ui/icons/Done';
+import ClearIcon from '@material-ui/icons/Clear';
 import { Tooltip, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { TypographyProps } from '@material-ui/core/Typography';
 import { useTranslate } from 'ra-core';
 
-import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import sanitizeRestProps from './sanitizeRestProps';
 
 const useStyles = makeStyles(
@@ -34,6 +35,8 @@ export const BooleanField: FC<BooleanFieldProps> = memo<BooleanFieldProps>(
             record = {},
             valueLabelTrue,
             valueLabelFalse,
+            TrueIcon,
+            FalseIcon,
             ...rest
         } = props;
         const translate = useTranslate();
@@ -80,6 +83,8 @@ export const BooleanField: FC<BooleanFieldProps> = memo<BooleanFieldProps>(
 
 BooleanField.defaultProps = {
     addLabel: true,
+    TrueIcon: DoneIcon,
+    FalseIcon: ClearIcon,
 };
 
 BooleanField.propTypes = {
@@ -88,14 +93,18 @@ BooleanField.propTypes = {
     ...fieldPropTypes,
     valueLabelFalse: PropTypes.string,
     valueLabelTrue: PropTypes.string,
+    TrueIcon: PropTypes.elementType,
+    FalseIcon: PropTypes.elementType,
 };
 
 export interface BooleanFieldProps
-    extends FieldProps,
+    extends PublicFieldProps,
         InjectedFieldProps,
         TypographyProps {
     valueLabelTrue?: string;
     valueLabelFalse?: string;
+    TrueIcon?: SvgIconComponent;
+    FalseIcon?: SvgIconComponent;
 }
 
 export default BooleanField;

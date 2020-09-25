@@ -5,9 +5,14 @@ import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import { makeStyles } from '@material-ui/core/styles';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
-import { linkToRecord, NumberField, useListContext } from 'react-admin';
+import {
+    linkToRecord,
+    NumberField,
+    useListContext,
+    DatagridProps,
+    Identifier,
+} from 'react-admin';
 import { Link } from 'react-router-dom';
-import { DatagridProps, Product } from '../types';
 import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
 
 const useStyles = makeStyles(theme => ({
@@ -75,7 +80,7 @@ const LoadedGridList: FC<GridProps> = ({ width }) => {
             cols={getColsForWidth(width)}
             className={classes.gridList}
         >
-            {ids.map((id: string) => (
+            {ids.map((id: Identifier) => (
                 <GridListTile
                     // @ts-ignore
                     component={Link}
@@ -108,7 +113,7 @@ const LoadedGridList: FC<GridProps> = ({ width }) => {
     );
 };
 
-interface GridProps extends DatagridProps<Product>, WithWidth {}
+interface GridProps extends DatagridProps, WithWidth {}
 
 const GridList: FC<WithWidth> = ({ width }) => {
     const { loaded } = useListContext();

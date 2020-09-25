@@ -1,18 +1,9 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 
+import { Record } from 'ra-core';
 import { ShowButton } from '../button';
 import TopToolbar from '../layout/TopToolbar';
-
-const sanitizeRestProps = ({
-    basePath,
-    className,
-    record,
-    hasShow,
-    hasList,
-    resource,
-    ...rest
-}) => rest;
 
 /**
  * Action Toolbar for the Edit view
@@ -39,11 +30,27 @@ const sanitizeRestProps = ({
  *         </Edit>
  *     );
  */
-const EditActions = ({ basePath, className, data, hasShow, ...rest }) => (
-    <TopToolbar className={className} {...sanitizeRestProps(rest)}>
+const EditActions = ({
+    basePath,
+    className,
+    data,
+    hasShow,
+    hasList,
+    ...rest
+}: EditActionsProps) => (
+    <TopToolbar className={className} {...rest}>
         {hasShow && <ShowButton basePath={basePath} record={data} />}
     </TopToolbar>
 );
+
+export interface EditActionsProps {
+    basePath?: string;
+    className?: string;
+    data?: Record;
+    hasShow?: boolean;
+    hasList?: boolean;
+    resource?: string;
+}
 
 EditActions.propTypes = {
     basePath: PropTypes.string,

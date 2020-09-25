@@ -8,9 +8,11 @@ import {
     useCheckMinimumRequiredProps,
     useCreateController,
     SideEffectContext,
+    CreateControllerProps,
 } from 'ra-core';
 
 import TitleForRecord from '../layout/TitleForRecord';
+import { CreateProps } from '../types';
 
 /**
  * Page component for the Create view
@@ -55,7 +57,7 @@ import TitleForRecord from '../layout/TitleForRecord';
  * );
  * export default App;
  */
-const Create = props => (
+const Create = (props: CreateProps) => (
     <CreateView {...props} {...useCreateController(props)} />
 );
 
@@ -78,7 +80,7 @@ Create.propTypes = {
     transform: PropTypes.func,
 };
 
-export const CreateView = props => {
+export const CreateView = (props: CreateViewProps) => {
     const {
         actions,
         aside,
@@ -161,6 +163,10 @@ export const CreateView = props => {
     );
 };
 
+interface CreateViewProps
+    extends CreateProps,
+        Omit<CreateControllerProps, 'resource'> {}
+
 CreateView.propTypes = {
     actions: PropTypes.element,
     aside: PropTypes.element,
@@ -207,33 +213,18 @@ const useStyles = makeStyles(
 );
 
 const sanitizeRestProps = ({
-    actions,
-    children,
-    className,
-    crudCreate,
-    loading,
-    loaded,
-    saving,
-    resource,
-    title,
-    hasCreate,
-    hasEdit,
-    hasList,
-    hasShow,
-    match,
-    location,
+    hasCreate = null,
+    hasEdit = null,
     history,
-    options,
-    locale,
-    permissions,
-    successMessage,
-    onSuccess,
-    setOnSuccess,
-    onFailure,
-    setOnFailure,
-    transform,
-    setTransform,
-    translate,
+    loaded,
+    loading,
+    location,
+    match,
+    onFailure = null,
+    onSuccess = null,
+    options = null,
+    permissions = null,
+    transform = null,
     ...rest
 }) => rest;
 

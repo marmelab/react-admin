@@ -2,19 +2,25 @@ import * as React from 'react';
 import { FC } from 'react';
 import PropTypes from 'prop-types';
 import ThumbDown from '@material-ui/icons/ThumbDown';
+
 import {
     Button,
     useUpdateMany,
     useNotify,
-    useRedirect,
+    useRefresh,
     useUnselectAll,
     CRUD_UPDATE_MANY,
+    BulkActionProps,
+    Identifier,
 } from 'react-admin';
-import { BulkActionProps } from '../types';
 
-const BulkRejectButton: FC<BulkActionProps> = ({ selectedIds }) => {
+const noSelection: Identifier[] = [];
+
+const BulkRejectButton: FC<BulkActionProps> = ({
+    selectedIds = noSelection,
+}) => {
     const notify = useNotify();
-    const redirectTo = useRedirect();
+    const refresh = useRefresh();
     const unselectAll = useUnselectAll('reviews');
 
     const [reject, { loading }] = useUpdateMany(
@@ -31,7 +37,7 @@ const BulkRejectButton: FC<BulkActionProps> = ({ selectedIds }) => {
                     {},
                     true
                 );
-                redirectTo('/reviews');
+                refresh();
                 unselectAll();
             },
             onFailure: () => {

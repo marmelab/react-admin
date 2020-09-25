@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import classnames from 'classnames';
 
 import sanitizeRestProps from './sanitizeRestProps';
-import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 /**
  * Render a link to a file based on a path contained in a record field
@@ -119,7 +119,7 @@ const useStyles = makeStyles(
     { name: 'RaFileField' }
 );
 
-export interface FileFieldProps extends FieldProps, InjectedFieldProps {
+export interface FileFieldProps extends PublicFieldProps, InjectedFieldProps {
     src?: string;
     title?: string;
     target?: string;

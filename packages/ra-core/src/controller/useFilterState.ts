@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
-import { Filter } from '../types';
+import { FilterPayload } from '../types';
 
 interface UseFilterStateOptions {
-    filterToQuery?: (v: string) => Filter;
-    permanentFilter?: Filter;
+    filterToQuery?: (v: string) => FilterPayload;
+    permanentFilter?: FilterPayload;
     debounceTime?: number;
 }
 
@@ -15,7 +15,7 @@ interface UseFilterStateOptions {
  * @property {setFilter} setFilter: Update the filter with the given string
  */
 interface UseFilterStateProps {
-    filter: Filter;
+    filter: FilterPayload;
     setFilter: (v: string) => void;
 }
 
@@ -79,6 +79,7 @@ export default ({
         }
     }, [permanentFilterSignature, permanentFilterProp, filterToQuery]); // eslint-disable-line react-hooks/exhaustive-deps
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const setFilter = useCallback(
         debounce((value: string) => {
             setFilterValue({

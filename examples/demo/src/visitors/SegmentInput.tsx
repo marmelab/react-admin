@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { useTranslate, SelectInput } from 'react-admin';
+import { useTranslate, SelectInput, InputProps } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
-import { InputProps } from 'ra-core';
 
 import segments from '../segments/data';
 

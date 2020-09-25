@@ -1,4 +1,4 @@
-import Filter from './Filter';
+import Filter, { FilterProps } from './Filter';
 import FilterButton from './FilterButton';
 import FilterForm from './FilterForm';
 import FilterFormInput from './FilterFormInput';
@@ -15,3 +15,5 @@ export {
     FilterListItem,
     FilterLiveSearch,
 };
+
+export type { FilterProps };

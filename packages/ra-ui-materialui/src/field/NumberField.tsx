@@ -5,7 +5,7 @@ import get from 'lodash/get';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
-import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 const hasNumberFormat = !!(
     typeof Intl === 'object' &&
@@ -104,7 +104,7 @@ NumberField.propTypes = {
 };
 
 export interface NumberFieldProps
-    extends FieldProps,
+    extends PublicFieldProps,
         InjectedFieldProps,
         TypographyProps {
     locales?: string | string[];

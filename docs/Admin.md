@@ -314,7 +314,7 @@ For more details on custom layouts, check [the Theming documentation](./Theming.
 
 ## `customReducers`
 
-The `<Admin>` app uses [Redux](http://redux.js.org/) to manage state. The state has the following keys:
+The `<Admin>` app uses [Redux](https://redux.js.org/) to manage state. The state has the following keys:
 
 ```json
 {
@@ -506,7 +506,7 @@ const App = () => (
 
 ## `initialState`
 
-The `initialState` prop lets you pass preloaded state to Redux. See the [Redux Documentation](http://redux.js.org/docs/api/createStore.html#createstorereducer-preloadedstate-enhancer) for more details.
+The `initialState` prop lets you pass preloaded state to Redux. See the [Redux Documentation](https://redux.js.org/docs/api/createStore.html#createstorereducer-preloadedstate-enhancer) for more details.
 
 It accepts either a function or an object:
 

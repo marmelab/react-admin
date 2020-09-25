@@ -1,4 +1,9 @@
-import { Identifier, Record, Pagination, Sort } from '../../types';
+import {
+    Identifier,
+    Record,
+    PaginationPayload,
+    SortPayload,
+} from '../../types';
 import { GET_MANY_REFERENCE } from '../../core';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 import { NotificationSideEffect } from '../../sideEffect';
@@ -8,8 +13,8 @@ export const crudGetManyReference = (
     target: string,
     id: Identifier,
     relatedTo: string,
-    pagination: Pagination,
-    sort: Sort,
+    pagination: PaginationPayload,
+    sort: SortPayload,
     filter: object,
     source: string
 ): CrudGetManyReferenceAction => ({
@@ -32,8 +37,8 @@ interface RequestPayload {
     source: string;
     target: string;
     id: Identifier;
-    pagination: Pagination;
-    sort: Sort;
+    pagination: PaginationPayload;
+    sort: SortPayload;
     filter: object;
 }
 

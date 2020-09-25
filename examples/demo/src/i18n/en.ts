@@ -1,4 +1,4 @@
-import { TranslationMessages } from 'ra-core';
+import { TranslationMessages } from 'react-admin';
 import englishMessages from 'ra-language-english';
 
 const customEnglishMessages: TranslationMessages = {
@@ -27,7 +27,7 @@ const customEnglishMessages: TranslationMessages = {
                 title: 'Welcome to the react-admin e-commerce demo',
                 subtitle:
                     "This is the admin of an imaginary poster shop. Feel free to explore and modify the data - it's local to your computer, and will reset each time you reload.",
-                aor_button: 'react-admin site',
+                ra_button: 'react-admin site',
                 demo_button: 'Source for this demo',
             },
         },

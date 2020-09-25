@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { ReferenceField, TextField } from 'react-admin';
-import { ReferenceFieldProps } from './../types';
+import { ReferenceField, ReferenceFieldProps, TextField } from 'react-admin';
 
-const ProductReferenceField: FC<Omit<
-    ReferenceFieldProps,
-    'reference' | 'children'
->> = props => (
+interface Props {
+    source?: string;
+}
+
+const ProductReferenceField: FC<
+    Props & Omit<Omit<ReferenceFieldProps, 'source'>, 'reference' | 'children'>
+> = props => (
     <ReferenceField
         label="Product"
         source="product_id"

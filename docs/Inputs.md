@@ -624,7 +624,7 @@ import { DateTimeInput } from 'react-admin';
 
 ### Usage
 
-Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and `maxSize` props. `accept` must be a valid [MIME type](http://www.iana.org/assignments/media-types/media-types.xhtml) according to [input element specification](https://www.w3.org/wiki/HTML/Elements/input/file) or a valid file extension. If `multiple` is set to false and additional files are dropped, all files besides the first will be rejected. Any file which does not have a size in the [`minSize`, `maxSize`] range, will be rejected as well.
+Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and `maxSize` props. `accept` must be a valid [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) according to [input element specification](https://www.w3.org/wiki/HTML/Elements/input/file) or a valid file extension. If `multiple` is set to false and additional files are dropped, all files besides the first will be rejected. Any file which does not have a size in the [`minSize`, `maxSize`] range, will be rejected as well.
 
 `<ImageInput>` delegates the preview of currently selected images to its child. `<ImageInput>` clones its child as many times as there are selected images, passing the image as the `record` prop. To preview a simple list of image thumbnails, you can use `<ImageField>` as child, as follows:
 
@@ -674,7 +674,7 @@ Note that the image upload returns a [File](https://developer.mozilla.org/en/doc
 
 ### Usage
 
-Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and `maxSize` props. `accept` must be a valid [MIME type](http://www.iana.org/assignments/media-types/media-types.xhtml) according to [input element specification](https://www.w3.org/wiki/HTML/Elements/input/file) or a valid file extension. If `multiple` is set to false and additional files are dropped, all files besides the first will be rejected. Any file which does not have a size in the [`minSize`, `maxSize`] range, will be rejected as well.
+Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and `maxSize` props. `accept` must be a valid [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) according to [input element specification](https://www.w3.org/wiki/HTML/Elements/input/file) or a valid file extension. If `multiple` is set to false and additional files are dropped, all files besides the first will be rejected. Any file which does not have a size in the [`minSize`, `maxSize`] range, will be rejected as well.
 
 `FileInput` delegates the preview of currently selected files to its child. `FileInput` clones its child as many times as there are selected files, passing the file as the `record` prop. To preview a simple list of files names, you can use `<FileField>` as child, as follows:
 
@@ -1465,7 +1465,10 @@ const dateParser = v => {
 
 You can find components for react-admin in third-party repositories.
 
-- [vascofg/react-admin-color-input](https://github.com/vascofg/react-admin-color-input): a color input using [React Color](http://casesandberg.github.io/react-color/), a collection of color pickers.
+- [MarkdownInput](https://marmelab.com/ra-enterprise/modules/ra-markdown) from [@react-admin/ra-markdown](https://marmelab.com/ra-enterprise/modules/ra-markdown) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) component which allows to edit markdown content with a WYSIWYG editor.
+- [DualListInput](https://marmelab.com/ra-enterprise/modules/ra-relationships#duallistinput) from [@react-admin/ra-relationships](https://marmelab.com/ra-enterprise/modules/ra-relationships) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) component which allows to select from a list of choices using two lists.
+- [ReferenceManyToManyInput](https://marmelab.com/ra-enterprise/modules/ra-relationships#referencemanytomanyinput) from [@react-admin/ra-relationships](https://marmelab.com/ra-enterprise/modules/ra-relationships) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) component which allows to create, edit or remove relationships between two resources sharing an associative table.
+- [vascofg/react-admin-color-input](https://github.com/vascofg/react-admin-color-input): a color input using [React Color](https://casesandberg.github.io/react-color/), a collection of color pickers.
 - [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs): a collection of Date Inputs, based on [material-ui-pickers](https://material-ui-pickers.firebaseapp.com/)
 - [maluramichael/ra-input-markdown](https://github.com/maluramichael/ra-input-markdown): a markdown editor, based on [react-mde](https://github.com/andrerpena/react-mde) and [showdown](https://github.com/showdownjs/showdown)
 
@@ -1616,10 +1619,11 @@ import { useInput, required } from 'react-admin';
 
 const BoundedTextField = props => {
     const {
-        input: { name, onChange },
+        input: { name, onChange, ...rest },
         meta: { touched, error },
         isRequired
     } = useInput(props);
+
     return (
         <TextField
             name={name}
@@ -1628,37 +1632,45 @@ const BoundedTextField = props => {
             error={!!(touched && error)}
             helperText={touched && error}
             required={isRequired}
+            {...rest}
         />
     );
 };
-const LatLngInput = () => (
-    <span>
-        <BoundedTextField source="lat" label="latitude" validate={[required()]} />
-        &nbsp;
-        <BoundedTextField source="lng" label="longitude" validate={[required()]} />
-    </span>
-);
+const LatLngInput = props => {
+    const {source, ...rest} = props;
+
+    return (
+        <span>
+            <BoundedTextField source="lat" label="Latitude" validate={required()} {...rest} />
+            &nbsp;
+            <BoundedTextField source="lng" label="Longitude" validate={required()} {...rest} />
+        </span>
+    );
+};
 ```
 
-Here is another example, this time using a material-ui `SelectField` component:
+Here is another example, this time using a material-ui `Select` component:
 
 ```jsx
 // in SexInput.js
-import SelectField from '@material-ui/core/SelectField';
+import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { useInput } from 'react-admin';
 
 const SexInput = props => {
-    const { input, meta: { touched, error } } = useInput(props);
+    const {
+        input,
+        meta: { touched, error }
+    } = useInput(props);
+
     return (
-        <SelectField
-            floatingLabelText="Sex"
-            errorText={touched && error}
+        <Select
+            label="Sex"
             {...input}
         >
-            <MenuItem value="M" primaryText="Male" />
-            <MenuItem value="F" primaryText="Female" />
-        </SelectField>
+            <MenuItem value="M">Male</MenuItem>
+            <MenuItem value="F">Female</MenuItem>
+        </Select>
     );
 };
 export default SexInput;
@@ -1667,13 +1679,14 @@ export default SexInput;
 **Tip**: `useInput` accepts all arguments that you can pass to `useField`. That means that components using `useInput` accept props like [`format`](https://final-form.org/docs/react-final-form/types/FieldProps#format) and [`parse`](https://final-form.org/docs/react-final-form/types/FieldProps#parse), to convert values from the form to the input, and vice-versa:
 
 ```jsx
-const parse = value => // ...
-const format = value => // ...
+const parse = value => {/* ... */};
+const format = value => {/* ... */};
 
 const PersonEdit = props => (
     <Edit {...props}>
         <SimpleForm>
-            <SexInput source="sex"
+            <SexInput
+                source="sex"
                 format={formValue => formValue === 0 ? 'M' : 'F'}
                 parse={inputValue => inputValue === 'M' ? 0 : 1}
             />

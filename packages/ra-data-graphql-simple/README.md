@@ -1,7 +1,7 @@
 # ra-data-graphql-simple
 
 A GraphQL data provider for [react-admin](https://github.com/marmelab/react-admin/)
-built with [Apollo](http://www.apollodata.com/) and tailored to target a simple GraphQL implementation.
+built with [Apollo](https://www.apollodata.com/) and tailored to target a simple GraphQL implementation.
 
 - [Installation](#installation)
 - [Usage](#installation)
@@ -23,7 +23,7 @@ yarn add graphql ra-data-graphql-simple
 
 ## Usage
 
-The `ra-data-graphql-simple` package exposes a single function, which is a constructor for a `dataProvider` based on a GraphQL endpoint. When executed, this function calls the GraphQL endpoint, running an [introspection](http://graphql.org/learn/introspection/) query. It uses the result of this query (the GraphQL schema) to automatically configure the `dataProvider` accordingly.
+The `ra-data-graphql-simple` package exposes a single function, which is a constructor for a `dataProvider` based on a GraphQL endpoint. When executed, this function calls the GraphQL endpoint, running an [introspection](https://graphql.org/learn/introspection/) query. It uses the result of this query (the GraphQL schema) to automatically configure the `dataProvider` accordingly.
 
 ```jsx
 // in App.js
@@ -205,7 +205,7 @@ const introspectionOptions = {
 
 **Note**: `exclude` and `include` are mutually exclusives and `include` will take precedence.
 
-**Note**: When using functions, the `type` argument will be a type returned by the introspection query. Refer to the [introspection](http://graphql.org/learn/introspection/) documentation for more information.
+**Note**: When using functions, the `type` argument will be a type returned by the introspection query. Refer to the [introspection](https://graphql.org/learn/introspection/) documentation for more information.
 
 Pass the introspection options to the `buildApolloProvider` function:
 

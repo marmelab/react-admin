@@ -13,6 +13,8 @@ import {
     useGetList,
 } from 'react-admin';
 
+import { Category } from '../types';
+
 const useStyles = makeStyles(theme => ({
     root: {
         [theme.breakpoints.up('sm')]: {
@@ -27,10 +29,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Aside: FC = () => {
-    const { data, ids } = useGetList(
+    const { data, ids } = useGetList<Category>(
         'categories',
         { page: 1, perPage: 100 },
-        { field: 'name', order: 'ASC' }
+        { field: 'name', order: 'ASC' },
+        {}
     );
     const classes = useStyles();
     return (
@@ -118,13 +121,15 @@ const Aside: FC = () => {
                     label="resources.products.filters.categories"
                     icon={<LocalOfferIcon />}
                 >
-                    {ids.map((id: any) => (
-                        <FilterListItem
-                            label={inflection.humanize(data[id].name)}
-                            key={data[id].id}
-                            value={{ category_id: data[id].id }}
-                        />
-                    ))}
+                    {ids &&
+                        data &&
+                        ids.map((id: any) => (
+                            <FilterListItem
+                                label={inflection.humanize(data[id].name)}
+                                key={data[id].id}
+                                value={{ category_id: data[id].id }}
+                            />
+                        ))}
                 </FilterList>
             </CardContent>
         </Card>

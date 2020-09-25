@@ -1226,7 +1226,7 @@ export const PostEdit = (props) => (
 );
 ```
 
-By default the `<SaveButton>` is disabled when the form is `pristine`. You can bypass this behavior and always enable it without recreating the whole `<Toolbar>`:
+In the default `<Toolbar>`, the `<SaveButton>` is disabled when the form is `pristine`. You can bypass this behavior and always enable it without customizing the `<Toolbar>` thanks to the prop `alwaysEnableSaveButton`:
 
 ```jsx
 import * as React from 'react';
@@ -1236,6 +1236,27 @@ export const PostEdit = (props) => (
     <Edit {...props}>
         <SimpleForm toolbar={<Toolbar alwaysEnableSaveButton />}>
             ...
+        </SimpleForm>
+    </Edit>
+);
+```
+
+But if you want to customize the `<Toolbar>` (to remove the `<DeleteButton>` for example), you have to manage the _disabled_ behaviour of the `<SaveButton>` by yourself:
+
+```jsx
+import * as React from "react";
+import { Edit, SimpleForm, SaveButton, Toolbar } from 'react-admin';
+
+const PostEditToolbar = props => (
+    <Toolbar {...props} >
+        <SaveButton disabled={!props.pristine} />
+    </Toolbar>
+);
+
+export const PostEdit = (props) => (
+    <Edit {...props}>
+        <SimpleForm toolbar={<PostEditToolbar />}>
+            // ...
         </SimpleForm>
     </Edit>
 );
@@ -1705,6 +1726,10 @@ export const UserEdit = ({ permissions, ...props }) =>
 ## Changing The Success or Failure Notification Message
 
 Once the `dataProvider` returns successfully after save, users see a generic notification ("Element created" / "Element updated"). You can customize this message by passing a custom success side effect function as [the `<Edit onSuccess>` prop](#onsuccess):
+
+By default, when saving with optimistic rendering, the `onSuccess` callback is called immediately. To change that, you need to pass `undoable={false}` to your `<Edit />` or `<Create />` component. The `onSuccess` callback will then be called at the end of the dataProvider call.
+
+In addition, the saved object will not be available as an argument of the `onSuccess` callback method when `undoable` feature is enabled.
 
 ```jsx
 import { Edit, useNotify, useRedirect } from 'react-admin';

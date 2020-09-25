@@ -6,7 +6,7 @@ import {
 } from 'react';
 import debounce from 'lodash/debounce';
 
-import { Record, Sort, Pagination } from '../../types';
+import { Record, SortPayload, PaginationPayload } from '../../types';
 import useReferenceArrayInputController from './useReferenceArrayInputController';
 
 interface ChildrenFuncParams {
@@ -15,8 +15,8 @@ interface ChildrenFuncParams {
     loaded: boolean;
     loading: boolean;
     setFilter: (filter: any) => void;
-    setPagination: (pagination: Pagination) => void;
-    setSort: (sort: Sort) => void;
+    setPagination: (pagination: PaginationPayload) => void;
+    setSort: (sort: SortPayload) => void;
     warning?: string;
 }
 
@@ -32,7 +32,7 @@ interface Props {
     record?: Record;
     reference: string;
     resource: string;
-    sort?: Sort;
+    sort?: SortPayload;
     source: string;
 }
 
@@ -147,6 +147,7 @@ const ReferenceArrayInputController: FunctionComponent<Props> = ({
         source,
     });
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const debouncedSetFilter = useCallback(debounce(setFilter, 500), [
         setFilter,
     ]);

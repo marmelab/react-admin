@@ -12,11 +12,11 @@ import {
     useNotify,
     useUnselectAll,
     CRUD_DELETE_MANY,
-    Identifier,
 } from 'ra-core';
 
 import Confirm from '../layout/Confirm';
 import Button, { ButtonProps } from './Button';
+import { BulkActionProps } from '../types';
 
 const useStyles = makeStyles(
     theme => ({
@@ -34,13 +34,15 @@ const useStyles = makeStyles(
     { name: 'RaBulkDeleteWithConfirmButton' }
 );
 
+const defaultIcon = <ActionDelete />;
+
 const BulkDeleteWithConfirmButton: FC<BulkDeleteWithConfirmButtonProps> = props => {
     const {
         basePath,
         classes: classesOverride,
-        confirmTitle,
-        confirmContent,
-        icon,
+        confirmTitle = 'ra.message.bulk_delete_title',
+        confirmContent = 'ra.message.bulk_delete_content',
+        icon = defaultIcon,
         label,
         onClick,
         resource,
@@ -139,17 +141,13 @@ const sanitizeRestProps = ({
     'resource' | 'selectedIds' | 'icon'
 >) => rest;
 
-interface Props {
-    basePath?: string;
+export interface BulkDeleteWithConfirmButtonProps
+    extends BulkActionProps,
+        ButtonProps {
     confirmContent?: string;
     confirmTitle?: string;
-    filterValues?: any;
-    icon: ReactElement;
-    resource: string;
-    selectedIds: Identifier[];
+    icon?: ReactElement;
 }
-
-export type BulkDeleteWithConfirmButtonProps = Props & ButtonProps;
 
 BulkDeleteWithConfirmButton.propTypes = {
     basePath: PropTypes.string,
@@ -163,10 +161,7 @@ BulkDeleteWithConfirmButton.propTypes = {
 };
 
 BulkDeleteWithConfirmButton.defaultProps = {
-    confirmTitle: 'ra.message.bulk_delete_title',
-    confirmContent: 'ra.message.bulk_delete_content',
     label: 'ra.action.delete',
-    icon: <ActionDelete />,
 };
 
 export default BulkDeleteWithConfirmButton;

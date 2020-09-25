@@ -4,7 +4,7 @@ import {
     ShowNotificationAction,
     HIDE_NOTIFICATION,
     HideNotificationAction,
-    Notification,
+    NotificationPayload,
 } from '../../actions/notificationActions';
 import { UNDO, UndoAction } from '../../actions/undoActions';
 
@@ -14,7 +14,7 @@ type ActionTypes =
     | UndoAction
     | { type: 'OTHER_TYPE' };
 
-type State = Notification[];
+type State = NotificationPayload[];
 
 const notificationsReducer: Reducer<State> = (
     previousState = [],

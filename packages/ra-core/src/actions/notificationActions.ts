@@ -11,7 +11,7 @@ interface NotificationOptions {
     undoable?: boolean;
 }
 
-export interface Notification {
+export interface NotificationPayload {
     readonly message: string;
     readonly type: NotificationType;
     readonly notificationOptions?: NotificationOptions;
@@ -19,7 +19,7 @@ export interface Notification {
 
 export interface ShowNotificationAction {
     readonly type: typeof SHOW_NOTIFICATION;
-    readonly payload: Notification;
+    readonly payload: NotificationPayload;
 }
 
 /**

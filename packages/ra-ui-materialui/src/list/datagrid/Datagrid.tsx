@@ -63,7 +63,7 @@ import { ClassesOverride } from '../../types';
  *     </Datagrid>
  * </ReferenceManyField>
  */
-const Datagrid: FC<DatagridProps> = props => {
+const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     const classes = useDatagridStyles(props);
     const {
         optimized = false,
@@ -168,6 +168,7 @@ const Datagrid: FC<DatagridProps> = props => {
      */
     return (
         <Table
+            ref={ref}
             className={classnames(classes.table, className)}
             size={size}
             {...sanitizeListRestProps(rest)}
@@ -244,7 +245,7 @@ const Datagrid: FC<DatagridProps> = props => {
             )}
         </Table>
     );
-};
+});
 
 Datagrid.propTypes = {
     basePath: PropTypes.string,
@@ -295,7 +296,7 @@ export interface DatagridProps extends Omit<TableProps, 'size' | 'classes'> {
           }>;
     hasBulkActions?: boolean;
     hover?: boolean;
-    isRowSelectable?: (record: Record) => boolean | boolean;
+    isRowSelectable?: (record: Record) => boolean;
     optimized?: boolean;
     rowClick?: string | RowClickFunction;
     rowStyle?: (record: Record, index: number) => any;

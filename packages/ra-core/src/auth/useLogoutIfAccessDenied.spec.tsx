@@ -17,12 +17,18 @@ useLogout.mockImplementation(() => logout);
 const notify = jest.fn();
 useNotify.mockImplementation(() => notify);
 
-const TestComponent = ({ error }: { error?: any }) => {
+const TestComponent = ({
+    error,
+    disableNotification,
+}: {
+    error?: any;
+    disableNotification?: boolean;
+}) => {
     const [loggedOut, setLoggedOut] = useState(false);
     const logoutIfAccessDenied = useLogoutIfAccessDenied();
     useEffect(() => {
-        logoutIfAccessDenied(error).then(setLoggedOut);
-    }, [error, logoutIfAccessDenied]);
+        logoutIfAccessDenied(error, disableNotification).then(setLoggedOut);
+    }, [error, disableNotification, logoutIfAccessDenied]);
     return <div>{loggedOut ? '' : 'logged in'}</div>;
 };
 
@@ -98,6 +104,21 @@ describe('useLogoutIfAccessDenied', () => {
         await wait();
         expect(logout).toHaveBeenCalledTimes(1);
         expect(notify).toHaveBeenCalledTimes(1);
+        expect(queryByText('logged in')).toBeNull();
+    });
+
+    it('should logout whitout showing a notification', async () => {
+        const { queryByText } = render(
+            <AuthContext.Provider value={authProvider}>
+                <TestComponent
+                    error={new Error('denied')}
+                    disableNotification
+                />
+            </AuthContext.Provider>
+        );
+        await wait();
+        expect(logout).toHaveBeenCalledTimes(1);
+        expect(notify).toHaveBeenCalledTimes(0);
         expect(queryByText('logged in')).toBeNull();
     });
 });

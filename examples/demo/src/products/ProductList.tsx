@@ -2,25 +2,26 @@ import * as React from 'react';
 import { FC } from 'react';
 import { Box, Chip, useMediaQuery, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { InputProps } from 'ra-core';
 import {
+    CreateButton,
+    ExportButton,
     Filter,
+    FilterProps,
+    InputProps,
     ListBase,
+    ListProps,
     NumberInput,
     Pagination,
     ReferenceInput,
     SearchInput,
     SelectInput,
-    TopToolbar,
-    CreateButton,
-    ExportButton,
     SortButton,
     Title,
-    useTranslate,
+    TopToolbar,
     useListContext,
+    useTranslate,
 } from 'react-admin';
 
-import { FilterProps, ListComponentProps } from '../types';
 import GridList from './GridList';
 import Aside from './Aside';
 
@@ -36,17 +37,7 @@ const QuickFilter: FC<InputProps> = ({ label }) => {
     return <Chip className={classes.root} label={translate(label)} />;
 };
 
-interface FilterParams {
-    q?: string;
-    category_id?: string;
-    width_gte?: number;
-    width_lte?: number;
-    height_gte?: number;
-    height_lte?: number;
-    stock_lte?: number;
-}
-
-export const ProductFilter: FC<FilterProps<FilterParams>> = props => (
+export const ProductFilter: FC<Omit<FilterProps, 'children'>> = props => (
     <Filter {...props}>
         <SearchInput source="q" alwaysOn />
         <ReferenceInput
@@ -77,7 +68,7 @@ const ListActions: FC<any> = ({ isSmall }) => (
     </TopToolbar>
 );
 
-const ProductList: FC<ListComponentProps> = props => {
+const ProductList: FC<ListProps> = props => {
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
     return (
         <ListBase

@@ -15,8 +15,8 @@ import { SORT_ASC } from '../reducer/admin/resource/list/queryReducer';
 import { CRUD_GET_LIST } from '../actions';
 import defaultExporter from '../export/defaultExporter';
 import {
-    Filter,
-    Sort,
+    FilterPayload,
+    SortPayload,
     RecordMap,
     Identifier,
     ReduxState,
@@ -26,11 +26,11 @@ import {
 
 export interface ListProps {
     // the props you can change
-    filter?: Filter;
+    filter?: FilterPayload;
     filters?: ReactElement<any>;
     filterDefaultValues?: object;
     perPage?: number;
-    sort?: Sort;
+    sort?: SortPayload;
     exporter?: Exporter | false;
     // the props managed by react-admin
     basePath?: string;
@@ -52,9 +52,9 @@ const defaultSort = {
 
 const defaultData = {};
 
-export interface ListControllerProps<RecordType = Record> {
+export interface ListControllerProps<RecordType extends Record = Record> {
     basePath: string;
-    currentSort: Sort;
+    currentSort: SortPayload;
     data: RecordMap<RecordType>;
     defaultTitle?: string;
     displayedFilters: any;
@@ -98,7 +98,7 @@ export interface ListControllerProps<RecordType = Record> {
  *     return <ListView {...controllerProps} {...props} />;
  * }
  */
-const useListController = <RecordType = Record>(
+const useListController = <RecordType extends Record = Record>(
     props: ListProps
 ): ListControllerProps<RecordType> => {
     useCheckMinimumRequiredProps('List', ['basePath', 'resource'], props);
@@ -180,11 +180,16 @@ const useListController = <RecordType = Record>(
         get(state.admin.resources, [resource, 'list', 'total'], 0)
     );
 
+    // Since the total can be empty during the loading phase
+    // We need to override that total with the latest loaded one
+    // This way, the useEffect bellow won't reset the page to 1
+    const finalTotal = typeof total === 'undefined' ? defaultTotal : total;
+
     const finalIds = typeof total === 'undefined' ? defaultIds : ids;
 
     const totalPages = useMemo(() => {
-        return Math.ceil(total / query.perPage) || 1;
-    }, [query.perPage, total]);
+        return Math.ceil(finalTotal / query.perPage) || 1;
+    }, [query.perPage, finalTotal]);
 
     useEffect(() => {
         if (
@@ -250,7 +255,7 @@ const useListController = <RecordType = Record>(
         setPerPage: queryModifiers.setPerPage,
         setSort: queryModifiers.setSort,
         showFilter: queryModifiers.showFilter,
-        total: typeof total === 'undefined' ? defaultTotal : total,
+        total: finalTotal,
     };
 };
 

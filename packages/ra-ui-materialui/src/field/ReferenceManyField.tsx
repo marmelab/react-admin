@@ -1,14 +1,14 @@
 import React, { FC, cloneElement, Children, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
-    Filter,
-    Sort,
+    FilterPayload,
+    SortPayload,
     useReferenceManyFieldController,
     ListContextProvider,
     ListControllerProps,
 } from 'ra-core';
 
-import { FieldProps, fieldPropTypes, InjectedFieldProps } from './types';
+import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
 import sanitizeRestProps from './sanitizeRestProps';
 
 /**
@@ -98,13 +98,16 @@ export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
     );
 };
 
-interface ReferenceManyFieldProps extends FieldProps, InjectedFieldProps {
+export interface ReferenceManyFieldProps
+    extends PublicFieldProps,
+        InjectedFieldProps {
     children: ReactElement;
-    filter?: Filter;
+    filter?: FilterPayload;
     page?: number;
+    pagination?: ReactElement;
     perPage?: number;
     reference: string;
-    sort?: Sort;
+    sort?: SortPayload;
     target: string;
 }
 
@@ -160,7 +163,6 @@ export interface ReferenceManyFieldViewProps
         >,
         ListControllerProps {
     children: ReactElement;
-    pagination?: ReactElement;
 }
 
 ReferenceManyFieldView.propTypes = {

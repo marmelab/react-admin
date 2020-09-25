@@ -7,11 +7,11 @@ import {
     ListContextProvider,
     ListControllerProps,
     useReferenceArrayFieldController,
-    Sort,
-    Filter,
+    SortPayload,
+    FilterPayload,
 } from 'ra-core';
 
-import { fieldPropTypes, FieldProps, InjectedFieldProps } from './types';
+import { fieldPropTypes, PublicFieldProps, InjectedFieldProps } from './types';
 import { ClassesOverride } from '../types';
 import sanitizeRestProps from './sanitizeRestProps';
 
@@ -129,17 +129,17 @@ ReferenceArrayField.defaultProps = {
 };
 
 export interface ReferenceArrayFieldProps
-    extends FieldProps,
+    extends PublicFieldProps,
         InjectedFieldProps {
     children: ReactElement;
     classes?: ClassesOverride<typeof useStyles>;
-    filter?: Filter;
+    filter?: FilterPayload;
     page?: number;
     pagination?: ReactElement;
     perPage?: number;
     reference: string;
     resource?: string;
-    sort?: Sort;
+    sort?: SortPayload;
 }
 
 const useStyles = makeStyles(
