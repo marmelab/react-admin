@@ -48,6 +48,7 @@ export interface CreateProps extends ResourceComponentProps {
     classes?: any;
     className?: string;
     component?: ElementType;
+    record?: Partial<RaRecord>;
     onSuccess?: (data: RaRecord) => void;
     onFailure?: (error: any) => void;
     transform?: (data: RaRecord) => RaRecord;

@@ -132,7 +132,7 @@ interface Props {
     undoable?: boolean;
 }
 
-type DeleteWithConfirmButtonProps = Props & ButtonProps;
+export type DeleteWithConfirmButtonProps = Props & ButtonProps;
 
 DeleteWithConfirmButton.propTypes = {
     basePath: PropTypes.string,

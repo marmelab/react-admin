@@ -13,6 +13,7 @@ import { ButtonProps as MuiButtonProps } from '@material-ui/core/Button';
 import { Theme } from '@material-ui/core';
 import classnames from 'classnames';
 import { Record, RedirectionSideEffect, useTranslate } from 'ra-core';
+import { LocationDescriptor } from 'history';
 
 /**
  * A generic Button with side icon. Only the icon is displayed on small screens.
@@ -133,7 +134,7 @@ interface Props {
     className?: string;
     color?: MuiPropTypes.Color;
     component?: ReactNode;
-    to?: string | { pathname: string; search: string };
+    to?: string | LocationDescriptor;
     disabled?: boolean;
     label?: string;
     size?: 'small' | 'medium' | 'large';
