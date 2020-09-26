@@ -6498,14 +6498,6 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-data-generator-retail@^3.0.0:
-  version "3.8.3"
-  resolved "https://registry.yarnpkg.com/data-generator-retail/-/data-generator-retail-3.8.3.tgz#2a87f3fa88c1e814c50eb2ee0eecb62016d9294d"
-  integrity sha512-pUN1f23q+irCFEoBU05cPQj3+NMB1u00XXyw02TlXUQ698wgL5Oc6ey0aftCk9MqpZFM+znZidwEtyIiMHMbzg==
-  dependencies:
-    date-fns "~1.29.0"
-    faker "^4.1.0"
-
 data-urls@^1.0.0, data-urls@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/data-urls/-/data-urls-1.1.0.tgz#15ee0582baa5e22bb59c77140da8f9c76963bbfe"

@@ -7,7 +7,7 @@
         "@material-ui/icons": "^4.9.1",
         "@types/inflection": "^1.5.28",
         "@types/recharts": "^1.8.10",
-        "data-generator-retail": "^3.0.0",
+        "data-generator-retail": "^3.9.0-beta.1",
         "fakerest": "~2.1.0",
         "fetch-mock": "~6.3.0",
         "json-graphql-server": "~2.1.3",
