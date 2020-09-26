@@ -10,8 +10,8 @@ import Layout from './Layout';
 import Loading from './Loading';
 import LinearProgress from './LinearProgress';
 import LoadingIndicator from './LoadingIndicator';
-import Menu from './Menu';
-import MenuItemLink from './MenuItemLink';
+import Menu, { MenuProps } from './Menu';
+import MenuItemLink, { MenuItemLinkProps } from './MenuItemLink';
 import NotFound from './NotFound';
 import Notification from './Notification';
 import Responsive from './Responsive';
@@ -20,6 +20,8 @@ import Title, { TitlePropType } from './Title';
 import TitleForRecord from './TitleForRecord';
 import TopToolbar from './TopToolbar';
 import UserMenu from './UserMenu';
+
+export type { MenuProps, MenuItemLinkProps };
 
 export {
     AppBar,

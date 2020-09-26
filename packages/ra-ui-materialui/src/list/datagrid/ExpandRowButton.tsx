@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { memo } from 'react';
-import IconButton from '@material-ui/core/IconButton';
+import { ElementType, memo } from 'react';
+import IconButton, { IconButtonProps } from '@material-ui/core/IconButton';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import classNames from 'classnames';
 import { useTranslate } from 'ra-core';
@@ -22,9 +22,9 @@ const ExpandRowButton = ({
             className={classNames(classes.expandIcon, {
                 [classes.expanded]: expanded,
             })}
-            component="div"
             tabIndex={-1}
             aria-hidden="true"
+            component="div"
             {...props}
         >
             <ExpandMoreIcon />
@@ -32,11 +32,11 @@ const ExpandRowButton = ({
     );
 };
 
-export interface ExpandRowButtonProps {
+export interface ExpandRowButtonProps extends IconButtonProps {
     classes?: any;
+    component?: ElementType;
     expanded: boolean;
-    expandContentId: string;
-    onClick?: (event: any) => void;
+    expandContentId?: string;
 }
 
 export default memo(ExpandRowButton);

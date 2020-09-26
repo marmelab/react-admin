@@ -4,6 +4,7 @@ import {
     isValidElement,
     FC,
     ReactElement,
+    ReactNode,
     HtmlHTMLAttributes,
 } from 'react';
 import PropTypes from 'prop-types';
@@ -124,6 +125,7 @@ export interface TabbedFormProps
             'defaultValue' | 'onSubmit' | 'children'
         > {
     basePath?: string;
+    children: ReactNode;
     className?: string;
     initialValues?: any;
     margin?: 'none' | 'normal' | 'dense';

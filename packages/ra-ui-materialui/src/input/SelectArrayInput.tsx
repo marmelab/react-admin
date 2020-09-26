@@ -140,9 +140,7 @@ const useStyles = makeStyles(
  *    { id: 'photography', name: 'myroot.tags.photography' },
  * ];
  */
-const SelectArrayInput: FunctionComponent<
-    ChoicesProps & InputProps<SelectProps> & FormControlProps
-> = props => {
+const SelectArrayInput: FunctionComponent<SelectArrayInputProps> = props => {
     const {
         choices = [],
         classes: classesOverride,
@@ -270,6 +268,17 @@ const SelectArrayInput: FunctionComponent<
         </FormControl>
     );
 };
+
+interface SelectArrayInputProps
+    extends Omit<ChoicesProps, 'choices'>,
+        Omit<InputProps<SelectProps>, 'source'>,
+        Omit<
+            FormControlProps,
+            'defaultValue' | 'onBlur' | 'onChange' | 'onFocus'
+        > {
+    choices?: object[];
+    source?: string;
+}
 
 SelectArrayInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
