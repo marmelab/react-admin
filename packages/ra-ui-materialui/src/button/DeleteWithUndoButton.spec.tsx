@@ -1,9 +1,16 @@
-import { render, cleanup } from '@testing-library/react';
+import { render, cleanup, wait, fireEvent } from '@testing-library/react';
 import * as React from 'react';
 import expect from 'expect';
-import { TestContext } from 'ra-core';
-import { ThemeProvider } from '@material-ui/core';
-import { createMuiTheme } from '@material-ui/core/styles';
+import {
+    DataProvider,
+    DataProviderContext,
+    renderWithRedux,
+    TestContext,
+} from 'ra-core';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { Toolbar, SimpleForm } from '../form';
+import { Edit } from '../detail';
+import { TextInput } from '../input';
 import DeleteWithUndoButton from './DeleteWithUndoButton';
 
 const theme = createMuiTheme();
@@ -58,5 +65,50 @@ describe('<DeleteWithUndoButton />', () => {
         );
 
         spy.mockRestore();
+    });
+
+    const defaultEditProps = {
+        basePath: '',
+        id: '123',
+        resource: 'posts',
+        location: {},
+        match: {},
+        undoable: false,
+    };
+
+    it('should allow to override the onSuccess side effects', async () => {
+        const dataProvider = ({
+            getOne: () =>
+                Promise.resolve({
+                    data: { id: 123, title: 'lorem' },
+                }),
+            delete: () => Promise.resolve({ data: { id: 123 } }),
+        } as unknown) as DataProvider;
+        const onSuccess = jest.fn();
+        const EditToolbar = props => (
+            <Toolbar {...props}>
+                <DeleteWithUndoButton onSuccess={onSuccess} />
+            </Toolbar>
+        );
+        const { queryByDisplayValue, getByLabelText } = renderWithRedux(
+            <ThemeProvider theme={theme}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <Edit {...defaultEditProps}>
+                        <SimpleForm toolbar={<EditToolbar />}>
+                            <TextInput source="title" />
+                        </SimpleForm>
+                    </Edit>
+                </DataProviderContext.Provider>
+            </ThemeProvider>,
+            { admin: { resources: { posts: { data: {} } } } }
+        );
+        // wait for the dataProvider.getOne() return
+        await wait(() => {
+            expect(queryByDisplayValue('lorem')).not.toBeNull();
+        });
+        fireEvent.click(getByLabelText('ra.action.delete'));
+        await wait(() => {
+            expect(onSuccess).toHaveBeenCalledWith({});
+        });
     });
 });

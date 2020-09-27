@@ -13,6 +13,7 @@ import {
     RedirectionSideEffect,
 } from '../../sideEffect';
 import { Record } from '../../types';
+import { OnFailure, OnSuccess } from '../saveModifiers';
 
 /**
  * Prepare a set of callbacks for a delete button guarded by confirmation dialog
@@ -72,27 +73,38 @@ const useDeleteWithConfirmController = ({
     redirect: redirectTo,
     basePath,
     onClick,
+    onSuccess,
+    onFailure,
 }: UseDeleteWithConfirmControllerParams): UseDeleteWithConfirmControllerReturn => {
     const [open, setOpen] = useState(false);
     const notify = useNotify();
     const redirect = useRedirect();
     const refresh = useRefresh();
-    const [deleteOne, { loading }] = useDelete(resource, null, null, {
-        action: CRUD_DELETE,
-        onSuccess: () => {
-            setOpen(false);
+    if (onSuccess === undefined) {
+        onSuccess = () => {
             notify('ra.notification.deleted', 'info', { smart_count: 1 });
             redirect(redirectTo, basePath);
             refresh();
-        },
-        onFailure: error => {
-            setOpen(false);
+        };
+    }
+    if (onFailure === undefined) {
+        onFailure = error =>
             notify(
                 typeof error === 'string'
                     ? error
                     : error.message || 'ra.notification.http_error',
                 'warning'
             );
+    }
+    const [deleteOne, { loading }] = useDelete(resource, null, null, {
+        action: CRUD_DELETE,
+        onSuccess: response => {
+            setOpen(false);
+            onSuccess(response);
+        },
+        onFailure: error => {
+            setOpen(false);
+            onFailure(error);
         },
         undoable: false,
     });
@@ -128,6 +140,8 @@ export interface UseDeleteWithConfirmControllerParams {
     redirect?: RedirectionSideEffect;
     resource: string;
     onClick?: ReactEventHandler<any>;
+    onSuccess?: OnSuccess;
+    onFailure?: OnFailure;
 }
 
 export interface UseDeleteWithConfirmControllerReturn {
