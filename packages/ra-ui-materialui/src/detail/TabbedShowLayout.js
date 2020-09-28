@@ -87,17 +87,19 @@ const TabbedShowLayout = props => {
         ...rest
     } = props;
     const match = useRouteMatch();
-
     const classes = useStyles(props);
+    const finalChildren = Array.isArray(children)
+        ? children.filter(child => child !== null)
+        : children;
 
     return (
         <div className={className} key={version} {...sanitizeRestProps(rest)}>
-            {cloneElement(tabs, {}, children)}
+            {cloneElement(tabs, {}, finalChildren)}
 
             <Divider />
             <div className={classes.content}>
-                {Children.map(children, (tab, index) =>
-                    tab && isValidElement(tab) ? (
+                {Children.map(finalChildren, (tab, index) => {
+                    return tab && isValidElement(tab) ? (
                         <Route
                             exact
                             path={escapePath(
@@ -112,8 +114,8 @@ const TabbedShowLayout = props => {
                                 })
                             }
                         />
-                    ) : null
-                )}
+                    ) : null;
+                })}
             </div>
         </div>
     );
