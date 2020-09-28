@@ -249,6 +249,6 @@ const sanitizeRestProps = ({
     permissions = null,
     successMessage = null,
     ...rest
-}) => rest;
+}: any) => rest;
 
 export default Edit;

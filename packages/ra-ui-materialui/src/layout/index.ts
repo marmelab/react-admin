@@ -15,7 +15,7 @@ import MenuItemLink, { MenuItemLinkProps } from './MenuItemLink';
 import NotFound from './NotFound';
 import Notification from './Notification';
 import Responsive from './Responsive';
-import Sidebar from './Sidebar';
+import Sidebar, { SidebarProps } from './Sidebar';
 import Title, { TitlePropType } from './Title';
 import TitleForRecord from './TitleForRecord';
 import TopToolbar from './TopToolbar';
@@ -42,6 +42,7 @@ export {
     Notification,
     Responsive,
     Sidebar,
+    SidebarProps,
     Title,
     TitleForRecord,
     TitlePropType,

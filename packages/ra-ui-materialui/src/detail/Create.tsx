@@ -226,6 +226,6 @@ const sanitizeRestProps = ({
     permissions = null,
     transform = null,
     ...rest
-}) => rest;
+}: any) => rest;
 
 export default Create;
