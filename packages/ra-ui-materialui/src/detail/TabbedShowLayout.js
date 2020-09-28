@@ -98,8 +98,8 @@ const TabbedShowLayout = props => {
 
             <Divider />
             <div className={classes.content}>
-                {Children.map(nonNullChildren, (tab, index) => {
-                    return tab && isValidElement(tab) ? (
+                {Children.map(nonNullChildren, (tab, index) =>
+                    tab && isValidElement(tab) ? (
                         <Route
                             exact
                             path={escapePath(
@@ -114,8 +114,8 @@ const TabbedShowLayout = props => {
                                 })
                             }
                         />
-                    ) : null;
-                })}
+                    ) : null
+                )}
             </div>
         </div>
     );
