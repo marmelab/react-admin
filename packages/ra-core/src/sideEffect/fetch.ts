@@ -128,7 +128,7 @@ export function* handleFetch(
     } catch (error) {
         yield put({
             type: `${type}_FAILURE`,
-            error: error && (error.message ? error.message : error) || null,
+            error: (error && (error.message ? error.message : error)) || null,
             payload: (error && error.body) || null,
             requestPayload: payload,
             meta: {
