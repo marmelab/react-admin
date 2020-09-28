@@ -24,12 +24,12 @@ import { useTranslate } from '../i18n';
 import { CRUD_GET_ONE, CRUD_UPDATE } from '../actions';
 
 export interface EditProps {
-    basePath: string;
+    basePath?: string;
     hasCreate?: boolean;
     hasEdit?: boolean;
     hasShow?: boolean;
     hasList?: boolean;
-    id: Identifier;
+    id?: Identifier;
     resource?: string;
     undoable?: boolean;
     onSuccess?: OnSuccess;
@@ -56,7 +56,7 @@ export interface EditControllerProps<RecordType extends Record = Record> {
     setOnFailure: SetOnFailure;
     setTransform: SetTransformData;
     resource: string;
-    basePath: string;
+    basePath?: string;
     record?: RecordType;
     redirect: RedirectionSideEffect;
     version: number;

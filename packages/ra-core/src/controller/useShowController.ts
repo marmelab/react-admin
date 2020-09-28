@@ -9,12 +9,12 @@ import { useNotify, useRedirect, useRefresh } from '../sideEffect';
 import { CRUD_GET_ONE } from '../actions';
 
 export interface ShowProps {
-    basePath: string;
+    basePath?: string;
     hasCreate?: boolean;
     hasedit?: boolean;
     hasShow?: boolean;
     hasList?: boolean;
-    id: Identifier;
+    id?: Identifier;
     resource?: string;
     [key: string]: any;
 }
@@ -24,7 +24,7 @@ export interface ShowControllerProps<RecordType extends Record = Record> {
     loaded: boolean;
     defaultTitle: string;
     resource: string;
-    basePath: string;
+    basePath?: string;
     record?: RecordType;
     version: number;
 }

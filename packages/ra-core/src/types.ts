@@ -388,6 +388,7 @@ export type DashboardComponent = ComponentType<WithPermissionsChildrenParams>;
 
 export interface LayoutProps {
     appBar?: ComponentType;
+    children?: ReactNode;
     dashboard?: DashboardComponent;
     logout?: ReactNode;
     menu?: ComponentType<{
@@ -402,7 +403,7 @@ export interface LayoutProps {
 export type LayoutComponent = ComponentType<LayoutProps>;
 
 export interface ResourceComponentInjectedProps {
-    basePath: string;
+    basePath?: string;
     permissions?: any;
     resource?: string;
     options?: any;
@@ -416,7 +417,7 @@ export interface ResourceComponentProps<
     Params extends { [K in keyof Params]?: string } = {},
     C extends StaticContext = StaticContext,
     S = LocationState
-> extends RouteComponentProps<Params, C, S>,
+> extends Partial<RouteComponentProps<Params, C, S>>,
         ResourceComponentInjectedProps {}
 
 // deprecated name, use ResourceComponentProps instead
@@ -426,9 +427,9 @@ export interface ResourceComponentPropsWithId<
     Params extends { id?: string } = {},
     C extends StaticContext = StaticContext,
     S = LocationState
-> extends RouteComponentProps<Params, C, S>,
+> extends Partial<RouteComponentProps<Params, C, S>>,
         ResourceComponentInjectedProps {
-    id: string;
+    id?: string;
 }
 
 // deprecated name, use ResourceComponentPropsWithId instead

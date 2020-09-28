@@ -191,29 +191,17 @@ const useStyles = makeStyles(
 );
 
 const sanitizeRestProps = ({
-    actions,
-    aside,
-    title,
-    children,
-    className,
-    id,
-    data,
-    loading,
-    loaded,
-    resource,
-    hasCreate,
-    hasEdit,
-    hasList,
-    hasShow,
-    version,
-    match,
-    location,
-    history,
-    options,
-    locale,
-    permissions,
-    translate,
+    hasCreate = null,
+    hasEdit = null,
+    history = null,
+    id = null,
+    loaded = null,
+    loading = null,
+    location = null,
+    match = null,
+    options = null,
+    permissions = null,
     ...rest
-}: any) => rest;
+}) => rest;
 
 export default Show;
