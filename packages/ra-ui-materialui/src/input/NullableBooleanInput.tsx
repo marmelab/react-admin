@@ -30,7 +30,12 @@ const getStringFromBoolean = (value?: boolean | null): string => {
 };
 
 const NullableBooleanInput: FunctionComponent<
-    InputProps<TextFieldProps> & Omit<TextFieldProps, 'label' | 'helperText'>
+    InputProps<TextFieldProps> &
+        Omit<TextFieldProps, 'label' | 'helperText'> & {
+            nullLabel?: string;
+            falseLabel?: string;
+            trueLabel?: string;
+        }
 > = props => {
     const {
         className,
@@ -43,12 +48,14 @@ const NullableBooleanInput: FunctionComponent<
         onChange,
         onFocus,
         options,
-        displayNull,
         parse = getBooleanFromString,
         resource,
         source,
         validate,
         variant = 'filled',
+        nullLabel = 'ra.boolean.null',
+        falseLabel = 'ra.boolean.false',
+        trueLabel = 'ra.boolean.true',
         ...rest
     } = props;
     const classes = useStyles(props);
@@ -69,20 +76,6 @@ const NullableBooleanInput: FunctionComponent<
         source,
         validate,
     });
-
-    const enhancedOptions = displayNull
-        ? {
-              ...options,
-              SelectProps: {
-                  displayEmpty: true,
-                  ...(options && options.SelectProps),
-              },
-              InputLabelProps: {
-                  shrink: true,
-                  ...(options && options.InputLabelProps),
-              },
-          }
-        : options;
 
     return (
         <TextField
@@ -108,12 +101,12 @@ const NullableBooleanInput: FunctionComponent<
             }
             className={classnames(classes.input, className)}
             variant={variant}
-            {...enhancedOptions}
+            {...options}
             {...sanitizeRestProps(rest)}
         >
-            <MenuItem value="">{translate('ra.boolean.null')}</MenuItem>
-            <MenuItem value="false">{translate('ra.boolean.false')}</MenuItem>
-            <MenuItem value="true">{translate('ra.boolean.true')}</MenuItem>
+            <MenuItem value="">{translate(nullLabel)}</MenuItem>
+            <MenuItem value="false">{translate(falseLabel)}</MenuItem>
+            <MenuItem value="true">{translate(trueLabel)}</MenuItem>
         </TextField>
     );
 };
@@ -123,6 +116,9 @@ NullableBooleanInput.propTypes = {
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
+    nullLabel: PropTypes.string,
+    falseLabel: PropTypes.string,
+    trueLabel: PropTypes.string,
 };
 
 export default NullableBooleanInput;
