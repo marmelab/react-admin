@@ -237,18 +237,18 @@ const useStyles = makeStyles(
 const sanitizeRestProps = ({
     hasCreate = null,
     hasEdit = null,
-    history,
-    id,
-    loaded,
-    loading,
-    location,
-    match,
+    history = null,
+    id = null,
+    loaded = null,
+    loading = null,
+    location = null,
+    match = null,
     onFailure = null,
     onSuccess = null,
     options = null,
     permissions = null,
     successMessage = null,
     ...rest
-}: any) => rest;
+}) => rest;
 
 export default Edit;

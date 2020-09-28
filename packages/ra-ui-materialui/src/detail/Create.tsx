@@ -215,17 +215,17 @@ const useStyles = makeStyles(
 const sanitizeRestProps = ({
     hasCreate = null,
     hasEdit = null,
-    history,
-    loaded,
-    loading,
-    location,
-    match,
+    history = null,
+    loaded = null,
+    loading = null,
+    location = null,
+    match = null,
     onFailure = null,
     onSuccess = null,
     options = null,
     permissions = null,
     transform = null,
     ...rest
-}: any) => rest;
+}) => rest;
 
 export default Create;
