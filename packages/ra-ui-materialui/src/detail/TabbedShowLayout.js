@@ -88,17 +88,17 @@ const TabbedShowLayout = props => {
     } = props;
     const match = useRouteMatch();
     const classes = useStyles(props);
-    const finalChildren = Array.isArray(children)
-        ? children.filter(child => child !== null)
-        : children;
+    const nonNullChildren = Children.toArray(children).filter(
+        child => child !== null
+    );
 
     return (
         <div className={className} key={version} {...sanitizeRestProps(rest)}>
-            {cloneElement(tabs, {}, finalChildren)}
+            {cloneElement(tabs, {}, nonNullChildren)}
 
             <Divider />
             <div className={classes.content}>
-                {Children.map(finalChildren, (tab, index) => {
+                {Children.map(nonNullChildren, (tab, index) => {
                     return tab && isValidElement(tab) ? (
                         <Route
                             exact
