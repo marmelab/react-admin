@@ -660,7 +660,7 @@ This custom Edit view has no action buttons or aside component - it's up to you 
 
 The `<SimpleForm>` component receives the `record` as prop from its parent component. It is responsible for rendering the actual form. It is also responsible for validating the form data. Finally, it receives a `handleSubmit` function as prop, to be called with the updated record as an argument when the user submits the form.
 
-The `<SimpleForm>` renders its child components line by line (within `<div>` components). It accepts Input and Field components as children. It relies on `react-final-form` for form handling.
+The `<SimpleForm>` renders its child components line by line (within `<div>` components). It accepts Input and Field components as children. It relies on [react-final-form](https://github.com/final-form/react-final-form) for form handling.
 
 ![post edition form](./img/post-edition.png)
 
@@ -942,7 +942,7 @@ export const UserCreate = (props) => (
 );
 ```
 
-**Tip**: The props you pass to `<SimpleForm>` and `<TabbedForm>` are passed to the `<Form>` of `react-final-form`.
+**Tip**: The props you pass to `<SimpleForm>` and `<TabbedForm>` are passed to the [<Form>](https://final-form.org/docs/react-final-form/api/Form) of `react-final-form`.
 
 ### Per Input Validation: Built-in Field Validators
 
@@ -1105,7 +1105,7 @@ export const ProductEdit = ({ ...props }) => (
 ```
 {% endraw %}
 
-**Tip**: The props of your Input components are passed to a `react-final-form` `<Field>` component.
+**Tip**: The props of your Input components are passed to a `react-final-form` [<Field>](https://final-form.org/docs/react-final-form/api/Field) component.
 
 **Tip**: You can use *both* Form validation and input validation.
 
@@ -1539,7 +1539,7 @@ const VisitorEdit = props => (
 );
 ```
 
-**Tip**: `FormWithRedirect` contains some logic that you may not want. In fact, nothing forbids you from using [a react-final-form `Form` component](https://final-form.org/docs/react-final-form/api/Form) as root component for a custom form layout. You'll have to set initial values based the injected `record` prop manually, as follows:
+**Tip**: `FormWithRedirect` contains some logic that you may not want. In fact, nothing forbids you from using a react-final-form [Form](https://final-form.org/docs/react-final-form/api/Form) component as root component for a custom form layout. You'll have to set initial values based the injected `record` prop manually, as follows:
 
 {% raw %}
 ```jsx
@@ -1705,6 +1705,10 @@ export const UserEdit = ({ permissions, ...props }) =>
 ## Changing The Success or Failure Notification Message
 
 Once the `dataProvider` returns successfully after save, users see a generic notification ("Element created" / "Element updated"). You can customize this message by passing a custom success side effect function as [the `<Edit onSuccess>` prop](#onsuccess):
+
+By default, when saving with optimistic rendering, the `onSuccess` callback is called immediately. To change that, you need to pass `undoable={false}` to your `<Edit />` or `<Create />` component. The `onSuccess` callback will then be called at the end of the dataProvider call.
+
+In addition, the saved object will not be available as an argument of the `onSuccess` callback method when `undoable` feature is enabled.
 
 ```jsx
 import { Edit, useNotify, useRedirect } from 'react-admin';

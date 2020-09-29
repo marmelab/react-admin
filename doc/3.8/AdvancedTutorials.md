@@ -18,10 +18,10 @@ This tutorial explains how to add a button on a show or edit page to create a ne
 
 This tutorial explains how to have a `create`, `show` or `edit` view of a referenced resource inside a modal or a sliding side panel.
 
-![Screencast](https://marmelab.com/images/blog/react-admin/react-admin-tutorials-custom-forms-related-records-quick-preview.gif)
+![Screencast](https://marmelab.com/dd58004986d3bb98a32972ba8fd25fc8/screencast.gif)
 
-* [Article](https://marmelab.com/blog/2018/08/27/react-admin-tutorials-custom-forms-related-records.html)
-* [Codesandbox](https://codesandbox.io/s/ypp9ljxqlj)
+* [Article](https://marmelab.com/blog/2020/04/27/react-admin-tutorials-custom-forms-related-records.html)
+* [Codesandbox](https://codesandbox.io/s/react-admin-v3-advanced-recipes-quick-createpreview-voyci)
 
 ## Build a Timeline as a replacement for a List component
 
@@ -65,3 +65,12 @@ This article shows how you can customize many parts of the framework without rep
 
 * [Live Example](https://marmelab.com/ra-example-oauth)
 * [Code Repository](https://github.com/marmelab/ra-example-oauth)
+
+## Changing The Look And Feel Of React-Admin Without JSX
+
+This article shows how to customize react-admin look and feel using only the material-ui theme.
+
+![Screencast](https://marmelab.com/097bee867a1d1dc55dec5456732fe94a/screencast.gif)
+
+* [Article](https://marmelab.com/blog/2020/09/11/react-admin-tutorials-build-your-own-theme.html)
+* [Code Repository](https://github.com/Luwangel/react-admin-tutorials-build-your-own-theme)
