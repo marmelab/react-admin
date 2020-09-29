@@ -85,27 +85,27 @@ export type LegacyAuthProvider = (
  */
 
 export type DataProvider = {
-    getList: <RecordType = Record>(
+    getList: <RecordType extends Record = Record>(
         resource: string,
         params: GetListParams
     ) => Promise<GetListResult<RecordType>>;
 
-    getOne: <RecordType = Record>(
+    getOne: <RecordType extends Record = Record>(
         resource: string,
         params: GetOneParams
     ) => Promise<GetOneResult<RecordType>>;
 
-    getMany: <RecordType = Record>(
+    getMany: <RecordType extends Record = Record>(
         resource: string,
         params: GetManyParams
     ) => Promise<GetManyResult<RecordType>>;
 
-    getManyReference: <RecordType = Record>(
+    getManyReference: <RecordType extends Record = Record>(
         resource: string,
         params: GetManyReferenceParams
     ) => Promise<GetManyReferenceResult<RecordType>>;
 
-    update: <RecordType = Record>(
+    update: <RecordType extends Record = Record>(
         resource: string,
         params: UpdateParams
     ) => Promise<UpdateResult<RecordType>>;
@@ -115,12 +115,12 @@ export type DataProvider = {
         params: UpdateManyParams
     ) => Promise<UpdateManyResult>;
 
-    create: <RecordType = Record>(
+    create: <RecordType extends Record = Record>(
         resource: string,
         params: CreateParams
     ) => Promise<CreateResult<RecordType>>;
 
-    delete: <RecordType = Record>(
+    delete: <RecordType extends Record = Record>(
         resource: string,
         params: DeleteParams
     ) => Promise<DeleteResult<RecordType>>;
@@ -227,31 +227,31 @@ export type DataProviderResult<RecordType = Record> =
     | UpdateManyResult;
 
 export type DataProviderProxy = {
-    getList: <RecordType = Record>(
+    getList: <RecordType extends Record = Record>(
         resource: string,
         params: GetListParams,
         options?: UseDataProviderOptions
     ) => Promise<GetListResult<RecordType>>;
 
-    getOne: <RecordType = Record>(
+    getOne: <RecordType extends Record = Record>(
         resource: string,
         params: GetOneParams,
         options?: UseDataProviderOptions
     ) => Promise<GetOneResult<RecordType>>;
 
-    getMany: <RecordType = Record>(
+    getMany: <RecordType extends Record = Record>(
         resource: string,
         params: GetManyParams,
         options?: UseDataProviderOptions
     ) => Promise<GetManyResult<RecordType>>;
 
-    getManyReference: <RecordType = Record>(
+    getManyReference: <RecordType extends Record = Record>(
         resource: string,
         params: GetManyReferenceParams,
         options?: UseDataProviderOptions
     ) => Promise<GetManyReferenceResult<RecordType>>;
 
-    update: <RecordType = Record>(
+    update: <RecordType extends Record = Record>(
         resource: string,
         params: UpdateParams,
         options?: UseDataProviderOptions
@@ -263,13 +263,13 @@ export type DataProviderProxy = {
         options?: UseDataProviderOptions
     ) => Promise<UpdateManyResult>;
 
-    create: <RecordType = Record>(
+    create: <RecordType extends Record = Record>(
         resource: string,
         params: CreateParams,
         options?: UseDataProviderOptions
     ) => Promise<CreateResult<RecordType>>;
 
-    delete: <RecordType = Record>(
+    delete: <RecordType extends Record = Record>(
         resource: string,
         params: DeleteParams,
         options?: UseDataProviderOptions

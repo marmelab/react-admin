@@ -1,6 +1,10 @@
 import useDataProvider from './useDataProvider';
 import { useMemo } from 'react';
-import { DataProvider, UseDataProviderOptions } from '../types';
+import {
+    DataProvider,
+    DataProviderProxy,
+    UseDataProviderOptions,
+} from '../types';
 import useDeclarativeSideEffects from './useDeclarativeSideEffects';
 
 /**
@@ -9,10 +13,11 @@ import useDeclarativeSideEffects from './useDeclarativeSideEffects';
  *
  * @deprecated This is for backward compatibility only and will be removed in next major version.
  */
-const useDataProviderWithDeclarativeSideEffects = (): DataProvider => {
+const useDataProviderWithDeclarativeSideEffects = (): DataProviderProxy => {
     const dataProvider = useDataProvider();
     const getSideEffects = useDeclarativeSideEffects();
 
+    // @ts-ignore
     const dataProviderProxy = useMemo(() => {
         return new Proxy(dataProvider, {
             get: (target, name) => {
