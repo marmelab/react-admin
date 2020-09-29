@@ -34,7 +34,8 @@ const useRefreshWhenVisible = (delay = 1000 * 60 * 5) => {
         return () =>
             document.removeEventListener(
                 'visibilitychange',
-                handleVisibilityChange
+                handleVisibilityChange,
+                { capture: true }
             );
     }, [automaticRefreshEnabled, delay, refresh]);
 };
