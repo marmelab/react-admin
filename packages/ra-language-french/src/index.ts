@@ -34,7 +34,7 @@ const frenchMessages: TranslationMessages = {
         boolean: {
             true: 'Oui',
             false: 'Non',
-            null: '',
+            null: ' ',
         },
         page: {
             create: 'Créer %{name}',
