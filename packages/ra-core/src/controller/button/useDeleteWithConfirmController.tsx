@@ -80,31 +80,30 @@ const useDeleteWithConfirmController = ({
     const notify = useNotify();
     const redirect = useRedirect();
     const refresh = useRefresh();
-    if (onSuccess === undefined) {
-        onSuccess = () => {
-            notify('ra.notification.deleted', 'info', { smart_count: 1 });
-            redirect(redirectTo, basePath);
-            refresh();
-        };
-    }
-    if (onFailure === undefined) {
-        onFailure = error =>
-            notify(
-                typeof error === 'string'
-                    ? error
-                    : error.message || 'ra.notification.http_error',
-                'warning'
-            );
-    }
     const [deleteOne, { loading }] = useDelete(resource, null, null, {
         action: CRUD_DELETE,
         onSuccess: response => {
             setOpen(false);
-            onSuccess(response);
+            if (onSuccess === undefined) {
+                notify('ra.notification.deleted', 'info', { smart_count: 1 });
+                redirect(redirectTo, basePath);
+                refresh();
+            } else {
+                onSuccess(response);
+            }
         },
         onFailure: error => {
             setOpen(false);
-            onFailure(error);
+            if (onFailure === undefined) {
+                notify(
+                    typeof error === 'string'
+                        ? error
+                        : error.message || 'ra.notification.http_error',
+                    'warning'
+                );
+            } else {
+                onFailure(error);
+            }
         },
         undoable: false,
     });
