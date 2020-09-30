@@ -450,7 +450,21 @@ import { NullableBooleanInput } from 'react-admin';
 
 ![NullableBooleanInput](./img/nullable-boolean-input.png)
 
-The labels of the options can be customized using the `nullLabel`, `falseLabel` and `trueLabel` properties.
+The labels of the options can be customized for the entire application by overriding the translation.
+
+```jsx
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
+
+englishMessages.ra.boolean.null = 'Null label';
+englishMessages.ra.boolean.false = 'False label';
+englishMessages.ra.boolean.true = 'True label';
+const i18nProvider = polyglotI18nProvider(() => englishMessages, 'en');
+
+<Admin i18nProvider={i18nProvider}></Admin>
+```
+
+Additionally, individual instances of `NullableBooleanInput` may be customized by setting the `nullLabel`, `falseLabel` and `trueLabel` properties. Values specified for those properties will be translated by react-admin.
 
 ```jsx
 import { NullableBooleanInput } from 'react-admin';

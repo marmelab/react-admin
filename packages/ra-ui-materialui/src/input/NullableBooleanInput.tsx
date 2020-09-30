@@ -29,13 +29,15 @@ const getStringFromBoolean = (value?: boolean | null): string => {
     return '';
 };
 
+export type NullableBooleanInputProps = InputProps<TextFieldProps> &
+    Omit<TextFieldProps, 'label' | 'helperText'> & {
+        nullLabel?: string;
+        falseLabel?: string;
+        trueLabel?: string;
+    };
+
 const NullableBooleanInput: FunctionComponent<
-    InputProps<TextFieldProps> &
-        Omit<TextFieldProps, 'label' | 'helperText'> & {
-            nullLabel?: string;
-            falseLabel?: string;
-            trueLabel?: string;
-        }
+    NullableBooleanInputProps
 > = props => {
     const {
         className,
