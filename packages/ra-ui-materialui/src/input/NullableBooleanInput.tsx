@@ -36,9 +36,7 @@ export type NullableBooleanInputProps = InputProps<TextFieldProps> &
         trueLabel?: string;
     };
 
-const NullableBooleanInput: FunctionComponent<
-    NullableBooleanInputProps
-> = props => {
+const NullableBooleanInput: FunctionComponent<NullableBooleanInputProps> = props => {
     const {
         className,
         classes: classesOverride,
