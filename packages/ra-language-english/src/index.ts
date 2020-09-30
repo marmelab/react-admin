@@ -33,7 +33,7 @@ const englishMessages: TranslationMessages = {
         boolean: {
             true: 'Yes',
             false: 'No',
-            null: '',
+            null: ' ',
         },
         page: {
             create: 'Create %{name}',
