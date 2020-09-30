@@ -118,10 +118,12 @@ export default (data, loggingEnabled = false): DataProvider => {
      */
     const handle = (type, resource, params): Promise<any> => {
         const collection = restServer.getCollection(resource);
-        if (!collection) {
-            return Promise.reject(
-                new Error(`Undefined collection "${resource}"`)
+        if (!collection && type !== 'create') {
+            const error = new UndefinedResourceError(
+                `Undefined collection "${resource}"`
             );
+            error.code = 1; // make that error detectable
+            return Promise.reject(error);
         }
         let response;
         try {
@@ -151,3 +153,7 @@ export default (data, loggingEnabled = false): DataProvider => {
             handle('deleteMany', resource, params),
     };
 };
+
+class UndefinedResourceError extends Error {
+    code: number;
+}
