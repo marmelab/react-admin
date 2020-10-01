@@ -450,28 +450,32 @@ import { NullableBooleanInput } from 'react-admin';
 
 ![NullableBooleanInput](./img/nullable-boolean-input.png)
 
-`<NullableBooleanInput />` doesn't display the empty option by default. If you want to customize its label and display it, you can use the `displayNull` prop.
-
-```jsx
-import { NullableBooleanInput } from 'react-admin';
-
-<NullableBooleanInput 
-    label="Commentable"
-    source="commentable"
-    displayNull
-/>
-```
-
-Also you need to provide your own label for null value.
+The labels of the options can be customized for the entire application by overriding the translation.
 
 ```jsx
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 
 englishMessages.ra.boolean.null = 'Null label';
+englishMessages.ra.boolean.false = 'False label';
+englishMessages.ra.boolean.true = 'True label';
 const i18nProvider = polyglotI18nProvider(() => englishMessages, 'en');
 
 <Admin i18nProvider={i18nProvider}></Admin>
+```
+
+Additionally, individual instances of `NullableBooleanInput` may be customized by setting the `nullLabel`, `falseLabel` and `trueLabel` properties. Values specified for those properties will be translated by react-admin.
+
+```jsx
+import { NullableBooleanInput } from 'react-admin';
+
+<NullableBooleanInput
+    label="Commentable"
+    source="commentable"
+    nullLabel="Either"
+    falseLabel="No"
+    trueLabel="Yes"
+/>
 ```
 
 ![NullableBooleanInput](./img/nullable-boolean-input-null-label.png)
