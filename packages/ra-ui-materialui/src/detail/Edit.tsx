@@ -248,6 +248,7 @@ const sanitizeRestProps = ({
     options = null,
     permissions = null,
     successMessage = null,
+    transform = null,
     ...rest
 }) => rest;
 
