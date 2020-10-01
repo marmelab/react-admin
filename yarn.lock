@@ -8081,10 +8081,10 @@ faker@^4.1.0:
   resolved "https://registry.yarnpkg.com/faker/-/faker-4.1.0.tgz#1e45bbbecc6774b3c195fad2835109c6d748cc3f"
   integrity sha1-HkW7vsxndLPBlfrSg1EJxtdIzD8=
 
-fakerest@~2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/fakerest/-/fakerest-2.1.0.tgz#f66d0b8fbae7455efa7c666e3f6cdeec70a83860"
-  integrity sha512-c5x7iayu46Qa/h/W7k3PJiElNc56yxCkWY4mxs38be/D9YNfQSy8fn8xtlIPYGIUxDHAcpmVF9YXrA/SqJp1cA==
+fakerest@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/fakerest/-/fakerest-2.2.0.tgz#68fc7663baee9243d998dcdb20c9f555ae7b6065"
+  integrity sha512-6ByPB2f7NfK7UJ7W4xt2oz6Cq/gefYCV5NJTCkDmZS+hh2scheLl7eLqOCmdx/yw67JinTvG8TgOufjhkM0UOg==
   dependencies:
     babel-runtime "^6.22.0"
 
