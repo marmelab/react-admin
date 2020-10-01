@@ -2,7 +2,7 @@
 
 A dataProvider for [react-admin](https://github.com/marmelab/react-admin) that uses a local database, persisted in localStorage.
 
-The provider issues no HTTP requests, every operation happens locally in the browser. User editions are persisted across refreshes and bwwteen sessions. This allows local-first apps, and can be useful in tests.
+The provider issues no HTTP requests, every operation happens locally in the browser. User editions are persisted across refreshes and between sessions. This allows local-first apps, and can be useful in tests.
 
 ## Installation
 
