@@ -250,6 +250,8 @@ const CommentList = props => (
 
 **Tip**: You may also remove the `<ExportButton>` by passing `false` to the `exporter` prop: `exporter={false}`
 
+**Tip**: Looking for an `<ImportButton>`? React-admin doesn't provide this feature, but the community has an excellent third-party module for CSV import: [benwinding/react-admin-import-csv](https://github.com/benwinding/react-admin-import-csv).
+
 ### Bulk Action Buttons
 
 ![Bulk Action Buttons](./img/bulk-actions-toolbar.gif)
