@@ -184,7 +184,7 @@ import { AutocompleteInput } from 'react-admin';
 
 | Prop                      | Required | Type                                          | Default      | Description                                                                                                                                                                                                                                                                                          |
 | ------------------------- | -------- | --------------------------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `allowEmpty`              | Optional | `boolean`                                     | `false`      | If `false` and the searchText typed did not match any suggestion, the searchText will revert to the current value when the field is blurred. If `true` and the `searchText` is set to `''` then the field will set the input value to `null`.                                                        |
+| `allowEmpty`              | Optional | `boolean`                                     | `false`      | If `false` and the `searchText` typed did not match any suggestion, the `searchText` will revert to the current value when the field is blurred. If `true` and the `searchText` is set to `''` then the field will set the input value to `null`.                                                    |
 | `choices`                 | Required | `Object[]`                                    | `-`          | List of items to autosuggest                                                                                                                                                                                                                                                                         |
 | `emptyValue`              | Optional | `any`                                         | `''`         | The value to use for the empty element                                                                                                                                                                                                                                                               |
 | `emptyText`               | Optional | `string`                                      | `''`         | The text to use for the empty element                                                                                                                                                                                                                                                                |
@@ -196,6 +196,15 @@ import { AutocompleteInput } from 'react-admin';
 | `shouldRenderSuggestions` | Optional | Function                                      | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
 
 `<AutocompleteInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
+### CSS API
+
+| Rule name           | Description                                                                                                                                                                                                                                                                                          |
+| ------------------- | ---------------------------------- |
+| `root`              | Styles applied to the root element |
+| `container`         | Styles applied to the root element |                                                                                                                                                                                                         |
+
+**Tip**: `"RaAutocompleteInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
 ### Usage
 
@@ -329,6 +338,23 @@ import { AutocompleteArrayInput } from 'react-admin';
 
 `<AutocompleteArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
+### CSS API
+
+| Rule name               | Description                        |
+| ----------------------  | ---------------------------------- |
+| `root`                  | Styles applied to the root element |
+| `container`             | Styles applied to the root element |
+| `paper`                 | Styles applied to the root element |
+| `chip`                  | Styles applied to the root element |
+| `chipContainerFilled`   | Styles applied to the root element |
+| `chipContainerOutlined` | Styles applied to the root element |
+| `inputRoot`             | Styles applied to the root element |
+| `inputRootFilled`       | Styles applied to the root element |
+| `inputInput`            | Styles applied to the root element |
+| `divider`               | Styles applied to the root element |
+
+**Tip**: `"RaAutocompleteArrayInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
+
 ### Usage
 
 You can customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
@@ -442,6 +468,14 @@ Refer to [Material UI Switch documentation](https://material-ui.com/api/switch) 
 
 `<NullableBooleanInput />` renders as a dropdown list, allowing choosing between `true`, `false`, and `null` values.
 
+### CSS API
+
+| Rule name  | Description                        |
+| ---------- | ---------------------------------- |
+| `input`    | Styles applied to the root element |
+
+**Tip**: `"RaNullableBooleanInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
+
 ```jsx
 import { NullableBooleanInput } from 'react-admin';
 
@@ -501,7 +535,7 @@ import { CheckboxGroupInput } from 'react-admin';
 ### Properties
 
 | Prop          | Required | Type                       | Default | Description                                                                                                                            |
-| ------------- | -------- | -------------------------- | ------- |
+| ------------- | -------- | -------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------  |
 | `choices`     | Required | `Object[]`                 | -       | List of choices                                                                                                                        |
 | `optionText`  | Optional | `string` &#124; `Function` | `name`  | Fieldname of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`) |
 | `optionValue` | Optional | `string`                   | `id`    | Fieldname of record containing the value to use as input value                                                                         |
@@ -510,6 +544,15 @@ import { CheckboxGroupInput } from 'react-admin';
 Refer to [Material UI Checkbox documentation](https://material-ui.com/api/checkbox/) for more details.
 
 `<CheckboxGroupInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
+### CSS API
+
+| Rule name  | Description                        |
+| ---------- | ---------------------------------- |
+| `root`     | Styles applied to the root element |
+| `label`    | Styles applied to the root element |
+
+**Tip**: `"RaCheckboxGroupInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
 ### Usage
 
@@ -613,7 +656,7 @@ import { DateTimeInput } from 'react-admin';
 ### Properties
 
 | Prop            | Required | Type                        | Default                          | Description                                                                                                                                                                                                                                                         |
-| --------------- | -------- | --------------------------- | -------------------------------- |
+| --------------- | -------- | --------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `accept`        | Optional | `string | string[]`         | -                                | Accepted file type(s), e. g. 'image/*,.pdf'. If left empty, all file types are accepted. Equivalent of the `accept` attribute of an `<input type="file">`. See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept for syntax and examples. |
 | `children`      | Optional | `ReactNode`                 | -                                | Element used to display the preview of an image (cloned several times if the select accepts multiple files).                                                                                                                                                        |
 | `minSize`       | Optional | `number`                    | 0                                | Minimum image size (in bytes), e.g. 5000 form 5KB                                                                                                                                                                                                                   |
@@ -625,6 +668,17 @@ import { DateTimeInput } from 'react-admin';
 | `options`       | Optional | `Object`                    | `{}`                             | Additional options passed to react-dropzone's `useDropzone()` hook. See [the react-dropzone source](https://github.com/react-dropzone/react-dropzone/blob/master/src/index.js)  for details .                                                                       |
 
 `<ImageInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
+### CSS API
+
+| Rule name       | Description                        |
+| --------------- | ---------------------------------- |
+| `root`          | Styles applied to the root element |
+| `dropZone`      | Styles applied to the root element |
+| `preview`       | Styles applied to the root element |
+| `removeButton`  | Styles applied to the root element |
+
+**Tip**: `"RaImageInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
 ### Usage
 
@@ -675,6 +729,17 @@ Note that the image upload returns a [File](https://developer.mozilla.org/en/doc
 | `options`       | Optional | `object`             | `{}`                            | Additional options passed to react-dropzone's `useDropzone()` hook. See [the react-dropzone source](https://github.com/react-dropzone/react-dropzone/blob/master/src/index.js)  for details .                                                                                                                                                          |
 
 `<FileInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
+### CSS API
+
+| Rule name       | Description                        |
+| --------------- | ---------------------------------- |
+| `root`          | Styles applied to the root element |
+| `dropZone`      | Styles applied to the root element |
+| `preview`       | Styles applied to the root element |
+| `removeButton`  | Styles applied to the root element |
+
+**Tip**: `"RaFileInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
 ### Usage
 
@@ -788,6 +853,14 @@ import { RadioButtonGroupInput } from 'react-admin';
 | `translateChoice` | Optional | `boolean`                  | `true`  | Whether the choices should be translated                                                                                               |
 
 `<RadioButtonGroupInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
+### CSS API
+
+| Rule name  | Description                        |
+| ---------- | ---------------------------------- |
+| `label`    | Styles applied to the root element |
+
+**Tip**: `"RaRadioButtonGroupInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
 ### Usage
 
@@ -1172,6 +1245,14 @@ import { SelectInput } from 'react-admin';
 
 `<SelectInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
+### CSS API
+
+| Rule name       | Description                        |
+| --------------- | ---------------------------------- |
+| `input`         | Styles applied to the root element |
+
+**Tip**: `"RaSelectInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
+
 ### Usage
 
 You can customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
@@ -1286,6 +1367,17 @@ const choices = [
 ## `<SelectArrayInput>`
 
 To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [Material ui's `<Select>`](https://material-ui.com/api/select). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
+
+### CSS API
+
+| Rule name  | Description                        |
+| ---------- | ---------------------------------- |
+| `root`     | Styles applied to the root element |
+| `chip`     | Styles applied to the root element |
+| `chips`    | Styles applied to the root element |
+| `select`   | Styles applied to the root element |
+
+**Tip**: `"RaSelectArrayInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
 ```jsx
 import { SelectArrayInput } from 'react-admin';

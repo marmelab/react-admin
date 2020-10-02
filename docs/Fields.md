@@ -221,6 +221,14 @@ import { BooleanField } from 'react-admin';
 
 `<BooleanField>` also accepts the [common field props](./Fields.md#common-field-props).
 
+### CSS API
+
+| Rule name  | Description                        |
+| ---------- | ---------------------------------- |
+| `root`     | Styles applied to the root element |
+
+**Tip**: `"RaBooleanField"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
+
 ### Usage
 
 The `<BooleanField>` includes a tooltip text for accessibility (or to query in "end to end" tests). By default, it is the translated value ('true' or 'false' in English).
@@ -247,6 +255,16 @@ import AlarmOffIcon from '@material-ui/icons/AlarmOff';
 ## `<ChipField>`
 
 Displays a value inside a ["Chip"](https://material-ui.com/components/chips), which is Material UI's term for a label.
+
+### CSS API
+
+| Rule name  | Description                        |
+| ---------- | ---------------------------------- |
+| `chip`     | Styles applied to the root element |
+
+**Tip**: `"RaChipField"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
+
+### Usage
 
 ```jsx
 import { ChipField } from 'react-admin';
@@ -374,6 +392,15 @@ This field is also often used within the [<ImageInput />](./Inputs.md#imageinput
 
 `<ImageField>` also accepts the [common field props](./Fields.md#common-field-props).
 
+### CSS API
+
+| Rule name  | Description                        |
+| ---------- | ---------------------------------- |
+| `list`     | Styles applied to the root element |
+| `image`    | Styles applied to the root element |
+
+**Tip**: `"RaImageField"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
+
 ### Usage
 
 The optional `title` prop points to the picture title property, used for both `alt` and `title` attributes. It can either be a hard-written string, or a path within your JSON object:
@@ -431,6 +458,14 @@ This field is also often used within an [<FileInput />](./Inputs.md#fileinput) c
 | `rel`      | Optional | `string`                  | -            | The relationship of the linked URL as space-separated link types (e.g. 'noopener', 'canonical', etc.).                                                 |
 
 `<FileField>` also accepts the [common field props](./Fields.md#common-field-props).
+
+### CSS API
+
+| Rule name  | Description                        |
+| ---------- | ---------------------------------- |
+| `root`     | Styles applied to the root element |
+
+**Tip**: `"RaFileField"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
 ### Usage
 
@@ -647,6 +682,14 @@ With this configuration, `<ReferenceField>` wraps the user's name in a link to t
 | `sortBy`    | Optional | `string | function` | `source` | Name of the field to use for sorting when the user clicks on the column header. Set to `false` to disable the link. |
 
 `<ReferenceField>` also accepts the [common field props](./Fields.md#common-field-props).
+
+### CSS API
+
+| Rule name  | Description                        |
+| ---------- | ---------------------------------- |
+| `link`     | Styles applied to the root element |
+
+**Tip**: `"RaReferenceField"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
 ### Usage
 
@@ -881,6 +924,14 @@ export const PostList = (props) => (
 | `sort`       | Optional | `{ field, order }`  | `{ field: 'id', order: 'DESC' }` | Sort order to use when displaying the related records (the sort is done client-side)                                                     |
 
 `<ReferenceArrayField>` also accepts the [common field props](./Fields.md#common-field-props).
+
+### CSS API
+
+| Rule name  | Description                        |
+| ---------- | ---------------------------------- |
+| `progress` | Styles applied to the root element |
+
+**Tip**: `"RaReferenceArrayField"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
 ### Usage
 
