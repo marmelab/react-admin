@@ -466,9 +466,9 @@ Refer to [Material UI Switch documentation](https://material-ui.com/api/switch) 
 
 ### CSS API
 
-| Rule name  | Description                        |
-| ---------- | ---------------------------------- |
-| `input`    | Styles applied to the root element |
+| Rule name  | Description                                                                       |
+| ---------- | --------------------------------------------------------------------------------- |
+| `input`    | Styles applied to the underlying Material UI TextField component                  |
 
 **Tip**: `"RaNullableBooleanInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -543,10 +543,9 @@ Refer to [Material UI Checkbox documentation](https://material-ui.com/api/checkb
 
 ### CSS API
 
-| Rule name  | Description                        |
-| ---------- | ---------------------------------- |
-| `root`     | Styles applied to the root element |
-| `label`    | Styles applied to the root element |
+| Rule name  | Description                                                                       |
+| ---------- | --------------------------------------------------------------------------------- |
+| `label`    | Styles applied to the underlying Material UI FormLabel component                  |
 
 **Tip**: `"RaCheckboxGroupInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -667,12 +666,12 @@ import { DateTimeInput } from 'react-admin';
 
 ### CSS API
 
-| Rule name       | Description                        |
-| --------------- | ---------------------------------- |
-| `root`          | Styles applied to the root element |
-| `dropZone`      | Styles applied to the root element |
-| `preview`       | Styles applied to the root element |
-| `removeButton`  | Styles applied to the root element |
+| Rule name       | Description                                             |
+| --------------- | ------------------------------------------------------- |
+| `root`          | Styles applied to the underlying `FileInput` component  |
+| `dropZone`      | Styles applied to the underlying `FileInput` component  |
+| `preview`       | Styles applied to the underlying `FileInput` component  |
+| `removeButton`  | Styles applied to the underlying `FileInput` component  |
 
 **Tip**: `"RaImageInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -728,12 +727,12 @@ Note that the image upload returns a [File](https://developer.mozilla.org/en/doc
 
 ### CSS API
 
-| Rule name       | Description                        |
-| --------------- | ---------------------------------- |
-| `root`          | Styles applied to the root element |
-| `dropZone`      | Styles applied to the root element |
-| `preview`       | Styles applied to the root element |
-| `removeButton`  | Styles applied to the root element |
+| Rule name       | Description                                                                          |
+| --------------- | ------------------------------------------------------------------------------------ |
+| `root`          | Styles applied to the underlying `Labeled` component                                 |
+| `dropZone`      | Styles applied to the main container of the component                                |
+| `preview`       | Styles applied to each children                                                      |
+| `removeButton`  | Styles applied to each of the Material UI IconButton component used as remove button |
 
 **Tip**: `"RaFileInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -852,9 +851,9 @@ import { RadioButtonGroupInput } from 'react-admin';
 
 ### CSS API
 
-| Rule name  | Description                        |
-| ---------- | ---------------------------------- |
-| `label`    | Styles applied to the root element |
+| Rule name  | Description                                                      |
+| ---------- | ---------------------------------------------------------------- |
+| `label`    | Styles applied to the underlying Material UI FormLabel component |
 
 **Tip**: `"RaRadioButtonGroupInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -1243,9 +1242,9 @@ import { SelectInput } from 'react-admin';
 
 ### CSS API
 
-| Rule name       | Description                        |
-| --------------- | ---------------------------------- |
-| `input`         | Styles applied to the root element |
+| Rule name       | Description                                                      |
+| --------------- | ---------------------------------------------------------------- |
+| `input`         | Styles applied to the underlying `ResettableTextField` component |
 
 **Tip**: `"RaSelectInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
