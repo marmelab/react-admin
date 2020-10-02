@@ -1,17 +1,14 @@
-import Create from './Create';
-import { CreateView } from './Create';
+import Create, { CreateView } from './Create';
 import CreateActions from './CreateActions';
-import Edit from './Edit';
-import { EditView } from './Edit';
+import Edit, { EditView } from './Edit';
 import EditActions from './EditActions';
 import EditGuesser from './EditGuesser';
-import Show from './Show';
-import { ShowView } from './Show';
-import ShowActions from './ShowActions';
+import Show, { ShowView } from './Show';
+import ShowActions, { ShowActionsProps } from './ShowActions';
 import ShowGuesser from './ShowGuesser';
-import SimpleShowLayout from './SimpleShowLayout';
-import TabbedShowLayout from './TabbedShowLayout';
-import Tab from './Tab';
+import SimpleShowLayout, { SimpleShowLayoutProps } from './SimpleShowLayout';
+import TabbedShowLayout, { TabbedShowLayoutProps } from './TabbedShowLayout';
+import Tab, { TabProps } from './Tab';
 import TabbedShowLayoutTabs from './TabbedShowLayoutTabs';
 
 export {
@@ -30,4 +27,11 @@ export {
     TabbedShowLayout,
     Tab,
     TabbedShowLayoutTabs,
+};
+
+export type {
+    SimpleShowLayoutProps,
+    ShowActionsProps,
+    TabProps,
+    TabbedShowLayoutProps,
 };
