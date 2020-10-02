@@ -199,10 +199,9 @@ import { AutocompleteInput } from 'react-admin';
 
 ### CSS API
 
-| Rule name           | Description                                                                                                                                                                                                                                                                                          |
+| Rule name           | Description                        |
 | ------------------- | ---------------------------------- |
-| `root`              | Styles applied to the root element |
-| `container`         | Styles applied to the root element |                                                                                                                                                                                                         |
+| `container`         | Styles applied to the root element |
 
 **Tip**: `"RaAutocompleteInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -340,18 +339,15 @@ import { AutocompleteArrayInput } from 'react-admin';
 
 ### CSS API
 
-| Rule name               | Description                        |
-| ----------------------  | ---------------------------------- |
-| `root`                  | Styles applied to the root element |
-| `container`             | Styles applied to the root element |
-| `paper`                 | Styles applied to the root element |
-| `chip`                  | Styles applied to the root element |
-| `chipContainerFilled`   | Styles applied to the root element |
-| `chipContainerOutlined` | Styles applied to the root element |
-| `inputRoot`             | Styles applied to the root element |
-| `inputRootFilled`       | Styles applied to the root element |
-| `inputInput`            | Styles applied to the root element |
-| `divider`               | Styles applied to the root element |
+| Rule name               | Description                                                                                                             |
+| ----------------------  | ----------------------------------------------------------------------------------------------------------------------- |
+| `container`             | Styles applied to the container of the underlying Material UI TextField component input                                 |
+| `chip`                  | Styles applied to each `<Chip>` component used as selected item                                                         |
+| `chipContainerFilled`   | Styles applied to each container of each `<Chip>` component used as selected item when `variant` prop is `filled`       |
+| `chipContainerOutlined` | Styles applied to each container of each `<Chip>` component used as selected item when `variant` prop is `outlined`     |
+| `inputRoot`             | Styles pass as the `root` class of the underlying Material UI TextField component input                                 |
+| `inputRootFilled`       | Styles pass as the `root` class of the underlying Material UI TextField component input when `variant` prop is `filled` |
+| `inputInput`            | Styles pass as the `input` class of the underlying Material UI TextField component input                                |
 
 **Tip**: `"RaAutocompleteArrayInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
