@@ -1,6 +1,6 @@
 {
     "name": "ra-data-local-storage",
-    "version": "3.9.0-beta.3",
+    "version": "3.9.0",
     "description": "Local storage data provider for react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",
@@ -37,8 +37,8 @@
         "watch": "tsc --outDir esm --module es2015 --watch"
     },
     "dependencies": {
-        "ra-data-fakerest": "^3.9.0-beta.1",
-        "lodash": "~4.17.5"
+        "lodash": "~4.17.5",
+        "ra-data-fakerest": "^3.9.0"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
