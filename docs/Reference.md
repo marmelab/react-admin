@@ -34,6 +34,7 @@ title: "Reference"
 * `<DatagridHeaderCell>`
 * [`<DateField>`](./Fields.md#datefield)
 * [`<DateInput>`](./Inputs.md#dateinput)
+* [`<DateTimeInput>`](./Inputs.md#datetimeinput)
 * `<DeleteButton>`
 * [`<Edit>`](./CreateEdit.md#the-create-and-edit-components)
 * [`<EditGuesser>`](./CreateEdit.md#the-editguesser-component)
