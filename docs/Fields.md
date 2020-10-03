@@ -258,9 +258,9 @@ Displays a value inside a ["Chip"](https://material-ui.com/components/chips), wh
 
 ### CSS API
 
-| Rule name  | Description                        |
-| ---------- | ---------------------------------- |
-| `chip`     | Styles applied to the root element |
+| Rule name  | Description                                                     |
+| ---------- | --------------------------------------------------------------- |
+| `chip`     | Styles applied to the underlying Material UI's `Chip` component |
 
 **Tip**: `"RaChipField"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -394,10 +394,10 @@ This field is also often used within the [<ImageInput />](./Inputs.md#imageinput
 
 ### CSS API
 
-| Rule name  | Description                        |
-| ---------- | ---------------------------------- |
-| `list`     | Styles applied to the root element |
-| `image`    | Styles applied to the root element |
+| Rule name  | Description                                                                           |
+| ---------- | ------------------------------------------------------------------------------------- |
+| `list`     | Styles applied to the underlying `<ul>` component when `sourceValue` prop is an array |
+| `image`    | Styles applied to the each underlying `<img>` component                               |
 
 **Tip**: `"RaImageField"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -582,7 +582,7 @@ import { SelectField } from 'react-admin';
 
 | Prop              | Required | Type                                         | Default | Description                                                                                                                                  |
 | ----------------- | -------- | -------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `optionText`      | Optional | `string ` &#124; `function` &#124; `Element` | 'name'  | Name of the field to use to display the matching choice, or function returning that field name, or a React element to render for that choice |
+| `optionText`      | Optional | `string ` &#124; `Function` &#124; `Element` | 'name'  | Name of the field to use to display the matching choice, or function returning that field name, or a React element to render for that choice |
 | `optionValue`     | Optional | `string`                                     | 'id'    | Name of the field to compare to the value to find the matching choice                                                                        |
 | `translateChoice` | Optional | `Boolean`                                    | `true`  | Whether or not the choice text should be translated                                                                                          |
 
@@ -679,15 +679,15 @@ With this configuration, `<ReferenceField>` wraps the user's name in a link to t
 | `reference` | Required | `string`                   | -        | The name of the resource for the referenced records, e.g. 'posts'                                                   |
 | `children`  | Required | `Element`                  | -        | The Field element used to render the referenced record                                                              |
 | `link`      | Optional | `string`                   | 'edit'   | Target of the link wrapping the rendered child                                                                      |
-| `sortBy`    | Optional | `string` &#124; `function` | `source` | Name of the field to use for sorting when the user clicks on the column header. Set to `false` to disable the link. |
+| `sortBy`    | Optional | `string` &#124; `Function` | `source` | Name of the field to use for sorting when the user clicks on the column header. Set to `false` to disable the link. |
 
 `<ReferenceField>` also accepts the [common field props](./Fields.md#common-field-props).
 
 ### CSS API
 
-| Rule name  | Description                        |
-| ---------- | ---------------------------------- |
-| `link`     | Styles applied to the root element |
+| Rule name  | Description                          |
+| ---------- | ------------------------------------ |
+| `link`     | Styles applied to each child element |
 
 **Tip**: `"RaReferenceField"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -913,23 +913,23 @@ export const PostList = (props) => (
 
 ### Properties
 
-| Prop         | Required | Type                       | Default                          | Description                                                                                                                              |
-| ------------ | -------- | -------------------------- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `reference`  | Required | `string`                   | -                                | The name of the resource for the referenced records, e.g. 'tags'                                                                         |
-| `children`   | Required | `Element`                  | -                                | The Field element used to render the referenced records                                                                                  |
-| `sortBy`     | Optional | `string` &#124; `function` | `source`                         | When used in a List, name of the field to use for sorting when the user clicks on the column header. Set to `false` to disable the link. |
-| `filter`     | Optional | `Object`                   | -                                | Filters to use when fetching the related records (the filtering is done client-side)                                                     |
-| `pagination` | Optional | `Element`                  | -                                | Pagination element to display pagination controls. empty by default (no pagination)                                                      |
-| `perPage`    | Optional | `number`                   | 1000                             | Maximum number of results to display                                                                                                     |
-| `sort`       | Optional | `{ field, order }`         | `{ field: 'id', order: 'DESC' }` | Sort order to use when displaying the related records (the sort is done client-side)                                                     |
+| Prop         | Required | Type                       | Default                          | Description                                                                                                                                |
+| ------------ | -------- | -------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `reference`  | Required | `string`                   | -                                | The name of the resource for the referenced records, e.g. 'tags'                                                                           |
+| `children`   | Required | `Element`                  | -                                | The Field element used to render the referenced records                                                                                    |
+| `sortBy`     | Optional | `string` &#124; `Function` | `source`                         | When used in a `List`, name of the field to use for sorting when the user clicks on the column header. Set to `false` to disable the link. |
+| `filter`     | Optional | `Object`                   | -                                | Filters to use when fetching the related records (the filtering is done client-side)                                                       |
+| `pagination` | Optional | `Element`                  | -                                | Pagination element to display pagination controls. empty by default (no pagination)                                                        |
+| `perPage`    | Optional | `number`                   | 1000                             | Maximum number of results to display                                                                                                       |
+| `sort`       | Optional | `{ field, order }`         | `{ field: 'id', order: 'DESC' }` | Sort order to use when displaying the related records (the sort is done client-side)                                                       |
 
 `<ReferenceArrayField>` also accepts the [common field props](./Fields.md#common-field-props).
 
 ### CSS API
 
-| Rule name  | Description                        |
-| ---------- | ---------------------------------- |
-| `progress` | Styles applied to the root element |
+| Rule name  | Description                                                                                   |
+| ---------- | --------------------------------------------------------------------------------------------- |
+| `progress` | Styles applied to the Material UI's `LinearProgress` component while `loaded` prop is `false` |
 
 **Tip**: `"RaReferenceArrayField"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -986,9 +986,9 @@ import { RichTextField } from 'react-admin';
 
 ### Properties
 
-| Prop        | Required | Type      | Default | Description                                        |
-| ----------- | -------- | --------- | ------- | -------------------------------------------------- |
-| `stripTags` | Optional | `Boolean` | false   | If true, remove all HTML tags and render text only |
+| Prop        | Required | Type      | Default  | Description                                          |
+| ----------- | -------- | --------- | -------- | ---------------------------------------------------- |
+| `stripTags` | Optional | `boolean` | `false`  | If `true`, remove all HTML tags and render text only |
 
 `<RichTextField>` also accepts the [common field props](./Fields.md#common-field-props).
 
