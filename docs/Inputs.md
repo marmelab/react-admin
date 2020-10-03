@@ -199,9 +199,9 @@ import { AutocompleteInput } from 'react-admin';
 
 ### CSS API
 
-| Rule name           | Description                        |
-| ------------------- | ---------------------------------- |
-| `container`         | Styles applied to the root element |
+| Rule name           | Description                 |
+| ------------------- | --------------------------- |
+| `container`         | Applied to the root element |
 
 **Tip**: `"RaAutocompleteInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -339,15 +339,15 @@ import { AutocompleteArrayInput } from 'react-admin';
 
 ### CSS API
 
-| Rule name               | Description                                                                                                                   |
-| ----------------------  | ----------------------------------------------------------------------------------------------------------------------------- |
-| `container`             | Styles applied to the container of the underlying Material UI's `TextField` component input                                   |
-| `chip`                  | Styles applied to each Material UI's `Chip` component used as selected item                                                   |
-| `chipContainerFilled`   | Styles applied to each container of each Material UI's `Chip` component used as selected item when `variant` prop is `filled` |
-| `chipContainerOutlined` | Styles applied to each container of each `Chip` component used as selected item when `variant` prop is `outlined`             |
-| `inputRoot`             | Styles pass as the `root` class of the underlying Material UI's `TextField` component input                                   |
-| `inputRootFilled`       | Styles pass as the `root` class of the underlying Material UI's `TextField` component input when `variant` prop is `filled`   |
-| `inputInput`            | Styles pass as the `input` class of the underlying Material UI's `TextField` component input                                  |
+| Rule name               | Description                                                                                                                 |
+| ----------------------  | --------------------------------------------------------------------------------------------------------------------------- |
+| `container`             | Applied to the container of the underlying Material UI's `TextField` component input                                        |
+| `chip`                  | Applied to each Material UI's `Chip` component used as selected item                                                        |
+| `chipContainerFilled`   | Applied to each container of each Material UI's `Chip` component used as selected item when `variant` prop is `filled`      |
+| `chipContainerOutlined` | Applied to each container of each `Chip` component used as selected item when `variant` prop is `outlined`                  |
+| `inputRoot`             | Styles pass as the `root` class of the underlying Material UI's `TextField` component input                                 |
+| `inputRootFilled`       | Styles pass as the `root` class of the underlying Material UI's `TextField` component input when `variant` prop is `filled` |
+| `inputInput`            | Styles pass as the `input` class of the underlying Material UI's `TextField` component input                                |
 
 **Tip**: `"RaAutocompleteArrayInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -466,9 +466,9 @@ Refer to [Material UI Switch documentation](https://material-ui.com/api/switch) 
 
 ### CSS API
 
-| Rule name  | Description                                                                       |
-| ---------- | --------------------------------------------------------------------------------- |
-| `input`    | Styles applied to the underlying Material UI's `TextField` component              |
+| Rule name  | Description                                                   |
+| ---------- | ------------------------------------------------------------- |
+| `input`    | Applied to the underlying Material UI's `TextField` component |
 
 **Tip**: `"RaNullableBooleanInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -543,9 +543,9 @@ Refer to [Material UI Checkbox documentation](https://material-ui.com/api/checkb
 
 ### CSS API
 
-| Rule name  | Description                                                                       |
-| ---------- | --------------------------------------------------------------------------------- |
-| `label`    | Styles applied to the underlying Material UI's `FormLabel` component              |
+| Rule name  | Description                                                   |
+| ---------- | ------------------------------------------------------------- |
+| `label`    | Applied to the underlying Material UI's `FormLabel` component |
 
 **Tip**: `"RaCheckboxGroupInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -727,12 +727,12 @@ Note that the image upload returns a [File](https://developer.mozilla.org/en/doc
 
 ### CSS API
 
-| Rule name       | Description                                                                              |
-| --------------- | ---------------------------------------------------------------------------------------- |
-| `root`          | Styles applied to the underlying `Labeled` component                                     |
-| `dropZone`      | Styles applied to the main container of the component                                    |
-| `preview`       | Styles applied to each children                                                          |
-| `removeButton`  | Styles applied to each of the Material UI's `IconButton` component used as remove button |
+| Rule name       | Description                                                                       |
+| --------------- | --------------------------------------------------------------------------------- |
+| `root`          | Applied to the underlying `Labeled` component                                     |
+| `dropZone`      | Applied to the main container of the component                                    |
+| `preview`       | Applied to each children                                                          |
+| `removeButton`  | Applied to each of the Material UI's `IconButton` component used as remove button |
 
 **Tip**: `"RaFileInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -851,9 +851,9 @@ import { RadioButtonGroupInput } from 'react-admin';
 
 ### CSS API
 
-| Rule name  | Description                                                          |
-| ---------- | -------------------------------------------------------------------- |
-| `label`    | Styles applied to the underlying Material UI's `FormLabel` component |
+| Rule name  | Description                                                   |
+| ---------- | ------------------------------------------------------------- |
+| `label`    | Applied to the underlying Material UI's `FormLabel` component |
 
 **Tip**: `"RaRadioButtonGroupInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -1242,9 +1242,9 @@ import { SelectInput } from 'react-admin';
 
 ### CSS API
 
-| Rule name       | Description                                                      |
-| --------------- | ---------------------------------------------------------------- |
-| `input`         | Styles applied to the underlying `ResettableTextField` component |
+| Rule name       | Description                                               |
+| --------------- | --------------------------------------------------------- |
+| `input`         | Applied to the underlying `ResettableTextField` component |
 
 **Tip**: `"RaSelectInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -1365,11 +1365,11 @@ To let users choose several values in a list using a dropdown, use `<SelectArray
 
 ### CSS API
 
-| Rule name  | Description                                                                               |
-| ---------- | ----------------------------------------------------------------------------------------- |
-| `root`     | Styles applied to the root element                                                        |
-| `chip`     | Styles applied to each Material UI's `Chip` component used as selected item               |
-| `chips`    | Styles applied to the container of Material UI's `Chip` components used as selected items |
+| Rule name  | Description                                                                        |
+| ---------- | ---------------------------------------------------------------------------------- |
+| `root`     | Applied to the root element                                                        |
+| `chip`     | Applied to each Material UI's `Chip` component used as selected item               |
+| `chips`    | Applied to the container of Material UI's `Chip` components used as selected items |
 
 **Tip**: `"RaSelectArrayInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 

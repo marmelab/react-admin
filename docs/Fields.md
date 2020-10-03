@@ -223,9 +223,9 @@ import { BooleanField } from 'react-admin';
 
 ### CSS API
 
-| Rule name  | Description                        |
-| ---------- | ---------------------------------- |
-| `root`     | Styles applied to the root element |
+| Rule name  | Description                 |
+| ---------- | --------------------------- |
+| `root`     | Applied to the root element |
 
 **Tip**: `"RaBooleanField"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -258,9 +258,9 @@ Displays a value inside a ["Chip"](https://material-ui.com/components/chips), wh
 
 ### CSS API
 
-| Rule name  | Description                                                     |
-| ---------- | --------------------------------------------------------------- |
-| `chip`     | Styles applied to the underlying Material UI's `Chip` component |
+| Rule name  | Description                                              |
+| ---------- | -------------------------------------------------------- |
+| `chip`     | Applied to the underlying Material UI's `Chip` component |
 
 **Tip**: `"RaChipField"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -394,10 +394,10 @@ This field is also often used within the [<ImageInput />](./Inputs.md#imageinput
 
 ### CSS API
 
-| Rule name  | Description                                                                           |
-| ---------- | ------------------------------------------------------------------------------------- |
-| `list`     | Styles applied to the underlying `<ul>` component when `sourceValue` prop is an array |
-| `image`    | Styles applied to the each underlying `<img>` component                               |
+| Rule name  | Description                                                                    |
+| ---------- | ------------------------------------------------------------------------------ |
+| `list`     | Applied to the underlying `<ul>` component when `sourceValue` prop is an array |
+| `image`    | Applied to the each underlying `<img>` component                               |
 
 **Tip**: `"RaImageField"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -461,9 +461,9 @@ This field is also often used within an [<FileInput />](./Inputs.md#fileinput) c
 
 ### CSS API
 
-| Rule name  | Description                        |
-| ---------- | ---------------------------------- |
-| `root`     | Styles applied to the root element |
+| Rule name  | Description                 |
+| ---------- | --------------------------- |
+| `root`     | Applied to the root element |
 
 **Tip**: `"RaFileField"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -685,9 +685,9 @@ With this configuration, `<ReferenceField>` wraps the user's name in a link to t
 
 ### CSS API
 
-| Rule name  | Description                          |
-| ---------- | ------------------------------------ |
-| `link`     | Styles applied to each child element |
+| Rule name  | Description                   |
+| ---------- | ----------------------------- |
+| `link`     | Applied to each child element |
 
 **Tip**: `"RaReferenceField"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -927,9 +927,9 @@ export const PostList = (props) => (
 
 ### CSS API
 
-| Rule name  | Description                                                                                   |
-| ---------- | --------------------------------------------------------------------------------------------- |
-| `progress` | Styles applied to the Material UI's `LinearProgress` component while `loaded` prop is `false` |
+| Rule name  | Description                                                                            |
+| ---------- | -------------------------------------------------------------------------------------- |
+| `progress` | Applied to the Material UI's `LinearProgress` component while `loaded` prop is `false` |
 
 **Tip**: `"RaReferenceArrayField"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
