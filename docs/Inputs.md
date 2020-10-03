@@ -341,7 +341,7 @@ import { AutocompleteArrayInput } from 'react-admin';
 
 | Rule name               | Description                                                                                                                   |
 | ----------------------  | ----------------------------------------------------------------------------------------------------------------------------- |
-| `container`             | Styles applied to the container of the underlying Material UI TextField component input                                       |
+| `container`             | Styles applied to the container of the underlying Material UI's `TextField` component input                                   |
 | `chip`                  | Styles applied to each Material UI's `Chip` component used as selected item                                                   |
 | `chipContainerFilled`   | Styles applied to each container of each Material UI's `Chip` component used as selected item when `variant` prop is `filled` |
 | `chipContainerOutlined` | Styles applied to each container of each `Chip` component used as selected item when `variant` prop is `outlined`             |
