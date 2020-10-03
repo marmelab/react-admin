@@ -502,20 +502,9 @@ const useStyles = makeStyles(
                 : 'rgba(255, 255, 255, 0.09)';
 
         return {
-            root: {
-                flexGrow: 1,
-                height: 250,
-            },
             container: {
                 flexGrow: 1,
                 position: 'relative',
-            },
-            paper: {
-                position: 'absolute',
-                zIndex: 1,
-                marginTop: theme.spacing(1),
-                left: 0,
-                right: 0,
             },
             chip: {
                 margin: theme.spacing(0.5, 0.5, 0.5, 0),
@@ -538,9 +527,6 @@ const useStyles = makeStyles(
             inputInput: {
                 width: 'auto',
                 flexGrow: 1,
-            },
-            divider: {
-                height: theme.spacing(2),
             },
         };
     },

@@ -24,7 +24,6 @@ const sanitizeRestProps = ({
 
 const useStyles = makeStyles(
     theme => ({
-        root: {},
         label: {
             transform: 'translate(0, 8px) scale(0.75)',
             transformOrigin: `top ${
