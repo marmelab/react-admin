@@ -339,15 +339,15 @@ import { AutocompleteArrayInput } from 'react-admin';
 
 ### CSS API
 
-| Rule name               | Description                                                                                                             |
-| ----------------------  | ----------------------------------------------------------------------------------------------------------------------- |
-| `container`             | Styles applied to the container of the underlying Material UI TextField component input                                 |
-| `chip`                  | Styles applied to each `<Chip>` component used as selected item                                                         |
-| `chipContainerFilled`   | Styles applied to each container of each `<Chip>` component used as selected item when `variant` prop is `filled`       |
-| `chipContainerOutlined` | Styles applied to each container of each `<Chip>` component used as selected item when `variant` prop is `outlined`     |
-| `inputRoot`             | Styles pass as the `root` class of the underlying Material UI TextField component input                                 |
-| `inputRootFilled`       | Styles pass as the `root` class of the underlying Material UI TextField component input when `variant` prop is `filled` |
-| `inputInput`            | Styles pass as the `input` class of the underlying Material UI TextField component input                                |
+| Rule name               | Description                                                                                                                   |
+| ----------------------  | ----------------------------------------------------------------------------------------------------------------------------- |
+| `container`             | Styles applied to the container of the underlying Material UI TextField component input                                       |
+| `chip`                  | Styles applied to each Material UI's `Chip` component used as selected item                                                   |
+| `chipContainerFilled`   | Styles applied to each container of each Material UI's `Chip` component used as selected item when `variant` prop is `filled` |
+| `chipContainerOutlined` | Styles applied to each container of each `Chip` component used as selected item when `variant` prop is `outlined`             |
+| `inputRoot`             | Styles pass as the `root` class of the underlying Material UI's `TextField` component input                                   |
+| `inputRootFilled`       | Styles pass as the `root` class of the underlying Material UI's `TextField` component input when `variant` prop is `filled`   |
+| `inputInput`            | Styles pass as the `input` class of the underlying Material UI's `TextField` component input                                  |
 
 **Tip**: `"RaAutocompleteArrayInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -442,7 +442,7 @@ import { BooleanInput } from 'react-admin';
 
 This input does not handle `null` values. You would need the `<NullableBooleanInput />` component if you have to handle non-set booleans.
 
-You can use the `options` prop to pass any option supported by the Material UI `Switch` components. For example, here's how to set a custom checked icon:
+You can use the `options` prop to pass any option supported by the Material UI's `Switch` components. For example, here's how to set a custom checked icon:
 
 {% raw %}
 ```jsx
@@ -468,7 +468,7 @@ Refer to [Material UI Switch documentation](https://material-ui.com/api/switch) 
 
 | Rule name  | Description                                                                       |
 | ---------- | --------------------------------------------------------------------------------- |
-| `input`    | Styles applied to the underlying Material UI TextField component                  |
+| `input`    | Styles applied to the underlying Material UI's `TextField` component              |
 
 **Tip**: `"RaNullableBooleanInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -545,7 +545,7 @@ Refer to [Material UI Checkbox documentation](https://material-ui.com/api/checkb
 
 | Rule name  | Description                                                                       |
 | ---------- | --------------------------------------------------------------------------------- |
-| `label`    | Styles applied to the underlying Material UI FormLabel component                  |
+| `label`    | Styles applied to the underlying Material UI's `FormLabel` component              |
 
 **Tip**: `"RaCheckboxGroupInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -652,7 +652,7 @@ import { DateTimeInput } from 'react-admin';
 
 | Prop            | Required | Type                        | Default                          | Description                                                                                                                                                                                                                                                         |
 | --------------- | -------- | --------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `accept`        | Optional | `string | string[]`         | -                                | Accepted file type(s), e. g. 'image/*,.pdf'. If left empty, all file types are accepted. Equivalent of the `accept` attribute of an `<input type="file">`. See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept for syntax and examples. |
+| `accept`        | Optional | `string` &#124; `string[]`  | -                                | Accepted file type(s), e. g. 'image/*,.pdf'. If left empty, all file types are accepted. Equivalent of the `accept` attribute of an `<input type="file">`. See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept for syntax and examples. |
 | `children`      | Optional | `ReactNode`                 | -                                | Element used to display the preview of an image (cloned several times if the select accepts multiple files).                                                                                                                                                        |
 | `minSize`       | Optional | `number`                    | 0                                | Minimum image size (in bytes), e.g. 5000 form 5KB                                                                                                                                                                                                                   |
 | `maxSize`       | Optional | `number`                    | `Infinity`                       | Maximum image size (in bytes), e.g. 5000000 for 5MB                                                                                                                                                                                                                 |
@@ -666,12 +666,12 @@ import { DateTimeInput } from 'react-admin';
 
 ### CSS API
 
-| Rule name       | Description                                             |
-| --------------- | ------------------------------------------------------- |
-| `root`          | Styles applied to the underlying `FileInput` component  |
-| `dropZone`      | Styles applied to the underlying `FileInput` component  |
-| `preview`       | Styles applied to the underlying `FileInput` component  |
-| `removeButton`  | Styles applied to the underlying `FileInput` component  |
+| Rule name       | Description                                          |
+| --------------- | ---------------------------------------------------- |
+| `root`          | Styles pass to the underlying `FileInput` component  |
+| `dropZone`      | Styles pass to the underlying `FileInput` component  |
+| `preview`       | Styles pass to the underlying `FileInput` component  |
+| `removeButton`  | Styles pass to the underlying `FileInput` component  |
 
 **Tip**: `"RaImageInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -711,28 +711,28 @@ Note that the image upload returns a [File](https://developer.mozilla.org/en/doc
 
 ### Properties
 
-| Prop            | Type     | Default              | Description                     |
-| --------------- | -------- | -------------------- | ------------------------------- |
-| `accept`        | Optional | `string | string[]`  | -                               | Accepted file type(s), e. g. 'application/json,video/*' or 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'. If left empty, all file types are accepted. Equivalent of the `accept` attribute of an `<input type="file">`. See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept for syntax and examples. |
-| `children`      | Optional | `ReactNode`          | -                               | Element used to display the preview of a file (cloned several times if the select accepts multiple files).                                                                                                                                                                                                                                             |
-| `minSize`       | Optional | `number`             | 0                               | Minimum file size (in bytes), e.g. 5000 form 5KB                                                                                                                                                                                                                                                                                                       |
-| `maxSize`       | Optional | `number`             | Infinity                        | Maximum file size (in bytes), e.g. 5000000 for 5MB                                                                                                                                                                                                                                                                                                     |
-| `multiple`      | Optional | `boolean`            | false                           | Set to true if the input should accept a list of files, false if it should only accept one file                                                                                                                                                                                                                                                        |
-| `labelSingle`   | Optional | `string`             | 'ra.input.file. upload_single'  | Invite displayed in the drop zone if the input accepts one file                                                                                                                                                                                                                                                                                        |
-| `labelMultiple` | Optional | `string`             | 'ra.input.file. upload_several' | Invite displayed in the drop zone if the input accepts several files                                                                                                                                                                                                                                                                                   |
-| `placeholder`   | Optional | `string | ReactNode` | -                               | Invite displayed in the drop zone, overrides `labelSingle` and `labelMultiple`                                                                                                                                                                                                                                                                         |
-| `options`       | Optional | `object`             | `{}`                            | Additional options passed to react-dropzone's `useDropzone()` hook. See [the react-dropzone source](https://github.com/react-dropzone/react-dropzone/blob/master/src/index.js)  for details .                                                                                                                                                          |
+| Prop            | Required | Type                        | Default                         | Description                                                                                                                                                                                                                                                                                                                                            |
+| --------------- | -------- | --------------------------- | ------------------------------- | -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  |
+| `accept`        | Optional | `string` &#124; `string[]`  | -                               | Accepted file type(s), e. g. 'application/json,video/*' or 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'. If left empty, all file types are accepted. Equivalent of the `accept` attribute of an `<input type="file">`. See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept for syntax and examples. |
+| `children`      | Optional | `ReactNode`                 | -                               | Element used to display the preview of a file (cloned several times if the select accepts multiple files).                                                                                                                                                                                                                                             |
+| `minSize`       | Optional | `number`                    | 0                               | Minimum file size (in bytes), e.g. 5000 form 5KB                                                                                                                                                                                                                                                                                                       |
+| `maxSize`       | Optional | `number`                    | `Infinity`                      | Maximum file size (in bytes), e.g. 5000000 for 5MB                                                                                                                                                                                                                                                                                                     |
+| `multiple`      | Optional | `boolean`                   | `false`                         | Set to true if the input should accept a list of files, false if it should only accept one file                                                                                                                                                                                                                                                        |
+| `labelSingle`   | Optional | `string`                    | 'ra.input.file. upload_single'  | Invite displayed in the drop zone if the input accepts one file                                                                                                                                                                                                                                                                                        |
+| `labelMultiple` | Optional | `string`                    | 'ra.input.file. upload_several' | Invite displayed in the drop zone if the input accepts several files                                                                                                                                                                                                                                                                                   |
+| `placeholder`   | Optional | `string` &#124; `ReactNode` | -                               | Invite displayed in the drop zone, overrides `labelSingle` and `labelMultiple`                                                                                                                                                                                                                                                                         |
+| `options`       | Optional | `object`                    | `{}`                            | Additional options passed to react-dropzone's `useDropzone()` hook. See [the react-dropzone source](https://github.com/react-dropzone/react-dropzone/blob/master/src/index.js)  for details .                                                                                                                                                          |
 
 `<FileInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
 ### CSS API
 
-| Rule name       | Description                                                                          |
-| --------------- | ------------------------------------------------------------------------------------ |
-| `root`          | Styles applied to the underlying `Labeled` component                                 |
-| `dropZone`      | Styles applied to the main container of the component                                |
-| `preview`       | Styles applied to each children                                                      |
-| `removeButton`  | Styles applied to each of the Material UI IconButton component used as remove button |
+| Rule name       | Description                                                                              |
+| --------------- | ---------------------------------------------------------------------------------------- |
+| `root`          | Styles applied to the underlying `Labeled` component                                     |
+| `dropZone`      | Styles applied to the main container of the component                                    |
+| `preview`       | Styles applied to each children                                                          |
+| `removeButton`  | Styles applied to each of the Material UI's `IconButton` component used as remove button |
 
 **Tip**: `"RaFileInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -851,9 +851,9 @@ import { RadioButtonGroupInput } from 'react-admin';
 
 ### CSS API
 
-| Rule name  | Description                                                      |
-| ---------- | ---------------------------------------------------------------- |
-| `label`    | Styles applied to the underlying Material UI FormLabel component |
+| Rule name  | Description                                                          |
+| ---------- | -------------------------------------------------------------------- |
+| `label`    | Styles applied to the underlying Material UI's `FormLabel` component |
 
 **Tip**: `"RaRadioButtonGroupInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
@@ -1365,12 +1365,11 @@ To let users choose several values in a list using a dropdown, use `<SelectArray
 
 ### CSS API
 
-| Rule name  | Description                        |
-| ---------- | ---------------------------------- |
-| `root`     | Styles applied to the root element |
-| `chip`     | Styles applied to the root element |
-| `chips`    | Styles applied to the root element |
-| `select`   | Styles applied to the root element |
+| Rule name  | Description                                                                               |
+| ---------- | ----------------------------------------------------------------------------------------- |
+| `root`     | Styles applied to the root element                                                        |
+| `chip`     | Styles applied to each Material UI's `Chip` component used as selected item               |
+| `chips`    | Styles applied to the container of Material UI's `Chip` components used as selected items |
 
 **Tip**: `"RaSelectArrayInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
