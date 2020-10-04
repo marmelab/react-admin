@@ -1427,7 +1427,7 @@ By default, when the user clicks on a column header, the list becomes sorted in 
 
 ```jsx
 // in src/posts.js
-import React from 'react';
+import * as React from 'react';
 import { List, Datagrid, TextField } from 'react-admin';
 
 export const PostList = (props) => (

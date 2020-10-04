@@ -304,7 +304,7 @@ const PostEdit = props => (
 By default, when the save action succeeds, react-admin shows a notification, and redirects to another page. You can override this behavior and pass custom side effects by providing a function as `onSuccess` prop:
 
 ```jsx
-import React from 'react';
+import * as React from 'react';
 import { useNotify, useRefresh, useRedirect, Edit, SimpleForm } from 'react-admin';
 
 const PostEdit = props => {
@@ -359,7 +359,7 @@ By default, when the save action fails at the dataProvider level, react-admin sh
 You can override this behavior and pass custom side effects by providing a function as `onFailure` prop:
 
 ```jsx
-import React from 'react';
+import * as React from 'react';
 import { useNotify, useRefresh, useRedirect, Edit, SimpleForm } from 'react-admin';
 
 const PostEdit = props => {
