@@ -397,7 +397,7 @@ This field is also often used within the [<ImageInput />](./Inputs.md#imageinput
 | Rule name  | Description                                                                    |
 | ---------- | ------------------------------------------------------------------------------ |
 | `list`     | Applied to the underlying `<ul>` component when `sourceValue` prop is an array |
-| `image`    | Applied to the each underlying `<img>` component                               |
+| `image`    | Applied to each underlying `<img>` component                                   |
 
 **Tip**: `"RaImageField"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
 
