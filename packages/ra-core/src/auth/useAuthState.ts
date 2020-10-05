@@ -22,6 +22,13 @@ const emptyParams = {};
  *
  * You can render different content depending on the authenticated status.
  *
+ * @see useAuthenticated()
+ *
+ * @param {Object} params Any params you want to pass to the authProvider
+ *
+ * @returns The current auth check state. Destructure as { authenticated, error, loading, loaded }.
+ *
+ * @example
  * import { useAuthState, Loading } from 'react-admin';
  *
  * const MyPage = () => {
@@ -34,27 +41,6 @@ const emptyParams = {};
  *     }
  *     return <AnonymousContent />;
  * };
- *
- * @see useAuthenticated()
- *
- * @param {Object} params Any params you want to pass to the authProvider
- *
- * @returns The current auth check state. Destructure as { authenticated, error, loading, loaded }.
- *
- * @example
- *     import { useAuthState } from 'react-admin';
- *
- *     const CustomRoutes = [
- *         <Route path="/bar" render={() => {
- *              const { authenticated } = useAuthState({ myContext: 'foobar' });
- *              return authenticated ? <Bar /> : <BarNotAuthenticated />;
- *          }} />,
- *     ];
- *     const App = () => (
- *         <Admin customRoutes={customRoutes}>
- *             ...
- *         </Admin>
- *     );
  */
 const useAuthState = (params: any = emptyParams): State => {
     const [state, setState] = useSafeSetState({
