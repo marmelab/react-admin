@@ -227,7 +227,7 @@ import { BooleanField } from 'react-admin';
 | ---------- | --------------------------- |
 | `root`     | Applied to the root element |
 
-**Tip**: `"RaBooleanField"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
+To override the style of all instances of `<BooleanField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaBooleanField` key.
 
 ### Usage
 
