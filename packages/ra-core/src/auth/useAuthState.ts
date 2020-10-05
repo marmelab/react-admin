@@ -12,20 +12,28 @@ interface State {
 const emptyParams = {};
 
 /**
- * Hook for getting the authentication status and restricting access to authenticated users
+ * To avoid rendering a component and force waiting for the authProvider response, use the useAuthState() hook
+ * instead of the useAuthenticated() hook.
+ * It returns an object with 3 properties:
  *
- * Calls the authProvider.checkAuth() method asynchronously.
- * If the authProvider returns a rejected promise, logs the user out.
+ * - loading: true just after mount, while the authProvider is being called. false once the authProvider has answered.
+ * - loaded: the opposite of loading.
+ * - authenticated: true while loading. then true or false depending on the authProvider response.
  *
- * The return value updates according to the authProvider request state:
+ * You can render different content depending on the authenticated status.
  *
- * - start:   { authenticated: false, loading: true, loaded: false }
- * - success: { authenticated: true,  loading: false, loaded: true }
- * - error:   { authenticated: false, loading: false, loaded: true }
+ * import { useAuthState, Loading } from 'react-admin';
  *
- * Useful in custom page components that can work both for connected and
- * anonymous users. For pages that can only work for connected users,
- * prefer the useAuthenticated() hook.
+ * const MyPage = () => {
+ *     const { loading, authenticated } = useAuthState();
+ *     if (loading) {
+ *         return <Loading />;
+ *     }
+ *     if (authenticated) {
+ *        return <AuthenticatedContent />;
+ *     }
+ *     return <AnonymousContent />;
+ * };
  *
  * @see useAuthenticated()
  *
