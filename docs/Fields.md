@@ -262,7 +262,7 @@ Displays a value inside a ["Chip"](https://material-ui.com/components/chips), wh
 | ---------- | -------------------------------------------------------- |
 | `chip`     | Applied to the underlying Material UI's `Chip` component |
 
-**Tip**: `"RaChipField"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
+To override the style of all instances of `<ChipField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaChipField` key.
 
 ### Usage
 
@@ -399,7 +399,7 @@ This field is also often used within the [<ImageInput />](./Inputs.md#imageinput
 | `list`     | Applied to the underlying `<ul>` component when `sourceValue` prop is an array |
 | `image`    | Applied to each underlying `<img>` component                                   |
 
-**Tip**: `"RaImageField"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
+To override the style of all instances of `<ImageField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaImageField` key.
 
 ### Usage
 
@@ -465,7 +465,7 @@ This field is also often used within an [<FileInput />](./Inputs.md#fileinput) c
 | ---------- | --------------------------- |
 | `root`     | Applied to the root element |
 
-**Tip**: `"RaFileField"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
+To override the style of all instances of `<FileField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaFileField` key.
 
 ### Usage
 
@@ -689,7 +689,7 @@ With this configuration, `<ReferenceField>` wraps the user's name in a link to t
 | ---------- | ----------------------------- |
 | `link`     | Applied to each child element |
 
-**Tip**: `"RaReferenceField"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
+To override the style of all instances of `<ReferenceField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaReferenceField` key.
 
 ### Usage
 
@@ -931,7 +931,7 @@ export const PostList = (props) => (
 | ---------- | -------------------------------------------------------------------------------------- |
 | `progress` | Applied to the Material UI's `LinearProgress` component while `loaded` prop is `false` |
 
-**Tip**: `"RaReferenceArrayField"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
+To override the style of all instances of `<ReferenceArrayField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaReferenceArrayField` key.
 
 ### Usage
 

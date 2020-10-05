@@ -203,7 +203,7 @@ import { AutocompleteInput } from 'react-admin';
 | ------------------- | --------------------------- |
 | `container`         | Applied to the root element |
 
-**Tip**: `"RaAutocompleteInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
+To override the style of all instances of `<AutocompleteInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaAutocompleteInput` key.
 
 ### Usage
 
@@ -349,7 +349,7 @@ import { AutocompleteArrayInput } from 'react-admin';
 | `inputRootFilled`       | Styles pass as the `root` class of the underlying Material UI's `TextField` component input when `variant` prop is `filled` |
 | `inputInput`            | Styles pass as the `input` class of the underlying Material UI's `TextField` component input                                |
 
-**Tip**: `"RaAutocompleteArrayInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
+To override the style of all instances of `<AutocompleteArrayInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaAutocompleteArrayInput` key.
 
 ### Usage
 
@@ -470,7 +470,7 @@ Refer to [Material UI Switch documentation](https://material-ui.com/api/switch) 
 | ---------- | ------------------------------------------------------------- |
 | `input`    | Applied to the underlying Material UI's `TextField` component |
 
-**Tip**: `"RaNullableBooleanInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
+To override the style of all instances of `<NullableBooleanInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaNullableBooleanInput` key.
 
 ```jsx
 import { NullableBooleanInput } from 'react-admin';
@@ -548,7 +548,7 @@ Refer to [Material UI Checkbox documentation](https://material-ui.com/api/checkb
 | `root`     | Applied to the root element                                   |
 | `label`    | Applied to the underlying Material UI's `FormLabel` component |
 
-**Tip**: `"RaCheckboxGroupInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
+To override the style of all instances of `<CheckboxGroupInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaCheckboxGroupInput` key.
 
 ### Usage
 
@@ -674,7 +674,7 @@ import { DateTimeInput } from 'react-admin';
 | `preview`       | Styles pass to the underlying `FileInput` component  |
 | `removeButton`  | Styles pass to the underlying `FileInput` component  |
 
-**Tip**: `"RaImageInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
+To override the style of all instances of `<ImageInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaImageInput` key.
 
 ### Usage
 
@@ -735,7 +735,7 @@ Note that the image upload returns a [File](https://developer.mozilla.org/en/doc
 | `preview`       | Applied to each children                                                          |
 | `removeButton`  | Applied to each of the Material UI's `IconButton` component used as remove button |
 
-**Tip**: `"RaFileInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
+To override the style of all instances of `<FileInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaFileInput` key.
 
 ### Usage
 
@@ -856,7 +856,7 @@ import { RadioButtonGroupInput } from 'react-admin';
 | ---------- | ------------------------------------------------------------- |
 | `label`    | Applied to the underlying Material UI's `FormLabel` component |
 
-**Tip**: `"RaRadioButtonGroupInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
+To override the style of all instances of `<RadioButtonGroupInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaRadioButtonGroupInput` key.
 
 ### Usage
 
@@ -1247,7 +1247,7 @@ import { SelectInput } from 'react-admin';
 | --------------- | --------------------------------------------------------- |
 | `input`         | Applied to the underlying `ResettableTextField` component |
 
-**Tip**: `"RaSelectInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
+To override the style of all instances of `<SelectInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaSelectInput` key.
 
 ### Usage
 
@@ -1372,7 +1372,7 @@ To let users choose several values in a list using a dropdown, use `<SelectArray
 | `chip`     | Applied to each Material UI's `Chip` component used as selected item               |
 | `chips`    | Applied to the container of Material UI's `Chip` components used as selected items |
 
-**Tip**: `"RaSelectArrayInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
+To override the style of all instances of `<SelectArrayInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaSelectArrayInput` key.
 
 ```jsx
 import { SelectArrayInput } from 'react-admin';
