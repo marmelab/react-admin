@@ -56,7 +56,7 @@
         "@material-ui/styles": "^4.3.3",
         "final-form": "^4.18.5",
         "final-form-arrays": "^3.0.1",
-        "ra-core": "^3.9.0-beta.1",
+        "ra-core": "^3.9.0",
         "react": "^16.9.0",
         "react-dom": "^16.9.0",
         "react-final-form": "^6.3.3",
