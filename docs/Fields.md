@@ -584,7 +584,7 @@ import { SelectField } from 'react-admin';
 | ----------------- | -------- | -------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | `optionText`      | Optional | `string ` &#124; `Function` &#124; `Element` | 'name'  | Name of the field to use to display the matching choice, or function returning that field name, or a React element to render for that choice |
 | `optionValue`     | Optional | `string`                                     | 'id'    | Name of the field to compare to the value to find the matching choice                                                                        |
-| `translateChoice` | Optional | `Boolean`                                    | `true`  | Whether or not the choice text should be translated                                                                                          |
+| `translateChoice` | Optional | `boolean`                                    | `true`  | Whether or not the choice text should be translated                                                                                          |
 
 `<SelectField>` also accepts the [common field props](./Fields.md#common-field-props).
 
