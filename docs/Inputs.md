@@ -545,6 +545,7 @@ Refer to [Material UI Checkbox documentation](https://material-ui.com/api/checkb
 
 | Rule name  | Description                                                   |
 | ---------- | ------------------------------------------------------------- |
+| `root`     | Applied to the root element                                   |
 | `label`    | Applied to the underlying Material UI's `FormLabel` component |
 
 **Tip**: `"RaCheckboxGroupInput"`: Global css name for overriding all instances of the component using Material UI theme. See their [documentation](https://material-ui.com/customization/globals/#css).
