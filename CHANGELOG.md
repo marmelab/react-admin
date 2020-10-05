@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.9.1
+
+* Fix packages dependencies pointing to react-admin beta and causing duplicate packages ([5347](https://github.com/marmelab/react-admin/pull/5347)) ([WiXSL](https://github.com/WiXSL))
+
 ## v3.9.0
 
 * Emit TypeScript types ([5291](https://github.com/marmelab/react-admin/pull/5291)) ([fzaninotto](https://github.com/fzaninotto))
