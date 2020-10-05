@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { useTranslate, SelectArrayInput } from 'react-admin';
-import { InputProps } from 'ra-core';
+import { useTranslate, SelectArrayInput, InputProps } from 'react-admin';
 
 import segments from '../segments/data';
 
@@ -13,6 +12,7 @@ const SegmentsInput: FC<Props> = ({ addField, ...rest }) => {
     const translate = useTranslate();
     return (
         <SelectArrayInput
+            source="groups"
             {...rest}
             choices={segments.map(segment => ({
                 id: segment.id,

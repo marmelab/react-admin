@@ -250,6 +250,8 @@ const CommentList = props => (
 
 **Tip**: You may also remove the `<ExportButton>` by passing `false` to the `exporter` prop: `exporter={false}`
 
+**Tip**: Looking for an `<ImportButton>`? React-admin doesn't provide this feature, but the community has an excellent third-party module for CSV import: [benwinding/react-admin-import-csv](https://github.com/benwinding/react-admin-import-csv).
+
 ### Bulk Action Buttons
 
 ![Bulk Action Buttons](./img/bulk-actions-toolbar.gif)
@@ -2394,6 +2396,14 @@ export const CommentList = (props) => (
 {% endraw %}
 
 As you can see, nothing prevents you from using `<Field>` components inside your own components... provided you inject the current `record`. Also, notice that components building links require the `basePath` component, which is also available from `useListContext`.
+
+## Third-Party Components
+
+You can find components for react-admin in third-party repositories.
+
+- [ra-editable-datagrid](https://marmelab.com/ra-enterprise/modules/ra-editable-datagrid) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) component which offers an "edit-in-place" experience in a `<Datagrid>`.
+- [ra-tree](https://marmelab.com/ra-enterprise/modules/ra-tree) <img class="icon" src="./img/premium.svg" />: tree hooks and components from the [ra-enterprise](https://marmelab.com/ra-enterprise) package. This module is agnostic as to how you store the tree structure in the backend side.
+- [ra-customizable-datagrid](https://github.com/fizix-io/ra-customizable-datagrid): plugin that allows to hide / show columns dynamically.
 
 ## Displaying Fields Depending On The User Permissions
 

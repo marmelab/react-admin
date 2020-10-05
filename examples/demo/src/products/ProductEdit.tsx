@@ -5,16 +5,17 @@ import {
     DateField,
     Edit,
     EditButton,
+    EditProps,
     FormTab,
     NumberInput,
     Pagination,
     ReferenceInput,
     ReferenceManyField,
+    required,
     SelectInput,
     TabbedForm,
     TextField,
     TextInput,
-    required,
 } from 'react-admin';
 import { InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -24,7 +25,7 @@ import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from '../reviews/StarRatingField';
 import Poster from './Poster';
 import { styles as createStyles } from './ProductCreate';
-import { Product, EditComponentProps } from '../types';
+import { Product } from '../types';
 
 interface ProductTitleProps {
     record?: Product;
@@ -47,7 +48,7 @@ const useStyles = makeStyles({
     },
 });
 
-const ProductEdit: FC<EditComponentProps> = props => {
+const ProductEdit: FC<EditProps> = props => {
     const classes = useStyles();
     return (
         <Edit {...props} title={<ProductTitle />}>

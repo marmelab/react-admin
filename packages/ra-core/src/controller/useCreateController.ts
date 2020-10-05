@@ -23,7 +23,7 @@ import { CRUD_CREATE } from '../actions';
 import { Record } from '../types';
 
 export interface CreateProps {
-    basePath: string;
+    basePath?: string;
     hasCreate?: boolean;
     hasEdit?: boolean;
     hasList?: boolean;
@@ -31,7 +31,7 @@ export interface CreateProps {
     location?: Location;
     match?: Match;
     record?: Partial<Record>;
-    resource: string;
+    resource?: string;
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
     transform?: TransformData;
@@ -56,7 +56,7 @@ export interface CreateControllerProps {
     setOnFailure: SetOnFailure;
     setTransform: SetTransformData;
     resource: string;
-    basePath: string;
+    basePath?: string;
     record?: Partial<Record>;
     redirect: RedirectionSideEffect;
     version: number;

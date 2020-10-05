@@ -1,0 +1,50 @@
+{
+    "name": "ra-data-local-storage",
+    "version": "3.9.1",
+    "description": "Local storage data provider for react-admin",
+    "main": "lib/index.js",
+    "module": "esm/index.js",
+    "sideEffects": false,
+    "files": [
+        "LICENSE",
+        "*.md",
+        "lib",
+        "esm",
+        "src"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/marmelab/react-admin.git"
+    },
+    "keywords": [
+        "reactjs",
+        "react",
+        "react-admin",
+        "rest",
+        "fakerest",
+        "local"
+    ],
+    "author": "François Zaninotto",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/marmelab/react-admin/issues"
+    },
+    "homepage": "https://github.com/marmelab/react-admin#readme",
+    "scripts": {
+        "build": "yarn run build-cjs && yarn run build-esm",
+        "build-cjs": "rimraf ./lib && tsc",
+        "build-esm": "rimraf ./esm && tsc --outDir esm --module es2015",
+        "watch": "tsc --outDir esm --module es2015 --watch"
+    },
+    "dependencies": {
+        "lodash": "~4.17.5",
+        "ra-data-fakerest": "^3.9.1"
+    },
+    "devDependencies": {
+        "cross-env": "^5.2.0",
+        "rimraf": "^2.6.3"
+    },
+    "peerDependencies": {
+        "ra-core": "^3.9.0"
+    }
+}

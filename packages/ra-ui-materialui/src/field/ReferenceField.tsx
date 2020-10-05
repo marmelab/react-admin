@@ -15,7 +15,7 @@ import {
 import LinearProgress from '../layout/LinearProgress';
 import Link from '../Link';
 import sanitizeRestProps from './sanitizeRestProps';
-import { FieldProps, fieldPropTypes, InjectedFieldProps } from './types';
+import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
 import { ClassesOverride } from '../types';
 
 /**
@@ -129,7 +129,9 @@ ReferenceField.defaultProps = {
     link: 'edit',
 };
 
-export interface ReferenceFieldProps extends FieldProps, InjectedFieldProps {
+export interface ReferenceFieldProps
+    extends PublicFieldProps,
+        InjectedFieldProps {
     children: ReactElement;
     classes?: ClassesOverride<typeof useStyles>;
     reference: string;
@@ -238,7 +240,7 @@ ReferenceFieldView.propTypes = {
 };
 
 export interface ReferenceFieldViewProps
-    extends FieldProps,
+    extends PublicFieldProps,
         InjectedFieldProps,
         UseReferenceProps {
     classes?: ClassesOverride<typeof useStyles>;

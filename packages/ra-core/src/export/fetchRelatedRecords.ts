@@ -1,4 +1,4 @@
-import { DataProvider, Record, Identifier } from '../types';
+import { Record, Identifier, DataProviderProxy } from '../types';
 
 /**
  * Helper function for calling the dataProvider.getMany() method,
@@ -11,7 +11,7 @@ import { DataProvider, Record, Identifier } from '../types';
  *              post_title: posts[record.post_id].title,
  *          }));
  */
-const fetchRelatedRecords = (dataProvider: DataProvider) => (
+const fetchRelatedRecords = (dataProvider: DataProviderProxy) => (
     data,
     field,
     resource

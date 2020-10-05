@@ -1,13 +1,20 @@
 import * as React from 'react';
-import { Children, cloneElement, isValidElement } from 'react';
+import {
+    Children,
+    cloneElement,
+    isValidElement,
+    ReactElement,
+    ReactNode,
+} from 'react';
 import PropTypes from 'prop-types';
 import Divider from '@material-ui/core/Divider';
 import { Route } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { useRouteMatch } from 'react-router-dom';
-import { escapePath } from 'ra-core';
+import { escapePath, Record } from 'ra-core';
 
 import TabbedShowLayoutTabs, { getTabFullPath } from './TabbedShowLayoutTabs';
+import { ClassesOverride } from '../types';
 
 const sanitizeRestProps = ({
     children,
@@ -21,7 +28,7 @@ const sanitizeRestProps = ({
     translate,
     tabs,
     ...rest
-}) => rest;
+}: any) => rest;
 
 const useStyles = makeStyles(
     theme => ({
@@ -73,7 +80,7 @@ const useStyles = makeStyles(
  *     );
  *     export default App;
  */
-const TabbedShowLayout = props => {
+const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
     const {
         basePath,
         children,
@@ -120,6 +127,18 @@ const TabbedShowLayout = props => {
         </div>
     );
 };
+
+export interface TabbedShowLayoutProps {
+    basePath?: string;
+    className?: string;
+    classes?: ClassesOverride<typeof useStyles>;
+    children: ReactNode;
+    record?: Record;
+    resource?: string;
+    tabs: ReactElement;
+    value?: any;
+    version?: number;
+}
 
 TabbedShowLayout.propTypes = {
     children: PropTypes.node,

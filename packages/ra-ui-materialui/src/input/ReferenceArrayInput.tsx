@@ -1,15 +1,33 @@
 import * as React from 'react';
+import { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
+    InputProps,
     useReferenceArrayInputController,
     useInput,
     useTranslate,
+    SortPayload,
+    PaginationPayload,
+    Translate,
 } from 'ra-core';
 
 import sanitizeInputProps from './sanitizeRestProps';
 import LinearProgress from '../layout/LinearProgress';
-import Labeled from '../input/Labeled';
+import Labeled from './Labeled';
 import ReferenceError from './ReferenceError';
+import { FieldInputProps, FieldMetaState } from 'react-final-form';
+
+export interface ReferenceArrayInputProps extends InputProps {
+    allowEmpty?: boolean;
+    basePath?: string;
+    children: ReactElement;
+    classes?: any;
+    className?: string;
+    label?: string;
+    reference: string;
+    resource?: string;
+    [key: string]: any;
+}
 
 /**
  * An Input component for fields containing a list of references to another resource.
@@ -89,7 +107,7 @@ import ReferenceError from './ReferenceError';
  *     <SelectArrayInput optionText="name" />
  * </ReferenceArrayInput>
  */
-const ReferenceArrayInput = ({
+const ReferenceArrayInput: FC<ReferenceArrayInputProps> = ({
     children,
     id: idOverride,
     onBlur,
@@ -171,7 +189,34 @@ const sanitizeRestProps = ({
     perPage,
     referenceSource,
     ...rest
-}) => sanitizeInputProps(rest);
+}: any) => sanitizeInputProps(rest);
+
+export interface ReferenceArrayInputViewProps {
+    allowEmpty?: boolean;
+    basePath?: string;
+    children: ReactElement;
+    choices: any[];
+    classes?: object;
+    className?: string;
+    error?: string;
+    helperText?: string | boolean;
+    id: string;
+    input: FieldInputProps<any, HTMLElement>;
+    isRequired: boolean;
+    label?: string;
+    loading: boolean;
+    meta: FieldMetaState<any>;
+    onChange: any;
+    options?: any;
+    reference: string;
+    resource?: string;
+    setFilter: (v: string) => void;
+    setPagination: (pagination: PaginationPayload) => void;
+    setSort: (sort: SortPayload, order?: string) => void;
+    source: string;
+    translate: Translate;
+    warning?: string;
+}
 
 export const ReferenceArrayInputView = ({
     allowEmpty,
@@ -195,7 +240,7 @@ export const ReferenceArrayInputView = ({
     translate,
     warning,
     ...rest
-}) => {
+}: ReferenceArrayInputViewProps) => {
     const translatedLabel = translate(
         label || `resources.${resource}.fields.${source}`,
         { _: label }

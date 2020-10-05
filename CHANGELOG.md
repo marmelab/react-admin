@@ -1,5 +1,46 @@
 # Changelog
 
+## v3.9.1
+
+* Fix packages dependencies pointing to react-admin beta and causing duplicate packages ([5347](https://github.com/marmelab/react-admin/pull/5347)) ([WiXSL](https://github.com/WiXSL))
+
+## v3.9.0
+
+* Emit TypeScript types ([5291](https://github.com/marmelab/react-admin/pull/5291)) ([fzaninotto](https://github.com/fzaninotto))
+* Add user name and avatar on the top bar ([5180](https://github.com/marmelab/react-admin/pull/5180)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to use a custom count header in `ra-data-simple-rest` data provider instead of `Content-Range` ([5224](https://github.com/marmelab/react-admin/pull/5224)) ([alexisjanvier](https://github.com/alexisjanvier))
+* Add `localStorage` data provider ([5329](https://github.com/marmelab/react-admin/pull/5329)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to customize the option labels of `<NullableBooleanInput>` ([5311](https://github.com/marmelab/react-admin/pull/5311)) ([gavacho](https://github.com/gavacho))
+* Add `onSuccess` and `onFailure` props to `<DeleteButton>` ([5310](https://github.com/marmelab/react-admin/pull/5310)) ([gavacho](https://github.com/gavacho))
+* Add ability to pass custom icons to `<BooleanField>` to show as values ([5281](https://github.com/marmelab/react-admin/pull/5281)) ([WiXSL](https://github.com/WiXSL))
+* Add ability to disable notifications of `useCheckAuth` and `useLogoutIfAccessDenied` hooks ([5255](https://github.com/marmelab/react-admin/pull/5255)) ([WiXSL](https://github.com/WiXSL))
+* Fix warning about `<Error>` component proptypes when using string `error` ([5341](https://github.com/marmelab/react-admin/pull/5341)) ([fzaninotto](https://github.com/fzaninotto))
+* Convert `<Tab>` component to TypeScript ([5342](https://github.com/marmelab/react-admin/pull/5342)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Edit>` logs warning when using `transform` prop ([5332](https://github.com/marmelab/react-admin/pull/5332)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<NullableBooleanInput>` empty value isn't selectable ([5326](https://github.com/marmelab/react-admin/pull/5326)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Edit>` refreshes dirty forms if tab is backgrounded ([5319](https://github.com/marmelab/react-admin/pull/5319)) ([WiXSL](https://github.com/WiXSL))
+* Fix TypeScript types ([5318](https://github.com/marmelab/react-admin/pull/5318)) ([djhi](https://github.com/djhi))
+* Fix `sideEffect` saga can throw `undefined` as error ([5315](https://github.com/marmelab/react-admin/pull/5315)) ([Hemant-yadav](https://github.com/Hemant-yadav))
+* Fix TypeScrip types ([5313](https://github.com/marmelab/react-admin/pull/5313)) ([djhi](https://github.com/djhi))
+* Fix `<TabbedShowLayout>` resolves path incorrectly if first tab is null ([5312](https://github.com/marmelab/react-admin/pull/5312)) ([WiXSL](https://github.com/WiXSL))
+* Fix ra-data-graphql only considers resource implementing `GET_ONE` and `GET_LIST` ([5305](https://github.com/marmelab/react-admin/pull/5305)) ([Kilometers42](https://github.com/Kilometers42))
+* Fix warning when passing `FieldProps` to `<Input>` components ([5300](https://github.com/marmelab/react-admin/pull/5300)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix TypeScript types ([5298](https://github.com/marmelab/react-admin/pull/5298)) ([djhi](https://github.com/djhi))
+* Fix `<LoadingIndicator>` does not get class overrides ([5279](https://github.com/marmelab/react-admin/pull/5279)) ([WiXSL](https://github.com/WiXSL))
+* Fix `IsRowSelectable` return type ([5278](https://github.com/marmelab/react-admin/pull/5278)) ([WiXSL](https://github.com/WiXSL))
+* Fix `useGetIdentity` fails when there is no `authProvider` ([5209](https://github.com/marmelab/react-admin/pull/5209)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Datagrid>` doesn't support forwarding ref ([5202](https://github.com/marmelab/react-admin/pull/5202)) ([jeiea](https://github.com/jeiea))
+* [BC Break] Rename duplicate `Sort`, `Filter` and `Navigation` types to allow type emission from react-admin ([5257](https://github.com/marmelab/react-admin/pull/5257)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix missing link to `<DateTimeInput>` in reference documentation ([5340](https://github.com/marmelab/react-admin/pull/5340)) ([Hettomei](https://github.com/Hettomei))
+* [Doc] Fix a typo in the `ra-data-localstorage` readme ([5333](https://github.com/marmelab/react-admin/pull/5333)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix `<UserMenu>` example in theming docs ([5328](https://github.com/marmelab/react-admin/pull/5328)) ([ceracera](https://github.com/ceracera))
+* [Doc] Add link to a new REST data provider, variant of `ra-data-simple-rest`, allowing configurable `id` field ([5290](https://github.com/marmelab/react-admin/pull/5290)) ([zachrybaker](https://github.com/zachrybaker))
+* [Doc] Fix the instructions for customizing the `Toolbar` in `<SaveButton>` ([5285](https://github.com/marmelab/react-admin/pull/5285)) ([Luwangel](https://github.com/Luwangel))
+* [Doc] Add `ra-enterprise` packages to Ecosystem documentation ([5284](https://github.com/marmelab/react-admin/pull/5284)) ([djhi](https://github.com/djhi))
+* [Doc] Fix http docs links ([5277](https://github.com/marmelab/react-admin/pull/5277)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix changelog links ([5276](https://github.com/marmelab/react-admin/pull/5276)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix minor typo in Actions documentation ([5274](https://github.com/marmelab/react-admin/pull/5274)) ([lipusal](https://github.com/lipusal))
+
 ## v3.8.5
 
 * Fix ugly rounded corners in `<Datagrid>` Header ([5264](https://github.com/marmelab/react-admin/pull/5264)) ([djhi](https://github.com/djhi))

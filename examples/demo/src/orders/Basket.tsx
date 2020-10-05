@@ -1,16 +1,18 @@
 import * as React from 'react';
 import { FC } from 'react';
 import classnames from 'classnames';
-
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import { Link, useTranslate, useQueryWithStore } from 'react-admin';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    Paper,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { FieldProps, AppState, Order, Product } from '../types';
+import { Link, FieldProps, useTranslate, useQueryWithStore } from 'react-admin';
+
+import { AppState, Order, Product } from '../types';
 
 const useStyles = makeStyles({
     container: { minWidth: '35em', marginLeft: '1em' },
@@ -22,7 +24,7 @@ const Basket: FC<FieldProps<Order>> = ({ record }) => {
     const classes = useStyles();
     const translate = useTranslate();
 
-    const { loaded, data: products } = useQueryWithStore(
+    const { loaded, data: products } = useQueryWithStore<AppState>(
         {
             type: 'getMany',
             resource: 'products',
@@ -31,7 +33,7 @@ const Basket: FC<FieldProps<Order>> = ({ record }) => {
             },
         },
         {},
-        (state: AppState) => {
+        state => {
             const productIds = record
                 ? record.basket.map(item => item.product_id)
                 : [];

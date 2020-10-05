@@ -140,7 +140,7 @@ interface Props {
     onFailure?: OnFailure;
 }
 
-type DeleteWithConfirmButtonProps = Props & ButtonProps;
+export type DeleteWithConfirmButtonProps = Props & ButtonProps;
 
 DeleteWithConfirmButton.propTypes = {
     basePath: PropTypes.string,

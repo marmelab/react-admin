@@ -2,8 +2,9 @@ import * as React from 'react';
 import { FC, memo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
+import { FieldProps } from 'react-admin';
 import AvatarField from './AvatarField';
-import { FieldProps, Customer } from '../types';
+import { Customer } from '../types';
 
 const useStyles = makeStyles(theme => ({
     root: {

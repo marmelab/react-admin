@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { Children, Fragment, isValidElement, ReactElement, FC } from 'react';
+import {
+    Children,
+    Fragment,
+    isValidElement,
+    ReactElement,
+    FC,
+    ReactNode,
+} from 'react';
 import PropTypes from 'prop-types';
 import MuiToolbar from '@material-ui/core/Toolbar';
 import withWidth from '@material-ui/core/withWidth';
@@ -7,6 +14,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
 import { SaveButton, DeleteButton } from '../button';
+import { Record, RedirectionSideEffect } from 'ra-core';
+import { FormRenderProps } from 'react-final-form';
+import { ClassesOverride } from '../types';
 
 const useStyles = makeStyles(
     theme => ({
@@ -84,7 +94,7 @@ const valueOrDefault = (value, defaultValue) =>
  * @prop {string} width Apply the mobile or the desktop classes depending on the width. Pass "xs" to display the mobile version.
  *
  */
-const Toolbar: FC<any> = props => {
+const Toolbar: FC<ToolbarProps> = props => {
     const {
         alwaysEnableSaveButton,
         basePath,
@@ -182,6 +192,25 @@ const Toolbar: FC<any> = props => {
     );
 };
 
+export interface ToolbarProps<RecordType extends Record = Record> {
+    children?: ReactNode;
+    alwaysEnableSaveButton?: boolean;
+    className?: string;
+    classes?: ClassesOverride<typeof useStyles>;
+    handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
+    handleSubmit?: FormRenderProps['handleSubmit'];
+    invalid?: boolean;
+    pristine?: boolean;
+    saving?: boolean;
+    submitOnEnter?: boolean;
+    redirect?: RedirectionSideEffect;
+    basePath?: string;
+    record?: RecordType;
+    resource?: string;
+    undoable?: boolean;
+    width?: string;
+}
+
 Toolbar.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.node,
@@ -191,14 +220,14 @@ Toolbar.propTypes = {
     handleSubmitWithRedirect: PropTypes.func,
     invalid: PropTypes.bool,
     pristine: PropTypes.bool,
-    record: PropTypes.object,
+    record: PropTypes.any,
     redirect: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.bool,
         PropTypes.func,
     ]),
     resource: PropTypes.string,
-    saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+    saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
     undoable: PropTypes.bool,
     width: PropTypes.string,

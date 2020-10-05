@@ -73,7 +73,7 @@ ListActions.defaultProps = {
     onUnselectItems: () => null,
 };
 
-interface ListActionsProps extends ToolbarProps {
+export interface ListActionsProps extends ToolbarProps {
     currentSort?: SortPayload;
     className?: string;
     resource?: string;

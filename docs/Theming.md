@@ -435,7 +435,7 @@ const MyUserMenu = props => (
 
 const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
 
-const MyLayout = props => <Layout {...props} appBar={<MyAppBar />} />;
+const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
 ```
 
 You can also customize the default icon by setting the `icon` prop to the `<UserMenu />` component.

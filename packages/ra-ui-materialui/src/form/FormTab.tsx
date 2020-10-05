@@ -20,6 +20,7 @@ const FormTab: FC<FormTabProps> = ({
     intent,
     label,
     margin,
+    path,
     record,
     resource,
     variant,
@@ -91,6 +92,7 @@ export interface FormTabProps {
     intent?: 'header' | 'content';
     label: string;
     margin?: 'none' | 'normal' | 'dense';
+    path?: string;
     record?: Record;
     resource?: string;
     value?: string;

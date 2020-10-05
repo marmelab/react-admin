@@ -2,12 +2,16 @@ import BulkDeleteButton from './BulkDeleteButton';
 import BulkDeleteWithConfirmButton from './BulkDeleteWithConfirmButton';
 import BulkDeleteWithUndoButton from './BulkDeleteWithUndoButton';
 import BulkExportButton from './BulkExportButton';
-import Button from './Button';
+import Button, { ButtonProps } from './Button';
 import CloneButton from './CloneButton';
 import CreateButton from './CreateButton';
-import DeleteButton from './DeleteButton';
-import DeleteWithConfirmButton from './DeleteWithConfirmButton';
-import DeleteWithUndoButton from './DeleteWithUndoButton';
+import DeleteButton, { DeleteButtonProps } from './DeleteButton';
+import DeleteWithConfirmButton, {
+    DeleteWithConfirmButtonProps,
+} from './DeleteWithConfirmButton';
+import DeleteWithUndoButton, {
+    DeleteWithUndoButtonProps,
+} from './DeleteWithUndoButton';
 import EditButton from './EditButton';
 import ExportButton from './ExportButton';
 import ListButton from './ListButton';
@@ -16,6 +20,13 @@ import ShowButton from './ShowButton';
 import SortButton from './SortButton';
 import RefreshButton from './RefreshButton';
 import RefreshIconButton from './RefreshIconButton';
+
+export type {
+    ButtonProps,
+    DeleteButtonProps,
+    DeleteWithConfirmButtonProps,
+    DeleteWithUndoButtonProps,
+};
 
 export {
     BulkDeleteButton,

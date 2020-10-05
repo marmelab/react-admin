@@ -4,7 +4,7 @@ import get from 'lodash/get';
 import Typography from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
-import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import { Link } from '@material-ui/core';
 
 // useful to prevent click bubbling in a datagrid with rowClick
@@ -47,7 +47,7 @@ EmailField.defaultProps = {
 EmailField.propTypes = fieldPropTypes;
 
 export interface EmailFieldProps
-    extends FieldProps,
+    extends PublicFieldProps,
         InjectedFieldProps,
         HtmlHTMLAttributes<HTMLAnchorElement> {}
 

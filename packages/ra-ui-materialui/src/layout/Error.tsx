@@ -67,7 +67,7 @@ const Error = (props: ErrorProps): JSX.Element => {
     const translate = useTranslate();
     return (
         <Fragment>
-            <Title defaultTitle={title} />
+            {title && <Title defaultTitle={title} />}
             <div className={classnames(classes.container, className)} {...rest}>
                 <h1 className={classes.title} role="alert">
                     <ErrorIcon className={classes.icon} />
@@ -82,7 +82,7 @@ const Error = (props: ErrorProps): JSX.Element => {
                         <ExpansionPanelDetails className={classes.panelDetails}>
                             <div>
                                 <h2>{translate(error.toString())}</h2>
-                                {errorInfo.componentStack}
+                                {errorInfo && errorInfo.componentStack}
                             </div>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
@@ -104,7 +104,7 @@ const Error = (props: ErrorProps): JSX.Element => {
 Error.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
-    error: PropTypes.object.isRequired,
+    error: PropTypes.oneOfType([PropTypes.object, PropTypes.string]).isRequired,
     errorInfo: PropTypes.object,
     title: TitlePropType,
 };

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Admin, Resource } from 'react-admin';
+import { Admin, Resource, DataProvider } from 'react-admin';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import './App.css';
@@ -32,7 +32,7 @@ const i18nProvider = polyglotI18nProvider(locale => {
 }, 'en');
 
 const App = () => {
-    const [dataProvider, setDataProvider] = useState(null);
+    const [dataProvider, setDataProvider] = useState<DataProvider>();
 
     useEffect(() => {
         let restoreFetch;

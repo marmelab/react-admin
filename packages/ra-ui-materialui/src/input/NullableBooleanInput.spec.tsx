@@ -138,4 +138,70 @@ describe('<NullableBooleanInput />', () => {
             'true'
         );
     });
+
+    it('should allow to customize the label of the null option', () => {
+        const { getByRole, getByText, container } = render(
+            <Form
+                onSubmit={jest.fn}
+                initialValues={{
+                    isPublished: null,
+                }}
+                render={() => (
+                    <NullableBooleanInput
+                        source="isPublished"
+                        resource="posts"
+                        nullLabel="example null label"
+                    />
+                )}
+            />
+        );
+        expect(container.querySelector('input').getAttribute('value')).toBe('');
+        const select = getByRole('button');
+        fireEvent.mouseDown(select);
+        expect(getByText('example null label')).not.toBeNull();
+    });
+
+    it('should allow to customize the label of the false option', () => {
+        const { getByRole, getByText, container } = render(
+            <Form
+                onSubmit={jest.fn}
+                initialValues={{
+                    isPublished: null,
+                }}
+                render={() => (
+                    <NullableBooleanInput
+                        source="isPublished"
+                        resource="posts"
+                        falseLabel="example false label"
+                    />
+                )}
+            />
+        );
+        expect(container.querySelector('input').getAttribute('value')).toBe('');
+        const select = getByRole('button');
+        fireEvent.mouseDown(select);
+        expect(getByText('example false label')).not.toBeNull();
+    });
+
+    it('should allow to customize the label of the true option', () => {
+        const { getByRole, getByText, container } = render(
+            <Form
+                onSubmit={jest.fn}
+                initialValues={{
+                    isPublished: null,
+                }}
+                render={() => (
+                    <NullableBooleanInput
+                        source="isPublished"
+                        resource="posts"
+                        trueLabel="example true label"
+                    />
+                )}
+            />
+        );
+        expect(container.querySelector('input').getAttribute('value')).toBe('');
+        const select = getByRole('button');
+        fireEvent.mouseDown(select);
+        expect(getByText('example true label')).not.toBeNull();
+    });
 });

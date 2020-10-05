@@ -179,7 +179,7 @@ const AutocompleteArrayInput: FunctionComponent<
         ...rest,
     });
 
-    const values = input.value || [];
+    const values = input.value || emptyArray;
 
     const [filterValue, setFilterValue] = React.useState('');
 
@@ -491,6 +491,8 @@ const AutocompleteArrayInput: FunctionComponent<
         </Downshift>
     );
 };
+
+const emptyArray = [];
 
 const useStyles = makeStyles(
     theme => {

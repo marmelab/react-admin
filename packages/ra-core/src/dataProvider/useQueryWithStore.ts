@@ -108,11 +108,11 @@ const defaultTotalSelector = query => (state: ReduxState) => {
  *     return <div>User {data.username}</div>;
  * };
  */
-const useQueryWithStore = (
+const useQueryWithStore = <State extends ReduxState = ReduxState>(
     query: Query,
     options: QueryOptions = { action: 'CUSTOM_QUERY' },
-    dataSelector: (state: ReduxState) => any = defaultDataSelector(query),
-    totalSelector: (state: ReduxState) => number = defaultTotalSelector(query)
+    dataSelector: (state: State) => any = defaultDataSelector(query),
+    totalSelector: (state: State) => number = defaultTotalSelector(query)
 ): {
     data?: any;
     total?: number;

@@ -212,10 +212,12 @@ import { BooleanField } from 'react-admin';
 
 ### Properties
 
-| Prop              | Required | Type   | Default | Description                     |
-| ----------------- | -------- | ------ | ------- | ------------------------------- |
-| `valueLabelTrue`  | Optional | string | 'true'  | Aria label for the truthy value |
-| `valueLabelFalse` | Optional | string | 'false' | Aria label for the falsy value  |
+| Prop              | Required | Type             | Default                    | Description                       |
+| ----------------- | -------- | ---------------- | -------------------------- | --------------------------------- |
+| `valueLabelTrue`  | Optional | string           | 'true'                     | Aria label for the truthy value   |
+| `valueLabelFalse` | Optional | string           | 'false'                    | Aria label for the falsy value    |
+| `TrueIcon`        | Optional | SvgIconComponent | `@material-ui/icons/Done`  | Icon to show for the truthy value |
+| `FalseIcon`       | Optional | SvgIconComponent | `@material-ui/icons/Clear` | Icon to show for the falsy value  |
 
 `<BooleanField>` also accepts the [common field props](./Fields.md#common-field-props).
 
@@ -232,6 +234,15 @@ If you need to override it, you can use the `valueLabelTrue` and `valueLabelFals
 // Translation keys
 <BooleanField source="published" valueLabelTrue="myapp.published.true" valueLabelFalse="myapp.published.false" />
 ```
+
+You can customize the icons to show by setting the `TrueIcon` and `FalseIcon` props which accept a SvgIcon type.
+
+```jsx
+import AlarmOnIcon from '@material-ui/icons/AlarmOn';
+import AlarmOffIcon from '@material-ui/icons/AlarmOff';
+
+<BooleanField source="alarm" TrueIcon={AlarmOnIcon} FalseIcon={AlarmOffIcon} />
+``` 
 
 ## `<ChipField>`
 
@@ -1064,8 +1075,9 @@ PriceField.defaultProps = {
 
 You can find components for react-admin in third-party repositories.
 
+- [MarkdownField](https://marmelab.com/ra-enterprise/modules/ra-markdown#markdownfield) from [@react-admin/ra-markdown](https://marmelab.com/ra-enterprise/modules/ra-markdown) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) component which can display markdown content.
+- [ReferenceManyToManyField](https://marmelab.com/ra-enterprise/modules/ra-relationships#referencemanytomanyfield) from [@react-admin/ra-relationships](https://marmelab.com/ra-enterprise/modules/ra-relationships) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) component which fetches a list of referenced records by lookup in an associative table, and passes the records down to its child component, which must be an iterator component.
 - [OoDeLally/react-admin-clipboard-list-field](https://github.com/OoDeLally/react-admin-clipboard-list-field): a quick and customizable copy-to-clipboard field.
-
 
 ## Writing Your Own Field Component
 

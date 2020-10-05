@@ -216,7 +216,7 @@ interface ReferenceArrayInputProps {
 }
 
 interface Option {
-    basePath: string;
+    basePath?: string;
     filter?: any;
     filterToQuery?: (filter: any) => any;
     input: FieldInputProps<any, HTMLElement>;
@@ -224,7 +224,7 @@ interface Option {
     perPage?: number;
     record?: Record;
     reference: string;
-    resource: string;
+    resource?: string;
     sort?: SortPayload;
     source: string;
 }

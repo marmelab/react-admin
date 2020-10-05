@@ -13,6 +13,7 @@ const useStyles = makeStyles(
         loader: {
             margin: 14,
         },
+        loadedIcon: {},
     },
     { name: 'RaLoadingIndicator' }
 );
@@ -31,7 +32,7 @@ const LoadingIndicator = props => {
             {...rest}
         />
     ) : (
-        <RefreshIconButton />
+        <RefreshIconButton className={classes.loadedIcon} />
     );
 };
 

@@ -1,6 +1,8 @@
 import * as React from 'react';
+import { FC } from 'react';
 import {
     Create,
+    CreateProps,
     DateInput,
     SimpleForm,
     TextInput,
@@ -9,6 +11,7 @@ import {
     required,
     email,
 } from 'react-admin';
+import { AnyObject } from 'react-final-form';
 import { Typography, Box } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Styles } from '@material-ui/styles/withStyles';
@@ -35,10 +38,7 @@ const useStyles = makeStyles(styles);
 export const validatePasswords = ({
     password,
     confirm_password,
-}: {
-    password: string;
-    confirm_password: string;
-}) => {
+}: AnyObject) => {
     const errors = {} as any;
 
     if (password && confirm_password && password !== confirm_password) {
@@ -50,7 +50,7 @@ export const validatePasswords = ({
     return errors;
 };
 
-const VisitorCreate = (props: any) => {
+const VisitorCreate: FC<CreateProps> = props => {
     const classes = useStyles();
 
     return (

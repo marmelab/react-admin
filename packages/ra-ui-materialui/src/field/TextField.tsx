@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { FC, memo } from 'react';
+import { FC, memo, ElementType } from 'react';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
-import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 const TextField: FC<TextFieldProps> = memo<TextFieldProps>(
     ({ className, source, record = {}, emptyText, ...rest }) => {
@@ -39,8 +39,11 @@ TextField.propTypes = {
 };
 
 export interface TextFieldProps
-    extends FieldProps,
+    extends PublicFieldProps,
         InjectedFieldProps,
-        TypographyProps {}
+        TypographyProps {
+    // TypographyProps do not expose the component props, see https://github.com/mui-org/material-ui/issues/19512
+    component?: ElementType<any>;
+}
 
 export default TextField;

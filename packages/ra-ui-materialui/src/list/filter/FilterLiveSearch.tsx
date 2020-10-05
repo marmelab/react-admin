@@ -22,7 +22,7 @@ import TextInput from '../../input/TextInput';
  *     </Card>
  * );
  */
-const FilterLiveSearch: FC<{ source: string }> = props => {
+const FilterLiveSearch: FC<{ source?: string }> = props => {
     const { source = 'q', ...rest } = props;
     const { filterValues, setFilters } = useListFilterContext();
     const translate = useTranslate();

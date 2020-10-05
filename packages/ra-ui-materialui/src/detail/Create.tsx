@@ -2,86 +2,85 @@ import * as React from 'react';
 import { Children, cloneElement, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import {
-    useEditController,
-    ComponentPropType,
+    useCheckMinimumRequiredProps,
+    useCreateController,
     SideEffectContext,
+    CreateControllerProps,
 } from 'ra-core';
 
-import DefaultActions from './EditActions';
 import TitleForRecord from '../layout/TitleForRecord';
+import { CreateProps } from '../types';
 
 /**
- * Page component for the Edit view
+ * Page component for the Create view
  *
- * The `<Edit>` component renders the page title and actions,
- * fetches the record from the data provider.
+ * The `<Create>` component renders the page title and actions.
  * It is not responsible for rendering the actual form -
  * that's the job of its child component (usually `<SimpleForm>`),
  * to which it passes pass the `record` as prop.
  *
- * The <Edit> component accepts the following props:
+ * The <Create> component accepts the following props:
  *
  * - actions
  * - aside
  * - component
  * - successMessage
  * - title
- * - undoable
  *
  * @example
  *
  * // in src/posts.js
  * import * as React from "react";
- * import { Edit, SimpleForm, TextInput } from 'react-admin';
+ * import { Create, SimpleForm, TextInput } from 'react-admin';
  *
- * export const PostEdit = (props) => (
- *     <Edit {...props}>
+ * export const PostCreate = (props) => (
+ *     <Create {...props}>
  *         <SimpleForm>
  *             <TextInput source="title" />
  *         </SimpleForm>
- *     </Edit>
+ *     </Create>
  * );
  *
  * // in src/App.js
  * import * as React from "react";
  * import { Admin, Resource } from 'react-admin';
  *
- * import { PostEdit } from './posts';
+ * import { PostCreate } from './posts';
  *
  * const App = () => (
  *     <Admin dataProvider={...}>
- *         <Resource name="posts" edit={PostEdit} />
+ *         <Resource name="posts" create={PostCreate} />
  *     </Admin>
  * );
  * export default App;
  */
-const Edit = props => <EditView {...props} {...useEditController(props)} />;
+const Create = (props: CreateProps) => (
+    <CreateView {...props} {...useCreateController(props)} />
+);
 
-Edit.propTypes = {
+Create.propTypes = {
     actions: PropTypes.element,
     aside: PropTypes.element,
-    children: PropTypes.node,
+    children: PropTypes.element,
     classes: PropTypes.object,
     className: PropTypes.string,
     hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,
     hasShow: PropTypes.bool,
-    hasList: PropTypes.bool,
-    id: PropTypes.any.isRequired,
     resource: PropTypes.string.isRequired,
     title: PropTypes.node,
+    record: PropTypes.object,
+    hasList: PropTypes.bool,
     successMessage: PropTypes.string,
     onSuccess: PropTypes.func,
     onFailure: PropTypes.func,
     transform: PropTypes.func,
-    undoable: PropTypes.bool,
 };
 
-export const EditView = props => {
+export const CreateView = (props: CreateViewProps) => {
     const {
         actions,
         aside,
@@ -93,7 +92,7 @@ export const EditView = props => {
         defaultTitle,
         hasList,
         hasShow,
-        record,
+        record = {},
         redirect,
         resource,
         save,
@@ -102,28 +101,19 @@ export const EditView = props => {
         setTransform,
         saving,
         title,
-        undoable,
         version,
         ...rest
     } = props;
+    useCheckMinimumRequiredProps('Create', ['children'], props);
     const classes = useStyles(props);
-    const finalActions =
-        typeof actions === 'undefined' && hasShow ? (
-            <DefaultActions />
-        ) : (
-            actions
-        );
     const sideEffectContextValue = useMemo(
         () => ({ setOnSuccess, setOnFailure, setTransform }),
         [setOnFailure, setOnSuccess, setTransform]
     );
-    if (!children) {
-        return null;
-    }
     return (
         <SideEffectContext.Provider value={sideEffectContextValue}>
             <div
-                className={classnames('edit-page', classes.root, className)}
+                className={classnames('create-page', classes.root, className)}
                 {...sanitizeRestProps(rest)}
             >
                 <TitleForRecord
@@ -131,49 +121,41 @@ export const EditView = props => {
                     record={record}
                     defaultTitle={defaultTitle}
                 />
-                {finalActions &&
-                    cloneElement(finalActions, {
+                {actions &&
+                    cloneElement(actions, {
                         basePath,
-                        data: record,
-                        hasShow,
-                        hasList,
                         resource,
+                        hasList,
                         //  Ensure we don't override any user provided props
-                        ...finalActions.props,
+                        ...actions.props,
                     })}
                 <div
                     className={classnames(classes.main, {
-                        [classes.noActions]: !finalActions,
+                        [classes.noActions]: !actions,
                     })}
                 >
                     <Content className={classes.card}>
-                        {record ? (
-                            cloneElement(Children.only(children), {
-                                basePath,
-                                record,
-                                redirect:
-                                    typeof children.props.redirect ===
-                                    'undefined'
-                                        ? redirect
-                                        : children.props.redirect,
-                                resource,
-                                save,
-                                saving,
-                                undoable,
-                                version,
-                            })
-                        ) : (
-                            <CardContent>&nbsp;</CardContent>
-                        )}
+                        {cloneElement(Children.only(children), {
+                            basePath,
+                            record,
+                            redirect:
+                                typeof children.props.redirect === 'undefined'
+                                    ? redirect
+                                    : children.props.redirect,
+                            resource,
+                            save,
+                            saving,
+                            version,
+                        })}
                     </Content>
                     {aside &&
-                        React.cloneElement(aside, {
+                        cloneElement(aside, {
                             basePath,
                             record,
                             resource,
-                            version,
                             save,
                             saving,
+                            version,
                         })}
                 </div>
             </div>
@@ -181,14 +163,17 @@ export const EditView = props => {
     );
 };
 
-EditView.propTypes = {
+interface CreateViewProps
+    extends CreateProps,
+        Omit<CreateControllerProps, 'resource'> {}
+
+CreateView.propTypes = {
     actions: PropTypes.element,
     aside: PropTypes.element,
     basePath: PropTypes.string,
     children: PropTypes.element,
     classes: PropTypes.object,
     className: PropTypes.string,
-    component: ComponentPropType,
     defaultTitle: PropTypes.any,
     hasList: PropTypes.bool,
     hasShow: PropTypes.bool,
@@ -197,7 +182,6 @@ EditView.propTypes = {
     resource: PropTypes.string,
     save: PropTypes.func,
     title: PropTypes.node,
-    version: PropTypes.number,
     onSuccess: PropTypes.func,
     onFailure: PropTypes.func,
     setOnSuccess: PropTypes.func,
@@ -205,56 +189,43 @@ EditView.propTypes = {
     setTransform: PropTypes.func,
 };
 
-EditView.defaultProps = {
+CreateView.defaultProps = {
     classes: {},
     component: Card,
 };
 
 const useStyles = makeStyles(
-    {
+    theme => ({
         root: {},
         main: {
             display: 'flex',
         },
         noActions: {
-            marginTop: '1em',
+            [theme.breakpoints.up('sm')]: {
+                marginTop: '1em',
+            },
         },
         card: {
             flex: '1 1 auto',
         },
-    },
-    { name: 'RaEdit' }
+    }),
+    { name: 'RaCreate' }
 );
 
 const sanitizeRestProps = ({
-    data,
-    hasCreate,
-    hasEdit,
-    hasList,
-    hasShow,
-    id,
-    loading,
-    loaded,
-    saving,
-    resource,
-    title,
-    version,
-    match,
-    location,
-    history,
-    options,
-    locale,
-    permissions,
-    undoable,
-    successMessage,
-    onSuccess,
-    setOnSuccess,
-    onFailure,
-    setOnFailure,
-    transform,
-    setTransform,
-    translate,
+    hasCreate = null,
+    hasEdit = null,
+    history = null,
+    loaded = null,
+    loading = null,
+    location = null,
+    match = null,
+    onFailure = null,
+    onSuccess = null,
+    options = null,
+    permissions = null,
+    transform = null,
     ...rest
 }) => rest;
 
-export default Edit;
+export default Create;

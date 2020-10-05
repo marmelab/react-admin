@@ -155,14 +155,14 @@ ReferenceInput.defaultProps = {
 };
 
 export interface ReferenceInputProps extends InputProps {
-    allowEmpty: boolean;
-    basePath: string;
+    allowEmpty?: boolean;
+    basePath?: string;
     children: ReactElement;
-    classes: any;
-    className: string;
-    label: string;
+    classes?: any;
+    className?: string;
+    label?: string;
     reference: string;
-    resource: string;
+    resource?: string;
     [key: string]: any;
 }
 
@@ -187,7 +187,7 @@ const sanitizeRestProps = ({
 
 export interface ReferenceInputViewProps {
     allowEmpty?: boolean;
-    basePath: string;
+    basePath?: string;
     children: ReactElement;
     choices: any[];
     classes?: object;
@@ -197,11 +197,11 @@ export interface ReferenceInputViewProps {
     id: string;
     input: FieldInputProps<any, HTMLElement>;
     isRequired: boolean;
-    label: string;
+    label?: string;
     loading: boolean;
     meta: FieldMetaState<any>;
     reference: string;
-    resource: string;
+    resource?: string;
     setFilter: (v: string) => void;
     setPagination: (pagination: PaginationPayload) => void;
     setSort: (sort: SortPayload, order?: string) => void;

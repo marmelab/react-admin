@@ -9,11 +9,11 @@ import {
     TabbedForm,
     TextInput,
     required,
+    CreateProps,
 } from 'react-admin';
 import { InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import RichTextInput from 'ra-input-rich-text';
-import { CreateComponentProps } from '../types';
 
 export const styles = {
     price: { width: '7em' },
@@ -26,7 +26,7 @@ export const styles = {
 
 const useStyles = makeStyles(styles);
 
-const ProductCreate: FC<CreateComponentProps> = props => {
+const ProductCreate: FC<CreateProps> = props => {
     const classes = useStyles();
     return (
         <Create {...props}>

@@ -51,7 +51,7 @@ const defaultData = {};
  *     )}</ul>;
  * };
  */
-const useGetList = <RecordType = Record>(
+const useGetList = <RecordType extends Record = Record>(
     resource: string,
     pagination: PaginationPayload,
     sort: SortPayload,

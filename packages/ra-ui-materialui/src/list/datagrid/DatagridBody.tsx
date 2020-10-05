@@ -9,7 +9,7 @@ import { Identifier, Record, RecordMap } from 'ra-core';
 import DatagridRow, { PureDatagridRow } from './DatagridRow';
 import useDatagridStyles from './useDatagridStyles';
 
-const DatagridBody: FC<DatagridBodyRow> = React.forwardRef(
+const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
     (
         {
             basePath,
@@ -104,7 +104,7 @@ type RowClickFunction = (
     record: Record
 ) => string;
 
-export interface DatagridBodyRow extends Omit<TableBodyProps, 'classes'> {
+export interface DatagridBodyProps extends Omit<TableBodyProps, 'classes'> {
     basePath?: string;
     classes?: ReturnType<typeof useDatagridStyles>;
     className?: string;

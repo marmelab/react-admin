@@ -4,7 +4,7 @@ import { Record } from 'ra-core';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
-import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 /**
  * Field using a render function
@@ -40,11 +40,11 @@ FunctionField.propTypes = {
     ...fieldPropTypes,
 };
 
-export interface FunctionFieldProps
-    extends FieldProps,
-        InjectedFieldProps,
+export interface FunctionFieldProps<RecordType extends Record = Record>
+    extends PublicFieldProps,
+        InjectedFieldProps<RecordType>,
         TypographyProps {
-    render: (record?: Record, source?: string) => any;
+    render: (record?: RecordType, source?: string) => any;
 }
 
 export default FunctionField;

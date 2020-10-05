@@ -6,7 +6,7 @@ import { useTranslate, Record, warning } from 'ra-core';
 
 export interface TitleProps {
     className?: string;
-    defaultTitle: string;
+    defaultTitle?: string;
     record?: Record;
     title?: string | ReactElement;
 }

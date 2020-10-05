@@ -1,21 +1,12 @@
 import * as React from 'react';
-import { isValidElement } from 'react';
+import { isValidElement, ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import MuiTab from '@material-ui/core/Tab';
-import { useTranslate } from 'ra-core';
+import MuiTab, { TabProps as MuiTabProps } from '@material-ui/core/Tab';
+import { useTranslate, Record } from 'ra-core';
 import classnames from 'classnames';
 
 import Labeled from '../input/Labeled';
-
-const sanitizeRestProps = ({
-    contentClassName,
-    label,
-    icon,
-    value,
-    translate,
-    ...rest
-}) => rest;
 
 /**
  * Tab element for the SimpleShowLayout.
@@ -71,7 +62,7 @@ const Tab = ({
     resource,
     value,
     ...rest
-}) => {
+}: TabProps) => {
     const translate = useTranslate();
 
     const renderHeader = () => (
@@ -81,16 +72,15 @@ const Tab = ({
             value={value}
             icon={icon}
             className={classnames('show-tab', className)}
-            component={Link}
-            to={value}
-            {...sanitizeRestProps(rest)}
+            {...({ component: Link, to: value } as any)} // to avoid TypeScript screams, see https://github.com/mui-org/material-ui/issues/9106#issuecomment-451270521
+            {...rest}
         />
     );
 
     const renderContent = () => (
         <span className={contentClassName}>
             {React.Children.map(children, field =>
-                field && isValidElement(field) ? (
+                field && isValidElement<any>(field) ? (
                     <div
                         key={field.props.source}
                         className={classnames(
@@ -136,5 +126,18 @@ Tab.propTypes = {
     label: PropTypes.string.isRequired,
     value: PropTypes.string,
 };
+
+export interface TabProps extends MuiTabProps {
+    basePath?: string;
+    children: ReactNode;
+    contentClassName?: string;
+    context?: 'header' | 'content';
+    className?: string;
+    icon?: ReactElement;
+    label: string;
+    record?: Record;
+    resource?: string;
+    value?: string;
+}
 
 export default Tab;

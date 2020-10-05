@@ -1,18 +1,27 @@
-import BulkActionsToolbar from './BulkActionsToolbar';
+import BulkActionsToolbar, {
+    BulkActionsToolbarProps,
+} from './BulkActionsToolbar';
 import BulkDeleteAction from './BulkDeleteAction';
 import List from './List';
-import ListActions from './ListActions';
+import ListActions, { ListActionsProps } from './ListActions';
 import ListGuesser from './ListGuesser';
-import ListToolbar from './ListToolbar';
+import ListToolbar, { ListToolbarProps } from './ListToolbar';
 import ListView from './ListView';
 import Placeholder from './Placeholder';
-import SimpleList from './SimpleList';
+import SimpleList, { SimpleListProps } from './SimpleList';
 import SimpleListLoading from './SimpleListLoading';
 import SingleFieldList from './SingleFieldList';
 
 export * from './filter';
 export * from './datagrid';
 export * from './pagination';
+
+export type {
+    BulkActionsToolbarProps,
+    ListActionsProps,
+    ListToolbarProps,
+    SimpleListProps,
+};
 
 export {
     BulkActionsToolbar,

@@ -4,10 +4,11 @@ import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { useShowController } from 'ra-core';
+import { ShowControllerProps, useShowController } from 'ra-core';
 
 import DefaultActions from './ShowActions';
 import TitleForRecord from '../layout/TitleForRecord';
+import { ShowProps } from '../types';
 
 /**
  * Page component for the Show view
@@ -52,7 +53,9 @@ import TitleForRecord from '../layout/TitleForRecord';
  * );
  * export default App;
  */
-const Show = props => <ShowView {...props} {...useShowController(props)} />;
+const Show = (props: ShowProps) => (
+    <ShowView {...props} {...useShowController(props)} />
+);
 
 Show.propTypes = {
     actions: PropTypes.element,
@@ -69,7 +72,11 @@ Show.propTypes = {
     title: PropTypes.node,
 };
 
-export const ShowView = props => {
+interface ShowViewProps
+    extends ShowProps,
+        Omit<ShowControllerProps, 'resource'> {}
+
+export const ShowView = (props: ShowViewProps) => {
     const {
         actions,
         aside,
@@ -184,28 +191,16 @@ const useStyles = makeStyles(
 );
 
 const sanitizeRestProps = ({
-    actions,
-    aside,
-    title,
-    children,
-    className,
-    id,
-    data,
-    loading,
-    loaded,
-    resource,
-    hasCreate,
-    hasEdit,
-    hasList,
-    hasShow,
-    version,
-    match,
-    location,
-    history,
-    options,
-    locale,
-    permissions,
-    translate,
+    hasCreate = null,
+    hasEdit = null,
+    history = null,
+    id = null,
+    loaded = null,
+    loading = null,
+    location = null,
+    match = null,
+    options = null,
+    permissions = null,
     ...rest
 }) => rest;
 
