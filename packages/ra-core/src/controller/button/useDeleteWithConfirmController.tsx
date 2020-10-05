@@ -13,6 +13,7 @@ import {
     RedirectionSideEffect,
 } from '../../sideEffect';
 import { Record } from '../../types';
+import { OnFailure, OnSuccess } from '../saveModifiers';
 
 /**
  * Prepare a set of callbacks for a delete button guarded by confirmation dialog
@@ -72,6 +73,8 @@ const useDeleteWithConfirmController = ({
     redirect: redirectTo,
     basePath,
     onClick,
+    onSuccess,
+    onFailure,
 }: UseDeleteWithConfirmControllerParams): UseDeleteWithConfirmControllerReturn => {
     const [open, setOpen] = useState(false);
     const notify = useNotify();
@@ -79,20 +82,28 @@ const useDeleteWithConfirmController = ({
     const refresh = useRefresh();
     const [deleteOne, { loading }] = useDelete(resource, null, null, {
         action: CRUD_DELETE,
-        onSuccess: () => {
+        onSuccess: response => {
             setOpen(false);
-            notify('ra.notification.deleted', 'info', { smart_count: 1 });
-            redirect(redirectTo, basePath);
-            refresh();
+            if (onSuccess === undefined) {
+                notify('ra.notification.deleted', 'info', { smart_count: 1 });
+                redirect(redirectTo, basePath);
+                refresh();
+            } else {
+                onSuccess(response);
+            }
         },
         onFailure: error => {
             setOpen(false);
-            notify(
-                typeof error === 'string'
-                    ? error
-                    : error.message || 'ra.notification.http_error',
-                'warning'
-            );
+            if (onFailure === undefined) {
+                notify(
+                    typeof error === 'string'
+                        ? error
+                        : error.message || 'ra.notification.http_error',
+                    'warning'
+                );
+            } else {
+                onFailure(error);
+            }
         },
         undoable: false,
     });
@@ -128,6 +139,8 @@ export interface UseDeleteWithConfirmControllerParams {
     redirect?: RedirectionSideEffect;
     resource: string;
     onClick?: ReactEventHandler<any>;
+    onSuccess?: OnSuccess;
+    onFailure?: OnFailure;
 }
 
 export interface UseDeleteWithConfirmControllerReturn {

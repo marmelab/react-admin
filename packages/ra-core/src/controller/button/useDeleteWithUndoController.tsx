@@ -8,6 +8,7 @@ import {
     RedirectionSideEffect,
 } from '../../sideEffect';
 import { Record } from '../../types';
+import { OnFailure, OnSuccess } from '../saveModifiers';
 
 /**
  * Prepare callback for a Delete button with undo support
@@ -52,6 +53,8 @@ const useDeleteWithUndoController = ({
     basePath,
     redirect: redirectTo = 'list',
     onClick,
+    onSuccess,
+    onFailure,
 }: UseDeleteWithUndoControllerParams): UseDeleteWithUndoControllerReturn => {
     const notify = useNotify();
     const redirect = useRedirect();
@@ -59,18 +62,29 @@ const useDeleteWithUndoController = ({
 
     const [deleteOne, { loading }] = useDelete(resource, null, null, {
         action: CRUD_DELETE,
-        onSuccess: () => {
-            notify('ra.notification.deleted', 'info', { smart_count: 1 }, true);
-            redirect(redirectTo, basePath);
-            refresh();
-        },
-        onFailure: error =>
-            notify(
-                typeof error === 'string'
-                    ? error
-                    : error.message || 'ra.notification.http_error',
-                'warning'
-            ),
+        onSuccess:
+            onSuccess !== undefined
+                ? onSuccess
+                : () => {
+                      notify(
+                          'ra.notification.deleted',
+                          'info',
+                          { smart_count: 1 },
+                          true
+                      );
+                      redirect(redirectTo, basePath);
+                      refresh();
+                  },
+        onFailure:
+            onFailure !== undefined
+                ? onFailure
+                : error =>
+                      notify(
+                          typeof error === 'string'
+                              ? error
+                              : error.message || 'ra.notification.http_error',
+                          'warning'
+                      ),
         undoable: true,
     });
     const handleDelete = useCallback(
@@ -95,6 +109,8 @@ export interface UseDeleteWithUndoControllerParams {
     redirect?: RedirectionSideEffect;
     resource: string;
     onClick?: ReactEventHandler<any>;
+    onSuccess?: OnSuccess;
+    onFailure?: OnFailure;
 }
 
 export interface UseDeleteWithUndoControllerReturn {

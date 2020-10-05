@@ -1,5 +1,6 @@
 import resolveIntrospection, {
-    filterTypesByIncludeExclude,
+    isResourceExcluded,
+    isResourceIncluded,
 } from './introspection';
 import {
     GET_LIST,
@@ -12,64 +13,78 @@ import {
 } from 'ra-core';
 
 describe('introspection', () => {
-    describe('filterTypesByIncludeExclude', () => {
+    describe('isResourceIncluded', () => {
         it('return false with an include option containing an array and tested type is not in it', () => {
             expect(
-                filterTypesByIncludeExclude({ include: ['Post', 'Comment'] })({
-                    name: 'NotMe',
+                isResourceIncluded({
+                    include: ['Post', 'Comment'],
+                    type: {
+                        name: 'NotMe',
+                    },
                 })
             ).toBe(false);
         });
 
         it('return true with an include option containing an array and tested type is in it', () => {
             expect(
-                filterTypesByIncludeExclude({ include: ['Post', 'Comment'] })({
-                    name: 'Post',
+                isResourceIncluded({
+                    include: ['Post', 'Comment'],
+                    type: {
+                        name: 'Post',
+                    },
                 })
             ).toBe(true);
         });
 
-        it('return false with an exclude option containing an array and tested type is in it', () => {
+        it('return false with an include option containing an array and tested type is not in it', () => {
             expect(
-                filterTypesByIncludeExclude({ exclude: ['NotMe'] })({
-                    name: 'NotMe',
+                isResourceIncluded({
+                    include: ['NotMe'],
+                    type: {
+                        name: 'Post',
+                    },
                 })
             ).toBe(false);
-        });
-
-        it('return true with an include option containing an array and tested type is not in it', () => {
-            expect(
-                filterTypesByIncludeExclude({ exclude: ['NotMe'] })({
-                    name: 'Post',
-                })
-            ).toBe(true);
         });
 
         it('return true with an include option being a function returning true', () => {
             const include = jest.fn(() => true);
             const type = { name: 'Post' };
-            expect(filterTypesByIncludeExclude({ include })(type)).toBe(true);
+            expect(isResourceIncluded({ include, type })).toBe(true);
             expect(include).toHaveBeenCalledWith(type);
         });
 
         it('return false with an include option being a function returning false', () => {
             const include = jest.fn(() => false);
             const type = { name: 'Post' };
-            expect(filterTypesByIncludeExclude({ include })(type)).toBe(false);
+            expect(isResourceIncluded({ include, type })).toBe(false);
             expect(include).toHaveBeenCalledWith(type);
         });
+    });
 
-        it('return false with an exclude option being a function returning true', () => {
+    describe('isResourceExcluded', () => {
+        it('return true with an exclude option containing an array and tested type is in it', () => {
+            expect(
+                isResourceExcluded({
+                    exclude: ['NotMe'],
+                    type: {
+                        name: 'NotMe',
+                    },
+                })
+            ).toBe(true);
+        });
+
+        it('return true with an exclude option being a function returning true', () => {
             const exclude = jest.fn(() => true);
             const type = { name: 'Post' };
-            expect(filterTypesByIncludeExclude({ exclude })(type)).toBe(false);
+            expect(isResourceExcluded({ exclude, type })).toBe(true);
             expect(exclude).toHaveBeenCalledWith(type);
         });
 
-        it('return true with an exclude option being a function returning false', () => {
+        it('return false with an exclude option being a function returning false', () => {
             const exclude = jest.fn(() => false);
             const type = { name: 'Post' };
-            expect(filterTypesByIncludeExclude({ exclude })(type)).toBe(true);
+            expect(isResourceExcluded({ exclude, type })).toBe(false);
             expect(exclude).toHaveBeenCalledWith(type);
         });
     });

@@ -16,6 +16,8 @@ import {
     Record,
     RedirectionSideEffect,
     useDeleteWithConfirmController,
+    OnSuccess,
+    OnFailure,
 } from 'ra-core';
 
 import Confirm from '../layout/Confirm';
@@ -34,6 +36,8 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
         record,
         resource,
         redirect = 'list',
+        onSuccess,
+        onFailure,
         ...rest
     } = props;
     const translate = useTranslate();
@@ -50,6 +54,8 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
         redirect,
         basePath,
         onClick,
+        onSuccess,
+        onFailure,
     });
 
     return (
@@ -130,6 +136,8 @@ interface Props {
     saving?: boolean;
     submitOnEnter?: boolean;
     undoable?: boolean;
+    onSuccess?: OnSuccess;
+    onFailure?: OnFailure;
 }
 
 export type DeleteWithConfirmButtonProps = Props & ButtonProps;

@@ -128,8 +128,8 @@ export function* handleFetch(
     } catch (error) {
         yield put({
             type: `${type}_FAILURE`,
-            error: error.message ? error.message : error,
-            payload: error.body ? error.body : null,
+            error: (error && (error.message ? error.message : error)) || null,
+            payload: (error && error.body) || null,
             requestPayload: payload,
             meta: {
                 ...meta,
