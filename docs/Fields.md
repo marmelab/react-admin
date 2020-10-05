@@ -582,7 +582,7 @@ import { SelectField } from 'react-admin';
 
 | Prop              | Required | Type                                         | Default | Description                                                                                                                                  |
 | ----------------- | -------- | -------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `optionText`      | Optional | `string ` &#124; `Function` &#124; `Element` | 'name'  | Name of the field to use to display the matching choice, or function returning that field name, or a React element to render for that choice |
+| `optionText`      | Optional | `string` &#124; `Function` &#124; `Element`  | 'name'  | Name of the field to use to display the matching choice, or function returning that field name, or a React element to render for that choice |
 | `optionValue`     | Optional | `string`                                     | 'id'    | Name of the field to compare to the value to find the matching choice                                                                        |
 | `translateChoice` | Optional | `boolean`                                    | `true`  | Whether or not the choice text should be translated                                                                                          |
 
