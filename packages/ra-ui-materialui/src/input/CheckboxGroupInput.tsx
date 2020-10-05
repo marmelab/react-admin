@@ -13,6 +13,7 @@ import { FieldTitle, useInput, ChoicesInputProps, warning } from 'ra-core';
 import defaultSanitizeRestProps from './sanitizeRestProps';
 import CheckboxGroupInputItem from './CheckboxGroupInputItem';
 import InputHelperText from './InputHelperText';
+import classnames from 'classnames';
 
 const sanitizeRestProps = ({
     setFilter,
@@ -24,6 +25,7 @@ const sanitizeRestProps = ({
 
 const useStyles = makeStyles(
     theme => ({
+        root: {},
         label: {
             transform: 'translate(0, 8px) scale(0.75)',
             transformOrigin: `top ${
@@ -101,6 +103,7 @@ const CheckboxGroupInput: FunctionComponent<
 > = props => {
     const {
         choices = [],
+        className,
         classes: classesOverride,
         format,
         helperText,
@@ -175,6 +178,7 @@ const CheckboxGroupInput: FunctionComponent<
             component="fieldset"
             margin={margin}
             error={touched && !!error}
+            className={classnames(classes.root, className)}
             {...sanitizeRestProps(rest)}
         >
             <FormLabel component="legend" className={classes.label}>
