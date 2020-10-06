@@ -60,7 +60,7 @@ The `message` returned by the function argument should be a dictionary where the
 
 All core translations are in the `ra` namespace, in order to prevent collisions with your own custom translations. The root key used at runtime is determined by the value of the `locale` prop.
 
-The default messages are available [here](https://github.com/marmelab/react-admin/blob/master/packages/ra-language-english/index.js).
+The default messages are available [here](https://github.com/marmelab/react-admin/blob/master/packages/ra-language-english/src/index.ts).
 
 ## Asynchronous Locale Change
 
