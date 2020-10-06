@@ -5,7 +5,7 @@ title: "The Create and Edit Views"
 
 # The Create and Edit Views
 
-`<Resource>` maps URLs to components - it takes care or *routing*. When you set a component as the `create` prop for a Resource, react-admin renders that component when users go to the `/[resource]/create` URL. When you set a component as the `edit` prop for a resource, react-admin renders that component when users go to the `/[resource]/:id` URL. 
+`<Resource>` maps URLs to components - it takes care of *routing*. When you set a component as the `create` prop for a Resource, react-admin renders that component when users go to the `/[resource]/create` URL. When you set a component as the `edit` prop for a resource, react-admin renders that component when users go to the `/[resource]/:id` URL. 
 
 ```
 <Resource name="posts" create={PostCreate} edit={PostEdit} />
