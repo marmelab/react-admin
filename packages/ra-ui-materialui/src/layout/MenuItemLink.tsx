@@ -12,7 +12,7 @@ import { StaticContext } from 'react-router';
 import { NavLink, NavLinkProps } from 'react-router-dom';
 import MenuItem, { MenuItemProps } from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import Tooltip from '@material-ui/core/Tooltip';
+import Tooltip, { TooltipProps } from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
 
 const NavLinkRef = forwardRef<HTMLAnchorElement, NavLinkProps>((props, ref) => (
@@ -32,6 +32,11 @@ const useStyles = makeStyles(
     { name: 'RaMenuItemLink' }
 );
 
+const renderWithTooltip = (
+    renderMenuItem: () => JSX.Element,
+    tooltipProps: TooltipProps
+) => <Tooltip {...tooltipProps}>{renderMenuItem()}</Tooltip>;
+
 const MenuItemLink: FC<MenuItemLinkProps> = forwardRef((props, ref) => {
     const {
         classes: classesOverride,
@@ -40,6 +45,7 @@ const MenuItemLink: FC<MenuItemLinkProps> = forwardRef((props, ref) => {
         leftIcon,
         onClick,
         sidebarIsOpen,
+        tooltipProps,
         ...rest
     } = props;
     const classes = useStyles(props);
@@ -77,11 +83,9 @@ const MenuItemLink: FC<MenuItemLinkProps> = forwardRef((props, ref) => {
         return renderMenuItem();
     }
 
-    return (
-        <Tooltip title={primaryText} placement="right">
-            {renderMenuItem()}
-        </Tooltip>
-    );
+    return tooltipProps
+        ? renderWithTooltip(renderMenuItem, tooltipProps)
+        : renderMenuItem();
 });
 
 interface Props {
@@ -89,6 +93,7 @@ interface Props {
     primaryText?: ReactNode;
     staticContext?: StaticContext;
     sidebarIsOpen: boolean;
+    tooltipProps?: TooltipProps;
 }
 
 export type MenuItemLinkProps = Props &
