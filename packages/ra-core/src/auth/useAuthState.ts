@@ -12,7 +12,7 @@ interface State {
 const emptyParams = {};
 
 /**
- * Hook for getting authentication status
+ * Hook for getting the authentication status
  *
  * Calls the authProvider.checkAuth() method asynchronously.
  *
