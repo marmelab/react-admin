@@ -605,7 +605,8 @@ So it's impossible, for instance, to have a dynamic list of resources based on a
 To overcome this limitation, you can build your own `<Admin>` component using two lower-level components: `<AdminContext>` (responsible for putting the providers in contexts) and `<AdminUI>` (responsible for displaying the UI). Here is an example:
 
 ``` jsx
-import * as React, { useEffect, useState } from 'react';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { AdminContext, AdminUI, Resource, ListGuesser, useDataProvider } from 'react-admin';
 
 function App() {
