@@ -10,7 +10,7 @@ import useNotify from '../sideEffect/useNotify';
  * and throws an error.
  *
  * This is a low level hook. See those more specialized hooks
- * for common authentication tasks, based on useAuthCheck.
+ * for common authentication tasks, based on useCheckAuth.
  *
  * @see useAuthenticated
  * @see useAuthState
