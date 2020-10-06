@@ -12,13 +12,18 @@ interface State {
 const emptyParams = {};
 
 /**
- * To avoid rendering a component and force waiting for the authProvider response, use the useAuthState() hook
- * instead of the useAuthenticated() hook.
- * It returns an object with 3 properties:
+ * Hook for getting authentication status
+ *
+ * Calls the authProvider.checkAuth() method asynchronously.
+ *
+ * The return value updates according to the authProvider request state:
  *
  * - loading: true just after mount, while the authProvider is being called. false once the authProvider has answered.
  * - loaded: the opposite of loading.
  * - authenticated: true while loading. then true or false depending on the authProvider response.
+ *
+ * To avoid rendering a component and force waiting for the authProvider response, use the useAuthState() hook
+ * instead of the useAuthenticated() hook.
  *
  * You can render different content depending on the authenticated status.
  *
