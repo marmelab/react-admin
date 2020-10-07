@@ -535,7 +535,6 @@ nav {
 
 .clickable > a:hover {
   opacity: 1;
-  filter: drop-shadow(10px 10px 10px rgba(0, 2, 159, 1));
 }
 
 @media (max-width: 767px) {
