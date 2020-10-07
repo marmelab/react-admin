@@ -2330,6 +2330,123 @@ It's especially useful for `<ReferenceManyField>` or `<ReferenceArrayField>` com
 </ReferenceArrayField>
 ```
 
+## The `<EditableDatagrid>` Component
+
+This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers an "edit-in-place" experience in a `<Datagrid>`.
+
+![Editable Datagrid](https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.gif)
+
+```jsx
+import React, { FC } from 'react';
+import {
+    List,
+    TextField,
+    TextInput,
+    DateField,
+    DateInput,
+    SelectField,
+    SelectInput,
+    required,
+} from 'react-admin';
+import { EditableDatagrid, RowForm } from '@react-admin/ra-editable-datagrid';
+
+const ArtistList: FC = props => (
+    <List {...props} hasCreate empty={false}>
+        <EditableDatagrid
+            undoable
+            createForm={<ArtistForm />}
+            editForm={<ArtistForm />}
+        >
+            <TextField source="id" />
+            <TextField source="firstname" />
+            <TextField source="name" />
+            <DateField source="dob" label="born" />
+            <SelectField
+                source="prof"
+                label="Profession"
+                choices={professionChoices}
+            />
+        </EditableDatagrid>
+    </List>
+);
+
+const ArtistForm: FC = props => (
+    <RowForm {...props}>
+        <TextField source="id" />
+        <TextInput source="firstname" validate={required()} />
+        <TextInput source="name" validate={required()} />
+        <DateInput source="dob" label="born" validate={required()} />
+        <SelectInput
+            source="prof"
+            label="Profession"
+            choices={professionChoices}
+        />
+    </RowForm>
+);
+```
+
+Check [the `ra-editable-datagrid` documentation](https://marmelab.com/ra-enterprise/modules/ra-editable-datagrid) for more details.
+
+## The `<TreeWithDetails>` Component
+
+This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers a replacement for the `<List>` component when the records form **tree structures** like directories, categories, etc. `<TreeWithDetails>` allows to display, edit, and rearrange trees.
+
+```jsx
+// in src/category.js
+import React from 'react';
+import {
+    Admin,
+    Resource,
+    Create,
+    Edit,
+    TextInput,
+} from 'react-admin';
+import { CreateNode, EditNode, SimpleForm, TreeWithDetails } from '@react-admin/ra-tree';
+
+// a Create view for a tree uses <CreateNode> instead of the standard <Create>
+const CategoriesCreate: FC = props => (
+    <CreateNode {...props}>
+        <SimpleForm>
+            <TextInput source="name" />
+        </SimpleForm>
+    </CreateNode>
+);
+
+// an Edit view for a tree uses <EditNode> instead of the standard <Edit>
+const CategoriesEdit = (props) => (
+    <EditNode {...props}>
+        <SimpleForm>
+            <TextInput source="title" />
+        </SimpleForm>
+    </EditNode>
+)
+
+// a List view for a tree uses <TreeWithDetails>
+export const CategoriesList = (props) => (
+    <TreeWithDetails 
+        create={CategoriesCreate}
+        edit={CategoriesEdit}
+        {...props}
+    />
+);
+
+// in src/App.js
+import { CategoriesList } from './category';
+
+const App = () => (
+    <Admin
+        dataProvider={dataProvider}
+        i18nProvider={i18nProvider}
+        locale="en"
+        customReducers={{ tree }}
+    >
+        <Resource list={CategoriesList} />
+    </Admin>
+)
+```
+
+Check [the `ra-tree` documentation](https://marmelab.com/ra-enterprise/modules/ra-tree) for more details.
+
 ## Using a Custom Iterator
 
 A `<List>` can delegate to any iterator component - `<Datagrid>` is just one example. An iterator component can get the data to display from [the `useListContext` hook](#uselistcontext). The data comes in two constants:
@@ -2401,8 +2518,6 @@ As you can see, nothing prevents you from using `<Field>` components inside your
 
 You can find components for react-admin in third-party repositories.
 
-- [ra-editable-datagrid](https://marmelab.com/ra-enterprise/modules/ra-editable-datagrid) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) component which offers an "edit-in-place" experience in a `<Datagrid>`.
-- [ra-tree](https://marmelab.com/ra-enterprise/modules/ra-tree) <img class="icon" src="./img/premium.svg" />: tree hooks and components from the [ra-enterprise](https://marmelab.com/ra-enterprise) package. This module is agnostic as to how you store the tree structure in the backend side.
 - [ra-customizable-datagrid](https://github.com/fizix-io/ra-customizable-datagrid): plugin that allows to hide / show columns dynamically.
 
 ## Displaying Fields Depending On The User Permissions
