@@ -398,7 +398,7 @@ To avoid rendering a component and force waiting for the `authProvider` response
 
 - `loading`: `true` just after mount, while the `authProvider` is being called. `false` once the `authProvider` has answered.
 - `loaded`: the opposite of `loading`.
-- `authenticated`: `undefined` while loading. then `true` or `false` depending on the `authProvider` response.
+- `authenticated`: `true` while loading. then `true` or `false` depending on the `authProvider` response.
 
 You can render different content depending on the authenticated status. 
 

@@ -604,6 +604,23 @@ import { DateTimeInput } from 'react-admin';
 
 **Tip**: For a material-ui styled `<DateTimeInput>` component, check out [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs).
 
+## `<DualListInput>`
+
+This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component allows to edit array values, one-to-many or many-to-many relationships by moving items from one list to another. It's a good alternative to `<SelectInput>` for a small number of choices.
+
+![DualListInput](https://marmelab.com/ra-enterprise/modules/assets/ra-relationships-duallistinput.gif)
+
+```jsx
+import { ReferenceInput } from 'react-admin';
+import { DualListInput } from '@react-admin/ra-relationships';
+
+<ReferenceInput label="Author" source="author_id" reference="authors">
+    <DualListInput optionText="last_name" />
+</ReferenceInput>
+```
+
+Check [the `ra-relationships` documentation](https://marmelab.com/ra-enterprise/modules/ra-relationships) for more details.
+
 ## `<ImageInput>`
 
 `<ImageInput>` allows to upload some pictures using [react-dropzone](https://github.com/okonet/react-dropzone).
@@ -703,6 +720,26 @@ If the default Dropzone label doesn't fit with your need, you can pass a `placeh
 ```
 
 Note that the file upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.md#extending-a-data-provider-example-of-file-upload) for base64 encoding data by extending the REST Client.
+
+## `<MarkdownInput>`
+
+This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component allows to edit and preview Markdown data, based on [the Toast UI editor](https://nhn.github.io/tui.editor/latest/ToastUIEditor).
+
+```jsx
+import { Edit, SimpleForm, TextInput } from 'react-admin';
+import { MarkdownInput } from '@react-admin/ra-markdown';
+
+const PostEdit = props => (
+    <Edit {...props}>
+        <SimpleForm>
+            <TextInput source="title" />
+            <MarkdownInput source="description" />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+Check [the `ra-markdown` documentation](https://marmelab.com/ra-enterprise/modules/ra-markdown) for more details.
 
 ## `<NumberInput>`
 
@@ -1079,6 +1116,78 @@ The child component receives the following props from `<ReferenceInput>`:
 - `setSort`: function to call to update the sorting of the request for possible values
 
 **Tip**: Why does `<ReferenceInput>` use the `dataProvider.getMany()` method with a single value `[id]` instead of `dataProvider.getOne()` to fetch the record for the current value? Because when there are many `<ReferenceInput>` for the same resource in a form (for instance when inside an `<ArrayInput>`), react-admin *aggregates* the calls to `dataProvider.getMany()` into a single one with `[id1, id2, ...)]`. This speeds up the UI and avoids hitting the API too much.
+
+## `<ReferenceManyToManyInput>`
+
+This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component allows to create, edit or remove relationships between two resources sharing an associative table. The changes in the associative table are sent to the dataProvider when the user submits the form, so that they can cancel the changes before submission.
+
+In this example, `artists.id` matches `performances.artist_id`, and `performances.event_id` matches `events.id`:
+
+```
+┌────────────┐       ┌──────────────┐      ┌────────┐
+│ artists    │       │ performances │      │ events │
+│------------│       │--------------│      │--------│
+│ id         │───┐   │ id           │      │ id     │
+│ first_name │   └──╼│ artist_id    │   ┌──│ name   │
+│ last_name  │       │ event_id     │╾──┘  │        │
+└────────────┘       └──────────────┘      └────────┘
+```
+
+The form displays the events name in a `<SelectArrayInput>`:
+
+```jsx
+import React, { FC, ComponentProps } from 'react';
+import { Edit, SelectArrayInput, SimpleForm, TextInput } from 'react-admin';
+
+import { ReferenceManyToManyInput, useReferenceManyToManyUpdate } from '@react-admin/ra-many-to-many';
+
+type Props = ComponentProps<typeof Edit>;
+
+/**
+ * Decorate <SimpleForm> to override the default save function.
+ * This is necessary to save changes in the associative table
+ * only on submission.
+ */
+const ArtistEditForm: FC<Props> = props => {
+    const save = useReferenceManyToManyUpdate({
+        basePath: props.basePath,
+        record: props.record,
+        redirect: props.redirect || 'list',
+        reference: 'events',
+        resource: props.resource,
+        source: 'id',
+        through: 'performances',
+        undoable: props.undoable,
+        using: 'artist_id,event_id',
+    });
+
+    return <SimpleForm {...props} save={save} />;
+};
+
+const ArtistEdit: FC<Props> = props => (
+    <Edit {...props}>
+        <ArtistEditForm>
+            <TextInput disabled source="id" />
+            <TextInput source="first_name" />
+            <TextInput source="last_name" />
+            <ReferenceManyToManyInput
+                source="id"
+                reference="events"
+                through="performances"
+                using="artist_id,event_id"
+                fullWidth
+                label="Performances"
+            >
+                <SelectArrayInput optionText="name" />
+            </ReferenceManyToManyInput>
+        </ArtistEditForm>
+    </Edit>
+);
+
+export default ArtistEdit;
+```
+
+Check [the `ra-relationships` documentation](https://marmelab.com/ra-enterprise/modules/ra-relationships#referencemanytomanyinput) for more details.
 
 ## `<RichTextInput>`
 
@@ -1469,12 +1578,8 @@ const dateParser = v => {
 
 You can find components for react-admin in third-party repositories.
 
-- [MarkdownInput](https://marmelab.com/ra-enterprise/modules/ra-markdown) from [@react-admin/ra-markdown](https://marmelab.com/ra-enterprise/modules/ra-markdown) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) component which allows to edit markdown content with a WYSIWYG editor.
-- [DualListInput](https://marmelab.com/ra-enterprise/modules/ra-relationships#duallistinput) from [@react-admin/ra-relationships](https://marmelab.com/ra-enterprise/modules/ra-relationships) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) component which allows to select from a list of choices using two lists.
-- [ReferenceManyToManyInput](https://marmelab.com/ra-enterprise/modules/ra-relationships#referencemanytomanyinput) from [@react-admin/ra-relationships](https://marmelab.com/ra-enterprise/modules/ra-relationships) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) component which allows to create, edit or remove relationships between two resources sharing an associative table.
 - [vascofg/react-admin-color-input](https://github.com/vascofg/react-admin-color-input): a color input using [React Color](https://casesandberg.github.io/react-color/), a collection of color pickers.
 - [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs): a collection of Date Inputs, based on [material-ui-pickers](https://material-ui-pickers.firebaseapp.com/)
-- [maluramichael/ra-input-markdown](https://github.com/maluramichael/ra-input-markdown): a markdown editor, based on [react-mde](https://github.com/andrerpena/react-mde) and [showdown](https://github.com/showdownjs/showdown)
 
 - **DEPRECATED V3** [LoicMahieu/aor-tinymce-input](https://github.com/LoicMahieu/aor-tinymce-input): a TinyMCE component, useful for editing HTML
 

@@ -514,7 +514,7 @@ const MyLayout = props => <Layout {...props} sidebar={MySidebar} />
 
 ### Layout From Scratch
 
-For more custom layouts, write a component from scratch. It must contain a `{children}` placeholder, where react-admin will render the resources. Use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.js) as a starting point. Here is a simplified version (with no responsive support):
+For more custom layouts, write a component from scratch. It must contain a `{children}` placeholder, where react-admin will render the resources. Use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point. Here is a simplified version (with no responsive support):
 
 ```jsx
 // in src/MyLayout.js
@@ -607,6 +607,50 @@ export default MyLayout;
 ```
 
 **Tip**: Don't forget to render a `<Notification>` component in your custom layout, otherwise the undoable updates will never be sent to the server. That's because part of the "undo" logic of react-admin lies in the `<Notification>` component.  
+
+## Adding a Breadcrumb
+
+The `<Breadcrumb>` component is part of `ra-navigation`, an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> module. It displays a breadcrumb based on a site structure that you can override at will.
+
+```jsx
+import * as React from 'react';
+import {
+    AppLocationContext,
+    Breadcrumb,
+    ResourceBreadcrumbItems,
+} from '@react-admin/ra-navigation';
+import { Admin, Resource, Layout } from 'react-admin';
+
+import PostList from './PostList';
+import PostEdit from './PostEdit';
+import PostShow from './PostShow';
+import PostCreate from './PostCreate';
+
+const MyLayout = ({ children, ...props }) => (
+    <AppLocationContext>
+        <Layout {...props}>
+            <Breadcrumb {...props}>
+                <ResourceBreadcrumbItems />
+            </Breadcrumb>
+            {children}
+        </Layout>
+    </AppLocationContext>
+);
+
+const App = () => (
+    <Admin dataProvider={dataProvider} layout={MyLayout}>
+        <Resource
+            name="posts"
+            list={PostList}
+            edit={PostEdit}
+            show={PostShow}
+            create={PostCreate}
+        />
+    </Admin>
+);
+```
+
+Check [the `ra-navigation` documentation](https://marmelab.com/ra-enterprise/modules/ra-navigation) for more details.
 
 ## Customizing the AppBar Content
 
@@ -710,6 +754,34 @@ export default MyAppBar;
 ```
 
 Take note that this uses *material-ui's `<AppBar>`* instead of *react-admin's `<AppBar>`*. To use this custom `AppBar` component, pass it as prop to a custom `Layout`, as explained in the previous section.
+
+## Adding Dark Mode Support
+
+The `<ToggleThemeButton>` component is part of `ra-preferences`, an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> module. It lets users switch from light to dark mode, and persists that choice in local storage so that users only have to do it once.
+
+![Dark Mode support](https://marmelab.com/ra-enterprise/modules/assets/ra-preferences-overview.gif)
+
+You can add the `<ToggleThemeButton>` to a custom App Bar:
+
+```jsx
+import React from 'react';
+import { Layout, AppBar } from 'react-admin';
+import { Box, Typography } from '@material-ui/core';
+import { ToggleThemeButton } from '@react-admin/ra-preferences';
+
+const MyAppBar: FC = props => (
+    <AppBar {...props}>
+        <Box flex="1">
+            <Typography variant="h6" id="react-admin-title"></Typography>
+        </Box>
+        <ToggleThemeButton />
+    </AppBar>
+);
+
+const MyLayout: FC = props => <Layout {...props} appBar={MyAppBar} />;
+```
+
+Check [the `ra-preferences` documentation](https://marmelab.com/ra-enterprise/modules/ra-preferences#togglethemebutton-store-the-theme-in-the-preferences) for more details.
 
 ## Using a Custom Menu
 
@@ -850,6 +922,10 @@ const Menu = ({ onMenuClick, logout }) => {
 
 export default withRouter(Menu);
 ```
+
+**Tip**: If you need a multi-level menu, or a Mega Menu opening panels with custom content, check out [the `ra-navigation`<img class="icon" src="./img/premium.svg" /> module](https://marmelab.com/ra-enterprise/modules/ra-navigation) (part of the [Enterprise Edition](https://marmelab.com/ra-enterprise))
+
+![MegaMenu and Breadcrumb](https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.gif)
 
 ## Using a Custom Login Page
 
