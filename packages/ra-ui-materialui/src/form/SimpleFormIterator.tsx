@@ -99,6 +99,7 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
         removeButton = <DefaultRemoveButton />,
         basePath,
         children,
+        className,
         fields,
         meta: { error, submitFailed },
         record,
@@ -173,7 +174,7 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
 
     const records = get(record, source);
     return fields ? (
-        <ul className={classes.root}>
+        <ul className={classNames(classes.root, className)}>
             {submitFailed && typeof error !== 'object' && error && (
                 <FormHelperText error>
                     <ValidationError error={error as string} />
@@ -304,6 +305,7 @@ export interface SimpleFormIteratorProps
     extends Partial<Omit<FieldArrayRenderProps<any, HTMLElement>, 'meta'>> {
     addButton?: ReactElement;
     basePath?: string;
+    className?: string;
     defaultValue?: any;
     disableAdd?: boolean;
     disableRemove?: boolean | DisableRemoveFunction;
