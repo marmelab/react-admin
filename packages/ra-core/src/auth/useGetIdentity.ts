@@ -4,7 +4,7 @@ import { UserIdentity } from '../types';
 import { useSafeSetState } from '../util/hooks';
 
 const defaultIdentity = {
-    id: null,
+    id: '',
     fullName: null,
 };
 
