@@ -467,6 +467,26 @@ You can optionally set the `target` prop to choose which window will the link tr
 <FileField source="file.url" target="_blank" />
 ```
 
+## `<MarkdownField>`
+
+This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component allows to render Markdown data as HTML.
+
+```jsx
+import { Show, SimpleShowLayout, TextField } from 'react-admin';
+import { MarkdownField } from '@react-admin/ra-markdown';
+
+const PostShow = props => (
+    <Show {...props}>
+        <SimpleShowLayout>
+            <TextField source="title" />
+            <MarkdownField source="description" />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
+Check [the `ra-markdown` documentation](https://marmelab.com/ra-enterprise/modules/ra-markdown) for more details.
+
 ## `<NumberField>`
 
 Displays a number formatted according to the browser locale, right aligned.
@@ -838,6 +858,59 @@ Also, you can filter the query used to populate the possible values. Use the `fi
 ```
 {% endraw %}
 
+## `<ReferenceManyToManyField>`
+
+This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component fetches a list of referenced records by lookup in an associative table, and passes the records down to its child component, which must be an iterator component.
+
+For instance, here is how to fetch the authors related to a book record by matching book.id to book_authors.post_id, then matching book_authors.author_id to authors.id, and then display the author last_name for each, in a <ChipField>:
+
+```jsx
+import React from 'react';
+import { 
+    Show,
+    SimpleShowLayout,
+    TextField,
+    DateField,
+    SingleFieldList,
+    ChipField,
+} from 'react-admin';
+import { ReferenceManyToManyField } from '@react-admin/ra-many-to-many';
+
+export const BookShow = (props) => (
+    <Show {...props}>
+        <SimpleShowLayout>
+            <TextField source="title" />
+            <DateField source="publication_date">
+            <ReferenceManyToManyField 
+                reference="authors"
+                through="book_authors"
+                using="book_id,author_id"
+            >
+                <SingleFieldList>
+                    <ChipField source="last_name" />
+                </SingleFieldList>
+            </ReferenceManyToManyField>
+            <EditButton />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
+This example uses the following schema:
+
+```
+┌──────────────────┐       ┌──────────────┐      ┌───────────────┐
+│ books            │       │ book_authors │      │ authors       │
+│------------------│       │--------------│      │---------------│
+│ id               │───┐   │ id           │      │ id            │
+│ title            │   └──╼│ book_id      │   ┌──│ first_name    │
+│ body             │       │ author_id    │╾──┘  │ last_name     │
+│ publication_date │       │ is_public    │      │ date_of_birth │
+└──────────────────┘       └──────────────┘      └───────────────┘
+```
+
+Check [the `ra-relationships` documentation](https://marmelab.com/ra-enterprise/modules/ra-relationships) for more details.
+
 ## `<ReferenceArrayField>`
 
 Use `<ReferenceArrayField>` to display a one-to-many relationship based on an array of foreign keys. This component fetches a list of referenced records (using the `dataProvider.getMany()` method), and passes them to its child. A `<ReferenceArrayField>` displays nothing on its own, it just fetches the data and expects its child to render it.
@@ -1075,8 +1148,6 @@ PriceField.defaultProps = {
 
 You can find components for react-admin in third-party repositories.
 
-- [MarkdownField](https://marmelab.com/ra-enterprise/modules/ra-markdown#markdownfield) from [@react-admin/ra-markdown](https://marmelab.com/ra-enterprise/modules/ra-markdown) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) component which can display markdown content.
-- [ReferenceManyToManyField](https://marmelab.com/ra-enterprise/modules/ra-relationships#referencemanytomanyfield) from [@react-admin/ra-relationships](https://marmelab.com/ra-enterprise/modules/ra-relationships) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) component which fetches a list of referenced records by lookup in an associative table, and passes the records down to its child component, which must be an iterator component.
 - [OoDeLally/react-admin-clipboard-list-field](https://github.com/OoDeLally/react-admin-clipboard-list-field): a quick and customizable copy-to-clipboard field.
 
 ## Writing Your Own Field Component
