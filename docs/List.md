@@ -2159,12 +2159,12 @@ const PostList = props => (
 export default withStyles(styles)(PostList);
 ```
 
-**Tip**: You can use the `Datagrid` component with [custom queries](./Actions.md#usequery-hook):
+**Tip**: You can use the `Datagrid` component with [custom queries](./Actions.md#usequery-hook), provided you pass the result to a `<ListContextProvider>`:
 
 {% raw %}
 ```jsx
 import keyBy from 'lodash/keyBy'
-import { useQuery, Datagrid, TextField, Pagination, Loading } from 'react-admin'
+import { useQuery, Datagrid, TextField, Pagination, Loading, ListContextProvider } from 'react-admin'
 
 const CustomList = () => {
     const [page, setPage] = useState(1);
@@ -2186,16 +2186,19 @@ const CustomList = () => {
         return <p>ERROR: {error}</p>
     }
     return (
-        <>
-            <Datagrid
-                data={keyBy(data, 'id')}
-                ids={data.map(({ id }) => id)}
-                currentSort={{ field: 'id', order: 'ASC' }}
-                basePath="/posts" // required only if you set use "rowClick"
-                rowClick="edit"
-            >
+        <ListContextProvider
+            value={{
+                resource: 'posts',
+                basePath: 'posts',
+                data: keyBy(data, 'id'),
+                ids: data.map(({ id }) => id),
+                currentSort: { field: 'id', order: 'ASC' },
+                selectedIds: [],
+            }}
+        >
+            <Datagrid rowClick="edit">
                 <TextField source="id" />
-                <TextField source="name" />
+                <TextField source="title" />
             </Datagrid>
             <Pagination
                 page={page}
@@ -2203,7 +2206,8 @@ const CustomList = () => {
                 setPage={setPage}
                 total={total}
             />
-        </>
+        </ListContextProvider>
+    );
     )
 }
 ```
