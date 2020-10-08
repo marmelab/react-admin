@@ -725,10 +725,14 @@ The default value for the `component` prop is `Card`.
 
 The `List` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
 
-* `root`: alternative to using `className`. Applied to the root element.
-* `actions`: applied to the actions container
-* `main`: applied to the main container
-* `noResults`: applied to the component shown when there is no result
+| Rule name              | Description                                                                              |
+| ---------------------- | ---------------------------------------------------------------------------------------- |
+| `root`                 | Alternative to using `className`. Applied to the root element                            |
+| `actions`              | Applied to the actions container                                                         |
+| `main`                 | Applied to the main container                                                            |
+| `content`              | Applied to the child component inside the main container                                 |
+| `bulkActionsDisplayed` | Applied to the child component inside the main container when there are selected records |
+| `noResults`            | Applied to the component shown when there is no result                                   |
 
 You can customize the list styles by passing a `classes` object as prop, through `useStyles()`. Here is an example:
 
@@ -737,15 +741,15 @@ You can customize the list styles by passing a `classes` object as prop, through
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
-    header: {
+    actions: {
         backgroundColor: '#ccc',
     },
 });
 
 const PostList = props => {
-    const classes = useStyles();
+    const classes = useStyles(props);
     return (
-        <List {...props} classes={{ header: classes.header }}>
+        <List {...props} classes={{ actions: classes.actions }}>
             <Datagrid>
                 ...
             </Datagrid>
@@ -756,6 +760,8 @@ const PostList = props => {
 export default PostList;
 ```
 {% endraw %}
+
+**Tip**: The `List` component `classes` can also be customized for all instances of the component with its global css name `"RaList"` as [describe here](https://marmelab.com/blog/2019/12/18/react-admin-3-1.html#theme-overrides)
 
 ## Filtering The List
 
@@ -1421,7 +1427,7 @@ By default, when the user clicks on a column header, the list becomes sorted in 
 
 ```jsx
 // in src/posts.js
-import React from 'react';
+import * as React from 'react';
 import { List, Datagrid, TextField } from 'react-admin';
 
 export const PostList = (props) => (
