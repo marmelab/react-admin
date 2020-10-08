@@ -466,10 +466,6 @@ const AutocompleteInput: FunctionComponent<
 
 const useStyles = makeStyles(
     {
-        root: {
-            flexGrow: 1,
-            height: 250,
-        },
         container: {
             flexGrow: 1,
             position: 'relative',
