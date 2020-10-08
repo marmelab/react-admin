@@ -352,6 +352,54 @@ export default App;
 
 Beware that users from all around the world may use your application, so make sure the `i18nProvider` returns default messages even for unknown locales?
 
+## Restoring The Locale Choice
+
+The `<LanguageSwitcher>` component is part of `ra-preferences`, an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> module. It displays a button in the App Bar letting users choose their preferred language, and **persists that choice in localStorage**. Users only have to set their preferred locale once per browser.
+
+```jsx
+import React from 'react';
+import { LanguageSwitcher } from '@react-admin/ra-preferences';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
+import frenchMessages from 'ra-language-french';
+import { Admin, Resource, List, SimpleList, Layout, AppBar } from 'react-admin';
+import { Box, Typography } from '@material-ui/core';
+
+const MyAppBar = props => (
+    <AppBar {...props}>
+        <Box flex="1">
+            <Typography variant="h6" id="react-admin-title"></Typography>
+        </Box>
+        <LanguageSwitcher
+            languages={[
+                { locale: 'en', name: 'English' },
+                { locale: 'fr', name: 'Français' },
+            ]}
+            defaultLanguage="English"
+        />
+    </AppBar>
+);
+
+const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
+
+const i18nProvider = polyglotI18nProvider(
+    locale => (locale === 'fr' ? frenchMessages : englishMessages),
+    'en' // Default locale
+);
+
+const App = () => (
+    <Admin
+        i18nProvider={i18nProvider}
+        dataProvider={dataProvider}
+        layout={MyLayout}
+    >
+        <Resource name="posts" list={PostList} />
+    </Admin>
+);
+```
+
+Check [the `ra-preferences` documentation](https://marmelab.com/ra-enterprise/modules/ra-preferences) for more details.
+
 ## Translation Messages
 
 The `message` returned by the `polyglotI18nProvider` function argument should be a dictionary where the keys identify interface components, and values are the translated string. This dictionary is a simple JavaScript object looking like the following:

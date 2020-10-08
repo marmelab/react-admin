@@ -1820,6 +1820,8 @@ export const PostList = (props) => (
 );
 ```
 
+**Tip**: To let users hide or show columns at will, check the [`<SelectColumnsButton>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#selectcolumnsbutton-store-datagrid-columns-in-preferences)<img class="icon" src="./img/premium.svg" />, an [Enterprise Edition](https://marmelab.com/ra-enterprise) component.
+
 The `<Datagrid>` is an **iterator** component: it gets an array of ids and a data store from the `ListContext`, and iterates over the ids to display each record. Another example of iterator component is [`<SingleFieldList>`](#the-singlefieldlist-component).
 
 ### Body element
