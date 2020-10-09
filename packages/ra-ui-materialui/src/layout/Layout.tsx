@@ -270,7 +270,7 @@ LayoutWithTheme.defaultProps = {
     theme: defaultTheme,
 };
 
-interface LayoutWithThemeProps extends LayoutProps {
+interface LayoutWithThemeProps extends MuiLayoutProps {
     theme?: ThemeOptions;
 }
 
