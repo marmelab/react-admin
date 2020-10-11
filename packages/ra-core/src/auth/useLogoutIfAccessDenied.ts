@@ -59,7 +59,11 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                                 ? error.redirectTo
                                 : undefined;
                         logout({}, redirectTo);
-                        !disableNotification &&
+                        const shouldSkipNotify =
+                            disableNotification ||
+                            (e && e.message === false) ||
+                            (error && error.message === false);
+                        !shouldSkipNotify &&
                             notify('ra.notification.logged_out', 'warning');
                         return true;
                     })
@@ -89,6 +93,7 @@ const logoutIfAccessDeniedWithoutProvider = () => Promise.resolve(false);
  */
 type LogoutIfAccessDenied = (
     error?: any,
+    /** @deprecated to disable the notification, authProvider.checkAuth() should return an object with an error property set to true */
     disableNotification?: boolean
 ) => Promise<boolean>;
 

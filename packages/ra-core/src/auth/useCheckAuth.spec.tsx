@@ -113,4 +113,21 @@ describe('useCheckAuth', () => {
         expect(notify).toHaveBeenCalledTimes(0);
         expect(queryByText('authenticated')).toBeNull();
     });
+
+    it('should logout whitout showing a notification when authProvider returns error with message false', async () => {
+        const { queryByText } = render(
+            <AuthContext.Provider
+                value={{
+                    ...authProvider,
+                    checkAuth: () => Promise.reject({ message: false }),
+                }}
+            >
+                <TestComponent />
+            </AuthContext.Provider>
+        );
+        await wait();
+        expect(logout).toHaveBeenCalledTimes(1);
+        expect(notify).toHaveBeenCalledTimes(0);
+        expect(queryByText('authenticated')).toBeNull();
+    });
 });

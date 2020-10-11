@@ -107,13 +107,32 @@ describe('useLogoutIfAccessDenied', () => {
         expect(queryByText('logged in')).toBeNull();
     });
 
-    it('should logout whitout showing a notification', async () => {
+    it('should logout whitout showing a notification if disableAuthentication is true', async () => {
         const { queryByText } = render(
             <AuthContext.Provider value={authProvider}>
                 <TestComponent
                     error={new Error('denied')}
                     disableNotification
                 />
+            </AuthContext.Provider>
+        );
+        await wait();
+        expect(logout).toHaveBeenCalledTimes(1);
+        expect(notify).toHaveBeenCalledTimes(0);
+        expect(queryByText('logged in')).toBeNull();
+    });
+
+    it('should logout whitout showing a notification if authProvider returns error with message false', async () => {
+        const { queryByText } = render(
+            <AuthContext.Provider
+                value={{
+                    ...authProvider,
+                    checkError: () => {
+                        return Promise.reject({ message: false });
+                    },
+                }}
+            >
+                <TestComponent />
             </AuthContext.Provider>
         );
         await wait();
