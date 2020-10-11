@@ -52,7 +52,7 @@ const useGetIdentity = () => {
                     setState({
                         loading: false,
                         loaded: true,
-                        identity,
+                        identity: identity || defaultIdentity,
                     });
                 } catch (error) {
                     setState({
