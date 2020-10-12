@@ -338,7 +338,7 @@ See [Intl.DateTimeFormat documentation](https://developer.mozilla.org/fr/docs/We
 
 ## `<EmailField>`
 
-`<EmailField>` displays an email as a `<a href="mailto:" />` link.
+`<EmailField>` displays an email as a Material UI's `<Link href="mailto:" />` component.
 
 ```jsx
 import { EmailField } from 'react-admin';
@@ -1087,7 +1087,7 @@ import { TextField } from 'react-admin';
 
 ## `<UrlField>`
 
-`<UrlField>` displays an url in an `<a href="">` tag.
+`<UrlField>` displays an url in a Material UI's `<Link href="" />` component.
 
 ```jsx
 import { UrlField } from 'react-admin';
