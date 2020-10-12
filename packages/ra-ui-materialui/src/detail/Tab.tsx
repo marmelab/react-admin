@@ -15,6 +15,7 @@ import Labeled from '../input/Labeled';
  *
  * - label: The string displayed for each tab
  * - icon: The icon to show before the label (optional). Must be a component.
+ * - path: The string used for custom urls
  *
  * @example
  *     // in src/posts.js
@@ -30,7 +31,7 @@ import Labeled from '../input/Labeled';
  *                     <TextField source="title" />
  *                     <TextField source="subtitle" />
  *                </Tab>
- *                 <Tab label="Metadata" icon={<PersonIcon />}>
+ *                 <Tab label="Metadata" icon={<PersonIcon />} path="metadata">
  *                     <TextField source="category" />
  *                </Tab>
  *             </TabbedShowLayout>
@@ -124,6 +125,7 @@ Tab.propTypes = {
     context: PropTypes.oneOf(['header', 'content']),
     icon: PropTypes.element,
     label: PropTypes.string.isRequired,
+    path: PropTypes.string,
     value: PropTypes.string,
 };
 
@@ -135,6 +137,7 @@ export interface TabProps extends MuiTabProps {
     className?: string;
     icon?: ReactElement;
     label: string;
+    path?: string;
     record?: Record;
     resource?: string;
     value?: string;
