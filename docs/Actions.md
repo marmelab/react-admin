@@ -235,20 +235,178 @@ const ApproveButton = ({ record }) => {
 };
 ```
 
-The specialized hooks based on `useQuery` execute on mount:
+The specialized hooks based on `useQuery` (`useGetList`, `useGetOne`, `useGetMany`, `useGetManyReference`) execute on mount. The specialized hooks based on `useMutation` (`useCreate`, `useUpdate`, `useUpdateMany`, `useDelete`, `useDeleteMany`) return a callback.
 
-* `useGetList(resource, pagination, sort, filter, options)`
-* `useGetOne(resource, id, options)`
-* `useGetMany(resource, ids, options)`
-* `useGetManyReference(resource, target, id, pagination, sort, filter, referencingResource, options)`
+### `useGetList`
 
-The specialized hooks based on `useMutation` return a callback:
+```jsx
+// syntax
+const { data, ids, total, loading, loaded, error } = useGetList(resource, pagination, sort, filter, options);
 
-* `useCreate(resource, data, options)`
-* `useUpdate(resource, id, data, previousData, options)`
-* `useUpdateMany(resource, ids, data, options)`
-* `useDelete(resource, id, previousData, options)`
-* `useDeleteMany(resource, ids, options)`
+// example
+import { useGetList } from 'react-admin';
+const LatestNews = () => {
+    const { data, ids, loading, error } = useGetList(
+        'posts',
+        { page: 1, perPage: 10 },
+        { field: 'published_at', order: 'DESC' }
+    );
+    if (loading) { return <Loading />; }
+    if (error) { return <p>ERROR</p>; }
+    return (
+        <ul>
+            {ids.map(id =>
+                <li key={id}>{data[id].title}</li>
+            )}
+        </ul>
+    );
+};
+```
+
+### `useGetOne`
+
+```jsx
+// syntax
+const { data, loading, loaded, error } = useGetOne(resource, id, options);
+
+// example
+import { useGetOne } from 'react-admin';
+const UserProfile = ({ record }) => {
+    const { data, loading, error } = useGetOne('users', record.id);
+    if (loading) { return <Loading />; }
+    if (error) { return <p>ERROR</p>; }
+    return <div>User {data.username}</div>;
+};
+```
+
+### `useGetMany`
+
+```jsx
+// syntax
+const { data, loading, loaded, error } = useGetMAny(resource, ids, options);
+
+// example
+import { useGetMany } from 'react-admin';
+const PostTags = ({ record }) => {
+    const { data, loading, error } = useGetMany('tags', record.tagIds);
+    if (loading) { return <Loading />; }
+    if (error) { return <p>ERROR</p>; }
+    return (
+         <ul>
+             {data.map(tag => (
+                 <li key={tag.id}>{tag.name}</li>
+             ))}
+         </ul>
+     );
+};
+```
+
+### `useGetManyReference`
+
+```jsx
+// syntax
+const { data, ids, total, loading, loaded, error } = useGetManyReference(resource, target, id, pagination, sort, filter, referencingResource, options)
+
+// example
+import { useGetManyReference } from 'react-admin';
+const PostComments = ({ post_id }) => {
+    const { data, ids, loading, error } = useGetManyReference(
+        'comments',
+        'post_id',
+        post_id,
+        { page: 1, perPage: 10 },
+        { field: 'published_at', order: 'DESC' }
+        {},
+        'posts',
+    );
+    if (loading) { return <Loading />; }
+    if (error) { return <p>ERROR</p>; }
+    return (
+        <ul>
+            {ids.map(id =>
+                <li key={id}>{data[id].body}</li>
+            )}
+        </ul>
+    );
+};
+```
+
+### `useCreate`
+
+```jsx
+// syntax
+const [create, { data, loading, loaded, error }] = useCreate(resource, data, options);
+
+// example
+import { useCreate } from 'react-admin';
+const LikeButton = ({ record }) => {
+    const like = { postId: record.id };
+    const [create, { loading, error }] = useCreate('likes', like);
+    if (error) { return <p>ERROR</p>; }
+    return <button disabled={loading} onClick={create}>Like</button>;
+};
+```
+
+### `useUpdate`
+
+```jsx
+// syntax
+const [update, { data, loading, loaded, error }] = useUpdate(resource, id, data, previousData, options);
+
+// example
+import { useUpdate } from 'react-admin';
+const IncreaseLikeButton = ({ record }) => {
+    const diff = { likes: record.likes + 1 };
+    const [update, { loading, error }] = useUpdate('likes', record.id, diff, record);
+    if (error) { return <p>ERROR</p>; }
+    return <button disabled={loading} onClick={update}>Like</div>;
+};
+```
+
+### `useUpdateMany`
+
+```jsx
+// syntax
+const [updateMany, { data, loading, loaded, error }] = useUpdateMany(resource, ids, data, options);
+
+// example
+import { useUpdateMany } from 'react-admin';
+const BulkResetViewsButton = ({ selectedIds }) => {
+    const [updateMany, { loading, error }] = useUpdateMany('posts', selectedIds, { views: 0 });
+    if (error) { return <p>ERROR</p>; }
+    return <button disabled={loading} onClick={updateMany}>Reset views</button>;
+};
+```
+
+### `useDelete`
+
+```jsx
+// syntax
+const [delete, { data, loading, loaded, error }] = useDelete(resource, id, previousData, options);
+
+// example
+import { useDelete } from 'react-admin';
+const DeleteButton = ({ record }) => {
+    const [deleteOne, { loading, error }] = useDelete('likes', record.id);
+    if (error) { return <p>ERROR</p>; }
+    return <button disabled={loading} onClick={deleteOne}>Delete</div>;
+};
+```
+
+### `useDeleteMany`
+
+```jsx
+// syntax
+const [delete, { data, loading, loaded, error }] = useDeleteMany(resource, ids, options);
+
+// example
+import { useDeleteMany } from 'react-admin';
+const BulkDeletePostsButton = ({ selectedIds }) => {
+    const [deleteMany, { loading, error }] = useDeleteMany('posts', selectedIds);
+    if (error) { return <p>ERROR</p>; }
+    return <button disabled={loading} onClick={deleteMany}>Delete selected posts</button>;
+};
+```
 
 ## Handling Side Effects In `useDataProvider`
 
