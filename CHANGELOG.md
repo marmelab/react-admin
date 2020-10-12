@@ -1,5 +1,25 @@
 # Changelog
 
+## v3.9.3
+
+* Fix `dataProvider` fails silently when response has wrong type ([5373](https://github.com/marmelab/react-admin/pull/5373)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix default `authProvider.getIdentity()` triggers infinite loop ([5381](https://github.com/marmelab/react-admin/pull/5381)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix duplicated `lodash` package when bundling react-admin without tree shaking ([5380](https://github.com/marmelab/react-admin/pull/5380)) ([impronunciable](https://github.com/impronunciable))
+* Fix default `AuthContext` value fails TypeScript compilation ([5372](https://github.com/marmelab/react-admin/pull/5372)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix unused css rules in Input components ([5345](https://github.com/marmelab/react-admin/pull/5345)) ([WiXSL](https://github.com/WiXSL))
+* Fix support for `className` prop in `<SimpleFormIterator>` ([5368](https://github.com/marmelab/react-admin/pull/5368)) ([edulix](https://github.com/edulix))
+* [Doc] Fix rendering a Datagrid outside a Resource instructions ([5371](https://github.com/marmelab/react-admin/pull/5371)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add Inputs and Fields CSS Api documentation ([5346](https://github.com/marmelab/react-admin/pull/5346)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Add open in Gitpod button in README ([5364](https://github.com/marmelab/react-admin/pull/5364)) ([nisarhassan12](https://github.com/nisarhassan12))
+* [Doc] Fix Demo Video Links in the READMEs of ra- packages ([5369](https://github.com/marmelab/react-admin/pull/5369)) ([djhi](https://github.com/djhi))
+* [Doc] Add mentions of the Enterprise Edition components in documentation ([5363](https://github.com/marmelab/react-admin/pull/5363)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix wrong link in shop demo's README ([5357](https://github.com/marmelab/react-admin/pull/5357)) ([DjebbZ](https://github.com/DjebbZ))
+* [Doc] Fix links to source code following TypeScript migration ([5358](https://github.com/marmelab/react-admin/pull/5358)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Add react-router link in Resource documentation ([5356](https://github.com/marmelab/react-admin/pull/5356)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix typo in CreateEdit chapter introduction ([5355](https://github.com/marmelab/react-admin/pull/5355)) ([pamuche](https://github.com/pamuche))
+* [Doc] Fix `useAuthState` hook js docs ([5351](https://github.com/marmelab/react-admin/pull/5351)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix import in `<AdminUI>` code example ([5352](https://github.com/marmelab/react-admin/pull/5352)) ([WiXSL](https://github.com/WiXSL))
+
 ## v3.9.2
 
 * Add `onSuccess` and `onFailure` props to `<DeleteButton>` ([5310](https://github.com/marmelab/react-admin/pull/5310)) ([gavacho](https://github.com/gavacho))
