@@ -764,12 +764,12 @@ The `<ToggleThemeButton>` component is part of `ra-preferences`, an [Enterprise 
 You can add the `<ToggleThemeButton>` to a custom App Bar:
 
 ```jsx
-import React from 'react';
+import * as React from 'react';
 import { Layout, AppBar } from 'react-admin';
 import { Box, Typography } from '@material-ui/core';
 import { ToggleThemeButton } from '@react-admin/ra-preferences';
 
-const MyAppBar: FC = props => (
+const MyAppBar = props => (
     <AppBar {...props}>
         <Box flex="1">
             <Typography variant="h6" id="react-admin-title"></Typography>
@@ -778,7 +778,7 @@ const MyAppBar: FC = props => (
     </AppBar>
 );
 
-const MyLayout: FC = props => <Layout {...props} appBar={MyAppBar} />;
+const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
 ```
 
 Check [the `ra-preferences` documentation](https://marmelab.com/ra-enterprise/modules/ra-preferences#togglethemebutton-store-the-theme-in-the-preferences) for more details.

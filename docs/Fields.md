@@ -908,7 +908,7 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 For instance, here is how to fetch the authors related to a book record by matching book.id to book_authors.post_id, then matching book_authors.author_id to authors.id, and then display the author last_name for each, in a <ChipField>:
 
 ```jsx
-import React from 'react';
+import * as React from 'react';
 import { 
     Show,
     SimpleShowLayout,

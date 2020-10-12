@@ -1456,10 +1456,11 @@ Some List views don't have a natural UI for sorting - e.g. the `<SimpleList>`, o
 
 `<SortButton>` expects one prop: `fields`, the list of fields it should allows to sort on. For instance, here is how to offer a button to sort on the `reference`, `sales`, and `stock` fields:
 
-```tsx
+```jsx
+import * as React from 'react';
 import { TopToolbar, SortButton, CreateButton, ExportButton } from 'react-admin';
 
-const ListActions: FC<any> = () => (
+const ListActions = () => (
     <TopToolbar>
         <SortButton fields={['reference', 'sales', 'stock']} />
         <CreateButton basePath="/products" />
@@ -1472,7 +1473,7 @@ const ListActions: FC<any> = () => (
 
 When neither the `<Datagrid>` or the `<SortButton>` fit your UI needs, you have to write a custom sort control. As with custom filters, this boils down to grabbing the required data and callbacks from the `ListContext`. Let's use the `<SortButton>` source as an example usage of `currentSort` and `setSort`:
 
-```tsx
+```jsx
 import * as React from 'react';
 import { Button, Menu, MenuItem, Tooltip, IconButton } from '@material-ui/core';
 import SortIcon from '@material-ui/icons/Sort';
@@ -1552,7 +1553,7 @@ const SortButton = ({ fields }) => {
     </>);
 };
 
-const inverseOrder = (sort: string) => (sort === 'ASC' ? 'DESC' : 'ASC');
+const inverseOrder = sort => (sort === 'ASC' ? 'DESC' : 'ASC');
 
 export default SortButton;
 ```
@@ -2349,7 +2350,7 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 ![Editable Datagrid](https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.gif)
 
 ```jsx
-import React, { FC } from 'react';
+import * as React from 'react';
 import {
     List,
     TextField,
@@ -2362,7 +2363,7 @@ import {
 } from 'react-admin';
 import { EditableDatagrid, RowForm } from '@react-admin/ra-editable-datagrid';
 
-const ArtistList: FC = props => (
+const ArtistList = props => (
     <List {...props} hasCreate empty={false}>
         <EditableDatagrid
             undoable
@@ -2382,7 +2383,7 @@ const ArtistList: FC = props => (
     </List>
 );
 
-const ArtistForm: FC = props => (
+const ArtistForm = props => (
     <RowForm {...props}>
         <TextField source="id" />
         <TextInput source="firstname" validate={required()} />
@@ -2405,7 +2406,7 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 
 ```jsx
 // in src/category.js
-import React from 'react';
+import * as React from 'react';
 import {
     Admin,
     Resource,
@@ -2416,7 +2417,7 @@ import {
 import { CreateNode, EditNode, SimpleForm, TreeWithDetails } from '@react-admin/ra-tree';
 
 // a Create view for a tree uses <CreateNode> instead of the standard <Create>
-const CategoriesCreate: FC = props => (
+const CategoriesCreate = props => (
     <CreateNode {...props}>
         <SimpleForm>
             <TextInput source="name" />
@@ -2425,7 +2426,7 @@ const CategoriesCreate: FC = props => (
 );
 
 // an Edit view for a tree uses <EditNode> instead of the standard <Edit>
-const CategoriesEdit = (props) => (
+const CategoriesEdit = props => (
     <EditNode {...props}>
         <SimpleForm>
             <TextInput source="title" />
@@ -2434,7 +2435,7 @@ const CategoriesEdit = (props) => (
 )
 
 // a List view for a tree uses <TreeWithDetails>
-export const CategoriesList = (props) => (
+export const CategoriesList = props => (
     <TreeWithDetails 
         create={CategoriesCreate}
         edit={CategoriesEdit}
