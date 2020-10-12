@@ -74,7 +74,9 @@ describe('useCreateController', () => {
     it('should call the dataProvider.create() function on save', async () => {
         const create = jest
             .fn()
-            .mockImplementationOnce((_, { data }) => Promise.resolve({ data }));
+            .mockImplementationOnce((_, { data }) =>
+                Promise.resolve({ data: { id: 123, ...data } })
+            );
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
             create,
@@ -101,7 +103,8 @@ describe('useCreateController', () => {
         let saveCallback;
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
-            create: (_, { data }) => Promise.resolve({ data }),
+            create: (_, { data }) =>
+                Promise.resolve({ data: { id: 123, ...data } }),
         } as unknown) as DataProvider;
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
@@ -168,7 +171,8 @@ describe('useCreateController', () => {
         let saveCallback;
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
-            create: (_, { data }) => Promise.resolve({ data }),
+            create: (_, { data }) =>
+                Promise.resolve({ data: { id: 123, ...data } }),
         } as unknown) as DataProvider;
         const onSuccess = jest.fn();
         const { dispatch } = renderWithRedux(
@@ -194,7 +198,8 @@ describe('useCreateController', () => {
         let saveCallback;
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
-            create: (_, { data }) => Promise.resolve({ data }),
+            create: (_, { data }) =>
+                Promise.resolve({ data: { id: 123, ...data } }),
         } as unknown) as DataProvider;
         const onSuccess = jest.fn();
         const onSuccessSave = jest.fn();
@@ -286,7 +291,9 @@ describe('useCreateController', () => {
         let saveCallback;
         const create = jest
             .fn()
-            .mockImplementationOnce((_, { data }) => Promise.resolve({ data }));
+            .mockImplementationOnce((_, { data }) =>
+                Promise.resolve({ data: { id: 123, ...data } })
+            );
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
             create,
@@ -317,7 +324,9 @@ describe('useCreateController', () => {
         let saveCallback;
         const create = jest
             .fn()
-            .mockImplementationOnce((_, { data }) => Promise.resolve({ data }));
+            .mockImplementationOnce((_, { data }) =>
+                Promise.resolve({ data: { id: 123, ...data } })
+            );
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
             create,

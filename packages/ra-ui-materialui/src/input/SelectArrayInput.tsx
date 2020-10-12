@@ -80,10 +80,6 @@ const useStyles = makeStyles(
         chip: {
             margin: theme.spacing(1 / 4),
         },
-        select: {
-            height: 'auto',
-            overflow: 'auto',
-        },
     }),
     { name: 'RaSelectArrayInput' }
 );

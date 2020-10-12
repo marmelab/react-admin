@@ -87,7 +87,7 @@ describe('useDataProvider', () => {
     });
 
     it('should dispatch CUSTOM_FETCH actions by default', async () => {
-        const getOne = jest.fn(() => Promise.resolve({ data: null }));
+        const getOne = jest.fn(() => Promise.resolve({ data: { id: 123 } }));
         const dataProvider = { getOne };
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
@@ -121,7 +121,9 @@ describe('useDataProvider', () => {
                     return <div data-testid="data">{JSON.stringify(data)}</div>;
                 return <div data-testid="loading">loading</div>;
             };
-            const getOne = jest.fn(() => Promise.resolve({ data: null }));
+            const getOne = jest.fn(() =>
+                Promise.resolve({ data: { id: 123 } })
+            );
             const dataProvider = { getOne };
             const { dispatch } = renderWithRedux(
                 <DataProviderContext.Provider value={dataProvider}>
