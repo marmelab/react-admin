@@ -1205,19 +1205,16 @@ In this example, `artists.id` matches `performances.artist_id`, and `performance
 The form displays the events name in a `<SelectArrayInput>`:
 
 ```jsx
-import React, { FC, ComponentProps } from 'react';
+import * as React from 'react';
 import { Edit, SelectArrayInput, SimpleForm, TextInput } from 'react-admin';
-
 import { ReferenceManyToManyInput, useReferenceManyToManyUpdate } from '@react-admin/ra-many-to-many';
-
-type Props = ComponentProps<typeof Edit>;
 
 /**
  * Decorate <SimpleForm> to override the default save function.
  * This is necessary to save changes in the associative table
  * only on submission.
  */
-const ArtistEditForm: FC<Props> = props => {
+const ArtistEditForm = props => {
     const save = useReferenceManyToManyUpdate({
         basePath: props.basePath,
         record: props.record,
@@ -1233,7 +1230,7 @@ const ArtistEditForm: FC<Props> = props => {
     return <SimpleForm {...props} save={save} />;
 };
 
-const ArtistEdit: FC<Props> = props => (
+const ArtistEdit = props => (
     <Edit {...props}>
         <ArtistEditForm>
             <TextInput disabled source="id" />

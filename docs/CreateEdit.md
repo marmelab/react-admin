@@ -898,7 +898,7 @@ import {
 import { AccordionForm, AccordionFormPanel } from '@react-admin/ra-form-layout';
 
 // don't forget the component="div" prop on the main component to disable the main Card
-const CustomerEdit: FC = props => (
+const CustomerEdit = props => (
     <Edit {...props} component="div">
         <AccordionForm autoClose>
             <AccordionFormPanel label="Identity">
@@ -944,11 +944,11 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 ![WizardForm](https://marmelab.com/ra-enterprise/modules/assets/ra-wizard-form-overview.gif)
 
 ```jsx
-import React, { FC } from 'react';
+import * as React from 'react';
 import { Create, TextInput, required } from 'react-admin';
 import { WizardForm, WizardFormStep } from '@react-admin/ra-form-layout';
 
-const PostCreate: FC = props => (
+const PostCreate = props => (
     <Create {...props}>
         <WizardForm>
             <WizardFormStep label="First step">
@@ -974,7 +974,7 @@ These [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" 
 ![EditDialog](https://marmelab.com/ra-enterprise/modules/assets/edit-dialog.gif)
 
 ```jsx
-import React from 'react';
+import * as React from 'react';
 import { List, Datagrid, SimpleForm, TextField, TextInput, DateInput, required } from 'react-admin';
 import { EditDialog, CreateDialog } from '@react-admin/ra-form-layout';
 
