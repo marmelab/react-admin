@@ -1892,25 +1892,65 @@ const PersonEdit = props => (
 
 Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
 
-React-admin relies on react-final-form, so you can grab the current form values using react-final-form [useFormState](https://final-form.org/docs/react-final-form/api/useFormState) hook. Alternatively, you can use the react-admin `<FormDataConsumer>` component, which grabs the form values, and passes them to a child function.
-
-This facilitates the implementation of linked inputs:
+React-admin relies on [react-final-form](https://final-form.org/docs/react-final-form/getting-started) for form handling. You can grab the current form values using react-final-form [useFormState](https://final-form.org/docs/react-final-form/api/useFormState) hook. 
 
 ```jsx
-import { FormDataConsumer } from 'react-admin';
+import * as React from 'react';
+import { Edit, SimpleForm, SelectInput } from 'react-admin';
+import { useFormState } from 'react-final-form';
 
-const OrderEdit = (props) => (
+const countries = ['USA', 'UK', 'France'];
+const cities = {
+    USA: ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'],
+    UK: ['London', 'Birmingham', 'Glasgow', 'Liverpool', 'Bristol'],
+    France: ['Paris', 'Marseille', 'Lyon', 'Toulouse', 'Nice'],
+};
+const toChoices = items => items.map(item => ({ id: item, name: item }));
+
+const CityInput = props => {
+    const { values } = useFormState();
+    return (
+        <SelectInput
+            choices={values.country ? toChoices(cities[values.country]) : []}
+            {...props}
+        />
+    );
+};
+
+const OrderEdit = props => (
     <Edit {...props}>
         <SimpleForm>
-            <SelectInput source="country" choices={countries} />
+            <SelectInput source="country" choices={toChoices(countries)} />
+            <CityInput source="cities" />
+        </SimpleForm>
+    </Edit>
+);
+
+export default OrderEdit;
+```
+
+Alternatively, you can use the react-admin `<FormDataConsumer>` component, which grabs the form values, and passes them to a child function. As `<FormDataConsumer>` uses the render props pattern, you can avoid creating an intermediate component like the `<CityInput>` component above:
+
+```jsx
+import * as React from 'react';
+import { Edit, SimpleForm, SelectInput, FormDataConsumer } from 'react-admin';
+
+const OrderEdit = props => (
+    <Edit {...props}>
+        <SimpleForm>
+            <SelectInput source="country" choices={toChoices(countries)} />
             <FormDataConsumer>
-                {({ formData, ...rest }) =>
-                     <SelectInput
-                         source="city"
-                         choices={getCitiesFor(formData.country)}
-                         {...rest}
-                     />
-                }
+                {({ formData, ...rest }) => (
+                    <SelectInput
+                        source="cities"
+                        choices={
+                            formData.country
+                                ? toChoices(cities[formData.country])
+                                : []
+                        }
+                        {...rest}
+                    />
+                )}
             </FormDataConsumer>
         </SimpleForm>
     </Edit>
@@ -1921,46 +1961,6 @@ const OrderEdit = (props) => (
 
 - `scopedFormData`: an object containing the current values of the currently rendered item from the `ArrayInput`
 - `getSource`: a function which will translate the source into a valid one for the `ArrayInput`
-
-Would you need to update an input when another one changes, use the [`useForm`](https://final-form.org/docs/react-final-form/api/useForm) hook from `react-final-form`. For example, a country input that resets a city input on change.
-
-```jsx
-import * as React from 'react';
-import { Fragment } from 'react';
-import { useForm } from 'react-final-form';
-
-const OrderOrigin = ({ formData, ...rest }) => {
-    const form = useForm();
-
-    return (
-        <Fragment>
-            <SelectInput
-                source="country"
-                choices={countries}
-                onChange={value => form.change('city', null)}
-                {...rest}
-            />
-            <SelectInput
-                source="city"
-                choices={getCitiesFor(formData.country)}
-                {...rest}
-            />
-        </Fragment>
-    );
-};
-
-const OrderEdit = (props) => (
-    <Edit {...props}>
-        <SimpleForm>
-            <FormDataConsumer>
-                {formDataProps => (
-                    <OrderOrigin {...formDataProps} />
-                )}
-            </FormDataConsumer>
-        </SimpleForm>
-    </Edit>
-);
-```
 
 And here is an example usage for `getSource` inside `<ArrayInput>`:
 
@@ -1973,7 +1973,6 @@ const PostEdit = (props) => (
             <ArrayInput source="authors">
                 <SimpleFormIterator>
                     <TextInput source="name" />
-
                     <FormDataConsumer>
                         {({
                             formData, // The whole form data
