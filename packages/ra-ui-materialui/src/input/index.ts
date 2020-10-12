@@ -21,6 +21,7 @@ import SearchInput from './SearchInput';
 import SelectArrayInput from './SelectArrayInput';
 import SelectInput from './SelectInput';
 import TextInput from './TextInput';
+import sanitizeInputRestProps from './sanitizeInputRestProps';
 
 export {
     ArrayInput,
@@ -46,4 +47,5 @@ export {
     SelectArrayInput,
     SelectInput,
     TextInput,
+    sanitizeInputRestProps,
 };

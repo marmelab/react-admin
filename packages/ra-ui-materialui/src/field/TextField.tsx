@@ -3,7 +3,7 @@ import { FC, memo, ElementType } from 'react';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 
-import sanitizeRestProps from './sanitizeRestProps';
+import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 const TextField: FC<TextFieldProps> = memo<TextFieldProps>(
@@ -15,7 +15,7 @@ const TextField: FC<TextFieldProps> = memo<TextFieldProps>(
                 component="span"
                 variant="body2"
                 className={className}
-                {...sanitizeRestProps(rest)}
+                {...sanitizeFieldRestProps(rest)}
             >
                 {value != null && typeof value !== 'string'
                     ? JSON.stringify(value)

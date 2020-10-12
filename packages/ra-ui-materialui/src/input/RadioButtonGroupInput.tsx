@@ -13,7 +13,7 @@ import { FormControlProps } from '@material-ui/core/FormControl';
 import get from 'lodash/get';
 import { useInput, FieldTitle, ChoicesInputProps, warning } from 'ra-core';
 
-import sanitizeRestProps from './sanitizeRestProps';
+import sanitizeInputRestProps from './sanitizeInputRestProps';
 import InputHelperText from './InputHelperText';
 import RadioButtonGroupInputItem from './RadioButtonGroupInputItem';
 
@@ -144,7 +144,7 @@ const RadioButtonGroupInput: FunctionComponent<
             component="fieldset"
             margin={margin}
             error={touched && !!error}
-            {...sanitizeRestProps(rest)}
+            {...sanitizeInputRestProps(rest)}
         >
             <FormLabel component="legend" className={classes.label}>
                 <FieldTitle

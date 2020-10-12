@@ -15,7 +15,7 @@ import {
     warning as warningLog,
 } from 'ra-core';
 
-import sanitizeInputProps from './sanitizeRestProps';
+import sanitizeInputRestProps from './sanitizeInputRestProps';
 import LinearProgress from '../layout/LinearProgress';
 import Labeled from './Labeled';
 import ReferenceError from './ReferenceError';
@@ -183,7 +183,7 @@ const sanitizeRestProps = ({
     sort,
     validation,
     ...rest
-}: any) => sanitizeInputProps(rest);
+}: any) => sanitizeInputRestProps(rest);
 
 export interface ReferenceInputViewProps {
     allowEmpty?: boolean;

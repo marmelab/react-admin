@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { Record } from 'ra-core';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 
-import sanitizeRestProps from './sanitizeRestProps';
+import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 /**
@@ -30,7 +30,7 @@ const FunctionField = <RecordType extends Record = Record>({
                     component="span"
                     variant="body2"
                     className={className}
-                    {...sanitizeRestProps(rest)}
+                    {...sanitizeFieldRestProps(rest)}
                 >
                     {render(record, source)}
                 </Typography>

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 
-import sanitizeRestProps from './sanitizeRestProps';
+import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 const hasNumberFormat = !!(
@@ -62,7 +62,7 @@ export const NumberField: FC<NumberFieldProps> = memo<NumberFieldProps>(
                     component="span"
                     variant="body2"
                     className={className}
-                    {...sanitizeRestProps(rest)}
+                    {...sanitizeFieldRestProps(rest)}
                 >
                     {emptyText}
                 </Typography>
@@ -74,7 +74,7 @@ export const NumberField: FC<NumberFieldProps> = memo<NumberFieldProps>(
                 variant="body2"
                 component="span"
                 className={className}
-                {...sanitizeRestProps(rest)}
+                {...sanitizeFieldRestProps(rest)}
             >
                 {hasNumberFormat
                     ? value.toLocaleString(locales, options)

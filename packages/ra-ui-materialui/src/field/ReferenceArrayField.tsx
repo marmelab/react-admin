@@ -13,7 +13,7 @@ import {
 
 import { fieldPropTypes, PublicFieldProps, InjectedFieldProps } from './types';
 import { ClassesOverride } from '../types';
-import sanitizeRestProps from './sanitizeRestProps';
+import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 
 /**
  * A container component that fetches records from another resource specified
@@ -169,13 +169,13 @@ export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props =
     return (
         <>
             {cloneElement(Children.only(children), {
-                ...sanitizeRestProps(rest),
+                ...sanitizeFieldRestProps(rest),
                 className,
                 resource: reference,
             })}{' '}
             {pagination &&
                 props.total !== undefined &&
-                cloneElement(pagination, sanitizeRestProps(rest))}
+                cloneElement(pagination, sanitizeFieldRestProps(rest))}
         </>
     );
 };

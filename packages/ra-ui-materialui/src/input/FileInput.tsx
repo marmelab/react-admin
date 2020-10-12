@@ -15,7 +15,7 @@ import { useInput, useTranslate, InputProps } from 'ra-core';
 
 import Labeled from './Labeled';
 import FileInputPreview from './FileInputPreview';
-import sanitizeRestProps from './sanitizeRestProps';
+import sanitizeInputRestProps from './sanitizeInputRestProps';
 import InputHelperText from './InputHelperText';
 
 const useStyles = makeStyles(
@@ -183,7 +183,7 @@ const FileInput: FunctionComponent<
             resource={resource}
             isRequired={isRequired}
             meta={meta}
-            {...sanitizeRestProps(rest)}
+            {...sanitizeInputRestProps(rest)}
         >
             <>
                 <div

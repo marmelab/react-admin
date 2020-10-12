@@ -12,7 +12,7 @@ import { TypographyProps } from '@material-ui/core/Typography';
 import { useTranslate } from 'ra-core';
 
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
-import sanitizeRestProps from './sanitizeRestProps';
+import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 
 const useStyles = makeStyles(
     {
@@ -55,7 +55,7 @@ export const BooleanField: FC<BooleanFieldProps> = memo<BooleanFieldProps>(
                     component="span"
                     variant="body2"
                     className={classnames(classes.root, className)}
-                    {...sanitizeRestProps(rest)}
+                    {...sanitizeFieldRestProps(rest)}
                 >
                     <Tooltip title={translate(ariaLabel, { _: ariaLabel })}>
                         {value === true ? (
@@ -73,7 +73,7 @@ export const BooleanField: FC<BooleanFieldProps> = memo<BooleanFieldProps>(
                 component="span"
                 variant="body2"
                 className={className}
-                {...sanitizeRestProps(rest)}
+                {...sanitizeFieldRestProps(rest)}
             >
                 {emptyText}
             </Typography>
