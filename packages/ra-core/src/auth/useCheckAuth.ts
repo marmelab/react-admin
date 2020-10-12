@@ -60,7 +60,10 @@ const useCheckAuth = (): CheckAuth => {
                             ? error.redirectTo
                             : redirectTo
                     );
-                    !disableNotification &&
+                    const shouldSkipNotify =
+                        disableNotification ||
+                        (error && error.message === false);
+                    !shouldSkipNotify &&
                         notify(
                             getErrorMessage(error, 'ra.auth.auth_check_error'),
                             'warning'
@@ -91,6 +94,7 @@ type CheckAuth = (
     params?: any,
     logoutOnFailure?: boolean,
     redirectTo?: string,
+    /** @deprecated to disable the notification, authProvider.checkAuth() should return an object with an error property set to true */
     disableNotification?: boolean
 ) => Promise<any>;
 
