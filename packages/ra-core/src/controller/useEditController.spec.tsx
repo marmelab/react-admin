@@ -85,7 +85,7 @@ describe('useEditController', () => {
         const update = jest
             .fn()
             .mockImplementationOnce((_, { id, data, previousData }) =>
-                Promise.resolve({ data: { ...previousData, ...data } })
+                Promise.resolve({ data: { id, ...previousData, ...data } })
             );
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
@@ -115,7 +115,7 @@ describe('useEditController', () => {
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
             update: (_, { id, data, previousData }) =>
-                Promise.resolve({ data: { ...previousData, ...data } }),
+                Promise.resolve({ data: { id, ...previousData, ...data } }),
         } as unknown) as DataProvider;
         let saveCallback;
         const { dispatch } = renderWithRedux(
@@ -148,7 +148,7 @@ describe('useEditController', () => {
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
             update: (_, { id, data, previousData }) =>
-                Promise.resolve({ data: { ...previousData, ...data } }),
+                Promise.resolve({ data: { id, ...previousData, ...data } }),
         } as unknown) as DataProvider;
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
@@ -188,7 +188,7 @@ describe('useEditController', () => {
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
             update: (_, { id, data, previousData }) =>
-                Promise.resolve({ data: { ...previousData, ...data } }),
+                Promise.resolve({ data: { id, ...previousData, ...data } }),
         } as unknown) as DataProvider;
         const onSuccess = jest.fn();
         const { dispatch } = renderWithRedux(
@@ -219,7 +219,7 @@ describe('useEditController', () => {
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
             update: (_, { id, data, previousData }) =>
-                Promise.resolve({ data: { ...previousData, ...data } }),
+                Promise.resolve({ data: { id, ...previousData, ...data } }),
         } as unknown) as DataProvider;
         const onSuccess = jest.fn();
         const onSuccessSave = jest.fn();
@@ -323,7 +323,9 @@ describe('useEditController', () => {
         let saveCallback;
         const update = jest
             .fn()
-            .mockImplementationOnce((_, { data }) => Promise.resolve({ data }));
+            .mockImplementationOnce((_, { id, data }) =>
+                Promise.resolve({ data: { id, ...data } })
+            );
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
             update,
@@ -362,7 +364,9 @@ describe('useEditController', () => {
         let saveCallback;
         const update = jest
             .fn()
-            .mockImplementationOnce((_, { data }) => Promise.resolve({ data }));
+            .mockImplementationOnce((_, { id, data }) =>
+                Promise.resolve({ data: { id, ...data } })
+            );
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
             update,
