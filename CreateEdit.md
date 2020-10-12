@@ -106,6 +106,19 @@ You can customize the `<Create>` and `<Edit>` components using the following pro
 
 `<Create>` also accepts a `record` prop, to initialize the form based on a value object.
 
+### CSS API
+
+The `<Create>` and `<Edit>` components accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
+
+| Rule name   | Description                                                                                |
+| ----------- | ------------------------------------------------------------------------------------------ |
+| `root`      | Alternative to using `className`. Applied to the root element                              |
+| `main`      | Applied to the main container                                                              |
+| `noActions` | Applied to the main container when `actions` prop is `false`                               |
+| `card`      | Applied to the child component inside the main container (Material UI's `Card` by default) |
+
+To override the style of all instances of `<Create>` and `<Edit>` components using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaCreate` and `RaEdit` keys respectively.
+
 ### Page Title
 
 By default, the title for the `Create` view is "Create [resource_name]", and the title for the `Edit` view is "Edit [resource_name] #[record_id]".
@@ -304,7 +317,7 @@ const PostEdit = props => (
 By default, when the save action succeeds, react-admin shows a notification, and redirects to another page. You can override this behavior and pass custom side effects by providing a function as `onSuccess` prop:
 
 ```jsx
-import React from 'react';
+import * as React from 'react';
 import { useNotify, useRefresh, useRedirect, Edit, SimpleForm } from 'react-admin';
 
 const PostEdit = props => {
@@ -359,7 +372,7 @@ By default, when the save action fails at the dataProvider level, react-admin sh
 You can override this behavior and pass custom side effects by providing a function as `onFailure` prop:
 
 ```jsx
-import React from 'react';
+import * as React from 'react';
 import { useNotify, useRefresh, useRedirect, Edit, SimpleForm } from 'react-admin';
 
 const PostEdit = props => {

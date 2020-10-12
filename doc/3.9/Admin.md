@@ -27,25 +27,22 @@ export default App;
 
 Here are all the props accepted by the component:
 
-- [The `<Admin>` Component](#the-admin-component)
-  - [`dataProvider`](#dataprovider)
-  - [`authProvider`](#authprovider)
-  - [`i18nProvider`](#i18nprovider)
-  - [`title`](#title)
-  - [`dashboard`](#dashboard)
-  - [`catchAll`](#catchall)
-  - [`menu`](#menu)
-  - [`theme`](#theme)
-  - [`layout`](#layout)
-  - [`customReducers`](#customreducers)
-  - [`customSagas`](#customsagas)
-  - [`customRoutes`](#customroutes)
-  - [`loginPage`](#loginpage)
-  - [`logoutButton`](#logoutbutton)
-  - [`initialState`](#initialstate)
-  - [`history`](#history)
-  - [Declaring resources at runtime](#declaring-resources-at-runtime)
-  - [Using react-admin without `<Admin>` and `<Resource>`](#using-react-admin-without-admin-and-resource)
+- [`dataProvider`](#dataprovider)
+- [`authProvider`](#authprovider)
+- [`i18nProvider`](#i18nprovider)
+- [`title`](#title)
+- [`dashboard`](#dashboard)
+- [`catchAll`](#catchall)
+- [`menu`](#menu)
+- [`theme`](#theme)
+- [`layout`](#layout)
+- [`customReducers`](#customreducers)
+- [`customSagas`](#customsagas)
+- [`customRoutes`](#customroutes)
+- [`loginPage`](#loginpage)
+- [`logoutButton`](#logoutbutton)
+- [`initialState`](#initialstate)
+- [`history`](#history)
 
 ## `dataProvider`
 
@@ -278,7 +275,7 @@ For more details on predefined themes and custom themes, refer to the [Material 
 
 If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where react-admin will render the resources. If you use material UI fields and inputs, it should contain a `<ThemeProvider>` element. And finally, if you want to show the spinner in the app header when the app fetches data in the background, the Layout should connect to the redux store.
 
-Use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.js) as a starting point, and check [the Theming documentation](./Theming.md#using-a-custom-layout) for examples.
+Use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point, and check [the Theming documentation](./Theming.md#using-a-custom-layout) for examples.
 
 ```jsx
 // in src/App.js
@@ -605,7 +602,8 @@ So it's impossible, for instance, to have a dynamic list of resources based on a
 To overcome this limitation, you can build your own `<Admin>` component using two lower-level components: `<AdminContext>` (responsible for putting the providers in contexts) and `<AdminUI>` (responsible for displaying the UI). Here is an example:
 
 ``` jsx
-import * as React, { useEffect, useState } from 'react';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { AdminContext, AdminUI, Resource, ListGuesser, useDataProvider } from 'react-admin';
 
 function App() {

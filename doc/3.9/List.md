@@ -725,10 +725,14 @@ The default value for the `component` prop is `Card`.
 
 The `List` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
 
-* `root`: alternative to using `className`. Applied to the root element.
-* `actions`: applied to the actions container
-* `main`: applied to the main container
-* `noResults`: applied to the component shown when there is no result
+| Rule name              | Description                                                                              |
+| ---------------------- | ---------------------------------------------------------------------------------------- |
+| `root`                 | Alternative to using `className`. Applied to the root element                            |
+| `actions`              | Applied to the actions container                                                         |
+| `main`                 | Applied to the main container                                                            |
+| `content`              | Applied to the child component inside the main container                                 |
+| `bulkActionsDisplayed` | Applied to the child component inside the main container when there are selected records |
+| `noResults`            | Applied to the component shown when there is no result                                   |
 
 You can customize the list styles by passing a `classes` object as prop, through `useStyles()`. Here is an example:
 
@@ -737,15 +741,15 @@ You can customize the list styles by passing a `classes` object as prop, through
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
-    header: {
+    actions: {
         backgroundColor: '#ccc',
     },
 });
 
 const PostList = props => {
-    const classes = useStyles();
+    const classes = useStyles(props);
     return (
-        <List {...props} classes={{ header: classes.header }}>
+        <List {...props} classes={{ actions: classes.actions }}>
             <Datagrid>
                 ...
             </Datagrid>
@@ -756,6 +760,8 @@ const PostList = props => {
 export default PostList;
 ```
 {% endraw %}
+
+**Tip**: The `List` component `classes` can also be customized for all instances of the component with its global css name `"RaList"` as [describe here](https://marmelab.com/blog/2019/12/18/react-admin-3-1.html#theme-overrides)
 
 ## Filtering The List
 
@@ -1421,7 +1427,7 @@ By default, when the user clicks on a column header, the list becomes sorted in 
 
 ```jsx
 // in src/posts.js
-import React from 'react';
+import * as React from 'react';
 import { List, Datagrid, TextField } from 'react-admin';
 
 export const PostList = (props) => (
@@ -1820,6 +1826,8 @@ export const PostList = (props) => (
 );
 ```
 
+**Tip**: To let users hide or show columns at will, check the [`<SelectColumnsButton>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#selectcolumnsbutton-store-datagrid-columns-in-preferences)<img class="icon" src="./img/premium.svg" />, an [Enterprise Edition](https://marmelab.com/ra-enterprise) component.
+
 The `<Datagrid>` is an **iterator** component: it gets an array of ids and a data store from the `ListContext`, and iterates over the ids to display each record. Another example of iterator component is [`<SingleFieldList>`](#the-singlefieldlist-component).
 
 ### Body element
@@ -2151,12 +2159,12 @@ const PostList = props => (
 export default withStyles(styles)(PostList);
 ```
 
-**Tip**: You can use the `Datagrid` component with [custom queries](./Actions.md#usequery-hook):
+**Tip**: You can use the `Datagrid` component with [custom queries](./Actions.md#usequery-hook), provided you pass the result to a `<ListContextProvider>`:
 
 {% raw %}
 ```jsx
 import keyBy from 'lodash/keyBy'
-import { useQuery, Datagrid, TextField, Pagination, Loading } from 'react-admin'
+import { useQuery, Datagrid, TextField, Pagination, Loading, ListContextProvider } from 'react-admin'
 
 const CustomList = () => {
     const [page, setPage] = useState(1);
@@ -2178,16 +2186,19 @@ const CustomList = () => {
         return <p>ERROR: {error}</p>
     }
     return (
-        <>
-            <Datagrid
-                data={keyBy(data, 'id')}
-                ids={data.map(({ id }) => id)}
-                currentSort={{ field: 'id', order: 'ASC' }}
-                basePath="/posts" // required only if you set use "rowClick"
-                rowClick="edit"
-            >
+        <ListContextProvider
+            value={{
+                resource: 'posts',
+                basePath: 'posts',
+                data: keyBy(data, 'id'),
+                ids: data.map(({ id }) => id),
+                currentSort: { field: 'id', order: 'ASC' },
+                selectedIds: [],
+            }}
+        >
+            <Datagrid rowClick="edit">
                 <TextField source="id" />
-                <TextField source="name" />
+                <TextField source="title" />
             </Datagrid>
             <Pagination
                 page={page}
@@ -2195,7 +2206,8 @@ const CustomList = () => {
                 setPage={setPage}
                 total={total}
             />
-        </>
+        </ListContextProvider>
+    );
     )
 }
 ```
@@ -2330,6 +2342,123 @@ It's especially useful for `<ReferenceManyField>` or `<ReferenceArrayField>` com
 </ReferenceArrayField>
 ```
 
+## The `<EditableDatagrid>` Component
+
+This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers an "edit-in-place" experience in a `<Datagrid>`.
+
+![Editable Datagrid](https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.gif)
+
+```jsx
+import React, { FC } from 'react';
+import {
+    List,
+    TextField,
+    TextInput,
+    DateField,
+    DateInput,
+    SelectField,
+    SelectInput,
+    required,
+} from 'react-admin';
+import { EditableDatagrid, RowForm } from '@react-admin/ra-editable-datagrid';
+
+const ArtistList: FC = props => (
+    <List {...props} hasCreate empty={false}>
+        <EditableDatagrid
+            undoable
+            createForm={<ArtistForm />}
+            editForm={<ArtistForm />}
+        >
+            <TextField source="id" />
+            <TextField source="firstname" />
+            <TextField source="name" />
+            <DateField source="dob" label="born" />
+            <SelectField
+                source="prof"
+                label="Profession"
+                choices={professionChoices}
+            />
+        </EditableDatagrid>
+    </List>
+);
+
+const ArtistForm: FC = props => (
+    <RowForm {...props}>
+        <TextField source="id" />
+        <TextInput source="firstname" validate={required()} />
+        <TextInput source="name" validate={required()} />
+        <DateInput source="dob" label="born" validate={required()} />
+        <SelectInput
+            source="prof"
+            label="Profession"
+            choices={professionChoices}
+        />
+    </RowForm>
+);
+```
+
+Check [the `ra-editable-datagrid` documentation](https://marmelab.com/ra-enterprise/modules/ra-editable-datagrid) for more details.
+
+## The `<TreeWithDetails>` Component
+
+This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers a replacement for the `<List>` component when the records form **tree structures** like directories, categories, etc. `<TreeWithDetails>` allows to display, edit, and rearrange trees.
+
+```jsx
+// in src/category.js
+import React from 'react';
+import {
+    Admin,
+    Resource,
+    Create,
+    Edit,
+    TextInput,
+} from 'react-admin';
+import { CreateNode, EditNode, SimpleForm, TreeWithDetails } from '@react-admin/ra-tree';
+
+// a Create view for a tree uses <CreateNode> instead of the standard <Create>
+const CategoriesCreate: FC = props => (
+    <CreateNode {...props}>
+        <SimpleForm>
+            <TextInput source="name" />
+        </SimpleForm>
+    </CreateNode>
+);
+
+// an Edit view for a tree uses <EditNode> instead of the standard <Edit>
+const CategoriesEdit = (props) => (
+    <EditNode {...props}>
+        <SimpleForm>
+            <TextInput source="title" />
+        </SimpleForm>
+    </EditNode>
+)
+
+// a List view for a tree uses <TreeWithDetails>
+export const CategoriesList = (props) => (
+    <TreeWithDetails 
+        create={CategoriesCreate}
+        edit={CategoriesEdit}
+        {...props}
+    />
+);
+
+// in src/App.js
+import { CategoriesList } from './category';
+
+const App = () => (
+    <Admin
+        dataProvider={dataProvider}
+        i18nProvider={i18nProvider}
+        locale="en"
+        customReducers={{ tree }}
+    >
+        <Resource list={CategoriesList} />
+    </Admin>
+)
+```
+
+Check [the `ra-tree` documentation](https://marmelab.com/ra-enterprise/modules/ra-tree) for more details.
+
 ## Using a Custom Iterator
 
 A `<List>` can delegate to any iterator component - `<Datagrid>` is just one example. An iterator component can get the data to display from [the `useListContext` hook](#uselistcontext). The data comes in two constants:
@@ -2401,8 +2530,6 @@ As you can see, nothing prevents you from using `<Field>` components inside your
 
 You can find components for react-admin in third-party repositories.
 
-- [ra-editable-datagrid](https://marmelab.com/ra-enterprise/modules/ra-editable-datagrid) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) component which offers an "edit-in-place" experience in a `<Datagrid>`.
-- [ra-tree](https://marmelab.com/ra-enterprise/modules/ra-tree) <img class="icon" src="./img/premium.svg" />: tree hooks and components from the [ra-enterprise](https://marmelab.com/ra-enterprise) package. This module is agnostic as to how you store the tree structure in the backend side.
 - [ra-customizable-datagrid](https://github.com/fizix-io/ra-customizable-datagrid): plugin that allows to hide / show columns dynamically.
 
 ## Displaying Fields Depending On The User Permissions

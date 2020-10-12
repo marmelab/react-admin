@@ -221,6 +221,14 @@ import { BooleanField } from 'react-admin';
 
 `<BooleanField>` also accepts the [common field props](./Fields.md#common-field-props).
 
+### CSS API
+
+| Rule name  | Description                 |
+| ---------- | --------------------------- |
+| `root`     | Applied to the root element |
+
+To override the style of all instances of `<BooleanField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaBooleanField` key.
+
 ### Usage
 
 The `<BooleanField>` includes a tooltip text for accessibility (or to query in "end to end" tests). By default, it is the translated value ('true' or 'false' in English).
@@ -247,6 +255,16 @@ import AlarmOffIcon from '@material-ui/icons/AlarmOff';
 ## `<ChipField>`
 
 Displays a value inside a ["Chip"](https://material-ui.com/components/chips), which is Material UI's term for a label.
+
+### CSS API
+
+| Rule name  | Description                                              |
+| ---------- | -------------------------------------------------------- |
+| `chip`     | Applied to the underlying Material UI's `Chip` component |
+
+To override the style of all instances of `<ChipField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaChipField` key.
+
+### Usage
 
 ```jsx
 import { ChipField } from 'react-admin';
@@ -374,6 +392,15 @@ This field is also often used within the [<ImageInput />](./Inputs.md#imageinput
 
 `<ImageField>` also accepts the [common field props](./Fields.md#common-field-props).
 
+### CSS API
+
+| Rule name  | Description                                                                    |
+| ---------- | ------------------------------------------------------------------------------ |
+| `list`     | Applied to the underlying `<ul>` component when `sourceValue` prop is an array |
+| `image`    | Applied to each underlying `<img>` component                                   |
+
+To override the style of all instances of `<ImageField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaImageField` key.
+
 ### Usage
 
 The optional `title` prop points to the picture title property, used for both `alt` and `title` attributes. It can either be a hard-written string, or a path within your JSON object:
@@ -432,6 +459,14 @@ This field is also often used within an [<FileInput />](./Inputs.md#fileinput) c
 
 `<FileField>` also accepts the [common field props](./Fields.md#common-field-props).
 
+### CSS API
+
+| Rule name  | Description                 |
+| ---------- | --------------------------- |
+| `root`     | Applied to the root element |
+
+To override the style of all instances of `<FileField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaFileField` key.
+
 ### Usage
 
 The optional `title` prop points to the file title property, used for `title` attributes. It can either be a hard-written string, or a path within your JSON object:
@@ -466,6 +501,26 @@ You can optionally set the `target` prop to choose which window will the link tr
 // Will make the file open in new window
 <FileField source="file.url" target="_blank" />
 ```
+
+## `<MarkdownField>`
+
+This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component allows to render Markdown data as HTML.
+
+```jsx
+import { Show, SimpleShowLayout, TextField } from 'react-admin';
+import { MarkdownField } from '@react-admin/ra-markdown';
+
+const PostShow = props => (
+    <Show {...props}>
+        <SimpleShowLayout>
+            <TextField source="title" />
+            <MarkdownField source="description" />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
+Check [the `ra-markdown` documentation](https://marmelab.com/ra-enterprise/modules/ra-markdown) for more details.
 
 ## `<NumberField>`
 
@@ -547,9 +602,9 @@ import { SelectField } from 'react-admin';
 
 | Prop              | Required | Type                          | Default | Description                                                                                                                                  |
 | ----------------- | -------- | ----------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `optionText`      | Optional | `string | function | Element` | 'name'  | Name of the field to use to display the matching choice, or function returning that field name, or a React element to render for that choice |
+| `optionText`      | Optional | `string | Function | Element` | 'name'  | Name of the field to use to display the matching choice, or function returning that field name, or a React element to render for that choice |
 | `optionValue`     | Optional | `string`                      | 'id'    | Name of the field to compare to the value to find the matching choice                                                                        |
-| `translateChoice` | Optional | `Boolean`                     | true    | Whether or not the choice text should be translated                                                                                          |
+| `translateChoice` | Optional | `boolean`                     | `true`  | Whether or not the choice text should be translated                                                                                          |
 
 `<SelectField>` also accepts the [common field props](./Fields.md#common-field-props).
 
@@ -644,9 +699,17 @@ With this configuration, `<ReferenceField>` wraps the user's name in a link to t
 | `reference` | Required | `string`            | -        | The name of the resource for the referenced records, e.g. 'posts'                                                   |
 | `children`  | Required | `Element`           | -        | The Field element used to render the referenced record                                                              |
 | `link`      | Optional | `string`            | 'edit'   | Target of the link wrapping the rendered child                                                                      |
-| `sortBy`    | Optional | `string | function` | `source` | Name of the field to use for sorting when the user clicks on the column header. Set to `false` to disable the link. |
+| `sortBy`    | Optional | `string | Function` | `source` | Name of the field to use for sorting when the user clicks on the column header. Set to `false` to disable the link. |
 
 `<ReferenceField>` also accepts the [common field props](./Fields.md#common-field-props).
+
+### CSS API
+
+| Rule name  | Description                   |
+| ---------- | ----------------------------- |
+| `link`     | Applied to each child element |
+
+To override the style of all instances of `<ReferenceField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaReferenceField` key.
 
 ### Usage
 
@@ -838,6 +901,59 @@ Also, you can filter the query used to populate the possible values. Use the `fi
 ```
 {% endraw %}
 
+## `<ReferenceManyToManyField>`
+
+This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component fetches a list of referenced records by lookup in an associative table, and passes the records down to its child component, which must be an iterator component.
+
+For instance, here is how to fetch the authors related to a book record by matching book.id to book_authors.post_id, then matching book_authors.author_id to authors.id, and then display the author last_name for each, in a <ChipField>:
+
+```jsx
+import React from 'react';
+import { 
+    Show,
+    SimpleShowLayout,
+    TextField,
+    DateField,
+    SingleFieldList,
+    ChipField,
+} from 'react-admin';
+import { ReferenceManyToManyField } from '@react-admin/ra-many-to-many';
+
+export const BookShow = (props) => (
+    <Show {...props}>
+        <SimpleShowLayout>
+            <TextField source="title" />
+            <DateField source="publication_date">
+            <ReferenceManyToManyField 
+                reference="authors"
+                through="book_authors"
+                using="book_id,author_id"
+            >
+                <SingleFieldList>
+                    <ChipField source="last_name" />
+                </SingleFieldList>
+            </ReferenceManyToManyField>
+            <EditButton />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
+This example uses the following schema:
+
+```
+┌──────────────────┐       ┌──────────────┐      ┌───────────────┐
+│ books            │       │ book_authors │      │ authors       │
+│------------------│       │--------------│      │---------------│
+│ id               │───┐   │ id           │      │ id            │
+│ title            │   └──╼│ book_id      │   ┌──│ first_name    │
+│ body             │       │ author_id    │╾──┘  │ last_name     │
+│ publication_date │       │ is_public    │      │ date_of_birth │
+└──────────────────┘       └──────────────┘      └───────────────┘
+```
+
+Check [the `ra-relationships` documentation](https://marmelab.com/ra-enterprise/modules/ra-relationships) for more details.
+
 ## `<ReferenceArrayField>`
 
 Use `<ReferenceArrayField>` to display a one-to-many relationship based on an array of foreign keys. This component fetches a list of referenced records (using the `dataProvider.getMany()` method), and passes them to its child. A `<ReferenceArrayField>` displays nothing on its own, it just fetches the data and expects its child to render it.
@@ -870,17 +986,25 @@ export const PostList = (props) => (
 
 ### Properties
 
-| Prop         | Required | Type                | Default                          | Description                                                                                                                              |
-| ------------ | -------- | ------------------- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `reference`  | Required | `string`            | -                                | The name of the resource for the referenced records, e.g. 'tags'                                                                         |
-| `children`   | Required | `Element`           | -                                | The Field element used to render the referenced records                                                                                  |
-| `sortBy`     | Optional | `string | function` | `source`                         | When used in a List, name of the field to use for sorting when the user clicks on the column header. Set to `false` to disable the link. |
-| `filter`     | Optional | `Object`            | -                                | Filters to use when fetching the related records (the filtering is done client-side)                                                     |
-| `pagination` | Optional | `Element`           | -                                | Pagination element to display pagination controls. empty by default (no pagination)                                                      |
-| `perPage`    | Optional | `number`            | 1000                             | Maximum number of results to display                                                                                                     |
-| `sort`       | Optional | `{ field, order }`  | `{ field: 'id', order: 'DESC' }` | Sort order to use when displaying the related records (the sort is done client-side)                                                     |
+| Prop         | Required | Type                | Default                          | Description                                                                                                                                |
+| ------------ | -------- | ------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `reference`  | Required | `string`            | -                                | The name of the resource for the referenced records, e.g. 'tags'                                                                           |
+| `children`   | Required | `Element`           | -                                | The Field element used to render the referenced records                                                                                    |
+| `sortBy`     | Optional | `string | Function` | `source`                         | When used in a `List`, name of the field to use for sorting when the user clicks on the column header. Set to `false` to disable the link. |
+| `filter`     | Optional | `Object`            | -                                | Filters to use when fetching the related records (the filtering is done client-side)                                                       |
+| `pagination` | Optional | `Element`           | -                                | Pagination element to display pagination controls. empty by default (no pagination)                                                        |
+| `perPage`    | Optional | `number`            | 1000                             | Maximum number of results to display                                                                                                       |
+| `sort`       | Optional | `{ field, order }`  | `{ field: 'id', order: 'DESC' }` | Sort order to use when displaying the related records (the sort is done client-side)                                                       |
 
 `<ReferenceArrayField>` also accepts the [common field props](./Fields.md#common-field-props).
+
+### CSS API
+
+| Rule name  | Description                                                                            |
+| ---------- | -------------------------------------------------------------------------------------- |
+| `progress` | Applied to the Material UI's `LinearProgress` component while `loaded` prop is `false` |
+
+To override the style of all instances of `<ReferenceArrayField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaReferenceArrayField` key.
 
 ### Usage
 
@@ -935,9 +1059,9 @@ import { RichTextField } from 'react-admin';
 
 ### Properties
 
-| Prop        | Required | Type      | Default | Description                                        |
-| ----------- | -------- | --------- | ------- | -------------------------------------------------- |
-| `stripTags` | Optional | `Boolean` | false   | If true, remove all HTML tags and render text only |
+| Prop        | Required | Type      | Default  | Description                                          |
+| ----------- | -------- | --------- | -------- | ---------------------------------------------------- |
+| `stripTags` | Optional | `boolean` | `false`  | If `true`, remove all HTML tags and render text only |
 
 `<RichTextField>` also accepts the [common field props](./Fields.md#common-field-props).
 
@@ -1075,8 +1199,6 @@ PriceField.defaultProps = {
 
 You can find components for react-admin in third-party repositories.
 
-- [MarkdownField](https://marmelab.com/ra-enterprise/modules/ra-markdown#markdownfield) from [@react-admin/ra-markdown](https://marmelab.com/ra-enterprise/modules/ra-markdown) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) component which can display markdown content.
-- [ReferenceManyToManyField](https://marmelab.com/ra-enterprise/modules/ra-relationships#referencemanytomanyfield) from [@react-admin/ra-relationships](https://marmelab.com/ra-enterprise/modules/ra-relationships) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) component which fetches a list of referenced records by lookup in an associative table, and passes the records down to its child component, which must be an iterator component.
 - [OoDeLally/react-admin-clipboard-list-field](https://github.com/OoDeLally/react-admin-clipboard-list-field): a quick and customizable copy-to-clipboard field.
 
 ## Writing Your Own Field Component
