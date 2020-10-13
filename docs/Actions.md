@@ -305,7 +305,7 @@ const PostTags = ({ record }) => {
 
 ```jsx
 // syntax
-const { data, ids, total, loading, loaded, error } = useGetManyReference(resource, target, id, pagination, sort, filter, referencingResource, options)
+const { data, ids, total, loading, loaded, error } = useGetManyReference(resource, target, id, pagination, sort, filter, referencingResource, options);
 
 // example
 import { useGetManyReference } from 'react-admin';
