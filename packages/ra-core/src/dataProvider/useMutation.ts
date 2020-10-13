@@ -156,11 +156,13 @@ const useMutation = (
 
             setState(prevState => ({ ...prevState, loading: true }));
 
-            finalDataProvider[params.type](
-                params.resource,
-                params.payload,
-                params.options
-            )
+            finalDataProvider[params.type]
+                .apply(
+                    finalDataProvider,
+                    typeof params.resource !== 'undefined'
+                        ? [params.resource, params.payload, params.options]
+                        : [params.payload, params.options]
+                )
                 .then(({ data, total }) => {
                     setState({
                         data,
@@ -195,7 +197,7 @@ const useMutation = (
 
 export interface Mutation {
     type: string;
-    resource: string;
+    resource?: string;
     payload: object;
 }
 
@@ -302,9 +304,9 @@ const hasDeclarativeSideEffectsSupport = (
 };
 
 const sanitizeOptions = (args?: MutationOptions) => {
-    if (!args) return {};
+    if (!args) return { onSuccess: undefined };
     const { withDeclarativeSideEffectsSupport, ...options } = args;
-    return options;
+    return { onSuccess: undefined, ...options };
 };
 
 export default useMutation;
