@@ -365,7 +365,7 @@ const AutocompleteInput: FunctionComponent<AutocompleteInputProps> = props => {
                         <IconButton
                             className={classes.clearButton}
                             aria-label={label}
-                            title={tlabel}
+                            title={label}
                             disableRipple
                             disabled={true}
                         >
