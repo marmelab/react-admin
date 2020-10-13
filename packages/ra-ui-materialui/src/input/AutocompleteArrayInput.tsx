@@ -463,6 +463,7 @@ const AutocompleteArrayInput: FunctionComponent<
                             suggestionsContainerProps={
                                 suggestionsContainerProps
                             }
+                            className={classes.suggestionsContainer}
                         >
                             {getSuggestions(suggestionFilter).map(
                                 (suggestion, index) => (
@@ -506,6 +507,7 @@ const useStyles = makeStyles(
                 flexGrow: 1,
                 position: 'relative',
             },
+            suggestionsContainer: {},
             chip: {
                 margin: theme.spacing(0.5, 0.5, 0.5, 0),
             },
