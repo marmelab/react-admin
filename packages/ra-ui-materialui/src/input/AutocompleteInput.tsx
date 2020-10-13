@@ -438,6 +438,7 @@ const AutocompleteInput: FunctionComponent<
                             suggestionsContainerProps={
                                 suggestionsContainerProps
                             }
+                            className={classes.suggestionsContainer}
                         >
                             {suggestions.map((suggestion, index) => (
                                 <AutocompleteSuggestionItem
@@ -470,6 +471,7 @@ const useStyles = makeStyles(
             flexGrow: 1,
             position: 'relative',
         },
+        suggestionsContainer: {},
     },
     { name: 'RaAutocompleteInput' }
 );

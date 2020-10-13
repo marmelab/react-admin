@@ -199,9 +199,30 @@ import { AutocompleteInput } from 'react-admin';
 
 ### CSS API
 
-| Rule name           | Description                 |
-| ------------------- | --------------------------- |
-| `container`         | Applied to the root element |
+| Rule name              | Description                          |
+| ---------------------- | ------------------------------------ |
+| `container`            | Applied to the root element          |
+| `suggestionsContainer` | Applied to the suggestions container |
+
+The suggestions container has a `z-index` of 2. When using `<AutocompleteInput>` in a `<Dialog>`, this will cause suggestions to appear beneath the Dialog. The solution is to override the `suggestionsContainer` class name, as follows:
+
+```diff
+import { AutocompleteInput } from 'react-admin';
+-import { Dialog } from '@material-ui/core';
++import { Dialog, withStyles } from '@material-ui/core';
+
++const AutocompleteInputInDialog = withStyles({
++    suggestionsContainer: { zIndex: 2000 },
++})(AutocompleteInput);
+
+const EditForm = () => (
+    <Dialog open>
+        ...
+-       <AutocompleteInput source="foo" choices={[...]}>
++       <AutocompleteInputInDialog source="foo" choices={[...]}>
+    </Dialog>
+)
+```
 
 To override the style of all instances of `<AutocompleteInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaAutocompleteInput` key.
 
@@ -342,12 +363,33 @@ import { AutocompleteArrayInput } from 'react-admin';
 | Rule name               | Description                                                                                                                 |
 | ----------------------  | --------------------------------------------------------------------------------------------------------------------------- |
 | `container`             | Applied to the container of the underlying Material UI's `TextField` component input                                        |
+| `suggestionsContainer`  | Applied to the suggestions container |
 | `chip`                  | Applied to each Material UI's `Chip` component used as selected item                                                        |
 | `chipContainerFilled`   | Applied to each container of each Material UI's `Chip` component used as selected item when `variant` prop is `filled`      |
 | `chipContainerOutlined` | Applied to each container of each `Chip` component used as selected item when `variant` prop is `outlined`                  |
 | `inputRoot`             | Styles pass as the `root` class of the underlying Material UI's `TextField` component input                                 |
 | `inputRootFilled`       | Styles pass as the `root` class of the underlying Material UI's `TextField` component input when `variant` prop is `filled` |
 | `inputInput`            | Styles pass as the `input` class of the underlying Material UI's `TextField` component input                                |
+
+The suggestions container has a `z-index` of 2. When using `<AutocompleteArrayInput>` in a `<Dialog>`, this will cause suggestions to appear beneath the Dialog. The solution is to override the `suggestionsContainer` class name, as follows:
+
+```diff
+import { AutocompleteArrayInput } from 'react-admin';
+-import { Dialog } from '@material-ui/core';
++import { Dialog, withStyles } from '@material-ui/core';
+
++const AutocompleteArrayInputInDialog = withStyles({
++    suggestionsContainer: { zIndex: 2000 },
++})(AutocompleteArrayInput);
+
+const EditForm = () => (
+    <Dialog open>
+        ...
+-       <AutocompleteArrayInput source="foo" choices={[...]}>
++       <AutocompleteArrayInputInDialog source="foo" choices={[...]}>
+    </Dialog>
+)
+```
 
 To override the style of all instances of `<AutocompleteArrayInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaAutocompleteArrayInput` key.
 
