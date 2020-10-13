@@ -1,4 +1,4 @@
-const sanitizeRestProps: (props: any) => any = ({
+const sanitizeFieldRestProps: (props: any) => any = ({
     addLabel,
     allowEmpty,
     basePath,
@@ -23,4 +23,4 @@ const sanitizeRestProps: (props: any) => any = ({
     ...props
 }) => props;
 
-export default sanitizeRestProps;
+export default sanitizeFieldRestProps;

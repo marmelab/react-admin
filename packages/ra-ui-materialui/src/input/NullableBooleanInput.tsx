@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import { useInput, useTranslate, FieldTitle, InputProps } from 'ra-core';
 
-import sanitizeRestProps from './sanitizeRestProps';
+import sanitizeInputRestProps from './sanitizeInputRestProps';
 import InputHelperText from './InputHelperText';
 
 const useStyles = makeStyles(
@@ -102,7 +102,7 @@ const NullableBooleanInput: FunctionComponent<NullableBooleanInputProps> = props
             className={classnames(classes.input, className)}
             variant={variant}
             {...options}
-            {...sanitizeRestProps(rest)}
+            {...sanitizeInputRestProps(rest)}
         >
             <MenuItem value="">{translate(nullLabel)}</MenuItem>
             <MenuItem value="false">{translate(falseLabel)}</MenuItem>

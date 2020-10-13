@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import classnames from 'classnames';
 
-import sanitizeRestProps from './sanitizeRestProps';
+import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 const useStyles = makeStyles(
@@ -48,12 +48,12 @@ const ImageField: FC<ImageFieldProps> = props => {
                 component="span"
                 variant="body2"
                 className={className}
-                {...sanitizeRestProps(rest)}
+                {...sanitizeFieldRestProps(rest)}
             >
                 {emptyText}
             </Typography>
         ) : (
-            <div className={className} {...sanitizeRestProps(rest)} />
+            <div className={className} {...sanitizeFieldRestProps(rest)} />
         );
     }
 
@@ -61,7 +61,7 @@ const ImageField: FC<ImageFieldProps> = props => {
         return (
             <ul
                 className={classnames(classes.list, className)}
-                {...sanitizeRestProps(rest)}
+                {...sanitizeFieldRestProps(rest)}
             >
                 {sourceValue.map((file, index) => {
                     const fileTitleValue = get(file, title) || title;
@@ -85,7 +85,7 @@ const ImageField: FC<ImageFieldProps> = props => {
     const titleValue = get(record, title) || title;
 
     return (
-        <div className={className} {...sanitizeRestProps(rest)}>
+        <div className={className} {...sanitizeFieldRestProps(rest)}>
             <img
                 title={titleValue}
                 alt={titleValue}

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 
-import sanitizeRestProps from './sanitizeRestProps';
+import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 const toLocaleStringSupportsLocales = (() => {
@@ -62,7 +62,7 @@ export const DateField: FC<DateFieldProps> = memo<DateFieldProps>(
                     component="span"
                     variant="body2"
                     className={className}
-                    {...sanitizeRestProps(rest)}
+                    {...sanitizeFieldRestProps(rest)}
                 >
                     {emptyText}
                 </Typography>
@@ -83,7 +83,7 @@ export const DateField: FC<DateFieldProps> = memo<DateFieldProps>(
                 component="span"
                 variant="body2"
                 className={className}
-                {...sanitizeRestProps(rest)}
+                {...sanitizeFieldRestProps(rest)}
             >
                 {dateString}
             </Typography>

@@ -7,7 +7,7 @@ import FormGroup, { FormGroupProps } from '@material-ui/core/FormGroup';
 import Switch, { SwitchProps } from '@material-ui/core/Switch';
 import { FieldTitle, useInput, InputProps } from 'ra-core';
 
-import sanitizeRestProps from './sanitizeRestProps';
+import sanitizeInputRestProps from './sanitizeInputRestProps';
 import InputHelperText from './InputHelperText';
 import InputPropTypes from './InputPropTypes';
 
@@ -56,7 +56,7 @@ const BooleanInput: FunctionComponent<
     );
 
     return (
-        <FormGroup {...sanitizeRestProps(rest)}>
+        <FormGroup {...sanitizeInputRestProps(rest)}>
             <FormControlLabel
                 control={
                     <Switch

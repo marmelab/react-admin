@@ -10,7 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { CheckboxProps } from '@material-ui/core/Checkbox';
 import { FieldTitle, useInput, ChoicesInputProps, warning } from 'ra-core';
 
-import defaultSanitizeRestProps from './sanitizeRestProps';
+import sanitizeInputRestProps from './sanitizeInputRestProps';
 import CheckboxGroupInputItem from './CheckboxGroupInputItem';
 import InputHelperText from './InputHelperText';
 
@@ -20,7 +20,7 @@ const sanitizeRestProps = ({
     setSort,
     loaded,
     ...rest
-}: any) => defaultSanitizeRestProps(rest);
+}: any) => sanitizeInputRestProps(rest);
 
 const useStyles = makeStyles(
     theme => ({
