@@ -27,8 +27,6 @@ const LinkToRelatedCustomers: FC<{ segment: string }> = ({ segment }) => {
             to={{
                 pathname: '/customers',
                 search: stringify({
-                    page: 1,
-                    perPage: 25,
                     filter: JSON.stringify({ groups: segment }),
                 }),
             }}
