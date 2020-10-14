@@ -182,22 +182,52 @@ import { AutocompleteInput } from 'react-admin';
 
 ### Properties
 
-| Prop                      | Required | Type                                          | Default      | Description                                                                                                                                                                                                                                                                                          |
-| ------------------------- | -------- | --------------------------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `allowEmpty`              | Optional | `boolean`                                     | `false`      | If `false` and the searchText typed did not match any suggestion, the searchText will revert to the current value when the field is blurred. If `true` and the `searchText` is set to `''` then the field will set the input value to `null`. |
-| `clearAlwaysVisible`      | Optional | `boolean`                                     | `false`      | When `resettable` is true, set this prop to `true` to have the Reset button visible even when the field is empty |
-| `choices`                 | Required | `Object[]`                                    | `-`          | List of items to autosuggest |
-| `emptyValue`              | Optional | `any`                                         | `''`         | The value to use for the empty element |
-| `emptyText`               | Optional | `string`                                      | `''`         | The text to use for the empty element |
-| `matchSuggestion`         | Optional | `Function`                                    | `-`          | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean` |
+| Prop                      | Required | Type           | Default      | Description                          |
+| ------------------------- | -------- | -------------- | ------------ | ------------------------------------ |
+| `allowEmpty`              | Optional | `boolean`      | `false`      | If `false` and the searchText typed did not match any suggestion, the searchText will revert to the current value when the field is blurred. If `true` and the `searchText` is set to `''` then the field will set the input value to `null`. |
+| `clearAlwaysVisible`      | Optional | `boolean`      | `false`      | When `resettable` is true, set this prop to `true` to have the Reset button visible even when the field is empty |
+| `choices`                 | Required | `Object[]`     | `-`          | List of items to autosuggest |
+| `emptyValue`              | Optional | `any`          | `''`         | The value to use for the empty element |
+| `emptyText`               | Optional | `string`       | `''`         | The text to use for the empty element |
+| `matchSuggestion`         | Optional | `Function`     | `-`          | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean` |
 | `optionText`              | Optional | `string` &#124; `Function` &#124; `Component` | `name`       | Fieldname of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`) |
-| `optionValue`             | Optional | `string`                                      | `id`         | Fieldname of record containing the value to use as input value |
-| `inputText`               | Optional | `Function`                                    | `-`          | If `optionText` is a custom Component, this function is needed to determine the text displayed for the current selection. |
-| `resettable`              | Optional | `boolean`                                     | `false`      | Display a button to reset the text filter. Useful when using `<AutocompleteInput>` inside `<Filter>` |
-| `setFilter`               | Optional | `Function`                                    | `null`       | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`. |
-| `shouldRenderSuggestions` | Optional | Function                                      | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
+| `optionValue`             | Optional | `string`       | `id`         | Fieldname of record containing the value to use as input value |
+| `inputText`               | Optional | `Function`     | `-`          | If `optionText` is a custom Component, this function is needed to determine the text displayed for the current selection. |
+| `resettable`              | Optional | `boolean`      | `false`      | Display a button to reset the text filter. Useful when using `<AutocompleteInput>` inside `<Filter>` |
+| `setFilter`               | Optional | `Function`     | `null`       | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`. |
+| `shouldRenderSuggestions` | Optional | `Function`     | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
+| `suggestionLimit`         | Optional | `number`       | `null`       | Limits the numbers of suggestions that are shown in the dropdown list |
 
 `<AutocompleteInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
+### CSS API
+
+| Rule name              | Description                          |
+| ---------------------- | ------------------------------------ |
+| `container`            | Applied to the root element          |
+| `suggestionsContainer` | Applied to the suggestions container |
+
+The suggestions container has a `z-index` of 2. When using `<AutocompleteInput>` in a `<Dialog>`, this will cause suggestions to appear beneath the Dialog. The solution is to override the `suggestionsContainer` class name, as follows:
+
+```diff
+import { AutocompleteInput } from 'react-admin';
+-import { Dialog } from '@material-ui/core';
++import { Dialog, withStyles } from '@material-ui/core';
+
++const AutocompleteInputInDialog = withStyles({
++    suggestionsContainer: { zIndex: 2000 },
++})(AutocompleteInput);
+
+const EditForm = () => (
+    <Dialog open>
+        ...
+-       <AutocompleteInput source="foo" choices={[...]}>
++       <AutocompleteInputInDialog source="foo" choices={[...]}>
+    </Dialog>
+)
+```
+
+To override the style of all instances of `<AutocompleteInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaAutocompleteInput` key.
 
 ### Usage
 
@@ -331,6 +361,41 @@ import { AutocompleteArrayInput } from 'react-admin';
 
 `<AutocompleteArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
+### CSS API
+
+| Rule name               | Description                                                                                                                 |
+| ----------------------  | --------------------------------------------------------------------------------------------------------------------------- |
+| `container`             | Applied to the container of the underlying Material UI's `TextField` component input                                        |
+| `suggestionsContainer`  | Applied to the suggestions container |
+| `chip`                  | Applied to each Material UI's `Chip` component used as selected item                                                        |
+| `chipContainerFilled`   | Applied to each container of each Material UI's `Chip` component used as selected item when `variant` prop is `filled`      |
+| `chipContainerOutlined` | Applied to each container of each `Chip` component used as selected item when `variant` prop is `outlined`                  |
+| `inputRoot`             | Styles pass as the `root` class of the underlying Material UI's `TextField` component input                                 |
+| `inputRootFilled`       | Styles pass as the `root` class of the underlying Material UI's `TextField` component input when `variant` prop is `filled` |
+| `inputInput`            | Styles pass as the `input` class of the underlying Material UI's `TextField` component input                                |
+
+The suggestions container has a `z-index` of 2. When using `<AutocompleteArrayInput>` in a `<Dialog>`, this will cause suggestions to appear beneath the Dialog. The solution is to override the `suggestionsContainer` class name, as follows:
+
+```diff
+import { AutocompleteArrayInput } from 'react-admin';
+-import { Dialog } from '@material-ui/core';
++import { Dialog, withStyles } from '@material-ui/core';
+
++const AutocompleteArrayInputInDialog = withStyles({
++    suggestionsContainer: { zIndex: 2000 },
++})(AutocompleteArrayInput);
+
+const EditForm = () => (
+    <Dialog open>
+        ...
+-       <AutocompleteArrayInput source="foo" choices={[...]}>
++       <AutocompleteArrayInputInDialog source="foo" choices={[...]}>
+    </Dialog>
+)
+```
+
+To override the style of all instances of `<AutocompleteArrayInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaAutocompleteArrayInput` key.
+
 ### Usage
 
 You can customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
@@ -422,7 +487,7 @@ import { BooleanInput } from 'react-admin';
 
 This input does not handle `null` values. You would need the `<NullableBooleanInput />` component if you have to handle non-set booleans.
 
-You can use the `options` prop to pass any option supported by the Material UI `Switch` components. For example, here's how to set a custom checked icon:
+You can use the `options` prop to pass any option supported by the Material UI's `Switch` components. For example, here's how to set a custom checked icon:
 
 {% raw %}
 ```jsx
@@ -443,6 +508,14 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 Refer to [Material UI Switch documentation](https://material-ui.com/api/switch) for more details.
 
 `<NullableBooleanInput />` renders as a dropdown list, allowing choosing between `true`, `false`, and `null` values.
+
+### CSS API
+
+| Rule name  | Description                                                   |
+| ---------- | ------------------------------------------------------------- |
+| `input`    | Applied to the underlying Material UI's `TextField` component |
+
+To override the style of all instances of `<NullableBooleanInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaNullableBooleanInput` key.
 
 ```jsx
 import { NullableBooleanInput } from 'react-admin';
@@ -503,7 +576,7 @@ import { CheckboxGroupInput } from 'react-admin';
 ### Properties
 
 | Prop          | Required | Type                       | Default | Description                                                                                                                            |
-| ------------- | -------- | -------------------------- | ------- |
+| ------------- | -------- | -------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------  |
 | `choices`     | Required | `Object[]`                 | -       | List of choices                                                                                                                        |
 | `optionText`  | Optional | `string` &#124; `Function` | `name`  | Fieldname of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`) |
 | `optionValue` | Optional | `string`                   | `id`    | Fieldname of record containing the value to use as input value                                                                         |
@@ -512,6 +585,15 @@ import { CheckboxGroupInput } from 'react-admin';
 Refer to [Material UI Checkbox documentation](https://material-ui.com/api/checkbox/) for more details.
 
 `<CheckboxGroupInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
+### CSS API
+
+| Rule name  | Description                                                   |
+| ---------- | ------------------------------------------------------------- |
+| `root`     | Applied to the root element                                   |
+| `label`    | Applied to the underlying Material UI's `FormLabel` component |
+
+To override the style of all instances of `<CheckboxGroupInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaCheckboxGroupInput` key.
 
 ### Usage
 
@@ -606,6 +688,23 @@ import { DateTimeInput } from 'react-admin';
 
 **Tip**: For a material-ui styled `<DateTimeInput>` component, check out [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs).
 
+## `<DualListInput>`
+
+This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component allows to edit array values, one-to-many or many-to-many relationships by moving items from one list to another. It's a good alternative to `<SelectInput>` for a small number of choices.
+
+![DualListInput](https://marmelab.com/ra-enterprise/modules/assets/ra-relationships-duallistinput.gif)
+
+```jsx
+import { ReferenceInput } from 'react-admin';
+import { DualListInput } from '@react-admin/ra-relationships';
+
+<ReferenceInput label="Author" source="author_id" reference="authors">
+    <DualListInput optionText="last_name" />
+</ReferenceInput>
+```
+
+Check [the `ra-relationships` documentation](https://marmelab.com/ra-enterprise/modules/ra-relationships) for more details.
+
 ## `<ImageInput>`
 
 `<ImageInput>` allows to upload some pictures using [react-dropzone](https://github.com/okonet/react-dropzone).
@@ -615,7 +714,7 @@ import { DateTimeInput } from 'react-admin';
 ### Properties
 
 | Prop            | Required | Type                        | Default                          | Description                                                                                                                                                                                                                                                         |
-| --------------- | -------- | --------------------------- | -------------------------------- |
+| --------------- | -------- | --------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `accept`        | Optional | `string | string[]`         | -                                | Accepted file type(s), e. g. 'image/*,.pdf'. If left empty, all file types are accepted. Equivalent of the `accept` attribute of an `<input type="file">`. See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept for syntax and examples. |
 | `children`      | Optional | `ReactNode`                 | -                                | Element used to display the preview of an image (cloned several times if the select accepts multiple files).                                                                                                                                                        |
 | `minSize`       | Optional | `number`                    | 0                                | Minimum image size (in bytes), e.g. 5000 form 5KB                                                                                                                                                                                                                   |
@@ -627,6 +726,17 @@ import { DateTimeInput } from 'react-admin';
 | `options`       | Optional | `Object`                    | `{}`                             | Additional options passed to react-dropzone's `useDropzone()` hook. See [the react-dropzone source](https://github.com/react-dropzone/react-dropzone/blob/master/src/index.js)  for details .                                                                       |
 
 `<ImageInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
+### CSS API
+
+| Rule name       | Description                                          |
+| --------------- | ---------------------------------------------------- |
+| `root`          | Styles pass to the underlying `FileInput` component  |
+| `dropZone`      | Styles pass to the underlying `FileInput` component  |
+| `preview`       | Styles pass to the underlying `FileInput` component  |
+| `removeButton`  | Styles pass to the underlying `FileInput` component  |
+
+To override the style of all instances of `<ImageInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaImageInput` key.
 
 ### Usage
 
@@ -664,19 +774,30 @@ Note that the image upload returns a [File](https://developer.mozilla.org/en/doc
 
 ### Properties
 
-| Prop            | Type     | Default              | Description                     |
-| --------------- | -------- | -------------------- | ------------------------------- |
+| Prop            | Required | Type                 | Default                         | Description                                                                                                                                                                                                                                                                                                                                            |
+| --------------- | -------- | -------------------- | ------------------------------- | -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  |
 | `accept`        | Optional | `string | string[]`  | -                               | Accepted file type(s), e. g. 'application/json,video/*' or 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'. If left empty, all file types are accepted. Equivalent of the `accept` attribute of an `<input type="file">`. See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept for syntax and examples. |
 | `children`      | Optional | `ReactNode`          | -                               | Element used to display the preview of a file (cloned several times if the select accepts multiple files).                                                                                                                                                                                                                                             |
 | `minSize`       | Optional | `number`             | 0                               | Minimum file size (in bytes), e.g. 5000 form 5KB                                                                                                                                                                                                                                                                                                       |
-| `maxSize`       | Optional | `number`             | Infinity                        | Maximum file size (in bytes), e.g. 5000000 for 5MB                                                                                                                                                                                                                                                                                                     |
-| `multiple`      | Optional | `boolean`            | false                           | Set to true if the input should accept a list of files, false if it should only accept one file                                                                                                                                                                                                                                                        |
+| `maxSize`       | Optional | `number`             | `Infinity`                      | Maximum file size (in bytes), e.g. 5000000 for 5MB                                                                                                                                                                                                                                                                                                     |
+| `multiple`      | Optional | `boolean`            | `false`                         | Set to true if the input should accept a list of files, false if it should only accept one file                                                                                                                                                                                                                                                        |
 | `labelSingle`   | Optional | `string`             | 'ra.input.file. upload_single'  | Invite displayed in the drop zone if the input accepts one file                                                                                                                                                                                                                                                                                        |
 | `labelMultiple` | Optional | `string`             | 'ra.input.file. upload_several' | Invite displayed in the drop zone if the input accepts several files                                                                                                                                                                                                                                                                                   |
 | `placeholder`   | Optional | `string | ReactNode` | -                               | Invite displayed in the drop zone, overrides `labelSingle` and `labelMultiple`                                                                                                                                                                                                                                                                         |
-| `options`       | Optional | `object`             | `{}`                            | Additional options passed to react-dropzone's `useDropzone()` hook. See [the react-dropzone source](https://github.com/react-dropzone/react-dropzone/blob/master/src/index.js)  for details .                                                                                                                                                          |
+| `options`       | Optional | `Object`             | `{}`                            | Additional options passed to react-dropzone's `useDropzone()` hook. See [the react-dropzone source](https://github.com/react-dropzone/react-dropzone/blob/master/src/index.js)  for details .                                                                                                                                                          |
 
 `<FileInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
+### CSS API
+
+| Rule name       | Description                                                                       |
+| --------------- | --------------------------------------------------------------------------------- |
+| `root`          | Applied to the underlying `Labeled` component                                     |
+| `dropZone`      | Applied to the main container of the component                                    |
+| `preview`       | Applied to each children                                                          |
+| `removeButton`  | Applied to each of the Material UI's `IconButton` component used as remove button |
+
+To override the style of all instances of `<FileInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaFileInput` key.
 
 ### Usage
 
@@ -705,6 +826,26 @@ If the default Dropzone label doesn't fit with your need, you can pass a `placeh
 ```
 
 Note that the file upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.md#extending-a-data-provider-example-of-file-upload) for base64 encoding data by extending the REST Client.
+
+## `<MarkdownInput>`
+
+This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component allows to edit and preview Markdown data, based on [the Toast UI editor](https://nhn.github.io/tui.editor/latest/ToastUIEditor).
+
+```jsx
+import { Edit, SimpleForm, TextInput } from 'react-admin';
+import { MarkdownInput } from '@react-admin/ra-markdown';
+
+const PostEdit = props => (
+    <Edit {...props}>
+        <SimpleForm>
+            <TextInput source="title" />
+            <MarkdownInput source="description" />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+Check [the `ra-markdown` documentation](https://marmelab.com/ra-enterprise/modules/ra-markdown) for more details.
 
 ## `<NumberInput>`
 
@@ -790,6 +931,14 @@ import { RadioButtonGroupInput } from 'react-admin';
 | `translateChoice` | Optional | `boolean`                  | `true`  | Whether the choices should be translated                                                                                               |
 
 `<RadioButtonGroupInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
+### CSS API
+
+| Rule name  | Description                                                   |
+| ---------- | ------------------------------------------------------------- |
+| `label`    | Applied to the underlying Material UI's `FormLabel` component |
+
+To override the style of all instances of `<RadioButtonGroupInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaRadioButtonGroupInput` key.
 
 ### Usage
 
@@ -1082,6 +1231,75 @@ The child component receives the following props from `<ReferenceInput>`:
 
 **Tip**: Why does `<ReferenceInput>` use the `dataProvider.getMany()` method with a single value `[id]` instead of `dataProvider.getOne()` to fetch the record for the current value? Because when there are many `<ReferenceInput>` for the same resource in a form (for instance when inside an `<ArrayInput>`), react-admin *aggregates* the calls to `dataProvider.getMany()` into a single one with `[id1, id2, ...)]`. This speeds up the UI and avoids hitting the API too much.
 
+## `<ReferenceManyToManyInput>`
+
+This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component allows to create, edit or remove relationships between two resources sharing an associative table. The changes in the associative table are sent to the dataProvider when the user submits the form, so that they can cancel the changes before submission.
+
+In this example, `artists.id` matches `performances.artist_id`, and `performances.event_id` matches `events.id`:
+
+```
+┌────────────┐       ┌──────────────┐      ┌────────┐
+│ artists    │       │ performances │      │ events │
+│------------│       │--------------│      │--------│
+│ id         │───┐   │ id           │      │ id     │
+│ first_name │   └──╼│ artist_id    │   ┌──│ name   │
+│ last_name  │       │ event_id     │╾──┘  │        │
+└────────────┘       └──────────────┘      └────────┘
+```
+
+The form displays the events name in a `<SelectArrayInput>`:
+
+```jsx
+import * as React from 'react';
+import { Edit, SelectArrayInput, SimpleForm, TextInput } from 'react-admin';
+import { ReferenceManyToManyInput, useReferenceManyToManyUpdate } from '@react-admin/ra-many-to-many';
+
+/**
+ * Decorate <SimpleForm> to override the default save function.
+ * This is necessary to save changes in the associative table
+ * only on submission.
+ */
+const ArtistEditForm = props => {
+    const save = useReferenceManyToManyUpdate({
+        basePath: props.basePath,
+        record: props.record,
+        redirect: props.redirect || 'list',
+        reference: 'events',
+        resource: props.resource,
+        source: 'id',
+        through: 'performances',
+        undoable: props.undoable,
+        using: 'artist_id,event_id',
+    });
+
+    return <SimpleForm {...props} save={save} />;
+};
+
+const ArtistEdit = props => (
+    <Edit {...props}>
+        <ArtistEditForm>
+            <TextInput disabled source="id" />
+            <TextInput source="first_name" />
+            <TextInput source="last_name" />
+            <ReferenceManyToManyInput
+                source="id"
+                reference="events"
+                through="performances"
+                using="artist_id,event_id"
+                fullWidth
+                label="Performances"
+            >
+                <SelectArrayInput optionText="name" />
+            </ReferenceManyToManyInput>
+        </ArtistEditForm>
+    </Edit>
+);
+
+export default ArtistEdit;
+```
+
+Check [the `ra-relationships` documentation](https://marmelab.com/ra-enterprise/modules/ra-relationships#referencemanytomanyinput) for more details.
+
 ## `<RichTextInput>`
 
 `<RichTextInput>` is the ideal component if you want to allow your users to edit some HTML contents. It
@@ -1173,6 +1391,14 @@ import { SelectInput } from 'react-admin';
 | `translateChoice` | Optional | `boolean`                  | `true`  | Whether the choices should be translated                                                                                               |
 
 `<SelectInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
+### CSS API
+
+| Rule name       | Description                                               |
+| --------------- | --------------------------------------------------------- |
+| `input`         | Applied to the underlying `ResettableTextField` component |
+
+To override the style of all instances of `<SelectInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaSelectInput` key.
 
 ### Usage
 
@@ -1288,6 +1514,16 @@ const choices = [
 ## `<SelectArrayInput>`
 
 To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [Material ui's `<Select>`](https://material-ui.com/api/select). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
+
+### CSS API
+
+| Rule name  | Description                                                                        |
+| ---------- | ---------------------------------------------------------------------------------- |
+| `root`     | Applied to the root element                                                        |
+| `chip`     | Applied to each Material UI's `Chip` component used as selected item               |
+| `chips`    | Applied to the container of Material UI's `Chip` components used as selected items |
+
+To override the style of all instances of `<SelectArrayInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaSelectArrayInput` key.
 
 ```jsx
 import { SelectArrayInput } from 'react-admin';
@@ -1471,12 +1707,8 @@ const dateParser = v => {
 
 You can find components for react-admin in third-party repositories.
 
-- [MarkdownInput](https://marmelab.com/ra-enterprise/modules/ra-markdown) from [@react-admin/ra-markdown](https://marmelab.com/ra-enterprise/modules/ra-markdown) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) component which allows to edit markdown content with a WYSIWYG editor.
-- [DualListInput](https://marmelab.com/ra-enterprise/modules/ra-relationships#duallistinput) from [@react-admin/ra-relationships](https://marmelab.com/ra-enterprise/modules/ra-relationships) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) component which allows to select from a list of choices using two lists.
-- [ReferenceManyToManyInput](https://marmelab.com/ra-enterprise/modules/ra-relationships#referencemanytomanyinput) from [@react-admin/ra-relationships](https://marmelab.com/ra-enterprise/modules/ra-relationships) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) component which allows to create, edit or remove relationships between two resources sharing an associative table.
 - [vascofg/react-admin-color-input](https://github.com/vascofg/react-admin-color-input): a color input using [React Color](https://casesandberg.github.io/react-color/), a collection of color pickers.
 - [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs): a collection of Date Inputs, based on [material-ui-pickers](https://material-ui-pickers.firebaseapp.com/)
-- [maluramichael/ra-input-markdown](https://github.com/maluramichael/ra-input-markdown): a markdown editor, based on [react-mde](https://github.com/andrerpena/react-mde) and [showdown](https://github.com/showdownjs/showdown)
 
 - **DEPRECATED V3** [LoicMahieu/aor-tinymce-input](https://github.com/LoicMahieu/aor-tinymce-input): a TinyMCE component, useful for editing HTML
 
@@ -1705,25 +1937,65 @@ const PersonEdit = props => (
 
 Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
 
-React-admin relies on react-final-form, so you can grab the current form values using react-final-form [useFormState](https://final-form.org/docs/react-final-form/api/useFormState) hook. Alternatively, you can use the react-admin `<FormDataConsumer>` component, which grabs the form values, and passes them to a child function.
-
-This facilitates the implementation of linked inputs:
+React-admin relies on [react-final-form](https://final-form.org/docs/react-final-form/getting-started) for form handling. You can grab the current form values using react-final-form [useFormState](https://final-form.org/docs/react-final-form/api/useFormState) hook. 
 
 ```jsx
-import { FormDataConsumer } from 'react-admin';
+import * as React from 'react';
+import { Edit, SimpleForm, SelectInput } from 'react-admin';
+import { useFormState } from 'react-final-form';
 
-const OrderEdit = (props) => (
+const countries = ['USA', 'UK', 'France'];
+const cities = {
+    USA: ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'],
+    UK: ['London', 'Birmingham', 'Glasgow', 'Liverpool', 'Bristol'],
+    France: ['Paris', 'Marseille', 'Lyon', 'Toulouse', 'Nice'],
+};
+const toChoices = items => items.map(item => ({ id: item, name: item }));
+
+const CityInput = props => {
+    const { values } = useFormState();
+    return (
+        <SelectInput
+            choices={values.country ? toChoices(cities[values.country]) : []}
+            {...props}
+        />
+    );
+};
+
+const OrderEdit = props => (
     <Edit {...props}>
         <SimpleForm>
-            <SelectInput source="country" choices={countries} />
+            <SelectInput source="country" choices={toChoices(countries)} />
+            <CityInput source="cities" />
+        </SimpleForm>
+    </Edit>
+);
+
+export default OrderEdit;
+```
+
+Alternatively, you can use the react-admin `<FormDataConsumer>` component, which grabs the form values, and passes them to a child function. As `<FormDataConsumer>` uses the render props pattern, you can avoid creating an intermediate component like the `<CityInput>` component above:
+
+```jsx
+import * as React from 'react';
+import { Edit, SimpleForm, SelectInput, FormDataConsumer } from 'react-admin';
+
+const OrderEdit = props => (
+    <Edit {...props}>
+        <SimpleForm>
+            <SelectInput source="country" choices={toChoices(countries)} />
             <FormDataConsumer>
-                {({ formData, ...rest }) =>
-                     <SelectInput
-                         source="city"
-                         choices={getCitiesFor(formData.country)}
-                         {...rest}
-                     />
-                }
+                {({ formData, ...rest }) => (
+                    <SelectInput
+                        source="cities"
+                        choices={
+                            formData.country
+                                ? toChoices(cities[formData.country])
+                                : []
+                        }
+                        {...rest}
+                    />
+                )}
             </FormDataConsumer>
         </SimpleForm>
     </Edit>
@@ -1734,46 +2006,6 @@ const OrderEdit = (props) => (
 
 - `scopedFormData`: an object containing the current values of the currently rendered item from the `ArrayInput`
 - `getSource`: a function which will translate the source into a valid one for the `ArrayInput`
-
-Would you need to update an input when another one changes, use the [`useForm`](https://final-form.org/docs/react-final-form/api/useForm) hook from `react-final-form`. For example, a country input that resets a city input on change.
-
-```jsx
-import * as React from 'react';
-import { Fragment } from 'react';
-import { useForm } from 'react-final-form';
-
-const OrderOrigin = ({ formData, ...rest }) => {
-    const form = useForm();
-
-    return (
-        <Fragment>
-            <SelectInput
-                source="country"
-                choices={countries}
-                onChange={value => form.change('city', null)}
-                {...rest}
-            />
-            <SelectInput
-                source="city"
-                choices={getCitiesFor(formData.country)}
-                {...rest}
-            />
-        </Fragment>
-    );
-};
-
-const OrderEdit = (props) => (
-    <Edit {...props}>
-        <SimpleForm>
-            <FormDataConsumer>
-                {formDataProps => (
-                    <OrderOrigin {...formDataProps} />
-                )}
-            </FormDataConsumer>
-        </SimpleForm>
-    </Edit>
-);
-```
 
 And here is an example usage for `getSource` inside `<ArrayInput>`:
 
@@ -1786,7 +2018,6 @@ const PostEdit = (props) => (
             <ArrayInput source="authors">
                 <SimpleFormIterator>
                     <TextInput source="name" />
-
                     <FormDataConsumer>
                         {({
                             formData, // The whole form data

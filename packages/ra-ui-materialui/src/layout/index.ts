@@ -21,7 +21,7 @@ import TitleForRecord from './TitleForRecord';
 import TopToolbar from './TopToolbar';
 import UserMenu from './UserMenu';
 
-export type { MenuProps, MenuItemLinkProps };
+export type { MenuProps, MenuItemLinkProps, SidebarProps };
 
 export {
     AppBar,
@@ -42,7 +42,6 @@ export {
     Notification,
     Responsive,
     Sidebar,
-    SidebarProps,
     Title,
     TitleForRecord,
     TitlePropType,

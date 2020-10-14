@@ -12,20 +12,20 @@ interface State {
 const emptyParams = {};
 
 /**
- * Hook for getting the authentication status and restricting access to authenticated users
+ * Hook for getting the authentication status
  *
  * Calls the authProvider.checkAuth() method asynchronously.
- * If the authProvider returns a rejected promise, logs the user out.
  *
  * The return value updates according to the authProvider request state:
  *
- * - start:   { authenticated: false, loading: true, loaded: false }
- * - success: { authenticated: true,  loading: false, loaded: true }
- * - error:   { authenticated: false, loading: false, loaded: true }
+ * - loading: true just after mount, while the authProvider is being called. false once the authProvider has answered.
+ * - loaded: the opposite of loading.
+ * - authenticated: true while loading. then true or false depending on the authProvider response.
  *
- * Useful in custom page components that can work both for connected and
- * anonymous users. For pages that can only work for connected users,
- * prefer the useAuthenticated() hook.
+ * To avoid rendering a component and force waiting for the authProvider response, use the useAuthState() hook
+ * instead of the useAuthenticated() hook.
+ *
+ * You can render different content depending on the authenticated status.
  *
  * @see useAuthenticated()
  *
@@ -34,19 +34,18 @@ const emptyParams = {};
  * @returns The current auth check state. Destructure as { authenticated, error, loading, loaded }.
  *
  * @example
- *     import { useAuthState } from 'react-admin';
+ * import { useAuthState, Loading } from 'react-admin';
  *
- *     const CustomRoutes = [
- *         <Route path="/bar" render={() => {
- *              const { authenticated } = useAuthState({ myContext: 'foobar' });
- *              return authenticated ? <Bar /> : <BarNotAuthenticated />;
- *          }} />,
- *     ];
- *     const App = () => (
- *         <Admin customRoutes={customRoutes}>
- *             ...
- *         </Admin>
- *     );
+ * const MyPage = () => {
+ *     const { loading, authenticated } = useAuthState();
+ *     if (loading) {
+ *         return <Loading />;
+ *     }
+ *     if (authenticated) {
+ *        return <AuthenticatedContent />;
+ *     }
+ *     return <AnonymousContent />;
+ * };
  */
 const useAuthState = (params: any = emptyParams): State => {
     const [state, setState] = useSafeSetState({

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-final-form';
-import { merge } from 'lodash';
+import merge from 'lodash/merge';
 
 /**
  * Restore the record values which should override any default values specified on the form.

@@ -1,10 +1,6 @@
 import useDataProvider from './useDataProvider';
 import { useMemo } from 'react';
-import {
-    DataProvider,
-    DataProviderProxy,
-    UseDataProviderOptions,
-} from '../types';
+import { DataProviderProxy, UseDataProviderOptions } from '../types';
 import useDeclarativeSideEffects from './useDeclarativeSideEffects';
 
 /**

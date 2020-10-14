@@ -9,36 +9,24 @@ A frontend Framework for building data-driven applications running in the browse
 ## Features
 
 * Adapts to any backend (REST, GraphQL, SOAP, etc.)
-* Powered by [material-ui](https://material-ui.com/), [redux](https://redux.js.org/), [react-final-form](https://final-form.org/react), [redux-saga](https://redux-saga.js.org/), [react-router](https://reacttraining.com/react-router/), [reselect](https://github.com/reduxjs/reselect) and a few more
+* Powered by [material-ui](https://material-ui.com/), [redux](https://redux.js.org/), [react-final-form](https://final-form.org/react), [react-router](https://reacttraining.com/react-router/) and a few more
 * Super-fast UI thanks to optimistic rendering (renders before the server returns)
 * Undo updates and deletes for a few seconds
-* Complete documentation
 * Relationships (many to one, one to many)
 * Data Validation
 * Internationalization (i18n)
-* Conditional formatting
-* Themeable
+* Themeable, Highly customizable interface
 * Supports any authentication provider (REST API, OAuth, Basic Auth, ...)
 * Full-featured datagrid (sort, pagination, filters)
+* Large library of components for various data types: boolean, number, rich text, etc.
+* Conditional formatting
 * Filter-as-you-type
 * Supports any form layout (simple, tabbed, etc.)
 * Custom actions
-* Large library of components for various data types: boolean, number, rich text, etc.
 * WYSIWYG editor
 * Customize dashboard, menu, layout
 * Super easy to extend and override (it's just React components)
-* Highly customizable interface
-* Can connect to multiple backends
 * Can be included in another React app
-* Inspired by the popular [ng-admin](https://github.com/marmelab/ng-admin) library (also by marmelab)
-
-## Versions In This Repository
-
-* [master](https://github.com/marmelab/react-admin/commits/master) - commits that will be included in the next _patch_ release
-
-* [next](https://github.com/marmelab/react-admin/commits/next) - commits that will be included in the next _major_ or _minor_ release
-
-Bugfix PRs that don't break BC should be made against **master**. All other PRs (new features, bugfix with BC break) should be made against **next**.
 
 ## Installation
 
@@ -47,7 +35,6 @@ using:
 
 ```sh
 npm install react-admin
-
 #or
 yarn add react-admin
 ```
@@ -69,7 +56,7 @@ import { PostList, PostEdit, PostCreate, PostIcon } from './posts';
 
 render(
     <Admin dataProvider={restProvider('http://localhost:3000')}>
-        <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} icon={PostIcon}/>
+        <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} icon={PostIcon} />
     </Admin>,
     document.getElementById('root')
 );
@@ -140,7 +127,7 @@ See the [Data Providers documentation](https://marmelab.com/react-admin/DataProv
 
 ## Batteries Included But Removable
 
-React-admin is designed as a library of loosely coupled React components built on top of [material-ui](https://material-ui.com/), in addition to controller functions implemented the Redux way. It is very easy to replace one part of react-admin with your own, e.g. to use a custom datagrid, GraphQL instead of REST, or bootstrap instead of Material Design.
+React-admin is designed as a library of loosely coupled React components built on top of [material-ui](https://material-ui.com/), in addition to custom react hooks exposing reusable controller logic. It is very easy to replace one part of react-admin with your own, e.g. to use a custom datagrid, GraphQL instead of REST, or Bootstrap instead of Material Design.
 
 ## Examples
 
@@ -155,21 +142,34 @@ You can run those example applications by calling:
 ```sh
 # At the react-admin project root
 make install
-
 # or
 yarn install
 
 # Run the simple application
 make run-simple
+
 # Run the tutorial application
 make build
 make run-tutorial
+
 # Run the demo application
 make build
 make run-demo
 ```
 
 And then browse to the URL displayed in your console.
+
+## Support
+
+You can get professional support from Marmelab via [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise), or community support via [StackOverflow](https://stackoverflow.com/questions/tagged/react-admin). 
+
+## Versions In This Repository
+
+* [master](https://github.com/marmelab/react-admin/commits/master) - commits that will be included in the next _patch_ release
+
+* [next](https://github.com/marmelab/react-admin/commits/next) - commits that will be included in the next _major_ or _minor_ release
+
+Bugfix PRs that don't break BC should be made against **master**. All other PRs (new features, bugfix with BC break) should be made against **next**.
 
 ## Contributing
 
@@ -190,6 +190,12 @@ For all Pull requests, you must follow the coding style of the existing files (b
 ### Setup
 
 Clone this repository and run `make install` to grab the dependencies, then `make build` to compile the sources from TypeScript to JS.
+
+### Online one-click Setup
+
+You can use Gitpod(An Online Open Source VS Code like IDE which is free for Open Source) for working on issues and making PRs. With a single click it will launch a workspace and automatically clone the repo, run `make install` and `make start` so that you can start straight away.
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
 
 ### Testing Your Changes In The Example Apps
 

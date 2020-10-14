@@ -21,7 +21,7 @@ describe('<TabbedShowLayout />', () => {
     };
 
     it('should display the first Tab component and its content', () => {
-        const { queryByText, history } = renderWithRouter(
+        const { queryByText } = renderWithRouter(
             <TabbedShowLayout basePath="/" record={{ id: 123 }} resource="foo">
                 <Tab label="Tab1">
                     <TextField label="Field On Tab1" source="field1" />
@@ -37,7 +37,7 @@ describe('<TabbedShowLayout />', () => {
     });
 
     it('should display the first valid Tab component and its content', () => {
-        const { queryByText, history } = renderWithRouter(
+        const { queryByText } = renderWithRouter(
             <TabbedShowLayout basePath="/" record={{ id: 123 }} resource="foo">
                 {null}
                 <Tab label="Tab1">

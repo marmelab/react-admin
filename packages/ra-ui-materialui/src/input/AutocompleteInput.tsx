@@ -520,6 +520,7 @@ const AutocompleteInput: FunctionComponent<AutocompleteInputProps> = props => {
                             suggestionsContainerProps={
                                 suggestionsContainerProps
                             }
+                            className={classes.suggestionsContainer}
                         >
                             {suggestions.map((suggestion, index) => (
                                 <AutocompleteSuggestionItem
@@ -575,6 +576,7 @@ const useStyles = makeStyles(
         inputAdornedEnd: {
             paddingRight: 0,
         },
+        suggestionsContainer: {},
     },
     { name: 'RaAutocompleteInput' }
 );

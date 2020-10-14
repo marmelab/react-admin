@@ -352,25 +352,37 @@ Use the `useLogin` and `useLogout` hooks in your custom `LoginPage` and `LogoutB
 // in src/MyLoginPage.js
 import * as React from 'react';
 import { useState } from 'react';
-import { useLogin, useNotify, Notification } from 'react-admin';
+import { useLogin, useNotify, Notification, defaultTheme } from 'react-admin';
 import { ThemeProvider } from '@material-ui/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 const MyLoginPage = ({ theme }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const login = useLogin();
     const notify = useNotify();
-    const submit = (e) => {
+    const submit = e => {
         e.preventDefault();
-        login({ email, password })
-            .catch(() => notify('Invalid email or password'));
+        login({ email, password }).catch(() =>
+            notify('Invalid email or password')
+        );
     };
 
     return (
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={createMuiTheme(defaultTheme)}>
             <form onSubmit={submit}>
-                <input name="email" type="email" value={email} onChange={e => setEmail(e.target.value)} /> 
-                <input name="password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
+                <input
+                    name="email"
+                    type="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                />
+                <input
+                    name="password"
+                    type="password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                />
             </form>
             <Notification />
         </ThemeProvider>
@@ -473,7 +485,7 @@ To avoid rendering a component and force waiting for the `authProvider` response
 
 - `loading`: `true` just after mount, while the `authProvider` is being called. `false` once the `authProvider` has answered.
 - `loaded`: the opposite of `loading`.
-- `authenticated`: `undefined` while loading. then `true` or `false` depending on the `authProvider` response.
+- `authenticated`: `true` while loading. then `true` or `false` depending on the `authProvider` response.
 
 You can render different content depending on the authenticated status. 
 

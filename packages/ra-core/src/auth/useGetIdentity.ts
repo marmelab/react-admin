@@ -4,7 +4,7 @@ import { UserIdentity } from '../types';
 import { useSafeSetState } from '../util/hooks';
 
 const defaultIdentity = {
-    id: null,
+    id: '',
     fullName: null,
 };
 
@@ -52,7 +52,7 @@ const useGetIdentity = () => {
                     setState({
                         loading: false,
                         loaded: true,
-                        identity,
+                        identity: identity || defaultIdentity,
                     });
                 } catch (error) {
                     setState({

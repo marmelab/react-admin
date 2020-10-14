@@ -5,7 +5,7 @@ title: "The Create and Edit Views"
 
 # The Create and Edit Views
 
-`<Resource>` maps URLs to components - it takes care or *routing*. When you set a component as the `create` prop for a Resource, react-admin renders that component when users go to the `/[resource]/create` URL. When you set a component as the `edit` prop for a resource, react-admin renders that component when users go to the `/[resource]/:id` URL. 
+`<Resource>` maps URLs to components - it takes care of *routing*. When you set a component as the `create` prop for a Resource, react-admin renders that component when users go to the `/[resource]/create` URL. When you set a component as the `edit` prop for a resource, react-admin renders that component when users go to the `/[resource]/:id` URL. 
 
 ```
 <Resource name="posts" create={PostCreate} edit={PostEdit} />
@@ -105,6 +105,19 @@ You can customize the `<Create>` and `<Edit>` components using the following pro
 * [`successMessage`](#success-message) (deprecated - use `onSuccess` instead)
 
 `<Create>` also accepts a `record` prop, to initialize the form based on a value object.
+
+### CSS API
+
+The `<Create>` and `<Edit>` components accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
+
+| Rule name   | Description                                                                                |
+| ----------- | ------------------------------------------------------------------------------------------ |
+| `root`      | Alternative to using `className`. Applied to the root element                              |
+| `main`      | Applied to the main container                                                              |
+| `noActions` | Applied to the main container when `actions` prop is `false`                               |
+| `card`      | Applied to the child component inside the main container (Material UI's `Card` by default) |
+
+To override the style of all instances of `<Create>` and `<Edit>` components using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaCreate` and `RaEdit` keys respectively.
 
 ### Page Title
 
@@ -304,7 +317,7 @@ const PostEdit = props => (
 By default, when the save action succeeds, react-admin shows a notification, and redirects to another page. You can override this behavior and pass custom side effects by providing a function as `onSuccess` prop:
 
 ```jsx
-import React from 'react';
+import * as React from 'react';
 import { useNotify, useRefresh, useRedirect, Edit, SimpleForm } from 'react-admin';
 
 const PostEdit = props => {
@@ -359,7 +372,7 @@ By default, when the save action fails at the dataProvider level, react-admin sh
 You can override this behavior and pass custom side effects by providing a function as `onFailure` prop:
 
 ```jsx
-import React from 'react';
+import * as React from 'react';
 import { useNotify, useRefresh, useRedirect, Edit, SimpleForm } from 'react-admin';
 
 const PostEdit = props => {
@@ -864,6 +877,136 @@ export const PostEdit = (props) => (
 );
 ```
 
+## The `<AccordionForm>` Component
+
+This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers an alternative layout for Edit and Create forms, where Inputs are grouped into expandable panels.
+
+![AccordionForm](https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-form-overview.gif)
+
+```jsx
+import {
+    Edit,
+    TextField,
+    TextInput,
+    DateInput,
+    SelectInput,
+    ArrayInput,
+    SimpleFormIterator,
+    BooleanInput,
+} from 'react-admin';
+
+import { AccordionForm, AccordionFormPanel } from '@react-admin/ra-form-layout';
+
+// don't forget the component="div" prop on the main component to disable the main Card
+const CustomerEdit = props => (
+    <Edit {...props} component="div">
+        <AccordionForm autoClose>
+            <AccordionFormPanel label="Identity">
+                <TextField source="id" />
+                <TextInput source="first_name" validate={required()} />
+                <TextInput source="last_name" validate={required()} />
+                <DateInput source="dob" label="born" validate={required()} />
+                <SelectInput source="sex" choices={sexChoices} />
+            </AccordionFormPanel>
+            <AccordionFormPanel label="Occupations">
+                <ArrayInput source="occupations" label="">
+                    <SimpleFormIterator>
+                        <TextInput source="name" validate={required()} />
+                        <DateInput source="from" validate={required()} />
+                        <DateInput source="to" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </AccordionFormPanel>
+            <AccordionFormPanel label="Preferences">
+                <SelectInput
+                    source="language"
+                    choices={languageChoices}
+                    defaultValue="en"
+                />
+                <BooleanInput source="dark_theme" />
+                <BooleanInput source="accepts_emails_from_partners" />
+            </AccordionFormPanel>
+        </AccordionForm>
+    </Edit>
+);
+```
+
+You can also use the `<AccordionSection>` component as a child of `<SimpleForm>` for secondary inputs:
+
+![Accordion section](https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-section-overview.gif)
+
+Check [the `ra-form-layout` documentation](https://marmelab.com/ra-enterprise/modules/ra-form-layout) for more details.
+
+## The `<WizardForm>` Component
+
+This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers an alternative layout for large Create forms, allowing users to enter data step-by-step.
+
+![WizardForm](https://marmelab.com/ra-enterprise/modules/assets/ra-wizard-form-overview.gif)
+
+```jsx
+import * as React from 'react';
+import { Create, TextInput, required } from 'react-admin';
+import { WizardForm, WizardFormStep } from '@react-admin/ra-form-layout';
+
+const PostCreate = props => (
+    <Create {...props}>
+        <WizardForm>
+            <WizardFormStep label="First step">
+                <TextInput source="title" validate={required()} />
+            </WizardFormStep>
+            <WizardFormStep label="Second step">
+                <TextInput source="description" />
+            </WizardFormStep>
+            <WizardFormStep label="Third step">
+                <TextInput source="fullDescription" validate={required()} />
+            </WizardFormStep>
+        </WizardForm>
+    </Create>
+);
+```
+
+Check [the `ra-form-layout` documentation](https://marmelab.com/ra-enterprise/modules/ra-form-layout) for more details.
+
+## The `<CreateDialog>` and `<EditDialog>` Components
+
+These [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> components offer an alternative layout for adding or updating a record without leaving the context of the list page.
+
+![EditDialog](https://marmelab.com/ra-enterprise/modules/assets/edit-dialog.gif)
+
+```jsx
+import * as React from 'react';
+import { List, Datagrid, SimpleForm, TextField, TextInput, DateInput, required } from 'react-admin';
+import { EditDialog, CreateDialog } from '@react-admin/ra-form-layout';
+
+const CustomerList = props => (
+    <>
+        <List {...props}>
+            <Datagrid>
+                ...
+            </Datagrid>
+        </List>
+        <EditDialog {...props}>
+            <SimpleForm>
+                <TextField source="id" />
+                <TextInput source="first_name" validate={required()} />
+                <TextInput source="last_name" validate={required()} />
+                <DateInput source="date_of_birth" label="born" validate={required()} />
+            </SimpleForm>
+        </EditDialog>
+        <CreateDialog {...props}>
+            <SimpleForm>
+                <TextField source="id" />
+                <TextInput source="first_name" validate={required()} />
+                <TextInput source="last_name" validate={required()} />
+                <DateInput source="date_of_birth" label="born" validate={required()} />
+            </SimpleForm>
+        </CreateDialog>
+    </>
+);
+```
+
+Check [the `ra-form-layout` documentation](https://marmelab.com/ra-enterprise/modules/ra-form-layout) for more details.
+
 ## Default Values
 
 To define default values, you can add a `initialValues` prop to form components (`<SimpleForm>`, `<TabbedForm>`, etc.), or add a `defaultValue` to individual input components. Let's see each of these options.
@@ -875,7 +1018,7 @@ To define default values, you can add a `initialValues` prop to form components 
 The value of the form `initialValues` prop is an object, or a function returning an object, specifying default values for the created record. For instance:
 
 ```jsx
-const postDefaultValue = { created_at: new Date(), nb_views: 0 };
+const postDefaultValue = () => ({ id: uuid(), created_at: new Date(), nb_views: 0 });
 export const PostCreate = (props) => (
     <Create {...props}>
         <SimpleForm initialValues={postDefaultValue}>
@@ -897,7 +1040,6 @@ Alternatively, you can specify a `defaultValue` prop directly in `<Input>` compo
 export const PostCreate = (props) => (
     <Create {...props}>
         <SimpleForm>
-            <TextInput source="id" defaultValue={React.useMemo(() => uuid(), [])} disabled />
             <TextInput source="title" />
             <RichTextInput source="body" />
             <NumberInput source="nb_views" defaultValue={0} />
@@ -906,7 +1048,7 @@ export const PostCreate = (props) => (
 );
 ```
 
-**Tip**: For default values computed during the first render, or default values that are expensive to compute, use `React.useMemo` as in the example above.
+**Tip**: Per-input default values cannot be functions. For default values computed at render time, set the `initialValues` at the form level, as explained in the previous section. 
 
 ## Validation
 

@@ -52,16 +52,19 @@ const dataProvider = {
 
 You can find an example Data Provider implementation at the end of this chapter.
 
+**Tip**: A Data Provider can have more methods than the 9 methods listed above. For instance, you create a dataProvider with custom methods for calling non-REST API endpoints, manipulating tree structures, subscribing to real time updates, etc.
+
 **Tip**: In react-admin v2, Data Providers used to be functions, not objects. React-admin v3 can detect a legacy Data Provider and wrap an object around it. So Data Providers developed for react-admin v2 still work with react-admin v3.
 
 ## Available Providers
 
-The react-admin project includes 4 Data Providers:
+The react-admin project includes 5 Data Providers:
 
 * Simple REST: [marmelab/ra-data-simple-rest](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-simple-rest) ([read more below](#usage)). It serves mostly as an example. Incidentally, it is compatible with the [FakeRest](https://github.com/marmelab/FakeRest) API.
 * **[JSON server](https://github.com/typicode/json-server)**: [marmelab/ra-data-json-server](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-json-server). Great for prototyping an admin over a yet-to-be-developed REST API.
 * [Simple GraphQL](https://graphql.org/): [marmelab/ra-data-graphql-simple](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-graphql-simple). A GraphQL provider built with Apollo and tailored to target a simple GraphQL implementation.
 * Local JSON: [marmelab/ra-data-fakerest](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-fakerest). Based on a local object, it doesn't even use HTTP. Use it for testing purposes.
+* Local Storage: [marmelab/ra-data-localstorage](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-localstorage). User editions are persisted across refreshes and between sessions. This allows local-first apps, and can be useful in tests.
 
 Developers from the react-admin community have open-sourced Data Providers for many more backends:
 
@@ -282,6 +285,29 @@ APIs are so diverse that quite often, none of the available Data Providers suit 
 
 The methods of a Data Provider receive a request, and return a promise for a response. Both the request and the response format are standardized.
 
+**Caution**: A Data Provider should return the same shape in `getList` and `getOne` for a given resource. This is because react-admin uses "optimistic rendering", and renders the Edit and Show view *before* calling `dataProvider.getOne()` by reusing the response from `dataProvider.getList()` if the user has displayed the List view before. If your API has different shapes for a query for a unique record and for a query for a list of records, your Data Provider should make these records consistent in shape before returning them to react-admin.
+
+For instance, the following Data Provider returns more details in `getOne` than in `getList`:
+
+```jsx
+const { data } = await dataProvider.getList('posts', {
+    pagination: { page: 1, perPage: 5 },
+    sort: { field: 'title', order: 'ASC' },
+    filter: { author_id: 12 },
+})
+// [
+//   { id: 123, title: "hello, world", author_id: 12 },
+//   { id: 125, title: "howdy partner", author_id: 12 },
+//  ],
+
+const { data } = dataProvider.getOne('posts', { id: 123 })
+// {
+//     data: { id: 123, title: "hello, world", author_id: 12, body: 'Lorem Ipsum Sic Dolor Amet' }
+// }
+```
+
+This will cause the Edit view to blink on load. If you have this problem, modify your Data Provider to return the same shape for all methods. 
+
 ## Request Format
 
 Data queries require a *method* (e.g. `getOne`), a *resource* (e.g. 'posts') and a set of *parameters*.
@@ -499,9 +525,10 @@ export default {
 
 Let's say that you want to map the react-admin requests to a REST backend exposing the following API:
 
-```
-# getList
 
+### getList
+
+```
 GET http://path.to.my.api/posts?sort=["title","ASC"]&range=[0, 4]&filter={"author_id":12}
 
 HTTP/1.1 200 OK
@@ -514,17 +541,21 @@ Content-Range: posts 0-4/27
     { "id": 123, "title": "hello, world", "author_id": 12 },
     { "id": 125, "title": "howdy partner", "author_id": 12 }
 ]
+```
 
-# getOne
+### getOne
 
+```
 GET http://path.to.my.api/posts/123
 
 HTTP/1.1 200 OK
 Content-Type: application/json
 { "id": 123, "title": "hello, world", "author_id": 12 }
+```
 
-# getMany
+### getMany
 
+```
 GET http://path.to.my.api/posts?filter={"id":[123,124,125]}
 
 HTTP/1.1 200 OK
@@ -534,9 +565,11 @@ Content-Type: application/json
     { "id": 124, "title": "good day sunshine", "author_id": 12 },
     { "id": 125, "title": "howdy partner", "author_id": 12 }
 ]
+```
 
-# getManyReference
+### getManyReference
 
+```
 GET http://path.to.my.api/comments?sort=["created_at","DESC"]&range=[0, 24]&filter={"post_id":123}
 
 HTTP/1.1 200 OK
@@ -546,45 +579,54 @@ Content-Range: comments 0-1/2
     { "id": 667, "title": "I agree", "post_id": 123 },
     { "id": 895, "title": "I don't agree", "post_id": 123 }
 ]
+```
 
-# create
+### create
 
+```
 POST http://path.to.my.api/posts
 { "title": "hello, world", "author_id": 12 }
 
 HTTP/1.1 200 OK
 Content-Type: application/json
 { "id": 123, "title": "hello, world", "author_id": 12 }
+```
 
+### update
 
-# update
-
+```
 PUT http://path.to.my.api/posts/123
 { "title": "hello, world!" }
 
 HTTP/1.1 200 OK
 Content-Type: application/json
 { "id": 123, "title": "hello, world!", "author_id": 12 }
+```
 
-# updateMany
+### updateMany
 
+```
 PUT http://path.to.my.api/posts?filter={"id":[123,124,125]}
 { "title": "hello, world!" }
 
 HTTP/1.1 200 OK
 Content-Type: application/json
 [123, 124, 125]
+```
 
-# delete
+### delete
 
+```
 DELETE http://path.to.my.api/posts/123
 
 HTTP/1.1 200 OK
 Content-Type: application/json
 { "id": 123, "title": "hello, world", "author_id": 12 }
+```
 
-# deleteMany
+### deleteMany
 
+```
 DELETE http://path.to.my.api/posts?filter={"id":[123,124,125]}
 
 HTTP/1.1 200 OK
@@ -723,3 +765,37 @@ const UserProfile = ({ record }) => {
 ```
 
 You will find complete usage documentation for the data provider hooks in the [Querying the API](./Actions.md) documentation chapter.
+
+## Real-Time Updates And Locks
+
+Teams where several people work in parallel on a common task need to allow live updates, real-time notifications, and prevent data loss when two editors work on the same resource concurrently. 
+
+[`ra-realtime`](https://marmelab.com/ra-enterprise/modules/ra-realtime) (an [Enterprise Edition <img class="icon" src="./img/premium.svg" />](https://marmelab.com/ra-enterprise) module) provides hooks and UI components to lock records, and update views when the underlying data changes. It's based on the Publish / Subscribe (PubSub) pattern, and requires a backend supporting this pattern (like GraphQL, Mercure). 
+
+For instance, here is how to enable live updates on a List view:
+
+```diff
+import {
+-   List,
+    Datagrid,
+    TextField,
+    NumberField,
+    Datefield,
+} from 'react-admin';
++import { RealTimeList } from '@react-admin/ra-realtime';
+
+const PostList = props => (
+-   <List {...props}>
++   <RealTimeList {...props}>
+        <Datagrid>
+            <TextField source="title" />
+            <NumberField source="views" />
+            <DateField source="published_at" />
+        </Datagrid>
+-   </List>
++   </RealTimeList>
+);
+```
+
+Check [the `ra-realtime` documentation](https://marmelab.com/ra-enterprise/modules/ra-realtime) for more details.
+
