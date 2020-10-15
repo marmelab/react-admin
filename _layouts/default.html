@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="{{ '/css/prism.css' | relative_url }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.css">
 </head>
 
 <body>
@@ -114,14 +115,14 @@
             apiKey: '32f254b1de6a25a96665d1229b6eb8f7',
             indexName: 'marmelab-react-admin',
             inputSelector: '#query',
-            debug: false, // Set debug to true if you want to inspect the dropdown 
+            debug: false, // Set debug to true if you want to inspect the dropdown
             autocompleteOptions: {
                 appendTo: '#search',
                 hint: false,
             }
-        }); 
+        });
     </script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" defer></script>
     <!--
         React-admin protects your privacy!
         We use our own self-hosted tracking solution to collect some raw metrics,
