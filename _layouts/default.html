@@ -89,6 +89,8 @@
                 .replace(/-+$/, '');            // Trim - from end of text
         }
         document.addEventListener('DOMContentLoaded', function () {
+            // Initialize version selector
+            M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
             /* Generate table of contents */
             tocbot.init({
                 // Where to render the table of contents
