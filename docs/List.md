@@ -812,7 +812,7 @@ You can change the filters by updating the query parameter, e.g. using the `<Lin
 
 ### Linking To A Pre-Filtered List
 
-As the filter values are taken from the URL, you can link to a pre-filtered list by setting the query parameter.
+As the filter values are taken from the URL, you can link to a pre-filtered list by setting the `filter` query parameter.
 
 For instance, if you have a list of tags, you can display a button for each category to link to the list of posts filtered by that tag:
 
@@ -821,7 +821,6 @@ For instance, if you have a list of tags, you can display a button for each cate
 import * as React from "react";
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
-import { stringify } from 'query-string';
 
 const LinkToRelatedProducts = ({ record }) => {
     const translate = useTranslate();
@@ -831,13 +830,7 @@ const LinkToRelatedProducts = ({ record }) => {
             component={Link}
             to={{
                 pathname: '/posts',
-                search: stringify({
-                    page: 1,
-                    perPage: 25,
-                    sort: 'id',
-                    order: 'DESC',
-                    filter: JSON.stringify({ category_id: record.id }),
-                }),
+                search: `filter=${JSON.stringify({ category_id: record.id })}`,
             }}
         >
             All posts with the category {record.name} ; 
@@ -848,8 +841,6 @@ const LinkToRelatedProducts = ({ record }) => {
 {% endraw %}
 
 You can use this button e.g. as a child of `<Datagrid>`. You can also create a custom Menu button with that technique to link to the unfiltered list by setting the filter value to `{}`.
-
-**Tip**: You have to pass *all* the query string parameters - not just `filter`. That's a current limitation of react-admin.
 
 ### The `<Filter>` Button/Form Combo
 
