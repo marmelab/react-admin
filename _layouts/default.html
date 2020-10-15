@@ -66,16 +66,11 @@
     <main>
         <div class="container">
             <div class="row">
-                <div class="col s12 m8 offset-m1 xl7 offset-xl1 markdown-section DocSearch-content">
+                <div class="col s12 m8 offset-m1 xl7 offset-xl1 markdown-section DocSearch-content toc-content">
                     {{ content }}
                 </div>
                 <div class="col hide-on-small-only m3 xl3 offset-xl1">
-                    <div class="toc-wrapper">
-                        <div style="height: 1px;">
-                            <ul class="section table-of-contents pushpin">
-                            </ul>
-                        </div>
-                    </div>
+                    <div class="toc"></div>
                 </div>
             </div>
         </div>
@@ -93,20 +88,18 @@
                 .replace(/-+$/, '');            // Trim - from end of text
         }
         document.addEventListener('DOMContentLoaded', function () {
-            /* Generate table of contents */
-            document.querySelectorAll('.markdown-section h2').forEach(element => {
-                element.classList.add('scrollspy');
-                var a = document.createElement('a');
-                a.href = "#" + slugify(element.innerText);
-                a.innerText = element.innerText;
-                var li = document.createElement('li');
-                li.appendChild(a);
-                document.querySelector('.table-of-contents').appendChild(li)
-            })
-            M.Sidenav.init(document.querySelectorAll('.sidenav'));
-            M.Pushpin.init(document.querySelector('.pushpin'), { offset: 75, top: 75 });
-            M.ScrollSpy.init(document.querySelectorAll('.scrollspy'));
-            M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
+            tocbot.init({
+                // Where to render the table of contents
+                tocSelector: '.toc',
+                positionFixedSelector: '.toc',
+                // Where to grab the headings to build the table of contents
+                contentSelector: '.toc-content',
+                // More options
+                headingSelector: 'h2, h3',
+                includeHtml: true,
+                collapseDepth: 2,
+                hasInnerContainers: true,
+            });
         });
     </script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
