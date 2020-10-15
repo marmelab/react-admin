@@ -10,7 +10,14 @@ import {
     DELETE_MANY,
 } from 'ra-core';
 
-export const QUERY_TYPES = [GET_LIST, GET_MANY, GET_MANY_REFERENCE, GET_ONE];
+export const GET_COUNT = 'GET_COUNT';
+export const QUERY_TYPES = [
+    GET_LIST,
+    GET_MANY,
+    GET_MANY_REFERENCE,
+    GET_ONE,
+    GET_COUNT,
+];
 export const MUTATION_TYPES = [
     CREATE,
     UPDATE,

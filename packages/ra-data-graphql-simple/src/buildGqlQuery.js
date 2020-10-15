@@ -1,5 +1,5 @@
 import { GET_LIST, GET_MANY, GET_MANY_REFERENCE, DELETE } from 'ra-core';
-import { QUERY_TYPES } from 'ra-data-graphql';
+import { QUERY_TYPES, GET_COUNT } from 'ra-data-graphql';
 import { TypeKind } from 'graphql';
 import * as gqlTypes from 'graphql-ast-types-browser';
 
@@ -158,16 +158,29 @@ export const buildApolloArgs = (query, variables) => {
     return args;
 };
 
+function getCountType(resource) {
+    const countType = resource[GET_COUNT];
+
+    if (!countType) {
+        throw new Error(
+            `No query or mutation matching fetch type ${GET_COUNT} could be found for resource ${resource.type.name}`
+        );
+    }
+
+    return countType;
+}
+
 export default introspectionResults => (
     resource,
     aorFetchType,
     queryType,
     variables
 ) => {
+    const countType = getCountType(resource);
     const { sortField, sortOrder, ...metaVariables } = variables;
     const apolloArgs = buildApolloArgs(queryType, variables);
     const args = buildArgs(queryType, variables);
-    const metaArgs = buildArgs(queryType, metaVariables);
+    const metaArgs = buildArgs(countType, metaVariables);
     const fields = buildFields(introspectionResults)(resource.type.fields);
     if (
         aorFetchType === GET_LIST ||
@@ -186,7 +199,7 @@ export default introspectionResults => (
                         gqlTypes.selectionSet(fields)
                     ),
                     gqlTypes.field(
-                        gqlTypes.name(`_${queryType.name}Meta`),
+                        gqlTypes.name(countType.name),
                         gqlTypes.name('total'),
                         metaArgs,
                         null,
