@@ -17,6 +17,8 @@ interface Props {
 const useStyles = makeStyles(theme => ({
     card: {
         minHeight: 52,
+        display: 'flex',
+        flexDirection: 'column',
         flex: '1',
         '& a': {
             textDecoration: 'none',

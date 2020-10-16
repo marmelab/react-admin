@@ -3,12 +3,14 @@ import { FC } from 'react';
 import { FunctionField, Record } from 'react-admin';
 import { Order } from '../types';
 
-const render = (record?: Record) => (record as Order).basket.length;
+const render = (record?: Record) => record && (record as Order).basket.length;
 
-const NbItemsField: FC = () => <FunctionField render={render} />;
+const NbItemsField: FC<any> = ({ record }) => (
+    <FunctionField record={record} render={render} />
+);
 
 NbItemsField.defaultProps = {
-    label: 'Nb Items',
+    label: 'resources.commands.fields.nb_items',
     textAlign: 'right',
 };
 

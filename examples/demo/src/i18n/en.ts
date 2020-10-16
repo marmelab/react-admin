@@ -17,7 +17,9 @@ const customEnglishMessages: TranslationMessages = {
             month_history: '30 Day Revenue History',
             new_orders: 'New Orders',
             pending_reviews: 'Pending Reviews',
+            all_reviews: 'See all reviews',
             new_customers: 'New Customers',
+            all_customers: 'See all customers',
             pending_orders: 'Pending Orders',
             order: {
                 items:
@@ -50,6 +52,7 @@ const customEnglishMessages: TranslationMessages = {
                 total_spent: 'Total spent',
                 password: 'Password',
                 confirm_password: 'Confirm password',
+                stateAbbr: 'State',
             },
             filters: {
                 last_visited: 'Last visited',
@@ -90,15 +93,25 @@ const customEnglishMessages: TranslationMessages = {
                     quantity: 'Quantity',
                     sum: 'Sum',
                     tax_rate: 'Tax Rate',
+                    taxes: 'Tax',
                     total: 'Total',
                     unit_price: 'Unit Price',
                 },
+                address: 'Address',
                 customer_id: 'Customer',
                 date_gte: 'Passed Since',
                 date_lte: 'Passed Before',
+                nb_items: 'Nb Items',
                 total_gte: 'Min amount',
                 status: 'Status',
                 returned: 'Returned',
+            },
+            section: {
+                order: 'Order',
+                customer: 'Customer',
+                shipping_address: 'Shipping Address',
+                items: 'Items',
+                total: 'Totals',
             },
         },
         invoices: {

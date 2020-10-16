@@ -121,22 +121,30 @@ const VisitorForm = (props: any) => {
                                     />
                                     <Box display={{ xs: 'block', sm: 'flex' }}>
                                         <Box
-                                            flex={1}
+                                            flex={2}
                                             mr={{ xs: 0, sm: '0.5em' }}
                                         >
                                             <TextInput
-                                                source="zipcode"
+                                                source="city"
                                                 resource="customers"
                                                 fullWidth
                                                 helperText={false}
                                             />
                                         </Box>
                                         <Box
-                                            flex={2}
-                                            ml={{ xs: 0, sm: '0.5em' }}
+                                            flex={1}
+                                            mr={{ xs: 0, sm: '0.5em' }}
                                         >
                                             <TextInput
-                                                source="city"
+                                                source="stateAbbr"
+                                                resource="customers"
+                                                fullWidth
+                                                helperText={false}
+                                            />
+                                        </Box>
+                                        <Box flex={2}>
+                                            <TextInput
+                                                source="zipcode"
                                                 resource="customers"
                                                 fullWidth
                                                 helperText={false}

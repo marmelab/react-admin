@@ -25,7 +25,12 @@ const ListFilters = (props: Omit<FilterProps, 'children'>) => (
 );
 
 const InvoiceList: FC<ListProps> = props => (
-    <List {...props} filters={<ListFilters />} perPage={25}>
+    <List
+        {...props}
+        filters={<ListFilters />}
+        perPage={25}
+        sort={{ field: 'date', order: 'desc' }}
+    >
         <Datagrid rowClick="expand" expand={<InvoiceShow />}>
             <TextField source="id" />
             <DateField source="date" />

@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { FC } from 'react';
 import {
+    Avatar,
+    Box,
+    Button,
     List,
     ListItem,
     ListItemAvatar,
     ListItemText,
-    Avatar,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import CommentIcon from '@material-ui/icons/Comment';
@@ -21,19 +23,6 @@ interface Props {
     customers?: { [key: string]: Customer };
     nb?: number;
 }
-
-const useStyles = makeStyles(theme => ({
-    avatar: {
-        background: theme.palette.background.paper,
-    },
-    listItemText: {
-        overflowY: 'hidden',
-        height: '4em',
-        display: '-webkit-box',
-        WebkitLineClamp: 2,
-        WebkitBoxOrient: 'vertical',
-    },
-}));
 
 const PendingReviews: FC<Props> = ({ reviews = [], customers = {}, nb }) => {
     const classes = useStyles();
@@ -76,8 +65,39 @@ const PendingReviews: FC<Props> = ({ reviews = [], customers = {}, nb }) => {
                     </ListItem>
                 ))}
             </List>
+            <Box flexGrow="1">&nbsp;</Box>
+            <Button
+                className={classes.link}
+                component={Link}
+                to="/reviews"
+                size="small"
+                color="primary"
+            >
+                <Box p={1} className={classes.linkContent}>
+                    {translate('pos.dashboard.all_reviews')}
+                </Box>
+            </Button>
         </CardWithIcon>
     );
 };
+
+const useStyles = makeStyles(theme => ({
+    avatar: {
+        background: theme.palette.background.paper,
+    },
+    listItemText: {
+        overflowY: 'hidden',
+        height: '4em',
+        display: '-webkit-box',
+        WebkitLineClamp: 2,
+        WebkitBoxOrient: 'vertical',
+    },
+    link: {
+        borderRadius: 0,
+    },
+    linkContent: {
+        color: theme.palette.primary.main,
+    },
+}));
 
 export default PendingReviews;
