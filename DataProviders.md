@@ -285,6 +285,29 @@ APIs are so diverse that quite often, none of the available Data Providers suit 
 
 The methods of a Data Provider receive a request, and return a promise for a response. Both the request and the response format are standardized.
 
+**Caution**: A Data Provider should return the same shape in `getList` and `getOne` for a given resource. This is because react-admin uses "optimistic rendering", and renders the Edit and Show view *before* calling `dataProvider.getOne()` by reusing the response from `dataProvider.getList()` if the user has displayed the List view before. If your API has different shapes for a query for a unique record and for a query for a list of records, your Data Provider should make these records consistent in shape before returning them to react-admin.
+
+For instance, the following Data Provider returns more details in `getOne` than in `getList`:
+
+```jsx
+const { data } = await dataProvider.getList('posts', {
+    pagination: { page: 1, perPage: 5 },
+    sort: { field: 'title', order: 'ASC' },
+    filter: { author_id: 12 },
+})
+// [
+//   { id: 123, title: "hello, world", author_id: 12 },
+//   { id: 125, title: "howdy partner", author_id: 12 },
+//  ],
+
+const { data } = dataProvider.getOne('posts', { id: 123 })
+// {
+//     data: { id: 123, title: "hello, world", author_id: 12, body: 'Lorem Ipsum Sic Dolor Amet' }
+// }
+```
+
+This will cause the Edit view to blink on load. If you have this problem, modify your Data Provider to return the same shape for all methods. 
+
 ## Request Format
 
 Data queries require a *method* (e.g. `getOne`), a *resource* (e.g. 'posts') and a set of *parameters*.

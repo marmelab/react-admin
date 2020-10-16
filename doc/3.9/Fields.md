@@ -338,7 +338,7 @@ See [Intl.DateTimeFormat documentation](https://developer.mozilla.org/fr/docs/We
 
 ## `<EmailField>`
 
-`<EmailField>` displays an email as a `<a href="mailto:" />` link.
+`<EmailField>` displays an email as a Material UI's `<Link href="mailto:" />` component.
 
 ```jsx
 import { EmailField } from 'react-admin';
@@ -908,7 +908,7 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 For instance, here is how to fetch the authors related to a book record by matching book.id to book_authors.post_id, then matching book_authors.author_id to authors.id, and then display the author last_name for each, in a <ChipField>:
 
 ```jsx
-import React from 'react';
+import * as React from 'react';
 import { 
     Show,
     SimpleShowLayout,
@@ -1087,7 +1087,7 @@ import { TextField } from 'react-admin';
 
 ## `<UrlField>`
 
-`<UrlField>` displays an url in an `<a href="">` tag.
+`<UrlField>` displays an url in a Material UI's `<Link href="" />` component.
 
 ```jsx
 import { UrlField } from 'react-admin';

@@ -898,7 +898,7 @@ import {
 import { AccordionForm, AccordionFormPanel } from '@react-admin/ra-form-layout';
 
 // don't forget the component="div" prop on the main component to disable the main Card
-const CustomerEdit: FC = props => (
+const CustomerEdit = props => (
     <Edit {...props} component="div">
         <AccordionForm autoClose>
             <AccordionFormPanel label="Identity">
@@ -944,11 +944,11 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 ![WizardForm](https://marmelab.com/ra-enterprise/modules/assets/ra-wizard-form-overview.gif)
 
 ```jsx
-import React, { FC } from 'react';
+import * as React from 'react';
 import { Create, TextInput, required } from 'react-admin';
 import { WizardForm, WizardFormStep } from '@react-admin/ra-form-layout';
 
-const PostCreate: FC = props => (
+const PostCreate = props => (
     <Create {...props}>
         <WizardForm>
             <WizardFormStep label="First step">
@@ -974,7 +974,7 @@ These [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" 
 ![EditDialog](https://marmelab.com/ra-enterprise/modules/assets/edit-dialog.gif)
 
 ```jsx
-import React from 'react';
+import * as React from 'react';
 import { List, Datagrid, SimpleForm, TextField, TextInput, DateInput, required } from 'react-admin';
 import { EditDialog, CreateDialog } from '@react-admin/ra-form-layout';
 
@@ -1018,7 +1018,7 @@ To define default values, you can add a `initialValues` prop to form components 
 The value of the form `initialValues` prop is an object, or a function returning an object, specifying default values for the created record. For instance:
 
 ```jsx
-const postDefaultValue = { created_at: new Date(), nb_views: 0 };
+const postDefaultValue = () => ({ id: uuid(), created_at: new Date(), nb_views: 0 });
 export const PostCreate = (props) => (
     <Create {...props}>
         <SimpleForm initialValues={postDefaultValue}>
@@ -1040,7 +1040,6 @@ Alternatively, you can specify a `defaultValue` prop directly in `<Input>` compo
 export const PostCreate = (props) => (
     <Create {...props}>
         <SimpleForm>
-            <TextInput source="id" defaultValue={React.useMemo(() => uuid(), [])} disabled />
             <TextInput source="title" />
             <RichTextInput source="body" />
             <NumberInput source="nb_views" defaultValue={0} />
@@ -1049,7 +1048,7 @@ export const PostCreate = (props) => (
 );
 ```
 
-**Tip**: For default values computed during the first render, or default values that are expensive to compute, use `React.useMemo` as in the example above.
+**Tip**: Per-input default values cannot be functions. For default values computed at render time, set the `initialValues` at the form level, as explained in the previous section. 
 
 ## Validation
 

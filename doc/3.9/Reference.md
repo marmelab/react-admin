@@ -141,19 +141,19 @@ title: "Reference"
 * [`useAuthState`](./Authentication.md#useauthstate-hook)
 * `useCheckAuth`
 * `useChoices`
-* [`useCreate`](./Actions.md#specialized-hooks)
+* [`useCreate`](./Actions.md#usecreate)
 * [`useCreateController`](./CreateEdit.md#usecreatecontroller)
 * [`useDataProvider`](./Actions.md#usedataprovider-hook)
-* [`useDelete`](./Actions.md#specialized-hooks)
-* [`useDeleteMany`](./Actions.md#specialized-hooks)
+* [`useDelete`](./Actions.md#usedelete)
+* [`useDeleteMany`](./Actions.md#usedeletemany)
 * [`useEditController`](./CreateEdit.md#useeditcontroller)
 * `useFilterState`
-* [`useGetList`](./Actions.md#specialized-hooks)
-* [`useGetMany`](./Actions.md#specialized-hooks)
-* [`useGetManyReference`](./Actions.md#specialized-hooks)
+* [`useGetList`](./Actions.md#usegetlist)
+* [`useGetMany`](./Actions.md#usegetmany)
+* [`useGetManyReference`](./Actions.md#usegetmanyreference)
 * `useGetMatching`
 * `useGetMatchingReferences`
-* [`useGetOne`](./Actions.md#specialized-hooks)
+* [`useGetOne`](./Actions.md#usegetone)
 * `useGetPermissions`
 * [`useHasLock`](https://marmelab.com/ra-enterprise/modules/ra-realtime#locks-on-content)<img class="icon" src="./img/premium.svg" />
 * [`useHasLocks`](https://marmelab.com/ra-enterprise/modules/ra-realtime#locks-on-content)<img class="icon" src="./img/premium.svg" />
@@ -189,9 +189,9 @@ title: "Reference"
 * `useSuggestions`
 * [`useTour`](https://marmelab.com/ra-enterprise/modules/ra-tour)<img class="icon" src="./img/premium.svg" />
 * [`useTranslate`](./Translation.md#usetranslate-hook)
-* [`useUpdate`](./Actions.md#specialized-hooks)
+* [`useUpdate`](./Actions.md#useupdate)
 * `useUpdateLoading`
-* [`useUpdateMany`](./Actions.md#specialized-hooks)
+* [`useUpdateMany`](./Actions.md#useupdatemany)
 * [`useUnselectAll`](./Actions.md#handling-side-effects-in-usedataprovider)
 * [`useWarnWhenUnsavedChanges`](./CreateEdit.md#warning-about-unsaved-changes)
 * `useVersion`

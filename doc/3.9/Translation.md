@@ -357,7 +357,7 @@ Beware that users from all around the world may use your application, so make su
 The `<LanguageSwitcher>` component is part of `ra-preferences`, an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> module. It displays a button in the App Bar letting users choose their preferred language, and **persists that choice in localStorage**. Users only have to set their preferred locale once per browser.
 
 ```jsx
-import React from 'react';
+import * as React from 'react';
 import { LanguageSwitcher } from '@react-admin/ra-preferences';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';

@@ -121,7 +121,7 @@ It's your responsibility to determine the validity date based on the API respons
 
 For instance, to have a `dataProvider` declare responses for `getOne`, `getMany`, and `getList` valid for 5 minutes, you can wrap it in the following proxy:
 
-```ts
+```js
 // in src/dataProvider.js
 import simpleRestProvider from 'ra-data-simple-rest';
 
@@ -129,7 +129,7 @@ const dataProvider = simpleRestProvider('http://path.to.my.api/');
 
 const cacheDataProviderProxy = (dataProvider, duration =  5 * 60 * 1000) =>
     new Proxy(dataProvider, {
-        get: (target, name: string) => (resource, params) => {
+        get: (target, name) => (resource, params) => {
             if (name === 'getOne' || name === 'getMany' || name === 'getList') {
                 return dataProvider[name](resource, params).then(response => {
                     const validUntil = new Date();
