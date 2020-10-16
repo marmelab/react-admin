@@ -39,7 +39,7 @@ const OrderFilter: FC<Omit<FilterProps, 'children'>> = props => (
         <ReferenceInput source="customer_id" reference="customers">
             <AutocompleteInput
                 optionText={(choice: Customer) =>
-                    choice.first_name && choice.last_name
+                    choice.id // the empty choice is { id: '' }
                         ? `${choice.first_name} ${choice.last_name}`
                         : ''
                 }
