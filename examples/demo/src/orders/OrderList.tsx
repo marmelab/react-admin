@@ -20,6 +20,7 @@ import {
     SearchInput,
     TextField,
     TextInput,
+    useGetList,
     useListContext,
 } from 'react-admin';
 import { useMediaQuery, Divider, Tabs, Tab, Theme } from '@material-ui/core';
@@ -63,6 +64,33 @@ const tabs = [
 
 interface TabbedDatagridProps extends DatagridProps {}
 
+const useGetTotals = (filterValues: any) => {
+    const { total: totalOrdered } = useGetList(
+        'commands',
+        { perPage: 1, page: 1 },
+        { field: 'id', order: 'ASC' },
+        { ...filterValues, status: 'ordered' }
+    );
+    const { total: totalDelivered } = useGetList(
+        'commands',
+        { perPage: 1, page: 1 },
+        { field: 'id', order: 'ASC' },
+        { ...filterValues, status: 'delivered' }
+    );
+    const { total: totalCancelled } = useGetList(
+        'commands',
+        { perPage: 1, page: 1 },
+        { field: 'id', order: 'ASC' },
+        { ...filterValues, status: 'cancelled' }
+    );
+
+    return {
+        ordered: totalOrdered,
+        delivered: totalDelivered,
+        cancelled: totalCancelled,
+    };
+};
+
 const TabbedDatagrid: FC<TabbedDatagridProps> = props => {
     const listContext = useListContext();
     const { ids, filterValues, setFilters, displayedFilters } = listContext;
@@ -77,6 +105,7 @@ const TabbedDatagrid: FC<TabbedDatagridProps> = props => {
     const [cancelled, setCancelled] = useState<Identifier[]>(
         [] as Identifier[]
     );
+    const totals = useGetTotals(filterValues) as any;
 
     useEffect(() => {
         if (ids && ids !== filterValues.status) {
@@ -124,7 +153,11 @@ const TabbedDatagrid: FC<TabbedDatagridProps> = props => {
                 {tabs.map(choice => (
                     <Tab
                         key={choice.id}
-                        label={choice.name}
+                        label={
+                            totals[choice.name]
+                                ? `${choice.name} (${totals[choice.name]})`
+                                : choice.name
+                        }
                         value={choice.id}
                     />
                 ))}
