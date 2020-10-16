@@ -1,11 +1,11 @@
-import AppBar from './AppBar';
+import AppBar, { AppBarProps } from './AppBar';
 import CardActions from './CardActions';
 import CardContentInner from './CardContentInner';
-import Confirm from './Confirm';
-import DashboardMenuItem from './DashboardMenuItem';
-import DeviceTestWrapper from './DeviceTestWrapper';
-import Error from './Error';
-import HideOnScroll from './HideOnScroll';
+import Confirm, { ConfirmProps } from './Confirm';
+import DashboardMenuItem, { DashboardMenuItemProps } from './DashboardMenuItem';
+import DeviceTestWrapper, { DeviceTestWrapperProps } from './DeviceTestWrapper';
+import Error, { ErrorProps } from './Error';
+import HideOnScroll, { HideOnScrollProps } from './HideOnScroll';
 import Layout from './Layout';
 import Loading from './Loading';
 import LinearProgress from './LinearProgress';
@@ -14,14 +14,12 @@ import Menu, { MenuProps } from './Menu';
 import MenuItemLink, { MenuItemLinkProps } from './MenuItemLink';
 import NotFound from './NotFound';
 import Notification from './Notification';
-import Responsive from './Responsive';
+import Responsive, { ResponsiveProps } from './Responsive';
 import Sidebar, { SidebarProps } from './Sidebar';
-import Title, { TitlePropType } from './Title';
+import Title, { TitleProps, TitlePropType } from './Title';
 import TitleForRecord from './TitleForRecord';
 import TopToolbar from './TopToolbar';
 import UserMenu from './UserMenu';
-
-export type { MenuProps, MenuItemLinkProps, SidebarProps };
 
 export {
     AppBar,
@@ -47,4 +45,18 @@ export {
     TitlePropType,
     TopToolbar,
     UserMenu,
+};
+
+export type {
+    AppBarProps,
+    ConfirmProps,
+    DashboardMenuItemProps,
+    DeviceTestWrapperProps,
+    ErrorProps,
+    HideOnScrollProps,
+    MenuItemLinkProps,
+    MenuProps,
+    ResponsiveProps,
+    SidebarProps,
+    TitleProps,
 };
