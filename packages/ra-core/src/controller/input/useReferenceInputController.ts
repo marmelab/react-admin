@@ -1,13 +1,9 @@
+import { useCallback } from 'react';
+
 import { getStatusForInput as getDataStatus } from './referenceDataStatus';
 import useTranslate from '../../i18n/useTranslate';
-import {
-    FilterPayload,
-    Identifier,
-    PaginationPayload,
-    Record,
-    RecordMap,
-    SortPayload,
-} from '../../types';
+import { PaginationPayload, Record, SortPayload } from '../../types';
+import { ListControllerProps } from '../useListController';
 import useReference from '../useReference';
 import useGetMatchingReferences from './useGetMatchingReferences';
 import usePaginationState from '../usePaginationState';
@@ -58,7 +54,9 @@ const defaultFilter = {};
  * });
  */
 const useReferenceInputController = ({
+    basePath,
     input,
+    page: initialPage = 1,
     perPage: initialPerPage = 25,
     filter = defaultFilter,
     reference,
@@ -77,8 +75,17 @@ const useReferenceInputController = ({
         setPage,
         perPage,
         setPerPage,
-    } = usePaginationState({ perPage: initialPerPage });
-    const { sort, setSort } = useSortState(sortOverride);
+    } = usePaginationState({ page: initialPage, perPage: initialPerPage });
+
+    const { sort, setSort: setSortObject } = useSortState(sortOverride);
+    const setSort = useCallback(
+        (field: string, order: string = 'ASC') => {
+            setSortObject({ field, order });
+            setPage(1);
+        },
+        [setPage, setSortObject]
+    );
+
     const { filter: filterValues, setFilter } = useFilterState({
         permanentFilter: filter,
         filterToQuery,
@@ -123,8 +130,9 @@ const useReferenceInputController = ({
     });
 
     return {
+        // should match the ListContext shape
         possibleValues: {
-            // should match the ListContext shape
+            basePath,
             data: matchingReferences.reduce((acc, item) => {
                 acc[item.id] = item;
                 return acc;
@@ -141,7 +149,7 @@ const useReferenceInputController = ({
             currentSort: sort,
             setSort,
             filterValues,
-            setFilter,
+            setFilters: setFilter,
             selectedIds,
             onSelect,
             onToggleItem,
@@ -169,31 +177,13 @@ const useReferenceInputController = ({
         pagination,
         setPagination,
         sort,
-        setSort,
+        setSort: setSortObject,
         warning: dataStatus.warning,
     };
 };
 
 export interface ReferenceInputValue {
-    possibleValues: {
-        loading: boolean;
-        error?: any;
-        ids: Identifier[];
-        data?: RecordMap;
-        filterValues: FilterPayload;
-        setFilter: (filter: string) => void;
-        page: number;
-        setPage: (page: number) => void;
-        perPage: number;
-        setPerPage: (perPage: number) => void;
-        currentSort: SortPayload;
-        setSort: (sort: SortPayload) => void;
-        selectedIds: Identifier[];
-        onSelect: (ids: Identifier[]) => void;
-        onToggleItem: (id: Identifier) => void;
-        onUnselectItems: () => void;
-        resource: string;
-    };
+    possibleValues: ListControllerProps;
     referenceRecord: {
         data?: Record;
         loaded: boolean;
@@ -219,9 +209,11 @@ export interface ReferenceInputValue {
 
 interface Option {
     allowEmpty?: boolean;
+    basePath?: string;
     filter?: any;
     filterToQuery?: (filter: string) => any;
     input?: any;
+    page?: number;
     perPage?: number;
     record?: Record;
     reference: string;
