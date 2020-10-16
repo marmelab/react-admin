@@ -16,6 +16,7 @@ import {
     NullableBooleanInput,
     NumberField,
     ReferenceInput,
+    ReferenceField,
     SearchInput,
     TextField,
     TextInput,
@@ -27,6 +28,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import NbItemsField from './NbItemsField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
+import AddressField from '../visitors/AddressField';
 import MobileGrid from './MobileGrid';
 import { Customer } from '../types';
 
@@ -144,6 +146,14 @@ const TabbedDatagrid: FC<TabbedDatagridProps> = props => {
                                 <DateField source="date" showTime />
                                 <TextField source="reference" />
                                 <CustomerReferenceField />
+                                <ReferenceField
+                                    source="customer_id"
+                                    reference="customers"
+                                    link={false}
+                                    label="resources.commands.fields.address"
+                                >
+                                    <AddressField />
+                                </ReferenceField>
                                 <NbItemsField />
                                 <NumberField
                                     source="total"
@@ -164,6 +174,14 @@ const TabbedDatagrid: FC<TabbedDatagridProps> = props => {
                                 <DateField source="date" showTime />
                                 <TextField source="reference" />
                                 <CustomerReferenceField />
+                                <ReferenceField
+                                    source="customer_id"
+                                    reference="customers"
+                                    link={false}
+                                    label="resources.commands.fields.address"
+                                >
+                                    <AddressField />
+                                </ReferenceField>
                                 <NbItemsField />
                                 <NumberField
                                     source="total"
@@ -185,6 +203,14 @@ const TabbedDatagrid: FC<TabbedDatagridProps> = props => {
                                 <DateField source="date" showTime />
                                 <TextField source="reference" />
                                 <CustomerReferenceField />
+                                <ReferenceField
+                                    source="customer_id"
+                                    reference="customers"
+                                    link={false}
+                                    label="resources.commands.fields.address"
+                                >
+                                    <AddressField />
+                                </ReferenceField>
                                 <NbItemsField />
                                 <NumberField
                                     source="total"

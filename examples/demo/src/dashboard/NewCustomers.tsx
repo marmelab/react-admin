@@ -1,10 +1,14 @@
 import * as React from 'react';
 import { useMemo } from 'react';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
+import {
+    Avatar,
+    Box,
+    Button,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemText,
+} from '@material-ui/core';
 import CustomerIcon from '@material-ui/icons/PersonAdd';
 import { Link } from 'react-router-dom';
 import { useTranslate, useQueryWithStore } from 'react-admin';
@@ -66,6 +70,14 @@ const NewCustomers = () => {
                       ))
                     : null}
             </List>
+            <Box flexGrow="1">&nbsp;</Box>
+            <Box p={1} display="flex" justifyContent="center">
+                <Link to="/customers">
+                    <Button size="small" color="primary">
+                        {translate('pos.dashboard.all_customers')}
+                    </Button>
+                </Link>
+            </Box>
         </CardWithIcon>
     );
 };

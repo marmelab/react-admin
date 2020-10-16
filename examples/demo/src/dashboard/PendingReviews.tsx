@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { FC } from 'react';
 import {
+    Avatar,
+    Box,
+    Button,
     List,
     ListItem,
     ListItemAvatar,
     ListItemText,
-    Avatar,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import CommentIcon from '@material-ui/icons/Comment';
@@ -76,6 +78,14 @@ const PendingReviews: FC<Props> = ({ reviews = [], customers = {}, nb }) => {
                     </ListItem>
                 ))}
             </List>
+            <Box flexGrow="1">&nbsp;</Box>
+            <Box p={1} display="flex" justifyContent="center">
+                <Link to="/customers">
+                    <Button size="small" color="primary">
+                        {translate('pos.dashboard.all_reviews')}
+                    </Button>
+                </Link>
+            </Box>
         </CardWithIcon>
     );
 };
