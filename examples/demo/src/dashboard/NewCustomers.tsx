@@ -9,6 +9,7 @@ import {
     ListItemAvatar,
     ListItemText,
 } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import CustomerIcon from '@material-ui/icons/PersonAdd';
 import { Link } from 'react-router-dom';
 import { useTranslate, useQueryWithStore } from 'react-admin';
@@ -18,6 +19,8 @@ import { Customer } from '../types';
 
 const NewCustomers = () => {
     const translate = useTranslate();
+    const classes = useStyles();
+
     const aMonthAgo = useMemo(() => {
         const date = new Date();
         date.setDate(date.getDate() - 30);
@@ -71,15 +74,28 @@ const NewCustomers = () => {
                     : null}
             </List>
             <Box flexGrow="1">&nbsp;</Box>
-            <Box p={1} display="flex" justifyContent="center">
-                <Link to="/customers">
-                    <Button size="small" color="primary">
-                        {translate('pos.dashboard.all_customers')}
-                    </Button>
-                </Link>
-            </Box>
+            <Button
+                className={classes.link}
+                component={Link}
+                to="/customers"
+                size="small"
+                color="primary"
+            >
+                <Box p={1} className={classes.linkContent}>
+                    {translate('pos.dashboard.all_customers')}
+                </Box>
+            </Button>
         </CardWithIcon>
     );
 };
+
+const useStyles = makeStyles(theme => ({
+    link: {
+        borderRadius: 0,
+    },
+    linkContent: {
+        color: theme.palette.primary.main,
+    },
+}));
 
 export default NewCustomers;

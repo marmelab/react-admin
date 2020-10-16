@@ -24,19 +24,6 @@ interface Props {
     nb?: number;
 }
 
-const useStyles = makeStyles(theme => ({
-    avatar: {
-        background: theme.palette.background.paper,
-    },
-    listItemText: {
-        overflowY: 'hidden',
-        height: '4em',
-        display: '-webkit-box',
-        WebkitLineClamp: 2,
-        WebkitBoxOrient: 'vertical',
-    },
-}));
-
 const PendingReviews: FC<Props> = ({ reviews = [], customers = {}, nb }) => {
     const classes = useStyles();
     const translate = useTranslate();
@@ -79,15 +66,38 @@ const PendingReviews: FC<Props> = ({ reviews = [], customers = {}, nb }) => {
                 ))}
             </List>
             <Box flexGrow="1">&nbsp;</Box>
-            <Box p={1} display="flex" justifyContent="center">
-                <Link to="/customers">
-                    <Button size="small" color="primary">
-                        {translate('pos.dashboard.all_reviews')}
-                    </Button>
-                </Link>
-            </Box>
+            <Button
+                className={classes.link}
+                component={Link}
+                to="/customers"
+                size="small"
+                color="primary"
+            >
+                <Box p={1} className={classes.linkContent}>
+                    {translate('pos.dashboard.all_reviews')}
+                </Box>
+            </Button>
         </CardWithIcon>
     );
 };
+
+const useStyles = makeStyles(theme => ({
+    avatar: {
+        background: theme.palette.background.paper,
+    },
+    listItemText: {
+        overflowY: 'hidden',
+        height: '4em',
+        display: '-webkit-box',
+        WebkitLineClamp: 2,
+        WebkitBoxOrient: 'vertical',
+    },
+    link: {
+        borderRadius: 0,
+    },
+    linkContent: {
+        color: theme.palette.primary.main,
+    },
+}));
 
 export default PendingReviews;
