@@ -26,6 +26,7 @@ export interface Customer extends Record {
     first_name: string;
     last_name: string;
     address: string;
+    stateAbbr: string;
     city: string;
     zipcode: string;
     avatar: string;

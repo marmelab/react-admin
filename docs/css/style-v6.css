@@ -146,6 +146,9 @@ ul.sidenav code {
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
+.markdown-section *:focus {
+    outline: none;
+}
 .markdown-section > :first-child {
     margin-top: 0 !important;
 }

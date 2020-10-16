@@ -9,7 +9,7 @@ const NbItemsField = ({ record }: FieldProps<Order>) => (
 );
 
 NbItemsField.defaultProps = {
-    label: 'Nb Items',
+    label: 'resources.commands.fields.nb_items',
     textAlign: 'right',
 };
 

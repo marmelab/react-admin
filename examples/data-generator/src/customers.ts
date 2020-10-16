@@ -16,9 +16,10 @@ export default (db, { serializeDate }) =>
             first_name,
             last_name,
             email,
-            address: has_ordered ? address.streetName() : null,
+            address: has_ordered ? address.streetAddress() : null,
             zipcode: has_ordered ? address.zipCode() : null,
             city: has_ordered ? address.city() : null,
+            stateAbbr: has_ordered ? address.stateAbbr() : null,
             avatar: internet.avatar(),
             birthday:
                 serializeDate && birthday ? birthday.toISOString() : birthday,

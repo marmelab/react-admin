@@ -16,9 +16,11 @@ import {
     NullableBooleanInput,
     NumberField,
     ReferenceInput,
+    ReferenceField,
     SearchInput,
     TextField,
     TextInput,
+    useGetList,
     useListContext,
 } from 'react-admin';
 import { useMediaQuery, Divider, Tabs, Tab, Theme } from '@material-ui/core';
@@ -27,6 +29,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import NbItemsField from './NbItemsField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
+import AddressField from '../visitors/AddressField';
 import MobileGrid from './MobileGrid';
 import { Customer } from '../types';
 
@@ -36,7 +39,7 @@ const OrderFilter: FC<Omit<FilterProps, 'children'>> = props => (
         <ReferenceInput source="customer_id" reference="customers">
             <AutocompleteInput
                 optionText={(choice: Customer) =>
-                    choice.first_name && choice.last_name
+                    choice.id // the empty choice is { id: '' }
                         ? `${choice.first_name} ${choice.last_name}`
                         : ''
                 }
@@ -61,6 +64,33 @@ const tabs = [
 
 interface TabbedDatagridProps extends DatagridProps {}
 
+const useGetTotals = (filterValues: any) => {
+    const { total: totalOrdered } = useGetList(
+        'commands',
+        { perPage: 1, page: 1 },
+        { field: 'id', order: 'ASC' },
+        { ...filterValues, status: 'ordered' }
+    );
+    const { total: totalDelivered } = useGetList(
+        'commands',
+        { perPage: 1, page: 1 },
+        { field: 'id', order: 'ASC' },
+        { ...filterValues, status: 'delivered' }
+    );
+    const { total: totalCancelled } = useGetList(
+        'commands',
+        { perPage: 1, page: 1 },
+        { field: 'id', order: 'ASC' },
+        { ...filterValues, status: 'cancelled' }
+    );
+
+    return {
+        ordered: totalOrdered,
+        delivered: totalDelivered,
+        cancelled: totalCancelled,
+    };
+};
+
 const TabbedDatagrid: FC<TabbedDatagridProps> = props => {
     const listContext = useListContext();
     const { ids, filterValues, setFilters, displayedFilters } = listContext;
@@ -75,6 +105,7 @@ const TabbedDatagrid: FC<TabbedDatagridProps> = props => {
     const [cancelled, setCancelled] = useState<Identifier[]>(
         [] as Identifier[]
     );
+    const totals = useGetTotals(filterValues) as any;
 
     useEffect(() => {
         if (ids && ids !== filterValues.status) {
@@ -122,7 +153,11 @@ const TabbedDatagrid: FC<TabbedDatagridProps> = props => {
                 {tabs.map(choice => (
                     <Tab
                         key={choice.id}
-                        label={choice.name}
+                        label={
+                            totals[choice.name]
+                                ? `${choice.name} (${totals[choice.name]})`
+                                : choice.name
+                        }
                         value={choice.id}
                     />
                 ))}
@@ -144,6 +179,14 @@ const TabbedDatagrid: FC<TabbedDatagridProps> = props => {
                                 <DateField source="date" showTime />
                                 <TextField source="reference" />
                                 <CustomerReferenceField />
+                                <ReferenceField
+                                    source="customer_id"
+                                    reference="customers"
+                                    link={false}
+                                    label="resources.commands.fields.address"
+                                >
+                                    <AddressField />
+                                </ReferenceField>
                                 <NbItemsField />
                                 <NumberField
                                     source="total"
@@ -164,6 +207,14 @@ const TabbedDatagrid: FC<TabbedDatagridProps> = props => {
                                 <DateField source="date" showTime />
                                 <TextField source="reference" />
                                 <CustomerReferenceField />
+                                <ReferenceField
+                                    source="customer_id"
+                                    reference="customers"
+                                    link={false}
+                                    label="resources.commands.fields.address"
+                                >
+                                    <AddressField />
+                                </ReferenceField>
                                 <NbItemsField />
                                 <NumberField
                                     source="total"
@@ -185,6 +236,14 @@ const TabbedDatagrid: FC<TabbedDatagridProps> = props => {
                                 <DateField source="date" showTime />
                                 <TextField source="reference" />
                                 <CustomerReferenceField />
+                                <ReferenceField
+                                    source="customer_id"
+                                    reference="customers"
+                                    link={false}
+                                    label="resources.commands.fields.address"
+                                >
+                                    <AddressField />
+                                </ReferenceField>
                                 <NbItemsField />
                                 <NumberField
                                     source="total"

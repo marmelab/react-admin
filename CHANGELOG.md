@@ -1,5 +1,22 @@
 # Changelog
 
+## v3.9.4
+
+* Fix `<AutocompleteInput>` suggestions appear beneath Dialog ([5393](https://github.com/marmelab/react-admin/pull/5393)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix missing types for `<AppBar>` and other layout components ([5410](https://github.com/marmelab/react-admin/pull/5410)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix compilation error on `defaultIdentity` ([5408](https://github.com/marmelab/react-admin/pull/5408)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix missing `path` prop in Tab component type ([5386](https://github.com/marmelab/react-admin/pull/5386)) ([nickwaelkens](https://github.com/nickwaelkens))
+* [Demo] Improve Order Edit UI ([5407](https://github.com/marmelab/react-admin/pull/5407)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix "Link to filtered list" snippet incorrectly requires all query parameters ([5401](https://github.com/marmelab/react-admin/pull/5401)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add warning about inconsistent record shapes in custom data provider instructions ([5391](https://github.com/marmelab/react-admin/pull/5391)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix specialized `dataProvider` hooks usage ([5390](https://github.com/marmelab/react-admin/pull/5390)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix linking two inputs example ([5389](https://github.com/marmelab/react-admin/pull/5389)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix custom login snippet missing theme ([5388](https://github.com/marmelab/react-admin/pull/5388)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Remove Input `defaultValue` syntax with a function ([5387](https://github.com/marmelab/react-admin/pull/5387)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Replace TypeScript code by js code in examples documentation([5385](https://github.com/marmelab/react-admin/pull/5385)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix `<EmailField>` and `<UrlField>` definitions ([5384](https://github.com/marmelab/react-admin/pull/5384)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix `<FileInput>` props table format  documentation([5383](https://github.com/marmelab/react-admin/pull/5383)) ([WiXSL](https://github.com/WiXSL))
+
 ## v3.9.3
 
 * Fix `dataProvider` fails silently when response has wrong type ([5373](https://github.com/marmelab/react-admin/pull/5373)) ([fzaninotto](https://github.com/fzaninotto))
