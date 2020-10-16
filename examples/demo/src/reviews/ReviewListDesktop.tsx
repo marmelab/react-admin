@@ -7,7 +7,7 @@ import {
     TextField,
     DatagridProps,
 } from 'react-admin';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 import ProductReferenceField from '../products/ProductReferenceField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
@@ -43,12 +43,11 @@ const ReviewListDesktop: FC<ReviewListDesktopProps> = ({
     ...props
 }) => {
     const classes = useListStyles();
-    const theme = useTheme();
     return (
         <Datagrid
             rowClick="edit"
             // @ts-ignore
-            rowStyle={selectedRow ? rowStyle(selectedRow, theme) : undefined}
+            rowStyle={rowStyle(selectedRow)}
             classes={{
                 headerRow: classes.headerRow,
                 headerCell: classes.headerCell,
