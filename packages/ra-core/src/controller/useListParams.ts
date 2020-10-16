@@ -241,7 +241,7 @@ const useListParams = ({
 
     const showFilter = useCallback((filterName: string, defaultValue: any) => {
         // we don't use lodash.set() for displayed filters
-        // to avoid problkems with compound filter names (e.g. 'author.name')
+        // to avoid problems with compound filter names (e.g. 'author.name')
         const displayedFilters = {
             ...displayedFilterValues,
             [filterName]: true,
