@@ -69,7 +69,7 @@ const PendingReviews: FC<Props> = ({ reviews = [], customers = {}, nb }) => {
             <Button
                 className={classes.link}
                 component={Link}
-                to="/customers"
+                to="/reviews"
                 size="small"
                 color="primary"
             >
