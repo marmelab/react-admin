@@ -1,8 +1,15 @@
 import { useCallback } from 'react';
 
+import useGetList from '../../dataProvider/useGetList';
 import { getStatusForInput as getDataStatus } from './referenceDataStatus';
 import useTranslate from '../../i18n/useTranslate';
-import { PaginationPayload, Record, SortPayload } from '../../types';
+import {
+    PaginationPayload,
+    Record,
+    RecordMap,
+    Identifier,
+    SortPayload,
+} from '../../types';
 import { ListControllerProps } from '../useListController';
 import useReference from '../useReference';
 import useGetMatchingReferences from './useGetMatchingReferences';
@@ -68,6 +75,7 @@ const useReferenceInputController = ({
 }: Option): ReferenceInputValue => {
     const translate = useTranslate();
 
+    // pagination logic
     const {
         pagination,
         setPagination,
@@ -77,6 +85,7 @@ const useReferenceInputController = ({
         setPerPage,
     } = usePaginationState({ page: initialPage, perPage: initialPerPage });
 
+    // sort logic
     const { sort, setSort: setSortObject } = useSortState(sortOverride);
     const setSort = useCallback(
         (field: string, order: string = 'ASC') => {
@@ -86,10 +95,16 @@ const useReferenceInputController = ({
         [setPage, setSortObject]
     );
 
+    // filter logic
     const { filter: filterValues, setFilter } = useFilterState({
         permanentFilter: filter,
         filterToQuery,
     });
+    const hideFilter = () => {};
+    const showFilter = () => {};
+    const displayedFilters = [];
+
+    // selection logic
     const {
         selectedIds,
         onSelect,
@@ -97,21 +112,17 @@ const useReferenceInputController = ({
         onUnselectItems,
     } = useSelectionState();
 
+    // fetch possible values
     const {
-        matchingReferences,
+        ids: possibleValuesIds,
+        data: possibleValuesData,
+        total: possibleValuesTotal,
+        loaded: possibleValuesLoaded,
         loading: possibleValuesLoading,
         error: possibleValuesError,
-    } = useGetMatchingReferences({
-        reference,
-        referenceSource,
-        filter: filterValues,
-        pagination,
-        sort,
-        resource,
-        source,
-        id: input.value,
-    });
+    } = useGetList(reference, pagination, sort, filterValues);
 
+    // fetch current value
     const {
         referenceRecord,
         error: referenceError,
@@ -122,9 +133,27 @@ const useReferenceInputController = ({
         reference,
     });
 
+    // remove current value from possible sources
+    let finalIds: Identifier[],
+        finalData: RecordMap<Record>,
+        finalTotal: number;
+    if (possibleValuesIds.includes(input.value)) {
+        finalIds = possibleValuesIds.filter(
+            referenceId => referenceId !== input.value
+        );
+        possibleValuesData[input.value] = undefined;
+        finalData = possibleValuesData;
+        finalTotal -= 1;
+    } else {
+        finalIds = possibleValuesIds;
+        finalData = possibleValuesData;
+        finalTotal = possibleValuesTotal;
+    }
+
+    // overall status
     const dataStatus = getDataStatus({
         input,
-        matchingReferences,
+        matchingReferences: Object.keys(finalData).map(id => finalData[id]),
         referenceRecord,
         translate,
     });
@@ -133,15 +162,13 @@ const useReferenceInputController = ({
         // should match the ListContext shape
         possibleValues: {
             basePath,
-            data: matchingReferences.reduce((acc, item) => {
-                acc[item.id] = item;
-                return acc;
-            }, {}),
-            ids: matchingReferences.map(item => item.id),
-            // total: ??, <= now that's a problem
+            data: finalData,
+            ids: finalIds,
+            total: finalTotal,
             error: possibleValuesError,
-            // loaded: ??,
+            loaded: possibleValuesLoaded,
             loading: possibleValuesLoading,
+            hasCreate: false,
             page,
             setPage,
             perPage,
@@ -149,7 +176,10 @@ const useReferenceInputController = ({
             currentSort: sort,
             setSort,
             filterValues,
+            displayedFilters,
             setFilters: setFilter,
+            showFilter,
+            hideFilter,
             selectedIds,
             onSelect,
             onToggleItem,
