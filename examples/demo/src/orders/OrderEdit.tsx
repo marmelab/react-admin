@@ -85,14 +85,14 @@ const OrderForm = (props: any) => {
                     <Card>
                         <CardContent>
                             <Grid container spacing={1}>
-                                <Grid item sm={8}>
+                                <Grid item xs={12} sm={12} md={8}>
                                     <Typography variant="h6" gutterBottom>
                                         {translate(
                                             'resources.commands.section.order'
                                         )}
                                     </Typography>
                                     <Grid container>
-                                        <Grid item sm={6}>
+                                        <Grid item xs={12} sm={12} md={6}>
                                             <Labeled
                                                 source="date"
                                                 resource="commands"
@@ -104,7 +104,7 @@ const OrderForm = (props: any) => {
                                                 />
                                             </Labeled>
                                         </Grid>
-                                        <Grid item sm={6}>
+                                        <Grid item xs={12} sm={12} md={6}>
                                             <Labeled
                                                 source="reference"
                                                 resource="commands"
@@ -118,7 +118,7 @@ const OrderForm = (props: any) => {
                                         </Grid>
                                     </Grid>
                                     <Grid container>
-                                        <Grid item sm={6}>
+                                        <Grid item xs={12} sm={12} md={6}>
                                             <SelectInput
                                                 resource="commands"
                                                 source="status"
@@ -143,7 +143,7 @@ const OrderForm = (props: any) => {
                                                 ]}
                                             />
                                         </Grid>
-                                        <Grid item sm={6}>
+                                        <Grid item xs={12} sm={12} md={6}>
                                             <Box mt={2}>
                                                 <BooleanInput
                                                     row={true}
@@ -154,7 +154,7 @@ const OrderForm = (props: any) => {
                                         </Grid>
                                     </Grid>
                                 </Grid>
-                                <Grid item sm={4}>
+                                <Grid item xs={12} sm={12} md={4}>
                                     <Typography variant="h6" gutterBottom>
                                         {translate(
                                             'resources.commands.section.customer'

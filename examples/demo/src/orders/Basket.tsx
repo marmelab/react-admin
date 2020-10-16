@@ -13,7 +13,6 @@ import { Link, FieldProps, useTranslate, useQueryWithStore } from 'react-admin';
 import { AppState, Order, Product } from '../types';
 
 const useStyles = makeStyles({
-    container: { minWidth: '35em' },
     rightAlignedCell: { textAlign: 'right' },
 });
 
@@ -53,7 +52,7 @@ const Basket: FC<FieldProps<Order>> = ({ record }) => {
     if (!loaded || !record) return null;
 
     return (
-        <Table className={classes.container}>
+        <Table>
             <TableHead>
                 <TableRow>
                     <TableCell>
