@@ -3,11 +3,7 @@ import PropTypes from 'prop-types';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import Slide from '@material-ui/core/Slide';
 
-interface Props {
-    children: React.ReactElement;
-}
-
-function HideOnScroll(props: Props) {
+function HideOnScroll(props: HideOnScrollProps) {
     const { children } = props;
     const trigger = useScrollTrigger();
     return (
@@ -20,5 +16,9 @@ function HideOnScroll(props: Props) {
 HideOnScroll.propTypes = {
     children: PropTypes.node.isRequired,
 };
+
+export interface HideOnScrollProps {
+    children: React.ReactElement;
+}
 
 export default HideOnScroll;
