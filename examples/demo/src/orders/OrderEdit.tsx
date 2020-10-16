@@ -13,8 +13,15 @@ import {
     Toolbar,
     useTranslate,
 } from 'react-admin';
-import { Link } from 'react-router-dom';
-import { Card, CardContent, Box, Grid, Typography } from '@material-ui/core';
+import { Link as RouterLink } from 'react-router-dom';
+import {
+    Card,
+    CardContent,
+    Box,
+    Grid,
+    Typography,
+    Link,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { Order, Customer } from '../types';
@@ -37,22 +44,22 @@ const OrderTitle: FC<OrderTitleProps> = ({ record }) => {
 };
 
 const CustomerDetails = ({ record }: { record?: Customer }) => (
-    <Box>
-        <Typography>
-            <Link
-                to={`/customers/${record?.id}`}
-                style={{ textDecoration: 'none' }}
-            >
-                {record?.first_name} {record?.last_name}
-            </Link>
+    <Box display="flex" flexDirection="column">
+        <Typography
+            component={RouterLink}
+            color="primary"
+            to={`/customers/${record?.id}`}
+            style={{ textDecoration: 'none' }}
+        >
+            {record?.first_name} {record?.last_name}
         </Typography>
-        <Typography>
-            <a
-                href={`mailto:${record?.email}`}
-                style={{ textDecoration: 'none' }}
-            >
-                {record?.email}
-            </a>
+        <Typography
+            component={Link}
+            color="primary"
+            href={`mailto:${record?.email}`}
+            style={{ textDecoration: 'none' }}
+        >
+            {record?.email}
         </Typography>
     </Box>
 );
