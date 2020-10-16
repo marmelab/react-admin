@@ -208,8 +208,16 @@ const useListParams = ({
     }, debounce);
 
     const setFilters = useCallback(
-        (filter, displayedFilters) =>
-            debouncedSetFilters(filter, displayedFilters),
+        (filter, displayedFilters, debounce = true) =>
+            debounce
+                ? debouncedSetFilters(filter, displayedFilters)
+                : changeParams({
+                      type: SET_FILTER,
+                      payload: {
+                          filter: removeEmpty(filter),
+                          displayedFilters,
+                      },
+                  }),
         requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );
 

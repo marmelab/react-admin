@@ -73,7 +73,11 @@ export interface ListControllerProps<RecordType extends Record = Record> {
     perPage: number;
     resource: string;
     selectedIds: Identifier[];
-    setFilters: (filters: any, displayedFilters: any) => void;
+    setFilters: (
+        filters: any,
+        displayedFilters: any,
+        debounce?: boolean
+    ) => void;
     setPage: (page: number) => void;
     setPerPage: (page: number) => void;
     setSort: (sort: string, order?: string) => void;
