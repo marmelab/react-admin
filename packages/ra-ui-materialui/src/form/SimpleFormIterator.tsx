@@ -100,6 +100,7 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
         basePath,
         children,
         className,
+        formClassName,
         fields,
         meta: { error, submitFailed },
         record,
@@ -195,7 +196,12 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
                             >
                                 {index + 1}
                             </Typography>
-                            <section className={classes.form}>
+                            <section
+                                className={classNames(
+                                    classes.form,
+                                    formClassName
+                                )}
+                            >
                                 {Children.map(
                                     children,
                                     (input: ReactElement, index2) =>
@@ -286,6 +292,7 @@ SimpleFormIterator.propTypes = {
     children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
+    formClassName: PropTypes.string,
     // @ts-ignore
     fields: PropTypes.object,
     meta: PropTypes.object,
@@ -306,6 +313,7 @@ export interface SimpleFormIteratorProps
     addButton?: ReactElement;
     basePath?: string;
     className?: string;
+    formClassName?: string;
     defaultValue?: any;
     disableAdd?: boolean;
     disableRemove?: boolean | DisableRemoveFunction;
