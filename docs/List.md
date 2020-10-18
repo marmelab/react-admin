@@ -2231,6 +2231,10 @@ You can use `<SimpleList>` as `<List>` or `<ReferenceManyField>` child:
 import * as React from "react";
 import { List, SimpleList } from 'react-admin';
 
+const postRowStyle = (record, index) => ({
+    backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
+});
+
 export const PostList = (props) => (
     <List {...props}>
         <SimpleList
@@ -2238,12 +2242,13 @@ export const PostList = (props) => (
             secondaryText={record => `${record.views} views`}
             tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
             linkType={record => record.canEdit ? "edit" : "show"}
+			rowStyle={postRowStyle}
         />
     </List>
 );
 ```
 
-For each record, `<SimpleList>` executes the `primaryText`, `secondaryText`, `linkType`, `leftAvatar`, `leftIcon`, `rightAvatar`, and `rightIcon` props functions, and creates a `<ListItem>` with the result.
+For each record, `<SimpleList>` executes the `primaryText`, `secondaryText`, `linkType`, `rowStyle`, `leftAvatar`, `leftIcon`, `rightAvatar`, and `rightIcon` props functions, and creates a `<ListItem>` with the result.
 
 **Tip**: To use a `<SimpleList>` on small screens and a `<Datagrid>` on larger screens, use material-ui's `useMediaQuery` hook:
 
