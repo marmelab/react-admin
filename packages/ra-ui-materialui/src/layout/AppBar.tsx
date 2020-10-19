@@ -65,7 +65,7 @@ const useStyles = makeStyles(
  * @param {string} color The color of the AppBar
  * @param {Component} logout The logout button component that will be pass to the UserMenu component
  * @param {boolean} open State of the <Admin/> Sidebar
- * @param {Element | null} userMenu A custom user menu component for the AppBar. <UserMenu/> component by default. Pass null to disable.
+ * @param {Element | false} userMenu A custom user menu component for the AppBar. <UserMenu/> component by default. Pass false to disable.
  *
  * @example
  *
@@ -88,7 +88,7 @@ const useStyles = makeStyles(
  * const MyAppBar = props => {
  *   const classes = useStyles();
  *   return (
- *       <AppBar {...props} userMenu={null} />
+ *       <AppBar {...props} userMenu={false} />
  *   );
  *};
  */
@@ -155,9 +155,9 @@ const AppBar = (props: AppBarProps): JSX.Element => {
                         children
                     )}
                     <LoadingIndicator />
-                    {userMenu !== null
-                        ? cloneElement(userMenu, { logout })
-                        : null}
+                    {userMenu !== false &&
+                        userMenu &&
+                        cloneElement(userMenu, { logout })}
                 </Toolbar>
             </MuiAppBar>
         </HideOnScroll>
@@ -178,7 +178,7 @@ AppBar.propTypes = {
     ]),
     logout: PropTypes.element,
     open: PropTypes.bool,
-    userMenu: PropTypes.element,
+    userMenu: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
 };
 
 AppBar.defaultProps = {
@@ -190,7 +190,7 @@ export interface AppBarProps extends Omit<MuiAppBarProps, 'title' | 'classes'> {
     logout?: JSX.Element;
     open?: boolean;
     title?: string | JSX.Element;
-    userMenu?: JSX.Element | null;
+    userMenu?: JSX.Element | false;
 }
 
 export default AppBar;
