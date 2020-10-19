@@ -15,7 +15,7 @@ Here is an example customizing an `EditButton` component inside a `Datagrid`, us
 
 {% raw %}
 ```jsx
-import * as React from "react";
+import * as React from 'react';
 import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -50,7 +50,7 @@ Here is an example using the `classes` property of the `Filter` and `List` compo
 
 {% raw %}
 ```jsx
-import * as React from "react";
+import * as React from 'react';
 import {
     BooleanField,
     Datagrid,
@@ -146,7 +146,7 @@ Sometimes you want the format to depend on the value. The following example show
 
 {% raw %}
 ```jsx
-import * as React from "react";
+import * as React from 'react';
 import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
@@ -189,7 +189,7 @@ Furthermore, you may extract this highlighting strategy into a Higher Order Comp
 
 {% raw %}
 ```jsx
-import * as React from "react";
+import * as React from 'react';
 import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
@@ -244,7 +244,7 @@ const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
 const isDesktop = useMediaQuery(theme => theme.breakpoints.up('md'));
 ```
 
-You can also pass a custom media query as a screen. 
+You can also pass a custom media query as a screen.
 
 ```jsx
 const isSmall = useMediaQuery('(min-width:600px)');
@@ -254,7 +254,7 @@ Here is an example for a responsive list of posts, displaying a `SimpleList` on 
 
 ```jsx
 // in src/posts.js
-import * as React from "react";
+import * as React from 'react';
 import { useMediaQuery } from '@material-ui/core';
 import { List, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
@@ -413,7 +413,7 @@ export default MyLayout;
 You can replace the default user menu by your own by setting the `userMenu` prop of the `<AppBar>` component. For instance, to add custom menu items, just decorate the default `<UserMenu>` by adding children to it:
 
 ```jsx
-import * as React from "react";
+import * as React from 'react';
 import { AppBar, UserMenu, MenuItemLink } from 'react-admin';
 import SettingsIcon from '@material-ui/icons/Settings';
 
@@ -434,6 +434,17 @@ const MyUserMenu = props => (
 );
 
 const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
+
+const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
+```
+
+You can also remove the `<UserMenu>` from the `<AppBar>` by passing `null` to the `userMenu` prop:
+
+```jsx
+import * as React from 'react';
+import { AppBar } from 'react-admin';
+
+const MyAppBar = props => <AppBar {...props} userMenu={null} />;
 
 const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
 ```
@@ -561,7 +572,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const MyLayout = ({ 
+const MyLayout = ({
     children,
     dashboard,
     logout,
@@ -570,11 +581,11 @@ const MyLayout = ({
     const classes = useStyles();
     const dispatch = useDispatch();
     const open = useSelector(state => state.admin.ui.sidebarOpen);
-    
+
     useEffect(() => {
         dispatch(setSidebarVisibility(true));
     }, [setSidebarVisibility]);
-    
+
     return (
         <div className={classes.root}>
             <div className={classes.appFrame}>
@@ -606,7 +617,7 @@ MyLayout.propTypes = {
 export default MyLayout;
 ```
 
-**Tip**: Don't forget to render a `<Notification>` component in your custom layout, otherwise the undoable updates will never be sent to the server. That's because part of the "undo" logic of react-admin lies in the `<Notification>` component.  
+**Tip**: Don't forget to render a `<Notification>` component in your custom layout, otherwise the undoable updates will never be sent to the server. That's because part of the "undo" logic of react-admin lies in the `<Notification>` component.
 
 ## Adding a Breadcrumb
 
@@ -654,13 +665,13 @@ Check [the `ra-navigation` documentation](https://marmelab.com/ra-enterprise/mod
 
 ## Customizing the AppBar Content
 
-By default, the react-admin `<AppBar>` component displays the page title. You can override this default by passing children to `<AppBar>` - they will replace the default title. And if you still want to include the page title, make sure you include an element with id `react-admin-title` in the top bar (this uses [React Portals](https://reactjs.org/docs/portals.html)). 
+By default, the react-admin `<AppBar>` component displays the page title. You can override this default by passing children to `<AppBar>` - they will replace the default title. And if you still want to include the page title, make sure you include an element with id `react-admin-title` in the top bar (this uses [React Portals](https://reactjs.org/docs/portals.html)).
 
 Here is an example customization for `<AppBar>` to include a company logo in the center of the page header:
 
 ```jsx
 // in src/MyAppBar.js
-import * as React from "react";
+import * as React from 'react';
 import { AppBar } from 'react-admin';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -702,7 +713,7 @@ To use this custom `MyAppBar` component, pass it as prop to a custom `Layout`, a
 
 ```jsx
 // in src/MyLayout.js
-import * as React from "react";
+import * as React from 'react';
 import { Layout } from 'react-admin';
 import MyAppBar from './MyAppBar';
 
@@ -726,18 +737,17 @@ const App = () => (
 
 ![custom AppBar](./img/custom_appbar.png)
 
-
 **Tip**: You can change the color of the `<AppBar>` by setting the `color` prop to `default`, `inherit`, `primary`, `secondary` or `transparent`. The default value is `secondary`.
 
 ## Replacing The AppBar
 
-For more drastic changes of the top component, you will probably want to create an `<AppBar>` from scratch instead of just passing children to react-admin's `<AppBar>`. 
+For more drastic changes of the top component, you will probably want to create an `<AppBar>` from scratch instead of just passing children to react-admin's `<AppBar>`.
 
 By default, React-admin uses [Material-ui's `<AppBar>` component](https://material-ui.com/api/app-bar/) together with [react-headroom](https://github.com/KyleAMathews/react-headroom) to hide the `AppBar` on scroll. Here is an example top bar rebuilt from scratch to remove the "headroom" effect:
 
 ```jsx
 // in src/MyAppBar.js
-import * as React from "react";
+import * as React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -1015,7 +1025,7 @@ Whenever a client-side error happens in react-admin, the user sees a default err
 
 ```jsx
 // in src/MyError.js
-import * as React from "react";
+import * as React from 'react';
 import Button from '@material-ui/core/Button';
 import ErrorIcon from '@material-ui/icons/Report';
 import History from '@material-ui/icons/History';
