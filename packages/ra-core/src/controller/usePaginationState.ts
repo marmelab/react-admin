@@ -10,7 +10,7 @@ import { PaginationPayload } from '../types';
  * @property {Function} setPerPage: Set the per page number
  * @property {Function} setPagination: Set page and perPage pagination numbers
  */
-export interface PaginationProps {
+export interface PaginationHookResult {
     page: number;
     perPage: number;
     pagination: PaginationPayload;
@@ -42,11 +42,11 @@ const defaultPagination = {
  * const { page, setpage, perPage, setPerPage } = usePagination(initialPerPage);
  *
  * @param {number} initialPagination the initial value per page
- * @returns {PaginationProps} The pagination props
+ * @returns {PaginationHookResult} The pagination props
  */
 export default (
     initialPagination: { perPage?: number; page?: number } = {}
-): PaginationProps => {
+): PaginationHookResult => {
     const [pagination, setPagination] = useReducer(paginationReducer, {
         ...defaultPagination,
         ...initialPagination,
