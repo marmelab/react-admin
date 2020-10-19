@@ -190,7 +190,7 @@ export interface AppBarProps extends Omit<MuiAppBarProps, 'title' | 'classes'> {
     logout?: JSX.Element;
     open?: boolean;
     title?: string | JSX.Element;
-    userMenu?: JSX.Element | boolean;
+    userMenu?: JSX.Element | null;
 }
 
 export default AppBar;
