@@ -1,6 +1,8 @@
 import * as React from 'react';
+import { useMemo } from 'react';
 import useEditController from './useEditController';
 import { EditContextProvider } from './EditContextProvider';
+import { SideEffectContext } from './saveModifiers';
 
 /**
  * Call useEditController and put the value in a EditContext
@@ -31,8 +33,23 @@ import { EditContextProvider } from './EditContextProvider';
  *     </BaseList>
  * );
  */
-export const EditBase = ({ children, ...props }) => (
-    <EditContextProvider value={useEditController(props)}>
-        {children}
-    </EditContextProvider>
-);
+export const EditBase = ({
+    children,
+    setOnFailure,
+    setOnSuccess,
+    setTransform,
+    ...props
+}) => {
+    const sideEffectContextValue = useMemo(
+        () => ({ setOnSuccess, setOnFailure, setTransform }),
+        [setOnFailure, setOnSuccess, setTransform]
+    );
+
+    return (
+        <EditContextProvider value={useEditController(props)}>
+            <SideEffectContext.Provider value={sideEffectContextValue}>
+                {children}
+            </SideEffectContext.Provider>
+        </EditContextProvider>
+    );
+};
