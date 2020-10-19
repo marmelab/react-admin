@@ -1,5 +1,8 @@
 import addField from './addField';
-import FormDataConsumer from './FormDataConsumer';
+import FormDataConsumer, {
+    FormDataConsumerRender,
+    FormDataConsumerRenderParams,
+} from './FormDataConsumer';
 import FormContext from './FormContext';
 import FormField from './FormField';
 import FormWithRedirect, {
@@ -23,6 +26,8 @@ import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
 export type {
     ChoicesProps,
     ChoicesInputProps,
+    FormDataConsumerRender,
+    FormDataConsumerRenderParams,
     FormWithRedirectProps,
     HandleSubmitWithRedirect,
     InputProps,
