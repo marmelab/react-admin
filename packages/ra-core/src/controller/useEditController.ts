@@ -39,6 +39,10 @@ export interface EditProps {
 }
 
 export interface EditControllerProps<RecordType extends Record = Record> {
+    hasCreate?: boolean;
+    hasEdit?: boolean;
+    hasShow?: boolean;
+    hasList?: boolean;
     loading: boolean;
     loaded: boolean;
     saving: boolean;
@@ -86,6 +90,10 @@ const useEditController = <RecordType extends Record = Record>(
     useCheckMinimumRequiredProps('Edit', ['basePath', 'resource'], props);
     const {
         basePath,
+        hasCreate,
+        hasEdit,
+        hasList,
+        hasShow,
         id,
         resource,
         successMessage,
@@ -222,6 +230,10 @@ const useEditController = <RecordType extends Record = Record>(
         loaded,
         saving,
         defaultTitle,
+        hasCreate,
+        hasEdit,
+        hasList,
+        hasShow,
         save,
         setOnSuccess,
         setOnFailure,

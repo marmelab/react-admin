@@ -1,6 +1,7 @@
 import Create, { CreateView } from './Create';
 import CreateActions from './CreateActions';
-import Edit, { EditView } from './Edit';
+import { Edit } from './Edit';
+import { EditView } from './EditView';
 import EditActions from './EditActions';
 import EditGuesser from './EditGuesser';
 import Show, { ShowView } from './Show';

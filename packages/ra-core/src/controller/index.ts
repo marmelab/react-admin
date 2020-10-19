@@ -1,4 +1,7 @@
 import CreateController from './CreateController';
+import { EditBase } from './EditBase';
+import { EditContext, useEditContext } from './EditContext';
+import { EditContextProvider } from './EditContextProvider';
 import EditController from './EditController';
 import ListController from './ListController';
 import ListContext from './ListContext';
@@ -6,6 +9,7 @@ import ListFilterContext from './ListFilterContext';
 import ListPaginationContext from './ListPaginationContext';
 import ListSortContext from './ListSortContext';
 import ListBase from './ListBase';
+import { RecordContext, RecordContextValue } from './RecordContext';
 import ShowController from './ShowController';
 import useRecordSelection from './useRecordSelection';
 import useVersion from './useVersion';
@@ -34,19 +38,23 @@ import useListPaginationContext from './useListPaginationContext';
 import useListSortContext from './useListSortContext';
 
 export type {
-    ListControllerProps,
     EditControllerProps,
     CreateControllerProps,
-    ShowControllerProps,
-    UseReferenceProps,
+    ListControllerProps,
     PaginationHookResult,
+    RecordContextValue,
+    ShowControllerProps,
     SortProps,
+    UseReferenceProps,
 };
 
 export {
     getListControllerProps,
     sanitizeListRestProps,
     CreateController,
+    EditBase,
+    EditContext,
+    EditContextProvider,
     EditController,
     ListBase,
     ListController,
@@ -55,10 +63,12 @@ export {
     ListPaginationContext,
     ListSortContext,
     ListContextProvider,
+    RecordContext,
     ShowController,
     useCheckMinimumRequiredProps,
     useListController,
     useEditController,
+    useEditContext,
     useCreateController,
     useShowController,
     useRecordSelection,
