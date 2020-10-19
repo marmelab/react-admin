@@ -1,4 +1,5 @@
-import { createContext, useRef } from 'react';
+import { createContext, useMemo, useRef } from 'react';
+import pick from 'lodash/pick';
 
 export const SideEffectContext = createContext<SideEffectContextType>({});
 
@@ -58,6 +59,27 @@ export const useSaveModifiers = ({
         transformRef,
         setTransform,
     };
+};
+
+export const usePickSideEffectContext = <
+    ContextType extends SideEffectContextType = SideEffectContextType
+>(
+    context: ContextType
+) => {
+    const value = useMemo(
+        () => {
+            const result = pick(context, [
+                'setOnFailure',
+                'setOnSuccess',
+                'setTransform',
+            ]);
+            return result;
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [context.setOnFailure, context.setOnSuccess, context.setTransform]
+    );
+
+    return value;
 };
 
 export type OnSuccess = (response: any) => void;

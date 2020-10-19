@@ -1,6 +1,9 @@
 import * as React from 'react';
+import { ReactElement } from 'react';
 import { RecordContext, usePickRecordContext } from './RecordContext';
 import { EditContext } from './EditContext';
+import { EditControllerProps } from './useEditController';
+import { SideEffectContext, usePickSideEffectContext } from './saveModifiers';
 
 /**
  * Create a Edit Context.
@@ -25,10 +28,18 @@ import { EditContext } from './EditContext';
  * @see EditContext
  * @see RecordContext
  */
-export const EditContextProvider = ({ children, value }) => (
+export const EditContextProvider = ({
+    children,
+    value,
+}: {
+    children: ReactElement;
+    value: EditControllerProps;
+}) => (
     <EditContext.Provider value={value}>
-        <RecordContext.Provider value={usePickRecordContext(value)}>
-            {children}
-        </RecordContext.Provider>
+        <SideEffectContext.Provider value={usePickSideEffectContext(value)}>
+            <RecordContext.Provider value={usePickRecordContext(value)}>
+                {children}
+            </RecordContext.Provider>
+        </SideEffectContext.Provider>
     </EditContext.Provider>
 );

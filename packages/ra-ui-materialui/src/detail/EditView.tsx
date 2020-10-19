@@ -1,15 +1,11 @@
 import * as React from 'react';
-import { Children, cloneElement, useMemo } from 'react';
+import { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import {
-    EditControllerProps,
-    ComponentPropType,
-    SideEffectContext,
-} from 'ra-core';
+import { EditControllerProps, ComponentPropType } from 'ra-core';
 
 import DefaultActions from './EditActions';
 import TitleForRecord from '../layout/TitleForRecord';
@@ -51,71 +47,64 @@ export const EditView = (props: EditViewProps) => {
         ) : (
             actions
         );
-    const sideEffectContextValue = useMemo(
-        () => ({ setOnSuccess, setOnFailure, setTransform }),
-        [setOnFailure, setOnSuccess, setTransform]
-    );
     if (!children) {
         return null;
     }
     return (
-        <SideEffectContext.Provider value={sideEffectContextValue}>
+        <div
+            className={classnames('edit-page', classes.root, className)}
+            {...sanitizeRestProps(rest)}
+        >
+            <TitleForRecord
+                title={title}
+                record={record}
+                defaultTitle={defaultTitle}
+            />
+            {finalActions &&
+                cloneElement(finalActions, {
+                    basePath,
+                    data: record,
+                    hasShow,
+                    hasList,
+                    resource,
+                    //  Ensure we don't override any user provided props
+                    ...finalActions.props,
+                })}
             <div
-                className={classnames('edit-page', classes.root, className)}
-                {...sanitizeRestProps(rest)}
+                className={classnames(classes.main, {
+                    [classes.noActions]: !finalActions,
+                })}
             >
-                <TitleForRecord
-                    title={title}
-                    record={record}
-                    defaultTitle={defaultTitle}
-                />
-                {finalActions &&
-                    cloneElement(finalActions, {
-                        basePath,
-                        data: record,
-                        hasShow,
-                        hasList,
-                        resource,
-                        //  Ensure we don't override any user provided props
-                        ...finalActions.props,
-                    })}
-                <div
-                    className={classnames(classes.main, {
-                        [classes.noActions]: !finalActions,
-                    })}
-                >
-                    <Content className={classes.card}>
-                        {record ? (
-                            cloneElement(Children.only(children), {
-                                basePath,
-                                record,
-                                redirect:
-                                    typeof children.props.redirect ===
-                                    'undefined'
-                                        ? redirect
-                                        : children.props.redirect,
-                                resource,
-                                save,
-                                saving,
-                                undoable,
-                                version,
-                            })
-                        ) : (
-                            <CardContent>&nbsp;</CardContent>
-                        )}
-                    </Content>
-                    {aside &&
-                        React.cloneElement(aside, {
+                <Content className={classes.card}>
+                    {record ? (
+                        cloneElement(Children.only(children), {
                             basePath,
                             record,
+                            redirect:
+                                typeof children.props.redirect === 'undefined'
+                                    ? redirect
+                                    : children.props.redirect,
                             resource,
-                            version,
                             save,
                             saving,
-                        })}
-                </div>
+                            undoable,
+                            version,
+                        })
+                    ) : (
+                        <CardContent>&nbsp;</CardContent>
+                    )}
+                </Content>
+                {aside &&
+                    React.cloneElement(aside, {
+                        basePath,
+                        record,
+                        resource,
+                        version,
+                        save,
+                        saving,
+                    })}
             </div>
-        </SideEffectContext.Provider>
+        </div>
     );
 };
 
