@@ -7,7 +7,7 @@ import {
     getElementsFromRecords,
 } from 'ra-core';
 
-import { EditView } from './Edit';
+import { EditView } from './EditView';
 import editFieldTypes from './editFieldTypes';
 
 const EditViewGuesser = props => {
