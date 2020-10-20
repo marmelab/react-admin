@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import TopToolbar from '../layout/TopToolbar';
 import { ListButton } from '../button';
-import { useCreateContext } from 'ra-core/esm/controller/CreateContext';
+import { useCreateContext } from 'ra-core';
 
 const sanitizeRestProps = ({
     basePath,
