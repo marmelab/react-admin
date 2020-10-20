@@ -11,7 +11,7 @@ import { CRUD_GET_ONE } from '../actions';
 export interface ShowProps {
     basePath?: string;
     hasCreate?: boolean;
-    hasedit?: boolean;
+    hasEdit?: boolean;
     hasShow?: boolean;
     hasList?: boolean;
     id?: Identifier;
@@ -20,11 +20,14 @@ export interface ShowProps {
 }
 
 export interface ShowControllerProps<RecordType extends Record = Record> {
+    basePath?: string;
+    defaultTitle: string;
     loading: boolean;
     loaded: boolean;
-    defaultTitle: string;
+    hasEdit?: boolean;
+    hasList?: boolean;
+    hasShow?: boolean;
     resource: string;
-    basePath?: string;
     record?: RecordType;
     version: number;
 }

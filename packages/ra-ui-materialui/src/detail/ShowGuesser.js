@@ -7,7 +7,7 @@ import {
     getElementsFromRecords,
 } from 'ra-core';
 
-import { ShowView } from './Show';
+import { ShowView } from './ShowView';
 import showFieldTypes from './showFieldTypes';
 
 const ShowViewGuesser = props => {

@@ -13,6 +13,9 @@ import ListPaginationContext from './ListPaginationContext';
 import ListSortContext from './ListSortContext';
 import ListBase from './ListBase';
 import { RecordContext, RecordContextValue } from './RecordContext';
+import { ShowBase } from './ShowBase';
+import { ShowContext, useShowContext } from './ShowContext';
+import { ShowContextProvider } from './ShowContextProvider';
 import ShowController from './ShowController';
 import useRecordSelection from './useRecordSelection';
 import useVersion from './useVersion';
@@ -70,12 +73,17 @@ export {
     ListSortContext,
     ListContextProvider,
     RecordContext,
+    ShowBase,
+    ShowContext,
+    ShowContextProvider,
     ShowController,
     useCheckMinimumRequiredProps,
     useListController,
     useEditController,
     useEditContext,
     useCreateController,
+    useCreateContext,
+    useShowContext,
     useShowController,
     useRecordSelection,
     useVersion,
