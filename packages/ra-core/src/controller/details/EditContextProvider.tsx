@@ -4,6 +4,7 @@ import { RecordContext, usePickRecordContext } from '../RecordContext';
 import { EditContext } from './EditContext';
 import { EditControllerProps } from './useEditController';
 import { SideEffectContext, usePickSideEffectContext } from '../saveModifiers';
+import { SaveContext, usePickSaveContext } from '../SaveContext';
 
 /**
  * Create a Edit Context.
@@ -37,9 +38,11 @@ export const EditContextProvider = ({
 }) => (
     <EditContext.Provider value={value}>
         <SideEffectContext.Provider value={usePickSideEffectContext(value)}>
-            <RecordContext.Provider value={usePickRecordContext(value)}>
-                {children}
-            </RecordContext.Provider>
+            <SaveContext.Provider value={usePickSaveContext(value)}>
+                <RecordContext.Provider value={usePickRecordContext(value)}>
+                    {children}
+                </RecordContext.Provider>
+            </SaveContext.Provider>
         </SideEffectContext.Provider>
     </EditContext.Provider>
 );

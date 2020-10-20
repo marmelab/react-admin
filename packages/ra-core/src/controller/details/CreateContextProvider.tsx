@@ -4,6 +4,7 @@ import { RecordContext, usePickRecordContext } from '../RecordContext';
 import { CreateContext } from './CreateContext';
 import { CreateControllerProps } from './useCreateController';
 import { SideEffectContext, usePickSideEffectContext } from '../saveModifiers';
+import { SaveContext, usePickSaveContext } from '../SaveContext';
 
 /**
  * Create a Create Context.
@@ -37,9 +38,11 @@ export const CreateContextProvider = ({
 }) => (
     <CreateContext.Provider value={value}>
         <SideEffectContext.Provider value={usePickSideEffectContext(value)}>
-            <RecordContext.Provider value={usePickRecordContext(value)}>
-                {children}
-            </RecordContext.Provider>
+            <SaveContext.Provider value={usePickSaveContext(value)}>
+                <RecordContext.Provider value={usePickRecordContext(value)}>
+                    {children}
+                </RecordContext.Provider>
+            </SaveContext.Provider>
         </SideEffectContext.Provider>
     </CreateContext.Provider>
 );
