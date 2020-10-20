@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import { RecordContext, usePickRecordContext } from './RecordContext';
+import { RecordContext, usePickRecordContext } from '../RecordContext';
 import { ShowContext } from './ShowContext';
 import { ShowControllerProps } from './useShowController';
 

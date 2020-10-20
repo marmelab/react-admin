@@ -1,15 +1,15 @@
 import { useCallback } from 'react';
 import inflection from 'inflection';
 
-import useVersion from './useVersion';
-import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
-import { Record, Identifier } from '../types';
+import useVersion from '../useVersion';
+import { useCheckMinimumRequiredProps } from '../checkMinimumRequiredProps';
+import { Record, Identifier } from '../../types';
 import {
     useNotify,
     useRedirect,
     useRefresh,
     RedirectionSideEffect,
-} from '../sideEffect';
+} from '../../sideEffect';
 import {
     OnSuccess,
     SetOnSuccess,
@@ -18,10 +18,10 @@ import {
     TransformData,
     SetTransformData,
     useSaveModifiers,
-} from './saveModifiers';
-import { useGetOne, useUpdate } from '../dataProvider';
-import { useTranslate } from '../i18n';
-import { CRUD_GET_ONE, CRUD_UPDATE } from '../actions';
+} from '../saveModifiers';
+import { useGetOne, useUpdate } from '../../dataProvider';
+import { useTranslate } from '../../i18n';
+import { CRUD_GET_ONE, CRUD_UPDATE } from '../../actions';
 
 export interface EditProps {
     basePath?: string;
@@ -84,7 +84,7 @@ export interface EditControllerProps<RecordType extends Record = Record> {
  *     return <EditView {...controllerProps} {...props} />;
  * }
  */
-const useEditController = <RecordType extends Record = Record>(
+export const useEditController = <RecordType extends Record = Record>(
     props: EditProps
 ): EditControllerProps<RecordType> => {
     useCheckMinimumRequiredProps('Edit', ['basePath', 'resource'], props);
@@ -245,7 +245,5 @@ const useEditController = <RecordType extends Record = Record>(
         version,
     };
 };
-
-export default useEditController;
 
 const DefaultRedirect = 'list';

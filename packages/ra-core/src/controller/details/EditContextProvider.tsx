@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import { RecordContext, usePickRecordContext } from './RecordContext';
+import { RecordContext, usePickRecordContext } from '../RecordContext';
 import { EditContext } from './EditContext';
 import { EditControllerProps } from './useEditController';
-import { SideEffectContext, usePickSideEffectContext } from './saveModifiers';
+import { SideEffectContext, usePickSideEffectContext } from '../saveModifiers';
 
 /**
  * Create a Edit Context.

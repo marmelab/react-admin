@@ -1,12 +1,12 @@
 import inflection from 'inflection';
 
-import useVersion from './useVersion';
-import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
-import { Record, Identifier } from '../types';
-import { useGetOne } from '../dataProvider';
-import { useTranslate } from '../i18n';
-import { useNotify, useRedirect, useRefresh } from '../sideEffect';
-import { CRUD_GET_ONE } from '../actions';
+import useVersion from '../useVersion';
+import { useCheckMinimumRequiredProps } from '../checkMinimumRequiredProps';
+import { Record, Identifier } from '../../types';
+import { useGetOne } from '../../dataProvider';
+import { useTranslate } from '../../i18n';
+import { useNotify, useRedirect, useRefresh } from '../../sideEffect';
+import { CRUD_GET_ONE } from '../../actions';
 
 export interface ShowProps {
     basePath?: string;
@@ -49,7 +49,7 @@ export interface ShowControllerProps<RecordType extends Record = Record> {
  *     return <ShowView {...controllerProps} {...props} />;
  * }
  */
-const useShowController = <RecordType extends Record = Record>(
+export const useShowController = <RecordType extends Record = Record>(
     props: ShowProps
 ): ShowControllerProps<RecordType> => {
     useCheckMinimumRequiredProps('Show', ['basePath', 'resource'], props);
@@ -92,5 +92,3 @@ const useShowController = <RecordType extends Record = Record>(
         version,
     };
 };
-
-export default useShowController;

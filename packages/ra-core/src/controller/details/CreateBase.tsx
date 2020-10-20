@@ -1,5 +1,5 @@
 import * as React from 'react';
-import useCreateController from './useCreateController';
+import { useCreateController } from './useCreateController';
 import { CreateContextProvider } from './CreateContextProvider';
 
 /**

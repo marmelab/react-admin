@@ -5,9 +5,13 @@ import { parse } from 'query-string';
 import { Location } from 'history';
 import { match as Match, useLocation } from 'react-router-dom';
 
-import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
-import { useCreate } from '../dataProvider';
-import { useNotify, useRedirect, RedirectionSideEffect } from '../sideEffect';
+import { useCheckMinimumRequiredProps } from '../checkMinimumRequiredProps';
+import { useCreate } from '../../dataProvider';
+import {
+    useNotify,
+    useRedirect,
+    RedirectionSideEffect,
+} from '../../sideEffect';
 import {
     OnSuccess,
     SetOnSuccess,
@@ -16,11 +20,11 @@ import {
     TransformData,
     SetTransformData,
     useSaveModifiers,
-} from './saveModifiers';
-import { useTranslate } from '../i18n';
-import { useVersion } from '.';
-import { CRUD_CREATE } from '../actions';
-import { Record } from '../types';
+} from '../saveModifiers';
+import { useTranslate } from '../../i18n';
+import useVersion from '../useVersion';
+import { CRUD_CREATE } from '../../actions';
+import { Record } from '../../types';
 
 export interface CreateProps<RecordType extends Record = Record> {
     basePath?: string;
@@ -80,7 +84,7 @@ export interface CreateControllerProps<RecordType extends Record = Record> {
  *     return <CreateView {...controllerProps} {...props} />;
  * }
  */
-const useCreateController = <RecordType extends Record = Record>(
+export const useCreateController = <RecordType extends Record = Record>(
     props: CreateProps
 ): CreateControllerProps<RecordType> => {
     useCheckMinimumRequiredProps('Create', ['basePath', 'resource'], props);
@@ -213,8 +217,6 @@ const useCreateController = <RecordType extends Record = Record>(
         version,
     };
 };
-
-export default useCreateController;
 
 export const getRecord = ({ state, search }, record: any = {}) => {
     if (state && state.record) {

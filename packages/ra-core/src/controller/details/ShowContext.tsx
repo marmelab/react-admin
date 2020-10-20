@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import { Record } from '../types';
+import { Record } from '../../types';
 import { ShowControllerProps } from './useShowController';
 
 /**

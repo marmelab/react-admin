@@ -1,5 +1,5 @@
 import * as React from 'react';
-import useShowController from './useShowController';
+import { useShowController } from './useShowController';
 import { ShowContextProvider } from './ShowContextProvider';
 
 /**

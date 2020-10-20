@@ -1,5 +1,5 @@
 import * as React from 'react';
-import useEditController from './useEditController';
+import { useEditController } from './useEditController';
 import { EditContextProvider } from './EditContextProvider';
 
 /**
