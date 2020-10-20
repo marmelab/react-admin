@@ -3,7 +3,7 @@ import pick from 'lodash/pick';
 import { Record } from '../types';
 
 export interface RecordContextValue {
-    record?: Record;
+    record?: Partial<Record>;
     loaded: boolean;
     loading: boolean;
 }

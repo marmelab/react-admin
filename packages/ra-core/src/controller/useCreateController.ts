@@ -22,7 +22,7 @@ import { useVersion } from '.';
 import { CRUD_CREATE } from '../actions';
 import { Record } from '../types';
 
-export interface CreateProps {
+export interface CreateProps<RecordType extends Record = Record> {
     basePath?: string;
     hasCreate?: boolean;
     hasEdit?: boolean;
@@ -30,7 +30,7 @@ export interface CreateProps {
     hasShow?: boolean;
     location?: Location;
     match?: Match;
-    record?: Partial<Record>;
+    record?: Partial<RecordType>;
     resource?: string;
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
@@ -38,7 +38,7 @@ export interface CreateProps {
     successMessage?: string;
 }
 
-export interface CreateControllerProps {
+export interface CreateControllerProps<RecordType extends Record = Record> {
     loading: boolean;
     loaded: boolean;
     saving: boolean;
@@ -55,9 +55,10 @@ export interface CreateControllerProps {
     setOnSuccess: SetOnSuccess;
     setOnFailure: SetOnFailure;
     setTransform: SetTransformData;
+    successMessage?: string;
     resource: string;
     basePath?: string;
-    record?: Partial<Record>;
+    record?: Partial<RecordType>;
     redirect: RedirectionSideEffect;
     version: number;
 }
@@ -79,7 +80,9 @@ export interface CreateControllerProps {
  *     return <CreateView {...controllerProps} {...props} />;
  * }
  */
-const useCreateController = (props: CreateProps): CreateControllerProps => {
+const useCreateController = <RecordType extends Record = Record>(
+    props: CreateProps
+): CreateControllerProps<RecordType> => {
     useCheckMinimumRequiredProps('Create', ['basePath', 'resource'], props);
     const {
         basePath,

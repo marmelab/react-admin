@@ -1,4 +1,5 @@
-import Create, { CreateView } from './Create';
+import { Create } from './Create';
+import { CreateView } from './CreateView';
 import CreateActions from './CreateActions';
 import { Edit } from './Edit';
 import { EditView } from './EditView';
