@@ -438,13 +438,13 @@ const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
 const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
 ```
 
-You can also remove the `<UserMenu>` from the `<AppBar>` by passing `null` to the `userMenu` prop:
+You can also remove the `<UserMenu>` from the `<AppBar>` by passing `false` to the `userMenu` prop:
 
 ```jsx
 import * as React from 'react';
 import { AppBar } from 'react-admin';
 
-const MyAppBar = props => <AppBar {...props} userMenu={null} />;
+const MyAppBar = props => <AppBar {...props} userMenu={false} />;
 
 const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
 ```
