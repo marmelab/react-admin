@@ -8,7 +8,7 @@ import { ShowControllerProps } from './useShowController';
  *
  * @example
  *
- * import { useShowController, ShowContext } from 'ra-core';
+ * import { useShowController, ShowContextProvider } from 'ra-core';
  *
  * const Show = props => {
  *     const controllerProps = useShowController(props);

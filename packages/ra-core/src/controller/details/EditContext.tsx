@@ -8,7 +8,7 @@ import { EditControllerProps } from './useEditController';
  *
  * @example
  *
- * import { useEditController, EditContext } from 'ra-core';
+ * import { useEditController, EditContextProvider } from 'ra-core';
  *
  * const Edit = props => {
  *     const controllerProps = useEditController(props);
