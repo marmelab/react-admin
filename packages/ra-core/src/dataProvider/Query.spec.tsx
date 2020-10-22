@@ -564,4 +564,23 @@ describe('Query', () => {
             meta: { resource: 'foo' },
         });
     });
+
+    it('should allow custom dataProvider methods without resource', () => {
+        const dataProvider = {
+            mytype: jest.fn(() => Promise.resolve({ data: { foo: 'bar' } })),
+        };
+
+        const myPayload = {};
+        const { getByText, dispatch } = renderWithRedux(
+            <DataProviderContext.Provider value={dataProvider}>
+                <Query type="mytype" payload={myPayload}>
+                    {({}) => <div />}
+                </Query>
+            </DataProviderContext.Provider>
+        );
+        const action = dispatch.mock.calls[0][0];
+        expect(action.type).toEqual('CUSTOM_FETCH');
+        expect(action.meta.resource).toBeUndefined();
+        expect(dataProvider.mytype).toHaveBeenCalledWith(myPayload);
+    });
 });

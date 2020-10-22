@@ -67,11 +67,18 @@ import useVersion from '../controller/useVersion';
  *     );
  * };
  */
-const useQuery = (query: Query, options: QueryOptions = {}): UseQueryValue => {
+const useQuery = (
+    query: Query,
+    options: QueryOptions = { onSuccess: undefined }
+): UseQueryValue => {
     const { type, resource, payload } = query;
-    const { withDeclarativeSideEffectsSupport, ...rest } = options;
+    const { withDeclarativeSideEffectsSupport, ...otherOptions } = options;
     const version = useVersion(); // used to allow force reload
-    const requestSignature = JSON.stringify({ query, options: rest, version });
+    const requestSignature = JSON.stringify({
+        query,
+        options: otherOptions,
+        version,
+    });
     const [state, setState] = useSafeSetState<UseQueryValue>({
         data: undefined,
         error: null,
@@ -89,13 +96,19 @@ const useQuery = (query: Query, options: QueryOptions = {}): UseQueryValue => {
          *
          * @deprecated to be removed in 4.0
          */
-        const dataProviderWithSideEffects = withDeclarativeSideEffectsSupport
+        const finalDataProvider = withDeclarativeSideEffectsSupport
             ? dataProviderWithDeclarativeSideEffects
             : dataProvider;
 
         setState(prevState => ({ ...prevState, loading: true }));
 
-        dataProviderWithSideEffects[type](resource, payload, rest)
+        finalDataProvider[type]
+            .apply(
+                finalDataProvider,
+                typeof resource !== 'undefined'
+                    ? [resource, payload, otherOptions]
+                    : [payload, otherOptions]
+            )
             .then(({ data, total }) => {
                 setState({
                     data,
@@ -124,7 +137,7 @@ const useQuery = (query: Query, options: QueryOptions = {}): UseQueryValue => {
 
 export interface Query {
     type: string;
-    resource: string;
+    resource?: string;
     payload: object;
 }
 

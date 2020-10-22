@@ -12,7 +12,7 @@ interface ChildrenFuncParams {
 interface Props {
     children: (params: ChildrenFuncParams) => JSX.Element;
     type: string;
-    resource: string;
+    resource?: string;
     payload?: any;
     options?: any;
 }
@@ -71,7 +71,9 @@ const Query: FunctionComponent<Props> = ({
     type,
     resource,
     payload,
-    options,
+    // Provides an undefined onSuccess just so the key `onSuccess` is defined
+    // This is used to detect options in useDataProvider
+    options = { onSuccess: undefined },
 }) =>
     children(
         useQuery(
