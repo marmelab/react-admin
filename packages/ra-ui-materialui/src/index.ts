@@ -1,5 +1,5 @@
 import Link from './Link';
-import defaultTheme from './defaultTheme';
+import defaultTheme, { RaThemeOptions, RaThemeOverrides } from './defaultTheme';
 
 export * from './auth';
 export * from './button';
@@ -10,5 +10,6 @@ export * from './input';
 export * from './layout';
 export * from './list';
 export { Link, defaultTheme };
+export type { RaThemeOptions, RaThemeOverrides };
 
 export * from './types';
