@@ -104,7 +104,6 @@ const SaveButton: FC<SaveButtonProps> = props => {
             setOnSave();
         }
         if (onSuccess) {
-            console.log('onSuccess');
             setOnSuccess(onSuccess);
         }
         if (onFailure) {

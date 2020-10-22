@@ -28,7 +28,7 @@ import { CreateContextProvider } from './CreateContextProvider';
  *         <div>
  *             Post related links...
  *         </div>
- *     </BaseList>
+ *     </BaseCreate>
  * );
  */
 export const CreateBase = ({ children, ...props }) => (
