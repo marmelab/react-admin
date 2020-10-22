@@ -182,7 +182,6 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
                 aria-errormessage={error.message ? error.message : error}
                 color="error"
                 fontSize="small"
-                role="presentation"
             />
         );
     }
