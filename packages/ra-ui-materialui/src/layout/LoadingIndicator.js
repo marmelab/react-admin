@@ -11,7 +11,7 @@ import RefreshIconButton from '../button/RefreshIconButton';
 const useStyles = makeStyles(
     {
         loader: {
-            margin: 14,
+            margin: 16,
         },
         loadedIcon: {},
     },
@@ -27,8 +27,8 @@ const LoadingIndicator = props => {
         <CircularProgress
             className={classNames('app-loader', classes.loader, className)}
             color="inherit"
-            size={18}
-            thickness={5}
+            size={16}
+            thickness={6}
             {...rest}
         />
     ) : (
