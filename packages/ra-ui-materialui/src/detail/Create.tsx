@@ -7,7 +7,7 @@ import {
 } from 'ra-core';
 
 import { CreateProps } from '../types';
-import { CreateView } from '.';
+import { CreateView } from './CreateView';
 
 /**
  * Page component for the Create view

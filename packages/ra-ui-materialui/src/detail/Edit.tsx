@@ -6,7 +6,7 @@ import {
     useEditController,
 } from 'ra-core';
 import { EditProps } from '../types';
-import { EditView } from '.';
+import { EditView } from './EditView';
 
 /**
  * Page component for the Edit view

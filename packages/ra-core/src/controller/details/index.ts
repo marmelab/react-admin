@@ -17,6 +17,10 @@ export * from './ShowBase';
 export * from './ShowContext';
 export * from './ShowContextProvider';
 export * from './ShowController';
+export * from './SaveContext';
+export * from './useCreateContext';
+export * from './useEditContext';
+export * from './useShowContext';
 
 // We don't want to export CreateProps, EditProps and ShowProps as they should
 // not be used outside of ra-core would conflict with ra-ui-materialui types,

@@ -1,5 +1,4 @@
-import { createContext, useContext } from 'react';
-import { Record } from '../../types';
+import { createContext } from 'react';
 import { CreateControllerProps } from './useCreateController';
 
 /**
@@ -9,14 +8,14 @@ import { CreateControllerProps } from './useCreateController';
  *
  * @example
  *
- * import { useCreateController, CreateContext } from 'ra-core';
+ * import { useCreateController, CreateContextProvider } from 'ra-core';
  *
  * const Create = props => {
  *     const controllerProps = useCreateController(props);
  *     return (
- *         <CreateContext.Provider value={controllerProps}>
+ *         <CreateContextProvider value={controllerProps}>
  *             ...
- *         </CreateContext.Provider>
+ *         </CreateContextProvider>
  *     );
  * };
  */
@@ -38,12 +37,3 @@ export const CreateContext = createContext<CreateControllerProps>({
 });
 
 CreateContext.displayName = 'CreateContext';
-
-export const useCreateContext = <
-    RecordType extends Record = Record
->(): CreateControllerProps<RecordType> => {
-    const context = useContext(CreateContext);
-
-    // @ts-ignore
-    return context;
-};

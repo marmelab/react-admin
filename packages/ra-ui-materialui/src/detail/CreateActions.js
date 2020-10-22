@@ -39,7 +39,7 @@ const sanitizeRestProps = ({
  *     );
  */
 const CreateActions = ({ className, ...rest }) => {
-    const { basePath, hasList } = useCreateContext();
+    const { basePath, hasList } = useCreateContext(rest);
     return (
         <TopToolbar className={className} {...sanitizeRestProps(rest)}>
             {hasList && <ListButton basePath={basePath} />}

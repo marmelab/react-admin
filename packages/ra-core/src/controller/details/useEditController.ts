@@ -10,6 +10,9 @@ import {
     useRefresh,
     RedirectionSideEffect,
 } from '../../sideEffect';
+import { useGetOne, useUpdate } from '../../dataProvider';
+import { useTranslate } from '../../i18n';
+import { CRUD_GET_ONE, CRUD_UPDATE } from '../../actions';
 import {
     OnSuccess,
     SetOnSuccess,
@@ -19,9 +22,6 @@ import {
     SetTransformData,
     useSaveModifiers,
 } from '../saveModifiers';
-import { useGetOne, useUpdate } from '../../dataProvider';
-import { useTranslate } from '../../i18n';
-import { CRUD_GET_ONE, CRUD_UPDATE } from '../../actions';
 
 export interface EditProps {
     basePath?: string;

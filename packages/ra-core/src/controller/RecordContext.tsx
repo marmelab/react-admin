@@ -1,12 +1,7 @@
-import { createContext, useContext } from 'react';
+import * as React from 'react';
+import { createContext, useContext, ReactNode } from 'react';
 import pick from 'lodash/pick';
 import { Record } from '../types';
-
-export interface RecordContextValue {
-    record?: Partial<Record>;
-    loaded: boolean;
-    loading: boolean;
-}
 
 /**
  * Context to store the result of the useRecord() hook.
@@ -20,9 +15,9 @@ export interface RecordContextValue {
  * const Edit = props => {
  *     const controllerProps = useEditController(props);
  *     return (
- *         <EditContext.Provider value={controllerProps}>
+ *         <RecordContextProvider value={controllerProps}>
  *             ...
- *         </EditContext.Provider>
+ *         </RecordContextProvider>
  *     );
  * };
  */
@@ -32,6 +27,12 @@ export const RecordContext = createContext<RecordContextValue>({
     record: null,
 });
 
+export const RecordContextProvider = ({
+    children,
+    value,
+}: RecordContextOptions) => (
+    <RecordContext.Provider value={value}>{children}</RecordContext.Provider>
+);
 RecordContext.displayName = 'RecordContext';
 
 export const usePickRecordContext = <
@@ -52,12 +53,16 @@ export const usePickRecordContext = <
  * @returns {RecordContextValue} The record context
  */
 export const useRecordContext = () => {
-    const context = useContext<RecordContextValue>(RecordContext);
-
-    if (!context) {
-        console.warn(
-            `The useRecordContext hook should be used inside a Provider which provides a record such as the <EditContextProvider> (e.g. as a descendent of <Edit> or <EditBase>) or within a <ShowContextProvider> (e.g. as a descendent of <Show> or <ShowBase>)`
-        );
-    }
-    return context;
+    return useContext<RecordContextValue>(RecordContext);
 };
+
+export interface RecordContextValue {
+    record?: Partial<Record>;
+    loaded: boolean;
+    loading: boolean;
+}
+
+export interface RecordContextOptions {
+    children: ReactNode;
+    value?: RecordContextValue;
+}

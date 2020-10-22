@@ -1,5 +1,4 @@
-import { createContext, useContext } from 'react';
-import { Record } from '../../types';
+import { createContext } from 'react';
 import { ShowControllerProps } from './useShowController';
 
 /**
@@ -14,9 +13,9 @@ import { ShowControllerProps } from './useShowController';
  * const Show = props => {
  *     const controllerProps = useShowController(props);
  *     return (
- *         <ShowContext.Provider value={controllerProps}>
+ *         <ShowContextProvider value={controllerProps}>
  *             ...
- *         </ShowContext.Provider>
+ *         </ShowContextProvider>
  *     );
  * };
  */
@@ -31,12 +30,3 @@ export const ShowContext = createContext<ShowControllerProps>({
 });
 
 ShowContext.displayName = 'ShowContext';
-
-export const useShowContext = <
-    RecordType extends Record = Record
->(): ShowControllerProps<RecordType> => {
-    const context = useContext(ShowContext);
-
-    // @ts-ignore
-    return context;
-};

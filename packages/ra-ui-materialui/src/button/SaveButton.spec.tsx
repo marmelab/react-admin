@@ -6,6 +6,7 @@ import {
     renderWithRedux,
     DataProviderContext,
     DataProvider,
+    SaveContextProvider,
 } from 'ra-core';
 import { ThemeProvider } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -42,7 +43,9 @@ describe('<SaveButton />', () => {
         const { getByLabelText } = render(
             <TestContext>
                 <ThemeProvider theme={theme}>
-                    <SaveButton {...invalidButtonDomProps} />
+                    <SaveContextProvider value={{}}>
+                        <SaveButton {...invalidButtonDomProps} />
+                    </SaveContextProvider>
                 </ThemeProvider>
             </TestContext>
         );
@@ -59,7 +62,9 @@ describe('<SaveButton />', () => {
         const { getByLabelText } = render(
             <TestContext>
                 <ThemeProvider theme={theme}>
-                    <SaveButton disabled={true} />
+                    <SaveContextProvider value={{}}>
+                        <SaveButton disabled={true} />
+                    </SaveContextProvider>
                 </ThemeProvider>
             </TestContext>
         );
@@ -69,7 +74,9 @@ describe('<SaveButton />', () => {
     it('should render as submit type when submitOnEnter is true', () => {
         const { getByLabelText } = render(
             <TestContext>
-                <SaveButton submitOnEnter />
+                <SaveContextProvider value={{}}>
+                    <SaveButton submitOnEnter />
+                </SaveContextProvider>
             </TestContext>
         );
         expect(getByLabelText('ra.action.save').getAttribute('type')).toEqual(
@@ -80,7 +87,9 @@ describe('<SaveButton />', () => {
     it('should render as button type when submitOnEnter is false', () => {
         const { getByLabelText } = render(
             <TestContext>
-                <SaveButton submitOnEnter={false} />
+                <SaveContextProvider value={{}}>
+                    <SaveButton submitOnEnter={false} />
+                </SaveContextProvider>
             </TestContext>
         );
 
@@ -93,10 +102,12 @@ describe('<SaveButton />', () => {
         const onSubmit = jest.fn();
         const { getByLabelText } = render(
             <TestContext>
-                <SaveButton
-                    handleSubmitWithRedirect={onSubmit}
-                    saving={false}
-                />
+                <SaveContextProvider value={{}}>
+                    <SaveButton
+                        handleSubmitWithRedirect={onSubmit}
+                        saving={false}
+                    />
+                </SaveContextProvider>
             </TestContext>
         );
 
@@ -109,7 +120,9 @@ describe('<SaveButton />', () => {
 
         const { getByLabelText } = render(
             <TestContext>
-                <SaveButton handleSubmitWithRedirect={onSubmit} saving />
+                <SaveContextProvider value={{}}>
+                    <SaveButton handleSubmitWithRedirect={onSubmit} saving />
+                </SaveContextProvider>
             </TestContext>
         );
 
@@ -126,10 +139,12 @@ describe('<SaveButton />', () => {
                 {({ store }) => {
                     dispatchSpy = jest.spyOn(store, 'dispatch');
                     return (
-                        <SaveButton
-                            handleSubmitWithRedirect={onSubmit}
-                            invalid
-                        />
+                        <SaveContextProvider value={{}}>
+                            <SaveButton
+                                handleSubmitWithRedirect={onSubmit}
+                                invalid
+                            />
+                        </SaveContextProvider>
                     );
                 }}
             </TestContext>
@@ -152,8 +167,18 @@ describe('<SaveButton />', () => {
         basePath: '',
         id: '123',
         resource: 'posts',
-        location: {},
-        match: {},
+        location: {
+            pathname: '/customers/123',
+            search: '',
+            state: {},
+            hash: '',
+        },
+        match: {
+            params: { id: 123 },
+            isExact: true,
+            path: '/customers/123',
+            url: '/customers/123',
+        },
         undoable: false,
     };
 

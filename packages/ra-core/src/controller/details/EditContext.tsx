@@ -1,5 +1,4 @@
-import { createContext, useContext } from 'react';
-import { Record } from '../../types';
+import { createContext } from 'react';
 import { EditControllerProps } from './useEditController';
 
 /**
@@ -14,9 +13,9 @@ import { EditControllerProps } from './useEditController';
  * const Edit = props => {
  *     const controllerProps = useEditController(props);
  *     return (
- *         <EditContext.Provider value={controllerProps}>
+ *         <EditContextProvider value={controllerProps}>
  *             ...
- *         </EditContext.Provider>
+ *         </EditContextProvider>
  *     );
  * };
  */
@@ -38,12 +37,3 @@ export const EditContext = createContext<EditControllerProps>({
 });
 
 EditContext.displayName = 'EditContext';
-
-export const useEditContext = <
-    RecordType extends Record = Record
->(): EditControllerProps<RecordType> => {
-    const context = useContext(EditContext);
-
-    // @ts-ignore
-    return context;
-};

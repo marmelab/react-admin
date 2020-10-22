@@ -31,7 +31,7 @@ import TopToolbar from '../layout/TopToolbar';
  *     );
  */
 const EditActions = ({ className, ...rest }: EditActionsProps) => {
-    const { basePath, hasShow, record: data } = useEditContext();
+    const { basePath, hasShow, record: data } = useEditContext(rest);
 
     return (
         <TopToolbar className={className} {...rest}>

@@ -41,7 +41,7 @@ const sanitizeRestProps = ({
  *     );
  */
 const ShowActions = ({ className, ...rest }: ShowActionsProps) => {
-    const { basePath, hasEdit, record: data } = useShowContext();
+    const { basePath, hasEdit, record: data } = useShowContext(rest);
     return (
         <TopToolbar className={className} {...sanitizeRestProps(rest)}>
             {hasEdit && <EditButton basePath={basePath} record={data} />}

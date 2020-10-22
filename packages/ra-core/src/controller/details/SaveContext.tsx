@@ -2,11 +2,16 @@ import * as React from 'react';
 import { createContext, useContext } from 'react';
 import pick from 'lodash/pick';
 
-import { RedirectionSideEffect } from '../sideEffect';
-import { Record } from '../types';
-import { OnFailure, OnSuccess, TransformData } from './saveModifiers';
+import { RedirectionSideEffect } from '../../sideEffect';
+import { Record } from '../../types';
+import {
+    OnFailure,
+    OnSuccess,
+    SideEffectContextValue,
+    TransformData,
+} from '../saveModifiers';
 
-interface SaveContextValue {
+interface SaveContextValue extends SideEffectContextValue {
     save: (
         record: Partial<Record>,
         redirect: RedirectionSideEffect,
@@ -57,5 +62,11 @@ export const usePickSaveContext = <
 >(
     context: ContextType
 ): SaveContextValue => {
-    return pick(context, ['save', 'saving']);
+    return pick(context, [
+        'save',
+        'saving',
+        'setOnFailure',
+        'setOnSuccess',
+        'setTransform',
+    ]);
 };

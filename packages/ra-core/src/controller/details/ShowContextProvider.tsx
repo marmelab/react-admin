@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import { RecordContext, usePickRecordContext } from '../RecordContext';
+import { RecordContextProvider, usePickRecordContext } from '../RecordContext';
 import { ShowContext } from './ShowContext';
 import { ShowControllerProps } from './useShowController';
 
 /**
- * Show a Show Context.
+ * Create a Show Context.
  *
  * @example
  *
@@ -33,8 +33,8 @@ export const ShowContextProvider = ({
     value: ShowControllerProps;
 }) => (
     <ShowContext.Provider value={value}>
-        <RecordContext.Provider value={usePickRecordContext(value)}>
+        <RecordContextProvider value={usePickRecordContext(value)}>
             {children}
-        </RecordContext.Provider>
+        </RecordContextProvider>
     </ShowContext.Provider>
 );

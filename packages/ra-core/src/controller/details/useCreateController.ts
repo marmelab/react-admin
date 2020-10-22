@@ -26,7 +26,7 @@ import useVersion from '../useVersion';
 import { CRUD_CREATE } from '../../actions';
 import { Record } from '../../types';
 
-export interface CreateProps<RecordType extends Record = Record> {
+export interface CreateProps<RecordType extends Omit<Record, 'id'> = Record> {
     basePath?: string;
     hasCreate?: boolean;
     hasEdit?: boolean;
@@ -42,7 +42,9 @@ export interface CreateProps<RecordType extends Record = Record> {
     successMessage?: string;
 }
 
-export interface CreateControllerProps<RecordType extends Record = Record> {
+export interface CreateControllerProps<
+    RecordType extends Omit<Record, 'id'> = Record
+> {
     loading: boolean;
     loaded: boolean;
     saving: boolean;
@@ -84,7 +86,9 @@ export interface CreateControllerProps<RecordType extends Record = Record> {
  *     return <CreateView {...controllerProps} {...props} />;
  * }
  */
-export const useCreateController = <RecordType extends Record = Record>(
+export const useCreateController = <
+    RecordType extends Omit<Record, 'id'> = Record
+>(
     props: CreateProps
 ): CreateControllerProps<RecordType> => {
     useCheckMinimumRequiredProps('Create', ['basePath', 'resource'], props);
