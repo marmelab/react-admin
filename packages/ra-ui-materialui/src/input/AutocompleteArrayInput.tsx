@@ -100,6 +100,7 @@ const AutocompleteArrayInput: FunctionComponent<
         allowEmpty,
         classes: classesOverride,
         choices = [],
+        disabled,
         emptyText,
         emptyValue,
         format,
@@ -449,6 +450,7 @@ const AutocompleteArrayInput: FunctionComponent<
                             margin={margin}
                             color={color as any}
                             size={size as any}
+                            disabled={disabled}
                             {...inputProps}
                             {...options}
                         />
