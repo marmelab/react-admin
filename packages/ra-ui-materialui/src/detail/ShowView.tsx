@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { ShowControllerProps } from 'ra-core';
+import { ShowControllerProps, useShowContext } from 'ra-core';
 
 import DefaultActions from './ShowActions';
 import TitleForRecord from '../layout/TitleForRecord';
@@ -18,21 +18,26 @@ export const ShowView = (props: ShowViewProps) => {
     const {
         actions,
         aside,
-        basePath,
         children,
         classes: classesOverride,
         className,
         component: Content,
+        title,
+        ...rest
+    } = props;
+
+    const classes = useStyles(props);
+
+    const {
+        basePath,
         defaultTitle,
         hasEdit,
         hasList,
         record,
         resource,
-        title,
         version,
-        ...rest
-    } = props;
-    const classes = useStyles(props);
+    } = useShowContext(props);
+
     const finalActions =
         typeof actions === 'undefined' && hasEdit ? (
             <DefaultActions />

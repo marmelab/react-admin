@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import { CreateControllerProps } from 'ra-core';
+import { CreateControllerProps, useCreateContext } from 'ra-core';
 import { Card } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
@@ -12,27 +12,27 @@ export const CreateView = (props: CreateViewProps) => {
     const {
         actions,
         aside,
-        basePath,
         children,
         classes: classesOverride,
         className,
         component: Content,
+        title,
+        ...rest
+    } = props;
+
+    const classes = useStyles(props);
+
+    const {
+        basePath,
         defaultTitle,
         hasList,
-        hasShow,
-        record = {},
+        record,
         redirect,
         resource,
         save,
-        setOnSuccess,
-        setOnFailure,
-        setTransform,
         saving,
-        title,
         version,
-        ...rest
-    } = props;
-    const classes = useStyles(props);
+    } = useCreateContext(props);
 
     return (
         <div

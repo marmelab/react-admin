@@ -5,7 +5,11 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { EditControllerProps, ComponentPropType } from 'ra-core';
+import {
+    EditControllerProps,
+    ComponentPropType,
+    useEditContext,
+} from 'ra-core';
 
 import DefaultActions from './EditActions';
 import TitleForRecord from '../layout/TitleForRecord';
@@ -19,11 +23,19 @@ export const EditView = (props: EditViewProps) => {
     const {
         actions,
         aside,
-        basePath,
         children,
         classes: classesOverride,
         className,
         component: Content,
+        title,
+        undoable,
+        ...rest
+    } = props;
+
+    const classes = useStyles(props);
+
+    const {
+        basePath,
         defaultTitle,
         hasList,
         hasShow,
@@ -31,16 +43,10 @@ export const EditView = (props: EditViewProps) => {
         redirect,
         resource,
         save,
-        setOnSuccess,
-        setOnFailure,
-        setTransform,
         saving,
-        title,
-        undoable,
         version,
-        ...rest
-    } = props;
-    const classes = useStyles(props);
+    } = useEditContext(props);
+
     const finalActions =
         typeof actions === 'undefined' && hasShow ? (
             <DefaultActions />

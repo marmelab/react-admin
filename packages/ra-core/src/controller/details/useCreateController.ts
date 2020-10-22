@@ -49,6 +49,10 @@ export interface CreateControllerProps<
     loaded: boolean;
     saving: boolean;
     defaultTitle: string;
+    hasCreate?: boolean;
+    hasEdit?: boolean;
+    hasList?: boolean;
+    hasShow?: boolean;
     save: (
         record: Partial<Record>,
         redirect: RedirectionSideEffect,
