@@ -9,12 +9,12 @@ import { useRefreshWhenVisible } from 'ra-core';
 import RefreshIconButton from '../button/RefreshIconButton';
 
 const useStyles = makeStyles(
-    {
+    theme => ({
         loader: {
-            margin: 16,
+            margin: theme.spacing(2),
         },
         loadedIcon: {},
-    },
+    }),
     { name: 'RaLoadingIndicator' }
 );
 
@@ -27,7 +27,7 @@ const LoadingIndicator = props => {
         <CircularProgress
             className={classNames('app-loader', classes.loader, className)}
             color="inherit"
-            size={16}
+            size="1em"
             thickness={6}
             {...rest}
         />
