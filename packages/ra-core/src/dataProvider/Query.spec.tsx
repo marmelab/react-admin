@@ -571,10 +571,10 @@ describe('Query', () => {
         };
 
         const myPayload = {};
-        const { getByText, dispatch } = renderWithRedux(
+        const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <Query type="mytype" payload={myPayload}>
-                    {({}) => <div />}
+                    {() => <div />}
                 </Query>
             </DataProviderContext.Provider>
         );
