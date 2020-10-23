@@ -37,13 +37,15 @@ const invalidButtonDomProps = {
 describe('<SaveButton />', () => {
     afterEach(cleanup);
 
+    const saveContextValue = { save: jest.fn(), saving: false };
+
     it('should render as submit type with no DOM errors', () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
         const { getByLabelText } = render(
             <TestContext>
                 <ThemeProvider theme={theme}>
-                    <SaveContextProvider value={{}}>
+                    <SaveContextProvider value={saveContextValue}>
                         <SaveButton {...invalidButtonDomProps} />
                     </SaveContextProvider>
                 </ThemeProvider>
@@ -62,7 +64,7 @@ describe('<SaveButton />', () => {
         const { getByLabelText } = render(
             <TestContext>
                 <ThemeProvider theme={theme}>
-                    <SaveContextProvider value={{}}>
+                    <SaveContextProvider value={saveContextValue}>
                         <SaveButton disabled={true} />
                     </SaveContextProvider>
                 </ThemeProvider>
@@ -74,7 +76,7 @@ describe('<SaveButton />', () => {
     it('should render as submit type when submitOnEnter is true', () => {
         const { getByLabelText } = render(
             <TestContext>
-                <SaveContextProvider value={{}}>
+                <SaveContextProvider value={saveContextValue}>
                     <SaveButton submitOnEnter />
                 </SaveContextProvider>
             </TestContext>
@@ -87,7 +89,7 @@ describe('<SaveButton />', () => {
     it('should render as button type when submitOnEnter is false', () => {
         const { getByLabelText } = render(
             <TestContext>
-                <SaveContextProvider value={{}}>
+                <SaveContextProvider value={saveContextValue}>
                     <SaveButton submitOnEnter={false} />
                 </SaveContextProvider>
             </TestContext>
@@ -102,7 +104,7 @@ describe('<SaveButton />', () => {
         const onSubmit = jest.fn();
         const { getByLabelText } = render(
             <TestContext>
-                <SaveContextProvider value={{}}>
+                <SaveContextProvider value={saveContextValue}>
                     <SaveButton
                         handleSubmitWithRedirect={onSubmit}
                         saving={false}
@@ -120,7 +122,7 @@ describe('<SaveButton />', () => {
 
         const { getByLabelText } = render(
             <TestContext>
-                <SaveContextProvider value={{}}>
+                <SaveContextProvider value={saveContextValue}>
                     <SaveButton handleSubmitWithRedirect={onSubmit} saving />
                 </SaveContextProvider>
             </TestContext>
@@ -139,7 +141,7 @@ describe('<SaveButton />', () => {
                 {({ store }) => {
                     dispatchSpy = jest.spyOn(store, 'dispatch');
                     return (
-                        <SaveContextProvider value={{}}>
+                        <SaveContextProvider value={saveContextValue}>
                             <SaveButton
                                 handleSubmitWithRedirect={onSubmit}
                                 invalid
