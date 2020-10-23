@@ -6,7 +6,7 @@ import { Record } from '../types';
 /**
  * Context to store the result of the useRecord() hook.
  *
- * Use the useRecordContext() hook to read the context. That's what the Edit components do in react-admn.
+ * Use the useRecordContext() hook to read the context. That's what the Edit and Show components do in react-admn.
  *
  * @example
  *
@@ -44,11 +44,11 @@ export const usePickRecordContext = <
 /**
  * Hook to read the record from a context which provide one, such as the EditContext or ShowContext.
  *
- * Must be used within a <EditContextProvider> (e.g. as a descendent of <Edit>
- * or <EditBase>) or within a <ShowContextProvider> (e.g. as a descendent of <Show>
- * or <ShowBase>)
+ * Must be used within a <RecordContext> such as provided by the <EditContextProvider>
+ * (e.g. as a descendent of <Edit> or <EditBase>) or within a <ShowContextProvider>
+ * (e.g. as a descendent of <Show> or <ShowBase>)
  *
- * @returns {RecordContextValue} The record context
+ * @returns {Record} The record context
  */
 export const useRecordContext = <
     RecordType extends Record | Omit<Record, 'id'> = Record
