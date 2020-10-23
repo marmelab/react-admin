@@ -1,21 +1,21 @@
 import * as React from 'react';
-import { createContext, useContext, ReactNode } from 'react';
+import { createContext, ReactNode, useContext, useMemo } from 'react';
 import pick from 'lodash/pick';
 import { Record } from '../types';
 
 /**
- * Context to store the result of the useRecord() hook.
+ * Context to store the result of the current record.
  *
- * Use the useRecordContext() hook to read the context. That's what the Edit and Show components do in react-admn.
+ * Use the useRecordContext() hook to read the context. That's what the Edit and Show components do in react-admin.
  *
  * @example
  *
  * import { useEditController, EditContext } from 'ra-core';
  *
  * const Edit = props => {
- *     const controllerProps = useEditController(props);
+ *     const { record }= useEditController(props);
  *     return (
- *         <RecordContextProvider value={controllerProps}>
+ *         <RecordContextProvider value={record}>
  *             ...
  *         </RecordContextProvider>
  *     );
@@ -38,11 +38,12 @@ export const usePickRecordContext = <
 >(
     context: RecordType
 ) => {
-    return pick(context, ['record']);
+    const value = useMemo(() => pick(context, ['record']), [context.record]); // eslint-disable-line
+    return value;
 };
 
 /**
- * Hook to read the record from a context which provide one, such as the EditContext or ShowContext.
+ * Hook to read the record from a RecordContext.
  *
  * Must be used within a <RecordContext> such as provided by the <EditContextProvider>
  * (e.g. as a descendent of <Edit> or <EditBase>) or within a <ShowContextProvider>
@@ -52,10 +53,21 @@ export const usePickRecordContext = <
  */
 export const useRecordContext = <
     RecordType extends Record | Omit<Record, 'id'> = Record
->() => {
+>(
+    props: RecordType
+) => {
     // Can't find a way to specify the RecordType when CreateContext is declared
     // @ts-ignore
-    return useContext<RecordType>(RecordContext);
+    const context = useContext<RecordType>(RecordContext);
+
+    if (!context) {
+        // As the record could very well be undefined because not yet loaded
+        // We don't display a deprecation warning yet
+        // @deprecated - to be removed in 4.0
+        return props;
+    }
+
+    return context;
 };
 
 export interface RecordContextOptions<
