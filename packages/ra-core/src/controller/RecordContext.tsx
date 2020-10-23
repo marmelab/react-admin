@@ -21,11 +21,9 @@ import { Record } from '../types';
  *     );
  * };
  */
-export const RecordContext = createContext<RecordContextValue>({
-    loaded: null,
-    loading: null,
-    record: null,
-});
+export const RecordContext = createContext<Record | Omit<Record, 'id'>>(
+    undefined
+);
 
 export const RecordContextProvider = ({
     children,
@@ -36,11 +34,11 @@ export const RecordContextProvider = ({
 RecordContext.displayName = 'RecordContext';
 
 export const usePickRecordContext = <
-    ContextType extends RecordContextValue = RecordContextValue
+    RecordType extends Record | Omit<Record, 'id'> = Record
 >(
-    context: ContextType
+    context: RecordType
 ) => {
-    return pick(context, ['record', 'loaded', 'loading']);
+    return pick(context, ['record']);
 };
 
 /**
@@ -52,17 +50,17 @@ export const usePickRecordContext = <
  *
  * @returns {RecordContextValue} The record context
  */
-export const useRecordContext = () => {
-    return useContext<RecordContextValue>(RecordContext);
+export const useRecordContext = <
+    RecordType extends Record | Omit<Record, 'id'> = Record
+>() => {
+    // Can't find a way to specify the RecordType when CreateContext is declared
+    // @ts-ignore
+    return useContext<RecordType>(RecordContext);
 };
 
-export interface RecordContextValue {
-    record?: Partial<Record>;
-    loaded: boolean;
-    loading: boolean;
-}
-
-export interface RecordContextOptions {
+export interface RecordContextOptions<
+    RecordType extends Record | Omit<Record, 'id'> = Record
+> {
     children: ReactNode;
-    value?: RecordContextValue;
+    value?: RecordType;
 }

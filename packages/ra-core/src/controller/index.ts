@@ -4,7 +4,6 @@ import ListFilterContext from './ListFilterContext';
 import ListPaginationContext from './ListPaginationContext';
 import ListSortContext from './ListSortContext';
 import ListBase from './ListBase';
-import { RecordContext, RecordContextValue } from './RecordContext';
 import useRecordSelection from './useRecordSelection';
 import useVersion from './useVersion';
 import useExpanded from './useExpanded';
@@ -29,7 +28,6 @@ import useListSortContext from './useListSortContext';
 export type {
     ListControllerProps,
     PaginationHookResult,
-    RecordContextValue,
     SortProps,
     UseReferenceProps,
 };
@@ -44,7 +42,6 @@ export {
     ListPaginationContext,
     ListSortContext,
     ListContextProvider,
-    RecordContext,
     useCheckMinimumRequiredProps,
     useListController,
     useRecordSelection,
