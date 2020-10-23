@@ -48,7 +48,7 @@ export const SaveContextProvider = ({ children, value }) => (
 export const useSaveContext = <
     PropsType extends SaveContextValue = SaveContextValue
 >(
-    props: PropsType
+    props?: PropsType
 ) => {
     const context = useContext(SaveContext);
 
