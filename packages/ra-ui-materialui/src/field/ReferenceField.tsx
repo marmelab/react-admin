@@ -178,12 +178,14 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
     }
     if (error) {
         return (
+            /* eslint-disable jsx-a11y/role-supports-aria-props */
             <ErrorIcon
                 aria-errormessage={error.message ? error.message : error}
+                role="presentation"
                 color="error"
                 fontSize="small"
-                role="presentation"
             />
+            /* eslint-enable */
         );
     }
     if (!referenceRecord) {
