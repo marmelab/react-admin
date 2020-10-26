@@ -164,6 +164,7 @@ export interface ReferenceInputProps extends InputProps {
     label?: string;
     perPage?: number;
     reference: string;
+    // @deprecated
     referenceSource?: (resource: string, source: string) => string;
     resource?: string;
     [key: string]: any;

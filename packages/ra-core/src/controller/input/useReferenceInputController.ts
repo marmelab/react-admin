@@ -67,6 +67,7 @@ const useReferenceInputController = ({
     filter = defaultFilter,
     reference,
     filterToQuery,
+    // @deprecated
     referenceSource = defaultReferenceSource,
     resource,
     sort: sortOverride,
@@ -243,6 +244,7 @@ interface Option {
     perPage?: number;
     record?: Record;
     reference: string;
+    // @deprecated ignored
     referenceSource?: typeof defaultReferenceSource;
     resource?: string;
     sort?: SortPayload;
