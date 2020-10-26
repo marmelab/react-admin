@@ -12,7 +12,6 @@ import {
 } from '../../types';
 import { ListControllerProps } from '../useListController';
 import useReference from '../useReference';
-import useGetMatchingReferences from './useGetMatchingReferences';
 import usePaginationState from '../usePaginationState';
 import { useSortState } from '..';
 import useFilterState from '../useFilterState';
@@ -133,21 +132,18 @@ const useReferenceInputController = ({
         reference,
     });
 
-    // remove current value from possible sources
+    // add current value to possible sources
     let finalIds: Identifier[],
         finalData: RecordMap<Record>,
         finalTotal: number;
-    if (possibleValuesIds.includes(input.value)) {
-        finalIds = possibleValuesIds.filter(
-            referenceId => referenceId !== input.value
-        );
-        possibleValuesData[input.value] = undefined;
-        finalData = possibleValuesData;
-        finalTotal -= 1;
-    } else {
+    if (!referenceRecord || possibleValuesIds.includes(input.value)) {
         finalIds = possibleValuesIds;
         finalData = possibleValuesData;
         finalTotal = possibleValuesTotal;
+    } else {
+        finalIds = [input.value, ...possibleValuesIds];
+        finalData = { [input.value]: referenceRecord, ...possibleValuesData };
+        finalTotal += 1;
     }
 
     // overall status
@@ -197,7 +193,7 @@ const useReferenceInputController = ({
             loading: dataStatus.waiting,
             warning: dataStatus.warning,
         },
-        choices: dataStatus.choices,
+        choices: Object.keys(finalData).map(id => finalData[id]),
         // kept for backwards compatibility
         // @deprecated to be removed in 4.0
         error: dataStatus.error,
@@ -248,7 +244,7 @@ interface Option {
     record?: Record;
     reference: string;
     referenceSource?: typeof defaultReferenceSource;
-    resource: string;
+    resource?: string;
     sort?: SortPayload;
     source: string;
 }

@@ -1,6 +1,8 @@
 import ReferenceArrayInputController from './ReferenceArrayInputController';
 import ReferenceInputController from './ReferenceInputController';
-import useReferenceInputController from './useReferenceInputController';
+import useReferenceInputController, {
+    ReferenceInputValue,
+} from './useReferenceInputController';
 import useReferenceArrayInputController from './useReferenceArrayInputController';
 import {
     getStatusForInput,
@@ -17,3 +19,4 @@ export {
     useReferenceInputController,
     useReferenceArrayInputController,
 };
+export type { ReferenceInputValue };

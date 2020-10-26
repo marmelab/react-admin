@@ -27,7 +27,7 @@ export interface InputProps<T = any>
     validate?: Validator | Validator[];
 }
 
-interface ComputedInputProps extends FieldRenderProps<any, HTMLElement> {
+export interface UseInputValue extends FieldRenderProps<any, HTMLElement> {
     id: string;
     isRequired: boolean;
 }
@@ -42,7 +42,7 @@ const useInput = ({
     onChange: customOnChange,
     onFocus: customOnFocus,
     ...options
-}: InputProps): ComputedInputProps => {
+}: InputProps): UseInputValue => {
     const finalName = name || source;
 
     const sanitizedValidate = Array.isArray(validate)
