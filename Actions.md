@@ -283,7 +283,7 @@ const UserProfile = ({ record }) => {
 
 ```jsx
 // syntax
-const { data, loading, loaded, error } = useGetMAny(resource, ids, options);
+const { data, loading, loaded, error } = useGetMany(resource, ids, options);
 
 // example
 import { useGetMany } from 'react-admin';
@@ -315,7 +315,7 @@ const PostComments = ({ post_id }) => {
         'post_id',
         post_id,
         { page: 1, perPage: 10 },
-        { field: 'published_at', order: 'DESC' }
+        { field: 'published_at', order: 'DESC' },
         {},
         'posts',
     );
@@ -359,7 +359,7 @@ const IncreaseLikeButton = ({ record }) => {
     const diff = { likes: record.likes + 1 };
     const [update, { loading, error }] = useUpdate('likes', record.id, diff, record);
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={loading} onClick={update}>Like</div>;
+    return <button disabled={loading} onClick={update}>Like</button>;
 };
 ```
 
@@ -382,14 +382,14 @@ const BulkResetViewsButton = ({ selectedIds }) => {
 
 ```jsx
 // syntax
-const [delete, { data, loading, loaded, error }] = useDelete(resource, id, previousData, options);
+const [deleteOne, { data, loading, loaded, error }] = useDelete(resource, id, previousData, options);
 
 // example
 import { useDelete } from 'react-admin';
 const DeleteButton = ({ record }) => {
     const [deleteOne, { loading, error }] = useDelete('likes', record.id);
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={loading} onClick={deleteOne}>Delete</div>;
+    return <button disabled={loading} onClick={deleteOne}>Delete</button>;
 };
 ```
 
@@ -397,7 +397,7 @@ const DeleteButton = ({ record }) => {
 
 ```jsx
 // syntax
-const [delete, { data, loading, loaded, error }] = useDeleteMany(resource, ids, options);
+const [deleteOne, { data, loading, loaded, error }] = useDeleteMany(resource, ids, options);
 
 // example
 import { useDeleteMany } from 'react-admin';

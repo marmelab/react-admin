@@ -916,14 +916,15 @@ import {
     DateField,
     SingleFieldList,
     ChipField,
+    EditButton,
 } from 'react-admin';
 import { ReferenceManyToManyField } from '@react-admin/ra-many-to-many';
 
-export const BookShow = (props) => (
+export const BookShow = props => (
     <Show {...props}>
         <SimpleShowLayout>
             <TextField source="title" />
-            <DateField source="publication_date">
+            <DateField source="publication_date" />
             <ReferenceManyToManyField 
                 reference="authors"
                 through="book_authors"
@@ -1125,7 +1126,7 @@ export const ProductList = (props) => (
 
 React-admin usually delegates the rendering of field components to material-ui components. Refer to the material-ui documentation to see the default styles for elements.
 
-You may want to customize the cell style inside a `DataGrid`. You can use the `cellClassName` for that:
+You may want to customize the cell style inside a `Datagrid`. You can use the `cellClassName` for that:
 
 {% raw %}
 ```jsx
