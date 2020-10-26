@@ -22,8 +22,12 @@ export interface ShowProps {
 export interface ShowControllerProps<RecordType extends Record = Record> {
     basePath?: string;
     defaultTitle: string;
+    // Necessary for actions (EditActions) which expect a data prop containing the record
+    // @deprecated - to be removed in 4.0d
+    data?: RecordType;
     loading: boolean;
     loaded: boolean;
+    hasCreate?: boolean;
     hasEdit?: boolean;
     hasList?: boolean;
     hasShow?: boolean;
@@ -53,7 +57,15 @@ export const useShowController = <RecordType extends Record = Record>(
     props: ShowProps
 ): ShowControllerProps<RecordType> => {
     useCheckMinimumRequiredProps('Show', ['basePath', 'resource'], props);
-    const { basePath, id, resource } = props;
+    const {
+        basePath,
+        hasCreate,
+        hasEdit,
+        hasList,
+        hasShow,
+        id,
+        resource,
+    } = props;
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();
@@ -89,6 +101,10 @@ export const useShowController = <RecordType extends Record = Record>(
         resource,
         basePath,
         record,
+        hasCreate,
+        hasEdit,
+        hasList,
+        hasShow,
         version,
     };
 };

@@ -5,6 +5,7 @@ import {
     useShowController,
     InferredElement,
     getElementsFromRecords,
+    ShowContextProvider,
 } from 'ra-core';
 
 import { ShowView } from './ShowView';
@@ -47,8 +48,13 @@ ${inferredChild.getRepresentation()}
 
 ShowViewGuesser.propTypes = ShowView.propTypes;
 
-const ShowGuesser = props => (
-    <ShowViewGuesser {...props} {...useShowController(props)} />
-);
+const ShowGuesser = props => {
+    const controllerProps = useShowController(props);
+    return (
+        <ShowContextProvider value={controllerProps}>
+            <ShowViewGuesser {...props} {...controllerProps} />
+        </ShowContextProvider>
+    );
+};
 
 export default ShowGuesser;

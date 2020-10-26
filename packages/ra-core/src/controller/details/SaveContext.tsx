@@ -12,7 +12,7 @@ import {
 } from '../saveModifiers';
 
 interface SaveContextValue extends SideEffectContextValue {
-    save: (
+    save?: (
         record: Partial<Record>,
         redirect: RedirectionSideEffect,
         callbacks?: {
@@ -21,13 +21,10 @@ interface SaveContextValue extends SideEffectContextValue {
             transform?: TransformData;
         }
     ) => void;
-    saving: boolean;
+    saving?: boolean;
 }
 
-export const SaveContext = createContext<SaveContextValue>({
-    save: null,
-    saving: null,
-});
+export const SaveContext = createContext<SaveContextValue>({});
 
 export const SaveContextProvider = ({ children, value }) => (
     <SaveContext.Provider value={value}>{children}</SaveContext.Provider>
@@ -52,7 +49,7 @@ export const useSaveContext = <
 ) => {
     const context = useContext(SaveContext);
 
-    if (!context.save) {
+    if (!context.save || !context.setOnFailure) {
         /**
          * The element isn't inside a <SaveContextProvider>
          * To avoid breakage in that case, fallback to props

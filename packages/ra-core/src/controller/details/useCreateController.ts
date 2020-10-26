@@ -45,10 +45,13 @@ export interface CreateProps<RecordType extends Omit<Record, 'id'> = Record> {
 export interface CreateControllerProps<
     RecordType extends Omit<Record, 'id'> = Record
 > {
+    basePath?: string;
+    // Necessary for actions (EditActions) which expect a data prop containing the record
+    // @deprecated - to be removed in 4.0d
+    data?: RecordType;
+    defaultTitle: string;
     loading: boolean;
     loaded: boolean;
-    saving: boolean;
-    defaultTitle: string;
     hasCreate?: boolean;
     hasEdit?: boolean;
     hasList?: boolean;
@@ -62,14 +65,14 @@ export interface CreateControllerProps<
             transform?: TransformData;
         }
     ) => void;
+    saving: boolean;
     setOnSuccess: SetOnSuccess;
     setOnFailure: SetOnFailure;
     setTransform: SetTransformData;
     successMessage?: string;
-    resource: string;
-    basePath?: string;
     record?: Partial<RecordType>;
     redirect: RedirectionSideEffect;
+    resource: string;
     version: number;
 }
 

@@ -8,7 +8,6 @@ import TopToolbar from '../layout/TopToolbar';
 const sanitizeRestProps = ({
     basePath,
     className,
-    record,
     hasEdit,
     hasList,
     resource,
@@ -41,10 +40,10 @@ const sanitizeRestProps = ({
  *     );
  */
 const ShowActions = ({ className, ...rest }: ShowActionsProps) => {
-    const { basePath, hasEdit, record: data } = useShowContext(rest);
+    const { basePath, hasEdit, record } = useShowContext(rest);
     return (
         <TopToolbar className={className} {...sanitizeRestProps(rest)}>
-            {hasEdit && <EditButton basePath={basePath} record={data} />}
+            {hasEdit && <EditButton basePath={basePath} record={record} />}
         </TopToolbar>
     );
 };

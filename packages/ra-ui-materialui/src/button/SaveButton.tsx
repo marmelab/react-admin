@@ -88,7 +88,7 @@ const SaveButton: FC<SaveButtonProps> = props => {
     const notify = useNotify();
     const translate = useTranslate();
     const { setOnSave } = useContext(FormContext);
-    const { setOnSuccess, setOnFailure, setTransform } = useSaveContext();
+    const { setOnSuccess, setOnFailure, setTransform } = useSaveContext(props);
 
     const handleClick = event => {
         // deprecated: use onSuccess and transform instead of onSave

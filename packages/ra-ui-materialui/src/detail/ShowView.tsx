@@ -134,8 +134,12 @@ const useStyles = makeStyles(
 );
 
 const sanitizeRestProps = ({
+    basePath = null,
+    defaultTitle = null,
     hasCreate = null,
     hasEdit = null,
+    hasList = null,
+    hasShow = null,
     history = null,
     id = null,
     loaded = null,

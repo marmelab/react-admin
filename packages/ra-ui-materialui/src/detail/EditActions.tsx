@@ -31,14 +31,23 @@ import TopToolbar from '../layout/TopToolbar';
  *     );
  */
 const EditActions = ({ className, ...rest }: EditActionsProps) => {
-    const { basePath, hasShow, record: data } = useEditContext(rest);
+    const { basePath, hasShow, record } = useEditContext(rest);
 
     return (
-        <TopToolbar className={className} {...rest}>
-            {hasShow && <ShowButton basePath={basePath} record={data} />}
+        <TopToolbar className={className} {...sanitizeRestProps(rest)}>
+            {hasShow && <ShowButton basePath={basePath} record={record} />}
         </TopToolbar>
     );
 };
+
+const sanitizeRestProps = ({
+    basePath = null,
+    hasCreate = null,
+    hasEdit = null,
+    hasShow = null,
+    hasList = null,
+    ...rest
+}) => rest;
 
 export interface EditActionsProps {
     basePath?: string;

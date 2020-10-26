@@ -4,7 +4,7 @@ import pick from 'lodash/pick';
 import { Record } from '../types';
 
 /**
- * Context to store the result of the current record.
+ * Context to store the current record.
  *
  * Use the useRecordContext() hook to read the context. That's what the Edit and Show components do in react-admin.
  *

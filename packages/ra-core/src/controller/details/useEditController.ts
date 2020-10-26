@@ -39,14 +39,17 @@ export interface EditProps {
 }
 
 export interface EditControllerProps<RecordType extends Record = Record> {
+    basePath?: string;
+    // Necessary for actions (EditActions) which expect a data prop containing the record
+    // @deprecated - to be removed in 4.0d
+    data?: RecordType;
+    defaultTitle: string;
     hasCreate?: boolean;
     hasEdit?: boolean;
     hasShow?: boolean;
     hasList?: boolean;
     loading: boolean;
     loaded: boolean;
-    saving: boolean;
-    defaultTitle: string;
     save: (
         data: Partial<Record>,
         redirect?: RedirectionSideEffect,
@@ -56,15 +59,15 @@ export interface EditControllerProps<RecordType extends Record = Record> {
             transform?: TransformData;
         }
     ) => void;
+    saving: boolean;
     setOnSuccess: SetOnSuccess;
     setOnFailure: SetOnFailure;
     setTransform: SetTransformData;
-    resource: string;
-    basePath?: string;
+    successMessage?: string;
     record?: RecordType;
     redirect: RedirectionSideEffect;
+    resource: string;
     version: number;
-    successMessage?: string;
 }
 
 /**

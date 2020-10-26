@@ -22,7 +22,9 @@ export const useEditContext = <RecordType extends Record = Record>(
                 "Edit components must be used inside a <EditContext.Provider>. Relying on props rather than context to get Edit data and callbacks is deprecated and won't be supported in the next major version of react-admin."
             );
         }
-        return props;
+        // Necessary for actions (EditActions) which expect a data prop containing the record
+        // @deprecated - to be removed in 4.0d
+        return { ...props, record: props.data };
     }
 
     return context;
