@@ -1,3 +1,6 @@
+import { ThemeOptions } from '@material-ui/core';
+import { Overrides } from '@material-ui/core/styles/overrides';
+
 export default {
     palette: {
         secondary: {
@@ -27,3 +30,17 @@ export default {
         },
     },
 };
+
+// Temporary solution until we specify our components in it like MUI does
+// See https://github.com/mui-org/material-ui/blob/master/packages/material-ui/src/styles/overrides.d.ts#L103
+export interface RaThemeOverrides extends Overrides {
+    [key: string]: any;
+}
+
+export interface RaThemeOptions extends ThemeOptions {
+    sidebar: {
+        width: number;
+        closedWidth: number;
+    };
+    overrides: RaThemeOverrides;
+}

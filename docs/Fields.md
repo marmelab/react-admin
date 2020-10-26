@@ -110,95 +110,9 @@ Then you can display the author first name as follows:
 
 **Tip**: If your interface has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.md#translating-resource-and-field-names) for details.
 
-## `<ArrayField>`
+## Basic Fields
 
-Display a collection using `<Field>` child components.
-
-Ideal for embedded arrays of objects, e.g. `tags` and `backlinks` in the following `post` object:
-
-```js
-{
-  id: 123,
-  tags: [
-        { name: 'foo' },
-        { name: 'bar' }
-  ],
-  backlinks: [
-        {
-            uuid: '34fdf393-f449-4b04-a423-38ad02ae159e',
-            date: '2012-08-10T00:00:00.000Z',
-            url: 'http://example.com/foo/bar.html',
-        },
-        {
-            uuid: 'd907743a-253d-4ec1-8329-404d4c5e6cf1',
-            date: '2012-08-14T00:00:00.000Z',
-            url: 'https://blog.johndoe.com/2012/08/12/foobar.html',
-        }
-   ]
-}
-```
-
-The child must be an iterator component (like `<Datagrid>` or `<SingleFieldList>`).
-
-Here is how to display all the backlinks of the current post as a `<Datagrid>`:
-
-```jsx
-<ArrayField source="backlinks">
-    <Datagrid>
-        <DateField source="date" />
-        <UrlField source="url" />
-    </Datagrid>
-</ArrayField>
-```
-
-And here is how to display all the tags of the current post as `<Chip>` components:
-
-```jsx
-<ArrayField source="tags">
-    <SingleFieldList>
-        <ChipField source="name" />
-    </SingleFieldList>
-</ArrayField>
-```
-
-### Properties
-
-| Prop       | Required | Type   | Default | Description                                                   |
-| ---------- | -------- | ------ | ------- | ------------------------------------------------------------- |
-| `fieldKey` | Optional | string | -       | Name for the field to be used as key when displaying children |
-
-`<ArrayField>` also accepts the [common field props](./Fields.md#common-field-props).
-
-### Usage
-
-If the array value contains a lot of items, you may experience slowdowns in the UI. In such cases, set the `fieldKey` prop to use one field as key, and reduce CPU and memory usage:
-
-```diff
--<ArrayField source="backlinks">
-+<ArrayField source="backlinks" fieldKey="uuid">
-    <Datagrid>
-        <DateField source="date" />
-        <UrlField source="url" />
-    </Datagrid>
-</ArrayField>
-```
-
-**Tip**: If you need to render a custom collection, it's often simpler to write your own component:
-
-```jsx
-const TagsField = ({ record }) => (
-    <ul>
-        {record.tags.map(item => (
-            <li key={item.name}>{item.name}</li>
-        ))}
-    </ul>
-)
-TagsField.defaultProps = {
-    addLabel: true
-};
-```
-
-## `<BooleanField>`
+### `<BooleanField>`
 
 Displays a boolean value as a check.
 
@@ -210,7 +124,7 @@ import { BooleanField } from 'react-admin';
 
 ![BooleanField](./img/boolean-field.png)
 
-### Properties
+#### Properties
 
 | Prop              | Required | Type             | Default                    | Description                       |
 | ----------------- | -------- | ---------------- | -------------------------- | --------------------------------- |
@@ -221,7 +135,7 @@ import { BooleanField } from 'react-admin';
 
 `<BooleanField>` also accepts the [common field props](./Fields.md#common-field-props).
 
-### CSS API
+#### CSS API
 
 | Rule name  | Description                 |
 | ---------- | --------------------------- |
@@ -229,7 +143,7 @@ import { BooleanField } from 'react-admin';
 
 To override the style of all instances of `<BooleanField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaBooleanField` key.
 
-### Usage
+#### Usage
 
 The `<BooleanField>` includes a tooltip text for accessibility (or to query in "end to end" tests). By default, it is the translated value ('true' or 'false' in English).
 
@@ -252,11 +166,11 @@ import AlarmOffIcon from '@material-ui/icons/AlarmOff';
 <BooleanField source="alarm" TrueIcon={AlarmOnIcon} FalseIcon={AlarmOffIcon} />
 ``` 
 
-## `<ChipField>`
+### `<ChipField>`
 
 Displays a value inside a ["Chip"](https://material-ui.com/components/chips), which is Material UI's term for a label.
 
-### CSS API
+#### CSS API
 
 | Rule name  | Description                                              |
 | ---------- | -------------------------------------------------------- |
@@ -264,7 +178,7 @@ Displays a value inside a ["Chip"](https://material-ui.com/components/chips), wh
 
 To override the style of all instances of `<ChipField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaChipField` key.
 
-### Usage
+#### Usage
 
 ```jsx
 import { ChipField } from 'react-admin';
@@ -288,7 +202,7 @@ import { ChipField, SingleFieldList, ReferenceManyField } from 'react-admin';
 
 Any additional props are passed to material-ui's `<Chip>` element. Check [The material-ui `<Chip>` documentation](https://material-ui.com/api/chip/) for details.
 
-## `<DateField>`
+### `<DateField>`
 
 Displays a date or datetime using the browser locale (thanks to `Date.toLocaleDateString()` and `Date.toLocaleString()`).
 
@@ -298,7 +212,7 @@ import { DateField } from 'react-admin';
 <DateField source="publication_date" />
 ```
 
-### Properties
+#### Properties
 
 | Prop       | Required | Type    | Default | Description                                                                                              |
 | ---------- | -------- | ------- | ------- | -------------------------------------------------------------------------------------------------------- |
@@ -308,7 +222,7 @@ import { DateField } from 'react-admin';
 
 `<DateField>` also accepts the [common field props](./Fields.md#common-field-props).
 
-### Usage
+#### Usage
 
 This component accepts a `showTime` attribute (`false` by default) to force the display of time in addition to date. It uses `Intl.DateTimeFormat()` if available, passing the `locales` and `options` props as arguments. If Intl is not available, it ignores the `locales` and `options` props.
 
@@ -336,7 +250,7 @@ See [Intl.DateTimeFormat documentation](https://developer.mozilla.org/fr/docs/We
 
 **Tip**: If you need more formatting options than what `Intl.DateTimeFormat` can provide, build your own field component leveraging a third-party library like [moment.js](https://momentjs.com/).
 
-## `<EmailField>`
+### `<EmailField>`
 
 `<EmailField>` displays an email as a Material UI's `<Link href="mailto:" />` component.
 
@@ -346,7 +260,7 @@ import { EmailField } from 'react-admin';
 <EmailField source="personal_email" />
 ```
 
-## `<FunctionField>`
+### `<FunctionField>`
 
 If you need a special function to render a field, `<FunctionField>` is the perfect match. It passes the `record` to a `render` function supplied by the developer. For instance, to display the full name of a `user` record based on `first_name` and `last_name` properties:
 
@@ -356,7 +270,7 @@ import { FunctionField } from 'react-admin';
 <FunctionField label="Name" render={record => `${record.first_name} ${record.last_name}`} />
 ```
 
-### Properties
+#### Properties
 
 | Prop     | Required | Type     | Default | Description                                                                |
 | -------- | -------- | -------- | ------- | -------------------------------------------------------------------------- |
@@ -366,7 +280,7 @@ import { FunctionField } from 'react-admin';
 
 **Tip**: Technically, you can omit the `source` and `sortBy` properties for the `<FunctionField>` since you provide the render function. However, providing a `source` or a `sortBy` will allow the `Datagrid` to make the column sortable, since when a user clicks on a column, the `Datagrid` uses these properties to sort. Should you provide both, `sortBy` will override `source` for sorting the column.
 
-## `<ImageField>`
+### `<ImageField>`
 
 If you need to display an image based on a path contained in a record field, you can use the `<ImageField />` component:
 
@@ -383,7 +297,7 @@ import { ImageField } from 'react-admin';
 
 This field is also often used within the [<ImageInput />](./Inputs.md#imageinput) component to display a preview.
 
-### Properties
+#### Properties
 
 | Prop    | Required | Type   | Default      | Description                                                                              |
 | ------- | -------- | ------ | ------------ | ---------------------------------------------------------------------------------------- |
@@ -392,7 +306,7 @@ This field is also often used within the [<ImageInput />](./Inputs.md#imageinput
 
 `<ImageField>` also accepts the [common field props](./Fields.md#common-field-props).
 
-### CSS API
+#### CSS API
 
 | Rule name  | Description                                                                    |
 | ---------- | ------------------------------------------------------------------------------ |
@@ -401,7 +315,7 @@ This field is also often used within the [<ImageInput />](./Inputs.md#imageinput
 
 To override the style of all instances of `<ImageField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaImageField` key.
 
-### Usage
+#### Usage
 
 The optional `title` prop points to the picture title property, used for both `alt` and `title` attributes. It can either be a hard-written string, or a path within your JSON object:
 
@@ -429,7 +343,7 @@ If the record actually contains an array of images in the property defined by th
 <ImageField source="pictures" src="url" title="desc" />
 ```
 
-## `<FileField>`
+### `<FileField>`
 
 If you need to render a link to a file based on a path contained in a record field, you can use the `<FileField />` component:
 
@@ -446,7 +360,7 @@ import { FileField } from 'react-admin';
 
 This field is also often used within an [<FileInput />](./Inputs.md#fileinput) component to display preview.
 
-### Properties
+#### Properties
 
 | Prop       | Required | Type                      | Default      | Description                                                                                                                                            |
 | ---------- | -------- | ------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -459,7 +373,7 @@ This field is also often used within an [<FileInput />](./Inputs.md#fileinput) c
 
 `<FileField>` also accepts the [common field props](./Fields.md#common-field-props).
 
-### CSS API
+#### CSS API
 
 | Rule name  | Description                 |
 | ---------- | --------------------------- |
@@ -467,7 +381,7 @@ This field is also often used within an [<FileInput />](./Inputs.md#fileinput) c
 
 To override the style of all instances of `<FileField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaFileField` key.
 
-### Usage
+#### Usage
 
 The optional `title` prop points to the file title property, used for `title` attributes. It can either be a hard-written string, or a path within your JSON object:
 
@@ -502,7 +416,7 @@ You can optionally set the `target` prop to choose which window will the link tr
 <FileField source="file.url" target="_blank" />
 ```
 
-## `<MarkdownField>`
+### `<MarkdownField>`
 
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component allows to render Markdown data as HTML.
 
@@ -522,7 +436,7 @@ const PostShow = props => (
 
 Check [the `ra-markdown` documentation](https://marmelab.com/ra-enterprise/modules/ra-markdown) for more details.
 
-## `<NumberField>`
+### `<NumberField>`
 
 Displays a number formatted according to the browser locale, right aligned.
 
@@ -534,7 +448,7 @@ import { NumberField }  from 'react-admin';
 <span>567</span>
 ```
 
-### Properties
+#### Properties
 
 | Prop      | Required | Type   | Default | Description                                                                                              |
 | --------- | -------- | ------ | ------- | -------------------------------------------------------------------------------------------------------- |
@@ -543,7 +457,7 @@ import { NumberField }  from 'react-admin';
 
 `<NumberField>` also accepts the [common field props](./Fields.md#common-field-props).
 
-### Usage
+#### Usage
 
 `<NumberField>` uses `Intl.NumberFormat()` if available, passing the `locales` and `options` props as arguments. This allows a perfect display of decimals, currencies, percentages, etc.
 
@@ -583,7 +497,59 @@ import { NumberField }  from 'react-admin';
 <NumberField source="score" textAlign="left" />
 ```
 
-## `<SelectField>`
+### `<RichTextField>`
+
+This component displays some HTML content. The content is "rich" (i.e. unescaped) by default.
+
+```jsx
+import { RichTextField } from 'react-admin';
+
+<RichTextField source="body" />
+```
+
+![RichTextField](./img/rich-text-field.png)
+
+#### Properties
+
+| Prop        | Required | Type      | Default  | Description                                          |
+| ----------- | -------- | --------- | -------- | ---------------------------------------------------- |
+| `stripTags` | Optional | `boolean` | `false`  | If `true`, remove all HTML tags and render text only |
+
+`<RichTextField>` also accepts the [common field props](./Fields.md#common-field-props).
+
+#### Usage
+
+The `stripTags` prop allows to remove all HTML markup, preventing some display glitches (which is especially useful in list views, or when truncating the content).
+
+```jsx
+import { RichTextField } from 'react-admin';
+
+<RichTextField source="body" stripTags />
+```
+
+### `<TextField>`
+
+The simplest of all fields, `<TextField>` simply displays the record property as plain text.
+
+```jsx
+import { TextField } from 'react-admin';
+
+<TextField label="Author Name" source="name" />
+```
+
+### `<UrlField>`
+
+`<UrlField>` displays an url in a Material UI's `<Link href="" />` component.
+
+```jsx
+import { UrlField } from 'react-admin';
+
+<UrlField source="site_url" />
+```
+
+## Choice Fields
+
+### `<SelectField>`
 
 When you need to display an enumerated field, `<SelectField>` maps the value to a string.
 
@@ -598,7 +564,7 @@ import { SelectField } from 'react-admin';
 ]} />
 ```
 
-### Properties
+#### Properties
 
 | Prop              | Required | Type                          | Default | Description                                                                                                                                  |
 | ----------------- | -------- | ----------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -608,7 +574,7 @@ import { SelectField } from 'react-admin';
 
 `<SelectField>` also accepts the [common field props](./Fields.md#common-field-props).
 
-### Usage
+#### Usage
 
 By default, the text is built by:
 
@@ -664,7 +630,101 @@ However, in some cases (e.g. inside a `<ReferenceField>`), you may not want the 
 
 **Tip**: `<SelectField>` sets `translateChoice` to `true` by default.
 
-## `<ReferenceField>`
+## Array Fields
+
+### `<ArrayField>`
+
+Display a collection using `<Field>` child components.
+
+Ideal for embedded arrays of objects, e.g. `tags` and `backlinks` in the following `post` object:
+
+```js
+{
+  id: 123,
+  tags: [
+        { name: 'foo' },
+        { name: 'bar' }
+  ],
+  backlinks: [
+        {
+            uuid: '34fdf393-f449-4b04-a423-38ad02ae159e',
+            date: '2012-08-10T00:00:00.000Z',
+            url: 'http://example.com/foo/bar.html',
+        },
+        {
+            uuid: 'd907743a-253d-4ec1-8329-404d4c5e6cf1',
+            date: '2012-08-14T00:00:00.000Z',
+            url: 'https://blog.johndoe.com/2012/08/12/foobar.html',
+        }
+   ]
+}
+```
+
+The child must be an iterator component (like `<Datagrid>` or `<SingleFieldList>`).
+
+Here is how to display all the backlinks of the current post as a `<Datagrid>`:
+
+```jsx
+<ArrayField source="backlinks">
+    <Datagrid>
+        <DateField source="date" />
+        <UrlField source="url" />
+    </Datagrid>
+</ArrayField>
+```
+
+And here is how to display all the tags of the current post as `<Chip>` components:
+
+```jsx
+<ArrayField source="tags">
+    <SingleFieldList>
+        <ChipField source="name" />
+    </SingleFieldList>
+</ArrayField>
+```
+
+#### Properties
+
+| Prop       | Required | Type   | Default | Description                                                   |
+| ---------- | -------- | ------ | ------- | ------------------------------------------------------------- |
+| `fieldKey` | Optional | string | -       | Name for the field to be used as key when displaying children |
+
+`<ArrayField>` also accepts the [common field props](./Fields.md#common-field-props).
+
+#### Usage
+
+If the array value contains a lot of items, you may experience slowdowns in the UI. In such cases, set the `fieldKey` prop to use one field as key, and reduce CPU and memory usage:
+
+```diff
+-<ArrayField source="backlinks">
++<ArrayField source="backlinks" fieldKey="uuid">
+    <Datagrid>
+        <DateField source="date" />
+        <UrlField source="url" />
+    </Datagrid>
+</ArrayField>
+```
+
+**Tip**: If you need to render a custom collection, it's often simpler to write your own component:
+
+```jsx
+const TagsField = ({ record }) => (
+    <ul>
+        {record.tags.map(item => (
+            <li key={item.name}>{item.name}</li>
+        ))}
+    </ul>
+)
+TagsField.defaultProps = {
+    addLabel: true
+};
+```
+
+## Reference Fields
+
+
+
+### `<ReferenceField>`
 
 `<ReferenceField>` is useful for displaying many-to-one and one-to-one relationships. This component fetches a referenced record (using the `dataProvider.getMany()` method), and passes it to its child. A `<ReferenceField>` displays nothing on its own, it just fetches the data and expects its child to render it. Usual child components for `<ReferenceField>` are other `<Field>` components.
 
@@ -692,7 +752,7 @@ With this configuration, `<ReferenceField>` wraps the user's name in a link to t
 
 ![ReferenceField](./img/reference-field.png)
 
-### Properties
+#### Properties
 
 | Prop        | Required | Type                | Default  | Description                                                                                                         |
 | ----------- | -------- | ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
@@ -703,7 +763,7 @@ With this configuration, `<ReferenceField>` wraps the user's name in a link to t
 
 `<ReferenceField>` also accepts the [common field props](./Fields.md#common-field-props).
 
-### CSS API
+#### CSS API
 
 | Rule name  | Description                   |
 | ---------- | ----------------------------- |
@@ -711,7 +771,7 @@ With this configuration, `<ReferenceField>` wraps the user's name in a link to t
 
 To override the style of all instances of `<ReferenceField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaReferenceField` key.
 
-### Usage
+#### Usage
 
 `<ReferenceField>` accepts a `reference` attribute, which specifies the resource to fetch for the related record.
 
@@ -782,7 +842,7 @@ You can also use a custom `link` function to get a custom path for the children.
 
 Then react-admin renders the `<PostList>` with a loader for the `<ReferenceField>`, fetches the API for the related users in one call (`GET http://path.to.my.api/users?ids=[789,735]`), and re-renders the list once the data arrives. This accelerates the rendering and minimizes network load.
 
-## `<ReferenceManyField>`
+### `<ReferenceManyField>`
 
 `<ReferenceManyField>` is useful for displaying one-to-many relationships, when the foreign key is carried by the referenced resource. For instance, if a `user` has many `books` and the `books` resource exposes a `user_id` field, `<ReferenceManyField>` can fetch all the books authored by a given user.
 
@@ -812,7 +872,7 @@ export const PostList = (props) => (
 
 ![ReferenceManyFieldSingleFieldList](./img/reference-many-field-single-field-list.png)
 
-### Properties
+#### Properties
 
 | Prop         | Required | Type               | Default                          | Description                                                                         |
 | ------------ | -------- | ------------------ | -------------------------------- | ----------------------------------------------------------------------------------- |
@@ -826,7 +886,7 @@ export const PostList = (props) => (
 
 `<ReferenceManyField>` also accepts the [common field props](./Fields.md#common-field-props).
 
-### Usage
+#### Usage
 
 `<ReferenceManyField>` accepts a `reference` attribute, which specifies the resource to fetch for the related record. It also accepts a `source` attribute which defines the field containing the value to look for in the `target` field of the referenced resource. By default, this is the `id` of the resource (`post.id` in the previous example).
 
@@ -901,7 +961,7 @@ Also, you can filter the query used to populate the possible values. Use the `fi
 ```
 {% endraw %}
 
-## `<ReferenceManyToManyField>`
+### `<ReferenceManyToManyField>`
 
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component fetches a list of referenced records by lookup in an associative table, and passes the records down to its child component, which must be an iterator component.
 
@@ -916,14 +976,15 @@ import {
     DateField,
     SingleFieldList,
     ChipField,
+    EditButton,
 } from 'react-admin';
 import { ReferenceManyToManyField } from '@react-admin/ra-many-to-many';
 
-export const BookShow = (props) => (
+export const BookShow = props => (
     <Show {...props}>
         <SimpleShowLayout>
             <TextField source="title" />
-            <DateField source="publication_date">
+            <DateField source="publication_date" />
             <ReferenceManyToManyField 
                 reference="authors"
                 through="book_authors"
@@ -954,7 +1015,7 @@ This example uses the following schema:
 
 Check [the `ra-relationships` documentation](https://marmelab.com/ra-enterprise/modules/ra-relationships) for more details.
 
-## `<ReferenceArrayField>`
+### `<ReferenceArrayField>`
 
 Use `<ReferenceArrayField>` to display a one-to-many relationship based on an array of foreign keys. This component fetches a list of referenced records (using the `dataProvider.getMany()` method), and passes them to its child. A `<ReferenceArrayField>` displays nothing on its own, it just fetches the data and expects its child to render it.
 
@@ -984,7 +1045,7 @@ export const PostList = (props) => (
 
 `<ReferenceArrayField>` fetches the `tag` resources related to each `post` resource by matching `post.tag_ids` to `tag.id`. Once it receives the related resources, `<ReferenceArrayField>` passes them to its child component using the `ids` and `data` props, so the child must be an iterator component (like `<SingleFieldList>` or `<Datagrid>`). The iterator component usually has one or more child `<Field>` components.
 
-### Properties
+#### Properties
 
 | Prop         | Required | Type                | Default                          | Description                                                                                                                                |
 | ------------ | -------- | ------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -998,7 +1059,7 @@ export const PostList = (props) => (
 
 `<ReferenceArrayField>` also accepts the [common field props](./Fields.md#common-field-props).
 
-### CSS API
+#### CSS API
 
 | Rule name  | Description                                                                            |
 | ---------- | -------------------------------------------------------------------------------------- |
@@ -1006,7 +1067,7 @@ export const PostList = (props) => (
 
 To override the style of all instances of `<ReferenceArrayField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaReferenceArrayField` key.
 
-### Usage
+#### Usage
 
 `<ReferenceArrayField>` expects a `reference` attribute, which specifies the resource to fetch for the related records. It also expects a `source` attribute, which defines the field containing the list of ids to look for in the referenced resource.
 
@@ -1045,57 +1106,9 @@ export const PostShow = (props) => (
 );
 ```
 
-## `<RichTextField>`
+## Recipes
 
-This component displays some HTML content. The content is "rich" (i.e. unescaped) by default.
-
-```jsx
-import { RichTextField } from 'react-admin';
-
-<RichTextField source="body" />
-```
-
-![RichTextField](./img/rich-text-field.png)
-
-### Properties
-
-| Prop        | Required | Type      | Default  | Description                                          |
-| ----------- | -------- | --------- | -------- | ---------------------------------------------------- |
-| `stripTags` | Optional | `boolean` | `false`  | If `true`, remove all HTML tags and render text only |
-
-`<RichTextField>` also accepts the [common field props](./Fields.md#common-field-props).
-
-### Usage
-
-The `stripTags` prop allows to remove all HTML markup, preventing some display glitches (which is especially useful in list views, or when truncating the content).
-
-```jsx
-import { RichTextField } from 'react-admin';
-
-<RichTextField source="body" stripTags />
-```
-
-## `<TextField>`
-
-The simplest of all fields, `<TextField>` simply displays the record property as plain text.
-
-```jsx
-import { TextField } from 'react-admin';
-
-<TextField label="Author Name" source="name" />
-```
-
-## `<UrlField>`
-
-`<UrlField>` displays an url in a Material UI's `<Link href="" />` component.
-
-```jsx
-import { UrlField } from 'react-admin';
-
-<UrlField source="site_url" />
-```
-
-## Styling Fields
+### Styling Fields
 
 All field components accept a `className` prop, allowing you to customize their style to your liking. We advise you to use the Material UI styling solution, JSS, to generate those classes. See their [documentation](https://material-ui.com/customization/css-in-js/#api) about that.
 
@@ -1125,7 +1138,7 @@ export const ProductList = (props) => (
 
 React-admin usually delegates the rendering of field components to material-ui components. Refer to the material-ui documentation to see the default styles for elements.
 
-You may want to customize the cell style inside a `DataGrid`. You can use the `cellClassName` for that:
+You may want to customize the cell style inside a `Datagrid`. You can use the `cellClassName` for that:
 
 {% raw %}
 ```jsx
@@ -1194,74 +1207,7 @@ PriceField.defaultProps = {
 ```
 {% endraw %}
 
-
-## Third-Party Components
-
-You can find components for react-admin in third-party repositories.
-
-- [OoDeLally/react-admin-clipboard-list-field](https://github.com/OoDeLally/react-admin-clipboard-list-field): a quick and customizable copy-to-clipboard field.
-
-## Writing Your Own Field Component
-
-If you don't find what you need in the list above, you can write your own Field component. It must be a regular React component, accepting not only a `source` attribute, but also a `record` attribute. React-admin will inject the `record` based on the API response data at render time. The field component only needs to find the `source` in the `record` and display it.
-
-For instance, here is an equivalent of react-admin's `<TextField>` component:
-
-```jsx
-import * as React from "react";
-import PropTypes from 'prop-types';
-
-const TextField = ({ source, record = {} }) => <span>{record[source]}</span>;
-
-TextField.propTypes = {
-    label: PropTypes.string,
-    record: PropTypes.object,
-    source: PropTypes.string.isRequired,
-};
-
-export default TextField;
-```
-
-**Tip**: The `label` attribute isn't used in the `render()` method, but react-admin uses it to display the table header.
-
-**Tip**: If you want to support deep field sources (e.g. source values like `author.name`), use [`lodash/get`](https://www.npmjs.com/package/lodash.get) to replace the simple object lookup:
-
-```jsx
-import get from 'lodash/get';
-const TextField = ({ source, record = {} }) => <span>{get(record, source)}</span>;
-```
-
-If you are not looking for reusability, you can create even simpler components, with no attributes. Let's say an API returns user records with `firstName` and `lastName` properties, and that you want to display a full name in a user list.
-
-```js
-{
-    id: 123,
-    firstName: 'John',
-    lastName: 'Doe'
-}
-```
-
-The component will be:
-
-```jsx
-import * as React from "react";
-import { List, Datagrid, TextField } from 'react-admin';
-
-const FullNameField = ({ record = {} }) => <span>{record.firstName} {record.lastName}</span>;
-FullNameField.defaultProps = { label: 'Name' };
-
-export const UserList = (props) => (
-    <List {...props}>
-        <Datagrid>
-            <FullNameField source="lastName" />
-        </Datagrid>
-    </List>
-);
-```
-
-**Tip**: In such custom fields, the `source` is optional. React-admin uses it to determine which column to use for sorting when the column header is clicked. In case you use the `source` property for additional purposes, the sorting can be overridden by the `sortBy` property on any `Field` component.
-
-## Adding Label To Custom Field Components In The Show View
+### Adding Label To Custom Field Components In The Show View
 
 React-admin lets you use the same `Field` components in the `List` view and in the `Show` view. But if you use the `<FullNameField>` custom field component defined earlier in a `Show` view, something is missing: the `Field` label. Why do other fields have a label and not this custom `Field`? And how can you create a `Field` component that has a label in the `Show` view, but not in the `List` view?
 
@@ -1275,7 +1221,7 @@ FullNameField.defaultProps = {
 };
 ```
 
-## Hiding A Field Based On The Value Of Another
+### Hiding A Field Based On The Value Of Another
 
 In a Show view, you may want to display or hide fields based on the value of another field - for instance, show an `email` field only if the `hasEmail` boolean field is `true`.
 
@@ -1384,3 +1330,69 @@ const UserShow = props => (
 ```
 
 And now you can use a regular Field component, and the label displays correctly in the Show view.
+
+## Writing Your Own Field Component
+
+If you don't find what you need in the list above, you can write your own Field component. It must be a regular React component, accepting not only a `source` attribute, but also a `record` attribute. React-admin will inject the `record` based on the API response data at render time. The field component only needs to find the `source` in the `record` and display it.
+
+For instance, here is an equivalent of react-admin's `<TextField>` component:
+
+```jsx
+import * as React from "react";
+import PropTypes from 'prop-types';
+
+const TextField = ({ source, record = {} }) => <span>{record[source]}</span>;
+
+TextField.propTypes = {
+    label: PropTypes.string,
+    record: PropTypes.object,
+    source: PropTypes.string.isRequired,
+};
+
+export default TextField;
+```
+
+**Tip**: The `label` attribute isn't used in the `render()` method, but react-admin uses it to display the table header.
+
+**Tip**: If you want to support deep field sources (e.g. source values like `author.name`), use [`lodash/get`](https://www.npmjs.com/package/lodash.get) to replace the simple object lookup:
+
+```jsx
+import get from 'lodash/get';
+const TextField = ({ source, record = {} }) => <span>{get(record, source)}</span>;
+```
+
+If you are not looking for reusability, you can create even simpler components, with no attributes. Let's say an API returns user records with `firstName` and `lastName` properties, and that you want to display a full name in a user list.
+
+```js
+{
+    id: 123,
+    firstName: 'John',
+    lastName: 'Doe'
+}
+```
+
+The component will be:
+
+```jsx
+import * as React from "react";
+import { List, Datagrid, TextField } from 'react-admin';
+
+const FullNameField = ({ record = {} }) => <span>{record.firstName} {record.lastName}</span>;
+FullNameField.defaultProps = { label: 'Name' };
+
+export const UserList = (props) => (
+    <List {...props}>
+        <Datagrid>
+            <FullNameField source="lastName" />
+        </Datagrid>
+    </List>
+);
+```
+
+**Tip**: In such custom fields, the `source` is optional. React-admin uses it to determine which column to use for sorting when the column header is clicked. In case you use the `source` property for additional purposes, the sorting can be overridden by the `sortBy` property on any `Field` component.
+
+## Third-Party Components
+
+You can find components for react-admin in third-party repositories.
+
+- [OoDeLally/react-admin-clipboard-list-field](https://github.com/OoDeLally/react-admin-clipboard-list-field): a quick and customizable copy-to-clipboard field.

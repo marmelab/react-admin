@@ -6,14 +6,18 @@ import get from 'lodash/get';
 
 import warning from '../util/warning';
 
-interface ChildrenFunctionParams {
+export interface FormDataConsumerRenderParams {
     formData: any;
     scopedFormData?: any;
     getSource?: (source: string) => string;
 }
 
+export type FormDataConsumerRender = (
+    params: FormDataConsumerRenderParams
+) => ReactNode;
+
 interface ConnectedProps {
-    children: (params: ChildrenFunctionParams) => ReactNode;
+    children: FormDataConsumerRender;
     form?: string;
     record?: any;
     source?: string;

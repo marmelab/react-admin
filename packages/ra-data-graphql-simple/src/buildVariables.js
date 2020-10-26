@@ -25,7 +25,8 @@ const sanitizeValue = (type, value) => {
 };
 
 const castType = (value, type) => {
-    switch (`${type.kind}:${type.name}`) {
+    const realType = type.kind === 'NON_NULL' ? type.ofType : type;
+    switch (`${realType.kind}:${realType.name}`) {
         case 'SCALAR:Int':
             return Number(value);
 

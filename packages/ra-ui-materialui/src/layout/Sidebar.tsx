@@ -11,60 +11,6 @@ import { ClassesOverride } from '../types';
 export const DRAWER_WIDTH = 240;
 export const CLOSED_DRAWER_WIDTH = 55;
 
-const useStyles = makeStyles(
-    theme => ({
-        root: {},
-        docked: {},
-        paper: {},
-        paperAnchorLeft: {},
-        paperAnchorRight: {},
-        paperAnchorTop: {},
-        paperAnchorBottom: {},
-        paperAnchorDockedLeft: {},
-        paperAnchorDockedTop: {},
-        paperAnchorDockedRight: {},
-        paperAnchorDockedBottom: {},
-        modal: {},
-        drawerPaper: {
-            position: 'relative',
-            height: '100%',
-            overflowX: 'hidden',
-            width: (props: { open?: boolean }) =>
-                props.open
-                    ? lodashGet(theme, 'sidebar.width', DRAWER_WIDTH)
-                    : lodashGet(
-                          theme,
-                          'sidebar.closedWidth',
-                          CLOSED_DRAWER_WIDTH
-                      ),
-            transition: theme.transitions.create('width', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-            }),
-            backgroundColor: 'transparent',
-            borderRight: 'none',
-            [theme.breakpoints.only('xs')]: {
-                marginTop: 0,
-                height: '100vh',
-                position: 'inherit',
-                backgroundColor: theme.palette.background.default,
-            },
-            [theme.breakpoints.up('md')]: {
-                border: 'none',
-            },
-            zIndex: 'inherit',
-        },
-    }),
-    { name: 'RaSidebar' }
-);
-
-export interface SidebarProps extends DrawerProps {
-    children: ReactElement;
-    closedSize?: number;
-    classes: ClassesOverride<typeof useStyles>;
-    size?: number;
-}
-
 const Sidebar = (props: SidebarProps) => {
     const {
         children,
@@ -127,7 +73,9 @@ const Sidebar = (props: SidebarProps) => {
             classes={classes}
             {...rest}
         >
-            {children}
+            {cloneElement(Children.only(children), {
+                onMenuClick: defaultOnMenuClick,
+            })}
         </Drawer>
     );
 };
@@ -135,5 +83,61 @@ const Sidebar = (props: SidebarProps) => {
 Sidebar.propTypes = {
     children: PropTypes.node.isRequired,
 };
+
+const defaultOnMenuClick = () => null;
+
+const useStyles = makeStyles(
+    theme => ({
+        root: {},
+        docked: {},
+        paper: {},
+        paperAnchorLeft: {},
+        paperAnchorRight: {},
+        paperAnchorTop: {},
+        paperAnchorBottom: {},
+        paperAnchorDockedLeft: {},
+        paperAnchorDockedTop: {},
+        paperAnchorDockedRight: {},
+        paperAnchorDockedBottom: {},
+        modal: {},
+        drawerPaper: {
+            position: 'relative',
+            height: '100%',
+            overflowX: 'hidden',
+            width: (props: { open?: boolean }) =>
+                props.open
+                    ? lodashGet(theme, 'sidebar.width', DRAWER_WIDTH)
+                    : lodashGet(
+                          theme,
+                          'sidebar.closedWidth',
+                          CLOSED_DRAWER_WIDTH
+                      ),
+            transition: theme.transitions.create('width', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+            }),
+            backgroundColor: 'transparent',
+            borderRight: 'none',
+            [theme.breakpoints.only('xs')]: {
+                marginTop: 0,
+                height: '100vh',
+                position: 'inherit',
+                backgroundColor: theme.palette.background.default,
+            },
+            [theme.breakpoints.up('md')]: {
+                border: 'none',
+            },
+            zIndex: 'inherit',
+        },
+    }),
+    { name: 'RaSidebar' }
+);
+
+export interface SidebarProps extends DrawerProps {
+    children: ReactElement;
+    closedSize?: number;
+    classes: ClassesOverride<typeof useStyles>;
+    size?: number;
+}
 
 export default Sidebar;

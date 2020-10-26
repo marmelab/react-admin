@@ -12,7 +12,7 @@ import useVersion from './useVersion';
 import useExpanded from './useExpanded';
 import useFilterState from './useFilterState';
 import useSortState, { SortProps } from './useSortState';
-import usePaginationState, { PaginationProps } from './usePaginationState';
+import usePaginationState, { PaginationHookResult } from './usePaginationState';
 import useListController, {
     getListControllerProps,
     sanitizeListRestProps,
@@ -39,7 +39,7 @@ export type {
     CreateControllerProps,
     ShowControllerProps,
     UseReferenceProps,
-    PaginationProps,
+    PaginationHookResult,
     SortProps,
 };
 

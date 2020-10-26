@@ -15,13 +15,9 @@ import {
 import { FETCH_END, FETCH_ERROR, FETCH_START } from '../actions/fetchActions';
 import { showNotification } from '../actions/notificationActions';
 import { refreshView } from '../actions/uiActions';
-import {
-    ReduxState,
-    DataProvider,
-    DataProviderProxy,
-    UseDataProviderOptions,
-} from '../types';
+import { ReduxState, DataProvider, DataProviderProxy } from '../types';
 import useLogoutIfAccessDenied from '../auth/useLogoutIfAccessDenied';
+import { getDataProviderCallArguments } from './getDataProviderCallArguments';
 
 // List of dataProvider calls emitted while in optimistic mode.
 // These calls get replayed once the dataProvider exits optimistic mode
@@ -132,11 +128,14 @@ const useDataProvider = (): DataProviderProxy => {
                 if (typeof name === 'symbol') {
                     return;
                 }
-                return (
-                    resource: string,
-                    payload: any,
-                    options: UseDataProviderOptions
-                ) => {
+                return (...args) => {
+                    const {
+                        resource,
+                        payload,
+                        allArguments,
+                        options,
+                    } = getDataProviderCallArguments(args);
+
                     const type = name.toString();
                     const {
                         action = 'CUSTOM_FETCH',
@@ -179,6 +178,7 @@ const useDataProvider = (): DataProviderProxy => {
                         rest,
                         store,
                         type,
+                        allArguments,
                         undoable,
                     };
                     if (isOptimistic) {
@@ -214,6 +214,7 @@ const doQuery = ({
     store,
     undoable,
     logoutIfAccessDenied,
+    allArguments,
 }) => {
     const resourceState = store.getState().admin.resources[resource];
     if (canReplyWithCache(type, payload, resourceState)) {
@@ -240,6 +241,7 @@ const doQuery = ({
               dataProvider,
               dispatch,
               logoutIfAccessDenied,
+              allArguments,
           })
         : performQuery({
               type,
@@ -252,6 +254,7 @@ const doQuery = ({
               dataProvider,
               dispatch,
               logoutIfAccessDenied,
+              allArguments,
           });
 };
 
@@ -275,6 +278,7 @@ const performUndoableQuery = ({
     dataProvider,
     dispatch,
     logoutIfAccessDenied,
+    allArguments,
 }: QueryFunctionParams) => {
     dispatch(startOptimisticMode());
     if (window) {
@@ -320,7 +324,13 @@ const performUndoableQuery = ({
         });
         dispatch({ type: FETCH_START });
         try {
-            dataProvider[type](resource, payload)
+            dataProvider[type]
+                .apply(
+                    dataProvider,
+                    typeof resource !== 'undefined'
+                        ? [resource, payload]
+                        : allArguments
+                )
                 .then(response => {
                     if (process.env.NODE_ENV !== 'production') {
                         validateResponseFormat(response, type);
@@ -441,6 +451,7 @@ const performQuery = ({
     dataProvider,
     dispatch,
     logoutIfAccessDenied,
+    allArguments,
 }: QueryFunctionParams) => {
     dispatch({
         type: action,
@@ -453,8 +464,15 @@ const performQuery = ({
         meta: { resource, ...rest },
     });
     dispatch({ type: FETCH_START });
+
     try {
-        return dataProvider[type](resource, payload)
+        return dataProvider[type]
+            .apply(
+                dataProvider,
+                typeof resource !== 'undefined'
+                    ? [resource, payload]
+                    : allArguments
+            )
             .then(response => {
                 if (process.env.NODE_ENV !== 'production') {
                     validateResponseFormat(response, type);
@@ -552,6 +570,7 @@ interface QueryFunctionParams {
     dataProvider: DataProvider;
     dispatch: Dispatch;
     logoutIfAccessDenied: (error?: any) => Promise<boolean>;
+    allArguments: any[];
 }
 
 export default useDataProvider;

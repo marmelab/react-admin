@@ -1,5 +1,18 @@
 # Changelog
 
+## v3.9.5
+
+* Fix Custom Menu doesn't always receive `onMenuClick` prop ([5435](https://github.com/marmelab/react-admin/pull/5435)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Appbar>` custom content flickers when loading ([5434](https://github.com/marmelab/react-admin/pull/5434)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix several eslint warnings ([5433](https://github.com/marmelab/react-admin/pull/5433)) ([Luwangel](https://github.com/Luwangel))
+* Fix `<AutocompleteArrayInput>` doesn't support the `disabled` prop ([5432](https://github.com/marmelab/react-admin/pull/5432)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix Edit view doesn't work with `ra-data-graphql-simple` if resource id is of type `Int!` ([5402](https://github.com/marmelab/react-admin/pull/5402)) ([EmrysMyrddin](https://github.com/EmrysMyrddin))
+* Fix `useDataProvider` signature prevents custom methods usage ([5395](https://github.com/marmelab/react-admin/pull/5395)) ([djhi](https://github.com/djhi))
+* [TypeScript] Add type for theme ([5429](https://github.com/marmelab/react-admin/pull/5429)) ([djhi](https://github.com/djhi))
+* [TypeScript] Export and Rename Pagination Types ([5420](https://github.com/marmelab/react-admin/pull/5420)) ([djhi](https://github.com/djhi))
+* [Doc] Fix typos ([5431](https://github.com/marmelab/react-admin/pull/5431)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix typos ([5412](https://github.com/marmelab/react-admin/pull/5412)) ([WiXSL](https://github.com/WiXSL))
+
 ## v3.9.4
 
 * Fix `<AutocompleteInput>` suggestions appear beneath Dialog ([5393](https://github.com/marmelab/react-admin/pull/5393)) ([fzaninotto](https://github.com/fzaninotto))

@@ -68,7 +68,7 @@ describe('useMutation', () => {
                     {mutate => (
                         <button
                             onClick={e =>
-                                mutate({ payload: { bar: 2 } }, { baz: 1 })
+                                mutate({ payload: { bar: 2 } }, { meta: 'baz' })
                             }
                         >
                             Hello
@@ -80,7 +80,7 @@ describe('useMutation', () => {
         fireEvent.click(getByText('Hello'));
         const action = dispatch.mock.calls[0][0];
         expect(action.payload).toEqual({ foo: 1, bar: 2 });
-        expect(action.meta.baz).toEqual(1);
+        expect(action.meta.meta).toEqual('baz');
     });
 
     it('should update the loading state when the mutation callback is triggered', () => {
@@ -164,5 +164,25 @@ describe('useMutation', () => {
         fireEvent.click(testElement);
         await waitForDomChange({ container: testElement });
         expect(testElement.textContent).toEqual('provider error');
+    });
+
+    it('should allow custom dataProvider methods without resource', () => {
+        const dataProvider = {
+            mytype: jest.fn(() => Promise.resolve({ data: { foo: 'bar' } })),
+        };
+
+        const myPayload = {};
+        const { getByText, dispatch } = renderWithRedux(
+            <DataProviderContext.Provider value={dataProvider}>
+                <Mutation type="mytype" payload={myPayload}>
+                    {mutate => <button onClick={mutate}>Hello</button>}
+                </Mutation>
+            </DataProviderContext.Provider>
+        );
+        fireEvent.click(getByText('Hello'));
+        const action = dispatch.mock.calls[0][0];
+        expect(action.type).toEqual('CUSTOM_FETCH');
+        expect(action.meta.resource).toBeUndefined();
+        expect(dataProvider.mytype).toHaveBeenCalledWith(myPayload);
     });
 });
