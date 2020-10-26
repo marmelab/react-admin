@@ -262,7 +262,12 @@ ul.sidenav code {
 }
 .markdown-section h3 {
     margin-top: 1.5em;
+    font-size: 1.25em;
+}
+.markdown-section h4 {
+    margin-top: 1.25em;
     font-size: 1em;
+    font-weight: bold;
 }
 .markdown-section code,
 .markdown-section pre {
