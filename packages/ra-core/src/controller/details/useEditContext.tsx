@@ -24,7 +24,11 @@ export const useEditContext = <RecordType extends Record = Record>(
         }
         // Necessary for actions (EditActions) which expect a data prop containing the record
         // @deprecated - to be removed in 4.0d
-        return { ...props, record: props.data };
+        return {
+            ...props,
+            record: props.record || props.data,
+            data: props.record || props.data,
+        };
     }
 
     return context;
