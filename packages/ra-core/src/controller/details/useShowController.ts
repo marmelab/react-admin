@@ -1,17 +1,17 @@
 import inflection from 'inflection';
 
-import useVersion from './useVersion';
-import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
-import { Record, Identifier } from '../types';
-import { useGetOne } from '../dataProvider';
-import { useTranslate } from '../i18n';
-import { useNotify, useRedirect, useRefresh } from '../sideEffect';
-import { CRUD_GET_ONE } from '../actions';
+import useVersion from '../useVersion';
+import { useCheckMinimumRequiredProps } from '../checkMinimumRequiredProps';
+import { Record, Identifier } from '../../types';
+import { useGetOne } from '../../dataProvider';
+import { useTranslate } from '../../i18n';
+import { useNotify, useRedirect, useRefresh } from '../../sideEffect';
+import { CRUD_GET_ONE } from '../../actions';
 
 export interface ShowProps {
     basePath?: string;
     hasCreate?: boolean;
-    hasedit?: boolean;
+    hasEdit?: boolean;
     hasShow?: boolean;
     hasList?: boolean;
     id?: Identifier;
@@ -20,11 +20,18 @@ export interface ShowProps {
 }
 
 export interface ShowControllerProps<RecordType extends Record = Record> {
+    basePath?: string;
+    defaultTitle: string;
+    // Necessary for actions (EditActions) which expect a data prop containing the record
+    // @deprecated - to be removed in 4.0d
+    data?: RecordType;
     loading: boolean;
     loaded: boolean;
-    defaultTitle: string;
+    hasCreate?: boolean;
+    hasEdit?: boolean;
+    hasList?: boolean;
+    hasShow?: boolean;
     resource: string;
-    basePath?: string;
     record?: RecordType;
     version: number;
 }
@@ -46,11 +53,19 @@ export interface ShowControllerProps<RecordType extends Record = Record> {
  *     return <ShowView {...controllerProps} {...props} />;
  * }
  */
-const useShowController = <RecordType extends Record = Record>(
+export const useShowController = <RecordType extends Record = Record>(
     props: ShowProps
 ): ShowControllerProps<RecordType> => {
     useCheckMinimumRequiredProps('Show', ['basePath', 'resource'], props);
-    const { basePath, id, resource } = props;
+    const {
+        basePath,
+        hasCreate,
+        hasEdit,
+        hasList,
+        hasShow,
+        id,
+        resource,
+    } = props;
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();
@@ -86,8 +101,10 @@ const useShowController = <RecordType extends Record = Record>(
         resource,
         basePath,
         record,
+        hasCreate,
+        hasEdit,
+        hasList,
+        hasShow,
         version,
     };
 };
-
-export default useShowController;

@@ -1,6 +1,7 @@
-import { Translate } from '../types';
-import { useTranslate } from '../i18n';
-import useCreateController, {
+import { Translate } from '../../types';
+import { useTranslate } from '../../i18n';
+import {
+    useCreateController,
     CreateProps,
     CreateControllerProps,
 } from './useCreateController';
@@ -26,10 +27,8 @@ interface Props extends CreateProps {
  *     </CreateController>
  * );
  */
-const CreateController = ({ children, ...props }: Props) => {
+export const CreateController = ({ children, ...props }: Props) => {
     const controllerProps = useCreateController(props);
     const translate = useTranslate(); // injected for backwards compatibility
     return children({ translate, ...controllerProps });
 };
-
-export default CreateController;

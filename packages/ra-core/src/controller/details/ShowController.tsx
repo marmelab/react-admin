@@ -1,9 +1,10 @@
-import useShowController, {
+import {
+    useShowController,
     ShowProps,
     ShowControllerProps,
 } from './useShowController';
-import { Translate } from '../types';
-import { useTranslate } from '../i18n';
+import { Translate } from '../../types';
+import { useTranslate } from '../../i18n';
 
 interface ShowControllerComponentProps extends ShowControllerProps {
     translate: Translate;
@@ -26,10 +27,8 @@ interface Props extends ShowProps {
  *     </ShowController>
  * );
  */
-const ShowController = ({ children, ...props }: Props) => {
+export const ShowController = ({ children, ...props }: Props) => {
     const controllerProps = useShowController(props);
     const translate = useTranslate(); // injected for backwards compatibility
     return children({ translate, ...controllerProps });
 };
-
-export default ShowController;

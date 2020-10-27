@@ -15,13 +15,13 @@ import {
     useTranslate,
     useNotify,
     RedirectionSideEffect,
-    SideEffectContext,
     OnSuccess,
     OnFailure,
     TransformData,
     Record,
     FormContext,
     HandleSubmitWithRedirect,
+    useSaveContext,
 } from 'ra-core';
 
 import { sanitizeButtonRestProps } from './Button';
@@ -88,9 +88,7 @@ const SaveButton: FC<SaveButtonProps> = props => {
     const notify = useNotify();
     const translate = useTranslate();
     const { setOnSave } = useContext(FormContext);
-    const { setOnSuccess, setOnFailure, setTransform } = useContext(
-        SideEffectContext
-    );
+    const { setOnSuccess, setOnFailure, setTransform } = useSaveContext(props);
 
     const handleClick = event => {
         // deprecated: use onSuccess and transform instead of onSave
