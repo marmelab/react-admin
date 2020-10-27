@@ -559,7 +559,7 @@ When you run an `<Admin>` with no child `<Resource>`, react-admin displays a "re
 
 ![Empty Admin](./img/tutorial_empty.png)
 
-You can replace that "ready" screen your custom component by passing it as the `ready` prop:
+You can replace that "ready" screen by passing a custom component as the `ready` prop:
 
 ```jsx
 import * as React from 'react';
