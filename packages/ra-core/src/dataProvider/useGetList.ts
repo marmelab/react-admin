@@ -1,11 +1,5 @@
-import { useEffect, useRef } from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
-import isEqual from 'lodash/isEqual';
 import get from 'lodash/get';
-
-import useDataProvider from './useDataProvider';
-import useVersion from '../controller/useVersion';
-import { useSafeSetState } from '../util/hooks';
 
 import {
     PaginationPayload,
@@ -15,10 +9,9 @@ import {
     Record,
     RecordMap,
 } from '../types';
+import useQueryWithStore from './useQueryWithStore';
 
 const defaultData = {};
-const emptyArray = [];
-const queriesThisTick: { [key: string]: Promise<PartialQueryState> } = {};
 
 /**
  * Call the dataProvider.getList() method and return the resolved result
@@ -64,43 +57,39 @@ const useGetList = <RecordType extends Record = Record>(
     sort: SortPayload,
     filter: object,
     options?: any
-): UseGetListValue<RecordType> => {
-    const payload = { pagination, sort, filter };
-    const payloadSignature = JSON.stringify(payload);
-    const version = useVersion(); // used to allow force reload
-    const requestSignature = JSON.stringify({
-        query: { type: 'getList', resource, payload },
-        options,
-        version,
-    });
-    const requestSignatureRef = useRef(requestSignature);
+): {
+    data?: RecordMap<RecordType>;
+    ids?: Identifier[];
+    total?: number;
+    error?: any;
+    loading: boolean;
+    loaded: boolean;
+} => {
+    const requestSignature = JSON.stringify({ pagination, sort, filter });
 
-    const total = useSelector((state: ReduxState): number =>
-        get(state.admin.resources, [
-            resource,
-            'list',
-            'cachedRequests',
-            payloadSignature,
-            'total',
-        ])
+    const { data: ids, total, error, loading, loaded } = useQueryWithStore(
+        { type: 'getList', resource, payload: { pagination, sort, filter } },
+        options,
+        // data selector (may return [])
+        (state: ReduxState): Identifier[] =>
+            get(
+                state.admin.resources,
+                [resource, 'list', 'cachedRequests', requestSignature, 'ids'],
+                []
+            ),
+        // total selector (may return undefined)
+        (state: ReduxState): number =>
+            get(state.admin.resources, [
+                resource,
+                'list',
+                'cachedRequests',
+                requestSignature,
+                'total',
+            ])
     );
 
-    // when the response has been received, the total is defind
-    const loaded = typeof total !== 'undefined';
-
-    const ids = useSelector((state: ReduxState): Identifier[] => {
-        if (!loaded) return emptyArray;
-        return get(state.admin.resources, [
-            resource,
-            'list',
-            'cachedRequests',
-            payloadSignature,
-            'ids',
-        ]);
-    });
-
     const data = useSelector((state: ReduxState): RecordMap<RecordType> => {
-        if (!loaded) return defaultData;
+        if (!ids) return defaultData;
         const allResourceData = get(
             state.admin.resources,
             [resource, 'data'],
@@ -115,133 +104,7 @@ const useGetList = <RecordType extends Record = Record>(
             }, {});
     }, shallowEqual);
 
-    const [state, setState] = useSafeSetState<UseGetListValue<RecordType>>({
-        ids,
-        data,
-        total,
-        error: null,
-        loading: true,
-        loaded,
-    });
-
-    useEffect(() => {
-        if (requestSignatureRef.current !== requestSignature) {
-            // request has changed, reset the loading state
-            requestSignatureRef.current = requestSignature;
-            setState({
-                ids,
-                data,
-                total,
-                error: null,
-                loading: true,
-                loaded,
-            });
-        } else if (
-            !isEqual(state.data, data) ||
-            !isEqual(state.ids, ids) ||
-            state.total !== total
-        ) {
-            // the dataProvider response arrived in the Redux store
-            if (loaded && isNaN(total)) {
-                console.error(
-                    'Total from response is not a number. Please check your dataProvider or the API.'
-                );
-            } else {
-                setState(prevState => ({
-                    ...prevState,
-                    ids,
-                    data,
-                    total,
-                    loaded: true,
-                }));
-            }
-        }
-    }, [
-        ids,
-        state.ids,
-        data,
-        state.data,
-        total,
-        state.total,
-        requestSignature,
-        loaded,
-        setState,
-    ]);
-
-    const dataProvider = useDataProvider();
-    useEffect(() => {
-        // When several identical queries are issued during the same tick,
-        // we only pass one query to the dataProvider.
-        // To achieve that, the closure keeps a list of dataProvider promises
-        // issued this tick. Before calling the dataProvider, this effect
-        // checks if another effect has already issued a similar dataProvider
-        // call.
-        if (!queriesThisTick.hasOwnProperty(requestSignature)) {
-            queriesThisTick[requestSignature] = new Promise<PartialQueryState>(
-                resolve => {
-                    dataProvider
-                        .getList(resource, payload, options)
-                        .then(() => {
-                            // We don't care about the dataProvider response here, because
-                            // it was already passed to SUCCESS reducers by the dataProvider
-                            // hook, and the result is available from the Redux store
-                            // through the data and total selectors.
-                            // In addition, if the query is optimistic, the response
-                            // will be empty, so it should not be used at all.
-                            if (
-                                requestSignature !== requestSignatureRef.current
-                            ) {
-                                resolve();
-                            }
-
-                            resolve({
-                                error: null,
-                                loading: false,
-                                loaded: true,
-                            });
-                        })
-                        .catch(error => {
-                            if (
-                                requestSignature !== requestSignatureRef.current
-                            ) {
-                                resolve();
-                            }
-                            resolve({
-                                error,
-                                loading: false,
-                                loaded: false,
-                            });
-                        });
-                }
-            );
-            // cleanup the list on next tick
-            setImmediate(() => {
-                delete queriesThisTick[requestSignature];
-            });
-        }
-        (async () => {
-            const newState = await queriesThisTick[requestSignature];
-            if (newState) setState(state => ({ ...state, ...newState }));
-        })();
-        // deep equality, see https://github.com/facebook/react/issues/14476#issuecomment-471199055
-    }, [requestSignature]); // eslint-disable-line
-
-    return state;
-};
-
-export interface UseGetListValue<RecordType extends Record = Record> {
-    ids?: Identifier[];
-    data?: RecordMap<RecordType>;
-    total?: number;
-    error?: any;
-    loading: boolean;
-    loaded: boolean;
-}
-
-export type PartialQueryState = {
-    error?: any;
-    loading: boolean;
-    loaded: boolean;
+    return { data, ids, total, error, loading, loaded };
 };
 
 export default useGetList;
