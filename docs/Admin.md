@@ -43,6 +43,7 @@ Here are all the props accepted by the component:
 - [`logoutButton`](#logoutbutton)
 - [`initialState`](#initialstate)
 - [`history`](#history)
+- [`ready`](#ready)
 
 ## `dataProvider`
 
@@ -547,6 +548,32 @@ const history = createHistory();
 
 const App = () => (
     <Admin history={history}>
+        ...
+    </Admin>
+);
+```
+
+### `ready`
+
+When you run an `<Admin>` with no child `<Resource>`, react-admin displays a "ready" screen:
+
+![Empty Admin](./img/tutorial_empty.png)
+
+You can replace that "ready" screen by passing a custom component as the `ready` prop:
+
+```jsx
+import * as React from 'react';
+import { Admin } from 'react-admin';
+
+const Ready = () => (
+    <div>
+        <h1>Admin ready</h1>
+        <p>You can now add resources</p>
+    </div>
+)
+
+const App = () => (
+    <Admin ready={Ready}>
         ...
     </Admin>
 );

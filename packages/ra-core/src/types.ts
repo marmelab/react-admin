@@ -470,6 +470,7 @@ export interface AdminProps {
     loginPage?: LoginComponent | boolean;
     logoutButton?: ComponentType;
     menu?: ComponentType;
+    ready?: ComponentType;
     theme?: ThemeOptions;
     title?: TitleComponent;
 }
