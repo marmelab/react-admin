@@ -100,9 +100,9 @@ const useReferenceInputController = ({
         permanentFilter: filter,
         filterToQuery,
     });
-    const hideFilter = () => {};
-    const showFilter = () => {};
     const displayedFilters = [];
+    // plus showFilter and hideFilter defined outside of the hook because
+    // they never change
 
     // selection logic
     const {
@@ -208,6 +208,9 @@ const useReferenceInputController = ({
         warning: dataStatus.warning,
     };
 };
+
+const hideFilter = () => {};
+const showFilter = () => {};
 
 export interface ReferenceInputValue {
     possibleValues: ListControllerProps;
