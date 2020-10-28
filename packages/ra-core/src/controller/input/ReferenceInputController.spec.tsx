@@ -7,7 +7,6 @@ import expect from 'expect';
 import renderWithRedux from '../../util/renderWithRedux';
 import ReferenceInputController from './ReferenceInputController';
 import { DataProviderContext } from '../../dataProvider';
-import { crudGetMatching } from '../../actions';
 
 describe('<ReferenceInputController />', () => {
     const defaultProps = {
