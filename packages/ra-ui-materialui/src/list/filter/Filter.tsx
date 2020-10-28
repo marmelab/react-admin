@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FC, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { sanitizeListRestProps, useListContext } from 'ra-core';
+import { sanitizeListRestProps, useListContext, useResource } from 'ra-core';
 
 import FilterForm from './FilterForm';
 import FilterButton from './FilterButton';
@@ -21,18 +21,20 @@ export interface FilterProps {
     classes?: ClassesOverride<typeof useStyles>;
     context?: 'form' | 'button';
     variant?: string;
+    resource?: string;
 }
 
 const Filter: FC<FilterProps> = props => {
     const classes = useStyles(props);
     const {
-        resource,
         showFilter,
         hideFilter,
         setFilters,
         displayedFilters,
         filterValues,
+        resource,
     } = useListContext(props);
+
     const renderButton = () => {
         const {
             classes: classesOverride,

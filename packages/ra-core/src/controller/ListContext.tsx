@@ -42,14 +42,14 @@ import { ListControllerProps } from './useListController';
  *
  * @example
  *
- * import { useListController, ListContext } from 'ra-core';
+ * import { useListController, ListContextProvider } from 'ra-core';
  *
  * const List = props => {
  *     const controllerProps = useListController(props);
  *     return (
- *         <ListContext.Provider value={controllerProps}>
+ *         <ListContextProvider value={controllerProps}>
  *             ...
- *         </ListContext.Provider>
+ *         </ListContextProvider>
  *     );
  * };
  */

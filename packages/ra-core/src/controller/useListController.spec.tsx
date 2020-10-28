@@ -13,15 +13,20 @@ import {
 import renderWithRedux from '../util/renderWithRedux';
 import { CRUD_CHANGE_LIST_PARAMS } from '../actions';
 import { SORT_ASC } from '../reducer/admin/resource/list/queryReducer';
+import { ResourceProvider } from '../core';
 
 describe('useListController', () => {
-    const defaultProps = {
-        basePath: '',
-        children: jest.fn(),
+    const resourceValue = {
         hasCreate: true,
         hasEdit: true,
         hasList: true,
         hasShow: true,
+        resource: 'posts',
+    };
+
+    const defaultProps = {
+        basePath: '',
+        children: jest.fn(),
         ids: [],
         location: {
             pathname: '/posts',
@@ -37,7 +42,6 @@ describe('useListController', () => {
             filter: {},
             displayedFilters: {},
         },
-        resource: 'posts',
         debounce: 200,
     };
 
@@ -68,7 +72,9 @@ describe('useListController', () => {
             };
 
             const { getByLabelText, dispatch, reduxStore } = renderWithRedux(
-                <ListController {...props} />,
+                <ResourceProvider value={resourceValue}>
+                    <ListController {...props} />
+                </ResourceProvider>,
                 {
                     admin: {
                         resources: {
@@ -112,7 +118,9 @@ describe('useListController', () => {
             };
 
             const { getByLabelText, dispatch, reduxStore } = renderWithRedux(
-                <ListController {...props} />,
+                <ResourceProvider value={resourceValue}>
+                    <ListController {...props} />
+                </ResourceProvider>,
                 {
                     admin: {
                         resources: {
@@ -158,7 +166,9 @@ describe('useListController', () => {
             };
 
             const { dispatch, rerender } = renderWithRedux(
-                <ListController {...props} filter={{ foo: 1 }} />,
+                <ResourceProvider value={resourceValue}>
+                    <ListController {...props} filter={{ foo: 1 }} />
+                </ResourceProvider>,
                 {
                     admin: {
                         resources: {
@@ -186,7 +196,11 @@ describe('useListController', () => {
             // Check that the permanent filter is not included in the filterValues (passed to Filter form and button)
             expect(children.mock.calls[0][0].filterValues).toEqual({});
 
-            rerender(<ListController {...props} filter={{ foo: 2 }} />);
+            rerender(
+                <ResourceProvider value={resourceValue}>
+                    <ListController {...props} filter={{ foo: 2 }} />
+                </ResourceProvider>
+            );
 
             const updatedCrudGetListCalls = dispatch.mock.calls.filter(
                 call => call[0].type === 'RA/CRUD_GET_LIST'
@@ -242,7 +256,9 @@ describe('useListController', () => {
             };
 
             const { getByLabelText } = renderWithRedux(
-                <ListController {...props} />,
+                <ResourceProvider value={resourceValue}>
+                    <ListController {...props} />
+                </ResourceProvider>,
                 {
                     admin: {
                         resources: {

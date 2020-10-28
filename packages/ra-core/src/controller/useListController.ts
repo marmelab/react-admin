@@ -23,6 +23,7 @@ import {
     Record,
     Exporter,
 } from '../types';
+import { useResource } from '../core';
 
 export interface ListProps {
     // the props you can change
@@ -105,19 +106,16 @@ export interface ListControllerProps<RecordType extends Record = Record> {
 const useListController = <RecordType extends Record = Record>(
     props: ListProps
 ): ListControllerProps<RecordType> => {
-    useCheckMinimumRequiredProps('List', ['basePath', 'resource'], props);
-
     const {
         basePath,
         exporter = defaultExporter,
-        resource,
-        hasCreate,
         filterDefaultValues,
         sort = defaultSort,
         perPage = 10,
         filter,
         debounce = 500,
     } = props;
+    const { resource, hasCreate } = useResource(props);
 
     if (filter && isValidElement(filter)) {
         throw new Error(

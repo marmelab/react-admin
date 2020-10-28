@@ -7,6 +7,7 @@ import { useGetOne } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
 import { useNotify, useRedirect, useRefresh } from '../../sideEffect';
 import { CRUD_GET_ONE } from '../../actions';
+import { useResource } from '../../core';
 
 export interface ShowProps {
     basePath?: string;
@@ -56,21 +57,15 @@ export interface ShowControllerProps<RecordType extends Record = Record> {
 export const useShowController = <RecordType extends Record = Record>(
     props: ShowProps
 ): ShowControllerProps<RecordType> => {
-    useCheckMinimumRequiredProps('Show', ['basePath', 'resource'], props);
-    const {
-        basePath,
-        hasCreate,
-        hasEdit,
-        hasList,
-        hasShow,
-        id,
-        resource,
-    } = props;
+    const { basePath, id } = props;
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();
     const refresh = useRefresh();
     const version = useVersion();
+    const { resource, hasCreate, hasEdit, hasShow, hasList } = useResource(
+        props
+    );
     const { data: record, loading, loaded } = useGetOne<RecordType>(
         resource,
         id,
@@ -98,13 +93,13 @@ export const useShowController = <RecordType extends Record = Record>(
         loading,
         loaded,
         defaultTitle,
+        hasCreate,
+        hasEdit,
+        hasShow,
+        hasList,
         resource,
         basePath,
         record,
-        hasCreate,
-        hasEdit,
-        hasList,
-        hasShow,
         version,
     };
 };

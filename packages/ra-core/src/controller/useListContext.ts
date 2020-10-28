@@ -91,7 +91,7 @@ const useListContext = <RecordType extends Record = Record>(
     props?: any
 ): ListControllerProps<RecordType> => {
     const context = useContext(ListContext);
-    if (!context.resource) {
+    if (!context.ids) {
         /**
          * The element isn't inside a <ListContext.Provider>
          *

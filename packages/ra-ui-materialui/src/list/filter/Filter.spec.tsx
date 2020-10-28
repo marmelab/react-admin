@@ -11,6 +11,7 @@ describe('<Filter />', () => {
     describe('With form context', () => {
         const defaultProps: any = {
             context: 'form',
+            ids: [],
             resource: 'posts',
             setFilters: jest.fn(),
             hideFilter: jest.fn(),

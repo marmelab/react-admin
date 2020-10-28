@@ -25,6 +25,7 @@ import { useTranslate } from '../../i18n';
 import useVersion from '../useVersion';
 import { CRUD_CREATE } from '../../actions';
 import { Record } from '../../types';
+import { useResource } from '../../core';
 
 export interface CreateProps<RecordType extends Omit<Record, 'id'> = Record> {
     basePath?: string;
@@ -98,13 +99,9 @@ export const useCreateController = <
 >(
     props: CreateProps
 ): CreateControllerProps<RecordType> => {
-    useCheckMinimumRequiredProps('Create', ['basePath', 'resource'], props);
     const {
         basePath,
-        resource,
         record = {},
-        hasShow,
-        hasEdit,
         successMessage,
         onSuccess,
         onFailure,
@@ -118,6 +115,9 @@ export const useCreateController = <
     const recordToUse = getRecord(location, record);
     const version = useVersion();
 
+    const { resource, hasCreate, hasEdit, hasShow, hasList } = useResource(
+        props
+    );
     if (process.env.NODE_ENV !== 'production' && successMessage) {
         console.log(
             '<Edit successMessage> prop is deprecated, use the onSuccess prop instead.'
@@ -213,6 +213,10 @@ export const useCreateController = <
     });
 
     return {
+        hasCreate,
+        hasEdit,
+        hasShow,
+        hasList,
         loading: false,
         loaded: true,
         saving,

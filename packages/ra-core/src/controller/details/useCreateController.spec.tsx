@@ -7,6 +7,7 @@ import { CreateController } from './CreateController';
 import renderWithRedux from '../../util/renderWithRedux';
 import { DataProviderContext } from '../../dataProvider';
 import { DataProvider } from '../../types';
+import { ResourceProvider } from '../../core';
 
 describe('useCreateController', () => {
     afterEach(cleanup);
@@ -61,13 +62,16 @@ describe('useCreateController', () => {
         });
     });
 
-    const defaultProps = {
-        basePath: '',
+    const resourceValue = {
         hasCreate: true,
         hasEdit: true,
         hasList: true,
         hasShow: true,
         resource: 'posts',
+    };
+
+    const defaultProps = {
+        basePath: '',
         debounce: 200,
     };
 
@@ -84,12 +88,14 @@ describe('useCreateController', () => {
         let saveCallback;
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <CreateController {...defaultProps}>
-                    {({ save }) => {
-                        saveCallback = save;
-                        return null;
-                    }}
-                </CreateController>
+                <ResourceProvider value={resourceValue}>
+                    <CreateController {...defaultProps}>
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </CreateController>
+                </ResourceProvider>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -108,12 +114,14 @@ describe('useCreateController', () => {
         } as unknown) as DataProvider;
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <CreateController {...defaultProps}>
-                    {({ save }) => {
-                        saveCallback = save;
-                        return null;
-                    }}
-                </CreateController>
+                <ResourceProvider value={resourceValue}>
+                    <CreateController {...defaultProps}>
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </CreateController>
+                </ResourceProvider>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -142,12 +150,14 @@ describe('useCreateController', () => {
         } as unknown) as DataProvider;
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <CreateController {...defaultProps}>
-                    {({ save }) => {
-                        saveCallback = save;
-                        return null;
-                    }}
-                </CreateController>
+                <ResourceProvider value={resourceValue}>
+                    <CreateController {...defaultProps}>
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </CreateController>
+                </ResourceProvider>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -177,12 +187,14 @@ describe('useCreateController', () => {
         const onSuccess = jest.fn();
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <CreateController {...defaultProps} onSuccess={onSuccess}>
-                    {({ save }) => {
-                        saveCallback = save;
-                        return null;
-                    }}
-                </CreateController>
+                <ResourceProvider value={resourceValue}>
+                    <CreateController {...defaultProps} onSuccess={onSuccess}>
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </CreateController>
+                </ResourceProvider>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -205,12 +217,14 @@ describe('useCreateController', () => {
         const onSuccessSave = jest.fn();
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <CreateController {...defaultProps} onSuccess={onSuccess}>
-                    {({ save }) => {
-                        saveCallback = save;
-                        return null;
-                    }}
-                </CreateController>
+                <ResourceProvider value={resourceValue}>
+                    <CreateController {...defaultProps} onSuccess={onSuccess}>
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </CreateController>
+                </ResourceProvider>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -237,12 +251,14 @@ describe('useCreateController', () => {
         const onFailure = jest.fn();
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <CreateController {...defaultProps} onFailure={onFailure}>
-                    {({ save }) => {
-                        saveCallback = save;
-                        return null;
-                    }}
-                </CreateController>
+                <ResourceProvider value={resourceValue}>
+                    <CreateController {...defaultProps} onFailure={onFailure}>
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </CreateController>
+                </ResourceProvider>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -265,12 +281,14 @@ describe('useCreateController', () => {
         const onFailureSave = jest.fn();
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <CreateController {...defaultProps} onFailure={onFailure}>
-                    {({ save }) => {
-                        saveCallback = save;
-                        return null;
-                    }}
-                </CreateController>
+                <ResourceProvider value={resourceValue}>
+                    <CreateController {...defaultProps} onFailure={onFailure}>
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </CreateController>
+                </ResourceProvider>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -304,12 +322,14 @@ describe('useCreateController', () => {
         }));
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <CreateController {...defaultProps} transform={transform}>
-                    {({ save }) => {
-                        saveCallback = save;
-                        return null;
-                    }}
-                </CreateController>
+                <ResourceProvider value={resourceValue}>
+                    <CreateController {...defaultProps} transform={transform}>
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </CreateController>
+                </ResourceProvider>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -338,12 +358,14 @@ describe('useCreateController', () => {
         }));
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <CreateController {...defaultProps} transform={transform}>
-                    {({ save }) => {
-                        saveCallback = save;
-                        return null;
-                    }}
-                </CreateController>
+                <ResourceProvider value={resourceValue}>
+                    <CreateController {...defaultProps} transform={transform}>
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </CreateController>
+                </ResourceProvider>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );

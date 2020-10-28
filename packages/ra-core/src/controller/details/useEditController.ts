@@ -22,6 +22,7 @@ import {
     SetTransformData,
     useSaveModifiers,
 } from '../saveModifiers';
+import { useResource } from '../../core';
 
 export interface EditProps {
     basePath?: string;
@@ -90,15 +91,9 @@ export interface EditControllerProps<RecordType extends Record = Record> {
 export const useEditController = <RecordType extends Record = Record>(
     props: EditProps
 ): EditControllerProps<RecordType> => {
-    useCheckMinimumRequiredProps('Edit', ['basePath', 'resource'], props);
     const {
         basePath,
-        hasCreate,
-        hasEdit,
-        hasList,
-        hasShow,
         id,
-        resource,
         successMessage,
         undoable = true,
         onSuccess,
@@ -110,6 +105,10 @@ export const useEditController = <RecordType extends Record = Record>(
     const redirect = useRedirect();
     const refresh = useRefresh();
     const version = useVersion();
+
+    const { resource, hasCreate, hasEdit, hasShow, hasList } = useResource(
+        props
+    );
 
     if (process.env.NODE_ENV !== 'production' && successMessage) {
         console.log(

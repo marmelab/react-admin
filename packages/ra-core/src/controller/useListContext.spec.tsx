@@ -4,6 +4,7 @@ import { render, cleanup } from '@testing-library/react';
 
 import ListContext from './ListContext';
 import useListContext from './useListContext';
+import { ResourceProvider } from '../core';
 
 describe('useListContext', () => {
     afterEach(cleanup);
@@ -21,16 +22,25 @@ describe('useListContext', () => {
 
     it('should return the listController props form the ListContext', () => {
         const { getByText } = render(
-            <ListContext.Provider
-                // @ts-ignore
+            <ResourceProvider
                 value={{
                     resource: 'foo',
-                    ids: [1],
-                    data: { 1: { id: 1, title: 'hello' } },
+                    hasList: true,
+                    hasCreate: true,
+                    hasEdit: true,
+                    hasShow: true,
                 }}
             >
-                <NaiveList />
-            </ListContext.Provider>
+                <ListContext.Provider
+                    // @ts-ignore
+                    value={{
+                        ids: [1],
+                        data: { 1: { id: 1, title: 'hello' } },
+                    }}
+                >
+                    <NaiveList />
+                </ListContext.Provider>
+            </ResourceProvider>
         );
         expect(getByText('hello')).toBeDefined();
     });

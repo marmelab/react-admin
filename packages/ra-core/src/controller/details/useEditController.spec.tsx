@@ -6,18 +6,22 @@ import { EditController } from './EditController';
 import renderWithRedux from '../../util/renderWithRedux';
 import { DataProviderContext } from '../../dataProvider';
 import { DataProvider } from '../../types';
+import { ResourceProvider } from '../../core';
 
 describe('useEditController', () => {
     afterEach(cleanup);
 
-    const defaultProps = {
-        basePath: '',
+    const resourceValue = {
         hasCreate: true,
         hasEdit: true,
         hasList: true,
         hasShow: true,
-        id: 12,
         resource: 'posts',
+    };
+
+    const defaultProps = {
+        basePath: '',
+        id: 12,
         debounce: 200,
     };
 
@@ -30,9 +34,11 @@ describe('useEditController', () => {
         const dataProvider = ({ getOne } as unknown) as DataProvider;
         const { queryAllByText } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <EditController {...defaultProps}>
-                    {({ record }) => <div>{record && record.title}</div>}
-                </EditController>
+                <ResourceProvider value={resourceValue}>
+                    <EditController {...defaultProps}>
+                        {({ record }) => <div>{record && record.title}</div>}
+                    </EditController>
+                </ResourceProvider>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -48,9 +54,11 @@ describe('useEditController', () => {
         } as unknown) as DataProvider;
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <EditController {...defaultProps}>
-                    {({ record }) => <div>{record && record.title}</div>}
-                </EditController>
+                <ResourceProvider value={resourceValue}>
+                    <EditController {...defaultProps}>
+                        {({ record }) => <div>{record && record.title}</div>}
+                    </EditController>
+                </ResourceProvider>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -66,9 +74,11 @@ describe('useEditController', () => {
         } as unknown) as DataProvider;
         const { queryAllByText } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <EditController {...defaultProps}>
-                    {({ record }) => <div>{record && record.title}</div>}
-                </EditController>
+                <ResourceProvider value={resourceValue}>
+                    <EditController {...defaultProps}>
+                        {({ record }) => <div>{record && record.title}</div>}
+                    </EditController>
+                </ResourceProvider>
             </DataProviderContext.Provider>,
             {
                 admin: {
@@ -94,12 +104,14 @@ describe('useEditController', () => {
         let saveCallback;
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <EditController {...defaultProps} undoable={false}>
-                    {({ save }) => {
-                        saveCallback = save;
-                        return null;
-                    }}
-                </EditController>
+                <ResourceProvider value={resourceValue}>
+                    <EditController {...defaultProps} undoable={false}>
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </EditController>
+                </ResourceProvider>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -120,12 +132,14 @@ describe('useEditController', () => {
         let saveCallback;
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <EditController {...defaultProps}>
-                    {({ save }) => {
-                        saveCallback = save;
-                        return null;
-                    }}
-                </EditController>
+                <ResourceProvider value={resourceValue}>
+                    <EditController {...defaultProps}>
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </EditController>
+                </ResourceProvider>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -152,12 +166,14 @@ describe('useEditController', () => {
         } as unknown) as DataProvider;
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <EditController {...defaultProps} undoable={false}>
-                    {({ save }) => {
-                        saveCallback = save;
-                        return null;
-                    }}
-                </EditController>
+                <ResourceProvider value={resourceValue}>
+                    <EditController {...defaultProps} undoable={false}>
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </EditController>
+                </ResourceProvider>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -193,16 +209,18 @@ describe('useEditController', () => {
         const onSuccess = jest.fn();
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <EditController
-                    {...defaultProps}
-                    undoable={false}
-                    onSuccess={onSuccess}
-                >
-                    {({ save }) => {
-                        saveCallback = save;
-                        return null;
-                    }}
-                </EditController>
+                <ResourceProvider value={resourceValue}>
+                    <EditController
+                        {...defaultProps}
+                        undoable={false}
+                        onSuccess={onSuccess}
+                    >
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </EditController>
+                </ResourceProvider>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -225,16 +243,18 @@ describe('useEditController', () => {
         const onSuccessSave = jest.fn();
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <EditController
-                    {...defaultProps}
-                    undoable={false}
-                    onSuccess={onSuccess}
-                >
-                    {({ save }) => {
-                        saveCallback = save;
-                        return null;
-                    }}
-                </EditController>
+                <ResourceProvider value={resourceValue}>
+                    <EditController
+                        {...defaultProps}
+                        undoable={false}
+                        onSuccess={onSuccess}
+                    >
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </EditController>
+                </ResourceProvider>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -261,16 +281,18 @@ describe('useEditController', () => {
         const onFailure = jest.fn();
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <EditController
-                    {...defaultProps}
-                    undoable={false}
-                    onFailure={onFailure}
-                >
-                    {({ save }) => {
-                        saveCallback = save;
-                        return null;
-                    }}
-                </EditController>
+                <ResourceProvider value={resourceValue}>
+                    <EditController
+                        {...defaultProps}
+                        undoable={false}
+                        onFailure={onFailure}
+                    >
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </EditController>
+                </ResourceProvider>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -293,16 +315,18 @@ describe('useEditController', () => {
         const onFailureSave = jest.fn();
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <EditController
-                    {...defaultProps}
-                    undoable={false}
-                    onFailure={onFailure}
-                >
-                    {({ save }) => {
-                        saveCallback = save;
-                        return null;
-                    }}
-                </EditController>
+                <ResourceProvider value={resourceValue}>
+                    <EditController
+                        {...defaultProps}
+                        undoable={false}
+                        onFailure={onFailure}
+                    >
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </EditController>
+                </ResourceProvider>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -336,16 +360,18 @@ describe('useEditController', () => {
         }));
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <EditController
-                    {...defaultProps}
-                    undoable={false}
-                    transform={transform}
-                >
-                    {({ save }) => {
-                        saveCallback = save;
-                        return null;
-                    }}
-                </EditController>
+                <ResourceProvider value={resourceValue}>
+                    <EditController
+                        {...defaultProps}
+                        undoable={false}
+                        transform={transform}
+                    >
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </EditController>
+                </ResourceProvider>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -378,16 +404,18 @@ describe('useEditController', () => {
         }));
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <EditController
-                    {...defaultProps}
-                    undoable={false}
-                    transform={transform}
-                >
-                    {({ save }) => {
-                        saveCallback = save;
-                        return null;
-                    }}
-                </EditController>
+                <ResourceProvider value={resourceValue}>
+                    <EditController
+                        {...defaultProps}
+                        undoable={false}
+                        transform={transform}
+                    >
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </EditController>
+                </ResourceProvider>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
