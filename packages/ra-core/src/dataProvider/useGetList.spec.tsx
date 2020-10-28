@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cleanup } from '@testing-library/react';
+import { cleanup, wait } from '@testing-library/react';
 import expect from 'expect';
 
 import renderWithRedux from '../util/renderWithRedux';
@@ -144,6 +144,7 @@ describe('useGetList', () => {
                 })
             ),
         };
+        await wait(); // empty the query deduplication in useQueryWithStore
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseGetList callback={hookValue} />
@@ -240,6 +241,7 @@ describe('useGetList', () => {
         const dataProvider = {
             getList: jest.fn(() => Promise.reject(new Error('failed'))),
         };
+        await wait(); // empty the query deduplication in useQueryWithStore
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseGetList callback={hookValue} />
