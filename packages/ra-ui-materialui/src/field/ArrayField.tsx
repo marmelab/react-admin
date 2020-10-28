@@ -9,7 +9,12 @@ import {
     ReactElement,
 } from 'react';
 import get from 'lodash/get';
-import { Identifier, ListContextProvider } from 'ra-core';
+import {
+    Identifier,
+    ListContextProvider,
+    useResource,
+    useRecordContext,
+} from 'ra-core';
 
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import PropTypes from 'prop-types';
@@ -114,68 +119,67 @@ const getDataAndIds = (record: object, source: string, fieldKey: string) => {
  *     )
  *     TagsField.defaultProps = { addLabel: true };
  */
-export const ArrayField: FC<ArrayFieldProps> = memo<ArrayFieldProps>(
-    ({
+export const ArrayField: FC<ArrayFieldProps> = memo<ArrayFieldProps>(props => {
+    const {
         addLabel,
         basePath,
         children,
-        record,
-        resource,
         sortable,
         source,
         fieldKey,
         ...rest
-    }) => {
-        const [ids, setIds] = useState(initialState.ids);
-        const [data, setData] = useState(initialState.data);
+    } = props;
+    const [ids, setIds] = useState(initialState.ids);
+    const [data, setData] = useState(initialState.data);
+    const { resource } = useResource(props);
+    const { record } = useRecordContext(props);
 
-        useEffect(() => {
-            const { ids, data } = getDataAndIds(record, source, fieldKey);
-            setIds(ids);
-            setData(data);
-        }, [record, source, fieldKey]);
+    useEffect(() => {
+        const { ids, data } = getDataAndIds(record, source, fieldKey);
+        setIds(ids);
+        setData(data);
+    }, [record, source, fieldKey]);
 
-        return (
-            <ListContextProvider
-                value={{
-                    ids,
-                    data,
-                    loading: false,
-                    basePath,
-                    selectedIds: [],
-                    currentSort: { field: null, order: null },
-                    displayedFilters: null,
-                    filterValues: null,
-                    hasCreate: null,
-                    hideFilter: null,
-                    loaded: null,
-                    onSelect: null,
-                    onToggleItem: null,
-                    onUnselectItems: null,
-                    page: null,
-                    perPage: null,
-                    resource,
-                    setFilters: null,
-                    setPage: null,
-                    setPerPage: null,
-                    setSort: null,
-                    showFilter: null,
-                    total: null,
-                }}
-            >
-                {cloneElement(Children.only(children), {
-                    ids,
-                    data,
-                    loading: false,
-                    basePath,
-                    currentSort: {},
-                    resource,
-                    ...rest,
-                })}
-            </ListContextProvider>
-        );
-    }
-);
+    return (
+        <ListContextProvider
+            value={{
+                ids,
+                data,
+                loading: false,
+                basePath,
+                selectedIds: [],
+                currentSort: { field: null, order: null },
+                displayedFilters: null,
+                filterValues: null,
+                hasCreate: null,
+                hideFilter: null,
+                loaded: null,
+                onSelect: null,
+                onToggleItem: null,
+                onUnselectItems: null,
+                page: null,
+                perPage: null,
+                resource,
+                setFilters: null,
+                setPage: null,
+                setPerPage: null,
+                setSort: null,
+                showFilter: null,
+                total: null,
+            }}
+        >
+            {cloneElement(Children.only(children), {
+                ids,
+                data,
+                loading: false,
+                basePath,
+                currentSort: {},
+                resource,
+                ...rest,
+            })}
+        </ListContextProvider>
+    );
+});
 
 ArrayField.defaultProps = {
     addLabel: true,
