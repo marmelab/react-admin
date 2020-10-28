@@ -5,6 +5,7 @@ import { LinearProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     ListContextProvider,
+    useListContext,
     ListControllerProps,
     useReferenceArrayFieldController,
     SortPayload,
@@ -161,8 +162,9 @@ export interface ReferenceArrayFieldViewProps
 export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props => {
     const { children, pagination, className, reference, ...rest } = props;
     const classes = useStyles(props);
+    const { loaded } = useListContext(props);
 
-    if (!props.loaded) {
+    if (!loaded) {
         return <LinearProgress className={classes.progress} />;
     }
 
