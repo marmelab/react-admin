@@ -202,6 +202,22 @@ import { ChipField, SingleFieldList, ReferenceManyField } from 'react-admin';
 
 Any additional props are passed to material-ui's `<Chip>` element. Check [The material-ui `<Chip>` documentation](https://material-ui.com/api/chip/) for details.
 
+#### Using many fields
+
+You can set an array of property names, so they will be concatenated:
+
+```jsx
+import { ChipField, SingleFieldList, ReferenceManyField } from 'react-admin';
+
+<ReferenceManyField reference="books" target="author_id">
+    <SingleFieldList>
+        <ChipField source={["lastName","firstName"]} join=", " />
+    </SingleFieldList>
+</ReferenceManyField>
+```
+
+The `join` parameter can be omitted. As a default, it is set to a non-breaking space.
+
 ### `<DateField>`
 
 Displays a date or datetime using the browser locale (thanks to `Date.toLocaleDateString()` and `Date.toLocaleString()`).

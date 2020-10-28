@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { FC, memo } from 'react';
 import get from 'lodash/get';
+import map from 'lodash/map';
+import isArray from 'lodash/isArray';
 import Chip, { ChipProps } from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -21,12 +23,15 @@ export const ChipField: FC<ChipFieldProps> = memo<ChipFieldProps>(props => {
         className,
         classes: classesOverride,
         source,
+        join = ' ',
         record = {},
         emptyText,
         ...rest
     } = props;
     const classes = useStyles(props);
-    const value = get(record, source);
+    const value = isArray(source)
+        ? (map(source, sourceItem => get(record, sourceItem))).join(join)
+        : get(record, source);
 
     if (value == null && emptyText) {
         return (
@@ -62,6 +67,8 @@ ChipField.propTypes = {
 export interface ChipFieldProps
     extends PublicFieldProps,
         InjectedFieldProps,
-        Omit<ChipProps, 'label'> {}
+        Omit<ChipProps, 'label'> {
+    join?: string;
+}
 
 export default ChipField;
