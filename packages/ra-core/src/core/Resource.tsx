@@ -6,6 +6,7 @@ import { Route, Switch } from 'react-router-dom';
 import WithPermissions from '../auth/WithPermissions';
 import { registerResource, unregisterResource } from '../actions';
 import { ResourceProps, ResourceMatch, ReduxState } from '../types';
+import { ResourceProvider } from './ResourceProvider';
 
 const defaultOptions = {};
 
@@ -51,84 +52,90 @@ const ResourceRoutes: FunctionComponent<ResourceProps> = ({
 
     const basePath = match ? match.path : '';
 
-    // match tends to change even on the same route ; using memo to avoid an extra render
-    return useMemo(() => {
-        // if the registration hasn't finished, no need to render
-        if (!isRegistered) {
-            return null;
-        }
-        const props = {
+    const resourceData = useMemo(
+        () => ({
             resource: name,
             options,
             hasList: !!list,
             hasEdit: !!edit,
             hasShow: !!show,
             hasCreate: !!create,
-        };
+        }),
+        []
+    );
+
+    // match tends to change even on the same route ; using memo to avoid an extra render
+    return useMemo(() => {
+        // if the registration hasn't finished, no need to render
+        if (!isRegistered) {
+            return null;
+        }
 
         return (
-            <Switch>
-                {create && (
-                    <Route
-                        path={`${basePath}/create`}
-                        render={routeProps => (
-                            <WithPermissions
-                                component={create}
-                                basePath={basePath}
-                                {...routeProps}
-                                {...props}
-                            />
-                        )}
-                    />
-                )}
-                {show && (
-                    <Route
-                        path={`${basePath}/:id/show`}
-                        render={routeProps => (
-                            <WithPermissions
-                                component={show}
-                                basePath={basePath}
-                                id={decodeURIComponent(
-                                    (routeProps.match as ResourceMatch).params
-                                        .id
-                                )}
-                                {...routeProps}
-                                {...props}
-                            />
-                        )}
-                    />
-                )}
-                {edit && (
-                    <Route
-                        path={`${basePath}/:id`}
-                        render={routeProps => (
-                            <WithPermissions
-                                component={edit}
-                                basePath={basePath}
-                                id={decodeURIComponent(
-                                    (routeProps.match as ResourceMatch).params
-                                        .id
-                                )}
-                                {...routeProps}
-                                {...props}
-                            />
-                        )}
-                    />
-                )}
-                {list && (
-                    <Route
-                        path={`${basePath}`}
-                        render={routeProps => (
-                            <WithPermissions
-                                component={list}
-                                basePath={basePath}
-                                {...routeProps}
-                                {...props}
-                            />
-                        )}
-                    />
-                )}
-            </Switch>
+            <ResourceProvider value={resourceData}>
+                <Switch>
+                    {create && (
+                        <Route
+                            path={`${basePath}/create`}
+                            render={routeProps => (
+                                <WithPermissions
+                                    component={create}
+                                    basePath={basePath}
+                                    {...routeProps}
+                                    {...resourceData}
+                                />
+                            )}
+                        />
+                    )}
+                    {show && (
+                        <Route
+                            path={`${basePath}/:id/show`}
+                            render={routeProps => (
+                                <WithPermissions
+                                    component={show}
+                                    basePath={basePath}
+                                    id={decodeURIComponent(
+                                        (routeProps.match as ResourceMatch)
+                                            .params.id
+                                    )}
+                                    {...routeProps}
+                                    {...resourceData}
+                                />
+                            )}
+                        />
+                    )}
+                    {edit && (
+                        <Route
+                            path={`${basePath}/:id`}
+                            render={routeProps => (
+                                <WithPermissions
+                                    component={edit}
+                                    basePath={basePath}
+                                    id={decodeURIComponent(
+                                        (routeProps.match as ResourceMatch)
+                                            .params.id
+                                    )}
+                                    {...routeProps}
+                                    {...resourceData}
+                                />
+                            )}
+                        />
+                    )}
+                    {list && (
+                        <Route
+                            path={`${basePath}`}
+                            render={routeProps => (
+                                <WithPermissions
+                                    component={list}
+                                    basePath={basePath}
+                                    {...routeProps}
+                                    {...resourceData}
+                                />
+                            )}
+                        />
+                    )}
+                </Switch>
+            </ResourceProvider>
         );
     }, [basePath, name, create, edit, list, show, options, isRegistered]); // eslint-disable-line react-hooks/exhaustive-deps
 };
