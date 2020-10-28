@@ -19,6 +19,7 @@ import {
     FieldTitle,
     ChoicesInputProps,
     useSuggestions,
+    useResource,
     useTranslate,
     warning,
 } from 'ra-core';
@@ -133,7 +134,6 @@ const AutocompleteInput: FunctionComponent<AutocompleteInputProps> = props => {
         optionValue = 'id',
         parse,
         resettable,
-        resource,
         setFilter,
         shouldRenderSuggestions: shouldRenderSuggestionsOverride,
         source,
@@ -143,6 +143,10 @@ const AutocompleteInput: FunctionComponent<AutocompleteInputProps> = props => {
         variant = 'filled',
         ...rest
     } = props;
+
+    // There is an issue with the props type. Unable to figure what yet
+    // @ts-ignore
+    const { resource } = useResource(props);
 
     if (isValidElement(optionText) && !inputText) {
         throw new Error(`If the optionText prop is a React element, you must also specify the inputText prop:

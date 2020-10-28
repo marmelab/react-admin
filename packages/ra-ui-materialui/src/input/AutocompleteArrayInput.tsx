@@ -2,7 +2,6 @@ import React, {
     useCallback,
     useEffect,
     useRef,
-    FunctionComponent,
     useMemo,
     isValidElement,
 } from 'react';
@@ -17,6 +16,7 @@ import {
     FieldTitle,
     ChoicesInputProps,
     useSuggestions,
+    useResource,
     warning,
 } from 'ra-core';
 
@@ -91,10 +91,10 @@ interface Options {
  * @example
  * <AutocompleteArrayInput source="author_id" options={{ color: 'secondary' }} />
  */
-const AutocompleteArrayInput: FunctionComponent<
-    ChoicesInputProps<TextFieldProps & Options> &
+const AutocompleteArrayInput = (
+    props: ChoicesInputProps<TextFieldProps & Options> &
         Omit<DownshiftProps<any>, 'onChange'>
-> = props => {
+) => {
     const {
         allowDuplicates,
         allowEmpty,
@@ -126,7 +126,6 @@ const AutocompleteArrayInput: FunctionComponent<
         optionText = 'name',
         optionValue = 'id',
         parse,
-        resource,
         setFilter,
         shouldRenderSuggestions: shouldRenderSuggestionsOverride,
         source,
@@ -136,6 +135,9 @@ const AutocompleteArrayInput: FunctionComponent<
         variant = 'filled',
         ...rest
     } = props;
+    // There is an issue with the props type. Unable to figure what yet
+    // @ts-ignore
+    const { resource } = useResource(props);
     warning(
         isValidElement(optionText) && !matchSuggestion,
         `If the optionText prop is a React element, you must also specify the matchSuggestion prop:

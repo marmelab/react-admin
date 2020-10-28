@@ -48,6 +48,9 @@ describe('<DeleteWithConfirmButton />', () => {
                                         foo: 'bar',
                                     },
                                 },
+                                props: {
+                                    name: 'posts',
+                                },
                             },
                         },
                     },
@@ -104,7 +107,18 @@ describe('<DeleteWithConfirmButton />', () => {
                     </Edit>
                 </DataProviderContext.Provider>
             </ThemeProvider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            {
+                admin: {
+                    resources: {
+                        posts: {
+                            data: {},
+                            props: {
+                                name: 'posts',
+                            },
+                        },
+                    },
+                },
+            }
         );
         // wait for the dataProvider.getOne() return
         await wait(() => {
@@ -149,7 +163,18 @@ describe('<DeleteWithConfirmButton />', () => {
                     </Edit>
                 </DataProviderContext.Provider>
             </ThemeProvider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            {
+                admin: {
+                    resources: {
+                        posts: {
+                            data: {},
+                            props: {
+                                name: 'posts',
+                            },
+                        },
+                    },
+                },
+            }
         );
         // wait for the dataProvider.getOne() return
         await wait(() => {

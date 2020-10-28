@@ -210,7 +210,13 @@ describe('<SaveButton />', () => {
                     </SimpleForm>
                 </Edit>
             </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            {
+                admin: {
+                    resources: {
+                        posts: { data: {}, props: { name: 'posts' } },
+                    },
+                },
+            }
         );
         // wait for the dataProvider.getOne() return
         await wait(() => {
@@ -255,7 +261,13 @@ describe('<SaveButton />', () => {
                     </SimpleForm>
                 </Edit>
             </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            {
+                admin: {
+                    resources: {
+                        posts: { data: {}, props: { name: 'posts' } },
+                    },
+                },
+            }
         );
         // wait for the dataProvider.getOne() return
         await wait(() => {
@@ -305,7 +317,13 @@ describe('<SaveButton />', () => {
                     </SimpleForm>
                 </Edit>
             </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            {
+                admin: {
+                    resources: {
+                        posts: { data: {}, props: { name: 'posts' } },
+                    },
+                },
+            }
         );
         // wait for the dataProvider.getOne() return
         await wait(() => {

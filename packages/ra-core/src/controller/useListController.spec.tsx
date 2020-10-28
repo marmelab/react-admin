@@ -16,11 +16,28 @@ import { SORT_ASC } from '../reducer/admin/resource/list/queryReducer';
 import { ResourceProvider } from '../core';
 
 describe('useListController', () => {
+    const initialState = {
+        admin: {
+            resources: {
+                posts: {
+                    data: {},
+                    list: {
+                        params: {},
+                        cachedRequests: {},
+                    },
+                    props: {
+                        name: 'posts',
+                        hasCreate: true,
+                        hasEdit: true,
+                        hasList: true,
+                        hasShow: true,
+                    },
+                },
+            },
+        },
+    };
+
     const resourceValue = {
-        hasCreate: true,
-        hasEdit: true,
-        hasList: true,
-        hasShow: true,
         resource: 'posts',
     };
 
@@ -75,18 +92,7 @@ describe('useListController', () => {
                 <ResourceProvider value={resourceValue}>
                     <ListController {...props} />
                 </ResourceProvider>,
-                {
-                    admin: {
-                        resources: {
-                            posts: {
-                                list: {
-                                    params: {},
-                                    cachedRequests: {},
-                                },
-                            },
-                        },
-                    },
-                }
+                initialState
             );
             const searchInput = getByLabelText('search');
 
@@ -131,6 +137,13 @@ describe('useListController', () => {
                                         displayedFilters: { q: true },
                                     },
                                     cachedRequests: {},
+                                },
+                                props: {
+                                    name: 'posts',
+                                    hasCreate: true,
+                                    hasEdit: true,
+                                    hasList: true,
+                                    hasShow: true,
                                 },
                             },
                         },
@@ -177,6 +190,13 @@ describe('useListController', () => {
                                     params: {},
                                     cachedRequests: {},
                                     ids: [],
+                                },
+                                props: {
+                                    name: 'posts',
+                                    hasCreate: true,
+                                    hasEdit: true,
+                                    hasList: true,
+                                    hasShow: true,
                                 },
                             },
                         },
@@ -268,6 +288,13 @@ describe('useListController', () => {
                                         filter: { q: 'hello' },
                                     },
                                     cachedRequests: {},
+                                },
+                                props: {
+                                    name: 'posts',
+                                    hasCreate: true,
+                                    hasEdit: true,
+                                    hasList: true,
+                                    hasShow: true,
                                 },
                             },
                         },

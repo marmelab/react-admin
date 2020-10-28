@@ -48,6 +48,9 @@ describe('<DeleteWithUndoButton />', () => {
                                         foo: 'bar',
                                     },
                                 },
+                                props: {
+                                    name: 'posts',
+                                },
                             },
                         },
                     },
@@ -100,7 +103,18 @@ describe('<DeleteWithUndoButton />', () => {
                     </Edit>
                 </DataProviderContext.Provider>
             </ThemeProvider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            {
+                admin: {
+                    resources: {
+                        posts: {
+                            data: {},
+                            props: {
+                                name: 'posts',
+                            },
+                        },
+                    },
+                },
+            }
         );
         // wait for the dataProvider.getOne() return
         await wait(() => {

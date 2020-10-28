@@ -11,11 +11,24 @@ import { ResourceProvider } from '../../core';
 describe('useEditController', () => {
     afterEach(cleanup);
 
+    const initialState = {
+        admin: {
+            resources: {
+                posts: {
+                    data: {},
+                    props: {
+                        name: 'posts',
+                        hasCreate: true,
+                        hasEdit: true,
+                        hasList: true,
+                        hasShow: true,
+                    },
+                },
+            },
+        },
+    };
+
     const resourceValue = {
-        hasCreate: true,
-        hasEdit: true,
-        hasList: true,
-        hasShow: true,
         resource: 'posts',
     };
 
@@ -40,7 +53,7 @@ describe('useEditController', () => {
                     </EditController>
                 </ResourceProvider>
             </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            initialState
         );
         await wait(() => {
             expect(getOne).toHaveBeenCalled();
@@ -60,7 +73,7 @@ describe('useEditController', () => {
                     </EditController>
                 </ResourceProvider>
             </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            initialState
         );
         const crudGetOneAction = dispatch.mock.calls[0][0];
         expect(crudGetOneAction.type).toEqual('RA/CRUD_GET_ONE');
@@ -83,7 +96,16 @@ describe('useEditController', () => {
             {
                 admin: {
                     resources: {
-                        posts: { data: { 12: { id: 12, title: 'hello' } } },
+                        posts: {
+                            data: { 12: { id: 12, title: 'hello' } },
+                            props: {
+                                name: 'posts',
+                                hasCreate: true,
+                                hasEdit: true,
+                                hasList: true,
+                                hasShow: true,
+                            },
+                        },
                     },
                 },
             }
@@ -113,7 +135,7 @@ describe('useEditController', () => {
                     </EditController>
                 </ResourceProvider>
             </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            initialState
         );
         await act(async () => saveCallback({ foo: 'bar' }));
         expect(update).toHaveBeenCalledWith('posts', {
@@ -141,7 +163,7 @@ describe('useEditController', () => {
                     </EditController>
                 </ResourceProvider>
             </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            initialState
         );
         await act(async () => saveCallback({ foo: 'bar' }));
         const call = dispatch.mock.calls.find(
@@ -175,7 +197,7 @@ describe('useEditController', () => {
                     </EditController>
                 </ResourceProvider>
             </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            initialState
         );
         await act(async () => saveCallback({ foo: 'bar' }));
         const call = dispatch.mock.calls.find(
@@ -222,7 +244,7 @@ describe('useEditController', () => {
                     </EditController>
                 </ResourceProvider>
             </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            initialState
         );
         await act(async () => saveCallback({ foo: 'bar' }));
         expect(onSuccess).toHaveBeenCalled();
@@ -256,7 +278,7 @@ describe('useEditController', () => {
                     </EditController>
                 </ResourceProvider>
             </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            initialState
         );
         await act(async () =>
             saveCallback({ foo: 'bar' }, undefined, {
@@ -294,7 +316,7 @@ describe('useEditController', () => {
                     </EditController>
                 </ResourceProvider>
             </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            initialState
         );
         await act(async () => saveCallback({ foo: 'bar' }));
         expect(onFailure).toHaveBeenCalled();
@@ -328,7 +350,7 @@ describe('useEditController', () => {
                     </EditController>
                 </ResourceProvider>
             </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            initialState
         );
         await act(async () =>
             saveCallback({ foo: 'bar' }, undefined, {
@@ -373,7 +395,7 @@ describe('useEditController', () => {
                     </EditController>
                 </ResourceProvider>
             </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            initialState
         );
         await act(async () => saveCallback({ foo: 'bar' }));
         expect(transform).toHaveBeenCalledWith({
@@ -417,7 +439,7 @@ describe('useEditController', () => {
                     </EditController>
                 </ResourceProvider>
             </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            initialState
         );
         await act(async () =>
             saveCallback({ foo: 'bar' }, undefined, {

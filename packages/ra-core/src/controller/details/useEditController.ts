@@ -22,7 +22,7 @@ import {
     SetTransformData,
     useSaveModifiers,
 } from '../saveModifiers';
-import { useResource } from '../../core';
+import { useResource, useResourceConfig } from '../../core';
 
 export interface EditProps {
     basePath?: string;
@@ -106,8 +106,9 @@ export const useEditController = <RecordType extends Record = Record>(
     const refresh = useRefresh();
     const version = useVersion();
 
-    const { resource, hasCreate, hasEdit, hasShow, hasList } = useResource(
-        props
+    const { resource } = useResource(props);
+    const { hasCreate, hasEdit, hasShow, hasList } = useResourceConfig(
+        resource
     );
 
     if (process.env.NODE_ENV !== 'production' && successMessage) {

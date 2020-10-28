@@ -21,8 +21,4 @@ export const ResourceContext = createContext<ResourceContextValue>(undefined);
 
 export interface ResourceContextValue {
     resource: string;
-    hasList: boolean;
-    hasEdit: boolean;
-    hasShow: boolean;
-    hasCreate: boolean;
 }

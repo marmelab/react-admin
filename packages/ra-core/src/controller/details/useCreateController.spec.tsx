@@ -62,11 +62,24 @@ describe('useCreateController', () => {
         });
     });
 
+    const initialState = {
+        admin: {
+            resources: {
+                posts: {
+                    data: {},
+                    props: {
+                        name: 'posts',
+                        hasCreate: true,
+                        hasEdit: true,
+                        hasList: true,
+                        hasShow: true,
+                    },
+                },
+            },
+        },
+    };
+
     const resourceValue = {
-        hasCreate: true,
-        hasEdit: true,
-        hasList: true,
-        hasShow: true,
         resource: 'posts',
     };
 
@@ -97,7 +110,7 @@ describe('useCreateController', () => {
                     </CreateController>
                 </ResourceProvider>
             </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            initialState
         );
         await act(async () => saveCallback({ foo: 'bar' }));
         expect(create).toHaveBeenCalledWith('posts', {
@@ -123,7 +136,7 @@ describe('useCreateController', () => {
                     </CreateController>
                 </ResourceProvider>
             </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            initialState
         );
         await act(async () => saveCallback({ foo: 'bar' }));
         const notify = dispatch.mock.calls.find(
@@ -159,7 +172,7 @@ describe('useCreateController', () => {
                     </CreateController>
                 </ResourceProvider>
             </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            initialState
         );
         await act(async () => saveCallback({ foo: 'bar' }));
         const notify = dispatch.mock.calls.find(
@@ -196,7 +209,7 @@ describe('useCreateController', () => {
                     </CreateController>
                 </ResourceProvider>
             </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            initialState
         );
         await act(async () => saveCallback({ foo: 'bar' }));
         expect(onSuccess).toHaveBeenCalled();
@@ -226,7 +239,7 @@ describe('useCreateController', () => {
                     </CreateController>
                 </ResourceProvider>
             </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            initialState
         );
         await act(async () =>
             saveCallback({ foo: 'bar' }, undefined, {
@@ -260,7 +273,7 @@ describe('useCreateController', () => {
                     </CreateController>
                 </ResourceProvider>
             </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            initialState
         );
         await act(async () => saveCallback({ foo: 'bar' }));
         expect(onFailure).toHaveBeenCalled();
@@ -290,7 +303,7 @@ describe('useCreateController', () => {
                     </CreateController>
                 </ResourceProvider>
             </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            initialState
         );
         await act(async () =>
             saveCallback({ foo: 'bar' }, undefined, {
@@ -331,7 +344,7 @@ describe('useCreateController', () => {
                     </CreateController>
                 </ResourceProvider>
             </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            initialState
         );
         await act(async () => saveCallback({ foo: 'bar' }));
         expect(transform).toHaveBeenCalledWith({ foo: 'bar' });
@@ -367,7 +380,7 @@ describe('useCreateController', () => {
                     </CreateController>
                 </ResourceProvider>
             </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            initialState
         );
         await act(async () =>
             saveCallback({ foo: 'bar' }, undefined, {

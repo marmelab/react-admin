@@ -198,7 +198,16 @@ const useStyles = makeStyles(
 );
 
 export interface ListViewProps
-    extends Omit<ListProps, 'basePath' | 'hasCreate' | 'perPage' | 'resource'>,
+    extends Omit<
+            ListProps,
+            | 'basePath'
+            | 'hasCreate'
+            | 'hasEdit'
+            | 'hasList'
+            | 'hasShow'
+            | 'perPage'
+            | 'resource'
+        >,
         ListControllerProps {}
 
 const sanitizeRestProps: (

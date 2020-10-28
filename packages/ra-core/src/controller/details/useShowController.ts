@@ -7,7 +7,7 @@ import { useGetOne } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
 import { useNotify, useRedirect, useRefresh } from '../../sideEffect';
 import { CRUD_GET_ONE } from '../../actions';
-import { useResource } from '../../core';
+import { useResource, useResourceConfig } from '../../core';
 
 export interface ShowProps {
     basePath?: string;
@@ -63,9 +63,11 @@ export const useShowController = <RecordType extends Record = Record>(
     const redirect = useRedirect();
     const refresh = useRefresh();
     const version = useVersion();
-    const { resource, hasCreate, hasEdit, hasShow, hasList } = useResource(
-        props
+    const { resource } = useResource(props);
+    const { hasCreate, hasEdit, hasShow, hasList } = useResourceConfig(
+        resource
     );
+
     const { data: record, loading, loaded } = useGetOne<RecordType>(
         resource,
         id,

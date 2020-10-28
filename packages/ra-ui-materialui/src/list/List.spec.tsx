@@ -37,6 +37,9 @@ describe('<List />', () => {
                         total: 0,
                         cachedRequests: {},
                     },
+                    props: {
+                        name: 'posts',
+                    },
                 },
             },
         },
@@ -50,7 +53,8 @@ describe('<List />', () => {
                 <List {...defaultProps}>
                     <Datagrid />
                 </List>
-            </ThemeProvider>
+            </ThemeProvider>,
+            defaultStateForList
         );
         expect(container.querySelectorAll('.list-page')).toHaveLength(1);
     });
@@ -70,7 +74,8 @@ describe('<List />', () => {
                         <Datagrid />
                     </List>
                 </MemoryRouter>
-            </ThemeProvider>
+            </ThemeProvider>,
+            defaultStateForList
         );
         expect(queryAllByText('filters')).toHaveLength(2);
         expect(queryAllByLabelText('ra.action.export')).toHaveLength(1);
@@ -86,7 +91,8 @@ describe('<List />', () => {
                 <List {...defaultProps} aside={<Aside />}>
                     <Dummy />
                 </List>
-            </ThemeProvider>
+            </ThemeProvider>,
+            defaultStateForList
         );
         expect(queryAllByText('Hello')).toHaveLength(1);
     });

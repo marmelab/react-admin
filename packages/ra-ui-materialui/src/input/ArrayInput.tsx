@@ -1,7 +1,13 @@
 import * as React from 'react';
 import { cloneElement, Children, FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { isRequired, FieldTitle, composeValidators, InputProps } from 'ra-core';
+import {
+    isRequired,
+    FieldTitle,
+    composeValidators,
+    InputProps,
+    useResource,
+} from 'ra-core';
 import { useFieldArray } from 'react-final-form-arrays';
 import { InputLabel, FormControl } from '@material-ui/core';
 
@@ -48,22 +54,24 @@ import sanitizeInputRestProps from './sanitizeInputRestProps';
  *
  * @see https://github.com/final-form/react-final-form-arrays
  */
-const ArrayInput: FC<ArrayInputProps> = ({
-    className,
-    defaultValue,
-    label,
-    children,
-    record,
-    resource,
-    source,
-    validate,
-    variant,
-    margin = 'dense',
-    ...rest
-}) => {
+const ArrayInput: FC<ArrayInputProps> = props => {
+    const {
+        className,
+        defaultValue,
+        label,
+        children,
+        record,
+        source,
+        validate,
+        variant,
+        margin = 'dense',
+        ...rest
+    } = props;
     const sanitizedValidate = Array.isArray(validate)
         ? composeValidators(validate)
         : validate;
+
+    const { resource } = useResource(props);
 
     const fieldProps = useFieldArray(source, {
         initialValue: defaultValue,

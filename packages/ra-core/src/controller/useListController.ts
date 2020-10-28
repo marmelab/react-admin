@@ -23,7 +23,7 @@ import {
     Record,
     Exporter,
 } from '../types';
-import { useResource } from '../core';
+import { useResource, useResourceConfig } from '../core';
 
 export interface ListProps {
     // the props you can change
@@ -63,6 +63,9 @@ export interface ListControllerProps<RecordType extends Record = Record> {
     exporter?: Exporter | false;
     filterValues: any;
     hasCreate: boolean;
+    hasEdit: boolean;
+    hasList: boolean;
+    hasShow: boolean;
     hideFilter: (filterName: string) => void;
     ids: Identifier[];
     loading: boolean;
@@ -115,7 +118,11 @@ const useListController = <RecordType extends Record = Record>(
         filter,
         debounce = 500,
     } = props;
-    const { resource, hasCreate } = useResource(props);
+
+    const { resource } = useResource(props);
+    const { hasCreate, hasEdit, hasShow, hasList } = useResourceConfig(
+        resource
+    );
 
     if (filter && isValidElement(filter)) {
         throw new Error(
@@ -241,6 +248,9 @@ const useListController = <RecordType extends Record = Record>(
         exporter,
         filterValues: query.filterValues,
         hasCreate,
+        hasEdit,
+        hasShow,
+        hasList,
         hideFilter: queryModifiers.hideFilter,
         ids: finalIds,
         loaded: loaded || defaultIds.length > 0,
