@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { render, cleanup } from '@testing-library/react';
+import { cleanup } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import { ReferenceManyFieldView } from './ReferenceManyField';
 import TextField from './TextField';
 import SingleFieldList from '../list/SingleFieldList';
+import { renderWithRedux } from 'ra-core';
 
 describe('<ReferenceManyField />', () => {
     afterEach(cleanup);
@@ -17,6 +18,17 @@ describe('<ReferenceManyField />', () => {
         setPage: () => null,
         setPerPage: () => null,
     };
+    const initialState = {
+        admin: {
+            resources: {
+                bar: {
+                    props: {
+                        name: 'bar',
+                    },
+                },
+            },
+        },
+    };
 
     it('should render a list of the child component', () => {
         const data = {
@@ -24,7 +36,7 @@ describe('<ReferenceManyField />', () => {
             2: { id: 2, title: 'world' },
         };
         const history = createMemoryHistory();
-        const { queryAllByRole } = render(
+        const { queryAllByRole } = renderWithRedux(
             <Router history={history}>
                 <ReferenceManyFieldView
                     {...defaultProps}
@@ -35,7 +47,8 @@ describe('<ReferenceManyField />', () => {
                         <TextField source="title" />
                     </SingleFieldList>
                 </ReferenceManyFieldView>
-            </Router>
+            </Router>,
+            initialState
         );
         expect(queryAllByRole('progressbar')).toHaveLength(0);
         const links = queryAllByRole('link');
@@ -47,12 +60,13 @@ describe('<ReferenceManyField />', () => {
     });
 
     it('should render nothing when there are no related records', () => {
-        const { queryAllByRole } = render(
+        const { queryAllByRole } = renderWithRedux(
             <ReferenceManyFieldView {...defaultProps} data={{}} ids={[]}>
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </ReferenceManyFieldView>
+            </ReferenceManyFieldView>,
+            initialState
         );
         expect(queryAllByRole('progressbar')).toHaveLength(0);
         expect(queryAllByRole('link')).toHaveLength(0);
@@ -64,7 +78,7 @@ describe('<ReferenceManyField />', () => {
             'abc-2': { id: 'abc-2', title: 'world' },
         };
         const history = createMemoryHistory();
-        const { queryAllByRole } = render(
+        const { queryAllByRole } = renderWithRedux(
             <Router history={history}>
                 <ReferenceManyFieldView
                     {...defaultProps}
@@ -75,7 +89,8 @@ describe('<ReferenceManyField />', () => {
                         <TextField source="title" />
                     </SingleFieldList>
                 </ReferenceManyFieldView>
-            </Router>
+            </Router>,
+            initialState
         );
         expect(queryAllByRole('progressbar')).toHaveLength(0);
         const links = queryAllByRole('link');
@@ -92,7 +107,7 @@ describe('<ReferenceManyField />', () => {
             2: { id: 2, title: 'world' },
         };
         const history = createMemoryHistory();
-        const { queryAllByRole } = render(
+        const { queryAllByRole } = renderWithRedux(
             <Router history={history}>
                 <ReferenceManyFieldView
                     {...defaultProps}
@@ -103,7 +118,8 @@ describe('<ReferenceManyField />', () => {
                         <TextField source="title" />
                     </SingleFieldList>
                 </ReferenceManyFieldView>
-            </Router>
+            </Router>,
+            initialState
         );
         expect(queryAllByRole('progressbar')).toHaveLength(0);
         const links = queryAllByRole('link');

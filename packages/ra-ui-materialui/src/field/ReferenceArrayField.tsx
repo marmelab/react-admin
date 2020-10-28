@@ -10,6 +10,9 @@ import {
     useReferenceArrayFieldController,
     SortPayload,
     FilterPayload,
+    useResource,
+    useGetResource,
+    ResourceProvider,
 } from 'ra-core';
 
 import { fieldPropTypes, PublicFieldProps, InjectedFieldProps } from './types';
@@ -81,10 +84,11 @@ const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
         perPage,
         record,
         reference,
-        resource,
         sort,
         source,
     } = props;
+    const { resource } = useResource(props);
+    const referenceResource = useGetResource(reference);
 
     if (React.Children.count(children) !== 1) {
         throw new Error(
@@ -103,9 +107,11 @@ const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
         source,
     });
     return (
-        <ListContextProvider value={controllerProps}>
-            <PureReferenceArrayFieldView {...props} {...controllerProps} />
-        </ListContextProvider>
+        <ResourceProvider value={referenceResource}>
+            <ListContextProvider value={controllerProps}>
+                <PureReferenceArrayFieldView {...props} {...controllerProps} />
+            </ListContextProvider>
+        </ResourceProvider>
     );
 };
 

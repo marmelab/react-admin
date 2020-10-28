@@ -10,6 +10,9 @@ import {
     UseReferenceProps,
     getResourceLinkPath,
     LinkToType,
+    useResource,
+    useGetResource,
+    ResourceProvider,
 } from 'ra-core';
 
 import LinearProgress from '../layout/LinearProgress';
@@ -72,7 +75,8 @@ const ReferenceField: FC<ReferenceFieldProps> = ({
     if (React.Children.count(children) !== 1) {
         throw new Error('<ReferenceField> only accepts a single child');
     }
-    const { basePath, resource } = props;
+    const { basePath } = props;
+    const { resource } = useResource(props);
     const resourceLinkPath = getResourceLinkPath({
         ...props,
         resource,
@@ -173,6 +177,7 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
         ...rest
     } = props;
     const classes = useStyles(props);
+    const referenceResource = useGetResource(reference);
     if (!loaded) {
         return <LinearProgress />;
     }
@@ -194,23 +199,25 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
 
     if (resourceLinkPath) {
         return (
-            <Link
-                to={resourceLinkPath as string}
-                className={className}
-                onClick={stopPropagation}
-            >
-                {cloneElement(Children.only(children), {
-                    className: classnames(
-                        children.props.className,
-                        classes.link // force color override for Typography components
-                    ),
-                    record: referenceRecord,
-                    resource: reference,
-                    basePath,
-                    translateChoice,
-                    ...sanitizeFieldRestProps(rest),
-                })}
-            </Link>
+            <ResourceProvider value={referenceResource}>
+                <Link
+                    to={resourceLinkPath as string}
+                    className={className}
+                    onClick={stopPropagation}
+                >
+                    {cloneElement(Children.only(children), {
+                        className: classnames(
+                            children.props.className,
+                            classes.link // force color override for Typography components
+                        ),
+                        record: referenceRecord,
+                        resource: reference,
+                        basePath,
+                        translateChoice,
+                        ...sanitizeFieldRestProps(rest),
+                    })}
+                </Link>
+            </ResourceProvider>
         );
     }
 

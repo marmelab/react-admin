@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, cleanup } from '@testing-library/react';
+import { cleanup } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { renderWithRedux, DataProviderContext } from 'ra-core';
 
@@ -9,6 +9,18 @@ import TextField from './TextField';
 
 describe('<ReferenceField />', () => {
     afterEach(cleanup);
+    const initialState = {
+        admin: {
+            resources: {
+                posts: {
+                    data: {},
+                    props: {
+                        name: 'posts',
+                    },
+                },
+            },
+        },
+    };
 
     describe('Progress bar', () => {
         it('should display a loader on mount if the reference is not in the store', () => {
@@ -21,7 +33,8 @@ describe('<ReferenceField />', () => {
                     basePath="/comments"
                 >
                     <TextField source="title" />
-                </ReferenceField>
+                </ReferenceField>,
+                initialState
             );
             expect(queryByRole('progressbar')).not.toBeNull();
             const links = container.getElementsByTagName('a');
@@ -46,6 +59,9 @@ describe('<ReferenceField />', () => {
                         resources: {
                             posts: {
                                 data: { 123: { id: 123, title: 'hello' } },
+                                props: {
+                                    name: 'posts',
+                                },
                             },
                         },
                     },
@@ -77,13 +93,7 @@ describe('<ReferenceField />', () => {
                         </ReferenceField>
                     </MemoryRouter>
                 </DataProviderContext.Provider>,
-                {
-                    admin: {
-                        resources: {
-                            posts: { data: {} },
-                        },
-                    },
-                }
+                initialState
             );
             await new Promise(resolve => setTimeout(resolve, 10));
             expect(queryByRole('progressbar')).toBeNull();
@@ -107,7 +117,8 @@ describe('<ReferenceField />', () => {
                     >
                         <TextField source="title" />
                     </ReferenceField>
-                </DataProviderContext.Provider>
+                </DataProviderContext.Provider>,
+                initialState
             );
             await new Promise(resolve => setTimeout(resolve, 10));
             expect(queryByRole('progressbar')).toBeNull();
@@ -132,7 +143,8 @@ describe('<ReferenceField />', () => {
                     >
                         <TextField source="title" />
                     </ReferenceField>
-                </DataProviderContext.Provider>
+                </DataProviderContext.Provider>,
+                initialState
             );
             await new Promise(resolve => setTimeout(resolve, 10));
             expect(queryByRole('progressbar')).toBeNull();
@@ -159,6 +171,7 @@ describe('<ReferenceField />', () => {
                     resources: {
                         posts: {
                             data: { 123: { id: 123, title: 'hello' } },
+                            props: { name: 'posts' },
                         },
                     },
                 },
@@ -190,7 +203,17 @@ describe('<ReferenceField />', () => {
                         <TextField source="title" />
                     </ReferenceField>
                 </MemoryRouter>
-            </DataProviderContext.Provider>
+            </DataProviderContext.Provider>,
+            {
+                admin: {
+                    resources: {
+                        posts: {
+                            data: { 123: { id: 123, title: 'hello' } },
+                            props: { name: 'posts' },
+                        },
+                    },
+                },
+            }
         );
         await new Promise(resolve => setTimeout(resolve, 10));
         const action = dispatch.mock.calls[0][0];
@@ -215,7 +238,17 @@ describe('<ReferenceField />', () => {
                 >
                     <TextField source="title" />
                 </ReferenceField>
-            </DataProviderContext.Provider>
+            </DataProviderContext.Provider>,
+            {
+                admin: {
+                    resources: {
+                        posts: {
+                            data: { 123: { id: 123, title: 'hello' } },
+                            props: { name: 'posts' },
+                        },
+                    },
+                },
+            }
         );
         await new Promise(resolve => setTimeout(resolve, 10));
         const ErrorIcon = getByRole('presentation');
@@ -225,7 +258,7 @@ describe('<ReferenceField />', () => {
 
     describe('ReferenceFieldView', () => {
         it('should render a link to specified resourceLinkPath', () => {
-            const { container } = render(
+            const { container } = renderWithRedux(
                 <MemoryRouter>
                     <ReferenceFieldView
                         record={{ id: 123, postId: 123 }}
@@ -240,7 +273,8 @@ describe('<ReferenceField />', () => {
                     >
                         <TextField source="title" />
                     </ReferenceFieldView>
-                </MemoryRouter>
+                </MemoryRouter>,
+                initialState
             );
             const links = container.getElementsByTagName('a');
             expect(links).toHaveLength(1);
@@ -248,19 +282,20 @@ describe('<ReferenceField />', () => {
         });
 
         it('should render no link when resourceLinkPath is not specified', () => {
-            const { container } = render(
+            const { container } = renderWithRedux(
                 <ReferenceFieldView
                     record={{ id: 123, fooId: 123 }}
                     source="fooId"
                     referenceRecord={{ id: 123, title: 'foo' }}
-                    reference="bar"
+                    reference="posts"
                     basePath="/foo"
                     resourceLinkPath={false}
                     loaded={true}
                     loading={false}
                 >
                     <TextField source="title" />
-                </ReferenceFieldView>
+                </ReferenceFieldView>,
+                initialState
             );
             const links = container.getElementsByTagName('a');
             expect(links).toHaveLength(0);

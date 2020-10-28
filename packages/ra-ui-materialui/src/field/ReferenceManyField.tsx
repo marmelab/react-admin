@@ -6,6 +6,8 @@ import {
     useReferenceManyFieldController,
     ListContextProvider,
     ListControllerProps,
+    useGetResource,
+    ResourceProvider,
 } from 'ra-core';
 
 import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
@@ -142,8 +144,10 @@ ReferenceManyField.defaultProps = {
 
 export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = props => {
     const { basePath, children, pagination, reference, ...rest } = props;
+    const referenceResource = useGetResource(reference);
+
     return (
-        <>
+        <ResourceProvider value={referenceResource}>
             {cloneElement(Children.only(children), {
                 ...sanitizeFieldRestProps(rest),
                 basePath,
@@ -152,7 +156,7 @@ export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = props => 
             {pagination &&
                 props.total !== undefined &&
                 cloneElement(pagination, rest)}
-        </>
+        </ResourceProvider>
     );
 };
 

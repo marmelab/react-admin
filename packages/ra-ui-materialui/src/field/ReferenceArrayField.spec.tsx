@@ -1,17 +1,18 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, cleanup } from '@testing-library/react';
+import { cleanup } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { ListContextProvider } from 'ra-core';
 
 import { ReferenceArrayFieldView } from './ReferenceArrayField';
 import TextField from './TextField';
 import SingleFieldList from '../list/SingleFieldList';
+import { renderWithRedux } from 'ra-core';
 
 describe('<ReferenceArrayField />', () => {
     afterEach(cleanup);
     it('should render a loading indicator when related records are not yet fetched', () => {
-        const { queryAllByRole } = render(
+        const { queryAllByRole } = renderWithRedux(
             <ListContextProvider
                 value={{
                     resource: 'foo',
@@ -41,7 +42,7 @@ describe('<ReferenceArrayField />', () => {
             1: { id: 1, title: 'hello' },
             2: { id: 2, title: 'world' },
         };
-        const { queryAllByRole, container, getByText } = render(
+        const { queryAllByRole, container, getByText } = renderWithRedux(
             <MemoryRouter>
                 <ListContextProvider
                     value={{
@@ -72,7 +73,7 @@ describe('<ReferenceArrayField />', () => {
     });
 
     it('should render nothing when there are no related records', () => {
-        const { queryAllByRole, container } = render(
+        const { queryAllByRole, container } = renderWithRedux(
             <ListContextProvider
                 value={{
                     resource: 'foo',
@@ -103,7 +104,7 @@ describe('<ReferenceArrayField />', () => {
             'abc-1': { id: 'abc-1', title: 'hello' },
             'abc-2': { id: 'abc-2', title: 'world' },
         };
-        const { queryAllByRole, container, getByText } = render(
+        const { queryAllByRole, container, getByText } = renderWithRedux(
             <MemoryRouter>
                 <ListContextProvider
                     value={{
@@ -138,7 +139,7 @@ describe('<ReferenceArrayField />', () => {
             1: { id: 1, title: 'hello' },
             2: { id: 2, title: 'world' },
         };
-        const { queryAllByRole, container, getByText } = render(
+        const { queryAllByRole, container, getByText } = renderWithRedux(
             <MemoryRouter>
                 <ListContextProvider
                     value={{
@@ -174,7 +175,7 @@ describe('<ReferenceArrayField />', () => {
             1: { id: 1, title: 'hello' },
             2: { id: 2, title: 'world' },
         };
-        const { container } = render(
+        const { container } = renderWithRedux(
             <MemoryRouter>
                 <ListContextProvider
                     value={{
