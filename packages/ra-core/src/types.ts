@@ -299,6 +299,45 @@ export type LegacyDataProvider = (
     params: any
 ) => Promise<any>;
 
+export interface ResourceDefinition {
+    readonly name: string;
+    readonly options?: any;
+    readonly hasList: boolean;
+    readonly hasEdit: boolean;
+    readonly hasShow: boolean;
+    readonly hasCreate: boolean;
+    readonly icon?: any;
+}
+
+export interface ResourceReduxState {
+    data: {
+        [key: string]: Record;
+        [key: number]: Record;
+    };
+    list: {
+        cachedRequests?: {
+            ids: Identifier[];
+            total: number;
+            validity: Date;
+        };
+        expanded: Identifier[];
+        ids: Identifier[];
+        loadedOnce: boolean;
+        params: any;
+        selectedIds: Identifier[];
+        total: number;
+    };
+    validity: {
+        [key: string]: Date;
+        [key: number]: Date;
+    };
+    props: ResourceDefinition;
+}
+
+export interface ResourcesReduxState {
+    [name: string]: ResourceReduxState;
+}
+
 /**
  * Redux state type
  */
@@ -311,31 +350,7 @@ export interface ReduxState {
             sidebarOpen: boolean;
             viewVersion: number;
         };
-        resources: {
-            [name: string]: {
-                data: {
-                    [key: string]: Record;
-                    [key: number]: Record;
-                };
-                list: {
-                    cachedRequests?: {
-                        ids: Identifier[];
-                        total: number;
-                        validity: Date;
-                    };
-                    expanded: Identifier[];
-                    ids: Identifier[];
-                    loadedOnce: boolean;
-                    params: any;
-                    selectedIds: Identifier[];
-                    total: number;
-                };
-                validity: {
-                    [key: string]: Date;
-                    [key: number]: Date;
-                };
-            };
-        };
+        resources: ResourcesReduxState;
         references: {
             oneToMany: {
                 [relatedTo: string]: { ids: Identifier[]; total: number };

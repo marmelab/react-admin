@@ -10,6 +10,7 @@ import references, {
 } from './references';
 import ui from './ui';
 import customQueries from './customQueries';
+import { ReduxState } from '../../types';
 
 const defaultReducer = () => null;
 
@@ -29,12 +30,13 @@ export default combineReducers({
     ui: ui || defaultReducer,
 });
 
-export const getPossibleReferenceValues = (state, props) =>
+export const getPossibleReferenceValues = (state: ReduxState, props) =>
     referencesGetPossibleReferenceValues(state.references, props);
 
-export const getResources = state => resourceGetResources(state.resources);
+export const getResources = (state: ReduxState) =>
+    resourceGetResources(state.resources);
 
-export const getReferenceResource = (state, props) => {
+export const getReferenceResource = (state: ReduxState, props) => {
     return resourceGetReferenceResource(state.resources, props);
 };
 

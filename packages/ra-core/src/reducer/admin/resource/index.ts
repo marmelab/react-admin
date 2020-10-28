@@ -6,6 +6,7 @@ import {
     REFRESH_VIEW,
     RefreshViewAction,
 } from '../../../actions';
+import { ResourcesReduxState } from '../../../types';
 
 import data from './data';
 import list from './list';
@@ -74,7 +75,8 @@ export default (previousState = initialState, action: ActionTypes) => {
     return newState;
 };
 
-export const getResources = state =>
+export const getResources = (state: ResourcesReduxState) =>
     Object.keys(state).map(key => state[key].props);
 
-export const getReferenceResource = (state, props) => state[props.reference];
+export const getReferenceResource = (state: ResourcesReduxState, props) =>
+    state[props.reference];
