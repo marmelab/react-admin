@@ -279,6 +279,7 @@ describe('useGetList', () => {
                     })
                 ),
         };
+        await wait(); // empty the query deduplication in useQueryWithStore
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseGetList options={{ onSuccess: onSuccess1 }} />
@@ -313,6 +314,7 @@ describe('useGetList', () => {
         const dataProvider = {
             getList: jest.fn(() => Promise.reject(new Error('failed'))),
         };
+        await wait(); // empty the query deduplication in useQueryWithStore
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseGetList options={{ onFailure }} />
