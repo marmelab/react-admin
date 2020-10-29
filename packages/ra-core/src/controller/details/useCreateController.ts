@@ -25,6 +25,7 @@ import { useTranslate } from '../../i18n';
 import useVersion from '../useVersion';
 import { CRUD_CREATE } from '../../actions';
 import { Record } from '../../types';
+import { useResourceContext, useResourceDefinition } from '../../core';
 
 export interface CreateProps<RecordType extends Omit<Record, 'id'> = Record> {
     basePath?: string;
@@ -101,16 +102,15 @@ export const useCreateController = <
     useCheckMinimumRequiredProps('Create', ['basePath', 'resource'], props);
     const {
         basePath,
-        resource,
         record = {},
-        hasShow,
-        hasEdit,
         successMessage,
         onSuccess,
         onFailure,
         transform,
     } = props;
 
+    const { resource } = useResourceContext(props);
+    const { hasEdit, hasShow } = useResourceDefinition(resource, props);
     const location = useLocation();
     const translate = useTranslate();
     const notify = useNotify();
