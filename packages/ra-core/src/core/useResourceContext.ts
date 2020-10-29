@@ -9,7 +9,7 @@ import { ResourceContext, ResourceContextValue } from './ResourceContext';
  *
  * @returns {ResourceContextValue} The resource informations
  */
-export const useResource = <
+export const useResourceContext = <
     ResourceInformationsType extends Partial<
         ResourceContextValue
     > = ResourceContextValue

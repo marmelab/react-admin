@@ -3,9 +3,13 @@ import { getResources } from '../reducer';
 import { ResourceDefinition } from '../types';
 
 /**
- * Hook which returns the configuration of the requested resource
+ * Hook which returns the definition of the requested resource
  */
-export const useResourceConfig = (resource: string): ResourceDefinition => {
+export const useResourceDefinition = (
+    resource: string,
+    props
+): ResourceDefinition => {
     const resources = useSelector(getResources);
-    return resources.find(r => r.name === resource);
+
+    return resources.find(r => r?.name === resource) || props;
 };
