@@ -50,6 +50,10 @@ const useLogout = (): Logout => {
         ) =>
             authProvider.logout(params).then(redirectToFromProvider => {
                 dispatch(clearState());
+                if (redirectToFromProvider === false) {
+                    // do not redirect
+                    return;
+                }
                 // redirectTo can contain a query string, e.g '/login?foo=bar'
                 // we must split the redirectTo to pass a structured location to history.push()
                 const redirectToParts = (

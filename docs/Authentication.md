@@ -176,7 +176,7 @@ export default {
 
 The `authProvider` is also a good place to notify the authentication API that the user credentials are no longer valid after logout.
 
-Note that the `authProvider.logout()` method can return the url to which the user will be redirected once logged out. By default, this is the `/login` route.
+Note that after logout, react-admin redirects the user to the string returned by `authProvider.logout()` - or to the `/login` url if the method returns nothing. You can customize the redirection url by returning a route string, or `false` to disable redirection after logout. 
 
 ## Catching Authentication Errors On The API
 
