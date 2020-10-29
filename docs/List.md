@@ -734,10 +734,11 @@ The `List` component accepts the usual `className` prop but you can override man
 | `bulkActionsDisplayed` | Applied to the child component inside the main container when there are selected records |
 | `noResults`            | Applied to the component shown when there is no result                                   |
 
-You can customize the list styles by passing a `classes` object as prop, through `useStyles()`. Here is an example:
+You can customize the `<List>` styles by passing a `classes` object as prop, through `useStyles()`. Here is an example:
 
 {% raw %}
 ```jsx
+import * as React from 'react';
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
@@ -2033,21 +2034,21 @@ export const PostList = props => (
 
 The `Datagrid` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
 
-* `table`: alternative to using `className`. Applied to the root element.
-* `tbody`: applied to the tbody
-* `headerCell`: applied to each header cell
-* `row`: applied to each row
-* `rowEven`: applied to each even row
-* `rowOdd`: applied to each odd row
-* `rowCell`: applied to each row cell
-
-Here is an example of how you can override some of these classes:
+| Rule name     | Description                                                   |
+| ------------- | ------------------------------------------------------------- |
+| `table`       | Alternative to using `className`. Applied to the root element |
+| `tbody`       | Applied to the tbody                                          |
+| `headerCell`  | Applied to each header cell                                   |
+| `row`         | Applied to each row                                           |
+| `rowEven`     | Applied to each even row                                      |
+| `rowOdd`      | Applied to the each odd row                                   |
+| `rowCell`     | Applied to the each row cell                                  |
 
 You can customize the `<Datagrid>` styles by passing a `classes` object as prop, through `useStyles()`. Here is an example:
 
 {% raw %}
 ```jsx
-import * as React from "react";
+import * as React from 'react';
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
@@ -2070,6 +2071,8 @@ const PostList = props => {
 export default PostList;
 ```
 {% endraw %}
+
+**Tip**: The `Datagrid` component `classes` can also be customized for all instances of the component with its global css name `"RaDatagrid"` as [describe here](https://marmelab.com/blog/2019/12/18/react-admin-3-1.html#theme-overrides)
 
 **Tip**: If you want to override the `header` and `cell` styles independently for each column, use the `headerClassName` and `cellClassName` props in `<Field>` components. For instance, to hide a certain column on small screens:
 
@@ -2181,7 +2184,7 @@ const CustomList = () => {
         <ListContextProvider
             value={{
                 resource: 'posts',
-                basePath: 'posts',
+                basePath: '/posts',
                 data: keyBy(data, 'id'),
                 ids: data.map(({ id }) => id),
                 currentSort: { field: 'id', order: 'ASC' },
