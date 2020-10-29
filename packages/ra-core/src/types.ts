@@ -299,10 +299,19 @@ export type LegacyDataProvider = (
     params: any
 ) => Promise<any>;
 
+export interface ResourceDefinition {
+    readonly name: string;
+    readonly options?: any;
+    readonly hasList?: boolean;
+    readonly hasEdit?: boolean;
+    readonly hasShow?: boolean;
+    readonly hasCreate?: boolean;
+    readonly icon?: any;
+}
+
 /**
  * Redux state type
  */
-
 export interface ReduxState {
     admin: {
         ui: {
@@ -313,6 +322,7 @@ export interface ReduxState {
         };
         resources: {
             [name: string]: {
+                props: ResourceDefinition;
                 data: {
                     [key: string]: Record;
                     [key: number]: Record;

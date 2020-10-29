@@ -1,14 +1,6 @@
-export const REGISTER_RESOURCE = 'RA/REGISTER_RESOURCE';
+import { ResourceDefinition } from '../types';
 
-export interface ResourceDefinition {
-    readonly name: string;
-    readonly options?: any;
-    readonly hasList?: boolean;
-    readonly hasEdit?: boolean;
-    readonly hasShow?: boolean;
-    readonly hasCreate?: boolean;
-    readonly icon?: any;
-}
+export const REGISTER_RESOURCE = 'RA/REGISTER_RESOURCE';
 
 export interface RegisterResourceAction {
     readonly type: typeof REGISTER_RESOURCE;
