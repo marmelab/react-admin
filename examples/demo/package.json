@@ -19,14 +19,14 @@
         "ra-input-rich-text": "^3.9.0",
         "ra-language-english": "^3.9.0",
         "ra-language-french": "^3.9.0",
-        "react": "^16.9.0",
+        "react": "^17.0.0",
         "react-admin": "^3.9.0",
         "react-app-polyfill": "^1.0.4",
-        "react-dom": "^16.9.0",
+        "react-dom": "^17.0.0",
         "react-redux": "^7.1.0",
         "react-router": "^5.1.0",
         "react-router-dom": "^5.1.0",
-        "react-scripts": "^3.0.0",
+        "react-scripts": "^4.0.0",
         "recharts": "^1.8.5",
         "redux-saga": "^1.0.0"
     },
@@ -50,7 +50,7 @@
         "@types/node": "^12.12.14",
         "@types/query-string": "5.1.0",
         "@types/react": "^16.9.13",
-        "@types/react-dom": "^16.9.4",
+        "@types/react-dom": "^17.0.0",
         "source-map-explorer": "^2.0.0",
         "typescript": "^4.0.2"
     }
