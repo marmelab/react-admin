@@ -15,10 +15,6 @@ describe('<List />', () => {
     afterEach(cleanup);
 
     const defaultProps = {
-        hasCreate: true,
-        hasEdit: true,
-        hasList: true,
-        hasShow: true,
         resource: 'posts',
         basePath: '/posts',
         history: {} as any,
@@ -39,6 +35,10 @@ describe('<List />', () => {
                     },
                     props: {
                         name: 'posts',
+                        hasCreate: true,
+                        hasEdit: true,
+                        hasList: true,
+                        hasShow: true,
                     },
                 },
             },
@@ -98,7 +98,7 @@ describe('<List />', () => {
     });
 
     it('should render an invite when the list is empty', async () => {
-        const Dummy = () => <div />;
+        const Dummy = props => <div />;
         const dataProvider = {
             getList: jest.fn(() => Promise.resolve({ data: [], total: 0 })),
         } as any;

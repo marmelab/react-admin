@@ -8,10 +8,18 @@ import { Edit } from './Edit';
 describe('<Edit />', () => {
     afterEach(cleanup);
 
+    const initialState = {
+        admin: {
+            resources: {
+                posts: { data: {}, props: { name: 'posts' } },
+            },
+        },
+    };
+
     const defaultEditProps = {
-        basePath: '',
+        basePath: '/posts',
         id: '123',
-        resource: 'foo',
+        resource: 'posts',
         location: {},
         match: {},
     };
@@ -28,7 +36,7 @@ describe('<Edit />', () => {
                     <FakeForm />
                 </Edit>
             </DataProviderContext.Provider>,
-            { admin: { resources: { foo: { data: {} } } } }
+            initialState
         );
         await wait(() => {
             expect(queryAllByText('lorem')).toHaveLength(1);
@@ -60,14 +68,14 @@ describe('<Edit />', () => {
                     <FakeForm />
                 </Edit>
             </DataProviderContext.Provider>,
-            { admin: { resources: { foo: { data: {} } } } }
+            initialState
         );
         await wait(() => {
             expect(queryAllByText('lorem')).toHaveLength(1);
         });
         fireEvent.click(getByText('Update'));
         await wait(() => {
-            expect(update).toHaveBeenCalledWith('foo', {
+            expect(update).toHaveBeenCalledWith('posts', {
                 id: '123',
                 data: { id: 123, title: 'ipsum' },
                 previousData: { id: 123, title: 'lorem' },
@@ -103,7 +111,7 @@ describe('<Edit />', () => {
                         <FakeForm />
                     </Edit>
                 </DataProviderContext.Provider>,
-                { admin: { resources: { foo: { data: {} } } } }
+                initialState
             );
             await wait(() => {
                 expect(queryAllByText('lorem')).toHaveLength(1);
@@ -150,7 +158,7 @@ describe('<Edit />', () => {
                         <FakeForm />
                     </Edit>
                 </DataProviderContext.Provider>,
-                { admin: { resources: { foo: { data: {} } } } }
+                initialState
             );
             await wait(() => {
                 expect(queryAllByText('lorem')).toHaveLength(1);
@@ -194,7 +202,7 @@ describe('<Edit />', () => {
                         <FakeForm />
                     </Edit>
                 </DataProviderContext.Provider>,
-                { admin: { resources: { foo: { data: {} } } } }
+                initialState
             );
             await wait(() => {
                 expect(queryAllByText('lorem')).toHaveLength(1);
@@ -240,7 +248,7 @@ describe('<Edit />', () => {
                         <FakeForm />
                     </Edit>
                 </DataProviderContext.Provider>,
-                { admin: { resources: { foo: { data: {} } } } }
+                initialState
             );
             await wait(() => {
                 expect(queryAllByText('lorem')).toHaveLength(1);
@@ -291,7 +299,7 @@ describe('<Edit />', () => {
                         <FakeForm />
                     </Edit>
                 </DataProviderContext.Provider>,
-                { admin: { resources: { foo: { data: {} } } } }
+                initialState
             );
             await wait(() => {
                 expect(queryAllByText('lorem')).toHaveLength(1);
@@ -302,7 +310,7 @@ describe('<Edit />', () => {
                     id: 123,
                     title: 'ipsum',
                 });
-                expect(update).toHaveBeenCalledWith('foo', {
+                expect(update).toHaveBeenCalledWith('posts', {
                     id: '123',
                     data: { id: 123, title: 'ipsum', transformed: true },
                     previousData: { id: 123, title: 'lorem' },
@@ -352,7 +360,7 @@ describe('<Edit />', () => {
                         <FakeForm />
                     </Edit>
                 </DataProviderContext.Provider>,
-                { admin: { resources: { foo: { data: {} } } } }
+                initialState
             );
             await wait(() => {
                 expect(queryAllByText('lorem')).toHaveLength(1);
@@ -364,7 +372,7 @@ describe('<Edit />', () => {
                     id: 123,
                     title: 'ipsum',
                 });
-                expect(update).toHaveBeenCalledWith('foo', {
+                expect(update).toHaveBeenCalledWith('posts', {
                     id: '123',
                     data: { id: 123, title: 'ipsum', transformed: true },
                     previousData: { id: 123, title: 'lorem' },
@@ -386,7 +394,7 @@ describe('<Edit />', () => {
                         <Dummy />
                     </Edit>
                 </DataProviderContext.Provider>,
-                { admin: { resources: { foo: { data: {} } } } }
+                initialState
             );
             expect(queryAllByText('Hello')).toHaveLength(1);
         });

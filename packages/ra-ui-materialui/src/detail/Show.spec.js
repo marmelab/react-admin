@@ -8,10 +8,18 @@ import { Show } from './Show';
 describe('<Show />', () => {
     afterEach(cleanup);
 
+    const initialState = {
+        admin: {
+            resources: {
+                posts: { data: {}, props: { name: 'posts' } },
+            },
+        },
+    };
+
     const defaultShowProps = {
-        basePath: '/',
+        basePath: '/posts',
         id: '123',
-        resource: 'foo',
+        resource: 'posts',
         location: {},
         match: {},
     };
@@ -28,7 +36,7 @@ describe('<Show />', () => {
                     <Dummy />
                 </Show>
             </DataProviderContext.Provider>,
-            { admin: { resources: { foo: { data: {} } } } }
+            initialState
         );
         expect(queryAllByText('Hello')).toHaveLength(1);
     });

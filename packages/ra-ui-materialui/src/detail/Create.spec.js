@@ -8,10 +8,18 @@ import { Create } from './Create';
 describe('<Create />', () => {
     afterEach(cleanup);
 
+    const initialState = {
+        admin: {
+            resources: {
+                posts: { props: { name: 'posts' } },
+            },
+        },
+    };
+
     const defaultCreateProps = {
-        basePath: '/foo',
+        basePath: '/posts',
         id: '123',
-        resource: 'foo',
+        resource: 'posts',
         location: {},
         match: {},
     };
@@ -22,7 +30,8 @@ describe('<Create />', () => {
         const { queryAllByText } = renderWithRedux(
             <Create {...defaultCreateProps} aside={<Aside />}>
                 <Dummy />
-            </Create>
+            </Create>,
+            initialState
         );
         expect(queryAllByText('Hello')).toHaveLength(1);
     });
