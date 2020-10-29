@@ -59,7 +59,7 @@ const defaultFilter = {};
  *      filterToQuery: searchText => ({ title: searchText })
  * });
  */
-const useReferenceInputController = ({
+export const useReferenceInputController = ({
     basePath,
     input,
     page: initialPage = 1,
@@ -253,5 +253,3 @@ interface Option {
     sort?: SortPayload;
     source: string;
 }
-
-export default useReferenceInputController;
