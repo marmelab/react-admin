@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { useState, useCallback } from 'react';
-import { cleanup, fireEvent } from '@testing-library/react';
+import { cleanup, fireEvent, wait } from '@testing-library/react';
 import omit from 'lodash/omit';
 import expect from 'expect';
 
 import renderWithRedux from '../../util/renderWithRedux';
 import ReferenceInputController from './ReferenceInputController';
 import { DataProviderContext } from '../../dataProvider';
-import { crudGetMatching } from '../../actions';
 
 describe('<ReferenceInputController />', () => {
     const defaultProps = {
@@ -22,14 +21,120 @@ describe('<ReferenceInputController />', () => {
 
     afterEach(cleanup);
 
-    it('should fetch reference matchingReferences, and provide filter pagination and sort', async () => {
+    const dataProvider = {
+        getMany: jest.fn(() =>
+            Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
+        ),
+        getList: jest.fn(() =>
+            Promise.resolve({
+                data: [
+                    { id: 1, title: 'foo' },
+                    { id: 2, title: 'bar' },
+                ],
+                total: 2,
+            })
+        ),
+    };
+
+    it('should fetch possible values using getList', async () => {
         const children = jest.fn().mockReturnValue(<p>child</p>);
-        const dataProvider = {
-            getMany: jest.fn(() =>
-                Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
-            ),
-        };
+        await wait();
         const { dispatch } = renderWithRedux(
+            <DataProviderContext.Provider value={dataProvider}>
+                <ReferenceInputController {...defaultProps}>
+                    {children}
+                </ReferenceInputController>
+            </DataProviderContext.Provider>
+        );
+
+        await wait();
+        expect(dispatch).toBeCalledTimes(5);
+        expect(dispatch.mock.calls[0][0]).toEqual({
+            type: 'CUSTOM_QUERY',
+            payload: {
+                filter: {
+                    q: '',
+                },
+                pagination: {
+                    page: 1,
+                    perPage: 25,
+                },
+                sort: {
+                    field: 'id',
+                    order: 'DESC',
+                },
+            },
+            meta: { resource: 'posts' },
+        });
+    });
+
+    it('should allow getList pagination and sorting customization', async () => {
+        const children = jest.fn().mockReturnValue(<p>child</p>);
+        await wait();
+        const { dispatch } = renderWithRedux(
+            <DataProviderContext.Provider value={dataProvider}>
+                <ReferenceInputController
+                    {...{
+                        ...defaultProps,
+                        page: 5,
+                        perPage: 10,
+                        sort: { field: 'title', order: 'ASC' },
+                    }}
+                >
+                    {children}
+                </ReferenceInputController>
+            </DataProviderContext.Provider>
+        );
+
+        await wait();
+        expect(dispatch).toBeCalledTimes(5);
+        expect(dispatch.mock.calls[0][0]).toEqual({
+            type: 'CUSTOM_QUERY',
+            payload: {
+                filter: {
+                    q: '',
+                },
+                pagination: {
+                    page: 5,
+                    perPage: 10,
+                },
+                sort: {
+                    field: 'title',
+                    order: 'ASC',
+                },
+            },
+            meta: { resource: 'posts' },
+        });
+    });
+
+    it('should fetch current value using getMany', async () => {
+        const children = jest.fn().mockReturnValue(<p>child</p>);
+        await wait();
+        const { dispatch } = renderWithRedux(
+            <DataProviderContext.Provider value={dataProvider}>
+                <ReferenceInputController
+                    {...{
+                        ...defaultProps,
+                        input: { value: 1 } as any,
+                    }}
+                >
+                    {children}
+                </ReferenceInputController>
+            </DataProviderContext.Provider>
+        );
+
+        await wait();
+        expect(dispatch).toBeCalledTimes(10); // 5 for getList, 5 for getMany
+        expect(dispatch.mock.calls[5][0]).toEqual({
+            type: 'RA/CRUD_GET_MANY',
+            payload: { ids: [1] },
+            meta: { resource: 'posts' },
+        });
+    });
+
+    it('should pass possibleValues and record to child', async () => {
+        const children = jest.fn().mockReturnValue(<p>child</p>);
+        renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <ReferenceInputController
                     {...{
@@ -45,21 +150,69 @@ describe('<ReferenceInputController />', () => {
             {
                 admin: {
                     resources: { posts: { data: { 1: { id: 1 } } } },
-                    references: {
-                        possibleValues: { 'comments@post_id': [2, 1] },
-                    },
                 },
             }
         );
 
+        await wait();
         expect(
             omit(children.mock.calls[0][0], [
                 'onChange',
                 'setPagination',
                 'setFilter',
                 'setSort',
+                'possibleValues.hideFilter',
+                'possibleValues.onSelect',
+                'possibleValues.onToggleItem',
+                'possibleValues.onUnselectItems',
+                'possibleValues.setFilters',
+                'possibleValues.setPage',
+                'possibleValues.setPerPage',
+                'possibleValues.setSort',
+                'possibleValues.showFilter',
             ])
         ).toEqual({
+            possibleValues: {
+                basePath: '/comments',
+                currentSort: {
+                    field: 'title',
+                    order: 'ASC',
+                },
+                data: {
+                    '1': {
+                        id: 1,
+                    },
+                },
+                displayedFilters: [],
+                error: null,
+                filterValues: {
+                    q: '',
+                },
+                hasCreate: false,
+
+                ids: [1],
+                loaded: false,
+                loading: true,
+                page: 1,
+                perPage: 25,
+                resource: 'comments',
+                selectedIds: [],
+
+                total: NaN,
+            },
+            referenceRecord: {
+                data: {
+                    id: 1,
+                },
+                error: null,
+                loaded: true,
+                loading: true,
+            },
+            dataStatus: {
+                error: null,
+                loading: false,
+                warning: null,
+            },
             choices: [{ id: 1 }],
             error: null,
             filter: { q: '' },
@@ -68,31 +221,10 @@ describe('<ReferenceInputController />', () => {
             sort: { field: 'title', order: 'ASC' },
             warning: null,
         });
-        await new Promise(resolve => setTimeout(resolve, 100));
-        expect(dispatch).toBeCalledTimes(6);
-        expect(dispatch.mock.calls[0][0].type).toBe(
-            'RA/CRUD_GET_MATCHING_ACCUMULATE'
-        );
-        expect(dispatch.mock.calls[0][0].meta.accumulate()).toEqual(
-            crudGetMatching(
-                'posts',
-                'comments@post_id',
-                { page: 1, perPage: 25 },
-                { field: 'title', order: 'ASC' },
-                { q: '' }
-            )
-        );
-        expect(dispatch.mock.calls[1][0].type).toBe('RA/CRUD_GET_MANY');
     });
 
-    it('should refetch reference matchingReferences when its props change', async () => {
+    it('should refetch reference getList when its props change', async () => {
         const children = jest.fn().mockReturnValue(<p>child</p>);
-        const dataProvider = {
-            getMany: jest.fn(() =>
-                Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
-            ),
-        };
-
         const Component = () => {
             const [sort, setSort] = useState({ field: 'title', order: 'ASC' });
             const handleClick = useCallback(
@@ -105,7 +237,6 @@ describe('<ReferenceInputController />', () => {
                     <ReferenceInputController
                         {...{
                             ...defaultProps,
-                            input: { value: 1 } as any,
                             loading: true,
                             sort,
                         }}
@@ -118,41 +249,47 @@ describe('<ReferenceInputController />', () => {
         const { getByLabelText, dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <Component />
-            </DataProviderContext.Provider>,
-            {
-                admin: {
-                    resources: { posts: { data: { 1: { id: 1 } } } },
-                    references: {
-                        possibleValues: { 'comments@post_id': [2, 1] },
-                    },
-                },
-            }
+            </DataProviderContext.Provider>
         );
 
-        await new Promise(resolve => setTimeout(resolve, 100));
-        expect(dispatch.mock.calls[0][0].meta.accumulate()).toEqual(
-            crudGetMatching(
-                'posts',
-                'comments@post_id',
-                { page: 1, perPage: 25 },
-                { field: 'title', order: 'ASC' },
-                { q: '' }
-            )
-        );
+        await wait();
+        expect(dispatch).toBeCalledTimes(5);
+        expect(dispatch.mock.calls[0][0]).toEqual({
+            type: 'CUSTOM_QUERY',
+            payload: {
+                filter: {
+                    q: '',
+                },
+                pagination: {
+                    page: 1,
+                    perPage: 25,
+                },
+                sort: {
+                    field: 'title',
+                    order: 'ASC',
+                },
+            },
+            meta: { resource: 'posts' },
+        });
         fireEvent.click(getByLabelText('Change sort'));
-        await new Promise(resolve => setTimeout(resolve, 100));
-        expect(
-            dispatch.mock.calls[
-                dispatch.mock.calls.length - 1
-            ][0].meta.accumulate()
-        ).toEqual(
-            crudGetMatching(
-                'posts',
-                'comments@post_id',
-                { page: 1, perPage: 25 },
-                { field: 'body', order: 'DESC' },
-                { q: '' }
-            )
-        );
+        await wait();
+        expect(dispatch).toBeCalledTimes(10);
+        expect(dispatch.mock.calls[5][0]).toEqual({
+            type: 'CUSTOM_QUERY',
+            payload: {
+                filter: {
+                    q: '',
+                },
+                pagination: {
+                    page: 1,
+                    perPage: 25,
+                },
+                sort: {
+                    field: 'body',
+                    order: 'DESC',
+                },
+            },
+            meta: { resource: 'posts' },
+        });
     });
 });

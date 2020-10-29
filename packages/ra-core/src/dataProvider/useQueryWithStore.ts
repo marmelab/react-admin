@@ -29,6 +29,14 @@ export interface QueryOptions {
     [key: string]: any;
 }
 
+export type PartialQueryState = {
+    error?: any;
+    loading: boolean;
+    loaded: boolean;
+};
+
+const queriesThisTick: { [key: string]: Promise<PartialQueryState> } = {};
+
 /**
  * Lists of records are initialized to a particular object,
  * so detecting if the list is empty requires some work.
@@ -167,37 +175,58 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
 
     const dataProvider = useDataProvider();
     useEffect(() => {
-        setState(prevState => ({ ...prevState, loading: true }));
+        // When several identical queries are issued during the same tick,
+        // we only pass one query to the dataProvider.
+        // To achieve that, the closure keeps a list of dataProvider promises
+        // issued this tick. Before calling the dataProvider, this effect
+        // checks if another effect has already issued a similar dataProvider
+        // call.
+        if (!queriesThisTick.hasOwnProperty(requestSignature)) {
+            queriesThisTick[requestSignature] = new Promise<PartialQueryState>(
+                resolve => {
+                    dataProvider[type](resource, payload, options)
+                        .then(() => {
+                            // We don't care about the dataProvider response here, because
+                            // it was already passed to SUCCESS reducers by the dataProvider
+                            // hook, and the result is available from the Redux store
+                            // through the data and total selectors.
+                            // In addition, if the query is optimistic, the response
+                            // will be empty, so it should not be used at all.
+                            if (
+                                requestSignature !== requestSignatureRef.current
+                            ) {
+                                resolve();
+                            }
 
-        dataProvider[type](resource, payload, options)
-            .then(() => {
-                // We don't care about the dataProvider response here, because
-                // it was already passed to SUCCESS reducers by the dataProvider
-                // hook, and the result is available from the Redux store
-                // through the data and total selectors.
-                // In addition, if the query is optimistic, the response
-                // will be empty, so it should not be used at all.
-                if (requestSignature !== requestSignatureRef.current) {
-                    return;
+                            resolve({
+                                error: null,
+                                loading: false,
+                                loaded: true,
+                            });
+                        })
+                        .catch(error => {
+                            if (
+                                requestSignature !== requestSignatureRef.current
+                            ) {
+                                resolve();
+                            }
+                            resolve({
+                                error,
+                                loading: false,
+                                loaded: false,
+                            });
+                        });
                 }
-
-                setState(prevState => ({
-                    ...prevState,
-                    error: null,
-                    loading: false,
-                    loaded: true,
-                }));
-            })
-            .catch(error => {
-                if (requestSignature !== requestSignatureRef.current) {
-                    return;
-                }
-                setState({
-                    error,
-                    loading: false,
-                    loaded: false,
-                });
+            );
+            // cleanup the list on next tick
+            setImmediate(() => {
+                delete queriesThisTick[requestSignature];
             });
+        }
+        (async () => {
+            const newState = await queriesThisTick[requestSignature];
+            if (newState) setState(state => ({ ...state, ...newState }));
+        })();
         // deep equality, see https://github.com/facebook/react/issues/14476#issuecomment-471199055
     }, [requestSignature]); // eslint-disable-line
 

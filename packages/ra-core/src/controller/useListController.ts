@@ -181,7 +181,7 @@ const useListController = <RecordType extends Record = Record>(
         get(state.admin.resources, [resource, 'list', 'ids'], [])
     );
     const defaultTotal = useSelector((state: ReduxState): number =>
-        get(state.admin.resources, [resource, 'list', 'total'], 0)
+        get(state.admin.resources, [resource, 'list', 'total'])
     );
 
     // Since the total can be empty during the loading phase
