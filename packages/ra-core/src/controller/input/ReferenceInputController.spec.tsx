@@ -189,6 +189,9 @@ describe('<ReferenceInputController />', () => {
                     q: '',
                 },
                 hasCreate: false,
+                hasEdit: false,
+                hasList: false,
+                hasShow: false,
 
                 ids: [1],
                 loaded: false,
