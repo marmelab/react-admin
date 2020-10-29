@@ -1108,7 +1108,7 @@ const CustomerList = props => (
 
 ![Filter Live Search](./img/filter-live-search.gif)
 
-The filter sidebar is not a form. Therefore, if your users need to enter complex filters, you'll have to recreate a filter form using react-final-form (see the [Filter on submit](#building-a-custom-filter) section below for an example). However, if you only need one text input with a filter-as-you-type behavior, you'll find the `<FilterLiveSearch>` component convenient. 
+The filter sidebar is not a form. Therefore, if your users need to enter complex filters, you'll have to recreate a filter form using react-final-form (see the [Buidling a custom filter](#building-a-custom-filter) section below for an example). However, if you only need one text input with a filter-as-you-type behavior, you'll find the `<FilterLiveSearch>` component convenient. 
 
 It outputs a form containing a single `<SearchInput>`, which modifies the page filter on change. That's usually what users expect for a full-text filter. `<FilterLiveSearch>` only needs a `source` field.
 
@@ -1361,7 +1361,7 @@ const SortByViews = () => (
 
 ![Sort Column Header](./img/sort-column-header.gif)
 
-If you're using a `<Datagrid>` inside the List view, then the column headers are buttons allowing users to change the list sort field and order. This feature requires no configuration and works out fo the box. The next sections explain how you can disable of modify the field used for sorting on a particular column.
+If you're using a `<Datagrid>` inside the List view, then the column headers are buttons allowing users to change the list sort field and order. This feature requires no configuration and works out fo the box. The next sections explain how you can disable or modify the field used for sorting on a particular column.
 
 ### Disabling Sorting
 
@@ -1690,7 +1690,7 @@ const {
     loading, // boolean that is true on mount, and false once the data was fetched
     // pagination
     page, // the current page. Starts at 1
-    setPage, // a callback to change the page, e.g. setPage(3)
+    setPage, // a callback to change the current page, e.g. setPage(3)
     perPage, // the number of results per page. Defaults to 25
     setPerPage, // a callback to change the number of results per page, e.g. setPerPage(25)
     // sorting
@@ -1703,7 +1703,7 @@ const {
     showFilter, // a callback to show one of the filters, e.g. showFilter('title', defaultValue)
     hideFilter, // a callback to hide one of the filters, e.g. hidefilter('title')
     // row selection
-    selectedIds, // an array listing the ids of the selcted rows, e.g. [123, 456]
+    selectedIds, // an array listing the ids of the selected rows, e.g. [123, 456]
     onSelect, // callback to change the list of selected rows, e.g onSelect([456, 789])
     onToggleItem, // callback to toggle the selection of a given record based on its id, e.g. onToggleItem(456)
     onUnselectItems, // callback to clear the selection, e.g. onUnselectItems();
