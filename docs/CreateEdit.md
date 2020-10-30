@@ -479,7 +479,7 @@ Alternately, you may need to prepopulate a record based on a *related* record. F
 
 **Note**  `<CloneButton>` is designed to be used in an edit view `<Actions>` component, not inside a `<Toolbar>`. The `Toolbar` is basically for submitting the form, not for going to another resource.
 
-By default, the `<Create>` view starts with an empty `record`. However, if the `location` object (injected by [react-router-dom](https://reacttraining.com/react-router/web/api/location)) contains a `record` in its `state`, the `<Create>` view uses that `record` instead of the empty object. That's how the `<CloneButton>` works behind the hood.
+By default, the `<Create>` view starts with an empty `record`. However, if the `location` object (injected by [react-router-dom](https://reacttraining.com/react-router/web/api/location)) contains a `record` in its `state`, the `<Create>` view uses that `record` instead of the empty object. That's how the `<CloneButton>` works under the hood.
 
 That means that if you want to create a link to a creation form, presetting *some* values, all you have to do is to set the location `state`. `react-router-dom` provides the `<Link>` component for that:
 
