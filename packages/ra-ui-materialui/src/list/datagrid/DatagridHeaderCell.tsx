@@ -5,7 +5,12 @@ import classnames from 'classnames';
 import { TableCell, TableSortLabel, Tooltip } from '@material-ui/core';
 import { TableCellProps } from '@material-ui/core/TableCell';
 import { makeStyles } from '@material-ui/core/styles';
-import { FieldTitle, useTranslate, SortPayload } from 'ra-core';
+import {
+    FieldTitle,
+    useTranslate,
+    SortPayload,
+    useResourceContext,
+} from 'ra-core';
 
 import { ClassesOverride } from '../../types';
 
@@ -33,10 +38,10 @@ export const DatagridHeaderCell = (
         field,
         currentSort,
         updateSort,
-        resource,
         isSorting,
         ...rest
     } = props;
+    const { resource } = useResourceContext(props);
     const classes = useStyles(props);
     const translate = useTranslate();
 

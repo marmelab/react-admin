@@ -14,6 +14,7 @@ import {
     useVersion,
     Identifier,
     Record,
+    useResourceContext,
 } from 'ra-core';
 import {
     Checkbox,
@@ -75,6 +76,7 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         hasBulkActions = false,
         hover,
         isRowSelectable,
+        resource,
         rowClick,
         rowStyle,
         size = 'small',
@@ -89,7 +91,6 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         loaded,
         onSelect,
         onToggleItem,
-        resource,
         selectedIds,
         setSort,
         total,

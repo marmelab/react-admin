@@ -2,10 +2,12 @@ import * as React from 'react';
 import { forwardRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import MenuItem from '@material-ui/core/MenuItem';
-import { FieldTitle } from 'ra-core';
+import { FieldTitle, useResourceContext } from 'ra-core';
 
 const FilterButtonMenuItem = forwardRef<any, FilterButtonMenuItemProps>(
-    ({ filter, onShow, resource }, ref) => {
+    (props, ref) => {
+        const { filter, onShow } = props;
+        const { resource } = useResourceContext(props);
         const handleShow = useCallback(() => {
             onShow({
                 source: filter.props.source,
