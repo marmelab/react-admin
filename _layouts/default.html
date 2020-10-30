@@ -1,132 +1,210 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en-US">
+    <head>
+        <title>React-admin - {{ page.title }}</title>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+        <meta name="description" content="{{ page.description }}" />
+        <meta name="HandheldFriendly" content="true" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <link
+            rel="stylesheet"
+            href="{{ '/css/materialize.min.css' | relative_url }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ '/css/style-v8.css' | relative_url }}"
+        />
+        <link rel="stylesheet" href="{{ '/css/syntax.css' | relative_url }}" />
+        <link rel="stylesheet" href="{{ '/css/prism.css' | relative_url }}" />
+        <link rel="stylesheet" href="{{ '/css/tocbot.css' | relative_url }}" />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.css"
+        />
+    </head>
 
-<head>
-    <title>React-admin - {{ page.title }}</title>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-    <meta name="description" content="{{ page.description }}">
-    <meta name="HandheldFriendly" content="true" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="stylesheet" href="{{ '/css/materialize.min.css' | relative_url }}">
-    <link rel="stylesheet" href="{{ '/css/style-v6.css' | relative_url }}">
-    <link rel="stylesheet" href="{{ '/css/syntax.css' | relative_url }}">
-    <link rel="stylesheet" href="{{ '/css/prism.css' | relative_url }}">
-    <link rel="stylesheet" href="{{ '/css/tocbot.css' | relative_url }}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.css">
-</head>
-
-<body>
-
-    <header>
-        <nav>
-            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-            <div class="nav-wrapper" style="background: linear-gradient(145deg,#027be3 11%,#1a237e 75%)">
-                <div class="left">
-                    <form action="#" onsubmit="return false;">
-                        <div class="input-field" style="position:absolute">
-                            <input type="search" name="q" id="query" size="31" maxlength="255" value=""
-                                style="vertical-align:inherit!important" />
-                            <label class="label-icon" for="test"><i class="material-icons">search</i></label>
-                            <i class="material-icons">close</i>
-                        </div>
-                        <span id="search"></span>
-                    </form>
+    <body>
+        <header>
+            <nav>
+                <a href="#" data-target="slide-out" class="sidenav-trigger"
+                    ><i class="material-icons">menu</i></a
+                >
+                <div
+                    class="nav-wrapper"
+                    style="
+                        background: linear-gradient(
+                            145deg,
+                            #027be3 11%,
+                            #1a237e 75%
+                        );
+                    "
+                >
+                    <div class="left">
+                        <form action="#" onsubmit="return false;">
+                            <div class="input-field" style="position: absolute">
+                                <input
+                                    type="search"
+                                    name="q"
+                                    id="query"
+                                    size="31"
+                                    maxlength="255"
+                                    value=""
+                                    style="vertical-align: inherit !important"
+                                />
+                                <label class="label-icon" for="test"
+                                    ><i class="material-icons">search</i></label
+                                >
+                                <i class="material-icons">close</i>
+                            </div>
+                            <span id="search"></span>
+                        </form>
+                    </div>
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        <li class="active">
+                            <a
+                                href="https://marmelab.com/react-admin/Readme.html"
+                                >Documentation</a
+                            >
+                        </li>
+                        <li>
+                            <a href="https://marmelab.com/react-admin-demo"
+                                >Demo</a
+                            >
+                        </li>
+                        <li>
+                            <a href="https://marmelab.com/en/blog/#react-admin"
+                                >Blog</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://marmelab.com/ra-enterprise/"
+                                style="color: #f0c070"
+                                >Enterprise Edition</a
+                            >
+                        </li>
+                        <li>
+                            <a href="https://github.com/marmelab/react-admin">
+                                <svg
+                                    viewBox="0 0 256 250"
+                                    preserveAspectRatio="xMidYMid"
+                                    style="
+                                        height: 20px;
+                                        vertical-align: middle;
+                                        margin-right: 5px;
+                                        fill: #ffffff;
+                                    "
+                                >
+                                    <path
+                                        d="M128.001 0C57.317 0 0 57.307 0 128.001c0 56.554 36.676 104.535 87.535 121.46 6.397 1.185 8.746-2.777 8.746-6.158 0-3.052-.12-13.135-.174-23.83-35.61 7.742-43.124-15.103-43.124-15.103-5.823-14.795-14.213-18.73-14.213-18.73-11.613-7.944.876-7.78.876-7.78 12.853.902 19.621 13.19 19.621 13.19 11.417 19.568 29.945 13.911 37.249 10.64 1.149-8.272 4.466-13.92 8.127-17.116-28.431-3.236-58.318-14.212-58.318-63.258 0-13.975 5-25.394 13.188-34.358-1.329-3.224-5.71-16.242 1.24-33.874 0 0 10.749-3.44 35.21 13.121 10.21-2.836 21.16-4.258 32.038-4.307 10.878.049 21.837 1.47 32.066 4.307 24.431-16.56 35.165-13.12 35.165-13.12 6.967 17.63 2.584 30.65 1.255 33.873 8.207 8.964 13.173 20.383 13.173 34.358 0 49.163-29.944 59.988-58.447 63.157 4.591 3.972 8.682 11.762 8.682 23.704 0 17.126-.148 30.91-.148 35.126 0 3.407 2.304 7.398 8.792 6.14C219.37 232.5 256 184.537 256 128.002 256 57.307 198.691 0 128.001 0zm-80.06 182.34c-.282.636-1.283.827-2.194.39-.929-.417-1.45-1.284-1.15-1.922.276-.655 1.279-.838 2.205-.399.93.418 1.46 1.293 1.139 1.931zm6.296 5.618c-.61.566-1.804.303-2.614-.591-.837-.892-.994-2.086-.375-2.66.63-.566 1.787-.301 2.626.591.838.903 1 2.088.363 2.66zm4.32 7.188c-.785.545-2.067.034-2.86-1.104-.784-1.138-.784-2.503.017-3.05.795-.547 2.058-.055 2.861 1.075.782 1.157.782 2.522-.019 3.08zm7.304 8.325c-.701.774-2.196.566-3.29-.49-1.119-1.032-1.43-2.496-.726-3.27.71-.776 2.213-.558 3.315.49 1.11 1.03 1.45 2.505.701 3.27zm9.442 2.81c-.31 1.003-1.75 1.459-3.199 1.033-1.448-.439-2.395-1.613-2.103-2.626.301-1.01 1.747-1.484 3.207-1.028 1.446.436 2.396 1.602 2.095 2.622zm10.744 1.193c.036 1.055-1.193 1.93-2.715 1.95-1.53.034-2.769-.82-2.786-1.86 0-1.065 1.202-1.932 2.733-1.958 1.522-.03 2.768.818 2.768 1.868zm10.555-.405c.182 1.03-.875 2.088-2.387 2.37-1.485.271-2.861-.365-3.05-1.386-.184-1.056.893-2.114 2.376-2.387 1.514-.263 2.868.356 3.061 1.403z"
+                                    ></path>
+                                </svg>
+                                GitHub
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-                <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li class="active"><a href="https://marmelab.com/react-admin/Readme.html">Documentation</a></li>
-                    <li><a href="https://marmelab.com/react-admin-demo">Demo</a></li>
-                    <li><a href="https://marmelab.com/en/blog/#react-admin">Blog</a></li>
-                    <li><a href="https://marmelab.com/ra-enterprise/" style="color: #f0c070">Enterprise Edition</a></li>
-                    <li><a href="https://github.com/marmelab/react-admin">
-                        <svg viewBox="0 0 256 250" preserveAspectRatio="xMidYMid" style="height: 20px;vertical-align: middle;margin-right: 5px;fill:#ffffff">
-                            <path d="M128.001 0C57.317 0 0 57.307 0 128.001c0 56.554 36.676 104.535 87.535 121.46 6.397 1.185 8.746-2.777 8.746-6.158 0-3.052-.12-13.135-.174-23.83-35.61 7.742-43.124-15.103-43.124-15.103-5.823-14.795-14.213-18.73-14.213-18.73-11.613-7.944.876-7.78.876-7.78 12.853.902 19.621 13.19 19.621 13.19 11.417 19.568 29.945 13.911 37.249 10.64 1.149-8.272 4.466-13.92 8.127-17.116-28.431-3.236-58.318-14.212-58.318-63.258 0-13.975 5-25.394 13.188-34.358-1.329-3.224-5.71-16.242 1.24-33.874 0 0 10.749-3.44 35.21 13.121 10.21-2.836 21.16-4.258 32.038-4.307 10.878.049 21.837 1.47 32.066 4.307 24.431-16.56 35.165-13.12 35.165-13.12 6.967 17.63 2.584 30.65 1.255 33.873 8.207 8.964 13.173 20.383 13.173 34.358 0 49.163-29.944 59.988-58.447 63.157 4.591 3.972 8.682 11.762 8.682 23.704 0 17.126-.148 30.91-.148 35.126 0 3.407 2.304 7.398 8.792 6.14C219.37 232.5 256 184.537 256 128.002 256 57.307 198.691 0 128.001 0zm-80.06 182.34c-.282.636-1.283.827-2.194.39-.929-.417-1.45-1.284-1.15-1.922.276-.655 1.279-.838 2.205-.399.93.418 1.46 1.293 1.139 1.931zm6.296 5.618c-.61.566-1.804.303-2.614-.591-.837-.892-.994-2.086-.375-2.66.63-.566 1.787-.301 2.626.591.838.903 1 2.088.363 2.66zm4.32 7.188c-.785.545-2.067.034-2.86-1.104-.784-1.138-.784-2.503.017-3.05.795-.547 2.058-.055 2.861 1.075.782 1.157.782 2.522-.019 3.08zm7.304 8.325c-.701.774-2.196.566-3.29-.49-1.119-1.032-1.43-2.496-.726-3.27.71-.776 2.213-.558 3.315.49 1.11 1.03 1.45 2.505.701 3.27zm9.442 2.81c-.31 1.003-1.75 1.459-3.199 1.033-1.448-.439-2.395-1.613-2.103-2.626.301-1.01 1.747-1.484 3.207-1.028 1.446.436 2.396 1.602 2.095 2.622zm10.744 1.193c.036 1.055-1.193 1.93-2.715 1.95-1.53.034-2.769-.82-2.786-1.86 0-1.065 1.202-1.932 2.733-1.958 1.522-.03 2.768.818 2.768 1.868zm10.555-.405c.182 1.03-.875 2.088-2.387 2.37-1.485.271-2.861-.365-3.05-1.386-.184-1.056.893-2.114 2.376-2.387 1.514-.263 2.868.356 3.061 1.403z"></path>
-                        </svg>
-                        GitHub
-                    </a></li>
-                </ul>
+            </nav>
+            <ul id="slide-out" class="sidenav sidenav-fixed">
+                <li class="logo">
+                    <a href="{{ site.url }}"
+                        ><img src="{{ site.url }}/assets/logo_white.png"
+                    /></a>
+                </li>
+                <li class="version">{% include versions.html %}</li>
+                {% include_relative navigation.html %}
+            </ul>
+        </header>
+
+        <main>
+            <div class="container">
+                <div class="row">
+                    <div
+                        class="col s12 m8 offset-m1 xl7 offset-xl1 markdown-section DocSearch-content toc-content"
+                    >
+                        {{ content }}
+                    </div>
+                    <div class="col hide-on-small-only m3 xl3 offset-xl1">
+                        <div class="toc"></div>
+                    </div>
+                </div>
             </div>
-        </nav>
-        <ul id="slide-out" class="sidenav sidenav-fixed">
-            <li class="logo">
-                <a href="{{ site.url }}"><img src="{{ site.url }}/assets/logo_white.png" /></a>
-            </li>
-            <li class="version">
-                {% include versions.html %}
-            </li>
-            {% include_relative navigation.html %}
-        </ul>
+        </main>
 
-    </header>
-
-    <main>
-        <div class="container">
-            <div class="row">
-                <div class="col s12 m8 offset-m1 xl7 offset-xl1 markdown-section DocSearch-content toc-content">
-                    {{ content }}
-                </div>
-                <div class="col hide-on-small-only m3 xl3 offset-xl1">
-                    <div class="toc"></div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <script src="{{ '/js/materialize.min.js' | relative_url }}"></script>
-    <script src="{{ 'js/prism.js' | relative_url }}"></script>
-    <script>
-        function slugify(text) {
-            return text.toString().toLowerCase()
-                .replace(/\s+/g, '-')           // Replace spaces with -
-                .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-                .replace(/\-\-+/g, '-')         // Replace multiple - with single -
-                .replace(/^-+/, '')             // Trim - from start of text
-                .replace(/-+$/, '');            // Trim - from end of text
-        }
-        document.addEventListener('DOMContentLoaded', function () {
-            // Initialize version selector
-            M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
-            /* Generate table of contents */
-            tocbot.init({
-                // Where to render the table of contents
-                tocSelector: '.toc',
-                positionFixedSelector: '.toc',
-                // Where to grab the headings to build the table of contents
-                contentSelector: '.toc-content',
-                // More options
-                headingSelector: 'h2, h3',
-                includeHtml: true,
-                collapseDepth: 2,
-                hasInnerContainers: true,
-            });
-        });
-    </script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
-    <script type="text/javascript">
-        docsearch({
-            apiKey: '32f254b1de6a25a96665d1229b6eb8f7',
-            indexName: 'marmelab-react-admin',
-            inputSelector: '#query',
-            debug: false, // Set debug to true if you want to inspect the dropdown
-            autocompleteOptions: {
-                appendTo: '#search',
-                hint: false,
+        <script src="{{ '/js/materialize.min.js' | relative_url }}"></script>
+        <script src="{{ 'js/prism.js' | relative_url }}"></script>
+        <script>
+            function slugify(text) {
+                return text
+                    .toString()
+                    .toLowerCase()
+                    .replace(/\s+/g, '-') // Replace spaces with -
+                    .replace(/[^\w\-]+/g, '') // Remove all non-word chars
+                    .replace(/\-\-+/g, '-') // Replace multiple - with single -
+                    .replace(/^-+/, '') // Trim - from start of text
+                    .replace(/-+$/, ''); // Trim - from end of text
             }
-        });
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" defer></script>
-    <!--
+            document.addEventListener('DOMContentLoaded', function () {
+                // Initialize version selector
+                M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
+                /* Generate table of contents */
+                tocbot.init({
+                    // Where to render the table of contents
+                    tocSelector: '.toc',
+                    positionFixedSelector: '.toc',
+                    // Where to grab the headings to build the table of contents
+                    contentSelector: '.toc-content',
+                    // More options
+                    headingSelector: 'h2, h3, h4',
+                    includeHtml: true,
+                    collapseDepth: 2,
+                    hasInnerContainers: true,
+                });
+            });
+        </script>
+        <script
+            type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"
+        ></script>
+        <script type="text/javascript">
+            docsearch({
+                apiKey: '32f254b1de6a25a96665d1229b6eb8f7',
+                indexName: 'marmelab-react-admin',
+                inputSelector: '#query',
+                debug: false, // Set debug to true if you want to inspect the dropdown
+                autocompleteOptions: {
+                    appendTo: '#search',
+                    hint: false,
+                },
+            });
+        </script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js"
+            defer
+        ></script>
+        <!--
         React-admin protects your privacy!
         We use our own self-hosted tracking solution to collect some raw metrics,
         like page views, device type (mobile, desktop, etc.) or country.
         We don't track any personal information about our visitors.
     -->
-    <script async defer data-website-id="ef7f8242-2808-4cbf-9dff-564daa515bbd" src="https://analytics.marmelab.com/umami.js"></script>
-</body>
-
+        <script
+            async
+            defer
+            data-website-id="ef7f8242-2808-4cbf-9dff-564daa515bbd"
+            src="https://analytics.marmelab.com/umami.js"
+        ></script>
+    </body>
 </html>
