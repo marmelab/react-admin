@@ -81,6 +81,10 @@ nav ul#nav-mobile a {
     padding: 0.5em 0 1em 0;
 }
 
+.sidenav li.version li {
+    min-height: auto;
+}
+
 .sidenav li.version .dropdown-trigger {
     margin: 0 auto;
     display: inline-block;
