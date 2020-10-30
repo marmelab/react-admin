@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import { useVersion, useDataProvider } from 'react-admin';
 import { useMediaQuery, Theme } from '@material-ui/core';
+import { subDays } from 'date-fns';
 
 import Welcome from './Welcome';
 import MonthlyRevenue from './MonthlyRevenue';
@@ -62,8 +63,7 @@ const Dashboard: FC = () => {
     );
 
     const fetchOrders = useCallback(async () => {
-        const aMonthAgo = new Date();
-        aMonthAgo.setDate(aMonthAgo.getDate() - 30);
+        const aMonthAgo = subDays(new Date(), 30);
         const { data: recentOrders } = await dataProvider.getList<Order>(
             'commands',
             {
