@@ -193,6 +193,7 @@ const useStyles = makeStyles(
 const sanitizeRestProps = ({
     hasCreate = null,
     hasEdit = null,
+    hasShow = null,
     history = null,
     id = null,
     loaded = null,
