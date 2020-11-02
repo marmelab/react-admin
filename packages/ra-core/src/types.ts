@@ -387,7 +387,6 @@ export type LoginComponent = ComponentType<LoginComponentProps>;
 export type DashboardComponent = ComponentType<WithPermissionsChildrenParams>;
 
 export interface CoreLayoutProps {
-    appBar?: ComponentType;
     children?: ReactNode;
     dashboard?: DashboardComponent;
     logout?: ReactNode;
@@ -395,7 +394,6 @@ export interface CoreLayoutProps {
         logout?: ReactNode;
         hasDashboard?: boolean;
     }>;
-    sidebar?: ComponentType;
     theme?: ThemeOptions;
     title?: TitleComponent;
 }

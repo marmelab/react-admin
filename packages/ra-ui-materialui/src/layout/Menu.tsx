@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ReactElement } from 'react';
+import { FC, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { shallowEqual, useSelector } from 'react-redux';
 // @ts-ignore
@@ -100,8 +100,8 @@ export interface MenuProps {
     classes?: object;
     className?: string;
     dense?: boolean;
-    hasDashboard: boolean;
-    logout?: ReactElement;
+    hasDashboard?: boolean;
+    logout?: ReactNode;
     onMenuClick?: () => void;
 }
 

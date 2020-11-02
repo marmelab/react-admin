@@ -13,7 +13,7 @@ import React, {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import {
     createMuiTheme,
     withStyles,
@@ -21,12 +21,12 @@ import {
 } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { ThemeOptions } from '@material-ui/core';
-import { ComponentPropType, CustomRoutes, CoreLayoutProps } from 'ra-core';
+import { ComponentPropType, CoreLayoutProps } from 'ra-core';
 import compose from 'lodash/flowRight';
 
 import DefaultAppBar from './AppBar';
 import DefaultSidebar from './Sidebar';
-import DefaultMenu from './Menu';
+import DefaultMenu, { MenuProps } from './Menu';
 import DefaultNotification from './Notification';
 import DefaultError from './Error';
 import defaultTheme from '../defaultTheme';
@@ -78,14 +78,6 @@ const styles = theme =>
         },
     });
 
-const sanitizeRestProps = ({
-    staticContext,
-    history,
-    location,
-    match,
-    ...props
-}: RestProps) => props;
-
 class LayoutWithoutTheme extends Component<
     LayoutWithoutThemeProps,
     LayoutState
@@ -116,7 +108,6 @@ class LayoutWithoutTheme extends Component<
             children,
             classes,
             className,
-            customRoutes,
             error,
             dashboard,
             logout,
@@ -132,7 +123,7 @@ class LayoutWithoutTheme extends Component<
             <>
                 <div
                     className={classnames('layout', classes.root, className)}
-                    {...sanitizeRestProps(props)}
+                    {...props}
                 >
                     <div className={classes.appFrame}>
                         {createElement(appBar, { title, open, logout })}
@@ -165,7 +156,6 @@ class LayoutWithoutTheme extends Component<
         children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
         classes: PropTypes.object,
         className: PropTypes.string,
-        customRoutes: PropTypes.array,
         dashboard: ComponentPropType,
         error: ComponentPropType,
         history: PropTypes.object.isRequired,
@@ -188,42 +178,24 @@ class LayoutWithoutTheme extends Component<
 
 interface LayoutWithoutThemeProps
     extends CoreLayoutProps,
-        RouteComponentProps,
         Omit<HtmlHTMLAttributes<HTMLDivElement>, 'title'> {
-    className?: string;
-    classes?: any;
-    customRoutes?: CustomRoutes;
     appBar?: ComponentType<{
         title?: string | ReactElement<any>;
         open?: boolean;
         logout?: ReactNode;
     }>;
-    sidebar?: ComponentType<{ children: JSX.Element }>;
+    classes?: any;
+    className?: string;
     error?: ComponentType<{
         error?: string;
         errorInfo?: React.ErrorInfo;
         title?: string | ReactElement<any>;
     }>;
+    menu?: ComponentType<MenuProps>;
     notification?: ComponentType;
     open?: boolean;
+    sidebar?: ComponentType<{ children: JSX.Element }>;
 }
-
-export type RestProps = Omit<
-    LayoutWithoutThemeProps,
-    | 'appBar'
-    | 'children'
-    | 'classes'
-    | 'className'
-    | 'customRoutes'
-    | 'error'
-    | 'dashboard'
-    | 'logout'
-    | 'menu'
-    | 'notification'
-    | 'open'
-    | 'sidebar'
-    | 'title'
->;
 
 export interface LayoutState {
     hasError: boolean;
