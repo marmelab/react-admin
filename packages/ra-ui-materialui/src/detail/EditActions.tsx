@@ -1,7 +1,12 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 
-import { Record, useEditContext } from 'ra-core';
+import {
+    Record,
+    useEditContext,
+    useResourceContext,
+    useResourceDefinition,
+} from 'ra-core';
 import { ShowButton } from '../button';
 import TopToolbar from '../layout/TopToolbar';
 
@@ -31,7 +36,9 @@ import TopToolbar from '../layout/TopToolbar';
  *     );
  */
 const EditActions = ({ className, ...rest }: EditActionsProps) => {
-    const { basePath, hasShow, record } = useEditContext(rest);
+    const { basePath, record } = useEditContext(rest);
+    const { resource } = useResourceContext(rest);
+    const { hasShow } = useResourceDefinition(resource, rest);
 
     return (
         <TopToolbar className={className} {...sanitizeRestProps(rest)}>

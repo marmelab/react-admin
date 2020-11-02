@@ -111,7 +111,8 @@ export interface UseDeleteWithUndoControllerParams {
     basePath?: string;
     record?: Record;
     redirect?: RedirectionSideEffect;
-    resource: string;
+    // @deprecated. This hook get the resource from the context
+    resource?: string;
     onClick?: ReactEventHandler<any>;
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;

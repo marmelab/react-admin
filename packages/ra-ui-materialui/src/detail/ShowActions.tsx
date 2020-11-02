@@ -1,6 +1,11 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { Record, useShowContext } from 'ra-core';
+import {
+    Record,
+    useResourceContext,
+    useResourceDefinition,
+    useShowContext,
+} from 'ra-core';
 
 import { EditButton } from '../button';
 import TopToolbar from '../layout/TopToolbar';
@@ -40,7 +45,9 @@ const sanitizeRestProps = ({
  *     );
  */
 const ShowActions = ({ className, ...rest }: ShowActionsProps) => {
-    const { basePath, hasEdit, record } = useShowContext(rest);
+    const { basePath, record } = useShowContext(rest);
+    const { resource } = useResourceContext(rest);
+    const { hasEdit } = useResourceDefinition(resource, rest);
     return (
         <TopToolbar className={className} {...sanitizeRestProps(rest)}>
             {hasEdit && <EditButton basePath={basePath} record={record} />}

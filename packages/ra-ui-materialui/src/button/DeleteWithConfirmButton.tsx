@@ -18,6 +18,7 @@ import {
     useDeleteWithConfirmController,
     OnSuccess,
     OnFailure,
+    useResourceContext,
 } from 'ra-core';
 
 import Confirm from '../layout/Confirm';
@@ -34,7 +35,6 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
         label = 'ra.action.delete',
         onClick,
         record,
-        resource,
         redirect = 'list',
         onSuccess,
         onFailure,
@@ -49,7 +49,6 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
         handleDialogClose,
         handleDelete,
     } = useDeleteWithConfirmController({
-        resource,
         record,
         redirect,
         basePath,
@@ -57,6 +56,7 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
         onSuccess,
         onFailure,
     });
+    const { resource } = useResourceContext(props);
 
     return (
         <Fragment>
