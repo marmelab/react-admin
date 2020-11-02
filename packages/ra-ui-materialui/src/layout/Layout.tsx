@@ -21,7 +21,11 @@ import {
 } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { ThemeOptions } from '@material-ui/core';
-import { ComponentPropType, CustomRoutes, LayoutProps } from 'ra-core';
+import {
+    ComponentPropType,
+    CustomRoutes,
+    LayoutProps as MuiLayoutProps,
+} from 'ra-core';
 import compose from 'lodash/flowRight';
 
 import DefaultAppBar from './AppBar';
@@ -86,7 +90,7 @@ const sanitizeRestProps = ({
     ...props
 }: RestProps) => props;
 
-class Layout extends Component<MuiLayoutProps, LayoutState> {
+class Layout extends Component<LayoutProps, LayoutState> {
     state = { hasError: false, errorMessage: null, errorInfo: null };
 
     constructor(props) {
@@ -183,8 +187,8 @@ class Layout extends Component<MuiLayoutProps, LayoutState> {
     };
 }
 
-export interface MuiLayoutProps
-    extends LayoutProps,
+export interface LayoutProps
+    extends MuiLayoutProps,
         RouteComponentProps,
         Omit<HtmlHTMLAttributes<HTMLDivElement>, 'title'> {
     className?: string;
@@ -206,7 +210,7 @@ export interface MuiLayoutProps
 }
 
 export type RestProps = Omit<
-    MuiLayoutProps,
+    LayoutProps,
     | 'appBar'
     | 'children'
     | 'classes'
