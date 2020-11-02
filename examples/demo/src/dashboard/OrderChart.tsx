@@ -11,7 +11,7 @@ import {
     Tooltip,
 } from 'recharts';
 import { useTranslate } from 'react-admin';
-import { format, subDays } from 'date-fns';
+import { format, subDays, addDays } from 'date-fns';
 
 import { Order } from '../types';
 
@@ -79,7 +79,7 @@ const OrderChart: FC<{ orders?: Order[] }> = ({ orders }) => {
                                 type="number"
                                 scale="time"
                                 domain={[
-                                    aMonthAgo.getTime(),
+                                    addDays(aMonthAgo, 1).getTime(),
                                     new Date().getTime(),
                                 ]}
                                 tickFormatter={dateFormatter}
