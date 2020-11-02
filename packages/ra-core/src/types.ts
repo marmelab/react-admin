@@ -386,7 +386,7 @@ interface LoginComponentProps extends RouteComponentProps {
 export type LoginComponent = ComponentType<LoginComponentProps>;
 export type DashboardComponent = ComponentType<WithPermissionsChildrenParams>;
 
-export interface LayoutProps {
+export interface CoreLayoutProps {
     appBar?: ComponentType;
     children?: ReactNode;
     dashboard?: DashboardComponent;
@@ -395,12 +395,12 @@ export interface LayoutProps {
         logout?: ReactNode;
         hasDashboard?: boolean;
     }>;
-    sideBar?: ComponentType;
+    sidebar?: ComponentType;
     theme?: ThemeOptions;
     title?: TitleComponent;
 }
 
-export type LayoutComponent = ComponentType<LayoutProps>;
+export type LayoutComponent = ComponentType<CoreLayoutProps>;
 
 export interface ResourceComponentInjectedProps {
     basePath?: string;

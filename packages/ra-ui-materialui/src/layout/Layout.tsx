@@ -21,11 +21,7 @@ import {
 } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { ThemeOptions } from '@material-ui/core';
-import {
-    ComponentPropType,
-    CustomRoutes,
-    LayoutProps as MuiLayoutProps,
-} from 'ra-core';
+import { ComponentPropType, CustomRoutes, CoreLayoutProps } from 'ra-core';
 import compose from 'lodash/flowRight';
 
 import DefaultAppBar from './AppBar';
@@ -90,7 +86,10 @@ const sanitizeRestProps = ({
     ...props
 }: RestProps) => props;
 
-class Layout extends Component<LayoutProps, LayoutState> {
+class LayoutWithoutTheme extends Component<
+    LayoutWithoutThemeProps,
+    LayoutState
+> {
     state = { hasError: false, errorMessage: null, errorInfo: null };
 
     constructor(props) {
@@ -187,8 +186,8 @@ class Layout extends Component<LayoutProps, LayoutState> {
     };
 }
 
-export interface LayoutProps
-    extends MuiLayoutProps,
+interface LayoutWithoutThemeProps
+    extends CoreLayoutProps,
         RouteComponentProps,
         Omit<HtmlHTMLAttributes<HTMLDivElement>, 'title'> {
     className?: string;
@@ -210,7 +209,7 @@ export interface LayoutProps
 }
 
 export type RestProps = Omit<
-    LayoutProps,
+    LayoutWithoutThemeProps,
     | 'appBar'
     | 'children'
     | 'classes'
@@ -243,12 +242,12 @@ const EnhancedLayout = compose(
     ),
     withRouter,
     withStyles(styles, { name: 'RaLayout' })
-)(Layout);
+)(LayoutWithoutTheme);
 
-const LayoutWithTheme = ({
+const Layout = ({
     theme: themeOverride,
     ...props
-}: LayoutWithThemeProps): JSX.Element => {
+}: LayoutProps): JSX.Element => {
     const themeProp = useRef(themeOverride);
     const [theme, setTheme] = useState(createMuiTheme(themeOverride));
 
@@ -266,16 +265,16 @@ const LayoutWithTheme = ({
     );
 };
 
-LayoutWithTheme.propTypes = {
+Layout.propTypes = {
     theme: PropTypes.object,
 };
 
-LayoutWithTheme.defaultProps = {
+Layout.defaultProps = {
     theme: defaultTheme,
 };
 
-interface LayoutWithThemeProps extends LayoutProps {
+export interface LayoutProps extends LayoutWithoutThemeProps {
     theme?: ThemeOptions;
 }
 
-export default LayoutWithTheme;
+export default Layout;
