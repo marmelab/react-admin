@@ -2,12 +2,12 @@ import { useContext } from 'react';
 import { ResourceContext, ResourceContextValue } from './ResourceContext';
 
 /**
- * Hook to read the resource informations from the ResourceContext.
+ * Hook to read the resource from the ResourceContext.
  *
  * Must be used within a <ResourceContextProvider> (e.g. as a descendent of <Resource>
  * or any reference related components).
  *
- * @returns {ResourceContextValue} The resource informations
+ * @returns {ResourceContextValue} The resource
  */
 export const useResourceContext = <
     ResourceInformationsType extends Partial<
