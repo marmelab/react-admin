@@ -13,7 +13,7 @@ import React, {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import {
     createMuiTheme,
     withStyles,
@@ -116,6 +116,11 @@ class LayoutWithoutTheme extends Component<
             open,
             sidebar,
             title,
+            // sanitize react-router props
+            match,
+            location,
+            history,
+            staticContext,
             ...props
         } = this.props;
         const { hasError, errorMessage, errorInfo } = this.state;
@@ -176,7 +181,7 @@ class LayoutWithoutTheme extends Component<
     };
 }
 
-interface LayoutWithoutThemeProps
+export interface LayoutProps
     extends CoreLayoutProps,
         Omit<HtmlHTMLAttributes<HTMLDivElement>, 'title'> {
     appBar?: ComponentType<{
@@ -193,14 +198,20 @@ interface LayoutWithoutThemeProps
     }>;
     menu?: ComponentType<MenuProps>;
     notification?: ComponentType;
-    open?: boolean;
     sidebar?: ComponentType<{ children: JSX.Element }>;
+    theme?: ThemeOptions;
 }
 
 export interface LayoutState {
     hasError: boolean;
     errorMessage: string;
     errorInfo: ErrorInfo;
+}
+
+interface LayoutWithoutThemeProps
+    extends RouteComponentProps,
+        Omit<LayoutProps, 'theme'> {
+    open?: boolean;
 }
 
 const mapStateToProps = state => ({
@@ -244,9 +255,5 @@ Layout.propTypes = {
 Layout.defaultProps = {
     theme: defaultTheme,
 };
-
-export interface LayoutProps extends LayoutWithoutThemeProps {
-    theme?: ThemeOptions;
-}
 
 export default Layout;
