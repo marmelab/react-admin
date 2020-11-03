@@ -8,6 +8,7 @@ import {
     ShowControllerProps,
     useResourceDefinition,
     useShowContext,
+    useResourceContext,
 } from 'ra-core';
 
 import DefaultActions from './ShowActions';
@@ -26,16 +27,20 @@ export const ShowView = (props: ShowViewProps) => {
         classes: classesOverride,
         className,
         component: Content,
-        resource,
         title,
         ...rest
     } = props;
 
     const classes = useStyles(props);
 
-    const { basePath, defaultTitle, hasList, record, version } = useShowContext(
-        props
-    );
+    const {
+        basePath,
+        defaultTitle,
+        hasList,
+        record,
+        resource,
+        version,
+    } = useShowContext(props);
     const { hasEdit } = useResourceDefinition(props);
 
     const finalActions =
