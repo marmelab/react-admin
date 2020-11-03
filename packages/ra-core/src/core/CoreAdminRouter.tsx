@@ -109,7 +109,10 @@ const CoreAdminRouter: FunctionComponent<AdminRouterProps> = props => {
         title,
     } = props;
 
-    if (typeof children !== 'function' && !children) {
+    if (
+        (typeof children !== 'function' && !children) ||
+        (Array.isArray(children) && children.length === 0)
+    ) {
         return createElement(ready);
     }
 
