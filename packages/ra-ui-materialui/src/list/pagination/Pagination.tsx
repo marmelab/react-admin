@@ -75,7 +75,7 @@ const Pagination: FC<PaginationProps> = props => {
     );
 
     // Avoid rendering TablePagination if "page" value is invalid
-    if (total === 0 || page < 1 || page > totalPages) {
+    if (total === null || total === 0 || page < 1 || page > totalPages) {
         return loading ? <Toolbar variant="dense" /> : limit;
     }
 

@@ -3,6 +3,7 @@ import { createElement, FunctionComponent, ComponentType } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import CoreAdminRouter from './CoreAdminRouter';
+import { Ready } from '../util';
 import {
     TitleComponent,
     LoginComponent,
@@ -30,6 +31,7 @@ export interface AdminUIProps {
     loginPage?: LoginComponent | boolean;
     logout?: ComponentType;
     menu?: ComponentType;
+    ready?: ComponentType;
     theme?: object;
     title?: TitleComponent;
 }
@@ -47,6 +49,7 @@ const CoreAdminUI: FunctionComponent<AdminUIProps> = ({
     loginPage = false,
     logout,
     menu, // deprecated, use a custom layout instead
+    ready = Ready,
     theme,
     title = 'React Admin',
 }) => {
@@ -76,6 +79,7 @@ const CoreAdminUI: FunctionComponent<AdminUIProps> = ({
                         loading={loading}
                         logout={logout && createElement(logout)}
                         menu={menu}
+                        ready={ready}
                         theme={theme}
                         title={title}
                         {...props}

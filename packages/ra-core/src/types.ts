@@ -67,7 +67,7 @@ export interface UserIdentity {
  */
 export type AuthProvider = {
     login: (params: any) => Promise<any>;
-    logout: (params: any) => Promise<void | string>;
+    logout: (params: any) => Promise<void | false | string>;
     checkAuth: (params: any) => Promise<void>;
     checkError: (error: any) => Promise<void>;
     getPermissions: (params: any) => Promise<any>;
@@ -299,10 +299,19 @@ export type LegacyDataProvider = (
     params: any
 ) => Promise<any>;
 
+export interface ResourceDefinition {
+    readonly name: string;
+    readonly options?: any;
+    readonly hasList?: boolean;
+    readonly hasEdit?: boolean;
+    readonly hasShow?: boolean;
+    readonly hasCreate?: boolean;
+    readonly icon?: any;
+}
+
 /**
  * Redux state type
  */
-
 export interface ReduxState {
     admin: {
         ui: {
@@ -313,6 +322,7 @@ export interface ReduxState {
         };
         resources: {
             [name: string]: {
+                props: ResourceDefinition;
                 data: {
                     [key: string]: Record;
                     [key: number]: Record;
@@ -468,6 +478,7 @@ export interface AdminProps {
     loginPage?: LoginComponent | boolean;
     logoutButton?: ComponentType;
     menu?: ComponentType;
+    ready?: ComponentType;
     theme?: ThemeOptions;
     title?: TitleComponent;
 }

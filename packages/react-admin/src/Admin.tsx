@@ -103,6 +103,7 @@ const Admin: FunctionComponent<AdminProps> = ({
     loginPage,
     logoutButton,
     menu, // deprecated, use a custom layout instead
+    ready,
     theme,
     title = 'React Admin',
 }) => {
@@ -143,6 +144,7 @@ const Admin: FunctionComponent<AdminProps> = ({
                 loading={loading}
                 loginPage={loginPage}
                 logout={authProvider ? logoutButton : undefined}
+                ready={ready}
             >
                 {children}
             </AdminUI>

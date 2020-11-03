@@ -1,14 +1,65 @@
-import * as React from 'react';
+import React from 'react';
 import expect from 'expect';
-import { act, cleanup, wait } from '@testing-library/react';
+import { act, cleanup } from '@testing-library/react';
 
-import EditController from './EditController';
-import renderWithRedux from '../util/renderWithRedux';
-import { DataProviderContext } from '../dataProvider';
-import { DataProvider } from '../types';
+import { getRecord } from './useCreateController';
+import { CreateController } from './CreateController';
+import renderWithRedux from '../../util/renderWithRedux';
+import { DataProviderContext } from '../../dataProvider';
+import { DataProvider } from '../../types';
 
-describe('useEditController', () => {
+describe('useCreateController', () => {
     afterEach(cleanup);
+
+    describe('getRecord', () => {
+        const location = {
+            pathname: '/foo',
+            search: undefined,
+            state: undefined,
+            hash: undefined,
+        };
+
+        it('should return an empty record by default', () => {
+            expect(getRecord(location, undefined)).toEqual({});
+        });
+
+        it('should return location state record when set', () => {
+            expect(
+                getRecord(
+                    {
+                        ...location,
+                        state: { record: { foo: 'bar' } },
+                    },
+                    undefined
+                )
+            ).toEqual({ foo: 'bar' });
+        });
+
+        it('should return location search when set', () => {
+            expect(
+                getRecord(
+                    {
+                        ...location,
+                        search: '?source={"foo":"baz","array":["1","2"]}',
+                    },
+                    undefined
+                )
+            ).toEqual({ foo: 'baz', array: ['1', '2'] });
+        });
+
+        it('should return location state record when both state and search are set', () => {
+            expect(
+                getRecord(
+                    {
+                        ...location,
+                        state: { record: { foo: 'bar' } },
+                        search: '?foo=baz',
+                    },
+                    undefined
+                )
+            ).toEqual({ foo: 'bar' });
+        });
+    });
 
     const defaultProps = {
         basePath: '',
@@ -16,193 +67,122 @@ describe('useEditController', () => {
         hasEdit: true,
         hasList: true,
         hasShow: true,
-        id: 12,
         resource: 'posts',
         debounce: 200,
     };
 
-    it('should call the dataProvider.getOne() function on mount', async () => {
-        const getOne = jest
+    it('should call the dataProvider.create() function on save', async () => {
+        const create = jest
             .fn()
-            .mockImplementationOnce(() =>
-                Promise.resolve({ data: { id: 12, title: 'hello' } })
-            );
-        const dataProvider = ({ getOne } as unknown) as DataProvider;
-        const { queryAllByText } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <EditController {...defaultProps}>
-                    {({ record }) => <div>{record && record.title}</div>}
-                </EditController>
-            </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
-        );
-        await wait(() => {
-            expect(getOne).toHaveBeenCalled();
-            expect(queryAllByText('hello')).toHaveLength(1);
-        });
-    });
-
-    it('should dispatch a CRUD_GET_ONE action on mount', () => {
-        const dataProvider = ({
-            getOne: () => Promise.resolve({ data: { id: 12, title: 'hello' } }),
-        } as unknown) as DataProvider;
-        const { dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <EditController {...defaultProps}>
-                    {({ record }) => <div>{record && record.title}</div>}
-                </EditController>
-            </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
-        );
-        const crudGetOneAction = dispatch.mock.calls[0][0];
-        expect(crudGetOneAction.type).toEqual('RA/CRUD_GET_ONE');
-        expect(crudGetOneAction.payload).toEqual({ id: 12 });
-        expect(crudGetOneAction.meta.resource).toEqual('posts');
-    });
-
-    it('should grab the record from the store based on the id', () => {
-        const dataProvider = ({
-            getOne: () => Promise.resolve({ data: { id: 12, title: 'world' } }),
-        } as unknown) as DataProvider;
-        const { queryAllByText } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <EditController {...defaultProps}>
-                    {({ record }) => <div>{record && record.title}</div>}
-                </EditController>
-            </DataProviderContext.Provider>,
-            {
-                admin: {
-                    resources: {
-                        posts: { data: { 12: { id: 12, title: 'hello' } } },
-                    },
-                },
-            }
-        );
-        expect(queryAllByText('hello')).toHaveLength(1);
-    });
-
-    it('should call the dataProvider.update() function on save', async () => {
-        const update = jest
-            .fn()
-            .mockImplementationOnce((_, { id, data, previousData }) =>
-                Promise.resolve({ data: { id, ...previousData, ...data } })
+            .mockImplementationOnce((_, { data }) =>
+                Promise.resolve({ data: { id: 123, ...data } })
             );
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
-            update,
+            create,
         } as unknown) as DataProvider;
         let saveCallback;
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <EditController {...defaultProps} undoable={false}>
+                <CreateController {...defaultProps}>
                     {({ save }) => {
                         saveCallback = save;
                         return null;
                     }}
-                </EditController>
+                </CreateController>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
         await act(async () => saveCallback({ foo: 'bar' }));
-        expect(update).toHaveBeenCalledWith('posts', {
-            id: 12,
+        expect(create).toHaveBeenCalledWith('posts', {
             data: { foo: 'bar' },
-            previousData: undefined,
         });
     });
 
-    it('should return an undoable save callback by default', async () => {
+    it('should execute default success side effects on success', async () => {
+        let saveCallback;
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
-            update: (_, { id, data, previousData }) =>
-                Promise.resolve({ data: { id, ...previousData, ...data } }),
+            create: (_, { data }) =>
+                Promise.resolve({ data: { id: 123, ...data } }),
         } as unknown) as DataProvider;
-        let saveCallback;
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <EditController {...defaultProps}>
+                <CreateController {...defaultProps}>
                     {({ save }) => {
                         saveCallback = save;
                         return null;
                     }}
-                </EditController>
+                </CreateController>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
         await act(async () => saveCallback({ foo: 'bar' }));
-        const call = dispatch.mock.calls.find(
-            params => params[0].type === 'RA/CRUD_UPDATE_OPTIMISTIC'
-        );
-        expect(call).not.toBeUndefined();
-        const crudUpdateAction = call[0];
-        expect(crudUpdateAction.payload).toEqual({
-            id: 12,
-            data: { foo: 'bar' },
-            previousData: undefined,
-        });
-        expect(crudUpdateAction.meta.resource).toEqual('posts');
-    });
-
-    it('should return a save callback when undoable is false', async () => {
-        let saveCallback;
-        const dataProvider = ({
-            getOne: () => Promise.resolve({ data: { id: 12 } }),
-            update: (_, { id, data, previousData }) =>
-                Promise.resolve({ data: { id, ...previousData, ...data } }),
-        } as unknown) as DataProvider;
-        const { dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <EditController {...defaultProps} undoable={false}>
-                    {({ save }) => {
-                        saveCallback = save;
-                        return null;
-                    }}
-                </EditController>
-            </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
-        );
-        await act(async () => saveCallback({ foo: 'bar' }));
-        const call = dispatch.mock.calls.find(
-            params => params[0].type === 'RA/CRUD_UPDATE_OPTIMISTIC'
-        );
-        expect(call).toBeUndefined();
-        const call2 = dispatch.mock.calls.find(
-            params => params[0].type === 'RA/CRUD_UPDATE'
-        );
-        expect(call2).not.toBeUndefined();
-        const crudUpdateAction = call2[0];
-        expect(crudUpdateAction.payload).toEqual({
-            id: 12,
-            data: { foo: 'bar' },
-            previousData: undefined,
-        });
-        expect(crudUpdateAction.meta.resource).toEqual('posts');
         const notify = dispatch.mock.calls.find(
             params => params[0].type === 'RA/SHOW_NOTIFICATION'
         );
-        expect(notify).not.toBeUndefined();
+        expect(notify[0]).toEqual({
+            type: 'RA/SHOW_NOTIFICATION',
+            payload: {
+                messageArgs: { smart_count: 1 },
+                undoable: false,
+                autoHideDuration: undefined,
+                type: 'info',
+                message: 'ra.notification.created',
+            },
+        });
+    });
+
+    it('should execute default failure side effects on failure', async () => {
+        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+        let saveCallback;
+        const dataProvider = ({
+            getOne: () => Promise.resolve({ data: { id: 12 } }),
+            create: () => Promise.reject({ message: 'not good' }),
+        } as unknown) as DataProvider;
+        const { dispatch } = renderWithRedux(
+            <DataProviderContext.Provider value={dataProvider}>
+                <CreateController {...defaultProps}>
+                    {({ save }) => {
+                        saveCallback = save;
+                        return null;
+                    }}
+                </CreateController>
+            </DataProviderContext.Provider>,
+            { admin: { resources: { posts: { data: {} } } } }
+        );
+        await act(async () => saveCallback({ foo: 'bar' }));
+        const notify = dispatch.mock.calls.find(
+            params => params[0].type === 'RA/SHOW_NOTIFICATION'
+        );
+        expect(notify[0]).toEqual({
+            type: 'RA/SHOW_NOTIFICATION',
+            payload: {
+                messageArgs: {},
+                undoable: false,
+                autoHideDuration: undefined,
+                type: 'warning',
+                message: 'not good',
+            },
+        });
     });
 
     it('should allow onSuccess to override the default success side effects', async () => {
         let saveCallback;
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
-            update: (_, { id, data, previousData }) =>
-                Promise.resolve({ data: { id, ...previousData, ...data } }),
+            create: (_, { data }) =>
+                Promise.resolve({ data: { id: 123, ...data } }),
         } as unknown) as DataProvider;
         const onSuccess = jest.fn();
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <EditController
-                    {...defaultProps}
-                    undoable={false}
-                    onSuccess={onSuccess}
-                >
+                <CreateController {...defaultProps} onSuccess={onSuccess}>
                     {({ save }) => {
                         saveCallback = save;
                         return null;
                     }}
-                </EditController>
+                </CreateController>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -218,23 +198,19 @@ describe('useEditController', () => {
         let saveCallback;
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
-            update: (_, { id, data, previousData }) =>
-                Promise.resolve({ data: { id, ...previousData, ...data } }),
+            create: (_, { data }) =>
+                Promise.resolve({ data: { id: 123, ...data } }),
         } as unknown) as DataProvider;
         const onSuccess = jest.fn();
         const onSuccessSave = jest.fn();
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <EditController
-                    {...defaultProps}
-                    undoable={false}
-                    onSuccess={onSuccess}
-                >
+                <CreateController {...defaultProps} onSuccess={onSuccess}>
                     {({ save }) => {
                         saveCallback = save;
                         return null;
                     }}
-                </EditController>
+                </CreateController>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -256,21 +232,17 @@ describe('useEditController', () => {
         let saveCallback;
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
-            update: () => Promise.reject({ message: 'not good' }),
+            create: () => Promise.reject({ message: 'not good' }),
         } as unknown) as DataProvider;
         const onFailure = jest.fn();
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <EditController
-                    {...defaultProps}
-                    undoable={false}
-                    onFailure={onFailure}
-                >
+                <CreateController {...defaultProps} onFailure={onFailure}>
                     {({ save }) => {
                         saveCallback = save;
                         return null;
                     }}
-                </EditController>
+                </CreateController>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -287,22 +259,18 @@ describe('useEditController', () => {
         let saveCallback;
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
-            update: () => Promise.reject({ message: 'not good' }),
+            create: () => Promise.reject({ message: 'not good' }),
         } as unknown) as DataProvider;
         const onFailure = jest.fn();
         const onFailureSave = jest.fn();
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <EditController
-                    {...defaultProps}
-                    undoable={false}
-                    onFailure={onFailure}
-                >
+                <CreateController {...defaultProps} onFailure={onFailure}>
                     {({ save }) => {
                         saveCallback = save;
                         return null;
                     }}
-                </EditController>
+                </CreateController>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -319,16 +287,16 @@ describe('useEditController', () => {
         expect(notify).toBeUndefined();
     });
 
-    it('should allow transform to transform the data before save', async () => {
+    it('should allow transform to transform the data before calling create', async () => {
         let saveCallback;
-        const update = jest
+        const create = jest
             .fn()
-            .mockImplementationOnce((_, { id, data }) =>
-                Promise.resolve({ data: { id, ...data } })
+            .mockImplementationOnce((_, { data }) =>
+                Promise.resolve({ data: { id: 123, ...data } })
             );
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
-            update,
+            create,
         } as unknown) as DataProvider;
         const transform = jest.fn().mockImplementationOnce(data => ({
             ...data,
@@ -336,40 +304,32 @@ describe('useEditController', () => {
         }));
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <EditController
-                    {...defaultProps}
-                    undoable={false}
-                    transform={transform}
-                >
+                <CreateController {...defaultProps} transform={transform}>
                     {({ save }) => {
                         saveCallback = save;
                         return null;
                     }}
-                </EditController>
+                </CreateController>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
         await act(async () => saveCallback({ foo: 'bar' }));
-        expect(transform).toHaveBeenCalledWith({
-            foo: 'bar',
-        });
-        expect(update).toHaveBeenCalledWith('posts', {
-            id: 12,
+        expect(transform).toHaveBeenCalledWith({ foo: 'bar' });
+        expect(create).toHaveBeenCalledWith('posts', {
             data: { foo: 'bar', transformed: true },
-            previousData: undefined,
         });
     });
 
-    it('should the save transform option to override the transform side effect', async () => {
+    it('should allow the save transform option to override the controller transform option', async () => {
         let saveCallback;
-        const update = jest
+        const create = jest
             .fn()
-            .mockImplementationOnce((_, { id, data }) =>
-                Promise.resolve({ data: { id, ...data } })
+            .mockImplementationOnce((_, { data }) =>
+                Promise.resolve({ data: { id: 123, ...data } })
             );
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
-            update,
+            create,
         } as unknown) as DataProvider;
         const transform = jest.fn();
         const transformSave = jest.fn().mockImplementationOnce(data => ({
@@ -378,16 +338,12 @@ describe('useEditController', () => {
         }));
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <EditController
-                    {...defaultProps}
-                    undoable={false}
-                    transform={transform}
-                >
+                <CreateController {...defaultProps} transform={transform}>
                     {({ save }) => {
                         saveCallback = save;
                         return null;
                     }}
-                </EditController>
+                </CreateController>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -397,13 +353,9 @@ describe('useEditController', () => {
             })
         );
         expect(transform).not.toHaveBeenCalled();
-        expect(transformSave).toHaveBeenCalledWith({
-            foo: 'bar',
-        });
-        expect(update).toHaveBeenCalledWith('posts', {
-            id: 12,
+        expect(transformSave).toHaveBeenCalledWith({ foo: 'bar' });
+        expect(create).toHaveBeenCalledWith('posts', {
             data: { foo: 'bar', transformed: true },
-            previousData: undefined,
         });
     });
 });

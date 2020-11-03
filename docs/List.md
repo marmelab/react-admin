@@ -2215,17 +2215,18 @@ For mobile devices, a `<Datagrid>` is often unusable - there is simply not enoug
 
 ### Properties
 
-| Prop            | Required | Type                                      | Default | Description                                                                                                                                              |
-| --------------- | -------- | ----------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `primaryText`   | Required | `Function`                                | -       | Passed as `<ListItemText primary>` prop                                                                                                                  |
-| `secondaryText` | Optional | `Function`                                | -       | Passed as `<ListItemText secondary>` prop                                                                                                                |
-| `tertiaryText`  | Optional | `Function`                                | -       | Passed as a complement to `<ListItemText primary>` with a custom style                                                                                   |
-| `linkType`      | Optional | `string` &#124; `Function` &#124; `false` | `edit`  | Target of the `<ListItem>` link. Set to `false` to disable the link. Set to a function `(record, id) => string` to have the link target vary per record. |
-| `leftAvatar`    | Optional | `Function`                                | -       | When present, the `<ListItem>` renders a `<ListItemAvatar>` before the `<ListItemText>`                                                                  |
-| `leftIcon`      | Optional | `Function`                                | -       | When present, the `<ListItem>` renders a `<ListIcon>` before the `<ListItemText>`                                                                        |
-| `rightAvatar`   | Optional | `Function`                                | -       | When present, the `<ListItem>` renders a `<ListItemAvatar>` after the `<ListItemText>`                                                                   |
-| `rightIcon`     | Optional | `Function`                                | -       | When present, the `<ListItem>` renders a `<ListIcon>` after the `<ListItemText>`                                                                         |
-| `className`     | Optional | `string`                                  | -       | Applied to the root element                                                                                                                              |
+| Prop            | Required | Type                                      | Default | Description                                                                                                                                              
+| --------------- | -------- | ----------------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------| 
+| `primaryText`   | Required | `Function`                                | -       | Passed as `<ListItemText primary>` prop                                                                                                                              |
+| `secondaryText` | Optional | `Function`                                | -       | Passed as `<ListItemText secondary>` prop                                                                                                                            |
+| `tertiaryText`  | Optional | `Function`                                | -       | Passed as a complement to `<ListItemText primary>` with a custom style                                                                                               |
+| `linkType`      | Optional | `string` &#124; `Function` &#124; `false` | `edit`  | Target of the `<ListItem>` link. Set to `false` to disable the link. Set to a function `(record, id) => string` to have the link target vary per record.             |
+| `leftAvatar`    | Optional | `Function`                                | -       | When present, the `<ListItem>` renders a `<ListItemAvatar>` before the `<ListItemText>`                                                                              |
+| `leftIcon`      | Optional | `Function`                                | -       | When present, the `<ListItem>` renders a `<ListIcon>` before the `<ListItemText>`                                                                                    |
+| `rightAvatar`   | Optional | `Function`                                | -       | When present, the `<ListItem>` renders a `<ListItemAvatar>` after the `<ListItemText>`                                                                               |
+| `rightIcon`     | Optional | `Function`                                | -       | When present, the `<ListItem>` renders a `<ListIcon>` after the `<ListItemText>`                                                                                     |
+| `className`     | Optional | `string`                                  | -       | Applied to the root element                                                                                                                                          |
+| `rowStyle`      | Optional | `Function`                                | -       | Applied to the `<ListItem>` styles prop. The function get's called for each row. Receives the current record and index as arguments and should return a style object.|
     
 ### Usage
 
@@ -2236,6 +2237,10 @@ You can use `<SimpleList>` as `<List>` or `<ReferenceManyField>` child:
 import * as React from "react";
 import { List, SimpleList } from 'react-admin';
 
+const postRowStyle = (record, index) => ({
+    backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
+});
+
 export const PostList = (props) => (
     <List {...props}>
         <SimpleList
@@ -2243,12 +2248,13 @@ export const PostList = (props) => (
             secondaryText={record => `${record.views} views`}
             tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
             linkType={record => record.canEdit ? "edit" : "show"}
+			rowStyle={postRowStyle}
         />
     </List>
 );
 ```
 
-For each record, `<SimpleList>` executes the `primaryText`, `secondaryText`, `linkType`, `leftAvatar`, `leftIcon`, `rightAvatar`, and `rightIcon` props functions, and creates a `<ListItem>` with the result.
+For each record, `<SimpleList>` executes the `primaryText`, `secondaryText`, `linkType`, `rowStyle`, `leftAvatar`, `leftIcon`, `rightAvatar`, and `rightIcon` props functions, and creates a `<ListItem>` with the result.
 
 **Tip**: To use a `<SimpleList>` on small screens and a `<Datagrid>` on larger screens, use material-ui's `useMediaQuery` hook:
 

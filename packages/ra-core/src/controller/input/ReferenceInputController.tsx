@@ -6,7 +6,8 @@ import {
 } from 'react';
 
 import { SortPayload, Record } from '../../types';
-import useReferenceInputController, {
+import {
+    useReferenceInputController,
     ReferenceInputValue,
 } from './useReferenceInputController';
 

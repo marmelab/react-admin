@@ -65,7 +65,7 @@ const useStyles = makeStyles(
  * @param {string} color The color of the AppBar
  * @param {Component} logout The logout button component that will be pass to the UserMenu component
  * @param {boolean} open State of the <Admin/> Sidebar
- * @param {Element} userMenu A custom user menu component for the AppBar. <UserMenu/> component by default
+ * @param {Element | boolean} userMenu A custom user menu component for the AppBar. <UserMenu/> component by default. Pass false to disable.
  *
  * @example
  *
@@ -79,8 +79,17 @@ const useStyles = makeStyles(
  *               className={classes.title}
  *               id="react-admin-title"
  *           />
- *        </AppBar>
- *    );
+ *       </AppBar>
+ *   );
+ *};
+ *
+ * @example Without a user menu
+ *
+ * const MyAppBar = props => {
+ *   const classes = useStyles();
+ *   return (
+ *       <AppBar {...props} userMenu={false} />
+ *   );
  *};
  */
 const AppBar = (props: AppBarProps): JSX.Element => {
@@ -146,7 +155,11 @@ const AppBar = (props: AppBarProps): JSX.Element => {
                         children
                     )}
                     <LoadingIndicator />
-                    {cloneElement(userMenu, { logout })}
+                    {typeof userMenu === 'boolean'
+                        ? userMenu === true
+                            ? cloneElement(<DefaultUserMenu />, { logout })
+                            : null
+                        : cloneElement(userMenu, { logout })}
                 </Toolbar>
             </MuiAppBar>
         </HideOnScroll>
@@ -167,7 +180,7 @@ AppBar.propTypes = {
     ]),
     logout: PropTypes.element,
     open: PropTypes.bool,
-    userMenu: PropTypes.element,
+    userMenu: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
 };
 
 AppBar.defaultProps = {
@@ -179,7 +192,7 @@ export interface AppBarProps extends Omit<MuiAppBarProps, 'title' | 'classes'> {
     logout?: JSX.Element;
     open?: boolean;
     title?: string | JSX.Element;
-    userMenu?: JSX.Element;
+    userMenu?: JSX.Element | boolean;
 }
 
 export default AppBar;

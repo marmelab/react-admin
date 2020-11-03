@@ -1,6 +1,7 @@
-import { Translate } from '../types';
-import { useTranslate } from '../i18n';
-import useEditController, {
+import { Translate } from '../../types';
+import { useTranslate } from '../../i18n';
+import {
+    useEditController,
     EditProps,
     EditControllerProps,
 } from './useEditController';
@@ -26,10 +27,8 @@ interface Props extends EditProps {
  *     </EditController>
  * );
  */
-const EditController = ({ children, ...props }: Props) => {
+export const EditController = ({ children, ...props }: Props) => {
     const controllerProps = useEditController(props);
     const translate = useTranslate(); // injected for backwards compatibility
     return children({ translate, ...controllerProps });
 };
-
-export default EditController;

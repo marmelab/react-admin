@@ -1,15 +1,18 @@
 import { useCallback } from 'react';
 import inflection from 'inflection';
 
-import useVersion from './useVersion';
-import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
-import { Record, Identifier } from '../types';
+import useVersion from '../useVersion';
+import { useCheckMinimumRequiredProps } from '../checkMinimumRequiredProps';
+import { Record, Identifier } from '../../types';
 import {
     useNotify,
     useRedirect,
     useRefresh,
     RedirectionSideEffect,
-} from '../sideEffect';
+} from '../../sideEffect';
+import { useGetOne, useUpdate } from '../../dataProvider';
+import { useTranslate } from '../../i18n';
+import { CRUD_GET_ONE, CRUD_UPDATE } from '../../actions';
 import {
     OnSuccess,
     SetOnSuccess,
@@ -18,10 +21,8 @@ import {
     TransformData,
     SetTransformData,
     useSaveModifiers,
-} from './saveModifiers';
-import { useGetOne, useUpdate } from '../dataProvider';
-import { useTranslate } from '../i18n';
-import { CRUD_GET_ONE, CRUD_UPDATE } from '../actions';
+} from '../saveModifiers';
+import { useResourceContext } from '../../core';
 
 export interface EditProps {
     basePath?: string;
@@ -39,10 +40,17 @@ export interface EditProps {
 }
 
 export interface EditControllerProps<RecordType extends Record = Record> {
+    basePath?: string;
+    // Necessary for actions (EditActions) which expect a data prop containing the record
+    // @deprecated - to be removed in 4.0d
+    data?: RecordType;
+    defaultTitle: string;
+    hasCreate?: boolean;
+    hasEdit?: boolean;
+    hasShow?: boolean;
+    hasList?: boolean;
     loading: boolean;
     loaded: boolean;
-    saving: boolean;
-    defaultTitle: string;
     save: (
         data: Partial<Record>,
         redirect?: RedirectionSideEffect,
@@ -52,15 +60,15 @@ export interface EditControllerProps<RecordType extends Record = Record> {
             transform?: TransformData;
         }
     ) => void;
+    saving: boolean;
     setOnSuccess: SetOnSuccess;
     setOnFailure: SetOnFailure;
     setTransform: SetTransformData;
-    resource: string;
-    basePath?: string;
+    successMessage?: string;
     record?: RecordType;
     redirect: RedirectionSideEffect;
+    resource: string;
     version: number;
-    successMessage?: string;
 }
 
 /**
@@ -80,20 +88,24 @@ export interface EditControllerProps<RecordType extends Record = Record> {
  *     return <EditView {...controllerProps} {...props} />;
  * }
  */
-const useEditController = <RecordType extends Record = Record>(
+export const useEditController = <RecordType extends Record = Record>(
     props: EditProps
 ): EditControllerProps<RecordType> => {
     useCheckMinimumRequiredProps('Edit', ['basePath', 'resource'], props);
     const {
         basePath,
+        hasCreate,
+        hasEdit,
+        hasList,
+        hasShow,
         id,
-        resource,
         successMessage,
         undoable = true,
         onSuccess,
         onFailure,
         transform,
     } = props;
+    const { resource } = useResourceContext(props);
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();
@@ -222,6 +234,10 @@ const useEditController = <RecordType extends Record = Record>(
         loaded,
         saving,
         defaultTitle,
+        hasCreate,
+        hasEdit,
+        hasList,
+        hasShow,
         save,
         setOnSuccess,
         setOnFailure,
@@ -233,7 +249,5 @@ const useEditController = <RecordType extends Record = Record>(
         version,
     };
 };
-
-export default useEditController;
 
 const DefaultRedirect = 'list';

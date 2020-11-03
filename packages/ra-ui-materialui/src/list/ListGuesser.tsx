@@ -6,6 +6,7 @@ import {
     getElementsFromRecords,
     InferredElement,
     ListContextProvider,
+    useResourceContext,
 } from 'ra-core';
 
 import ListView, { ListViewProps } from './ListView';
@@ -42,7 +43,8 @@ const ListGuesser: FC<ListProps> = props => {
 };
 
 const ListViewGuesser: FC<ListViewProps> = props => {
-    const { ids, data, resource } = props;
+    const { ids, data } = props;
+    const { resource } = useResourceContext(props);
     const [inferredChild, setInferredChild] = useState(null);
     useEffect(() => {
         if (ids.length > 0 && data && !inferredChild) {

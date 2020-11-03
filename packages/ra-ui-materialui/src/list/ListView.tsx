@@ -91,7 +91,7 @@ export const ListView: FC<ListViewProps> = props => {
         hasCreate &&
         loaded &&
         !loading &&
-        !total &&
+        total === 0 &&
         !Object.keys(filterValues).length;
 
     return (

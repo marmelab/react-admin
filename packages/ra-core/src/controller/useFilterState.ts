@@ -1,6 +1,8 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
+
+import { useSafeSetState } from '../util';
 import { FilterPayload } from '../types';
 
 interface UseFilterStateOptions {
@@ -57,7 +59,7 @@ export default ({
 }: UseFilterStateOptions): UseFilterStateProps => {
     const permanentFilterProp = useRef(permanentFilter);
     const latestValue = useRef<string>();
-    const [filter, setFilterValue] = useState({
+    const [filter, setFilterValue] = useSafeSetState({
         ...permanentFilter,
         ...filterToQuery(''),
     });

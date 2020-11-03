@@ -13,20 +13,21 @@ export interface InputProps<T = any>
         FieldProps<any, FieldRenderProps<any, HTMLElement>, HTMLElement>,
         'validate' | 'children'
     > {
-    source: string;
-    name?: string;
-    id?: string;
     defaultValue?: any;
-    validate?: Validator | Validator[];
+    id?: string;
+    input?: FieldInputProps<any, HTMLElement>;
+    meta?: any;
+    name?: string;
     onBlur?: (event: FocusEvent<T>) => void;
     onChange?: (event: ChangeEvent | any) => void;
     onFocus?: (event: FocusEvent<T>) => void;
     options?: T;
-    input?: FieldInputProps<any, HTMLElement>;
-    meta?: any;
+    resource?: string;
+    source: string;
+    validate?: Validator | Validator[];
 }
 
-interface ComputedInputProps extends FieldRenderProps<any, HTMLElement> {
+export interface UseInputValue extends FieldRenderProps<any, HTMLElement> {
     id: string;
     isRequired: boolean;
 }
@@ -41,7 +42,7 @@ const useInput = ({
     onChange: customOnChange,
     onFocus: customOnFocus,
     ...options
-}: InputProps): ComputedInputProps => {
+}: InputProps): UseInputValue => {
     const finalName = name || source;
 
     const sanitizedValidate = Array.isArray(validate)

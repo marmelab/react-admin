@@ -9,7 +9,7 @@ import {
 } from 'ra-core';
 
 import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
-import sanitizeRestProps from './sanitizeRestProps';
+import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 
 /**
  * Render related records to the current one.
@@ -145,7 +145,7 @@ export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = props => 
     return (
         <>
             {cloneElement(Children.only(children), {
-                ...sanitizeRestProps(rest),
+                ...sanitizeFieldRestProps(rest),
                 basePath,
                 resource: reference,
             })}

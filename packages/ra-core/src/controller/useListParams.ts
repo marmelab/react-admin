@@ -197,52 +197,63 @@ const useListParams = ({
     );
     const displayedFilterValues = query.displayedFilters || emptyObject;
 
-    const debouncedSetFilters = lodashDebounce(
-        (newFilters, newDisplayedFilters) => {
-            let payload = {
-                filter: removeEmpty(newFilters),
-                displayedFilters: undefined,
-            };
-            if (newDisplayedFilters) {
-                payload.displayedFilters = Object.keys(
-                    newDisplayedFilters
-                ).reduce((filters, filter) => {
-                    return newDisplayedFilters[filter]
-                        ? { ...filters, [filter]: true }
-                        : filters;
-                }, {});
-            }
-            changeParams({
-                type: SET_FILTER,
-                payload,
-            });
-        },
-        debounce
-    );
+    const debouncedSetFilters = lodashDebounce((filter, displayedFilters) => {
+        changeParams({
+            type: SET_FILTER,
+            payload: {
+                filter: removeEmpty(filter),
+                displayedFilters,
+            },
+        });
+    }, debounce);
 
     const setFilters = useCallback(
-        (filters, displayedFilters) =>
-            debouncedSetFilters(filters, displayedFilters),
+        (filter, displayedFilters, debounce = true) =>
+            debounce
+                ? debouncedSetFilters(filter, displayedFilters)
+                : changeParams({
+                      type: SET_FILTER,
+                      payload: {
+                          filter: removeEmpty(filter),
+                          displayedFilters,
+                      },
+                  }),
         requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );
 
     const hideFilter = useCallback((filterName: string) => {
-        const newFilters = removeKey(filterValues, filterName);
-        const newDisplayedFilters = {
-            ...displayedFilterValues,
-            [filterName]: undefined,
-        };
-
-        setFilters(newFilters, newDisplayedFilters);
+        // we don't use lodash.set() for displayed filters
+        // to avoid problems with compound filter names (e.g. 'author.name')
+        const displayedFilters = Object.keys(displayedFilterValues).reduce(
+            (filters, filter) => {
+                return filter !== filterName
+                    ? { ...filters, [filter]: true }
+                    : filters;
+            },
+            {}
+        );
+        const filter = removeEmpty(removeKey(filterValues, filterName));
+        changeParams({
+            type: SET_FILTER,
+            payload: { filter, displayedFilters },
+        });
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
     const showFilter = useCallback((filterName: string, defaultValue: any) => {
-        const newFilters = set(filterValues, filterName, defaultValue);
-        const newDisplayedFilters = {
+        // we don't use lodash.set() for displayed filters
+        // to avoid problems with compound filter names (e.g. 'author.name')
+        const displayedFilters = {
             ...displayedFilterValues,
             [filterName]: true,
         };
-        setFilters(newFilters, newDisplayedFilters);
+        const filter = set(filterValues, filterName, defaultValue);
+        changeParams({
+            type: SET_FILTER,
+            payload: {
+                filter,
+                displayedFilters,
+            },
+        });
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
     return [

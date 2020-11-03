@@ -153,14 +153,20 @@ const FilterListItem: FC<{ label: string; value: any }> = props => {
     );
 
     const addFilter = () => {
-        setFilters({ ...filterValues, ...value }, null);
+        setFilters({ ...filterValues, ...value }, null, false);
     };
+
     const removeFilter = () => {
-        const inverseValue = Object.keys(value).reduce((acc, key) => {
-            acc[key] = undefined;
-            return acc;
-        }, {} as any);
-        setFilters({ ...filterValues, ...inverseValue }, null);
+        const keysToRemove = Object.keys(value);
+        const filters = Object.keys(filterValues).reduce(
+            (acc, key) =>
+                keysToRemove.includes(key)
+                    ? acc
+                    : { ...acc, [key]: filterValues[key] },
+            {}
+        );
+
+        setFilters(filters, null, false);
     };
 
     const toggleFilter = () => (isSelected ? removeFilter() : addFilter());

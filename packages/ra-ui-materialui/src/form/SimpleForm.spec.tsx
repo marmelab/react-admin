@@ -1,7 +1,11 @@
 import { cleanup } from '@testing-library/react';
 import * as React from 'react';
 import expect from 'expect';
-import { renderWithRedux } from 'ra-core';
+import {
+    renderWithRedux,
+    SaveContextProvider,
+    SideEffectContextProvider,
+} from 'ra-core';
 
 import SimpleForm from './SimpleForm';
 import TextInput from '../input/TextInput';
@@ -9,12 +13,19 @@ import TextInput from '../input/TextInput';
 describe('<SimpleForm />', () => {
     afterEach(cleanup);
 
+    const saveContextValue = { save: jest.fn(), saving: false };
+    const sideEffects = {};
+
     it('should embed a form with given component children', () => {
         const { queryByLabelText } = renderWithRedux(
-            <SimpleForm>
-                <TextInput source="name" />
-                <TextInput source="city" />
-            </SimpleForm>
+            <SaveContextProvider value={saveContextValue}>
+                <SideEffectContextProvider value={sideEffects}>
+                    <SimpleForm>
+                        <TextInput source="name" />
+                        <TextInput source="city" />
+                    </SimpleForm>
+                </SideEffectContextProvider>
+            </SaveContextProvider>
         );
         expect(
             queryByLabelText('resources.undefined.fields.name')
@@ -26,10 +37,14 @@ describe('<SimpleForm />', () => {
 
     it('should display <Toolbar />', () => {
         const { queryByLabelText } = renderWithRedux(
-            <SimpleForm>
-                <TextInput source="name" />
-                <TextInput source="city" />
-            </SimpleForm>
+            <SaveContextProvider value={saveContextValue}>
+                <SideEffectContextProvider value={sideEffects}>
+                    <SimpleForm>
+                        <TextInput source="name" />
+                        <TextInput source="city" />
+                    </SimpleForm>
+                </SideEffectContextProvider>
+            </SaveContextProvider>
         );
         expect(queryByLabelText('ra.action.save')).not.toBeNull();
     });
@@ -40,21 +55,39 @@ describe('<SimpleForm />', () => {
         );
 
         const { queryByText, rerender } = renderWithRedux(
-            <SimpleForm submitOnEnter={false} toolbar={<Toolbar />} />
+            <SaveContextProvider value={saveContextValue}>
+                <SideEffectContextProvider value={sideEffects}>
+                    <SimpleForm submitOnEnter={false} toolbar={<Toolbar />}>
+                        <div />
+                    </SimpleForm>
+                </SideEffectContextProvider>
+            </SaveContextProvider>
         );
 
         expect(queryByText('submitOnEnter: false')).not.toBeNull();
 
-        rerender(<SimpleForm submitOnEnter toolbar={<Toolbar />} />);
+        rerender(
+            <SaveContextProvider value={saveContextValue}>
+                <SideEffectContextProvider value={sideEffects}>
+                    <SimpleForm submitOnEnter toolbar={<Toolbar />}>
+                        <div />
+                    </SimpleForm>
+                </SideEffectContextProvider>
+            </SaveContextProvider>
+        );
 
         expect(queryByText('submitOnEnter: true')).not.toBeNull();
     });
 
     it('should not alter default margin or variant', () => {
         const { queryByLabelText } = renderWithRedux(
-            <SimpleForm>
-                <TextInput source="name" />
-            </SimpleForm>
+            <SaveContextProvider value={saveContextValue}>
+                <SideEffectContextProvider value={sideEffects}>
+                    <SimpleForm>
+                        <TextInput source="name" />
+                    </SimpleForm>
+                </SideEffectContextProvider>
+            </SaveContextProvider>
         );
         const inputElement = queryByLabelText(
             'resources.undefined.fields.name'
@@ -67,9 +100,13 @@ describe('<SimpleForm />', () => {
 
     it('should pass variant and margin to child inputs', () => {
         const { queryByLabelText } = renderWithRedux(
-            <SimpleForm variant="outlined" margin="normal">
-                <TextInput source="name" />
-            </SimpleForm>
+            <SaveContextProvider value={saveContextValue}>
+                <SideEffectContextProvider value={sideEffects}>
+                    <SimpleForm variant="outlined" margin="normal">
+                        <TextInput source="name" />
+                    </SimpleForm>
+                </SideEffectContextProvider>
+            </SaveContextProvider>
         );
         const inputElement = queryByLabelText(
             'resources.undefined.fields.name'
@@ -82,9 +119,17 @@ describe('<SimpleForm />', () => {
 
     it('should allow input children to override variant and margin', () => {
         const { queryByLabelText } = renderWithRedux(
-            <SimpleForm variant="standard" margin="none">
-                <TextInput source="name" variant="outlined" margin="normal" />
-            </SimpleForm>
+            <SaveContextProvider value={saveContextValue}>
+                <SideEffectContextProvider value={sideEffects}>
+                    <SimpleForm variant="standard" margin="none">
+                        <TextInput
+                            source="name"
+                            variant="outlined"
+                            margin="normal"
+                        />
+                    </SimpleForm>
+                </SideEffectContextProvider>
+            </SaveContextProvider>
         );
         const inputElement = queryByLabelText(
             'resources.undefined.fields.name'

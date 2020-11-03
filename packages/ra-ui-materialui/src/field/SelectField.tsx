@@ -5,7 +5,7 @@ import get from 'lodash/get';
 import { ChoicesProps, useChoices } from 'ra-core';
 import Typography from '@material-ui/core/Typography';
 
-import sanitizeRestProps from './sanitizeRestProps';
+import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 /**
@@ -94,7 +94,7 @@ export const SelectField: FC<SelectFieldProps> = memo<SelectFieldProps>(
                     component="span"
                     variant="body2"
                     className={className}
-                    {...sanitizeRestProps(rest)}
+                    {...sanitizeFieldRestProps(rest)}
                 >
                     {emptyText}
                 </Typography>
@@ -108,7 +108,7 @@ export const SelectField: FC<SelectFieldProps> = memo<SelectFieldProps>(
                 component="span"
                 variant="body2"
                 className={className}
-                {...sanitizeRestProps(rest)}
+                {...sanitizeFieldRestProps(rest)}
             >
                 {choiceText}
             </Typography>

@@ -10,6 +10,7 @@ import { ListControllerProps } from '../useListController';
 import usePaginationState from '../usePaginationState';
 import useSelectionState from '../useSelectionState';
 import useSortState from '../useSortState';
+import { useResourceContext } from '../../core';
 
 interface Options {
     basePath: string;
@@ -65,18 +66,21 @@ const defaultFilter = {};
  *
  * @returns {ReferenceManyProps} The reference many props
  */
-const useReferenceManyFieldController = ({
-    resource,
-    reference,
-    record,
-    target,
-    filter = defaultFilter,
-    source,
-    basePath,
-    page: initialPage,
-    perPage: initialPerPage,
-    sort: initialSort = { field: 'id', order: 'DESC' },
-}: Options): ListControllerProps => {
+const useReferenceManyFieldController = (
+    props: Options
+): ListControllerProps => {
+    const {
+        reference,
+        record,
+        target,
+        filter = defaultFilter,
+        source,
+        basePath,
+        page: initialPage,
+        perPage: initialPerPage,
+        sort: initialSort = { field: 'id', order: 'DESC' },
+    } = props;
+    const { resource } = useResourceContext(props);
     const notify = useNotify();
 
     // pagination logic
