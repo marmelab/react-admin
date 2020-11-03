@@ -228,7 +228,7 @@ export default {
 };
 ```
 
-When `authProvider.checkError()` returns a rejected Promise, react-admin displays a notification to the end user, unlsee the `error.message` is `false`. That means you can disable the notification on error as follows:
+When `authProvider.checkError()` returns a rejected Promise, react-admin displays a notification to the end user, unless the `error.message` is `false`. That means you can disable the notification on error as follows:
 
 ```js
 // in src/authProvider.js
