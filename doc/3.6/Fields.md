@@ -27,11 +27,13 @@ export const PostList = (props) => (
 
 `Field` components need a `record` and a `source` prop to work, and basically display the `record[source]` data. There is nothing magic there - you can easily write your own:
 
+{% raw %}
 ```jsx
 const PurpleTextField = ({ record, source }) => (
     <span style={{ color: 'purple' }}>{record[source]}</span>
 );
 ```
+{% endraw %}
 
 Some react-admin components  (e.g. `<Datagrid>` or `<SimpleShowLayout>`) clone their children and pass them a `record` value. That's why most of the time, you don't have to pass the `record` manually. But you can totally render a `Field` component by passing it a `record` value ; in fact, it's a great way to understand how `Field` components work:
 
