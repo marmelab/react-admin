@@ -31,15 +31,16 @@ const DeleteWithUndoButton: FC<DeleteWithUndoButtonProps> = props => {
         ...rest
     } = props;
     const classes = useStyles(props);
+    const { resource } = useResourceContext(props);
     const { loading, handleDelete } = useDeleteWithUndoController({
         record,
+        resource,
         basePath,
         redirect,
         onClick,
         onSuccess,
         onFailure,
     });
-    const { resource } = useResourceContext(props);
 
     return (
         <Button
