@@ -151,7 +151,7 @@ export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = props => 
             })}
             {pagination &&
                 props.total !== undefined &&
-                cloneElement(pagination, rest)}
+                cloneElement(pagination)}
         </>
     );
 };
