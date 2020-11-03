@@ -7,6 +7,8 @@ import {
     SortPayload,
     Exporter,
     useListContext,
+    useResourceContext,
+    useResourceDefinition,
 } from 'ra-core';
 import { ToolbarProps } from '@material-ui/core';
 
@@ -17,15 +19,15 @@ const ListActions: FC<ListActionsProps> = props => {
     const { className, exporter, filters, ...rest } = props;
     const {
         currentSort,
-        resource,
         displayedFilters,
         filterValues,
-        hasCreate,
         basePath,
         selectedIds,
         showFilter,
         total,
     } = useListContext(props);
+    const { resource } = useResourceContext(rest);
+    const { hasCreate } = useResourceDefinition(rest);
     return useMemo(
         () => (
             <TopToolbar className={className} {...sanitizeListRestProps(rest)}>

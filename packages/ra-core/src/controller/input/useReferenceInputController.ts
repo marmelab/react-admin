@@ -16,6 +16,7 @@ import usePaginationState from '../usePaginationState';
 import { useSortState } from '..';
 import useFilterState from '../useFilterState';
 import useSelectionState from '../useSelectionState';
+import { useResourceContext } from '../../core';
 
 const defaultReferenceSource = (resource: string, source: string) =>
     `${resource}@${source}`;
@@ -59,20 +60,23 @@ const defaultFilter = {};
  *      filterToQuery: searchText => ({ title: searchText })
  * });
  */
-export const useReferenceInputController = ({
-    basePath,
-    input,
-    page: initialPage = 1,
-    perPage: initialPerPage = 25,
-    filter = defaultFilter,
-    reference,
-    filterToQuery,
-    // @deprecated
-    referenceSource = defaultReferenceSource,
-    resource,
-    sort: sortOverride,
-    source,
-}: Option): ReferenceInputValue => {
+export const useReferenceInputController = (
+    props: Option
+): ReferenceInputValue => {
+    const {
+        basePath,
+        input,
+        page: initialPage = 1,
+        perPage: initialPerPage = 25,
+        filter = defaultFilter,
+        reference,
+        filterToQuery,
+        // @deprecated
+        referenceSource = defaultReferenceSource,
+        sort: sortOverride,
+        source,
+    } = props;
+    const { resource } = useResourceContext(props);
     const translate = useTranslate();
 
     // pagination logic
