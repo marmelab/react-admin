@@ -777,7 +777,7 @@ export default PostList;
 
 One of the most important features of the List page is the ability to filter the results. React-admin does its best to offer a powerful filter functionality, and to get out of the way when you want to go further. 
 
-The next sections explain hows to use the filter functionality. And first, a few explanations about the inner workings of filters:
+The next sections explain how to use the filter functionality. And first, a few explanations about the inner workings of filters:
 
 - [Filter Query Parameter](#filter-query-parameter)
 - [Linking To A Pre-Filtered List](#linking-to-a-pre-filtered-list)
@@ -1108,7 +1108,7 @@ const CustomerList = props => (
 
 ![Filter Live Search](./img/filter-live-search.gif)
 
-The filter sidebar is not a form. Therefore, if your users need to enter complex filters, you'll have to recreate a filter form using react-final-form (see the [Buidling a custom filter](#building-a-custom-filter) section below for an example). However, if you only need one text input with a filter-as-you-type behavior, you'll find the `<FilterLiveSearch>` component convenient. 
+The filter sidebar is not a form. Therefore, if your users need to enter complex filters, you'll have to recreate a filter form using react-final-form (see the [Building a custom filter](#building-a-custom-filter) section below for an example). However, if you only need one text input with a filter-as-you-type behavior, you'll find the `<FilterLiveSearch>` component convenient. 
 
 It outputs a form containing a single `<SearchInput>`, which modifies the page filter on change. That's usually what users expect for a full-text filter. `<FilterLiveSearch>` only needs a `source` field.
 
@@ -1290,7 +1290,7 @@ You can use a similar approach to customize the list filter completely, e.g. to 
 
 React-admin does its best to offer a powerful sort functionality, and to get out of the way when you want to go further. 
 
-The next sections explain hows to use the sort functionality. And first, a few explanations about the inner workings of sorting in react-admin:
+The next sections explain how to use the sort functionality. And first, a few explanations about the inner workings of sorting in react-admin:
 
 - [Sort Query Parameter](#sort-query-parameter)
 - [Linking To A Pre-Sorted List](#linking-to-a-pre-sorted-list)
@@ -1444,9 +1444,9 @@ export const PostList = (props) => (
 
 ![Sort Button](./img/sort-button.gif)
 
-Some List views don't have a natural UI for sorting - e.g. the `<SimpleList>`, or a list of images, don't have column headers like the `<Datagrid>`. For these cases, react-admin offers the `<SortButton>`, which displays a drodown list of fields that the user can choose to sort on.
+Some List views don't have a natural UI for sorting - e.g. the `<SimpleList>`, or a list of images, don't have column headers like the `<Datagrid>`. For these cases, react-admin offers the `<SortButton>`, which displays a dropdown list of fields that the user can choose to sort on.
 
-`<SortButton>` expects one prop: `fields`, the list of fields it should allows to sort on. For instance, here is how to offer a button to sort on the `reference`, `sales`, and `stock` fields:
+`<SortButton>` expects one prop: `fields`, the list of fields it should allow to sort on. For instance, here is how to offer a button to sort on the `reference`, `sales`, and `stock` fields:
 
 ```jsx
 import * as React from 'react';

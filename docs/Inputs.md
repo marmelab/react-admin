@@ -418,7 +418,7 @@ You can customize the rich text editor toolbar using the `toolbar` attribute, as
 <RichTextInput source="body" toolbar={[ ['bold', 'italic', 'underline', 'link'] ]} />
 ```
 
-If you need to add Quill `modules` or `themes`, you can do so by passsing them in the `options` prop.
+If you need to add Quill `modules` or `themes`, you can do so by passing them in the `options` prop.
 
 {% raw %}
 ```jsx
