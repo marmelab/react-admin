@@ -127,7 +127,7 @@ The [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise) <img cl
   - `ra-tree`: Edit and visualize tree structures. Reorganize by drag and drop. Adapts to any data structure on the backend (parent_id, children, nested sets, etc).
   - `ra-tour`: Guided tours for react-admin applications. Step-by-step instructions, Material-ui skin.
   - `ra-markdown`: Read Markdown data, and edit it using a WYSIWYG editor in your admin
-- Get **Support** from experienced react and react-admin developers, who will help you to find the right information and troubleshoot your bugs.
+- Get **Support** from experienced react and react-admin developers, who will help you find the right information and troubleshoot your bugs.
 - Get a **50% Discount on Professional Services** in case you need coaching, audit, or custom development by our experts.
 - Get access to exclusive **Learning Material**, including a Storybook full of examples, and a dedicated demo app.
 - Prioritize your needs in the react-admin **Development Roadmap** thanks to a priority vote.
@@ -144,7 +144,7 @@ The second way to contribute is to **answer support questions on [StackOverflow]
 
 Pull requests for **bug fixes** are welcome on the [GitHub repository](https://github.com/marmelab/react-admin). There is always a bunch of [issues labeled "Good First Issue"](https://github.com/marmelab/react-admin/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22) in the bug tracker - start with these. Check the contributing guidelines in [the repository README](https://github.com/marmelab/react-admin#contributing).
 
-If you want to **add a feature**, you can open a Pull request on the `next` branch. We don't accept all features - we try to keep the react-admin code small and manageable. Try and see if your feature can't be built as an additional `npm` package. If you're in doubt, open a "Feature Request" issue to see if the core team would accept your feature before developing it. 
+If you want to **add a feature**, you can open a Pull request on the `next` branch. We don't accept all features - we try to keep the react-admin code small and manageable. Try and see if your feature can be built as an additional `npm` package. If you're in doubt, open a "Feature Request" issue to see if the core team would accept your feature before developing it. 
 
 ## License
 
