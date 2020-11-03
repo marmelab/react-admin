@@ -66,7 +66,10 @@ nav ul#nav-mobile a {
 .sidenav li.logo {
     text-align: center;
     margin-top: 1em;
-    margin-bottom: 1em;
+}
+
+.sidenav li.logo a {
+    height: auto;
 }
 
 .sidenav li.logo img {
@@ -75,6 +78,11 @@ nav ul#nav-mobile a {
 
 .sidenav li.version {
     text-align: center;
+    padding: 0.5em 0 1em 0;
+}
+
+.sidenav li.version li {
+    min-height: auto;
 }
 
 .sidenav li.version .dropdown-trigger {
@@ -83,6 +91,7 @@ nav ul#nav-mobile a {
     padding: 0 10px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     width: 70%;
+    height: 2em;
 }
 
 .sidenav li.version .dropdown-trigger .caret {
@@ -91,9 +100,21 @@ nav ul#nav-mobile a {
     fill: rgba(0, 0, 0, 0.6);
 }
 
+.sidenav ul {
+    padding: 0.5em 1em;
+}
+.sidenav ul div {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 0.8em;
+}
+
 .sidenav li > a {
-    height: 40px;
-    line-height: 40px;
+    height: 1.6em;
+    line-height: 1.6em;
+    padding: 0 1em;
+    font-size: 1em;
+    font-weight: normal;
 }
 
 .sidenav.sidenav-fixed ul.collapsible-accordion a.collapsible-header {

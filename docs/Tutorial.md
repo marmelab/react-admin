@@ -591,7 +591,7 @@ The first filter, 'q', takes advantage of a full-text functionality offered by J
 
 Filters are "search-as-you-type", meaning that when the user enters new values in the filter form, the list refreshes (via an API request) immediately.
 
-**Tip**: Note that the `label` property can be used on any any field to customize the field label.
+**Tip**: Note that the `label` property can be used on any field to customize the field label.
 
 ## Customizing the Menu Icons
 

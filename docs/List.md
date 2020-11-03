@@ -734,10 +734,11 @@ The `List` component accepts the usual `className` prop but you can override man
 | `bulkActionsDisplayed` | Applied to the child component inside the main container when there are selected records |
 | `noResults`            | Applied to the component shown when there is no result                                   |
 
-You can customize the list styles by passing a `classes` object as prop, through `useStyles()`. Here is an example:
+You can customize the `<List>` styles by passing a `classes` object as prop, through `useStyles()`. Here is an example:
 
 {% raw %}
 ```jsx
+import * as React from 'react';
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
@@ -1107,7 +1108,7 @@ const CustomerList = props => (
 
 ![Filter Live Search](./img/filter-live-search.gif)
 
-The filter sidebar is not a form. Therefore, if your users need to enter complex filters, you'll have to recreate a filter form using react-final-form (see the [Filter on submit](#building-a-custom-filter) section below for an example). However, if you only need one text input with a filter-as-you-type behavior, you'll find the `<FilterLiveSearch>` component convenient. 
+The filter sidebar is not a form. Therefore, if your users need to enter complex filters, you'll have to recreate a filter form using react-final-form (see the [Buidling a custom filter](#building-a-custom-filter) section below for an example). However, if you only need one text input with a filter-as-you-type behavior, you'll find the `<FilterLiveSearch>` component convenient. 
 
 It outputs a form containing a single `<SearchInput>`, which modifies the page filter on change. That's usually what users expect for a full-text filter. `<FilterLiveSearch>` only needs a `source` field.
 
@@ -1360,7 +1361,7 @@ const SortByViews = () => (
 
 ![Sort Column Header](./img/sort-column-header.gif)
 
-If you're using a `<Datagrid>` inside the List view, then the column headers are buttons allowing users to change the list sort field and order. This feature requires no configuration and works out fo the box. The next sections explain how you can disable of modify the field used for sorting on a particular column.
+If you're using a `<Datagrid>` inside the List view, then the column headers are buttons allowing users to change the list sort field and order. This feature requires no configuration and works out fo the box. The next sections explain how you can disable or modify the field used for sorting on a particular column.
 
 ### Disabling Sorting
 
@@ -1689,7 +1690,7 @@ const {
     loading, // boolean that is true on mount, and false once the data was fetched
     // pagination
     page, // the current page. Starts at 1
-    setPage, // a callback to change the page, e.g. setPage(3)
+    setPage, // a callback to change the current page, e.g. setPage(3)
     perPage, // the number of results per page. Defaults to 25
     setPerPage, // a callback to change the number of results per page, e.g. setPerPage(25)
     // sorting
@@ -1702,7 +1703,7 @@ const {
     showFilter, // a callback to show one of the filters, e.g. showFilter('title', defaultValue)
     hideFilter, // a callback to hide one of the filters, e.g. hidefilter('title')
     // row selection
-    selectedIds, // an array listing the ids of the selcted rows, e.g. [123, 456]
+    selectedIds, // an array listing the ids of the selected rows, e.g. [123, 456]
     onSelect, // callback to change the list of selected rows, e.g onSelect([456, 789])
     onToggleItem, // callback to toggle the selection of a given record based on its id, e.g. onToggleItem(456)
     onUnselectItems, // callback to clear the selection, e.g. onUnselectItems();
@@ -2033,21 +2034,21 @@ export const PostList = props => (
 
 The `Datagrid` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
 
-* `table`: alternative to using `className`. Applied to the root element.
-* `tbody`: applied to the tbody
-* `headerCell`: applied to each header cell
-* `row`: applied to each row
-* `rowEven`: applied to each even row
-* `rowOdd`: applied to each odd row
-* `rowCell`: applied to each row cell
-
-Here is an example of how you can override some of these classes:
+| Rule name     | Description                                                   |
+| ------------- | ------------------------------------------------------------- |
+| `table`       | Alternative to using `className`. Applied to the root element |
+| `tbody`       | Applied to the tbody                                          |
+| `headerCell`  | Applied to each header cell                                   |
+| `row`         | Applied to each row                                           |
+| `rowEven`     | Applied to each even row                                      |
+| `rowOdd`      | Applied to the each odd row                                   |
+| `rowCell`     | Applied to the each row cell                                  |
 
 You can customize the `<Datagrid>` styles by passing a `classes` object as prop, through `useStyles()`. Here is an example:
 
 {% raw %}
 ```jsx
-import * as React from "react";
+import * as React from 'react';
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
@@ -2070,6 +2071,8 @@ const PostList = props => {
 export default PostList;
 ```
 {% endraw %}
+
+**Tip**: The `Datagrid` component `classes` can also be customized for all instances of the component with its global css name `"RaDatagrid"` as [describe here](https://marmelab.com/blog/2019/12/18/react-admin-3-1.html#theme-overrides)
 
 **Tip**: If you want to override the `header` and `cell` styles independently for each column, use the `headerClassName` and `cellClassName` props in `<Field>` components. For instance, to hide a certain column on small screens:
 
@@ -2181,7 +2184,7 @@ const CustomList = () => {
         <ListContextProvider
             value={{
                 resource: 'posts',
-                basePath: 'posts',
+                basePath: '/posts',
                 data: keyBy(data, 'id'),
                 ids: data.map(({ id }) => id),
                 currentSort: { field: 'id', order: 'ASC' },

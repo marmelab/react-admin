@@ -16,7 +16,7 @@
         />
         <link
             rel="stylesheet"
-            href="{{ '/css/style-v7.css' | relative_url }}"
+            href="{{ '/css/style-v8.css' | relative_url }}"
         />
         <link rel="stylesheet" href="{{ '/css/syntax.css' | relative_url }}" />
         <link rel="stylesheet" href="{{ '/css/prism.css' | relative_url }}" />
@@ -157,6 +157,7 @@
                     .replace(/-+$/, ''); // Trim - from end of text
             }
             document.addEventListener('DOMContentLoaded', function () {
+                M.Sidenav.init(document.querySelectorAll('.sidenav'));
                 // Initialize version selector
                 M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
                 /* Generate table of contents */

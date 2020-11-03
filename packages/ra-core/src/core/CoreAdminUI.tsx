@@ -8,7 +8,7 @@ import {
     TitleComponent,
     LoginComponent,
     LayoutComponent,
-    LayoutProps,
+    CoreLayoutProps,
     AdminChildren,
     CatchAllComponent,
     CustomRoutes,
@@ -17,7 +17,7 @@ import {
 
 export type ChildrenFunction = () => ComponentType[];
 
-const DefaultLayout: FunctionComponent<LayoutProps> = ({ children }) => (
+const DefaultLayout: FunctionComponent<CoreLayoutProps> = ({ children }) => (
     <>{children}</>
 );
 

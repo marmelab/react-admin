@@ -82,13 +82,15 @@ const useDeleteWithUndoController = (
         onFailure:
             onFailure !== undefined
                 ? onFailure
-                : error =>
+                : error => {
                       notify(
                           typeof error === 'string'
                               ? error
                               : error.message || 'ra.notification.http_error',
                           'warning'
-                      ),
+                      );
+                      refresh();
+                  },
         undoable: true,
     });
     const handleDelete = useCallback(

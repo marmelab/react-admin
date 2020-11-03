@@ -105,6 +105,7 @@ const useDeleteWithConfirmController = (
                         : error.message || 'ra.notification.http_error',
                     'warning'
                 );
+                refresh();
             } else {
                 onFailure(error);
             }

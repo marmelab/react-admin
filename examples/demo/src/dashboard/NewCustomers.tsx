@@ -13,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import CustomerIcon from '@material-ui/icons/PersonAdd';
 import { Link } from 'react-router-dom';
 import { useTranslate, useQueryWithStore } from 'react-admin';
+import { subDays } from 'date-fns';
 
 import CardWithIcon from './CardWithIcon';
 import { Customer } from '../types';
@@ -21,15 +22,12 @@ const NewCustomers = () => {
     const translate = useTranslate();
     const classes = useStyles();
 
-    const aMonthAgo = useMemo(() => {
-        const date = new Date();
-        date.setDate(date.getDate() - 30);
-        date.setHours(0);
-        date.setMinutes(0);
-        date.setSeconds(0);
-        date.setMilliseconds(0);
-        return date;
-    }, []);
+    const aMonthAgo = subDays(new Date(), 30);
+    aMonthAgo.setDate(aMonthAgo.getDate() - 30);
+    aMonthAgo.setHours(0);
+    aMonthAgo.setMinutes(0);
+    aMonthAgo.setSeconds(0);
+    aMonthAgo.setMilliseconds(0);
 
     const { loaded, data: visitors } = useQueryWithStore({
         type: 'getList',

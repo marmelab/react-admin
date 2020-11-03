@@ -17,6 +17,11 @@ describe('removeEmpty', () => {
         expect(removeEmpty(input)).toEqual({ foo: 'val' });
     });
 
+    it('should remove nested undefined values', () => {
+        const input = { foo: 'val', bar: { baz: undefined } };
+        expect(removeEmpty(input)).toEqual({ foo: 'val' });
+    });
+
     it('should preserve dates', () => {
         const date = new Date();
         const input = { foo: 'val', bar: { baz: '' }, date };

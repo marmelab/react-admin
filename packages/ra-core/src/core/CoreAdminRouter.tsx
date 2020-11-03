@@ -17,13 +17,13 @@ import {
     CustomRoutes,
     CatchAllComponent,
     LayoutComponent,
-    LayoutProps,
+    CoreLayoutProps,
     ResourceProps,
     RenderResourcesFunction,
     ResourceElement,
 } from '../types';
 
-export interface AdminRouterProps extends LayoutProps {
+export interface AdminRouterProps extends CoreLayoutProps {
     layout: LayoutComponent;
     catchAll: CatchAllComponent;
     children?: AdminChildren;
