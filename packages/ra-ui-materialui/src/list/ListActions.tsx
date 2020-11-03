@@ -27,7 +27,7 @@ const ListActions: FC<ListActionsProps> = props => {
         total,
     } = useListContext(props);
     const { resource } = useResourceContext(rest);
-    const { hasCreate } = useResourceDefinition(resource, rest);
+    const { hasCreate } = useResourceDefinition(rest);
     return useMemo(
         () => (
             <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
