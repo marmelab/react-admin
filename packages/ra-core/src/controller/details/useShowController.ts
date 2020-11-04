@@ -59,7 +59,7 @@ export const useShowController = <RecordType extends Record = Record>(
 ): ShowControllerProps<RecordType> => {
     useCheckMinimumRequiredProps('Show', ['basePath', 'resource'], props);
     const { basePath, hasCreate, hasEdit, hasList, hasShow, id } = props;
-    const { resource } = useResourceContext(props);
+    const resource = useResourceContext(props);
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();

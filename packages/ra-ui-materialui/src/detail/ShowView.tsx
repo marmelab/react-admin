@@ -8,7 +8,6 @@ import {
     ShowControllerProps,
     useResourceDefinition,
     useShowContext,
-    useResourceContext,
 } from 'ra-core';
 
 import DefaultActions from './ShowActions';

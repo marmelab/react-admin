@@ -59,7 +59,7 @@ const useDeleteWithUndoController = (
         onSuccess,
         onFailure,
     } = props;
-    const { resource } = useResourceContext(props);
+    const resource = useResourceContext(props);
     const notify = useNotify();
     const redirect = useRedirect();
     const refresh = useRefresh();

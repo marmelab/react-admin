@@ -10,15 +10,13 @@ import { ResourceContext, ResourceContextValue } from './ResourceContext';
  * @returns {ResourceContextValue} The resource
  */
 export const useResourceContext = <
-    ResourceInformationsType extends Partial<
-        ResourceContextValue
-    > = ResourceContextValue
+    ResourceInformationsType extends Partial<{ resource: string }>
 >(
     props: ResourceInformationsType
 ): ResourceContextValue => {
     const context = useContext(ResourceContext);
 
-    if (!context || !context.resource) {
+    if (!context) {
         /**
          * The element isn't inside a <ResourceContextProvider>
          *
@@ -30,8 +28,7 @@ export const useResourceContext = <
             );
         }
         // Ignored because resource is often optional (as it is injected) in components which passes the props to this hook
-        // @ts-ignore
-        return props;
+        return props.resource;
     }
 
     return context;

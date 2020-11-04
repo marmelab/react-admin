@@ -105,7 +105,7 @@ export const useEditController = <RecordType extends Record = Record>(
         onFailure,
         transform,
     } = props;
-    const { resource } = useResourceContext(props);
+    const resource = useResourceContext(props);
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();

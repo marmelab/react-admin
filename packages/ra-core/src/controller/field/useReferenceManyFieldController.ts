@@ -80,7 +80,7 @@ const useReferenceManyFieldController = (
         perPage: initialPerPage,
         sort: initialSort = { field: 'id', order: 'DESC' },
     } = props;
-    const { resource } = useResourceContext(props);
+    const resource = useResourceContext(props);
     const notify = useNotify();
 
     // pagination logic

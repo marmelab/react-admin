@@ -46,7 +46,7 @@ const BulkDeleteWithUndoButton: FC<BulkDeleteWithUndoButtonProps> = props => {
     const notify = useNotify();
     const unselectAll = useUnselectAll();
     const refresh = useRefresh();
-    const { resource } = useResourceContext(props);
+    const resource = useResourceContext(props);
     const [deleteMany, { loading }] = useDeleteMany(resource, selectedIds, {
         action: CRUD_DELETE_MANY,
         onSuccess: () => {

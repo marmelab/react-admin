@@ -71,7 +71,7 @@ const ResourceRoutes: FunctionComponent<ResourceProps> = ({
         }
 
         return (
-            <ResourceContextProvider value={resourceData}>
+            <ResourceContextProvider value={name}>
                 <Switch>
                     {create && (
                         <Route

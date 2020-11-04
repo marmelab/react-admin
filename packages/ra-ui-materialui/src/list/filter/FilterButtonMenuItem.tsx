@@ -7,7 +7,7 @@ import { FieldTitle, useResourceContext } from 'ra-core';
 const FilterButtonMenuItem = forwardRef<any, FilterButtonMenuItemProps>(
     (props, ref) => {
         const { filter, onShow } = props;
-        const { resource } = useResourceContext(props);
+        const resource = useResourceContext(props);
         const handleShow = useCallback(() => {
             onShow({
                 source: filter.props.source,

@@ -41,7 +41,7 @@ export const DatagridHeaderCell = (
         isSorting,
         ...rest
     } = props;
-    const { resource } = useResourceContext(props);
+    const resource = useResourceContext(props);
     const classes = useStyles(props);
     const translate = useTranslate();
 

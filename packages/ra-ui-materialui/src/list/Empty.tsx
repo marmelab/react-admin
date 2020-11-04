@@ -34,7 +34,7 @@ const useStyles = makeStyles(
 
 const Empty: FC<EmptyProps> = props => {
     const { basePath } = useListContext(props);
-    const { resource } = useResourceContext(props);
+    const resource = useResourceContext(props);
     const classes = useStyles(props);
     const translate = useTranslate();
 

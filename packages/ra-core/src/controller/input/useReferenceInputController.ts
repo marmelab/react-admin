@@ -76,7 +76,7 @@ export const useReferenceInputController = (
         sort: sortOverride,
         source,
     } = props;
-    const { resource } = useResourceContext(props);
+    const resource = useResourceContext(props);
     const translate = useTranslate();
 
     // pagination logic

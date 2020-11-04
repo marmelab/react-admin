@@ -118,7 +118,7 @@ const useListController = <RecordType extends Record = Record>(
         filter,
         debounce = 500,
     } = props;
-    const { resource } = useResourceContext(props);
+    const resource = useResourceContext(props);
 
     if (filter && isValidElement(filter)) {
         throw new Error(

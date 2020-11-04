@@ -56,7 +56,7 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
         onSuccess,
         onFailure,
     });
-    const { resource } = useResourceContext(props);
+    const resource = useResourceContext(props);
 
     return (
         <Fragment>

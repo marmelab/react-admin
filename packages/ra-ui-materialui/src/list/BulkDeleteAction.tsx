@@ -8,7 +8,7 @@ import { crudDeleteMany, startUndoable, useResourceContext } from 'ra-core';
  */
 const BulkDeleteAction = props => {
     const dispatch = useDispatch();
-    const { resource } = useResourceContext(props);
+    const resource = useResourceContext(props);
 
     useEffect(() => {
         if (process.env.NODE_ENV !== 'production') {

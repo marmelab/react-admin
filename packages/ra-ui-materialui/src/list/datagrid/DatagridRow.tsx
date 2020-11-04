@@ -59,7 +59,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
         selectable,
         ...rest
     } = props;
-    const { resource } = useResourceContext(props);
+    const resource = useResourceContext(props);
     const [expanded, toggleExpanded] = useExpanded(resource, id);
     const [nbColumns, setNbColumns] = useState(
         computeNbColumns(expand, children, hasBulkActions)
