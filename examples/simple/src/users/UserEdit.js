@@ -14,6 +14,9 @@ import {
     TextInput,
     Toolbar,
     TopToolbar,
+    ReferenceManyField,
+    SingleFieldList,
+    ChipField,
 } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -71,6 +74,15 @@ const UserEdit = ({ permissions, ...props }) => (
                     defaultValue="slim shady"
                     validate={required()}
                 />
+                <ReferenceManyField
+                    label="Reference Many Field Problem:"
+                    reference="users"
+                    target="other_user_id"
+                >
+                    <SingleFieldList>
+                        <ChipField source="name" />
+                    </SingleFieldList>
+                </ReferenceManyField>
             </FormTab>
             {permissions === 'admin' && (
                 <FormTab label="user.form.security" path="security">

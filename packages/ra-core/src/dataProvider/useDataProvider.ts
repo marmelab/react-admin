@@ -23,6 +23,7 @@ import { getDataProviderCallArguments } from './getDataProviderCallArguments';
 // These calls get replayed once the dataProvider exits optimistic mode
 const optimisticCalls = [];
 const undoableOptimisticCalls = [];
+let nbRemainingOptimisticCalls = 0;
 
 /**
  * Hook for getting a dataProvider
@@ -190,7 +191,13 @@ const useDataProvider = (): DataProviderProxy => {
                         } else {
                             optimisticCalls.push(params);
                         }
-                        return Promise.resolve();
+                        nbRemainingOptimisticCalls++;
+                        // Return a Promise that only resolves when the optimistic call was made
+                        // otherwise hooks like useQueryWithStore will return loaded = true
+                        // before the content actually reaches the Redux store.
+                        // But as we can't determine when this particular query was finished,
+                        // the Promise resolves only when *all* optimistic queries are done.
+                        return waitFor(() => nbRemainingOptimisticCalls === 0);
                     }
                     return doQuery(params);
                 };
@@ -200,6 +207,18 @@ const useDataProvider = (): DataProviderProxy => {
 
     return dataProviderProxy;
 };
+
+// get a Promise that resolves after a delay in milliseconds
+const later = (delay = 100): Promise<void> =>
+    new Promise(function (resolve) {
+        setTimeout(resolve, delay);
+    });
+
+// get a Promise that resolves once a condition is satisfied
+const waitFor = (condition: () => boolean): Promise<void> =>
+    new Promise(resolve =>
+        condition() ? resolve() : later().then(() => waitFor(condition))
+    );
 
 const doQuery = ({
     type,
@@ -279,7 +298,7 @@ const performUndoableQuery = ({
     dispatch,
     logoutIfAccessDenied,
     allArguments,
-}: QueryFunctionParams) => {
+}: QueryFunctionParams): Promise<{}> => {
     dispatch(startOptimisticMode());
     if (window) {
         window.addEventListener('beforeunload', warnBeforeClosingWindow, {
@@ -419,18 +438,28 @@ const replayOptimisticCalls = async () => {
     // We only handle all side effects queries if there are no more undoable queries
     if (undoableOptimisticCalls.length > 0) {
         clone = [...undoableOptimisticCalls];
+        // remove these calls from the list *before* doing them
+        // because side effects in the calls can add more calls
+        // so we don't want to erase these.
         undoableOptimisticCalls.splice(0, undoableOptimisticCalls.length);
 
         await Promise.all(
             clone.map(params => Promise.resolve(doQuery.call(null, params)))
         );
+        // once the calls are finished, decrease the number of remaining calls
+        nbRemainingOptimisticCalls -= clone.length;
     } else {
         clone = [...optimisticCalls];
+        // remove these calls from the list *before* doing them
+        // because side effects in the calls can add more calls
+        // so we don't want to erase these.
         optimisticCalls.splice(0, optimisticCalls.length);
 
         await Promise.all(
             clone.map(params => Promise.resolve(doQuery.call(null, params)))
         );
+        // once the calls are finished, decrease the number of remaining calls
+        nbRemainingOptimisticCalls -= clone.length;
     }
 };
 
@@ -452,7 +481,7 @@ const performQuery = ({
     dispatch,
     logoutIfAccessDenied,
     allArguments,
-}: QueryFunctionParams) => {
+}: QueryFunctionParams): Promise<any> => {
     dispatch({
         type: action,
         payload,
