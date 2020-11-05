@@ -79,7 +79,7 @@ const useDeleteWithConfirmController = (
         onSuccess,
         onFailure,
     } = props;
-    const { resource } = useResourceContext(props);
+    const resource = useResourceContext(props);
     const [open, setOpen] = useState(false);
     const notify = useNotify();
     const redirect = useRedirect();

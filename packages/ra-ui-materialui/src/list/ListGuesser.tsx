@@ -44,7 +44,7 @@ const ListGuesser: FC<ListProps> = props => {
 
 const ListViewGuesser: FC<ListViewProps> = props => {
     const { ids, data } = props;
-    const { resource } = useResourceContext(props);
+    const resource = useResourceContext(props);
     const [inferredChild, setInferredChild] = useState(null);
     useEffect(() => {
         if (ids.length > 0 && data && !inferredChild) {

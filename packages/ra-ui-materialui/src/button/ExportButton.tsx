@@ -30,7 +30,7 @@ const ExportButton: FunctionComponent<ExportButtonProps> = props => {
         exporter: exporterFromContext,
         total,
     } = useListContext(props);
-    const { resource } = useResourceContext(props);
+    const resource = useResourceContext(props);
     const exporter = customExporter || exporterFromContext;
     const dataProvider = useDataProvider();
     const notify = useNotify();

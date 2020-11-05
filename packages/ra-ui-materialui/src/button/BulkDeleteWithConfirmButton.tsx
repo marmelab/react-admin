@@ -55,7 +55,7 @@ const BulkDeleteWithConfirmButton: FC<BulkDeleteWithConfirmButtonProps> = props 
     const unselectAll = useUnselectAll();
     const refresh = useRefresh();
     const translate = useTranslate();
-    const { resource } = useResourceContext(props);
+    const resource = useResourceContext(props);
     const [deleteMany, { loading }] = useDeleteMany(resource, selectedIds, {
         action: CRUD_DELETE_MANY,
         onSuccess: () => {

@@ -10,7 +10,7 @@ import { createContext } from 'react';
  * import { useResource, useTranslate } from 'ra-core';
  *
  * const MyCustomEditTitle = props => {
- *     const { name } = useResource(props);
+ *     const name = useResource(props);
  *
  *     return (
  *         <h1>{translate(`${name}.name`)}</h1>
@@ -19,10 +19,4 @@ import { createContext } from 'react';
  */
 export const ResourceContext = createContext<ResourceContextValue>(undefined);
 
-export interface ResourceContextValue {
-    resource: string;
-    hasList: boolean;
-    hasEdit: boolean;
-    hasShow: boolean;
-    hasCreate: boolean;
-}
+export type ResourceContextValue = string;

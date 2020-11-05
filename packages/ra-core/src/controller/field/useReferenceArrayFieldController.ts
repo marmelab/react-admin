@@ -63,7 +63,7 @@ const useReferenceArrayFieldController = (
         sort: initialSort = defaultSort,
         source,
     } = props;
-    const { resource } = useResourceContext(props);
+    const resource = useResourceContext(props);
     const notify = useNotify();
     const ids = get(record, source) || [];
     const { data, error, loading, loaded } = useGetMany(reference, ids, {

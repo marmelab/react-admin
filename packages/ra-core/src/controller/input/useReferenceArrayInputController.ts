@@ -50,7 +50,7 @@ const useReferenceArrayInputController = (
         reference,
         source,
     } = props;
-    const { resource } = useResourceContext(props);
+    const resource = useResourceContext(props);
     const translate = useTranslate();
 
     // We store the current input value in a ref so that we are able to fetch

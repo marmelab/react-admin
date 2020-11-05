@@ -111,7 +111,7 @@ export const useCreateController = <
         transform,
     } = props;
 
-    const { resource } = useResourceContext(props);
+    const resource = useResourceContext(props);
     const location = useLocation();
     const translate = useTranslate();
     const notify = useNotify();

@@ -23,7 +23,7 @@ const useStyles = makeStyles(
 
 const FilterFormInput = props => {
     const { filterElement, handleHide, variant, margin } = props;
-    const { resource } = useResourceContext(props);
+    const resource = useResourceContext(props);
     const translate = useTranslate();
     const classes = useStyles(props);
     return (

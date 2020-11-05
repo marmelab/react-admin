@@ -26,7 +26,7 @@ const ListActions: FC<ListActionsProps> = props => {
         showFilter,
         total,
     } = useListContext(props);
-    const { resource } = useResourceContext(rest);
+    const resource = useResourceContext(rest);
     const { hasCreate } = useResourceDefinition(rest);
     return useMemo(
         () => (

@@ -76,7 +76,7 @@ const SingleFieldList: FC<SingleFieldListProps> = props => {
         ...rest
     } = props;
     const { ids, data, loaded, basePath } = useListContext(props);
-    const { resource } = useResourceContext(props);
+    const resource = useResourceContext(props);
 
     const classes = useStyles(props);
 

@@ -48,7 +48,7 @@ export default (
         sort,
         id,
     } = props;
-    const { resource } = useResourceContext(props);
+    const resource = useResourceContext(props);
     const dispatch = useDispatch();
 
     useDeepCompareEffect(() => {
