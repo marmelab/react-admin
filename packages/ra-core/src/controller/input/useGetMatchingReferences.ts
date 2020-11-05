@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { crudGetMatchingAccumulate } from '../../actions/accumulateActions';
+import { useResourceContext } from '../../core';
 import {
     getPossibleReferences,
     getPossibleReferenceValues,
@@ -35,16 +36,19 @@ interface UseMatchingReferencesProps {
 const defaultReferenceSource = (resource: string, source: string) =>
     `${resource}@${source}`;
 
-export default ({
-    reference,
-    referenceSource = defaultReferenceSource,
-    resource,
-    source,
-    filter,
-    pagination,
-    sort,
-    id,
-}: UseMatchingReferencesOption): UseMatchingReferencesProps => {
+export default (
+    props: UseMatchingReferencesOption
+): UseMatchingReferencesProps => {
+    const {
+        reference,
+        referenceSource = defaultReferenceSource,
+        source,
+        filter,
+        pagination,
+        sort,
+        id,
+    } = props;
+    const resource = useResourceContext(props);
     const dispatch = useDispatch();
 
     useDeepCompareEffect(() => {

@@ -14,7 +14,7 @@ import {
 
 import LinearProgress from '../layout/LinearProgress';
 import Link from '../Link';
-import sanitizeRestProps from './sanitizeRestProps';
+import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
 import { ClassesOverride } from '../types';
 
@@ -208,7 +208,7 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
                     resource: reference,
                     basePath,
                     translateChoice,
-                    ...sanitizeRestProps(rest),
+                    ...sanitizeFieldRestProps(rest),
                 })}
             </Link>
         );
@@ -219,7 +219,7 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
         resource: reference,
         basePath,
         translateChoice,
-        ...sanitizeRestProps(rest),
+        ...sanitizeFieldRestProps(rest),
     });
 };
 

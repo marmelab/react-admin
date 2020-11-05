@@ -23,6 +23,7 @@ import {
     Record,
     Exporter,
 } from '../types';
+import { useResourceContext } from '../core';
 
 export interface ListProps {
     // the props you can change
@@ -73,7 +74,11 @@ export interface ListControllerProps<RecordType extends Record = Record> {
     perPage: number;
     resource: string;
     selectedIds: Identifier[];
-    setFilters: (filters: any, displayedFilters: any) => void;
+    setFilters: (
+        filters: any,
+        displayedFilters: any,
+        debounce?: boolean
+    ) => void;
     setPage: (page: number) => void;
     setPerPage: (page: number) => void;
     setSort: (sort: string, order?: string) => void;
@@ -106,14 +111,14 @@ const useListController = <RecordType extends Record = Record>(
     const {
         basePath,
         exporter = defaultExporter,
-        resource,
-        hasCreate,
         filterDefaultValues,
+        hasCreate,
         sort = defaultSort,
         perPage = 10,
         filter,
         debounce = 500,
     } = props;
+    const resource = useResourceContext(props);
 
     if (filter && isValidElement(filter)) {
         throw new Error(
@@ -177,7 +182,7 @@ const useListController = <RecordType extends Record = Record>(
         get(state.admin.resources, [resource, 'list', 'ids'], [])
     );
     const defaultTotal = useSelector((state: ReduxState): number =>
-        get(state.admin.resources, [resource, 'list', 'total'], 0)
+        get(state.admin.resources, [resource, 'list', 'total'])
     );
 
     // Since the total can be empty during the loading phase

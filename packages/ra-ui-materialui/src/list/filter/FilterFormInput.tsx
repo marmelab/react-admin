@@ -4,7 +4,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ActionHide from '@material-ui/icons/HighlightOff';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { useTranslate } from 'ra-core';
+import { useResourceContext, useTranslate } from 'ra-core';
 
 const emptyRecord = {};
 
@@ -22,7 +22,8 @@ const useStyles = makeStyles(
 );
 
 const FilterFormInput = props => {
-    const { filterElement, handleHide, resource, variant, margin } = props;
+    const { filterElement, handleHide, variant, margin } = props;
+    const resource = useResourceContext(props);
     const translate = useTranslate();
     const classes = useStyles(props);
     return (

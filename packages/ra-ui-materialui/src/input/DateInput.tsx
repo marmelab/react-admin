@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import TextField, { TextFieldProps } from '@material-ui/core/TextField';
 import { useInput, FieldTitle, InputProps } from 'ra-core';
 
-import sanitizeRestProps from './sanitizeRestProps';
+import sanitizeInputRestProps from './sanitizeInputRestProps';
 import InputHelperText from './InputHelperText';
 
 /**
@@ -105,7 +105,7 @@ const DateInput: FunctionComponent<
                 shrink: true,
             }}
             {...options}
-            {...sanitizeRestProps(rest)}
+            {...sanitizeInputRestProps(rest)}
         />
     );
 };

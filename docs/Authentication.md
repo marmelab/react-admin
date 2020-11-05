@@ -176,15 +176,17 @@ export default {
 
 The `authProvider` is also a good place to notify the authentication API that the user credentials are no longer valid after logout.
 
-Note that the `authProvider.logout()` method can return the url to which the user will be redirected once logged out. By default, this is the `/login` route.
+Note that after logout, react-admin redirects the user to the string returned by `authProvider.logout()` - or to the `/login` url if the method returns nothing. You can customize the redirection url by returning a route string, or `false` to disable redirection after logout. 
 
 ## Catching Authentication Errors On The API
 
 If the API requires authentication, and the user credentials are missing in the request or invalid, the API usually answers with an HTTP error code 401 or 403.
 
-Fortunately, each time the API returns an error, react-admin calls the `authProvider.checkError()` method. Once again, it's up to you to decide which HTTP status codes should let the user continue (by returning a resolved promise) or log them out (by returning a rejected promise).
+Fortunately, each time the API returns an error, react-admin calls the `authProvider.checkError()` method. When `checkError()` returns a rejected promise, react-admin calls the `authProvider.logout()` method.
 
-For instance, to redirect the user to the login page for both 401 and 403 codes:
+So it's up to you to decide which HTTP status codes should let the user continue (by returning a resolved promise) or log them out (by returning a rejected promise).
+
+For instance, to log the user out for both 401 and 403 codes:
 
 ```js
 // in src/authProvider.js
@@ -198,13 +200,54 @@ export default {
             localStorage.removeItem('auth');
             return Promise.reject();
         }
+        // other error code (404, 500, etc): no need to log out
         return Promise.resolve();
     },
     // ...
 };
 ```
 
-Note that when `checkError()` returns a rejected promise, react-admin calls the `authProvider.logout()` method before redirecting, and uses the url which may have been returned by the call to `logout()`.
+When `authProvider.checkError()` returns a rejected Promise, react-admin redirects to the `/login` page, or to the `error.redirectTo` url. That means you can override the default redirection as follows:
+
+```js
+// in src/authProvider.js
+export default {
+    login: ({ username, password }) => { /* ... */ },
+    getIdentity: () => { /* ... */ },
+    logout: () => { /* ... */ },
+    checkError: (error) => {
+        const status = error.status;
+        if (status === 401 || status === 403) {
+            localStorage.removeItem('auth');
+            return Promise.reject({ redirectTo: '/credentials-required' });
+        }
+        // other error code (404, 500, etc): no need to log out
+        return Promise.resolve();
+    },
+    // ...
+};
+```
+
+When `authProvider.checkError()` returns a rejected Promise, react-admin displays a notification to the end user, unless the `error.message` is `false`. That means you can disable the notification on error as follows:
+
+```js
+// in src/authProvider.js
+export default {
+    login: ({ username, password }) => { /* ... */ },
+    getIdentity: () => { /* ... */ },
+    logout: () => { /* ... */ },
+    checkError: (error) => {
+        const status = error.status;
+        if (status === 401 || status === 403) {
+            localStorage.removeItem('auth');
+            return Promise.reject({ message: false });
+        }
+        // other error code (404, 500, etc): no need to log out
+        return Promise.resolve();
+    },
+    // ...
+};
+```
 
 ## Checking Credentials During Navigation
 
@@ -245,6 +288,38 @@ export default {
 ```
 
 Note that react-admin will call the `authProvider.logout()` method before redirecting. If you specify the `redirectTo` here, it will override the url which may have been returned by the call to `logout()`.
+
+If the promise is rejected, react-admin displays a notification to the end user. You can customize this message by rejecting an error with a `message` property:
+
+```js
+// in src/authProvider.js
+export default {
+    login: ({ username, password }) => { /* ... */ },
+    getIdentity: () => { /* ... */ },
+    logout: () => { /* ... */ },
+    checkError: (error) => { /* ... */ },
+    checkAuth: () => localStorage.getItem('auth')
+        ? Promise.resolve()
+        : Promise.reject({ message: 'login.required' }), // react-admin passes the error message to the translation layer
+    // ...
+}
+```
+
+You can also disable this notification completely by rejecting an error with a `message` with a `false` value:
+
+```js
+// in src/authProvider.js
+export default {
+    login: ({ username, password }) => { /* ... */ },
+    getIdentity: () => { /* ... */ },
+    logout: () => { /* ... */ },
+    checkError: (error) => { /* ... */ },
+    checkAuth: () => localStorage.getItem('auth')
+        ? Promise.resolve()
+        : Promise.reject({ message: false }),
+    // ...
+}
+```
 
 **Tip**: In addition to `login()`, `logout()`, `checkError()`, and `checkAuth()`, react-admin calls the `authProvider.getPermissions()` method to check user permissions. It's useful to enable or disable features on a per user basis. Read the [Authorization Documentation](./Authorization.md) to learn how to implement that type.
 

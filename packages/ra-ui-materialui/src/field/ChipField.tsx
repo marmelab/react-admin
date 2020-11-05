@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
-import sanitizeRestProps from './sanitizeRestProps';
+import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 const useStyles = makeStyles(
@@ -34,7 +34,7 @@ export const ChipField: FC<ChipFieldProps> = memo<ChipFieldProps>(props => {
                 component="span"
                 variant="body2"
                 className={className}
-                {...sanitizeRestProps(rest)}
+                {...sanitizeFieldRestProps(rest)}
             >
                 {emptyText}
             </Typography>
@@ -45,7 +45,7 @@ export const ChipField: FC<ChipFieldProps> = memo<ChipFieldProps>(props => {
         <Chip
             className={classnames(classes.chip, className)}
             label={value}
-            {...sanitizeRestProps(rest)}
+            {...sanitizeFieldRestProps(rest)}
         />
     );
 });

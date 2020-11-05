@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { FC, HtmlHTMLAttributes, memo } from 'react';
+import { FC, AnchorHTMLAttributes, memo } from 'react';
 import get from 'lodash/get';
 import Typography from '@material-ui/core/Typography';
 
-import sanitizeRestProps from './sanitizeRestProps';
+import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import { Link } from '@material-ui/core';
 
@@ -20,7 +20,7 @@ const EmailField: FC<EmailFieldProps> = memo<EmailFieldProps>(
                     component="span"
                     variant="body2"
                     className={className}
-                    {...sanitizeRestProps(rest)}
+                    {...sanitizeFieldRestProps(rest)}
                 >
                     {emptyText}
                 </Typography>
@@ -32,7 +32,7 @@ const EmailField: FC<EmailFieldProps> = memo<EmailFieldProps>(
                 className={className}
                 href={`mailto:${value}`}
                 onClick={stopPropagation}
-                {...sanitizeRestProps(rest)}
+                {...sanitizeFieldRestProps(rest)}
             >
                 {value}
             </Link>
@@ -49,6 +49,6 @@ EmailField.propTypes = fieldPropTypes;
 export interface EmailFieldProps
     extends PublicFieldProps,
         InjectedFieldProps,
-        HtmlHTMLAttributes<HTMLAnchorElement> {}
+        AnchorHTMLAttributes<HTMLAnchorElement> {}
 
 export default EmailField;

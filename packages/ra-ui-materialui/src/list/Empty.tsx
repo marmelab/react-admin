@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Inbox from '@material-ui/icons/Inbox';
-import { useTranslate, useListContext } from 'ra-core';
+import { useTranslate, useListContext, useResourceContext } from 'ra-core';
 import inflection from 'inflection';
 
 import { ClassesOverride } from '../types';
@@ -33,7 +33,8 @@ const useStyles = makeStyles(
 );
 
 const Empty: FC<EmptyProps> = props => {
-    const { resource, basePath } = useListContext(props);
+    const { basePath } = useListContext(props);
+    const resource = useResourceContext(props);
     const classes = useStyles(props);
     const translate = useTranslate();
 
@@ -75,6 +76,7 @@ const Empty: FC<EmptyProps> = props => {
 
 export interface EmptyProps {
     classes?: ClassesOverride<typeof useStyles>;
+    resource?: string;
 }
 
 export default Empty;

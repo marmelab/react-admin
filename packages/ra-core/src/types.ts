@@ -299,10 +299,19 @@ export type LegacyDataProvider = (
     params: any
 ) => Promise<any>;
 
+export interface ResourceDefinition {
+    readonly name: string;
+    readonly options?: any;
+    readonly hasList?: boolean;
+    readonly hasEdit?: boolean;
+    readonly hasShow?: boolean;
+    readonly hasCreate?: boolean;
+    readonly icon?: any;
+}
+
 /**
  * Redux state type
  */
-
 export interface ReduxState {
     admin: {
         ui: {
@@ -313,6 +322,7 @@ export interface ReduxState {
         };
         resources: {
             [name: string]: {
+                props: ResourceDefinition;
                 data: {
                     [key: string]: Record;
                     [key: number]: Record;
@@ -386,8 +396,7 @@ interface LoginComponentProps extends RouteComponentProps {
 export type LoginComponent = ComponentType<LoginComponentProps>;
 export type DashboardComponent = ComponentType<WithPermissionsChildrenParams>;
 
-export interface LayoutProps {
-    appBar?: ComponentType;
+export interface CoreLayoutProps {
     children?: ReactNode;
     dashboard?: DashboardComponent;
     logout?: ReactNode;
@@ -395,12 +404,11 @@ export interface LayoutProps {
         logout?: ReactNode;
         hasDashboard?: boolean;
     }>;
-    sideBar?: ComponentType;
     theme?: ThemeOptions;
     title?: TitleComponent;
 }
 
-export type LayoutComponent = ComponentType<LayoutProps>;
+export type LayoutComponent = ComponentType<CoreLayoutProps>;
 
 export interface ResourceComponentInjectedProps {
     basePath?: string;
@@ -470,6 +478,7 @@ export interface AdminProps {
     loginPage?: LoginComponent | boolean;
     logoutButton?: ComponentType;
     menu?: ComponentType;
+    ready?: ComponentType;
     theme?: ThemeOptions;
     title?: TitleComponent;
 }

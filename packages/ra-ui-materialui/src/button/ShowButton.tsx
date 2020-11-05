@@ -47,11 +47,12 @@ ShowButton.propTypes = {
 
 const PureShowButton = memo(
     ShowButton,
-    (props: Props, nextProps: Props) =>
+    (props: ShowButtonProps, nextProps: ShowButtonProps) =>
         (props.record && nextProps.record
             ? props.record.id === nextProps.record.id
             : props.record == nextProps.record) && // eslint-disable-line eqeqeq
-        props.basePath === nextProps.basePath
+        props.basePath === nextProps.basePath &&
+        props.to === nextProps.to
 );
 
 export default PureShowButton;

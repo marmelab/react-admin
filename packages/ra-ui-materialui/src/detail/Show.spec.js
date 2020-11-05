@@ -3,7 +3,7 @@ import expect from 'expect';
 import { cleanup } from '@testing-library/react';
 import { renderWithRedux, DataProviderContext } from 'ra-core';
 
-import Show from './Show';
+import { Show } from './Show';
 
 describe('<Show />', () => {
     afterEach(cleanup);

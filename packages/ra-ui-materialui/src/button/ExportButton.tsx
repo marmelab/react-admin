@@ -10,6 +10,7 @@ import {
     SortPayload,
     Exporter,
     FilterPayload,
+    useResourceContext,
 } from 'ra-core';
 import Button, { ButtonProps } from './Button';
 
@@ -25,11 +26,11 @@ const ExportButton: FunctionComponent<ExportButtonProps> = props => {
     } = props;
     const {
         filterValues,
-        resource,
         currentSort,
         exporter: exporterFromContext,
         total,
     } = useListContext(props);
+    const resource = useResourceContext(props);
     const exporter = customExporter || exporterFromContext;
     const dataProvider = useDataProvider();
     const notify = useNotify();

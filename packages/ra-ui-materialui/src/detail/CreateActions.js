@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import TopToolbar from '../layout/TopToolbar';
 import { ListButton } from '../button';
+import { useCreateContext, useResourceDefinition } from 'ra-core';
 
 const sanitizeRestProps = ({
     basePath,
@@ -37,11 +38,15 @@ const sanitizeRestProps = ({
  *         </Create>
  *     );
  */
-const CreateActions = ({ basePath, className, hasList, ...rest }) => (
-    <TopToolbar className={className} {...sanitizeRestProps(rest)}>
-        {hasList && <ListButton basePath={basePath} />}
-    </TopToolbar>
-);
+const CreateActions = ({ className, ...rest }) => {
+    const { basePath } = useCreateContext(rest);
+    const { hasList } = useResourceDefinition(rest);
+    return (
+        <TopToolbar className={className} {...sanitizeRestProps(rest)}>
+            {hasList && <ListButton basePath={basePath} />}
+        </TopToolbar>
+    );
+};
 
 CreateActions.propTypes = {
     basePath: PropTypes.string,

@@ -5,7 +5,7 @@ import { isRequired, FieldTitle, composeValidators, InputProps } from 'ra-core';
 import { useFieldArray } from 'react-final-form-arrays';
 import { InputLabel, FormControl } from '@material-ui/core';
 
-import sanitizeRestProps from './sanitizeRestProps';
+import sanitizeInputRestProps from './sanitizeInputRestProps';
 
 /**
  * To edit arrays of data embedded inside a record, <ArrayInput> creates a list of sub-forms.
@@ -76,7 +76,7 @@ const ArrayInput: FC<ArrayInputProps> = ({
             fullWidth
             margin="normal"
             className={className}
-            {...sanitizeRestProps(rest)}
+            {...sanitizeInputRestProps(rest)}
         >
             <InputLabel htmlFor={source} shrink>
                 <FieldTitle

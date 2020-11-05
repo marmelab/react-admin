@@ -83,7 +83,7 @@ export default ({
 
 You can use this script as a base and then add your own middlewares or enhancers, e.g., to allow store persistence with [redux-persist](https://github.com/rt2zz/redux-persist).
 
-Then, use the `<Admin>` component as you would in a standalone application. Here is an example with 3 resources: `posts`, `comments`, and `users`
+Then, use the `<Admin>` component as you would in a standalone application. Here is an example with 3 resources: `posts`, `comments`, and `users`.
 
 ```jsx
 // in src/App.js

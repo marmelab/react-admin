@@ -12,6 +12,7 @@ import {
     useNotify,
     useUnselectAll,
     CRUD_DELETE_MANY,
+    useResourceContext,
 } from 'ra-core';
 
 import Confirm from '../layout/Confirm';
@@ -45,7 +46,6 @@ const BulkDeleteWithConfirmButton: FC<BulkDeleteWithConfirmButtonProps> = props 
         icon = defaultIcon,
         label,
         onClick,
-        resource,
         selectedIds,
         ...rest
     } = props;
@@ -55,6 +55,7 @@ const BulkDeleteWithConfirmButton: FC<BulkDeleteWithConfirmButtonProps> = props 
     const unselectAll = useUnselectAll();
     const refresh = useRefresh();
     const translate = useTranslate();
+    const resource = useResourceContext(props);
     const [deleteMany, { loading }] = useDeleteMany(resource, selectedIds, {
         action: CRUD_DELETE_MANY,
         onSuccess: () => {

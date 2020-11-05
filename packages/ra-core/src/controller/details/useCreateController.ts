@@ -5,9 +5,13 @@ import { parse } from 'query-string';
 import { Location } from 'history';
 import { match as Match, useLocation } from 'react-router-dom';
 
-import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
-import { useCreate } from '../dataProvider';
-import { useNotify, useRedirect, RedirectionSideEffect } from '../sideEffect';
+import { useCheckMinimumRequiredProps } from '../checkMinimumRequiredProps';
+import { useCreate } from '../../dataProvider';
+import {
+    useNotify,
+    useRedirect,
+    RedirectionSideEffect,
+} from '../../sideEffect';
 import {
     OnSuccess,
     SetOnSuccess,
@@ -16,13 +20,14 @@ import {
     TransformData,
     SetTransformData,
     useSaveModifiers,
-} from './saveModifiers';
-import { useTranslate } from '../i18n';
-import { useVersion } from '.';
-import { CRUD_CREATE } from '../actions';
-import { Record } from '../types';
+} from '../saveModifiers';
+import { useTranslate } from '../../i18n';
+import useVersion from '../useVersion';
+import { CRUD_CREATE } from '../../actions';
+import { Record } from '../../types';
+import { useResourceContext } from '../../core';
 
-export interface CreateProps {
+export interface CreateProps<RecordType extends Omit<Record, 'id'> = Record> {
     basePath?: string;
     hasCreate?: boolean;
     hasEdit?: boolean;
@@ -30,7 +35,7 @@ export interface CreateProps {
     hasShow?: boolean;
     location?: Location;
     match?: Match;
-    record?: Partial<Record>;
+    record?: Partial<RecordType>;
     resource?: string;
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
@@ -38,11 +43,20 @@ export interface CreateProps {
     successMessage?: string;
 }
 
-export interface CreateControllerProps {
+export interface CreateControllerProps<
+    RecordType extends Omit<Record, 'id'> = Record
+> {
+    basePath?: string;
+    // Necessary for actions (EditActions) which expect a data prop containing the record
+    // @deprecated - to be removed in 4.0d
+    data?: RecordType;
+    defaultTitle: string;
     loading: boolean;
     loaded: boolean;
-    saving: boolean;
-    defaultTitle: string;
+    hasCreate?: boolean;
+    hasEdit?: boolean;
+    hasList?: boolean;
+    hasShow?: boolean;
     save: (
         record: Partial<Record>,
         redirect: RedirectionSideEffect,
@@ -52,13 +66,14 @@ export interface CreateControllerProps {
             transform?: TransformData;
         }
     ) => void;
+    saving: boolean;
     setOnSuccess: SetOnSuccess;
     setOnFailure: SetOnFailure;
     setTransform: SetTransformData;
-    resource: string;
-    basePath?: string;
-    record?: Partial<Record>;
+    successMessage?: string;
+    record?: Partial<RecordType>;
     redirect: RedirectionSideEffect;
+    resource: string;
     version: number;
 }
 
@@ -79,20 +94,24 @@ export interface CreateControllerProps {
  *     return <CreateView {...controllerProps} {...props} />;
  * }
  */
-const useCreateController = (props: CreateProps): CreateControllerProps => {
+export const useCreateController = <
+    RecordType extends Omit<Record, 'id'> = Record
+>(
+    props: CreateProps
+): CreateControllerProps<RecordType> => {
     useCheckMinimumRequiredProps('Create', ['basePath', 'resource'], props);
     const {
         basePath,
-        resource,
-        record = {},
-        hasShow,
         hasEdit,
+        hasShow,
+        record = {},
         successMessage,
         onSuccess,
         onFailure,
         transform,
     } = props;
 
+    const resource = useResourceContext(props);
     const location = useLocation();
     const translate = useTranslate();
     const notify = useNotify();
@@ -210,8 +229,6 @@ const useCreateController = (props: CreateProps): CreateControllerProps => {
         version,
     };
 };
-
-export default useCreateController;
 
 export const getRecord = ({ state, search }, record: any = {}) => {
     if (state && state.record) {

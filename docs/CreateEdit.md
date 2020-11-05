@@ -479,7 +479,7 @@ Alternately, you may need to prepopulate a record based on a *related* record. F
 
 **Note**  `<CloneButton>` is designed to be used in an edit view `<Actions>` component, not inside a `<Toolbar>`. The `Toolbar` is basically for submitting the form, not for going to another resource.
 
-By default, the `<Create>` view starts with an empty `record`. However, if the `location` object (injected by [react-router-dom](https://reacttraining.com/react-router/web/api/location)) contains a `record` in its `state`, the `<Create>` view uses that `record` instead of the empty object. That's how the `<CloneButton>` works behind the hood.
+By default, the `<Create>` view starts with an empty `record`. However, if the `location` object (injected by [react-router-dom](https://reacttraining.com/react-router/web/api/location)) contains a `record` in its `state`, the `<Create>` view uses that `record` instead of the empty object. That's how the `<CloneButton>` works under the hood.
 
 That means that if you want to create a link to a creation form, presetting *some* values, all you have to do is to set the location `state`. `react-router-dom` provides the `<Link>` component for that:
 
@@ -571,7 +571,7 @@ The `<Create>` and `<Edit>` components both take care of two things:
 
 In some cases, you may want to customize the view entirely (i.e. keep the code for step 1, and provide your own code for step 2). For these cases, react-admin provides two hooks, `useCreateController()` and `useEditController()`. These hooks contain just the controller part of the `<Create>` and `<Edit>` components.
 
-**Tip**: You should not use these hooks to hide or show form inputs based on the data. For that need, check [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs)
+**Tip**: You should not use these hooks to hide or show form inputs based on the data. For that need, check [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs).
 
 ### `useCreateController`
 
@@ -858,7 +858,7 @@ const PostEdit = props => (
 
 By default `<TabbedForm>` uses `<TabbedFormTabs>`, an internal react-admin component, to renders tabs. You can pass a custom component as the `tabs` prop to override the default component. Besides, props from `<TabbedFormTabs>` are passed to material-ui's `<Tabs>` component inside `<TabbedFormTabs>`.
 
-The following example shows how to make use of scrollable `<Tabs>`. Pass the `scrollable` prop to `<TabbedFormTabs>` and pass that as the `tabs` prop to `<TabbedForm>`
+The following example shows how to make use of scrollable `<Tabs>`. Pass the `scrollable` prop to `<TabbedFormTabs>` and pass that as the `tabs` prop to `<TabbedForm>`.
 
 ```jsx
 import * as React from "react";

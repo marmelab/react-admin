@@ -5,7 +5,7 @@ import TextField, { TextFieldProps } from '@material-ui/core/TextField';
 import { useInput, FieldTitle, InputProps } from 'ra-core';
 
 import InputHelperText from './InputHelperText';
-import sanitizeRestProps from './sanitizeRestProps';
+import sanitizeInputRestProps from './sanitizeInputRestProps';
 
 const convertStringToNumber = value => {
     const float = parseFloat(value);
@@ -89,7 +89,7 @@ const NumberInput: FunctionComponent<NumberInputProps> = ({
             margin={margin}
             inputProps={inputProps}
             {...options}
-            {...sanitizeRestProps(rest)}
+            {...sanitizeInputRestProps(rest)}
         />
     );
 };

@@ -3,7 +3,7 @@ import { FC, memo } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
-import sanitizeRestProps from './sanitizeRestProps';
+import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { InjectedFieldProps, PublicFieldProps, fieldPropTypes } from './types';
 
 export const removeTags = (input: string) =>
@@ -18,7 +18,7 @@ const RichTextField: FC<RichTextFieldProps> = memo<RichTextFieldProps>(
                 className={className}
                 variant="body2"
                 component="span"
-                {...sanitizeRestProps(rest)}
+                {...sanitizeFieldRestProps(rest)}
             >
                 {value == null && emptyText ? (
                     emptyText

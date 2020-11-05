@@ -11,7 +11,7 @@ import {
     Translate,
 } from 'ra-core';
 
-import sanitizeInputProps from './sanitizeRestProps';
+import sanitizeInputRestProps from './sanitizeInputRestProps';
 import LinearProgress from '../layout/LinearProgress';
 import Labeled from './Labeled';
 import ReferenceError from './ReferenceError';
@@ -189,7 +189,7 @@ const sanitizeRestProps = ({
     perPage,
     referenceSource,
     ...rest
-}: any) => sanitizeInputProps(rest);
+}: any) => sanitizeInputRestProps(rest);
 
 export interface ReferenceArrayInputViewProps {
     allowEmpty?: boolean;

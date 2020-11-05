@@ -6,6 +6,7 @@ import {
     renderWithRedux,
     DataProviderContext,
     DataProvider,
+    SaveContextProvider,
 } from 'ra-core';
 import { ThemeProvider } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -36,13 +37,17 @@ const invalidButtonDomProps = {
 describe('<SaveButton />', () => {
     afterEach(cleanup);
 
+    const saveContextValue = { save: jest.fn(), saving: false };
+
     it('should render as submit type with no DOM errors', () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
         const { getByLabelText } = render(
             <TestContext>
                 <ThemeProvider theme={theme}>
-                    <SaveButton {...invalidButtonDomProps} />
+                    <SaveContextProvider value={saveContextValue}>
+                        <SaveButton {...invalidButtonDomProps} />
+                    </SaveContextProvider>
                 </ThemeProvider>
             </TestContext>
         );
@@ -59,7 +64,9 @@ describe('<SaveButton />', () => {
         const { getByLabelText } = render(
             <TestContext>
                 <ThemeProvider theme={theme}>
-                    <SaveButton disabled={true} />
+                    <SaveContextProvider value={saveContextValue}>
+                        <SaveButton disabled={true} />
+                    </SaveContextProvider>
                 </ThemeProvider>
             </TestContext>
         );
@@ -69,7 +76,9 @@ describe('<SaveButton />', () => {
     it('should render as submit type when submitOnEnter is true', () => {
         const { getByLabelText } = render(
             <TestContext>
-                <SaveButton submitOnEnter />
+                <SaveContextProvider value={saveContextValue}>
+                    <SaveButton submitOnEnter />
+                </SaveContextProvider>
             </TestContext>
         );
         expect(getByLabelText('ra.action.save').getAttribute('type')).toEqual(
@@ -80,7 +89,9 @@ describe('<SaveButton />', () => {
     it('should render as button type when submitOnEnter is false', () => {
         const { getByLabelText } = render(
             <TestContext>
-                <SaveButton submitOnEnter={false} />
+                <SaveContextProvider value={saveContextValue}>
+                    <SaveButton submitOnEnter={false} />
+                </SaveContextProvider>
             </TestContext>
         );
 
@@ -93,10 +104,12 @@ describe('<SaveButton />', () => {
         const onSubmit = jest.fn();
         const { getByLabelText } = render(
             <TestContext>
-                <SaveButton
-                    handleSubmitWithRedirect={onSubmit}
-                    saving={false}
-                />
+                <SaveContextProvider value={saveContextValue}>
+                    <SaveButton
+                        handleSubmitWithRedirect={onSubmit}
+                        saving={false}
+                    />
+                </SaveContextProvider>
             </TestContext>
         );
 
@@ -109,7 +122,9 @@ describe('<SaveButton />', () => {
 
         const { getByLabelText } = render(
             <TestContext>
-                <SaveButton handleSubmitWithRedirect={onSubmit} saving />
+                <SaveContextProvider value={saveContextValue}>
+                    <SaveButton handleSubmitWithRedirect={onSubmit} saving />
+                </SaveContextProvider>
             </TestContext>
         );
 
@@ -126,10 +141,12 @@ describe('<SaveButton />', () => {
                 {({ store }) => {
                     dispatchSpy = jest.spyOn(store, 'dispatch');
                     return (
-                        <SaveButton
-                            handleSubmitWithRedirect={onSubmit}
-                            invalid
-                        />
+                        <SaveContextProvider value={saveContextValue}>
+                            <SaveButton
+                                handleSubmitWithRedirect={onSubmit}
+                                invalid
+                            />
+                        </SaveContextProvider>
                     );
                 }}
             </TestContext>
@@ -152,8 +169,18 @@ describe('<SaveButton />', () => {
         basePath: '',
         id: '123',
         resource: 'posts',
-        location: {},
-        match: {},
+        location: {
+            pathname: '/customers/123',
+            search: '',
+            state: {},
+            hash: '',
+        },
+        match: {
+            params: { id: 123 },
+            isExact: true,
+            path: '/customers/123',
+            url: '/customers/123',
+        },
         undoable: false,
     };
 

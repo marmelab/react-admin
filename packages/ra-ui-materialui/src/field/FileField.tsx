@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import classnames from 'classnames';
 
-import sanitizeRestProps from './sanitizeRestProps';
+import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 /**
@@ -46,14 +46,14 @@ const FileField: FC<FileFieldProps> = props => {
                 component="span"
                 variant="body2"
                 className={className}
-                {...sanitizeRestProps(rest)}
+                {...sanitizeFieldRestProps(rest)}
             >
                 {emptyText}
             </Typography>
         ) : (
             <div
                 className={classnames(classes.root, className)}
-                {...sanitizeRestProps(rest)}
+                {...sanitizeFieldRestProps(rest)}
             />
         );
     }
@@ -62,7 +62,7 @@ const FileField: FC<FileFieldProps> = props => {
         return (
             <ul
                 className={classnames(classes.root, className)}
-                {...sanitizeRestProps(rest)}
+                {...sanitizeFieldRestProps(rest)}
             >
                 {sourceValue.map((file, index) => {
                     const fileTitleValue = get(file, title) || title;
@@ -92,7 +92,7 @@ const FileField: FC<FileFieldProps> = props => {
     return (
         <div
             className={classnames(classes.root, className)}
-            {...sanitizeRestProps(rest)}
+            {...sanitizeFieldRestProps(rest)}
         >
             <a
                 href={sourceValue}

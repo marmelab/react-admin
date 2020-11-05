@@ -9,7 +9,7 @@ import FormWithRedirect, {
     FormWithRedirectProps,
     HandleSubmitWithRedirect,
 } from './FormWithRedirect';
-import useInput, { InputProps } from './useInput';
+import useInput, { InputProps, UseInputValue } from './useInput';
 import ValidationError from './ValidationError';
 import useInitializeFormWithRecord from './useInitializeFormWithRecord';
 import sanitizeEmptyValues from './sanitizeEmptyValues';
@@ -31,6 +31,7 @@ export type {
     FormWithRedirectProps,
     HandleSubmitWithRedirect,
     InputProps,
+    UseInputValue,
     OptionTextElement,
     OptionText,
     UseChoicesOptions,

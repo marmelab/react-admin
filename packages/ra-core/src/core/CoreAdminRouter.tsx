@@ -11,24 +11,25 @@ import { Route, Switch } from 'react-router-dom';
 
 import RoutesWithLayout from './RoutesWithLayout';
 import { useLogout, useGetPermissions, useAuthState } from '../auth';
-import { Ready, useTimeout, useSafeSetState } from '../util';
+import { useTimeout, useSafeSetState } from '../util';
 import {
     AdminChildren,
     CustomRoutes,
     CatchAllComponent,
     LayoutComponent,
-    LayoutProps,
+    CoreLayoutProps,
     ResourceProps,
     RenderResourcesFunction,
     ResourceElement,
 } from '../types';
 
-export interface AdminRouterProps extends LayoutProps {
+export interface AdminRouterProps extends CoreLayoutProps {
     layout: LayoutComponent;
     catchAll: CatchAllComponent;
     children?: AdminChildren;
     customRoutes?: CustomRoutes;
     loading: ComponentType;
+    ready?: ComponentType;
 }
 
 type State = ResourceElement[];
@@ -103,16 +104,16 @@ const CoreAdminRouter: FunctionComponent<AdminRouterProps> = props => {
         loading,
         logout,
         menu,
+        ready,
         theme,
         title,
     } = props;
 
     if (
-        process.env.NODE_ENV !== 'production' &&
-        typeof children !== 'function' &&
-        !children
+        (typeof children !== 'function' && !children) ||
+        (Array.isArray(children) && children.length === 0)
     ) {
-        return <Ready />;
+        return createElement(ready);
     }
 
     if (

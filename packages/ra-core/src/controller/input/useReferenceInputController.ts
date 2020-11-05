@@ -1,42 +1,26 @@
+import { useCallback } from 'react';
+
+import useGetList from '../../dataProvider/useGetList';
 import { getStatusForInput as getDataStatus } from './referenceDataStatus';
 import useTranslate from '../../i18n/useTranslate';
-import { SortPayload, Record, PaginationPayload } from '../../types';
+import {
+    PaginationPayload,
+    Record,
+    RecordMap,
+    Identifier,
+    SortPayload,
+} from '../../types';
+import { ListControllerProps } from '../useListController';
 import useReference from '../useReference';
-import useGetMatchingReferences from './useGetMatchingReferences';
 import usePaginationState from '../usePaginationState';
 import { useSortState } from '..';
 import useFilterState from '../useFilterState';
+import useSelectionState from '../useSelectionState';
+import { useResourceContext } from '../../core';
 
 const defaultReferenceSource = (resource: string, source: string) =>
     `${resource}@${source}`;
 const defaultFilter = {};
-
-export interface ReferenceInputValue {
-    choices: Record[];
-    error?: string;
-    loading: boolean;
-    pagination: PaginationPayload;
-    setFilter: (filter: string) => void;
-    filter: any;
-    setPagination: (pagination: PaginationPayload) => void;
-    setSort: (sort: SortPayload) => void;
-    sort: SortPayload;
-    warning?: string;
-}
-
-interface Option {
-    allowEmpty?: boolean;
-    filter?: any;
-    filterToQuery?: (filter: string) => any;
-    input?: any;
-    perPage?: number;
-    record?: Record;
-    reference: string;
-    referenceSource?: typeof defaultReferenceSource;
-    resource?: string;
-    sort?: SortPayload;
-    source: string;
-}
 
 /**
  * A hook for choosing a reference record. Useful for foreign keys.
@@ -76,62 +60,200 @@ interface Option {
  *      filterToQuery: searchText => ({ title: searchText })
  * });
  */
-const useReferenceInputController = ({
-    input,
-    perPage = 25,
-    filter = defaultFilter,
-    reference,
-    filterToQuery,
-    referenceSource = defaultReferenceSource,
-    resource,
-    sort: sortOverride,
-    source,
-}: Option): ReferenceInputValue => {
+export const useReferenceInputController = (
+    props: Option
+): ReferenceInputValue => {
+    const {
+        basePath,
+        input,
+        page: initialPage = 1,
+        perPage: initialPerPage = 25,
+        filter = defaultFilter,
+        reference,
+        filterToQuery,
+        // @deprecated
+        referenceSource = defaultReferenceSource,
+        sort: sortOverride,
+        source,
+    } = props;
+    const resource = useResourceContext(props);
     const translate = useTranslate();
 
-    const { pagination, setPagination } = usePaginationState({ perPage });
-    const { sort, setSort } = useSortState(sortOverride);
+    // pagination logic
+    const {
+        pagination,
+        setPagination,
+        page,
+        setPage,
+        perPage,
+        setPerPage,
+    } = usePaginationState({ page: initialPage, perPage: initialPerPage });
 
-    const { filter: filterValue, setFilter } = useFilterState({
+    // sort logic
+    const { sort, setSort: setSortObject } = useSortState(sortOverride);
+    const setSort = useCallback(
+        (field: string, order: string = 'ASC') => {
+            setSortObject({ field, order });
+            setPage(1);
+        },
+        [setPage, setSortObject]
+    );
+
+    // filter logic
+    const { filter: filterValues, setFilter } = useFilterState({
         permanentFilter: filter,
         filterToQuery,
     });
+    const displayedFilters = [];
+    // plus showFilter and hideFilter defined outside of the hook because
+    // they never change
 
-    const { matchingReferences } = useGetMatchingReferences({
-        reference,
-        referenceSource,
-        filter: filterValue,
-        pagination,
-        sort,
-        resource,
-        source,
+    // selection logic
+    const {
+        selectedIds,
+        onSelect,
+        onToggleItem,
+        onUnselectItems,
+    } = useSelectionState();
+
+    // fetch possible values
+    const {
+        ids: possibleValuesIds,
+        data: possibleValuesData,
+        total: possibleValuesTotal,
+        loaded: possibleValuesLoaded,
+        loading: possibleValuesLoading,
+        error: possibleValuesError,
+    } = useGetList(reference, pagination, sort, filterValues);
+
+    // fetch current value
+    const {
+        referenceRecord,
+        error: referenceError,
+        loading: referenceLoading,
+        loaded: referenceLoaded,
+    } = useReference({
         id: input.value,
+        reference,
     });
 
-    const { referenceRecord } = useReference({
-        id: input.value,
-        reference,
-    });
+    // add current value to possible sources
+    let finalIds: Identifier[],
+        finalData: RecordMap<Record>,
+        finalTotal: number;
+    if (!referenceRecord || possibleValuesIds.includes(input.value)) {
+        finalIds = possibleValuesIds;
+        finalData = possibleValuesData;
+        finalTotal = possibleValuesTotal;
+    } else {
+        finalIds = [input.value, ...possibleValuesIds];
+        finalData = { [input.value]: referenceRecord, ...possibleValuesData };
+        finalTotal += 1;
+    }
 
+    // overall status
     const dataStatus = getDataStatus({
         input,
-        matchingReferences,
+        matchingReferences: Object.keys(finalData).map(id => finalData[id]),
         referenceRecord,
         translate,
     });
 
     return {
-        choices: dataStatus.choices,
+        // should match the ListContext shape
+        possibleValues: {
+            basePath,
+            data: finalData,
+            ids: finalIds,
+            total: finalTotal,
+            error: possibleValuesError,
+            loaded: possibleValuesLoaded,
+            loading: possibleValuesLoading,
+            hasCreate: false,
+            page,
+            setPage,
+            perPage,
+            setPerPage,
+            currentSort: sort,
+            setSort,
+            filterValues,
+            displayedFilters,
+            setFilters: setFilter,
+            showFilter,
+            hideFilter,
+            selectedIds,
+            onSelect,
+            onToggleItem,
+            onUnselectItems,
+            resource,
+        },
+        referenceRecord: {
+            data: referenceRecord,
+            loaded: referenceLoaded,
+            loading: referenceLoading,
+            error: referenceError,
+        },
+        dataStatus: {
+            error: dataStatus.error,
+            loading: dataStatus.waiting,
+            warning: dataStatus.warning,
+        },
+        choices: Object.keys(finalData).map(id => finalData[id]),
+        // kept for backwards compatibility
+        // @deprecated to be removed in 4.0
         error: dataStatus.error,
         loading: dataStatus.waiting,
-        filter: filterValue,
+        filter: filterValues,
         setFilter,
         pagination,
         setPagination,
         sort,
-        setSort,
+        setSort: setSortObject,
         warning: dataStatus.warning,
     };
 };
 
-export default useReferenceInputController;
+const hideFilter = () => {};
+const showFilter = () => {};
+
+export interface ReferenceInputValue {
+    possibleValues: ListControllerProps;
+    referenceRecord: {
+        data?: Record;
+        loaded: boolean;
+        loading: boolean;
+        error?: any;
+    };
+    dataStatus: {
+        error?: any;
+        loading: boolean;
+        warning?: string;
+    };
+    choices: Record[];
+    error?: string;
+    loading: boolean;
+    pagination: PaginationPayload;
+    setFilter: (filter: string) => void;
+    filter: any;
+    setPagination: (pagination: PaginationPayload) => void;
+    setSort: (sort: SortPayload) => void;
+    sort: SortPayload;
+    warning?: string;
+}
+
+interface Option {
+    allowEmpty?: boolean;
+    basePath?: string;
+    filter?: any;
+    filterToQuery?: (filter: string) => any;
+    input?: any;
+    page?: number;
+    perPage?: number;
+    record?: Record;
+    reference: string;
+    // @deprecated ignored
+    referenceSource?: typeof defaultReferenceSource;
+    resource?: string;
+    sort?: SortPayload;
+    source: string;
+}

@@ -10,6 +10,7 @@ import {
     useNotify,
     useUnselectAll,
     CRUD_DELETE_MANY,
+    useResourceContext,
 } from 'ra-core';
 
 import Button, { ButtonProps } from './Button';
@@ -38,7 +39,6 @@ const BulkDeleteWithUndoButton: FC<BulkDeleteWithUndoButtonProps> = props => {
         icon,
         label,
         onClick,
-        resource,
         selectedIds,
         ...rest
     } = props;
@@ -46,6 +46,7 @@ const BulkDeleteWithUndoButton: FC<BulkDeleteWithUndoButtonProps> = props => {
     const notify = useNotify();
     const unselectAll = useUnselectAll();
     const refresh = useRefresh();
+    const resource = useResourceContext(props);
     const [deleteMany, { loading }] = useDeleteMany(resource, selectedIds, {
         action: CRUD_DELETE_MANY,
         onSuccess: () => {
@@ -107,7 +108,7 @@ BulkDeleteWithUndoButton.propTypes = {
     basePath: PropTypes.string,
     classes: PropTypes.object,
     label: PropTypes.string,
-    resource: PropTypes.string.isRequired,
+    resource: PropTypes.string,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
     icon: PropTypes.element,
 };

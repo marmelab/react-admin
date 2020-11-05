@@ -3,6 +3,7 @@ import { useCallback, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import MenuItem from '@material-ui/core/MenuItem';
+import { TextFieldProps } from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     useInput,
@@ -15,51 +16,41 @@ import {
 
 import ResettableTextField from './ResettableTextField';
 import InputHelperText from './InputHelperText';
-import { TextFieldProps } from '@material-ui/core/TextField';
+import sanitizeInputRestProps from './sanitizeInputRestProps';
 
 const sanitizeRestProps = ({
     addLabel,
-    allowEmpty,
-    alwaysOn,
-    emptyValue,
-    basePath,
+    afterSubmit,
+    allowNull,
+    beforeSubmit,
     choices,
     className,
-    component,
     crudGetMatching,
     crudGetOne,
-    defaultValue,
+    data,
     filter,
     filterToQuery,
-    formClassName,
-    initializeForm,
-    initialValue,
-    input,
-    isRequired,
-    label,
-    locale,
-    meta,
-    onChange,
-    options,
-    optionValue,
-    optionText,
-    disableValue,
+    formatOnBlur,
+    isEqual,
+    limitChoicesToValue,
+    multiple,
+    name,
     pagination,
     perPage,
-    record,
+    ref,
     reference,
-    resource,
+    render,
     setFilter,
     setPagination,
     setSort,
     sort,
-    source,
-    textAlign,
-    translate,
-    translateChoice,
+    subscription,
+    type,
+    validateFields,
     validation,
+    value,
     ...rest
-}: any) => rest;
+}: any) => sanitizeInputRestProps(rest);
 
 const useStyles = makeStyles(
     theme => ({
