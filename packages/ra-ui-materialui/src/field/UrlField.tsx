@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, HtmlHTMLAttributes, memo } from 'react';
+import { FC, AnchorHTMLAttributes, memo } from 'react';
 import get from 'lodash/get';
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { Typography, Link } from '@material-ui/core';
@@ -44,6 +44,6 @@ UrlField.displayName = 'UrlField';
 export interface UrlFieldProps
     extends PublicFieldProps,
         InjectedFieldProps,
-        HtmlHTMLAttributes<HTMLAnchorElement> {}
+        AnchorHTMLAttributes<HTMLAnchorElement> {}
 
 export default UrlField;

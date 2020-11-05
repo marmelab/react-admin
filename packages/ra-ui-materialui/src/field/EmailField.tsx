@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, HtmlHTMLAttributes, memo } from 'react';
+import { FC, AnchorHTMLAttributes, memo } from 'react';
 import get from 'lodash/get';
 import Typography from '@material-ui/core/Typography';
 
@@ -49,6 +49,6 @@ EmailField.propTypes = fieldPropTypes;
 export interface EmailFieldProps
     extends PublicFieldProps,
         InjectedFieldProps,
-        HtmlHTMLAttributes<HTMLAnchorElement> {}
+        AnchorHTMLAttributes<HTMLAnchorElement> {}
 
 export default EmailField;
