@@ -7,7 +7,7 @@ const frenchMessages: TranslationMessages = {
             add: 'Ajouter',
             back: 'Retour',
             bulk_actions:
-                '%{smart_count} selectionné |||| %{smart_count} selectionnés',
+                '%{smart_count} sélectionné |||| %{smart_count} sélectionnés',
             cancel: 'Annuler',
             clear_input_value: 'Vider le champ',
             clone: 'Dupliquer',
