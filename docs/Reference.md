@@ -148,13 +148,14 @@ title: "Reference"
 * [`useDeleteMany`](./Actions.md#usedeletemany)
 * [`useEditController`](./CreateEdit.md#useeditcontroller)
 * `useFilterState`
+* [`useGetIdentity`](./Authentication.md#usegetidentity-hook)
 * [`useGetList`](./Actions.md#usegetlist)
 * [`useGetMany`](./Actions.md#usegetmany)
 * [`useGetManyReference`](./Actions.md#usegetmanyreference)
 * `useGetMatching`
 * `useGetMatchingReferences`
 * [`useGetOne`](./Actions.md#usegetone)
-* `useGetPermissions`
+* [`useGetPermissions`](./Authentication.md#usegetpermissions-hook)
 * [`useHasLock`](https://marmelab.com/ra-enterprise/modules/ra-realtime#locks-on-content)<img class="icon" src="./img/premium.svg" />
 * [`useHasLocks`](https://marmelab.com/ra-enterprise/modules/ra-realtime#locks-on-content)<img class="icon" src="./img/premium.svg" />
 * `useInput`
@@ -163,14 +164,14 @@ title: "Reference"
 * `useLoading`
 * [`useLocale`](./Translation.md#uselocale-getting-the-current-locale)
 * [`useLock`](https://marmelab.com/ra-enterprise/modules/ra-realtime#locks-on-content)<img class="icon" src="./img/premium.svg" />
-* [`useLogin`](./Authentication.md#customizing-the-login-and-logout-components)
-* [`useLogout`](./Authentication.md#customizing-the-login-and-logout-components)
+* [`useLogin`](./Authentication.md#uselogin-hook)
+* [`useLogout`](./Authentication.md#uselogout-hook)
 * `useLogoutIfAccessDenied`
 * [`useMediaQuery`](./Theming.md#usemediaquery-hook)
 * [`useMutation`](./Actions.md#usemutation-hook)
 * [`useNotify`](./Actions.md#handling-side-effects-in-usedataprovider)
 * `usePaginationState`
-* [`usePermissions`](./Authorization.md#usepermissions-hook)
+* [`usePermissions`](./Authentication.md#usepermissions-hook)
 * [`usePreferences`](https://marmelab.com/ra-enterprise/modules/ra-preferences#usepreferences-reading-and-writing-user-preferences)<img class="icon" src="./img/premium.svg" />
 * [`useQuery`](./Actions.md#usequery-hook)
 * [`useQueryWithStore`](./Actions.md#usequerywithstore-hook)
@@ -197,6 +198,6 @@ title: "Reference"
 * `useVersion`
 * [`withDataProvider`](./Actions.md#legacy-components-query-mutation-and-withdataprovider)
 * [`withTranslate`](./Translation.md#withtranslate-hoc)
-* [`<WithPermissions>`](./Authorization.md#usepermissions-hook)
+* [`<WithPermissions>`](./Authentication.md#usepermissions-hook)
 
 </div>
