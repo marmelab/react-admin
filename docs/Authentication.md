@@ -70,9 +70,9 @@ Once an admin has an `authProvider`, react-admin enables a new page on the `/log
 
 ![Default Login Form](./img/login-form.png)
 
-Upon submission, this form calls the `authProvider.login({ login, password })` method. React-admin expects this method to return a resolved Promise if the credentials are correct, and to a rejected Promise if they're not. 
+Upon submission, this form calls the `authProvider.login({ login, password })` method. React-admin expects this method to return a resolved Promise if the credentials are correct, and a rejected Promise if they're not. 
 
-For instance, to query an authentication route via HTTPS and store the credentials (a token) in local storage, configure `authProvider` as follows:
+For instance, to query an authentication route via HTTPS and store the credentials (a token) in local storage, configure the `authProvider` as follows:
 
 ```js
 // in src/authProvider.js
@@ -470,7 +470,7 @@ const MyPage = () => {
 
 Here is the interface react-admin expect `authProvider` objects to implement.
 
-**Tip**: If you're a TypeScript user, you can check that your `authProvider` is correct at compile-tiome using the `AuthProvider` type:
+**Tip**: If you're a TypeScript user, you can check that your `authProvider` is correct at compile-time using the `AuthProvider` type:
 
 ```jsx
 import { AuthProvider } from 'react-admin';
@@ -495,7 +495,7 @@ React-admin calls the `authProvider` methods with the following params:
 | ---------------- | ----------------------------------------------- | ------------------ |
 | `login`          | Log a user in                                   | `Object` whatever fields the login form contains |
 | `checkError`     | Check if a dataProvider error is an authentication error  | `{ message: string, status: number, body: Object }` the error returned by the `dataProvider` |
-| `checkAuth`      | Check credentials before moving to a new route  | `Object` whatever params passed to `useCheckAuth()` - void for react-admin default routes |
+| `checkAuth`      | Check credentials before moving to a new route  | `Object` whatever params passed to `useCheckAuth()` - nothing for react-admin default routes |
 | `logout`         | Log a user out                                  | `void`             |
 | `getIdentity`    | Get the current user identity                   | `void`             | 
 | `getPermissions` | Get the current user credentials                | `Object` whatever params passed to `usePermissions()` - void for react-admin default routes |
