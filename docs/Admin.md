@@ -85,7 +85,7 @@ const App = () => (
 );
 ```
 
-The [Authentication documentation](./Authentication.md) explains how to implement these functions in detail.
+The [Auth Provider documentation](./Authentication.md) explains how to implement these functions in detail.
 
 ## `i18nProvider`
 
@@ -585,7 +585,7 @@ You might want to dynamically define the resources when the app starts. To do so
 
 ### Using a Function As `<Admin>` Child
 
-The `<Admin>` component accepts a function as its child and this function can return a Promise. If you also defined an `authProvider`, the child function will receive the result of a call to `authProvider.getPermissions()` (you can read more about this in the [Authorization](./Authorization.md) chapter).
+The `<Admin>` component accepts a function as its child and this function can return a Promise. If you also defined an `authProvider`, the child function will receive the result of a call to `authProvider.getPermissions()` (you can read more about this in the [Auth Provider](./Authentication.md#authorization) chapter).
 
 For instance, getting the resource from an API might look like:
 

@@ -89,7 +89,7 @@ it('should send the user to another url', () => {
 
 ## Testing Permissions
 
-As explained on the [Authorization page](./Authorization.md), it's possible to manage permissions via the authentication provider in order to filter page and fields the users can see.
+As explained on the [Auth Provider chapter](./Authentication.md#authorization), it's possible to manage permissions via the `authProvider` in order to filter page and fields the users can see.
 
 In order to avoid regressions and make the design explicit to your co-workers, it's better to unit test which fields are supposed to be displayed or hidden for each permission.
 
