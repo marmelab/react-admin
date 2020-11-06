@@ -496,8 +496,8 @@ React-admin calls the `authProvider` methods with the following params:
 | `login`          | Log a user in                                   | `Object` whatever fields the login form contains |
 | `checkError`     | Check if a dataProvider error is an authentication error  | `{ message: string, status: number, body: Object }` the error returned by the `dataProvider` |
 | `checkAuth`      | Check credentials before moving to a new route  | `Object` whatever params passed to `useCheckAuth()` - empty for react-admin default routes |
-| `logout`         | Log a user out                                  | `void`             |
-| `getIdentity`    | Get the current user identity                   | `void`             | 
+| `logout`         | Log a user out                                  |                    |
+| `getIdentity`    | Get the current user identity                   |                    | 
 | `getPermissions` | Get the current user credentials                | `Object` whatever params passed to `usePermissions()` - empty for react-admin default routes |
 
 ### Response Format
