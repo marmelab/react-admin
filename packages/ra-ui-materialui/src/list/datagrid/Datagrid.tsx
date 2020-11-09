@@ -14,7 +14,6 @@ import {
     useVersion,
     Identifier,
     Record,
-    useResourceContext,
 } from 'ra-core';
 import {
     Checkbox,

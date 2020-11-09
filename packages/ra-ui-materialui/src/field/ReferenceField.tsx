@@ -10,6 +10,7 @@ import {
     UseReferenceProps,
     getResourceLinkPath,
     LinkToType,
+    ResourceContextProvider,
 } from 'ra-core';
 
 import LinearProgress from '../layout/LinearProgress';
@@ -82,16 +83,18 @@ const ReferenceField: FC<ReferenceFieldProps> = ({
     });
 
     return (
-        <PureReferenceFieldView
-            {...props}
-            {...useReference({
-                reference: props.reference,
-                id: get(record, source),
-            })}
-            resourceLinkPath={resourceLinkPath}
-        >
-            {children}
-        </PureReferenceFieldView>
+        <ResourceContextProvider value={props.reference}>
+            <PureReferenceFieldView
+                {...props}
+                {...useReference({
+                    reference: props.reference,
+                    id: get(record, source),
+                })}
+                resourceLinkPath={resourceLinkPath}
+            >
+                {children}
+            </PureReferenceFieldView>
+        </ResourceContextProvider>
     );
 };
 
