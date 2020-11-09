@@ -1,4 +1,4 @@
-export default (csv, filename, blobType = 'text/csv') => {
+export default (csv, filename, blobType = 'text/csv;charset=utf-8') => {
     const fakeLink = document.createElement('a');
     fakeLink.style.display = 'none';
     document.body.appendChild(fakeLink);
