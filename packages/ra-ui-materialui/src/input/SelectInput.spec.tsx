@@ -407,7 +407,8 @@ describe('<SelectInput />', () => {
                 />
             );
             const input = getByLabelText('resources.posts.fields.language *');
-            fireEvent.blur(input);
+            input.focus();
+            input.blur();
 
             const error = queryAllByText('ra.validation.required');
             expect(error.length).toEqual(0);
@@ -429,19 +430,20 @@ describe('<SelectInput />', () => {
                 />
             );
             const input = getByLabelText('resources.posts.fields.language *');
-
+            input.focus();
             const select = getByRole('button');
             fireEvent.mouseDown(select);
 
             const optionAngular = getByText('Angular');
             fireEvent.click(optionAngular);
-            fireEvent.blur(input);
-            fireEvent.blur(select);
+            input.blur();
+            select.blur();
 
+            input.focus();
             const optionEmpty = getByText('Empty');
             fireEvent.click(optionEmpty);
-            fireEvent.blur(input);
-            fireEvent.blur(select);
+            input.blur();
+            select.blur();
 
             const error = getByText('ra.validation.required');
             expect(error).not.toBeNull();
