@@ -16,7 +16,7 @@ import rowStyle from './rowStyle';
 
 const useListStyles = makeStyles({
     headerRow: {
-        borderLeftColor: 'white',
+        borderLeftColor: 'transparent',
         borderLeftWidth: 5,
         borderLeftStyle: 'solid',
     },
