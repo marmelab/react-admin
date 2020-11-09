@@ -6,6 +6,7 @@ import {
     useReferenceManyFieldController,
     ListContextProvider,
     ListControllerProps,
+    ResourceContextProvider,
 } from 'ra-core';
 
 import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
@@ -92,9 +93,11 @@ export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
     });
 
     return (
-        <ListContextProvider value={controllerProps}>
-            <ReferenceManyFieldView {...props} {...controllerProps} />
-        </ListContextProvider>
+        <ResourceContextProvider value={reference}>
+            <ListContextProvider value={controllerProps}>
+                <ReferenceManyFieldView {...props} {...controllerProps} />
+            </ListContextProvider>
+        </ResourceContextProvider>
     );
 };
 

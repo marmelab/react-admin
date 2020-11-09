@@ -13,6 +13,7 @@ import {
     ListContextProvider,
     ReferenceInputValue,
     UseInputValue,
+    ResourceContextProvider,
 } from 'ra-core';
 
 import sanitizeInputRestProps from './sanitizeInputRestProps';
@@ -206,6 +207,7 @@ export const ReferenceInputView: FunctionComponent<ReferenceInputViewProps> = ({
     meta,
     possibleValues,
     resource,
+    reference,
     setFilter,
     setPagination,
     setSort,
@@ -260,27 +262,29 @@ export const ReferenceInputView: FunctionComponent<ReferenceInputViewProps> = ({
     const disabledHelperText = helperText === false ? { helperText } : {};
 
     return (
-        <ListContextProvider value={possibleValues}>
-            {cloneElement(children, {
-                allowEmpty,
-                classes,
-                className,
-                input,
-                isRequired,
-                label,
-                resource,
-                meta: finalMeta,
-                source,
-                choices,
-                basePath,
-                setFilter,
-                setPagination,
-                setSort,
-                translateChoice: false,
-                ...disabledHelperText,
-                ...sanitizeRestProps(rest),
-            })}
-        </ListContextProvider>
+        <ResourceContextProvider value={reference}>
+            <ListContextProvider value={possibleValues}>
+                {cloneElement(children, {
+                    allowEmpty,
+                    classes,
+                    className,
+                    input,
+                    isRequired,
+                    label,
+                    resource,
+                    meta: finalMeta,
+                    source,
+                    choices,
+                    basePath,
+                    setFilter,
+                    setPagination,
+                    setSort,
+                    translateChoice: false,
+                    ...disabledHelperText,
+                    ...sanitizeRestProps(rest),
+                })}
+            </ListContextProvider>
+        </ResourceContextProvider>
     );
 };
 

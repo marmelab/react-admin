@@ -10,6 +10,7 @@ import {
     useReferenceArrayFieldController,
     SortPayload,
     FilterPayload,
+    ResourceContextProvider,
 } from 'ra-core';
 
 import { fieldPropTypes, PublicFieldProps, InjectedFieldProps } from './types';
@@ -103,9 +104,11 @@ const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
         source,
     });
     return (
-        <ListContextProvider value={controllerProps}>
-            <PureReferenceArrayFieldView {...props} {...controllerProps} />
-        </ListContextProvider>
+        <ResourceContextProvider value={reference}>
+            <ListContextProvider value={controllerProps}>
+                <PureReferenceArrayFieldView {...props} {...controllerProps} />
+            </ListContextProvider>
+        </ResourceContextProvider>
     );
 };
 
@@ -160,7 +163,14 @@ export interface ReferenceArrayFieldViewProps
 }
 
 export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props => {
-    const { children, pagination, className, reference, ...rest } = props;
+    const {
+        children,
+        pagination,
+        className,
+        resource,
+        reference,
+        ...rest
+    } = props;
     const classes = useStyles(props);
     const { loaded } = useListContext(props);
 
@@ -173,7 +183,7 @@ export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props =
             {cloneElement(Children.only(children), {
                 ...sanitizeFieldRestProps(rest),
                 className,
-                resource: reference,
+                resource,
             })}{' '}
             {pagination &&
                 props.total !== undefined &&

@@ -9,6 +9,7 @@ import {
     SortPayload,
     PaginationPayload,
     Translate,
+    ResourceContextProvider,
 } from 'ra-core';
 
 import sanitizeInputRestProps from './sanitizeInputRestProps';
@@ -232,6 +233,7 @@ export const ReferenceArrayInputView = ({
     meta,
     onChange,
     options,
+    reference,
     resource,
     setFilter,
     setPagination,
@@ -264,31 +266,35 @@ export const ReferenceArrayInputView = ({
         return <ReferenceError label={translatedLabel} error={error} />;
     }
 
-    return React.cloneElement(children, {
-        allowEmpty,
-        basePath,
-        choices,
-        className,
-        error,
-        input,
-        isRequired,
-        label: translatedLabel,
-        meta: {
-            ...meta,
-            helperText: warning || false,
-        },
-        onChange,
-        options,
-        resource,
-        setFilter,
-        setPagination,
-        setSort,
-        source,
-        translateChoice: false,
-        limitChoicesToValue: true,
-        ...sanitizeRestProps(rest),
-        ...children.props,
-    });
+    return (
+        <ResourceContextProvider value={reference}>
+            {React.cloneElement(children, {
+                allowEmpty,
+                basePath,
+                choices,
+                className,
+                error,
+                input,
+                isRequired,
+                label: translatedLabel,
+                meta: {
+                    ...meta,
+                    helperText: warning || false,
+                },
+                onChange,
+                options,
+                resource,
+                setFilter,
+                setPagination,
+                setSort,
+                source,
+                translateChoice: false,
+                limitChoicesToValue: true,
+                ...sanitizeRestProps(rest),
+                ...children.props,
+            })}
+        </ResourceContextProvider>
+    );
 };
 
 ReferenceArrayInputView.propTypes = {
