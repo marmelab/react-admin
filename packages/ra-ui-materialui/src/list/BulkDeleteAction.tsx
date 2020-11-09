@@ -1,13 +1,14 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { crudDeleteMany, startUndoable } from 'ra-core';
+import { crudDeleteMany, startUndoable, useResourceContext } from 'ra-core';
 
 /**
  *@deprecated use BulkDeleteButton instead
  */
 const BulkDeleteAction = props => {
     const dispatch = useDispatch();
+    const resource = useResourceContext(props);
 
     useEffect(() => {
         if (process.env.NODE_ENV !== 'production') {
@@ -16,7 +17,7 @@ const BulkDeleteAction = props => {
                 '<BulkDeleteAction> is deprecated. Use the <BulkDeleteButton> component instead, via the bulkActionButton props.'
             );
         }
-        const { basePath, resource, selectedIds, undoable, onExit } = props;
+        const { basePath, selectedIds, undoable, onExit } = props;
         if (undoable) {
             dispatch(
                 startUndoable(crudDeleteMany(resource, selectedIds, basePath))
@@ -25,7 +26,7 @@ const BulkDeleteAction = props => {
             dispatch(crudDeleteMany(resource, selectedIds, basePath));
         }
         onExit();
-    }, [dispatch, props]);
+    }, [dispatch, props, resource]);
 
     return null;
 };

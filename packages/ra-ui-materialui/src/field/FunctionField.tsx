@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { FC, memo } from 'react';
+import { useMemo } from 'react';
 import { Record } from 'ra-core';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 
-import sanitizeRestProps from './sanitizeRestProps';
+import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 /**
@@ -16,19 +16,27 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  *     render={record => record && `${record.first_name} ${record.last_name}`}
  * />
  */
-const FunctionField: FC<FunctionFieldProps> = memo<FunctionFieldProps>(
-    ({ className, record, source = '', render, ...rest }) =>
-        record ? (
-            <Typography
-                component="span"
-                variant="body2"
-                className={className}
-                {...sanitizeRestProps(rest)}
-            >
-                {render(record, source)}
-            </Typography>
-        ) : null
-);
+const FunctionField = <RecordType extends Record = Record>({
+    className,
+    record,
+    source = '',
+    render,
+    ...rest
+}: FunctionFieldProps<RecordType>) =>
+    useMemo(
+        () =>
+            record ? (
+                <Typography
+                    component="span"
+                    variant="body2"
+                    className={className}
+                    {...sanitizeFieldRestProps(rest)}
+                >
+                    {render(record, source)}
+                </Typography>
+            ) : null,
+        [className, record, source, render, rest]
+    );
 
 FunctionField.defaultProps = {
     addLabel: true,

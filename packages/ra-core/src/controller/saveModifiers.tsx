@@ -1,6 +1,13 @@
+import * as React from 'react';
 import { createContext, useRef } from 'react';
 
-export const SideEffectContext = createContext<SideEffectContextType>({});
+export const SideEffectContext = createContext<SideEffectContextValue>({});
+
+export const SideEffectContextProvider = ({ children, value }) => (
+    <SideEffectContext.Provider value={value}>
+        {children}
+    </SideEffectContext.Provider>
+);
 
 /**
  * Get modifiers for a save() function, and the way to update them.
@@ -22,7 +29,7 @@ export const useSaveModifiers = ({
     onSuccess,
     onFailure,
     transform,
-}: SaveModifiers) => {
+}: SideEffectContextOptions) => {
     const onSuccessRef = useRef(onSuccess);
     const setOnSuccess: SetOnSuccess = onSuccess => {
         onSuccessRef.current = response => {
@@ -67,13 +74,13 @@ export type SetOnFailure = (onFailure: OnFailure) => void;
 export type TransformData = (data: any) => any | Promise<any>;
 export type SetTransformData = (transform: TransformData) => void;
 
-export interface SideEffectContextType {
+export interface SideEffectContextValue {
     setOnSuccess?: SetOnSuccess;
     setOnFailure?: SetOnFailure;
     setTransform?: SetTransformData;
 }
 
-export interface SaveModifiers {
+export interface SideEffectContextOptions {
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
     transform?: TransformData;

@@ -11,6 +11,7 @@ import {
     useDeleteWithUndoController,
     OnSuccess,
     OnFailure,
+    useResourceContext,
 } from 'ra-core';
 
 import Button, { ButtonProps } from './Button';
@@ -22,7 +23,6 @@ const DeleteWithUndoButton: FC<DeleteWithUndoButtonProps> = props => {
         className,
         icon = defaultIcon,
         onClick,
-        resource,
         record,
         basePath,
         redirect = 'list',
@@ -31,9 +31,10 @@ const DeleteWithUndoButton: FC<DeleteWithUndoButtonProps> = props => {
         ...rest
     } = props;
     const classes = useStyles(props);
+    const resource = useResourceContext(props);
     const { loading, handleDelete } = useDeleteWithUndoController({
-        resource,
         record,
+        resource,
         basePath,
         redirect,
         onClick,

@@ -4,7 +4,12 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { makeStyles } from '@material-ui/core/styles';
-import { linkToRecord, sanitizeListRestProps, useListContext } from 'ra-core';
+import {
+    linkToRecord,
+    sanitizeListRestProps,
+    useListContext,
+    useResourceContext,
+} from 'ra-core';
 
 import Link from '../Link';
 import { ClassesOverride } from '../types';
@@ -70,7 +75,8 @@ const SingleFieldList: FC<SingleFieldListProps> = props => {
         linkType = 'edit',
         ...rest
     } = props;
-    const { ids, data, loaded, resource, basePath } = useListContext(props);
+    const { ids, data, loaded, basePath } = useListContext(props);
+    const resource = useResourceContext(props);
 
     const classes = useStyles(props);
 

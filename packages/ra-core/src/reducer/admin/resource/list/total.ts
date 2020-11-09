@@ -16,7 +16,7 @@ type ActionTypes =
 type State = number;
 
 const totalReducer: Reducer<State> = (
-    previousState = 0,
+    previousState = null,
     action: ActionTypes
 ) => {
     if (action.type === CRUD_GET_LIST_SUCCESS) {
@@ -24,10 +24,12 @@ const totalReducer: Reducer<State> = (
     }
     if (action.meta && action.meta.optimistic) {
         if (action.meta.fetch === DELETE) {
-            return previousState - 1;
+            return previousState === null ? null : previousState - 1;
         }
         if (action.meta.fetch === DELETE_MANY) {
-            return previousState - action.payload.ids.length;
+            return previousState === null
+                ? null
+                : previousState - action.payload.ids.length;
         }
     }
     return previousState;

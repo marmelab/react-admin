@@ -1,6 +1,6 @@
 import ArrayInput from './ArrayInput';
 import AutocompleteArrayInput from './AutocompleteArrayInput';
-import AutocompleteInput from './AutocompleteInput';
+import AutocompleteInput, { AutocompleteInputProps } from './AutocompleteInput';
 import BooleanInput from './BooleanInput';
 import CheckboxGroupInput from './CheckboxGroupInput';
 import DateInput from './DateInput';
@@ -21,6 +21,7 @@ import SearchInput from './SearchInput';
 import SelectArrayInput from './SelectArrayInput';
 import SelectInput from './SelectInput';
 import TextInput from './TextInput';
+import sanitizeInputRestProps from './sanitizeInputRestProps';
 
 export {
     ArrayInput,
@@ -46,4 +47,7 @@ export {
     SelectArrayInput,
     SelectInput,
     TextInput,
+    sanitizeInputRestProps,
 };
+
+export type { AutocompleteInputProps };

@@ -35,6 +35,7 @@ const useDataProviderWithDeclarativeSideEffects = (): DataProviderProxy => {
                     let finalAllArguments = allArguments;
 
                     if (
+                        options &&
                         Object.keys(options).some(key =>
                             ['onSuccess', 'onFailure'].includes(key)
                         )

@@ -18,6 +18,7 @@ import RichTextField, { RichTextFieldProps } from './RichTextField';
 import SelectField, { SelectFieldProps } from './SelectField';
 import TextField, { TextFieldProps } from './TextField';
 import UrlField, { UrlFieldProps } from './UrlField';
+import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { FieldProps } from './types';
 
 export {
@@ -37,6 +38,7 @@ export {
     SelectField,
     TextField,
     UrlField,
+    sanitizeFieldRestProps,
 };
 
 export type {

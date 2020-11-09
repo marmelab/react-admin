@@ -29,17 +29,13 @@ import pullAt from 'lodash/pullAt';
  *   }
  * });
  */
-export default ({
-    defaultData = {},
-    localStorageKey = 'ra-data-local-storage',
-    loggingEnabled = false,
-    localStorageUpdateDelay = 10, // milliseconds
-}: {
-    defaultData: any;
-    localStorageKey: string;
-    loggingEnabled: boolean;
-    localStorageUpdateDelay: number;
-}): DataProvider => {
+export default (params: LocalStorageDataProviderParams): DataProvider => {
+    const {
+        defaultData = {},
+        localStorageKey = 'ra-data-local-storage',
+        loggingEnabled = false,
+        localStorageUpdateDelay = 10, // milliseconds
+    } = params || {};
     const localStorageData = localStorage.getItem(localStorageKey);
     const data = localStorageData ? JSON.parse(localStorageData) : defaultData;
 
@@ -150,3 +146,10 @@ export default ({
         },
     };
 };
+
+export interface LocalStorageDataProviderParams {
+    defaultData: any;
+    localStorageKey: string;
+    loggingEnabled: boolean;
+    localStorageUpdateDelay: number;
+}

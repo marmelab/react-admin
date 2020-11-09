@@ -3,7 +3,7 @@ import expect from 'expect';
 import { cleanup } from '@testing-library/react';
 import { renderWithRedux } from 'ra-core';
 
-import Create from './Create';
+import { Create } from './Create';
 
 describe('<Create />', () => {
     afterEach(cleanup);

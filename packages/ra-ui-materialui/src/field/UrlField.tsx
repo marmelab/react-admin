@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { FC, HtmlHTMLAttributes, memo } from 'react';
+import { FC, AnchorHTMLAttributes, memo } from 'react';
 import get from 'lodash/get';
-import sanitizeRestProps from './sanitizeRestProps';
+import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { Typography, Link } from '@material-ui/core';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
@@ -15,7 +15,7 @@ const UrlField: FC<UrlFieldProps> = memo<UrlFieldProps>(
                     component="span"
                     variant="body2"
                     className={className}
-                    {...sanitizeRestProps(rest)}
+                    {...sanitizeFieldRestProps(rest)}
                 >
                     {emptyText}
                 </Typography>
@@ -26,7 +26,7 @@ const UrlField: FC<UrlFieldProps> = memo<UrlFieldProps>(
             <Link
                 className={className}
                 href={value}
-                {...sanitizeRestProps(rest)}
+                {...sanitizeFieldRestProps(rest)}
             >
                 {value}
             </Link>
@@ -44,6 +44,6 @@ UrlField.displayName = 'UrlField';
 export interface UrlFieldProps
     extends PublicFieldProps,
         InjectedFieldProps,
-        HtmlHTMLAttributes<HTMLAnchorElement> {}
+        AnchorHTMLAttributes<HTMLAnchorElement> {}
 
 export default UrlField;

@@ -1,5 +1,19 @@
 # Changelog
 
+## v3.9.6
+
+* Fix unrecognized DOM prop on `<Show>` ([5471](https://github.com/marmelab/react-admin/pull/5471)) ([FredericEspiau](https://github.com/FredericEspiau))
+* Fix filter with nested source ([5457](https://github.com/marmelab/react-admin/pull/5457)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix failed delete doesn't refresh the view ([5455](https://github.com/marmelab/react-admin/pull/5455)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix typo in tutorial  documentation([5468](https://github.com/marmelab/react-admin/pull/5468)) ([ivanosevitch](https://github.com/ivanosevitch))
+* [Doc] Fix bad sentence in `CloneButton` usage ([5466](https://github.com/marmelab/react-admin/pull/5466)) ([DjebbZ](https://github.com/DjebbZ))
+* [Demo] Fix sales chart becomes empty at the end of the month ([5465](https://github.com/marmelab/react-admin/pull/5465)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix minor typos ([5460](https://github.com/marmelab/react-admin/pull/5460)) ([DjebbZ](https://github.com/DjebbZ))
+* [Doc] Improve main navigation ([5459](https://github.com/marmelab/react-admin/pull/5459)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Improve List and Datagrid docs ([5449](https://github.com/marmelab/react-admin/pull/5449)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix simple example usage instructions ([5444](https://github.com/marmelab/react-admin/pull/5444)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Group Inputs and Fields in documentation to allow better discoverability ([5440](https://github.com/marmelab/react-admin/pull/5440)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v3.9.5
 
 * Fix Custom Menu doesn't always receive `onMenuClick` prop ([5435](https://github.com/marmelab/react-admin/pull/5435)) ([fzaninotto](https://github.com/fzaninotto))

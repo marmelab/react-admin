@@ -6,7 +6,7 @@ import DashboardMenuItem, { DashboardMenuItemProps } from './DashboardMenuItem';
 import DeviceTestWrapper, { DeviceTestWrapperProps } from './DeviceTestWrapper';
 import Error, { ErrorProps } from './Error';
 import HideOnScroll, { HideOnScrollProps } from './HideOnScroll';
-import Layout from './Layout';
+import Layout, { LayoutProps } from './Layout';
 import Loading from './Loading';
 import LinearProgress from './LinearProgress';
 import LoadingIndicator from './LoadingIndicator';
@@ -54,6 +54,7 @@ export type {
     DeviceTestWrapperProps,
     ErrorProps,
     HideOnScrollProps,
+    LayoutProps,
     MenuItemLinkProps,
     MenuProps,
     ResponsiveProps,

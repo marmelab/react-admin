@@ -3,7 +3,7 @@ import expect from 'expect';
 import { cleanup, wait, fireEvent } from '@testing-library/react';
 import { renderWithRedux, DataProviderContext } from 'ra-core';
 
-import Edit from './Edit';
+import { Edit } from './Edit';
 
 describe('<Edit />', () => {
     afterEach(cleanup);

@@ -11,26 +11,22 @@ import {
     Tooltip,
 } from 'recharts';
 import { useTranslate } from 'react-admin';
+import { format, subDays, addDays } from 'date-fns';
 
 import { Order } from '../types';
 
-const lastDay = new Date(new Date().toDateString()).getTime();
-const oneDay = 24 * 60 * 60 * 1000;
-const lastMonthDays = Array.from(
-    { length: 30 },
-    (_, i) => lastDay - i * oneDay
-).reverse();
-const aMonthAgo = new Date();
-aMonthAgo.setDate(aMonthAgo.getDate() - 30);
+const lastDay = new Date();
+const lastMonthDays = Array.from({ length: 30 }, (_, i) => subDays(lastDay, i));
+const aMonthAgo = subDays(new Date(), 30);
 
 const dateFormatter = (date: number): string =>
     new Date(date).toLocaleDateString();
 
-const aggregateOrdersByDay = (orders: Order[]): { [key: number]: number } =>
+const aggregateOrdersByDay = (orders: Order[]): { [key: string]: number } =>
     orders
         .filter((order: Order) => order.status !== 'cancelled')
         .reduce((acc, curr) => {
-            const day = new Date(new Date(curr.date).toDateString()).getTime();
+            const day = format(curr.date, 'YYYY-MM-DD');
             if (!acc[day]) {
                 acc[day] = 0;
             }
@@ -41,8 +37,8 @@ const aggregateOrdersByDay = (orders: Order[]): { [key: number]: number } =>
 const getRevenuePerDay = (orders: Order[]): TotalByDay[] => {
     const daysWithRevenue = aggregateOrdersByDay(orders);
     return lastMonthDays.map(date => ({
-        date,
-        total: daysWithRevenue[date] || 0,
+        date: date.getTime(),
+        total: daysWithRevenue[format(date, 'YYYY-MM-DD')] || 0,
     }));
 };
 
@@ -83,11 +79,10 @@ const OrderChart: FC<{ orders?: Order[] }> = ({ orders }) => {
                                 type="number"
                                 scale="time"
                                 domain={[
-                                    aMonthAgo.getTime(),
+                                    addDays(aMonthAgo, 1).getTime(),
                                     new Date().getTime(),
                                 ]}
                                 tickFormatter={dateFormatter}
-                                reversed
                             />
                             <YAxis dataKey="total" name="Revenue" unit="€" />
                             <CartesianGrid strokeDasharray="3 3" />

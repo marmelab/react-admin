@@ -1,9 +1,12 @@
-import Create, { CreateView } from './Create';
+import { Create } from './Create';
+import { CreateView } from './CreateView';
 import CreateActions from './CreateActions';
-import Edit, { EditView } from './Edit';
+import { Edit } from './Edit';
+import { EditView } from './EditView';
 import EditActions from './EditActions';
 import EditGuesser from './EditGuesser';
-import Show, { ShowView } from './Show';
+import { Show } from './Show';
+import { ShowView } from './ShowView';
 import ShowActions, { ShowActionsProps } from './ShowActions';
 import ShowGuesser from './ShowGuesser';
 import SimpleShowLayout, { SimpleShowLayoutProps } from './SimpleShowLayout';

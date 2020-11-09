@@ -13,7 +13,7 @@ import React, {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import {
     createMuiTheme,
     withStyles,
@@ -21,12 +21,12 @@ import {
 } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { ThemeOptions } from '@material-ui/core';
-import { ComponentPropType, CustomRoutes, LayoutProps } from 'ra-core';
+import { ComponentPropType, CoreLayoutProps } from 'ra-core';
 import compose from 'lodash/flowRight';
 
 import DefaultAppBar from './AppBar';
 import DefaultSidebar from './Sidebar';
-import DefaultMenu from './Menu';
+import DefaultMenu, { MenuProps } from './Menu';
 import DefaultNotification from './Notification';
 import DefaultError from './Error';
 import defaultTheme from '../defaultTheme';
@@ -78,15 +78,10 @@ const styles = theme =>
         },
     });
 
-const sanitizeRestProps = ({
-    staticContext,
-    history,
-    location,
-    match,
-    ...props
-}: RestProps) => props;
-
-class Layout extends Component<MuiLayoutProps, LayoutState> {
+class LayoutWithoutTheme extends Component<
+    LayoutWithoutThemeProps,
+    LayoutState
+> {
     state = { hasError: false, errorMessage: null, errorInfo: null };
 
     constructor(props) {
@@ -113,7 +108,6 @@ class Layout extends Component<MuiLayoutProps, LayoutState> {
             children,
             classes,
             className,
-            customRoutes,
             error,
             dashboard,
             logout,
@@ -122,6 +116,11 @@ class Layout extends Component<MuiLayoutProps, LayoutState> {
             open,
             sidebar,
             title,
+            // sanitize react-router props
+            match,
+            location,
+            history,
+            staticContext,
             ...props
         } = this.props;
         const { hasError, errorMessage, errorInfo } = this.state;
@@ -129,7 +128,7 @@ class Layout extends Component<MuiLayoutProps, LayoutState> {
             <>
                 <div
                     className={classnames('layout', classes.root, className)}
-                    {...sanitizeRestProps(props)}
+                    {...props}
                 >
                     <div className={classes.appFrame}>
                         {createElement(appBar, { title, open, logout })}
@@ -162,7 +161,6 @@ class Layout extends Component<MuiLayoutProps, LayoutState> {
         children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
         classes: PropTypes.object,
         className: PropTypes.string,
-        customRoutes: PropTypes.array,
         dashboard: ComponentPropType,
         error: ComponentPropType,
         history: PropTypes.object.isRequired,
@@ -183,49 +181,37 @@ class Layout extends Component<MuiLayoutProps, LayoutState> {
     };
 }
 
-export interface MuiLayoutProps
-    extends LayoutProps,
-        RouteComponentProps,
+export interface LayoutProps
+    extends CoreLayoutProps,
         Omit<HtmlHTMLAttributes<HTMLDivElement>, 'title'> {
-    className?: string;
-    classes?: any;
-    customRoutes?: CustomRoutes;
     appBar?: ComponentType<{
         title?: string | ReactElement<any>;
         open?: boolean;
         logout?: ReactNode;
     }>;
-    sidebar?: ComponentType<{ children: JSX.Element }>;
+    classes?: any;
+    className?: string;
     error?: ComponentType<{
         error?: string;
         errorInfo?: React.ErrorInfo;
         title?: string | ReactElement<any>;
     }>;
+    menu?: ComponentType<MenuProps>;
     notification?: ComponentType;
-    open?: boolean;
+    sidebar?: ComponentType<{ children: JSX.Element }>;
+    theme?: ThemeOptions;
 }
-
-export type RestProps = Omit<
-    MuiLayoutProps,
-    | 'appBar'
-    | 'children'
-    | 'classes'
-    | 'className'
-    | 'customRoutes'
-    | 'error'
-    | 'dashboard'
-    | 'logout'
-    | 'menu'
-    | 'notification'
-    | 'open'
-    | 'sidebar'
-    | 'title'
->;
 
 export interface LayoutState {
     hasError: boolean;
     errorMessage: string;
     errorInfo: ErrorInfo;
+}
+
+interface LayoutWithoutThemeProps
+    extends RouteComponentProps,
+        Omit<LayoutProps, 'theme'> {
+    open?: boolean;
 }
 
 const mapStateToProps = state => ({
@@ -239,12 +225,12 @@ const EnhancedLayout = compose(
     ),
     withRouter,
     withStyles(styles, { name: 'RaLayout' })
-)(Layout);
+)(LayoutWithoutTheme);
 
-const LayoutWithTheme = ({
+const Layout = ({
     theme: themeOverride,
     ...props
-}: LayoutWithThemeProps): JSX.Element => {
+}: LayoutProps): JSX.Element => {
     const themeProp = useRef(themeOverride);
     const [theme, setTheme] = useState(createMuiTheme(themeOverride));
 
@@ -262,16 +248,12 @@ const LayoutWithTheme = ({
     );
 };
 
-LayoutWithTheme.propTypes = {
+Layout.propTypes = {
     theme: PropTypes.object,
 };
 
-LayoutWithTheme.defaultProps = {
+Layout.defaultProps = {
     theme: defaultTheme,
 };
 
-interface LayoutWithThemeProps extends LayoutProps {
-    theme?: ThemeOptions;
-}
-
-export default LayoutWithTheme;
+export default Layout;

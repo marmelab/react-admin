@@ -286,9 +286,9 @@ describe('<ReferenceArrayInputController />', () => {
         expect(queryByText('ra.input.references.many_missing')).toBeNull();
     });
 
-    it('should call crudGetMatching on mount with default fetch values', () => {
+    it('should call crudGetMatching on mount with default fetch values', async () => {
         const children = jest.fn(() => <div />);
-
+        await wait(); // empty the query deduplication in useQueryWithStore
         const { dispatch } = renderWithRedux(
             <ReferenceArrayInputController {...defaultProps} allowEmpty>
                 {children}

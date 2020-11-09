@@ -1,10 +1,15 @@
 import * as React from 'react';
-import { FC, useState } from 'react';
+import { FC, useState, ReactNode } from 'react';
 import { useSelector } from 'react-redux';
 import SettingsIcon from '@material-ui/icons/Settings';
 import LabelIcon from '@material-ui/icons/Label';
 import { useMediaQuery, Theme, Box } from '@material-ui/core';
-import { useTranslate, DashboardMenuItem, MenuItemLink } from 'react-admin';
+import {
+    useTranslate,
+    DashboardMenuItem,
+    MenuItemLink,
+    MenuProps,
+} from 'react-admin';
 
 import visitors from '../visitors';
 import orders from '../orders';
@@ -17,13 +22,7 @@ import { AppState } from '../types';
 
 type MenuName = 'menuCatalog' | 'menuSales' | 'menuCustomers';
 
-interface Props {
-    dense: boolean;
-    logout: () => void;
-    onMenuClick: () => void;
-}
-
-const Menu: FC<Props> = ({ onMenuClick, dense, logout }) => {
+const Menu: FC<MenuProps> = ({ onMenuClick, logout, dense = false }) => {
     const [state, setState] = useState({
         menuCatalog: true,
         menuSales: true,
