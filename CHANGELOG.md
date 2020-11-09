@@ -1,5 +1,32 @@
 # Changelog
 
+## v3.10.0
+
+* Add `<RecordContext>` and Base components for Edit, Create and Show ([5422](https://github.com/marmelab/react-admin/pull/5422)) ([djhi](https://github.com/djhi))
+* Add `<ResourceContext>` ([5456](https://github.com/marmelab/react-admin/pull/5456)) ([djhi](https://github.com/djhi))
+* Update the `<ResourceContext>` to store a scalar instead of an object ([5489](https://github.com/marmelab/react-admin/pull/5489)) ([fzaninotto](https://github.com/fzaninotto))
+* Update `<Reference>` elements to use `<ResourceContext>` ([5502](https://github.com/marmelab/react-admin/pull/5502)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to reset an `<AutocompleteInput>` ([5396](https://github.com/marmelab/react-admin/pull/5396)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to disable redirection after logout ([5458](https://github.com/marmelab/react-admin/pull/5458)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to customize the `ready` screen on empty admins ([5441](https://github.com/marmelab/react-admin/pull/5441)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to disable the `<UserMenu>` without rewriting the `<AppBar>` ([5421](https://github.com/marmelab/react-admin/pull/5421)) ([Luwangel](https://github.com/Luwangel))
+* Add ability to hide notification when `authProvider.checkAuth()` or `authProvider.checkError()` fail ([5382](https://github.com/marmelab/react-admin/pull/5382)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to specify record type in `<FunctionField>` ([5370](https://github.com/marmelab/react-admin/pull/5370)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to infer field type from data ([5485](https://github.com/marmelab/react-admin/pull/5485)) ([fzaninotto](https://github.com/fzaninotto))
+* Add rest props sanitizer for Fields and Inputs ([5392](https://github.com/marmelab/react-admin/pull/5392)) ([fzaninotto](https://github.com/fzaninotto))
+* Speed up show & hide filter ([5411](https://github.com/marmelab/react-admin/pull/5411)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix typo on bulk axction labels in French translation ([5494](https://github.com/marmelab/react-admin/pull/5494)) ([etienne-bondot](https://github.com/etienne-bondot))
+* Fix `<EmailField>` with `target` prop fails TypeScript compilation ([5488](https://github.com/marmelab/react-admin/pull/5488)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix crash when navigating away during undo period ([5487](https://github.com/marmelab/react-admin/pull/5487)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<ShowButton>` does not update on `to` prop change ([5483](https://github.com/marmelab/react-admin/pull/5483)) ([rkfg](https://github.com/rkfg))
+* Fix error when using `withDataProvider` without `options` argument ([5481](https://github.com/marmelab/react-admin/pull/5481)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix layout component type ([5473](https://github.com/marmelab/react-admin/pull/5473)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Add rowStyle prop to SimpleList ([5252](https://github.com/marmelab/react-admin/pull/5252)) ([ValentinnDimitroff](https://github.com/ValentinnDimitroff))
+* [Doc] Improve Auth Provider chapter ([5493](https://github.com/marmelab/react-admin/pull/5493)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix typo ([5482](https://github.com/marmelab/react-admin/pull/5482)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix docs typos and grammar ([5480](https://github.com/marmelab/react-admin/pull/5480)) ([WiXSL](https://github.com/WiXSL))
+* [Demo] use stepper for customer actions ([5472](https://github.com/marmelab/react-admin/pull/5472)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v3.9.6
 
 * Fix unrecognized DOM prop on `<Show>` ([5471](https://github.com/marmelab/react-admin/pull/5471)) ([FredericEspiau](https://github.com/FredericEspiau))
