@@ -3,7 +3,7 @@ name: "Test - action"
 on: 
   push:
     branches:
-      - main
+      - master
       - next
   pull_request:
 
