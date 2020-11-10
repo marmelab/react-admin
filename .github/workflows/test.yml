@@ -16,16 +16,19 @@ jobs:
       run: make install
 
   build:
+    runs-on: ubuntu-latest
     needs: setup
     steps:
     - run: make build
 
   lint:
+    runs-on: ubuntu-latest
     needs: setup
     steps:
     - run: make lint
 
   unit-test:
+    runs-on: ubuntu-latest
     needs: build
     steps:
     - run: make test-unit
@@ -33,6 +36,7 @@ jobs:
         CI: true
 
   e2e-test:
+    runs-on: ubuntu-latest
     needs: build
     steps:
     - run: make test-e2e
