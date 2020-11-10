@@ -1,6 +1,11 @@
 name: "Test - action"
 
-on: [push, pull_request]
+on: 
+  push:
+    branches:
+      - main
+      - next
+  pull_request:
 
 jobs:
   unit-test:
@@ -12,8 +17,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: '14.x'
-    - name: Install
-      run: make install
+    - uses: bahmutov/npm-install@v1
     - name: Build
       run: make build
     - name: Lint
@@ -32,8 +36,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: '14.x'
-    - name: Install
-      run: make install
+    - uses: bahmutov/npm-install@v1
     - name: Build
       run: make build
     - name: e2e Tests
