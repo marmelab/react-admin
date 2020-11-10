@@ -55,12 +55,13 @@ const ResourceRoutes: FunctionComponent<ResourceProps> = ({
     const resourceData = useMemo(
         () => ({
             resource: name,
+            options,
             hasList: !!list,
             hasEdit: !!edit,
             hasShow: !!show,
             hasCreate: !!create,
         }),
-        [name, create, edit, list, show]
+        [name, options, create, edit, list, show]
     );
 
     // match tends to change even on the same route ; using memo to avoid an extra render
