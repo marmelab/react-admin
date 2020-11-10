@@ -17,10 +17,12 @@ jobs:
 
   build:
     needs: setup
+    steps:
     - run: make build
 
   lint:
     needs: setup
+    steps:
     - run: make lint
 
   unit-test:
