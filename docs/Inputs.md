@@ -1598,7 +1598,7 @@ The child component receives the following props from `<ReferenceInput>`:
 - `setPagination`: : function to call to update the pagination of the request for possible values
 - `setSort`: function to call to update the sorting of the request for possible values
 
-**Tip**: Why does `<ReferenceInput>` use the `dataProvider.getMany()` method with a single value `[id]` instead of `dataProvider.getOne()` to fetch the record for the current value? Because when there are many `<ReferenceInput>` for the same resource in a form (for instance when inside an `<ArrayInput>`), react-admin *aggregates* the calls to `dataProvider.getMany()` into a single one with `[id1, id2, ...)]`. This speeds up the UI and avoids hitting the API too much.
+**Tip**: Why does `<ReferenceInput>` use the `dataProvider.getMany()` method with a single value `[id]` instead of `dataProvider.getOne()` to fetch the record for the current value? Because when there are many `<ReferenceInput>` for the same resource in a form (for instance when inside an `<ArrayInput>`), react-admin *aggregates* the calls to `dataProvider.getMany()` into a single one with `[id1, id2, ...]`. This speeds up the UI and avoids hitting the API too much.
 
 ### `<ReferenceManyToManyInput>`
 

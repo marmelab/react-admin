@@ -2226,7 +2226,7 @@ For mobile devices, a `<Datagrid>` is often unusable - there is simply not enoug
 | `rightAvatar`   | Optional | `Function`                                | -       | When present, the `<ListItem>` renders a `<ListItemAvatar>` after the `<ListItemText>`                                                                               |
 | `rightIcon`     | Optional | `Function`                                | -       | When present, the `<ListItem>` renders a `<ListIcon>` after the `<ListItemText>`                                                                                     |
 | `className`     | Optional | `string`                                  | -       | Applied to the root element                                                                                                                                          |
-| `rowStyle`      | Optional | `Function`                                | -       | Applied to the `<ListItem>` styles prop. The function get's called for each row. Receives the current record and index as arguments and should return a style object.|
+| `rowStyle`      | Optional | `Function`                                | -       | Applied to the `<ListItem>` styles prop. The function gets called for each row. Receives the current record and index as arguments and should return a style object. |
     
 ### Usage
 
@@ -2248,7 +2248,7 @@ export const PostList = (props) => (
             secondaryText={record => `${record.views} views`}
             tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
             linkType={record => record.canEdit ? "edit" : "show"}
-			rowStyle={postRowStyle}
+            rowStyle={postRowStyle}
         />
     </List>
 );
