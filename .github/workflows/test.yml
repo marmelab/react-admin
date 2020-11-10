@@ -1,0 +1,22 @@
+name: "Test - action"
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Use Node.js LTS
+      uses: actions/setup-node@v1
+      with:
+        node-version: '14.x'
+    - name: Install
+      run: make install
+    - name: Test
+      run: make test
+      env:
+        CI: true
+
