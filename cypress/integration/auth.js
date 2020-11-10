@@ -8,7 +8,7 @@ describe('Authentication', () => {
     it('should go to login page after logout', () => {
         ListPage.navigate();
         ListPage.logout();
-        cy.url().then(url => expect(url).to.contain('/#/login'));
+        cy.url().then(url => expect(url).to.contain('/#/login_fail'));
     });
 
     it('should redirect to login page when not logged in', () => {
