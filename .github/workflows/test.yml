@@ -3,9 +3,8 @@ name: "Test - action"
 on: [push, pull_request]
 
 jobs:
-  build:
+  setup:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -15,8 +14,26 @@ jobs:
         node-version: '14.x'
     - name: Install
       run: make install
-    - name: Test
-      run: make test
+
+  build:
+    needs: setup
+    - run: make build
+
+  lint:
+    needs: setup
+    - run: make lint
+
+  unit-test:
+    needs: build
+    steps:
+    - run: make test-unit
+      env:
+        CI: true
+
+  e2e-test:
+    needs: build
+    steps:
+    - run: make test-e2e
       env:
         CI: true
 
