@@ -23,9 +23,10 @@ export const useResourceContext = <
          * @deprecated - to be removed in 4.0
          */
         if (process.env.NODE_ENV !== 'production') {
-            console.warn(
-                "Any react-admin components must be used inside a <ResourceContextProvider>. Relying on props rather than context to get the resource data is deprecated and won't be supported in the next major version of react-admin."
-            );
+            // Restore this message when ResourceContext is actually used
+            // console.warn(
+            //     "Any react-admin components must be used inside a <ResourceContextProvider>. Relying on props rather than context to get the resource data is deprecated and won't be supported in the next major version of react-admin."
+            // );
         }
         // Ignored because resource is often optional (as it is injected) in components which passes the props to this hook
         return props.resource;
