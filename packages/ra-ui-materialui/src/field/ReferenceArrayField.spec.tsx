@@ -67,8 +67,8 @@ describe('<ReferenceArrayField />', () => {
         );
         expect(queryAllByRole('progressbar')).toHaveLength(0);
         expect(container.firstChild.textContent).not.toBeUndefined();
-        expect(getByText('hello')).toBeDefined();
-        expect(getByText('world')).toBeDefined();
+        expect(getByText('hello')).not.toBeNull();
+        expect(getByText('world')).not.toBeNull();
     });
 
     it('should render nothing when there are no related records', () => {
@@ -129,8 +129,8 @@ describe('<ReferenceArrayField />', () => {
         );
         expect(queryAllByRole('progressbar')).toHaveLength(0);
         expect(container.firstChild.textContent).not.toBeUndefined();
-        expect(getByText('hello')).toBeDefined();
-        expect(getByText('world')).toBeDefined();
+        expect(getByText('hello')).not.toBeNull();
+        expect(getByText('world')).not.toBeNull();
     });
 
     it('should support record with number identifier', () => {
@@ -165,8 +165,8 @@ describe('<ReferenceArrayField />', () => {
         );
         expect(queryAllByRole('progressbar')).toHaveLength(0);
         expect(container.firstChild.textContent).not.toBeUndefined();
-        expect(getByText('hello')).toBeDefined();
-        expect(getByText('world')).toBeDefined();
+        expect(getByText('hello')).not.toBeNull();
+        expect(getByText('world')).not.toBeNull();
     });
 
     it('should use custom className', () => {

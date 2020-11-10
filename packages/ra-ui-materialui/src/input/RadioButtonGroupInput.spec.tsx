@@ -343,7 +343,7 @@ describe('<RadioButtonGroupInput />', () => {
 
             fireEvent.blur(input);
 
-            expect(getByText('ra.validation.error')).toBeDefined();
+            expect(getByText('ra.validation.error')).not.toBeNull();
         });
 
         it('should be displayed even with an helper Text', () => {

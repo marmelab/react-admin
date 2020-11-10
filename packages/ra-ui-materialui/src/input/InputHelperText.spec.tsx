@@ -18,7 +18,7 @@ describe('InputHelperText', () => {
             <InputHelperText helperText="Please help!" touched />
         );
 
-        expect(getByText('Please help!')).toBeDefined();
+        expect(getByText('Please help!')).not.toBeNull();
     });
 
     it('renders the helperText when there is an error but the input has not been touched yet', () => {
@@ -30,7 +30,7 @@ describe('InputHelperText', () => {
             />
         );
 
-        expect(getByText('Please help!')).toBeDefined();
+        expect(getByText('Please help!')).not.toBeNull();
         expect(queryByText('Crap!')).toBeNull();
     });
 
@@ -40,6 +40,6 @@ describe('InputHelperText', () => {
         );
 
         expect(queryByText('Please help!')).toBeNull();
-        expect(getByText('Crap!')).toBeDefined();
+        expect(getByText('Crap!')).not.toBeNull();
     });
 });

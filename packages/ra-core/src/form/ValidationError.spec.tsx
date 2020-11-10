@@ -76,7 +76,7 @@ describe('ValidationError', () => {
             />
         );
 
-        expect(getByText('Min Value 10')).toBeDefined();
+        expect(getByText('Min Value 10')).not.toBeNull();
     });
 
     it('renders the error message translated if it is an object, interpolating strings', () => {
@@ -89,7 +89,7 @@ describe('ValidationError', () => {
             />
         );
 
-        expect(getByText('Must match IAmMatch')).toBeDefined();
+        expect(getByText('Must match IAmMatch')).not.toBeNull();
     });
 
     it('renders the error message translated if it is an object, interpolating arrays', () => {
@@ -102,6 +102,6 @@ describe('ValidationError', () => {
             />
         );
 
-        expect(getByText('Must be one of foo,bar')).toBeDefined();
+        expect(getByText('Must be one of foo,bar')).not.toBeNull();
     });
 });

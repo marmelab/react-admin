@@ -23,7 +23,7 @@ describe('<DatagridHeaderCell />', () => {
                 </tbody>
             </table>
         );
-        expect(getByText('Label')).toBeDefined();
+        expect(getByText('Label')).not.toBeNull();
     });
 
     describe('sorting on a column', () => {
