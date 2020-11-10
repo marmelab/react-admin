@@ -3,7 +3,7 @@ name: "Test - action"
 on: [push, pull_request]
 
 jobs:
-  setup:
+  unit-test:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -14,32 +14,30 @@ jobs:
         node-version: '14.x'
     - name: Install
       run: make install
-
-  build:
-    runs-on: ubuntu-latest
-    needs: setup
-    steps:
-    - run: make build
-
-  lint:
-    runs-on: ubuntu-latest
-    needs: setup
-    steps:
-    - run: make lint
-
-  unit-test:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-    - run: make test-unit
+    - name: Build
+      run: make build
+    - name: Lint
+      run: make lint
+    - name: Unit Tests
+      run: make test-unit
       env:
         CI: true
 
   e2e-test:
     runs-on: ubuntu-latest
-    needs: build
     steps:
-    - run: make test-e2e
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Use Node.js LTS
+      uses: actions/setup-node@v1
+      with:
+        node-version: '14.x'
+    - name: Install
+      run: make install
+    - name: Build
+      run: make build
+    - name: e2e Tests
+      run: make test-e2e
       env:
         CI: true
 
