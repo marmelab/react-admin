@@ -69,13 +69,13 @@ describe('<Resource>', () => {
             { admin: { resources: { posts: {} } } }
         );
         history.push('/posts');
-        expect(getByText('PostList')).toBeDefined();
+        expect(getByText('PostList')).not.toBeNull();
         history.push('/posts/123');
-        expect(getByText('PostEdit')).toBeDefined();
+        expect(getByText('PostEdit')).not.toBeNull();
         history.push('/posts/123/show');
-        expect(getByText('PostShow')).toBeDefined();
+        expect(getByText('PostShow')).not.toBeNull();
         history.push('/posts/create');
-        expect(getByText('PostCreate')).toBeDefined();
+        expect(getByText('PostCreate')).not.toBeNull();
     });
     it('injects permissions to the resource routes', async () => {
         const history = createMemoryHistory();
@@ -108,6 +108,6 @@ describe('<Resource>', () => {
         );
         history.push('/posts');
         await wait();
-        expect(getByText('Permissions: admin')).toBeDefined();
+        expect(getByText('Permissions: admin')).not.toBeNull();
     });
 });

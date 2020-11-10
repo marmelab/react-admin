@@ -20,7 +20,7 @@ describe('<Authenticated>', () => {
                 <Foo />
             </Authenticated>
         );
-        expect(queryByText('Foo')).toBeDefined();
+        expect(queryByText('Foo')).not.toBeNull();
         await wait();
         expect(dispatch).toHaveBeenCalledTimes(0);
     });

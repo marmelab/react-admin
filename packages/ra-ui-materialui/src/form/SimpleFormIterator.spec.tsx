@@ -26,7 +26,11 @@ describe('<SimpleFormIterator />', () => {
 
     afterEach(cleanup);
 
-    const saveContextValue = { save: jest.fn(), saving: false };
+    const saveContextValue = {
+        save: jest.fn(),
+        saving: false,
+        setOnFailure: jest.fn(),
+    };
     const sideEffectValue = {};
 
     it('should display an add item button at least', () => {
@@ -44,7 +48,7 @@ describe('<SimpleFormIterator />', () => {
             </SaveContextProvider>
         );
 
-        expect(getByText('ra.action.add')).toBeDefined();
+        expect(getByText('ra.action.add')).not.toBeNull();
     });
 
     it('should not display add button if disableAdd is truthy', () => {
@@ -334,7 +338,7 @@ describe('<SimpleFormIterator />', () => {
             </SaveContextProvider>
         );
 
-        expect(getByText('Custom Add Button')).toBeDefined();
+        expect(getByText('Custom Add Button')).not.toBeNull();
     });
 
     it('should display the custom remove button', () => {
@@ -360,7 +364,7 @@ describe('<SimpleFormIterator />', () => {
             </ThemeProvider>
         );
 
-        expect(getByText('Custom Remove Button')).toBeDefined();
+        expect(getByText('Custom Remove Button')).not.toBeNull();
     });
 
     it('should call the onClick method when the custom add button is clicked', async () => {

@@ -164,7 +164,7 @@ describe('<ReferenceField />', () => {
                 },
             }
         );
-        expect(getByText('hello')).toBeDefined();
+        expect(getByText('hello')).not.toBeNull();
         const links = container.getElementsByTagName('a');
         expect(links).toHaveLength(1);
         expect(links.item(0).href).toBe('http://localhost/posts/123');

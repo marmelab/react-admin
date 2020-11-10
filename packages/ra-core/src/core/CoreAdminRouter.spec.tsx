@@ -35,11 +35,11 @@ describe('<CoreAdminRouter>', () => {
                     </CoreAdminRouter>
                 </Router>
             );
-            expect(getByText('Layout')).toBeDefined();
+            expect(getByText('Layout')).not.toBeNull();
             history.push('/posts');
-            expect(getByText('PostList')).toBeDefined();
+            expect(getByText('PostList')).not.toBeNull();
             history.push('/comments');
-            expect(getByText('CommentList')).toBeDefined();
+            expect(getByText('CommentList')).not.toBeNull();
         });
     });
 
@@ -63,11 +63,11 @@ describe('<CoreAdminRouter>', () => {
                 </Router>
             );
             await new Promise(resolve => setTimeout(resolve, 10));
-            expect(getByText('Layout')).toBeDefined();
+            expect(getByText('Layout')).not.toBeNull();
             history.push('/posts');
-            expect(getByText('PostList')).toBeDefined();
+            expect(getByText('PostList')).not.toBeNull();
             history.push('/comments');
-            expect(getByText('CommentList')).toBeDefined();
+            expect(getByText('CommentList')).not.toBeNull();
         });
     });
 
@@ -105,11 +105,11 @@ describe('<CoreAdminRouter>', () => {
             );
             // Timeout needed because of the authProvider call
             await wait();
-            expect(getByText('Layout')).toBeDefined();
+            expect(getByText('Layout')).not.toBeNull();
             history.push('/posts');
-            expect(getByText('PostList')).toBeDefined();
+            expect(getByText('PostList')).not.toBeNull();
             history.push('/comments');
-            expect(getByText('CommentList')).toBeDefined();
+            expect(getByText('CommentList')).not.toBeNull();
         });
     });
 
@@ -142,9 +142,9 @@ describe('<CoreAdminRouter>', () => {
         );
         history.push('/foo');
         expect(queryByText('Layout')).toBeNull();
-        expect(getByText('Foo')).toBeDefined();
+        expect(getByText('Foo')).not.toBeNull();
         history.push('/bar');
-        expect(getByText('Layout')).toBeDefined();
-        expect(getByText('Bar')).toBeDefined();
+        expect(getByText('Layout')).not.toBeNull();
+        expect(getByText('Bar')).not.toBeNull();
     });
 });

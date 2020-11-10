@@ -14,7 +14,11 @@ import TextInput from '../input/TextInput';
 describe('<FormTab label="foo" />', () => {
     afterEach(cleanup);
 
-    const saveContextValue = { save: jest.fn(), saving: false };
+    const saveContextValue = {
+        save: jest.fn(),
+        saving: false,
+        setOnFailure: jest.fn(),
+    };
     const sideEffectValue = {};
 
     it('should display <Toolbar />', () => {

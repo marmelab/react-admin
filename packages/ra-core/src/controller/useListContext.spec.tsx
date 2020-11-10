@@ -32,7 +32,7 @@ describe('useListContext', () => {
                 <NaiveList />
             </ListContext.Provider>
         );
-        expect(getByText('hello')).toBeDefined();
+        expect(getByText('hello')).not.toBeNull();
     });
 
     it('should return injected props if the context was not set', () => {
@@ -44,6 +44,6 @@ describe('useListContext', () => {
                 data={{ 1: { id: 1, title: 'hello' } }}
             />
         );
-        expect(getByText('hello')).toBeDefined();
+        expect(getByText('hello')).not.toBeNull();
     });
 });
