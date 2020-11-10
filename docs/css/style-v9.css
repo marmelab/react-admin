@@ -39,15 +39,54 @@ nav ul#nav-mobile a {
 .input-field .label-icon {
     -webkit-transform: none;
     transform: none;
-    left: 1rem;
+    left: 2rem;
 }
 
-.input-field input[type='search']:focus:not(.browser-default) ~ label i {
-    color: #444;
+nav .input-field label.active i {
+    color: #8dbbe9;
+}
+
+.nav-wrapper .input-field input[type='search'] {
+    height: 2em;
+    margin-top: 1em;
+    margin-left: 1em;
+    background-color: #368fe7;
+    border-radius: 4px;
+    color: #8dbbe9;
+    width: calc(100% - 6rem);
+}
+
+.nav-wrapper .input-field input[type='search']::placeholder {
+    color: #8dbbe9;
+}
+
+.input-field input[type='search'] ~ .material-icons {
+    font-size: 1.5rem;
+    right: 1.5rem;
+}
+
+.nav-wrapper .input-field input[type='search']:hover,
+.nav-wrapper .input-field input[type='search']:active,
+.nav-wrapper .input-field input[type='search']:focus {
+    background-color: #5fa2e6;
+    color: white;
+}
+
+.input-field input[type='search']:focus:not(.browser-default) ~ label i,
+.input-field
+    input[type='search']:focus:not(.browser-default)
+    ~ .material-icons {
+    color: white;
 }
 
 .input-field input[type='search'] {
-    color: #027be3;
+    color: #1976d2;
+}
+
+@media only screen and (max-width: 600px) {
+    .nav-wrapper .input-field input[type='search'] {
+        margin-top: 0.7em;
+    }
 }
 
 .algolia-docsearch-suggestion--wrapper {
