@@ -13,7 +13,11 @@ import TextInput from '../input/TextInput';
 describe('<SimpleForm />', () => {
     afterEach(cleanup);
 
-    const saveContextValue = { save: jest.fn(), saving: false };
+    const saveContextValue = {
+        save: jest.fn(),
+        saving: false,
+        setOnFailure: jest.fn(),
+    };
     const sideEffects = {};
 
     it('should embed a form with given component children', () => {

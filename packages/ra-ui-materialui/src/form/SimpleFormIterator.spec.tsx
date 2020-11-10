@@ -26,7 +26,11 @@ describe('<SimpleFormIterator />', () => {
 
     afterEach(cleanup);
 
-    const saveContextValue = { save: jest.fn(), saving: false };
+    const saveContextValue = {
+        save: jest.fn(),
+        saving: false,
+        setOnFailure: jest.fn(),
+    };
     const sideEffectValue = {};
 
     it('should display an add item button at least', () => {

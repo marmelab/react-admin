@@ -14,7 +14,11 @@ import FormTab from './FormTab';
 describe('<TabbedForm />', () => {
     afterEach(cleanup);
 
-    const saveContextValue = { save: jest.fn(), saving: false };
+    const saveContextValue = {
+        save: jest.fn(),
+        saving: false,
+        setOnFailure: jest.fn(),
+    };
     const sideEffectValue = {};
 
     it('should display the tabs', () => {
