@@ -52,7 +52,7 @@ const App = () => (
 );
 ```
 
-**Tip**: Under the hood, the `<Resource>` component uses [`react-router`](https://reactrouter.com/web/guides/quick-start) to create several routes:
+**Tip**: Under the hood, the `<Resource>` component uses [react-router](https://reactrouter.com/web/guides/quick-start) to create several routes:
 
 * `/` maps to the `list` component
 * `/create` maps to the `create` component
