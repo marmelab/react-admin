@@ -71,10 +71,7 @@ export const useReferenceInputController = (
         filter = defaultFilter,
         reference,
         filterToQuery,
-        // @deprecated
-        referenceSource = defaultReferenceSource,
         sort: sortOverride,
-        source,
     } = props;
     const resource = useResourceContext(props);
     const translate = useTranslate();
