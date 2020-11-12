@@ -219,9 +219,9 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
                 }
             );
             // cleanup the list on next tick
-            setImmediate(() => {
+            setTimeout(() => {
                 delete queriesThisTick[requestSignature];
-            });
+            }, 0);
         }
         (async () => {
             const newState = await queriesThisTick[requestSignature];
