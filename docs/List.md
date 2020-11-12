@@ -2034,15 +2034,23 @@ export const PostList = props => (
 
 The `Datagrid` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
 
-| Rule name     | Description                                                   |
-| ------------- | ------------------------------------------------------------- |
-| `table`       | Alternative to using `className`. Applied to the root element |
-| `tbody`       | Applied to the tbody                                          |
-| `headerCell`  | Applied to each header cell                                   |
-| `row`         | Applied to each row                                           |
-| `rowEven`     | Applied to each even row                                      |
-| `rowOdd`      | Applied to the each odd row                                   |
-| `rowCell`     | Applied to the each row cell                                  |
+| Rule name        | Description                                                   |
+| ---------------- | ------------------------------------------------------------- |
+| `table`          | Alternative to using `className`. Applied to the root element |
+| `thead`          | Applied to the header of the `Datagrid`                       |
+| `tbody`          | Applied to the tbody                                          |
+| `headerCell`     | Applied to each header cell                                   |
+| `headerRow`      | Applied to each header row                                    |
+| `row`            | Applied to each row                                           |
+| `rowEven`        | Applied to each even row                                      |
+| `rowOdd`         | Applied to each odd row                                       |
+| `rowCell`        | Applied to each row cell                                      |
+| `expandHeader`   | Applied to each expandable header cell                        |
+| `clickableRow`   | Applied to each row if `rowClick` prop is truthy              |
+| `expandIconCell` | Applied to each expandable cell                               |
+| `expandIcon`     | Applied to each expand icon                                   |
+| `expanded`       | Applied to each expanded icon                                 |
+| `checkbox`       | Applied to each checkbox cell                                 |
 
 You can customize the `<Datagrid>` styles by passing a `classes` object as prop, through `useStyles()`. Here is an example:
 
