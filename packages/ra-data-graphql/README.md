@@ -120,7 +120,7 @@ buildGraphQLProvider({
 });
 ```
 
-The `./schema` file is a `schema.json` in `./src` retrieved with [`get-graphql-schema --json <graphql_endpoint>`](https://github.com/graphcool/get-graphql-schema).
+The `./schema` file is a `schema.json` in `./src` retrieved with [get-graphql-schema --json <graphql_endpoint>](https://github.com/graphcool/get-graphql-schema).
 
 > Note: Importing the `schema.json` file will significantly increase the bundle size.
 
