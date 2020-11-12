@@ -1673,7 +1673,7 @@ Check [the `ra-relationships` documentation](https://marmelab.com/ra-enterprise/
 
 ### Transforming Input Value to/from Record
 
-The data format returned by the input component may not be what your API desires. Since React-admin uses react-final-form, we can use its [parse](https://final-form.org/docs/react-final-form/types/FieldProps#parse) and [`format`](https://final-form.org/docs/react-final-form/types/FieldProps#format) functions to transform the input value when saving to and loading from the record.
+The data format returned by the input component may not be what your API desires. Since React-admin uses react-final-form, we can use its [parse](https://final-form.org/docs/react-final-form/types/FieldProps#parse) and [format](https://final-form.org/docs/react-final-form/types/FieldProps#format) functions to transform the input value when saving to and loading from the record.
 
 Mnemonic for the two functions:
 
