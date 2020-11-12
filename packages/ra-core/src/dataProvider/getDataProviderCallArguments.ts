@@ -11,6 +11,7 @@ const OptionsProperties = [
 ];
 
 const isDataProviderOptions = (value: any) => {
+    if (typeof value === 'undefined') return [];
     let options = value as UseDataProviderOptions;
 
     return Object.keys(options).some(key => OptionsProperties.includes(key));
