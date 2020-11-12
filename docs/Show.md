@@ -357,6 +357,12 @@ export default ScrollableTabbedShowLayout;
 
 ```
 
+## Third-Party Components
+
+You can find components for react-admin in third-party repositories.
+
+- [ra-compact-ui](https://github.com/ValentinnDimitroff/ra-compact-ui#layouts): plugin that allows to have custom styled show layouts.
+
 ## Displaying Fields depending on the user permissions
 
 You might want to display some fields only to users with specific permissions. 
