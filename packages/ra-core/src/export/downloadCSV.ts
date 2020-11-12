@@ -1,8 +1,8 @@
-export default (csv, filename, blobType = 'text/csv;charset=utf-8') => {
+export default (csv, filename) => {
     const fakeLink = document.createElement('a');
     fakeLink.style.display = 'none';
     document.body.appendChild(fakeLink);
-    const blob = new Blob([csv], { type: blobType });
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
         // Manage IE11+ & Edge
         window.navigator.msSaveOrOpenBlob(blob, `${filename}.csv`);
