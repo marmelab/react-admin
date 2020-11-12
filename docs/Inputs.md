@@ -2071,7 +2071,7 @@ const SexInput = props => {
 export default SexInput;
 ```
 
-**Tip**: `useInput` accepts all arguments that you can pass to `useField`. That means that components using `useInput` accept props like [format](https://final-form.org/docs/react-final-form/types/FieldProps#format) and [`parse`](https://final-form.org/docs/react-final-form/types/FieldProps#parse), to convert values from the form to the input, and vice-versa:
+**Tip**: `useInput` accepts all arguments that you can pass to `useField`. That means that components using `useInput` accept props like [format](https://final-form.org/docs/react-final-form/types/FieldProps#format) and [parse](https://final-form.org/docs/react-final-form/types/FieldProps#parse), to convert values from the form to the input, and vice-versa:
 
 ```jsx
 const parse = value => {/* ... */};
