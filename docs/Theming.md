@@ -234,7 +234,7 @@ If you want to read more about higher-order components, check out this SitePoint
 
 ## useMediaQuery Hook
 
-To provide an optimized experience on mobile, tablet, and desktop devices, you often need to display different components depending on the screen size. Material-ui provides a hook dedicated to help such responsive layouts: [`useMediaQuery`](https://material-ui.com/components/use-media-query/#usemediaquery).
+To provide an optimized experience on mobile, tablet, and desktop devices, you often need to display different components depending on the screen size. Material-ui provides a hook dedicated to help such responsive layouts: [useMediaQuery](https://material-ui.com/components/use-media-query/#usemediaquery).
 
 It expects a function receiving the material-ui theme as a parameter, and returning a media query. Use the theme breakpoints to check for common screen sizes. The hook returns a boolean indicating if the current screen matches the media query or not.
 
@@ -888,7 +888,7 @@ const App = () => (
 
 **Tip**: If you use authentication, don't forget to render the `logout` prop in your custom menu component. Also, the `onMenuClick` function passed as prop is used to close the sidebar on mobile.
 
-The `MenuItemLink` component make use of the React Router [`NavLink`](https://reacttraining.com/react-router/web/api/NavLink) component, hence allowing to customize its style when it targets the current page.
+The `MenuItemLink` component make use of the React Router [NavLink](https://reacttraining.com/react-router/web/api/NavLink) component, hence allowing to customize its style when it targets the current page.
 
 If the default active style does not suit your tastes, you can override it by passing your own `classes`:
 

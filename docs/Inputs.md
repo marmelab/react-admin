@@ -44,7 +44,7 @@ All input components accept the following props:
 <TextInput source="zb_title" label="Title" initialValue="Foo" />
 ```
 
-React-admin uses [react-final-form](https://final-form.org/docs/react-final-form/getting-started) to control form inputs. Each input component also accepts all react-final-form [`FieldProps`](https://final-form.org/docs/react-final-form/types/FieldProps), including:
+React-admin uses [react-final-form](https://final-form.org/docs/react-final-form/getting-started) to control form inputs. Each input component also accepts all react-final-form [FieldProps](https://final-form.org/docs/react-final-form/types/FieldProps), including:
 
 | Prop           | Required | Type       | Default | Description                                                                                                                                                                                                     |
 | -------------- | -------- | ---------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -1673,7 +1673,7 @@ Check [the `ra-relationships` documentation](https://marmelab.com/ra-enterprise/
 
 ### Transforming Input Value to/from Record
 
-The data format returned by the input component may not be what your API desires. Since React-admin uses react-final-form, we can use its [`parse`](https://final-form.org/docs/react-final-form/types/FieldProps#parse) and [`format`](https://final-form.org/docs/react-final-form/types/FieldProps#format) functions to transform the input value when saving to and loading from the record.
+The data format returned by the input component may not be what your API desires. Since React-admin uses react-final-form, we can use its [parse](https://final-form.org/docs/react-final-form/types/FieldProps#parse) and [format](https://final-form.org/docs/react-final-form/types/FieldProps#format) functions to transform the input value when saving to and loading from the record.
 
 Mnemonic for the two functions:
 
@@ -1842,7 +1842,7 @@ import { FormDataConsumer } from 'react-admin';
  );
 ```
 
-**Tip**: When using a `FormDataConsumer` you can define [`subscription`](https://final-form.org/docs/react-final-form/types/FormProps#subscription) prop to pass to the `react-final-form`
+**Tip**: When using a `FormDataConsumer` you can define [subscription](https://final-form.org/docs/react-final-form/types/FormProps#subscription) prop to pass to the `react-final-form`
 
 {% raw %}
 ```jsx
@@ -1865,7 +1865,7 @@ import { FormDataConsumer } from 'react-admin';
 
 ## Writing Your Own Input Component
 
-If you need a more specific input type, you can write it directly in React. You'll have to rely on react-final-form's [`<Field>`](https://final-form.org/docs/react-final-form/api/Field) component, or its [`useField`](https://final-form.org/docs/react-final-form/api/useField) hook, to handle the value update cycle.
+If you need a more specific input type, you can write it directly in React. You'll have to rely on react-final-form's [<Field>](https://final-form.org/docs/react-final-form/api/Field) component, or its [useField](https://final-form.org/docs/react-final-form/api/useField) hook, to handle the value update cycle.
 
 ### Using `<Field>`
 
@@ -1980,7 +1980,7 @@ const LatLngInput = () => (
 
 **Tip**: Material-ui's `<TextField>` component already includes a label, so you don't need to use `<Labeled>` in this case.
 
-`useField()` returns two values: `input` and `meta`. To learn more about these props, please refer to the [`useField`](https://final-form.org/docs/react-final-form/api/useField) hook documentation in the react-final-form website.
+`useField()` returns two values: `input` and `meta`. To learn more about these props, please refer to the [useField](https://final-form.org/docs/react-final-form/api/useField) hook documentation in the react-final-form website.
 
 Instead of HTML `input` elements or material-ui components, you can use react-admin input components, like `<NumberInput>` for instance. React-admin components already use `useField()`, and already include a label, so you don't need either `useField()` or `<Labeled>` when using them:
 
@@ -2071,7 +2071,7 @@ const SexInput = props => {
 export default SexInput;
 ```
 
-**Tip**: `useInput` accepts all arguments that you can pass to `useField`. That means that components using `useInput` accept props like [`format`](https://final-form.org/docs/react-final-form/types/FieldProps#format) and [`parse`](https://final-form.org/docs/react-final-form/types/FieldProps#parse), to convert values from the form to the input, and vice-versa:
+**Tip**: `useInput` accepts all arguments that you can pass to `useField`. That means that components using `useInput` accept props like [format](https://final-form.org/docs/react-final-form/types/FieldProps#format) and [parse](https://final-form.org/docs/react-final-form/types/FieldProps#parse), to convert values from the form to the input, and vice-versa:
 
 ```jsx
 const parse = value => {/* ... */};
