@@ -55,7 +55,7 @@ import { ClassesOverride } from '../types';
  * as arguments and return a string
  *
  * @example
- * <ReferenceField label="User" source="userId" reference="users" link={(reference, record) => "/path/to/${reference}/${record}"}>
+ * <ReferenceField label="User" source="userId" reference="users" link={(record, reference) => "/path/to/${reference}/${record}"}>
  *     <TextField source="name" />
  * </ReferenceField>
  *

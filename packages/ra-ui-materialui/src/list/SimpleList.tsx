@@ -46,6 +46,7 @@ const useStyles = makeStyles(
  * - rightAvatar: same
  * - rightIcon: same
  * - linkType: 'edit' or 'show', or a function returning 'edit' or 'show' based on the record
+ * - rowStyle: function returning a style object based on (record, index)
  *
  * @example // Display all posts as a List
  *

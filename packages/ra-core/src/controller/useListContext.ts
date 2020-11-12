@@ -44,7 +44,7 @@ import { Record } from '../types';
  * import { useListContext } from 'react-admin';
  *
  * const MyList = () => {
- *     const { data, id, loaded } = useListContext();
+ *     const { data, ids, loaded } = useListContext();
  *     if (!loaded) {
  *         return <>Loading...</>;
  *     }
