@@ -1865,7 +1865,7 @@ import { FormDataConsumer } from 'react-admin';
 
 ## Writing Your Own Input Component
 
-If you need a more specific input type, you can write it directly in React. You'll have to rely on react-final-form's [<Field>](https://final-form.org/docs/react-final-form/api/Field) component, or its [`useField`](https://final-form.org/docs/react-final-form/api/useField) hook, to handle the value update cycle.
+If you need a more specific input type, you can write it directly in React. You'll have to rely on react-final-form's [<Field>](https://final-form.org/docs/react-final-form/api/Field) component, or its [useField](https://final-form.org/docs/react-final-form/api/useField) hook, to handle the value update cycle.
 
 ### Using `<Field>`
 
