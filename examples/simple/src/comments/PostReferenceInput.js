@@ -30,26 +30,12 @@ const useStyles = makeStyles({
 const PostReferenceInput = props => {
     const translate = useTranslate();
     const classes = useStyles();
-    const dispatch = useDispatch();
     const { change } = useForm();
 
     const [showCreateDialog, setShowCreateDialog] = useState(false);
     const [showPreviewDialog, setShowPreviewDialog] = useState(false);
     const [newPostId, setNewPostId] = useState('');
-
-    useEffect(() => {
-        //Refresh the choices of the ReferenceInput to ensure our newly created post
-        // always appear, even after selecting another post
-        dispatch(
-            crudGetMatching(
-                'posts',
-                'comments@post_id',
-                { page: 1, perPage: 25 },
-                { field: 'id', order: 'DESC' },
-                {}
-            )
-        );
-    }, [dispatch, newPostId]);
+    const [version, setVersion] = useState(0);
 
     const handleNewClick = useCallback(
         event => {
@@ -79,6 +65,7 @@ const PostReferenceInput = props => {
         post => {
             setShowCreateDialog(false);
             setNewPostId(post.id);
+            setVersion(previous => previous + 1);
             change('post_id', post.id);
         },
         [setShowCreateDialog, setNewPostId, change]
@@ -86,7 +73,7 @@ const PostReferenceInput = props => {
 
     return (
         <Fragment>
-            <ReferenceInput {...props} defaultValue={newPostId}>
+            <ReferenceInput key={version} {...props} defaultValue={newPostId}>
                 <SelectInput optionText="title" />
             </ReferenceInput>
             <Button
