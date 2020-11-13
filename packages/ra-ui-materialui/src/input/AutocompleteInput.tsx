@@ -446,9 +446,9 @@ const AutocompleteInput: FunctionComponent<AutocompleteInputProps> = props => {
                     color,
                     ...inputProps
                 } = getInputProps({
-                    ...InputProps,
                     onBlur: handleBlur,
                     onFocus: handleFocus(openMenu),
+                    ...InputProps,
                 });
                 const suggestions = getSuggestions(filterValue);
 
