@@ -101,8 +101,8 @@ describe('useInput', () => {
             />
         );
         const input = getByLabelText('Title');
-
-        fireEvent.focus(input);
+        // Temporary workaroud until we can upgrade testing-library in v4
+        input.focus();
         expect(handleFocus).toHaveBeenCalled();
         expect(formApi.getState().active).toEqual('title');
 
@@ -112,7 +112,7 @@ describe('useInput', () => {
         expect(handleChange).toHaveBeenCalled();
         expect(formApi.getState().values).toEqual({ title: 'A title' });
 
-        fireEvent.blur(input);
+        input.blur();
         expect(handleBlur).toHaveBeenCalled();
         expect(formApi.getState().active).toBeUndefined();
     });

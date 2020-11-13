@@ -81,8 +81,11 @@ const RichTextInput: FunctionComponent<Props> = props => {
                 editor.current.innerHTML === '<p><br></p>'
                     ? ''
                     : editor.current.innerHTML;
-            lastValueChange.current = value;
-            onChange(value);
+
+            if (lastValueChange.current !== value) {
+                lastValueChange.current = value;
+                onChange(value);
+            }
         }, 500),
         [onChange]
     );

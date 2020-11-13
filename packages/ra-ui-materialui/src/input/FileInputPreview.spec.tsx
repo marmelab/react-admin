@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render, cleanup, fireEvent, wait } from '@testing-library/react';
 
 import FileInputPreview from './FileInputPreview';
 
@@ -53,7 +53,7 @@ describe('<FileInputPreview />', () => {
         expect(queryByText('Child')).not.toBeNull();
     });
 
-    it('should clean up generated URLs for preview', () => {
+    it('should clean up generated URLs for preview', async () => {
         const { unmount } = render(
             <FileInputPreview {...defaultProps}>
                 <div id="child">Child</div>
@@ -61,11 +61,12 @@ describe('<FileInputPreview />', () => {
         );
 
         unmount();
+        await wait();
         // @ts-ignore
         expect(global.URL.revokeObjectURL).toHaveBeenCalledWith('previewUrl');
     });
 
-    it('should not try to clean up preview urls if not passed a File object with a preview', () => {
+    it('should not try to clean up preview urls if not passed a File object with a preview', async () => {
         const file = {};
 
         const { unmount } = render(
@@ -75,6 +76,7 @@ describe('<FileInputPreview />', () => {
         );
 
         unmount();
+        await wait();
         // @ts-ignore
         expect(global.URL.revokeObjectURL).not.toHaveBeenCalled();
     });

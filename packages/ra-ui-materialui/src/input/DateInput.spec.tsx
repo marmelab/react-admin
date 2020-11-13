@@ -70,7 +70,8 @@ describe('<DateInput />', () => {
             const input = getByLabelText(
                 'resources.posts.fields.publishedAt *'
             );
-            fireEvent.blur(input);
+            input.focus();
+            input.blur();
             expect(queryByText('ra.validation.required')).not.toBeNull();
         });
     });

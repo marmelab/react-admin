@@ -44,13 +44,17 @@ describe('<Resource>', () => {
             })
         );
     });
-    it(`unregister its resource from redux on unmount when context is 'registration'`, () => {
+    it(`unregister its resource from redux on unmount when context is 'registration'`, async () => {
         const { unmount, dispatch } = renderWithRedux(
             <Resource {...resource} intent="registration" />
         );
         unmount();
-        expect(dispatch).toHaveBeenCalledTimes(2);
-        expect(dispatch.mock.calls[1][0]).toEqual(unregisterResource('posts'));
+        await wait(() => {
+            expect(dispatch).toHaveBeenCalledTimes(2);
+            expect(dispatch.mock.calls[1][0]).toEqual(
+                unregisterResource('posts')
+            );
+        });
     });
     it('renders resource routes by default', () => {
         const history = createMemoryHistory();
@@ -107,7 +111,8 @@ describe('<Resource>', () => {
             { admin: { resources: { posts: {} } } }
         );
         history.push('/posts');
-        await wait();
-        expect(getByText('Permissions: admin')).not.toBeNull();
+        await wait(() => {
+            expect(getByText('Permissions: admin')).not.toBeNull();
+        });
     });
 });

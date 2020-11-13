@@ -66,7 +66,7 @@ describe('<TextInput />', () => {
 
             const input = getByLabelText('resources.posts.fields.title *');
             fireEvent.change(input, { target: { value: 'test' } });
-            fireEvent.blur(input);
+            input.blur();
             const error = queryByText('ra.validation.required');
             expect(error).toBeNull();
         });
@@ -82,7 +82,8 @@ describe('<TextInput />', () => {
             );
 
             const input = getByLabelText('resources.posts.fields.title *');
-            fireEvent.blur(input);
+            input.focus();
+            input.blur();
             const error = queryByText('ra.validation.required');
             expect(error).not.toBeNull();
         });

@@ -338,10 +338,11 @@ describe('<RadioButtonGroupInput />', () => {
             );
 
             const input = getByLabelText('Mastercard') as HTMLInputElement;
+            input.focus();
             fireEvent.click(input);
             expect(input.checked).toBe(true);
 
-            fireEvent.blur(input);
+            input.blur();
 
             expect(getByText('ra.validation.error')).not.toBeNull();
         });
@@ -364,10 +365,11 @@ describe('<RadioButtonGroupInput />', () => {
                 />
             );
             const input = getByLabelText('Mastercard') as HTMLInputElement;
+            input.focus();
             fireEvent.click(input);
             expect(input.checked).toBe(true);
 
-            fireEvent.blur(input);
+            input.blur();
 
             const error = getByText('ra.validation.error');
             expect(error).toBeDefined();
