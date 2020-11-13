@@ -378,7 +378,7 @@ Data Providers methods must return a Promise for an object with a `data` propert
 | `delete`           | `{ data: {Record} }` The record that has been deleted           |
 | `deleteMany`       | `{ data: {mixed[]} }` The ids of the deleted records (optional) |
 
-A `{Record}` is an object literal with at least an `id` property, e.g. `{ id: 123, title: "hello, world" }`.
+A `{Record}` is an object literal with at least an `id` property, e.g. `{ id: 123, title: "hello, world" }`. The value of the `id` field must be consistent in all results of methods of the data provider. React admin makes a lot of calculations and assumptions based on this fact.
 
 Building up on the previous example, here are example responses matching the format expected by react-admin:
 
