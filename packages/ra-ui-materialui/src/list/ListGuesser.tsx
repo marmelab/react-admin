@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect, FC } from 'react';
+import { useState, useEffect } from 'react';
 import inflection from 'inflection';
 import {
     useListController,
