@@ -30,6 +30,7 @@ import DatagridLoading from './DatagridLoading';
 import DatagridBody, { PureDatagridBody } from './DatagridBody';
 import useDatagridStyles from './useDatagridStyles';
 import { ClassesOverride } from '../../types';
+import { isNullishCoalesce } from 'typescript';
 
 /**
  * The Datagrid component renders a list of records as a table.
@@ -68,6 +69,13 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     const {
         optimized = false,
         body = optimized ? <PureDatagridBody /> : <DatagridBody />,
+        headerCell = (
+            <DatagridHeaderCell
+                currentSort={null}
+                resource={null}
+                updateSort={null}
+            />
+        ),
         children,
         classes: classesOverride,
         className,
@@ -204,21 +212,20 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                         </TableCell>
                     )}
                     {Children.map(children, (field, index) =>
-                        isValidElement(field) ? (
-                            <DatagridHeaderCell
-                                className={classes.headerCell}
-                                currentSort={currentSort}
-                                field={field}
-                                isSorting={
-                                    currentSort.field ===
-                                    ((field.props as any).sortBy ||
-                                        (field.props as any).source)
-                                }
-                                key={(field.props as any).source || index}
-                                resource={resource}
-                                updateSort={updateSort}
-                            />
-                        ) : null
+                        isValidElement(field)
+                            ? cloneElement(headerCell, {
+                                  className: classes.headerCell,
+                                  currentSort,
+                                  field,
+                                  isSorting:
+                                      currentSort.field ===
+                                      ((field.props as any).sortBy ||
+                                          (field.props as any).source),
+                                  key: (field.props as any).source || index,
+                                  resource,
+                                  updateSort,
+                              })
+                            : null
                     )}
                 </TableRow>
             </TableHead>
@@ -250,6 +257,7 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
 Datagrid.propTypes = {
     basePath: PropTypes.string,
     body: PropTypes.element,
+    headerCell: PropTypes.element,
     children: PropTypes.node.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
@@ -284,6 +292,7 @@ type RowClickFunction = (
 
 export interface DatagridProps extends Omit<TableProps, 'size' | 'classes'> {
     body?: ReactElement;
+    headerCell?: ReactElement;
     classes?: ClassesOverride<typeof useDatagridStyles>;
     className?: string;
     expand?:
