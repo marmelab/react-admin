@@ -195,7 +195,7 @@ export const useReferenceInputController = (
             loading: dataStatus.waiting,
             warning: dataStatus.warning,
         },
-        choices: Object.keys(finalData).map(id => finalData[id]),
+        choices: finalIds.map(id => finalData[id]),
         // kept for backwards compatibility
         // @deprecated to be removed in 4.0
         error: dataStatus.error,
