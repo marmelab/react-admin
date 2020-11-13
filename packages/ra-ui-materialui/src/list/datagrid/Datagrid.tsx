@@ -30,7 +30,6 @@ import DatagridLoading from './DatagridLoading';
 import DatagridBody, { PureDatagridBody } from './DatagridBody';
 import useDatagridStyles from './useDatagridStyles';
 import { ClassesOverride } from '../../types';
-import { isNullishCoalesce } from 'typescript';
 
 /**
  * The Datagrid component renders a list of records as a table.
