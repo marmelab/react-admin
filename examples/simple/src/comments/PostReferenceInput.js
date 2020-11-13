@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Fragment, useState, useCallback, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { Fragment, useState, useCallback } from 'react';
 import { FormSpy, useForm } from 'react-final-form';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -10,12 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
-import {
-    crudGetMatching,
-    ReferenceInput,
-    SelectInput,
-    useTranslate,
-} from 'react-admin'; // eslint-disable-line import/no-unresolved
+import { ReferenceInput, SelectInput, useTranslate } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 import PostQuickCreate from './PostQuickCreate';
 import PostPreview from './PostPreview';
