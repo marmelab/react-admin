@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import {
     BooleanField,
     Datagrid,
@@ -22,6 +21,7 @@ import CustomerLinkField from './CustomerLinkField';
 import ColoredNumberField from './ColoredNumberField';
 import MobileGrid from './MobileGrid';
 import VisitorListAside from './VisitorListAside';
+import { ReactElement } from 'react';
 
 const VisitorFilter = (props: Omit<FilterProps, 'children'>) => (
     <Filter {...props}>
@@ -37,7 +37,7 @@ const useStyles = makeStyles({
     nb_commands: { color: 'purple' },
 });
 
-const VisitorList: FC<ListProps> = (props: any) => {
+const VisitorList = (props: ListProps): ReactElement => {
     const classes = useStyles();
     const isXsmall = useMediaQuery<Theme>(theme =>
         theme.breakpoints.down('xs')
@@ -46,7 +46,7 @@ const VisitorList: FC<ListProps> = (props: any) => {
     return (
         <List
             {...props}
-            filters={isSmall ? <VisitorFilter /> : null}
+            filters={isSmall ? <VisitorFilter /> : undefined}
             sort={{ field: 'last_seen', order: 'DESC' }}
             perPage={25}
             aside={<VisitorListAside />}

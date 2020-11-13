@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     CreateContextProvider,
@@ -52,7 +53,9 @@ import { CreateView } from './CreateView';
  * );
  * export default App;
  */
-export const Create = (props: CreateProps) => {
+export const Create = (
+    props: CreateProps & { children: ReactElement }
+): ReactElement => {
     useCheckMinimumRequiredProps('Create', ['children'], props);
     const controllerProps = useCreateController(props);
     return (

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect, FC } from 'react';
+import { useState, useEffect } from 'react';
 import inflection from 'inflection';
 import {
     useListController,
@@ -33,7 +33,7 @@ import { ListProps } from '../types';
  *     </Admin>
  * );
  */
-const ListGuesser: FC<ListProps> = props => {
+const ListGuesser = (props: ListProps) => {
     const controllerProps = useListController(props);
     return (
         <ListContextProvider value={controllerProps}>
@@ -42,7 +42,7 @@ const ListGuesser: FC<ListProps> = props => {
     );
 };
 
-const ListViewGuesser: FC<ListViewProps> = props => {
+const ListViewGuesser = (props: Omit<ListViewProps, 'children'>) => {
     const { ids, data } = props;
     const resource = useResourceContext(props);
     const [inferredChild, setInferredChild] = useState(null);

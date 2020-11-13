@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     EditContextProvider,
@@ -53,7 +54,9 @@ import { EditView } from './EditView';
  * );
  * export default App;
  */
-export const Edit = (props: EditProps): JSX.Element => {
+export const Edit = (
+    props: EditProps & { children: ReactElement }
+): ReactElement => {
     useCheckMinimumRequiredProps('Edit', ['children'], props);
     const controllerProps = useEditController(props);
     return (

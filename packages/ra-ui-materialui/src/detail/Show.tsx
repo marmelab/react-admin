@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     ShowContextProvider,
@@ -52,7 +53,9 @@ import { ShowView } from './ShowView';
  * );
  * export default App;
  */
-export const Show = (props: ShowProps) => {
+export const Show = (
+    props: ShowProps & { children: ReactElement }
+): ReactElement => {
     useCheckMinimumRequiredProps('Show', ['children'], props);
     const controllerProps = useShowController(props);
     return (
