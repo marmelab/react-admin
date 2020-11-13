@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC } from 'react';
+import { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     useCheckMinimumRequiredProps,
@@ -57,7 +57,7 @@ import { ListProps } from '../types';
  *     </List>
  * );
  */
-const List: FC<ListProps> = props => {
+const List = (props: ListProps & { children: ReactElement }): ReactElement => {
     useCheckMinimumRequiredProps('List', ['children'], props);
     const controllerProps = useListController(props);
     return (

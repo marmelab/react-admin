@@ -9,7 +9,6 @@ import {
 } from 'ra-core';
 
 export interface ListProps extends ResourceComponentProps {
-    children?: ReactElement;
     actions?: ReactElement | false;
     aside?: ReactElement;
     bulkActionButtons?: ReactElement | false;
@@ -28,7 +27,6 @@ export interface ListProps extends ResourceComponentProps {
 }
 
 export interface EditProps extends ResourceComponentPropsWithId {
-    children?: ReactElement;
     actions?: ReactElement | false;
     aside?: ReactElement;
     classes?: any;
@@ -42,7 +40,6 @@ export interface EditProps extends ResourceComponentPropsWithId {
 }
 
 export interface CreateProps extends ResourceComponentProps {
-    children?: ReactElement;
     actions?: ReactElement | false;
     aside?: ReactElement;
     classes?: any;
@@ -56,7 +53,6 @@ export interface CreateProps extends ResourceComponentProps {
 }
 
 export interface ShowProps extends ResourceComponentPropsWithId {
-    children?: ReactElement;
     actions?: ReactElement | false;
     aside?: ReactElement;
     classes?: any;
