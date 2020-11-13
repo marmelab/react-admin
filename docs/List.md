@@ -1795,6 +1795,7 @@ The `Datagrid` component renders a list of records as a table. It is usually use
 Here are all the props accepted by the component:
 
 * [`body`](#body-element)
+* [`headerCell`](#header-cell-element)
 * [`rowStyle`](#row-style-function)
 * [`rowClick`](#rowclick)
 * [`expand`](#expand)
@@ -1873,6 +1874,43 @@ const PostList = props => (
 )
 
 export default PostList;
+```
+
+### Header Cell element
+
+By default, `<Datagrid>` renders header cells using `<DatagridHeaderCell>`, an internal react-admin component. You can pass a custom component as the `headerCell` prop to override that default. `<Datagrid>` sets a list of props such as `field`, `currentSort` or `className` when cloning the `headerCell`, and it clones this element once for each header cell. Please refer to the source code of `<DatagridHeaderCell>` and `<Datagrid>` for more information.
+
+The `headerCell` prop allows the customization of the header elements to create more complex and featureful table headers. Here is how you can simplify the header cells showing only the header title and disabling any tooltip or sorting feature:
+
+```jsx
+export const PostHeaderCell = (props) => {
+    const {
+        field,
+        ...rest
+    } = props;
+    const resource = useResourceContext(props);
+    return (
+        <TableCell
+            className={classnames(className, field.props.headerClassName)}
+            align={field.props.textAlign}
+            variant="head"
+        >
+            <FieldTitle
+                label={field.props.label}
+                source={field.props.source}
+                resource={resource}
+            />
+        </TableCell>
+    );
+}
+
+export const PostList = (props) => (
+    <List {...props}>
+        <Datagrid headerCell={<PostHeaderCell />}>
+            ...
+        </Datagrid>
+    </List>
+);
 ```
 
 ### Row Style Function
