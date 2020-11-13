@@ -154,6 +154,37 @@ describe('useDataProvider', () => {
         expect(customVerb).toHaveBeenCalledWith('posts', { id: 1 });
     });
 
+    it('should accept calls to custom verbs with no arguments', async () => {
+        const UseCustomVerbWithNoArgument = ({ onSuccess }) => {
+            const [data, setData] = useState();
+            const [error, setError] = useState();
+            const dataProvider = useDataProvider();
+            useEffect(() => {
+                dataProvider
+                    .customVerb()
+                    .then(res => setData(res.data))
+                    .catch(e => setError(e));
+            }, [dataProvider, onSuccess]);
+            if (error) return <div data-testid="error">{error.message}</div>;
+            if (data)
+                return <div data-testid="data">{JSON.stringify(data)}</div>;
+            return <div data-testid="loading">loading</div>;
+        };
+        const customVerb = jest.fn(() => Promise.resolve({ data: null }));
+        const dataProvider = { customVerb };
+        renderWithRedux(
+            <DataProviderContext.Provider value={dataProvider}>
+                <UseCustomVerbWithNoArgument />
+            </DataProviderContext.Provider>
+        );
+        // wait for the dataProvider to return
+        await act(async () => {
+            await new Promise(resolve => setTimeout(resolve));
+        });
+
+        expect(customVerb).toHaveBeenCalledWith();
+    });
+
     it('should accept custom arguments for custom verbs', async () => {
         const customVerb = jest.fn(() => Promise.resolve({ data: null }));
         const dataProvider = { customVerb };
