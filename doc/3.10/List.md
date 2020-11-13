@@ -1825,7 +1825,7 @@ The `<Datagrid>` is an **iterator** component: it gets an array of ids and a dat
 
 ### Body element
 
-By default, `<Datagrid>` renders its body using `<DatagridBody>`, an internal react-admin component. You can pass a custom component as the `body` prop to override that default. And by the way, `<DatagridBody>` has a `row` prop set to `<DatagridRow>` by default for the same purpose. `<DatagridRow>` receives the row `record`, the `resource`, and a copy of the `<Datagrid>` children. That means you can create custom datagrid logic without copying several components from the react-admin source.
+By default, `<Datagrid>` renders its body using `<DatagridBody>`, an internal react-admin component. You can pass a custom component as the `body` prop to override that default. And by the way, `<DatagridBody>` has a `row` prop set to `<DatagridRow>` by default for the same purpose. `<DatagridRow>` receives the row `record`, the `resource`, and a copy of the `<Datagrid>` children. That means you can create custom `<Datagrid>` logic without copying several components from the react-admin source.
 
 For instance, the `<Datagrid isRowSelectable>` prop allows to hide the selection checkbox for some records. To show a *disabled* checkbox instead of hiding it, you can override `<DatagridRow>` and `<DatagridBody>` as follows:
 
@@ -2034,15 +2034,23 @@ export const PostList = props => (
 
 The `Datagrid` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
 
-| Rule name     | Description                                                   |
-| ------------- | ------------------------------------------------------------- |
-| `table`       | Alternative to using `className`. Applied to the root element |
-| `tbody`       | Applied to the tbody                                          |
-| `headerCell`  | Applied to each header cell                                   |
-| `row`         | Applied to each row                                           |
-| `rowEven`     | Applied to each even row                                      |
-| `rowOdd`      | Applied to the each odd row                                   |
-| `rowCell`     | Applied to the each row cell                                  |
+| Rule name        | Description                                                   |
+| ---------------- | ------------------------------------------------------------- |
+| `table`          | Alternative to using `className`. Applied to the root element |
+| `thead`          | Applied to the header of the `Datagrid`                       |
+| `tbody`          | Applied to the tbody                                          |
+| `headerCell`     | Applied to each header cell                                   |
+| `headerRow`      | Applied to each header row                                    |
+| `row`            | Applied to each row                                           |
+| `rowEven`        | Applied to each even row                                      |
+| `rowOdd`         | Applied to each odd row                                       |
+| `rowCell`        | Applied to each row cell                                      |
+| `expandHeader`   | Applied to each expandable header cell                        |
+| `clickableRow`   | Applied to each row if `rowClick` prop is truthy              |
+| `expandIconCell` | Applied to each expandable cell                               |
+| `expandIcon`     | Applied to each expand icon                                   |
+| `expanded`       | Applied to each expanded icon                                 |
+| `checkbox`       | Applied to each checkbox cell                                 |
 
 You can customize the `<Datagrid>` styles by passing a `classes` object as prop, through `useStyles()`. Here is an example:
 
@@ -2226,7 +2234,7 @@ For mobile devices, a `<Datagrid>` is often unusable - there is simply not enoug
 | `rightAvatar`   | Optional | `Function`                                | -       | When present, the `<ListItem>` renders a `<ListItemAvatar>` after the `<ListItemText>`                                                                               |
 | `rightIcon`     | Optional | `Function`                                | -       | When present, the `<ListItem>` renders a `<ListIcon>` after the `<ListItemText>`                                                                                     |
 | `className`     | Optional | `string`                                  | -       | Applied to the root element                                                                                                                                          |
-| `rowStyle`      | Optional | `Function`                                | -       | Applied to the `<ListItem>` styles prop. The function get's called for each row. Receives the current record and index as arguments and should return a style object.|
+| `rowStyle`      | Optional | `Function`                                | -       | Applied to the `<ListItem>` styles prop. The function gets called for each row. Receives the current record and index as arguments and should return a style object. |
     
 ### Usage
 
@@ -2248,7 +2256,7 @@ export const PostList = (props) => (
             secondaryText={record => `${record.views} views`}
             tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
             linkType={record => record.canEdit ? "edit" : "show"}
-			rowStyle={postRowStyle}
+            rowStyle={postRowStyle}
         />
     </List>
 );

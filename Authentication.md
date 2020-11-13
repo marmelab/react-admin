@@ -777,7 +777,7 @@ const MyPage = () => {
 
 ### `useGetPermissions()` Hook
 
-React-admin also exposes a `useGetPermissions()` hook, returning a callback to call `authProvider.getPermissions()` on demand. In practice, you seldom need this hook - `usePermissions` covers most authorizatoin needs, and manages the loading state for you. 
+React-admin also exposes a `useGetPermissions()` hook, returning a callback to call `authProvider.getPermissions()` on demand. In practice, you seldom need this hook - `usePermissions` covers most authorization needs, and manages the loading state for you. 
 
 Here is an example usage:
 

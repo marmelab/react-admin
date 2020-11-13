@@ -1354,7 +1354,7 @@ export default TextField;
 
 **Tip**: The `label` attribute isn't used in the `render()` method, but react-admin uses it to display the table header.
 
-**Tip**: If you want to support deep field sources (e.g. source values like `author.name`), use [`lodash/get`](https://www.npmjs.com/package/lodash.get) to replace the simple object lookup:
+**Tip**: If you want to support deep field sources (e.g. source values like `author.name`), use [lodash/get](https://www.npmjs.com/package/lodash.get) to replace the simple object lookup:
 
 ```jsx
 import get from 'lodash/get';

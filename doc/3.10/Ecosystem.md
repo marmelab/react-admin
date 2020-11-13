@@ -19,6 +19,10 @@ title: "Ecosystem"
 
 See the [List](./List.md#third-party-components) page.
 
+## Show Related Components
+
+See the [Show](./Show.md#third-party-components) page.
+
 ## Fields
 
 See the [Field](./Fields.md#third-party-components) page.
