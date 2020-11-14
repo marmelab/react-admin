@@ -787,7 +787,7 @@ For instance, let's imagine you have to use the `my.api.url` REST API, which exp
 | Get one record      | `GET http://my.api.url/posts/123`                                                       |
 | Get several records | `GET http://my.api.url/posts?filter={"id":[123,456,789]}`                               |
 | Get related records | `GET http://my.api.url/posts?filter={"author_id":345}`                                  |
-| Create a record     | `POST http://my.api.url/posts/123`                                                      |
+| Create a record     | `POST http://my.api.url/posts`                                                          |
 | Update a record     | `PUT http://my.api.url/posts/123`                                                       |
 | Update records      | `PUT http://my.api.url/posts?filter={"id":[123,124,125]}`                               |
 | Delete a record     | `DELETE http://my.api.url/posts/123`                                                    |
