@@ -72,7 +72,6 @@ const ProductList: FC<ListProps> = props => {
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
     return (
         <ListBase
-            filters={isSmall ? <ProductFilter /> : null}
             perPage={20}
             sort={{ field: 'reference', order: 'ASC' }}
             {...props}

@@ -1725,7 +1725,7 @@ const PostList = props => (
 );
 
 const MyList = props => (
-    <ListBase>
+    <ListBase {...props}>
         <h1>{props.title}</h1>
         <ListToolbar
             filters={props.filters}
@@ -1747,6 +1747,15 @@ const MyList = props => (
 This custom List component has no aside component - it's up to you to add it in pure React.
 
 **Tip**: You don't have to clone the child element. If you can't reuse an existing list view component like `<Datagrid>` or `<SimpleList>`, feel free to write the form code inside your custom `MyList` component. 
+
+The `<ListBase>` component accepts a subset of the props accepted by `<List>` - only the props that change data fetching, and not the props related to the user interface:
+
+* [`exporter`](#exporter)
+* [`filter`](#filter-permanent-filter) (the permanent filter used in the REST request)
+* [`filterDefaultValues`](#filterdefaultvalues) (the default values for `alwaysOn` filters)
+* [`perPage`](#perpage-pagination-size)
+* [`sort`](#sort-default-sort-field--order)
+* [`pagination`](#pagination-pagination-component)
 
 ## `useListContext`
 
