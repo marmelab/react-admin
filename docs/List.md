@@ -5,32 +5,35 @@ title: "The List View"
 
 # The List View
 
-The List view displays a list of records fetched from the API. The entry point for this view is the `<List>` component, which takes care of fetching the data. Then, it puts that data in a `ListContext` so that it's available for its descendants - usually `<Datagrid>`, which then delegates the rendering of each record property to [`<Field>`](./Fields.md) components.
+The List view displays a list of records fetched from the API, and allows users to filter, sort, select, and paginate the records. You can display the list as a Datagrid, a list of images, a calendar, or using a component of your own.
 
-![The List View](./img/list-view.png)
+![The List View](./img/list-view.jpg)
+
+The entry point for this view is the `<List>` component, which takes care of fetching the data. Then, it puts that data in a `ListContext` so that it's available for its descendants - usually `<Datagrid>`, which then delegates the rendering of each record property to [`<Field>`](./Fields.md) components.
 
 ## The `<List>` Component
 
-The `<List>` component fetches the list of records from the data provider, and renders the list layout (title, buttons, filters, pagination). It delegates the rendering of the list of records to its child component. Usually, it's a `<Datagrid>`, responsible for displaying a table with one row for each post.
+The `<List>` component fetches the list of records from the data provider, and renders the default list layout (title, buttons, filters, pagination). It delegates the rendering of the list of records to its child component. Usually, it's a `<Datagrid>`, responsible for displaying a table with one row for each record.
 
-Here are all the props accepted by the `<List>` component:
-
-* [`title`](#page-title)
-* [`actions`](#actions)
-* [`exporter`](#exporter)
-* [`bulkActionButtons`](#bulk-action-buttons)
-* [`filters`](#filters) (a React element used to display the filter form)
-* [`filterDefaultValues`](#filter-default-values) (the default values for `alwaysOn` filters)
-* [`perPage`](#records-per-page)
-* [`sort`](#default-sort-field)
-* [`filter`](#permanent-filter) (the permanent filter used in the REST request)
-* [`pagination`](#pagination)
-* [`aside`](#aside-component)
-* [`empty`](#empty-page)
-
-Here is the minimal code necessary to display a list of posts:
+Here is the minimal code necessary to display a list of posts using a `<Datagrid>`:
 
 ```jsx
+// in src/posts.js
+import * as React from "react";
+import { List, Datagrid, TextField, DateField, BooleanField } from 'react-admin';
+
+export const PostList = (props) => (
+    <List {...props}>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <DateField source="published_at" />
+            <TextField source="category" />
+            <BooleanField source="commentable" />
+        </Datagrid>
+    </List>
+);
+
 // in src/App.js
 import * as React from "react";
 import { Admin, Resource } from 'react-admin';
@@ -45,27 +48,28 @@ const App = () => (
 );
 
 export default App;
-
-// in src/posts.js
-import * as React from "react";
-import { List, Datagrid, TextField } from 'react-admin';
-
-export const PostList = (props) => (
-    <List {...props}>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="body" />
-        </Datagrid>
-    </List>
-);
 ```
 
-That's enough to display the post list:
+That's enough to display a basic post list, with functional sort and pagination:
 
 ![Simple posts list](./img/simple-post-list.png)
 
-### Page Title
+Here are all the props accepted by the `<List>` component:
+
+* [`title`](#title)
+* [`actions`](#actions)
+* [`exporter`](#exporter)
+* [`bulkActionButtons`](#bulkactionbuttons)
+* [`filters`](#filters-filter-inputs) (a React element used to display the filter form)
+* [`filter`](#filter-permanent-filter) (the permanent filter used in the REST request)
+* [`filterDefaultValues`](#filterdefaultvalues) (the default values for `alwaysOn` filters)
+* [`perPage`](#perpage-pagination-size)
+* [`sort`](#sort-default-sort-field--order)
+* [`pagination`](#pagination-pagination-component)
+* [`aside`](#aside-aside-component)
+* [`empty`](#empty-empty-page-component)
+
+### `title`
 
 The default title for a list view is "[resource] list" (e.g. "Posts list"). Use the `title` prop to customize the List view title:
 
@@ -80,7 +84,7 @@ export const PostList = (props) => (
 
 The title can be either a string or an element of your own.
 
-### Actions
+### `actions`
 
 ![Actions Toolbar](./img/actions-toolbar.png)
 
@@ -166,7 +170,7 @@ export const PostList = ({ permissions, ...props }) => (
 );
 ```
 
-### Exporter
+### `exporter`
 
 ![Export Button](./img/export-button.gif)
 
@@ -252,7 +256,7 @@ const CommentList = props => (
 
 **Tip**: Looking for an `<ImportButton>`? React-admin doesn't provide this feature, but the community has an excellent third-party module for CSV import: [benwinding/react-admin-import-csv](https://github.com/benwinding/react-admin-import-csv).
 
-### Bulk Action Buttons
+### `bulkActionButtons`
 
 ![Bulk Action Buttons](./img/bulk-actions-toolbar.gif)
 
@@ -449,11 +453,11 @@ const ResetViewsButton = ({ selectedIds }) => {
 };
 ```
 
-### Filters
+### `filters`: Filter Inputs
 
 ![List Filters](./img/list_filter.gif)
 
-You can add a filter component to the list using the `filters` prop:
+You can add a filter component to the List using the `filters` prop:
 
 ```jsx
 const PostFilter = (props) => (
@@ -476,9 +480,30 @@ The filter component must be a `<Filter>` with `<Input>` children.
 
 Children of the `<Filter>` form are regular inputs. `<Filter>` hides them all by default, except those that have the `alwaysOn` prop.
 
-For more details about the `filters` prop, see the [Filtering the List](#filtering-the-list) section below. 
+You can also display filters as a sidebar:
 
-### Filter Default Values
+![`<FilterList>` sidebar](./img/filter-sidebar.gif)
+
+For more details about customizing filters, see the [Filtering the List](#filtering-the-list) section. 
+
+### `filter`: Permanent Filter
+
+You can choose to always filter the list, without letting the user disable this filter - for instance to display only published posts. Write the filter to be passed to the data provider in the `filter` props:
+
+{% raw %}
+```jsx
+// in src/posts.js
+export const PostList = (props) => (
+    <List {...props} filter={{ is_published: true }}>
+        ...
+    </List>
+);
+```
+{% endraw %}
+
+The actual filter parameter sent to the data provider is the result of the combination of the *user* filters (the ones set through the `filters` component form), and the *permanent* filter. The user cannot override the permanent filters set by way of `filter`.
+
+### `filterDefaultValues`
 
 To set default values to filters, you can either pass an object literal as the `filterDefaultValues` prop of the `<List>` element, or use the `defaultValue` prop of any input component.
 
@@ -509,7 +534,7 @@ export const PostList = (props) => (
 const filterSentToDataProvider = { ...filterDefaultValues, ...filterChosenByUser, ...filter };
 ```
 
-### Records Per Page
+### `perPage`: Pagination Size 
 
 By default, the list paginates results by groups of 10. You can override this setting by specifying the `perPage` prop:
 
@@ -522,7 +547,7 @@ export const PostList = (props) => (
 );
 ```
 
-### Default Sort Field
+### `sort`: Default Sort Field & Order
 
 Pass an object literal as the `sort` prop to determine the default `field` and `order` used for sorting:
 
@@ -541,24 +566,7 @@ export const PostList = (props) => (
 
 For more details on list sort, see the [Sorting The List](#sorting-the-list) section below. 
 
-### Permanent Filter
-
-You can choose to always filter the list, without letting the user disable this filter - for instance to display only published posts. Write the filter to be passed to the data provider in the `filter` props:
-
-{% raw %}
-```jsx
-// in src/posts.js
-export const PostList = (props) => (
-    <List {...props} filter={{ is_published: true }}>
-        ...
-    </List>
-);
-```
-{% endraw %}
-
-The actual filter parameter sent to the data provider is the result of the combination of the *user* filters (the ones set through the `filters` component form), and the *permanent* filter. The user cannot override the permanent filters set by way of `filter`.
-
-### Pagination
+### `pagination`: Pagination Component
 
 The `pagination` prop allows to replace the default pagination controls by your own.
 
@@ -577,7 +585,7 @@ export const PostList = (props) => (
 
 See [Paginating the List](#paginating-the-list) below for details.
 
-### Aside component
+### `aside`: Aside Component
 
 You may want to display additional information on the side of the list. Use the `aside` prop for that, passing the component of your choice:
 
@@ -633,7 +641,7 @@ const Aside = () => {
 ```
 {% endraw %}
 
-### Empty page
+### `empty`: Empty Page Component
 
 When there is no result, and there is no active filter, and the resource has a create page, react-admin displays a special page inviting the user to create the first record.
 
@@ -697,7 +705,7 @@ const ProductList = props => (
 );
 ```
 
-### Component
+### `component`
 
 By default, the List view renders the main content area inside a material-ui `<Card>` element. The actual layout of the list depends on the child component you're using (`<Datagrid>`, `<SimpleList>`, or a custom layout component).
 
@@ -886,7 +894,7 @@ That's the case of the react-admin `<Filter>` component:
 - `<Filter context="form">` renders an inline form based on its children which must be `<Input>` components
 - `<Filter context="button">` renders a dropdown allowing enabling filters based on the `source` prop of its children. 
 
-### Full-Text Search
+#### Full-Text Search
 
 ![`<SearchInput>`](./img/search_input.gif)
 
@@ -904,7 +912,7 @@ const PostFilter = props => (
 
 In the example given above, the `q` filter triggers a full-text search on all fields. It's your responsibility to implement the full-text filtering capabilities in your `dataProvider`, or in your API.
 
-### Quick Filters
+#### Quick Filters
 
 ![`<QuickFilter>`](./img/quick_filters.gif)
 
@@ -943,6 +951,8 @@ const PostFilter = props => (
 ![Filter Sidebar](./img/filter-sidebar.gif)
 
 An alternative UI to the `<Filter>` Button/Form Combo is the FilterList Sidebar. Similar to what users usually see on e-commerce websites, it's a panel with many simple filters that can be enabled and combined using the mouse. The user experience is better than the Button/Form Combo, because the filter values are explicit, and it doesn't require typing anything in a form. But it's a bit less powerful, as only filters with a finite set of values (or intervals) can be used in the `<FilterList>`.
+
+#### Basic usage
 
 The `<FilterList>` component expects a list of `<FilterListItem>` as children. Each `<FilterListItem>` defines a filter `label` and a `value`, which is merged with the current filter value when enabled by the user. Here is an example usage for a list of customers:
 
@@ -1063,6 +1073,8 @@ const SegmentFilter = () => (
 ```
 {% endraw %}
 
+#### Placing Filters In A Sidebar
+
 You can place these `<FilterList>` anywhere inside a `<List>`. The most common case is to put them in a sidebar that is on the left hand side of the datagrid. You can use the `aside` property for that:
 
 ```jsx
@@ -1104,7 +1116,7 @@ const CustomerList = props => (
 
 **Tip**: The `<FilterList>` Sidebar is not a good UI for small screens. You can choose to hide it on small screens (as in the previous example). A good tradeoff is to use `<FilterList>` on large screens, and the `<Filter>` Button/Form combo on Mobile.
 
-### Live Search
+#### Live Search
 
 ![Filter Live Search](./img/filter-live-search.gif)
 
@@ -1136,9 +1148,12 @@ const FilterSidebar = () => (
 
 If neither the `<Filter>` button/form combo or the `<FilterList>` sidebar match your need, you can always build your own. React-admin provides shortcuts to facilitate the development of custom filters.
 
+
 For instance, by default, the filter button/form combo doesn't provide a submit button, and submits automatically after the user has finished interacting with the form. This provides a smooth user experience, but for some APIs, it can cause too many calls. 
 
 In that case, the solution is to process the filter when users click on a submit button, rather than when they type values in form inputs. React-admin doesn't provide any component for that, but it's a good opportunity to illustrate the internals of the filter functionality. We'll actually provide an alternative implementation to the `<Filter>` button/form combo.
+
+#### Filter Callbacks
 
 The new filter element can use the `useListContext()` hook to interact with the URI query parameter more easily. The hook returns the following constants:
 
@@ -1149,6 +1164,8 @@ The new filter element can use the `useListContext()` hook to interact with the 
 - `hideFilter()`: Callback to hide a filter in the form, e.g. `hideFilter('title')`
 
 Let's use this knowledge to write a custom `<Filter>` component that filters on submit.
+
+#### Double Rendering
 
 As explained earlier, `<List>` clones the element passed as `filters` prop twice - once to display the filter *button*, and once to display the filter *form*. So first, let's create a `<Filter>` component rendering either a button or a form depending on the `context`:
 
@@ -1161,6 +1178,8 @@ const PostFilter = props => {
   );
 };
 ```
+
+#### Custom Filter Button
 
 The `<PostListFilterButton>` simply shows the filter form on click. We'll take advantage of the `showFilter` function:
 
@@ -1185,6 +1204,8 @@ const PostFilterButton = () => {
 ```
 
 Normally, `showFilter()` adds one input to the `displayedFilters` list. As the filter form will be entirely hidden or shown, we use `showFilter()` with a virtual "main" input, which represents the entire form. 
+
+#### Custom Form Component
 
 Next is the form component, based on `react-final-form`. The form inputs appear directly in the form, and the form submission triggers the `setFilters()` callback passed as parameter:
 
@@ -1264,6 +1285,8 @@ const PostFilterForm = ({ open }) => {
 };
 ```
 {% endraw %}
+
+#### Using The Custom Form
 
 To finish, we pass the `<PostFilter>` component to the `<List>` component using the `filters` prop:
 
@@ -1670,51 +1693,11 @@ Just like `<List>`, `<ListGuesser>` fetches the data. It then analyzes the respo
 
 ![Guessed List](./img/guessed-list.png)
 
-React-admin provides guessers for the List view (`<ListGuesser>`), the Edit view (`<EditGuesser>`), and the Show view (`<ShowGuesser>`).
+React-admin provides guessers for the List view (`<ListGuesser>`), the Edit view ([`<EditGuesser>`](./CreateEdit.md#the-editguesser-component)), and the Show view ([`<ShowGuesser>`](./Show.md#the-showguesser-component)).
 
 **Tip**: Do not use the guessers in production. They are slower than manually-defined components, because they have to infer types based on the content. Besides, the guessers are not always perfect.
 
-## `useListContext`
-
-The `<List>` component takes care of fetching the data, and puts that data in a context called `ListContext` so that it's available for its descendants. In fact, it puts a lot of variables in the context because the List page is complex: based on the URL, the `<List>` component deduces filters, pagination, ordering, it provides callbacks to update them. 
-
-Any component can grab that data using the `useListContext` hook. As a matter of fact, react-admin's `<Datagrid>`, `<Filter>`, and `<Pagination>` components all use the `useListContext` hook. Here is what it returns:
-
-```jsx
-const {
-    // fetched data
-    data, // an id-based dictionary of the list data, e.g. { 123: { id: 123, title: 'hello world' }, 456: { ... } }
-    ids, // an array listing the ids of the records in the list, e.g [123, 456, ...]
-    total, // the total number of results for the current filters, excluding pagination. Useful to build the pagination controls. e.g. 23 
-    loaded, // boolean that is false until the data is available
-    loading, // boolean that is true on mount, and false once the data was fetched
-    // pagination
-    page, // the current page. Starts at 1
-    setPage, // a callback to change the current page, e.g. setPage(3)
-    perPage, // the number of results per page. Defaults to 25
-    setPerPage, // a callback to change the number of results per page, e.g. setPerPage(25)
-    // sorting
-    currentSort, // a sort object { field, order }, e.g. { field: 'date', order: 'DESC' } 
-    setSort, // a callback to change the sort, e.g. setSort('name', 'ASC')
-    // filtering
-    filterValues, // a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
-    setFilters, // a callback to update the filters, e.g. setFilters(filters, displayedFilters)
-    displayedFilters, // a dictionary of the displayed filters, e.g. { title: true, nationality: true }
-    showFilter, // a callback to show one of the filters, e.g. showFilter('title', defaultValue)
-    hideFilter, // a callback to hide one of the filters, e.g. hidefilter('title')
-    // row selection
-    selectedIds, // an array listing the ids of the selected rows, e.g. [123, 456]
-    onSelect, // callback to change the list of selected rows, e.g onSelect([456, 789])
-    onToggleItem, // callback to toggle the selection of a given record based on its id, e.g. onToggleItem(456)
-    onUnselectItems, // callback to clear the selection, e.g. onUnselectItems();
-    // misc
-    basePath, // deduced from the location, useful for action buttons
-    defaultTitle, // the translated title based on the resource, e.g. 'Posts'
-    resource, // the resource name, deduced from the location. e.g. 'posts'
-} = useListContext();
-```
-
-## `ListBase`
+## The `<ListBase>` Component
 
 In addition to fetching the list data, the `<List>` component renders the page title, the actions, the content and aside areas. You may want to display a record list in an entirely different layout, i.e. use only the data fetching part of `<List>` and not the view layout. In that case, you should use `<ListBase>`.
 
@@ -1765,9 +1748,61 @@ This custom List component has no aside component - it's up to you to add it in 
 
 **Tip**: You don't have to clone the child element. If you can't reuse an existing list view component like `<Datagrid>` or `<SimpleList>`, feel free to write the form code inside your custom `MyList` component. 
 
+## `useListContext`
+
+The List components (`<List>`, `<ListGuesser>`, `<ListBase>`) take care of fetching the data, and put that data in a context called `ListContext` so that it's available for their descendants. This context also stores filters, pagination, sort state, and provides callbacks to update them. 
+
+Any component can grab information from the `ListContext` using the `useListContext` hook. As a matter of fact, react-admin's `<Datagrid>`, `<Filter>`, and `<Pagination>` components all use the `useListContext` hook. Here is what it returns:
+
+```jsx
+const {
+    // fetched data
+    data, // an id-based dictionary of the list data, e.g. { 123: { id: 123, title: 'hello world' }, 456: { ... } }
+    ids, // an array listing the ids of the records in the list, e.g [123, 456, ...]
+    total, // the total number of results for the current filters, excluding pagination. Useful to build the pagination controls. e.g. 23 
+    loaded, // boolean that is false until the data is available
+    loading, // boolean that is true on mount, and false once the data was fetched
+    // pagination
+    page, // the current page. Starts at 1
+    setPage, // a callback to change the current page, e.g. setPage(3)
+    perPage, // the number of results per page. Defaults to 25
+    setPerPage, // a callback to change the number of results per page, e.g. setPerPage(25)
+    // sorting
+    currentSort, // a sort object { field, order }, e.g. { field: 'date', order: 'DESC' } 
+    setSort, // a callback to change the sort, e.g. setSort('name', 'ASC')
+    // filtering
+    filterValues, // a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
+    setFilters, // a callback to update the filters, e.g. setFilters(filters, displayedFilters)
+    displayedFilters, // a dictionary of the displayed filters, e.g. { title: true, nationality: true }
+    showFilter, // a callback to show one of the filters, e.g. showFilter('title', defaultValue)
+    hideFilter, // a callback to hide one of the filters, e.g. hidefilter('title')
+    // row selection
+    selectedIds, // an array listing the ids of the selected rows, e.g. [123, 456]
+    onSelect, // callback to change the list of selected rows, e.g onSelect([456, 789])
+    onToggleItem, // callback to toggle the selection of a given record based on its id, e.g. onToggleItem(456)
+    onUnselectItems, // callback to clear the selection, e.g. onUnselectItems();
+    // misc
+    basePath, // deduced from the location, useful for action buttons
+    defaultTitle, // the translated title based on the resource, e.g. 'Posts'
+    resource, // the resource name, deduced from the location. e.g. 'posts'
+} = useListContext();
+```
+
+You can find many usage examples of `useListContext` in this page, including:
+
+- [Building a Custom Actions Bar](#actions)
+- [Building an Aside Component](#aside-aside-component)
+- [Building a Custom Empty Page](#empty-empty-page-component)
+- [Building a Custom Filter](#building-a-custom-filter)
+- [Building a Custom Sort Control](##building-a-custom-sort-control)
+- [Building a Custom Pagination Control](#building-a-custom-pagination-control)
+- [Building a Custom Iterator](#using-a-custom-iterator)
+
+**Tip**: [`<ReferenceManyField>`](./Fields.md#referencemanyfield), as well as other relationship-related components, also implement a `ListContext`. That means you can use a `<Datagrid>` of a `<Pagination>` inside these components!
+
 ## `useListController`
 
-As explained above, `<ListBase>` fetches the data and puts it in a `ListContext`, then renders its child. In fact, the `ListBase` code is super simple:
+As explained above, `<ListBase>` fetches the data and puts it in a `ListContext`, then renders its child. In fact, the `<ListBase>` code is super simple:
 
 ```jsx
 import * as React from 'react';
@@ -2466,6 +2501,81 @@ const App = () => (
 ```
 
 Check [the `ra-tree` documentation](https://marmelab.com/ra-enterprise/modules/ra-tree) for more details.
+
+## The `<Calendar>` Component
+
+This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component, part of [the `ra-calendar` module](https://marmelab.com/ra-enterprise/modules/ra-calendar), renders a list of events as a calendar. 
+
+![the `<Calendar>` component](https://marmelab.com/ra-enterprise/modules/assets/ra-calendar.gif)
+
+The user interface offers everything you expect:
+
+- month, week, day views
+- list view
+- drag and resize events
+- whole-day events
+- creating an event by clicking in the calendar
+- edition of event title, and metadata
+- events spanning on multiple days
+- recurring events
+- background events
+- theming
+- locales and timezones
+- resource time grid (e.g. rooms) (requires additional licence from Full Calendar)
+
+Use `<Calendar>` as a child of `<List>`:
+
+```jsx
+import { Calendar, getFilterValuesFromInterval } from '@react-admin/ra-calendar';
+import { List } from 'react-admin';
+
+const EventList = props => (
+    <List
+        {...props}
+        filterDefaultValues={getFilterValuesFromInterval()}
+        perPage={1000}
+        pagination={false}
+    >
+        <Calendar />
+    </List>
+);
+```
+
+The `ra-calendar` module also offers a full replacement for the `<List>` component, complete with show and edit views for events, called `<CompleteCalendar>`:
+
+```jsx
+import React, { FC } from 'react';
+import {
+    Admin,
+    Resource,
+    List,
+    ListProps,
+    SimpleForm,
+    TextInput,
+    DateTimeInput,
+} from 'react-admin';
+import { CompleteCalendar } from '@react-admin/ra-calendar';
+
+import dataProvider from './dataProvider';
+
+const EventList: FC<ListProps> = props => (
+    <CompleteCalendar {...props}>
+        <SimpleForm>
+            <TextInput source="title" autoFocus />
+            <DateTimeInput source="start" />
+            <DateTimeInput source="end" />
+        </SimpleForm>
+    </CompleteCalendar>
+);
+
+export const Basic: FC = () => (
+    <Admin dataProvider={dataProvider}>
+        <Resource name="events" list={EventList} />
+    </Admin>
+);
+```
+
+Check [the `ra-calendar` documentation](https://marmelab.com/ra-enterprise/modules/ra-calendar) for more details.
 
 ## Using a Custom Iterator
 
