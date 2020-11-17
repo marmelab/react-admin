@@ -145,7 +145,7 @@ Here is how this Data Provider maps react-admin calls to API calls:
 | `getOne`           | `GET http://my.api.url/posts/123`                                                       |
 | `getMany`          | `GET http://my.api.url/posts?filter={"id":[123,456,789]}`                               |
 | `getManyReference` | `GET http://my.api.url/posts?filter={"author_id":345}`                                  |
-| `create`           | `POST http://my.api.url/posts/123`                                                      |
+| `create`           | `POST http://my.api.url/posts`                                                      |
 | `update`           | `PUT http://my.api.url/posts/123`                                                       |
 | `updateMany`       | Multiple calls to `PUT http://my.api.url/posts/123`                                     |
 | `delete`           | `DELETE http://my.api.url/posts/123`                                                    |

@@ -21,11 +21,13 @@ title: "Reference"
 * [`<BreadcrumbItem>`](https://marmelab.com/ra-enterprise/modules/ra-navigation#the-breadcrumbitem-component)<img class="icon" src="./img/premium.svg" />
 * [`<BooleanField>`](./Fields.md#booleanfield)
 * [`<BooleanInput>`](./Inputs.md#booleaninput-and-nullablebooleaninput)
-* [`<BulkDeleteButton>`](./List.md#bulk-action-buttons)
-* [`<BulkExportButton>`](./List.md#bulk-action-buttons)
+* [`<BulkDeleteButton>`](./List.md#bulkactionbuttons)
+* [`<BulkExportButton>`](./List.md#bulkactionbuttons)
+* [`<Calendar>`](https://marmelab.com/ra-enterprise/modules/ra-calendar#calendar)<img class="icon" src="./img/premium.svg" />
 * [`<CheckboxGroupInput>`](./Inputs.md#checkboxgroupinput)
 * [`<ChipField>`](./Fields.md#chipfield)
 * `<CloneButton>`
+* [`<CompleteCalendar>`](https://marmelab.com/ra-enterprise/modules/ra-calendar#completecalendar)<img class="icon" src="./img/premium.svg" />
 * `<Confirm>`
 * [`<Create>`](./CreateEdit.md#the-create-and-edit-components)
 * `<CreateActions>`
@@ -50,7 +52,7 @@ title: "Reference"
 * [`<EmailField>`](./Fields.md#emailfield)
 * [`<FileField>`](./Fields.md#filefield)
 * [`<FileInput>`](./Inputs.md#fileinput)
-* [`<Filter>`](./List.md#filters)
+* [`<Filter>`](./List.md#filters-filter-inputs)
 * `<FilterButton>`
 * `<FilterForm>`
 * [`<FilterList>`](./List.md#the-filterlist-sidebar)
@@ -68,6 +70,7 @@ title: "Reference"
 * [`<Loading>`](./Theming.md#Loading)
 * [`<Logout>`](./Theming.md#using-a-custom-logout-button)
 * [`<List>`](./List.md#the-list-component)
+* [`<ListBase>`](./List.md#the-listbase-component)
 * [`<ListGuesser>`](./List.md#the-listguesser-component)
 * `<ListButton>`
 * [`<MarkdownField>`](https://marmelab.com/ra-enterprise/modules/ra-markdown#markdownfield)<img class="icon" src="./img/premium.svg" />
@@ -79,7 +82,7 @@ title: "Reference"
 * [`<NullableBooleanInput>`](./Inputs.md#booleaninput-and-nullablebooleaninput)
 * [`<NumberField>`](./Fields.md#numberfield)
 * [`<NumberInput>`](./Inputs.md#numberinput)
-* [`<Pagination>`](./List.md#the-pagination-component)
+* [`<Pagination>`](./List.md#pagination-pagination-component)
 * [`<PasswordInput>`](./Inputs.md#passwordinput)
 * [`<PreferencesSetter>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#preferencessetter-setting-preferences-declaratively)<img class="icon" src="./img/premium.svg" />
 * [`<Query>`](./Actions.md#legacy-components-query-mutation-and-withdataprovider)
@@ -159,6 +162,7 @@ title: "Reference"
 * [`useHasLock`](https://marmelab.com/ra-enterprise/modules/ra-realtime#locks-on-content)<img class="icon" src="./img/premium.svg" />
 * [`useHasLocks`](https://marmelab.com/ra-enterprise/modules/ra-realtime#locks-on-content)<img class="icon" src="./img/premium.svg" />
 * `useInput`
+* [`useListContext`](./List.md#uselistcontext)
 * [`useListController`](./List.md#uselistcontroller)
 * `useListParams`
 * `useLoading`

@@ -11,7 +11,7 @@ This tutorial explains how to add a button on a show or edit page to create a ne
 
 ![Screencast](https://marmelab.com/images/blog/react-admin/react-admin-tutorials-form-for-related-records.gif)
 
-* [Article](https://marmelab.com/blog/2018/07/09/react-admin-tutorials-form-for-related-records.html)
+* [Article](https://marmelab.com/blog/2020/09/16/react-admin-tutorials-form-for-related-records.html)
 * [Codesandbox](https://codesandbox.io/s/2393m2k5rj)
 
 ## Custom Forms and UI for related records
