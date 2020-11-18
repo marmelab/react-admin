@@ -11,7 +11,7 @@ Whether you need to adjust a CSS rule for a single component, or change the colo
 
 Every react-admin component provides a `className` property, which is always applied to the root element.
 
-Here is an example customizing an `EditButton` component inside a `Datagrid`, using its `className` property and the `makeStyle` hook from Material-UI:
+Here is an example customizing an `EditButton` component inside a `Datagrid`, using its `className` property and the `makeStyles` hook from Material-UI:
 
 {% raw %}
 ```jsx
@@ -387,7 +387,7 @@ const App = () => (
 );
 ```
 
-Your custom layout can extend the default `<Layout>` component if you only want to override the sidebar, the appBar, the menu, the notification component, or the error page. For instance:
+Your custom layout can extend the default `<Layout>` component if you only want to override the sidebar, the appBar, the menu or the notification component. For instance:
 
 ```jsx
 // in src/MyLayout.js
@@ -890,7 +890,7 @@ const App = () => (
 
 The `MenuItemLink` component make use of the React Router [NavLink](https://reacttraining.com/react-router/web/api/NavLink) component, hence allowing to customize its style when it targets the current page.
 
-If the default active style does not suit your tastes, you can override it by passing your own `classes`:
+If the default active style does not suit your tastes, you can override it by passing your own `classes`: // the code below doesn't use the `classes` prop
 
 ```jsx
 // in src/Menu.js
