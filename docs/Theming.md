@@ -890,49 +890,6 @@ const App = () => (
 
 The `MenuItemLink` component make use of the React Router [NavLink](https://reacttraining.com/react-router/web/api/NavLink) component, hence allowing to customize its style when it targets the current page.
 
-If the default active style does not suit your tastes, you can override it by passing your own `classes`: // the code below doesn't use the `classes` prop
-
-```jsx
-// in src/Menu.js
-import * as React from 'react';
-import { createElement } from 'react';
-import { useSelector } from 'react-redux';
-import { useMediaQuery } from '@material-ui/core';
-import { MenuItemLink, getResources } from 'react-admin';
-import { withRouter } from 'react-router-dom';
-import LabelIcon from '@material-ui/icons/Label';
-
-const Menu = ({ onMenuClick, logout }) => {
-    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
-    const open = useSelector(state => state.admin.ui.sidebarOpen);
-    const resources = useSelector(getResources);
-    return (
-        <div>
-            {resources.map(resource => (
-                <MenuItemLink
-                    key={resource.name}
-                    to={`/${resource.name}`}
-                    primaryText={resource.options && resource.options.label || resource.name}
-                    leftIcon={createElement(resource.icon)}
-                    onClick={onMenuClick}
-                    sidebarIsOpen={open}
-                />
-            ))}
-            <MenuItemLink
-                to="/custom-route"
-                primaryText="Miscellaneous"
-                leftIcon={LabelIcon}
-                onClick={onMenuClick}
-                sidebarIsOpen={open}
-            />
-            {isXSmall && logout}
-        </div>
-    );
-};
-
-export default withRouter(Menu);
-```
-
 **Tip**: If you need a multi-level menu, or a Mega Menu opening panels with custom content, check out [the `ra-navigation`<img class="icon" src="./img/premium.svg" /> module](https://marmelab.com/ra-enterprise/modules/ra-navigation) (part of the [Enterprise Edition](https://marmelab.com/ra-enterprise))
 
 ![MegaMenu and Breadcrumb](https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.gif)
