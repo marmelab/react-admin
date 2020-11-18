@@ -1706,6 +1706,7 @@ In addition to fetching the list data, the `<List>` component renders the page t
 You can use `ListBase` to create your own custom List component, like this one:
 
 ```jsx
+import * as React from 'react';
 import { 
     Datagrid,
     ListBase,
@@ -2567,7 +2568,7 @@ import { CompleteCalendar } from '@react-admin/ra-calendar';
 
 import dataProvider from './dataProvider';
 
-const EventList: FC<ListProps> = props => (
+const EventList = props => (
     <CompleteCalendar {...props}>
         <SimpleForm>
             <TextInput source="title" autoFocus />
@@ -2577,7 +2578,7 @@ const EventList: FC<ListProps> = props => (
     </CompleteCalendar>
 );
 
-export const Basic: FC = () => (
+export const Basic = () => (
     <Admin dataProvider={dataProvider}>
         <Resource name="events" list={EventList} />
     </Admin>
