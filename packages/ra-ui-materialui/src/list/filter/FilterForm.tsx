@@ -122,8 +122,8 @@ export const FilterForm = ({
                     filterElement={filterElement}
                     handleHide={handleHide}
                     resource={resource}
-                    margin={margin}
-                    variant={variant}
+                    variant={filterElement.props.variant || variant}
+                    margin={filterElement.props.margin || margin}
                 />
             ))}
             <div className={classes.clearFix} />
