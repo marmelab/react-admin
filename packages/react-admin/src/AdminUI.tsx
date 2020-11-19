@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { CoreAdminUI, AdminUIProps } from 'ra-core';
 import {
     Layout as DefaultLayout,
-    LoadingPage,
+    Loading,
     Login,
     Logout,
     NotFound,
@@ -14,7 +14,7 @@ const AdminUI: FC<AdminUIProps> = props => <CoreAdminUI {...props} />;
 AdminUI.defaultProps = {
     layout: DefaultLayout,
     catchAll: NotFound,
-    loading: LoadingPage,
+    loading: Loading,
     loginPage: Login,
     logout: Logout,
 };

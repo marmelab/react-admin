@@ -8,7 +8,6 @@ import Error, { ErrorProps } from './Error';
 import HideOnScroll, { HideOnScrollProps } from './HideOnScroll';
 import Layout, { LayoutProps } from './Layout';
 import Loading from './Loading';
-import LoadingPage from './LoadingPage';
 import LinearProgress from './LinearProgress';
 import LoadingIndicator from './LoadingIndicator';
 import Menu, { MenuProps } from './Menu';
@@ -33,7 +32,6 @@ export {
     HideOnScroll,
     Layout,
     Loading,
-    LoadingPage,
     LinearProgress,
     LoadingIndicator,
     Menu,

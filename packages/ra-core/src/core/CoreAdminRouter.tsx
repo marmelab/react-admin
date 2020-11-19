@@ -17,7 +17,6 @@ import {
     CustomRoutes,
     CatchAllComponent,
     LayoutComponent,
-    LoadingComponent,
     CoreLayoutProps,
     ResourceProps,
     RenderResourcesFunction,
@@ -29,7 +28,7 @@ export interface AdminRouterProps extends CoreLayoutProps {
     catchAll: CatchAllComponent;
     children?: AdminChildren;
     customRoutes?: CustomRoutes;
-    loading: LoadingComponent;
+    loading: ComponentType;
     ready?: ComponentType;
 }
 
@@ -102,7 +101,7 @@ const CoreAdminRouter: FunctionComponent<AdminRouterProps> = props => {
         children,
         customRoutes,
         dashboard,
-        loading: LoadingPage,
+        loading,
         logout,
         menu,
         ready,
@@ -122,13 +121,7 @@ const CoreAdminRouter: FunctionComponent<AdminRouterProps> = props => {
         (!computedChildren || computedChildren.length === 0)
     ) {
         if (oneSecondHasPassed) {
-            return (
-                <Route
-                    path="/"
-                    key="loading"
-                    render={() => <LoadingPage theme={theme} />}
-                />
-            );
+            return <Route path="/" key="loading" component={loading} />;
         } else {
             return null;
         }
