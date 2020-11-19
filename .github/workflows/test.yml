@@ -2,10 +2,14 @@ name: "Test - action"
 
 on: 
   push:
+    paths-ignore:
+      - 'docs/**'
     branches:
       - master
       - next
   pull_request:
+    paths-ignore:
+      - 'docs/**'
 
 jobs:
   unit-test:
