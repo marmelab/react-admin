@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import CancelIcon from '@material-ui/icons/CancelOutlined';
 import { useTranslate, useListFilterContext } from 'ra-core';
 import { shallowEqual } from 'react-redux';
+import isEqual from 'lodash/isEqual';
 
 const useStyles = makeStyles(theme => ({
     listItem: {
@@ -147,10 +148,7 @@ const FilterListItem: FC<{ label: string; value: any }> = props => {
     const translate = useTranslate();
     const classes = useStyles(props);
 
-    const isSelected = Object.keys(value).reduce(
-        (acc, key) => acc && value[key] == filterValues[key], // eslint-disable-line eqeqeq
-        true
-    );
+    const isSelected = isEqual(value, filterValues);
 
     const addFilter = () => {
         setFilters({ ...filterValues, ...value }, null, false);
