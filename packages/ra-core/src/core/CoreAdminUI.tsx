@@ -13,6 +13,7 @@ import {
     CatchAllComponent,
     CustomRoutes,
     DashboardComponent,
+    LoadingComponent,
 } from '../types';
 
 export type ChildrenFunction = () => ComponentType[];
@@ -27,7 +28,7 @@ export interface AdminUIProps {
     customRoutes?: CustomRoutes;
     dashboard?: DashboardComponent;
     layout?: LayoutComponent;
-    loading?: ComponentType;
+    loading?: LoadingComponent;
     loginPage?: LoginComponent | boolean;
     logout?: ComponentType;
     menu?: ComponentType;

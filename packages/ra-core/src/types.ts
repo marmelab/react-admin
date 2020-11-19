@@ -409,6 +409,11 @@ export interface CoreLayoutProps {
 }
 
 export type LayoutComponent = ComponentType<CoreLayoutProps>;
+export type LoadingComponent = ComponentType<{
+    theme?: ThemeOptions;
+    loadingPrimary?: string;
+    loadingSecondary?: string;
+}>;
 
 export interface ResourceComponentInjectedProps {
     basePath?: string;
