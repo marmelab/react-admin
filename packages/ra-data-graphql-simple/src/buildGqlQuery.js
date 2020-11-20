@@ -211,9 +211,7 @@ export default introspectionResults => (
                         gqlTypes.name('data'),
                         args,
                         null,
-                        gqlTypes.selectionSet([
-                            gqlTypes.field(gqlTypes.name('id')),
-                        ])
+                        gqlTypes.selectionSet(fields)
                     ),
                 ]),
                 gqlTypes.name(queryType.name),

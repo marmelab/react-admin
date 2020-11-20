@@ -504,7 +504,13 @@ describe('buildGqlQuery', () => {
         ).toEqual(
             `mutation deleteCommand($foo: Int!) {
   data: deleteCommand(foo: $foo) {
-    id
+    foo
+    linked {
+      foo
+    }
+    resource {
+      id
+    }
   }
 }
 `
