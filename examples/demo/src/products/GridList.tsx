@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
 const getColsForWidth = (width: Breakpoint) => {
     if (width === 'xs') return 2;
     if (width === 'sm') return 3;
-    if (width === 'md') return 4;
+    if (width === 'md') return 3;
     if (width === 'lg') return 5;
     return 6;
 };

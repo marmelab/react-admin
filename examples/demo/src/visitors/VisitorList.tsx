@@ -33,9 +33,15 @@ const VisitorFilter = (props: Omit<FilterProps, 'children'>) => (
     </Filter>
 );
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     nb_commands: { color: 'purple' },
-});
+    hiddenOnSmallScreens: {
+        display: 'table-cell',
+        [theme.breakpoints.down('md')]: {
+            display: 'none',
+        },
+    },
+}));
 
 const VisitorList = (props: ListProps): ReactElement => {
     const classes = useStyles();
@@ -68,7 +74,10 @@ const VisitorList = (props: ListProps): ReactElement => {
                     />
                     <DateField source="latest_purchase" showTime />
                     <BooleanField source="has_newsletter" label="News." />
-                    <SegmentsField />
+                    <SegmentsField
+                        cellClassName={classes.hiddenOnSmallScreens}
+                        headerClassName={classes.hiddenOnSmallScreens}
+                    />
                 </Datagrid>
             )}
         </List>
