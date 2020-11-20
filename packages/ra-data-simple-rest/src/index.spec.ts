@@ -68,4 +68,57 @@ describe('Data Simple REST Client', () => {
             expect(result.total).toEqual(42);
         });
     });
+    describe('delete', () => {
+        it('should set the `Content-Type` header to `text/plain`', async () => {
+            const httpClient = jest.fn().mockResolvedValue({ json: { id: 1 } });
+
+            const client = simpleClient('http://localhost:3000', httpClient);
+
+            await client.delete('posts', {
+                id: 1,
+                previousData: { id: 1 },
+            });
+
+            expect(httpClient).toHaveBeenCalledWith(
+                'http://localhost:3000/posts/1',
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'text/plain',
+                    },
+                }
+            );
+        });
+    });
+    describe('deleteMany', () => {
+        it('should set the `Content-Type` header to `text/plain`', async () => {
+            const httpClient = jest.fn().mockResolvedValue({ json: { id: 1 } });
+
+            const client = simpleClient('http://localhost:3000', httpClient);
+
+            await client.deleteMany('posts', {
+                ids: [1, 2],
+            });
+
+            expect(httpClient).toHaveBeenCalledWith(
+                'http://localhost:3000/posts/1',
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'text/plain',
+                    },
+                }
+            );
+
+            expect(httpClient).toHaveBeenCalledWith(
+                'http://localhost:3000/posts/2',
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'text/plain',
+                    },
+                }
+            );
+        });
+    });
 });
