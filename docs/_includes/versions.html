@@ -1,7 +1,8 @@
+{% assign v = page.dir | split: '/' | last %}
 <a class="dropdown-trigger" href="#" data-target="versions">
     {% if page.dir contains "doc" %}
     {% for version in site.data.versions %}
-    {% if page.dir contains version %}
+    {% if v == version %}
     {{ version }}
     {% endif %}
     {% endfor %}
