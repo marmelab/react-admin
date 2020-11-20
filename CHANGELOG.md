@@ -1,5 +1,21 @@
 # Changelog
 
+## v3.10.2
+
+* Fix `ra-data-simple-rest` delete response mime type ([5568](https://github.com/marmelab/react-admin/pull/5568)) ([djhi](https://github.com/djhi))
+* Fix `ra-data-graphql-simple` delete result ([5567](https://github.com/marmelab/react-admin/pull/5567)) ([djhi](https://github.com/djhi))
+* Fix Loading route missing `theme` ([5560](https://github.com/marmelab/react-admin/pull/5560)) ([thcolin](https://github.com/thcolin))
+* Fix `variant` and `margin` prop on an input have no effect inside a Filter form ([5555](https://github.com/marmelab/react-admin/pull/5555)) ([fzaninotto](https://github.com/fzaninotto))
+* [Demo] Fix missing Roboto font in e-commerce demo ([5566](https://github.com/marmelab/react-admin/pull/5566)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix link formatting in "Writing your own input" documentation ([5556](https://github.com/marmelab/react-admin/pull/5556)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix typos in Theming doc ([5546](https://github.com/marmelab/react-admin/pull/5546)) ([DjebbZ](https://github.com/DjebbZ))
+* [Doc] Fix code examples in TypeScript ([5548](https://github.com/marmelab/react-admin/pull/5548)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Improve List chapter screenshots and cross-links ([5543](https://github.com/marmelab/react-admin/pull/5543)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add link to `MrHertal/react-admin-json-view` package for JSON field and input ([5542](https://github.com/marmelab/react-admin/pull/5542)) ([MrHertal](https://github.com/MrHertal))
+* [Doc] Update tutorial link ([5540](https://github.com/marmelab/react-admin/pull/5540)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix sample REST translation of `dataProvider` calls in Tutorial ([5535](https://github.com/marmelab/react-admin/pull/5535)) ([ayhandoslu](https://github.com/ayhandoslu))
+* [Doc] Fix sample REST translation of `dataProvider` calls in Data Providers documentation ([5536](https://github.com/marmelab/react-admin/pull/5536)) ([ayhandoslu](https://github.com/ayhandoslu))
+
 ## v3.10.1
 
 * Fix `<ReferenceInput>` ignores `sort` prop ([5527](https://github.com/marmelab/react-admin/pull/5527)) ([djhi](https://guthub.com/djhi))
