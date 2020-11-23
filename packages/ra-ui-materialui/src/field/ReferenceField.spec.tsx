@@ -141,6 +141,22 @@ describe('<ReferenceField />', () => {
         });
     });
 
+    it('should display the emptyText if the field is empty', () => {
+        const { getByText } = renderWithRedux(
+            <ReferenceField
+                record={{ id: 123 }}
+                resource="comments"
+                source="postId"
+                reference="posts"
+                basePath="/comments"
+                emptyText="EMPTY"
+            >
+                <TextField source="title" />
+            </ReferenceField>
+        );
+        expect(getByText('EMPTY')).not.toBeNull();
+    });
+
     it('should use the reference from the store if available', () => {
         const { container, getByText } = renderWithRedux(
             <MemoryRouter>
