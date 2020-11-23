@@ -575,7 +575,9 @@ const Ready = () => (
 )
 
 const App = () => (
-    <Admin ready={Ready}></Admin>
+    <Admin ready={Ready}>
+        {() => null}
+    </Admin>
 );
 ```
 
