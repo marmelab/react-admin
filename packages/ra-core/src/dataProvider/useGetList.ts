@@ -1,4 +1,4 @@
-import { useSelector, shallowEqual } from 'react-redux';
+import { useMemo } from 'react';
 import get from 'lodash/get';
 
 import {
@@ -11,6 +11,7 @@ import {
 } from '../types';
 import useQueryWithStore from './useQueryWithStore';
 
+const defaultIds = [];
 const defaultData = {};
 
 /**
@@ -67,16 +68,28 @@ const useGetList = <RecordType extends Record = Record>(
 } => {
     const requestSignature = JSON.stringify({ pagination, sort, filter });
 
-    const { data: ids, total, error, loading, loaded } = useQueryWithStore(
+    const {
+        data: { ids, allRecords },
+        total,
+        error,
+        loading,
+        loaded,
+    } = useQueryWithStore(
         { type: 'getList', resource, payload: { pagination, sort, filter } },
         options,
-        // data selector (may return [])
-        (state: ReduxState): Identifier[] =>
-            get(
+        // ids and data selector
+        (state: ReduxState): DataSelectorResult<RecordType> => ({
+            ids: get(
                 state.admin.resources,
                 [resource, 'list', 'cachedRequests', requestSignature, 'ids'],
-                []
+                defaultIds
             ),
+            allRecords: get(
+                state.admin.resources,
+                [resource, 'data'],
+                defaultData
+            ),
+        }),
         // total selector (may return undefined)
         (state: ReduxState): number =>
             get(state.admin.resources, [
@@ -88,23 +101,24 @@ const useGetList = <RecordType extends Record = Record>(
             ])
     );
 
-    const data = useSelector((state: ReduxState): RecordMap<RecordType> => {
-        if (!ids) return defaultData;
-        const allResourceData = get(
-            state.admin.resources,
-            [resource, 'data'],
-            defaultData
-        );
-        return ids
-            .map(id => allResourceData[id])
-            .reduce((acc, record) => {
-                if (!record) return acc;
-                acc[record.id] = record;
-                return acc;
-            }, {});
-    }, shallowEqual);
+    const data = useMemo(
+        () =>
+            ids
+                .map(id => allRecords[id])
+                .reduce((acc, record) => {
+                    if (!record) return acc;
+                    acc[record.id] = record;
+                    return acc;
+                }, {}),
+        [ids, allRecords]
+    );
 
     return { data, ids, total, error, loading, loaded };
 };
+
+interface DataSelectorResult<RecordType extends Record = Record> {
+    ids: Identifier[];
+    allRecords: RecordMap<RecordType>;
+}
 
 export default useGetList;
