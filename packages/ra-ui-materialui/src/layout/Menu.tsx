@@ -2,6 +2,7 @@ import * as React from 'react';
 import { FC, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { shallowEqual, useSelector } from 'react-redux';
+import lodashGet from 'lodash/get';
 // @ts-ignore
 import inflection from 'inflection';
 import { useMediaQuery, Theme } from '@material-ui/core';
@@ -12,6 +13,9 @@ import { getResources, useTranslate, Translate, ReduxState } from 'ra-core';
 
 import DashboardMenuItem from './DashboardMenuItem';
 import MenuItemLink from './MenuItemLink';
+
+export const MENU_WIDTH = 240;
+export const CLOSED_MENU_WIDTH = 55;
 
 const useStyles = makeStyles(
     theme => ({
@@ -26,6 +30,12 @@ const useStyles = makeStyles(
             [theme.breakpoints.up('md')]: {
                 marginTop: '1.5em',
             },
+        },
+        open: {
+            width: lodashGet(theme, 'menu.width', MENU_WIDTH),
+        },
+        closed: {
+            width: lodashGet(theme, 'menu.closedWidth', CLOSED_MENU_WIDTH),
         },
     }),
     { name: 'RaMenu' }
@@ -65,7 +75,17 @@ const Menu: FC<MenuProps> = props => {
     useSelector((state: ReduxState) => state.router.location.pathname);
 
     return (
-        <div className={classnames(classes.main, className)} {...rest}>
+        <div
+            className={classnames(
+                classes.main,
+                {
+                    [classes.open]: open,
+                    [classes.closed]: !open,
+                },
+                className
+            )}
+            {...rest}
+        >
             {hasDashboard && (
                 <DashboardMenuItem
                     onClick={onMenuClick}
