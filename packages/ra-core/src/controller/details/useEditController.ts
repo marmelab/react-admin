@@ -166,7 +166,7 @@ export const useEditController = <RecordType extends Record = Record>(
                 onFailure: onFailureFromSave,
                 transform: transformFromSave,
             } = {}
-        ) => {
+        ) =>
             Promise.resolve(
                 transformFromSave
                     ? transformFromSave(data)
@@ -213,8 +213,7 @@ export const useEditController = <RecordType extends Record = Record>(
                         undoable,
                     }
                 )
-            );
-        },
+            ),
         [
             transformRef,
             update,
