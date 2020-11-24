@@ -183,8 +183,6 @@ export const useEditController = <RecordType extends Record = Record>(
                             : onSuccessRef.current
                             ? onSuccessRef.current
                             : () => {
-                                  redirect(redirectTo, basePath, data.id, data);
-                                  // For an unknown reason, the notification only appears if it is dispatched after the redirect
                                   notify(
                                       successMessage ||
                                           'ra.notification.updated',
@@ -194,6 +192,7 @@ export const useEditController = <RecordType extends Record = Record>(
                                       },
                                       undoable
                                   );
+                                  redirect(redirectTo, basePath, data.id, data);
                               },
                         onFailure: onFailureFromSave
                             ? onFailureFromSave

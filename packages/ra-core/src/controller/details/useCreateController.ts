@@ -162,12 +162,6 @@ export const useCreateController = <
                             : onSuccessRef.current
                             ? onSuccessRef.current
                             : ({ data: newRecord }) => {
-                                  redirect(
-                                      redirectTo,
-                                      basePath,
-                                      newRecord.id,
-                                      newRecord
-                                  );
                                   notify(
                                       successMessage ||
                                           'ra.notification.created',
@@ -175,6 +169,12 @@ export const useCreateController = <
                                       {
                                           smart_count: 1,
                                       }
+                                  );
+                                  redirect(
+                                      redirectTo,
+                                      basePath,
+                                      newRecord.id,
+                                      newRecord
                                   );
                               },
                         onFailure: onFailureFromSave
