@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import get from 'lodash/get';
 import { makeStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
 import ErrorIcon from '@material-ui/icons/Error';
 import {
     useReference,
@@ -11,6 +12,7 @@ import {
     getResourceLinkPath,
     LinkToType,
     ResourceContextProvider,
+    Record,
 } from 'ra-core';
 
 import LinearProgress from '../layout/LinearProgress';
@@ -63,40 +65,21 @@ import { ClassesOverride } from '../types';
  * In previous versions of React-Admin, the prop `linkType` was used. It is now deprecated and replaced with `link`. However
  * backward-compatibility is still kept
  */
-
 const ReferenceField: FC<ReferenceFieldProps> = ({
-    children,
     record,
     source,
+    emptyText,
     ...props
-}) => {
-    if (React.Children.count(children) !== 1) {
-        throw new Error('<ReferenceField> only accepts a single child');
-    }
-    const { basePath, resource } = props;
-    const resourceLinkPath = getResourceLinkPath({
-        ...props,
-        resource,
-        record,
-        source,
-        basePath,
-    });
-
-    return (
-        <ResourceContextProvider value={props.reference}>
-            <PureReferenceFieldView
-                {...props}
-                {...useReference({
-                    reference: props.reference,
-                    id: get(record, source),
-                })}
-                resourceLinkPath={resourceLinkPath}
-            >
-                {children}
-            </PureReferenceFieldView>
-        </ResourceContextProvider>
+}) =>
+    get(record, source) == null ? (
+        emptyText ? (
+            <Typography component="span" variant="body2">
+                {emptyText}
+            </Typography>
+        ) : null
+    ) : (
+        <NonEmptyReferenceField {...props} record={record} source={source} />
     );
-};
 
 ReferenceField.propTypes = {
     addLabel: PropTypes.bool,
@@ -132,9 +115,9 @@ ReferenceField.defaultProps = {
     link: 'edit',
 };
 
-export interface ReferenceFieldProps
+export interface ReferenceFieldProps<RecordType extends Record = Record>
     extends PublicFieldProps,
-        InjectedFieldProps {
+        InjectedFieldProps<RecordType> {
     children: ReactElement;
     classes?: ClassesOverride<typeof useStyles>;
     reference: string;
@@ -144,6 +127,41 @@ export interface ReferenceFieldProps
     linkType?: LinkToType;
     link?: LinkToType;
 }
+
+/**
+ * This intermediate component is made necessary by the useReference hook,
+ * which cannot be called conditionally when get(record, source) is empty.
+ */
+export const NonEmptyReferenceField: FC<Omit<
+    ReferenceFieldProps,
+    'emptyText'
+>> = ({ children, record, source, ...props }) => {
+    if (React.Children.count(children) !== 1) {
+        throw new Error('<ReferenceField> only accepts a single child');
+    }
+    const { basePath, resource } = props;
+    const resourceLinkPath = getResourceLinkPath({
+        ...props,
+        resource,
+        record,
+        source,
+        basePath,
+    });
+    return (
+        <ResourceContextProvider value={props.reference}>
+            <PureReferenceFieldView
+                {...props}
+                {...useReference({
+                    reference: props.reference,
+                    id: get(record, source),
+                })}
+                resourceLinkPath={resourceLinkPath}
+            >
+                {children}
+            </PureReferenceFieldView>
+        </ResourceContextProvider>
+    );
+};
 
 const useStyles = makeStyles(
     theme => ({
