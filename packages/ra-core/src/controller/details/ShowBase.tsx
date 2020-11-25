@@ -14,7 +14,7 @@ import { ShowContextProvider } from './ShowContextProvider';
  * @example // Custom edit layout
  *
  * const PostShow = props => (
- *     <BaseShow {...props}>
+ *     <ShowBase {...props}>
  *         <Grid container>
  *             <Grid item xs={8}>
  *                 <SimpleForm>
@@ -28,7 +28,7 @@ import { ShowContextProvider } from './ShowContextProvider';
  *         <div>
  *             Post related links...
  *         </div>
- *     </BaseList>
+ *     </ShowBase>
  * );
  */
 export const ShowBase = ({ children, ...props }) => (

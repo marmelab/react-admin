@@ -14,7 +14,7 @@ import { EditContextProvider } from './EditContextProvider';
  * @example // Custom edit layout
  *
  * const PostEdit = props => (
- *     <BaseEdit {...props}>
+ *     <EditBase {...props}>
  *         <Grid container>
  *             <Grid item xs={8}>
  *                 <SimpleForm>
@@ -28,7 +28,7 @@ import { EditContextProvider } from './EditContextProvider';
  *         <div>
  *             Post related links...
  *         </div>
- *     </BaseList>
+ *     </EditBase>
  * );
  */
 export const EditBase = ({ children, ...props }) => (
