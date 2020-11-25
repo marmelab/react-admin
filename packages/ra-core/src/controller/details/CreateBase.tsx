@@ -14,7 +14,7 @@ import { CreateContextProvider } from './CreateContextProvider';
  * @example // Custom edit layout
  *
  * const PostCreate = props => (
- *     <BaseCreate {...props}>
+ *     <CreateBase {...props}>
  *         <Grid container>
  *             <Grid item xs={8}>
  *                 <SimpleForm>
@@ -28,7 +28,7 @@ import { CreateContextProvider } from './CreateContextProvider';
  *         <div>
  *             Post related links...
  *         </div>
- *     </BaseCreate>
+ *     </CreateBase>
  * );
  */
 export const CreateBase = ({ children, ...props }) => (

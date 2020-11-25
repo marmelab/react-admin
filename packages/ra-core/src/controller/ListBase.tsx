@@ -18,7 +18,7 @@ import ListContextProvider from './ListContextProvider';
  * @example // Custom list layout
  *
  * const PostList = props => (
- *     <BaseList {...props} perPage={10}>
+ *     <ListBase {...props} perPage={10}>
  *         <div>
  *              List metrics...
  *         </div>
@@ -33,7 +33,7 @@ import ListContextProvider from './ListContextProvider';
  *         <div>
  *             Post related links...
  *         </div>
- *     </BaseList>
+ *     </ListBase>
  * );
  */
 const ListBase = ({ children, ...props }) => (
