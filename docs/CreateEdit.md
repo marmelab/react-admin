@@ -578,9 +578,10 @@ In some cases, you may want to customize the view entirely (i.e. keep the code f
 This hook takes one object as input (the props passed to a `<Create>` component) and returns the save callback for the `Create` view, as well as some pre-computed values. You can use it to create your own custom `Create` view, like this one:
 
 ```jsx
-import { useCreateController, SimpleForm } from 'react-admin';
+import { useCreateController, CreateContextProvider, SimpleForm } from 'react-admin';
 
 const MyCreate = props => {
+    const createControllerProps = useCreateController(props);
     const {
         basePath, // deduced from the location, useful for action buttons
         defaultTitle, // the translated title based on the resource, e.g. 'Create Post'
@@ -590,20 +591,22 @@ const MyCreate = props => {
         save, // the create callback, to be passed to the underlying form as submit handler
         saving, // boolean that becomes true when the dataProvider is called to create the record
         version, // integer used by the refresh feature
-    } = useCreateController(props);
+    } = createControllerProps;
     return (
-        <div>
-            <h1>{defaultTitle}</h1>
-            {cloneElement(props.children, {
-                basePath,
-                record,
-                redirect,
-                resource,
-                save,
-                saving,
-                version,
-            })}
-        </div>
+        <CreateContextProvider value={createControllerProps}>
+            <div>
+                <h1>{defaultTitle}</h1>
+                {cloneElement(props.children, {
+                    basePath,
+                    record,
+                    redirect,
+                    resource,
+                    save,
+                    saving,
+                    version,
+                })}
+            </div>
+        </CreateContextProvider>
     );
 }
 
@@ -625,9 +628,10 @@ This custom Create view has no action buttons or aside component - it's up to yo
 This hook takes one object as input (the props passed to an `<Edit>` component) and returns the fetched data and callbacks for the Edit view. You can use it to create your own custom Edit view, like this one:
 
 ```jsx
-import { useEditController, SimpleForm } from 'react-admin';
+import { useEditController, EditContextProvider, SimpleForm } from 'react-admin';
 
 const MyEdit = props => {
+    const controllerProps = useEditController(props);
     const {
         basePath, // deduced from the location, useful for action buttons
         defaultTitle, // the translated title based on the resource, e.g. 'Post #123'
@@ -639,20 +643,22 @@ const MyEdit = props => {
         save, // the update callback, to be passed to the underlying form as submit handler
         saving, // boolean that becomes true when the dataProvider is called to update the record
         version, // integer used by the refresh feature
-    } = useEditController(props);
+    } = controllerProps;
     return (
-        <div>
-            <h1>{defaultTitle}</h1>
-            {cloneElement(props.children, {
-                basePath,
-                record,
-                redirect,
-                resource,
-                save,
-                saving,
-                version,
-            })}
-        </div>
+        <EditContextProvider value={controllerProps}>
+            <div>
+                <h1>{defaultTitle}</h1>
+                {cloneElement(props.children, {
+                    basePath,
+                    record,
+                    redirect,
+                    resource,
+                    save,
+                    saving,
+                    version,
+                })}
+            </div>
+        </EditContextProvider>
     );
 }
 
