@@ -121,7 +121,7 @@ export const useCreateController = <
 
     if (process.env.NODE_ENV !== 'production' && successMessage) {
         console.log(
-            '<Edit successMessage> prop is deprecated, use the onSuccess prop instead.'
+            '<Create successMessage> prop is deprecated, use the onSuccess prop instead.'
         );
     }
 
