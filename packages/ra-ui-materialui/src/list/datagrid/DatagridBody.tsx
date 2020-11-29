@@ -3,7 +3,7 @@ import { cloneElement, memo, FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { TableBody, TableBodyProps } from '@material-ui/core';
 import classnames from 'classnames';
-import isEqual from 'lodash/isEqual';
+import { shallowEqual } from 'react-redux';
 import { Identifier, Record, RecordMap } from 'ra-core';
 
 import DatagridRow, { PureDatagridRow } from './DatagridRow';
@@ -135,9 +135,19 @@ export interface DatagridBodyProps extends Omit<TableBodyProps, 'classes'> {
 DatagridBody.muiName = 'TableBody';
 
 const areEqual = (prevProps, nextProps) => {
-    const { children: _, ...prevPropsWithoutChildren } = prevProps;
-    const { children: __, ...nextPropsWithoutChildren } = nextProps;
-    return isEqual(prevPropsWithoutChildren, nextPropsWithoutChildren);
+    const {
+        children: _1,
+        expand: _2,
+        row: _3,
+        ...prevPropsWithoutChildren
+    } = prevProps;
+    const {
+        children: _4,
+        expand: _5,
+        row: _6,
+        ...nextPropsWithoutChildren
+    } = nextProps;
+    return shallowEqual(prevPropsWithoutChildren, nextPropsWithoutChildren);
 };
 
 export const PureDatagridBody = memo(DatagridBody, areEqual);
