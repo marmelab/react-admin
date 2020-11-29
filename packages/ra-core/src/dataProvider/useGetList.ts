@@ -82,7 +82,7 @@ const useGetList = <RecordType extends Record = Record>(
             ids: get(
                 state.admin.resources,
                 [resource, 'list', 'cachedRequests', requestSignature, 'ids'],
-                defaultIds
+                null
             ),
             allRecords: get(
                 state.admin.resources,
@@ -98,22 +98,32 @@ const useGetList = <RecordType extends Record = Record>(
                 'cachedRequests',
                 requestSignature,
                 'total',
-            ])
+            ]),
+        (data: DataSelectorResult<RecordType>) => data.ids !== null
     );
 
     const data = useMemo(
         () =>
-            ids
-                .map(id => allRecords[id])
-                .reduce((acc, record) => {
-                    if (!record) return acc;
-                    acc[record.id] = record;
-                    return acc;
-                }, {}),
+            ids === null
+                ? defaultData
+                : ids
+                      .map(id => allRecords[id])
+                      .reduce((acc, record) => {
+                          if (!record) return acc;
+                          acc[record.id] = record;
+                          return acc;
+                      }, {}),
         [ids, allRecords]
     );
 
-    return { data, ids, total, error, loading, loaded };
+    return {
+        data,
+        ids: ids === null ? defaultIds : ids,
+        total,
+        error,
+        loading,
+        loaded,
+    };
 };
 
 interface DataSelectorResult<RecordType extends Record = Record> {
