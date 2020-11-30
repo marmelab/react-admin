@@ -59,6 +59,8 @@ const defaultTotalSelector = query => (state: ReduxState) => {
         : null;
 };
 
+const defaultIsDataLoaded = (data: any): boolean => data !== undefined;
+
 /**
  * Fetch the data provider through Redux, return the value from the store.
  *
@@ -108,7 +110,7 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
     options: QueryOptions = { action: 'CUSTOM_QUERY' },
     dataSelector: (state: State) => any = defaultDataSelector(query),
     totalSelector: (state: State) => number = defaultTotalSelector(query),
-    isDataLoaded: (data: any) => boolean = data => data !== undefined
+    isDataLoaded: (data: any) => boolean = defaultIsDataLoaded
 ): {
     data?: any;
     total?: number;
@@ -159,7 +161,15 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
                 }));
             }
         }
-    }, [data, requestSignature, setState, state.data, state.total, total]);
+    }, [
+        data,
+        requestSignature,
+        setState,
+        state.data,
+        state.total,
+        total,
+        isDataLoaded,
+    ]);
 
     const dataProvider = useDataProvider();
     useEffect(() => {
