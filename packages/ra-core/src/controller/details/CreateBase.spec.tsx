@@ -33,7 +33,7 @@ describe('CreateBase', () => {
             const saveContext = useSaveContext();
 
             useEffect(() => {
-                saveContext.onSuccess('test');
+                saveContext.onSuccessRef.current('test');
             }, []);
 
             return null;
@@ -54,6 +54,54 @@ describe('CreateBase', () => {
         expect(onSuccess).toHaveBeenCalledWith('test');
     });
 
+    it('should allow to override the onSuccess function', () => {
+        const dataProvider = ({
+            getOne: () => Promise.resolve({ data: { id: 12 } }),
+            update: (_, { id, data, previousData }) =>
+                Promise.resolve({ data: { id, ...previousData, ...data } }),
+        } as unknown) as DataProvider;
+        const onSuccess = jest.fn();
+        const onSuccessOverride = jest.fn();
+
+        const SetOnSuccess = () => {
+            const saveContext = useSaveContext();
+
+            useEffect(() => {
+                saveContext.setOnSuccess(onSuccessOverride);
+            }, []);
+
+            return null;
+        };
+        const Child = () => {
+            const saveContext = useSaveContext();
+
+            const handleClick = () => {
+                saveContext.onSuccessRef.current('test');
+            };
+
+            return <button aria-label="save" onClick={handleClick} />;
+        };
+        const { getByLabelText } = renderWithRedux(
+            <DataProviderContext.Provider value={dataProvider}>
+                <CreateBase
+                    {...defaultProps}
+                    undoable={false}
+                    onSuccess={onSuccess}
+                >
+                    <>
+                        <SetOnSuccess />
+                        <Child />
+                    </>
+                </CreateBase>
+            </DataProviderContext.Provider>,
+            { admin: { resources: { posts: { data: {} } } } }
+        );
+
+        getByLabelText('save').click();
+
+        expect(onSuccessOverride).toHaveBeenCalledWith('test');
+    });
+
     it('should give access to the current onFailure function', () => {
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
@@ -66,7 +114,7 @@ describe('CreateBase', () => {
             const saveContext = useSaveContext();
 
             useEffect(() => {
-                saveContext.onFailure({ message: 'test' });
+                saveContext.onFailureRef.current({ message: 'test' });
             }, []);
 
             return null;
@@ -87,6 +135,54 @@ describe('CreateBase', () => {
         expect(onFailure).toHaveBeenCalledWith({ message: 'test' });
     });
 
+    it('should allow to override the onFailure function', () => {
+        const dataProvider = ({
+            getOne: () => Promise.resolve({ data: { id: 12 } }),
+            update: (_, { id, data, previousData }) =>
+                Promise.resolve({ data: { id, ...previousData, ...data } }),
+        } as unknown) as DataProvider;
+        const onFailure = jest.fn();
+        const onFailureOverride = jest.fn();
+
+        const SetOnSuccess = () => {
+            const saveContext = useSaveContext();
+
+            useEffect(() => {
+                saveContext.setOnFailure(onFailureOverride);
+            }, []);
+
+            return null;
+        };
+        const Child = () => {
+            const saveContext = useSaveContext();
+
+            const handleClick = () => {
+                saveContext.onFailureRef.current('test');
+            };
+
+            return <button aria-label="save" onClick={handleClick} />;
+        };
+        const { getByLabelText } = renderWithRedux(
+            <DataProviderContext.Provider value={dataProvider}>
+                <CreateBase
+                    {...defaultProps}
+                    undoable={false}
+                    onFailure={onFailure}
+                >
+                    <>
+                        <SetOnSuccess />
+                        <Child />
+                    </>
+                </CreateBase>
+            </DataProviderContext.Provider>,
+            { admin: { resources: { posts: { data: {} } } } }
+        );
+
+        getByLabelText('save').click();
+
+        expect(onFailureOverride).toHaveBeenCalledWith('test');
+    });
+
     it('should give access to the current transform function', () => {
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
@@ -99,7 +195,7 @@ describe('CreateBase', () => {
             const saveContext = useSaveContext();
 
             useEffect(() => {
-                saveContext.transform({ message: 'test' });
+                saveContext.transformRef.current({ message: 'test' });
             }, []);
 
             return null;
@@ -118,5 +214,53 @@ describe('CreateBase', () => {
         );
 
         expect(transform).toHaveBeenCalledWith({ message: 'test' });
+    });
+
+    it('should allow to override the transform function', () => {
+        const dataProvider = ({
+            getOne: () => Promise.resolve({ data: { id: 12 } }),
+            update: (_, { id, data, previousData }) =>
+                Promise.resolve({ data: { id, ...previousData, ...data } }),
+        } as unknown) as DataProvider;
+        const transform = jest.fn();
+        const transformOverride = jest.fn();
+
+        const SetOnSuccess = () => {
+            const saveContext = useSaveContext();
+
+            useEffect(() => {
+                saveContext.setTransform(transformOverride);
+            }, []);
+
+            return null;
+        };
+        const Child = () => {
+            const saveContext = useSaveContext();
+
+            const handleClick = () => {
+                saveContext.transformRef.current('test');
+            };
+
+            return <button aria-label="save" onClick={handleClick} />;
+        };
+        const { getByLabelText } = renderWithRedux(
+            <DataProviderContext.Provider value={dataProvider}>
+                <CreateBase
+                    {...defaultProps}
+                    undoable={false}
+                    transform={transform}
+                >
+                    <>
+                        <SetOnSuccess />
+                        <Child />
+                    </>
+                </CreateBase>
+            </DataProviderContext.Provider>,
+            { admin: { resources: { posts: { data: {} } } } }
+        );
+
+        getByLabelText('save').click();
+
+        expect(transformOverride).toHaveBeenCalledWith('test');
     });
 });

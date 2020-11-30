@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createContext, useContext, useMemo } from 'react';
+import { createContext, MutableRefObject, useContext, useMemo } from 'react';
 import pick from 'lodash/pick';
 
 import { RedirectionSideEffect } from '../../sideEffect';
@@ -8,13 +8,13 @@ import {
     OnFailure,
     OnSuccess,
     SideEffectContextValue,
-    SideEffectContextOptions,
     TransformData,
 } from '../saveModifiers';
 
-interface SaveContextValue
-    extends SideEffectContextValue,
-        SideEffectContextOptions {
+interface SaveContextValue extends SideEffectContextValue {
+    onFailureRef?: MutableRefObject<OnFailure>;
+    onSuccessRef?: MutableRefObject<OnSuccess>;
+    transformRef?: MutableRefObject<TransformData>;
     save?: (
         record: Partial<Record>,
         redirect: RedirectionSideEffect,
@@ -27,7 +27,7 @@ interface SaveContextValue
     saving?: boolean;
 }
 
-export const SaveContext = createContext<SaveContextValue>({});
+export const SaveContext = createContext<SaveContextValue>(undefined);
 
 export const SaveContextProvider = ({ children, value }) => (
     <SaveContext.Provider value={value}>{children}</SaveContext.Provider>
@@ -49,7 +49,7 @@ export const useSaveContext = <
     PropsType extends SaveContextValue = SaveContextValue
 >(
     props?: PropsType
-) => {
+): SaveContextValue => {
     const context = useContext(SaveContext);
 
     if (!context.save || !context.setOnFailure) {
@@ -84,9 +84,9 @@ export const usePickSaveContext = <
                 'setOnFailure',
                 'setOnSuccess',
                 'setTransform',
-                'onSuccess',
-                'onFailure',
-                'transform',
+                'onSuccessRef',
+                'onFailureRef',
+                'transformRef',
             ]),
         /* eslint-disable react-hooks/exhaustive-deps */
         [
@@ -96,9 +96,9 @@ export const usePickSaveContext = <
             context.setOnSuccess,
             context.setTransform,
             context.setTransform,
-            context.onFailure,
-            context.onSuccess,
-            context.transform,
+            context.onFailureRef,
+            context.onSuccessRef,
+            context.transformRef,
         ]
         /* eslint-enable react-hooks/exhaustive-deps */
     );
