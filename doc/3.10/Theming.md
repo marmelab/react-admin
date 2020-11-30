@@ -11,7 +11,7 @@ Whether you need to adjust a CSS rule for a single component, or change the colo
 
 Every react-admin component provides a `className` property, which is always applied to the root element.
 
-Here is an example customizing an `EditButton` component inside a `Datagrid`, using its `className` property and the `makeStyle` hook from Material-UI:
+Here is an example customizing an `EditButton` component inside a `Datagrid`, using its `className` property and the `makeStyles` hook from Material-UI:
 
 {% raw %}
 ```jsx
@@ -387,7 +387,7 @@ const App = () => (
 );
 ```
 
-Your custom layout can extend the default `<Layout>` component if you only want to override the sidebar, the appBar, the menu, the notification component, or the error page. For instance:
+Your custom layout can extend the default `<Layout>` component if you only want to override the sidebar, the appBar, the menu, the notification component or the error page. For instance:
 
 ```jsx
 // in src/MyLayout.js
@@ -889,49 +889,6 @@ const App = () => (
 **Tip**: If you use authentication, don't forget to render the `logout` prop in your custom menu component. Also, the `onMenuClick` function passed as prop is used to close the sidebar on mobile.
 
 The `MenuItemLink` component make use of the React Router [NavLink](https://reacttraining.com/react-router/web/api/NavLink) component, hence allowing to customize its style when it targets the current page.
-
-If the default active style does not suit your tastes, you can override it by passing your own `classes`:
-
-```jsx
-// in src/Menu.js
-import * as React from 'react';
-import { createElement } from 'react';
-import { useSelector } from 'react-redux';
-import { useMediaQuery } from '@material-ui/core';
-import { MenuItemLink, getResources } from 'react-admin';
-import { withRouter } from 'react-router-dom';
-import LabelIcon from '@material-ui/icons/Label';
-
-const Menu = ({ onMenuClick, logout }) => {
-    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
-    const open = useSelector(state => state.admin.ui.sidebarOpen);
-    const resources = useSelector(getResources);
-    return (
-        <div>
-            {resources.map(resource => (
-                <MenuItemLink
-                    key={resource.name}
-                    to={`/${resource.name}`}
-                    primaryText={resource.options && resource.options.label || resource.name}
-                    leftIcon={createElement(resource.icon)}
-                    onClick={onMenuClick}
-                    sidebarIsOpen={open}
-                />
-            ))}
-            <MenuItemLink
-                to="/custom-route"
-                primaryText="Miscellaneous"
-                leftIcon={LabelIcon}
-                onClick={onMenuClick}
-                sidebarIsOpen={open}
-            />
-            {isXSmall && logout}
-        </div>
-    );
-};
-
-export default withRouter(Menu);
-```
 
 **Tip**: If you need a multi-level menu, or a Mega Menu opening panels with custom content, check out [the `ra-navigation`<img class="icon" src="./img/premium.svg" /> module](https://marmelab.com/ra-enterprise/modules/ra-navigation) (part of the [Enterprise Edition](https://marmelab.com/ra-enterprise))
 

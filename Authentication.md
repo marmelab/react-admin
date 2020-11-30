@@ -475,7 +475,7 @@ Here is the interface react-admin expect `authProvider` objects to implement.
 ```jsx
 import { AuthProvider } from 'react-admin';
 
-const authProvider: AuthProvider = {
+const authProvider = {
     // authentication
     login: ({ username, password }) => { /* ... */ },
     checkError: (error) => { /* ... */ },
