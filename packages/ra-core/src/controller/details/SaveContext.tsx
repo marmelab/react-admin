@@ -8,10 +8,13 @@ import {
     OnFailure,
     OnSuccess,
     SideEffectContextValue,
+    SideEffectContextOptions,
     TransformData,
 } from '../saveModifiers';
 
-interface SaveContextValue extends SideEffectContextValue {
+interface SaveContextValue
+    extends SideEffectContextValue,
+        SideEffectContextOptions {
     save?: (
         record: Partial<Record>,
         redirect: RedirectionSideEffect,
@@ -81,6 +84,9 @@ export const usePickSaveContext = <
                 'setOnFailure',
                 'setOnSuccess',
                 'setTransform',
+                'onSuccess',
+                'onFailure',
+                'transorm',
             ]),
         /* eslint-disable react-hooks/exhaustive-deps */
         [
@@ -89,6 +95,10 @@ export const usePickSaveContext = <
             context.setOnFailure,
             context.setOnSuccess,
             context.setTransform,
+            context.setTransform,
+            context.onFailure,
+            context.onSuccess,
+            context.transform,
         ]
         /* eslint-enable react-hooks/exhaustive-deps */
     );
