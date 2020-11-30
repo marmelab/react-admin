@@ -2,15 +2,30 @@ import { date, name, internet, address } from 'faker/locale/en';
 
 import { randomDate, weightedBoolean } from './utils';
 
-export default (db, { serializeDate }) =>
-    Array.from(Array(900).keys()).map(id => {
+export default (db, { serializeDate }) => {
+    // This is the total number of people pictures available. We only use those pictures for actual customers
+    const maxCustomers = 223;
+    let numberOfCustomers = 0;
+
+    return Array.from(Array(900).keys()).map(id => {
         const first_seen = randomDate();
         const last_seen = randomDate(first_seen);
-        const has_ordered = weightedBoolean(25);
+        const has_ordered =
+            weightedBoolean(25) && numberOfCustomers < maxCustomers;
         const first_name = name.firstName();
         const last_name = name.lastName();
         const email = internet.email(first_name, last_name);
         const birthday = has_ordered ? date.past(60) : null;
+        const avatar = has_ordered
+            ? 'https://marmelab.com/posters/avatar-' +
+              numberOfCustomers +
+              '.jpeg'
+            : undefined;
+
+        if (has_ordered) {
+            numberOfCustomers++;
+        }
+
         return {
             id,
             first_name,
@@ -20,7 +35,7 @@ export default (db, { serializeDate }) =>
             zipcode: has_ordered ? address.zipCode() : null,
             city: has_ordered ? address.city() : null,
             stateAbbr: has_ordered ? address.stateAbbr() : null,
-            avatar: internet.avatar(),
+            avatar,
             birthday:
                 serializeDate && birthday ? birthday.toISOString() : birthday,
             first_seen: serializeDate ? first_seen.toISOString() : first_seen,
@@ -33,3 +48,4 @@ export default (db, { serializeDate }) =>
             total_spent: 0,
         };
     });
+};
