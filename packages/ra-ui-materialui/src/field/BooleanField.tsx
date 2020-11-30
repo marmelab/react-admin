@@ -59,9 +59,16 @@ export const BooleanField: FC<BooleanFieldProps> = memo<BooleanFieldProps>(
                 >
                     <Tooltip title={translate(ariaLabel, { _: ariaLabel })}>
                         {value === true ? (
-                            <TrueIcon data-testid="true" fontSize="small" />
+                            <span>
+                                <TrueIcon data-testid="true" fontSize="small" />
+                            </span>
                         ) : (
-                            <FalseIcon data-testid="false" fontSize="small" />
+                            <span>
+                                <FalseIcon
+                                    data-testid="false"
+                                    fontSize="small"
+                                />
+                            </span>
                         )}
                     </Tooltip>
                 </Typography>

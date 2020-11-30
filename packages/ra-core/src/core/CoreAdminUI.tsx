@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { createElement, FunctionComponent, ComponentType } from 'react';
+import {
+    createElement,
+    FunctionComponent,
+    ComponentType,
+    useMemo,
+} from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import CoreAdminRouter from './CoreAdminRouter';
@@ -54,6 +59,9 @@ const CoreAdminUI: FunctionComponent<AdminUIProps> = ({
     theme,
     title = 'React Admin',
 }) => {
+    const logoutElement = React.useMemo(() => logout && createElement(logout), [
+        logout,
+    ]);
     return (
         <Switch>
             {loginPage !== false && loginPage !== true ? (
@@ -78,7 +86,7 @@ const CoreAdminUI: FunctionComponent<AdminUIProps> = ({
                         dashboard={dashboard}
                         layout={layout}
                         loading={loading}
-                        logout={logout && createElement(logout)}
+                        logout={logoutElement}
                         menu={menu}
                         ready={ready}
                         theme={theme}

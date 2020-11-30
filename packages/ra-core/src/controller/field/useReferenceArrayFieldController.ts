@@ -24,6 +24,7 @@ interface Option {
     source: string;
 }
 
+const emptyArray = [];
 const defaultFilter = {};
 const defaultSort = { field: null, order: null };
 
@@ -65,7 +66,7 @@ const useReferenceArrayFieldController = (
     } = props;
     const resource = useResourceContext(props);
     const notify = useNotify();
-    const ids = get(record, source) || [];
+    const ids = get(record, source) || emptyArray;
     const { data, error, loading, loaded } = useGetMany(reference, ids, {
         onFailure: error =>
             notify(

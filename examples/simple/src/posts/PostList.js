@@ -160,7 +160,7 @@ const PostList = props => {
                         reference="tags"
                         source="tags"
                         sortBy="tags.name"
-                        sort={{ field: 'name', order: 'ASC' }}
+                        sort={tagSort}
                         cellClassName={classes.hiddenOnSmallScreens}
                         headerClassName={classes.hiddenOnSmallScreens}
                     >
@@ -177,5 +177,7 @@ const PostList = props => {
         </List>
     );
 };
+
+const tagSort = { field: 'name', order: 'ASC' };
 
 export default PostList;
