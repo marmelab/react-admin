@@ -25,7 +25,7 @@ import {
     Record,
     useResourceContext,
 } from 'ra-core';
-import isEqual from 'lodash/isEqual';
+import { shallowEqual } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import DatagridCell from './DatagridCell';
@@ -265,9 +265,9 @@ export type RowClickFunction = (
 ) => string;
 
 const areEqual = (prevProps, nextProps) => {
-    const { children: _, ...prevPropsWithoutChildren } = prevProps;
-    const { children: __, ...nextPropsWithoutChildren } = nextProps;
-    return isEqual(prevPropsWithoutChildren, nextPropsWithoutChildren);
+    const { children: _1, expand: _2, ...prevPropsWithoutChildren } = prevProps;
+    const { children: _3, expand: _4, ...nextPropsWithoutChildren } = nextProps;
+    return shallowEqual(prevPropsWithoutChildren, nextPropsWithoutChildren);
 };
 
 export const PureDatagridRow = memo(DatagridRow, areEqual);

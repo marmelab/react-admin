@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import {
     useUpdateMany,
-    useRefresh,
     useNotify,
     useUnselectAll,
     Button,
@@ -13,7 +12,6 @@ import {
 const ResetViewsButton = ({ resource, selectedIds }) => {
     const notify = useNotify();
     const unselectAll = useUnselectAll();
-    const refresh = useRefresh();
     const [updateMany, { loading }] = useUpdateMany(
         resource,
         selectedIds,
@@ -28,7 +26,6 @@ const ResetViewsButton = ({ resource, selectedIds }) => {
                     true
                 );
                 unselectAll(resource);
-                refresh();
             },
             onFailure: error =>
                 notify(
