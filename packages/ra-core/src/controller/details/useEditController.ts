@@ -51,6 +51,9 @@ export interface EditControllerProps<RecordType extends Record = Record> {
     hasList?: boolean;
     loading: boolean;
     loaded: boolean;
+    onSuccess: OnSuccess;
+    onFailure: OnFailure;
+    transform: TransformData;
     save: (
         data: Partial<Record>,
         redirect?: RedirectionSideEffect,
@@ -238,6 +241,9 @@ export const useEditController = <RecordType extends Record = Record>(
         hasEdit,
         hasList,
         hasShow,
+        onSuccess: onSuccessRef.current,
+        onFailure: onFailureRef.current,
+        transform: transformRef.current,
         save,
         setOnSuccess,
         setOnFailure,
