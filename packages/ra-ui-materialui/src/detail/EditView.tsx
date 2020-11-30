@@ -116,10 +116,7 @@ export const EditView = (props: EditViewProps) => {
 
 interface EditViewProps
     extends EditProps,
-        Omit<
-            EditControllerProps,
-            'resource' | 'onSuccess' | 'onFailure' | 'transform'
-        > {
+        Omit<EditControllerProps, 'resource'> {
     children: ReactElement;
 }
 
@@ -181,8 +178,8 @@ const sanitizeRestProps = ({
     loading = null,
     location = null,
     match = null,
-    onFailure = null,
-    onSuccess = null,
+    onFailureRef = null,
+    onSuccessRef = null,
     options = null,
     permissions = null,
     save = null,
@@ -191,6 +188,6 @@ const sanitizeRestProps = ({
     setOnSuccess = null,
     setTransform = null,
     successMessage = null,
-    transform = null,
+    transformRef = null,
     ...rest
 }) => rest;

@@ -87,10 +87,7 @@ export const CreateView = (props: CreateViewProps) => {
 
 interface CreateViewProps
     extends CreateProps,
-        Omit<
-            CreateControllerProps,
-            'resource' | 'onSuccess' | 'onFailure' | 'transform'
-        > {
+        Omit<CreateControllerProps, 'resource'> {
     children: ReactElement;
 }
 
@@ -151,8 +148,8 @@ const sanitizeRestProps = ({
     loading = null,
     location = null,
     match = null,
-    onFailure = null,
-    onSuccess = null,
+    onFailureRef = null,
+    onSuccessRef = null,
     options = null,
     permissions = null,
     save = null,
@@ -160,6 +157,6 @@ const sanitizeRestProps = ({
     setOnFailure = null,
     setOnSuccess = null,
     setTransform = null,
-    transform = null,
+    transformRef = null,
     ...rest
 }) => rest;
