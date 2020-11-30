@@ -1,5 +1,18 @@
 # Changelog
 
+## v3.10.3
+
+* Fix `<Datagrid optimized>` freezes when using `expand` ([5603](https://github.com/marmelab/react-admin/pull/5603)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix warning about deprecated prop in `useCreateController` ([5594](https://github.com/marmelab/react-admin/pull/5594)) ([djhi](https://github.com/djhi))
+* Fix Edit notifications are not shown in React 17 ([5583](https://github.com/marmelab/react-admin/pull/5583)) ([djhi](https://github.com/djhi))
+* Fix `<ReferenceField>` doesn't accept the `emptyText` prop ([5579](https://github.com/marmelab/react-admin/pull/5579)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `logout` causes error in `useGetList` ([5577](https://github.com/marmelab/react-admin/pull/5577)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Sidebar>` width cannot be modified by the child `<Menu>` ([5575](https://github.com/marmelab/react-admin/pull/5575)) ([djhi](https://github.com/djhi))
+* Fix `<FilterListItem>` doesn't accept object values ([5559](https://github.com/marmelab/react-admin/pull/5559)) ([mjattiot](https://github.com/mjattiot))
+* [TypeScript] Export `SimpleFormIteratorProps` interface ([5595](https://github.com/marmelab/react-admin/pull/5595)) ([djhi](https://github.com/djhi))
+* [Doc] Fix create and edit controller usage documentation ([5597](https://github.com/marmelab/react-admin/pull/5597)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix typos in `<XXXBase>` components jsdoc ([5589](https://github.com/marmelab/react-admin/pull/5589)) ([WiXSL](https://github.com/WiXSL))
+
 ## v3.10.2
 
 * Fix `ra-data-simple-rest` delete response mime type ([5568](https://github.com/marmelab/react-admin/pull/5568)) ([djhi](https://github.com/djhi))
