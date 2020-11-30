@@ -3,6 +3,7 @@ import AuthContext from './AuthContext';
 import useAuthProvider from './useAuthProvider';
 import useAuthState from './useAuthState';
 import usePermissions from './usePermissions';
+import usePermissionsOptimized from './usePermissionsOptimized';
 import useAuthenticated from './useAuthenticated';
 import WithPermissions from './WithPermissions';
 import useLogin from './useLogin';
@@ -26,6 +27,7 @@ export {
     useGetPermissions,
     // hooks with state management
     usePermissions,
+    usePermissionsOptimized,
     useAuthState,
     // hook with immediate effect
     useAuthenticated,

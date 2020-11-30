@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import isEqual from 'lodash/isEqual';
 
 import useGetPermissions from './useGetPermissions';
 import { useSafeSetState } from '../util/hooks';
@@ -13,14 +12,10 @@ interface State {
 
 const emptyParams = {};
 
-// keep a cache of already fetched permissions to initialize state for new
-// components and avoid a useless rerender if the permissions haven't changed
-const alreadyFetchedPermissions = { '{}': [] };
-
 /**
  * Hook for getting user permissions
  *
- * Calls the authProvider.getPrmissions() method asynchronously.
+ * Calls the authProvider.getPermissions() method asynchronously.
  * If the authProvider returns a rejected promise, returns empty permissions.
  *
  * The return value updates according to the request state:
@@ -51,17 +46,12 @@ const usePermissions = (params = emptyParams) => {
     const [state, setState] = useSafeSetState<State>({
         loading: true,
         loaded: false,
-        permissions: alreadyFetchedPermissions[JSON.stringify(params)],
     });
     const getPermissions = useGetPermissions();
     useEffect(() => {
         getPermissions(params)
             .then(permissions => {
-                const key = JSON.stringify(params);
-                if (!isEqual(permissions, alreadyFetchedPermissions[key])) {
-                    alreadyFetchedPermissions[key] = permissions;
-                    setState({ loading: false, loaded: true, permissions });
-                }
+                setState({ loading: false, loaded: true, permissions });
             })
             .catch(error => {
                 setState({

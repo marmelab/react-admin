@@ -9,7 +9,7 @@ import { Location } from 'history';
 
 import warning from '../util/warning';
 import useAuthenticated from './useAuthenticated';
-import usePermissions from './usePermissions';
+import usePermissionsOptimized from './usePermissionsOptimized';
 
 export interface WithPermissionsChildrenParams {
     permissions: any;
@@ -81,7 +81,7 @@ const WithPermissions: FunctionComponent<Props> = ({
     );
 
     useAuthenticated(authParams);
-    const { permissions } = usePermissions(authParams);
+    const { permissions } = usePermissionsOptimized(authParams);
     // render even though the usePermissions() call isn't finished (optimistic rendering)
     if (component) {
         return createElement(component, { permissions, ...props });
