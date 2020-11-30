@@ -51,7 +51,7 @@ export const validatePasswords = ({
 };
 
 const VisitorCreate: FC<CreateProps> = props => {
-    const classes = useStyles();
+    const classes = useStyles(props);
 
     return (
         <Create {...props}>
