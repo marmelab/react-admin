@@ -99,7 +99,7 @@ const useGetList = <RecordType extends Record = Record>(
                 requestSignature,
                 'total',
             ]),
-        (data: DataSelectorResult<RecordType>) => data.ids !== null
+        isDataLoaded
     );
 
     const data = useMemo(
@@ -130,5 +130,7 @@ interface DataSelectorResult<RecordType extends Record = Record> {
     ids: Identifier[];
     allRecords: RecordMap<RecordType>;
 }
+
+const isDataLoaded = (data: DataSelectorResult) => data.ids !== null;
 
 export default useGetList;
