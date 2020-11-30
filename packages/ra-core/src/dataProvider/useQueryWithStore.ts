@@ -38,19 +38,6 @@ export type PartialQueryState = {
 const queriesThisTick: { [key: string]: Promise<PartialQueryState> } = {};
 
 /**
- * Lists of records are initialized to a particular object,
- * so detecting if the list is empty requires some work.
- *
- * @see src/reducer/admin/data.ts
- */
-const isEmptyList = data =>
-    Array.isArray(data)
-        ? data.length === 0
-        : data &&
-          Object.keys(data).length === 0 &&
-          data.hasOwnProperty('fetchedAt');
-
-/**
  * Default cache selector. Allows to cache responses by default.
  *
  * By default, custom queries are dispatched as a CUSTOM_QUERY Redux action.
@@ -71,6 +58,8 @@ const defaultTotalSelector = query => (state: ReduxState) => {
         ? state.admin.customQueries[key].total
         : null;
 };
+
+const defaultIsDataLoaded = (data: any): boolean => data !== undefined;
 
 /**
  * Fetch the data provider through Redux, return the value from the store.
@@ -120,7 +109,8 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
     query: Query,
     options: QueryOptions = { action: 'CUSTOM_QUERY' },
     dataSelector: (state: State) => any = defaultDataSelector(query),
-    totalSelector: (state: State) => number = defaultTotalSelector(query)
+    totalSelector: (state: State) => number = defaultTotalSelector(query),
+    isDataLoaded: (data: any) => boolean = defaultIsDataLoaded
 ): {
     data?: any;
     total?: number;
@@ -142,7 +132,7 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
         total,
         error: null,
         loading: true,
-        loaded: data !== undefined && !isEmptyList(data),
+        loaded: isDataLoaded(data),
     });
 
     useEffect(() => {
@@ -154,7 +144,7 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
                 total,
                 error: null,
                 loading: true,
-                loaded: data !== undefined && !isEmptyList(data),
+                loaded: isDataLoaded(data),
             });
         } else if (!isEqual(state.data, data) || state.total !== total) {
             // the dataProvider response arrived in the Redux store
@@ -171,7 +161,15 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
                 }));
             }
         }
-    }, [data, requestSignature, setState, state.data, state.total, total]);
+    }, [
+        data,
+        requestSignature,
+        setState,
+        state.data,
+        state.total,
+        total,
+        isDataLoaded,
+    ]);
 
     const dataProvider = useDataProvider();
     useEffect(() => {
