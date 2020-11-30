@@ -2,6 +2,7 @@ import * as React from 'react';
 import { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
+    getFieldLabelTranslationArgs,
     InputProps,
     useReferenceArrayInputController,
     useInput,
@@ -244,8 +245,11 @@ export const ReferenceArrayInputView = ({
     ...rest
 }: ReferenceArrayInputViewProps) => {
     const translatedLabel = translate(
-        label || `resources.${resource}.fields.${source}`,
-        { _: label }
+        ...getFieldLabelTranslationArgs({
+            label,
+            resource,
+            source,
+        })
     );
 
     if (loading) {
