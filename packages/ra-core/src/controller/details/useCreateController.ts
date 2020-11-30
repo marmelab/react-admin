@@ -57,6 +57,9 @@ export interface CreateControllerProps<
     hasEdit?: boolean;
     hasList?: boolean;
     hasShow?: boolean;
+    onSuccess: OnSuccess;
+    onFailure: OnFailure;
+    transform: TransformData;
     save: (
         record: Partial<Record>,
         redirect: RedirectionSideEffect,
@@ -218,6 +221,9 @@ export const useCreateController = <
         loaded: true,
         saving,
         defaultTitle,
+        onFailure: onFailureRef.current,
+        onSuccess: onSuccessRef.current,
+        transform: transformRef.current,
         save,
         setOnSuccess,
         setOnFailure,

@@ -86,7 +86,7 @@ export const usePickSaveContext = <
                 'setTransform',
                 'onSuccess',
                 'onFailure',
-                'transorm',
+                'transform',
             ]),
         /* eslint-disable react-hooks/exhaustive-deps */
         [
