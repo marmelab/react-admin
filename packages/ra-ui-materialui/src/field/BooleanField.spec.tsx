@@ -15,7 +15,10 @@ describe('<BooleanField />', () => {
     it('should display tick and truthy text if value is true', () => {
         const { queryByTitle } = render(<BooleanField {...defaultProps} />);
         expect(queryByTitle('ra.boolean.true')).not.toBeNull();
-        expect(queryByTitle('ra.boolean.true').dataset.testid).toBe('true');
+        expect(
+            (queryByTitle('ra.boolean.true').firstChild as HTMLElement).dataset
+                .testid
+        ).toBe('true');
         expect(queryByTitle('ra.boolean.false')).toBeNull();
     });
 
@@ -39,7 +42,10 @@ describe('<BooleanField />', () => {
         );
         expect(queryByTitle('ra.boolean.true')).toBeNull();
         expect(queryByTitle('ra.boolean.false')).not.toBeNull();
-        expect(queryByTitle('ra.boolean.false').dataset.testid).toBe('false');
+        expect(
+            (queryByTitle('ra.boolean.false').firstChild as HTMLElement).dataset
+                .testid
+        ).toBe('false');
     });
 
     it('should use valueLabelFalse for custom falsy text', () => {
