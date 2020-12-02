@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { forwardRef } from 'react';
+import { forwardRef, memo } from 'react';
 import { Layout, AppBar, UserMenu, useLocale, useSetLocale } from 'react-admin';
 import { MenuItem, ListItemIcon } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -39,6 +39,6 @@ const MyUserMenu = props => (
     </UserMenu>
 );
 
-const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
+const MyAppBar = memo(props => <AppBar {...props} userMenu={<MyUserMenu />} />);
 
 export default props => <Layout {...props} appBar={MyAppBar} />;
