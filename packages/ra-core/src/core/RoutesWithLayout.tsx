@@ -23,6 +23,8 @@ interface Props {
     title?: TitleComponent;
 }
 
+const defaultAuthParams = { route: 'dashboard' };
+
 const RoutesWithLayout: FunctionComponent<Props> = ({
     catchAll,
     children,
@@ -60,9 +62,7 @@ const RoutesWithLayout: FunctionComponent<Props> = ({
                     path="/"
                     render={routeProps => (
                         <WithPermissions
-                            authParams={{
-                                route: 'dashboard',
-                            }}
+                            authParams={defaultAuthParams}
                             component={dashboard}
                             {...routeProps}
                         />
