@@ -1,5 +1,6 @@
 import { cleanup, fireEvent, wait, getByText } from '@testing-library/react';
 import * as React from 'react';
+import expect from 'expect';
 import {
     renderWithRedux,
     SaveContextProvider,
@@ -32,6 +33,68 @@ describe('<SimpleFormIterator />', () => {
         setOnFailure: jest.fn(),
     };
     const sideEffectValue = {};
+
+    it('should display one input group per row', () => {
+        const { queryAllByLabelText } = renderWithRedux(
+            <ThemeProvider theme={theme}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffectValue}>
+                        <SimpleForm
+                            record={{
+                                id: 'whatever',
+                                emails: [{ email: 'foo' }, { email: 'bar' }],
+                            }}
+                        >
+                            <ArrayInput source="emails">
+                                <SimpleFormIterator>
+                                    <TextInput source="email" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
+        );
+        const inputElements = queryAllByLabelText(
+            'resources.undefined.fields.email'
+        );
+        expect(inputElements).toHaveLength(2);
+        expect((inputElements[0] as HTMLInputElement).disabled).toBeFalsy();
+        expect((inputElements[0] as HTMLInputElement).value).toBe('foo');
+        expect((inputElements[1] as HTMLInputElement).disabled).toBeFalsy();
+        expect((inputElements[1] as HTMLInputElement).value).toBe('bar');
+    });
+
+    it('should render disabled inputs when disabled is true', () => {
+        const { queryAllByLabelText } = renderWithRedux(
+            <ThemeProvider theme={theme}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffectValue}>
+                        <SimpleForm
+                            record={{
+                                id: 'whatever',
+                                emails: [{ email: 'foo' }, { email: 'bar' }],
+                            }}
+                        >
+                            <ArrayInput source="emails" disabled>
+                                <SimpleFormIterator>
+                                    <TextInput source="email" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
+        );
+        const inputElements = queryAllByLabelText(
+            'resources.undefined.fields.email'
+        );
+        expect(inputElements).toHaveLength(2);
+        expect((inputElements[0] as HTMLInputElement).disabled).toBeTruthy();
+        expect((inputElements[0] as HTMLInputElement).value).toBe('foo');
+        expect((inputElements[1] as HTMLInputElement).disabled).toBeTruthy();
+        expect((inputElements[1] as HTMLInputElement).value).toBe('bar');
+    });
 
     it('should display an add item button at least', () => {
         const { getByText } = renderWithRedux(
@@ -69,6 +132,24 @@ describe('<SimpleFormIterator />', () => {
         expect(queryAllByText('ra.action.add').length).toBe(0);
     });
 
+    it('should not display add button if disabled is truthy', () => {
+        const { queryAllByText } = renderWithRedux(
+            <SaveContextProvider value={saveContextValue}>
+                <SideEffectContextProvider value={sideEffectValue}>
+                    <SimpleForm>
+                        <ArrayInput source="emails" disabled>
+                            <SimpleFormIterator>
+                                <TextInput source="email" />
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </SimpleForm>
+                </SideEffectContextProvider>
+            </SaveContextProvider>
+        );
+
+        expect(queryAllByText('ra.action.add').length).toBe(0);
+    });
+
     it('should not display remove button if disableRemove is truthy', () => {
         const { queryAllByText } = renderWithRedux(
             <ThemeProvider theme={theme}>
@@ -82,6 +163,31 @@ describe('<SimpleFormIterator />', () => {
                         >
                             <ArrayInput source="emails">
                                 <SimpleFormIterator disableRemove>
+                                    <TextInput source="email" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
+        );
+
+        expect(queryAllByText('ra.action.remove').length).toBe(0);
+    });
+
+    it('should not display remove button if disabled is truthy', () => {
+        const { queryAllByText } = renderWithRedux(
+            <ThemeProvider theme={theme}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffectValue}>
+                        <SimpleForm
+                            record={{
+                                id: 'whatever',
+                                emails: [{ email: '' }, { email: '' }],
+                            }}
+                        >
+                            <ArrayInput source="emails" disabled>
+                                <SimpleFormIterator>
                                     <TextInput source="email" />
                                 </SimpleFormIterator>
                             </ArrayInput>

@@ -63,6 +63,7 @@ const ArrayInput: FC<ArrayInputProps> = ({
     source,
     validate,
     variant,
+    disabled,
     margin = 'dense',
     ...rest
 }) => {
@@ -98,6 +99,7 @@ const ArrayInput: FC<ArrayInputProps> = ({
                 source,
                 variant,
                 margin,
+                disabled,
             })}
         </FormControl>
     );
