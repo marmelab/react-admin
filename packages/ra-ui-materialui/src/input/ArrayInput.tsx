@@ -124,5 +124,6 @@ ArrayInput.defaultProps = {
 
 export interface ArrayInputProps extends InputProps {
     children: ReactElement;
+    disabled?: boolean;
 }
 export default ArrayInput;
