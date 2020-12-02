@@ -3,7 +3,7 @@ import { CreateView } from './CreateView';
 import CreateActions from './CreateActions';
 import { Edit } from './Edit';
 import { EditView } from './EditView';
-import EditActions from './EditActions';
+import EditActions, { EditActionsProps } from './EditActions';
 import EditGuesser from './EditGuesser';
 import { Show } from './Show';
 import { ShowView } from './ShowView';
@@ -33,6 +33,7 @@ export {
 };
 
 export type {
+    EditActionsProps,
     SimpleShowLayoutProps,
     ShowActionsProps,
     TabProps,
