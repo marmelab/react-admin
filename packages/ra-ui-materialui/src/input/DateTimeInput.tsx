@@ -27,6 +27,7 @@ const convertDateToString = (value: Date) => {
 
 // yyyy-MM-ddThh:mm
 const dateTimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+const defaultInputLabelProps = { shrink: true };
 
 /**
  * Converts a date from the Redux store, with timezone, to a date string
@@ -122,9 +123,7 @@ const DateTimeInput: FunctionComponent<
                     isRequired={isRequired}
                 />
             }
-            InputLabelProps={{
-                shrink: true,
-            }}
+            InputLabelProps={defaultInputLabelProps}
             {...options}
             {...sanitizeInputRestProps(rest)}
         />

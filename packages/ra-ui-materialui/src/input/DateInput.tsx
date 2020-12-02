@@ -23,6 +23,7 @@ const convertDateToString = (value: Date) => {
 };
 
 const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+const defaultInputLabelProps = { shrink: true };
 
 const getStringFromDate = (value: string | Date) => {
     // null, undefined and empty string values should not go through dateFormatter
@@ -101,9 +102,7 @@ const DateInput: FunctionComponent<
                     isRequired={isRequired}
                 />
             }
-            InputLabelProps={{
-                shrink: true,
-            }}
+            InputLabelProps={defaultInputLabelProps}
             {...options}
             {...sanitizeInputRestProps(rest)}
         />

@@ -26,8 +26,10 @@ const InputHelperText: FunctionComponent<Props> = ({
         // markup as material-ui.
         // @see https://github.com/mui-org/material-ui/blob/62e439b7022d519ab638d65201e204b59b77f8da/packages/material-ui/src/FormHelperText/FormHelperText.js#L85-L90
         // eslint-disable-next-line react/no-danger
-        <span dangerouslySetInnerHTML={{ __html: '&#8203;' }} />
+        <span dangerouslySetInnerHTML={defaultInnerHTML} />
     ) : null;
 };
+
+const defaultInnerHTML = { __html: '&#8203;' };
 
 export default InputHelperText;
