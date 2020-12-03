@@ -32,6 +32,7 @@ Here are all the props accepted by the component:
 - [`i18nProvider`](#i18nprovider)
 - [`title`](#title)
 - [`dashboard`](#dashboard)
+- [`disableTelemetry`](#disableTelemetry)
 - [`catchAll`](#catchall)
 - [`menu`](#menu)
 - [`theme`](#theme)
@@ -137,6 +138,24 @@ const App = () => (
 ```
 
 ![Custom home page](./img/dashboard.png)
+
+## `disableTelemetry`
+
+Telemetry is enabled by default on production environments. It's an anonymous metric only logging the domain name and allowing us to know who uses react-admin in production.
+
+You can disable it by settings the `disableTelemetry` prop:
+
+```jsx
+// in src/App.js
+import * as React from "react";
+import { Admin } from 'react-admin';
+
+const App = () => (
+    <Admin disableTelemetry>
+        // ...
+    </Admin>
+);
+```
 
 ## `catchAll`
 

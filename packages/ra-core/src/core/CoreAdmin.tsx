@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FunctionComponent, ComponentType } from 'react';
+import { FunctionComponent, ComponentType, useEffect } from 'react';
 
 import CoreAdminContext from './CoreAdminContext';
 import CoreAdminUI from './CoreAdminUI';
@@ -106,7 +106,9 @@ const CoreAdmin: FunctionComponent<AdminProps> = ({
     menu, // deprecated, use a custom layout instead
     theme,
     title = 'React Admin',
+    disableTelemetry,
 }) => {
+    console.log(process.env.NODE_ENV);
     return (
         <CoreAdminContext
             authProvider={authProvider}
@@ -121,6 +123,7 @@ const CoreAdmin: FunctionComponent<AdminProps> = ({
                 layout={appLayout || layout}
                 customRoutes={customRoutes}
                 dashboard={dashboard}
+                disableTelemetry={disableTelemetry}
                 menu={menu}
                 catchAll={catchAll}
                 theme={theme}
