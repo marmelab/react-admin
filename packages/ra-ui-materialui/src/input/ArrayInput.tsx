@@ -58,6 +58,7 @@ const ArrayInput: FC<ArrayInputProps> = ({
     source,
     validate,
     variant,
+    disabled,
     margin = 'dense',
     ...rest
 }) => {
@@ -93,6 +94,7 @@ const ArrayInput: FC<ArrayInputProps> = ({
                 source,
                 variant,
                 margin,
+                disabled,
             })}
         </FormControl>
     );
@@ -122,5 +124,6 @@ ArrayInput.defaultProps = {
 
 export interface ArrayInputProps extends InputProps {
     children: ReactElement;
+    disabled?: boolean;
 }
 export default ArrayInput;
