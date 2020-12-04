@@ -1,7 +1,12 @@
 import * as React from 'react';
 import { cloneElement, Children, FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { isRequired, FieldTitle, composeValidators, InputProps } from 'ra-core';
+import {
+    isRequired,
+    FieldTitle,
+    composeSyncValidators,
+    InputProps,
+} from 'ra-core';
 import { useFieldArray } from 'react-final-form-arrays';
 import { InputLabel, FormControl } from '@material-ui/core';
 
@@ -62,7 +67,7 @@ const ArrayInput: FC<ArrayInputProps> = ({
     ...rest
 }) => {
     const sanitizedValidate = Array.isArray(validate)
-        ? composeValidators(validate)
+        ? composeSyncValidators(validate)
         : validate;
 
     const fieldProps = useFieldArray(source, {
