@@ -13,7 +13,7 @@ import ContentFilter from '@material-ui/icons/FilterList';
 import classnames from 'classnames';
 import lodashGet from 'lodash/get';
 
-import FilterButtonMenuItem from './FilterButtonMenuItem';
+import { FilterButtonMenuItem } from './FilterButtonMenuItem';
 import Button from '../../button/Button';
 import { ClassesOverride } from '../../types';
 
