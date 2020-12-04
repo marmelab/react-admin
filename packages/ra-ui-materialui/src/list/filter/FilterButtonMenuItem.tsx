@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import MenuItem from '@material-ui/core/MenuItem';
 import { FieldTitle, useResourceContext } from 'ra-core';
 
-const FilterButtonMenuItem = forwardRef<any, FilterButtonMenuItemProps>(
+export const FilterButtonMenuItem = forwardRef<any, FilterButtonMenuItemProps>(
     (props, ref) => {
         const { filter, onShow } = props;
         const resource = useResourceContext(props);
@@ -45,5 +45,3 @@ export interface FilterButtonMenuItemProps {
     onShow: (params: { source: string; defaultValue: any }) => void;
     resource: string;
 }
-
-export default FilterButtonMenuItem;

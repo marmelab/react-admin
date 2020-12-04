@@ -6,6 +6,7 @@ import FilterList from './FilterList';
 import FilterListItem from './FilterListItem';
 import FilterLiveSearch from './FilterLiveSearch';
 
+export * from './FilterButtonMenuItem';
 export {
     Filter,
     FilterButton,
