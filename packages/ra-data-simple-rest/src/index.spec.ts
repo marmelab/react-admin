@@ -83,9 +83,9 @@ describe('Data Simple REST Client', () => {
                 'http://localhost:3000/posts/1',
                 {
                     method: 'DELETE',
-                    headers: {
+                    headers: new Headers({
                         'Content-Type': 'text/plain',
-                    },
+                    }),
                 }
             );
         });
@@ -104,9 +104,9 @@ describe('Data Simple REST Client', () => {
                 'http://localhost:3000/posts/1',
                 {
                     method: 'DELETE',
-                    headers: {
+                    headers: new Headers({
                         'Content-Type': 'text/plain',
-                    },
+                    }),
                 }
             );
 
@@ -114,9 +114,9 @@ describe('Data Simple REST Client', () => {
                 'http://localhost:3000/posts/2',
                 {
                     method: 'DELETE',
-                    headers: {
+                    headers: new Headers({
                         'Content-Type': 'text/plain',
-                    },
+                    }),
                 }
             );
         });
