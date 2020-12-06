@@ -166,9 +166,9 @@ export default (
     delete: (resource, params) =>
         httpClient(`${apiUrl}/${resource}/${params.id}`, {
             method: 'DELETE',
-            headers: {
+            headers: new Headers({
                 'Content-Type': 'text/plain',
-            },
+            }),
         }).then(({ json }) => ({ data: json })),
 
     // simple-rest doesn't handle filters on DELETE route, so we fallback to calling DELETE n times instead
@@ -177,9 +177,9 @@ export default (
             params.ids.map(id =>
                 httpClient(`${apiUrl}/${resource}/${id}`, {
                     method: 'DELETE',
-                    headers: {
+                    headers: new Headers({
                         'Content-Type': 'text/plain',
-                    },
+                    }),
                 })
             )
         ).then(responses => ({
