@@ -1,5 +1,6 @@
 import React, {
     HtmlHTMLAttributes,
+    ComponentType,
     ReactNode,
     useRef,
     useEffect,
