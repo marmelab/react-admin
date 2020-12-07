@@ -16,7 +16,7 @@ import { useHistory } from 'react-router-dom';
 import { useCheckAuth, TitleComponent } from 'ra-core';
 
 import defaultTheme from '../defaultTheme';
-import Notification from '../layout/Notification';
+import DefaultNotification from '../layout/Notification';
 import DefaultLoginForm from './LoginForm';
 
 export interface LoginProps
@@ -85,6 +85,7 @@ const Login: React.FunctionComponent<LoginProps> = props => {
         classes: classesOverride,
         className,
         children,
+        notification,
         staticContext,
         backgroundImage,
         ...rest
@@ -143,7 +144,7 @@ const Login: React.FunctionComponent<LoginProps> = props => {
                     </div>
                     {children}
                 </Card>
-                <Notification />
+                {notification ? createElement(notification) : null}
             </div>
         </ThemeProvider>
     );
@@ -161,6 +162,7 @@ Login.propTypes = {
 Login.defaultProps = {
     theme: defaultTheme,
     children: <DefaultLoginForm />,
+    notification: DefaultNotification,
 };
 
 export default Login;
