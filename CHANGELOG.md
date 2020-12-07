@@ -1,5 +1,16 @@
 # Changelog
 
+## v3.10.4
+
+* Fix `ra-data-simple-rest` delete method fails because of bad header ([5628](https://github.com/marmelab/react-admin/pull/5628)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<FilterButtonMenuItem>` isn't exported ([5625](https://github.com/marmelab/react-admin/pull/5625)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix support for async validators in Create and Edit forms ([5623](https://github.com/marmelab/react-admin/pull/5623)) ([djhi](https://github.com/djhi))
+* Fix useless rerenders in minor components ([5616](https://github.com/marmelab/react-admin/pull/5616)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<AppBar>` rerenders too often ([5613](https://github.com/marmelab/react-admin/pull/5613)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<ReferenceManyField>` rerenders too often ([5612](https://github.com/marmelab/react-admin/pull/5612)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<ReferenceArrayInput>` doesn't humanize the source if no label is given ([5606](https://github.com/marmelab/react-admin/pull/5606)) ([alanpoulain](https://github.com/alanpoulain))
+* [TypeScript] Fix `<EditActionsProps>` type is missing ([5614](https://github.com/marmelab/react-admin/pull/5614)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v3.10.3
 
 * Fix `<Datagrid optimized>` freezes when using `expand` ([5603](https://github.com/marmelab/react-admin/pull/5603)) ([fzaninotto](https://github.com/fzaninotto))
