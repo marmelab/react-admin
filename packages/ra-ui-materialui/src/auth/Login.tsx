@@ -25,6 +25,7 @@ export interface LoginProps
     children?: ReactNode;
     classes?: object;
     className?: string;
+    notification?: ComponentType
     staticContext?: StaticContext;
     theme?: object;
     title?: TitleComponent;
