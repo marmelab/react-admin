@@ -1008,7 +1008,9 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput, FormDataConsumer 
 </ArrayInput>
 ```
 
-`<ArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props) (except `format` and `parse`).
+`<ArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props) (except `format` and `parse`). 
+
+**Important**: Note that asynchronous validators are not supported on the `ArrayInput` component due to a limitation of [react-final-form-arrays](https://github.com/final-form/react-final-form-arrays).
 
 ### `<AutocompleteArrayInput>`
 
