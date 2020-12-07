@@ -66,11 +66,11 @@ const CoreAdminUI: FunctionComponent<AdminUIProps> = ({
     ]);
     return (
         <>
-            {process.env.NODE_ENV === 'production' &&
+            {process.env.NODE_ENV === 'development' &&
             disableTelemetry !== true &&
             typeof window !== 'undefined' ? (
                 <img
-                    src={`https://imfoxncoya.execute-api.eu-west-3.amazonaws.com/prod?domain=${window.location.hostname}`}
+                    src={`https://react-admin-telemetry.marmelab.com/react-admin-telemetry?domain=${window.location.hostname}`}
                     width="0"
                     height=""
                     alt=""
