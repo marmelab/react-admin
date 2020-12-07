@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 import { Record } from 'ra-core';
 import PropTypes from 'prop-types';
 
-type TextAlign = 'right' | 'left';
+type TextAlign = 'right' | 'left' | 'center';
 type SortOrder = 'ASC' | 'DESC';
 
 export interface FieldProps<RecordType extends Record = Record>
@@ -42,6 +42,6 @@ export const fieldPropTypes = {
     className: PropTypes.string,
     cellClassName: PropTypes.string,
     headerClassName: PropTypes.string,
-    textAlign: PropTypes.oneOf<TextAlign>(['right', 'left']),
+    textAlign: PropTypes.oneOf<TextAlign>(['right', 'left', 'center']),
     emptyText: PropTypes.string,
 };
