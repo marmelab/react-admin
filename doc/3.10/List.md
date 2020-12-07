@@ -1844,8 +1844,11 @@ Here are all the props accepted by the component:
 * [`rowClick`](#rowclick)
 * [`expand`](#expand)
 * [`isRowSelectable`](#isrowselectable)
+* [`optimized`](#performance)
 
-It renders as many columns as it receives `<Field>` children. It uses the field `label` as column header (or, for fields with not `label`, the field `source`).
+Additional props are passed down to [the material-ui `<Table>` element](https://material-ui.com/api/table/).
+
+`<Datagrid>` renders as many columns as it receives `<Field>` children. It uses the field `label` as column header (or, for fields with no `label`, the field `source`).
 
 ```jsx
 // in src/posts.js
@@ -2207,7 +2210,7 @@ const PostList = props => (
 export default withStyles(styles)(PostList);
 ```
 
-**Tip**: You can use the `Datagrid` component with [custom queries](./Actions.md#usequery-hook), provided you pass the result to a `<ListContextProvider>`:
+**Tip**: You can use the `<Datagrid>` component with [custom queries](./Actions.md#usequery-hook), provided you pass the result to a `<ListContextProvider>`:
 
 {% raw %}
 ```jsx
