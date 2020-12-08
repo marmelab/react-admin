@@ -46,7 +46,6 @@ export const ListView = (props: ListViewProps) => {
         total,
         loaded,
         loading,
-        hasCreate,
         filterValues,
         selectedIds,
     } = listContext;
@@ -88,10 +87,7 @@ export const ListView = (props: ListViewProps) => {
     );
 
     const shouldRenderEmptyPage =
-        loaded &&
-        !loading &&
-        total === 0 &&
-        !Object.keys(filterValues).length;
+        loaded && !loading && total === 0 && !Object.keys(filterValues).length;
 
     return (
         <div
@@ -130,7 +126,6 @@ ListView.propTypes = {
     filterDefaultValues: PropTypes.object,
     filters: PropTypes.element,
     filterValues: PropTypes.object,
-    hasCreate: PropTypes.bool,
     hideFilter: PropTypes.func,
     ids: PropTypes.array,
     loading: PropTypes.bool,
@@ -197,7 +192,7 @@ const useStyles = makeStyles(
 );
 
 export interface ListViewProps
-    extends Omit<ListProps, 'basePath' | 'hasCreate' | 'perPage' | 'resource'>,
+    extends Omit<ListProps, 'basePath' | 'perPage' | 'resource'>,
         ListControllerProps {
     children: ReactElement;
 }
@@ -227,7 +222,6 @@ const sanitizeRestProps: (
     displayedFilters = null,
     filterDefaultValues = null,
     filterValues = null,
-    hasCreate = null,
     hasEdit = null,
     hasList = null,
     hasShow = null,
