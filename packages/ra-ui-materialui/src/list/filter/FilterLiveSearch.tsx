@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { FC, ChangeEvent, memo } from 'react';
+import { FC, ChangeEvent, memo, useRef } from 'react';
 import { InputAdornment } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
-import { Form } from 'react-final-form';
+import { AnyObject, Form } from 'react-final-form';
 import { useTranslate, useListFilterContext } from 'ra-core';
+import { get, set, merge } from 'lodash';
 
 import TextInput from '../../input/TextInput';
 
@@ -22,17 +23,27 @@ import TextInput from '../../input/TextInput';
  *     </Card>
  * );
  */
-const FilterLiveSearch: FC<{ source?: string }> = props => {
-    const { source = 'q', ...rest } = props;
+const FilterLiveSearch: FC<{ source?: string; label?: string }> = props => {
+    const { source = 'q', label, ...rest } = props;
+
     const { filterValues, setFilters } = useListFilterContext();
     const translate = useTranslate();
+    const formRef = useRef<FormApi<AnyObject, Partial<AnyObject>>>(null);
 
+    // clear the form when the correspondind <Filter> is removed
+    if (!get(filterValues, source)) {
+        if (formRef.current) {
+            formRef.current.reset();
+        }
+    }
     const onSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target) {
-            setFilters({ ...filterValues, [source]: event.target.value }, null);
+            const { values } = formRef.current.getState(); // get parsed value
+            const query = merge({}, filterValues, values);
+            setFilters(query, null);
         } else {
-            const { [source]: _, ...filters } = filterValues;
-            setFilters(filters, null);
+            const cleanedFilter = set(filterValues, source, null);
+            setFilters(cleanedFilter, null);
         }
     };
 
@@ -40,23 +51,29 @@ const FilterLiveSearch: FC<{ source?: string }> = props => {
 
     return (
         <Form onSubmit={onSubmit}>
-            {({ handleSubmit }) => (
-                <TextInput
-                    resettable
-                    helperText={false}
-                    source={source}
-                    label={translate('ra.action.search')}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <SearchIcon color="disabled" />
-                            </InputAdornment>
-                        ),
-                    }}
-                    onChange={onSearchChange}
-                    {...rest}
-                />
-            )}
+            {({ form }) => {
+                formRef.current = form;
+                return (
+                    <TextInput
+                        resettable
+                        helperText={false}
+                        source={source}
+                        label={
+                            (label && translate(label)) ||
+                            translate('ra.action.search')
+                        }
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <SearchIcon color="disabled" />
+                                </InputAdornment>
+                            ),
+                        }}
+                        onChange={onSearchChange}
+                        {...rest}
+                    />
+                );
+            }}
         </Form>
     );
 };
