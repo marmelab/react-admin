@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import CancelIcon from '@material-ui/icons/CancelOutlined';
-import { useTranslate, useListFilterContext } from 'ra-core';
+import { useTranslate, useListContext } from 'ra-core';
 import { shallowEqual } from 'react-redux';
 import { isEmpty, isMatch, merge, omit } from 'lodash';
 import { paths } from 'deepdash-es/standalone';
@@ -145,7 +145,12 @@ const useStyles = makeStyles(theme => ({
  */
 const FilterListItem: FC<{ label: string; value: any }> = props => {
     const { label, value } = props;
-    const { filterValues, setFilters } = useListFilterContext();
+    const {
+        filterValues,
+        setFilters,
+        displayedFilters,
+        hideFilter,
+    } = useListContext();
     const translate = useTranslate();
     const classes = useStyles(props);
 
