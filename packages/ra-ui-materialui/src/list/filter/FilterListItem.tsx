@@ -10,7 +10,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import CancelIcon from '@material-ui/icons/CancelOutlined';
 import { useTranslate, useListFilterContext } from 'ra-core';
 import { shallowEqual } from 'react-redux';
-import isEqual from 'lodash/isEqual';
+import { isEmpty, isMatch, merge, omit } from 'lodash';
+import { paths } from 'deepdash-es/standalone';
 
 const useStyles = makeStyles(theme => ({
     listItem: {
@@ -148,23 +149,21 @@ const FilterListItem: FC<{ label: string; value: any }> = props => {
     const translate = useTranslate();
     const classes = useStyles(props);
 
-    const isSelected = isEqual(value, filterValues);
+    const isSelected =
+        isEmpty(value) || isEmpty(filterValues)
+            ? false
+            : isMatch(filterValues, value);
 
     const addFilter = () => {
-        setFilters({ ...filterValues, ...value }, null, false);
+        setFilters(merge({}, filterValues, value), null, false);
     };
 
     const removeFilter = () => {
-        const keysToRemove = Object.keys(value);
-        const filters = Object.keys(filterValues).reduce(
-            (acc, key) =>
-                keysToRemove.includes(key)
-                    ? acc
-                    : { ...acc, [key]: filterValues[key] },
-            {}
-        );
-
-        setFilters(filters, null, false);
+        setFilters(omit(filterValues, paths(value)), null, false);
+        const displayedFilterToRemove = Object.keys(
+            displayedFilters
+        )?.find(elem => paths(value).includes(elem));
+        hideFilter(displayedFilterToRemove);
     };
 
     const toggleFilter = () => (isSelected ? removeFilter() : addFilter());
