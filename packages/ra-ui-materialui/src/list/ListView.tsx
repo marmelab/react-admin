@@ -88,10 +88,7 @@ export const ListView = (props: ListViewProps) => {
     );
 
     const shouldRenderEmptyPage =
-        loaded &&
-        !loading &&
-        total === 0 &&
-        !Object.keys(filterValues).length;
+        loaded && !loading && total === 0 && !Object.keys(filterValues).length;
 
     return (
         <div
