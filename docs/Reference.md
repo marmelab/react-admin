@@ -58,6 +58,7 @@ title: "Reference"
 * [`<FilterList>`](./List.md#the-filterlist-sidebar)
 * [`<FilterListItem>`](./List.md#the-filterlist-sidebar)
 * [`<FilterLiveSearch>`](./List.md#live-search)
+* [`<FilterWithSave>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#savedquerieslist-and-filterwithsave-store-user-queries-in-preferences)<img class="icon" src="./img/premium.svg" />
 * [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs)
 * [`<FormTab>`](./CreateEdit.md#the-tabbedform-component)
 * [`<FunctionField>`](./Fields.md#functionfield)
@@ -104,6 +105,7 @@ title: "Reference"
 * [`<RichTextInput>`](./Inputs.md#richtextinput)
 * [`<RowForm>`](https://marmelab.com/ra-enterprise/modules/ra-editable-datagrid#rowform)<img class="icon" src="./img/premium.svg" />
 * `<SaveButton>`
+* [`<SavedFilterList>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#savedquerieslist-and-filterwithsave-store-user-queries-in-preferences)<img class="icon" src="./img/premium.svg" />
 * `<SearchInput>`
 * [`<SelectArrayInput>`](./Inputs.md#selectarrayinput)
 * [`<SelectColumnsButton>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#selectcolumnsbutton-store-datagrid-columns-in-preferences)<img class="icon" src="./img/premium.svg" />
