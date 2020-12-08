@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FC, ChangeEvent, memo, useRef } from 'react';
 import { InputAdornment } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
-import { AnyObject, Form } from 'react-final-form';
+import { Form } from 'react-final-form';
 import { useTranslate, useListFilterContext } from 'ra-core';
 import { get, set, merge } from 'lodash';
 
@@ -28,7 +28,7 @@ const FilterLiveSearch: FC<{ source?: string; label?: string }> = props => {
 
     const { filterValues, setFilters } = useListFilterContext();
     const translate = useTranslate();
-    const formRef = useRef<FormApi<AnyObject, Partial<AnyObject>>>(null);
+    const formRef = useRef<any>(null);
 
     // clear the form when the correspondind <Filter> is removed
     if (!get(filterValues, source)) {
