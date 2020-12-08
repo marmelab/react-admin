@@ -88,7 +88,6 @@ export const ListView = (props: ListViewProps) => {
     );
 
     const shouldRenderEmptyPage =
-        hasCreate &&
         loaded &&
         !loading &&
         total === 0 &&
