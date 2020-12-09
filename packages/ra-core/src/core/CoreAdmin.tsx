@@ -55,7 +55,7 @@ export type ChildrenFunction = () => ComponentType[];
  * // it's relatively straightforward to replace it:
  *
  * import * as React from 'react';
-import { useEffect, useState } from 'react';
+ * import { useEffect, useState } from 'react';
  * import {
  *     CoreAdminContext,
  *     CoreAdminUI,
@@ -96,6 +96,7 @@ const CoreAdmin: FunctionComponent<AdminProps> = ({
     customSagas,
     dashboard,
     dataProvider,
+    disableTelemetry,
     history,
     i18nProvider,
     initialState,
@@ -106,7 +107,6 @@ const CoreAdmin: FunctionComponent<AdminProps> = ({
     menu, // deprecated, use a custom layout instead
     theme,
     title = 'React Admin',
-    disableTelemetry,
 }) => {
     return (
         <CoreAdminContext
