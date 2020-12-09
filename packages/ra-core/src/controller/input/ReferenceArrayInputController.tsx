@@ -49,7 +49,7 @@ interface Props {
  *
  * ReferenceArrayInput component fetches the current resources (using
  * `dataProvider.getMany()`) as well as possible resources (using
- * `dataProvider.getMatching()` REST method) in the reference endpoint. It then
+ * `dataProvider.getList()` REST method) in the reference endpoint. It then
  * delegates rendering to a subcomponent, to which it passes the possible
  * choices as the `choices` attribute.
  *

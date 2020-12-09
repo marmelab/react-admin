@@ -26,7 +26,7 @@ const defaultFilter = {};
  * A hook for choosing a reference record. Useful for foreign keys.
  *
  * This hook fetches the possible values in the reference resource
- * (using `dataProvider.getMatching()`), it returns the possible choices
+ * (using `dataProvider.getList()`), it returns the possible choices
  * as the `choices` attribute.
  *
  * @example
