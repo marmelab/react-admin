@@ -25,7 +25,7 @@ import ReferenceError from './ReferenceError';
  * An Input component for choosing a reference record. Useful for foreign keys.
  *
  * This component fetches the possible values in the reference resource
- * (using `dataProvider.getMatching()`), then delegates rendering
+ * (using `dataProvider.getList()`), then delegates rendering
  * to a subcomponent, to which it passes the possible choices
  * as the `choices` attribute.
  *

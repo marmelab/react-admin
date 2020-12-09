@@ -44,7 +44,7 @@ export interface ReferenceArrayInputProps extends InputProps {
  *
  * ReferenceArrayInput component fetches the current resources (using
  * `dataProvider.getMany()`) as well as possible resources (using
- * `dataProvider.getMatching()`) in the reference endpoint. It then
+ * `dataProvider.getList()`) in the reference endpoint. It then
  * delegates rendering to a subcomponent, to which it passes the possible
  * choices as the `choices` attribute.
  *
