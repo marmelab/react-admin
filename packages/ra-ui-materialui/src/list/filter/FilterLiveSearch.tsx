@@ -24,7 +24,7 @@ import TextInput from '../../input/TextInput';
  * );
  */
 const FilterLiveSearch: FC<{ source?: string; label?: string }> = props => {
-    const { source = 'q', label, ...rest } = props;
+    const { source = 'q', label = 'ra.action.search', ...rest } = props;
 
     const { filterValues, setFilters } = useListFilterContext();
     const translate = useTranslate();
@@ -58,10 +58,7 @@ const FilterLiveSearch: FC<{ source?: string; label?: string }> = props => {
                         resettable
                         helperText={false}
                         source={source}
-                        label={
-                            (label && translate(label)) ||
-                            translate('ra.action.search')
-                        }
+                        label={translate(label)}
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
