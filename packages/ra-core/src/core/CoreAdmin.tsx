@@ -108,7 +108,6 @@ const CoreAdmin: FunctionComponent<AdminProps> = ({
     title = 'React Admin',
     disableTelemetry,
 }) => {
-    console.log(process.env.NODE_ENV);
     return (
         <CoreAdminContext
             authProvider={authProvider}
