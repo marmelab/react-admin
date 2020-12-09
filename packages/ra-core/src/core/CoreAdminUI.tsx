@@ -4,6 +4,7 @@ import {
     FunctionComponent,
     ComponentType,
     useMemo,
+    useEffect,
 } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
@@ -32,6 +33,7 @@ export interface AdminUIProps {
     children?: AdminChildren;
     customRoutes?: CustomRoutes;
     dashboard?: DashboardComponent;
+    disableTelemetry?: boolean;
     layout?: LayoutComponent;
     loading?: LoadingComponent;
     loginPage?: LoginComponent | boolean;
@@ -50,6 +52,7 @@ const CoreAdminUI: FunctionComponent<AdminUIProps> = ({
     children,
     customRoutes = [],
     dashboard,
+    disableTelemetry = false,
     layout = DefaultLayout,
     loading = Noop,
     loginPage = false,
@@ -62,6 +65,21 @@ const CoreAdminUI: FunctionComponent<AdminUIProps> = ({
     const logoutElement = useMemo(() => logout && createElement(logout), [
         logout,
     ]);
+
+    useEffect(() => {
+        if (
+            disableTelemetry ||
+            process.env.NODE_ENV !== 'production' ||
+            typeof window === 'undefined' ||
+            typeof window.location === 'undefined' ||
+            typeof Image === 'undefined'
+        ) {
+            return;
+        }
+        const img = new Image();
+        img.src = `https://react-admin-telemetry.marmelab.com/react-admin-telemetry?domain=${window.location.hostname}`;
+    }, [disableTelemetry]);
+
     return (
         <Switch>
             {loginPage !== false && loginPage !== true ? (

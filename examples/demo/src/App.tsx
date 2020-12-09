@@ -74,6 +74,7 @@ const App = () => {
             loginPage={Login}
             layout={Layout}
             i18nProvider={i18nProvider}
+            disableTelemetry
         >
             <Resource name="customers" {...visitors} />
             <Resource
