@@ -10,7 +10,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import CancelIcon from '@material-ui/icons/CancelOutlined';
 import { useTranslate, useListFilterContext } from 'ra-core';
 import { shallowEqual } from 'react-redux';
-import isEqual from 'lodash/isEqual';
+import matches from 'lodash/matches';
+import pickBy from 'lodash/pickBy';
 
 const useStyles = makeStyles(theme => ({
     listItem: {
@@ -148,7 +149,9 @@ const FilterListItem: FC<{ label: string; value: any }> = props => {
     const translate = useTranslate();
     const classes = useStyles(props);
 
-    const isSelected = isEqual(value, filterValues);
+    const isSelected = matches(
+        pickBy(value, val => typeof val !== 'undefined')
+    )(filterValues);
 
     const addFilter = () => {
         setFilters({ ...filterValues, ...value }, null, false);
@@ -179,6 +182,7 @@ const FilterListItem: FC<{ label: string; value: any }> = props => {
             <ListItemText
                 primary={translate(label, { _: label })}
                 className={classes.listItemText}
+                data-selected={isSelected ? 'true' : 'false'}
             />
             {isSelected && (
                 <ListItemSecondaryAction>
