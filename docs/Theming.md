@@ -485,9 +485,11 @@ const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
 You can specify the `Sidebar` width by setting the `width` and `closedWidth` property on your custom material-ui theme:
 
 ```jsx
+import { defaultTheme } from "react-admin";
 import { createMuiTheme } from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
+    ...defaultTheme,
     sidebar: {
         width: 300, // The default value is 240
         closedWidth: 70, // The default value is 55
