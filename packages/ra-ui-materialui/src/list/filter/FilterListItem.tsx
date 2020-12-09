@@ -10,7 +10,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import CancelIcon from '@material-ui/icons/CancelOutlined';
 import { useTranslate, useListContext } from 'ra-core';
 import { shallowEqual } from 'react-redux';
-import { isEmpty, isMatch, merge, omit } from 'lodash';
+import matches from 'lodash/matches';
+import pickBy from 'lodash/pickBy';
+import merge from 'lodash/merge';
+import omit from 'lodash/omit';
 import { paths } from 'deepdash-es/standalone';
 
 const useStyles = makeStyles(theme => ({
@@ -154,10 +157,9 @@ const FilterListItem: FC<{ label: string; value: any }> = props => {
     const translate = useTranslate();
     const classes = useStyles(props);
 
-    const isSelected =
-        isEmpty(value) || isEmpty(filterValues)
-            ? false
-            : isMatch(filterValues, value);
+    const isSelected = matches(
+        pickBy(value, val => typeof val !== 'undefined')
+    )(filterValues);
 
     const addFilter = () => {
         setFilters(merge({}, filterValues, value), null, false);
@@ -183,6 +185,7 @@ const FilterListItem: FC<{ label: string; value: any }> = props => {
             <ListItemText
                 primary={translate(label, { _: label })}
                 className={classes.listItemText}
+                data-selected={isSelected ? 'true' : 'false'}
             />
             {isSelected && (
                 <ListItemSecondaryAction>
