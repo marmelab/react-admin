@@ -141,9 +141,13 @@ const App = () => (
 
 ## `disableTelemetry`
 
-Telemetry is enabled by default on production environments. It's an anonymous metric only logging the domain name and allowing us to know who uses react-admin in production.
+In production, react-admin applications send an anonymous request on mount to a telemetry server operated by marmelab. You can see this request by looking at the Network tab of your browser DevTools:
 
-You can disable it by settings the `disableTelemetry` prop:
+`https://react-admin-telemetry.marmelab.com/react-admin-telemetry`
+
+The only data sent to the telemetry server is the admin domain (e.g. "example.com") - no personal data is ever sent, and no cookie is included in the response. The react-admin team uses these domains to track the usage of the framework.
+
+You can opt out of telemetry by simply adding `disableTelemetry` to the `<Admin>` component:
 
 ```jsx
 // in src/App.js

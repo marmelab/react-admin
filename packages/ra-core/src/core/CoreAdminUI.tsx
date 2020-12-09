@@ -4,6 +4,7 @@ import {
     FunctionComponent,
     ComponentType,
     useMemo,
+    useEffect,
 } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
@@ -64,54 +65,57 @@ const CoreAdminUI: FunctionComponent<AdminUIProps> = ({
     const logoutElement = useMemo(() => logout && createElement(logout), [
         logout,
     ]);
+
+    useEffect(() => {
+        if (
+            disableTelemetry ||
+            process.env.NODE_ENV !== 'production' ||
+            typeof window === 'undefined' ||
+            typeof window.location === 'undefined' ||
+            typeof Image === 'undefined'
+        ) {
+            return;
+        }
+        const img = new Image();
+        img.src = `https://react-admin-telemetry.marmelab.com/react-admin-telemetry?domain=${window.location.hostname}`;
+    }, [disableTelemetry]);
+
     return (
-        <>
-            {process.env.NODE_ENV === 'production' &&
-            disableTelemetry !== true &&
-            typeof window !== 'undefined' ? (
-                <img
-                    src={`https://react-admin-telemetry.marmelab.com/react-admin-telemetry?domain=${window.location.hostname}`}
-                    width="0"
-                    height=""
-                    alt=""
+        <Switch>
+            {loginPage !== false && loginPage !== true ? (
+                <Route
+                    exact
+                    path="/login"
+                    render={props =>
+                        createElement(loginPage, {
+                            ...props,
+                            title,
+                            theme,
+                        })
+                    }
                 />
             ) : null}
-            <Switch>
-                {loginPage !== false && loginPage !== true ? (
-                    <Route
-                        exact
-                        path="/login"
-                        render={props =>
-                            createElement(loginPage, {
-                                ...props,
-                                title,
-                                theme,
-                            })
-                        }
-                    />
-                ) : null}
-                <Route
-                    path="/"
-                    render={props => (
-                        <CoreAdminRouter
-                            catchAll={catchAll}
-                            customRoutes={customRoutes}
-                            dashboard={dashboard}
-                            layout={layout}
-                            loading={loading}
-                            logout={logoutElement}
-                            menu={menu}
-                            ready={ready}
-                            theme={theme}
-                            title={title}
-                            {...props}
-                        >
-                            {children}
-                        </CoreAdminRouter>
-                    )}
-                />
-            </Switch>
-        </>
+            <Route
+                path="/"
+                render={props => (
+                    <CoreAdminRouter
+                        catchAll={catchAll}
+                        customRoutes={customRoutes}
+                        dashboard={dashboard}
+                        layout={layout}
+                        loading={loading}
+                        logout={logoutElement}
+                        menu={menu}
+                        ready={ready}
+                        theme={theme}
+                        title={title}
+                        {...props}
+                    >
+                        {children}
+                    </CoreAdminRouter>
+                )}
+            />
+        </Switch>
     );
 };
 
