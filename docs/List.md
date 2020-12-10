@@ -231,7 +231,7 @@ const exporter = (records, fetchRelatedRecords) => {
         }));
         jsonExport(data, {
             headers: ['id', 'post_id', 'post_title', 'body'],
-        }, (err, csv) => {;
+        }, (err, csv) => {
             downloadCSV(csv, 'comments');
         });
     });
