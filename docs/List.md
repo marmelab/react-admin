@@ -1760,6 +1760,8 @@ export const Pagination = props => <RaPagination {...props} ActionsComponent={Pa
 
 export const UserList = props => (
     <List {...props} pagination={<Pagination />} />
+        ...
+    </List
 );
 ```
 
