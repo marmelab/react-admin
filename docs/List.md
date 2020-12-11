@@ -1759,8 +1759,7 @@ export const PaginationActions = props => <RaPaginationActions {...props} color=
 export const Pagination = props => <RaPagination {...props} ActionsComponent={PaginationActions} />;
 
 export const UserList = props => (
-    <List {...props} pagination={<Pagination />}>
-    </List>
+    <List {...props} pagination={<Pagination />} />
 );
 ```
 
@@ -1799,6 +1798,7 @@ You can use `ListBase` to create your own custom List component, like this one:
 
 ```jsx
 import * as React from 'react';
+import { cloneElement } from 'react';
 import { 
     Datagrid,
     ListBase,
@@ -1817,7 +1817,7 @@ const PostList = props => (
     </MyList>
 );
 
-const MyList = props => (
+const MyList = ({children, ...props}) => (
     <ListBase {...props}>
         <h1>{props.title}</h1>
         <ListToolbar
