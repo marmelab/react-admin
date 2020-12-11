@@ -158,7 +158,7 @@ describe('useCreateController', () => {
         expect(notify[0]).toEqual({
             type: 'RA/SHOW_NOTIFICATION',
             payload: {
-                messageArgs: {},
+                messageArgs: { _: 'not good' },
                 undoable: false,
                 autoHideDuration: undefined,
                 type: 'warning',
