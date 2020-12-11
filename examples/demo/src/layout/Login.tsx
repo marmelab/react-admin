@@ -99,7 +99,15 @@ const Login = () => {
                         : typeof error === 'undefined' || !error.message
                         ? 'ra.auth.sign_in_error'
                         : error.message,
-                    'warning'
+                    'warning',
+                    {
+                        _:
+                            typeof error === 'string'
+                                ? error
+                                : error && error.message
+                                ? error.message
+                                : undefined,
+                    }
                 );
             }
         );
