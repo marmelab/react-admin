@@ -15,6 +15,7 @@ export const defaultStore = {
         resources: {},
         references: { possibleValues: {} },
         ui: { viewVersion: 1 },
+        notifications: [],
     },
 };
 
