@@ -187,7 +187,15 @@ export const useCreateController = <
                                           ? error
                                           : error.message ||
                                                 'ra.notification.http_error',
-                                      'warning'
+                                      'warning',
+                                      {
+                                          _:
+                                              typeof error === 'string'
+                                                  ? error
+                                                  : error && error.message
+                                                  ? error.message
+                                                  : undefined,
+                                      }
                                   );
                               },
                     }
