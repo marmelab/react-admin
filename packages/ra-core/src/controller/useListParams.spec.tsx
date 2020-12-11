@@ -1,4 +1,11 @@
-import { getQuery, getNumberOrDefault } from './useListParams';
+import * as React from 'react';
+import expect from 'expect';
+import { render } from '@testing-library/react';
+import { Router } from 'react-router-dom';
+import { stringify } from 'query-string';
+
+import TestContext from '../util/TestContext';
+import useListParams, { getQuery, getNumberOrDefault } from './useListParams';
 import {
     SORT_DESC,
     SORT_ASC,
@@ -180,6 +187,146 @@ describe('useListParams', () => {
             const result = getNumberOrDefault('0', 2);
 
             expect(result).toEqual(0);
+        });
+    });
+    describe('showFilter', () => {
+        it('should initialize displayed filters', () => {
+            const TestedComponent = () => {
+                const [, { showFilter }] = useListParams({
+                    resource: 'foo',
+                    location: {} as any,
+                });
+                showFilter('foo');
+                return <span />;
+            };
+            const history = {
+                listen: jest.fn(),
+                push: jest.fn(),
+                location: { pathname: '', search: '' },
+            } as any;
+            render(
+                <Router history={history}>
+                    <TestContext history={history}>
+                        <TestedComponent />
+                    </TestContext>
+                </Router>
+            );
+            expect(history.push).toBeCalledWith({
+                search:
+                    '?' +
+                    stringify({
+                        displayedFilters: JSON.stringify({ foo: true }),
+                        filter: '{}',
+                        sort: 'id',
+                        order: 'ASC',
+                        page: 1,
+                        perPage: 10,
+                    }),
+            });
+        });
+        it('should initialize filters', () => {
+            const TestedComponent = () => {
+                const [, { showFilter }] = useListParams({
+                    resource: 'foo',
+                    location: {} as any,
+                });
+                showFilter('foo', 'bar');
+                return <span />;
+            };
+            const history = {
+                listen: jest.fn(),
+                push: jest.fn(),
+                location: { pathname: '', search: '' },
+            } as any;
+            render(
+                <Router history={history}>
+                    <TestContext history={history}>
+                        <TestedComponent />
+                    </TestContext>
+                </Router>
+            );
+            expect(history.push).toBeCalledWith({
+                search:
+                    '?' +
+                    stringify({
+                        displayedFilters: JSON.stringify({ foo: true }),
+                        filter: JSON.stringify({ foo: 'bar' }),
+                        sort: 'id',
+                        order: 'ASC',
+                        page: 1,
+                        perPage: 10,
+                    }),
+            });
+        });
+
+        it('should initialize displayed filters on compound filters', () => {
+            const TestedComponent = () => {
+                const [, { showFilter }] = useListParams({
+                    resource: 'foo',
+                    location: {} as any,
+                });
+                showFilter('foo.bar');
+                return <span />;
+            };
+            const history = {
+                listen: jest.fn(),
+                push: jest.fn(),
+                location: { pathname: '', search: '' },
+            } as any;
+            render(
+                <Router history={history}>
+                    <TestContext history={history}>
+                        <TestedComponent />
+                    </TestContext>
+                </Router>
+            );
+            expect(history.push).toBeCalledWith({
+                search:
+                    '?' +
+                    stringify({
+                        displayedFilters: JSON.stringify({ 'foo.bar': true }),
+                        filter: '{}',
+                        sort: 'id',
+                        order: 'ASC',
+                        page: 1,
+                        perPage: 10,
+                    }),
+            });
+        });
+
+        it('should initialize filters on compound filters', () => {
+            const TestedComponent = () => {
+                const [, { showFilter }] = useListParams({
+                    resource: 'foo',
+                    location: {} as any,
+                });
+                showFilter('foo.bar', 'baz');
+                return <span />;
+            };
+            const history = {
+                listen: jest.fn(),
+                push: jest.fn(),
+                location: { pathname: '', search: '' },
+            } as any;
+            render(
+                <Router history={history}>
+                    <TestContext history={history}>
+                        <TestedComponent />
+                    </TestContext>
+                </Router>
+            );
+            expect(history.push).toBeCalledWith({
+                search:
+                    '?' +
+                    stringify({
+                        displayedFilters: JSON.stringify({ 'foo.bar': true }),
+                        filter: JSON.stringify({ foo: { bar: 'baz' } }),
+                        sort: 'id',
+                        order: 'ASC',
+                        page: 1,
+                        perPage: 10,
+                    }),
+            });
         });
     });
 });

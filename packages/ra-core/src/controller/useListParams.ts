@@ -246,7 +246,9 @@ const useListParams = ({
             ...displayedFilterValues,
             [filterName]: true,
         };
-        const filter = set(filterValues, filterName, defaultValue);
+        const filter = defaultValue
+            ? set(filterValues, filterName, defaultValue)
+            : filterValues;
         changeParams({
             type: SET_FILTER,
             payload: {
