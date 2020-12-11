@@ -192,7 +192,7 @@ describe('useListParams', () => {
     describe('showFilter', () => {
         it('should initialize displayed filters', () => {
             const TestedComponent = () => {
-                const [_, { showFilter }] = useListParams({
+                const [, { showFilter }] = useListParams({
                     resource: 'foo',
                     location: {} as any,
                 });
@@ -226,7 +226,7 @@ describe('useListParams', () => {
         });
         it('should initialize filters', () => {
             const TestedComponent = () => {
-                const [_, { showFilter }] = useListParams({
+                const [, { showFilter }] = useListParams({
                     resource: 'foo',
                     location: {} as any,
                 });
@@ -261,7 +261,7 @@ describe('useListParams', () => {
 
         it('should initialize displayed filters on compound filters', () => {
             const TestedComponent = () => {
-                const [_, { showFilter }] = useListParams({
+                const [, { showFilter }] = useListParams({
                     resource: 'foo',
                     location: {} as any,
                 });
@@ -296,7 +296,7 @@ describe('useListParams', () => {
 
         it('should initialize filters on compound filters', () => {
             const TestedComponent = () => {
-                const [_, { showFilter }] = useListParams({
+                const [, { showFilter }] = useListParams({
                     resource: 'foo',
                     location: {} as any,
                 });
