@@ -49,7 +49,9 @@ const useStyles = makeStyles(
  * - rowStyle: function returning a style object based on (record, index)
  *
  * @example // Display all posts as a List
- *
+ * const postRowStyle = (record, index) => ({
+ *     backgroundColor: record.views >= 500 ? '#efe' : 'white',
+ * });
  * export const PostList = (props) => (
  *     <List {...props}>
  *         <SimpleList
@@ -58,6 +60,7 @@ const useStyles = makeStyles(
  *             tertiaryText={record =>
  *                 new Date(record.published_at).toLocaleDateString()
  *             }
+ *             rowStyle={postRowStyle}
  *          />
  *     </List>
  * );
