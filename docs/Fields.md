@@ -758,7 +758,7 @@ With this configuration, `<ReferenceField>` wraps the user's name in a link to t
 | ----------- | -------- | ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
 | `reference` | Required | `string`            | -        | The name of the resource for the referenced records, e.g. 'posts'                                                   |
 | `children`  | Required | `Element`           | -        | The Field element used to render the referenced record                                                              |
-| `link`      | Optional | `string`            | 'edit'   | Target of the link wrapping the rendered child                                                                      |
+| `link`      | Optional | `string | Function` | 'edit'   | Target of the link wrapping the rendered child                                                                      |
 | `sortBy`    | Optional | `string | Function` | `source` | Name of the field to use for sorting when the user clicks on the column header. Set to `false` to disable the link. |
 
 `<ReferenceField>` also accepts the [common field props](./Fields.md#common-field-props).
