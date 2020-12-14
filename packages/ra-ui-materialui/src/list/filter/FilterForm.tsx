@@ -14,10 +14,11 @@ import { ClassesOverride } from '../../types';
 const useStyles = makeStyles(
     theme => ({
         form: {
-            marginTop: -theme.spacing(2),
+            alignItems: 'center',
+            flexGrow: 1,
+
             paddingTop: 0,
             display: 'flex',
-            alignItems: 'flex-end',
             flexWrap: 'wrap',
             minHeight: theme.spacing(10),
             pointerEvents: 'none',

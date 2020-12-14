@@ -12,7 +12,7 @@ import TextInput from './TextInput';
 const useStyles = makeStyles(
     {
         input: {
-            marginTop: 32,
+            // marginTop: 32,
         },
     },
     { name: 'RaSearchInput' }
