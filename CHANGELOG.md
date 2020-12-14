@@ -1,5 +1,43 @@
 # Changelog
 
+## v3.11.0
+
+Starting with this version, react-admin applications send an anonymous request on mount to a telemetry server operated by marmelab. You can see this request by looking at the Network tab of your browser DevTools:
+
+`https://react-admin-telemetry.marmelab.com/react-admin-telemetry`
+
+The only data sent to the telemetry server is the admin domain (e.g. "example.com") - no personal data is ever sent, and no cookie is included in the response. The react-admin team uses these domains to track the usage of the framework.
+
+You can opt out of telemetry by simply adding `disableTelemetry` to the `<Admin>` component:
+
+```jsx
+// in src/App.js
+import * as React from "react";
+import { Admin } from 'react-admin';
+
+const App = () => (
+    <Admin disableTelemetry>
+        // ...
+    </Admin>
+);
+```
+
+* Add domain telemetry on app mount ([5631](https://github.com/marmelab/react-admin/pull/5631)) ([djhi](https://github.com/djhi))
+* Add ability to access (and override) side effects in `SaveContext` ([5604](https://github.com/marmelab/react-admin/pull/5604)) ([djhi](https://github.com/djhi))
+* Add support for `disabled` in `<ArrayInput>` ([5618](https://github.com/marmelab/react-admin/pull/5618)) ([fzaninotto](https://github.com/fzaninotto))
+* Disable ripple effect on Buttons for improved performance ([5598](https://github.com/marmelab/react-admin/pull/5598)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<TestContext>` doesn't contain `notifications` node ([5659](https://github.com/marmelab/react-admin/pull/5659)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Filter>` fails to show compound filters with no default value ([5657](https://github.com/marmelab/react-admin/pull/5657)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix "Missing translation" console error when the `dataProvider` fails ([5655](https://github.com/marmelab/react-admin/pull/5655)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<FilterListItem>` doesn't appear selected when more than one filter is applied ([5644](https://github.com/marmelab/react-admin/pull/5644)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add `rowStyle` example usage to `<SimpleList>` jsDoc ([5661](https://github.com/marmelab/react-admin/pull/5661)) ([vdimitroff](https://github.com/vdimitroff))
+* [Doc] Fix `<ReferenceField link>` prop type to show that it accepts a function ([5660](https://github.com/marmelab/react-admin/pull/5660)) ([vdimitroff](https://github.com/vdimitroff))
+* [Doc] Fix missing import in `List` example ([5658](https://github.com/marmelab/react-admin/pull/5658)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix syntax error in `<List exporter>` prop usage ([5649](https://github.com/marmelab/react-admin/pull/5649)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix Sidebar size change resets the theme color ([5646](https://github.com/marmelab/react-admin/pull/5646)) ([zheya08](https://github.com/zheya08))
+* [Doc] Fix `<ReferenceInput>` and `<ReferenceArrayInput>` JSDocs point to the wrong `dataProvider` method ([5645](https://github.com/marmelab/react-admin/pull/5645)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Add mention of saved queries in List chapter ([5638](https://github.com/marmelab/react-admin/pull/5638)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v3.10.4
 
 * Fix `ra-data-simple-rest` delete method fails because of bad header ([5628](https://github.com/marmelab/react-admin/pull/5628)) ([fzaninotto](https://github.com/fzaninotto))
