@@ -94,6 +94,7 @@ const Admin: FunctionComponent<AdminProps> = ({
     customSagas,
     dashboard,
     dataProvider,
+    disableTelemetry,
     history,
     i18nProvider,
     initialState,
@@ -137,6 +138,7 @@ const Admin: FunctionComponent<AdminProps> = ({
                 layout={appLayout || layout}
                 customRoutes={customRoutes}
                 dashboard={dashboard}
+                disableTelemetry={disableTelemetry}
                 menu={menu}
                 catchAll={catchAll}
                 theme={theme}

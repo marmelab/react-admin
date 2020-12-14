@@ -474,6 +474,7 @@ export interface AdminProps {
     customSagas?: any[];
     dashboard?: DashboardComponent;
     dataProvider: DataProvider | LegacyDataProvider;
+    disableTelemetry?: boolean;
     history?: History;
     i18nProvider?: I18nProvider;
     initialState?: InitialState;

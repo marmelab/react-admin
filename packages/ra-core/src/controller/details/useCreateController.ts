@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, MutableRefObject } from 'react';
 // @ts-ignore
 import inflection from 'inflection';
 import { parse } from 'query-string';
@@ -57,6 +57,9 @@ export interface CreateControllerProps<
     hasEdit?: boolean;
     hasList?: boolean;
     hasShow?: boolean;
+    onSuccessRef: MutableRefObject<OnSuccess>;
+    onFailureRef: MutableRefObject<OnFailure>;
+    transformRef: MutableRefObject<TransformData>;
     save: (
         record: Partial<Record>,
         redirect: RedirectionSideEffect,
@@ -226,6 +229,9 @@ export const useCreateController = <
         loaded: true,
         saving,
         defaultTitle,
+        onFailureRef,
+        onSuccessRef,
+        transformRef,
         save,
         setOnSuccess,
         setOnFailure,

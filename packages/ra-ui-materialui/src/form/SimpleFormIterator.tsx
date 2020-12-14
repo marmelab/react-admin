@@ -105,6 +105,7 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
         record,
         resource,
         source,
+        disabled,
         disableAdd,
         disableRemove,
         variant,
@@ -220,6 +221,7 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
                                                                 ? `resources.${resource}.fields.${input.props.source}`
                                                                 : undefined
                                                             : input.props.label,
+                                                    disabled,
                                                 })}
                                                 record={
                                                     (records &&
@@ -233,28 +235,29 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
                                         ) : null
                                 )}
                             </section>
-                            {!disableRemoveField(
-                                (records && records[index]) || {},
-                                disableRemove
-                            ) && (
-                                <span className={classes.action}>
-                                    {cloneElement(removeButton, {
-                                        onClick: handleRemoveButtonClick(
-                                            removeButton.props.onClick,
-                                            index
-                                        ),
-                                        className: classNames(
-                                            'button-remove',
-                                            `button-remove-${source}-${index}`
-                                        ),
-                                    })}
-                                </span>
-                            )}
+                            {!disabled &&
+                                !disableRemoveField(
+                                    (records && records[index]) || {},
+                                    disableRemove
+                                ) && (
+                                    <span className={classes.action}>
+                                        {cloneElement(removeButton, {
+                                            onClick: handleRemoveButtonClick(
+                                                removeButton.props.onClick,
+                                                index
+                                            ),
+                                            className: classNames(
+                                                'button-remove',
+                                                `button-remove-${source}-${index}`
+                                            ),
+                                        })}
+                                    </span>
+                                )}
                         </li>
                     </CSSTransition>
                 ))}
             </TransitionGroup>
-            {!disableAdd && (
+            {!disabled && !disableAdd && (
                 <li className={classes.line}>
                     <span className={classes.action}>
                         {cloneElement(addButton, {
@@ -307,6 +310,7 @@ export interface SimpleFormIteratorProps
     basePath?: string;
     className?: string;
     defaultValue?: any;
+    disabled?: boolean;
     disableAdd?: boolean;
     disableRemove?: boolean | DisableRemoveFunction;
     margin?: 'none' | 'normal' | 'dense';
