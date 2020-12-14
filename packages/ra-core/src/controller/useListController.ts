@@ -134,6 +134,7 @@ const useListController = <RecordType extends Record = Record>(
         resource,
         location,
         filterDefaultValues,
+        filter,
         sort,
         perPage,
         debounce,
