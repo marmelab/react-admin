@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Children, cloneElement, FC, memo, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { LinearProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     ListContextProvider,
@@ -16,6 +15,7 @@ import {
 import { fieldPropTypes, PublicFieldProps, InjectedFieldProps } from './types';
 import { ClassesOverride } from '../types';
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
+import { LinearProgressIfTooLong } from '../layout/LinearProgressIfTooLong';
 
 /**
  * A container component that fetches records from another resource specified
@@ -175,7 +175,7 @@ export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props =
     const { loaded } = useListContext(props);
 
     if (!loaded) {
-        return <LinearProgress className={classes.progress} />;
+        return <LinearProgressIfTooLong className={classes.progress} />;
     }
 
     return (

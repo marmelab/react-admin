@@ -17,9 +17,9 @@ import {
 } from 'ra-core';
 
 import sanitizeInputRestProps from './sanitizeInputRestProps';
-import LinearProgress from '../layout/LinearProgress';
 import Labeled from './Labeled';
 import ReferenceError from './ReferenceError';
+import { LinearProgressIfTooLong } from '../layout/LinearProgressIfTooLong';
 
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
@@ -231,7 +231,7 @@ export const ReferenceInputView: FunctionComponent<ReferenceInputViewProps> = ({
                 meta={meta}
                 input={input}
             >
-                <LinearProgress />
+                <LinearProgressIfTooLong />
             </Labeled>
         );
     }

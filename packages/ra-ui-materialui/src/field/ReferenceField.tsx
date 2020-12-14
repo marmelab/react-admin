@@ -15,11 +15,11 @@ import {
     Record,
 } from 'ra-core';
 
-import LinearProgress from '../layout/LinearProgress';
 import Link from '../Link';
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
 import { ClassesOverride } from '../types';
+import { LinearProgressIfTooLong } from '../layout/LinearProgressIfTooLong';
 
 /**
  * Fetch reference record, and delegate rendering to child component.
@@ -194,8 +194,9 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
         ...rest
     } = props;
     const classes = useStyles(props);
+
     if (!loaded) {
-        return <LinearProgress />;
+        return <LinearProgressIfTooLong />;
     }
     if (error) {
         return (

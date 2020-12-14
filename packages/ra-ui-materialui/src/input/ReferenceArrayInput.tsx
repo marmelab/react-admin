@@ -14,7 +14,7 @@ import {
 } from 'ra-core';
 
 import sanitizeInputRestProps from './sanitizeInputRestProps';
-import LinearProgress from '../layout/LinearProgress';
+import { LinearProgressIfTooLong } from '../layout/LinearProgressIfTooLong';
 import Labeled from './Labeled';
 import ReferenceError from './ReferenceError';
 import { FieldInputProps, FieldMetaState } from 'react-final-form';
@@ -261,7 +261,7 @@ export const ReferenceArrayInputView = ({
                 className={className}
                 isRequired={isRequired}
             >
-                <LinearProgress />
+                <LinearProgressIfTooLong />
             </Labeled>
         );
     }
