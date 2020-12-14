@@ -1092,37 +1092,7 @@ export const UserCreate = (props) => (
 
 **Tip**: The props you pass to `<SimpleForm>` and `<TabbedForm>` are passed to the [<Form>](https://final-form.org/docs/react-final-form/api/Form) of `react-final-form`.
 
-**Tip**: The `validate` function can return a promise for asynchronous validation. For instance:
-
-```jsx
-const validateUserCreation = async (values) => {
-    const errors = {};
-    if (!values.firstName) {
-        errors.firstName = ['The firstName is required'];
-    }
-    if (!values.age) {
-        errors.age = ['The age is required'];
-    } else if (values.age < 18) {
-        errors.age = ['Must be over 18'];
-    }
-
-    const isEmailUnique = await checkEmailIsUnique(values.userName);
-    if (!isEmailUnique) {
-        errors.email = ['Email already used'];
-    }
-    return errors
-};
-
-export const UserCreate = (props) => (
-    <Create {...props}>
-        <SimpleForm validate={validateUserCreation}>
-            <TextInput label="First Name" source="firstName" />
-            <TextInput label="Email" source="email" />
-            <TextInput label="Age" source="age" />
-        </SimpleForm>
-    </Create>
-);
-```
+**Tip**: The `validate` function can return a promise for asynchronous validation. See [the Server-Side Validation section](#server-side-validation) below.
 
 ### Per Input Validation: Built-in Field Validators
 
@@ -1289,7 +1259,43 @@ export const ProductEdit = ({ ...props }) => (
 
 **Tip**: You can use *both* Form validation and input validation.
 
-**Tip**: The custom validator function can return a promise for asynchronous validation. For instance:
+**Tip**: The custom validator function can return a promise, e.g. to use server-side validation. See next section for details.
+
+### Server-Side Validation
+
+You can validate the entire form data server-side by returning a Promise in the form `validate` function. For instance:
+
+```jsx
+const validateUserCreation = async (values) => {
+    const errors = {};
+    if (!values.firstName) {
+        errors.firstName = ['The firstName is required'];
+    }
+    if (!values.age) {
+        errors.age = ['The age is required'];
+    } else if (values.age < 18) {
+        errors.age = ['Must be over 18'];
+    }
+
+    const isEmailUnique = await checkEmailIsUnique(values.userName);
+    if (!isEmailUnique) {
+        errors.email = ['Email already used'];
+    }
+    return errors
+};
+
+export const UserCreate = (props) => (
+    <Create {...props}>
+        <SimpleForm validate={validateUserCreation}>
+            <TextInput label="First Name" source="firstName" />
+            <TextInput label="Email" source="email" />
+            <TextInput label="Age" source="age" />
+        </SimpleForm>
+    </Create>
+);
+```
+
+Per Input validators can also return a Promise to call the server for validation. For instance:
 
 ```jsx
 const validateEmailUnicity = async (value) => {
@@ -1321,7 +1327,8 @@ export const UserCreate = (props) => (
 );
 ```
 
-**Important**: Note that asynchronous validators are not supported on the `ArrayInput` component due to a limitation of [react-final-form-arrays](https://github.com/final-form/react-final-form-arrays).
+**Important**: Note that asynchronous validators are not supported on the `<ArrayInput>` component due to a limitation of [react-final-form-arrays](https://github.com/final-form/react-final-form-arrays).
+
 ## Submit On Enter
 
 By default, pressing `ENTER` in any of the form fields submits the form - this is the expected behavior in most cases. However, some of your custom input components (e.g. Google Maps widget) may have special handlers for the `ENTER` key. In that case, to disable the automated form submission on enter, set the `submitOnEnter` prop of the form component to `false`:
