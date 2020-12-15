@@ -19,7 +19,7 @@ import Link from '../Link';
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
 import { ClassesOverride } from '../types';
-import { LinearProgressIfTooLong } from '../layout/LinearProgressIfTooLong';
+import { LinearProgress } from '../layout';
 
 /**
  * Fetch reference record, and delegate rendering to child component.
@@ -197,7 +197,7 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
     const classes = useStyles(props);
 
     if (!loaded) {
-        return <LinearProgressIfTooLong />;
+        return <LinearProgress />;
     }
     if (error) {
         return (

@@ -15,7 +15,7 @@ describe('<ReferenceArrayInput />', () => {
         translate: x => `*${x}*`,
     };
 
-    it("should render a progress bar if loading is true and a second hasn't passed", async () => {
+    it("should not render a progress bar if loading is true and a second hasn't passed", async () => {
         const MyComponent = () => <div>MyComponent</div>;
         const { queryByRole, queryByText } = render(
             <ReferenceArrayInputView

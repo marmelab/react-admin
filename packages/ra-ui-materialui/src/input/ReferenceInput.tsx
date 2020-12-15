@@ -19,7 +19,7 @@ import {
 import sanitizeInputRestProps from './sanitizeInputRestProps';
 import Labeled from './Labeled';
 import ReferenceError from './ReferenceError';
-import { LinearProgressIfTooLong } from '../layout/LinearProgressIfTooLong';
+import { LinearProgress } from '../layout';
 
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
@@ -231,7 +231,7 @@ export const ReferenceInputView: FunctionComponent<ReferenceInputViewProps> = ({
                 meta={meta}
                 input={input}
             >
-                <LinearProgressIfTooLong />
+                <LinearProgress />
             </Labeled>
         );
     }

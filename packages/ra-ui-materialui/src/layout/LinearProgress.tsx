@@ -1,8 +1,11 @@
 import * as React from 'react';
-import Progress from '@material-ui/core/LinearProgress';
+import Progress, {
+    LinearProgressProps as ProgressProps,
+} from '@material-ui/core/LinearProgress';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
+import { useTimeout } from 'ra-core';
 
 const useStyles = makeStyles(
     theme => ({
@@ -24,18 +27,27 @@ const useStyles = makeStyles(
  *
  * @param {Object} classes CSS class names
  */
-const LinearProgress = props => {
+const LinearProgress = ({ timeout = 1000, ...props }: LinearProgressProps) => {
     const { classes: classesOverride, className, ...rest } = props;
     const classes = useStyles(props);
-    return (
+    const oneSecondHasPassed = useTimeout(timeout);
+
+    return oneSecondHasPassed ? (
         <Progress className={classnames(classes.root, className)} {...rest} />
-    );
+    ) : null;
 };
+
 LinearProgress.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
+    timeout: PropTypes.number,
 };
+
 // wat? TypeScript looses the displayName if we don't set it explicitly
 LinearProgress.displayName = 'LinearProgress';
+
+export interface LinearProgressProps extends ProgressProps {
+    timeout?: number;
+}
 
 export default LinearProgress;

@@ -15,7 +15,7 @@ import {
 import { fieldPropTypes, PublicFieldProps, InjectedFieldProps } from './types';
 import { ClassesOverride } from '../types';
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
-import { LinearProgressIfTooLong } from '../layout/LinearProgressIfTooLong';
+import { LinearProgress } from '../layout';
 
 /**
  * A container component that fetches records from another resource specified
@@ -175,7 +175,7 @@ export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props =
     const { loaded } = useListContext(props);
 
     if (!loaded) {
-        return <LinearProgressIfTooLong className={classes.progress} />;
+        return <LinearProgress className={classes.progress} />;
     }
 
     return (
