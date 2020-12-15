@@ -139,7 +139,7 @@ export const NonEmptyReferenceField: FC<Omit<
     if (React.Children.count(children) !== 1) {
         throw new Error('<ReferenceField> only accepts a single child');
     }
-    const { basePath, resource } = props;
+    const { basePath, resource, reference } = props;
     const resourceLinkPath = getResourceLinkPath({
         ...props,
         resource,
@@ -147,12 +147,13 @@ export const NonEmptyReferenceField: FC<Omit<
         source,
         basePath,
     });
+
     return (
-        <ResourceContextProvider value={props.reference}>
+        <ResourceContextProvider value={reference}>
             <PureReferenceFieldView
                 {...props}
                 {...useReference({
-                    reference: props.reference,
+                    reference,
                     id: get(record, source),
                 })}
                 resourceLinkPath={resourceLinkPath}
