@@ -231,7 +231,7 @@ const exporter = (records, fetchRelatedRecords) => {
         }));
         jsonExport(data, {
             headers: ['id', 'post_id', 'post_title', 'body'],
-        }, (err, csv) => {;
+        }, (err, csv) => {
             downloadCSV(csv, 'comments');
         });
     });
@@ -799,6 +799,7 @@ React-admin proposes several UI components to let users see and modify filters, 
 - The `<FilterList>` Sidebar
   - [Usage](#the-filterlist-sidebar)
   - [Full-Text Search](#live-search)
+- [Saved Queries: Let Users Save Filter And Sort](#saved-queries-let-users-save-filter-and-sort)
 - [Building A Custom Filter](#building-a-custom-filter)
 
 ### Filter Query Parameter
@@ -1141,6 +1142,97 @@ const FilterSidebar = () => (
     </Card>
 );
 ```
+
+### Saved Queries: Let Users Save Filter And Sort
+
+[![Saved Queries in FilterList](https://marmelab.com/ra-enterprise/modules/assets/ra-preferences-SavedQueriesList.gif)](https://marmelab.com/ra-enterprise/modules/assets/ra-preferences-SavedQueriesList.gif)
+
+Saved Queries are an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> feature letting users save a combination of filters and sort parameters into a new, personal filter. Saved queries persist between sessions, so users can find their custom queries even after closing and reopening the admin. Saved queries are available both for the `<Filter>` Button/Form combo and for the `<FilterList>` Sidebar:
+
+- `<FilterWithSave>` is a drop-in replacement for react-admin's `<Filter>` component
+
+```diff
+import {
+-   Filter,
+    SelectInput,
+    DateInput,
+    List,
+    Datagrid,
+    TextField,
+    NumberField,
+    DateField
+} from 'react-admin';
++import { FilterWithSave } from '@react-admin/ra-preferences';
+
+const SongFilter: FC = props => (
+-   <Filter {...props}>
++   <FilterWithSave {...props}>
+        <SelectInput
+            choices={[
+                { id: 'Apple', name: 'Apple' },
+                { id: 'Atlantic', name: 'Atlantic' },
+                { id: 'Capitol', name: 'Capitol' },
+                { id: 'Chess', name: 'Chess' },
+                { id: 'Columbia', name: 'Columbia' },
+                { id: 'DGC', name: 'DGC' },
+                { id: 'London', name: 'London' },
+                { id: 'Tamla', name: 'Tamla' },
+            ]}
+            source="recordCompany"
+        />
+        <DateInput source="released_gte" label="Released after" />
+        <DateInput source="released_lte" label="Released before" />
+-   </Filter>
++   </FilterWithSave>
+);
+
+const SongList: FC<Props> = props => (
+    <List {...props} filters={<SongFilter />}>
+        <Datagrid rowClick="edit">
+            <TextField source="title" />
+            <TextField source="artist" />
+            <TextField source="writer" />
+            <TextField source="producer" />
+            <TextField source="recordCompany" />
+            <NumberField source="rank" />
+            <DateField source="released" />
+        </Datagrid>
+    </List>
+);
+```
+
+- `<SavedFilterList>` is a complement to `<FilterList>` sections for the filter sidebar
+
+```diff
+import { FilterList, FilterListItem, List, Datagrid } from 'react-admin';
+import { Card, CardContent } from '@material-ui/core';
+
++import { SavedQueriesList } from '@react-admin/ra-preferences';
+
+const SongFilterSidebar: FC = () => (
+    <Card>
+        <CardContent>
++           <SavedQueriesList />
+            <FilterList label="Record Company" icon={<BusinessIcon />}>
+                ...
+            </FilterList>
+            <FilterList label="Released" icon={<DateRangeeIcon />}>
+               ...
+            </FilterList>
+        </CardContent>
+    </Card>
+);
+
+const SongList: FC<Props> = props => (
+    <List {...props} aside={<SongFilterSidebar />}>
+        <Datagrid>
+            ...
+        </Datagrid>
+    </List>
+);
+```
+
+For mode details about Saved Queries, check  the [`ra-preferences` module](https://marmelab.com/ra-enterprise/modules/ra-preferences#savedquerieslist-and-filterwithsave-store-user-queries-in-preferences) in React-Admin Enterprise Edition. 
 
 ### Building a Custom Filter
 
@@ -1667,8 +1759,9 @@ export const PaginationActions = props => <RaPaginationActions {...props} color=
 export const Pagination = props => <RaPagination {...props} ActionsComponent={PaginationActions} />;
 
 export const UserList = props => (
-    <List {...props} pagination={<Pagination />}>
-    </List>
+    <List {...props} pagination={<Pagination />} />
+        ...
+    </List
 );
 ```
 
@@ -1707,6 +1800,7 @@ You can use `ListBase` to create your own custom List component, like this one:
 
 ```jsx
 import * as React from 'react';
+import { cloneElement } from 'react';
 import { 
     Datagrid,
     ListBase,
@@ -1725,7 +1819,7 @@ const PostList = props => (
     </MyList>
 );
 
-const MyList = props => (
+const MyList = ({children, ...props}) => (
     <ListBase {...props}>
         <h1>{props.title}</h1>
         <ListToolbar

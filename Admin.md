@@ -32,6 +32,7 @@ Here are all the props accepted by the component:
 - [`i18nProvider`](#i18nprovider)
 - [`title`](#title)
 - [`dashboard`](#dashboard)
+- [`disableTelemetry`](#disableTelemetry)
 - [`catchAll`](#catchall)
 - [`menu`](#menu)
 - [`theme`](#theme)
@@ -137,6 +138,28 @@ const App = () => (
 ```
 
 ![Custom home page](./img/dashboard.png)
+
+## `disableTelemetry`
+
+In production, react-admin applications send an anonymous request on mount to a telemetry server operated by marmelab. You can see this request by looking at the Network tab of your browser DevTools:
+
+`https://react-admin-telemetry.marmelab.com/react-admin-telemetry`
+
+The only data sent to the telemetry server is the admin domain (e.g. "example.com") - no personal data is ever sent, and no cookie is included in the response. The react-admin team uses these domains to track the usage of the framework.
+
+You can opt out of telemetry by simply adding `disableTelemetry` to the `<Admin>` component:
+
+```jsx
+// in src/App.js
+import * as React from "react";
+import { Admin } from 'react-admin';
+
+const App = () => (
+    <Admin disableTelemetry>
+        // ...
+    </Admin>
+);
+```
 
 ## `catchAll`
 
