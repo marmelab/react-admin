@@ -334,10 +334,8 @@ const myTheme = merge({}, defaultTheme, {
         fontFamily: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Arial', 'sans-serif'].join(','),
     },
     overrides: {
-        MuiButton: {
-            // override the styles of all instances of this component
-            root: {
-                // Name of the rule
+        MuiButton: { // override the styles of all instances of this component
+            root: { // Name of the rule
                 color: 'white', // Some CSS
             },
         },
