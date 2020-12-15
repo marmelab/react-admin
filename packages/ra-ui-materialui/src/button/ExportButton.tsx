@@ -25,6 +25,7 @@ const ExportButton: FunctionComponent<ExportButtonProps> = props => {
         ...rest
     } = props;
     const {
+        filter,
         filterValues,
         currentSort,
         exporter: exporterFromContext,
@@ -39,7 +40,9 @@ const ExportButton: FunctionComponent<ExportButtonProps> = props => {
             dataProvider
                 .getList(resource, {
                     sort: currentSort || sort,
-                    filter: filterValues,
+                    filter: filter
+                        ? { ...filterValues, ...filter }
+                        : filterValues,
                     pagination: { page: 1, perPage: maxResults },
                 })
                 .then(
@@ -64,6 +67,7 @@ const ExportButton: FunctionComponent<ExportButtonProps> = props => {
             currentSort,
             dataProvider,
             exporter,
+            filter,
             filterValues,
             maxResults,
             notify,

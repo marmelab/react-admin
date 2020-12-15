@@ -3,6 +3,7 @@ import {
     Identifier,
     Exporter,
     SortPayload,
+    FilterPayload,
     Record as RaRecord,
     ResourceComponentProps,
     ResourceComponentPropsWithId,
@@ -17,7 +18,7 @@ export interface ListProps extends ResourceComponentProps {
     component?: ElementType;
     empty?: ReactElement | false;
     exporter?: Exporter | false;
-    filter?: any;
+    filter?: FilterPayload;
     filterDefaultValues?: any;
     filters?: ReactElement;
     pagination?: ReactElement | false;
