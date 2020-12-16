@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { wait, fireEvent } from '@testing-library/react';
+import { waitFor, fireEvent } from '@testing-library/react';
 import { renderWithRedux, DataProviderContext } from 'ra-core';
 
 import { Edit } from './Edit';
@@ -28,7 +28,7 @@ describe('<Edit />', () => {
             </DataProviderContext.Provider>,
             { admin: { resources: { foo: { data: {} } } } }
         );
-        await wait(() => {
+        await waitFor(() => {
             expect(queryAllByText('lorem')).toHaveLength(1);
         });
     });
@@ -39,9 +39,7 @@ describe('<Edit />', () => {
             .mockImplementationOnce((_, { data }) => Promise.resolve({ data }));
         const dataProvider = {
             getOne: () =>
-                Promise.resolve({
-                    data: { id: 123, title: 'lorem' },
-                }),
+                Promise.resolve({ data: { id: 1234, title: 'lorem' } }),
             update,
         };
         const FakeForm = ({ record, save }) => (
@@ -52,23 +50,24 @@ describe('<Edit />', () => {
                 </button>
             </>
         );
+
         const { queryAllByText, getByText } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <Edit {...defaultEditProps} undoable={false}>
+                <Edit {...defaultEditProps} id="1234" undoable={false}>
                     <FakeForm />
                 </Edit>
             </DataProviderContext.Provider>,
             { admin: { resources: { foo: { data: {} } } } }
         );
-        await wait(() => {
+        await waitFor(() => {
             expect(queryAllByText('lorem')).toHaveLength(1);
         });
         fireEvent.click(getByText('Update'));
-        await wait(() => {
+        await waitFor(() => {
             expect(update).toHaveBeenCalledWith('foo', {
-                id: '123',
-                data: { id: 123, title: 'ipsum' },
-                previousData: { id: 123, title: 'lorem' },
+                id: '1234',
+                data: { id: 1234, title: 'ipsum' },
+                previousData: { id: 1234, title: 'lorem' },
             });
         });
     });
@@ -103,11 +102,11 @@ describe('<Edit />', () => {
                 </DataProviderContext.Provider>,
                 { admin: { resources: { foo: { data: {} } } } }
             );
-            await wait(() => {
+            await waitFor(() => {
                 expect(queryAllByText('lorem')).toHaveLength(1);
             });
             fireEvent.click(getByText('Update'));
-            await wait(() => {
+            await waitFor(() => {
                 expect(onSuccess).toHaveBeenCalledWith({
                     data: { id: 123, title: 'ipsum' },
                 });
@@ -150,11 +149,11 @@ describe('<Edit />', () => {
                 </DataProviderContext.Provider>,
                 { admin: { resources: { foo: { data: {} } } } }
             );
-            await wait(() => {
+            await waitFor(() => {
                 expect(queryAllByText('lorem')).toHaveLength(1);
             });
             fireEvent.click(getByText('Update'));
-            await wait(() => {
+            await waitFor(() => {
                 expect(onSuccessSave).toHaveBeenCalledWith({
                     data: { id: 123, title: 'ipsum' },
                 });
@@ -194,11 +193,11 @@ describe('<Edit />', () => {
                 </DataProviderContext.Provider>,
                 { admin: { resources: { foo: { data: {} } } } }
             );
-            await wait(() => {
+            await waitFor(() => {
                 expect(queryAllByText('lorem')).toHaveLength(1);
             });
             fireEvent.click(getByText('Update'));
-            await wait(() => {
+            await waitFor(() => {
                 expect(onFailure).toHaveBeenCalledWith({ message: 'not good' });
             });
         });
@@ -240,11 +239,11 @@ describe('<Edit />', () => {
                 </DataProviderContext.Provider>,
                 { admin: { resources: { foo: { data: {} } } } }
             );
-            await wait(() => {
+            await waitFor(() => {
                 expect(queryAllByText('lorem')).toHaveLength(1);
             });
             fireEvent.click(getByText('Update'));
-            await wait(() => {
+            await waitFor(() => {
                 expect(onFailureSave).toHaveBeenCalledWith({
                     message: 'not good',
                 });
@@ -291,11 +290,11 @@ describe('<Edit />', () => {
                 </DataProviderContext.Provider>,
                 { admin: { resources: { foo: { data: {} } } } }
             );
-            await wait(() => {
+            await waitFor(() => {
                 expect(queryAllByText('lorem')).toHaveLength(1);
             });
             fireEvent.click(getByText('Update'));
-            await wait(() => {
+            await waitFor(() => {
                 expect(transform).toHaveBeenCalledWith({
                     id: 123,
                     title: 'ipsum',
@@ -352,11 +351,11 @@ describe('<Edit />', () => {
                 </DataProviderContext.Provider>,
                 { admin: { resources: { foo: { data: {} } } } }
             );
-            await wait(() => {
+            await waitFor(() => {
                 expect(queryAllByText('lorem')).toHaveLength(1);
             });
             fireEvent.click(getByText('Update'));
-            await wait(() => {
+            await waitFor(() => {
                 expect(transform).not.toHaveBeenCalled();
                 expect(transformSave).toHaveBeenCalledWith({
                     id: 123,

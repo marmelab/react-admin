@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, fireEvent, wait } from '@testing-library/react';
+import { render, fireEvent, waitFor } from '@testing-library/react';
 
 import FileInputPreview from './FileInputPreview';
 
@@ -60,9 +60,12 @@ describe('<FileInputPreview />', () => {
         );
 
         unmount();
-        await wait();
-        // @ts-ignore
-        expect(global.URL.revokeObjectURL).toHaveBeenCalledWith('previewUrl');
+        await waitFor(() => {
+            // @ts-ignore
+            expect(global.URL.revokeObjectURL).toHaveBeenCalledWith(
+                'previewUrl'
+            );
+        });
     });
 
     it('should not try to clean up preview urls if not passed a File object with a preview', async () => {
@@ -75,8 +78,9 @@ describe('<FileInputPreview />', () => {
         );
 
         unmount();
-        await wait();
-        // @ts-ignore
-        expect(global.URL.revokeObjectURL).not.toHaveBeenCalled();
+        await waitFor(() => {
+            // @ts-ignore
+            expect(global.URL.revokeObjectURL).not.toHaveBeenCalled();
+        });
     });
 });

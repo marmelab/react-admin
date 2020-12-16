@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { fireEvent, render, wait } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import expect from 'expect';
 
@@ -202,7 +202,7 @@ describe('<AutocompleteArrayInput />', () => {
         expect(queryAllByRole('option')).toHaveLength(0);
 
         fireEvent.change(input, { target: { value: 'Tec' } });
-        await wait(() => {
+        await waitFor(() => {
             expect(queryAllByRole('option')).toHaveLength(1);
         });
     });
@@ -425,7 +425,7 @@ describe('<AutocompleteArrayInput />', () => {
             expect(setFilter).toHaveBeenCalledTimes(2);
             expect(setFilter).toHaveBeenCalledWith('p');
             formApi.change('tags', ['p']);
-            await wait(() => {
+            await waitFor(() => {
                 expect(setFilter).toHaveBeenCalledTimes(3);
                 expect(setFilter).toHaveBeenCalledWith('');
             });
@@ -464,7 +464,7 @@ describe('<AutocompleteArrayInput />', () => {
             expect(setFilter).toHaveBeenCalledTimes(2);
             expect(setFilter).toHaveBeenCalledWith('p');
             formApi.change('tags', ['p']);
-            await wait(() => {
+            await waitFor(() => {
                 expect(setFilter).toHaveBeenCalledTimes(3);
                 expect(setFilter).toHaveBeenCalledWith('');
             });

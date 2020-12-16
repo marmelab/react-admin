@@ -46,7 +46,7 @@
     "devDependencies": {
         "@types/fetch-mock": "^7.3.2",
         "@types/classnames": "^2.2.9",
-        "@types/jest": "^26.0.15",
+        "@types/jest": "^26.0.19",
         "@types/node": "^12.12.14",
         "@types/query-string": "5.1.0",
         "@types/react": "^16.9.13",

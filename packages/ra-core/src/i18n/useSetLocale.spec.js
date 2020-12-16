@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { fireEvent, wait, act } from '@testing-library/react';
+import { fireEvent, waitFor, act } from '@testing-library/react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import useTranslate from './useTranslate';
@@ -42,8 +42,9 @@ describe('useSetLocale', () => {
             </TranslationContext.Provider>
         );
         fireEvent.click(getByText('Français'));
-        await wait();
-        expect(setLocale).toHaveBeenCalledTimes(1);
+        await waitFor(() => {
+            expect(setLocale).toHaveBeenCalledTimes(1);
+        });
     });
 
     it('should use the i18n provider when using TranslationProvider', async () => {
@@ -61,8 +62,9 @@ describe('useSetLocale', () => {
         act(() => {
             fireEvent.click(getByText('Français'));
         });
-        await wait();
-        expect(queryAllByText('hello')).toHaveLength(0);
-        expect(queryAllByText('bonjour')).toHaveLength(1);
+        await waitFor(() => {
+            expect(queryAllByText('hello')).toHaveLength(0);
+            expect(queryAllByText('bonjour')).toHaveLength(1);
+        });
     });
 });

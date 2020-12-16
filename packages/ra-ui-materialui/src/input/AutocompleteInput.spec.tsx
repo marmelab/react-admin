@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, fireEvent, wait } from '@testing-library/react';
+import { render, fireEvent, waitFor } from '@testing-library/react';
 
 import AutocompleteInput from './AutocompleteInput';
 import { Form } from 'react-final-form';
@@ -208,7 +208,7 @@ describe('<AutocompleteInput />', () => {
             selector: 'input',
         });
         fireEvent.focus(input);
-        await wait(() => {
+        await waitFor(() => {
             expect(queryByText('foo')).not.toBeNull();
         });
     });
@@ -234,7 +234,7 @@ describe('<AutocompleteInput />', () => {
             selector: 'input',
         });
         fireEvent.focus(input);
-        await wait(() => {
+        await waitFor(() => {
             expect(queryByText('foo')).toBeNull();
         });
     });
@@ -356,7 +356,7 @@ describe('<AutocompleteInput />', () => {
             fireEvent.focus(input);
             fireEvent.change(input, { target: { value: 'bar' } });
             fireEvent.blur(input);
-            await wait(() => {
+            await waitFor(() => {
                 expect(input.value).toEqual('foo');
             });
         });
@@ -588,7 +588,7 @@ describe('<AutocompleteInput />', () => {
         });
         fireEvent.focus(input);
         fireEvent.change(input, { target: { value: 'abc' } });
-        await wait(() => expect(queryAllByRole('option').length).toEqual(1));
+        await waitFor(() => expect(queryAllByRole('option').length).toEqual(1));
     });
 
     it('passes options.suggestionsContainerProps to the suggestions container', () => {

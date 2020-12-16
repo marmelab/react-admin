@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { wait } from '@testing-library/react';
+import { waitFor } from '@testing-library/react';
 
 import Authenticated from './Authenticated';
 import AuthContext from './AuthContext';
@@ -19,8 +19,9 @@ describe('<Authenticated>', () => {
             </Authenticated>
         );
         expect(queryByText('Foo')).not.toBeNull();
-        await wait();
-        expect(dispatch).toHaveBeenCalledTimes(0);
+        await waitFor(() => {
+            expect(dispatch).toHaveBeenCalledTimes(0);
+        });
     });
 
     it('should logout, redirect to login and show a notification after a tick if the auth fails', async () => {
@@ -43,18 +44,21 @@ describe('<Authenticated>', () => {
                 </AuthContext.Provider>
             </Router>
         );
-        await wait();
-        expect(authProvider.checkAuth.mock.calls[0][0]).toEqual({});
-        expect(authProvider.logout.mock.calls[0][0]).toEqual({});
-        expect(dispatch).toHaveBeenCalledTimes(2);
-        expect(dispatch.mock.calls[0][0]).toEqual(
-            showNotification('ra.auth.auth_check_error', 'warning', {
-                messageArgs: {},
-                undoable: false,
-            })
-        );
-        expect(dispatch.mock.calls[1][0]).toEqual({ type: 'RA/CLEAR_STATE' });
-        expect(history.location.pathname).toEqual('/login');
-        expect(history.location.state).toEqual({ nextPathname: '/' });
+        await waitFor(() => {
+            expect(authProvider.checkAuth.mock.calls[0][0]).toEqual({});
+            expect(authProvider.logout.mock.calls[0][0]).toEqual({});
+            expect(dispatch).toHaveBeenCalledTimes(2);
+            expect(dispatch.mock.calls[0][0]).toEqual(
+                showNotification('ra.auth.auth_check_error', 'warning', {
+                    messageArgs: {},
+                    undoable: false,
+                })
+            );
+            expect(dispatch.mock.calls[1][0]).toEqual({
+                type: 'RA/CLEAR_STATE',
+            });
+            expect(history.location.pathname).toEqual('/login');
+            expect(history.location.state).toEqual({ nextPathname: '/' });
+        });
     });
 });

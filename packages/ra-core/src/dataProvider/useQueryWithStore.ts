@@ -195,7 +195,7 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
                             if (
                                 requestSignature !== requestSignatureRef.current
                             ) {
-                                resolve();
+                                resolve(undefined);
                             }
 
                             resolve({
@@ -208,7 +208,7 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
                             if (
                                 requestSignature !== requestSignatureRef.current
                             ) {
-                                resolve();
+                                resolve(undefined);
                             }
                             resolve({
                                 error,

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { wait } from '@testing-library/react';
+import { waitFor } from '@testing-library/react';
 import expect from 'expect';
 
 import renderWithRedux from '../util/renderWithRedux';
@@ -142,7 +142,7 @@ describe('useGetList', () => {
                 })
             ),
         };
-        await wait(); // empty the query deduplication in useQueryWithStore
+        await new Promise(setImmediate); // empty the query deduplication in useQueryWithStore
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseGetList callback={hookValue} />
@@ -239,7 +239,7 @@ describe('useGetList', () => {
         const dataProvider = {
             getList: jest.fn(() => Promise.reject(new Error('failed'))),
         };
-        await wait(); // empty the query deduplication in useQueryWithStore
+        await new Promise(setImmediate); // empty the query deduplication in useQueryWithStore
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseGetList callback={hookValue} />
@@ -277,7 +277,7 @@ describe('useGetList', () => {
                     })
                 ),
         };
-        await wait(); // empty the query deduplication in useQueryWithStore
+        await new Promise(setImmediate); // empty the query deduplication in useQueryWithStore
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseGetList options={{ onSuccess: onSuccess1 }} />
@@ -312,7 +312,7 @@ describe('useGetList', () => {
         const dataProvider = {
             getList: jest.fn(() => Promise.reject(new Error('failed'))),
         };
-        await wait(); // empty the query deduplication in useQueryWithStore
+        await new Promise(setImmediate); // empty the query deduplication in useQueryWithStore
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseGetList options={{ onFailure }} />

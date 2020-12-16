@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { wait } from '@testing-library/react';
+import { waitFor } from '@testing-library/react';
 import expect from 'expect';
 import { Router, Route } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
@@ -102,8 +102,9 @@ describe('<CoreAdminRouter>', () => {
                 </AuthContext.Provider>
             );
             // Timeout needed because of the authProvider call
-            await wait();
-            expect(getByText('Layout')).not.toBeNull();
+            await waitFor(() => {
+                expect(getByText('Layout')).not.toBeNull();
+            });
             history.push('/posts');
             expect(getByText('PostList')).not.toBeNull();
             history.push('/comments');

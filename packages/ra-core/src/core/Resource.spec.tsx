@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { wait } from '@testing-library/react';
+import { waitFor } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
@@ -47,7 +47,7 @@ describe('<Resource>', () => {
             <Resource {...resource} intent="registration" />
         );
         unmount();
-        await wait(() => {
+        await waitFor(() => {
             expect(dispatch).toHaveBeenCalledTimes(2);
             expect(dispatch.mock.calls[1][0]).toEqual(
                 unregisterResource('posts')
@@ -109,7 +109,7 @@ describe('<Resource>', () => {
             { admin: { resources: { posts: {} } } }
         );
         history.push('/posts');
-        await wait(() => {
+        await waitFor(() => {
             expect(getByText('Permissions: admin')).not.toBeNull();
         });
     });

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, wait, fireEvent } from '@testing-library/react';
+import { render, waitFor, fireEvent } from '@testing-library/react';
 import expect from 'expect';
 import {
     TestContext,
@@ -214,8 +214,8 @@ describe('<SaveButton />', () => {
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
-        // wait for the dataProvider.getOne() return
-        await wait(() => {
+        // waitFor for the dataProvider.getOne() return
+        await waitFor(() => {
             expect(queryByDisplayValue('lorem')).toBeDefined();
         });
         // change one input to enable the SaveButton (which is disabled when the form is pristine)
@@ -223,7 +223,7 @@ describe('<SaveButton />', () => {
             target: { value: 'ipsum' },
         });
         fireEvent.click(getByText('ra.action.save'));
-        await wait(() => {
+        await waitFor(() => {
             expect(onSuccess).toHaveBeenCalledWith({
                 data: { id: 123, title: 'ipsum' },
             });
@@ -259,8 +259,8 @@ describe('<SaveButton />', () => {
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
-        // wait for the dataProvider.getOne() return
-        await wait(() => {
+        // waitFor for the dataProvider.getOne() return
+        await waitFor(() => {
             expect(queryByDisplayValue('lorem')).toBeDefined();
         });
         // change one input to enable the SaveButton (which is disabled when the form is pristine)
@@ -268,7 +268,7 @@ describe('<SaveButton />', () => {
             target: { value: 'ipsum' },
         });
         fireEvent.click(getByText('ra.action.save'));
-        await wait(() => {
+        await waitFor(() => {
             expect(onFailure).toHaveBeenCalledWith({
                 message: 'not good',
             });
@@ -309,8 +309,8 @@ describe('<SaveButton />', () => {
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
-        // wait for the dataProvider.getOne() return
-        await wait(() => {
+        // waitFor for the dataProvider.getOne() return
+        await waitFor(() => {
             expect(queryByDisplayValue('lorem')).toBeDefined();
         });
         // change one input to enable the SaveButton (which is disabled when the form is pristine)
@@ -318,7 +318,7 @@ describe('<SaveButton />', () => {
             target: { value: 'ipsum' },
         });
         fireEvent.click(getByText('ra.action.save'));
-        await wait(() => {
+        await waitFor(() => {
             expect(transform).toHaveBeenCalledWith({ id: 123, title: 'ipsum' });
             expect(update).toHaveBeenCalledWith('posts', {
                 id: '123',

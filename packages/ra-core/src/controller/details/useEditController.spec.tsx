@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { act, wait } from '@testing-library/react';
+import { act, waitFor } from '@testing-library/react';
 
 import { EditController } from './EditController';
 import renderWithRedux from '../../util/renderWithRedux';
@@ -32,7 +32,7 @@ describe('useEditController', () => {
                 Promise.resolve({ data: { id: 12, title: 'hello' } })
             );
         const dataProvider = ({ getOne } as unknown) as DataProvider;
-        const { queryAllByText } = renderWithRedux(
+        const { queryAllByText, unmount } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <SaveContextProvider value={saveContextValue}>
                     <EditController {...defaultProps}>
@@ -42,30 +42,35 @@ describe('useEditController', () => {
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
-        await wait(() => {
+        await waitFor(() => {
             expect(getOne).toHaveBeenCalled();
             expect(queryAllByText('hello')).toHaveLength(1);
         });
+
+        unmount();
     });
 
-    it('should dispatch a CRUD_GET_ONE action on mount', () => {
+    it('should dispatch a CRUD_GET_ONE action on mount', async () => {
         const dataProvider = ({
-            getOne: () => Promise.resolve({ data: { id: 12, title: 'hello' } }),
+            getOne: () => Promise.resolve({ data: { id: 13, title: 'hello' } }),
         } as unknown) as DataProvider;
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <SaveContextProvider value={saveContextValue}>
-                    <EditController {...defaultProps}>
+                    <EditController {...defaultProps} id={13}>
                         {({ record }) => <div>{record && record.title}</div>}
                     </EditController>
                 </SaveContextProvider>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
-        const crudGetOneAction = dispatch.mock.calls[0][0];
-        expect(crudGetOneAction.type).toEqual('RA/CRUD_GET_ONE');
-        expect(crudGetOneAction.payload).toEqual({ id: 12 });
-        expect(crudGetOneAction.meta.resource).toEqual('posts');
+
+        await waitFor(() => {
+            const crudGetOneAction = dispatch.mock.calls[0][0];
+            expect(crudGetOneAction.type).toEqual('RA/CRUD_GET_ONE');
+            expect(crudGetOneAction.payload).toEqual({ id: 13 });
+            expect(crudGetOneAction.meta.resource).toEqual('posts');
+        });
     });
 
     it('should grab the record from the store based on the id', () => {

@@ -1,10 +1,5 @@
 import * as React from 'react';
-import {
-    fireEvent,
-    waitForDomChange,
-    act,
-    render,
-} from '@testing-library/react';
+import { fireEvent, waitFor, act, render } from '@testing-library/react';
 import expect from 'expect';
 
 import Mutation from './Mutation';
@@ -98,17 +93,19 @@ describe('Mutation', () => {
 
         const testElement = getByTestId('test');
         fireEvent.click(testElement);
-        await waitForDomChange({ container: testElement });
-
-        expect(dispatchSpy).toHaveBeenCalledWith(
-            showNotification('Youhou!', 'info', {
-                messageArgs: {},
-                undoable: false,
-            })
-        );
-        expect(historyForAssertions.location.pathname).toEqual('/a_path');
-        expect(dispatchSpy).toHaveBeenCalledWith(refreshView());
-        expect(dispatchSpy).toHaveBeenCalledWith(setListSelectedIds('foo', []));
+        await waitFor(() => {
+            expect(dispatchSpy).toHaveBeenCalledWith(
+                showNotification('Youhou!', 'info', {
+                    messageArgs: {},
+                    undoable: false,
+                })
+            );
+            expect(historyForAssertions.location.pathname).toEqual('/a_path');
+            expect(dispatchSpy).toHaveBeenCalledWith(refreshView());
+            expect(dispatchSpy).toHaveBeenCalledWith(
+                setListSelectedIds('foo', [])
+            );
+        });
     });
 
     it('supports onSuccess side effects using hooks', async () => {
@@ -154,14 +151,14 @@ describe('Mutation', () => {
 
         const testElement = getByTestId('test');
         fireEvent.click(testElement);
-        await waitForDomChange({ container: testElement });
-
-        expect(dispatchSpy).toHaveBeenCalledWith(
-            showNotification('Youhou!', 'info', {
-                messageArgs: {},
-                undoable: false,
-            })
-        );
+        await waitFor(() => {
+            expect(dispatchSpy).toHaveBeenCalledWith(
+                showNotification('Youhou!', 'info', {
+                    messageArgs: {},
+                    undoable: false,
+                })
+            );
+        });
     });
 
     it('supports declarative onFailure side effects', async () => {
@@ -218,17 +215,19 @@ describe('Mutation', () => {
 
         const testElement = getByTestId('test');
         fireEvent.click(testElement);
-        await waitForDomChange({ container: testElement });
-
-        expect(dispatchSpy).toHaveBeenCalledWith(
-            showNotification('Damn!', 'warning', {
-                messageArgs: {},
-                undoable: false,
-            })
-        );
-        expect(historyForAssertions.location.pathname).toEqual('/a_path');
-        expect(dispatchSpy).toHaveBeenCalledWith(refreshView());
-        expect(dispatchSpy).toHaveBeenCalledWith(setListSelectedIds('foo', []));
+        await waitFor(() => {
+            expect(dispatchSpy).toHaveBeenCalledWith(
+                showNotification('Damn!', 'warning', {
+                    messageArgs: {},
+                    undoable: false,
+                })
+            );
+            expect(historyForAssertions.location.pathname).toEqual('/a_path');
+            expect(dispatchSpy).toHaveBeenCalledWith(refreshView());
+            expect(dispatchSpy).toHaveBeenCalledWith(
+                setListSelectedIds('foo', [])
+            );
+        });
     });
 
     it('supports onFailure side effects using hooks', async () => {
@@ -277,13 +276,13 @@ describe('Mutation', () => {
 
         const testElement = getByTestId('test');
         fireEvent.click(testElement);
-        await waitForDomChange({ container: testElement });
-
-        expect(dispatchSpy).toHaveBeenCalledWith(
-            showNotification('Damn!', 'warning', {
-                messageArgs: {},
-                undoable: false,
-            })
-        );
+        await waitFor(() => {
+            expect(dispatchSpy).toHaveBeenCalledWith(
+                showNotification('Damn!', 'warning', {
+                    messageArgs: {},
+                    undoable: false,
+                })
+            );
+        });
     });
 });

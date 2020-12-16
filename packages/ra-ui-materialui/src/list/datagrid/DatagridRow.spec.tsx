@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { fireEvent, wait } from '@testing-library/react';
+import { fireEvent, waitFor } from '@testing-library/react';
 import { renderWithRedux, linkToRecord } from 'ra-core';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
@@ -139,7 +139,7 @@ describe('<DatagridRow />', () => {
                 </DatagridRow>
             );
             fireEvent.click(getByText('hello'));
-            await wait(); // wait one tick
+            await new Promise(setImmediate); // waitFor one tick
             expect(history.location.pathname).toEqual('/bar/foo');
         });
 

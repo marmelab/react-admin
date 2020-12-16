@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { wait } from '@testing-library/react';
+import { waitFor } from '@testing-library/react';
 import expect from 'expect';
 
 import renderWithRedux from '../util/renderWithRedux';
@@ -9,7 +9,7 @@ import { DataProviderContext } from '../dataProvider';
 const UseQueryWithStore = ({
     query = { type: 'getOne', resource: 'posts', payload: { id: 1 } },
     options = {},
-    dataSelector = state => state.admin?.resources.posts.data[1],
+    dataSelector = state => state.admin?.resources.posts.data[query.payload.id],
     totalSelector = state => null,
     callback = null,
     ...rest
@@ -48,7 +48,7 @@ describe('useQueryWithStore', () => {
             total: null,
         });
         callback.mockClear();
-        await wait(); // dataProvider Promise returns result on next tick
+        await new Promise(resolve => setImmediate(resolve)); // dataProvider Promise returns result on next tick
         expect(callback).toBeCalledWith({
             data: { id: 1, title: 'titleFromDataProvider' },
             loading: false,
@@ -62,21 +62,28 @@ describe('useQueryWithStore', () => {
         const dataProvider = {
             getOne: jest.fn(() =>
                 Promise.resolve({
-                    data: { id: 1, title: 'titleFromDataProvider' },
+                    data: { id: 2, title: 'titleFromDataProvider' },
                 })
             ),
         };
         const callback = jest.fn();
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <UseQueryWithStore callback={callback} />
+                <UseQueryWithStore
+                    query={{
+                        type: 'getOne',
+                        resource: 'posts',
+                        payload: { id: 2 },
+                    }}
+                    callback={callback}
+                />
             </DataProviderContext.Provider>,
             {
                 admin: {
                     resources: {
                         posts: {
                             data: {
-                                1: { id: 1, title: 'titleFromReduxStore' },
+                                2: { id: 2, title: 'titleFromReduxStore' },
                             },
                         },
                     },
@@ -84,20 +91,25 @@ describe('useQueryWithStore', () => {
             }
         );
         expect(callback).toBeCalledWith({
-            data: { id: 1, title: 'titleFromReduxStore' },
+            data: { id: 2, title: 'titleFromReduxStore' },
             loading: true,
             loaded: true,
             error: null,
             total: null,
         });
         callback.mockClear();
-        await wait(); // dataProvider Promise returns result on next tick
-        expect(callback).toBeCalledWith({
-            data: { id: 1, title: 'titleFromDataProvider' },
-            loading: false,
-            loaded: true,
-            error: null,
-            total: null,
+        await waitFor(() => {
+            expect(dataProvider.getOne).toHaveBeenCalled();
+        });
+        // dataProvider Promise returns result on next tick
+        await waitFor(() => {
+            expect(callback).toBeCalledWith({
+                data: { id: 2, title: 'titleFromDataProvider' },
+                loading: false,
+                loaded: true,
+                error: null,
+                total: null,
+            });
         });
     });
 
@@ -125,7 +137,7 @@ describe('useQueryWithStore', () => {
             total: null,
         });
         callback.mockClear();
-        await wait(); // dataProvider Promise returns result on next tick
+        await new Promise(resolve => setImmediate(resolve)); // dataProvider Promise returns result on next tick
         expect(callback).toBeCalledWith({
             data: undefined,
             loading: false,
@@ -139,30 +151,36 @@ describe('useQueryWithStore', () => {
         const dataProvider = {
             getOne: jest.fn(() =>
                 Promise.resolve({
-                    data: { id: 1, title: 'titleFromDataProvider' },
+                    data: { id: 3, title: 'titleFromDataProvider' },
                 })
             ),
         };
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <UseQueryWithStore />
+                <UseQueryWithStore
+                    query={{
+                        type: 'getOne',
+                        resource: 'posts',
+                        payload: { id: 3 },
+                    }}
+                />
             </DataProviderContext.Provider>,
             {
                 admin: {
                     resources: {
                         posts: {
                             data: {
-                                1: { id: 1, title: 'titleFromReduxStore' },
+                                3: { id: 3, title: 'titleFromReduxStore' },
                             },
                         },
                     },
                 },
             }
         );
-        await wait(); // dataProvider Promise returns result on next tick
+        await new Promise(resolve => setImmediate(resolve)); // dataProvider Promise returns result on next tick
         expect(dataProvider.getOne).toBeCalledTimes(1);
         dispatch({ type: 'RA/REFRESH_VIEW' });
-        await wait(); // dataProvider Promise returns result on next tick
+        await new Promise(resolve => setImmediate(resolve)); // dataProvider Promise returns result on next tick
         expect(dataProvider.getOne).toBeCalledTimes(2);
     });
 
@@ -187,7 +205,7 @@ describe('useQueryWithStore', () => {
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
-        await wait(); // dataProvider Promise returns result on next tick
+        await new Promise(resolve => setImmediate(resolve)); // dataProvider Promise returns result on next tick
         expect(dataProvider.getOne).toBeCalledTimes(2);
     });
 
@@ -206,7 +224,7 @@ describe('useQueryWithStore', () => {
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
-        await wait(); // dataProvider Promise returns result on next tick
+        await new Promise(resolve => setImmediate(resolve)); // dataProvider Promise returns result on next tick
         expect(dataProvider.getOne).toBeCalledTimes(1);
     });
 });

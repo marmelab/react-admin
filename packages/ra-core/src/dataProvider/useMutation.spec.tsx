@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, fireEvent, waitForDomChange } from '@testing-library/react';
+import { render, fireEvent, waitFor } from '@testing-library/react';
 import expect from 'expect';
 
 import Mutation from './Mutation';
@@ -127,8 +127,9 @@ describe('useMutation', () => {
         const testElement = getByTestId('test');
         expect(testElement.textContent).toBe('no data');
         fireEvent.click(testElement);
-        await waitForDomChange({ container: testElement });
-        expect(testElement.textContent).toEqual('bar');
+        await waitFor(() => {
+            expect(testElement.textContent).toEqual('bar');
+        });
     });
 
     it('should update the error state after an error response', async () => {
@@ -155,8 +156,9 @@ describe('useMutation', () => {
         const testElement = getByTestId('test');
         expect(testElement.textContent).toBe('no data');
         fireEvent.click(testElement);
-        await waitForDomChange({ container: testElement });
-        expect(testElement.textContent).toEqual('provider error');
+        await waitFor(() => {
+            expect(testElement.textContent).toEqual('provider error');
+        });
     });
 
     it('should allow custom dataProvider methods without resource', () => {

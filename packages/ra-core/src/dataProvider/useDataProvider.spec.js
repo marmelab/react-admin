@@ -123,7 +123,7 @@ describe('useDataProvider', () => {
             </DataProviderContext.Provider>
         );
         expect(dispatch.mock.calls).toHaveLength(3);
-        // wait for the dataProvider to return
+        // waitFor for the dataProvider to return
         await act(async () => {
             await new Promise(resolve => setTimeout(resolve));
         });
@@ -144,7 +144,7 @@ describe('useDataProvider', () => {
                 <UseCustomVerbWithStandardSignature onSuccess={onSuccess} />
             </DataProviderContext.Provider>
         );
-        // wait for the dataProvider to return
+        // waitFor for the dataProvider to return
         await act(async () => {
             await new Promise(resolve => setTimeout(resolve));
         });
@@ -175,7 +175,7 @@ describe('useDataProvider', () => {
                 <UseCustomVerbWithNoArgument />
             </DataProviderContext.Provider>
         );
-        // wait for the dataProvider to return
+        // waitFor for the dataProvider to return
         await act(async () => {
             await new Promise(resolve => setTimeout(resolve));
         });
@@ -191,7 +191,7 @@ describe('useDataProvider', () => {
                 <UseCustomVerb />
             </DataProviderContext.Provider>
         );
-        // wait for the dataProvider to return
+        // waitFor for the dataProvider to return
         await act(async () => {
             await new Promise(resolve => setTimeout(resolve));
         });
@@ -208,7 +208,7 @@ describe('useDataProvider', () => {
                 <UseCustomVerb onSuccess={onSuccess} />
             </DataProviderContext.Provider>
         );
-        // wait for the dataProvider to return
+        // waitFor for the dataProvider to return
         await act(async () => {
             await new Promise(resolve => setTimeout(resolve));
         });
@@ -241,7 +241,7 @@ describe('useDataProvider', () => {
                 </DataProviderContext.Provider>
             );
             expect(dispatch.mock.calls).toHaveLength(3);
-            // wait for the dataProvider to return
+            // waitFor for the dataProvider to return
             await act(async () => {
                 await new Promise(resolve => setTimeout(resolve));
             });
@@ -277,7 +277,7 @@ describe('useDataProvider', () => {
                 </DataProviderContext.Provider>
             );
             expect(onSuccess.mock.calls).toHaveLength(0);
-            // wait for the dataProvider to return
+            // waitFor for the dataProvider to return
             await act(async () => {
                 await new Promise(resolve => setTimeout(resolve));
             });
@@ -310,7 +310,7 @@ describe('useDataProvider', () => {
                 </DataProviderContext.Provider>
             );
             expect(onFailure.mock.calls).toHaveLength(0);
-            // wait for the dataProvider to return
+            // waitFor for the dataProvider to return
             await act(async () => {
                 await new Promise(resolve => setTimeout(resolve));
             });
@@ -329,7 +329,7 @@ describe('useDataProvider', () => {
                 </DataProviderContext.Provider>,
                 { admin: { resources: { posts: { data: {}, list: {} } } } }
             );
-            // wait for the dataProvider to return
+            // waitFor for the dataProvider to return
             await act(async () => await new Promise(r => setTimeout(r)));
             expect(getOne).toBeCalledTimes(1);
             rerender(
@@ -337,7 +337,7 @@ describe('useDataProvider', () => {
                     <UseGetOne key="2" />
                 </DataProviderContext.Provider>
             );
-            // wait for the dataProvider to return
+            // waitFor for the dataProvider to return
             await act(async () => await new Promise(r => setTimeout(r)));
             expect(getOne).toBeCalledTimes(2);
         });
@@ -355,7 +355,7 @@ describe('useDataProvider', () => {
                 </DataProviderContext.Provider>,
                 { admin: { resources: { posts: { data: {}, list: {} } } } }
             );
-            // wait for the dataProvider to return
+            // waitFor for the dataProvider to return
             await act(async () => await new Promise(r => setTimeout(r)));
             expect(getOne).toBeCalledTimes(1);
             rerender(
@@ -363,7 +363,7 @@ describe('useDataProvider', () => {
                     <UseGetOne key="2" />
                 </DataProviderContext.Provider>
             );
-            // wait for the dataProvider to return
+            // waitFor for the dataProvider to return
             await act(async () => await new Promise(r => setTimeout(r)));
             expect(getOne).toBeCalledTimes(1);
         });
@@ -381,7 +381,7 @@ describe('useDataProvider', () => {
                 </DataProviderContext.Provider>,
                 { admin: { resources: { posts: { data: {}, list: {} } } } }
             );
-            // wait for the dataProvider to return
+            // waitFor for the dataProvider to return
             await act(async () => await new Promise(r => setTimeout(r)));
             expect(getOne).toBeCalledTimes(1);
             rerender(
@@ -389,7 +389,7 @@ describe('useDataProvider', () => {
                     <UseGetOne key="2" />
                 </DataProviderContext.Provider>
             );
-            // wait for the dataProvider to return
+            // waitFor for the dataProvider to return
             await act(async () => await new Promise(r => setTimeout(r)));
             expect(getOne).toBeCalledTimes(2);
         });
@@ -412,7 +412,7 @@ describe('useDataProvider', () => {
                 </DataProviderContext.Provider>,
                 { admin: { resources: { posts: { data: {}, list: {} } } } }
             );
-            // wait for the dataProvider to return
+            // waitFor for the dataProvider to return
             await act(async () => await new Promise(r => setTimeout(r)));
             // click on the refresh button
             expect(getOne).toBeCalledTimes(1);
@@ -425,7 +425,7 @@ describe('useDataProvider', () => {
                     <UseGetOne key="2" />
                 </DataProviderContext.Provider>
             );
-            // wait for the dataProvider to return
+            // waitFor for the dataProvider to return
             await act(async () => await new Promise(r => setTimeout(r)));
             expect(getOne).toBeCalledTimes(2);
         });
@@ -451,7 +451,7 @@ describe('useDataProvider', () => {
                 </DataProviderContext.Provider>,
                 { admin: { resources: { posts: { data: {}, list: {} } } } }
             );
-            // wait for the dataProvider to return
+            // waitFor for the dataProvider to return
             await act(async () => await new Promise(r => setTimeout(r)));
             expect(getOne).toBeCalledTimes(1);
             // click on the update button
@@ -464,7 +464,7 @@ describe('useDataProvider', () => {
                     <UseGetOne key="2" />
                 </DataProviderContext.Provider>
             );
-            // wait for the dataProvider to return
+            // waitFor for the dataProvider to return
             await act(async () => await new Promise(r => setTimeout(r)));
             expect(getOne).toBeCalledTimes(2);
         });

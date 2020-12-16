@@ -1,4 +1,4 @@
-import { render, wait, fireEvent } from '@testing-library/react';
+import { render, waitFor, fireEvent } from '@testing-library/react';
 import * as React from 'react';
 import expect from 'expect';
 import {
@@ -100,12 +100,12 @@ describe('<DeleteWithUndoButton />', () => {
             </ThemeProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
-        // wait for the dataProvider.getOne() return
-        await wait(() => {
+        // waitFor for the dataProvider.getOne() return
+        await waitFor(() => {
             expect(queryByDisplayValue('lorem')).not.toBeNull();
         });
         fireEvent.click(getByLabelText('ra.action.delete'));
-        await wait(() => {
+        await waitFor(() => {
             expect(onSuccess).toHaveBeenCalledWith({});
         });
     });

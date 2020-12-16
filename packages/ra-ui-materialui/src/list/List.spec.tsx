@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { wait } from '@testing-library/react';
+import { waitFor } from '@testing-library/react';
 import { renderWithRedux, DataProviderContext } from 'ra-core';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -104,7 +104,7 @@ describe('<List />', () => {
             </ThemeProvider>,
             defaultStateForList
         );
-        await wait(() => {
+        await waitFor(() => {
             expect(queryAllByText('resources.posts.empty')).toHaveLength(1);
         });
     });
@@ -124,7 +124,7 @@ describe('<List />', () => {
             </ThemeProvider>,
             defaultStateForList
         );
-        await wait(() => {
+        await waitFor(() => {
             expect(queryAllByText('resources.posts.empty')).toHaveLength(0);
         });
     });
@@ -144,7 +144,7 @@ describe('<List />', () => {
             </ThemeProvider>,
             defaultStateForList
         );
-        await wait(() => {
+        await waitFor(() => {
             expect(queryAllByText('resources.posts.empty')).toHaveLength(1);
         });
     });

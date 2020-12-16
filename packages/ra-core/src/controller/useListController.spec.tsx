@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { fireEvent, wait } from '@testing-library/react';
+import { fireEvent, waitFor } from '@testing-library/react';
 import lolex from 'lolex';
 import TextField from '@material-ui/core/TextField/TextField';
 
@@ -259,13 +259,13 @@ describe('useListController', () => {
             );
 
             fireEvent.click(getByLabelText('Show filter 1'));
-            await wait(() => {
+            await waitFor(() => {
                 expect(currentDisplayedFilters).toEqual({
                     'filter1.subdata': true,
                 });
             });
             fireEvent.click(getByLabelText('Show filter 2'));
-            await wait(() => {
+            await waitFor(() => {
                 expect(currentDisplayedFilters).toEqual({
                     'filter1.subdata': true,
                     filter2: true,
