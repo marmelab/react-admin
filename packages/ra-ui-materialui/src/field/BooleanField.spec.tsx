@@ -1,7 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import BooleanField from './BooleanField';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 const defaultProps = {
     record: { id: 123, published: true },
@@ -11,7 +11,6 @@ const defaultProps = {
 };
 
 describe('<BooleanField />', () => {
-    afterEach(cleanup);
     it('should display tick and truthy text if value is true', () => {
         const { queryByTitle } = render(<BooleanField {...defaultProps} />);
         expect(queryByTitle('ra.boolean.true')).not.toBeNull();

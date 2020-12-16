@@ -2,13 +2,11 @@ import * as React from 'react';
 import { Route, MemoryRouter } from 'react-router-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 import RoutesWithLayout from './RoutesWithLayout';
 
 describe('<RoutesWithLayout>', () => {
-    afterEach(cleanup);
-
     const Dashboard = () => <div>Dashboard</div>;
     const Custom = ({ name }) => <div>Custom</div>;
     const FirstResource = ({ name }) => <div>Default</div>;

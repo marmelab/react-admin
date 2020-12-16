@@ -1,10 +1,5 @@
 import * as React from 'react';
-import {
-    render,
-    cleanup,
-    fireEvent,
-    waitForDomChange,
-} from '@testing-library/react';
+import { render, fireEvent, waitForDomChange } from '@testing-library/react';
 import expect from 'expect';
 
 import Mutation from './Mutation';
@@ -13,8 +8,6 @@ import renderWithRedux from '../util/renderWithRedux';
 import { DataProviderContext } from '.';
 
 describe('useMutation', () => {
-    afterEach(cleanup);
-
     it('should pass a callback to trigger the mutation', () => {
         let callback = null;
         renderWithRedux(

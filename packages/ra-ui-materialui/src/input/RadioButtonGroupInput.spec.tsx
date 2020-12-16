@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import { TestTranslationProvider } from 'ra-core';
 
@@ -15,8 +15,6 @@ describe('<RadioButtonGroupInput />', () => {
             { id: 'mastercard', name: 'Mastercard' },
         ],
     };
-
-    afterEach(cleanup);
 
     it('should render choices as radio inputs', () => {
         const { getByLabelText, queryByText } = render(

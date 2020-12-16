@@ -1,4 +1,3 @@
-import { cleanup } from '@testing-library/react';
 import * as React from 'react';
 import expect from 'expect';
 import {
@@ -11,8 +10,6 @@ import SimpleForm from './SimpleForm';
 import TextInput from '../input/TextInput';
 
 describe('<SimpleForm />', () => {
-    afterEach(cleanup);
-
     const saveContextValue = { save: jest.fn(), saving: false };
     const sideEffects = {};
 

@@ -1,13 +1,11 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import EmailField from './EmailField';
 
 const url = 'foo@bar.com';
 
 describe('<EmailField />', () => {
-    afterEach(cleanup);
-
     it('should render as Mui Link', () => {
         const record = { id: 123, foo: url };
         const { getByText } = render(

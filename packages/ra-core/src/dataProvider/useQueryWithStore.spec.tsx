@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cleanup, wait } from '@testing-library/react';
+import { wait } from '@testing-library/react';
 import expect from 'expect';
 
 import renderWithRedux from '../util/renderWithRedux';
@@ -25,8 +25,6 @@ const UseQueryWithStore = ({
 };
 
 describe('useQueryWithStore', () => {
-    afterEach(cleanup);
-
     it('should return data from dataProvider', async () => {
         const dataProvider = {
             getOne: jest.fn(() =>

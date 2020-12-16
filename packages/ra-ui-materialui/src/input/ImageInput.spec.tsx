@@ -1,13 +1,11 @@
 import * as React from 'react';
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
 
 import ImageField from '../field/ImageField';
 import ImageInput from './ImageInput';
 
 describe('<ImageInput />', () => {
-    afterEach(cleanup);
-
     const defaultProps = {
         source: 'image',
         resource: 'posts',
@@ -266,7 +264,6 @@ describe('<ImageInput />', () => {
             );
 
             expect(getByText(expectedLabelText)).not.toBeNull();
-            cleanup();
         };
 
         const CustomLabel = () => <div>Custom label in component</div>;

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { ReferenceInputView } from './ReferenceInput';
 
 describe('<ReferenceInput />', () => {
@@ -56,8 +56,6 @@ describe('<ReferenceInput />', () => {
         loading: false,
     };
     const MyComponent = () => <span id="mycomponent" />;
-
-    afterEach(cleanup);
 
     it('should render a LinearProgress if loading is true', () => {
         const { queryByRole } = render(

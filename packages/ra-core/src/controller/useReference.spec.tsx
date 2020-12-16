@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { cleanup } from '@testing-library/react';
 import expect from 'expect';
 
 import renderWithRedux from '../util/renderWithRedux';
@@ -17,8 +16,6 @@ describe('useReference', () => {
         id: '1',
         reference: 'posts',
     };
-
-    afterEach(cleanup);
 
     it('should fetch reference on mount', async () => {
         const dataProvider = {

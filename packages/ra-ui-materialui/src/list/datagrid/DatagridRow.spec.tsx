@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cleanup, fireEvent, wait } from '@testing-library/react';
+import { fireEvent, wait } from '@testing-library/react';
 import { renderWithRedux, linkToRecord } from 'ra-core';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
@@ -31,8 +31,6 @@ const render = element =>
     );
 
 describe('<DatagridRow />', () => {
-    afterEach(cleanup);
-
     const defaultProps = {
         id: 15,
         basePath: '/blob',

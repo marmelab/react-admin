@@ -1,12 +1,11 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import useChoices from './useChoices';
 import { renderWithRedux } from '../util';
 import { TestTranslationProvider } from '../i18n';
 
 describe('useChoices hook', () => {
-    afterEach(cleanup);
     const defaultProps = {
         choice: { id: 42, name: 'test' },
         optionValue: 'id',

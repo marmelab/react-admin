@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import { TestTranslationProvider } from 'ra-core';
 
@@ -16,8 +16,6 @@ describe('<SelectArrayInput />', () => {
             { id: 'photography', name: 'Photography' },
         ],
     };
-
-    afterEach(cleanup);
 
     it('should use a mui Select', () => {
         const { queryByTestId } = render(

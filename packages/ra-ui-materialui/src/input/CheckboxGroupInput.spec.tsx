@@ -1,7 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import CheckboxGroupInput from './CheckboxGroupInput';
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import { renderWithRedux, TestTranslationProvider } from 'ra-core';
 
@@ -14,8 +14,6 @@ describe('<CheckboxGroupInput />', () => {
             { id: 'rct', name: 'React' },
         ],
     };
-
-    afterEach(cleanup);
 
     it('should render choices as checkbox components', () => {
         const { getByLabelText } = render(

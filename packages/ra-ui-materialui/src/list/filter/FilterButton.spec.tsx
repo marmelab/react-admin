@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
 
@@ -23,8 +23,6 @@ describe('<FilterButton />', () => {
         showFilter: () => {},
         filterValues: {},
     };
-
-    afterEach(cleanup);
 
     describe('filter button', () => {
         it('should not be rendered, if all filters are already being displayed', () => {

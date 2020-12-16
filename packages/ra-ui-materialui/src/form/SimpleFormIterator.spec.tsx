@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, wait, getByText } from '@testing-library/react';
+import { fireEvent, wait, getByText } from '@testing-library/react';
 import * as React from 'react';
 import {
     renderWithRedux,
@@ -23,8 +23,6 @@ describe('<SimpleFormIterator />', () => {
         confirmSpy.mockImplementation(jest.fn(() => true));
     });
     afterAll(() => confirmSpy.mockRestore());
-
-    afterEach(cleanup);
 
     const saveContextValue = { save: jest.fn(), saving: false };
     const sideEffectValue = {};

@@ -1,11 +1,9 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import InputHelperText from './InputHelperText';
 
 describe('InputHelperText', () => {
-    afterEach(cleanup);
-
     it('does render empty string when the input has not been touched yet and has no helper text', () => {
         const { container } = render(
             <InputHelperText touched={false} error="Crap!" />

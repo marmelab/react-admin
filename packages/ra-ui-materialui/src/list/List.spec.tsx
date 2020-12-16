@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { cleanup, wait } from '@testing-library/react';
+import { wait } from '@testing-library/react';
 import { renderWithRedux, DataProviderContext } from 'ra-core';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -12,8 +12,6 @@ import List from './List';
 const theme = createMuiTheme(defaultTheme);
 
 describe('<List />', () => {
-    afterEach(cleanup);
-
     const defaultProps = {
         hasCreate: true,
         hasEdit: true,

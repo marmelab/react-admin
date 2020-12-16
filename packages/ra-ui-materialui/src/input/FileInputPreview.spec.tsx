@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 
 import FileInputPreview from './FileInputPreview';
 
@@ -17,7 +17,6 @@ describe('<FileInputPreview />', () => {
     afterEach(() => {
         // @ts-ignore
         global.URL.revokeObjectURL.mockClear();
-        cleanup();
     });
 
     const file = {

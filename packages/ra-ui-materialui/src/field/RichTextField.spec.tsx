@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import RichTextField, { removeTags } from './RichTextField';
 
 describe('stripTags', () => {
@@ -44,8 +44,6 @@ describe('stripTags', () => {
 });
 
 describe('<RichTextField />', () => {
-    afterEach(cleanup);
-
     it('should render as HTML', () => {
         const record = { id: 123, body: '<h1>Hello world!</h1>' };
         const { container } = render(
