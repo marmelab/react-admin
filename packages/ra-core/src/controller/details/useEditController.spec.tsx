@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { act, cleanup, wait } from '@testing-library/react';
+import { act, wait } from '@testing-library/react';
 
 import { EditController } from './EditController';
 import renderWithRedux from '../../util/renderWithRedux';
@@ -9,8 +9,6 @@ import { DataProvider } from '../../types';
 import { SaveContextProvider } from '../../../esm';
 
 describe('useEditController', () => {
-    afterEach(cleanup);
-
     const defaultProps = {
         basePath: '',
         hasCreate: true,

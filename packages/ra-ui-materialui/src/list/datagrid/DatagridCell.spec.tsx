@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 import DatagridCell from './DatagridCell';
 
@@ -14,8 +14,6 @@ const renderWithTable = element =>
     );
 
 describe('<DatagridCell />', () => {
-    afterEach(cleanup);
-
     const Field = ({ basePath }) => <div>{basePath}</div>;
     Field.propTypes = {
         type: PropTypes.string,

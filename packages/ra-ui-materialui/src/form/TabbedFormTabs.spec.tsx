@@ -1,13 +1,11 @@
 import * as React from 'react';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
 import TabbedFormTabs from './TabbedFormTabs';
 import FormTab from './FormTab';
 
 describe('<TabbedFormTabs />', () => {
-    afterEach(cleanup);
-
     it('should set the style of an inactive Tab button with errors', () => {
         const { getAllByRole } = render(
             <MemoryRouter initialEntries={['/posts/12']} initialIndex={0}>

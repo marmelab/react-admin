@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { cleanup, wait } from '@testing-library/react';
+import { wait } from '@testing-library/react';
 
 import usePermissions from './usePermissions';
 import AuthContext from './AuthContext';
@@ -21,8 +21,6 @@ const stateInpector = state => (
 );
 
 describe('usePermissions', () => {
-    afterEach(cleanup);
-
     it('should return a loading state on mount', () => {
         const { queryByText } = renderWithRedux(
             <UsePermissions>{stateInpector}</UsePermissions>

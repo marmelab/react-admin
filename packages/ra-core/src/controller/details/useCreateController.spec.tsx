@@ -1,6 +1,6 @@
 import React from 'react';
 import expect from 'expect';
-import { act, cleanup } from '@testing-library/react';
+import { act } from '@testing-library/react';
 
 import { getRecord } from './useCreateController';
 import { CreateController } from './CreateController';
@@ -9,8 +9,6 @@ import { DataProviderContext } from '../../dataProvider';
 import { DataProvider } from '../../types';
 
 describe('useCreateController', () => {
-    afterEach(cleanup);
-
     describe('getRecord', () => {
         const location = {
             pathname: '/foo',

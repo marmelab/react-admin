@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import expect from 'expect';
-import { render, cleanup, wait } from '@testing-library/react';
+import { render, wait } from '@testing-library/react';
 
 import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
 import AuthContext from './AuthContext';
@@ -55,7 +55,6 @@ describe('useLogoutIfAccessDenied', () => {
     afterEach(() => {
         logout.mockClear();
         notify.mockClear();
-        cleanup();
     });
 
     it('should not logout if passed no error', async () => {

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {
     render,
-    cleanup,
     fireEvent,
     wait,
     waitForDomChange,
@@ -27,8 +26,6 @@ describe('<AutocompleteInput />', () => {
         source: 'role',
         resource: 'users',
     };
-
-    afterEach(cleanup);
 
     it('should use a Downshift', () => {
         const { getByRole } = render(

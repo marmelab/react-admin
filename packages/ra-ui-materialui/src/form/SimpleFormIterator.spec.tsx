@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, wait, getByText } from '@testing-library/react';
+import { fireEvent, wait, getByText } from '@testing-library/react';
 import * as React from 'react';
 import expect from 'expect';
 import {
@@ -24,8 +24,6 @@ describe('<SimpleFormIterator />', () => {
         confirmSpy.mockImplementation(jest.fn(() => true));
     });
     afterAll(() => confirmSpy.mockRestore());
-
-    afterEach(cleanup);
 
     const saveContextValue = {
         save: jest.fn(),

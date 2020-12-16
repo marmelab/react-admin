@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cleanup, wait } from '@testing-library/react';
+import { wait } from '@testing-library/react';
 import expect from 'expect';
 import { Router, Route } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
@@ -12,8 +12,6 @@ import Resource from './Resource';
 const Layout = ({ children }) => <div>Layout {children}</div>;
 
 describe('<CoreAdminRouter>', () => {
-    afterEach(cleanup);
-
     const defaultProps = {
         customRoutes: [],
     };

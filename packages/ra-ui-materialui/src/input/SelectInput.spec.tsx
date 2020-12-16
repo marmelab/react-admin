@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import { TestTranslationProvider } from 'ra-core';
 
@@ -7,8 +7,6 @@ import SelectInput from './SelectInput';
 import { required } from 'ra-core';
 
 describe('<SelectInput />', () => {
-    afterEach(cleanup);
-
     const defaultProps = {
         source: 'language',
         resource: 'posts',

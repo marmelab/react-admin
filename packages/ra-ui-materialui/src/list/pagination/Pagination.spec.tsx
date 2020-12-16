@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ListPaginationContext } from 'ra-core';
@@ -19,8 +19,6 @@ describe('<Pagination />', () => {
         loading: false,
         setPerPage: () => {},
     };
-
-    afterEach(cleanup);
 
     describe('no results mention', () => {
         it('should display a pagination limit when there is no result', () => {

@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 import PaginationActions from './PaginationActions';
 
 describe('<PaginationActions />', () => {
-    afterEach(cleanup);
-
     it('should not render any actions when no pagination is necessary', () => {
         const { queryAllByRole } = render(
             <PaginationActions

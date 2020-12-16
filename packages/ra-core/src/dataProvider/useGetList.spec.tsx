@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cleanup, wait } from '@testing-library/react';
+import { wait } from '@testing-library/react';
 import expect from 'expect';
 
 import renderWithRedux from '../util/renderWithRedux';
@@ -21,8 +21,6 @@ const UseGetList = ({
 };
 
 describe('useGetList', () => {
-    afterEach(cleanup);
-
     it('should call dataProvider.getList() on mount', async () => {
         const dataProvider = {
             getList: jest.fn(() =>

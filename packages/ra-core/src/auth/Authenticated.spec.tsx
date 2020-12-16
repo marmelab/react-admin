@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { cleanup, wait } from '@testing-library/react';
+import { wait } from '@testing-library/react';
 
 import Authenticated from './Authenticated';
 import AuthContext from './AuthContext';
@@ -10,8 +10,6 @@ import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 
 describe('<Authenticated>', () => {
-    afterEach(cleanup);
-
     const Foo = () => <div>Foo</div>;
 
     it('should render its child by default', async () => {

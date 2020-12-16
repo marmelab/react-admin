@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { fireEvent, wait, cleanup } from '@testing-library/react';
+import { fireEvent, wait } from '@testing-library/react';
 import lolex from 'lolex';
 import TextField from '@material-ui/core/TextField/TextField';
 
@@ -205,7 +205,6 @@ describe('useListController', () => {
 
         afterEach(() => {
             clock.uninstall();
-            cleanup();
         });
     });
     describe('showFilter', () => {

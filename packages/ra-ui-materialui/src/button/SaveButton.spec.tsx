@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, cleanup, wait, fireEvent } from '@testing-library/react';
+import { render, wait, fireEvent } from '@testing-library/react';
 import expect from 'expect';
 import {
     TestContext,
@@ -35,8 +35,6 @@ const invalidButtonDomProps = {
 };
 
 describe('<SaveButton />', () => {
-    afterEach(cleanup);
-
     const saveContextValue = {
         save: jest.fn(),
         saving: false,

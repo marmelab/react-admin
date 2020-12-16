@@ -1,11 +1,9 @@
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import * as React from 'react';
 
 import { Responsive } from './Responsive';
 
 describe('<Responsive>', () => {
-    afterEach(cleanup);
-
     const Small = () => <div>Small</div>;
     const Medium = () => <div>Medium</div>;
     const Large = () => <div>Large</div>;
@@ -87,7 +85,6 @@ describe('<Responsive>', () => {
             expect(queryByText('Small')).not.toBeNull();
             expect(queryByText('Medium')).toBeNull();
             expect(queryByText('Large')).toBeNull();
-            cleanup();
         });
     });
 
@@ -99,7 +96,6 @@ describe('<Responsive>', () => {
             expect(queryByText('Small')).toBeNull();
             expect(queryByText('Medium')).not.toBeNull();
             expect(queryByText('Large')).toBeNull();
-            cleanup();
         });
     });
 
@@ -111,7 +107,6 @@ describe('<Responsive>', () => {
             expect(queryByText('Small')).toBeNull();
             expect(queryByText('Medium')).toBeNull();
             expect(queryByText('Large')).not.toBeNull();
-            cleanup();
         });
     });
 

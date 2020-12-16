@@ -1,4 +1,3 @@
-import { cleanup } from '@testing-library/react';
 import * as React from 'react';
 import { createElement } from 'react';
 import { MemoryRouter } from 'react-router-dom';
@@ -12,8 +11,6 @@ import TabbedForm, { findTabsWithErrors } from './TabbedForm';
 import FormTab from './FormTab';
 
 describe('<TabbedForm />', () => {
-    afterEach(cleanup);
-
     const saveContextValue = {
         save: jest.fn(),
         saving: false,

@@ -1,13 +1,11 @@
 import * as React from 'react';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { ListContext } from 'ra-core';
 
 import TextInput from '../../input/TextInput';
 import Filter from './Filter';
 
 describe('<Filter />', () => {
-    afterEach(cleanup);
-
     describe('With form context', () => {
         const defaultProps: any = {
             context: 'form',

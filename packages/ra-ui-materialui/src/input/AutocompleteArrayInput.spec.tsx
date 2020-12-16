@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { fireEvent, render, wait, cleanup } from '@testing-library/react';
+import { fireEvent, render, wait } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import expect from 'expect';
 
@@ -11,8 +11,6 @@ describe('<AutocompleteArrayInput />', () => {
         source: 'tags',
         resource: 'posts',
     };
-
-    afterEach(cleanup);
 
     it('should extract suggestions from choices', () => {
         const { getByLabelText, getByText, queryAllByRole } = render(
