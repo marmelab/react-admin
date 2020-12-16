@@ -28,7 +28,11 @@ describe('<AutocompleteArrayInput />', () => {
             />
         );
 
-        fireEvent.focus(getByLabelText('resources.posts.fields.tags'));
+        fireEvent.focus(
+            getByLabelText('resources.posts.fields.tags', {
+                selector: 'input',
+            })
+        );
         expect(queryAllByRole('option')).toHaveLength(2);
         expect(getByText('Technical')).not.toBeNull();
         expect(getByText('Programming')).not.toBeNull();
@@ -51,7 +55,11 @@ describe('<AutocompleteArrayInput />', () => {
             />
         );
 
-        fireEvent.focus(getByLabelText('resources.posts.fields.tags'));
+        fireEvent.focus(
+            getByLabelText('resources.posts.fields.tags', {
+                selector: 'input',
+            })
+        );
 
         expect(queryAllByRole('option')).toHaveLength(2);
         expect(getByText('Technical')).not.toBeNull();
@@ -75,7 +83,11 @@ describe('<AutocompleteArrayInput />', () => {
             />
         );
 
-        fireEvent.focus(getByLabelText('resources.posts.fields.tags'));
+        fireEvent.focus(
+            getByLabelText('resources.posts.fields.tags', {
+                selector: 'input',
+            })
+        );
 
         expect(queryAllByRole('option')).toHaveLength(2);
         expect(getByText('Technical')).not.toBeNull();
@@ -99,7 +111,11 @@ describe('<AutocompleteArrayInput />', () => {
             />
         );
 
-        fireEvent.focus(getByLabelText('resources.posts.fields.tags'));
+        fireEvent.focus(
+            getByLabelText('resources.posts.fields.tags', {
+                selector: 'input',
+            })
+        );
 
         expect(queryAllByRole('option')).toHaveLength(2);
         expect(getByText('Technical')).not.toBeNull();
@@ -124,7 +140,11 @@ describe('<AutocompleteArrayInput />', () => {
             />
         );
 
-        fireEvent.focus(getByLabelText('**resources.posts.fields.tags**'));
+        fireEvent.focus(
+            getByLabelText('**resources.posts.fields.tags**', {
+                selector: 'input',
+            })
+        );
 
         expect(queryAllByRole('option')).toHaveLength(2);
         expect(getByText('**Technical**')).not.toBeNull();
@@ -150,7 +170,11 @@ describe('<AutocompleteArrayInput />', () => {
             />
         );
 
-        fireEvent.focus(getByLabelText('**resources.posts.fields.tags**'));
+        fireEvent.focus(
+            getByLabelText('**resources.posts.fields.tags**', {
+                selector: 'input',
+            })
+        );
 
         expect(queryAllByRole('option')).toHaveLength(2);
         expect(getByText('Technical')).not.toBeNull();
@@ -170,7 +194,9 @@ describe('<AutocompleteArrayInput />', () => {
                 )}
             />
         );
-        const input = getByLabelText('resources.posts.fields.tags');
+        const input = getByLabelText('resources.posts.fields.tags', {
+            selector: 'input',
+        });
         fireEvent.focus(input);
         fireEvent.change(input, { target: { value: 'Te' } });
         expect(queryAllByRole('option')).toHaveLength(0);
@@ -205,9 +231,9 @@ describe('<AutocompleteArrayInput />', () => {
                     )}
                 />
             );
-            const input = getByLabelText(
-                'resources.posts.fields.tags'
-            ) as HTMLInputElement;
+            const input = getByLabelText('resources.posts.fields.tags', {
+                selector: 'input',
+            }) as HTMLInputElement;
             expect(input.value).toEqual('');
         });
 
@@ -224,7 +250,9 @@ describe('<AutocompleteArrayInput />', () => {
                 />
             );
 
-            const input = getByLabelText('resources.posts.fields.tags');
+            const input = getByLabelText('resources.posts.fields.tags', {
+                selector: 'input',
+            });
 
             fireEvent.focus(input);
             fireEvent.change(input, { target: { value: 'foo' } });
@@ -254,9 +282,9 @@ describe('<AutocompleteArrayInput />', () => {
                     )}
                 />
             );
-            const input = getByLabelText(
-                'resources.posts.fields.tags'
-            ) as HTMLInputElement;
+            const input = getByLabelText('resources.posts.fields.tags', {
+                selector: 'input',
+            }) as HTMLInputElement;
 
             fireEvent.focus(input);
             fireEvent.change(input, { target: { value: 'foo' } });
@@ -298,9 +326,9 @@ describe('<AutocompleteArrayInput />', () => {
                 />
             );
 
-            const input = getByLabelText(
-                'resources.posts.fields.tags'
-            ) as HTMLInputElement;
+            const input = getByLabelText('resources.posts.fields.tags', {
+                selector: 'input',
+            }) as HTMLInputElement;
 
             fireEvent.focus(input);
             fireEvent.change(input, { target: { value: 'foo' } });
@@ -331,7 +359,11 @@ describe('<AutocompleteArrayInput />', () => {
                 />
             );
 
-            fireEvent.focus(getByLabelText('resources.posts.fields.tags'));
+            fireEvent.focus(
+                getByLabelText('resources.posts.fields.tags', {
+                    selector: 'input',
+                })
+            );
             expect(queryAllByRole('option')).toHaveLength(2);
         });
 
@@ -350,7 +382,9 @@ describe('<AutocompleteArrayInput />', () => {
                 />
             );
 
-            const input = getByLabelText('resources.posts.fields.tags');
+            const input = getByLabelText('resources.posts.fields.tags', {
+                selector: 'input',
+            });
 
             fireEvent.focus(input);
             fireEvent.change(input, { target: { value: 'Technical' } });
@@ -383,7 +417,9 @@ describe('<AutocompleteArrayInput />', () => {
                     }}
                 />
             );
-            const input = getByLabelText('resources.posts.fields.tags');
+            const input = getByLabelText('resources.posts.fields.tags', {
+                selector: 'input',
+            });
             fireEvent.change(input, { target: { value: 'p' } });
             expect(setFilter).toHaveBeenCalledTimes(2);
             expect(setFilter).toHaveBeenCalledWith('p');
@@ -419,7 +455,9 @@ describe('<AutocompleteArrayInput />', () => {
                     }}
                 />
             );
-            const input = getByLabelText('resources.posts.fields.tags');
+            const input = getByLabelText('resources.posts.fields.tags', {
+                selector: 'input',
+            });
             fireEvent.change(input, { target: { value: 'p' } });
             expect(setFilter).toHaveBeenCalledTimes(2);
             expect(setFilter).toHaveBeenCalledWith('p');
@@ -450,7 +488,11 @@ describe('<AutocompleteArrayInput />', () => {
                     )}
                 />
             );
-            fireEvent.focus(getByLabelText('resources.posts.fields.tags'));
+            fireEvent.focus(
+                getByLabelText('resources.posts.fields.tags', {
+                    selector: 'input',
+                })
+            );
             expect(getByLabelText('Technical')).not.toBeNull();
             expect(getByLabelText('Programming')).not.toBeNull();
         });
@@ -503,7 +545,9 @@ describe('<AutocompleteArrayInput />', () => {
                     )}
                 />
             );
-            const input = getByLabelText('resources.posts.fields.tags');
+            const input = getByLabelText('resources.posts.fields.tags', {
+                selector: 'input',
+            });
             fireEvent.focus(input);
             fireEvent.blur(input);
 
@@ -528,7 +572,9 @@ describe('<AutocompleteArrayInput />', () => {
                     )}
                 />
             );
-            const input = getByLabelText('resources.posts.fields.tags');
+            const input = getByLabelText('resources.posts.fields.tags', {
+                selector: 'input',
+            });
 
             fireEvent.focus(input);
             fireEvent.change(input, { target: { value: 'ab' } });
@@ -559,7 +605,9 @@ describe('<AutocompleteArrayInput />', () => {
                 )}
             />
         );
-        const input = getByLabelText('resources.posts.fields.tags');
+        const input = getByLabelText('resources.posts.fields.tags', {
+            selector: 'input',
+        });
         fireEvent.focus(input);
         fireEvent.change(input, { target: { value: 'abc' } });
         expect(queryAllByRole('option')).toHaveLength(1);
@@ -584,7 +632,9 @@ describe('<AutocompleteArrayInput />', () => {
                 )}
             />
         );
-        const input = getByLabelText('resources.posts.fields.tags');
+        const input = getByLabelText('resources.posts.fields.tags', {
+            selector: 'input',
+        });
         fireEvent.focus(input);
 
         expect(getByLabelText('Me')).not.toBeNull();
@@ -606,7 +656,9 @@ describe('<AutocompleteArrayInput />', () => {
                 )}
             />
         );
-        const input = getByLabelText('resources.posts.fields.tags');
+        const input = getByLabelText('resources.posts.fields.tags', {
+            selector: 'input',
+        });
         fireEvent.focus(input);
         expect(queryAllByRole('option')).toHaveLength(1);
     });
