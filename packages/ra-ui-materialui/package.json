@@ -29,7 +29,7 @@
         "@material-ui/core": "^4.10.0",
         "@material-ui/icons": "^4.9.1",
         "@material-ui/styles": "^4.10.0",
-        "@testing-library/react": "^8.0.7",
+        "@testing-library/react": "^11.2.2",
         "@types/query-string": "5.1.0",
         "cross-env": "^5.2.0",
         "enzyme": "~3.9.0",
