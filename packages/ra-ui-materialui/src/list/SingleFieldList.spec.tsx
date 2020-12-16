@@ -69,8 +69,8 @@ describe('<SingleFieldList />', () => {
         ]);
     });
 
-    it('should render a link to the Edit page of the related record when the resource is named edit or show', () => {
-        ['edit', 'show'].forEach(action => {
+    ['edit', 'show'].forEach(action => {
+        it(`should render a link to the Edit page of the related record when the resource is named ${action}`, () => {
             const { queryAllByRole } = renderWithRouter(
                 <ListContext.Provider
                     value={{
@@ -123,8 +123,8 @@ describe('<SingleFieldList />', () => {
         ]);
     });
 
-    it('should render a link to the Edit page of the related record when the resource is named edit or show and linkType is show', () => {
-        ['edit', 'show'].forEach(action => {
+    ['edit', 'show'].forEach(action => {
+        it(`should render a link to the Edit page of the related record when the resource is named ${action} and linkType is show`, () => {
             const { queryAllByRole } = renderWithRouter(
                 <ListContext.Provider
                     value={{
