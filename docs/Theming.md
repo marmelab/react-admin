@@ -310,15 +310,18 @@ const App = () => (
 
 ## Writing a Custom Theme
 
-If you need more fine-tuning, you'll need to write your own `theme` object, following [Material UI themes documentation](https://material-ui.com/customization/themes/). Material UI merges custom theme objects with the default theme.
+If you need more fine-tuning, you'll need to write your own `theme` object, following [Material UI themes documentation](https://material-ui.com/customization/themes/).
+
+For instance, here is how to override the default react-admin theme:
 
 ```jsx
-import { createMuiTheme } from '@material-ui/core/styles';
+import { defaultTheme } from 'react-admin';
+import merge from 'lodash/merge';
 import indigo from '@material-ui/core/colors/indigo';
 import pink from '@material-ui/core/colors/pink';
 import red from '@material-ui/core/colors/red';
 
-const myTheme = createMuiTheme({
+const myTheme = merge({}, defaultTheme, {
     palette: {
         primary: indigo,
         secondary: pink,
@@ -328,13 +331,7 @@ const myTheme = createMuiTheme({
     },
     typography: {
         // Use the system font instead of the default Roboto font.
-        fontFamily: [
-            '-apple-system',
-            'BlinkMacSystemFont',
-            '"Segoe UI"',
-            'Arial',
-            'sans-serif',
-        ].join(','),
+        fontFamily: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Arial', 'sans-serif'].join(','),
     },
     overrides: {
         MuiButton: { // override the styles of all instances of this component
@@ -346,7 +343,7 @@ const myTheme = createMuiTheme({
 });
 ```
 
-The `myTheme` object contains the following keys:
+A `theme` object can contain the following keys:
 
 * `breakpoints`
 * `direction`
@@ -355,9 +352,9 @@ The `myTheme` object contains the following keys:
 * `palette`
 * `props`
 * `shadows`
-* `typography`
-* `transitions`
 * `spacing`
+* `transitions`
+* `typography`
 * `zIndex`
 
 **Tip**: Check [Material UI default theme documentation](https://material-ui.com/customization/default-theme/) to see the default values and meaning for these keys.
