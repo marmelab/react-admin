@@ -77,8 +77,8 @@ describe('<Responsive>', () => {
         expect(queryByText('Large')).toBeNull();
     });
 
-    it('should render the small component on all screens when no other component is passed', () => {
-        ['xs', 'sm', 'lg'].forEach(width => {
+    ['xs', 'sm', 'lg'].forEach(width => {
+        it(`should render the small component on ${width} screens when no other component is passed`, () => {
             const { queryByText } = render(
                 <Responsive small={<Small />} width={width} />
             );
@@ -86,10 +86,8 @@ describe('<Responsive>', () => {
             expect(queryByText('Medium')).toBeNull();
             expect(queryByText('Large')).toBeNull();
         });
-    });
 
-    it('should render the medium component on all screens when no other component is passed', () => {
-        ['xs', 'sm', 'lg'].forEach(width => {
+        it(`should render the medium component on ${width} screens when no other component is passed`, () => {
             const { queryByText } = render(
                 <Responsive medium={<Medium />} width={width} />
             );
@@ -97,10 +95,8 @@ describe('<Responsive>', () => {
             expect(queryByText('Medium')).not.toBeNull();
             expect(queryByText('Large')).toBeNull();
         });
-    });
 
-    it('should render the large component on all screens when no other component is passed', () => {
-        ['xs', 'sm', 'lg'].forEach(width => {
+        it(`should render the large component on ${width} screens when no other component is passed`, () => {
             const { queryByText } = render(
                 <Responsive large={<Large />} width={width} />
             );
