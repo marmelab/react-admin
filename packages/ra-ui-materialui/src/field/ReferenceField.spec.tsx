@@ -216,7 +216,7 @@ describe('<ReferenceField />', () => {
             </DataProviderContext.Provider>
         );
         await new Promise(resolve => setTimeout(resolve, 10));
-        const ErrorIcon = getByRole('presentation');
+        const ErrorIcon = getByRole('presentation', { hidden: true });
         expect(ErrorIcon).toBeDefined();
         expect(ErrorIcon.getAttribute('aria-errormessage')).toBe('boo');
     });
