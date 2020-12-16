@@ -1,18 +1,13 @@
 import * as React from 'react';
-import {
-    render,
-    fireEvent,
-    wait,
-    waitForDomChange,
-} from '@testing-library/react';
+import { render, fireEvent, wait } from '@testing-library/react';
 
 import AutocompleteInput from './AutocompleteInput';
 import { Form } from 'react-final-form';
 import { TestTranslationProvider } from 'ra-core';
 
 describe('<AutocompleteInput />', () => {
-    //Fix document.createRange is not a function error on fireEvent usage (Fixed in jsdom v16.0.0)
-    //reported by https://github.com/mui-org/material-ui/issues/15726#issuecomment-493124813
+    // Fix document.createRange is not a function error on fireEvent usage (Fixed in jsdom v16.0.0)
+    // reported by https://github.com/mui-org/material-ui/issues/15726#issuecomment-493124813
     global.document.createRange = () => ({
         setStart: () => {},
         setEnd: () => {},
@@ -209,9 +204,10 @@ describe('<AutocompleteInput />', () => {
             />
         );
 
-        const input = getByLabelText('resources.users.fields.role');
-        // Temporary workaround until we can upgrade testing-library in v4
-        input.focus();
+        const input = getByLabelText('resources.users.fields.role', {
+            selector: 'input',
+        });
+        fireEvent.focus(input);
         await wait(() => {
             expect(queryByText('foo')).not.toBeNull();
         });
@@ -234,10 +230,10 @@ describe('<AutocompleteInput />', () => {
             />
         );
 
-        const input = getByLabelText('resources.users.fields.role');
-        // Temporary workaround until we can upgrade testing-library in v4
-        input.focus();
-
+        const input = getByLabelText('resources.users.fields.role', {
+            selector: 'input',
+        });
+        fireEvent.focus(input);
         await wait(() => {
             expect(queryByText('foo')).toBeNull();
         });
@@ -257,8 +253,9 @@ describe('<AutocompleteInput />', () => {
                     )}
                 />
             );
-            const input = getByLabelText('resources.users.fields.role');
-
+            const input = getByLabelText('resources.users.fields.role', {
+                selector: 'input',
+            });
             expect(input.value).toEqual('');
             // Temporary workaround until we can upgrade testing-library in v4
             input.focus();
@@ -292,9 +289,10 @@ describe('<AutocompleteInput />', () => {
                     )}
                 />
             );
-            const input = getByLabelText('resources.users.fields.role');
-            // Temporary workaround until we can upgrade testing-library in v4
-            input.focus();
+            const input = getByLabelText('resources.users.fields.role', {
+                selector: 'input',
+            });
+            fireEvent.focus(input);
             fireEvent.change(input, { target: { value: 'bar' } });
             expect(queryByText('foo')).toBeNull();
 
@@ -318,7 +316,9 @@ describe('<AutocompleteInput />', () => {
                     )}
                 />
             );
-            const input = getByLabelText('resources.users.fields.role');
+            const input = getByLabelText('resources.users.fields.role', {
+                selector: 'input',
+            });
             fireEvent.change(input, { target: { value: 'foo' } });
 
             rerender(
@@ -350,14 +350,15 @@ describe('<AutocompleteInput />', () => {
                     )}
                 />
             );
-            const input = getByLabelText('resources.users.fields.role');
-            // Temporary workaround until we can upgrade testing-library in v4
-            input.focus();
+            const input = getByLabelText('resources.users.fields.role', {
+                selector: 'input',
+            });
+            fireEvent.focus(input);
             fireEvent.change(input, { target: { value: 'bar' } });
-            // Temporary workaround until we can upgrade testing-library in v4
-            input.blur();
-            await waitForDomChange();
-            expect(input.value).toEqual('foo');
+            fireEvent.blur(input);
+            await wait(() => {
+                expect(input.value).toEqual('foo');
+            });
         });
 
         it('should show the suggestions when the input value is null and the input is focussed and choices arrived late', () => {
@@ -368,9 +369,10 @@ describe('<AutocompleteInput />', () => {
                 />
             );
 
-            const input = getByLabelText('resources.users.fields.role');
-            // Temporary workaround until we can upgrade testing-library in v4
-            input.focus();
+            const input = getByLabelText('resources.users.fields.role', {
+                selector: 'input',
+            });
+            fireEvent.focus(input);
 
             rerender(
                 <Form
@@ -416,7 +418,9 @@ describe('<AutocompleteInput />', () => {
                     )}
                 />
             );
-            const input = getByLabelText('resources.users.fields.role');
+            const input = getByLabelText('resources.users.fields.role', {
+                selector: 'input',
+            });
             fireEvent.change(input, { target: { value: 'bar' } });
             expect(setFilter).toHaveBeenCalledTimes(3);
             expect(setFilter).toHaveBeenCalledWith('bar');
@@ -464,9 +468,10 @@ describe('<AutocompleteInput />', () => {
                 />
             );
 
-            const input = getByLabelText('resources.users.fields.role');
-            // Temporary workaround until we can upgrade testing-library in v4
-            input.focus();
+            const input = getByLabelText('resources.users.fields.role', {
+                selector: 'input',
+            });
+            fireEvent.focus(input);
             expect(queryByLabelText('bar')).not.toBeNull();
             expect(queryByLabelText('foo')).not.toBeNull();
         });
@@ -520,10 +525,11 @@ describe('<AutocompleteInput />', () => {
                     )}
                 />
             );
-            const input = getByLabelText('resources.users.fields.role');
-            // Temporary workaround until we can upgrade testing-library in v4
-            input.focus();
-            input.blur();
+            const input = getByLabelText('resources.users.fields.role', {
+                selector: 'input',
+            });
+            fireEvent.focus(input);
+            fireEvent.blur(input);
 
             expect(queryByText('ra.validation.error')).not.toBeNull();
         });
@@ -546,7 +552,9 @@ describe('<AutocompleteInput />', () => {
                     )}
                 />
             );
-            const input = getByLabelText('resources.users.fields.role');
+            const input = getByLabelText('resources.users.fields.role', {
+                selector: 'input',
+            });
 
             fireEvent.focus(input);
             fireEvent.change(input, { target: { value: 'a' } });
@@ -575,9 +583,10 @@ describe('<AutocompleteInput />', () => {
                 )}
             />
         );
-        const input = getByLabelText('resources.users.fields.role');
-        // Temporary workaround until we can upgrade testing-library in v4
-        input.focus();
+        const input = getByLabelText('resources.users.fields.role', {
+            selector: 'input',
+        });
+        fireEvent.focus(input);
         fireEvent.change(input, { target: { value: 'abc' } });
         await wait(() => expect(queryAllByRole('option').length).toEqual(1));
     });
@@ -605,9 +614,10 @@ describe('<AutocompleteInput />', () => {
             />
         );
 
-        const input = getByLabelText('resources.users.fields.role');
-        // Temporary workaround until we can upgrade testing-library in v4
-        input.focus();
+        const input = getByLabelText('resources.users.fields.role', {
+            selector: 'input',
+        });
+        fireEvent.focus(input);
 
         expect(getByLabelText('My Suggestions Container')).not.toBeNull();
     });
