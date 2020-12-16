@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import { ReferenceManyFieldView } from './ReferenceManyField';
@@ -7,7 +7,6 @@ import TextField from './TextField';
 import SingleFieldList from '../list/SingleFieldList';
 
 describe('<ReferenceManyField />', () => {
-    afterEach(cleanup);
     const defaultProps = {
         resource: 'foo',
         reference: 'bar',

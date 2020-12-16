@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {
     render,
-    cleanup,
     act,
     fireEvent,
     wait,
@@ -20,8 +19,6 @@ import { useNotify, useRefresh } from '../sideEffect';
 import { History } from 'history';
 
 describe('Query', () => {
-    afterEach(cleanup);
-
     it('should render its child', () => {
         const { getByTestId } = renderWithRedux(
             <Query type="getList" resource="bar">

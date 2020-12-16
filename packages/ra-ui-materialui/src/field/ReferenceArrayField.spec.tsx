@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { ListContextProvider } from 'ra-core';
 
@@ -9,7 +9,6 @@ import TextField from './TextField';
 import SingleFieldList from '../list/SingleFieldList';
 
 describe('<ReferenceArrayField />', () => {
-    afterEach(cleanup);
     it('should render a loading indicator when related records are not yet fetched', () => {
         const { queryAllByRole } = render(
             <ListContextProvider

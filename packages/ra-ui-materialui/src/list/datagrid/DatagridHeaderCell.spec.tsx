@@ -1,12 +1,10 @@
 import expect from 'expect';
 import * as React from 'react';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 import { DatagridHeaderCell } from './DatagridHeaderCell';
 
 describe('<DatagridHeaderCell />', () => {
-    afterEach(cleanup);
-
     it('should accept a React element as Field label', () => {
         const Label = () => <>Label</>;
         const Field = () => <div />;

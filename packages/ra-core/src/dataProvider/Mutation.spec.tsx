@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {
-    cleanup,
     fireEvent,
     waitForDomChange,
     act,
@@ -17,8 +16,6 @@ import { useNotify } from '../sideEffect';
 import { History } from 'history';
 
 describe('Mutation', () => {
-    afterEach(cleanup);
-
     it('should render its child function', () => {
         const { getByTestId } = renderWithRedux(
             <Mutation type="foo" resource="bar">

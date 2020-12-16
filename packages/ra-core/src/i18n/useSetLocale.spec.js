@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { fireEvent, cleanup, wait, act } from '@testing-library/react';
+import { fireEvent, wait, act } from '@testing-library/react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import useTranslate from './useTranslate';
@@ -9,8 +9,6 @@ import { TranslationContext, TranslationProvider } from './';
 import { renderWithRedux } from '../util';
 
 describe('useSetLocale', () => {
-    afterEach(cleanup);
-
     const Component = () => {
         const translate = useTranslate();
         const setLocale = useSetLocale();

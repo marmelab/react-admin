@@ -1,4 +1,4 @@
-import { render, cleanup, wait, fireEvent } from '@testing-library/react';
+import { render, wait, fireEvent } from '@testing-library/react';
 import * as React from 'react';
 import expect from 'expect';
 import {
@@ -31,8 +31,6 @@ const invalidButtonDomProps = {
 };
 
 describe('<DeleteWithUndoButton />', () => {
-    afterEach(cleanup);
-
     it('should render a button with no DOM errors', () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { cleanup, wait, fireEvent } from '@testing-library/react';
+import { wait, fireEvent } from '@testing-library/react';
 import ReferenceArrayInputController from './ReferenceArrayInputController';
 import { renderWithRedux } from '../../util';
 import { CRUD_GET_MATCHING, CRUD_GET_MANY } from '../../../lib';
@@ -14,8 +14,6 @@ describe('<ReferenceArrayInputController />', () => {
         resource: 'posts',
         source: 'tag_ids',
     };
-
-    afterEach(cleanup);
 
     it('should set loading to true as long as there are no references fetched and no selected references', () => {
         const children = jest.fn(({ loading }) => (

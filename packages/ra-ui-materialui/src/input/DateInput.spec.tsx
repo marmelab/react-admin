@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, fireEvent, cleanup } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 
 import DateInput from './DateInput';
 import { Form } from 'react-final-form';
@@ -11,8 +11,6 @@ describe('<DateInput />', () => {
         resource: 'posts',
         source: 'publishedAt',
     };
-
-    afterEach(cleanup);
 
     it('should render a date input', () => {
         const { getByLabelText } = render(

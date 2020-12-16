@@ -1,13 +1,11 @@
 import * as React from 'react';
 import expect from 'expect';
-import { fireEvent, render, cleanup, wait } from '@testing-library/react';
+import { fireEvent, render, wait } from '@testing-library/react';
 import { Form } from 'react-final-form';
 
 import NullableBooleanInput from './NullableBooleanInput';
 
 describe('<NullableBooleanInput />', () => {
-    afterEach(cleanup);
-
     const defaultProps = {
         source: 'isPublished',
         resource: 'posts',

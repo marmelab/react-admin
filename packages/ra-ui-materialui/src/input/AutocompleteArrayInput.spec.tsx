@@ -1,10 +1,5 @@
 import * as React from 'react';
-import {
-    cleanup,
-    fireEvent,
-    render,
-    waitForDomChange,
-} from '@testing-library/react';
+import { fireEvent, render, waitForDomChange } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import expect from 'expect';
 
@@ -12,8 +7,6 @@ import AutocompleteArrayInput from './AutocompleteArrayInput';
 import { TestTranslationProvider } from 'ra-core';
 
 describe('<AutocompleteArrayInput />', () => {
-    afterEach(cleanup);
-
     const defaultProps = {
         source: 'tags',
         resource: 'posts',

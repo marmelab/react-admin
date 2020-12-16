@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { TestContext } from 'ra-core';
 
 import ArrayField from './ArrayField';
@@ -8,8 +8,6 @@ import TextField from './TextField';
 import Datagrid from '../list/datagrid/Datagrid';
 
 describe('<ArrayField />', () => {
-    afterEach(cleanup);
-
     const DummyIterator = props => (
         <Datagrid {...props}>
             <NumberField source="id" />

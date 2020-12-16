@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
 
 import TextInput from './TextInput';
@@ -10,8 +10,6 @@ describe('<TextInput />', () => {
         source: 'title',
         resource: 'posts',
     };
-
-    afterEach(cleanup);
 
     it('should render the input correctly', () => {
         const { getByLabelText } = render(

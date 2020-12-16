@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { cleanup, wait } from '@testing-library/react';
+import { wait } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
@@ -26,8 +26,6 @@ const resource = {
 };
 
 describe('<Resource>', () => {
-    afterEach(cleanup);
-
     it(`registers its resource in redux on mount when context is 'registration'`, () => {
         const { dispatch } = renderWithRedux(
             <Resource {...resource} intent="registration" />

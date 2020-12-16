@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { cleanup, act, fireEvent } from '@testing-library/react';
+import { act, fireEvent } from '@testing-library/react';
 import expect from 'expect';
 
 import renderWithRedux from '../util/renderWithRedux';
@@ -55,8 +55,6 @@ const UseCustomVerbWithStandardSignature = ({ onSuccess }) => {
 };
 
 describe('useDataProvider', () => {
-    afterEach(cleanup);
-
     it('should return a way to call the dataProvider', async () => {
         const getOne = jest.fn(() =>
             Promise.resolve({ data: { id: 1, title: 'foo' } })

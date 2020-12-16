@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { cleanup, wait } from '@testing-library/react';
+import { wait } from '@testing-library/react';
 import expect from 'expect';
 
 import ReferenceManyFieldController from './ReferenceManyFieldController';
 import renderWithRedux from '../../util/renderWithRedux';
 
 describe('<ReferenceManyFieldController />', () => {
-    afterEach(cleanup);
     it('should set loaded to false when related records are not yet fetched', async () => {
         const children = jest.fn().mockReturnValue('children');
         const { dispatch } = renderWithRedux(

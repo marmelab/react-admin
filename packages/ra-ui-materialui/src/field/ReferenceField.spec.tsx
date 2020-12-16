@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { renderWithRedux, DataProviderContext } from 'ra-core';
 
@@ -8,8 +8,6 @@ import ReferenceField, { ReferenceFieldView } from './ReferenceField';
 import TextField from './TextField';
 
 describe('<ReferenceField />', () => {
-    afterEach(cleanup);
-
     describe('Progress bar', () => {
         it('should display a loader on mount if the reference is not in the store', () => {
             const { queryByRole, container } = renderWithRedux(

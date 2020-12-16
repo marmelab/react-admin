@@ -1,13 +1,11 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 import ListContext from './ListContext';
 import useListContext from './useListContext';
 
 describe('useListContext', () => {
-    afterEach(cleanup);
-
     const NaiveList = props => {
         const { ids, data } = useListContext(props);
         return (

@@ -1,11 +1,9 @@
 import * as React from 'react';
 import expect from 'expect';
 import ChipField from './ChipField';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 describe('<ChipField />', () => {
-    afterEach(cleanup);
-
     it('should display the record value added as source', () => {
         const { getByText } = render(
             <ChipField

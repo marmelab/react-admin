@@ -1,11 +1,9 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, cleanup, getNodeText } from '@testing-library/react';
+import { render, getNodeText } from '@testing-library/react';
 import TextField from './TextField';
 
 describe('<TextField />', () => {
-    afterEach(cleanup);
-
     it('should display record specific value as plain text', () => {
         const record = {
             id: 123,

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { cleanup, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 import TabbedShowLayout from './TabbedShowLayout';
 import Tab from './Tab';
@@ -9,8 +9,6 @@ import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 
 describe('<TabbedShowLayout />', () => {
-    afterEach(cleanup);
-
     const renderWithRouter = children => {
         const history = createMemoryHistory();
 

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { cleanup } from '@testing-library/react';
 import expect from 'expect';
 
 import ReferenceArrayFieldController from './ReferenceArrayFieldController';
@@ -7,7 +6,6 @@ import { DataProviderContext } from '../../dataProvider';
 import renderWithRedux from '../../util/renderWithRedux';
 
 describe('<ReferenceArrayFieldController />', () => {
-    afterEach(cleanup);
     it('should set the loaded prop to false when related records are not yet fetched', () => {
         const children = jest.fn().mockReturnValue('child');
 

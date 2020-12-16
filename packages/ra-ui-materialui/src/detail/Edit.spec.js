@@ -1,13 +1,11 @@
 import * as React from 'react';
 import expect from 'expect';
-import { cleanup, wait, fireEvent } from '@testing-library/react';
+import { wait, fireEvent } from '@testing-library/react';
 import { renderWithRedux, DataProviderContext } from 'ra-core';
 
 import { Edit } from './Edit';
 
 describe('<Edit />', () => {
-    afterEach(cleanup);
-
     const defaultEditProps = {
         basePath: '',
         id: '123',

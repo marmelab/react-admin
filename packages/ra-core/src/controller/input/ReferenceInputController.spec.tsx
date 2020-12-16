@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useCallback } from 'react';
-import { cleanup, fireEvent, wait } from '@testing-library/react';
+import { fireEvent, wait } from '@testing-library/react';
 import omit from 'lodash/omit';
 import expect from 'expect';
 
@@ -18,8 +18,6 @@ describe('<ReferenceInputController />', () => {
         resource: 'comments',
         source: 'post_id',
     };
-
-    afterEach(cleanup);
 
     const dataProvider = {
         getMany: jest.fn(() =>
