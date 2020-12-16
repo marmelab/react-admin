@@ -28,9 +28,11 @@ describe('<AutocompleteArrayInput />', () => {
             />
         );
 
-        const input = getByLabelText('resources.posts.fields.tags');
-        // Temporary workaround until we can upgrade testing-library in v4
-        input.focus();
+        fireEvent.focus(
+            getByLabelText('resources.posts.fields.tags', {
+                selector: 'input',
+            })
+        );
         expect(queryAllByRole('option')).toHaveLength(2);
         expect(getByText('Technical')).not.toBeNull();
         expect(getByText('Programming')).not.toBeNull();
@@ -53,9 +55,11 @@ describe('<AutocompleteArrayInput />', () => {
             />
         );
 
-        const input = getByLabelText('resources.posts.fields.tags');
-        // Temporary workaround until we can upgrade testing-library in v4
-        input.focus();
+        fireEvent.focus(
+            getByLabelText('resources.posts.fields.tags', {
+                selector: 'input',
+            })
+        );
 
         expect(queryAllByRole('option')).toHaveLength(2);
         expect(getByText('Technical')).not.toBeNull();
@@ -79,9 +83,11 @@ describe('<AutocompleteArrayInput />', () => {
             />
         );
 
-        const input = getByLabelText('resources.posts.fields.tags');
-        // Temporary workaround until we can upgrade testing-library in v4
-        input.focus();
+        fireEvent.focus(
+            getByLabelText('resources.posts.fields.tags', {
+                selector: 'input',
+            })
+        );
 
         expect(queryAllByRole('option')).toHaveLength(2);
         expect(getByText('Technical')).not.toBeNull();
@@ -105,9 +111,11 @@ describe('<AutocompleteArrayInput />', () => {
             />
         );
 
-        const input = getByLabelText('resources.posts.fields.tags');
-        // Temporary workaround until we can upgrade testing-library in v4
-        input.focus();
+        fireEvent.focus(
+            getByLabelText('resources.posts.fields.tags', {
+                selector: 'input',
+            })
+        );
 
         expect(queryAllByRole('option')).toHaveLength(2);
         expect(getByText('Technical')).not.toBeNull();
@@ -131,9 +139,12 @@ describe('<AutocompleteArrayInput />', () => {
                 )}
             />
         );
-        const input = getByLabelText('**resources.posts.fields.tags**');
-        // Temporary workaround until we can upgrade testing-library in v4
-        input.focus();
+
+        fireEvent.focus(
+            getByLabelText('**resources.posts.fields.tags**', {
+                selector: 'input',
+            })
+        );
 
         expect(queryAllByRole('option')).toHaveLength(2);
         expect(getByText('**Technical**')).not.toBeNull();
@@ -159,9 +170,11 @@ describe('<AutocompleteArrayInput />', () => {
             />
         );
 
-        const input = getByLabelText('**resources.posts.fields.tags**');
-        // Temporary workaround until we can upgrade testing-library in v4
-        input.focus();
+        fireEvent.focus(
+            getByLabelText('**resources.posts.fields.tags**', {
+                selector: 'input',
+            })
+        );
 
         expect(queryAllByRole('option')).toHaveLength(2);
         expect(getByText('Technical')).not.toBeNull();
@@ -181,9 +194,10 @@ describe('<AutocompleteArrayInput />', () => {
                 )}
             />
         );
-        const input = getByLabelText('resources.posts.fields.tags');
-        // Temporary workaround until we can upgrade testing-library in v4
-        input.focus();
+        const input = getByLabelText('resources.posts.fields.tags', {
+            selector: 'input',
+        });
+        fireEvent.focus(input);
         fireEvent.change(input, { target: { value: 'Te' } });
         expect(queryAllByRole('option')).toHaveLength(0);
 
@@ -218,9 +232,9 @@ describe('<AutocompleteArrayInput />', () => {
                     )}
                 />
             );
-            const input = getByLabelText(
-                'resources.posts.fields.tags'
-            ) as HTMLInputElement;
+            const input = getByLabelText('resources.posts.fields.tags', {
+                selector: 'input',
+            }) as HTMLInputElement;
             expect(input.value).toEqual('');
         });
 
@@ -237,14 +251,16 @@ describe('<AutocompleteArrayInput />', () => {
                 />
             );
 
-            const input = getByLabelText('resources.posts.fields.tags');
-            // Temporary workaround until we can upgrade testing-library in v4
-            input.focus();
+            const input = getByLabelText('resources.posts.fields.tags', {
+                selector: 'input',
+            });
+
+            fireEvent.focus(input);
             fireEvent.change(input, { target: { value: 'foo' } });
             expect(queryAllByRole('option')).toHaveLength(0);
 
-            input.blur();
-            input.focus();
+            fireEvent.blur(input);
+            fireEvent.focus(input);
             fireEvent.change(input, { target: { value: '' } });
             expect(queryAllByRole('option')).toHaveLength(1);
         });
@@ -267,12 +283,11 @@ describe('<AutocompleteArrayInput />', () => {
                     )}
                 />
             );
-            const input = getByLabelText(
-                'resources.posts.fields.tags'
-            ) as HTMLInputElement;
+            const input = getByLabelText('resources.posts.fields.tags', {
+                selector: 'input',
+            }) as HTMLInputElement;
 
-            // Temporary workaround until we can upgrade testing-library in v4
-            input.focus();
+            fireEvent.focus(input);
             fireEvent.change(input, { target: { value: 'foo' } });
             expect(queryAllByRole('option')).toHaveLength(0);
 
@@ -312,14 +327,14 @@ describe('<AutocompleteArrayInput />', () => {
                 />
             );
 
-            const input = getByLabelText(
-                'resources.posts.fields.tags'
-            ) as HTMLInputElement;
+            const input = getByLabelText('resources.posts.fields.tags', {
+                selector: 'input',
+            }) as HTMLInputElement;
 
-            input.focus();
+            fireEvent.focus(input);
             fireEvent.change(input, { target: { value: 'foo' } });
             expect(queryAllByRole('option')).toHaveLength(0);
-            input.blur();
+            fireEvent.blur(input);
             expect(input.value).toEqual('');
         });
 
@@ -345,9 +360,11 @@ describe('<AutocompleteArrayInput />', () => {
                 />
             );
 
-            const input = getByLabelText('resources.posts.fields.tags');
-            // Temporary workaround until we can upgrade testing-library in v4
-            input.focus();
+            fireEvent.focus(
+                getByLabelText('resources.posts.fields.tags', {
+                    selector: 'input',
+                })
+            );
             expect(queryAllByRole('option')).toHaveLength(2);
         });
 
@@ -366,12 +383,14 @@ describe('<AutocompleteArrayInput />', () => {
                 />
             );
 
-            const input = getByLabelText('resources.posts.fields.tags');
-            // Temporary workaround until we can upgrade testing-library in v4
-            input.focus();
+            const input = getByLabelText('resources.posts.fields.tags', {
+                selector: 'input',
+            });
+
+            fireEvent.focus(input);
             fireEvent.change(input, { target: { value: 'Technical' } });
             fireEvent.click(getByRole('option'));
-            input.blur();
+            fireEvent.blur(input);
 
             expect(onChange).toHaveBeenCalledTimes(1);
             expect(onChange).toHaveBeenCalledWith(['t']);
@@ -399,7 +418,9 @@ describe('<AutocompleteArrayInput />', () => {
                     }}
                 />
             );
-            const input = getByLabelText('resources.posts.fields.tags');
+            const input = getByLabelText('resources.posts.fields.tags', {
+                selector: 'input',
+            });
             fireEvent.change(input, { target: { value: 'p' } });
             expect(setFilter).toHaveBeenCalledTimes(2);
             expect(setFilter).toHaveBeenCalledWith('p');
@@ -436,7 +457,9 @@ describe('<AutocompleteArrayInput />', () => {
                     }}
                 />
             );
-            const input = getByLabelText('resources.posts.fields.tags');
+            const input = getByLabelText('resources.posts.fields.tags', {
+                selector: 'input',
+            });
             fireEvent.change(input, { target: { value: 'p' } });
             expect(setFilter).toHaveBeenCalledTimes(2);
             expect(setFilter).toHaveBeenCalledWith('p');
@@ -468,9 +491,11 @@ describe('<AutocompleteArrayInput />', () => {
                     )}
                 />
             );
-            const input = getByLabelText('resources.posts.fields.tags');
-            // Temporary workaround until we can upgrade testing-library in v4
-            input.focus();
+            fireEvent.focus(
+                getByLabelText('resources.posts.fields.tags', {
+                    selector: 'input',
+                })
+            );
             expect(getByLabelText('Technical')).not.toBeNull();
             expect(getByLabelText('Programming')).not.toBeNull();
         });
@@ -523,10 +548,11 @@ describe('<AutocompleteArrayInput />', () => {
                     )}
                 />
             );
-            const input = getByLabelText('resources.posts.fields.tags');
-            // Temporary workaround until we can upgrade testing-library in v4
-            input.focus();
-            input.blur();
+            const input = getByLabelText('resources.posts.fields.tags', {
+                selector: 'input',
+            });
+            fireEvent.focus(input);
+            fireEvent.blur(input);
 
             expect(queryByText('ra.validation.error')).not.toBeNull();
         });
@@ -549,14 +575,16 @@ describe('<AutocompleteArrayInput />', () => {
                     )}
                 />
             );
-            const input = getByLabelText('resources.posts.fields.tags');
-            // Temporary workaround until we can upgrade testing-library in v4
-            input.focus();
+            const input = getByLabelText('resources.posts.fields.tags', {
+                selector: 'input',
+            });
+
+            fireEvent.focus(input);
             fireEvent.change(input, { target: { value: 'ab' } });
             expect(queryAllByRole('option')).toHaveLength(2);
-            input.blur();
+            fireEvent.blur(input);
 
-            input.focus();
+            fireEvent.focus(input);
             fireEvent.change(input, { target: { value: 'ab' } });
             expect(queryAllByRole('option')).toHaveLength(2);
         });
@@ -580,9 +608,10 @@ describe('<AutocompleteArrayInput />', () => {
                 )}
             />
         );
-        const input = getByLabelText('resources.posts.fields.tags');
-        // Temporary workaround until we can upgrade testing-library in v4
-        input.focus();
+        const input = getByLabelText('resources.posts.fields.tags', {
+            selector: 'input',
+        });
+        fireEvent.focus(input);
         fireEvent.change(input, { target: { value: 'abc' } });
         expect(queryAllByRole('option')).toHaveLength(1);
 
@@ -606,9 +635,10 @@ describe('<AutocompleteArrayInput />', () => {
                 )}
             />
         );
-        const input = getByLabelText('resources.posts.fields.tags');
-        // Temporary workaround until we can upgrade testing-library in v4
-        input.focus();
+        const input = getByLabelText('resources.posts.fields.tags', {
+            selector: 'input',
+        });
+        fireEvent.focus(input);
 
         expect(getByLabelText('Me')).not.toBeNull();
     });
@@ -629,9 +659,10 @@ describe('<AutocompleteArrayInput />', () => {
                 )}
             />
         );
-        const input = getByLabelText('resources.posts.fields.tags');
-        // Temporary workaround until we can upgrade testing-library in v4
-        input.focus();
+        const input = getByLabelText('resources.posts.fields.tags', {
+            selector: 'input',
+        });
+        fireEvent.focus(input);
         expect(queryAllByRole('option')).toHaveLength(1);
     });
 });
