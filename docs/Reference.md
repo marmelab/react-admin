@@ -106,6 +106,7 @@ title: "Reference"
 * [`<RowForm>`](https://marmelab.com/ra-enterprise/modules/ra-editable-datagrid#rowform)<img class="icon" src="./img/premium.svg" />
 * `<SaveButton>`
 * [`<SavedFilterList>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#savedquerieslist-and-filterwithsave-store-user-queries-in-preferences)<img class="icon" src="./img/premium.svg" />
+* [`<Search>`](https://marmelab.com/ra-enterprise/modules/ra-search#the-search-component)<img class="icon" src="./img/premium.svg" />
 * `<SearchInput>`
 * [`<SelectArrayInput>`](./Inputs.md#selectarrayinput)
 * [`<SelectColumnsButton>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#selectcolumnsbutton-store-datagrid-columns-in-preferences)<img class="icon" src="./img/premium.svg" />
@@ -189,6 +190,7 @@ title: "Reference"
 * `useReferenceInputController`
 * `useReferenceManyFieldController`
 * [`useRefresh`](./Actions.md#handling-side-effects-in-usedataprovider)
+* [`useSearch`](https://marmelab.com/ra-enterprise/modules/ra-search#the-usesearch-hook)<img class="icon" src="./img/premium.svg" />
 * [`useSetLocale`](./Translation.md#usesetlocale-changing-locale-at-runtime)
 * [`useShowController`](./Show.md#useshowcontroller)
 * `useSortState`
