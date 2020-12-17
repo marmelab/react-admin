@@ -472,7 +472,7 @@ import {
     Edit,
     SimpleForm,
     ReferenceInput,
-    SelectIpnut,
+    SelectInput,
     TextInput,
 } from 'react-admin';
 
@@ -534,7 +534,7 @@ import {
 +   Create,
     SimpleForm,
     ReferenceInput,
-    SelectIpnut,
+    SelectInput,
     TextInput,
 } from 'react-admin';
 
