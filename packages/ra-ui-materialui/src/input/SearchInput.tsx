@@ -42,7 +42,6 @@ const SearchInput: FunctionComponent<
                         <SearchIcon color="disabled" />
                     </InputAdornment>
                 ),
-                autoComplete: 'off',
             }}
             className={classes.input}
             {...rest}
