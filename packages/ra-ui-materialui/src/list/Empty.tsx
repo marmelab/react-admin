@@ -33,7 +33,7 @@ const useStyles = makeStyles(
 );
 
 const Empty: FC<EmptyProps> = props => {
-    const { basePath } = useListContext(props);
+    const { basePath, hasCreate } = useListContext(props);
     const resource = useResourceContext(props);
     const classes = useStyles(props);
     const translate = useTranslate();
@@ -61,15 +61,19 @@ const Empty: FC<EmptyProps> = props => {
                         _: emptyMessage,
                     })}
                 </Typography>
-                <Typography variant="body1">
-                    {translate(`resources.${resource}.invite`, {
-                        _: inviteMessage,
-                    })}
-                </Typography>
+                {hasCreate && (
+                    <Typography variant="body1">
+                        {translate(`resources.${resource}.invite`, {
+                            _: inviteMessage,
+                        })}
+                    </Typography>
+                )}
             </div>
-            <div className={classes.toolbar}>
-                <CreateButton variant="contained" basePath={basePath} />
-            </div>
+            {hasCreate && (
+                <div className={classes.toolbar}>
+                    <CreateButton variant="contained" basePath={basePath} />
+                </div>
+            )}
         </>
     );
 };

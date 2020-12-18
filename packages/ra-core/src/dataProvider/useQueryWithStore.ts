@@ -158,6 +158,7 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
                     data,
                     total,
                     loaded: true,
+                    loading: false,
                 }));
             }
         }
