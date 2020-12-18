@@ -15,11 +15,11 @@ import {
     Record,
 } from 'ra-core';
 
+import LinearProgress from '../layout/LinearProgress';
 import Link from '../Link';
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
 import { ClassesOverride } from '../types';
-import { LinearProgress } from '../layout';
 
 /**
  * Fetch reference record, and delegate rendering to child component.

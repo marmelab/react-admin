@@ -17,9 +17,9 @@ import {
 } from 'ra-core';
 
 import sanitizeInputRestProps from './sanitizeInputRestProps';
+import LinearProgress from '../layout/LinearProgress';
 import Labeled from './Labeled';
 import ReferenceError from './ReferenceError';
-import { LinearProgress } from '../layout';
 
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
