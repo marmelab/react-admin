@@ -7,7 +7,6 @@ import {
     ReactNode,
 } from 'react';
 import PropTypes from 'prop-types';
-import Divider from '@material-ui/core/Divider';
 import { Route } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { useRouteMatch } from 'react-router-dom';
@@ -103,7 +102,6 @@ const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
         <div className={className} key={version} {...sanitizeRestProps(rest)}>
             {cloneElement(tabs, {}, nonNullChildren)}
 
-            <Divider />
             <div className={classes.content}>
                 {Children.map(nonNullChildren, (tab, index) =>
                     tab && isValidElement(tab) ? (
