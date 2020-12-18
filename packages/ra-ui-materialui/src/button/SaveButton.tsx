@@ -42,7 +42,7 @@ import { FormRenderProps } from 'react-final-form';
  * @prop {function} onFailure Callback to execute instead of the default error side effects. Receives the dataProvider error response as argument.
  * @prop {function} transform Callback to execute before calling the dataProvider. Receives the data from the form, must return that transformed data. Can be asynchronous (and return a Promise)
  *
- * @param {Prop} props
+ * @param {Props} props
  *
  * @example // with custom redirection
  *

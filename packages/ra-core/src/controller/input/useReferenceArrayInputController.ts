@@ -28,12 +28,12 @@ import { useResourceContext } from '../../core';
  *      source: 'referenceIds';
  * });
  *
- * @param {Object} option
- * @param {string} option.basePath basepath to current resource
- * @param {Object} option.record The The current resource record
- * @param {string} option.reference The linked resource name
- * @param {string} option.resource The current resource name
- * @param {string} option.source The key of the linked resource identifier
+ * @param {Option} props
+ * @param {string} props.basePath basepath to current resource
+ * @param {Object} props.record The The current resource record
+ * @param {string} props.reference The linked resource name
+ * @param {string} props.resource The current resource name
+ * @param {string} props.source The key of the linked resource identifier
  *
  * @return {Object} controllerProps Fetched data and callbacks for the ReferenceArrayInput components
  */

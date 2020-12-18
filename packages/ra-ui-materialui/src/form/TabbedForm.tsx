@@ -91,7 +91,7 @@ import { ClassesOverride } from '../types';
  * @prop {string} margin Apply variant to all inputs. Possible values are 'none', 'normal', and 'dense' (default)
  * @prop {boolean} sanitizeEmptyValues Whether or not deleted record attributes should be recreated with a `null` value (default: true)
  *
- * @param {Prop} props
+ * @param {Props} props
  */
 const TabbedForm: FC<TabbedFormProps> = props => (
     <FormWithRedirect
