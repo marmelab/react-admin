@@ -528,6 +528,7 @@ const ApproveButton = ({ record }) => {
         'comments',
         record.id,
         { isApproved: true },
+        record,
         {
             undoable: true,
             onSuccess: ({ data }) => {
