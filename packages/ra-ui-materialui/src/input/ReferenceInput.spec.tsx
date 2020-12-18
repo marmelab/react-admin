@@ -59,7 +59,7 @@ describe('<ReferenceInput />', () => {
 
     afterEach(cleanup);
 
-    it('should render a LinearProgress if loading is true', () => {
+    it('should render a LinearProgress if loading is true and a second has passed', async () => {
         const { queryByRole } = render(
             <ReferenceInputView
                 {...{
@@ -72,7 +72,25 @@ describe('<ReferenceInput />', () => {
             </ReferenceInputView>
         );
 
+        await new Promise(resolve => setTimeout(resolve, 1001));
         expect(queryByRole('progressbar')).not.toBeNull();
+    });
+
+    it("should not render a LinearProgress if loading is true and a second hasn't passed", async () => {
+        const { queryByRole } = render(
+            <ReferenceInputView
+                {...{
+                    ...defaultProps,
+                    input: { value: 1 },
+                    loading: true,
+                }}
+            >
+                <MyComponent />
+            </ReferenceInputView>
+        );
+
+        await new Promise(resolve => setTimeout(resolve, 250));
+        expect(queryByRole('progressbar')).toBeNull();
     });
 
     it('should not render a LinearProgress if loading is false', () => {
