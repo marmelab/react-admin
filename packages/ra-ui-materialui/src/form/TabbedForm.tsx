@@ -201,6 +201,7 @@ export const TabbedFormView: FC<TabbedFormViewProps> = props => {
                     classes,
                     url,
                     tabsWithErrors,
+                    ...sanitizeRestProps(rest),
                 },
                 children
             )}
