@@ -104,6 +104,7 @@ const SimpleFormView: FC<SimpleFormViewProps> = ({
     basePath,
     children,
     className,
+    contentClassName,
     handleSubmit,
     handleSubmitWithRedirect,
     invalid,
@@ -123,7 +124,7 @@ const SimpleFormView: FC<SimpleFormViewProps> = ({
         className={classnames('simple-form', className)}
         {...sanitizeRestProps(rest)}
     >
-        <CardContentInner>
+        <CardContentInner className={contentClassName}>
             {Children.map(
                 children,
                 (input: ReactElement) =>
@@ -160,6 +161,7 @@ SimpleFormView.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string,
+    contentClassName: PropTypes.string,
     handleSubmit: PropTypes.func, // passed by react-final-form
     invalid: PropTypes.bool,
     pristine: PropTypes.bool,
@@ -182,6 +184,7 @@ SimpleFormView.propTypes = {
 export interface SimpleFormViewProps extends FormRenderProps {
     basePath?: string;
     className?: string;
+    contentClassName?: string;
     margin?: 'none' | 'normal' | 'dense';
     handleSubmitWithRedirect?: (redirectTo: RedirectionSideEffect) => void;
     record?: Record;
