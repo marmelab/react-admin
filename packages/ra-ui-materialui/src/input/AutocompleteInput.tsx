@@ -265,9 +265,13 @@ const AutocompleteInput: FunctionComponent<AutocompleteInputProps> = props => {
 
     const handleChange = useCallback(
         (item: any) => {
+            if (getChoiceValue(item) == null && filterValue) {
+                setFilterValue('');
+            }
+
             input.onChange(getChoiceValue(item));
         },
-        [getChoiceValue, input]
+        [filterValue, getChoiceValue, input]
     );
 
     // This function ensures that the suggestion list stay aligned to the
