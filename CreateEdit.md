@@ -1255,7 +1255,7 @@ export const ProductEdit = ({ ...props }) => (
 ```
 {% endraw %}
 
-**Tip**: The props of your Input components are passed to a `react-final-form` [<Field>](https://final-form.org/docs/react-final-form/api/Field) component.
+**Tip**: The props of your Input components are passed to a `react-final-form` [Field](https://final-form.org/docs/react-final-form/api/Field) component.
 
 **Tip**: You can use *both* Form validation and input validation.
 
