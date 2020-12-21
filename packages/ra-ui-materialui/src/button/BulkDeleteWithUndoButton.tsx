@@ -59,12 +59,20 @@ const BulkDeleteWithUndoButton: FC<BulkDeleteWithUndoButtonProps> = props => {
             unselectAll(resource);
             refresh();
         },
-        onFailure: error =>{
+        onFailure: error => {
             notify(
                 typeof error === 'string'
                     ? error
                     : error.message || 'ra.notification.http_error',
-                'warning'
+                'warning',
+                {
+                    _:
+                        typeof error === 'string'
+                            ? error
+                            : error && error.message
+                            ? error.message
+                            : undefined,
+                }
             );
             window.location.reload();
         },
