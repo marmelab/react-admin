@@ -73,6 +73,7 @@ const BulkDeleteWithConfirmButton: FC<BulkDeleteWithConfirmButtonProps> = props 
                 'warning'
             );
             setOpen(false);
+            window.location.reload();
         },
     });
 
