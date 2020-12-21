@@ -718,7 +718,7 @@ export const PostCreate = (props) => (
 **Tip**: To style the <SimpleForm> component you can set two props:
 
 - `className` is passed to the `form` element
-- `contentClassName` is passed to the underlying MUI's [CardContent](#https://material-ui.com/api/card-content/#cardcontent-api) component witch surrounds the content of the form
+- `contentClassName` is passed to the underlying MUI's [CardContent](#https://material-ui.com/api/card-content/#cardcontent-api) component witch surrounds the form's content
 
 ### Label Decoration
 
