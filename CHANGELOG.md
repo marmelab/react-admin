@@ -1,5 +1,18 @@
 # Changelog
 
+## v3.11.1
+
+* Fix select empty option in `<AutocompleteInput>` does not reset the input ([5698](https://github.com/marmelab/react-admin/5698)) ([AnkitaGupta111](https://github.com/AnkitaGupta111))
+* Fix `<Empty>` list component does not display when the `Resource` has no `create` component ([5688](https://github.com/marmelab/react-admin/5688)) ([djhi](https://github.com/djhi))
+* Fix `<ExportButton>` doesn't take permanent `filter` into account ([5675](https://github.com/marmelab/react-admin/5675)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Confirm>` dialog shows a scroll bar on mobile ([5674](https://github.com/marmelab/react-admin/5674)) ([rkfg](https://github.com/rkfg))
+* Fix `<ReferenceField>` and `<ReferenceArrayField>` performance by showing loader only after a delay ([5668](https://github.com/marmelab/react-admin/5668)) ([djhi](https://github.com/djhi))
+* [Doc] Fix link to react-final-form `Field` documentation in CreateEdit chapter ([5689](https://github.com/marmelab/react-admin/5689)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix outdated Hasura Data Provider reference ([5686](https://github.com/marmelab/react-admin/5686)) ([djhi](https://github.com/djhi))
+* [Doc] Fix syntax in actions example for `useUpdate` ([5681](https://github.com/marmelab/react-admin/5681)) ([abdenny](https://github.com/abdenny))
+* [Doc] Fix custom theme doc doesn't explain how to override default theme ([5676](https://github.com/marmelab/react-admin/5676)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix typos in Tutorial doc ([5669](https://github.com/marmelab/react-admin/5669)) ([paulo9mv](https://github.com/paulo9mv))
+
 ## v3.11.0
 
 Starting with this version, react-admin applications send an anonymous request on mount to a telemetry server operated by marmelab. You can see this request by looking at the Network tab of your browser DevTools:
