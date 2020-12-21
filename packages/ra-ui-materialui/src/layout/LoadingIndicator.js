@@ -19,8 +19,8 @@ const useStyles = makeStyles(
 );
 
 const LoadingIndicator = props => {
-    const { classes: classesOverride, className, ...rest } = props;
-    useRefreshWhenVisible();
+    const { classes: classesOverride, className, refresh, ...rest } = props;
+    refresh && useRefreshWhenVisible();
     const loading = useSelector(state => state.admin.loading > 0);
     const classes = useStyles(props);
     const theme = useTheme();
@@ -41,6 +41,7 @@ LoadingIndicator.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
     width: PropTypes.string,
+    refresh: PropTypes.boolean,
 };
 
 export default LoadingIndicator;

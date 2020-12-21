@@ -102,6 +102,7 @@ const AppBar = (props: AppBarProps): JSX.Element => {
         open,
         title,
         userMenu,
+        refresh = true,
         ...rest
     } = props;
     const classes = useStyles(props);
@@ -154,7 +155,7 @@ const AppBar = (props: AppBarProps): JSX.Element => {
                     ) : (
                         children
                     )}
-                    <LoadingIndicator />
+                    <LoadingIndicator refresh={refresh}/>
                     {typeof userMenu === 'boolean'
                         ? userMenu === true
                             ? cloneElement(<DefaultUserMenu />, { logout })
@@ -171,6 +172,7 @@ AppBar.propTypes = {
     // @ts-ignore
     classes: PropTypes.object,
     className: PropTypes.string,
+
     color: PropTypes.oneOf([
         'default',
         'inherit',
@@ -180,6 +182,7 @@ AppBar.propTypes = {
     ]),
     logout: PropTypes.element,
     open: PropTypes.bool,
+    refresh: PropTypes.bool,
     userMenu: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
 };
 
@@ -191,6 +194,7 @@ export interface AppBarProps extends Omit<MuiAppBarProps, 'title' | 'classes'> {
     classes?: ClassesOverride<typeof useStyles>;
     logout?: JSX.Element;
     open?: boolean;
+    refresh?: boolean;
     title?: string | JSX.Element;
     userMenu?: JSX.Element | boolean;
 }
