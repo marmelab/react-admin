@@ -26,6 +26,10 @@ const useStyles = makeStyles(
             backgroundColor: theme.palette.success.main,
             color: theme.palette.success.contrastText,
         },
+        info: {
+            backgroundColor: theme.palette.info.main,
+            color: theme.palette.info.contrastText,
+        },
         error: {
             backgroundColor: theme.palette.error.dark,
             color: theme.palette.error.contrastText,
