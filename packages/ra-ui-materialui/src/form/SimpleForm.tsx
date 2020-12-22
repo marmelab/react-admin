@@ -91,7 +91,7 @@ export interface SimpleFormProps
     basePath?: string;
     children: ReactNode;
     className?: string;
-    container?: React.ComponentType<any>;
+    component?: React.ComponentType<any>;
     initialValues?: any;
     margin?: 'none' | 'normal' | 'dense';
     resource?: string;
@@ -105,7 +105,7 @@ const SimpleFormView: FC<SimpleFormViewProps> = ({
     basePath,
     children,
     className,
-    container: Container,
+    component: Component,
     handleSubmit,
     handleSubmitWithRedirect,
     invalid,
@@ -125,7 +125,7 @@ const SimpleFormView: FC<SimpleFormViewProps> = ({
         className={classnames('simple-form', className)}
         {...sanitizeRestProps(rest)}
     >
-        <Container>
+        <Component>
             {Children.map(
                 children,
                 (input: ReactElement) =>
@@ -140,7 +140,7 @@ const SimpleFormView: FC<SimpleFormViewProps> = ({
                         />
                     )
             )}
-        </Container>
+        </Component>
         {toolbar &&
             React.cloneElement(toolbar, {
                 basePath,
@@ -184,7 +184,7 @@ SimpleFormView.propTypes = {
 export interface SimpleFormViewProps extends FormRenderProps {
     basePath?: string;
     className?: string;
-    container?: React.ComponentType<any>;
+    component?: React.ComponentType<any>;
     margin?: 'none' | 'normal' | 'dense';
     handleSubmitWithRedirect?: (redirectTo: RedirectionSideEffect) => void;
     record?: Record;
@@ -202,7 +202,7 @@ export interface SimpleFormViewProps extends FormRenderProps {
 SimpleFormView.defaultProps = {
     submitOnEnter: true,
     toolbar: <Toolbar />,
-    container: CardContentInner,
+    component: CardContentInner,
 };
 
 const sanitizeRestProps = ({
