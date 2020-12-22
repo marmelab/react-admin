@@ -35,8 +35,8 @@ const useStyles = makeStyles(
             color: theme.palette.error.contrastText,
         },
         warning: {
-            backgroundColor: theme.palette.error.light,
-            color: theme.palette.error.contrastText,
+            backgroundColor: theme.palette.warning.main,
+            color: theme.palette.warning.contrastText,
         },
         undo: {
             color: theme.palette.primary.light,
