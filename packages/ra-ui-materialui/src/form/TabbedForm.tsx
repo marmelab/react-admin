@@ -201,6 +201,9 @@ export const TabbedFormView: FC<TabbedFormViewProps> = props => {
                     classes,
                     url,
                     tabsWithErrors,
+                    variant: tabs.props.scrollable
+                        ? 'scrollable'
+                        : tabs.props.variant || 'standard',
                 },
                 children
             )}
