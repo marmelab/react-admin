@@ -9,6 +9,13 @@ import {
 import PropTypes from 'prop-types';
 import Tabs, { TabsProps } from '@material-ui/core/Tabs';
 import { useLocation } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+    scrollableTabs: {
+        width: 0,
+    },
+}));
 
 const TabbedFormTabs: FC<TabbedFormTabsProps> = ({
     children,
@@ -18,7 +25,7 @@ const TabbedFormTabs: FC<TabbedFormTabsProps> = ({
     ...rest
 }) => {
     const location = useLocation();
-
+    const styles = useStyles();
     const validTabPaths = Children.map(children, (tab, index) => {
         if (!isValidElement(tab)) return undefined;
         return getTabFullPath(tab, index, url);
@@ -36,7 +43,12 @@ const TabbedFormTabs: FC<TabbedFormTabsProps> = ({
         : validTabPaths[0];
 
     return (
-        <Tabs value={tabValue} indicatorColor="primary" {...rest}>
+        <Tabs
+            value={tabValue}
+            indicatorColor="primary"
+            classes={{ scrollable: styles.scrollableTabs }}
+            {...rest}
+        >
             {Children.map(children, (tab: ReactElement, index) => {
                 if (!isValidElement<any>(tab)) return null;
 
