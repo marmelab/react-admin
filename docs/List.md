@@ -1912,7 +1912,7 @@ You can find many usage examples of `useListContext` in this page, including:
 - [Building an Aside Component](#aside-aside-component)
 - [Building a Custom Empty Page](#empty-empty-page-component)
 - [Building a Custom Filter](#building-a-custom-filter)
-- [Building a Custom Sort Control](##building-a-custom-sort-control)
+- [Building a Custom Sort Control](#building-a-custom-sort-control)
 - [Building a Custom Pagination Control](#building-a-custom-pagination-control)
 - [Building a Custom Iterator](#using-a-custom-iterator)
 
