@@ -19,7 +19,7 @@ export interface SelectionState {
  *
  * @example
  *
- * const { selectedIds, onSelect, onToggleItem, onUnselectItem } = useSelectionState();
+ * const { selectedIds, onSelect, onToggleItem, onUnselectItems } = useSelectionState();
  *
  */
 const useSelectionState = (
