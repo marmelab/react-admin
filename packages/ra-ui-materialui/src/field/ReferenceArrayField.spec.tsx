@@ -10,7 +10,7 @@ import SingleFieldList from '../list/SingleFieldList';
 
 describe('<ReferenceArrayField />', () => {
     afterEach(cleanup);
-    it('should render a loading indicator when related records are not yet fetched', () => {
+    it('should render a loading indicator when related records are not yet fetched and a second has passed', async () => {
         const { queryAllByRole } = render(
             <ListContextProvider
                 value={{
@@ -33,6 +33,8 @@ describe('<ReferenceArrayField />', () => {
                 </ReferenceArrayFieldView>
             </ListContextProvider>
         );
+
+        await new Promise(resolve => setTimeout(resolve, 1001));
         expect(queryAllByRole('progressbar')).toHaveLength(1);
     });
 

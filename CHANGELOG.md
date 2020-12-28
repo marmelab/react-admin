@@ -1,5 +1,59 @@
 # Changelog
 
+## v3.11.1
+
+* Fix select empty option in `<AutocompleteInput>` does not reset the input ([5698](https://github.com/marmelab/react-admin/pull/5698)) ([AnkitaGupta111](https://github.com/AnkitaGupta111))
+* Fix `<Empty>` list component does not display when the `Resource` has no `create` component ([5688](https://github.com/marmelab/react-admin/pull/5688)) ([djhi](https://github.com/djhi))
+* Fix `<ExportButton>` doesn't take permanent `filter` into account ([5675](https://github.com/marmelab/react-admin/pull/5675)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Confirm>` dialog shows a scroll bar on mobile ([5674](https://github.com/marmelab/react-admin/pull/5674)) ([rkfg](https://github.com/rkfg))
+* Fix `<ReferenceField>` and `<ReferenceArrayField>` performance by showing loader only after a delay ([5668](https://github.com/marmelab/react-admin/pull/5668)) ([djhi](https://github.com/djhi))
+* [Doc] Fix link to react-final-form `Field` documentation in CreateEdit chapter ([5689](https://github.com/marmelab/react-admin/pull/5689)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix outdated Hasura Data Provider reference ([5686](https://github.com/marmelab/react-admin/pull/5686)) ([djhi](https://github.com/djhi))
+* [Doc] Fix syntax in actions example for `useUpdate` ([5681](https://github.com/marmelab/react-admin/pull/5681)) ([abdenny](https://github.com/abdenny))
+* [Doc] Fix custom theme doc doesn't explain how to override default theme ([5676](https://github.com/marmelab/react-admin/pull/5676)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix typos in Tutorial doc ([5669](https://github.com/marmelab/react-admin/pull/5669)) ([paulo9mv](https://github.com/paulo9mv))
+
+## v3.11.0
+
+Starting with this version, react-admin applications send an anonymous request on mount to a telemetry server operated by marmelab. You can see this request by looking at the Network tab of your browser DevTools:
+
+`https://react-admin-telemetry.marmelab.com/react-admin-telemetry`
+
+The only data sent to the telemetry server is the admin domain (e.g. "example.com") - no personal data is ever sent, and no cookie is included in the response. The react-admin team uses these domains to track the usage of the framework.
+
+You can opt out of telemetry by simply adding `disableTelemetry` to the `<Admin>` component:
+
+```jsx
+// in src/App.js
+import * as React from "react";
+import { Admin } from 'react-admin';
+
+const App = () => (
+    <Admin disableTelemetry>
+        // ...
+    </Admin>
+);
+```
+
+* Add domain telemetry on app mount ([5631](https://github.com/marmelab/react-admin/pull/5631)) ([djhi](https://github.com/djhi))
+* Add ability to access (and override) side effects in `SaveContext` ([5604](https://github.com/marmelab/react-admin/pull/5604)) ([djhi](https://github.com/djhi))
+* Add support for `disabled` in `<ArrayInput>` ([5618](https://github.com/marmelab/react-admin/pull/5618)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to customize the notification element in the `<Login>` page ([5630](https://github.com/marmelab/react-admin/pull/5630)) ([hieusmiths](https://github.com/hieusmiths))
+* Disable ripple effect on Buttons for improved performance ([5598](https://github.com/marmelab/react-admin/pull/5598)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<TestContext>` doesn't contain `notifications` node ([5659](https://github.com/marmelab/react-admin/pull/5659)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Filter>` fails to show compound filters with no default value ([5657](https://github.com/marmelab/react-admin/pull/5657)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix "Missing translation" console error when the `dataProvider` fails ([5655](https://github.com/marmelab/react-admin/pull/5655)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<FilterListItem>` doesn't appear selected when more than one filter is applied ([5644](https://github.com/marmelab/react-admin/pull/5644)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `usePermissions` always triggers a re-render even though the permissions are unchanged ([5607](https://github.com/marmelab/react-admin/pull/5607)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add `rowStyle` example usage to `<SimpleList>` jsDoc ([5661](https://github.com/marmelab/react-admin/pull/5661)) ([vdimitroff](https://github.com/vdimitroff))
+* [Doc] Fix `<ReferenceField link>` prop type to show that it accepts a function ([5660](https://github.com/marmelab/react-admin/pull/5660)) ([vdimitroff](https://github.com/vdimitroff))
+* [Doc] Fix missing import in `List` example ([5658](https://github.com/marmelab/react-admin/pull/5658)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix syntax error in `<List exporter>` prop usage ([5649](https://github.com/marmelab/react-admin/pull/5649)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix Sidebar size change resets the theme color ([5646](https://github.com/marmelab/react-admin/pull/5646)) ([zheya08](https://github.com/zheya08))
+* [Doc] Fix `<ReferenceInput>` and `<ReferenceArrayInput>` JSDocs point to the wrong `dataProvider` method ([5645](https://github.com/marmelab/react-admin/pull/5645)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Add mention of saved queries in List chapter ([5638](https://github.com/marmelab/react-admin/pull/5638)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<Admin history>` prop injection documentation misses package version constraint ([5538](https://github.com/marmelab/react-admin/pull/5538)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v3.10.4
 
 * Fix `ra-data-simple-rest` delete method fails because of bad header ([5628](https://github.com/marmelab/react-admin/pull/5628)) ([fzaninotto](https://github.com/fzaninotto))
@@ -1973,7 +2027,7 @@ This new release is not backwards compatible with 1.x. Please refer to [the Upgr
 * Fix date filters ([djhi](https://github.com/djhi))
 * Fix typo in custom actions documentation ([RWOverdijk](https://github.com/RWOverdijk))
 
-## v.1.3.0
+## v1.3.0
 
 * Add permissions handling ([djhi](https://github.com/djhi))
 * Add Not Found page ([fzaninotto](https://github.com/fzaninotto))

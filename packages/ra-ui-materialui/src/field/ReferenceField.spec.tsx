@@ -9,20 +9,43 @@ import TextField from './TextField';
 
 describe('<ReferenceField />', () => {
     afterEach(cleanup);
+    const record = { id: 123, postId: 123 };
 
     describe('Progress bar', () => {
-        it('should display a loader on mount if the reference is not in the store', () => {
+        it("should not display a loader on mount if the reference is not in the store and a second hasn't passed yet", async () => {
             const { queryByRole, container } = renderWithRedux(
-                <ReferenceField
-                    record={{ id: 123, postId: 123 }}
+                <ReferenceFieldView
+                    record={record}
                     resource="comments"
                     source="postId"
                     reference="posts"
                     basePath="/comments"
+                    loaded={false}
+                    loading={true}
                 >
                     <TextField source="title" />
-                </ReferenceField>
+                </ReferenceFieldView>
             );
+            await new Promise(resolve => setTimeout(resolve, 500));
+            expect(queryByRole('progressbar')).toBeNull();
+            const links = container.getElementsByTagName('a');
+            expect(links).toHaveLength(0);
+        });
+        it('should display a loader on mount if the reference is not in the store and a second has passed', async () => {
+            const { queryByRole, container } = renderWithRedux(
+                <ReferenceFieldView
+                    record={record}
+                    resource="comments"
+                    source="postId"
+                    reference="posts"
+                    basePath="/comments"
+                    loaded={false}
+                    loading={true}
+                >
+                    <TextField source="title" />
+                </ReferenceFieldView>
+            );
+            await new Promise(resolve => setTimeout(resolve, 1001));
             expect(queryByRole('progressbar')).not.toBeNull();
             const links = container.getElementsByTagName('a');
             expect(links).toHaveLength(0);
@@ -32,7 +55,7 @@ describe('<ReferenceField />', () => {
             const { queryByRole, container } = renderWithRedux(
                 <MemoryRouter>
                     <ReferenceField
-                        record={{ id: 123, postId: 123 }}
+                        record={record}
                         resource="comments"
                         source="postId"
                         reference="posts"
@@ -67,7 +90,7 @@ describe('<ReferenceField />', () => {
                 <DataProviderContext.Provider value={dataProvider}>
                     <MemoryRouter>
                         <ReferenceField
-                            record={{ id: 123, postId: 123 }}
+                            record={record}
                             resource="comments"
                             source="postId"
                             reference="posts"
@@ -99,7 +122,7 @@ describe('<ReferenceField />', () => {
                 // @ts-ignore-line
                 <DataProviderContext.Provider value={dataProvider}>
                     <ReferenceField
-                        record={{ id: 123, postId: 123 }}
+                        record={record}
                         resource="comments"
                         source="postId"
                         reference="posts"
@@ -124,7 +147,7 @@ describe('<ReferenceField />', () => {
                 // @ts-ignore-line
                 <DataProviderContext.Provider value={dataProvider}>
                     <ReferenceField
-                        record={{ id: 123, postId: 123 }}
+                        record={record}
                         resource="comments"
                         source="postId"
                         reference="posts"
@@ -161,7 +184,7 @@ describe('<ReferenceField />', () => {
         const { container, getByText } = renderWithRedux(
             <MemoryRouter>
                 <ReferenceField
-                    record={{ id: 123, postId: 123 }}
+                    record={record}
                     resource="comments"
                     source="postId"
                     reference="posts"
@@ -197,7 +220,7 @@ describe('<ReferenceField />', () => {
             <DataProviderContext.Provider value={dataProvider}>
                 <MemoryRouter>
                     <ReferenceField
-                        record={{ id: 123, postId: 123 }}
+                        record={record}
                         resource="comments"
                         source="postId"
                         reference="posts"
@@ -223,7 +246,7 @@ describe('<ReferenceField />', () => {
             // @ts-ignore-line
             <DataProviderContext.Provider value={dataProvider}>
                 <ReferenceField
-                    record={{ id: 123, postId: 123 }}
+                    record={record}
                     resource="comments"
                     source="postId"
                     reference="posts"
@@ -244,7 +267,7 @@ describe('<ReferenceField />', () => {
             const { container } = render(
                 <MemoryRouter>
                     <ReferenceFieldView
-                        record={{ id: 123, postId: 123 }}
+                        record={record}
                         source="postId"
                         referenceRecord={{ id: 123, title: 'foo' }}
                         reference="posts"
@@ -266,7 +289,7 @@ describe('<ReferenceField />', () => {
         it('should render no link when resourceLinkPath is not specified', () => {
             const { container } = render(
                 <ReferenceFieldView
-                    record={{ id: 123, fooId: 123 }}
+                    record={record}
                     source="fooId"
                     referenceRecord={{ id: 123, title: 'foo' }}
                     reference="bar"

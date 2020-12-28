@@ -26,8 +26,6 @@ interface ListParamsOptions {
     sort?: SortPayload;
     // default value for a filter when displayed but not yet set
     filterDefaultValues?: FilterPayload;
-    // permanent filter which always overrides the user entry
-    filter?: FilterPayload;
     debounce?: number;
 }
 
@@ -111,7 +109,6 @@ const useListParams = ({
     resource,
     location,
     filterDefaultValues,
-    filter, // permanent filter
     sort = defaultSort,
     perPage = 10,
     debounce = 500,
@@ -191,10 +188,7 @@ const useListParams = ({
         requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );
 
-    const filterValues = useMemo(
-        () => ({ ...(query.filter || emptyObject), ...filter }),
-        [filter, query.filter]
-    );
+    const filterValues = query.filter || emptyObject;
     const displayedFilterValues = query.displayedFilters || emptyObject;
 
     const debouncedSetFilters = lodashDebounce((filter, displayedFilters) => {
