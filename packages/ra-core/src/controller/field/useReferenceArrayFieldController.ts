@@ -42,12 +42,14 @@ const defaultSort = { field: null, order: null };
  *      source: 'referenceIds';
  * });
  *
- * @param {Option} props
- * @param {string} props.basePath basepath to current resource
- * @param {Object} props.record The The current resource record
- * @param {string} props.reference The linked resource name
- * @param {string} props.resource The current resource name
- * @param {string} props.source The key of the linked resource identifier
+ * @typedef {Object} Props the props you can use
+ * @prop {string} basePath basepath to current resource
+ * @prop {Object} record The The current resource record
+ * @prop {string} reference The linked resource name
+ * @prop {string} resource The current resource name
+ * @prop {string} source The key of the linked resource identifier
+ *
+ * @param {Props} props
  *
  * @returns {ReferenceArrayProps} The reference props
  */
