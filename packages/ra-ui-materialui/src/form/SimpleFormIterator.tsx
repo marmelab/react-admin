@@ -114,6 +114,7 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
         defaultValue,
     } = props;
     const classes = useStyles(props);
+    const nodeRef = useRef(null);
 
     // We need a unique id for each field for a proper enter/exit animation
     // so we keep an internal map between the field position and an auto-increment id
@@ -184,6 +185,7 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
             <TransitionGroup component={null}>
                 {fields.map((member, index) => (
                     <CSSTransition
+                        nodeRef={nodeRef}
                         key={ids.current[index]}
                         timeout={500}
                         classNames="fade"
