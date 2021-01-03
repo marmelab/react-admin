@@ -3,6 +3,7 @@ import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     EditContextProvider,
+    ResourceContextProvider,
     useCheckMinimumRequiredProps,
     useEditController,
 } from 'ra-core';
@@ -59,10 +60,18 @@ export const Edit = (
 ): ReactElement => {
     useCheckMinimumRequiredProps('Edit', ['children'], props);
     const controllerProps = useEditController(props);
-    return (
+    const body = (
         <EditContextProvider value={controllerProps}>
             <EditView {...props} {...controllerProps} />
         </EditContextProvider>
+    );
+    return props.resource ? (
+        // support resource override via props
+        <ResourceContextProvider value={props.resource}>
+            {body}
+        </ResourceContextProvider>
+    ) : (
+        body
     );
 };
 
