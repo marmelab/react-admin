@@ -12,7 +12,7 @@ import { ResourceContext, ResourceContextValue } from './ResourceContext';
 export const useResourceContext = <
     ResourceInformationsType extends Partial<{ resource: string }>
 >(
-    props: ResourceInformationsType
+    props?: ResourceInformationsType
 ): ResourceContextValue => {
     const context = useContext(ResourceContext);
 
@@ -29,7 +29,7 @@ export const useResourceContext = <
             // );
         }
         // Ignored because resource is often optional (as it is injected) in components which passes the props to this hook
-        return props.resource;
+        return props && props.resource;
     }
 
     return context;
