@@ -11,7 +11,7 @@ const UsePermissions = ({ children, authParams }: any) => {
     return children(res);
 };
 
-const stateInspector = state => (
+const stateInpector = state => (
     <div>
         <span>{state.loading && 'LOADING'}</span>
         <span>{state.loaded && 'LOADED'}</span>
@@ -25,7 +25,7 @@ describe('usePermissions', () => {
 
     it('should return a loading state on mount', () => {
         const { queryByText } = renderWithRedux(
-            <UsePermissions>{stateInspector}</UsePermissions>
+            <UsePermissions>{stateInpector}</UsePermissions>
         );
         expect(queryByText('LOADING')).not.toBeNull();
         expect(queryByText('LOADED')).toBeNull();
@@ -34,7 +34,7 @@ describe('usePermissions', () => {
 
     it('should return nothing by default after a tick', async () => {
         const { queryByText } = renderWithRedux(
-            <UsePermissions>{stateInspector}</UsePermissions>
+            <UsePermissions>{stateInpector}</UsePermissions>
         );
         await wait();
         expect(queryByText('LOADING')).toBeNull();
@@ -51,7 +51,7 @@ describe('usePermissions', () => {
         };
         const { queryByText } = renderWithRedux(
             <AuthContext.Provider value={authProvider}>
-                <UsePermissions>{stateInspector}</UsePermissions>
+                <UsePermissions>{stateInpector}</UsePermissions>
             </AuthContext.Provider>
         );
         await wait();
@@ -70,7 +70,7 @@ describe('usePermissions', () => {
         };
         const { queryByText } = renderWithRedux(
             <AuthContext.Provider value={authProvider}>
-                <UsePermissions>{stateInspector}</UsePermissions>
+                <UsePermissions>{stateInpector}</UsePermissions>
             </AuthContext.Provider>
         );
         await wait();
