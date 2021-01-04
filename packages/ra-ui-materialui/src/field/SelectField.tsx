@@ -22,7 +22,7 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  *
  * By default, the text is built by
  * - finding a choice where the 'id' property equals the field value
- * - using the 'name' property an the option text
+ * - using the 'name' property as the option text
  *
  * You can also customize the properties to use for the value and text,
  * thanks to the 'optionValue' and 'optionText' attributes.

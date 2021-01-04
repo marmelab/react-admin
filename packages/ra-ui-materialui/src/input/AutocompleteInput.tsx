@@ -39,7 +39,7 @@ interface Options {
  *
  * By default, the options are built from:
  *  - the 'id' property as the option value,
- *  - the 'name' property an the option text
+ *  - the 'name' property as the option text
  * @example
  * const choices = [
  *    { id: 'M', name: 'Male' },
