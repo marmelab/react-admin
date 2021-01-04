@@ -18,7 +18,7 @@ This Data Provider fits REST APIs powered by [JSON Server](https://github.com/ty
 | ------------------ | ------------------------------------------------------------------------------------------------------- |
 | `getList`          | `GET http://my.api.url/posts?_sort=title&_order=ASC&_start=0&_end=24&title=bar`                         |
 | `getOne`           | `GET http://my.api.url/posts/123`                                                                       |
-| `getMany`          | `GET http://my.api.url/posts/123, GET http://my.api.url/posts/456, GET http://my.api.url/posts/789`     |
+| `getMany`          | `GET http://my.api.url/posts?id=123&id=456&id=789`     |
 | `getManyReference` | `GET http://my.api.url/posts?author_id=345`                                                             |
 | `create`           | `POST http://my.api.url/posts/123`                                                                      |
 | `update`           | `PUT http://my.api.url/posts/123`                                                                       |
