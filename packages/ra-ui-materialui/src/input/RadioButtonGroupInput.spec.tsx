@@ -347,7 +347,7 @@ describe('<RadioButtonGroupInput />', () => {
             expect(getByText('ra.validation.error')).not.toBeNull();
         });
 
-        it('should be displayed even with an helper Text', () => {
+        it('should be displayed even with a helper Text', () => {
             // This validator always returns an error
             const validate = () => 'ra.validation.error';
 

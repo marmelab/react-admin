@@ -10,7 +10,7 @@ import useMutation from './useMutation';
  * - error: [callback, { error: [error from response], loading: false, loaded: true }]
  *
  * @param resource The resource name, e.g. 'posts'
- * @param data The data to initialize the new record with, e.g. { title: 'hello, world" }
+ * @param data The data to initialize the new record with, e.g. { title: 'hello, world' }
  * @param options Options object to pass to the dataProvider. May include side effects to be executed upon success or failure, e.g. { onSuccess: { refresh: true } }
  *
  * @returns The current request state. Destructure as [create, { data, error, loading, loaded }].

@@ -81,14 +81,14 @@ export const accumulateFactory = (tasks, accumulations, finalize) =>
      */
 
     function* accumulate(action) {
-        // For backward compatibility, if no accumulateKey is provided, we fallback to the resource
+        // For backward compatibility, if no accumulateKey is provided, fallback to the resource
         const key = action.meta.accumulateKey || action.payload.resource;
 
         if (tasks[key]) {
             yield cancel(tasks[key]);
         }
 
-        // For backward compatibility, if no accumulateValues function is provided, we fallback to the old
+        // For backward compatibility, if no accumulateValues function is provided, fallback to the old
         // addIds function (used by the crudGetManyAccumulate action for example)
         const accumulateValues = action.meta.accumulateValues || addIds;
 

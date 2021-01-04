@@ -8,7 +8,7 @@ import TopToolbar from '../layout/TopToolbar';
 /**
  * Action Toolbar for the Edit view
  *
- * Internal component. If you want to add or remove actions for a Edit view,
+ * Internal component. If you want to add or remove actions for an Edit view,
  * write your own EditActions Component. Then, in the <Edit> component,
  * use it in the `actions` prop to pass a custom component.
  *

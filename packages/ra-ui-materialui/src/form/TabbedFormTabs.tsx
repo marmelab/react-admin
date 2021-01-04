@@ -24,13 +24,13 @@ const TabbedFormTabs: FC<TabbedFormTabsProps> = ({
         return getTabFullPath(tab, index, url);
     });
 
-    // This ensure we don't get warnings from material-ui Tabs component when
+    // This ensures we don't get warnings from material-ui Tabs component when
     // the current location pathname targets a dynamically added Tab
     // In the case the targeted Tab is not present at first render (when
     // using permissions for example) we temporarily switch to the first
     // available tab. The current location will be applied again on the
     // first render containing the targeted tab. This is almost transparent
-    // for the user who may just see an short tab selection animation
+    // for the user who may just see a short tab selection animation
     const tabValue = validTabPaths.includes(location.pathname)
         ? location.pathname
         : validTabPaths[0];
@@ -40,7 +40,7 @@ const TabbedFormTabs: FC<TabbedFormTabsProps> = ({
             {Children.map(children, (tab: ReactElement, index) => {
                 if (!isValidElement<any>(tab)) return null;
 
-                // Builds the full tab tab which is the concatenation of the last matched route in the
+                // Builds the full tab which is the concatenation of the last matched route in the
                 // TabbedShowLayout hierarchy (ex: '/posts/create', '/posts/12', , '/posts/12/show')
                 // and the tab path.
                 // This will be used as the Tab's value

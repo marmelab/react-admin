@@ -43,7 +43,7 @@ describe('possibleValues reducer', () => {
             expect(possibleReferences).toEqual({ error: 'error message' });
         });
 
-        it('should return a empty array if the possibleValues in state is empty', () => {
+        it('should return an empty array if the possibleValues in state is empty', () => {
             const possibleReferences = getPossibleReferences(
                 referenceState,
                 []

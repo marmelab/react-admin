@@ -22,7 +22,7 @@ import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDecl
  *
  * - both, in which case the definition and call time parameters are merged
  *
- *       const [mutate] = useMutation(query1, options1); mutate(query2, options2));
+ *       const [mutate] = useMutation(query1, options1); mutate(query2, options2);
  *
  * @param {Object} query
  * @param {string} query.type The method called on the data provider, e.g. 'getList', 'getOne'. Can also be a custom method if the dataProvider supports is.
@@ -31,9 +31,9 @@ import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDecl
  * @param {Object} options
  * @param {string} options.action Redux action type
  * @param {boolean} options.undoable Set to true to run the mutation locally before calling the dataProvider
- * @param {Function} options.onSuccess Side effect function to be executed upon success or failure, e.g. { onSuccess: response => refresh() } }
- * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) } }
- * @param {boolean} options.withDeclarativeSideEffectsSupport Set to true to support legacy side effects (e.g. { onSuccess: { refresh: true } })
+ * @param {Function} options.onSuccess Side effect function to be executed upon success or failure, e.g. { onSuccess: response => refresh() }
+ * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) }
+ * @param {boolean} options.withDeclarativeSideEffectsSupport Set to true to support legacy side effects e.g. { onSuccess: { refresh: true } }
  *
  * @returns A tuple with the mutation callback and the request state. Destructure as [mutate, { data, total, error, loading, loaded }].
  *
@@ -52,9 +52,9 @@ import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDecl
  * - {Object} options
  * - {string} options.action Redux action type
  * - {boolean} options.undoable Set to true to run the mutation locally before calling the dataProvider
- * - {Function} options.onSuccess Side effect function to be executed upon success or failure, e.g. { onSuccess: response => refresh() } }
- * - {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) } }
- * - {boolean} withDeclarativeSideEffectsSupport Set to true to support legacy side effects (e.g. { onSuccess: { refresh: true } })
+ * - {Function} options.onSuccess Side effect function to be executed upon success or failure, e.g. { onSuccess: response => refresh() }
+ * - {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) }
+ * - {boolean} withDeclarativeSideEffectsSupport Set to true to support legacy side effects e.g. { onSuccess: { refresh: true } }
  *
  * @example
  *
@@ -225,7 +225,7 @@ export type UseMutationValue = [
  *
  * useMutation() parameters can be passed:
  * - at definition time (e.g. useMutation({ type: 'update', resource: 'posts', payload: { id: 1, data: { title: '' } } }) )
- * - at call time (e.g [mutate] = useMutation(); mutate({ type: 'update', resource: 'posts', payload: { id: 1, data: { title: '' } } }))
+ * - at call time (e.g. [mutate] = useMutation(); mutate({ type: 'update', resource: 'posts', payload: { id: 1, data: { title: '' } } }))
  * - both
  *
  * This function merges the definition time and call time parameters.
