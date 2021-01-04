@@ -103,7 +103,7 @@ describe('<DatagridHeaderCell />', () => {
             expect(getByTitle('ra.action.sort').dataset.order).toBe('ASC');
         });
 
-        it('should be disabled when field has no sortby and no source', () => {
+        it('should be disabled when field has no sortBy and no source', () => {
             const { queryAllByTitle } = render(
                 <table>
                     <tbody>

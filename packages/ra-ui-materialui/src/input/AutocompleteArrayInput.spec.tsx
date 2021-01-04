@@ -251,7 +251,7 @@ describe('<AutocompleteArrayInput />', () => {
             expect(queryAllByRole('option')).toHaveLength(1);
         });
 
-        it('should not rerender searchtext while having focus and new choices arrive', () => {
+        it('should not rerender searchText while having focus and new choices arrive', () => {
             const optionText = jest.fn();
             const { getByLabelText, queryAllByRole, rerender } = render(
                 <Form

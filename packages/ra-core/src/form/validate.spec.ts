@@ -29,7 +29,7 @@ describe('Validators', () => {
     };
 
     describe('composeValidators', () => {
-        const asyncSuccessfullValidator = async =>
+        const asyncSuccessfulValidator = async =>
             new Promise(resolve => resolve());
         const asyncFailedValidator = async =>
             new Promise(resolve => resolve('async'));
@@ -39,7 +39,7 @@ describe('Validators', () => {
                 composeValidators([
                     required(),
                     minLength(5),
-                    asyncSuccessfullValidator,
+                    asyncSuccessfulValidator,
                 ]),
                 [''],
                 'ra.validation.required'
@@ -47,7 +47,7 @@ describe('Validators', () => {
             await test(
                 composeValidators([
                     required(),
-                    asyncSuccessfullValidator,
+                    asyncSuccessfulValidator,
                     minLength(5),
                 ]),
                 ['abcd'],
@@ -66,7 +66,7 @@ describe('Validators', () => {
                 composeValidators([
                     required(),
                     minLength(5),
-                    asyncSuccessfullValidator,
+                    asyncSuccessfulValidator,
                 ]),
                 ['abcde'],
                 undefined
@@ -78,7 +78,7 @@ describe('Validators', () => {
                 composeValidators(
                     required(),
                     minLength(5),
-                    asyncSuccessfullValidator
+                    asyncSuccessfulValidator
                 ),
                 [''],
                 'ra.validation.required'
@@ -86,7 +86,7 @@ describe('Validators', () => {
             await test(
                 composeValidators(
                     required(),
-                    asyncSuccessfullValidator,
+                    asyncSuccessfulValidator,
                     minLength(5)
                 ),
                 ['abcd'],
@@ -105,7 +105,7 @@ describe('Validators', () => {
                 composeValidators(
                     required(),
                     minLength(5),
-                    asyncSuccessfullValidator
+                    asyncSuccessfulValidator
                 ),
                 ['abcde'],
                 undefined
@@ -293,13 +293,13 @@ describe('Validators', () => {
             );
         });
 
-        it('should memoize the validator when the regex pattren and message are the same', () => {
+        it('should memoize the validator when the regex pattern and message are the same', () => {
             expect(regex(/foo/, 'placeholder')).toBe(
                 regex(/foo/, 'placeholder')
             );
         });
 
-        it('should create new validator when the regex pattren is different', () => {
+        it('should create new validator when the regex pattern is different', () => {
             expect(regex(/foo/, 'placeholder')).not.toBe(
                 regex(/notfoo/, 'placeholder')
             );

@@ -308,7 +308,7 @@ describe('<AutocompleteInput />', () => {
             expect(queryByText('foo')).not.toBeNull();
         });
 
-        it('should not rerender searchtext while having focus and new choices arrive', () => {
+        it('should not rerender searchText while having focus and new choices arrive', () => {
             const { getByLabelText, rerender } = render(
                 <Form
                     onSubmit={jest.fn()}
@@ -595,7 +595,7 @@ describe('<AutocompleteInput />', () => {
                         {...defaultProps}
                         options={{
                             suggestionsContainerProps: {
-                                'aria-label': 'My Sugggestions Container',
+                                'aria-label': 'My Suggestions Container',
                             },
                         }}
                         choices={[
@@ -612,7 +612,7 @@ describe('<AutocompleteInput />', () => {
         // Temporary workaround until we can upgrade testing-library in v4
         input.focus();
 
-        expect(getByLabelText('My Sugggestions Container')).not.toBeNull();
+        expect(getByLabelText('My Suggestions Container')).not.toBeNull();
     });
 
     describe('Fix issue #4660', () => {

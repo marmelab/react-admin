@@ -135,7 +135,7 @@ describe('<FilterForm />', () => {
     });
 
     describe('mergeInitialValuesWithDefaultValues', () => {
-        it('should correctly merge initial values with the default values of the alwayson filters', () => {
+        it('should correctly merge initial values with the default values of the alwaysOn filters', () => {
             const initialValues = {
                 title: 'initial title',
             };
