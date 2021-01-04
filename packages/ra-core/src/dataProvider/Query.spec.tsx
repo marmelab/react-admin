@@ -552,7 +552,7 @@ describe('Query', () => {
             payload: undefined,
             meta: { resource: 'foo' },
         });
-        dispatchSpy.mockClear(); // clar initial fetch
+        dispatchSpy.mockClear(); // clear initial fetch
 
         const testElement = getByTestId('test');
         fireEvent.click(testElement);

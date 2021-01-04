@@ -101,7 +101,7 @@ describe('useInput', () => {
             />
         );
         const input = getByLabelText('Title');
-        // Temporary workaroud until we can upgrade testing-library in v4
+        // Temporary workaround until we can upgrade testing-library in v4
         input.focus();
         expect(handleFocus).toHaveBeenCalled();
         expect(formApi.getState().active).toEqual('title');

@@ -23,7 +23,7 @@ interface Props {
 /**
  * Fetch reference record, and delegate rendering to child component.
  *
- * The reference prop sould be the name of one of the <Resource> components
+ * The reference prop should be the name of one of the <Resource> components
  * added as <Admin> child.
  *
  * @example

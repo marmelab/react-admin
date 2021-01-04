@@ -45,7 +45,7 @@ const useStyles = makeStyles(
  * Tabbed Layout for a Show view, showing fields grouped in tabs.
  *
  * Receives the current `record` from the parent `<Show>` component,
- * and passes it to its childen. Children should be Tab components.
+ * and passes it to its children. Children should be Tab components.
  * The component passed as `tabs` props replaces the default material-ui's <Tabs> component.
  *
  * @example

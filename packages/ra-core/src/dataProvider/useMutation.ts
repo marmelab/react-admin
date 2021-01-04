@@ -231,7 +231,7 @@ export type UseMutationValue = [
  * This function merges the definition time and call time parameters.
  *
  * This is useful because useMutation() is used by higher-level hooks like
- * useCreate() or useUpade(), and these hooks can be called both ways.
+ * useCreate() or useUpdate(), and these hooks can be called both ways.
  * So it makes sense to make useMutation() capable of handling both call types
  * as it avoids repetition higher in the hook chain.
  *

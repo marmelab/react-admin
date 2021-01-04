@@ -32,9 +32,9 @@ interface Options {
 const defaultFilter = {};
 
 /**
- * Fetch reference records, and return them when avaliable
+ * Fetch reference records, and return them when available
  *
- * The reference prop sould be the name of one of the <Resource> components
+ * The reference prop should be the name of one of the <Resource> components
  * added as <Admin> child.
  *
  * @example

@@ -29,7 +29,7 @@ type ActionTypes =
  * from the cachedRequests reducer (not this ids reducer). It's only when the user
  * changes page, sort, or filter, that the useListController hook uses the ids
  * reducer, so as to show the previous list of results while loading the new
- * list (intead of displaying a blank page each time the list params change).
+ * list (instead of displaying a blank page each time the list params change).
  *
  * @see useListController
  *

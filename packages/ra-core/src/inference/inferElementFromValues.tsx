@@ -51,7 +51,7 @@ const hasType = (type, types) => typeof types[type] !== 'undefined';
  *     // new InferredElement(<StringField source="address" />)
  *
  * Types are optional: if a type isn't provided, the function falls back
- * to the neareast type.
+ * to the nearest type.
  *
  * @example
  *     inferElementFromValues(

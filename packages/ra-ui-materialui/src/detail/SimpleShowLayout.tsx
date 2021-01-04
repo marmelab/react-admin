@@ -23,7 +23,7 @@ const sanitizeRestProps = ({
  * Simple Layout for a Show view, showing fields in one column.
  *
  * Receives the current `record` from the parent `<Show>` component,
- * and passes it to its childen. Children should be Field-like components.
+ * and passes it to its children. Children should be Field-like components.
  *
  * @example
  *     // in src/posts.js

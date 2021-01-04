@@ -45,7 +45,7 @@ const useGetOne = <RecordType extends Record = Record>(
             if (
                 // resources are registered
                 Object.keys(state.admin.resources).length > 0 &&
-                // no registered resource mathing the query
+                // no registered resource matching the query
                 !state.admin.resources[resource]
             ) {
                 throw new Error(

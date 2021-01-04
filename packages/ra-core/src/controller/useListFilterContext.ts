@@ -13,7 +13,7 @@ import ListFilterContext, { ListFilterContextValue } from './ListFilterContext';
  * @prop {Function} setFilters a callback to update the filters, e.g. setFilters(filters, displayedFilters)
  * @prop {Object}   displayedFilters a dictionary of the displayed filters, e.g. { title: true, nationality: true }
  * @prop {Function} showFilter a callback to show one of the filters, e.g. showFilter('title', defaultValue)
- * @prop {Function} hideFilter a callback to hide one of the filters, e.g. hidefilter('title')
+ * @prop {Function} hideFilter a callback to hide one of the filters, e.g. hideFilter('title')
  * @prop {string}   resource the resource name, deduced from the location. e.g. 'posts'
  *
  * @returns {ListFilterContextValue} list controller props

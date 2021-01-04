@@ -6,7 +6,7 @@ import { ListControllerProps } from './useListController';
  * Context to store the pagination part of the useListController() result.
  *
  * Use the useListPaginationContext() hook to read the pagination information.
- * That's what List components do in react-admn (e.g. <Pagination>).
+ * That's what List components do in react-admin (e.g. <Pagination>).
  *
  * @typedef {Object} ListPaginationContextValue
  * @prop {boolean}  loading boolean that is true on mount, and false once the data was fetched

@@ -41,7 +41,7 @@ const queriesThisTick: { [key: string]: Promise<PartialQueryState> } = {};
  * Default cache selector. Allows to cache responses by default.
  *
  * By default, custom queries are dispatched as a CUSTOM_QUERY Redux action.
- * The useDataProvider hookdispatches a CUSTOM_QUERY_SUCCESS when the response
+ * The useDataProvider hook dispatches a CUSTOM_QUERY_SUCCESS when the response
  * comes, and the customQueries reducer stores the result in the store.
  * This selector reads the customQueries store and acts as a response cache.
  */

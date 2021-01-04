@@ -12,7 +12,7 @@ import { ReduxState } from '../types';
  *
  * const MyComponent = () => {
  *      const loading = useLoading();
- *      return loading ? <Squeleton /> : <RealContent>;
+ *      return loading ? <Skeleton /> : <RealContent>;
  * }
  */
 export default () =>

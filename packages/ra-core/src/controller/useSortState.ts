@@ -51,24 +51,24 @@ const sortReducer = (state: SortPayload, action: Action): SortPayload => {
 export const defaultSort = { field: 'id', order: 'DESC' };
 
 /**
- * set the sort { field, order }
+ * Set the sort { field, order }
  * @name setSort
  * @function
  * @param {SortPayload} sort the sort object
  */
 
 /**
- * set the sort field, swap the order if the field is the same
+ * Set the sort field, swap the order if the field is the same
  * @name setSortField
  * @function
  * @param {string} field the sort field
  */
 
 /**
- * set the sort order
+ * Set the sort order
  * @name setSortOrder
  * @function
- * @param {string} order the sort order eiather ASC or DESC
+ * @param {string} order The sort order, either ASC or DESC
  */
 
 /**

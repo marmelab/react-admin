@@ -35,11 +35,11 @@ const defaultPagination = {
 };
 
 /**
- * Hooks to provide pagination state (apge and perPage)
+ * Hooks to provide pagination state (page and perPage)
  *
  * @example
  *
- * const { page, setpage, perPage, setPerPage } = usePagination(initialPerPage);
+ * const { page, setPage, perPage, setPerPage } = usePagination(initialPerPage);
  *
  * @param {number} initialPagination the initial value per page
  * @returns {PaginationHookResult} The pagination props

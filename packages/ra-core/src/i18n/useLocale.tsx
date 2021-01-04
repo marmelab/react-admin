@@ -5,7 +5,7 @@ import { TranslationContext } from './TranslationContext';
 /**
  * Get the current locale from the TranslationContext
  *
- * This hook rerenders when the locale changes.
+ * This hook re-renders when the locale changes.
  *
  * @example
  *

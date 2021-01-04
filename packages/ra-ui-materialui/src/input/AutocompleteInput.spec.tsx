@@ -213,7 +213,7 @@ describe('<AutocompleteInput />', () => {
         );
 
         const input = getByLabelText('resources.users.fields.role');
-        // Temporary workaroud until we can upgrade testing-library in v4
+        // Temporary workaround until we can upgrade testing-library in v4
         input.focus();
         await wait(() => {
             expect(queryByText('foo')).not.toBeNull();
@@ -238,7 +238,7 @@ describe('<AutocompleteInput />', () => {
         );
 
         const input = getByLabelText('resources.users.fields.role');
-        // Temporary workaroud until we can upgrade testing-library in v4
+        // Temporary workaround until we can upgrade testing-library in v4
         input.focus();
 
         await wait(() => {
@@ -263,7 +263,7 @@ describe('<AutocompleteInput />', () => {
             const input = getByLabelText('resources.users.fields.role');
 
             expect(input.value).toEqual('');
-            // Temporary workaroud until we can upgrade testing-library in v4
+            // Temporary workaround until we can upgrade testing-library in v4
             input.focus();
 
             rerender(
@@ -296,12 +296,12 @@ describe('<AutocompleteInput />', () => {
                 />
             );
             const input = getByLabelText('resources.users.fields.role');
-            // Temporary workaroud until we can upgrade testing-library in v4
+            // Temporary workaround until we can upgrade testing-library in v4
             input.focus();
             fireEvent.change(input, { target: { value: 'bar' } });
             expect(queryByText('foo')).toBeNull();
 
-            // Temporary workaroud until we can upgrade testing-library in v4
+            // Temporary workaround until we can upgrade testing-library in v4
             input.blur();
             input.focus();
             fireEvent.change(input, { target: { value: 'foo' } });
@@ -354,10 +354,10 @@ describe('<AutocompleteInput />', () => {
                 />
             );
             const input = getByLabelText('resources.users.fields.role');
-            // Temporary workaroud until we can upgrade testing-library in v4
+            // Temporary workaround until we can upgrade testing-library in v4
             input.focus();
             fireEvent.change(input, { target: { value: 'bar' } });
-            // Temporary workaroud until we can upgrade testing-library in v4
+            // Temporary workaround until we can upgrade testing-library in v4
             input.blur();
             await waitForDomChange();
             expect(input.value).toEqual('foo');
@@ -372,7 +372,7 @@ describe('<AutocompleteInput />', () => {
             );
 
             const input = getByLabelText('resources.users.fields.role');
-            // Temporary workaroud until we can upgrade testing-library in v4
+            // Temporary workaround until we can upgrade testing-library in v4
             input.focus();
 
             rerender(
@@ -468,7 +468,7 @@ describe('<AutocompleteInput />', () => {
             );
 
             const input = getByLabelText('resources.users.fields.role');
-            // Temporary workaroud until we can upgrade testing-library in v4
+            // Temporary workaround until we can upgrade testing-library in v4
             input.focus();
             expect(queryByLabelText('bar')).not.toBeNull();
             expect(queryByLabelText('foo')).not.toBeNull();
@@ -524,7 +524,7 @@ describe('<AutocompleteInput />', () => {
                 />
             );
             const input = getByLabelText('resources.users.fields.role');
-            // Temporary workaroud until we can upgrade testing-library in v4
+            // Temporary workaround until we can upgrade testing-library in v4
             input.focus();
             input.blur();
 
@@ -579,7 +579,7 @@ describe('<AutocompleteInput />', () => {
             />
         );
         const input = getByLabelText('resources.users.fields.role');
-        // Temporary workaroud until we can upgrade testing-library in v4
+        // Temporary workaround until we can upgrade testing-library in v4
         input.focus();
         fireEvent.change(input, { target: { value: 'abc' } });
         await wait(() => expect(queryAllByRole('option').length).toEqual(1));
@@ -609,7 +609,7 @@ describe('<AutocompleteInput />', () => {
         );
 
         const input = getByLabelText('resources.users.fields.role');
-        // Temporary workaroud until we can upgrade testing-library in v4
+        // Temporary workaround until we can upgrade testing-library in v4
         input.focus();
 
         expect(getByLabelText('My Sugggestions Container')).not.toBeNull();
