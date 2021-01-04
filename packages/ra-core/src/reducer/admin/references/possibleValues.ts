@@ -56,7 +56,7 @@ export const getPossibleReferences = (
     if (possibleValues.error) {
         return possibleValues;
     }
-    const [...possibleValuesList] = possibleValues;
+    const possibleValuesList = Array.from(possibleValues);
     selectedIds.forEach(
         id =>
             possibleValuesList.some(value => value === id) ||
