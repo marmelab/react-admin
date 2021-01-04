@@ -62,9 +62,12 @@ export const getPossibleReferences = (
             possibleValuesList.some(value => value === id) ||
             possibleValuesList.unshift(id)
     );
-    return possibleValuesList
-        .map(id => referenceState.data[id])
-        .filter(r => typeof r !== 'undefined');
+    return (
+        possibleValuesList
+            // @ts-ignore
+            .map(id => referenceState.data[id])
+            .filter(r => typeof r !== 'undefined')
+    );
 };
 
 export default possibleValuesreducer;
