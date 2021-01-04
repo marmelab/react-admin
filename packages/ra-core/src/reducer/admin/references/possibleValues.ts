@@ -56,13 +56,13 @@ export const getPossibleReferences = (
     if (possibleValues.error) {
         return possibleValues;
     }
-    possibleValues = Array.from(possibleValues);
+    const [...possibleValuesList] = possibleValues;
     selectedIds.forEach(
         id =>
-            possibleValues.some(value => value === id) ||
-            possibleValues.unshift(id)
+            possibleValuesList.some(value => value === id) ||
+            possibleValuesList.unshift(id)
     );
-    return possibleValues
+    return possibleValuesList
         .map(id => referenceState.data[id])
         .filter(r => typeof r !== 'undefined');
 };
