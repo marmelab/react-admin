@@ -52,7 +52,7 @@ export const useSaveContext = <
 ): SaveContextValue => {
     const context = useContext(SaveContext);
 
-    if (!context.save || !context.setOnFailure) {
+    if (!context || !context.save || !context.setOnFailure) {
         /**
          * The element isn't inside a <SaveContextProvider>
          * To avoid breakage in that case, fallback to props
