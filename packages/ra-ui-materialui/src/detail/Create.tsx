@@ -3,6 +3,7 @@ import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     CreateContextProvider,
+    ResourceContextProvider,
     useCheckMinimumRequiredProps,
     useCreateController,
 } from 'ra-core';
@@ -58,10 +59,18 @@ export const Create = (
 ): ReactElement => {
     useCheckMinimumRequiredProps('Create', ['children'], props);
     const controllerProps = useCreateController(props);
-    return (
+    const body = (
         <CreateContextProvider value={controllerProps}>
             <CreateView {...props} {...controllerProps} />
         </CreateContextProvider>
+    );
+    return props.resource ? (
+        // support resource override via props
+        <ResourceContextProvider value={props.resource}>
+            {body}
+        </ResourceContextProvider>
+    ) : (
+        body
     );
 };
 
@@ -74,7 +83,7 @@ Create.propTypes = {
     hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,
     hasShow: PropTypes.bool,
-    resource: PropTypes.string.isRequired,
+    resource: PropTypes.string,
     title: PropTypes.node,
     record: PropTypes.object,
     hasList: PropTypes.bool,

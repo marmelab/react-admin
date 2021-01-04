@@ -3,6 +3,7 @@ import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     ShowContextProvider,
+    ResourceContextProvider,
     useCheckMinimumRequiredProps,
     useShowController,
 } from 'ra-core';
@@ -58,10 +59,18 @@ export const Show = (
 ): ReactElement => {
     useCheckMinimumRequiredProps('Show', ['children'], props);
     const controllerProps = useShowController(props);
-    return (
+    const body = (
         <ShowContextProvider value={controllerProps}>
             <ShowView {...props} {...controllerProps} />
         </ShowContextProvider>
+    );
+    return props.resource ? (
+        // support resource override via props
+        <ResourceContextProvider value={props.resource}>
+            {body}
+        </ResourceContextProvider>
+    ) : (
+        body
     );
 };
 
