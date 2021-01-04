@@ -29,7 +29,7 @@ describe('Validators', () => {
     };
 
     describe('composeValidators', () => {
-        const asyncSuccessfulValidator = async =>
+        const asyncSuccessfullValidator = async =>
             new Promise(resolve => resolve());
         const asyncFailedValidator = async =>
             new Promise(resolve => resolve('async'));
@@ -39,7 +39,7 @@ describe('Validators', () => {
                 composeValidators([
                     required(),
                     minLength(5),
-                    asyncSuccessfulValidator,
+                    asyncSuccessfullValidator,
                 ]),
                 [''],
                 'ra.validation.required'
@@ -47,7 +47,7 @@ describe('Validators', () => {
             await test(
                 composeValidators([
                     required(),
-                    asyncSuccessfulValidator,
+                    asyncSuccessfullValidator,
                     minLength(5),
                 ]),
                 ['abcd'],
@@ -66,7 +66,7 @@ describe('Validators', () => {
                 composeValidators([
                     required(),
                     minLength(5),
-                    asyncSuccessfulValidator,
+                    asyncSuccessfullValidator,
                 ]),
                 ['abcde'],
                 undefined
@@ -78,7 +78,7 @@ describe('Validators', () => {
                 composeValidators(
                     required(),
                     minLength(5),
-                    asyncSuccessfulValidator
+                    asyncSuccessfullValidator
                 ),
                 [''],
                 'ra.validation.required'
@@ -86,7 +86,7 @@ describe('Validators', () => {
             await test(
                 composeValidators(
                     required(),
-                    asyncSuccessfulValidator,
+                    asyncSuccessfullValidator,
                     minLength(5)
                 ),
                 ['abcd'],
@@ -105,7 +105,7 @@ describe('Validators', () => {
                 composeValidators(
                     required(),
                     minLength(5),
-                    asyncSuccessfulValidator
+                    asyncSuccessfullValidator
                 ),
                 ['abcde'],
                 undefined
