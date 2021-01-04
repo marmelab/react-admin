@@ -3,7 +3,10 @@ import { useEffect, useState } from 'react';
 import inflection from 'inflection';
 import {
     useEditController,
+    EditContextProvider,
     InferredElement,
+    useResourceContext,
+    useEditContext,
     getElementsFromRecords,
 } from 'ra-core';
 
@@ -11,7 +14,8 @@ import { EditView } from './EditView';
 import editFieldTypes from './editFieldTypes';
 
 const EditViewGuesser = props => {
-    const { record, resource } = props;
+    const resource = useResourceContext();
+    const { record } = useEditContext();
     const [inferredChild, setInferredChild] = useState(null);
     useEffect(() => {
         if (record && !inferredChild) {
@@ -47,8 +51,13 @@ ${inferredChild.getRepresentation()}
 
 EditViewGuesser.propTypes = EditView.propTypes;
 
-const EditGuesser = props => (
-    <EditViewGuesser {...props} {...useEditController(props)} />
-);
+const EditGuesser = props => {
+    const controllerProps = useEditController(props);
+    return (
+        <EditContextProvider value={controllerProps}>
+            <EditViewGuesser {...props} />
+        </EditContextProvider>
+    );
+};
 
 export default EditGuesser;
