@@ -132,7 +132,7 @@ export const required = memoize((message = 'ra.validation.required') =>
  *
  * Returns an error if the value has a length less than the parameter
  *
- * @param {int} min
+ * @param {integer} min
  * @param {string|Function} message
  *
  * @example
@@ -152,7 +152,7 @@ export const minLength = memoize(
  *
  * Returns an error if the value has a length higher than the parameter
  *
- * @param {int} max
+ * @param {integer} max
  * @param {string|Function} message
  *
  * @example
@@ -172,7 +172,7 @@ export const maxLength = memoize(
  *
  * Returns an error if the value is less than the parameter
  *
- * @param {int} min
+ * @param {integer} min
  * @param {string|Function} message
  *
  * @example
@@ -192,7 +192,7 @@ export const minValue = memoize(
  *
  * Returns an error if the value is higher than the parameter
  *
- * @param {int} max
+ * @param {integer} max
  * @param {string|Function} message
  *
  * @example

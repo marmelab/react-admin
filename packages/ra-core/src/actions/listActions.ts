@@ -71,7 +71,7 @@ export interface ToggleListItemExpandAction {
  * Action creator to toggle the expanded state of a list item
  *
  * @param {string} resource The resource name, e.g. 'posts'
- * @param {string|int} id The record identifier, e.g. 123
+ * @param {string|integer} id The record identifier, e.g. 123
  *
  * @example
  *
