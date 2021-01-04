@@ -11,13 +11,15 @@ import DeleteWithConfirmButton from './DeleteWithConfirmButton';
  * Button used to delete a single record. Added by default by the <Toolbar> of edit and show views.
  *
  * @typedef {Object} Props The props you can use (other props are injected if you used it in the <Toolbar>)
- * @param {Props} props
  * @prop {boolean} undoable Confirm the deletion using an undo button in a notification or a confirmation dialog. Defaults to 'false'.
+ * @prop {Object} record The current resource record
  * @prop {string} className
  * @prop {string} label Button label. Defaults to 'ra.action.delete, translated.
  * @prop {boolean} disabled Disable the button.
  * @prop {string} variant Material-ui variant for the button. Defaults to 'contained'.
  * @prop {ReactElement} icon Override the icon. Defaults to the Delete icon from material-ui.
+ *
+ * @param {Props} props
  *
  * @example Usage in the <TopToolbar> of an <Edit> form
  *
