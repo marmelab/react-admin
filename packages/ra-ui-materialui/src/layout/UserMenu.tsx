@@ -32,7 +32,7 @@ const UserMenu = props => {
 
     return (
         <div className={classes.user}>
-            {loaded && identity.fullName ? (
+            {loaded && identity?.fullName ? (
                 <Button
                     aria-label={label && translate(label, { _: label })}
                     className={classes.userButton}
