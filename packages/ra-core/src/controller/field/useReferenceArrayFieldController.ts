@@ -44,7 +44,7 @@ const defaultSort = { field: null, order: null };
  *
  * @typedef {Object} Props the props you can use
  * @prop {string} basePath basepath to current resource
- * @prop {Object} record The The current resource record
+ * @prop {Object} record The current resource record
  * @prop {string} reference The linked resource name
  * @prop {string} resource The current resource name
  * @prop {string} source The key of the linked resource identifier
