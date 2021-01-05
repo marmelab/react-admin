@@ -130,13 +130,11 @@ const useListController = <RecordType extends Record = Record>(
         );
     }
 
-    const location = useLocation();
     const translate = useTranslate();
     const notify = useNotify();
 
     const [query, queryModifiers] = useListParams({
         resource,
-        location,
         filterDefaultValues,
         sort,
         perPage,
