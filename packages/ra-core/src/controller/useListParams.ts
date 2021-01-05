@@ -1,11 +1,10 @@
-import { useCallback, useMemo, useEffect } from 'react';
+import { useCallback, useMemo, useEffect, useState } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { parse, stringify } from 'query-string';
 import lodashDebounce from 'lodash/debounce';
 import set from 'lodash/set';
 import pickBy from 'lodash/pickBy';
-import { Location } from 'history';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import queryReducer, {
     SET_FILTER,
@@ -21,7 +20,6 @@ import removeKey from '../util/removeKey';
 
 interface ListParamsOptions {
     resource: string;
-    location: Location;
     perPage?: number;
     sort?: SortPayload;
     // default value for a filter when displayed but not yet set
@@ -110,15 +108,16 @@ const defaultParams = {};
  */
 const useListParams = ({
     resource,
-    location,
     filterDefaultValues,
     sort = defaultSort,
     perPage = 10,
     debounce = 500,
-    syncWithLocation,
+    syncWithLocation = false,
 }: ListParamsOptions): [Parameters, Modifiers] => {
     const dispatch = useDispatch();
+    const location = useLocation();
     const history = useHistory();
+    const [localParams, setLocalParams] = useState(defaultParams);
     const params = useSelector(
         (reduxState: ReduxState) =>
             reduxState.admin.resources[resource]
@@ -130,10 +129,11 @@ const useListParams = ({
     const requestSignature = [
         location.search,
         resource,
-        params,
+        syncWithLocation ? params : localParams,
         filterDefaultValues,
         JSON.stringify(sort),
         perPage,
+        syncWithLocation,
     ];
 
     const queryFromLocation = syncWithLocation
@@ -144,7 +144,7 @@ const useListParams = ({
         () =>
             getQuery({
                 queryFromLocation,
-                params,
+                params: syncWithLocation ? params : localParams,
                 filterDefaultValues,
                 sort,
                 perPage,
@@ -174,8 +174,10 @@ const useListParams = ({
                     ),
                 })}`,
             });
+            dispatch(changeListParams(resource, newParams));
+        } else {
+            setLocalParams(newParams);
         }
-        dispatch(changeListParams(resource, newParams));
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
     const setSort = useCallback(
