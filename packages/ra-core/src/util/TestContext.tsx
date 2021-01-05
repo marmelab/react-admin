@@ -30,6 +30,7 @@ type ChildrenFunction = ({
 interface Props {
     initialState?: object;
     enableReducers?: boolean;
+    history?: History;
     children: ReactNode | ChildrenFunction;
 }
 

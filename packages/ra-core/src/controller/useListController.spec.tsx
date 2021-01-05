@@ -68,7 +68,7 @@ describe('useListController', () => {
             };
 
             const { getByLabelText, dispatch, reduxStore } = renderWithRedux(
-                <ListController {...props} />,
+                <ListController syncWithLocation {...props} />,
                 {
                     admin: {
                         resources: {
@@ -112,7 +112,7 @@ describe('useListController', () => {
             };
 
             const { getByLabelText, dispatch, reduxStore } = renderWithRedux(
-                <ListController {...props} />,
+                <ListController syncWithLocation {...props} />,
                 {
                     admin: {
                         resources: {
@@ -158,7 +158,11 @@ describe('useListController', () => {
             };
 
             const { dispatch, rerender } = renderWithRedux(
-                <ListController {...props} filter={{ foo: 1 }} />,
+                <ListController
+                    syncWithLocation
+                    {...props}
+                    filter={{ foo: 1 }}
+                />,
                 {
                     admin: {
                         resources: {
@@ -186,7 +190,13 @@ describe('useListController', () => {
             // Check that the permanent filter is not included in the filterValues (passed to Filter form and button)
             expect(children.mock.calls[0][0].filterValues).toEqual({});
 
-            rerender(<ListController {...props} filter={{ foo: 2 }} />);
+            rerender(
+                <ListController
+                    syncWithLocation
+                    {...props}
+                    filter={{ foo: 2 }}
+                />
+            );
 
             const updatedCrudGetListCalls = dispatch.mock.calls.filter(
                 call => call[0].type === 'RA/CRUD_GET_LIST'
