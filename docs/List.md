@@ -17,6 +17,20 @@ The `<List>` component fetches the list of records from the data provider, and r
 
 Here is the minimal code necessary to display a list of posts using a `<Datagrid>`:
 
+* [`title`](#page-title)
+* [`actions`](#actions)
+* [`exporter`](#exporter)
+* [`bulkActionButtons`](#bulk-action-buttons)
+* [`filters`](#filters) (a React element used to display the filter form)
+* [`filterDefaultValues`](#filter-default-values) (the default values for `alwaysOn` filters)
+* [`perPage`](#records-per-page)
+* [`sort`](#default-sort-field)
+* [`filter`](#permanent-filter) (the permanent filter used in the REST request)
+* [`pagination`](#pagination)
+* [`aside`](#aside-component)
+* [`empty`](#empty-page)
+- [`syncWithLocation`](#synchronize-with-url)
+
 ```jsx
 // in src/posts.js
 import * as React from "react";
@@ -728,6 +742,29 @@ const PostList = props => (
 ```
 
 The default value for the `component` prop is `Card`.
+
+## Synchronize With URL
+
+When a List based component (eg: `PostList`) is passed to the `list` prop of a `<Resource>`, it will automatically synchronize its parameters with the browser URL (using react-router location). However, when used anywhere outside of a `<Resource>`, it won't synchronize, which can be useful when you have multiple lists on a single page for example.
+
+In order to enable the synchronization with the URL, you can set the `syncWithLocation` prop. For example, adding a `List` to an `Edit` page:
+
+```jsx
+const TagsEdit = (props) => (
+    <>
+        <Edit {...props}>
+            // ...
+        </Edit>
+        <ResourceProviderContext resource="posts">
+            <List syncWithLocation basePath="/posts" filter={{ tags: [id]}}>
+                <Datagri>
+                    <TextField source="title" />
+                </Datagrid>
+            </List>
+        </ResourceProviderContext>
+    </>
+)
+```
 
 ### CSS API
 

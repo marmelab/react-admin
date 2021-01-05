@@ -27,6 +27,9 @@ interface ListParamsOptions {
     // default value for a filter when displayed but not yet set
     filterDefaultValues?: FilterPayload;
     debounce?: number;
+    // Wether to synchronize the list parameters with the current location (URL search parameters)
+    // This is set to true automatically when a List is used inside a Resource component
+    syncWithLocation: boolean;
 }
 
 interface Parameters extends ListParams {
@@ -112,6 +115,7 @@ const useListParams = ({
     sort = defaultSort,
     perPage = 10,
     debounce = 500,
+    syncWithLocation,
 }: ListParamsOptions): [Parameters, Modifiers] => {
     const dispatch = useDispatch();
     const history = useHistory();
@@ -132,7 +136,9 @@ const useListParams = ({
         perPage,
     ];
 
-    const queryFromLocation = parseQueryFromLocation(location);
+    const queryFromLocation = syncWithLocation
+        ? parseQueryFromLocation(location)
+        : {};
 
     const query = useMemo(
         () =>
@@ -158,13 +164,17 @@ const useListParams = ({
 
     const changeParams = useCallback(action => {
         const newParams = queryReducer(query, action);
-        history.push({
-            search: `?${stringify({
-                ...newParams,
-                filter: JSON.stringify(newParams.filter),
-                displayedFilters: JSON.stringify(newParams.displayedFilters),
-            })}`,
-        });
+        if (syncWithLocation) {
+            history.push({
+                search: `?${stringify({
+                    ...newParams,
+                    filter: JSON.stringify(newParams.filter),
+                    displayedFilters: JSON.stringify(
+                        newParams.displayedFilters
+                    ),
+                })}`,
+            });
+        }
         dispatch(changeListParams(resource, newParams));
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 

@@ -22,6 +22,7 @@ describe('<List />', () => {
         history: {} as any,
         location: {} as any,
         match: (() => {}) as any,
+        syncWithLocation: true,
     };
 
     const defaultStateForList = {
