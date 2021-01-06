@@ -59,7 +59,7 @@ import { useState } from 'react';
  *          <Fragment>
  *              {posts.map((post, key) => <PostDetail post={post} key={key} />)}
  *          </Fragment>
- *     }
+ *     );
  * }
  *
  * @example Handling all states (loading, error, success)

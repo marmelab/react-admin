@@ -5,11 +5,11 @@ import { ListControllerProps } from './useListController';
  * Context to store the result of the useListController() hook.
  *
  * Use the useListContext() hook to read the context. That's what many
- * List components do in react-admn (e.g. <Datagrid>, <Filter>, <Pagination>).
+ * List components do in react-admin (e.g. <Datagrid>, <Filter>, <Pagination>).
  *
  * @typedef {Object} ListControllerProps
  * @prop {Object}   data an id-based dictionary of the list data, e.g. { 123: { id: 123, title: 'hello world' }, 456: { ... } }
- * @prop {Array}    ids an array listing the ids of the records in the list, e.g [123, 456, ...]
+ * @prop {Array}    ids an array listing the ids of the records in the list, e.g. [123, 456, ...]
  * @prop {integer}  total the total number of results for the current filters, excluding pagination. Useful to build the pagination controls. e.g. 23
  * @prop {boolean}  loaded boolean that is false until the data is available
  * @prop {boolean}  loading boolean that is true on mount, and false once the data was fetched
@@ -23,9 +23,9 @@ import { ListControllerProps } from './useListController';
  * @prop {Function} setFilters a callback to update the filters, e.g. setFilters(filters, displayedFilters)
  * @prop {Object}   displayedFilters a dictionary of the displayed filters, e.g. { title: true, nationality: true }
  * @prop {Function} showFilter a callback to show one of the filters, e.g. showFilter('title', defaultValue)
- * @prop {Function} hideFilter a callback to hide one of the filters, e.g. hidefilter('title')
- * @prop {Array}    selectedIds an array listing the ids of the selcted rows, e.g. [123, 456]
- * @prop {Function} onSelect callback to change the list of selected rows, e.g onSelect([456, 789])
+ * @prop {Function} hideFilter a callback to hide one of the filters, e.g. hideFilter('title')
+ * @prop {Array}    selectedIds an array listing the ids of the selected rows, e.g. [123, 456]
+ * @prop {Function} onSelect callback to change the list of selected rows, e.g. onSelect([456, 789])
  * @prop {Function} onToggleItem callback to toggle the selection of a given record based on its id, e.g. onToggleItem(456)
  * @prop {Function} onUnselectItems callback to clear the selection, e.g. onUnselectItems();
  * @prop {string}   basePath deduced from the location, useful for action buttons

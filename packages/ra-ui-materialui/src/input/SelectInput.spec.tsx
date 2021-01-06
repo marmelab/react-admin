@@ -365,7 +365,7 @@ describe('<SelectInput />', () => {
         expect(option2.getAttribute('data-value')).toEqual('rea');
     });
 
-    it('should displayed helperText if prop is present', () => {
+    it('should display helperText if prop is present', () => {
         const { getByText } = render(
             <Form
                 onSubmit={jest.fn()}

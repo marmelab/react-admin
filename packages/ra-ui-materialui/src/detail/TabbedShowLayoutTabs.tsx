@@ -21,7 +21,7 @@ const TabbedShowLayoutTabs: FC = ({ children, ...rest }) => {
         <Tabs indicatorColor="primary" value={value} {...rest}>
             {Children.map(children, (tab, index) => {
                 if (!tab || !isValidElement(tab)) return null;
-                // Builds the full tab tab which is the concatenation of the last matched route in the
+                // Builds the full tab which is the concatenation of the last matched route in the
                 // TabbedShowLayout hierarchy (ex: '/posts/create', '/posts/12', , '/posts/12/show')
                 // and the tab path.
                 // This will be used as the Tab's value

@@ -43,7 +43,7 @@ describe('possibleValues reducer', () => {
             expect(possibleReferences).toEqual({ error: 'error message' });
         });
 
-        it('should return a empty array if the possibleValues in state is empty', () => {
+        it('should return an empty array if the possibleValues in state is empty', () => {
             const possibleReferences = getPossibleReferences(
                 referenceState,
                 []
@@ -51,7 +51,7 @@ describe('possibleValues reducer', () => {
             expect(possibleReferences).toEqual([]);
         });
 
-        it('should return all formated possibleValues in state if selectedIds param is not set', () => {
+        it('should return all formatted possibleValues in state if selectedIds param is not set', () => {
             const possibleReferences = getPossibleReferences(referenceState, [
                 1,
                 2,
@@ -64,7 +64,7 @@ describe('possibleValues reducer', () => {
             ]);
         });
 
-        it('should return all formated possibleValues in state if selectedIds param is an empty array', () => {
+        it('should return all formatted possibleValues in state if selectedIds param is an empty array', () => {
             const possibleReferences = getPossibleReferences(
                 referenceState,
                 [1, 2, 4],
@@ -77,7 +77,7 @@ describe('possibleValues reducer', () => {
             ]);
         });
 
-        it('should add selectedIds to the formated possibleValues in state if it is not already in', () => {
+        it('should add selectedIds to the formatted possibleValues in state if it is not already in', () => {
             const possibleReferences = getPossibleReferences(
                 referenceState,
                 [1, 2, 4],

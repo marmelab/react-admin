@@ -57,7 +57,7 @@ import { LinearProgress } from '../layout';
  * </ReferenceArrayField>
  *
  * By default, the field displays the results in the order in which they are referenced
- * (i.e in the order of the list of ids). You can change this order
+ * (i.e. in the order of the list of ids). You can change this order
  * by setting the `sort` prop (an object with `field` and `order` properties).
  *
  * @example

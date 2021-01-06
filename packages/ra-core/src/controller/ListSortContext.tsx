@@ -6,7 +6,7 @@ import { ListControllerProps } from './useListController';
  * Context to store the sort part of the useListController() result.
  *
  * Use the useListSortContext() hook to read the context. That's what many
- * List components do in react-admn (e.g. <SortButton>).
+ * List components do in react-admin (e.g. <SortButton>).
  *
  * @typedef {Object} ListSortContextValue
  * @prop {Object}   currentSort a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }

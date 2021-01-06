@@ -84,7 +84,7 @@ const checkAuthWithoutAuthProvider = () => Promise.resolve();
  * Logs the user out on failure.
  *
  * @param {Object} params The parameters to pass to the authProvider
- * @param {boolean} logoutOnFailure Whether the user should be logged out if the authProvider fails to authenticatde them. True by default.
+ * @param {boolean} logoutOnFailure Whether the user should be logged out if the authProvider fails to authenticate them. True by default.
  * @param {string} redirectTo The login form url. Defaults to '/login'
  * @param {boolean} disableNotification Avoid showing a notification after the user is logged out. false by default.
  *

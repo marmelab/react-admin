@@ -170,7 +170,7 @@ describe('data reducer', () => {
             });
         });
 
-        it('should update existion records without changing the other ones', () => {
+        it('should update existing records without changing the other ones', () => {
             const now = new Date();
             const before = new Date(0);
             const newRecords = [

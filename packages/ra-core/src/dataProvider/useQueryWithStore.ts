@@ -41,7 +41,7 @@ const queriesThisTick: { [key: string]: Promise<PartialQueryState> } = {};
  * Default cache selector. Allows to cache responses by default.
  *
  * By default, custom queries are dispatched as a CUSTOM_QUERY Redux action.
- * The useDataProvider hookdispatches a CUSTOM_QUERY_SUCCESS when the response
+ * The useDataProvider hook dispatches a CUSTOM_QUERY_SUCCESS when the response
  * comes, and the customQueries reducer stores the result in the store.
  * This selector reads the customQueries store and acts as a response cache.
  */
@@ -79,8 +79,8 @@ const defaultIsDataLoaded = (data: any): boolean => data !== undefined;
  * @param {Object} query.payload The payload object, e.g; { post_id: 12 }
  * @param {Object} options
  * @param {string} options.action Redux action type
- * @param {Function} options.onSuccess Side effect function to be executed upon success or failure, e.g. { onSuccess: response => refresh() } }
- * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) } }
+ * @param {Function} options.onSuccess Side effect function to be executed upon success or failure, e.g. { onSuccess: response => refresh() }
+ * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) }
  * @param {Function} dataSelector Redux selector to get the result. Required.
  * @param {Function} totalSelector Redux selector to get the total (optional, only for LIST queries)
  *

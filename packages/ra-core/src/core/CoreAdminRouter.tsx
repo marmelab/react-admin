@@ -141,7 +141,7 @@ const CoreAdminRouter: FunctionComponent<AdminRouterProps> = props => {
     return (
         <div>
             {
-                // Render every resources children outside the React Router Switch
+                // Render every resource children outside the React Router Switch
                 // as we need all of them and not just the one rendered
                 Children.map(
                     childrenToRender,

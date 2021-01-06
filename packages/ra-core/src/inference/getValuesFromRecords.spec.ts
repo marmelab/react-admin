@@ -18,7 +18,7 @@ describe('getValuesFromRecords', () => {
         });
     });
 
-    it('should acept recods with variable fields', () => {
+    it('should accept records with variable fields', () => {
         const records = [
             { a: 1, b: 1, c: 1 },
             { b: 2, c: 2, d: 2 },

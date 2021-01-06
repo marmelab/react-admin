@@ -293,13 +293,13 @@ describe('Validators', () => {
             );
         });
 
-        it('should memoize the validator when the regex pattren and message are the same', () => {
+        it('should memoize the validator when the regex pattern and message are the same', () => {
             expect(regex(/foo/, 'placeholder')).toBe(
                 regex(/foo/, 'placeholder')
             );
         });
 
-        it('should create new validator when the regex pattren is different', () => {
+        it('should create new validator when the regex pattern is different', () => {
             expect(regex(/foo/, 'placeholder')).not.toBe(
                 regex(/notfoo/, 'placeholder')
             );

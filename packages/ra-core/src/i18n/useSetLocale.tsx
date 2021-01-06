@@ -7,7 +7,7 @@ import { useNotify } from '../sideEffect';
 /**
  * Set the current locale using the TranslationContext
  *
- * This hook rerenders when the locale changes.
+ * This hook re-renders when the locale changes.
  *
  * @example
  *

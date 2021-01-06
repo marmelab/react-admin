@@ -51,7 +51,7 @@ describe('ui reducer', () => {
             )
         );
     });
-    it('should return activated autimatic refresh by default', () => {
+    it('should return activated automatic refresh by default', () => {
         expect(reducer(undefined, { type: 'foo' })).toEqual(defaultState);
     });
     it('should set sidebar visibility upon SET_AUTOMATIC_REFRESH', () => {

@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 
 /**
- * Context to store the current resource informations.
+ * Context to store the current resource information.
  *
  * Use the useResource() hook to read the context. That's what most components do in react-admin.
  *

@@ -54,7 +54,7 @@ const useLogout = (): Logout => {
                     // do not redirect
                     return;
                 }
-                // redirectTo can contain a query string, e.g '/login?foo=bar'
+                // redirectTo can contain a query string, e.g. '/login?foo=bar'
                 // we must split the redirectTo to pass a structured location to history.push()
                 const redirectToParts = (
                     redirectToFromProvider || redirectTo

@@ -20,7 +20,7 @@ const DeviceTestWrapper = ({
 }: DeviceTestWrapperProps): JSX.Element => {
     const theme = createMuiTheme();
 
-    // Use https://github.com/ericf/css-mediaquery as ponyfill.
+    // Use https://github.com/ericf/css-mediaquery as polyfill.
     const ssrMatchMedia = query => ({
         matches: mediaQuery.match(query, {
             // The estimated CSS width of the browser.

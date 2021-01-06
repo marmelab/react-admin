@@ -83,7 +83,7 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
 const logoutIfAccessDeniedWithoutProvider = () => Promise.resolve(false);
 
 /**
- * Call the authProvider.authError() method, unsing the error passed as argument.
+ * Call the authProvider.authError() method, using the error passed as argument.
  * If the authProvider rejects the call, logs the user out and shows a logged out notification.
  *
  * @param {Error} error An Error object (usually returned by the dataProvider)

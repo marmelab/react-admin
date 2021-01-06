@@ -33,7 +33,7 @@ const defaultFilterToQuery = (v: string) => ({ q: v });
  *      permanentFilter: { foo: 'bar' },
  *      debounceTime: 500,
  * });
- * // filter inital value:
+ * // filter initial value:
  * {
  *      query: '',
  *      foo: 'bar'
