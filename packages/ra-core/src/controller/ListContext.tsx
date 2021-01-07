@@ -21,7 +21,7 @@ import { ListControllerProps } from './useListController';
  * @prop {Function} setSort a callback to change the sort, e.g. setSort('name', 'ASC')
  * @prop {Object}   filterValues a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
  * @prop {Function} setFilters a callback to update the filters, e.g. setFilters(filters, displayedFilters)
- * @prop {Object}   displayedFilters a dictionary of the displayed filters, e.g. { title: true, nationality: true }
+ * @prop {Array}    displayedFilters the names of the filters displayed in the form, e.g. ['commentable','title']
  * @prop {Function} showFilter a callback to show one of the filters, e.g. showFilter('title', defaultValue)
  * @prop {Function} hideFilter a callback to hide one of the filters, e.g. hideFilter('title')
  * @prop {Array}    selectedIds an array listing the ids of the selected rows, e.g. [123, 456]
