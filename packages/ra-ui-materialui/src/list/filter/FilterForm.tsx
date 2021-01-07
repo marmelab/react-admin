@@ -66,8 +66,11 @@ export interface FilterFormProps
     resource?: string;
     filterValues: any;
     hideFilter: (filterName: string) => void;
-    setFilters: (filters: any, displayedFilters: any) => void;
-    displayedFilters: any;
+    setFilters: (
+        filters: any,
+        displayedFilters?: { [key: string]: boolean } | null
+    ) => void;
+    displayedFilters?: { [key: string]: boolean } | null;
     filters: ReactNode[];
     initialValues?: any;
     margin?: 'none' | 'normal' | 'dense';

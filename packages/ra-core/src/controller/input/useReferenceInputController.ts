@@ -101,7 +101,7 @@ export const useReferenceInputController = (
         permanentFilter: filter,
         filterToQuery,
     });
-    const displayedFilters = [];
+    const displayedFilters = {};
     // plus showFilter and hideFilter defined outside of the hook because
     // they never change
 

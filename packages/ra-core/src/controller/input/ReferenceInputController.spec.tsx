@@ -183,7 +183,7 @@ describe('<ReferenceInputController />', () => {
                         id: 1,
                     },
                 },
-                displayedFilters: [],
+                displayedFilters: {},
                 error: null,
                 filterValues: {
                     q: '',

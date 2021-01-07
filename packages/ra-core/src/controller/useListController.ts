@@ -58,7 +58,7 @@ export interface ListControllerProps<RecordType extends Record = Record> {
     currentSort: SortPayload;
     data: RecordMap<RecordType>;
     defaultTitle?: string;
-    displayedFilters: any;
+    displayedFilters?: { [key: string]: boolean } | null;
     error?: any;
     exporter?: Exporter | false;
     filter?: FilterPayload;
@@ -77,7 +77,7 @@ export interface ListControllerProps<RecordType extends Record = Record> {
     selectedIds: Identifier[];
     setFilters: (
         filters: any,
-        displayedFilters: any,
+        displayedFilters?: { [key: string]: boolean } | null,
         debounce?: boolean
     ) => void;
     setPage: (page: number) => void;
