@@ -1,0 +1,95 @@
+export default {
+  ra: {
+    action: {
+      add: 'Додај',
+      add_filter: 'Додај филтер',
+      search: 'Претражи',
+      show: 'Прикажи',
+      select: 'Одабери',
+      sort:'Сортирај',
+      save: 'Сачувај',
+      create: 'Креирај',
+      confirm: 'Потврди',
+      clone: 'Клонирај',
+      clear_input_value: 'Уклони унету вредност',
+      edit: 'Прикажи',
+      cancel: 'Откажи',
+      undo: 'Одустани',
+      remove_filter: 'Уклоните филтер',
+      refresh: 'Освежи',
+      forward: 'Напред',
+      back: 'Назад',
+      unselect: 'Уклони одабрано',
+      list: 'Листа',
+      delete: 'Уклони',
+    },
+    boolean: {
+      true: 'Да',
+      false: 'Не',
+    },
+    page: {
+      list: 'Листа %{name}',
+      edit: '%{name} #%{id}',
+      show: '%{name} #%{id}',
+      create: 'Креирај %{name}',
+      delete: 'Уклони %{name} #%{id}',
+      dashboard: 'Контролна табла',
+      not_found: 'Није пронађено',
+    },
+    input: {
+      file: {
+        upload_several:
+          'Отпреми датотеке.',
+        upload_single: 'Отпреми датотеку.',
+      },
+      image: {
+        upload_several:
+          'Отпреми слике.',
+        upload_single:
+          'Отпреми слику.',
+      },
+    },
+    message: {
+      yes: 'Да',
+      no: 'Не',
+      about: 'Инфо',
+      details: 'Детаљи',
+      are_you_sure: 'Јесте ли сигурни?',
+      loading: 'Учитавање',
+      not_found:
+        'Није пронађено!',
+    },
+    navigation: {
+      no_results: 'Нема резултата',
+      page_out_of_boundaries: 'Број страницa %{page} је прекорачен',
+      page_out_from_end: 'Стигли сте до задње странице',
+      page_out_from_begin: 'Стигли сте до прве странице',
+      page_range_info: '%{offsetBegin}-%{offsetEnd} од укупно %{total}',
+      next: 'Напред',
+      prev: 'Назад',
+    },
+    auth: {
+      username: 'Корисничко име',
+      password: 'Лозинка',
+      sign_in: 'Пријави се',
+      sign_in_error: 'Идентификација није успјела, покушајте поново',
+      logout: 'Одјава',
+    },
+    notification: {
+      updated: 'Успешно ажурирање',
+      created: 'Успешно креирање',
+      deleted: 'Успешно брисање',
+      item_doesnt_exist: 'Елемент не постоји',
+      http_error: 'Грешка приликом повезивању сервера',
+    },
+    validation: {
+      required: 'Обавезно',
+      minLength: 'Мора садржати најмање %{min} знакова',
+      maxLength: 'Може садржати највише %{max} знакова',
+      minValue: 'Мора бити најмање %{min}',
+      maxValue: 'Може бити највише %{max}',
+      number: 'Унесите број',
+      email: 'Унесите важећу е-адресу',
+    },
+  },
+};

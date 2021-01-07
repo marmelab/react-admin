@@ -1,0 +1,26 @@
+{
+  "name": "ra-language-serbo-cyrillic",
+  "version": "1.0.0",
+  "description": "Sebian  cyrillic translations for react-admin, the frontend framework for building admin applications on top of REST/GraphQL services.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/markovicmarco/ra-language-serbo-cyrillic.git"
+  },
+  "keywords": [
+    "react-admin",
+    "serbo",
+    "translation",
+    "cyrillic",
+    "ra-language-serbo-cyrillic"
+  ],
+  "author": "Marko Markovic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/markovicmarco/ra-language-serbo-cyrillic/issues"
+  },
+  "homepage": "https://github.com/markovicmarco/ra-language-serbo-cyrillic#readme"
+}
