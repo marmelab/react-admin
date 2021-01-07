@@ -1,0 +1,25 @@
+{
+  "name": "ra-language-serbo",
+  "version": "1.0.0",
+  "description": "Serbian translations for react-admin, the frontend framework for building admin applications on top of REST/GraphQL services",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/markovicmarco/ra-language-serbo.git"
+  },
+  "keywords": [
+    "react-admin",
+    "serbo",
+    "translation",
+    "ra-language-serbo"
+  ],
+  "author": "Marko Markovic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/markovicmarco/ra-language-serbo/issues"
+  },
+  "homepage": "https://github.com/markovicmarco/ra-language-serbo#readme"
+}
