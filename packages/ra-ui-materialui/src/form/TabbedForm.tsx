@@ -20,7 +20,6 @@ import {
     RedirectionSideEffect,
 } from 'ra-core';
 import { FormRenderProps } from 'react-final-form';
-import get from 'lodash/get';
 
 import Toolbar from './Toolbar';
 import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
@@ -338,26 +337,5 @@ const sanitizeRestProps = ({
     __versions = null,
     ...props
 }) => props;
-
-export const findTabsWithErrors = (children, errors) => {
-    return Children.toArray(children).reduce((acc: any[], child) => {
-        if (!isValidElement(child)) {
-            return acc;
-        }
-
-        const inputs = Children.toArray(child.props.children);
-
-        if (
-            inputs.some(
-                input =>
-                    isValidElement(input) && get(errors, input.props.source)
-            )
-        ) {
-            return [...acc, child.props.label];
-        }
-
-        return acc;
-    }, []);
-};
 
 export default TabbedForm;
