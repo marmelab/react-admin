@@ -1912,7 +1912,7 @@ You can find many usage examples of `useListContext` in this page, including:
 - [Building an Aside Component](#aside-aside-component)
 - [Building a Custom Empty Page](#empty-empty-page-component)
 - [Building a Custom Filter](#building-a-custom-filter)
-- [Building a Custom Sort Control](##building-a-custom-sort-control)
+- [Building a Custom Sort Control](#building-a-custom-sort-control)
 - [Building a Custom Pagination Control](#building-a-custom-pagination-control)
 - [Building a Custom Iterator](#using-a-custom-iterator)
 
@@ -2318,12 +2318,22 @@ const PostList = props => (
 export default withStyles(styles)(PostList);
 ```
 
-**Tip**: You can use the `<Datagrid>` component with [custom queries](./Actions.md#usequery-hook), provided you pass the result to a `<ListContextProvider>`:
+### With Custom Query
+
+You can use the `<Datagrid>` component with [custom queries](./Actions.md#usequery-hook), provided you pass the result to a `<ListContextProvider>`:
 
 {% raw %}
 ```jsx
 import keyBy from 'lodash/keyBy'
-import { useQuery, Datagrid, TextField, Pagination, Loading, ListContextProvider } from 'react-admin'
+import {
+    useQuery,
+    ResourceContextProvider,
+    ListContextProvider
+    Datagrid,
+    TextField,
+    Pagination,
+    Loading,
+} from 'react-admin'
 
 const CustomList = () => {
     const [page, setPage] = useState(1);
@@ -2345,27 +2355,28 @@ const CustomList = () => {
         return <p>ERROR: {error}</p>
     }
     return (
-        <ListContextProvider
-            value={{
-                resource: 'posts',
-                basePath: '/posts',
-                data: keyBy(data, 'id'),
-                ids: data.map(({ id }) => id),
-                currentSort: { field: 'id', order: 'ASC' },
-                selectedIds: [],
-            }}
-        >
-            <Datagrid rowClick="edit">
-                <TextField source="id" />
-                <TextField source="title" />
-            </Datagrid>
-            <Pagination
-                page={page}
-                perPage={perPage}
-                setPage={setPage}
-                total={total}
-            />
-        </ListContextProvider>
+        <ResourceContextProvider value="posts">
+            <ListContextProvider
+                value={{
+                    basePath: '/posts',
+                    data: keyBy(data, 'id'),
+                    ids: data.map(({ id }) => id),
+                    currentSort: { field: 'id', order: 'ASC' },
+                    selectedIds: [],
+                }}
+            >
+                <Datagrid rowClick="edit">
+                    <TextField source="id" />
+                    <TextField source="title" />
+                </Datagrid>
+                <Pagination
+                    page={page}
+                    perPage={perPage}
+                    setPage={setPage}
+                    total={total}
+                />
+            </ListContextProvider>
+        </ResourceContextProvider>
     );
 }
 ```

@@ -412,7 +412,7 @@ export default {
         localStorage.removeItem('permissions');
         return Promise.resolve();
     },
-    getIdentity: (error) => { /* ... */ },
+    getIdentity: () => { /* ... */ },
     getPermissions: () => {
         const role = localStorage.getItem('permissions');
         return role ? Promise.resolve(role) : Promise.reject();
