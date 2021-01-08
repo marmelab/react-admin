@@ -1,5 +1,24 @@
 # Changelog
 
+## v3.11.2
+
+* Fix `SaveContext` error when no context is supplied ([5738](https://github.com/marmelab/react-admin/pull/5738)) ([WiXSL](https://github.com/WiXSL))
+* Fix `getPossibleReferences.possibleValues` prop gets overriden after one call ([5737](https://github.com/marmelab/react-admin/pull/5737)) ([WiXSL](https://github.com/WiXSL))
+* Fix "Cannot read property 'fullName' of undefined" error after logout ([5735](https://github.com/marmelab/react-admin/pull/5735)) ([etienne-bondot](https://github.com/etienne-bondot))
+* Fix `<ReferenceInput>` does not show loader while possible values and reference record are loading ([5731](https://github.com/marmelab/react-admin/pull/5731)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Create>`, `<Edit>` and `<Show>` cannot be used outside of a `<ResourceContextProvider>` ([5730](https://github.com/marmelab/react-admin/pull/5730)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<EditGuesser>` is broken ([5728](https://github.com/marmelab/react-admin/pull/5728)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix findDOMNode warning in StrictMode when using `<SimpleFormIterator>` ([5725](https://github.com/marmelab/react-admin/pull/5725)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix DOM warning when using `<Edit transform>` ([5705](https://github.com/marmelab/react-admin/pull/5705)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix typos in jsDoc, comments and string literals ([5739](https://github.com/marmelab/react-admin/pull/5739)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Add `ra-language-malay` translation ([5736](https://github.com/marmelab/react-admin/pull/5736)) ([kayuapi](https://github.com/kayuapi))
+* [Doc] Fix `authProvider.getIdentity()` signature in Authentication doc ([5734](https://github.com/marmelab/react-admin/pull/5734)) ([adrien-may](https://github.com/adrien-may))
+* [Doc] Fix `ra-data-json-server` `getMany` is documented as multiple `getOne` calls ([5729](https://github.com/marmelab/react-admin/pull/5729)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix custom query with `<Datagrid>` example uses incorrect resource ([5726](https://github.com/marmelab/react-admin/pull/5726)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix typo in `useSelectionState` jsdoc ([5715](https://github.com/marmelab/react-admin/pull/5715)) ([DjebbZ](https://github.com/DjebbZ))
+* [Doc] Fix Changelog links ([5712](https://github.com/marmelab/react-admin/pull/5712)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix wrong anchor in `useListContent` examples list ([5711](https://github.com/marmelab/react-admin/pull/5711)) ([WiXSL](https://github.com/WiXSL))
+
 ## v3.11.1
 
 * Fix select empty option in `<AutocompleteInput>` does not reset the input ([5698](https://github.com/marmelab/react-admin/pull/5698)) ([AnkitaGupta111](https://github.com/AnkitaGupta111))
