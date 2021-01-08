@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
 import { FormContextValue } from '../types';
-import FormContext from './FormContext';
+import { FormContext } from './FormContext';
 
 export const FormContextProvider = ({
     children,
