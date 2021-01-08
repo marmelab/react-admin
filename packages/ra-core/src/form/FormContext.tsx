@@ -1,9 +1,7 @@
 import { createContext } from 'react';
-import { FormFunctions } from '../types';
+import { FormContextValue } from '../types';
 
-const defaultFormFunctions: FormFunctions = { setOnSave: () => {} };
-
-const FormContext = createContext<FormFunctions>(defaultFormFunctions);
+const FormContext = createContext<FormContextValue>(undefined);
 
 FormContext.displayName = 'FormContext';
 

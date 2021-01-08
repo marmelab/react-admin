@@ -6,7 +6,9 @@ import {
 } from 'react-final-form';
 import { Validator, composeValidators } from './validate';
 import isRequired from './isRequired';
-import { useCallback, ChangeEvent, FocusEvent } from 'react';
+import { useCallback, ChangeEvent, FocusEvent, useEffect } from 'react';
+import { useFormGroupContext } from './useFormGroupContext';
+import { useFormContext } from './useFormContext';
 
 export interface InputProps<T = any>
     extends Omit<
@@ -44,6 +46,19 @@ const useInput = ({
     ...options
 }: InputProps): UseInputValue => {
     const finalName = name || source;
+    const formGroupName = useFormGroupContext();
+    const formContext = useFormContext();
+
+    useEffect(() => {
+        if (!formContext) {
+            return;
+        }
+        formContext.registerField(source, formGroupName);
+
+        return () => {
+            formContext.unregisterField(source, formGroupName);
+        };
+    }, [formContext, formGroupName, source]);
 
     const sanitizedValidate = Array.isArray(validate)
         ? composeValidators(validate)
