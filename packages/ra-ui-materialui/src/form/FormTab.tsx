@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ReactElement, useEffect, useState } from 'react';
+import { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 import MuiTab from '@material-ui/core/Tab';
@@ -77,12 +77,6 @@ const FormTabHeader = ({ classes, label, value, icon, className, ...rest }) => {
     const translate = useTranslate();
     const location = useLocation();
     const formGroup = useFormGroup(value);
-    const [invalid, setInvalid] = useState(false);
-
-    // eslint-disable-next-line
-    useEffect(() => {
-        setInvalid(formGroup.invalid());
-    });
 
     return (
         <MuiTab
@@ -91,7 +85,7 @@ const FormTabHeader = ({ classes, label, value, icon, className, ...rest }) => {
             icon={icon}
             className={classnames('form-tab', className, {
                 [classes.errorTabButton]:
-                    invalid && location.pathname !== value,
+                    formGroup.invalid && location.pathname !== value,
             })}
             component={Link}
             to={{ ...location, pathname: value }}
