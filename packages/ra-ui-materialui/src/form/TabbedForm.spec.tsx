@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { createElement } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import {
     renderWithRedux,
@@ -7,7 +6,7 @@ import {
     SideEffectContextProvider,
 } from 'ra-core';
 
-import TabbedForm, { findTabsWithErrors } from './TabbedForm';
+import TabbedForm from './TabbedForm';
 import FormTab from './FormTab';
 
 describe('<TabbedForm />', () => {
@@ -66,46 +65,5 @@ describe('<TabbedForm />', () => {
         );
 
         expect(queryByText('submitOnEnter: true')).not.toBeNull();
-    });
-
-    describe('findTabsWithErrors', () => {
-        it('should find the tabs containing errors', () => {
-            const errors = {
-                field1: 'required',
-                field5: 'required',
-                field7: {
-                    test: 'required',
-                },
-            };
-            const children = [
-                createElement(
-                    FormTab,
-                    { label: 'tab1' },
-                    createElement('input', { source: 'field1' }),
-                    createElement('input', { source: 'field2' })
-                ),
-                createElement(
-                    FormTab,
-                    { label: 'tab2' },
-                    createElement('input', { source: 'field3' }),
-                    createElement('input', { source: 'field4' })
-                ),
-                createElement(
-                    FormTab,
-                    { label: 'tab3' },
-                    createElement('input', { source: 'field5' }),
-                    createElement('input', { source: 'field6' })
-                ),
-                createElement(
-                    FormTab,
-                    { label: 'tab4' },
-                    createElement('input', { source: 'field7.test' }),
-                    createElement('input', { source: 'field8' })
-                ),
-            ];
-
-            const tabs = findTabsWithErrors(children, errors);
-            expect(tabs).toEqual(['tab1', 'tab3', 'tab4']);
-        });
     });
 });
