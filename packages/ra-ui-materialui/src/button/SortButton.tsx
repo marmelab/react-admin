@@ -17,7 +17,7 @@ import { useListSortContext, useTranslate } from 'ra-core';
 /**
  * A button allowing to change the sort field and order.
  *
- * To be used inside a ListContext (e.g. inside a <List> or <ReferenceManyfield>)
+ * To be used inside a ListContext (e.g. inside a <List> or <ReferenceManyField>)
  *
  * Expects one 'fields' prop, containing an array of field strings that shall
  * be used and displayed for sorting.

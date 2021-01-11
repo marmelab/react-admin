@@ -6,10 +6,11 @@ import { Record, Identifier, DataProviderProxy } from '../types';
  *
  * @example
  *     fetchRelatedRecords(dataProvider)(records, 'post_id', 'posts').then(posts =>
- *          posts.map(record => ({
- *              ...record,
- *              post_title: posts[record.post_id].title,
- *          }));
+ *         posts.map(record => ({
+ *             ...record,
+ *             post_title: posts[record.post_id].title,
+ *         }))
+ *     );
  */
 const fetchRelatedRecords = (dataProvider: DataProviderProxy) => (
     data,
