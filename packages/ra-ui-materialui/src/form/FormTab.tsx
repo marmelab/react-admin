@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ReactElement } from 'react';
+import { FC, ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 import MuiTab from '@material-ui/core/Tab';
@@ -73,7 +73,14 @@ const FormTab: FC<FormTabProps> = ({
     return intent === 'header' ? renderHeader() : renderContent();
 };
 
-const FormTabHeader = ({ classes, label, value, icon, className, ...rest }) => {
+export const FormTabHeader = ({
+    classes,
+    label,
+    value,
+    icon,
+    className,
+    ...rest
+}) => {
     const translate = useTranslate();
     const location = useLocation();
     const formGroup = useFormGroup(value);
@@ -85,7 +92,9 @@ const FormTabHeader = ({ classes, label, value, icon, className, ...rest }) => {
             icon={icon}
             className={classnames('form-tab', className, {
                 [classes.errorTabButton]:
-                    formGroup.invalid && location.pathname !== value,
+                    formGroup.invalid &&
+                    formGroup.dirty &&
+                    location.pathname !== value,
             })}
             component={Link}
             to={{ ...location, pathname: value }}
@@ -118,6 +127,7 @@ export interface FormTabProps {
     basePath?: string;
     className?: string;
     classes?: object;
+    children?: ReactNode;
     contentClassName?: string;
     hidden?: boolean;
     icon?: ReactElement;

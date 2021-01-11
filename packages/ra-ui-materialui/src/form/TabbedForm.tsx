@@ -127,6 +127,7 @@ export interface TabbedFormProps
     basePath?: string;
     children: ReactNode;
     className?: string;
+    classes?: ClassesOverride<typeof useStyles>;
     initialValues?: any;
     margin?: 'none' | 'normal' | 'dense';
     record?: Record;
