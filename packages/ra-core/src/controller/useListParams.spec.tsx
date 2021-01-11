@@ -1,8 +1,12 @@
-import { getQuery, getNumberOrDefault } from './useListParams';
+import * as React from 'react';
+import useListParams, { getQuery, getNumberOrDefault } from './useListParams';
 import {
     SORT_DESC,
     SORT_ASC,
 } from '../reducer/admin/resource/list/queryReducer';
+import { createMemoryHistory } from 'history';
+import { renderWithRedux, TestContext } from '../util';
+import { fireEvent, waitFor } from '@testing-library/react';
 
 describe('useListParams', () => {
     describe('getQuery', () => {
@@ -180,6 +184,63 @@ describe('useListParams', () => {
             const result = getNumberOrDefault('0', 2);
 
             expect(result).toEqual(0);
+        });
+    });
+
+    describe('useListParams', () => {
+        const Component = ({ syncWithLocation = false }) => {
+            const [, { setPage }] = useListParams({
+                resource: 'posts',
+                syncWithLocation,
+            });
+
+            const handleClick = () => {
+                setPage(10);
+            };
+
+            return <button onClick={handleClick}>update</button>;
+        };
+
+        test('should synchronize parameters with location and redux state when sync is enabled', async () => {
+            const history = createMemoryHistory();
+            jest.spyOn(history, 'push');
+            let dispatch;
+
+            const { getByText } = renderWithRedux(
+                <TestContext enableReducers history={history}>
+                    {({ store }) => {
+                        dispatch = jest.spyOn(store, 'dispatch');
+                        return <Component syncWithLocation />;
+                    }}
+                </TestContext>
+            );
+
+            fireEvent.click(getByText('update'));
+
+            expect(history.push).toHaveBeenCalled();
+            expect(dispatch).toHaveBeenCalled();
+        });
+
+        test('should not synchronize parameters with location and redux state when sync is not enabled', async () => {
+            const history = createMemoryHistory();
+            jest.spyOn(history, 'push');
+            let dispatch;
+
+            const { getByText } = renderWithRedux(
+                <TestContext enableReducers history={history}>
+                    {({ store }) => {
+                        dispatch = jest.spyOn(store, 'dispatch');
+                        return <Component />;
+                    }}
+                </TestContext>
+            );
+
+            fireEvent.click(getByText('update'));
+
+            await waitFor(() => {
+                expect(history.push).not.toHaveBeenCalled();
+                expect(dispatch).not.toHaveBeenCalled();
+            });
         });
     });
 });

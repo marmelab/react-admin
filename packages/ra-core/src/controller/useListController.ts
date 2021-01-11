@@ -43,6 +43,9 @@ export interface ListProps {
     location?: Location;
     path?: string;
     resource?: string;
+    // Wether to synchronize the list parameters with the current location (URL search parameters)
+    // This is set to true automatically when a List is used inside a Resource component
+    syncWithLocation: boolean;
     [key: string]: any;
 }
 
@@ -117,6 +120,7 @@ const useListController = <RecordType extends Record = Record>(
         perPage = 10,
         filter,
         debounce = 500,
+        syncWithLocation,
     } = props;
     const resource = useResourceContext(props);
 
@@ -126,17 +130,16 @@ const useListController = <RecordType extends Record = Record>(
         );
     }
 
-    const location = useLocation();
     const translate = useTranslate();
     const notify = useNotify();
 
     const [query, queryModifiers] = useListParams({
         resource,
-        location,
         filterDefaultValues,
         sort,
         perPage,
         debounce,
+        syncWithLocation,
     });
 
     const [selectedIds, selectionModifiers] = useRecordSelection(resource);
