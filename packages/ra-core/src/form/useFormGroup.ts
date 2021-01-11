@@ -27,24 +27,22 @@ export const useFormGroup = (name: string): FormGroupState => {
             const fields = formContext.getGroupFields(name);
             const newState = Array.from(fields).reduce<FormGroupState>(
                 (acc, field) => {
-                    let error = form.getFieldState(field).error;
+                    const fieldState = form.getFieldState(field);
                     let errors = acc.errors;
 
-                    if (error) {
+                    if (fieldState.error) {
                         if (!errors) {
                             errors = {};
                         }
-                        errors[field] = error;
+                        errors[field] = fieldState.error;
                     }
 
                     const newState = {
                         errors,
-                        valid: acc.valid && form.getFieldState(field).valid,
-                        invalid:
-                            acc.invalid || form.getFieldState(field).invalid,
-                        pristine:
-                            acc.pristine && form.getFieldState(field).valid,
-                        dirty: acc.dirty || form.getFieldState(field).valid,
+                        valid: acc.valid && fieldState.valid,
+                        invalid: acc.invalid || fieldState.invalid,
+                        pristine: acc.pristine && fieldState.pristine,
+                        dirty: acc.dirty || fieldState.dirty,
                     };
 
                     return newState;
@@ -63,8 +61,11 @@ export const useFormGroup = (name: string): FormGroupState => {
             }
         },
         {
+            errors: true,
             invalid: true,
             dirty: true,
+            pristine: true,
+            valid: true,
         }
     );
 
