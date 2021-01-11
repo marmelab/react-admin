@@ -25,7 +25,11 @@ const useStyles = makeStyles(
  * @see ReferenceField
  * @see ReferenceInput
  *
- * @param {Object} classes CSS class names
+ * @typedef {Object} Props the props you can use
+ * @prop {Object} classes CSS class names
+ * @prop {string} className CSS class applied to the LinearProgress component
+ *
+ * @param {Props} props
  */
 const LinearProgress = ({ timeout = 1000, ...props }: LinearProgressProps) => {
     const { classes: classesOverride, className, ...rest } = props;

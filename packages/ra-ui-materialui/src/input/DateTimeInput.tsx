@@ -57,7 +57,7 @@ const formatDateTime = (value: string | Date) => {
  * Converts a datetime string without timezone to a date object
  * with timezone, using the browser timezone.
  *
- * @param {String} value Date string, formatted as yyyy-MM-ddThh:mm
+ * @param {string} value Date string, formatted as yyyy-MM-ddThh:mm
  * @return {Date}
  */
 const parseDateTime = (value: string) => new Date(value);

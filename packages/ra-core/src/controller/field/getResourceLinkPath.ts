@@ -38,7 +38,7 @@ interface Option {
  * @param {string | false | LinkToFunctionType} option.link="edit" The link toward the referenced record. 'edit', 'show' or false for no link (default to edit). Alternatively a function that returns a string
  * @param {string | false | LinkToFunctionType} [option.linkType] DEPRECATED : old name for link
  * @param {string} option.reference The linked resource name
- * @param {Object} option.record The The current resource record
+ * @param {Object} option.record The current resource record
  * @param {string} option.resource The current resource name
  * @param {string} option.source The key of the linked resource identifier
  *

@@ -110,7 +110,7 @@ export const composeSyncValidators = (...validators) => (
  *
  * Returns an error if the value is null, undefined, or empty
  *
- * @param {string|function} message
+ * @param {string|Function} message
  *
  * @example
  *
@@ -133,7 +133,7 @@ export const required = memoize((message = 'ra.validation.required') =>
  * Returns an error if the value has a length less than the parameter
  *
  * @param {integer} min
- * @param {string|function} message
+ * @param {string|Function} message
  *
  * @example
  *
@@ -153,7 +153,7 @@ export const minLength = memoize(
  * Returns an error if the value has a length higher than the parameter
  *
  * @param {integer} max
- * @param {string|function} message
+ * @param {string|Function} message
  *
  * @example
  *
@@ -173,7 +173,7 @@ export const maxLength = memoize(
  * Returns an error if the value is less than the parameter
  *
  * @param {integer} min
- * @param {string|function} message
+ * @param {string|Function} message
  *
  * @example
  *
@@ -193,7 +193,7 @@ export const minValue = memoize(
  * Returns an error if the value is higher than the parameter
  *
  * @param {integer} max
- * @param {string|function} message
+ * @param {string|Function} message
  *
  * @example
  *
@@ -212,7 +212,7 @@ export const maxValue = memoize(
  *
  * Returns an error if the value is not a number
  *
- * @param {string|function} message
+ * @param {string|Function} message
  *
  * @example
  *
@@ -232,7 +232,7 @@ export const number = memoize(
  * Returns an error if the value does not match the pattern given as parameter
  *
  * @param {RegExp} pattern
- * @param {string|function} message
+ * @param {string|Function} message
  *
  * @example
  *
@@ -254,7 +254,7 @@ export const regex = lodashMemoize(
  *
  * Returns an error if the value is not a valid email
  *
- * @param {string|function} message
+ * @param {string|Function} message
  *
  * @example
  *
@@ -276,7 +276,7 @@ const oneOfTypeMessage: MessageFunc = ({ args }) => ({
  * Returns an error if the value is not among the list passed as parameter
  *
  * @param {array} list
- * @param {string|function} message
+ * @param {string|Function} message
  *
  * @example
  *

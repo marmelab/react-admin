@@ -40,7 +40,7 @@ import { setAutomaticRefresh } from '../actions/uiActions';
  * @prop {string} redirect
  * @prop {boolean} sanitizeEmptyValues
  *
- * @param {Prop} props
+ * @param {Props} props
  */
 const FormWithRedirect: FC<FormWithRedirectProps> = ({
     debug,

@@ -83,6 +83,7 @@ const defaultIsDataLoaded = (data: any): boolean => data !== undefined;
  * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) }
  * @param {Function} dataSelector Redux selector to get the result. Required.
  * @param {Function} totalSelector Redux selector to get the total (optional, only for LIST queries)
+ * @param {Function} isDataLoaded
  *
  * @returns The current request state. Destructure as { data, total, error, loading, loaded }.
  *

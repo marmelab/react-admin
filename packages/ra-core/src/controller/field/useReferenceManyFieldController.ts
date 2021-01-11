@@ -52,17 +52,17 @@ const defaultFilter = {};
  *     perPage: 25,
  * });
  *
- * @param {Object} option
- * @param {string} option.resource The current resource name
- * @param {string} option.reference The linked resource name
- * @param {Object} option.record The current resource record
- * @param {string} option.target The target resource key
- * @param {Object} option.filter The filter applied on the recorded records list
- * @param {string} option.source The key of the linked resource identifier
- * @param {string} option.basePath basepath to current resource
- * @param {number} option.page the page number
- * @param {number} option.perPage the number of item per page
- * @param {Object} option.sort the sort to apply to the referenced records
+ * @param {Object} props
+ * @param {string} props.resource The current resource name
+ * @param {string} props.reference The linked resource name
+ * @param {Object} props.record The current resource record
+ * @param {string} props.target The target resource key
+ * @param {Object} props.filter The filter applied on the recorded records list
+ * @param {string} props.source The key of the linked resource identifier
+ * @param {string} props.basePath basepath to current resource
+ * @param {number} props.page the page number
+ * @param {number} props.perPage the number of item per page
+ * @param {Object} props.sort the sort to apply to the referenced records
  *
  * @returns {ReferenceManyProps} The reference many props
  */
