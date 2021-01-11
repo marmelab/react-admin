@@ -42,7 +42,7 @@ const defaultSort = { field: null, order: null };
  *      source: 'referenceIds';
  * });
  *
- * @param {Option} props
+ * @param {Object} props
  * @param {string} props.basePath basepath to current resource
  * @param {Object} props.record The current resource record
  * @param {string} props.reference The linked resource name
