@@ -20,6 +20,7 @@ import {
     RedirectionSideEffect,
 } from 'ra-core';
 import { FormRenderProps } from 'react-final-form';
+import get from 'lodash/get';
 
 import Toolbar from './Toolbar';
 import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
@@ -276,7 +277,6 @@ TabbedFormView.propTypes = {
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
     tabs: PropTypes.element.isRequired,
-    tabsWithErrors: PropTypes.arrayOf(PropTypes.string),
     toolbar: PropTypes.element,
     translate: PropTypes.func,
     undoable: PropTypes.bool,
@@ -339,3 +339,29 @@ const sanitizeRestProps = ({
 }) => props;
 
 export default TabbedForm;
+
+export const findTabsWithErrors = (children, errors) => {
+    // TODO: Provide documentation link
+    console.warn(
+        'Deprecated. FormTab now wrap their content inside a FormGroupContextProvider. If you implemented custom forms with tabs, please use the FormGroupContextProvider. See DOCUMENTATION_LINK'
+    );
+
+    return Children.toArray(children).reduce((acc: any[], child) => {
+        if (!isValidElement(child)) {
+            return acc;
+        }
+
+        const inputs = Children.toArray(child.props.children);
+
+        if (
+            inputs.some(
+                input =>
+                    isValidElement(input) && get(errors, input.props.source)
+            )
+        ) {
+            return [...acc, child.props.label];
+        }
+
+        return acc;
+    }, []);
+};

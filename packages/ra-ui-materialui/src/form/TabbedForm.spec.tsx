@@ -6,7 +6,7 @@ import {
     SideEffectContextProvider,
 } from 'ra-core';
 
-import TabbedForm from './TabbedForm';
+import TabbedForm, { findTabsWithErrors } from './TabbedForm';
 import FormTab from './FormTab';
 
 describe('<TabbedForm />', () => {
