@@ -11,6 +11,12 @@ type FormGroupState = {
     dirty: boolean;
 };
 
+/**
+ * Retrieve a specific form group data such as its validation status (valid/invalid) or
+ * or whether its inputs have been updated (dirty/pristine)
+ * @param {string] name The form group name
+ * @returns {FormGroupState} The form group state
+ */
 export const useFormGroup = (name: string): FormGroupState => {
     const form = useForm();
     const formContext = useFormContext();
