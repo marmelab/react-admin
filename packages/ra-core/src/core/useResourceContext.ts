@@ -42,5 +42,5 @@ export const useResourceContext = <
     props?: ResourceInformationsType
 ): ResourceContextValue => {
     const context = useContext(ResourceContext);
-    return props.resource || context;
+    return (props && props.resource) || context;
 };
