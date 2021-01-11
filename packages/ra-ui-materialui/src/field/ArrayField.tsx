@@ -111,7 +111,7 @@ const getDataAndIds = (record: object, source: string, fieldKey: string) => {
  *                  <li key={item.name}>{item.name}</li>
  *              ))}
  *          </ul>
- *     )
+ *     );
  *     TagsField.defaultProps = { addLabel: true };
  */
 export const ArrayField: FC<ArrayFieldProps> = memo<ArrayFieldProps>(

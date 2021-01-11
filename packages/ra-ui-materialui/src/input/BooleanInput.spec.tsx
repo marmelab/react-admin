@@ -90,7 +90,7 @@ describe('<BooleanInput />', () => {
         expect(input.checked).toBe(true);
     });
 
-    it('should displays errors', () => {
+    it('should display errors', () => {
         // This validator always returns an error
         const validate = () => 'ra.validation.error';
 

@@ -482,13 +482,13 @@ describe('<AutocompleteInput />', () => {
                 render={() => (
                     <AutocompleteInput
                         {...defaultProps}
-                        helperText="Can i help you?"
+                        helperText="Can I help you?"
                         choices={[{ id: 1, name: 'hello' }]}
                     />
                 )}
             />
         );
-        expect(queryByText('Can i help you?')).not.toBeNull();
+        expect(queryByText('Can I help you?')).not.toBeNull();
     });
 
     describe('error message', () => {
