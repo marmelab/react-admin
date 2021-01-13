@@ -27,6 +27,8 @@ import {
 import InputHelperText from './InputHelperText';
 import { SelectProps } from '@material-ui/core/Select';
 import { FormControlProps } from '@material-ui/core/FormControl';
+import Labeled from './Labeled';
+import { LinearProgress } from '../layout';
 
 const sanitizeRestProps = ({
     addLabel,
@@ -144,6 +146,8 @@ const SelectArrayInput: FunctionComponent<SelectArrayInputProps> = props => {
         format,
         helperText,
         label,
+        loaded,
+        loading,
         margin = 'dense',
         onBlur,
         onChange,
@@ -204,6 +208,21 @@ const SelectArrayInput: FunctionComponent<SelectArrayInputProps> = props => {
         },
         [getChoiceValue, renderMenuItemOption]
     );
+
+    if (loading) {
+        return (
+            <Labeled
+                label={label}
+                source={source}
+                resource={resource}
+                className={className}
+                isRequired={isRequired}
+            >
+                <LinearProgress />
+            </Labeled>
+        );
+    }
+
     return (
         <FormControl
             margin={margin}

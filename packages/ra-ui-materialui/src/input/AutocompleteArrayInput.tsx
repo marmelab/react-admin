@@ -23,6 +23,7 @@ import {
 import InputHelperText from './InputHelperText';
 import AutocompleteSuggestionList from './AutocompleteSuggestionList';
 import AutocompleteSuggestionItem from './AutocompleteSuggestionItem';
+import { AutocompleteInputLoader } from './AutocompleteInputLoader';
 
 interface Options {
     suggestionsContainerProps?: any;
@@ -110,6 +111,8 @@ const AutocompleteArrayInput: FunctionComponent<
         input: inputOverride,
         isRequired: isRequiredOverride,
         label,
+        loaded,
+        loading,
         limitChoicesToValue,
         margin = 'dense',
         matchSuggestion,
@@ -409,6 +412,9 @@ const AutocompleteArrayInput: FunctionComponent<
                                             />
                                         ))}
                                     </div>
+                                ),
+                                endAdornment: loading && (
+                                    <AutocompleteInputLoader />
                                 ),
                                 onBlur,
                                 onChange: event => {
