@@ -28,7 +28,7 @@ const delayedDataProvider = new Proxy(sometimesFailsDataProvider, {
             setTimeout(
                 () =>
                     resolve(sometimesFailsDataProvider[name](resource, params)),
-                300
+                3000
             )
         ),
 });
