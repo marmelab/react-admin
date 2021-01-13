@@ -199,7 +199,7 @@ export const useReferenceInputController = (
         // kept for backwards compatibility
         // @deprecated to be removed in 4.0
         error: dataStatus.error,
-        loading: !possibleValuesLoaded || !referenceLoaded,
+        loading: dataStatus.waiting,
         filter: filterValues,
         setFilter,
         pagination,
