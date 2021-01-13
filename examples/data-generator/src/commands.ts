@@ -12,6 +12,7 @@ import {
 export default (db, { serializeDate }) => {
     const today = new Date();
     const aMonthAgo = subDays(today, 30);
+    const realCustomers = db.customers.filter(customer => customer.has_ordered);
 
     return Array.from(Array(600).keys()).map(id => {
         const nbProducts = weightedArrayElement(
@@ -35,9 +36,7 @@ export default (db, { serializeDate }) => {
         const taxes = parseFloat(
             ((total_ex_taxes + delivery_fees) * tax_rate).toFixed(2)
         );
-        const customer = random.arrayElement(
-            db.customers.filter(customer => customer.has_ordered)
-        );
+        const customer = random.arrayElement(realCustomers);
         const date = randomDate(customer.first_seen, customer.last_seen);
 
         const status =
