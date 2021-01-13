@@ -13,23 +13,6 @@ describe('<ReferenceArrayInput />', () => {
         translate: x => `*${x}*`,
     };
 
-    it('should render a progress bar if loading is true', () => {
-        const MyComponent = () => <div>MyComponent</div>;
-        const { queryByRole, queryByText } = render(
-            <ReferenceArrayInputView
-                {...{
-                    ...defaultProps,
-                    loading: true,
-                    input: {},
-                }}
-            >
-                <MyComponent />
-            </ReferenceArrayInputView>
-        );
-        expect(queryByRole('progressbar')).not.toBeNull();
-        expect(queryByText('MyComponent')).toBeNull();
-    });
-
     it('should display an error if error is defined', () => {
         const MyComponent = () => <div>MyComponent</div>;
         const { queryByDisplayValue, queryByText } = render(

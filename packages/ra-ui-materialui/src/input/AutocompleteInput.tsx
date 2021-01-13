@@ -10,12 +10,7 @@ import React, {
 import Downshift, { DownshiftProps } from 'downshift';
 import get from 'lodash/get';
 import classNames from 'classnames';
-import {
-    TextField,
-    InputAdornment,
-    IconButton,
-    CircularProgress,
-} from '@material-ui/core';
+import { TextField, InputAdornment, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ClearIcon from '@material-ui/icons/Clear';
 import { TextFieldProps } from '@material-ui/core/TextField';
@@ -26,12 +21,12 @@ import {
     useSuggestions,
     useTranslate,
     warning,
-    useTimeout,
 } from 'ra-core';
 
 import InputHelperText from './InputHelperText';
 import AutocompleteSuggestionList from './AutocompleteSuggestionList';
 import AutocompleteSuggestionItem from './AutocompleteSuggestionItem';
+import { AutocompleteInputLoader } from './AutocompleteInputLoader';
 
 interface Options {
     suggestionsContainerProps?: any;
@@ -607,13 +602,3 @@ export interface AutocompleteInputProps
 }
 
 export default AutocompleteInput;
-
-const AutocompleteInputLoader = ({ timeout = 1000 }) => {
-    const oneSecondHasPassed = useTimeout(timeout);
-
-    if (oneSecondHasPassed) {
-        return <CircularProgress size={24} />;
-    }
-
-    return null;
-};

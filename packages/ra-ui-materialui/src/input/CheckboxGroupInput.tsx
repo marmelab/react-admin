@@ -14,6 +14,8 @@ import sanitizeInputRestProps from './sanitizeInputRestProps';
 import CheckboxGroupInputItem from './CheckboxGroupInputItem';
 import InputHelperText from './InputHelperText';
 import classnames from 'classnames';
+import Labeled from './Labeled';
+import { LinearProgress } from '../layout';
 
 const sanitizeRestProps = ({
     setFilter,
@@ -108,6 +110,8 @@ const CheckboxGroupInput: FunctionComponent<
         format,
         helperText,
         label,
+        loaded,
+        loading,
         margin = 'dense',
         onBlur,
         onChange,
@@ -172,6 +176,20 @@ const CheckboxGroupInput: FunctionComponent<
         },
         [finalFormOnChange, finalFormOnBlur, value]
     );
+
+    if (loading) {
+        return (
+            <Labeled
+                label={label}
+                source={source}
+                resource={resource}
+                className={className}
+                isRequired={isRequired}
+            >
+                <LinearProgress />
+            </Labeled>
+        );
+    }
 
     return (
         <FormControl

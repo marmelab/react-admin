@@ -6,6 +6,8 @@ import { useFieldArray } from 'react-final-form-arrays';
 import { InputLabel, FormControl } from '@material-ui/core';
 
 import sanitizeInputRestProps from './sanitizeInputRestProps';
+import Labeled from './Labeled';
+import { LinearProgress } from '../layout';
 
 /**
  * To edit arrays of data embedded inside a record, <ArrayInput> creates a list of sub-forms.
@@ -52,6 +54,8 @@ const ArrayInput: FC<ArrayInputProps> = ({
     className,
     defaultValue,
     label,
+    loaded,
+    loading,
     children,
     record,
     resource,
@@ -70,6 +74,19 @@ const ArrayInput: FC<ArrayInputProps> = ({
         validate: sanitizedValidate,
         ...rest,
     });
+
+    if (loading) {
+        return (
+            <Labeled
+                label={label}
+                source={source}
+                resource={resource}
+                className={className}
+            >
+                <LinearProgress />
+            </Labeled>
+        );
+    }
 
     return (
         <FormControl

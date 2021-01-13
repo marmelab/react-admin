@@ -205,6 +205,7 @@ export interface ReferenceArrayInputViewProps {
     input: FieldInputProps<any, HTMLElement>;
     isRequired: boolean;
     label?: string;
+    loaded: boolean;
     loading: boolean;
     meta: FieldMetaState<any>;
     onChange: any;
@@ -227,6 +228,7 @@ export const ReferenceArrayInputView = ({
     className,
     error,
     input,
+    loaded,
     loading,
     isRequired,
     label,
@@ -248,20 +250,6 @@ export const ReferenceArrayInputView = ({
         { _: label }
     );
 
-    if (loading) {
-        return (
-            <Labeled
-                label={translatedLabel}
-                source={source}
-                resource={resource}
-                className={className}
-                isRequired={isRequired}
-            >
-                <LinearProgress />
-            </Labeled>
-        );
-    }
-
     if (error) {
         return <ReferenceError label={translatedLabel} error={error} />;
     }
@@ -277,6 +265,8 @@ export const ReferenceArrayInputView = ({
                 input,
                 isRequired,
                 label: translatedLabel,
+                loaded,
+                loading,
                 meta: {
                     ...meta,
                     helperText: warning || false,
