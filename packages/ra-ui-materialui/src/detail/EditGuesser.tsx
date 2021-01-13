@@ -14,7 +14,7 @@ import { EditView } from './EditView';
 import editFieldTypes from './editFieldTypes';
 
 const EditViewGuesser = props => {
-    const resource = useResourceContext();
+    const resource = useResourceContext(props);
     const { record } = useEditContext();
     const [inferredChild, setInferredChild] = useState(null);
     useEffect(() => {
