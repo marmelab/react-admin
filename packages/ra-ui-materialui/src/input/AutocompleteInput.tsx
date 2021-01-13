@@ -10,7 +10,12 @@ import React, {
 import Downshift, { DownshiftProps } from 'downshift';
 import get from 'lodash/get';
 import classNames from 'classnames';
-import { TextField, InputAdornment, IconButton } from '@material-ui/core';
+import {
+    TextField,
+    InputAdornment,
+    IconButton,
+    CircularProgress,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ClearIcon from '@material-ui/icons/Clear';
 import { TextFieldProps } from '@material-ui/core/TextField';
@@ -21,6 +26,7 @@ import {
     useSuggestions,
     useTranslate,
     warning,
+    useTimeout,
 } from 'ra-core';
 
 import InputHelperText from './InputHelperText';
@@ -112,6 +118,8 @@ const AutocompleteInput: FunctionComponent<AutocompleteInputProps> = props => {
         isRequired: isRequiredOverride,
         label,
         limitChoicesToValue,
+        loaded,
+        loading,
         margin = 'dense',
         matchSuggestion,
         meta: metaOverride,
@@ -355,7 +363,12 @@ const AutocompleteInput: FunctionComponent<AutocompleteInputProps> = props => {
 
     const getEndAdornment = openMenu => {
         if (!resettable) {
-            return endAdornment;
+            if (endAdornment) {
+                return endAdornment;
+            }
+            if (loading) {
+                return <AutocompleteInputLoader />;
+            }
         } else if (!filterValue) {
             const label = translate('ra.action.clear_input_value');
             if (clearAlwaysVisible) {
@@ -376,6 +389,7 @@ const AutocompleteInput: FunctionComponent<AutocompleteInputProps> = props => {
                                 )}
                             />
                         </IconButton>
+                        {loading && <AutocompleteInputLoader />}
                     </InputAdornment>
                 );
             } else {
@@ -386,6 +400,7 @@ const AutocompleteInput: FunctionComponent<AutocompleteInputProps> = props => {
                     return (
                         <InputAdornment position="end">
                             <span className={classes.clearButton}>&nbsp;</span>
+                            {loading && <AutocompleteInput />}
                         </InputAdornment>
                     );
                 }
@@ -411,6 +426,7 @@ const AutocompleteInput: FunctionComponent<AutocompleteInputProps> = props => {
                             })}
                         />
                     </IconButton>
+                    {loading && <AutocompleteInputLoader />}
                 </InputAdornment>
             );
         }
@@ -586,6 +602,18 @@ export interface AutocompleteInputProps
         Omit<DownshiftProps<any>, 'onChange'> {
     clearAlwaysVisible?: boolean;
     resettable?: boolean;
+    loaded?: boolean;
+    loading?: boolean;
 }
 
 export default AutocompleteInput;
+
+const AutocompleteInputLoader = ({ timeout = 1000 }) => {
+    const oneSecondHasPassed = useTimeout(timeout);
+
+    if (oneSecondHasPassed) {
+        return <CircularProgress size={24} />;
+    }
+
+    return null;
+};

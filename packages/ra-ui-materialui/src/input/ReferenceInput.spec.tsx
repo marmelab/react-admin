@@ -57,38 +57,6 @@ describe('<ReferenceInput />', () => {
     };
     const MyComponent = () => <span id="mycomponent" />;
 
-    it('should render a LinearProgress if loading is true', () => {
-        const { queryByRole } = render(
-            <ReferenceInputView
-                {...{
-                    ...defaultProps,
-                    input: { value: 1 },
-                    loading: true,
-                }}
-            >
-                <MyComponent />
-            </ReferenceInputView>
-        );
-
-        expect(queryByRole('progressbar')).not.toBeNull();
-    });
-
-    it('should not render a LinearProgress if loading is false', () => {
-        const { queryByRole } = render(
-            <ReferenceInputView
-                {...{
-                    ...defaultProps,
-                    choices: [{ id: 1 }],
-                    input: { value: 1 },
-                }}
-            >
-                <MyComponent />
-            </ReferenceInputView>
-        );
-
-        expect(queryByRole('progressbar')).toBeNull();
-    });
-
     it('should display an error if error is defined', () => {
         const { queryByDisplayValue } = render(
             <ReferenceInputView
