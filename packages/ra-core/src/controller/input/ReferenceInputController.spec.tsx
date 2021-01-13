@@ -216,7 +216,7 @@ describe('<ReferenceInputController />', () => {
             choices: [{ id: 1 }],
             error: null,
             filter: { q: '' },
-            loading: true,
+            loading: false,
             pagination: { page: 1, perPage: 25 },
             sort: { field: 'title', order: 'ASC' },
             warning: null,
