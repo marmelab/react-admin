@@ -3,8 +3,6 @@ import { useState, useEffect } from 'react';
 import { Admin, Resource, DataProvider } from 'react-admin';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
-import './App.css';
-
 import authProvider from './authProvider';
 import themeReducer from './themeReducer';
 import { Login, Layout } from './layout';
