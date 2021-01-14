@@ -144,7 +144,7 @@ const CheckboxGroupInput: FunctionComponent<
         id,
         input: { onChange: finalFormOnChange, onBlur: finalFormOnBlur, value },
         isRequired,
-        meta: { error, touched },
+        meta: { error, submitError, touched },
     } = useInput({
         format,
         onBlur,
@@ -195,7 +195,7 @@ const CheckboxGroupInput: FunctionComponent<
         <FormControl
             component="fieldset"
             margin={margin}
-            error={touched && !!error}
+            error={touched && !!(error || submitError)}
             className={classnames(classes.root, className)}
             {...sanitizeRestProps(rest)}
         >
@@ -225,7 +225,7 @@ const CheckboxGroupInput: FunctionComponent<
             <FormHelperText>
                 <InputHelperText
                     touched={touched}
-                    error={error}
+                    error={error || submitError}
                     helperText={helperText}
                 />
             </FormHelperText>

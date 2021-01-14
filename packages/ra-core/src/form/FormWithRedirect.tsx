@@ -142,9 +142,9 @@ const FormWithRedirect: FC<FormWithRedirectProps> = ({
                 finalInitialValues,
                 values
             );
-            onSave.current(sanitizedValues, finalRedirect);
+            return onSave.current(sanitizedValues, finalRedirect);
         } else {
-            onSave.current(values, finalRedirect);
+            return onSave.current(values, finalRedirect);
         }
     };
 

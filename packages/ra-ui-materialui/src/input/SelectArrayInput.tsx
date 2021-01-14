@@ -181,7 +181,7 @@ const SelectArrayInput: FunctionComponent<SelectArrayInputProps> = props => {
     const {
         input,
         isRequired,
-        meta: { error, touched },
+        meta: { error, submitError, touched },
     } = useInput({
         format,
         onBlur,
@@ -230,14 +230,14 @@ const SelectArrayInput: FunctionComponent<SelectArrayInputProps> = props => {
         <FormControl
             margin={margin}
             className={classnames(classes.root, className)}
-            error={touched && !!error}
+            error={touched && !!(error || submitError)}
             variant={variant}
             {...sanitizeRestProps(rest)}
         >
             <InputLabel
                 ref={inputLabel}
                 id={`${label}-outlined-label`}
-                error={touched && !!error}
+                error={touched && !!(error || submitError)}
             >
                 <FieldTitle
                     label={label}
@@ -250,7 +250,7 @@ const SelectArrayInput: FunctionComponent<SelectArrayInputProps> = props => {
                 autoWidth
                 labelId={`${label}-outlined-label`}
                 multiple
-                error={!!(touched && error)}
+                error={!!(touched && (error || submitError))}
                 renderValue={(selected: any[]) => (
                     <div className={classes.chips}>
                         {selected
@@ -276,10 +276,10 @@ const SelectArrayInput: FunctionComponent<SelectArrayInputProps> = props => {
             >
                 {choices.map(renderMenuItem)}
             </Select>
-            <FormHelperText error={touched && !!error}>
+            <FormHelperText error={touched && !!(error || submitError)}>
                 <InputHelperText
                     touched={touched}
-                    error={error}
+                    error={error || submitError}
                     helperText={helperText}
                 />
             </FormHelperText>
