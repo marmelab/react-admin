@@ -199,10 +199,12 @@ const exporter = posts => {
         postForExport.author_name = post.author.name; // add a field
         return postForExport;
     });
-    jsonExport(postsForExport, {
-        headers: ['id', 'title', 'author_name', 'body'] // order fields in the export
-    }, (err, csv) => {
-        downloadCSV(csv, 'posts'); // download as 'posts.csv` file
+    return new Promise(() => {
+        jsonExport(postsForExport, {
+            headers: ['id', 'title', 'author_name', 'body'] // order fields in the export
+        }, (err, csv) => {
+            downloadCSV(csv, 'posts'); // download as 'posts.csv` file
+        });
     });
 };
 
