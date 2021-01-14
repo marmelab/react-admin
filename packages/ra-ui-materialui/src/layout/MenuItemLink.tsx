@@ -16,7 +16,7 @@ import Tooltip, { TooltipProps } from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
 
 const NavLinkRef = forwardRef<HTMLAnchorElement, NavLinkProps>((props, ref) => (
-    <NavLink innerRef={ref} {...props} />
+    <NavLink innerRef={ref} {...props} tabIndex={0} />
 ));
 
 const useStyles = makeStyles(
