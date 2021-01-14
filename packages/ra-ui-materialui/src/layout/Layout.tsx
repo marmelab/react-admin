@@ -30,6 +30,7 @@ import DefaultMenu, { MenuProps } from './Menu';
 import DefaultNotification from './Notification';
 import DefaultError from './Error';
 import defaultTheme from '../defaultTheme';
+import SkipNavigationButton from '../button/SkipNavigationButton';
 
 const styles = theme =>
     createStyles({
@@ -130,6 +131,7 @@ class LayoutWithoutTheme extends Component<
                     className={classnames('layout', classes.root, className)}
                     {...props}
                 >
+                    <SkipNavigationButton />
                     <div className={classes.appFrame}>
                         {createElement(appBar, { title, open, logout })}
                         <main className={classes.contentWithSidebar}>
@@ -139,7 +141,7 @@ class LayoutWithoutTheme extends Component<
                                     hasDashboard: !!dashboard,
                                 }),
                             })}
-                            <div className={classes.content}>
+                            <div id="main-content" className={classes.content}>
                                 {hasError
                                     ? createElement(error, {
                                           error: errorMessage,
