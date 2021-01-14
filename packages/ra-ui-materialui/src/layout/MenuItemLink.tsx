@@ -16,7 +16,7 @@ import Tooltip, { TooltipProps } from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
 
 const NavLinkRef = forwardRef<HTMLAnchorElement, NavLinkProps>((props, ref) => (
-    <NavLink innerRef={ref} {...props} tabIndex={0} />
+    <NavLink innerRef={ref} {...props} />
 ));
 
 const useStyles = makeStyles(
@@ -59,6 +59,7 @@ const MenuItemLink: FC<MenuItemLinkProps> = forwardRef((props, ref) => {
                 activeClassName={classes.active}
                 component={NavLinkRef}
                 ref={ref}
+                tabIndex={0}
                 {...rest}
                 onClick={handleMenuTap}
             >
