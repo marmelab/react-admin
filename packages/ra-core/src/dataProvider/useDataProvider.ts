@@ -406,7 +406,6 @@ const performUndoableQuery = ({
                         });
                         dispatch({ type: FETCH_ERROR, error });
                         onFailure && onFailure(error);
-                        throw error;
                     });
                 });
         } catch (e) {
