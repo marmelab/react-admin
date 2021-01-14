@@ -42,7 +42,7 @@ export const useSaveModifiers = ({
     const onFailureRef = useRef(onFailure);
     const setOnFailure: SetOnFailure = onFailure => {
         onFailureRef.current = error => {
-            // reset onSuccess for next submission
+            // reset onFailure for next submission
             onFailureRef.current = undefined;
             return onFailure(error);
         };
