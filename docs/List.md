@@ -1400,7 +1400,7 @@ If you want to display a full-text search allowing to look for any record in the
 
 ![ra-search basic](https://marmelab.com/ra-enterprise/modules/assets/ra-search-overview.gif)
 
-`ra-search` can plug to any existing search engine (ElasticSearch, Lucene, or custom search engine), and lets you customize the search results to provide quick navigation to related items, turniun the search engine into an "Omnibox": 
+`ra-search` can plug to any existing search engine (ElasticSearch, Lucene, or custom search engine), and lets you customize the search results to provide quick navigation to related items, turning the search engine into an "Omnibox": 
 
 ![ra-search demo](https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.gif)
 
