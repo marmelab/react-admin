@@ -342,9 +342,8 @@ const sanitizeRestProps = ({
 export default TabbedForm;
 
 export const findTabsWithErrors = (children, errors) => {
-    // TODO: Provide documentation link
     console.warn(
-        'Deprecated. FormTab now wrap their content inside a FormGroupContextProvider. If you implemented custom forms with tabs, please use the FormGroupContextProvider. See DOCUMENTATION_LINK'
+        'Deprecated. FormTab now wrap their content inside a FormGroupContextProvider. If you implemented custom forms with tabs, please use the FormGroupContextProvider. See https://marmelab.com/react-admin/CreateEdit.html#grouping-inputs'
     );
 
     return Children.toArray(children).reduce((acc: any[], child) => {
