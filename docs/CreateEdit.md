@@ -2102,7 +2102,7 @@ The `onSave` value should be a function expecting 2 arguments: the form values t
 
 Sometimes, you may want to group inputs in order to make a form more approachable. You may use a [`<TabbedForm>`](#the-tabbedform-component), an [`<AccordionForm>`](#the-accordionform-component) or you may want to roll your own layout. In this case, you might need to know the state of a group of inputs: whether it's valid or if the user has changed them (dirty/pristine state).
 
-For this, you can use the `<FormGroupContextProvider>`, which accept a group name and will links any inputs inside it to the group. You may then call the `useFormGroup` hook to retrieve the group status. For example:
+For this, you can use the `<FormGroupContextProvider>`, which accepts a group name. All inputs rendered inside this context will register to it (thanks to the `useInput` hook). You may then call the `useFormGroup` hook to retrieve the status of the group. For example:
 
 ```jsx
 import { Edit, SimpleForm, TextInput, FormGroupContextProvider, useFormGroup } from 'react-admin';
