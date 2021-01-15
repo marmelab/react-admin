@@ -256,4 +256,23 @@ describe('Edit Page', () => {
             .eq(2)
             .should(el => expect(el).to.contain('Sed quo et et fugiat modi'));
     });
+
+    it('should not display a warning about unsaved changes when an array input has been updated', () => {
+        ListPagePosts.navigate();
+        ListPagePosts.nextPage(); // Ensure the record is visible in the table
+
+        EditPostPage.navigate();
+        // Select first notification input checkbox
+        cy.get(
+            EditPostPage.elements.input('notifications', 'checkbox-group-input')
+        )
+            .eq(0)
+            .click();
+
+        EditPostPage.submit();
+
+        // If the update succeeded without display a warning about unsaved changes,
+        // we should have been redirected to the list
+        cy.url().then(url => expect(url).to.contain('/#/posts'));
+    });
 });

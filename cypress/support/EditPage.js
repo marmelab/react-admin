@@ -6,6 +6,9 @@ export default url => ({
             if (type === 'rich-text-input') {
                 return `.ra-input-${name} .ql-editor`;
             }
+            if (type === 'checkbox-group-input') {
+                return `.ra-input-${name} label`;
+            }
             if (type === 'reference-array-input') {
                 return `.ra-input div[role=combobox]`;
             }
