@@ -9,6 +9,7 @@
     "devDependencies": {
         "@cypress/webpack-preprocessor": "^5.4.5",
         "cypress": "^5.1.0",
+        "cypress-plugin-tab": "^1.0.5",
         "cypress-skip-and-only-ui": "^1.2.7"
     }
 }
