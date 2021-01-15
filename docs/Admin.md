@@ -579,6 +579,8 @@ const App = () => (
 );
 ```
 
+You can also disable the "ready" screen by passing `false` to the `ready` prop. This is useful when you don't use resources at all and call the `dataProvider` directly. In that case, you should also provide a Dashboard using the [`dashboard`](#dashboard) prop, otherwise a "Not Found" page will be displayed. Indeed, by default, if no dashboard is provided, react-admin shows the list page of the first resource and there won't be any.
+
 ## Declaring resources at runtime
 
 You might want to dynamically define the resources when the app starts. To do so, you have two options: using a function as `<Admin>` child, or unplugging it to use a combination of `AdminContext` and `<AdminUI>` instead.
