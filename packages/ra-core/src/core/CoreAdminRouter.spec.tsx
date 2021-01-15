@@ -10,6 +10,7 @@ import AuthContext from '../auth/AuthContext';
 import Resource from './Resource';
 
 const Layout = ({ children }) => <div>Layout {children}</div>;
+const Dashboard = () => <div>Welcome</div>;
 
 describe('<CoreAdminRouter>', () => {
     const defaultProps = {
@@ -144,5 +145,20 @@ describe('<CoreAdminRouter>', () => {
         history.push('/bar');
         expect(getByText('Layout')).toBeDefined();
         expect(getByText('Bar')).toBeDefined();
+    });
+
+    it('should render the Dashboard even when there are no resources if ready is set to false', () => {
+        const history = createMemoryHistory();
+        const { getByText } = renderWithRedux(
+            <Router history={history}>
+                <CoreAdminRouter
+                    {...defaultProps}
+                    layout={Layout}
+                    dashboard={Dashboard}
+                    ready={false}
+                />
+            </Router>
+        );
+        expect(getByText('Welcome')).toBeDefined();
     });
 });
