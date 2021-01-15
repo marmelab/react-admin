@@ -59,6 +59,7 @@ const MenuItemLink: FC<MenuItemLinkProps> = forwardRef((props, ref) => {
                 activeClassName={classes.active}
                 component={NavLinkRef}
                 ref={ref}
+                tabIndex={0}
                 {...rest}
                 onClick={handleMenuTap}
             >
