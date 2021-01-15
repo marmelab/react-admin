@@ -4,7 +4,7 @@ import { FormContextValue } from '../types';
 import { FormContext } from './FormContext';
 
 /**
- * Provides utilities to Forms children, allowing them to change the default save function or register inputs inside a group.
+ * Provides utilities to Form children, allowing them to change the default save function or register inputs to a group.
  * @param props The component props
  * @param {ReactNode} props.children The form content
  * @param {FormContextValue} props.value The form context

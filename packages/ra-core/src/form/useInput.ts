@@ -50,7 +50,7 @@ const useInput = ({
     const formContext = useFormContext();
 
     useEffect(() => {
-        if (!formContext) {
+        if (!formContext || !formGroupName ) {
             return;
         }
         formContext.registerField(source, formGroupName);
