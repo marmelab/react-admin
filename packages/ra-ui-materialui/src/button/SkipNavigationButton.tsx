@@ -1,8 +1,20 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from './Button';
-import { HashLink as Link } from 'react-router-hash-link';
 import { useTranslate } from 'ra-core';
+
+function skipToContent() {
+    const element = document.getElementById('main-content');
+
+    if (!element) {
+        return;
+    }
+
+    element.setAttribute('tabIndex', '-1');
+    element.focus();
+    element.blur();
+    element.removeAttribute('tabIndex');
+}
 
 const useStyles = makeStyles(theme => ({
     skipToContentButton: {
@@ -37,8 +49,7 @@ function SkipNavigationButton() {
 
     return (
         <Button
-            component={Link}
-            to="#main-content"
+            onClick={skipToContent}
             className={classes.skipToContentButton}
             label={translate('ra.navigation.skip_nav')}
             variant="contained"
