@@ -105,8 +105,7 @@ const FormWithRedirect: FC<FormWithRedirectProps> = ({
             },
             registerField: (source, group) => {
                 if (group) {
-                    formGroups.current[group] = formGroups.current[group] || [];
-                    const fields = new Set(formGroups.current[group]);
+                    const fields = new Set(formGroups.current[group] || []);
                     fields.add(source);
                     formGroups.current[group] = Array.from(fields);
                 }
