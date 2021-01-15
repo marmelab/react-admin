@@ -74,15 +74,30 @@ describe('Edit Page', () => {
             EditPostTagsPage.navigate();
             EditPostTagsPage.gotoTab(3);
 
-            // Select first notification input checkbox
+            // Music is selected by default
             cy.get(
-                EditPostTagsPage.elements.input(
-                    'notifications',
-                    'checkbox-group-input'
-                )
+                EditPostTagsPage.elements.input('tags', 'reference-array-input')
             )
-                .eq(0)
-                .click();
+                .get(`div[role=button]`)
+                .contains('Music')
+                .should('exist');
+
+            EditPostTagsPage.clickInput('change-filter');
+
+            // Music should not be selected anymore after filter reset
+            cy.get(
+                EditPostTagsPage.elements.input('tags', 'reference-array-input')
+            )
+                .get(`div[role=button]`)
+                .contains('Music')
+                .should('not.exist');
+
+            EditPostTagsPage.clickInput('tags', 'reference-array-input');
+
+            // Music should not be visible in the list after filter reset
+            cy.get('div[role=listbox]').contains('Music').should('not.exist');
+
+            cy.get('div[role=listbox]').contains('Photo').should('exist');
         });
     });
 
