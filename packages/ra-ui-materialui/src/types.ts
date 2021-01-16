@@ -7,6 +7,8 @@ import {
     Record as RaRecord,
     ResourceComponentProps,
     ResourceComponentPropsWithId,
+    OnSuccess,
+    OnFailure,
 } from 'ra-core';
 
 export interface ListProps extends ResourceComponentProps {
@@ -34,8 +36,8 @@ export interface EditProps extends ResourceComponentPropsWithId {
     className?: string;
     component?: ElementType;
     undoable?: boolean;
-    onSuccess?: (data: RaRecord) => void;
-    onFailure?: (error: any) => void;
+    onSuccess?: OnSuccess;
+    onFailure?: OnFailure;
     transform?: (data: RaRecord) => RaRecord;
     title?: string | ReactElement;
 }
@@ -47,8 +49,8 @@ export interface CreateProps extends ResourceComponentProps {
     className?: string;
     component?: ElementType;
     record?: Partial<RaRecord>;
-    onSuccess?: (data: RaRecord) => void;
-    onFailure?: (error: any) => void;
+    onSuccess?: OnSuccess;
+    onFailure?: OnFailure;
     transform?: (data: RaRecord) => RaRecord;
     title?: string | ReactElement;
 }

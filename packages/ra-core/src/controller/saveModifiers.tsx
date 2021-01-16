@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { createContext, useRef } from 'react';
+import { Record } from '../types';
 
 export const SideEffectContext = createContext<SideEffectContextValue>({});
 
@@ -67,7 +68,7 @@ export const useSaveModifiers = ({
     };
 };
 
-export type OnSuccess = (response: any) => void;
+export type OnSuccess = (response: { data: Record }) => void;
 export type SetOnSuccess = (onSuccess: OnSuccess) => void;
 export type OnFailure = (error: { message?: string }) => void;
 export type SetOnFailure = (onFailure: OnFailure) => void;
