@@ -15,6 +15,8 @@ import {
     fetchActionsWithTotalResponse,
     sanitizeFetchType,
 } from '../core';
+import { OnSuccess, OnFailure } from '../controller';
+import { DeclarativeSideEffect } from '../dataProvider/useDeclarativeSideEffects';
 
 function validateResponseFormat(
     response,
@@ -73,8 +75,8 @@ interface ActionWithSideEffect {
     meta: {
         fetch: string;
         resource: string;
-        onSuccess?: any;
-        onFailure?: any;
+        onSuccess?: OnSuccess | DeclarativeSideEffect;
+        onFailure?: OnFailure | DeclarativeSideEffect;
     };
 }
 

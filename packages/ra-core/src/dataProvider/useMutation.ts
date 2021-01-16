@@ -4,6 +4,8 @@ import merge from 'lodash/merge';
 import { useSafeSetState } from '../util/hooks';
 import useDataProvider from './useDataProvider';
 import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDeclarativeSideEffects';
+import { OnSuccess, OnFailure } from '../controller';
+import { DeclarativeSideEffect } from './useDeclarativeSideEffects';
 
 /**
  * Get a callback to fetch the data provider through Redux, usually for mutations.
@@ -204,8 +206,8 @@ export interface Mutation {
 export interface MutationOptions {
     action?: string;
     undoable?: boolean;
-    onSuccess?: (response: any) => any | Object;
-    onFailure?: (error?: any) => any | Object;
+    onSuccess?: OnSuccess | DeclarativeSideEffect;
+    onFailure?: OnFailure | DeclarativeSideEffect;
     withDeclarativeSideEffectsSupport?: boolean;
 }
 

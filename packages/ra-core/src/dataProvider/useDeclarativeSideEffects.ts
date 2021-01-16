@@ -3,6 +3,8 @@ import {
     useRedirect,
     useRefresh,
     useUnselectAll,
+    NotificationSideEffect,
+    RedirectionSideEffect,
 } from '../sideEffect';
 import { useMemo } from 'react';
 
@@ -15,12 +17,21 @@ const useDeclarativeSideEffects = () => {
     return useMemo(
         () => (
             resource,
-            { onSuccess, onFailure }: any = {
+            {
+                onSuccess,
+                onFailure,
+            }: {
+                onSuccess?: DeclarativeSideEffect;
+                onFailure?: DeclarativeSideEffect;
+            } = {
                 onSuccess: undefined,
                 onFailure: undefined,
             }
         ) => {
-            const convertToFunctionSideEffect = (resource, sideEffects) => {
+            const convertToFunctionSideEffect = (
+                resource: string | undefined,
+                sideEffects: DeclarativeSideEffect
+            ) => {
                 if (!sideEffects || typeof sideEffects === 'function') {
                     return sideEffects;
                 }
@@ -67,5 +78,12 @@ const useDeclarativeSideEffects = () => {
         [notify, redirect, refresh, unselectAll]
     );
 };
+
+export interface DeclarativeSideEffect {
+    notification?: NotificationSideEffect;
+    redirectTo?: RedirectionSideEffect;
+    refresh?: boolean;
+    unselectAll?: boolean;
+}
 
 export default useDeclarativeSideEffects;
