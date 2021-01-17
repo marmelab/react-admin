@@ -1,7 +1,9 @@
 import { useCallback } from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
-import { useLocation, useHistory } from 'react-router-dom';
+import { resetNotification } from '../actions/notificationActions';
 
 /**
  * Get a callback for calling the authProvider.login() method
@@ -31,26 +33,29 @@ const useLogin = (): Login => {
     const location = useLocation();
     const locationState = location.state as any;
     const history = useHistory();
+    const dispatch = useDispatch();
     const nextPathName = locationState && locationState.nextPathname;
 
     const login = useCallback(
         (params: any = {}, pathName) =>
             authProvider.login(params).then(ret => {
+                dispatch(resetNotification());
                 const redirectUrl = pathName
                     ? pathName
                     : nextPathName || defaultAuthParams.afterLoginUrl;
                 history.push(redirectUrl);
                 return ret;
             }),
-        [authProvider, history, nextPathName]
+        [authProvider, history, nextPathName, dispatch]
     );
 
     const loginWithoutProvider = useCallback(
         (_, __) => {
+            dispatch(resetNotification());
             history.push(defaultAuthParams.afterLoginUrl);
             return Promise.resolve();
         },
-        [history]
+        [history, dispatch]
     );
 
     return authProvider ? login : loginWithoutProvider;
