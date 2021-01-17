@@ -1,5 +1,22 @@
 # Changelog
 
+## v3.11.3
+
+* Fix `<EditGuesser>` is broken ([5756](https://github.com/marmelab/react-admin/pull/5756)) ([maaarghk](https://github.com/maaarghk))
+* Fix `<AutocompleteInput>` doesn't work decorated with `<ReferenceInput>` ([5763](https://github.com/marmelab/react-admin/pull/5763)) ([djhi](https://github.com/djhi))
+* Fix warning about unsaved change when using ArrayInputs  ([5776](https://github.com/marmelab/react-admin/pull/5776)) ([djhi](https://github.com/djhi))
+* Fix uncaught error when `dataProvider` fails on undoable forms ([5781](https://github.com/marmelab/react-admin/pull/5781)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix resource context fallback in `<EditGuesser>` and `<ShowGuesser>` ([5762](https://github.com/marmelab/react-admin/pull/5762)) ([djhi](https://github.com/djhi))
+* [Demo] Fix Review Edit warning due to missing `<EditContext>` ([5780](https://github.com/marmelab/react-admin/pull/5780)) ([fzaninotto](https://github.com/fzaninotto))
+* [Demo] Fix app doesn't need a CSS preprocessor ([5765](https://github.com/marmelab/react-admin/pull/5765)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix the type of the custom `theme` used in `<Admin>` ([5784](https://github.com/marmelab/react-admin/pull/5784)) ([djhi](https://github.com/djhi))
+* [TypeScript] Fix the return type of the `exporter` function used in `<List>` ([5782](https://github.com/marmelab/react-admin/pull/5782)) ([ohbarye](https://github.com/ohbarye))
+* [Doc] Fix various typos in Input components prop lists ([5777](https://github.com/marmelab/react-admin/pull/5777)) ([WiXSL](https://github.com/WiXSL))
+* [Do] Fix typo in `saveModifiers` code comment ([5770](https://github.com/marmelab/react-admin/pull/5770)) ([DjebbZ](https://github.com/DjebbZ))
+* [Doc] Fix `<AutocompleteInput resettable>` prop isn't documented ([5769](https://github.com/marmelab/react-admin/pull/5769)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix minor typos in code comments ([5758](https://github.com/marmelab/react-admin/pull/5758)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix bad return types and typos in jsDocs for `ra-core` and `ra-ui-material-ui` packages ([5690](https://github.com/marmelab/react-admin/pull/5690)) ([WiXSL](https://github.com/WiXSL))
+
 ## v3.11.2
 
 * Fix `SaveContext` error when no context is supplied ([5738](https://github.com/marmelab/react-admin/pull/5738)) ([WiXSL](https://github.com/WiXSL))
