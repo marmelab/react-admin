@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useEffect } from 'react';
+import expect from 'expect';
 import { cleanup } from '@testing-library/react';
 import { EditBase } from './EditBase';
 import { useSaveContext } from './SaveContext';
@@ -34,7 +35,7 @@ describe('EditBase', () => {
 
             useEffect(() => {
                 saveContext.onSuccessRef.current('test');
-            }, []);
+            }, [saveContext.onSuccessRef]);
 
             return null;
         };
@@ -68,7 +69,7 @@ describe('EditBase', () => {
 
             useEffect(() => {
                 saveContext.setOnSuccess(onSuccessOverride);
-            }, []);
+            }, [saveContext]);
 
             return null;
         };
@@ -115,7 +116,7 @@ describe('EditBase', () => {
 
             useEffect(() => {
                 saveContext.onFailureRef.current({ message: 'test' });
-            }, []);
+            }, [saveContext.onFailureRef]);
 
             return null;
         };
@@ -149,7 +150,7 @@ describe('EditBase', () => {
 
             useEffect(() => {
                 saveContext.setOnFailure(onFailureOverride);
-            }, []);
+            }, [saveContext]);
 
             return null;
         };
@@ -157,7 +158,7 @@ describe('EditBase', () => {
             const saveContext = useSaveContext();
 
             const handleClick = () => {
-                saveContext.onFailureRef.current('test');
+                saveContext.onFailureRef.current({ message: 'test' });
             };
 
             return <button aria-label="save" onClick={handleClick} />;
@@ -180,7 +181,7 @@ describe('EditBase', () => {
 
         getByLabelText('save').click();
 
-        expect(onFailureOverride).toHaveBeenCalledWith('test');
+        expect(onFailureOverride).toHaveBeenCalledWith({ message: 'test' });
     });
 
     it('should give access to the current transform function', () => {
@@ -196,7 +197,7 @@ describe('EditBase', () => {
 
             useEffect(() => {
                 saveContext.transformRef.current({ message: 'test' });
-            }, []);
+            }, [saveContext.transformRef]);
 
             return null;
         };
@@ -230,7 +231,7 @@ describe('EditBase', () => {
 
             useEffect(() => {
                 saveContext.setTransform(transformOverride);
-            }, []);
+            }, [saveContext]);
 
             return null;
         };
