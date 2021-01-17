@@ -19,7 +19,11 @@ const initialState = {
     ids: [],
 };
 
-const getDataAndIds = (record: object, source: string, fieldKey: string) => {
+const getDataAndIds = (
+    record: object,
+    source: string,
+    fieldKey: string
+): State => {
     const list = get(record, source);
     if (!list) {
         return initialState;
