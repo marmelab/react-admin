@@ -57,7 +57,7 @@ export const FormGroupContextProvider = ({
     const formContext = useFormContext();
 
     useEffect(() => {
-        if (!formContext) {
+        if (!formContext || !formContext.registerGroup || !formContext.unregisterGroup) {
             console.warn(
                 `The FormGroupContextProvider can only be used inside a FormContext such as provided by the SimpleForm and TabbedForm components`
             );
