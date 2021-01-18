@@ -399,7 +399,7 @@ const AutocompleteInput: FunctionComponent<AutocompleteInputProps> = props => {
                     return (
                         <InputAdornment position="end">
                             <span className={classes.clearButton}>&nbsp;</span>
-                            {loading && <AutocompleteInput />}
+                            {loading && <AutocompleteInputLoader />}
                         </InputAdornment>
                     );
                 }
