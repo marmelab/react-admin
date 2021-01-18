@@ -2,11 +2,18 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from './Button';
 import { useTranslate } from 'ra-core';
+import classnames from 'classnames';
 
 function skipToContent() {
     const element = document.getElementById('main-content');
 
     if (!element) {
+        if (process.env.NODE_ENV !== 'production') {
+            console.warn(
+                'No element with id "main-content" was found. Ensure the element that contains your main content has an id of "main-content".'
+            );
+        }
+
         return;
     }
 
@@ -50,7 +57,10 @@ function SkipNavigationButton() {
     return (
         <Button
             onClick={skipToContent}
-            className={classes.skipToContentButton}
+            className={classnames(
+                classes.skipToContentButton,
+                'skip-nav-button'
+            )}
             label={translate('ra.navigation.skip_nav')}
             variant="contained"
         />
