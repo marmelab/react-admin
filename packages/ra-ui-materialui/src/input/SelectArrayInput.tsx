@@ -167,7 +167,10 @@ const SelectArrayInput: FunctionComponent<SelectArrayInputProps> = props => {
     const inputLabel = useRef(null);
     const [labelWidth, setLabelWidth] = useState(0);
     useEffect(() => {
-        setLabelWidth(inputLabel.current.offsetWidth);
+        // Will be null while loading and we don't need this fix in that case
+        if (inputLabel.current) {
+            setLabelWidth(inputLabel.current.offsetWidth);
+        }
     }, []);
 
     const { getChoiceText, getChoiceValue } = useChoices({

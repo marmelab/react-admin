@@ -639,4 +639,65 @@ describe('<AutocompleteInput />', () => {
             expect(queryByDisplayValue('foo')).not.toBeNull();
         });
     });
+
+    // TODO: restore once master has been merged back to next
+    it.skip('should not render a LinearProgress if loading is true and a second has not passed yet', () => {
+        const { queryByRole } = render(
+            <Form
+                validateOnBlur
+                onSubmit={jest.fn()}
+                render={() => (
+                    <AutocompleteInput
+                        {...{
+                            ...defaultProps,
+                            loaded: true,
+                            loading: true,
+                        }}
+                    />
+                )}
+            />
+        );
+
+        expect(queryByRole('progressbar')).toBeNull();
+    });
+
+    it('should render a LinearProgress if loading is true and a second has passed', async () => {
+        const { queryByRole } = render(
+            <Form
+                validateOnBlur
+                onSubmit={jest.fn()}
+                render={() => (
+                    <AutocompleteInput
+                        {...{
+                            ...defaultProps,
+                            loaded: true,
+                            loading: true,
+                        }}
+                    />
+                )}
+            />
+        );
+
+        await new Promise(resolve => setTimeout(resolve, 1001));
+
+        expect(queryByRole('progressbar')).not.toBeNull();
+    });
+
+    it('should not render a LinearProgress if loading is false', () => {
+        const { queryByRole } = render(
+            <Form
+                validateOnBlur
+                onSubmit={jest.fn()}
+                render={() => (
+                    <AutocompleteInput
+                        {...{
+                            ...defaultProps,
+                        }}
+                    />
+                )}
+            />
+        );
+
+        expect(queryByRole('progressbar')).toBeNull();
+    });
 });
