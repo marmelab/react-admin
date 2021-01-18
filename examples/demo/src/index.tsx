@@ -15,10 +15,10 @@ import App from './App';
  * use the import() function, so they are asynchronous.
  */
 const prepareDataProvider = async () => {
-    const dataProvider = await dataProviderFactory(
+    const restoreFetch = await fakeServerFactory(
         process.env.REACT_APP_DATA_PROVIDER || ''
     );
-    const restoreFetch = await fakeServerFactory(
+    const dataProvider = await dataProviderFactory(
         process.env.REACT_APP_DATA_PROVIDER || ''
     );
     return { dataProvider, restoreFetch };
