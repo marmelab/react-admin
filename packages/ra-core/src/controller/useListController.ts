@@ -1,7 +1,6 @@
 import { isValidElement, ReactElement, useEffect, useMemo } from 'react';
 import inflection from 'inflection';
 import { Location } from 'history';
-import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import get from 'lodash/get';
 

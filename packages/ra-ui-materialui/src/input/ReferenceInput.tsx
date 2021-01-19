@@ -17,8 +17,6 @@ import {
 } from 'ra-core';
 
 import sanitizeInputRestProps from './sanitizeInputRestProps';
-import LinearProgress from '../layout/LinearProgress';
-import Labeled from './Labeled';
 import ReferenceError from './ReferenceError';
 
 /**

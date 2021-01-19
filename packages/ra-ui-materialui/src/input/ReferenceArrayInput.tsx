@@ -14,8 +14,6 @@ import {
 } from 'ra-core';
 
 import sanitizeInputRestProps from './sanitizeInputRestProps';
-import LinearProgress from '../layout/LinearProgress';
-import Labeled from './Labeled';
 import ReferenceError from './ReferenceError';
 import { FieldInputProps, FieldMetaState } from 'react-final-form';
 

@@ -8,10 +8,10 @@ import {
     SideEffectContextProvider,
 } from 'ra-core';
 
-import TabbedForm, { findTabsWithErrors } from './TabbedForm';
+import TabbedForm from './TabbedForm';
 import FormTab from './FormTab';
 import TextInput from '../input/TextInput';
-import { fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent } from '@testing-library/react';
 
 describe('<TabbedForm />', () => {
     const saveContextValue = {
@@ -76,7 +76,7 @@ describe('<TabbedForm />', () => {
     });
 
     it('should set the style of an inactive Tab button with errors', async () => {
-        const { getAllByRole, getByLabelText, debug } = renderWithRedux(
+        const { getAllByRole, getByLabelText } = renderWithRedux(
             <MemoryRouter initialEntries={['/posts/12']} initialIndex={0}>
                 <TabbedForm
                     classes={{ errorTabButton: 'error' }}

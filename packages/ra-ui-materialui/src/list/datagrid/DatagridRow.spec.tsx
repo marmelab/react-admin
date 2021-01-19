@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent } from '@testing-library/react';
 import { renderWithRedux, linkToRecord } from 'ra-core';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
