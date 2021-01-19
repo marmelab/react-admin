@@ -44,7 +44,7 @@ let nbRemainingOptimisticCalls = 0;
  * @example Basic usage
  *
  * import * as React from 'react';
-import { useState } from 'react';
+ * import { useState } from 'react';
  * import { useDataProvider } from 'react-admin';
  *
  * const PostList = () => {
@@ -143,6 +143,7 @@ const useDataProvider = (): DataProviderProxy => {
                         undoable = false,
                         onSuccess = undefined,
                         onFailure = undefined,
+                        mode = 'regular',
                         ...rest
                     } = options || {};
 
@@ -161,7 +162,7 @@ const useDataProvider = (): DataProviderProxy => {
                             'The onFailure option must be a function'
                         );
                     }
-                    if (undoable && !onSuccess) {
+                    if ((undoable || mode === 'undoable') && !onSuccess) {
                         throw new Error(
                             'You must pass an onSuccess callback calling notify() to use the undoable mode'
                         );
@@ -180,13 +181,18 @@ const useDataProvider = (): DataProviderProxy => {
                         store,
                         type,
                         allArguments,
+                        mode,
                         undoable,
                     };
                     if (isOptimistic) {
                         // in optimistic mode, all fetch calls are stacked, to be
                         // executed once the dataProvider leaves optimistic mode.
                         // In the meantime, the admin uses data from the store.
-                        if (undoable) {
+                        if (
+                            undoable ||
+                            mode === 'undoable' ||
+                            mode === 'optimistic'
+                        ) {
                             undoableOptimisticCalls.push(params);
                         } else {
                             optimisticCalls.push(params);
@@ -232,6 +238,7 @@ const doQuery = ({
     dispatch,
     store,
     undoable,
+    mode,
     logoutIfAccessDenied,
     allArguments,
 }) => {
@@ -247,34 +254,154 @@ const doQuery = ({
             resourceState,
             dispatch,
         });
+    } else if (mode === 'optimistic') {
+        return performOptimisticQuery({
+            type,
+            payload,
+            resource,
+            action,
+            rest,
+            onSuccess,
+            onFailure,
+            dataProvider,
+            dispatch,
+            logoutIfAccessDenied,
+            allArguments,
+        });
+    } else if (mode === 'undoable' || undoable) {
+        return performUndoableQuery({
+            type,
+            payload,
+            resource,
+            action,
+            rest,
+            onSuccess,
+            onFailure,
+            dataProvider,
+            dispatch,
+            logoutIfAccessDenied,
+            allArguments,
+        });
+    } else {
+        return performQuery({
+            type,
+            payload,
+            resource,
+            action,
+            rest,
+            onSuccess,
+            onFailure,
+            dataProvider,
+            dispatch,
+            logoutIfAccessDenied,
+            allArguments,
+        });
     }
-    return undoable
-        ? performUndoableQuery({
-              type,
-              payload,
-              resource,
-              action,
-              rest,
-              onSuccess,
-              onFailure,
-              dataProvider,
-              dispatch,
-              logoutIfAccessDenied,
-              allArguments,
-          })
-        : performQuery({
-              type,
-              payload,
-              resource,
-              action,
-              rest,
-              onSuccess,
-              onFailure,
-              dataProvider,
-              dispatch,
-              logoutIfAccessDenied,
-              allArguments,
-          });
+};
+
+/**
+ * In optimistic mode, the hook dispatches an optimistic action and executes
+ * the success side effects right away. Then it immediately calls the dataProvider.
+ *
+ * We call that "optimistic" because the hook returns a resolved Promise
+ * immediately (although it has an empty value). That only works if the
+ * caller reads the result from the Redux store, not from the Promise.
+ */
+const performOptimisticQuery = ({
+    type,
+    payload,
+    resource,
+    action,
+    rest,
+    onSuccess,
+    onFailure,
+    dataProvider,
+    dispatch,
+    logoutIfAccessDenied,
+    allArguments,
+}: QueryFunctionParams): Promise<{}> => {
+    dispatch(startOptimisticMode());
+    dispatch({
+        type: action,
+        payload,
+        meta: { resource, ...rest },
+    });
+    dispatch({
+        type: `${action}_OPTIMISTIC`,
+        payload,
+        meta: {
+            resource,
+            fetch: getFetchType(type),
+            optimistic: true,
+        },
+    });
+    onSuccess && onSuccess({});
+    setTimeout(() => {
+        dispatch(stopOptimisticMode());
+        dispatch({
+            type: `${action}_LOADING`,
+            payload,
+            meta: { resource, ...rest },
+        });
+        dispatch({ type: FETCH_START });
+        try {
+            dataProvider[type]
+                .apply(
+                    dataProvider,
+                    typeof resource !== 'undefined'
+                        ? [resource, payload]
+                        : allArguments
+                )
+                .then(response => {
+                    if (process.env.NODE_ENV !== 'production') {
+                        validateResponseFormat(response, type);
+                    }
+                    dispatch({
+                        type: `${action}_SUCCESS`,
+                        payload: response,
+                        requestPayload: payload,
+                        meta: {
+                            ...rest,
+                            resource,
+                            fetchResponse: getFetchType(type),
+                            fetchStatus: FETCH_END,
+                        },
+                    });
+                    dispatch({ type: FETCH_END });
+                    replayOptimisticCalls();
+                })
+                .catch(error => {
+                    if (process.env.NODE_ENV !== 'production') {
+                        console.error(error);
+                    }
+                    return logoutIfAccessDenied(error).then(loggedOut => {
+                        if (loggedOut) return;
+                        dispatch({
+                            type: `${action}_FAILURE`,
+                            error: error.message ? error.message : error,
+                            payload: error.body ? error.body : null,
+                            requestPayload: payload,
+                            meta: {
+                                ...rest,
+                                resource,
+                                fetchResponse: getFetchType(type),
+                                fetchStatus: FETCH_ERROR,
+                            },
+                        });
+                        dispatch({ type: FETCH_ERROR, error });
+                        onFailure && onFailure(error);
+                    });
+                });
+        } catch (e) {
+            if (process.env.NODE_ENV !== 'production') {
+                console.error(e);
+            }
+            throw new Error(
+                'The dataProvider threw an error. It should return a rejected Promise instead.'
+            );
+        }
+    });
+    return Promise.resolve({});
 };
 
 /**

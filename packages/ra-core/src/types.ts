@@ -288,7 +288,9 @@ export interface UseDataProviderOptions {
     action?: string;
     fetch?: string;
     meta?: object;
+    // @deprecated use mode: 'undoable' instead
     undoable?: boolean;
+    mode?: 'regular' | 'optimistic' | 'undoable';
     onSuccess?: any;
     onFailure?: any;
 }

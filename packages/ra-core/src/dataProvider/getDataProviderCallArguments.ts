@@ -8,6 +8,7 @@ const OptionsProperties = [
     'onFailure',
     'onSuccess',
     'undoable',
+    'mode',
 ];
 
 const isDataProviderOptions = (value: any) => {
@@ -20,7 +21,14 @@ const isDataProviderOptions = (value: any) => {
 // As all dataProvider methods do not have the same signature, we must differentiate
 // standard methods which have the (resource, params, options) signature
 // from the custom ones
-export const getDataProviderCallArguments = (args: any[]) => {
+export const getDataProviderCallArguments = (
+    args: any[]
+): {
+    resource: string;
+    payload: any;
+    options: UseDataProviderOptions;
+    allArguments: any[];
+} => {
     const lastArg = args[args.length - 1];
     let allArguments = [...args];
 
