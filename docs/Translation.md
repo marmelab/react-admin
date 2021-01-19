@@ -180,6 +180,7 @@ You can find translation packages for the following languages:
 - German (`de`): [greenbananaCH/ra-language-german](https://github.com/greenbananaCH/ra-language-german) (tree translation: [straurob/ra-tree-language-german](https://github.com/straurob/ra-tree-language-german))
 - Hebrew (`he`): [ak-il/ra-language-hebrew](https://github.com/ak-il/ra-language-hebrew)
 - Hungarian (`hu`): [phelion/ra-language-hungarian](https://github.com/phelion/ra-language-hungarian)
+- Hindi (`hi`): [harshit-budhraja/ra-language-hindi](https://github.com/harshit-budhraja/ra-language-hindi)
 - Indonesian (`id`): [ronadi/ra-language-indonesian](https://github.com/ronadi/ra-language-indonesian)
 - Italian (`it`): [stefsava/ra-italian](https://github.com/stefsava/ra-italian)
 - Japanese (`ja`): [bicstone/ra-language-japanese](https://github.com/bicstone/ra-language-japanese)
