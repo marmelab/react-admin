@@ -1,12 +1,21 @@
 import * as React from 'react';
-import { useGetList, useAuthenticated, Title } from 'react-admin';
+import {
+    useGetList,
+    useAuthenticated,
+    Datagrid,
+    TextField,
+    Title,
+} from 'react-admin';
+
+const currentSort = { field: 'published_at', order: 'DESC' };
 
 const CustomRouteLayout = () => {
     useAuthenticated();
+
     const { ids, data, total, loaded } = useGetList(
         'posts',
         { page: 1, perPage: 10 },
-        { field: 'published_at', order: 'DESC' }
+        currentSort
     );
 
     return loaded ? (
@@ -16,11 +25,28 @@ const CustomRouteLayout = () => {
             <p>
                 Found <span className="total">{total}</span> posts !
             </p>
-            <ul>
-                {ids.map(id => (
-                    <li key={id}>{data[id].title}</li>
-                ))}
-            </ul>
+            <Datagrid
+                basePath=""
+                currentSort={currentSort}
+                data={data}
+                ids={ids}
+                selectedIds={[]}
+                loaded={loaded}
+                total={total}
+                // Optional parameters below
+                setSort={() => {
+                    console.log('set sort');
+                }}
+                onSelect={() => {
+                    console.log('on select');
+                }}
+                onToggleItem={() => {
+                    console.log('on toggle item');
+                }}
+            >
+                <TextField source="id" sortable={false} />
+                <TextField source="title" sortable={false} />
+            </Datagrid>
         </div>
     ) : null;
 };
