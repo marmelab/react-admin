@@ -65,7 +65,7 @@ const extractCreateContextProps = ({
     saving,
     successMessage,
     version,
-}): CreateControllerProps<RecordType> => ({
+}) => ({
     basePath,
     record,
     defaultTitle,

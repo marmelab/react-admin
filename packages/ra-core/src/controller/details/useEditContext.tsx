@@ -62,7 +62,7 @@ const extractEditContextProps = ({
     saving,
     successMessage,
     version,
-}): CreateControllerProps<RecordType> => ({
+}) => ({
     basePath,
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d

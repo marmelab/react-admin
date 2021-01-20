@@ -139,7 +139,7 @@ const extractListContextProps = ({
     setSort,
     showFilter,
     total,
-}): ListControllerProps<RecordType> => ({
+}) => ({
     basePath,
     currentSort,
     data,

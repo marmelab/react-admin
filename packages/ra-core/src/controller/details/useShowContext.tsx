@@ -51,7 +51,7 @@ const extractShowContextProps = ({
     loading,
     resource,
     version,
-}): ShowControllerProps<RecordType> => ({
+}) => ({
     basePath,
     record,
     defaultTitle,
