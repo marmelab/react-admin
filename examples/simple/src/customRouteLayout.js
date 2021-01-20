@@ -33,16 +33,6 @@ const CustomRouteLayout = () => {
                 selectedIds={[]}
                 loaded={loaded}
                 total={total}
-                // Optional parameters below
-                setSort={() => {
-                    console.log('set sort');
-                }}
-                onSelect={() => {
-                    console.log('on select');
-                }}
-                onToggleItem={() => {
-                    console.log('on toggle item');
-                }}
             >
                 <TextField source="id" sortable={false} />
                 <TextField source="title" sortable={false} />
