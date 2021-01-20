@@ -710,7 +710,7 @@ export const PostCreate = (props) => (
 );
 ```
 
-**Tip**: `Create` and `Edit` inject more props to their child. So `SimpleForm` also expects these props to be set (but you shouldn't set them yourself):
+**Tip**: `Create` and `Edit` inject more props to their child. So `SimpleForm` also expects these props to be set (you should set them yourself only in particular cases like the [submission validation](#submission-validation)):
 
 * `save`: The function invoked when the form is submitted.
 * `saving`: A boolean indicating whether a save operation is ongoing.
@@ -1328,6 +1328,47 @@ export const UserCreate = (props) => (
 ```
 
 **Important**: Note that asynchronous validators are not supported on the `<ArrayInput>` component due to a limitation of [react-final-form-arrays](https://github.com/final-form/react-final-form-arrays).
+
+## Submission Validation
+
+The form can be validated by the server after its submission. In order to display the validation errors, a custom `save` function needs to be used:
+
+{% raw %}
+```jsx
+import { useMutation } from 'react-admin';
+
+export const UserCreate = (props) => {
+    const [mutate] = useMutation();
+    const save = useCallback(
+        async (values) => {
+            try {
+                await mutate({
+                    type: 'create',
+                    resource: 'users',
+                    payload: { data: values },
+                }, { returnPromise: true });
+            } catch (error) {
+                if (error.body.errors) {
+                    return error.body.errors;
+                }
+            }
+        },
+        [mutate],
+    );
+
+    return (
+        <Create undoable={false} {...props}>
+            <SimpleForm save={save}>
+                <TextInput label="First Name" source="firstName" />
+                <TextInput label="Age" source="age" />
+            </SimpleForm>
+        </Create>
+    );
+};
+```
+{% endraw %}
+
+**Tip**: The shape of the returned validation errors must correspond to the form: a key needs to match a `source` prop.
 
 ## Submit On Enter
 

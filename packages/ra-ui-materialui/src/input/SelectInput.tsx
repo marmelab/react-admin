@@ -198,7 +198,7 @@ const SelectInput: FunctionComponent<
         ...rest,
     });
 
-    const { touched, error } = meta;
+    const { touched, error, submitError } = meta;
 
     const renderEmptyItemOption = useCallback(() => {
         return React.isValidElement(emptyText)
@@ -247,11 +247,11 @@ const SelectInput: FunctionComponent<
             }
             className={`${classes.input} ${className}`}
             clearAlwaysVisible
-            error={!!(touched && error)}
+            error={!!(touched && (error || submitError))}
             helperText={
                 <InputHelperText
                     touched={touched}
-                    error={error}
+                    error={error || submitError}
                     helperText={helperText}
                 />
             }

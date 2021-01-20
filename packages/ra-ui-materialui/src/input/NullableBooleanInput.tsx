@@ -65,7 +65,7 @@ const NullableBooleanInput: FunctionComponent<NullableBooleanInputProps> = props
         id,
         input,
         isRequired,
-        meta: { error, touched },
+        meta: { error, submitError, touched },
     } = useInput({
         format,
         onBlur,
@@ -91,11 +91,11 @@ const NullableBooleanInput: FunctionComponent<NullableBooleanInputProps> = props
                     isRequired={isRequired}
                 />
             }
-            error={!!(touched && error)}
+            error={!!(touched && (error || submitError))}
             helperText={
                 <InputHelperText
                     touched={touched}
-                    error={error}
+                    error={error || submitError}
                     helperText={helperText}
                 />
             }
