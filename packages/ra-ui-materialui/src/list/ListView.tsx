@@ -250,6 +250,7 @@ const sanitizeRestProps: (
     showFilter = null,
     syncWithLocation = null,
     sort = null,
+    syncWithLocation = null,
     total = null,
     ...rest
 }) => rest;
