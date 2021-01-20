@@ -1,8 +1,27 @@
 import { useContext } from 'react';
+import merge from 'lodash/merge';
+
 import { Record } from '../../types';
 import { CreateContext } from './CreateContext';
 import { CreateControllerProps } from './useCreateController';
 
+/**
+ * Hook to read the create controller props from the CreateContext.
+ *
+ * Mostly used within a <CreateContext.Provider> (e.g. as a descendent of <Create>).
+ *
+ * But you can also use it without a <CreateContext.Provider>. In this case, it is up to you
+ * to pass all the necessary props.
+ *
+ * The given props will take precedence over context values.
+ *
+ * @typedef {Object} CreateControllerProps
+ *
+ * @returns {CreateControllerProps} create controller props
+ *
+ * @see useCreateController for how it is filled
+ *
+ */
 export const useCreateContext = <
     RecordType extends Omit<Record, 'id'> = Omit<Record, 'id'>
 >(
@@ -14,21 +33,54 @@ export const useCreateContext = <
         CreateContext
     );
 
-    if (!context.resource) {
-        /**
-         * The element isn't inside a <CreateContext.Provider>
-         * To avoid breakage in that case, fallback to props
-         *
-         * @deprecated - to be removed in 4.0
-         */
-        if (process.env.NODE_ENV !== 'production') {
-            console.log(
-                "Create components must be used inside a <CreateContext.Provider>. Relying on props rather than context to get Create data and callbacks is deprecated and won't be supported in the next major version of react-admin."
-            );
-        }
-
-        return props;
-    }
-
-    return context;
+    // Props take precedence over the context
+    // @ts-ignore
+    return props != null
+        ? merge({}, context, extractCreateContextProps(props))
+        : context;
 };
+
+/**
+ * Extract only the create controller props
+ *
+ * @param {Object} props props passed to the useCreateContext hook
+ *
+ * @returns {CreateControllerProps} create controller props
+ */
+const extractCreateContextProps = ({
+    basePath,
+    record,
+    defaultTitle,
+    onFailureRef,
+    onSuccessRef,
+    transformRef,
+    loaded,
+    loading,
+    redirect,
+    setOnFailure,
+    setOnSuccess,
+    setTransform,
+    resource,
+    save,
+    saving,
+    successMessage,
+    version,
+}): CreateControllerProps<RecordType> => ({
+    basePath,
+    record,
+    defaultTitle,
+    onFailureRef,
+    onSuccessRef,
+    transformRef,
+    loaded,
+    loading,
+    redirect,
+    setOnFailure,
+    setOnSuccess,
+    setTransform,
+    resource,
+    save,
+    saving,
+    successMessage,
+    version,
+});
