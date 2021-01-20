@@ -177,10 +177,10 @@ describe('useQueryWithStore', () => {
                 },
             }
         );
-        await new Promise(resolve => setImmediate(resolve)); // dataProvider Promise returns result on next tick
+        await new Promise(resolve => setTimeout(resolve, 100)); // dataProvider Promise returns result on next tick
         expect(dataProvider.getOne).toBeCalledTimes(1);
         dispatch({ type: 'RA/REFRESH_VIEW' });
-        await new Promise(resolve => setImmediate(resolve)); // dataProvider Promise returns result on next tick
+        await new Promise(resolve => setTimeout(resolve, 100)); // dataProvider Promise returns result on next tick
         expect(dataProvider.getOne).toBeCalledTimes(2);
     });
 
