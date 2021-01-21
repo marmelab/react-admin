@@ -153,21 +153,24 @@ const FormWithRedirect: FC<FormWithRedirectProps> = ({
 export type FormWithRedirectProps = FormWithRedirectOwnProps &
     Omit<FormProps, 'onSubmit' | 'active'>;
 
+export type FormWithRedirectRender = (
+    props: Omit<FormViewProps, 'render' | 'setRedirect'>
+) => React.ReactElement<any, any>;
+
+export type FormWithRedirectSave = (
+    data: Partial<Record>,
+    redirectTo: RedirectionSideEffect,
+    options?: {
+        onSuccess?: (data?: any) => void;
+        onFailure?: (error: any) => void;
+    }
+) => void;
 export interface FormWithRedirectOwnProps {
     defaultValue?: any;
     record?: Record;
     redirect?: RedirectionSideEffect;
-    render: (
-        props: Omit<FormViewProps, 'render' | 'setRedirect'>
-    ) => React.ReactElement<any, any>;
-    save?: (
-        data: Partial<Record>,
-        redirectTo: RedirectionSideEffect,
-        options?: {
-            onSuccess?: (data?: any) => void;
-            onFailure?: (error: any) => void;
-        }
-    ) => void;
+    render: FormWithRedirectRender;
+    save?: FormWithRedirectSave;
     sanitizeEmptyValues?: boolean;
     saving?: boolean;
     version?: number;
