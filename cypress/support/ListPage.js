@@ -31,6 +31,7 @@ export default url => ({
         title: '#react-admin-title',
         headroomUnfixed: '.headroom--unfixed',
         headroomUnpinned: '.headroom--unpinned',
+        skipNavButton: '.skip-nav-button',
     },
 
     navigate() {
