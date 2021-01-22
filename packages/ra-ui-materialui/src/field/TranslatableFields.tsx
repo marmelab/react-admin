@@ -3,7 +3,6 @@ import { ReactElement, ReactNode } from 'react';
 import {
     TranslatableContextProvider,
     useTranslatable,
-    TranslatableContextValue,
     UseTranslatableOptions,
     Record,
 } from 'ra-core';
@@ -86,19 +85,17 @@ export const TranslatableFields = (
         <div className={classes.root}>
             <TranslatableContextProvider value={context}>
                 {selector}
-                {typeof children === 'function'
-                    ? children(context)
-                    : languages.map(language => (
-                          <TranslatableFieldsTabContent
-                              key={language}
-                              basePath={basePath}
-                              locale={language}
-                              record={record}
-                              resource={resource}
-                          >
-                              {children}
-                          </TranslatableFieldsTabContent>
-                      ))}
+                {languages.map(language => (
+                    <TranslatableFieldsTabContent
+                        key={language}
+                        basePath={basePath}
+                        locale={language}
+                        record={record}
+                        resource={resource}
+                    >
+                        {children}
+                    </TranslatableFieldsTabContent>
+                ))}
             </TranslatableContextProvider>
         </div>
     );
@@ -106,16 +103,12 @@ export const TranslatableFields = (
 
 export interface TranslatableFieldsProps extends UseTranslatableOptions {
     basePath: string;
-    children: ReactNode | TranslatableFieldRenderFunction;
+    children: ReactNode;
     classes?: ClassesOverride<typeof useStyles>;
     record: Record;
     resource: string;
     selector?: ReactElement;
 }
-
-export type TranslatableFieldRenderFunction = (
-    context: TranslatableContextValue
-) => ReactNode;
 
 const useStyles = makeStyles(theme => ({
     root: {

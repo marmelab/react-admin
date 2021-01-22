@@ -3,7 +3,6 @@ import { ReactElement, ReactNode } from 'react';
 import {
     TranslatableContextProvider,
     useTranslatable,
-    TranslatableContextValue,
     UseTranslatableOptions,
 } from 'ra-core';
 import { TranslatableInputsTabs } from './TranslatableInputsTabs';
@@ -78,27 +77,21 @@ export const TranslatableInputs = (props: TranslatableProps): ReactElement => {
     return (
         <TranslatableContextProvider value={context}>
             {selector}
-            {typeof children === 'function'
-                ? children(context)
-                : languages.map(language => (
-                      <TranslatableInputsTabContent
-                          key={language}
-                          locale={language}
-                          formGroupKeyPrefix={formGroupKeyPrefix}
-                      >
-                          {children}
-                      </TranslatableInputsTabContent>
-                  ))}
+            {languages.map(language => (
+                <TranslatableInputsTabContent
+                    key={language}
+                    locale={language}
+                    formGroupKeyPrefix={formGroupKeyPrefix}
+                >
+                    {children}
+                </TranslatableInputsTabContent>
+            ))}
         </TranslatableContextProvider>
     );
 };
 
 export interface TranslatableProps extends UseTranslatableOptions {
     selector?: ReactElement;
-    children: ReactNode | TranslatableInputRenderFunction;
+    children: ReactNode;
     formGroupKeyPrefix?: string;
 }
-
-export type TranslatableInputRenderFunction = (
-    context: TranslatableContextValue
-) => ReactNode;
