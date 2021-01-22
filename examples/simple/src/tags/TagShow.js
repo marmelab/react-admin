@@ -10,7 +10,7 @@ const TagShow = props => (
     <Show {...props}>
         <SimpleShowLayout>
             <TextField source="id" />
-            <TranslatableFields languages={['en', 'fr']}>
+            <TranslatableFields locales={['en', 'fr']}>
                 <TextField source="name" />
             </TranslatableFields>
         </SimpleShowLayout>

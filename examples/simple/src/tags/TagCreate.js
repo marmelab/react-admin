@@ -13,7 +13,7 @@ const TagCreate = props => (
     <Create {...props}>
         <SimpleForm redirect="list">
             <TextField source="id" />
-            <TranslatableInputs languages={['en', 'fr']}>
+            <TranslatableInputs locales={['en', 'fr']}>
                 <TextInput source="name" validate={[required()]} />
             </TranslatableInputs>
         </SimpleForm>
