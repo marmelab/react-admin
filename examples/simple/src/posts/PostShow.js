@@ -70,10 +70,10 @@ const PostShow = props => {
                         <ReferenceArrayField
                             reference="tags"
                             source="tags"
-                            sort={{ field: 'name', order: 'ASC' }}
+                            sort={{ field: 'name.en', order: 'ASC' }}
                         >
                             <SingleFieldList>
-                                <ChipField source="name" />
+                                <ChipField source="name.en" />
                             </SingleFieldList>
                         </ReferenceArrayField>
                         <DateField source="published_at" />

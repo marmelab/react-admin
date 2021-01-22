@@ -6,13 +6,16 @@ import {
     TextField,
     TextInput,
     required,
+    TranslatableInputs,
 } from 'react-admin';
 
 const TagCreate = props => (
     <Create {...props}>
         <SimpleForm redirect="list">
             <TextField source="id" />
-            <TextInput source="name" validate={[required()]} />
+            <TranslatableInputs languages={['en', 'fr']}>
+                <TextInput source="name" validate={[required()]} />
+            </TranslatableInputs>
         </SimpleForm>
     </Create>
 );

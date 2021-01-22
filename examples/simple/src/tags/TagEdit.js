@@ -10,6 +10,7 @@ import {
     Datagrid,
     ResourceContextProvider,
     EditButton,
+    TranslatableInputs,
 } from 'react-admin';
 
 const TagEdit = props => (
@@ -17,7 +18,9 @@ const TagEdit = props => (
         <Edit {...props}>
             <SimpleForm redirect="list">
                 <TextField source="id" />
-                <TextInput source="name" validate={[required()]} />
+                <TranslatableInputs languages={['en', 'fr']}>
+                    <TextInput source="name" validate={[required()]} />
+                </TranslatableInputs>
             </SimpleForm>
         </Edit>
         <ResourceContextProvider resource="posts">
