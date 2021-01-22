@@ -67,7 +67,7 @@ export const TranslatableInputs = (props: TranslatableProps): ReactElement => {
     const {
         defaultLanguage = 'en',
         languages,
-        formGroupKeyPrefix,
+        formGroupKeyPrefix = '',
         selector = (
             <TranslatableInputsTabs formGroupKeyPrefix={formGroupKeyPrefix} />
         ),
