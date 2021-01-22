@@ -31,7 +31,7 @@ export const useTranslatable = (
         () => ({
             getSource: (source: string, locale: string = selectedLanguage) =>
                 `${source}.${locale}`,
-            getInputLabel: (source: string) => {
+            getLabel: (source: string) => {
                 return translate(
                     ...getFieldLabelTranslationArgs({
                         source,

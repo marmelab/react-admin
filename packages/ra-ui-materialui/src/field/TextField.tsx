@@ -9,7 +9,6 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 const TextField: FC<TextFieldProps> = memo<TextFieldProps>(
     ({ className, source, record = {}, emptyText, ...rest }) => {
         const value = get(record, source);
-        console.log({ record, source });
 
         return (
             <Typography

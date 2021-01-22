@@ -18,11 +18,7 @@ export const TranslatableInputsTabContent = (
     props: TranslatableInputsTabContentProps
 ): ReactElement => {
     const { children, formGroupKeyPrefix = '', locale, ...other } = props;
-    const {
-        selectedLanguage,
-        getInputLabel,
-        getSource,
-    } = useTranslatableContext();
+    const { selectedLanguage, getLabel, getSource } = useTranslatableContext();
     const classes = useStyles(props);
 
     return (
@@ -30,8 +26,8 @@ export const TranslatableInputsTabContent = (
             <div
                 role="tabpanel"
                 hidden={selectedLanguage !== locale}
-                id={`translatable-${locale}`}
-                aria-labelledby={`translatable-${locale}`}
+                id={`translatable-content-${formGroupKeyPrefix}${locale}`}
+                aria-labelledby={`translatable-header-${formGroupKeyPrefix}${locale}`}
                 className={classes.root}
                 {...other}
             >
@@ -39,8 +35,8 @@ export const TranslatableInputsTabContent = (
                     isValidElement(child)
                         ? cloneElement(child, {
                               ...child.props,
-                              label: getInputLabel(child.props.source),
-                              source: getSource(child.props.source),
+                              label: getLabel(child.props.source),
+                              source: getSource(child.props.source, locale),
                           })
                         : null
                 )}

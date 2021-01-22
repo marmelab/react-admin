@@ -19,19 +19,15 @@ export const TranslatableFieldsTabContent = (
     props: TranslatableFieldsTabContentProps
 ): ReactElement => {
     const { basePath, children, locale, record, resource, ...other } = props;
-    const {
-        selectedLanguage,
-        getInputLabel,
-        getSource,
-    } = useTranslatableContext();
+    const { selectedLanguage, getLabel, getSource } = useTranslatableContext();
     const classes = useStyles(props);
 
     return (
         <div
             role="tabpanel"
             hidden={selectedLanguage !== locale}
-            id={`translatable-${locale}`}
-            aria-labelledby={`translatable-${locale}`}
+            id={`translatable-content-${locale}`}
+            aria-labelledby={`translatable-header-${locale}`}
             className={classes.root}
             {...other}
         >
@@ -47,8 +43,8 @@ export const TranslatableFieldsTabContent = (
                     >
                         {cloneElement(field, {
                             ...field.props,
-                            label: getInputLabel(field.props.source),
-                            source: getSource(field.props.source),
+                            label: getLabel(field.props.source),
+                            source: getSource(field.props.source, locale),
                         })}
                     </Labeled>
                 ) : typeof field === 'string' ? (
@@ -57,8 +53,8 @@ export const TranslatableFieldsTabContent = (
                     isValidElement(field) &&
                     cloneElement(field, {
                         ...field.props,
-                        label: getInputLabel(field.props.source),
-                        source: getSource(field.props.source),
+                        label: getLabel(field.props.source),
+                        source: getSource(field.props.source, locale),
                     })
                 )
             )}

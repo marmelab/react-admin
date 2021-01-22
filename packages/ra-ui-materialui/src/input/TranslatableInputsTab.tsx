@@ -19,6 +19,7 @@ export const TranslatebleInputsTab = (
 
     return (
         <Tab
+            id={`translatable-header-${formGroupKeyPrefix}${locale}`}
             label={translate(`ra.languages.${locale}`, {
                 _: capitalize(locale),
             })}
