@@ -15,7 +15,7 @@ import { ClassesOverride } from '../types';
  * @see TranslatableInputs
  */
 export const TranslatableInputsTabContent = (
-    props: LanguageTabProps
+    props: TranslatableInputsTabContentProps
 ): ReactElement => {
     const { children, formGroupKeyPrefix = '', locale, ...other } = props;
     const {
@@ -49,7 +49,7 @@ export const TranslatableInputsTabContent = (
     );
 };
 
-export type LanguageTabProps = {
+export type TranslatableInputsTabContentProps = {
     children: ReactNode;
     classes?: ClassesOverride<typeof useStyles>;
     formGroupKeyPrefix?: string;

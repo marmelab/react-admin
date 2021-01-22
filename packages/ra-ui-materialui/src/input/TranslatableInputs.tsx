@@ -95,10 +95,10 @@ export const TranslatableInputs = (props: TranslatableProps): ReactElement => {
 
 export interface TranslatableProps extends UseTranslatableOptions {
     selector?: ReactElement;
-    children: ReactNode | TranslatableRenderFunction;
+    children: ReactNode | TranslatableInputRenderFunction;
     formGroupKeyPrefix?: string;
 }
 
-export type TranslatableRenderFunction = (
+export type TranslatableInputRenderFunction = (
     context: TranslatableContextValue
 ) => ReactNode;

@@ -16,7 +16,7 @@ import { Labeled } from '../input';
  * @see TranslatableFields
  */
 export const TranslatableFieldsTabContent = (
-    props: LanguageTabProps
+    props: TranslatableFieldsTabContentProps
 ): ReactElement => {
     const { basePath, children, locale, record, resource, ...other } = props;
     const {
@@ -66,10 +66,10 @@ export const TranslatableFieldsTabContent = (
     );
 };
 
-export type LanguageTabProps = {
+export type TranslatableFieldsTabContentProps = {
     basePath: string;
     children: ReactNode;
-    classes: ClassesOverride<typeof useStyles>;
+    classes?: ClassesOverride<typeof useStyles>;
     formGroupKeyPrefix?: string;
     locale: string;
     record: Record;

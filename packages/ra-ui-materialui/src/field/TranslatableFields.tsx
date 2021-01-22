@@ -106,14 +106,14 @@ export const TranslatableFields = (
 
 export interface TranslatableFieldsProps extends UseTranslatableOptions {
     basePath: string;
-    children: ReactNode | TranslatableRenderFunction;
+    children: ReactNode | TranslatableFieldRenderFunction;
     classes?: ClassesOverride<typeof useStyles>;
     record: Record;
     resource: string;
     selector?: ReactElement;
 }
 
-export type TranslatableRenderFunction = (
+export type TranslatableFieldRenderFunction = (
     context: TranslatableContextValue
 ) => ReactNode;
 

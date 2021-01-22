@@ -12,7 +12,7 @@ import { AppBarProps } from '../layout';
  */
 export const TranslatableFieldsTabs = ({
     TabsProps: tabsProps,
-}: LanguagesTabsProps & AppBarProps): ReactElement => {
+}: TranslatableFieldsTabsProps & AppBarProps): ReactElement => {
     const {
         languages,
         selectLanguage,
@@ -42,6 +42,6 @@ export const TranslatableFieldsTabs = ({
     );
 };
 
-export interface LanguagesTabsProps {
+export interface TranslatableFieldsTabsProps {
     TabsProps?: TabsProps;
 }
