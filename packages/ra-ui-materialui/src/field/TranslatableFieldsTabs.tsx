@@ -7,30 +7,22 @@ import { TranslatableFieldsTab } from './TranslatableFieldsTab';
 import { AppBarProps } from '../layout';
 
 /**
- * Default language selector for the TranslatableFields component. Generates a tab for each specified language.
+ * Default locale selector for the TranslatableFields component. Generates a tab for each specified locale.
  * @see TranslatableFields
  */
 export const TranslatableFieldsTabs = ({
     TabsProps: tabsProps,
 }: TranslatableFieldsTabsProps & AppBarProps): ReactElement => {
-    const {
-        languages,
-        selectLanguage,
-        selectedLanguage,
-    } = useTranslatableContext();
+    const { locales, selectLocale, selectedLocale } = useTranslatableContext();
 
-    const handleChange = (event, newLanguage): void => {
-        selectLanguage(newLanguage);
+    const handleChange = (event, newLocale): void => {
+        selectLocale(newLocale);
     };
 
     return (
         <AppBar position="static">
-            <Tabs
-                value={selectedLanguage}
-                onChange={handleChange}
-                {...tabsProps}
-            >
-                {languages.map(locale => (
+            <Tabs value={selectedLocale} onChange={handleChange} {...tabsProps}>
+                {locales.map(locale => (
                     <TranslatableFieldsTab
                         key={locale}
                         value={locale}

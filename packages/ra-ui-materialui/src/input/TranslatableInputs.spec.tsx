@@ -24,7 +24,7 @@ const record = {
 };
 
 describe('<TranslatableInputs />', () => {
-    it('should display every inputs for every languages', () => {
+    it('should display every inputs for every locales', () => {
         const save = jest.fn();
         const {
             queryByDisplayValue,
@@ -35,7 +35,7 @@ describe('<TranslatableInputs />', () => {
                 record={record}
                 save={save}
                 render={() => (
-                    <TranslatableInputs languages={['en', 'fr']}>
+                    <TranslatableInputs locales={['en', 'fr']}>
                         <TextInput source="name" />
                         <TextInput source="description" />
                         <TextInput source="nested.field" />
@@ -45,10 +45,10 @@ describe('<TranslatableInputs />', () => {
         );
 
         expect(
-            getByLabelText('ra.languages.en').getAttribute('hidden')
+            getByLabelText('ra.locales.en').getAttribute('hidden')
         ).toBeNull();
         expect(
-            getByLabelText('ra.languages.fr').getAttribute('hidden')
+            getByLabelText('ra.locales.fr').getAttribute('hidden')
         ).toBeDefined();
 
         expect(queryByDisplayValue('english name')).not.toBeNull();
@@ -59,16 +59,16 @@ describe('<TranslatableInputs />', () => {
         expect(queryByDisplayValue('french description')).not.toBeNull();
         expect(queryByDisplayValue('french nested field')).not.toBeNull();
 
-        fireEvent.click(getByText('ra.languages.fr'));
+        fireEvent.click(getByText('ra.locales.fr'));
         expect(
-            getByLabelText('ra.languages.en').getAttribute('hidden')
+            getByLabelText('ra.locales.en').getAttribute('hidden')
         ).toBeDefined();
         expect(
-            getByLabelText('ra.languages.fr').getAttribute('hidden')
+            getByLabelText('ra.locales.fr').getAttribute('hidden')
         ).toBeNull();
     });
 
-    it('should allow to update any input for any language', () => {
+    it('should allow to update any input for any locale', () => {
         const save = jest.fn();
         const { queryByDisplayValue, getByText } = renderWithRedux(
             <FormWithRedirect
@@ -76,7 +76,7 @@ describe('<TranslatableInputs />', () => {
                 save={save}
                 render={({ handleSubmit }) => (
                     <form onSubmit={handleSubmit}>
-                        <TranslatableInputs languages={['en', 'fr']}>
+                        <TranslatableInputs locales={['en', 'fr']}>
                             <TextInput source="name" />
                             <TextInput source="description" />
                             <TextInput source="nested.field" />
@@ -90,7 +90,7 @@ describe('<TranslatableInputs />', () => {
         fireEvent.change(queryByDisplayValue('english name'), {
             target: { value: 'english name updated' },
         });
-        fireEvent.click(getByText('ra.languages.fr'));
+        fireEvent.click(getByText('ra.locales.fr'));
         fireEvent.change(queryByDisplayValue('french nested field'), {
             target: { value: 'french nested field updated' },
         });

@@ -7,14 +7,11 @@ export const TranslatableContext = createContext<TranslatableContextValue>(
 export interface TranslatableContextValue {
     getLabel: GetTranslatableLabel;
     getSource: GetTranslatableSource;
-    languages: string[];
-    selectedLanguage: string;
-    selectLanguage: SelectTranslatableLanguage;
+    locales: string[];
+    selectedLocale: string;
+    selectLocale: SelectTranslatableLocale;
 }
 
-export type GetTranslatableSource = (
-    field: string,
-    language?: string
-) => string;
+export type GetTranslatableSource = (field: string, locale?: string) => string;
 export type GetTranslatableLabel = (field: string) => string;
-export type SelectTranslatableLanguage = (language: string) => void;
+export type SelectTranslatableLocale = (locale: string) => void;

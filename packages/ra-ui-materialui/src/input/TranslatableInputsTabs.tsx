@@ -7,31 +7,23 @@ import { TranslatebleInputsTab } from './TranslatableInputsTab';
 import { AppBarProps } from '../layout';
 
 /**
- * Default language selector for the TranslatableInputs component. Generates a tab for each specified language.
+ * Default locale selector for the TranslatableInputs component. Generates a tab for each specified locale.
  * @see TranslatableInputs
  */
 export const TranslatableInputsTabs = ({
     formGroupKeyPrefix,
     TabsProps: tabsProps,
 }: TranslatableInputsTabsProps & AppBarProps): ReactElement => {
-    const {
-        languages,
-        selectLanguage,
-        selectedLanguage,
-    } = useTranslatableContext();
+    const { locales, selectLocale, selectedLocale } = useTranslatableContext();
 
-    const handleChange = (event, newLanguage): void => {
-        selectLanguage(newLanguage);
+    const handleChange = (event, newLocale): void => {
+        selectLocale(newLocale);
     };
 
     return (
         <AppBar position="static">
-            <Tabs
-                value={selectedLanguage}
-                onChange={handleChange}
-                {...tabsProps}
-            >
-                {languages.map(locale => (
+            <Tabs value={selectedLocale} onChange={handleChange} {...tabsProps}>
+                {locales.map(locale => (
                     <TranslatebleInputsTab
                         key={locale}
                         value={locale}

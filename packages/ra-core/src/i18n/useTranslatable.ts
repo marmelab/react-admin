@@ -8,28 +8,28 @@ import useTranslate from './useTranslate';
  * Hook supplying the logic to translate a field value in multiple languages.
  *
  * @param options The hook options
- * @param {string} options.defaultLanguage The locale of the default selected language. Defaults to 'en'.
- * @param {Language[]} options.languages An array of the supported languages. Each is an object with a locale and a name property. For example { locale: 'en', name: 'English' }.
+ * @param {string} options.defaultLocale The locale of the default selected locale. Defaults to 'en'.
+ * @param {strong[]} options.locales An array of the supported locales. Each is an object with a locale and a name property. For example { locale: 'en', name: 'English' }.
  *
  * @returns
  * An object with following properties and methods:
- * - selectedLanguage: The locale of the currently selected language
- * - languages: An array of the supported languages
+ * - selectedLocale: The locale of the currently selected locale
+ * - locales: An array of the supported locales
  * - getLabelInput: A function which returns the translated label for the given field
  * - getSource: A function which returns the source for the given field
- * - selectLanguage: A function which set the selected language
+ * - selectLocale: A function which set the selected locale
  */
 export const useTranslatable = (
     options: UseTranslatableOptions
 ): TranslatableContextValue => {
-    const { defaultLanguage = 'en', languages } = options;
-    const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
+    const { defaultLocale = 'en', locales } = options;
+    const [selectedLocale, setSelectedLocale] = useState(defaultLocale);
     const resource = useResourceContext({});
     const translate = useTranslate();
 
     const context = useMemo<TranslatableContextValue>(
         () => ({
-            getSource: (source: string, locale: string = selectedLanguage) =>
+            getSource: (source: string, locale: string = selectedLocale) =>
                 `${source}.${locale}`,
             getLabel: (source: string) => {
                 return translate(
@@ -40,17 +40,17 @@ export const useTranslatable = (
                     })
                 );
             },
-            languages,
-            selectedLanguage,
-            selectLanguage: setSelectedLanguage,
+            locales,
+            selectedLocale,
+            selectLocale: setSelectedLocale,
         }),
-        [languages, resource, selectedLanguage, translate]
+        [locales, resource, selectedLocale, translate]
     );
 
     return context;
 };
 
 export type UseTranslatableOptions = {
-    defaultLanguage?: string;
-    languages: string[];
+    defaultLocale?: string;
+    locales: string[];
 };

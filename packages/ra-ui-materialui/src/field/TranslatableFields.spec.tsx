@@ -24,13 +24,13 @@ const record = {
 };
 
 describe('<TranslatableFields />', () => {
-    it('should render every fields for every languages', () => {
+    it('should render every fields for every locales', () => {
         const { queryByText, getByLabelText, getByText } = render(
             <TranslatableFields
                 record={record}
                 resource="products"
                 basePath="/products"
-                languages={['en', 'fr']}
+                locales={['en', 'fr']}
             >
                 <TextField source="name" />
                 <TextField source="description" />
@@ -39,10 +39,10 @@ describe('<TranslatableFields />', () => {
         );
 
         expect(
-            getByLabelText('ra.languages.en').getAttribute('hidden')
+            getByLabelText('ra.locales.en').getAttribute('hidden')
         ).toBeNull();
         expect(
-            getByLabelText('ra.languages.fr').getAttribute('hidden')
+            getByLabelText('ra.locales.fr').getAttribute('hidden')
         ).toBeDefined();
 
         expect(queryByText('english name')).not.toBeNull();
@@ -53,35 +53,35 @@ describe('<TranslatableFields />', () => {
         expect(queryByText('french description')).not.toBeNull();
         expect(queryByText('french nested field')).not.toBeNull();
 
-        fireEvent.click(getByText('ra.languages.fr'));
+        fireEvent.click(getByText('ra.locales.fr'));
         expect(
-            getByLabelText('ra.languages.en').getAttribute('hidden')
+            getByLabelText('ra.locales.en').getAttribute('hidden')
         ).toBeDefined();
         expect(
-            getByLabelText('ra.languages.fr').getAttribute('hidden')
+            getByLabelText('ra.locales.fr').getAttribute('hidden')
         ).toBeNull();
     });
 
-    it('should allow to customize the language selector', () => {
+    it('should allow to customize the locale selector', () => {
         const Selector = () => {
             const {
-                languages,
-                selectLanguage,
-                selectedLanguage,
+                locales,
+                selectLocale,
+                selectedLocale,
             } = useTranslatableContext();
 
             const handleChange = (event): void => {
                 console.log(event.target.value);
-                selectLanguage(event.target.value);
+                selectLocale(event.target.value);
             };
 
             return (
                 <select
-                    aria-label="select language"
+                    aria-label="select locale"
                     onChange={handleChange}
-                    value={selectedLanguage}
+                    value={selectedLocale}
                 >
-                    {languages.map(locale => (
+                    {locales.map(locale => (
                         <option
                             key={locale}
                             value={locale}
@@ -99,7 +99,7 @@ describe('<TranslatableFields />', () => {
                 record={record}
                 resource="products"
                 basePath="/products"
-                languages={['en', 'fr']}
+                locales={['en', 'fr']}
                 selector={<Selector />}
             >
                 <TextField source="name" />
@@ -119,7 +119,7 @@ describe('<TranslatableFields />', () => {
         expect(queryByText('french description')).not.toBeNull();
         expect(queryByText('french nested field')).not.toBeNull();
 
-        fireEvent.change(getByLabelText('select language'), {
+        fireEvent.change(getByLabelText('select locale'), {
             target: { value: 'fr' },
         });
         expect(getByLabelText('en').getAttribute('hidden')).toBeDefined();

@@ -15,46 +15,32 @@ import { ClassesOverride } from '../types';
  * Provides a way to show multiple languages for any fields passed as children.
  *
  * @example <caption>Basic usage</caption>
- * <TranslatableFields
- *     languages={[
- *         { locale: 'en', name: 'English' }
- *         { locale: 'fr', name: 'Français' }
- *     ]}
- * >
- *     {({ getSource }) => (
- *         <>
- *             <TextField source={getSource('title')} />
- *             <TextField source={getSource('description')} />
- *         </>
- *     )}
+ * <TranslatableFields locales={['en', 'fr']}>
+ *     <TextField source={getSource('title')} />
+ *     <TextField source={getSource('description')} />
  * </TranslatableFields>
  *
  * @example <caption>With a custom language selector</caption>
  * <TranslatableFields
  *     selector={<MyLanguageSelector />}
- *     languages={[
- *         { locale: 'en', name: 'English' }
- *         { locale: 'fr', name: 'Français' }
- *     ]}
+ *     locales={['en', 'fr']}
  * >
- *     {({ getSource }) => (
- *         <TextField source={getSource('title')} />
- *     )}
+ *     <TextField source={getSource('title')} />
  * <TranslatableFields>
 >
  *
  * const MyLanguageSelector = () => {
  *     const {
- *         languages,
- *         selectedLanguage,
- *         selectLanguage,
- *     } = useTranslatable(availableLanguages, validate);
+ *         locales,
+ *         selectedLocale,
+ *         selectLocale,
+ *     } = useTranslatableContext();
  *
  *     return (
- *         <select onChange={selectLanguage}>
- *             {languages.map((language) => (
- *                 <option selected={language.locale === selectedLanguage}>
- *                     {language.name}
+ *         <select onChange={selectLocale}>
+ *             {locales.map((locale) => (
+ *                 <option selected={locale.locale === selectedLocale}>
+ *                     {locale.name}
  *                 </option>
  *             ))}
  *        </select>
@@ -62,34 +48,34 @@ import { ClassesOverride } from '../types';
  * }
  *
  * * @param props The component props
- * * @param {string} props.defaultLanguage The language selected by default (accept the language locale). Default to 'en'.
- * * @param {Language[]} props.languages An array of the possible languages in the form: `[{ locale: 'en', language: 'English' }].
- * * @param {ReactElement} props.selector The element responsible for selecting a language. Defaults to Material UI tabs.
+ * * @param {string} props.defaultLocale The locale selected by default. Default to 'en'.
+ * * @param {string[]} props.locales An array of the possible locales in the form. For example [{ 'en', 'fr' }].
+ * * @param {ReactElement} props.selector The element responsible for selecting a locale. Defaults to Material UI tabs.
  */
 export const TranslatableFields = (
     props: TranslatableFieldsProps
 ): ReactElement => {
     const {
-        defaultLanguage = 'en',
-        languages,
+        defaultLocale = 'en',
+        locales,
         selector = <TranslatableFieldsTabs />,
         children,
         record,
         resource,
         basePath,
     } = props;
-    const context = useTranslatable({ defaultLanguage, languages });
+    const context = useTranslatable({ defaultLocale, locales });
     const classes = useStyles(props);
 
     return (
         <div className={classes.root}>
             <TranslatableContextProvider value={context}>
                 {selector}
-                {languages.map(language => (
+                {locales.map(locale => (
                     <TranslatableFieldsTabContent
-                        key={language}
+                        key={locale}
                         basePath={basePath}
-                        locale={language}
+                        locale={locale}
                         record={record}
                         resource={resource}
                     >

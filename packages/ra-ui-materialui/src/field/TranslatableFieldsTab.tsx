@@ -4,7 +4,7 @@ import { useTranslate } from 'ra-core';
 import { capitalize } from 'inflection';
 
 /**
- * Single tab which select a language TranslatableFields component.
+ * Single tab which select a locale in a TranslatableFields component.
  * @see TranslatableFields
  */
 export const TranslatableFieldsTab = (
@@ -16,7 +16,7 @@ export const TranslatableFieldsTab = (
     return (
         <Tab
             id={`translatable-header-${locale}`}
-            label={translate(`ra.languages.${locale}`, {
+            label={translate(`ra.locales.${locale}`, {
                 _: capitalize(locale),
             })}
             {...rest}

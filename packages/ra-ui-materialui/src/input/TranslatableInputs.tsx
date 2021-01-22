@@ -12,45 +12,31 @@ import { TranslatableInputsTabContent } from './TranslatableInputsTabContent';
  * Provides a way to edit multiple languages for any inputs passed as children.
  *
  * @example <caption>Basic usage</caption>
- * <Translatable
- *     languages={[
- *         { locale: 'en', name: 'English' }
- *         { locale: 'fr', name: 'Français' }
- *     ]}
- * >
- *     {({ getSource }) => (
- *         <>
- *             <TextInput source={getSource('title')} />
- *             <RichTextInput source={getSource('description')} />
- *         </>
- *     )}
+ * <TranslatableInputs locales={['en', 'fr']}>
+ *     <TextInput source="title" />
+ *     <RichTextInput source="description" />
  * </Translatable>
  *
  * @example <caption>With a custom language selector</caption>
- * <Translatable
+ * <TranslatableInputs
  *     selector={<MyLanguageSelector />}
- *     languages={[
- *         { locale: 'en', name: 'English' }
- *         { locale: 'fr', name: 'Français' }
- *     ]}
+ *     locales={['en', 'fr']}
  * >
- *     {({ getSource }) => (
- *         <TextInput source={getSource('title')} />
- *     )}
+ *     <TextInput source="title" />
  * </Translatable>
  *
  * const MyLanguageSelector = () => {
  *     const {
- *         languages,
- *         selectedLanguage,
- *         selectLanguage,
- *     } = useTranslatable(availableLanguages, validate);
+ *         locales,
+ *         selectedLocale,
+ *         selectLocale,
+ *     } = useTranslatableContext();
  *
  *     return (
- *         <select onChange={selectLanguage}>
- *             {languages.map((language) => (
- *                 <option selected={language.locale === selectedLanguage}>
- *                     {language.name}
+ *         <select onChange={event => selectLocale(event.target.value)}>
+ *             {locales.map((locale) => (
+ *                 <option selected={locale === selectedLocale}>
+ *                     {locale}
  *                 </option>
  *             ))}
  *        </select>
@@ -58,29 +44,29 @@ import { TranslatableInputsTabContent } from './TranslatableInputsTabContent';
  * }
  *
  * * @param props The component props
- * * @param {string} props.defaultLanguage The language selected by default (accept the language locale). Default to 'en'.
- * * @param {Language[]} props.languages An array of the possible languages in the form: `[{ locale: 'en', language: 'English' }].
- * * @param {ReactElement} props.selector The element responsible for selecting a language. Defaults to Material UI tabs.
+ * * @param {string} props.defaultLocale The locale selected by default. Default to 'en'.
+ * * @param {string[]} props.locales An array of the possible locales. For example: `['en', 'fr'].
+ * * @param {ReactElement} props.selector The element responsible for selecting a locale. Defaults to Material UI tabs.
  */
 export const TranslatableInputs = (props: TranslatableProps): ReactElement => {
     const {
-        defaultLanguage = 'en',
-        languages,
+        defaultLocale = 'en',
+        locales,
         formGroupKeyPrefix = '',
         selector = (
             <TranslatableInputsTabs formGroupKeyPrefix={formGroupKeyPrefix} />
         ),
         children,
     } = props;
-    const context = useTranslatable({ defaultLanguage, languages });
+    const context = useTranslatable({ defaultLocale, locales });
 
     return (
         <TranslatableContextProvider value={context}>
             {selector}
-            {languages.map(language => (
+            {locales.map(locale => (
                 <TranslatableInputsTabContent
-                    key={language}
-                    locale={language}
+                    key={locale}
+                    locale={locale}
                     formGroupKeyPrefix={formGroupKeyPrefix}
                 >
                     {children}

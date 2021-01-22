@@ -19,13 +19,13 @@ export const TranslatableFieldsTabContent = (
     props: TranslatableFieldsTabContentProps
 ): ReactElement => {
     const { basePath, children, locale, record, resource, ...other } = props;
-    const { selectedLanguage, getLabel, getSource } = useTranslatableContext();
+    const { selectedLocale, getLabel, getSource } = useTranslatableContext();
     const classes = useStyles(props);
 
     return (
         <div
             role="tabpanel"
-            hidden={selectedLanguage !== locale}
+            hidden={selectedLocale !== locale}
             id={`translatable-content-${locale}`}
             aria-labelledby={`translatable-header-${locale}`}
             className={classes.root}

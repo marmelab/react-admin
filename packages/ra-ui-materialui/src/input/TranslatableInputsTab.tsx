@@ -6,7 +6,7 @@ import { ClassesOverride } from '../types';
 import { capitalize } from 'inflection';
 
 /**
- * Single tab which select a language TranslatableInputs component.
+ * Single tab which select a locale in a TranslatableInputs component.
  * @see TranslatableInputs
  */
 export const TranslatebleInputsTab = (
@@ -20,7 +20,7 @@ export const TranslatebleInputsTab = (
     return (
         <Tab
             id={`translatable-header-${formGroupKeyPrefix}${locale}`}
-            label={translate(`ra.languages.${locale}`, {
+            label={translate(`ra.locales.${locale}`, {
                 _: capitalize(locale),
             })}
             className={invalid ? classes.error : undefined}

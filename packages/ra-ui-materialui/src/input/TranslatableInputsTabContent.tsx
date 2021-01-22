@@ -18,14 +18,14 @@ export const TranslatableInputsTabContent = (
     props: TranslatableInputsTabContentProps
 ): ReactElement => {
     const { children, formGroupKeyPrefix = '', locale, ...other } = props;
-    const { selectedLanguage, getLabel, getSource } = useTranslatableContext();
+    const { selectedLocale, getLabel, getSource } = useTranslatableContext();
     const classes = useStyles(props);
 
     return (
         <FormGroupContextProvider name={`${formGroupKeyPrefix}${locale}`}>
             <div
                 role="tabpanel"
-                hidden={selectedLanguage !== locale}
+                hidden={selectedLocale !== locale}
                 id={`translatable-content-${formGroupKeyPrefix}${locale}`}
                 aria-labelledby={`translatable-header-${formGroupKeyPrefix}${locale}`}
                 className={classes.root}
