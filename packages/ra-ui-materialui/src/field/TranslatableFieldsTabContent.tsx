@@ -18,7 +18,15 @@ import { Labeled } from '../input';
 export const TranslatableFieldsTabContent = (
     props: TranslatableFieldsTabContentProps
 ): ReactElement => {
-    const { basePath, children, locale, record, resource, ...other } = props;
+    const {
+        basePath,
+        children,
+        groupPrefix = '',
+        locale,
+        record,
+        resource,
+        ...other
+    } = props;
     const { selectedLocale, getLabel, getSource } = useTranslatableContext();
     const classes = useStyles(props);
 
@@ -26,37 +34,43 @@ export const TranslatableFieldsTabContent = (
         <div
             role="tabpanel"
             hidden={selectedLocale !== locale}
-            id={`translatable-content-${locale}`}
-            aria-labelledby={`translatable-header-${locale}`}
+            id={`translatable-content-${groupPrefix}${locale}`}
+            aria-labelledby={`translatable-header-${groupPrefix}${locale}`}
             className={classes.root}
             {...other}
         >
             {Children.map(children, field =>
-                isValidElement(field) && field.props.addLabel ? (
-                    <Labeled
-                        record={record}
-                        resource={resource}
-                        basePath={basePath}
-                        label={field.props.label}
-                        source={field.props.source}
-                        disabled={false}
-                    >
-                        {cloneElement(field, {
-                            ...field.props,
-                            label: getLabel(field.props.source),
-                            source: getSource(field.props.source, locale),
-                        })}
-                    </Labeled>
-                ) : typeof field === 'string' ? (
-                    field
-                ) : (
-                    isValidElement(field) &&
-                    cloneElement(field, {
-                        ...field.props,
-                        label: getLabel(field.props.source),
-                        source: getSource(field.props.source, locale),
-                    })
-                )
+                field && isValidElement<any>(field) ? (
+                    <div key={field.props.source}>
+                        {field.props.addLabel ? (
+                            <Labeled
+                                record={record}
+                                resource={resource}
+                                basePath={basePath}
+                                label={field.props.label}
+                                source={field.props.source}
+                                disabled={false}
+                            >
+                                {cloneElement(field, {
+                                    ...field.props,
+                                    label: getLabel(field.props.source),
+                                    source: getSource(
+                                        field.props.source,
+                                        locale
+                                    ),
+                                })}
+                            </Labeled>
+                        ) : typeof field === 'string' ? (
+                            field
+                        ) : (
+                            cloneElement(field, {
+                                ...field.props,
+                                label: getLabel(field.props.source),
+                                source: getSource(field.props.source, locale),
+                            })
+                        )}
+                    </div>
+                ) : null
             )}
         </div>
     );
@@ -67,6 +81,7 @@ export type TranslatableFieldsTabContentProps = {
     children: ReactNode;
     classes?: ClassesOverride<typeof useStyles>;
     formGroupKeyPrefix?: string;
+    groupPrefix: string;
     locale: string;
     record: Record;
     resource: string;

@@ -12,7 +12,7 @@ import { capitalize } from 'inflection';
 export const TranslatebleInputsTab = (
     props: TranslatebleInputsTabProps & TabProps
 ) => {
-    const { formGroupKeyPrefix, locale, ...rest } = props;
+    const { formGroupKeyPrefix = '', locale, ...rest } = props;
     const { invalid } = useFormGroup(`${formGroupKeyPrefix}${locale}`);
     const classes = useStyles(props);
     const translate = useTranslate();
