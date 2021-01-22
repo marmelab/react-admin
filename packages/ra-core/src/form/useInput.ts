@@ -97,7 +97,7 @@ const useInput = ({
             id: id || source,
             input: options.input,
             meta: options.meta,
-            isRequired: isRequired(validate),
+            isRequired: options.isRequired || isRequired(validate),
         };
     }
 
