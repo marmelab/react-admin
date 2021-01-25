@@ -26,7 +26,8 @@ import { EditView } from './EditView';
  * - component
  * - successMessage
  * - title
- * - undoable
+ * - mutationMode
+ * - undoable (deprecated)
  *
  * @example
  *
@@ -93,4 +94,5 @@ Edit.propTypes = {
     onFailure: PropTypes.func,
     transform: PropTypes.func,
     undoable: PropTypes.bool,
+    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
 };

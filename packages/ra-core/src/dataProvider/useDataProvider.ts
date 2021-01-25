@@ -37,7 +37,7 @@ let nbRemainingOptimisticCalls = 0;
  * In addition to the 2 usual parameters of the dataProvider methods (resource,
  * payload), the Proxy supports a third parameter for every call. It's an
  * object literal which may contain side effects, or make the action optimistic
- * (with undoable: true).
+ * (with mutationMode: optimistic) or undoable (with mutationMode: undoable).
  *
  * @return dataProvider
  *
@@ -143,7 +143,7 @@ const useDataProvider = (): DataProviderProxy => {
                         undoable = false,
                         onSuccess = undefined,
                         onFailure = undefined,
-                        mode = 'regular',
+                        mutationMode = 'pessimistic',
                         ...rest
                     } = options || {};
 
@@ -162,7 +162,10 @@ const useDataProvider = (): DataProviderProxy => {
                             'The onFailure option must be a function'
                         );
                     }
-                    if ((undoable || mode === 'undoable') && !onSuccess) {
+                    if (
+                        (undoable || mutationMode === 'undoable') &&
+                        !onSuccess
+                    ) {
                         throw new Error(
                             'You must pass an onSuccess callback calling notify() to use the undoable mode'
                         );
@@ -181,7 +184,7 @@ const useDataProvider = (): DataProviderProxy => {
                         store,
                         type,
                         allArguments,
-                        mode,
+                        mutationMode,
                         undoable,
                     };
                     if (isOptimistic) {
@@ -190,8 +193,8 @@ const useDataProvider = (): DataProviderProxy => {
                         // In the meantime, the admin uses data from the store.
                         if (
                             undoable ||
-                            mode === 'undoable' ||
-                            mode === 'optimistic'
+                            mutationMode === 'undoable' ||
+                            mutationMode === 'optimistic'
                         ) {
                             undoableOptimisticCalls.push(params);
                         } else {
@@ -238,7 +241,7 @@ const doQuery = ({
     dispatch,
     store,
     undoable,
-    mode,
+    mutationMode,
     logoutIfAccessDenied,
     allArguments,
 }) => {
@@ -254,7 +257,7 @@ const doQuery = ({
             resourceState,
             dispatch,
         });
-    } else if (mode === 'optimistic') {
+    } else if (mutationMode === 'optimistic') {
         return performOptimisticQuery({
             type,
             payload,
@@ -268,7 +271,7 @@ const doQuery = ({
             logoutIfAccessDenied,
             allArguments,
         });
-    } else if (mode === 'undoable' || undoable) {
+    } else if (mutationMode === 'undoable' || undoable) {
         return performUndoableQuery({
             type,
             payload,

@@ -25,6 +25,7 @@ export const EditView = (props: EditViewProps) => {
         component: Content,
         title,
         undoable,
+        mutationMode,
         ...rest
     } = props;
 
@@ -89,7 +90,7 @@ export const EditView = (props: EditViewProps) => {
                             resource,
                             save,
                             saving,
-                            undoable,
+                            undoable: undoable || mutationMode === 'undoable',
                             version,
                         })
                     ) : (
