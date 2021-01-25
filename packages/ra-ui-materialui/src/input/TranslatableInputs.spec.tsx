@@ -3,7 +3,11 @@ import expect from 'expect';
 import { fireEvent } from '@testing-library/react';
 import { TranslatableInputs } from './TranslatableInputs';
 import TextInput from './TextInput';
-import { FormWithRedirect, renderWithRedux } from 'ra-core';
+import {
+    FormWithRedirect,
+    renderWithRedux,
+    useTranslatableContext,
+} from 'ra-core';
 
 const record = {
     id: 123,
@@ -49,7 +53,7 @@ describe('<TranslatableInputs />', () => {
         ).toBeNull();
         expect(
             getByLabelText('ra.locales.fr').getAttribute('hidden')
-        ).toBeDefined();
+        ).not.toBeNull();
 
         expect(queryByDisplayValue('english name')).not.toBeNull();
         expect(queryByDisplayValue('english description')).not.toBeNull();
@@ -62,7 +66,7 @@ describe('<TranslatableInputs />', () => {
         fireEvent.click(getByText('ra.locales.fr'));
         expect(
             getByLabelText('ra.locales.en').getAttribute('hidden')
-        ).toBeDefined();
+        ).not.toBeNull();
         expect(
             getByLabelText('ra.locales.fr').getAttribute('hidden')
         ).toBeNull();
@@ -116,5 +120,73 @@ describe('<TranslatableInputs />', () => {
             },
             undefined
         );
+    });
+
+    it('should allow to customize the locale selector', () => {
+        const Selector = () => {
+            const {
+                locales,
+                selectLocale,
+                selectedLocale,
+            } = useTranslatableContext();
+
+            const handleChange = (event): void => {
+                selectLocale(event.target.value);
+            };
+
+            return (
+                <select
+                    aria-label="select locale"
+                    onChange={handleChange}
+                    value={selectedLocale}
+                >
+                    {locales.map(locale => (
+                        <option
+                            key={locale}
+                            value={locale}
+                            id={`translatable-header-${locale}`}
+                        >
+                            {locale}
+                        </option>
+                    ))}
+                </select>
+            );
+        };
+
+        const { getByLabelText, queryByDisplayValue } = renderWithRedux(
+            <FormWithRedirect
+                record={record}
+                render={({ handleSubmit }) => (
+                    <form onSubmit={handleSubmit}>
+                        <TranslatableInputs
+                            locales={['en', 'fr']}
+                            selector={<Selector />}
+                        >
+                            <TextInput source="name" />
+                            <TextInput source="description" />
+                            <TextInput source="nested.field" />
+                        </TranslatableInputs>
+                        <button type="submit">save</button>
+                    </form>
+                )}
+            />
+        );
+
+        expect(getByLabelText('en').getAttribute('hidden')).toBeNull();
+        expect(getByLabelText('fr').getAttribute('hidden')).not.toBeNull();
+
+        expect(queryByDisplayValue('english name')).not.toBeNull();
+        expect(queryByDisplayValue('english description')).not.toBeNull();
+        expect(queryByDisplayValue('english nested field')).not.toBeNull();
+
+        expect(queryByDisplayValue('french name')).not.toBeNull();
+        expect(queryByDisplayValue('french description')).not.toBeNull();
+        expect(queryByDisplayValue('french nested field')).not.toBeNull();
+
+        fireEvent.change(getByLabelText('select locale'), {
+            target: { value: 'fr' },
+        });
+        expect(getByLabelText('en').getAttribute('hidden')).not.toBeNull();
+        expect(getByLabelText('fr').getAttribute('hidden')).toBeNull();
     });
 });

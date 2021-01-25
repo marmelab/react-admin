@@ -43,7 +43,7 @@ describe('<TranslatableFields />', () => {
         ).toBeNull();
         expect(
             getByLabelText('ra.locales.fr').getAttribute('hidden')
-        ).toBeDefined();
+        ).not.toBeNull();
 
         expect(queryByText('english name')).not.toBeNull();
         expect(queryByText('english description')).not.toBeNull();
@@ -56,7 +56,7 @@ describe('<TranslatableFields />', () => {
         fireEvent.click(getByText('ra.locales.fr'));
         expect(
             getByLabelText('ra.locales.en').getAttribute('hidden')
-        ).toBeDefined();
+        ).not.toBeNull();
         expect(
             getByLabelText('ra.locales.fr').getAttribute('hidden')
         ).toBeNull();
@@ -71,7 +71,6 @@ describe('<TranslatableFields />', () => {
             } = useTranslatableContext();
 
             const handleChange = (event): void => {
-                console.log(event.target.value);
                 selectLocale(event.target.value);
             };
 
@@ -109,7 +108,7 @@ describe('<TranslatableFields />', () => {
         );
 
         expect(getByLabelText('en').getAttribute('hidden')).toBeNull();
-        expect(getByLabelText('fr').getAttribute('hidden')).toBeDefined();
+        expect(getByLabelText('fr').getAttribute('hidden')).not.toBeNull();
 
         expect(queryByText('english name')).not.toBeNull();
         expect(queryByText('english description')).not.toBeNull();
@@ -122,7 +121,7 @@ describe('<TranslatableFields />', () => {
         fireEvent.change(getByLabelText('select locale'), {
             target: { value: 'fr' },
         });
-        expect(getByLabelText('en').getAttribute('hidden')).toBeDefined();
+        expect(getByLabelText('en').getAttribute('hidden')).not.toBeNull();
         expect(getByLabelText('fr').getAttribute('hidden')).toBeNull();
     });
 });
