@@ -804,7 +804,7 @@ import * as React from 'react';
 import { createElement } from 'react';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@material-ui/core';
-import { MenuItemLink, getResources } from 'react-admin';
+import { DashboardMenuItem, MenuItemLink, getResources } from 'react-admin';
 import DefaultIcon from '@material-ui/icons/ViewList';
 import LabelIcon from '@material-ui/icons/Label';
 
@@ -814,6 +814,7 @@ const Menu = ({ onMenuClick, logout }) => {
     const resources = useSelector(getResources);
     return (
         <div>
+            <DashboardMenuItem onClick={onMenuClick} sidebarIsOpen={open} />
             {resources.map(resource => (
                 <MenuItemLink
                     key={resource.name}
