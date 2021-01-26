@@ -20,6 +20,7 @@ import {
     TextField,
     UrlField,
     useShowController,
+    useLocale,
 } from 'react-admin';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
@@ -39,6 +40,7 @@ const CreateRelatedComment = ({ record }) => (
 
 const PostShow = props => {
     const controllerProps = useShowController(props);
+    const locale = useLocale();
     return (
         <ShowContextProvider value={controllerProps}>
             <ShowView title={<PostTitle />}>
@@ -70,10 +72,10 @@ const PostShow = props => {
                         <ReferenceArrayField
                             reference="tags"
                             source="tags"
-                            sort={{ field: 'name.en', order: 'ASC' }}
+                            sort={{ field: `name.${locale}`, order: 'ASC' }}
                         >
                             <SingleFieldList>
-                                <ChipField source="name.en" />
+                                <ChipField source={`name.${locale}`} />
                             </SingleFieldList>
                         </ReferenceArrayField>
                         <DateField source="published_at" />
