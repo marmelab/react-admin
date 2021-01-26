@@ -6,8 +6,11 @@ import TextInput from './TextInput';
 import {
     FormWithRedirect,
     renderWithRedux,
+    required,
     useTranslatableContext,
 } from 'ra-core';
+import { TranslatableInputsTab } from './TranslatableInputsTab';
+import { Tabs } from '@material-ui/core';
 
 const record = {
     id: 123,
@@ -70,6 +73,82 @@ describe('<TranslatableInputs />', () => {
         expect(
             getByLabelText('ra.locales.fr').getAttribute('hidden')
         ).toBeNull();
+    });
+
+    it('should display validation errors and highlight the tab which has invalid inputs', () => {
+        const save = jest.fn();
+
+        const Selector = () => {
+            const {
+                locales,
+                selectLocale,
+                selectedLocale,
+            } = useTranslatableContext();
+
+            const handleChange = (event, newLocale): void => {
+                selectLocale(newLocale);
+            };
+
+            return (
+                <Tabs value={selectedLocale} onChange={handleChange}>
+                    {locales.map(locale => (
+                        <TranslatableInputsTab
+                            key={locale}
+                            value={locale}
+                            locale={locale}
+                            classes={{ error: 'error' }}
+                        />
+                    ))}
+                </Tabs>
+            );
+        };
+
+        const {
+            queryByText,
+            getByLabelText,
+            getAllByLabelText,
+            getByText,
+            getAllByRole,
+            debug,
+        } = renderWithRedux(
+            <FormWithRedirect
+                save={save}
+                render={() => (
+                    <TranslatableInputs
+                        locales={['en', 'fr']}
+                        selector={<Selector />}
+                    >
+                        <TextInput source="name" validate={required()} />
+                    </TranslatableInputs>
+                )}
+            />
+        );
+
+        expect(
+            getByLabelText('ra.locales.en').getAttribute('hidden')
+        ).toBeNull();
+        expect(
+            getByLabelText('ra.locales.fr').getAttribute('hidden')
+        ).not.toBeNull();
+
+        fireEvent.change(
+            getAllByLabelText('resources.undefined.fields.name *')[0],
+            {
+                target: { value: 'english value' },
+            }
+        );
+        fireEvent.click(getByText('ra.locales.fr'));
+        fireEvent.focus(
+            getAllByLabelText('resources.undefined.fields.name *')[1]
+        );
+        fireEvent.blur(
+            getAllByLabelText('resources.undefined.fields.name *')[1]
+        );
+        expect(queryByText('ra.validation.required')).not.toBeNull();
+        fireEvent.click(getByText('ra.locales.en'));
+        const tabs = getAllByRole('tab');
+        expect(tabs[1].getAttribute('id')).toEqual('translatable-header-fr');
+        expect(tabs[1].classList.contains('error')).toEqual(true);
     });
 
     it('should allow to update any input for any locale', () => {
