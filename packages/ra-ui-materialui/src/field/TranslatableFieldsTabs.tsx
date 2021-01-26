@@ -11,7 +11,7 @@ import { AppBarProps } from '../layout';
  * @see TranslatableFields
  */
 export const TranslatableFieldsTabs = ({
-    groupPrefix,
+    groupKey,
     TabsProps: tabsProps,
 }: TranslatableFieldsTabsProps & AppBarProps): ReactElement => {
     const { locales, selectLocale, selectedLocale } = useTranslatableContext();
@@ -28,7 +28,7 @@ export const TranslatableFieldsTabs = ({
                         key={locale}
                         value={locale}
                         locale={locale}
-                        groupPrefix={groupPrefix}
+                        groupKey={groupKey}
                     />
                 ))}
             </Tabs>
@@ -38,5 +38,5 @@ export const TranslatableFieldsTabs = ({
 
 export interface TranslatableFieldsTabsProps {
     TabsProps?: TabsProps;
-    groupPrefix?: string;
+    groupKey?: string;
 }

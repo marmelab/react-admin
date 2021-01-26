@@ -56,10 +56,10 @@ export const TranslatableFields = (
     props: TranslatableFieldsProps
 ): ReactElement => {
     const {
-        defaultLocale = 'en',
+        defaultLocale,
         locales,
-        groupPrefix = '',
-        selector = <TranslatableFieldsTabs groupPrefix={groupPrefix} />,
+        groupKey = '',
+        selector = <TranslatableFieldsTabs groupKey={groupKey} />,
         children,
         record,
         resource,
@@ -79,7 +79,7 @@ export const TranslatableFields = (
                         locale={locale}
                         record={record}
                         resource={resource}
-                        groupPrefix={groupPrefix}
+                        groupKey={groupKey}
                     >
                         {children}
                     </TranslatableFieldsTabContent>
@@ -96,7 +96,7 @@ export interface TranslatableFieldsProps extends UseTranslatableOptions {
     record: Record;
     resource: string;
     selector?: ReactElement;
-    groupPrefix?: string;
+    groupKey?: string;
 }
 
 const useStyles = makeStyles(theme => ({

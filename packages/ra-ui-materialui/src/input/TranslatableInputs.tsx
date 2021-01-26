@@ -50,12 +50,10 @@ import { TranslatableInputsTabContent } from './TranslatableInputsTabContent';
  */
 export const TranslatableInputs = (props: TranslatableProps): ReactElement => {
     const {
-        defaultLocale = 'en',
+        defaultLocale,
         locales,
-        formGroupKeyPrefix = '',
-        selector = (
-            <TranslatableInputsTabs formGroupKeyPrefix={formGroupKeyPrefix} />
-        ),
+        groupKey = '',
+        selector = <TranslatableInputsTabs groupKey={groupKey} />,
         children,
     } = props;
     const context = useTranslatable({ defaultLocale, locales });
@@ -67,7 +65,7 @@ export const TranslatableInputs = (props: TranslatableProps): ReactElement => {
                 <TranslatableInputsTabContent
                     key={locale}
                     locale={locale}
-                    formGroupKeyPrefix={formGroupKeyPrefix}
+                    groupKey={groupKey}
                 >
                     {children}
                 </TranslatableInputsTabContent>
@@ -79,5 +77,5 @@ export const TranslatableInputs = (props: TranslatableProps): ReactElement => {
 export interface TranslatableProps extends UseTranslatableOptions {
     selector?: ReactElement;
     children: ReactNode;
-    formGroupKeyPrefix?: string;
+    groupKey?: string;
 }

@@ -17,17 +17,17 @@ import { ClassesOverride } from '../types';
 export const TranslatableInputsTabContent = (
     props: TranslatableInputsTabContentProps
 ): ReactElement => {
-    const { children, formGroupKeyPrefix = '', locale, ...other } = props;
+    const { children, groupKey = '', locale, ...other } = props;
     const { selectedLocale, getLabel, getSource } = useTranslatableContext();
     const classes = useStyles(props);
 
     return (
-        <FormGroupContextProvider name={`${formGroupKeyPrefix}${locale}`}>
+        <FormGroupContextProvider name={`${groupKey}${locale}`}>
             <div
                 role="tabpanel"
                 hidden={selectedLocale !== locale}
-                id={`translatable-content-${formGroupKeyPrefix}${locale}`}
-                aria-labelledby={`translatable-header-${formGroupKeyPrefix}${locale}`}
+                id={`translatable-content-${groupKey}${locale}`}
+                aria-labelledby={`translatable-header-${groupKey}${locale}`}
                 className={classes.root}
                 {...other}
             >
@@ -48,7 +48,7 @@ export const TranslatableInputsTabContent = (
 export type TranslatableInputsTabContentProps = {
     children: ReactNode;
     classes?: ClassesOverride<typeof useStyles>;
-    formGroupKeyPrefix?: string;
+    groupKey?: string;
     locale: string;
 };
 

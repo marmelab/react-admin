@@ -21,7 +21,7 @@ export const TranslatableFieldsTabContent = (
     const {
         basePath,
         children,
-        groupPrefix = '',
+        groupKey = '',
         locale,
         record,
         resource,
@@ -34,8 +34,8 @@ export const TranslatableFieldsTabContent = (
         <div
             role="tabpanel"
             hidden={selectedLocale !== locale}
-            id={`translatable-content-${groupPrefix}${locale}`}
-            aria-labelledby={`translatable-header-${groupPrefix}${locale}`}
+            id={`translatable-content-${groupKey}${locale}`}
+            aria-labelledby={`translatable-header-${groupKey}${locale}`}
             className={classes.root}
             {...other}
         >
@@ -81,7 +81,7 @@ export type TranslatableFieldsTabContentProps = {
     children: ReactNode;
     classes?: ClassesOverride<typeof useStyles>;
     formGroupKeyPrefix?: string;
-    groupPrefix: string;
+    groupKey: string;
     locale: string;
     record: Record;
     resource: string;

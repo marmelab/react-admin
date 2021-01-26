@@ -11,7 +11,7 @@ import { AppBarProps } from '../layout';
  * @see TranslatableInputs
  */
 export const TranslatableInputsTabs = ({
-    formGroupKeyPrefix,
+    groupKey,
     TabsProps: tabsProps,
 }: TranslatableInputsTabsProps & AppBarProps): ReactElement => {
     const { locales, selectLocale, selectedLocale } = useTranslatableContext();
@@ -28,7 +28,7 @@ export const TranslatableInputsTabs = ({
                         key={locale}
                         value={locale}
                         locale={locale}
-                        formGroupKeyPrefix={formGroupKeyPrefix}
+                        groupKey={groupKey}
                     />
                 ))}
             </Tabs>
@@ -37,6 +37,6 @@ export const TranslatableInputsTabs = ({
 };
 
 export interface TranslatableInputsTabsProps {
-    formGroupKeyPrefix?: string;
+    groupKey?: string;
     TabsProps?: TabsProps;
 }

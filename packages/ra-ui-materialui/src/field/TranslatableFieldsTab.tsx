@@ -10,13 +10,13 @@ import { capitalize } from 'inflection';
 export const TranslatableFieldsTab = (
     props: TranslatableFieldsTabProps & TabProps
 ) => {
-    const { locale, groupPrefix = '', ...rest } = props;
+    const { locale, groupKey = '', ...rest } = props;
     const translate = useTranslate();
 
     return (
         <Tab
-            id={`translatable-header-${groupPrefix}${locale}`}
-            label={translate(`ra.locales.${groupPrefix}${locale}`, {
+            id={`translatable-header-${groupKey}${locale}`}
+            label={translate(`ra.locales.${groupKey}${locale}`, {
                 _: capitalize(locale),
             })}
             {...rest}
@@ -26,5 +26,5 @@ export const TranslatableFieldsTab = (
 
 interface TranslatableFieldsTabProps {
     locale: string;
-    groupPrefix?: string;
+    groupKey?: string;
 }

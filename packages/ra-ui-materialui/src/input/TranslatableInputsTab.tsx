@@ -12,14 +12,14 @@ import { capitalize } from 'inflection';
 export const TranslatebleInputsTab = (
     props: TranslatebleInputsTabProps & TabProps
 ) => {
-    const { formGroupKeyPrefix = '', locale, ...rest } = props;
-    const { invalid } = useFormGroup(`${formGroupKeyPrefix}${locale}`);
+    const { groupKey = '', locale, ...rest } = props;
+    const { invalid } = useFormGroup(`${groupKey}${locale}`);
     const classes = useStyles(props);
     const translate = useTranslate();
 
     return (
         <Tab
-            id={`translatable-header-${formGroupKeyPrefix}${locale}`}
+            id={`translatable-header-${groupKey}${locale}`}
             label={translate(`ra.locales.${locale}`, {
                 _: capitalize(locale),
             })}
@@ -35,6 +35,6 @@ const useStyles = makeStyles(theme => ({
 
 interface TranslatebleInputsTabProps {
     classes?: ClassesOverride<typeof useStyles>;
-    formGroupKeyPrefix?: string;
+    groupKey?: string;
     locale: string;
 }
