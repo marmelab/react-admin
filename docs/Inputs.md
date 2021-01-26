@@ -1673,6 +1673,97 @@ export default ArtistEdit;
 
 Check [the `ra-relationships` documentation](https://marmelab.com/ra-enterprise/modules/ra-relationships#referencemanytomanyinput) for more details.
 
+## Translatable Inputs
+
+You may have inputs which are translated in multiple languages and want users to edit translations for each language separately. To display them, you can use the `<TranslatableInputs>` components which expect the translatable fields to have the following structure:
+
+```js
+{
+    name: {
+        en: 'The english value',
+        fr: 'The french value',
+        tlh: 'The klingon value',
+    }
+}
+```
+
+This is how to use it:
+
+```jsx
+<TranslatableInputs locales={['en', 'fr']}>
+    <TextInput source="name">
+    <RichTextInput source="description">
+</TranslatableInputs>
+```
+
+You may override the locale selected by default using the `defaultLocale` prop which react-admin sets to the current UI locale when not provided.
+
+```jsx
+<TranslatableInputs locales={['en', 'fr']} defaultLocale="fr">
+    <TextInput source="name">
+    <RichTextInput source="description">
+</TranslatableInputs>
+```
+
+By default, `<TranslatableInputs>` will allow users to select the displayed locale using Material-ui tabs with the locale code as their labels.
+
+You may override the tabs labels using translation keys following this format: 'ra.locales.locale_code'. For example `ra.locales.en` or `ra.locales.fr`.
+
+You may override the language selector using the `selector` prop which accept a React element:
+
+```jsx
+const Selector = () => {
+    const {
+        locales,
+        selectLocale,
+        selectedLocale,
+    } = useTranslatableContext();
+
+    const handleChange = (event): void => {
+        selectLocale(event.target.value);
+    };
+
+    return (
+        <select
+            aria-label="Select the locale"
+            onChange={handleChange}
+            value={selectedLocale}
+        >
+            {locales.map(locale => (
+                <option
+                    key={locale}
+                    value={locale}
+                    // This allows to correctly links the containers for each locale to their labels
+                    id={`translatable-header-${locale}`}
+                >
+                    {locale}
+                </option>
+            ))}
+        </select>
+    );
+};
+
+<TranslatableInputs
+    record={record}
+    resource="products"
+    basePath="/products"
+    locales={['en', 'fr']}
+    selector={<Selector />}
+>
+    <TextInput source="name" />
+    <RichTextInput source="description" />
+</TranslatableInputs>
+```
+
+If you have multiple `TranslatableInputs` on the same page, you should specify a `groupKey` so that react-admin can create unique identifiers for accessibility.
+
+```jsx
+<TranslatableInputs locales={['en', 'fr']} groupKey="essential-fields">
+    <TextInput source="name">
+    <RichTextInput source="description">
+</TranslatableInputs>
+```
+
 ## Recipes 
 
 ### Transforming Input Value to/from Record
