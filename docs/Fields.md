@@ -1197,6 +1197,41 @@ If you have multiple `TranslatableFields` on the same page, you should specify a
 </TranslatableFields>
 ```
 
+### Using Translatable Fields In List or Show views
+
+The `TranslatableFields` component is not meant to be used inside a `List` as you probably don't want to have tabs inside multiple lines. The simple solution to display a translatable value would be to specify its source like this: `name.en`. However, you may want to display its translation for the current admin locale.
+
+In this case, you'll have to get the current locale through the `useLocale` hook and set the translatable field `source` dynamically.
+
+```jsx
+const PostList = (props) => {
+    const locale = useLocale();
+
+    return (
+        <List {...props}>
+            <Datagrid>
+                <TextField source={`name.${locale}`}>
+                <ReferenceArrayField
+                    label="Tags"
+                    reference="tags"
+                    source="tags"
+                    sortBy="tags.name"
+                    sort={{ field: `name.${locale}`, order: 'ASC' }}
+                >
+                    <SingleFieldList>
+                        <ChipField source={`name.${locale}`} size="small" />
+                    </SingleFieldList>
+                </ReferenceArrayField>
+            </Datagrid>
+        </List>
+    )
+}
+```
+
+Note that you can't have an [optimized](https://marmelab.com/react-admin/List.html#performance) Datagrid when doing so as changing the locale wouldn't trigger a render of its children.
+
+The same pattern applise to show views when you don't want to display all translations: get the locale from the `useLocale` hook and dynamically set the `source` prop of the translatable fields.
+
 ## Recipes
 
 ### Styling Fields
