@@ -13,6 +13,19 @@ import { ClassesOverride } from '../types';
 
 /**
  * Provides a way to show multiple languages for any field passed as children.
+ * It expects the translatable values to have the following structure:
+ * { 
+ *     name: {
+ *         en: 'The english value',
+ *         fr: 'The french value',
+ *         tlh: 'The klingon value',
+ *     },
+ *     description: {
+ *         en: 'The english value',
+ *         fr: 'The french value',
+ *         tlh: 'The klingon value',
+ *     }
+ * }
  *
  * @example <caption>Basic usage</caption>
  * <TranslatableFields locales={['en', 'fr']}>

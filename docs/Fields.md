@@ -1116,6 +1116,11 @@ You may have fields which are translated in multiple languages and want users to
         en: 'The english value',
         fr: 'The french value',
         tlh: 'The klingon value',
+    },
+    description: {
+        en: 'The english value',
+        fr: 'The french value',
+        tlh: 'The klingon value',
     }
 }
 ```
@@ -1129,7 +1134,7 @@ This is how to use it:
 </TranslatableFields>
 ```
 
-You may override the locale selected by default using the `defaultLocale` prop which react-admin sets to the current UI locale when not provided.
+React-admin uses the user locale as the default locale in this field. You can override this setting using the `defaultLocale` prop.
 
 ```jsx
 <TranslatableFields locales={['en', 'fr']} defaultLocale="fr">

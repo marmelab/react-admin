@@ -10,6 +10,19 @@ import { TranslatableInputsTabContent } from './TranslatableInputsTabContent';
 
 /**
  * Provides a way to edit multiple languages for any input passed as children.
+ * It expects the translatable values to have the following structure:
+ * {
+ *     name: {
+ *         en: 'The english value',
+ *         fr: 'The french value',
+ *         tlh: 'The klingon value',
+ *     },
+ *     description: {
+ *         en: 'The english value',
+ *         fr: 'The french value',
+ *         tlh: 'The klingon value',
+ *     }
+ * }
  *
  * @example <caption>Basic usage</caption>
  * <TranslatableInputs locales={['en', 'fr']}>
