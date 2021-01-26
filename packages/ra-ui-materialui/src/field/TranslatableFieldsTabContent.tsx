@@ -87,10 +87,15 @@ export type TranslatableFieldsTabContentProps = {
     resource: string;
 };
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        flexGrow: 1,
-        padding: theme.spacing(1),
-        backgroundColor: theme.palette.background.default,
-    },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        root: {
+            flexGrow: 1,
+            padding: theme.spacing(1),
+            backgroundColor: theme.palette.background.default,
+        },
+    }),
+    {
+        name: 'RaTranslatableFieldsTabContent',
+    }
+);

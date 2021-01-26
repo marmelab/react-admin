@@ -29,9 +29,14 @@ export const TranslatebleInputsTab = (
     );
 };
 
-const useStyles = makeStyles(theme => ({
-    error: { color: theme.palette.error.main },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        error: { color: theme.palette.error.main },
+    }),
+    {
+        name: 'RaTranslatableInputsTab',
+    }
+);
 
 interface TranslatebleInputsTabProps {
     classes?: ClassesOverride<typeof useStyles>;

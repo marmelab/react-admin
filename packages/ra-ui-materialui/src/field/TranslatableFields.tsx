@@ -112,9 +112,14 @@ export interface TranslatableFieldsProps extends UseTranslatableOptions {
     groupKey?: string;
 }
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        flexGrow: 1,
-        backgroundColor: theme.palette.background.default,
-    },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        root: {
+            flexGrow: 1,
+            backgroundColor: theme.palette.background.default,
+        },
+    }),
+    {
+        name: 'RaTranslatableFields',
+    }
+);

@@ -7,6 +7,7 @@ import {
 } from 'ra-core';
 import { TranslatableInputsTabs } from './TranslatableInputsTabs';
 import { TranslatableInputsTabContent } from './TranslatableInputsTabContent';
+import { makeStyles } from '@material-ui/core/styles';
 
 /**
  * Provides a way to edit multiple languages for any input passed as children.
@@ -70,20 +71,23 @@ export const TranslatableInputs = (props: TranslatableProps): ReactElement => {
         children,
     } = props;
     const context = useTranslatable({ defaultLocale, locales });
+    const classes = useStyles(props);
 
     return (
-        <TranslatableContextProvider value={context}>
-            {selector}
-            {locales.map(locale => (
-                <TranslatableInputsTabContent
-                    key={locale}
-                    locale={locale}
-                    groupKey={groupKey}
-                >
-                    {children}
-                </TranslatableInputsTabContent>
-            ))}
-        </TranslatableContextProvider>
+        <div className={classes.root}>
+            <TranslatableContextProvider value={context}>
+                {selector}
+                {locales.map(locale => (
+                    <TranslatableInputsTabContent
+                        key={locale}
+                        locale={locale}
+                        groupKey={groupKey}
+                    >
+                        {children}
+                    </TranslatableInputsTabContent>
+                ))}
+            </TranslatableContextProvider>
+        </div>
     );
 };
 
@@ -92,3 +96,15 @@ export interface TranslatableProps extends UseTranslatableOptions {
     children: ReactNode;
     groupKey?: string;
 }
+
+const useStyles = makeStyles(
+    theme => ({
+        root: {
+            flexGrow: 1,
+            backgroundColor: theme.palette.background.default,
+        },
+    }),
+    {
+        name: 'RaTranslatableInputs',
+    }
+);
