@@ -3,7 +3,7 @@ import { ReactElement } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs, { TabsProps } from '@material-ui/core/Tabs';
 import { useTranslatableContext } from 'ra-core';
-import { TranslatebleInputsTab } from './TranslatableInputsTab';
+import { TranslatableInputsTab } from './TranslatableInputsTab';
 import { AppBarProps } from '../layout';
 
 /**
@@ -24,7 +24,7 @@ export const TranslatableInputsTabs = ({
         <AppBar position="static">
             <Tabs value={selectedLocale} onChange={handleChange} {...tabsProps}>
                 {locales.map(locale => (
-                    <TranslatebleInputsTab
+                    <TranslatableInputsTab
                         key={locale}
                         value={locale}
                         locale={locale}

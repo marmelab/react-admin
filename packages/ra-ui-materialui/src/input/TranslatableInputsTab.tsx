@@ -9,10 +9,10 @@ import { capitalize } from 'inflection';
  * Single tab that selects a locale in a TranslatableInputs component.
  * @see TranslatableInputs
  */
-export const TranslatebleInputsTab = (
-    props: TranslatebleInputsTabProps & TabProps
+export const TranslatableInputsTab = (
+    props: TranslatableInputsTabProps & TabProps
 ) => {
-    const { groupKey = '', locale, ...rest } = props;
+    const { groupKey = '', locale, classes: classesOverride, ...rest } = props;
     const { invalid } = useFormGroup(`${groupKey}${locale}`);
     const classes = useStyles(props);
     const translate = useTranslate();
@@ -38,7 +38,7 @@ const useStyles = makeStyles(
     }
 );
 
-interface TranslatebleInputsTabProps {
+interface TranslatableInputsTabProps {
     classes?: ClassesOverride<typeof useStyles>;
     groupKey?: string;
     locale: string;
