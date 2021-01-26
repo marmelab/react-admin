@@ -11,7 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { ClassesOverride } from '../types';
 
 /**
- * Default container for a group of translatable inputs inside a TranslatableInputs components.
+ * Default container for a group of translatable inputs inside a TranslatableInputs component.
  * @see TranslatableInputs
  */
 export const TranslatableInputsTabContent = (

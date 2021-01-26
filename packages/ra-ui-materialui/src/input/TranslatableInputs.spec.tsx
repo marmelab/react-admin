@@ -28,7 +28,7 @@ const record = {
 };
 
 describe('<TranslatableInputs />', () => {
-    it('should display every inputs for every locales', () => {
+    it('should display every input for every locale', () => {
         const save = jest.fn();
         const {
             queryByDisplayValue,

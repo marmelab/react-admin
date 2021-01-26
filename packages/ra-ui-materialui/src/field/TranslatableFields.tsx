@@ -12,7 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { ClassesOverride } from '../types';
 
 /**
- * Provides a way to show multiple languages for any fields passed as children.
+ * Provides a way to show multiple languages for any field passed as children.
  *
  * @example <caption>Basic usage</caption>
  * <TranslatableFields locales={['en', 'fr']}>

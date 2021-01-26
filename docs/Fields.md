@@ -1108,7 +1108,7 @@ export const PostShow = (props) => (
 
 ## Translatable Fields
 
-You may have fields which are translated in multiple languages and want users to verify each translation. To display them, you can use the `<TranslatableFields>` components which expect the translatable fields to have the following structure:
+You may have fields which are translated in multiple languages and want users to verify each translation. To display them, you can use the `<TranslatableFields>` component, which expects the translatable values to have the following structure:
 
 ```js
 {
@@ -1140,9 +1140,9 @@ You may override the locale selected by default using the `defaultLocale` prop w
 
 By default, `<TranslatableFields>` will allow users to select the displayed locale using Material-ui tabs with the locale code as their labels.
 
-You may override the tabs labels using translation keys following this format: 'ra.locales.locale_code'. For example `ra.locales.en` or `ra.locales.fr`.
+You may override the tabs labels using translation keys following this format: 'ra.locales.[locale_code]'. For instance, `ra.locales.en` or `ra.locales.fr`.
 
-You may override the language selector using the `selector` prop which accept a React element:
+You may override the language selector using the `selector` prop, which accepts a React element:
 
 ```jsx
 const Selector = () => {
@@ -1166,7 +1166,7 @@ const Selector = () => {
                 <option
                     key={locale}
                     value={locale}
-                    // This allows to correctly links the containers for each locale to their labels
+                    // This allows to correctly link the containers for each locale to their labels
                     id={`translatable-header-${locale}`}
                 >
                     {locale}
@@ -1228,9 +1228,9 @@ const PostList = (props) => {
 }
 ```
 
-Note that you can't have an [optimized](https://marmelab.com/react-admin/List.html#performance) Datagrid when doing so as changing the locale wouldn't trigger a render of its children.
+Note that you can't have an [optimized](https://marmelab.com/react-admin/List.html#performance) Datagrid when doing so, as changing the locale wouldn't trigger a render of its children.
 
-The same pattern applise to show views when you don't want to display all translations: get the locale from the `useLocale` hook and dynamically set the `source` prop of the translatable fields.
+The same pattern applies to show views when you don't want to display all translations: get the locale from the `useLocale` hook and dynamically set the `source` prop of the translatable fields.
 
 ## Recipes
 

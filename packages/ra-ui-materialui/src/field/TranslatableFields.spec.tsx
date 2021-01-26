@@ -24,7 +24,7 @@ const record = {
 };
 
 describe('<TranslatableFields />', () => {
-    it('should render every fields for every locales', () => {
+    it('should render every field for every locale', () => {
         const { queryByText, getByLabelText, getByText } = render(
             <TranslatableFields
                 record={record}

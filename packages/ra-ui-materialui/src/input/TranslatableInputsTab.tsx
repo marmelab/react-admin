@@ -6,7 +6,7 @@ import { ClassesOverride } from '../types';
 import { capitalize } from 'inflection';
 
 /**
- * Single tab which select a locale in a TranslatableInputs component.
+ * Single tab that selects a locale in a TranslatableInputs component.
  * @see TranslatableInputs
  */
 export const TranslatebleInputsTab = (

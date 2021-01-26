@@ -9,7 +9,7 @@ import { TranslatableInputsTabs } from './TranslatableInputsTabs';
 import { TranslatableInputsTabContent } from './TranslatableInputsTabContent';
 
 /**
- * Provides a way to edit multiple languages for any inputs passed as children.
+ * Provides a way to edit multiple languages for any input passed as children.
  *
  * @example <caption>Basic usage</caption>
  * <TranslatableInputs locales={['en', 'fr']}>
