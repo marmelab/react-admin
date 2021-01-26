@@ -700,9 +700,12 @@ This solution is all-or-nothing: you can't silence only *some* missing translati
 
 ## Translating Record Fields
 
-You may have fields which are translated in multiple languages and want users to see and edit each translation. To display them, you can use the [`<TranslatableFields>`](/Fields.html#translatable-fields) component. To allow their edition, you can use the [`<TranslatableInputs>`](/Inputs.html#translatable-inputs) component.
+Some of your records may contain fields that are translated in multiple languages. It's common, in such cases, to offer an interface allowing admin users to see and edit each translation. React-admin provides 2 components for that:
 
-They both expects the translatable values to have the following structure:
+- To display translatable fields, use the [`<TranslatableFields>`](/Fields.html#translatable-fields) component
+- To edit translatable fields, use the [`<TranslatableInputs>`](/Inputs.html#translatable-inputs) component
+
+They both expect the translatable values to have the following structure:
 
 ```js
 {
