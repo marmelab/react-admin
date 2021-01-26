@@ -697,3 +697,24 @@ const i18nProvider = polyglotI18nProvider(locale =>
 **Tip**: Check [the Polyglot documentation](https://airbnb.io/polyglot.js/#options-overview) for a list of options you can pass to Polyglot at startup. 
 
 This solution is all-or-nothing: you can't silence only *some* missing translation warnings. An alternative solution consists of passing a default translation using the `_` translation option, as explained in the [Using Specific Polyglot Features section](#using-specific-polyglot-features) above. 
+
+## Translating Record Fields
+
+You may have fields which are translated in multiple languages and want users to see and edit each translation. To display them, you can use the [`<TranslatableFields>`](/Fields.html#translatable-fields) component. To allow their edition, you can use the [`<TranslatableInputs>`](/Inputs.html#translatable-inputs) component.
+
+They both expects the translatable values to have the following structure:
+
+```js
+{
+    name: {
+        en: 'The english value',
+        fr: 'The french value',
+        tlh: 'The klingon value',
+    },
+    description: {
+        en: 'The english value',
+        fr: 'The french value',
+        tlh: 'The klingon value',
+    }
+}
+```
