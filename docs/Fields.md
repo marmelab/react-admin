@@ -1145,7 +1145,7 @@ React-admin uses the user locale as the default locale in this field. You can ov
 
 By default, `<TranslatableFields>` will allow users to select the displayed locale using Material-ui tabs with the locale code as their labels.
 
-You may override the tabs labels using translation keys following this format: 'ra.locales.[locale_code]'. For instance, `ra.locales.en` or `ra.locales.fr`.
+You may override the tabs labels using translation keys following this format: `ra.locales.[locale_code]`. For instance, `ra.locales.en` or `ra.locales.fr`.
 
 You may override the language selector using the `selector` prop, which accepts a React element:
 
@@ -1208,6 +1208,7 @@ The `TranslatableFields` component is not meant to be used inside a `List` as yo
 
 In this case, you'll have to get the current locale through the `useLocale` hook and set the translatable field `source` dynamically.
 
+{% raw %}
 ```jsx
 const PostList = (props) => {
     const locale = useLocale();
@@ -1232,6 +1233,7 @@ const PostList = (props) => {
     )
 }
 ```
+{% endraw %}
 
 Note that you can't have an [optimized](https://marmelab.com/react-admin/List.html#performance) Datagrid when doing so, as changing the locale wouldn't trigger a render of its children.
 
