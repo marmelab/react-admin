@@ -13,7 +13,7 @@ const emptyParams = {};
 
 // keep a cache of already fetched permissions to initialize state for new
 // components and avoid a useless rerender if the permissions haven't changed
-const alreadyFetchedPermissions = { '{}': [] };
+const alreadyFetchedPermissions = { '{}': undefined };
 
 /**
  * Hook for getting user permissions without the loading state.
@@ -53,15 +53,15 @@ const alreadyFetchedPermissions = { '{}': [] };
  *     };
  */
 const usePermissionsOptimized = (params = emptyParams) => {
+    const key = JSON.stringify(params);
     const [state, setState] = useSafeSetState<State>({
-        permissions: alreadyFetchedPermissions[JSON.stringify(params)],
+        permissions: alreadyFetchedPermissions[key],
     });
     const getPermissions = useGetPermissions();
     useEffect(() => {
         getPermissions(params)
             .then(permissions => {
-                const key = JSON.stringify(params);
-                if (!isEqual(permissions, alreadyFetchedPermissions[key])) {
+                if (!isEqual(permissions, state.permissions)) {
                     alreadyFetchedPermissions[key] = permissions;
                     setState({ permissions });
                 }
@@ -71,7 +71,7 @@ const usePermissionsOptimized = (params = emptyParams) => {
                     error,
                 });
             });
-    }, [getPermissions, params, setState]);
+    }, [getPermissions, key]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return state;
 };
