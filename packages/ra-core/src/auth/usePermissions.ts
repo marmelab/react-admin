@@ -12,6 +12,8 @@ interface State {
 
 const emptyParams = {};
 
+const cache = {};
+
 /**
  * Hook for getting user permissions
  *
@@ -43,14 +45,20 @@ const emptyParams = {};
  *     };
  */
 const usePermissions = (params = emptyParams) => {
+    const cacheKey = JSON.stringify(params);
+
     const [state, setState] = useSafeSetState<State>({
         loading: true,
         loaded: false,
+        permissions: cache[cacheKey],
     });
+
     const getPermissions = useGetPermissions();
+
     useEffect(() => {
         getPermissions(params)
             .then(permissions => {
+                cache[cacheKey] = permissions;
                 setState({ loading: false, loaded: true, permissions });
             })
             .catch(error => {
@@ -60,7 +68,7 @@ const usePermissions = (params = emptyParams) => {
                     error,
                 });
             });
-    }, [getPermissions, params, setState]);
+    }, [getPermissions, params, setState, cacheKey]);
     return state;
 };
 

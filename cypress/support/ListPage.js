@@ -103,7 +103,7 @@ export default url => ({
     },
 
     applyDeleteBulkAction() {
-        cy.get(this.elements.deleteBulkActionsButton).click();
+        cy.get(this.elements.deleteBulkActionsButton).click({ force: true });
     },
 
     toggleColumnSort(name) {
