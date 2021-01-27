@@ -109,7 +109,6 @@ describe('<TranslatableInputs />', () => {
             getAllByLabelText,
             getByText,
             getAllByRole,
-            debug,
         } = renderWithRedux(
             <FormWithRedirect
                 save={save}
