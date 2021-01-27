@@ -5,6 +5,8 @@ import usePermissionsOptimized from './usePermissionsOptimized';
 import AuthContext from './AuthContext';
 
 describe('usePermissionsOptimized', () => {
+    afterEach(cleanup);
+
     const CallPermissionsOnMount = ({ number, authParams }: any) => {
         const { permissions } = usePermissionsOptimized(authParams);
         return (
