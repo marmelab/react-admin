@@ -21,6 +21,9 @@ import UrlField, { UrlFieldProps } from './UrlField';
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { FieldProps } from './types';
 
+export * from './TranslatableFields';
+export * from './TranslatableFieldsTabContent';
+
 export {
     ArrayField,
     BooleanField,
