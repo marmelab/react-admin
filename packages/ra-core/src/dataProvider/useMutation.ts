@@ -32,6 +32,7 @@ import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDecl
  * @param {Object} options
  * @param {string} options.action Redux action type
  * @param {boolean} options.undoable Set to true to run the mutation locally before calling the dataProvider
+ * @param {boolean} options.returnPromise Set to true to return the result promise of the mutation
  * @param {Function} options.onSuccess Side effect function to be executed upon success or failure, e.g. { onSuccess: response => refresh() }
  * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) }
  * @param {boolean} options.withDeclarativeSideEffectsSupport Set to true to support legacy side effects e.g. { onSuccess: { refresh: true } }
@@ -53,6 +54,7 @@ import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDecl
  * - {Object} options
  * - {string} options.action Redux action type
  * - {boolean} options.undoable Set to true to run the mutation locally before calling the dataProvider
+ * - {boolean} options.returnPromise Set to true to return the result promise of the mutation
  * - {Function} options.onSuccess Side effect function to be executed upon success or failure, e.g. { onSuccess: response => refresh() }
  * - {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) }
  * - {boolean} withDeclarativeSideEffectsSupport Set to true to support legacy side effects e.g. { onSuccess: { refresh: true } }
@@ -141,7 +143,7 @@ const useMutation = (
         (
             callTimeQuery?: Mutation | Event,
             callTimeOptions?: MutationOptions
-        ): void => {
+        ): void | Promise<any> => {
             const finalDataProvider = hasDeclarativeSideEffectsSupport(
                 options,
                 callTimeOptions
@@ -157,14 +159,17 @@ const useMutation = (
 
             setState(prevState => ({ ...prevState, loading: true }));
 
-            finalDataProvider[params.type]
+            const returnPromise = params.options.returnPromise;
+
+            const promise = finalDataProvider[params.type]
                 .apply(
                     finalDataProvider,
                     typeof params.resource !== 'undefined'
                         ? [params.resource, params.payload, params.options]
                         : [params.payload, params.options]
                 )
-                .then(({ data, total }) => {
+                .then(response => {
+                    const { data, total } = response;
                     setState({
                         data,
                         error: null,
@@ -172,6 +177,9 @@ const useMutation = (
                         loading: false,
                         total,
                     });
+                    if (returnPromise) {
+                        return response;
+                    }
                 })
                 .catch(errorFromResponse => {
                     setState({
@@ -181,7 +189,14 @@ const useMutation = (
                         loading: false,
                         total: null,
                     });
+                    if (returnPromise) {
+                        throw errorFromResponse;
+                    }
                 });
+
+            if (returnPromise) {
+                return promise;
+            }
         },
         [
             // deep equality, see https://github.com/facebook/react/issues/14476#issuecomment-471199055
@@ -204,6 +219,7 @@ export interface Mutation {
 
 export interface MutationOptions {
     action?: string;
+    returnPromise?: boolean;
     onSuccess?: (response: any) => any | Object;
     onFailure?: (error?: any) => any | Object;
     withDeclarativeSideEffectsSupport?: boolean;
@@ -213,7 +229,10 @@ export interface MutationOptions {
 }
 
 export type UseMutationValue = [
-    (query?: Partial<Mutation>, options?: Partial<MutationOptions>) => void,
+    (
+        query?: Partial<Mutation>,
+        options?: Partial<MutationOptions>
+    ) => void | Promise<any>,
     {
         data?: any;
         total?: number;

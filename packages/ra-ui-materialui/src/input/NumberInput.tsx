@@ -49,7 +49,7 @@ const NumberInput: FunctionComponent<NumberInputProps> = ({
         id,
         input,
         isRequired,
-        meta: { error, touched },
+        meta: { error, submitError, touched },
     } = useInput({
         format,
         onBlur,
@@ -70,11 +70,11 @@ const NumberInput: FunctionComponent<NumberInputProps> = ({
             id={id}
             {...input}
             variant={variant}
-            error={!!(touched && error)}
+            error={!!(touched && (error || submitError))}
             helperText={
                 <InputHelperText
                     touched={touched}
-                    error={error}
+                    error={error || submitError}
                     helperText={helperText}
                 />
             }

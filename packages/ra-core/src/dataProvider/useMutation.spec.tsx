@@ -180,4 +180,44 @@ describe('useMutation', () => {
         expect(action.meta.resource).toBeUndefined();
         expect(dataProvider.mytype).toHaveBeenCalledWith(myPayload);
     });
+
+    it('should return a promise to dispatch a fetch action when returnPromise option is set and the mutation callback is triggered', async () => {
+        const dataProvider = {
+            mytype: jest.fn(() => Promise.resolve({ data: { foo: 'bar' } })),
+        };
+
+        let promise = null;
+        const myPayload = {};
+        const { getByText, dispatch } = renderWithRedux(
+            <DataProviderContext.Provider value={dataProvider}>
+                <Mutation
+                    type="mytype"
+                    resource="myresource"
+                    payload={myPayload}
+                    options={{ returnPromise: true }}
+                >
+                    {(mutate, { loading }) => (
+                        <button
+                            className={loading ? 'loading' : 'idle'}
+                            onClick={() => (promise = mutate())}
+                        >
+                            Hello
+                        </button>
+                    )}
+                </Mutation>
+            </DataProviderContext.Provider>
+        );
+        const buttonElement = getByText('Hello');
+        fireEvent.click(buttonElement);
+        const action = dispatch.mock.calls[0][0];
+        expect(action.type).toEqual('CUSTOM_FETCH');
+        expect(action.payload).toEqual(myPayload);
+        expect(action.meta.resource).toEqual('myresource');
+        await waitFor(() => {
+            expect(buttonElement.className).toEqual('idle');
+        });
+        expect(promise).toBeInstanceOf(Promise);
+        const result = await promise;
+        expect(result).toMatchObject({ data: { foo: 'bar' } });
+    });
 });

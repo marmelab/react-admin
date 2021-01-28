@@ -103,6 +103,7 @@ const englishMessages: TranslationMessages = {
             page_rows_per_page: 'Rows per page:',
             next: 'Next',
             prev: 'Prev',
+            skip_nav: 'Skip to content',
         },
         sort: {
             sort_by: 'Sort by %{field} %{order}',

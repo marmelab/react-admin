@@ -87,7 +87,7 @@ const DateTimeInput: FunctionComponent<
         id,
         input,
         isRequired,
-        meta: { error, touched },
+        meta: { error, submitError, touched },
     } = useInput({
         format,
         onBlur,
@@ -107,11 +107,11 @@ const DateTimeInput: FunctionComponent<
             {...input}
             variant={variant}
             margin={margin}
-            error={!!(touched && error)}
+            error={!!(touched && (error || submitError))}
             helperText={
                 <InputHelperText
                     touched={touched}
-                    error={error}
+                    error={error || submitError}
                     helperText={helperText}
                 />
             }

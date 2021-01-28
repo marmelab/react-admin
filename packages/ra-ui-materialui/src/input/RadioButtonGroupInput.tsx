@@ -138,7 +138,7 @@ const RadioButtonGroupInput: FunctionComponent<
         ...rest,
     });
 
-    const { error, touched } = meta;
+    const { error, submitError, touched } = meta;
 
     if (loading) {
         return (
@@ -160,7 +160,7 @@ const RadioButtonGroupInput: FunctionComponent<
         <FormControl
             component="fieldset"
             margin={margin}
-            error={touched && !!error}
+            error={touched && !!(error || submitError)}
             {...sanitizeInputRestProps(rest)}
         >
             <FormLabel component="legend" className={classes.label}>
@@ -188,7 +188,7 @@ const RadioButtonGroupInput: FunctionComponent<
             <FormHelperText>
                 <InputHelperText
                     touched={touched}
-                    error={error}
+                    error={error || submitError}
                     helperText={helperText}
                 />
             </FormHelperText>
