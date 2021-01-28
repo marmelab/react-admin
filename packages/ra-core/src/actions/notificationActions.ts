@@ -1,6 +1,6 @@
 export const SHOW_NOTIFICATION = 'RA/SHOW_NOTIFICATION';
 
-export type NotificationType = 'success' | 'info' | 'warning' | 'error';
+export type NotificationType = 'info' | 'warning' | 'error';
 
 interface NotificationOptions {
     // The duration in milliseconds the notification is shown
