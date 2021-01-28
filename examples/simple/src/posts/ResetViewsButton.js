@@ -31,7 +31,7 @@ const ResetViewsButton = ({ resource, selectedIds }) => {
                         : error.message || 'ra.notification.http_error',
                     'warning'
                 ),
-            mode: 'optimistic',
+            mutationMode: 'optimistic',
         }
     );
 
