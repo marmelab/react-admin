@@ -13,26 +13,17 @@ export const useResourceDefinition = (
 ): ResourceDefinition => {
     const resource = useResourceContext(props);
     const resources = useSelector(getResources);
-    const definitionFromRedux = resources.find(r => r?.name === resource);
     const { hasCreate, hasEdit, hasList, hasShow } = props;
-    const definitionFromProps = merge({}, definitionFromRedux, {
-        hasCreate,
-        hasEdit,
-        hasList,
-        hasShow,
-        name: props.resource || definitionFromRedux.name,
-    });
 
-    const definition = useMemo(
-        () => (props != null ? definitionFromProps : definitionFromRedux),
-        // eslint-disable-next-line
-        [
-            // eslint-disable-next-line
-            JSON.stringify(definitionFromProps),
-            // eslint-disable-next-line
-            JSON.stringify(definitionFromRedux),
-        ]
-    );
+    const definition = useMemo(() => {
+        const definitionFromRedux = resources.find(r => r?.name === resource);
+        return merge({}, definitionFromRedux, {
+            hasCreate,
+            hasEdit,
+            hasList,
+            hasShow,
+        });
+    }, [resource, resources, hasCreate, hasEdit, hasList, hasShow]);
 
     return definition;
 };
