@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux';
+import merge from 'lodash/merge';
 import { getResources } from '../reducer';
 import { ResourceDefinition } from '../types';
 import { useResourceContext } from './useResourceContext';
@@ -11,21 +12,17 @@ export const useResourceDefinition = (
 ): ResourceDefinition => {
     const resource = useResourceContext(props);
     const resources = useSelector(getResources);
-
-    if (
-        props.resource &&
-        (typeof props.hasCreate !== 'undefined' ||
-            typeof props.hasEdit !== 'undefined' ||
-            typeof props.hasList !== 'undefined' ||
-            typeof props.hasShow !== 'undefined')
-    ) {
-        return {
-            ...props,
-            name: props.resource,
-        };
-    }
-
-    return resources.find(r => r?.name === resource) || props;
+    const definition = resources.find(r => r?.name === resource) || props;
+    const { hasCreate, hasEdit, hasList, hasShow } = props;
+    return props != null
+        ? merge({}, definition, {
+              hasCreate,
+              hasEdit,
+              hasList,
+              hasShow,
+              name: props.resource || definition.name,
+          })
+        : definition;
 };
 
 export interface UseResourceDefinitionOptions {
