@@ -319,7 +319,7 @@ const performUndoableQuery = ({
             optimistic: true,
         },
     });
-    onSuccess && onSuccess({});
+    onSuccess && onSuccess(payload);
     undoableEventEmitter.once('end', ({ isUndo }) => {
         dispatch(stopOptimisticMode());
         if (isUndo) {

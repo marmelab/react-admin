@@ -289,6 +289,41 @@ describe('useDataProvider', () => {
             });
         });
 
+        it('should accept an onSuccess option to execute on success for optimistic actions', async () => {
+            const onSuccess = jest.fn();
+            const UseUpdateWithOnSuccess = () => {
+                const [data, setData] = useState();
+                const dataProvider = useDataProvider();
+                useEffect(() => {
+                    dataProvider
+                        .update(
+                            'dummy',
+                            { id: 1, data: { id: 1, foo: 'bar' } },
+                            { onSuccess, undoable: true }
+                        )
+                        .then(res => setData(res.data));
+                }, [dataProvider]);
+                if (data)
+                    return <div data-testid="data">{JSON.stringify(data)}</div>;
+                return <div data-testid="loading">loading</div>;
+            };
+            const update = jest.fn(() =>
+                Promise.resolve({ data: { id: 1, foo: 'bar' } })
+            );
+            const dataProvider = { update };
+            renderWithRedux(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <UseUpdateWithOnSuccess />
+                </DataProviderContext.Provider>
+            );
+
+            expect(onSuccess.mock.calls).toHaveLength(1);
+            expect(onSuccess.mock.calls[0][0]).toEqual({
+                id: 1,
+                data: { id: 1, foo: 'bar' },
+            });
+        });
+
         it('should accept an onFailure option to execute on failure', async () => {
             jest.spyOn(console, 'error').mockImplementationOnce(() => {});
             const onFailure = jest.fn();
