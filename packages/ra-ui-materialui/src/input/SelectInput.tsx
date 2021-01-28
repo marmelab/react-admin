@@ -211,6 +211,10 @@ const SelectInput: FunctionComponent<
         getChoiceText,
     ]);
 
+    if (choices.length === 0 && input.value !== '') {
+        return null;
+    }
+
     return (
         <ResettableTextField
             id={id}
