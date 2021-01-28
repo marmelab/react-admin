@@ -21,9 +21,9 @@ import { getDataProviderCallArguments } from './getDataProviderCallArguments';
 
 // List of dataProvider calls emitted while in optimistic mode.
 // These calls get replayed once the dataProvider exits optimistic mode
-const optimisticCalls = [];
-const undoableOptimisticCalls = [];
-let nbRemainingOptimisticCalls = 0;
+const stackedCalls = [];
+const stackedOptimisticCalls = [];
+let nbRemainingStackedCalls = 0;
 
 /**
  * Hook for getting a dataProvider
@@ -143,7 +143,7 @@ const useDataProvider = (): DataProviderProxy => {
                         undoable = false,
                         onSuccess = undefined,
                         onFailure = undefined,
-                        mutationMode = 'pessimistic',
+                        mutationMode = undoable ? 'undoable' : 'pessimistic',
                         ...rest
                     } = options || {};
 
@@ -162,10 +162,7 @@ const useDataProvider = (): DataProviderProxy => {
                             'The onFailure option must be a function'
                         );
                     }
-                    if (
-                        (undoable || mutationMode === 'undoable') &&
-                        !onSuccess
-                    ) {
+                    if (mutationMode === 'undoable' && !onSuccess) {
                         throw new Error(
                             'You must pass an onSuccess callback calling notify() to use the undoable mode'
                         );
@@ -192,21 +189,20 @@ const useDataProvider = (): DataProviderProxy => {
                         // executed once the dataProvider leaves optimistic mode.
                         // In the meantime, the admin uses data from the store.
                         if (
-                            undoable ||
                             mutationMode === 'undoable' ||
                             mutationMode === 'optimistic'
                         ) {
-                            undoableOptimisticCalls.push(params);
+                            stackedOptimisticCalls.push(params);
                         } else {
-                            optimisticCalls.push(params);
+                            stackedCalls.push(params);
                         }
-                        nbRemainingOptimisticCalls++;
+                        nbRemainingStackedCalls++;
                         // Return a Promise that only resolves when the optimistic call was made
                         // otherwise hooks like useQueryWithStore will return loaded = true
                         // before the content actually reaches the Redux store.
                         // But as we can't determine when this particular query was finished,
                         // the Promise resolves only when *all* optimistic queries are done.
-                        return waitFor(() => nbRemainingOptimisticCalls === 0);
+                        return waitFor(() => nbRemainingStackedCalls === 0);
                     }
                     return doQuery(params);
                 };
@@ -565,30 +561,30 @@ const replayOptimisticCalls = async () => {
     // queries do not conflict with this one.
 
     // We only handle all side effects queries if there are no more undoable queries
-    if (undoableOptimisticCalls.length > 0) {
-        clone = [...undoableOptimisticCalls];
+    if (stackedOptimisticCalls.length > 0) {
+        clone = [...stackedOptimisticCalls];
         // remove these calls from the list *before* doing them
         // because side effects in the calls can add more calls
         // so we don't want to erase these.
-        undoableOptimisticCalls.splice(0, undoableOptimisticCalls.length);
+        stackedOptimisticCalls.splice(0, stackedOptimisticCalls.length);
 
         await Promise.all(
             clone.map(params => Promise.resolve(doQuery.call(null, params)))
         );
         // once the calls are finished, decrease the number of remaining calls
-        nbRemainingOptimisticCalls -= clone.length;
+        nbRemainingStackedCalls -= clone.length;
     } else {
-        clone = [...optimisticCalls];
+        clone = [...stackedCalls];
         // remove these calls from the list *before* doing them
         // because side effects in the calls can add more calls
         // so we don't want to erase these.
-        optimisticCalls.splice(0, optimisticCalls.length);
+        stackedCalls.splice(0, stackedCalls.length);
 
         await Promise.all(
             clone.map(params => Promise.resolve(doQuery.call(null, params)))
         );
         // once the calls are finished, decrease the number of remaining calls
-        nbRemainingOptimisticCalls -= clone.length;
+        nbRemainingStackedCalls -= clone.length;
     }
 };
 
