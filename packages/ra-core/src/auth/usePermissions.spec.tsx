@@ -20,12 +20,6 @@ const stateInpector = state => (
     </div>
 );
 
-let renderCount = 0;
-const renderInspector = () => {
-    renderCount++;
-    return <div>{renderCount}</div>;
-};
-
 describe('usePermissions', () => {
     it('should return a loading state on mount', () => {
         const { queryByText } = renderWithRedux(
@@ -84,17 +78,5 @@ describe('usePermissions', () => {
             expect(queryByText('LOADED')).not.toBeNull();
             expect(queryByText('ERROR')).not.toBeNull();
         });
-    });
-
-    it('should not rerender once the permissions have been rertieved once', async () => {
-        const { queryByText, rerender } = renderWithRedux(
-            <UsePermissions>{renderInspector}</UsePermissions>
-        );
-
-        await new Promise(resolve => setTimeout(resolve, 10));
-        expect(queryByText('2')).not.toBeNull();
-
-        rerender(<UsePermissions>{renderInspector}</UsePermissions>);
-        expect(queryByText('3')).not.toBeNull();
     });
 });

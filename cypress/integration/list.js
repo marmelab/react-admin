@@ -186,9 +186,6 @@ describe('List Page', () => {
         it('should allow to trigger the delete bulk action on selected items', () => {
             cy.contains('1-10 of 13'); // wait for data
             ListPagePosts.toggleSelectSomeItems(3);
-            cy.get(
-                ListPagePosts.elements.deleteBulkActionsButton
-            ).scrollIntoView();
             ListPagePosts.applyDeleteBulkAction();
             cy.contains('1-10 of 10');
         });
