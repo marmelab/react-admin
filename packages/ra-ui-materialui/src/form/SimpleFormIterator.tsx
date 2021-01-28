@@ -317,6 +317,7 @@ SimpleFormIterator.propTypes = {
     record: PropTypes.object,
     onAdd: PropTypes.func,
     onRemove: PropTypes.func,
+    fieldInitialValue: PropTypes.object,
     source: PropTypes.string,
     resource: PropTypes.string,
     translate: PropTypes.func,
@@ -337,6 +338,7 @@ export interface SimpleFormIteratorProps
     disabled?: boolean;
     disableAdd?: boolean;
     disableRemove?: boolean | DisableRemoveFunction;
+    fieldInitialValue?: object;
     margin?: 'none' | 'normal' | 'dense';
     meta?: {
         // the type defined in FieldArrayRenderProps says error is boolean, which is wrong.
