@@ -12,7 +12,7 @@ import {
     useRedirect,
     RedirectionSideEffect,
 } from '../../sideEffect';
-import { Record } from '../../types';
+import { Record, MutationMode } from '../../types';
 import { OnFailure, OnSuccess } from '../saveModifiers';
 import { useResourceContext } from '../../core';
 
@@ -75,6 +75,7 @@ const useDeleteWithConfirmController = (
         record,
         redirect: redirectTo,
         basePath,
+        mutationMode,
         onClick,
         onSuccess,
         onFailure,
@@ -118,7 +119,7 @@ const useDeleteWithConfirmController = (
                 onFailure(error);
             }
         },
-        undoable: false,
+        mutationMode,
     });
 
     const handleDialogOpen = e => {
@@ -148,6 +149,7 @@ const useDeleteWithConfirmController = (
 
 export interface UseDeleteWithConfirmControllerParams {
     basePath?: string;
+    mutationMode?: MutationMode;
     record?: Record;
     redirect?: RedirectionSideEffect;
     // @deprecated. This hook get the resource from the context

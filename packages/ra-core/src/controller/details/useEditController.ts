@@ -105,7 +105,7 @@ export const useEditController = <RecordType extends Record = Record>(
         hasShow,
         id,
         successMessage,
-        // @deprecated use mutationMode: undoable instaed
+        // @deprecated use mutationMode: undoable instead
         undoable = true,
         onSuccess,
         onFailure,
