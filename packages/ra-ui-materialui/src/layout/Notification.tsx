@@ -23,7 +23,7 @@ interface Props {
 const useStyles = makeStyles(
     (theme: Theme) => ({
         error: {
-            backgroundColor: theme.palette.error.main,
+            backgroundColor: theme.palette.error.dark,
             color: theme.palette.error.contrastText,
         },
         warning: {
