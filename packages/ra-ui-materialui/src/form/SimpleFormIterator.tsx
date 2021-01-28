@@ -98,6 +98,8 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
     const {
         addButton = <DefaultAddButton />,
         removeButton = <DefaultRemoveButton />,
+        onAdd = () => true,
+        onRemove = () => true,
         basePath,
         children,
         className,
@@ -136,8 +138,12 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
     );
 
     const removeField = index => () => {
-        ids.current.splice(index, 1);
-        fields.remove(index);
+        const itemToRemove = fields.value[index];
+
+        if (onRemove(index, itemToRemove)) {
+            ids.current.splice(index, 1);
+            fields.remove(index);
+        }
     };
 
     // Returns a boolean to indicate whether to disable the remove button for certain fields.
@@ -152,8 +158,10 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
     };
 
     const addField = () => {
-        ids.current.push(nextId.current++);
-        fields.push(undefined);
+        if (onAdd()) {
+            ids.current.push(nextId.current++);
+            fields.push(undefined);
+        }
     };
 
     // add field and call the onClick event of the button passed as addButton prop
@@ -306,6 +314,8 @@ SimpleFormIterator.propTypes = {
     meta: PropTypes.object,
     // @ts-ignore
     record: PropTypes.object,
+    onAdd: PropTypes.func,
+    onRemove: PropTypes.func,
     source: PropTypes.string,
     resource: PropTypes.string,
     translate: PropTypes.func,
@@ -332,6 +342,8 @@ export interface SimpleFormIteratorProps
         error?: any;
         submitFailed?: boolean;
     };
+    onAdd?: () => boolean;
+    onRemove?: (index: number, itemToRemove: object) => boolean;
     record?: Record;
     removeButton?: ReactElement;
     resource?: string;
