@@ -108,7 +108,10 @@ describe('<DeleteWithUndoButton />', () => {
         });
         fireEvent.click(getByLabelText('ra.action.delete'));
         await wait(() => {
-            expect(onSuccess).toHaveBeenCalledWith({});
+            expect(onSuccess).toHaveBeenCalledWith({
+                id: 123,
+                previousData: { id: 123, title: 'lorem' },
+            });
         });
     });
 });
