@@ -3,6 +3,8 @@ import { performUndoableQuery } from './performUndoableQuery';
 import { performPessimisticQuery } from './performPessimisticQuery';
 import { answerWithCache } from './answerWithCache';
 import { canReplyWithCache } from '../replyWithCache';
+import { QueryFunctionParams } from './QueryFunctionParams';
+import { MutationMode } from '../../types';
 
 /**
  * Execute a dataProvider call
@@ -21,11 +23,11 @@ export const doQuery = ({
     onFailure,
     dataProvider,
     dispatch,
-    store,
-    mutationMode,
     logoutIfAccessDenied,
     allArguments,
-}) => {
+    store,
+    mutationMode,
+}: DoQueryParameters) => {
     const resourceState = store.getState().admin.resources[resource];
     if (canReplyWithCache(type, payload, resourceState)) {
         return answerWithCache({
@@ -82,3 +84,8 @@ export const doQuery = ({
         });
     }
 };
+
+interface DoQueryParameters extends QueryFunctionParams {
+    store: any; // unfortunately react-redux doesn't expose Store and AnyAction types, so we can't do better
+    mutationMode: MutationMode;
+}
