@@ -13,7 +13,6 @@ import {
     ChipField,
     Datagrid,
     DateField,
-    DeleteButton,
     downloadCSV,
     EditButton,
     Filter,
@@ -172,11 +171,6 @@ const PostList = props => {
                     <PostListActionToolbar>
                         <EditButton />
                         <ShowButton />
-                        <DeleteButton label={'Undoable Delete'} />
-                        <DeleteButton
-                            label={'Regular Delete'}
-                            undoable={false}
-                        />
                     </PostListActionToolbar>
                 </Datagrid>
             )}
