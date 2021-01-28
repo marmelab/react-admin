@@ -115,6 +115,7 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
         margin,
         TransitionProps,
         defaultValue,
+        fieldInitialValue,
     } = props;
     const classes = useStyles(props);
     const nodeRef = useRef(null);
@@ -160,7 +161,7 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
     const addField = () => {
         if (onAdd()) {
             ids.current.push(nextId.current++);
-            fields.push(undefined);
+            fields.push(fieldInitialValue);
         }
     };
 
