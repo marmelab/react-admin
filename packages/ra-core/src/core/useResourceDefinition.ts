@@ -3,6 +3,7 @@ import merge from 'lodash/merge';
 import { getResources } from '../reducer';
 import { ResourceDefinition } from '../types';
 import { useResourceContext } from './useResourceContext';
+import { useMemo } from 'react';
 
 /**
  * Hook which returns the definition of the requested resource
@@ -12,17 +13,28 @@ export const useResourceDefinition = (
 ): ResourceDefinition => {
     const resource = useResourceContext(props);
     const resources = useSelector(getResources);
-    const definition = resources.find(r => r?.name === resource) || props;
+    const definitionFromRedux = resources.find(r => r?.name === resource);
     const { hasCreate, hasEdit, hasList, hasShow } = props;
-    return props != null
-        ? merge({}, definition, {
-              hasCreate,
-              hasEdit,
-              hasList,
-              hasShow,
-              name: props.resource || definition.name,
-          })
-        : definition;
+    const definitionFromProps = merge({}, definitionFromRedux, {
+        hasCreate,
+        hasEdit,
+        hasList,
+        hasShow,
+        name: props.resource || definitionFromRedux.name,
+    });
+
+    const definition = useMemo(
+        () => (props != null ? definitionFromProps : definitionFromRedux),
+        // eslint-disable-next-line
+        [
+            // eslint-disable-next-line
+            JSON.stringify(definitionFromProps),
+            // eslint-disable-next-line
+            JSON.stringify(definitionFromRedux),
+        ]
+    );
+
+    return definition;
 };
 
 export interface UseResourceDefinitionOptions {
