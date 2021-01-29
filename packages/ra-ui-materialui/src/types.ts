@@ -24,7 +24,7 @@ export interface ListProps extends ResourceComponentProps {
     pagination?: ReactElement | false;
     perPage?: number;
     sort?: SortPayload;
-    syncWithLocation: boolean;
+    syncWithLocation?: boolean;
     title?: string | ReactElement;
 }
 

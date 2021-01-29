@@ -44,7 +44,7 @@ export interface ListProps {
     resource?: string;
     // Wether to synchronize the list parameters with the current location (URL search parameters)
     // This is set to true automatically when a List is used inside a Resource component
-    syncWithLocation: boolean;
+    syncWithLocation?: boolean;
     [key: string]: any;
 }
 
