@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import get from 'lodash/get';
 import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { makeStyles } from '@material-ui/core/styles';
@@ -19,6 +20,8 @@ import AddIcon from '@material-ui/icons/AddCircleOutline';
 import { useTranslate, ValidationError, Record } from 'ra-core';
 import classNames from 'classnames';
 import { FieldArrayRenderProps } from 'react-final-form-arrays';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 
 import FormInput from './FormInput';
 
@@ -93,6 +96,36 @@ const DefaultRemoveButton = props => {
     );
 };
 
+const UpDownButtons = ({
+    index,
+    max,
+    onClick,
+}: {
+    index: number;
+    max?: number;
+    onClick: (index: number, moveTo: number) => void;
+}) => {
+    const classes = useStyles();
+    return (
+        <>
+            <IconButton
+                size="small"
+                onClick={() => onClick(index, index - 1)}
+                disabled={index <= 0}
+            >
+                <ArrowUpwardIcon />
+            </IconButton>
+            <IconButton
+                size="small"
+                onClick={() => onClick(index, index + 1)}
+                disabled={max == null || index >= max - 1}
+            >
+                <ArrowDownwardIcon />
+            </IconButton>
+        </>
+    );
+};
+
 const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
     const {
         addButton = <DefaultAddButton />,
@@ -108,6 +141,7 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
         disabled,
         disableAdd,
         disableRemove,
+        disableReordering,
         variant,
         margin,
         TransitionProps,
@@ -134,16 +168,19 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
         nextId.current > 0 ? Array.from(Array(nextId.current).keys()) : []
     );
 
-    const removeField = index => () => {
+    const removeField = (index: number) => () => {
         ids.current.splice(index, 1);
-        fields.remove(index);
+        fields?.remove(index);
     };
 
     // Returns a boolean to indicate whether to disable the remove button for certain fields.
     // If disableRemove is a function, then call the function with the current record to
     // determining if the button should be disabled. Otherwise, use a boolean property that
     // enables or disables the button for all of the fields.
-    const disableRemoveField = (record, disableRemove) => {
+    const disableRemoveField = (
+        record: Record,
+        disableRemove: boolean | DisableRemoveFunction
+    ) => {
         if (typeof disableRemove === 'boolean') {
             return disableRemove;
         }
@@ -152,11 +189,13 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
 
     const addField = () => {
         ids.current.push(nextId.current++);
-        fields.push(undefined);
+        fields?.push(undefined);
     };
 
     // add field and call the onClick event of the button passed as addButton prop
-    const handleAddButtonClick = originalOnClickHandler => event => {
+    const handleAddButtonClick = (originalOnClickHandler: any) => (
+        event: React.MouseEvent
+    ) => {
         addField();
         if (originalOnClickHandler) {
             originalOnClickHandler(event);
@@ -165,16 +204,23 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
 
     // remove field and call the onClick event of the button passed as removeButton prop
     const handleRemoveButtonClick = (
-        originalOnClickHandler,
-        index
-    ) => event => {
+        originalOnClickHandler: any,
+        index: number
+    ) => (event: React.MouseEvent) => {
         removeField(index)();
         if (originalOnClickHandler) {
             originalOnClickHandler(event);
         }
     };
 
-    const records = get(record, source);
+    const handleUpDown = (index: number, moveTo: number) => {
+        const tmp = ids.current[index];
+        ids.current[index] = ids.current[moveTo];
+        ids.current[moveTo] = tmp;
+        fields?.move(index, moveTo);
+    };
+
+    const records = get(record, source!);
     return fields ? (
         <ul className={classNames(classes.root, className)}>
             {submitFailed && typeof error !== 'object' && error && (
@@ -198,6 +244,13 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
                             >
                                 {index + 1}
                             </Typography>
+                            {!disabled && !disableReordering && (
+                                <UpDownButtons
+                                    index={index}
+                                    max={fields.length}
+                                    onClick={handleUpDown}
+                                />
+                            )}
                             <section className={classes.form}>
                                 {Children.map(
                                     children,
@@ -281,6 +334,7 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
 SimpleFormIterator.defaultProps = {
     disableAdd: false,
     disableRemove: false,
+    disableReordering: false,
 };
 
 SimpleFormIterator.propTypes = {
@@ -301,6 +355,7 @@ SimpleFormIterator.propTypes = {
     translate: PropTypes.func,
     disableAdd: PropTypes.bool,
     disableRemove: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+    disableReordering: PropTypes.bool,
     TransitionProps: PropTypes.shape({}),
 };
 
@@ -315,6 +370,7 @@ export interface SimpleFormIteratorProps
     disabled?: boolean;
     disableAdd?: boolean;
     disableRemove?: boolean | DisableRemoveFunction;
+    disableReordering?: boolean;
     margin?: 'none' | 'normal' | 'dense';
     meta?: {
         // the type defined in FieldArrayRenderProps says error is boolean, which is wrong.
