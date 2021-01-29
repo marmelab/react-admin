@@ -22,6 +22,10 @@ interface Props {
 
 const useStyles = makeStyles(
     (theme: Theme) => ({
+        success: {
+            backgroundColor: theme.palette.success.main,
+            color: theme.palette.success.contrastText,
+        },
         error: {
             backgroundColor: theme.palette.error.dark,
             color: theme.palette.error.contrastText,
