@@ -31,7 +31,7 @@
 ## v3.11.2
 
 * Fix `SaveContext` error when no context is supplied ([5738](https://github.com/marmelab/react-admin/pull/5738)) ([WiXSL](https://github.com/WiXSL))
-* Fix `getPossibleReferences.possibleValues` prop gets overriden after one call ([5737](https://github.com/marmelab/react-admin/pull/5737)) ([WiXSL](https://github.com/WiXSL))
+* Fix `getPossibleReferences.possibleValues` prop gets overridden after one call ([5737](https://github.com/marmelab/react-admin/pull/5737)) ([WiXSL](https://github.com/WiXSL))
 * Fix "Cannot read property 'fullName' of undefined" error after logout ([5735](https://github.com/marmelab/react-admin/pull/5735)) ([etienne-bondot](https://github.com/etienne-bondot))
 * Fix `<ReferenceInput>` does not show loader while possible values and reference record are loading ([5731](https://github.com/marmelab/react-admin/pull/5731)) ([fzaninotto](https://github.com/fzaninotto))
 * Fix `<Create>`, `<Edit>` and `<Show>` cannot be used outside of a `<ResourceContextProvider>` ([5730](https://github.com/marmelab/react-admin/pull/5730)) ([fzaninotto](https://github.com/fzaninotto))
@@ -1761,7 +1761,7 @@ Deprecations:
 * Fix doc mentions obsolete translation packages ([fzaninotto](https://github.com/fzaninotto))
 * Add link to Danish translation ([nikri](https://github.com/nikri))
 * Add an Advanced Tutorials section to the documentation ([djhi](https://github.com/djhi))
-* Fix `handleSubmit` should not be overriden in `<Toolbar>` children ([djhi](https://github.com/djhi))
+* Fix `handleSubmit` should not be overridden in `<Toolbar>` children ([djhi](https://github.com/djhi))
 * Fix `<ReferenceField>` does not respect its child's `className` ([fzaninotto](https://github.com/fzaninotto))
 * Fix typo on `ra-language-french` French translations ([Kmaschta](https://github.com/Kmaschta))
 
