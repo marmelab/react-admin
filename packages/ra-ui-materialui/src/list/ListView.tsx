@@ -248,6 +248,7 @@ const sanitizeRestProps: (
     setPerPage = null,
     setSort = null,
     showFilter = null,
+    syncWithLocation = null,
     sort = null,
     total = null,
     ...rest
