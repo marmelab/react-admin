@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import merge from 'lodash/merge';
 
 import { useSafeSetState } from '../util/hooks';
+import { MutationMode } from '../types';
 import useDataProvider from './useDataProvider';
 import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDeclarativeSideEffects';
 
@@ -218,11 +219,13 @@ export interface Mutation {
 
 export interface MutationOptions {
     action?: string;
-    undoable?: boolean;
     returnPromise?: boolean;
     onSuccess?: (response: any) => any | Object;
     onFailure?: (error?: any) => any | Object;
     withDeclarativeSideEffectsSupport?: boolean;
+    /** @deprecated use mutationMode: undoable instead */
+    undoable?: boolean;
+    mutationMode?: MutationMode;
 }
 
 export type UseMutationValue = [

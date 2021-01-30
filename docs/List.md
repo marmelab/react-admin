@@ -749,6 +749,7 @@ When a List based component (eg: `PostList`) is passed to the `list` prop of a `
 
 In order to enable the synchronization with the URL, you can set the `syncWithLocation` prop. For example, adding a `List` to an `Edit` page:
 
+{% raw %}
 ```jsx
 const TagsEdit = (props) => (
     <>
@@ -765,6 +766,7 @@ const TagsEdit = (props) => (
     </>
 )
 ```
+{% endraw %}
 
 ### CSS API
 

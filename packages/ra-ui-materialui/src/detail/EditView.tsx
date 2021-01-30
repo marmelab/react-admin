@@ -25,6 +25,7 @@ export const EditView = (props: EditViewProps) => {
         component: Content,
         title,
         undoable,
+        mutationMode,
         ...rest
     } = props;
 
@@ -93,6 +94,7 @@ export const EditView = (props: EditViewProps) => {
                                     : children.props.save,
                             saving,
                             undoable,
+                            mutationMode,
                             version,
                         })
                     ) : (
@@ -133,6 +135,7 @@ EditView.propTypes = {
     defaultTitle: PropTypes.any,
     hasList: PropTypes.bool,
     hasShow: PropTypes.bool,
+    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     record: PropTypes.object,
     redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     resource: PropTypes.string,
@@ -144,6 +147,7 @@ EditView.propTypes = {
     setOnSuccess: PropTypes.func,
     setOnFailure: PropTypes.func,
     setTransform: PropTypes.func,
+    undoable: PropTypes.bool,
 };
 
 EditView.defaultProps = {

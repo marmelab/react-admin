@@ -53,6 +53,7 @@ const PostEdit = ({ permissions, ...props }) => (
             <FormTab label="post.form.summary">
                 <SanitizedBox
                     display="flex"
+                    flexDirection="column"
                     width="100%"
                     justifyContent="space-between"
                     fullWidth

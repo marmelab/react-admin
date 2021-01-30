@@ -16,6 +16,7 @@ import {
     escapePath,
     FormWithRedirect,
     FormWithRedirectProps,
+    MutationMode,
     Record,
     RedirectionSideEffect,
 } from 'ra-core';
@@ -103,6 +104,7 @@ const TabbedForm: FC<TabbedFormProps> = props => (
 TabbedForm.propTypes = {
     children: PropTypes.node,
     initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     // @ts-ignore
     record: PropTypes.object,
     redirect: PropTypes.oneOfType([
@@ -130,6 +132,7 @@ export interface TabbedFormProps
     classes?: ClassesOverride<typeof useStyles>;
     initialValues?: any;
     margin?: 'none' | 'normal' | 'dense';
+    mutationMode?: MutationMode;
     record?: Record;
     redirect?: RedirectionSideEffect;
     resource?: string;
@@ -145,6 +148,7 @@ export interface TabbedFormProps
     submitOnEnter?: boolean;
     tabs?: ReactElement;
     toolbar?: ReactElement;
+    /** @deprecated use mutationMode: undoable instead */
     undoable?: boolean;
     variant?: 'standard' | 'outlined' | 'filled';
     warnWhenUnsavedChanges?: boolean;
@@ -172,6 +176,7 @@ export const TabbedFormView: FC<TabbedFormViewProps> = props => {
         handleSubmit,
         handleSubmitWithRedirect,
         invalid,
+        mutationMode,
         pristine,
         record,
         redirect: defaultRedirect,
@@ -242,6 +247,7 @@ export const TabbedFormView: FC<TabbedFormViewProps> = props => {
                     handleSubmitWithRedirect,
                     handleSubmit,
                     invalid,
+                    mutationMode,
                     pristine,
                     record,
                     redirect: defaultRedirect,
@@ -260,11 +266,12 @@ TabbedFormView.propTypes = {
     className: PropTypes.string,
     classes: PropTypes.object,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
-    initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     handleSubmit: PropTypes.func, // passed by react-final-form
+    initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     invalid: PropTypes.bool,
     location: PropTypes.object,
     match: PropTypes.object,
+    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     pristine: PropTypes.bool,
     // @ts-ignore
     record: PropTypes.object,
@@ -297,6 +304,7 @@ export interface TabbedFormViewProps extends FormRenderProps {
     classes?: ClassesOverride<typeof useStyles>;
     className?: string;
     margin?: 'none' | 'normal' | 'dense';
+    mutationMode?: MutationMode;
     handleSubmitWithRedirect?: (redirectTo: RedirectionSideEffect) => void;
     record?: Record;
     redirect?: RedirectionSideEffect;
@@ -305,6 +313,7 @@ export interface TabbedFormViewProps extends FormRenderProps {
     saving?: boolean;
     tabs?: ReactElement;
     toolbar?: ReactElement;
+    /** @deprecated use mutationMode: undoable instead */
     undoable?: boolean;
     variant?: 'standard' | 'outlined' | 'filled';
     submitOnEnter?: boolean;

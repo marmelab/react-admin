@@ -1,5 +1,5 @@
 import { Identifier } from '../types';
-import useMutation from './useMutation';
+import useMutation, { MutationOptions } from './useMutation';
 
 /**
  * Get a callback to call the dataProvider.update() method, the result and the loading state.
@@ -34,7 +34,7 @@ const useUpdate = (
     id: Identifier,
     data?: any,
     previousData?: any,
-    options?: any
+    options?: MutationOptions
 ) =>
     useMutation(
         { type: 'update', resource, payload: { id, data, previousData } },

@@ -1,4 +1,4 @@
-import useMutation from './useMutation';
+import useMutation, { MutationOptions } from './useMutation';
 import { Identifier } from '../types';
 
 /**
@@ -32,7 +32,7 @@ const useUpdateMany = (
     resource: string,
     ids: Identifier[],
     data: any,
-    options?: any
+    options?: MutationOptions
 ) =>
     useMutation(
         { type: 'updateMany', resource, payload: { ids, data } },

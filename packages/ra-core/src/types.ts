@@ -10,6 +10,7 @@ import { Location, History, LocationState } from 'history';
 
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 import { AuthActionType } from './auth/types';
+import { Mutation } from './dataProvider/useMutation';
 
 /**
  * data types
@@ -284,11 +285,15 @@ export type DataProviderProxy = {
     [key: string]: any;
 };
 
+export type MutationMode = 'pessimistic' | 'optimistic' | 'undoable';
+
 export interface UseDataProviderOptions {
     action?: string;
     fetch?: string;
     meta?: object;
+    // @deprecated use mode: 'undoable' instead
     undoable?: boolean;
+    mutationMode?: MutationMode;
     onSuccess?: any;
     onFailure?: any;
 }

@@ -8,6 +8,7 @@ import useDataProvider from './useDataProvider';
 import useUpdate from './useUpdate';
 import { DataProviderContext } from '../dataProvider';
 import { useRefresh } from '../sideEffect';
+import undoableEventEmitter from './undoableEventEmitter';
 
 const UseGetOne = () => {
     const [data, setData] = useState();
@@ -316,6 +317,157 @@ describe('useDataProvider', () => {
             });
             expect(onFailure.mock.calls).toHaveLength(1);
             expect(onFailure.mock.calls[0][0]).toEqual(new Error('foo'));
+        });
+
+        describe('mutationMode', () => {
+            it('should wait for response to dispatch side effects in pessimistic mode', async () => {
+                let resolveUpdate;
+                const update = jest.fn(() =>
+                    new Promise(resolve => {
+                        resolveUpdate = resolve;
+                    }).then(() => ({ data: { id: 1, updated: true } }))
+                );
+                const dataProvider = { update };
+                const UpdateButton = () => {
+                    const [updated, setUpdated] = useState(false);
+                    const dataProvider = useDataProvider();
+                    return (
+                        <button
+                            onClick={() =>
+                                dataProvider.update(
+                                    'foo',
+                                    {},
+                                    {
+                                        onSuccess: () => {
+                                            setUpdated(true);
+                                        },
+                                        mutationMode: 'pessimistic',
+                                    }
+                                )
+                            }
+                        >
+                            {updated ? '(updated)' : 'update'}
+                        </button>
+                    );
+                };
+                const { getByText, queryByText } = renderWithRedux(
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <UpdateButton />
+                    </DataProviderContext.Provider>,
+                    { admin: { resources: { posts: { data: {}, list: {} } } } }
+                );
+                // click on the update button
+                await act(async () => {
+                    fireEvent.click(getByText('update'));
+                    await new Promise(r => setTimeout(r));
+                });
+                expect(update).toBeCalledTimes(1);
+                // make sure the side effect hasn't been applied yet
+                expect(queryByText('(updated)')).toBeNull();
+                await act(() => {
+                    resolveUpdate();
+                });
+                // side effects should be applied now
+                expect(queryByText('(updated)')).not.toBeNull();
+            });
+
+            it('should not wait for response to dispatch side effects in optimistic mode', async () => {
+                let resolveUpdate;
+                const update = jest.fn(() =>
+                    new Promise(resolve => {
+                        resolveUpdate = resolve;
+                    }).then(() => ({ data: { id: 1, updated: true } }))
+                );
+                const dataProvider = { update };
+                const UpdateButton = () => {
+                    const [updated, setUpdated] = useState(false);
+                    const dataProvider = useDataProvider();
+                    return (
+                        <button
+                            onClick={() =>
+                                dataProvider.update(
+                                    'foo',
+                                    {},
+                                    {
+                                        onSuccess: () => {
+                                            setUpdated(true);
+                                        },
+                                        mutationMode: 'optimistic',
+                                    }
+                                )
+                            }
+                        >
+                            {updated ? '(updated)' : 'update'}
+                        </button>
+                    );
+                };
+                const { getByText, queryByText } = renderWithRedux(
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <UpdateButton />
+                    </DataProviderContext.Provider>,
+                    { admin: { resources: { posts: { data: {}, list: {} } } } }
+                );
+                // click on the update button
+                await act(async () => {
+                    fireEvent.click(getByText('update'));
+                    await new Promise(r => setTimeout(r));
+                });
+                // side effects should be applied now
+                expect(queryByText('(updated)')).not.toBeNull();
+                expect(update).toBeCalledTimes(1);
+                await act(() => {
+                    resolveUpdate();
+                });
+            });
+
+            it('should not wait for response to dispatch side effects in undoable mode', async () => {
+                const update = jest.fn({
+                    apply: () =>
+                        Promise.resolve({ data: { id: 1, updated: true } }),
+                });
+                const dataProvider = { update };
+                const UpdateButton = () => {
+                    const [updated, setUpdated] = useState(false);
+                    const dataProvider = useDataProvider();
+                    return (
+                        <button
+                            onClick={() =>
+                                dataProvider.update(
+                                    'foo',
+                                    {},
+                                    {
+                                        onSuccess: () => {
+                                            setUpdated(true);
+                                        },
+                                        mutationMode: 'undoable',
+                                    }
+                                )
+                            }
+                        >
+                            {updated ? '(updated)' : 'update'}
+                        </button>
+                    );
+                };
+                const { getByText, queryByText } = renderWithRedux(
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <UpdateButton />
+                    </DataProviderContext.Provider>,
+                    { admin: { resources: { posts: { data: {}, list: {} } } } }
+                );
+                // click on the update button
+                await act(async () => {
+                    fireEvent.click(getByText('update'));
+                    await new Promise(r => setTimeout(r));
+                });
+                // side effects should be applied now
+                expect(queryByText('(updated)')).not.toBeNull();
+                // update shouldn't be called at all
+                expect(update).toBeCalledTimes(0);
+                await act(() => {
+                    undoableEventEmitter.emit('end', {});
+                });
+                expect(update).toBeCalledTimes(1);
+            });
         });
     });
 
