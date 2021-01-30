@@ -40,7 +40,7 @@ export interface EditProps extends ResourceComponentPropsWithId {
     mutationMode?: MutationMode;
     onSuccess?: (data: RaRecord) => void;
     onFailure?: (error: any) => void;
-    transform?: (data: RaRecord) => RaRecord;
+    transform?: (data: RaRecord) => RaRecord | Promise<RaRecord>;
     title?: string | ReactElement;
 }
 
@@ -53,7 +53,7 @@ export interface CreateProps extends ResourceComponentProps {
     record?: Partial<RaRecord>;
     onSuccess?: (data: RaRecord) => void;
     onFailure?: (error: any) => void;
-    transform?: (data: RaRecord) => RaRecord;
+    transform?: (data: RaRecord) => RaRecord | Promise<RaRecord>;
     title?: string | ReactElement;
 }
 

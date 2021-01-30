@@ -6,6 +6,8 @@ import FormDataConsumer, {
 import FormField from './FormField';
 import FormWithRedirect, {
     FormWithRedirectProps,
+    FormWithRedirectRender,
+    FormWithRedirectSave,
     HandleSubmitWithRedirect,
 } from './FormWithRedirect';
 import useInput, { InputProps, UseInputValue } from './useInput';
@@ -28,6 +30,8 @@ export type {
     FormDataConsumerRender,
     FormDataConsumerRenderParams,
     FormWithRedirectProps,
+    FormWithRedirectRender,
+    FormWithRedirectSave,
     HandleSubmitWithRedirect,
     InputProps,
     UseInputValue,
