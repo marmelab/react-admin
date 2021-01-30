@@ -480,11 +480,11 @@ const ApproveButton = ({ record }) => {
 
 In the previous example, after clicking on the "Approve" button, a loading spinner appears while the data provider is fetched. Then, users are redirected to the comments list. But in most cases, the server returns a success response, so the user waits for this response for nothing. 
 
-This is called **pessimistic rendering**, as all users are forced to wait because of the (usually rare) possibilit yof server failure. 
+This is called **pessimistic rendering**, as all users are forced to wait because of the (usually rare) possibility of server failure. 
 
-An alternative mode for mutations is **optimistic rendering**. The idea is to handle the calls to the `dataProvider` on the client side first (i.e. updating entities in the Redux store), and re-render the screen immediately. The user sees the effect of their action with no delay. Then, react-admin applies the success side effects, and only after that, it triggers the call to the data provider. If the fetch ends with a success, react-admin does nothing more than a refresh to grab the latest data from the server. In most cases, the user sees no difference (the data in the Redux store and the data from the data provider are the same). If the fetch fails, react-admin shows an error notification, and forces a refresh, too.
+An alternative mode for mutations is **optimistic rendering**. The idea is to handle the calls to the `dataProvider` on the client side first (i.e. updating entities in the Redux store), and re-render the screen immediately. The user sees the effect of their action with no delay. Then, react-admin applies the success side effects, and only after that, it triggers the call to the data provider. If the fetch ends with a success, react-admin does nothing more than a refresh to grab the latest data from the server. In most cases, the user sees no difference (the data in the Redux store and the data from the `dataProvider` are the same). If the fetch fails, react-admin shows an error notification, and forces a refresh, too.
 
-A third mutation mode is called **undoable**. It's like optimistic rendering, but with an added feature: after applying the changes and the side effects locally, react-admin *waits* for a few seconds before triggering the call to the data provider. During this delay, the end user sees an "undo" button that, when clicked, cancels the call to the data provider and refreshes the screen.
+A third mutation mode is called **undoable**. It's like optimistic rendering, but with an added feature: after applying the changes and the side effects locally, react-admin *waits* for a few seconds before triggering the call to the `dataProvider`. During this delay, the end user sees an "undo" button that, when clicked, cancels the call to the `dataProvider` and refreshes the screen.
 
 Here is a quick recap of the three mutation modes:
 
@@ -496,7 +496,7 @@ Here is a quick recap of the three mutation modes:
 | cancellable       | no                        | no         | yes       |
 
 
-For the Edit view, react-admin uses the undoable mode. For the Create view, react-admin needs to wait for the response to know the id of the resource to redirect to, so the mutation mode is pessimistic.  
+By default, react-admin uses the undoable mode for the Edit view. For the Create view, react-admin needs to wait for the response to know the id of the resource to redirect to, so the mutation mode is pessimistic.  
 
 You can benefit from optimistic and undoable modes when you call the `useMutation` hook, too. You just need to pass a `mutationMode` value in the `options` parameter:
 
