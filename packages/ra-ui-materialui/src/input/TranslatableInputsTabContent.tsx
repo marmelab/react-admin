@@ -56,11 +56,13 @@ const useStyles = makeStyles(
     theme => ({
         root: {
             flexGrow: 1,
-            padding: theme.spacing(1),
-            backgroundColor: theme.palette.background.default,
+            padding: theme.spacing(2),
+            borderRadius: 0,
+            borderBottomLeftRadius: theme.shape.borderRadius,
+            borderBottomRightRadius: theme.shape.borderRadius,
+            border: `1px solid ${theme.palette.divider}`,
+            borderTop: 0,
         },
     }),
-    {
-        name: 'RaTranslatableInputsTabContent',
-    }
+    { name: 'RaTranslatableInputsTabContent' }
 );
