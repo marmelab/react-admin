@@ -30,6 +30,7 @@ type ChildrenFunction = ({
 interface Props {
     initialState?: object;
     enableReducers?: boolean;
+    history?: History;
     children: ReactNode | ChildrenFunction;
 }
 
@@ -41,16 +42,16 @@ const dataProviderDefaultResponse = { data: null };
  * Pass custom store values as store prop
  *
  * @example
- * // in an enzyme test
- * const wrapper = render(
+ * // in an react testing-library test
+ * const utils = render(
  *     <TestContext initialState={{ admin: { resources: { post: { data: { 1: {id: 1, title: 'foo' } } } } } }}>
  *         <Show {...defaultShowProps} />
  *     </TestContext>
  * );
  *
  * @example
- * // in an enzyme test, using jest.
- * const wrapper = render(
+ * // in an react testing-library test, using jest.
+ * const utils = render(
  *     <TestContext initialState={{ admin: { resources: { post: { data: { 1: {id: 1, title: 'foo' } } } } } }}>
  *         {({ store }) => {
  *              dispatchSpy = jest.spyOn(store, 'dispatch');

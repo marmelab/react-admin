@@ -22,6 +22,10 @@ import SelectArrayInput from './SelectArrayInput';
 import SelectInput from './SelectInput';
 import TextInput from './TextInput';
 import sanitizeInputRestProps from './sanitizeInputRestProps';
+export * from './TranslatableInputs';
+export * from './TranslatableInputsTabContent';
+export * from './TranslatableInputsTabs';
+export * from './TranslatableInputsTab';
 
 export {
     ArrayInput,

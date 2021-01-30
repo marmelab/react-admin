@@ -87,7 +87,7 @@ const Labeled: FunctionComponent<LabeledProps> = props => {
         <FormControl
             className={className}
             fullWidth={fullWidth}
-            error={meta && meta.touched && !!meta.error}
+            error={meta && meta.touched && !!(meta.error || meta.submitError)}
             margin={margin}
         >
             <InputLabel htmlFor={id} shrink className={classes.label}>

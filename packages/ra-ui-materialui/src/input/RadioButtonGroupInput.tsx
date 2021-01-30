@@ -16,6 +16,8 @@ import { useInput, FieldTitle, ChoicesInputProps, warning } from 'ra-core';
 import sanitizeInputRestProps from './sanitizeInputRestProps';
 import InputHelperText from './InputHelperText';
 import RadioButtonGroupInputItem from './RadioButtonGroupInputItem';
+import Labeled from './Labeled';
+import { LinearProgress } from '../layout';
 
 const useStyles = makeStyles(
     theme => ({
@@ -95,6 +97,8 @@ const RadioButtonGroupInput: FunctionComponent<
         format,
         helperText,
         label,
+        loaded,
+        loading,
         margin = 'dense',
         onBlur,
         onChange,
@@ -122,12 +126,7 @@ const RadioButtonGroupInput: FunctionComponent<
         `If you're not wrapping the RadioButtonGroupInput inside a ReferenceInput, you must provide the choices prop`
     );
 
-    const {
-        id,
-        isRequired,
-        meta: { error, touched },
-        input,
-    } = useInput({
+    const { id, isRequired, meta, input } = useInput({
         format,
         onBlur,
         onChange,
@@ -139,11 +138,29 @@ const RadioButtonGroupInput: FunctionComponent<
         ...rest,
     });
 
+    const { error, submitError, touched } = meta;
+
+    if (loading) {
+        return (
+            <Labeled
+                id={id}
+                label={label}
+                source={source}
+                resource={resource}
+                className={rest.className}
+                isRequired={isRequired}
+                meta={meta}
+                input={input}
+            >
+                <LinearProgress />
+            </Labeled>
+        );
+    }
     return (
         <FormControl
             component="fieldset"
             margin={margin}
-            error={touched && !!error}
+            error={touched && !!(error || submitError)}
             {...sanitizeInputRestProps(rest)}
         >
             <FormLabel component="legend" className={classes.label}>
@@ -171,7 +188,7 @@ const RadioButtonGroupInput: FunctionComponent<
             <FormHelperText>
                 <InputHelperText
                     touched={touched}
-                    error={error}
+                    error={error || submitError}
                     helperText={helperText}
                 />
             </FormHelperText>

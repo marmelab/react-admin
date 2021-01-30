@@ -99,6 +99,7 @@ List.propTypes = {
     match: PropTypes.any,
     path: PropTypes.string,
     resource: PropTypes.string.isRequired,
+    syncWithLocation: PropTypes.bool,
 };
 
 List.defaultProps = {

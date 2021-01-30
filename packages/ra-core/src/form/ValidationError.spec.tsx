@@ -1,6 +1,5 @@
 import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
-import { cleanup } from '@testing-library/react';
 
 import ValidationError from './ValidationError';
 import { TranslationProvider } from '../i18n';
@@ -33,7 +32,6 @@ const renderWithTranslations = content =>
 
 describe('ValidationError', () => {
     afterEach(() => {
-        cleanup();
         translate.mockClear();
     });
 

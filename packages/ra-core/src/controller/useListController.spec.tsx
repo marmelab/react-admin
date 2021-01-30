@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { fireEvent, wait, cleanup } from '@testing-library/react';
+import { fireEvent, waitFor } from '@testing-library/react';
 import lolex from 'lolex';
 import TextField from '@material-ui/core/TextField/TextField';
 
@@ -68,7 +68,7 @@ describe('useListController', () => {
             };
 
             const { getByLabelText, dispatch, reduxStore } = renderWithRedux(
-                <ListController {...props} />,
+                <ListController syncWithLocation {...props} />,
                 {
                     admin: {
                         resources: {
@@ -112,7 +112,7 @@ describe('useListController', () => {
             };
 
             const { getByLabelText, dispatch, reduxStore } = renderWithRedux(
-                <ListController {...props} />,
+                <ListController syncWithLocation {...props} />,
                 {
                     admin: {
                         resources: {
@@ -158,7 +158,11 @@ describe('useListController', () => {
             };
 
             const { dispatch, rerender } = renderWithRedux(
-                <ListController {...props} filter={{ foo: 1 }} />,
+                <ListController
+                    syncWithLocation
+                    {...props}
+                    filter={{ foo: 1 }}
+                />,
                 {
                     admin: {
                         resources: {
@@ -186,7 +190,13 @@ describe('useListController', () => {
             // Check that the permanent filter is not included in the filterValues (passed to Filter form and button)
             expect(children.mock.calls[0][0].filterValues).toEqual({});
 
-            rerender(<ListController {...props} filter={{ foo: 2 }} />);
+            rerender(
+                <ListController
+                    syncWithLocation
+                    {...props}
+                    filter={{ foo: 2 }}
+                />
+            );
 
             const updatedCrudGetListCalls = dispatch.mock.calls.filter(
                 call => call[0].type === 'RA/CRUD_GET_LIST'
@@ -205,7 +215,6 @@ describe('useListController', () => {
 
         afterEach(() => {
             clock.uninstall();
-            cleanup();
         });
     });
     describe('showFilter', () => {
@@ -260,13 +269,13 @@ describe('useListController', () => {
             );
 
             fireEvent.click(getByLabelText('Show filter 1'));
-            await wait(() => {
+            await waitFor(() => {
                 expect(currentDisplayedFilters).toEqual({
                     'filter1.subdata': true,
                 });
             });
             fireEvent.click(getByLabelText('Show filter 2'));
-            await wait(() => {
+            await waitFor(() => {
                 expect(currentDisplayedFilters).toEqual({
                     'filter1.subdata': true,
                     filter2: true,

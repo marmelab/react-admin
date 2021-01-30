@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import { TestTranslationProvider } from 'ra-core';
 
@@ -15,8 +15,6 @@ describe('<RadioButtonGroupInput />', () => {
             { id: 'mastercard', name: 'Mastercard' },
         ],
     };
-
-    afterEach(cleanup);
 
     it('should render choices as radio inputs', () => {
         const { getByLabelText, queryByText } = render(
@@ -376,5 +374,66 @@ describe('<RadioButtonGroupInput />', () => {
             expect(error.classList.contains('Mui-error')).toEqual(true);
             expect(queryByText('Can I help you?')).toBeNull();
         });
+    });
+
+    // TODO: restore once master has been merged back to next
+    it.skip('should not render a LinearProgress if loading is true and a second has not passed yet', () => {
+        const { queryByRole } = render(
+            <Form
+                validateOnBlur
+                onSubmit={jest.fn()}
+                render={() => (
+                    <RadioButtonGroupInput
+                        {...{
+                            ...defaultProps,
+                            loaded: true,
+                            loading: true,
+                        }}
+                    />
+                )}
+            />
+        );
+
+        expect(queryByRole('progressbar')).toBeNull();
+    });
+
+    it('should render a LinearProgress if loading is true and a second has passed', async () => {
+        const { queryByRole } = render(
+            <Form
+                validateOnBlur
+                onSubmit={jest.fn()}
+                render={() => (
+                    <RadioButtonGroupInput
+                        {...{
+                            ...defaultProps,
+                            loaded: true,
+                            loading: true,
+                        }}
+                    />
+                )}
+            />
+        );
+
+        await new Promise(resolve => setTimeout(resolve, 1001));
+
+        expect(queryByRole('progressbar')).not.toBeNull();
+    });
+
+    it('should not render a LinearProgress if loading is false', () => {
+        const { queryByRole } = render(
+            <Form
+                validateOnBlur
+                onSubmit={jest.fn()}
+                render={() => (
+                    <RadioButtonGroupInput
+                        {...{
+                            ...defaultProps,
+                        }}
+                    />
+                )}
+            />
+        );
+
+        expect(queryByRole('progressbar')).toBeNull();
     });
 });

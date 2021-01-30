@@ -199,7 +199,8 @@ export const useReferenceInputController = (
         // kept for backwards compatibility
         // @deprecated to be removed in 4.0
         error: dataStatus.error,
-        loading: dataStatus.waiting,
+        loading: possibleValuesLoading || referenceLoading,
+        loaded: possibleValuesLoaded && referenceLoaded,
         filter: filterValues,
         setFilter,
         pagination,
@@ -228,6 +229,7 @@ export interface ReferenceInputValue {
     };
     choices: Record[];
     error?: string;
+    loaded: boolean;
     loading: boolean;
     pagination: PaginationPayload;
     setFilter: (filter: string) => void;

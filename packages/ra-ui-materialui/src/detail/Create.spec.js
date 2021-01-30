@@ -1,13 +1,10 @@
 import * as React from 'react';
 import expect from 'expect';
-import { cleanup } from '@testing-library/react';
 import { renderWithRedux } from 'ra-core';
 
 import { Create } from './Create';
 
 describe('<Create />', () => {
-    afterEach(cleanup);
-
     const defaultCreateProps = {
         basePath: '/foo',
         id: '123',

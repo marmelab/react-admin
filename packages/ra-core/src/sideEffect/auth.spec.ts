@@ -18,7 +18,7 @@ import {
 } from '../actions/notificationActions';
 import { clearState } from '../actions/clearActions';
 
-const wait = (timeout = 100) =>
+const waitFor = (timeout = 100) =>
     new Promise(resolve => setTimeout(resolve, timeout));
 
 describe('Auth saga', () => {
@@ -183,7 +183,7 @@ describe('Auth saga', () => {
                 resource: 'posts',
             });
             expect(authProvider.logout).toHaveBeenCalled();
-            await wait();
+            await waitFor();
             expect(dispatch).toHaveBeenCalledWith(
                 replace({
                     pathname: '/custom',
@@ -246,7 +246,7 @@ describe('Auth saga', () => {
             );
             expect(authProvider.checkError).toHaveBeenCalledWith(error);
             expect(authProvider.logout).toHaveBeenCalled();
-            await wait();
+            await waitFor();
             expect(dispatch).toHaveBeenCalledWith(
                 push({
                     pathname: '/custom',

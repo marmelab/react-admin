@@ -1,11 +1,10 @@
-import { useCallback, useMemo, useEffect } from 'react';
+import { useCallback, useMemo, useEffect, useState } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { parse, stringify } from 'query-string';
 import lodashDebounce from 'lodash/debounce';
 import set from 'lodash/set';
 import pickBy from 'lodash/pickBy';
-import { Location } from 'history';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import queryReducer, {
     SET_FILTER,
@@ -21,12 +20,14 @@ import removeKey from '../util/removeKey';
 
 interface ListParamsOptions {
     resource: string;
-    location: Location;
     perPage?: number;
     sort?: SortPayload;
     // default value for a filter when displayed but not yet set
     filterDefaultValues?: FilterPayload;
     debounce?: number;
+    // Wether to synchronize the list parameters with the current location (URL search parameters)
+    // This is set to true automatically when a List is used inside a Resource component
+    syncWithLocation?: boolean;
 }
 
 interface Parameters extends ListParams {
@@ -107,14 +108,16 @@ const defaultParams = {};
  */
 const useListParams = ({
     resource,
-    location,
     filterDefaultValues,
     sort = defaultSort,
     perPage = 10,
     debounce = 500,
+    syncWithLocation = false,
 }: ListParamsOptions): [Parameters, Modifiers] => {
     const dispatch = useDispatch();
+    const location = useLocation();
     const history = useHistory();
+    const [localParams, setLocalParams] = useState(defaultParams);
     const params = useSelector(
         (reduxState: ReduxState) =>
             reduxState.admin.resources[resource]
@@ -126,19 +129,22 @@ const useListParams = ({
     const requestSignature = [
         location.search,
         resource,
-        params,
+        syncWithLocation ? params : localParams,
         filterDefaultValues,
         JSON.stringify(sort),
         perPage,
+        syncWithLocation,
     ];
 
-    const queryFromLocation = parseQueryFromLocation(location);
+    const queryFromLocation = syncWithLocation
+        ? parseQueryFromLocation(location)
+        : {};
 
     const query = useMemo(
         () =>
             getQuery({
                 queryFromLocation,
-                params,
+                params: syncWithLocation ? params : localParams,
                 filterDefaultValues,
                 sort,
                 perPage,
@@ -158,14 +164,20 @@ const useListParams = ({
 
     const changeParams = useCallback(action => {
         const newParams = queryReducer(query, action);
-        history.push({
-            search: `?${stringify({
-                ...newParams,
-                filter: JSON.stringify(newParams.filter),
-                displayedFilters: JSON.stringify(newParams.displayedFilters),
-            })}`,
-        });
-        dispatch(changeListParams(resource, newParams));
+        if (syncWithLocation) {
+            history.push({
+                search: `?${stringify({
+                    ...newParams,
+                    filter: JSON.stringify(newParams.filter),
+                    displayedFilters: JSON.stringify(
+                        newParams.displayedFilters
+                    ),
+                })}`,
+            });
+            dispatch(changeListParams(resource, newParams));
+        } else {
+            setLocalParams(newParams);
+        }
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
     const setSort = useCallback(

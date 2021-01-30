@@ -11,11 +11,11 @@ import useInitializeFormWithRecord from './useInitializeFormWithRecord';
 import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
 import sanitizeEmptyValues from './sanitizeEmptyValues';
 import getFormInitialValues from './getFormInitialValues';
-import FormContext from './FormContext';
-import { Record } from '../types';
+import { FormContextValue, Record } from '../types';
 import { RedirectionSideEffect } from '../sideEffect';
 import { useDispatch } from 'react-redux';
 import { setAutomaticRefresh } from '../actions/uiActions';
+import { FormContextProvider } from './FormContextProvider';
 
 /**
  * Wrapper around react-final-form's Form to handle redirection on submit,
@@ -64,8 +64,9 @@ const FormWithRedirect: FC<FormWithRedirectProps> = ({
     sanitizeEmptyValues: shouldSanitizeEmptyValues = true,
     ...props
 }) => {
-    let redirect = useRef(props.redirect);
-    let onSave = useRef(save);
+    const redirect = useRef(props.redirect);
+    const onSave = useRef(save);
+    const formGroups = useRef<{ [key: string]: string[] }>({});
 
     // We don't use state here for two reasons:
     // 1. There no way to execute code only after the state has been updated
@@ -92,7 +93,37 @@ const FormWithRedirect: FC<FormWithRedirectProps> = ({
         [save]
     );
 
-    const formContextValue = useMemo(() => ({ setOnSave }), [setOnSave]);
+    const formContextValue = useMemo<FormContextValue>(
+        () => ({
+            setOnSave,
+            getGroupFields: name => formGroups.current[name] || [],
+            registerGroup: name => {
+                formGroups.current[name] = formGroups.current[name] || [];
+            },
+            unregisterGroup: name => {
+                delete formGroups[name];
+            },
+            registerField: (source, group) => {
+                if (group) {
+                    const fields = new Set(formGroups.current[group] || []);
+                    fields.add(source);
+                    formGroups.current[group] = Array.from(fields);
+                }
+            },
+            unregisterField: (source, group) => {
+                if (group) {
+                    if (!formGroups.current[group]) {
+                        console.warn(`Invalid form group ${group}`);
+                    } else {
+                        const fields = new Set(formGroups.current[group]);
+                        fields.delete(source);
+                        formGroups.current[group] = Array.from(fields);
+                    }
+                }
+            },
+        }),
+        [setOnSave]
+    );
 
     const finalInitialValues = getFormInitialValues(
         initialValues,
@@ -111,14 +142,14 @@ const FormWithRedirect: FC<FormWithRedirectProps> = ({
                 finalInitialValues,
                 values
             );
-            onSave.current(sanitizedValues, finalRedirect);
+            return onSave.current(sanitizedValues, finalRedirect);
         } else {
-            onSave.current(values, finalRedirect);
+            return onSave.current(values, finalRedirect);
         }
     };
 
     return (
-        <FormContext.Provider value={formContextValue}>
+        <FormContextProvider value={formContextValue}>
             <Form
                 key={version} // support for refresh button
                 debug={debug}
@@ -146,7 +177,7 @@ const FormWithRedirect: FC<FormWithRedirectProps> = ({
                     />
                 )}
             />
-        </FormContext.Provider>
+        </FormContextProvider>
     );
 };
 

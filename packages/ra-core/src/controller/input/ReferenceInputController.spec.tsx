@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useCallback } from 'react';
-import { cleanup, fireEvent, wait } from '@testing-library/react';
+import { fireEvent, waitFor } from '@testing-library/react';
 import omit from 'lodash/omit';
 import expect from 'expect';
 
@@ -19,8 +19,6 @@ describe('<ReferenceInputController />', () => {
         source: 'post_id',
     };
 
-    afterEach(cleanup);
-
     const dataProvider = {
         getMany: jest.fn(() =>
             Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
@@ -38,7 +36,6 @@ describe('<ReferenceInputController />', () => {
 
     it('should fetch possible values using getList', async () => {
         const children = jest.fn().mockReturnValue(<p>child</p>);
-        await wait();
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <ReferenceInputController {...defaultProps}>
@@ -47,30 +44,30 @@ describe('<ReferenceInputController />', () => {
             </DataProviderContext.Provider>
         );
 
-        await wait();
-        expect(dispatch).toBeCalledTimes(5);
-        expect(dispatch.mock.calls[0][0]).toEqual({
-            type: 'CUSTOM_QUERY',
-            payload: {
-                filter: {
-                    q: '',
+        await waitFor(() => {
+            expect(dispatch).toBeCalledTimes(5);
+            expect(dispatch.mock.calls[0][0]).toEqual({
+                type: 'CUSTOM_QUERY',
+                payload: {
+                    filter: {
+                        q: '',
+                    },
+                    pagination: {
+                        page: 1,
+                        perPage: 25,
+                    },
+                    sort: {
+                        field: 'id',
+                        order: 'DESC',
+                    },
                 },
-                pagination: {
-                    page: 1,
-                    perPage: 25,
-                },
-                sort: {
-                    field: 'id',
-                    order: 'DESC',
-                },
-            },
-            meta: { resource: 'posts' },
+                meta: { resource: 'posts' },
+            });
         });
     });
 
     it('should allow getList pagination and sorting customization', async () => {
         const children = jest.fn().mockReturnValue(<p>child</p>);
-        await wait();
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <ReferenceInputController
@@ -86,30 +83,30 @@ describe('<ReferenceInputController />', () => {
             </DataProviderContext.Provider>
         );
 
-        await wait();
-        expect(dispatch).toBeCalledTimes(5);
-        expect(dispatch.mock.calls[0][0]).toEqual({
-            type: 'CUSTOM_QUERY',
-            payload: {
-                filter: {
-                    q: '',
+        await waitFor(() => {
+            expect(dispatch).toBeCalledTimes(5);
+            expect(dispatch.mock.calls[0][0]).toEqual({
+                type: 'CUSTOM_QUERY',
+                payload: {
+                    filter: {
+                        q: '',
+                    },
+                    pagination: {
+                        page: 5,
+                        perPage: 10,
+                    },
+                    sort: {
+                        field: 'title',
+                        order: 'ASC',
+                    },
                 },
-                pagination: {
-                    page: 5,
-                    perPage: 10,
-                },
-                sort: {
-                    field: 'title',
-                    order: 'ASC',
-                },
-            },
-            meta: { resource: 'posts' },
+                meta: { resource: 'posts' },
+            });
         });
     });
 
     it('should fetch current value using getMany', async () => {
         const children = jest.fn().mockReturnValue(<p>child</p>);
-        await wait();
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <ReferenceInputController
@@ -123,12 +120,13 @@ describe('<ReferenceInputController />', () => {
             </DataProviderContext.Provider>
         );
 
-        await wait();
-        expect(dispatch).toBeCalledTimes(10); // 5 for getList, 5 for getMany
-        expect(dispatch.mock.calls[5][0]).toEqual({
-            type: 'RA/CRUD_GET_MANY',
-            payload: { ids: [1] },
-            meta: { resource: 'posts' },
+        await waitFor(() => {
+            expect(dispatch).toBeCalledTimes(10); // 5 for getList, 5 for getMany
+            expect(dispatch.mock.calls[5][0]).toEqual({
+                type: 'RA/CRUD_GET_MANY',
+                payload: { ids: [1] },
+                meta: { resource: 'posts' },
+            });
         });
     });
 
@@ -154,72 +152,74 @@ describe('<ReferenceInputController />', () => {
             }
         );
 
-        await wait();
-        expect(
-            omit(children.mock.calls[0][0], [
-                'onChange',
-                'setPagination',
-                'setFilter',
-                'setSort',
-                'possibleValues.hideFilter',
-                'possibleValues.onSelect',
-                'possibleValues.onToggleItem',
-                'possibleValues.onUnselectItems',
-                'possibleValues.setFilters',
-                'possibleValues.setPage',
-                'possibleValues.setPerPage',
-                'possibleValues.setSort',
-                'possibleValues.showFilter',
-            ])
-        ).toEqual({
-            possibleValues: {
-                basePath: '/comments',
-                currentSort: {
-                    field: 'title',
-                    order: 'ASC',
+        await waitFor(() => {
+            expect(
+                omit(children.mock.calls[0][0], [
+                    'onChange',
+                    'setPagination',
+                    'setFilter',
+                    'setSort',
+                    'possibleValues.hideFilter',
+                    'possibleValues.onSelect',
+                    'possibleValues.onToggleItem',
+                    'possibleValues.onUnselectItems',
+                    'possibleValues.setFilters',
+                    'possibleValues.setPage',
+                    'possibleValues.setPerPage',
+                    'possibleValues.setSort',
+                    'possibleValues.showFilter',
+                ])
+            ).toEqual({
+                possibleValues: {
+                    basePath: '/comments',
+                    currentSort: {
+                        field: 'title',
+                        order: 'ASC',
+                    },
+                    data: {
+                        '1': {
+                            id: 1,
+                        },
+                    },
+                    displayedFilters: [],
+                    error: null,
+                    filterValues: {
+                        q: '',
+                    },
+                    hasCreate: false,
+
+                    ids: [1],
+                    loaded: false,
+                    loading: true,
+                    page: 1,
+                    perPage: 25,
+                    resource: 'comments',
+                    selectedIds: [],
+
+                    total: NaN,
                 },
-                data: {
-                    '1': {
+                referenceRecord: {
+                    data: {
                         id: 1,
                     },
+                    error: null,
+                    loaded: true,
+                    loading: true,
                 },
-                displayedFilters: [],
+                dataStatus: {
+                    error: null,
+                    loading: false,
+                    warning: null,
+                },
+                choices: [{ id: 1 }],
                 error: null,
-                filterValues: {
-                    q: '',
-                },
-                hasCreate: false,
-
-                ids: [1],
+                filter: { q: '' },
                 loaded: false,
                 loading: true,
-                page: 1,
-                perPage: 25,
-                resource: 'comments',
-                selectedIds: [],
-
-                total: NaN,
-            },
-            referenceRecord: {
-                data: {
-                    id: 1,
-                },
-                error: null,
-                loaded: true,
-                loading: true,
-            },
-            dataStatus: {
-                error: null,
-                loading: false,
+                pagination: { page: 1, perPage: 25 },
+                sort: { field: 'title', order: 'ASC' },
                 warning: null,
-            },
-            choices: [{ id: 1 }],
-            error: null,
-            filter: { q: '' },
-            loading: false,
-            pagination: { page: 1, perPage: 25 },
-            sort: { field: 'title', order: 'ASC' },
-            warning: null,
+            });
         });
     });
 
@@ -252,44 +252,46 @@ describe('<ReferenceInputController />', () => {
             </DataProviderContext.Provider>
         );
 
-        await wait();
-        expect(dispatch).toBeCalledTimes(5);
-        expect(dispatch.mock.calls[0][0]).toEqual({
-            type: 'CUSTOM_QUERY',
-            payload: {
-                filter: {
-                    q: '',
+        await waitFor(() => {
+            expect(dispatch).toBeCalledTimes(5);
+            expect(dispatch.mock.calls[0][0]).toEqual({
+                type: 'CUSTOM_QUERY',
+                payload: {
+                    filter: {
+                        q: '',
+                    },
+                    pagination: {
+                        page: 1,
+                        perPage: 25,
+                    },
+                    sort: {
+                        field: 'title',
+                        order: 'ASC',
+                    },
                 },
-                pagination: {
-                    page: 1,
-                    perPage: 25,
-                },
-                sort: {
-                    field: 'title',
-                    order: 'ASC',
-                },
-            },
-            meta: { resource: 'posts' },
+                meta: { resource: 'posts' },
+            });
         });
         fireEvent.click(getByLabelText('Change sort'));
-        await wait();
-        expect(dispatch).toBeCalledTimes(10);
-        expect(dispatch.mock.calls[5][0]).toEqual({
-            type: 'CUSTOM_QUERY',
-            payload: {
-                filter: {
-                    q: '',
+        await waitFor(() => {
+            expect(dispatch).toBeCalledTimes(10);
+            expect(dispatch.mock.calls[5][0]).toEqual({
+                type: 'CUSTOM_QUERY',
+                payload: {
+                    filter: {
+                        q: '',
+                    },
+                    pagination: {
+                        page: 1,
+                        perPage: 25,
+                    },
+                    sort: {
+                        field: 'body',
+                        order: 'DESC',
+                    },
                 },
-                pagination: {
-                    page: 1,
-                    perPage: 25,
-                },
-                sort: {
-                    field: 'body',
-                    order: 'DESC',
-                },
-            },
-            meta: { resource: 'posts' },
+                meta: { resource: 'posts' },
+            });
         });
     });
 });

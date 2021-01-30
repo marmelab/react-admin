@@ -1,4 +1,4 @@
-import useMutation from './useMutation';
+import useMutation, { MutationOptions } from './useMutation';
 import { Identifier } from '../types';
 
 /**
@@ -27,7 +27,10 @@ import { Identifier } from '../types';
  *     return <button disabled={loading} onClick={deleteMany}>Delete selected posts</button>;
  * };
  */
-const useDeleteMany = (resource: string, ids: Identifier[], options?: any) =>
-    useMutation({ type: 'deleteMany', resource, payload: { ids } }, options);
+const useDeleteMany = (
+    resource: string,
+    ids: Identifier[],
+    options?: MutationOptions
+) => useMutation({ type: 'deleteMany', resource, payload: { ids } }, options);
 
 export default useDeleteMany;

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { Form, Field } from 'react-final-form';
 import { Route, MemoryRouter, useHistory } from 'react-router-dom';
 
@@ -53,8 +53,6 @@ const App = () => (
 );
 
 describe('useWarnWhenUnsavedChanges', () => {
-    afterEach(cleanup);
-
     it('should not warn when leaving form with no changes', () => {
         const { getByText } = render(<App />);
         fireEvent.click(getByText('Submit'));

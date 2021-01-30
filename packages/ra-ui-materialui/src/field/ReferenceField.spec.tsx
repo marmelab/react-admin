@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { renderWithRedux, DataProviderContext } from 'ra-core';
 
@@ -8,7 +8,6 @@ import ReferenceField, { ReferenceFieldView } from './ReferenceField';
 import TextField from './TextField';
 
 describe('<ReferenceField />', () => {
-    afterEach(cleanup);
     const record = { id: 123, postId: 123 };
 
     describe('Progress bar', () => {
@@ -257,7 +256,7 @@ describe('<ReferenceField />', () => {
             </DataProviderContext.Provider>
         );
         await new Promise(resolve => setTimeout(resolve, 10));
-        const ErrorIcon = getByRole('presentation');
+        const ErrorIcon = getByRole('presentation', { hidden: true });
         expect(ErrorIcon).toBeDefined();
         expect(ErrorIcon.getAttribute('aria-errormessage')).toBe('boo');
     });

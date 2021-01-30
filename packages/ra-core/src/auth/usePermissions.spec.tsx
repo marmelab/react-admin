@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { cleanup, wait } from '@testing-library/react';
+import { waitFor } from '@testing-library/react';
 
 import usePermissions from './usePermissions';
 import AuthContext from './AuthContext';
@@ -21,8 +21,6 @@ const stateInpector = state => (
 );
 
 describe('usePermissions', () => {
-    afterEach(cleanup);
-
     it('should return a loading state on mount', () => {
         const { queryByText } = renderWithRedux(
             <UsePermissions>{stateInpector}</UsePermissions>
@@ -36,9 +34,10 @@ describe('usePermissions', () => {
         const { queryByText } = renderWithRedux(
             <UsePermissions>{stateInpector}</UsePermissions>
         );
-        await wait();
-        expect(queryByText('LOADING')).toBeNull();
-        expect(queryByText('LOADED')).not.toBeNull();
+        await waitFor(() => {
+            expect(queryByText('LOADING')).toBeNull();
+            expect(queryByText('LOADED')).not.toBeNull();
+        });
     });
 
     it('should return the permissions after a tick', async () => {
@@ -54,10 +53,11 @@ describe('usePermissions', () => {
                 <UsePermissions>{stateInpector}</UsePermissions>
             </AuthContext.Provider>
         );
-        await wait();
-        expect(queryByText('LOADING')).toBeNull();
-        expect(queryByText('LOADED')).not.toBeNull();
-        expect(queryByText('PERMISSIONS: admin')).not.toBeNull();
+        await waitFor(() => {
+            expect(queryByText('LOADING')).toBeNull();
+            expect(queryByText('LOADED')).not.toBeNull();
+            expect(queryByText('PERMISSIONS: admin')).not.toBeNull();
+        });
     });
 
     it('should return an error after a tick if the auth call fails', async () => {
@@ -73,9 +73,10 @@ describe('usePermissions', () => {
                 <UsePermissions>{stateInpector}</UsePermissions>
             </AuthContext.Provider>
         );
-        await wait();
-        expect(queryByText('LOADING')).toBeNull();
-        expect(queryByText('LOADED')).not.toBeNull();
-        expect(queryByText('ERROR')).not.toBeNull();
+        await waitFor(() => {
+            expect(queryByText('LOADING')).toBeNull();
+            expect(queryByText('LOADED')).not.toBeNull();
+            expect(queryByText('ERROR')).not.toBeNull();
+        });
     });
 });

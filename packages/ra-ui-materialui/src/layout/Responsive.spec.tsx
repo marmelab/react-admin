@@ -1,11 +1,9 @@
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import * as React from 'react';
 
 import { Responsive } from './Responsive';
 
 describe('<Responsive>', () => {
-    afterEach(cleanup);
-
     const Small = () => <div>Small</div>;
     const Medium = () => <div>Medium</div>;
     const Large = () => <div>Large</div>;
@@ -79,39 +77,32 @@ describe('<Responsive>', () => {
         expect(queryByText('Large')).toBeNull();
     });
 
-    it('should render the small component on all screens when no other component is passed', () => {
-        ['xs', 'sm', 'lg'].forEach(width => {
+    ['xs', 'sm', 'lg'].forEach(width => {
+        it(`should render the small component on ${width} screens when no other component is passed`, () => {
             const { queryByText } = render(
                 <Responsive small={<Small />} width={width} />
             );
             expect(queryByText('Small')).not.toBeNull();
             expect(queryByText('Medium')).toBeNull();
             expect(queryByText('Large')).toBeNull();
-            cleanup();
         });
-    });
 
-    it('should render the medium component on all screens when no other component is passed', () => {
-        ['xs', 'sm', 'lg'].forEach(width => {
+        it(`should render the medium component on ${width} screens when no other component is passed`, () => {
             const { queryByText } = render(
                 <Responsive medium={<Medium />} width={width} />
             );
             expect(queryByText('Small')).toBeNull();
             expect(queryByText('Medium')).not.toBeNull();
             expect(queryByText('Large')).toBeNull();
-            cleanup();
         });
-    });
 
-    it('should render the large component on all screens when no other component is passed', () => {
-        ['xs', 'sm', 'lg'].forEach(width => {
+        it(`should render the large component on ${width} screens when no other component is passed`, () => {
             const { queryByText } = render(
                 <Responsive large={<Large />} width={width} />
             );
             expect(queryByText('Small')).toBeNull();
             expect(queryByText('Medium')).toBeNull();
             expect(queryByText('Large')).not.toBeNull();
-            cleanup();
         });
     });
 

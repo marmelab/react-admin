@@ -17,8 +17,6 @@ import {
 } from 'ra-core';
 
 import sanitizeInputRestProps from './sanitizeInputRestProps';
-import LinearProgress from '../layout/LinearProgress';
-import Labeled from './Labeled';
 import ReferenceError from './ReferenceError';
 
 /**
@@ -202,7 +200,6 @@ export const ReferenceInputView: FunctionComponent<ReferenceInputViewProps> = ({
     id,
     input,
     isRequired,
-    loading,
     label,
     meta,
     possibleValues,
@@ -217,23 +214,6 @@ export const ReferenceInputView: FunctionComponent<ReferenceInputViewProps> = ({
 }) => {
     if (Children.count(children) !== 1) {
         throw new Error('<ReferenceInput> only accepts a single child');
-    }
-
-    if (loading) {
-        return (
-            <Labeled
-                id={id}
-                label={label}
-                source={source}
-                resource={resource}
-                className={className}
-                isRequired={isRequired}
-                meta={meta}
-                input={input}
-            >
-                <LinearProgress />
-            </Labeled>
-        );
     }
 
     // This is not a final-form error but an unrecoverable error from the

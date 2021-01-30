@@ -1,11 +1,9 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import DateField from './DateField';
 
 describe('<DateField />', () => {
-    afterEach(cleanup);
-
     it('should return null when the record is not set', () => {
         const { container } = render(<DateField source="foo" />);
         expect(container.firstChild).toBeNull();

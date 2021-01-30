@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { cleanup, wait } from '@testing-library/react';
+import { waitFor } from '@testing-library/react';
 
 import useAuthState from './useAuthState';
 import AuthContext from './AuthContext';
@@ -20,8 +20,6 @@ const stateInpector = state => (
 );
 
 describe('useAuthState', () => {
-    afterEach(cleanup);
-
     it('should return a loading state on mount', () => {
         const { queryByText } = renderWithRedux(
             <UseAuth>{stateInpector}</UseAuth>
@@ -35,10 +33,11 @@ describe('useAuthState', () => {
         const { queryByText } = renderWithRedux(
             <UseAuth>{stateInpector}</UseAuth>
         );
-        await wait();
-        expect(queryByText('LOADING')).toBeNull();
-        expect(queryByText('LOADED')).not.toBeNull();
-        expect(queryByText('AUTHENTICATED')).not.toBeNull();
+        await waitFor(() => {
+            expect(queryByText('LOADING')).toBeNull();
+            expect(queryByText('LOADED')).not.toBeNull();
+            expect(queryByText('AUTHENTICATED')).not.toBeNull();
+        });
     });
 
     it('should return an error after a tick if the auth fails', async () => {
@@ -56,9 +55,10 @@ describe('useAuthState', () => {
                 </UseAuth>
             </AuthContext.Provider>
         );
-        await wait();
-        expect(queryByText('LOADING')).toBeNull();
-        expect(queryByText('LOADED')).not.toBeNull();
-        expect(queryByText('AUTHENTICATED')).toBeNull();
+        await waitFor(() => {
+            expect(queryByText('LOADING')).toBeNull();
+            expect(queryByText('LOADED')).not.toBeNull();
+            expect(queryByText('AUTHENTICATED')).toBeNull();
+        });
     });
 });

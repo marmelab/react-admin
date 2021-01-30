@@ -1,6 +1,5 @@
 import renderHook from '../../util/renderHook';
 import useMatchingReferences from './useGetMatchingReferences';
-import { cleanup } from '@testing-library/react';
 
 describe('useMatchingReferences', () => {
     const defaultProps = {
@@ -15,8 +14,6 @@ describe('useMatchingReferences', () => {
         sort: { field: 'id', order: 'DESC' },
         referenceSource: undefined,
     };
-
-    afterEach(cleanup);
 
     it('should fetch matchingReferences only on mount', () => {
         const { dispatch } = renderHook(

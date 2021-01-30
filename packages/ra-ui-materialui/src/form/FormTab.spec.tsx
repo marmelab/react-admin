@@ -1,4 +1,3 @@
-import { cleanup } from '@testing-library/react';
 import * as React from 'react';
 import expect from 'expect';
 import {
@@ -12,8 +11,6 @@ import FormTab from './FormTab';
 import TextInput from '../input/TextInput';
 
 describe('<FormTab label="foo" />', () => {
-    afterEach(cleanup);
-
     const saveContextValue = {
         save: jest.fn(),
         saving: false,

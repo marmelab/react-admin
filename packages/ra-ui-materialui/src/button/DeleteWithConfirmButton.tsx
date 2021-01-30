@@ -13,6 +13,7 @@ import classnames from 'classnames';
 import inflection from 'inflection';
 import {
     useTranslate,
+    MutationMode,
     Record,
     RedirectionSideEffect,
     useDeleteWithConfirmController,
@@ -33,6 +34,7 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
         confirmContent = 'ra.message.delete_content',
         icon = defaultIcon,
         label = 'ra.action.delete',
+        mutationMode,
         onClick,
         record,
         redirect = 'list',
@@ -52,6 +54,7 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
         record,
         redirect,
         basePath,
+        mutationMode,
         onClick,
         onSuccess,
         onFailure,
@@ -124,6 +127,7 @@ interface Props {
     confirmContent?: string;
     icon?: ReactElement;
     label?: string;
+    mutationMode?: MutationMode;
     onClick?: ReactEventHandler<any>;
     record?: Record;
     redirect?: RedirectionSideEffect;

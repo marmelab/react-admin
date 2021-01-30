@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import expect from 'expect';
-import { render, cleanup, wait } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 
 import useCheckAuth from './useCheckAuth';
 import AuthContext from './AuthContext';
@@ -60,7 +60,6 @@ describe('useCheckAuth', () => {
     afterEach(() => {
         logout.mockClear();
         notify.mockClear();
-        cleanup();
     });
 
     it('should not logout if has credentials', async () => {
@@ -69,10 +68,11 @@ describe('useCheckAuth', () => {
                 <TestComponent params={{ token: true }} />
             </AuthContext.Provider>
         );
-        await wait();
-        expect(logout).toHaveBeenCalledTimes(0);
-        expect(notify).toHaveBeenCalledTimes(0);
-        expect(queryByText('authenticated')).not.toBeNull();
+        await waitFor(() => {
+            expect(logout).toHaveBeenCalledTimes(0);
+            expect(notify).toHaveBeenCalledTimes(0);
+            expect(queryByText('authenticated')).not.toBeNull();
+        });
     });
 
     it('should logout if has no credentials', async () => {
@@ -81,10 +81,11 @@ describe('useCheckAuth', () => {
                 <TestComponent params={{ token: false }} />
             </AuthContext.Provider>
         );
-        await wait();
-        expect(logout).toHaveBeenCalledTimes(1);
-        expect(notify).toHaveBeenCalledTimes(1);
-        expect(queryByText('authenticated')).toBeNull();
+        await waitFor(() => {
+            expect(logout).toHaveBeenCalledTimes(1);
+            expect(notify).toHaveBeenCalledTimes(1);
+            expect(queryByText('authenticated')).toBeNull();
+        });
     });
 
     it('should not logout if has no credentials and passed logoutOnFailure as false', async () => {
@@ -96,10 +97,11 @@ describe('useCheckAuth', () => {
                 />
             </AuthContext.Provider>
         );
-        await wait();
-        expect(logout).toHaveBeenCalledTimes(0);
-        expect(notify).toHaveBeenCalledTimes(0);
-        expect(queryByText('not authenticated')).not.toBeNull();
+        await waitFor(() => {
+            expect(logout).toHaveBeenCalledTimes(0);
+            expect(notify).toHaveBeenCalledTimes(0);
+            expect(queryByText('not authenticated')).not.toBeNull();
+        });
     });
 
     it('should logout without showing a notification when disableNotification is true', async () => {
@@ -108,10 +110,11 @@ describe('useCheckAuth', () => {
                 <TestComponent params={{ token: false }} disableNotification />
             </AuthContext.Provider>
         );
-        await wait();
-        expect(logout).toHaveBeenCalledTimes(1);
-        expect(notify).toHaveBeenCalledTimes(0);
-        expect(queryByText('authenticated')).toBeNull();
+        await waitFor(() => {
+            expect(logout).toHaveBeenCalledTimes(1);
+            expect(notify).toHaveBeenCalledTimes(0);
+            expect(queryByText('authenticated')).toBeNull();
+        });
     });
 
     it('should logout without showing a notification when authProvider returns error with message false', async () => {
@@ -125,9 +128,10 @@ describe('useCheckAuth', () => {
                 <TestComponent />
             </AuthContext.Provider>
         );
-        await wait();
-        expect(logout).toHaveBeenCalledTimes(1);
-        expect(notify).toHaveBeenCalledTimes(0);
-        expect(queryByText('authenticated')).toBeNull();
+        await waitFor(() => {
+            expect(logout).toHaveBeenCalledTimes(1);
+            expect(notify).toHaveBeenCalledTimes(0);
+            expect(queryByText('authenticated')).toBeNull();
+        });
     });
 });
