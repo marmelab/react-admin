@@ -1,12 +1,8 @@
 import { render, waitFor, fireEvent } from '@testing-library/react';
 import * as React from 'react';
 import expect from 'expect';
-import {
-    DataProvider,
-    DataProviderContext,
-    renderWithRedux,
-    TestContext,
-} from 'ra-core';
+import { DataProvider, DataProviderContext } from 'ra-core';
+import { renderWithRedux, TestContext } from 'ra-test';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import DeleteWithConfirmButton from './DeleteWithConfirmButton';
 import { Toolbar, SimpleForm } from '../form';

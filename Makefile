@@ -40,6 +40,10 @@ build-ra-core:
 	@echo "Transpiling ra-core files...";
 	@cd ./packages/ra-core && yarn -s build
 
+build-ra-test:
+	@echo "Transpiling ra-test files...";
+	@cd ./packages/ra-test && yarn -s build
+
 build-ra-ui-materialui:
 	@echo "Transpiling ra-ui-materialui files...";
 	@cd ./packages/ra-ui-materialui && yarn -s build

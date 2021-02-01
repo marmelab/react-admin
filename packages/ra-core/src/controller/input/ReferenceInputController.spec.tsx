@@ -4,7 +4,7 @@ import { fireEvent, waitFor } from '@testing-library/react';
 import omit from 'lodash/omit';
 import expect from 'expect';
 
-import renderWithRedux from '../../util/renderWithRedux';
+import { renderWithRedux } from 'ra-test';
 import ReferenceInputController from './ReferenceInputController';
 import { DataProviderContext } from '../../dataProvider';
 

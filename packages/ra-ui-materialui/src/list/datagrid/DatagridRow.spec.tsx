@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { fireEvent } from '@testing-library/react';
-import { renderWithRedux, linkToRecord } from 'ra-core';
+import { linkToRecord } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 

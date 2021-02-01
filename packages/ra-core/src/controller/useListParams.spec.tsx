@@ -5,7 +5,7 @@ import { Router } from 'react-router-dom';
 import { stringify } from 'query-string';
 import { createMemoryHistory } from 'history';
 import { fireEvent, waitFor } from '@testing-library/react';
-import { renderWithRedux, TestContext } from '../util';
+import { renderWithRedux, TestContext } from 'ra-test';
 
 import useListParams, { getQuery, getNumberOrDefault } from './useListParams';
 import {

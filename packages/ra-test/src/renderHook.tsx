@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { render, RenderResult } from '@testing-library/react';
 
-import renderWithRedux, { RenderWithReduxResult } from './renderWithRedux';
+import { renderWithRedux, RenderWithReduxResult } from './renderWithRedux';
 
 const TestHook = ({ children, hook }) => {
     return children(hook());
 };
 
-interface RenderHookResult extends RenderResult {
+export interface RenderHookResult extends RenderResult {
     hookValue: any;
     childrenMock: jest.Mock;
     rerender: (f: any) => any;
 }
-interface RenderHookWithReduxResult extends RenderWithReduxResult {
+export interface RenderHookWithReduxResult extends RenderWithReduxResult {
     hookValue: any;
     childrenMock: jest.Mock;
     rerender: (f: any) => any;
@@ -27,13 +27,13 @@ interface RenderHookWithReduxResult extends RenderWithReduxResult {
  * @returns {RenderHookResult}
  * @returns {RenderHookWithReduxResult}
  */
-function renderHook(
+export function renderHook(
     hook: Function,
     withRedux?: true,
     reduxState?: {}
 ): RenderHookWithReduxResult;
-function renderHook(hook: Function, withRedux: false): RenderHookResult;
-function renderHook(hook, withRedux = true, reduxState?) {
+export function renderHook(hook: Function, withRedux: false): RenderHookResult;
+export function renderHook(hook, withRedux = true, reduxState?) {
     let hookValue = null;
     const children = props => {
         hookValue = props;
@@ -58,5 +58,3 @@ function renderHook(hook, withRedux = true, reduxState?) {
         },
     };
 }
-
-export default renderHook;

@@ -1,4 +1,4 @@
-import renderHook from '../util/renderHook';
+import { renderHook } from 'ra-test';
 import useSortState, { defaultSort } from './useSortState';
 import { act } from '@testing-library/react';
 

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
-import { renderWithRedux, DataProviderContext } from 'ra-core';
+import { DataProviderContext } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 
 import { Show } from './Show';
 

@@ -3,10 +3,9 @@ import { fireEvent, waitFor, act, render } from '@testing-library/react';
 import expect from 'expect';
 
 import Mutation from './Mutation';
-import renderWithRedux from '../util/renderWithRedux';
 import { showNotification, refreshView, setListSelectedIds } from '../actions';
 import DataProviderContext from './DataProviderContext';
-import TestContext from '../util/TestContext';
+import { renderWithRedux, TestContext } from 'ra-test';
 import { useNotify } from '../sideEffect';
 import { History } from 'history';
 

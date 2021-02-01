@@ -10,7 +10,7 @@ import {
     sanitizeListRestProps,
 } from './useListController';
 
-import renderWithRedux from '../util/renderWithRedux';
+import { renderWithRedux } from 'ra-test';
 import { CRUD_CHANGE_LIST_PARAMS } from '../actions';
 import { SORT_ASC } from '../reducer/admin/resource/list/queryReducer';
 

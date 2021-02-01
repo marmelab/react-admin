@@ -6,7 +6,7 @@ import { CreateBase } from './CreateBase';
 import { useSaveContext } from './SaveContext';
 import { DataProviderContext } from '../../dataProvider';
 import { DataProvider } from '../../types';
-import { renderWithRedux } from '../../util';
+import { renderWithRedux } from 'ra-test';
 
 describe('CreateBase', () => {
     afterEach(cleanup);

@@ -17,16 +17,16 @@ That being said, there are still some cases, listed below, where a unit test can
 
 One issue you may run into when attempting to render custom `Create` or `Edit` views is that you need to provide the component with the expected props contained within the react-admin redux store.
 
-Luckily, react-admin provides access to a `TestContext` wrapper component that can be used to initialise your component with many of the expected react-admin props:
+Luckily, the `ra-test` package provides access to a `TestContext` wrapper component that can be used to initialise your component with many of the expected react-admin props:
 
 ```jsx
 import * as React from "react";
-import { TestContext } from 'react-admin';
-import { mount } from 'enzyme';
+import { TestContext } from 'ra-test';
+import { render } from '@testing-library/react';
 import MyCustomEditView from './my-custom-edit-view';
 
 describe('MyCustomEditView', () => {
-    let myCustomEditView;
+    let testUtils;
 
     beforeEach(() => {
         const defaultEditProps = {
@@ -37,7 +37,7 @@ describe('MyCustomEditView', () => {
             match: {},
         };
 
-        myCustomEditView = mount(
+        testUtils = render(
             <TestContext>
                 <MyCustomEditView {...defaultEditProps} />
             </TestContext>
@@ -57,7 +57,7 @@ At this point, your component should `mount` without errors and you can unit tes
 If your component relies on a reducer, you can enable reducers using the `enableReducers` prop:
 
 ```jsx
-myCustomEditView = mount(
+testUtils = render(
     <TestContext enableReducers>
         <MyCustomEditView />
     </TestContext>
@@ -72,7 +72,7 @@ If you are using `useDispatch` within your components, it is likely you will wan
 
 ```jsx
 let dispatchSpy;
-myCustomEditView = mount(
+testUtils = render(
     <TestContext>
         {({ store }) => {
             dispatchSpy = jest.spyOn(store, 'dispatch');
@@ -82,7 +82,7 @@ myCustomEditView = mount(
 );
 
 it('should send the user to another url', () => {
-    myCustomEditView.find('.next-button').simulate('click');
+    fireEvent.click(testUtils.getByText('Go to next'));
     expect(dispatchSpy).toHaveBeenCalledWith(`/next-url`);
 });
 ```
@@ -93,12 +93,12 @@ As explained on the [Auth Provider chapter](./Authentication.md#authorization), 
 
 In order to avoid regressions and make the design explicit to your co-workers, it's better to unit test which fields are supposed to be displayed or hidden for each permission.
 
-Here is an example with Jest and Enzyme, which is testing the [`UserShow` page of the simple example](https://github.com/marmelab/react-admin/blob/master/examples/simple/src/users/UserShow.js).
+Here is an example with Jest and TestingLibrary, which is testing the [`UserShow` page of the simple example](https://github.com/marmelab/react-admin/blob/master/examples/simple/src/users/UserShow.js).
 
 ```jsx
 // UserShow.spec.js
 import * as React from "react";
-import { shallow } from 'enzyme';
+import { render } from '@testing-library/react';
 import { Tab, TextField } from 'react-admin';
 
 import UserShow from './UserShow';
@@ -106,48 +106,71 @@ import UserShow from './UserShow';
 describe('UserShow', () => {
     describe('As User', () => {
         it('should display one tab', () => {
-            const wrapper = shallow(<UserShow permissions="user" />);
+            const testUtils = render(<UserShow permissions="user" />);
 
-            const tab = wrapper.find(Tab);
-            expect(tab.length).toBe(1);
+            const tabs = testUtils.queryByRole('tab');
+            expect(tabs.length).toEqual(1);
         });
 
         it('should show the user identity in the first tab', () => {
-            const wrapper = shallow(<UserShow permissions="user" />);
+            const dataProvider = {
+                getOne: jest.fn().resolve({
+                    id: 1,
+                    name: 'Leila'
+                })
+            }
+            const testUtils = render(
+                <TestContext>
+                    <UserShow permissions="user" id="1" />
+                </TestContext>
+            );
 
-            const tab = wrapper.find(Tab);
-            const fields = tab.find(TextField);
-
-            expect(fields.at(0).prop('source')).toBe('id');
-            expect(fields.at(1).prop('source')).toBe('name');
+            expect(testUtils.queryByDisplayValue('1')).not.toBeNull();
+            expect(testUtils.queryByDisplayValue('Leila')).not.toBeNull();
         });
     });
 
     describe('As Admin', () => {
         it('should display two tabs', () => {
-            const wrapper = shallow(<UserShow permissions="admin" />);
+            const testUtils = render(<UserShow permissions="user" />);
 
-            const tabs = wrapper.find(Tab);
-            expect(tabs.length).toBe(2);
+            const tabs = testUtils.queryByRole('tab');
+            expect(tabs.length).toEqual(2);
         });
 
         it('should show the user identity in the first tab', () => {
-            const wrapper = shallow(<UserShow permissions="admin" />);
+            const dataProvider = {
+                getOne: jest.fn().resolve({
+                    id: 1,
+                    name: 'Leila'
+                })
+            }
+            const testUtils = render(
+                <TestContext>
+                    <UserShow permissions="user" id="1" />
+                </TestContext>
+            );
 
-            const tabs = wrapper.find(Tab);
-            const fields = tabs.at(0).find(TextField);
-
-            expect(fields.at(0).prop('source')).toBe('id');
-            expect(fields.at(1).prop('source')).toBe('name');
+            expect(testUtils.queryByDisplayValue('1')).not.toBeNull();
+            expect(testUtils.queryByDisplayValue('Leila')).not.toBeNull();
         });
 
         it('should show the user role in the second tab', () => {
-            const wrapper = shallow(<UserShow permissions="admin" />);
+            const dataProvider = {
+                getOne: jest.fn().resolve({
+                    id: 1,
+                    name: 'Leila',
+                    role: 'admin'
+                })
+            }
+            const testUtils = render(
+                <TestContext>
+                    <UserShow permissions="user" id="1" />
+                </TestContext>
+            );
 
-            const tabs = wrapper.find(Tab);
-            const fields = tabs.at(1).find(TextField);
-
-            expect(fields.at(0).prop('source')).toBe('role');
+            fireEvent.click(testUtils.getByText('Security'));
+            expect(testUtils.queryByDisplayValue('admin')).not.toBeNull();
         });
     });
 });

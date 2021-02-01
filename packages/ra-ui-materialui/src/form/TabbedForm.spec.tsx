@@ -2,11 +2,11 @@ import * as React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import {
     minLength,
-    renderWithRedux,
     required,
     SaveContextProvider,
     SideEffectContextProvider,
 } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 
 import TabbedForm from './TabbedForm';
 import FormTab from './FormTab';

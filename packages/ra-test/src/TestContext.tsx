@@ -6,9 +6,11 @@ import merge from 'lodash/merge';
 import { createMemoryHistory, History } from 'history';
 import { Router } from 'react-router-dom';
 
-import createAdminStore from '../core/createAdminStore';
-import { convertLegacyDataProvider } from '../dataProvider';
-import { ReduxState } from '../types';
+import {
+    convertLegacyDataProvider,
+    createAdminStore,
+    ReduxState,
+} from 'ra-core';
 
 export const defaultStore = {
     admin: {
@@ -19,7 +21,7 @@ export const defaultStore = {
     },
 };
 
-type ChildrenFunction = ({
+export type TextContextChildrenFunction = ({
     store,
     history,
 }: {
@@ -27,11 +29,11 @@ type ChildrenFunction = ({
     history: History;
 }) => ReactNode;
 
-interface Props {
+export interface TestContextProps {
     initialState?: object;
     enableReducers?: boolean;
     history?: History;
-    children: ReactNode | ChildrenFunction;
+    children: ReactNode | TextContextChildrenFunction;
 }
 
 const dataProviderDefaultResponse = { data: null };
@@ -60,7 +62,7 @@ const dataProviderDefaultResponse = { data: null };
  *     </TestContext>
  * );
  */
-class TestContext extends Component<Props> {
+export class TestContext extends Component<TestContextProps> {
     storeWithDefault = null;
     history: History = null;
 
@@ -83,7 +85,7 @@ class TestContext extends Component<Props> {
     renderChildren = () => {
         const { children } = this.props;
         return typeof children === 'function'
-            ? (children as ChildrenFunction)({
+            ? (children as TextContextChildrenFunction)({
                   store: this.storeWithDefault,
                   history: this.history,
               })

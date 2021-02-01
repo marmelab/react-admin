@@ -24,7 +24,7 @@ export interface RenderWithReduxResult extends RenderResult {
  * dispatch: spy on the redux store dispatch method
  * reduxStore: the redux store used by the tested component
  */
-export default (
+export const renderWithRedux = (
     component,
     initialState = {},
     options = {}
