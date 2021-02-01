@@ -62,7 +62,7 @@ describe('usePermissionsOptimized', () => {
         expect(getPermissions).toBeCalledTimes(1);
         expect(queryByText('admin')).toBeNull();
         await act(async () => await new Promise(r => setTimeout(r)));
-        expect(renders).toBe(2); // rerenders when the getPermissions returns
+        expect(renders).toBe(2); // re-renders when the getPermissions returns
         expect(queryByText('admin')).not.toBeNull();
 
         // second usage
