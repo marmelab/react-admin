@@ -14,7 +14,6 @@ const TabbedFormTabs: FC<TabbedFormTabsProps> = ({
     children,
     classes,
     url,
-    tabsWithErrors,
     ...rest
 }) => {
     const location = useLocation();
@@ -49,11 +48,7 @@ const TabbedFormTabs: FC<TabbedFormTabsProps> = ({
                 return cloneElement(tab, {
                     intent: 'header',
                     value: tabPath,
-                    className:
-                        tabsWithErrors.includes(tab.props.label) &&
-                        location.pathname !== tabPath
-                            ? classes.errorTabButton
-                            : null,
+                    classes,
                 });
             })}
         </Tabs>

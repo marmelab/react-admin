@@ -1,14 +1,12 @@
 import * as React from 'react';
 import { FC } from 'react';
 import expect from 'expect';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 import { Record, TestTranslationProvider, renderWithRedux } from 'ra-core';
 import SelectField from './SelectField';
 
 describe('<SelectField />', () => {
-    afterEach(cleanup);
-
     const defaultProps = {
         source: 'foo',
         choices: [

@@ -1,10 +1,8 @@
 import * as React from 'react';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import FunctionField from './FunctionField';
 
 describe('<FunctionField />', () => {
-    afterEach(cleanup);
-
     it('should render using the render function', () => {
         const record = { id: 123, foo: 'bar' };
         const { queryByText } = render(

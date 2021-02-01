@@ -31,7 +31,7 @@ const TagReferenceInput = ({ ...props }) => {
     return (
         <div className={classes.input}>
             <ReferenceArrayInput {...props} filter={{ published: filter }}>
-                <AutocompleteArrayInput />
+                <AutocompleteArrayInput optionText="name.en" />
             </ReferenceArrayInput>
             <Button
                 name="change-filter"

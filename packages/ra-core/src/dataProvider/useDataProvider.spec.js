@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { cleanup, act, fireEvent } from '@testing-library/react';
+import { act, fireEvent } from '@testing-library/react';
 import expect from 'expect';
 
 import renderWithRedux from '../util/renderWithRedux';
@@ -8,6 +8,7 @@ import useDataProvider from './useDataProvider';
 import useUpdate from './useUpdate';
 import { DataProviderContext } from '../dataProvider';
 import { useRefresh } from '../sideEffect';
+import undoableEventEmitter from './undoableEventEmitter';
 
 const UseGetOne = () => {
     const [data, setData] = useState();
@@ -55,8 +56,6 @@ const UseCustomVerbWithStandardSignature = ({ onSuccess }) => {
 };
 
 describe('useDataProvider', () => {
-    afterEach(cleanup);
-
     it('should return a way to call the dataProvider', async () => {
         const getOne = jest.fn(() =>
             Promise.resolve({ data: { id: 1, title: 'foo' } })
@@ -125,7 +124,7 @@ describe('useDataProvider', () => {
             </DataProviderContext.Provider>
         );
         expect(dispatch.mock.calls).toHaveLength(3);
-        // wait for the dataProvider to return
+        // waitFor for the dataProvider to return
         await act(async () => {
             await new Promise(resolve => setTimeout(resolve));
         });
@@ -146,7 +145,7 @@ describe('useDataProvider', () => {
                 <UseCustomVerbWithStandardSignature onSuccess={onSuccess} />
             </DataProviderContext.Provider>
         );
-        // wait for the dataProvider to return
+        // waitFor for the dataProvider to return
         await act(async () => {
             await new Promise(resolve => setTimeout(resolve));
         });
@@ -177,7 +176,7 @@ describe('useDataProvider', () => {
                 <UseCustomVerbWithNoArgument />
             </DataProviderContext.Provider>
         );
-        // wait for the dataProvider to return
+        // waitFor for the dataProvider to return
         await act(async () => {
             await new Promise(resolve => setTimeout(resolve));
         });
@@ -193,7 +192,7 @@ describe('useDataProvider', () => {
                 <UseCustomVerb />
             </DataProviderContext.Provider>
         );
-        // wait for the dataProvider to return
+        // waitFor for the dataProvider to return
         await act(async () => {
             await new Promise(resolve => setTimeout(resolve));
         });
@@ -210,7 +209,7 @@ describe('useDataProvider', () => {
                 <UseCustomVerb onSuccess={onSuccess} />
             </DataProviderContext.Provider>
         );
-        // wait for the dataProvider to return
+        // waitFor for the dataProvider to return
         await act(async () => {
             await new Promise(resolve => setTimeout(resolve));
         });
@@ -243,7 +242,7 @@ describe('useDataProvider', () => {
                 </DataProviderContext.Provider>
             );
             expect(dispatch.mock.calls).toHaveLength(3);
-            // wait for the dataProvider to return
+            // waitFor for the dataProvider to return
             await act(async () => {
                 await new Promise(resolve => setTimeout(resolve));
             });
@@ -279,7 +278,7 @@ describe('useDataProvider', () => {
                 </DataProviderContext.Provider>
             );
             expect(onSuccess.mock.calls).toHaveLength(0);
-            // wait for the dataProvider to return
+            // waitFor for the dataProvider to return
             await act(async () => {
                 await new Promise(resolve => setTimeout(resolve));
             });
@@ -312,12 +311,163 @@ describe('useDataProvider', () => {
                 </DataProviderContext.Provider>
             );
             expect(onFailure.mock.calls).toHaveLength(0);
-            // wait for the dataProvider to return
+            // waitFor for the dataProvider to return
             await act(async () => {
                 await new Promise(resolve => setTimeout(resolve));
             });
             expect(onFailure.mock.calls).toHaveLength(1);
             expect(onFailure.mock.calls[0][0]).toEqual(new Error('foo'));
+        });
+
+        describe('mutationMode', () => {
+            it('should wait for response to dispatch side effects in pessimistic mode', async () => {
+                let resolveUpdate;
+                const update = jest.fn(() =>
+                    new Promise(resolve => {
+                        resolveUpdate = resolve;
+                    }).then(() => ({ data: { id: 1, updated: true } }))
+                );
+                const dataProvider = { update };
+                const UpdateButton = () => {
+                    const [updated, setUpdated] = useState(false);
+                    const dataProvider = useDataProvider();
+                    return (
+                        <button
+                            onClick={() =>
+                                dataProvider.update(
+                                    'foo',
+                                    {},
+                                    {
+                                        onSuccess: () => {
+                                            setUpdated(true);
+                                        },
+                                        mutationMode: 'pessimistic',
+                                    }
+                                )
+                            }
+                        >
+                            {updated ? '(updated)' : 'update'}
+                        </button>
+                    );
+                };
+                const { getByText, queryByText } = renderWithRedux(
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <UpdateButton />
+                    </DataProviderContext.Provider>,
+                    { admin: { resources: { posts: { data: {}, list: {} } } } }
+                );
+                // click on the update button
+                await act(async () => {
+                    fireEvent.click(getByText('update'));
+                    await new Promise(r => setTimeout(r));
+                });
+                expect(update).toBeCalledTimes(1);
+                // make sure the side effect hasn't been applied yet
+                expect(queryByText('(updated)')).toBeNull();
+                await act(() => {
+                    resolveUpdate();
+                });
+                // side effects should be applied now
+                expect(queryByText('(updated)')).not.toBeNull();
+            });
+
+            it('should not wait for response to dispatch side effects in optimistic mode', async () => {
+                let resolveUpdate;
+                const update = jest.fn(() =>
+                    new Promise(resolve => {
+                        resolveUpdate = resolve;
+                    }).then(() => ({ data: { id: 1, updated: true } }))
+                );
+                const dataProvider = { update };
+                const UpdateButton = () => {
+                    const [updated, setUpdated] = useState(false);
+                    const dataProvider = useDataProvider();
+                    return (
+                        <button
+                            onClick={() =>
+                                dataProvider.update(
+                                    'foo',
+                                    {},
+                                    {
+                                        onSuccess: () => {
+                                            setUpdated(true);
+                                        },
+                                        mutationMode: 'optimistic',
+                                    }
+                                )
+                            }
+                        >
+                            {updated ? '(updated)' : 'update'}
+                        </button>
+                    );
+                };
+                const { getByText, queryByText } = renderWithRedux(
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <UpdateButton />
+                    </DataProviderContext.Provider>,
+                    { admin: { resources: { posts: { data: {}, list: {} } } } }
+                );
+                // click on the update button
+                await act(async () => {
+                    fireEvent.click(getByText('update'));
+                    await new Promise(r => setTimeout(r));
+                });
+                // side effects should be applied now
+                expect(queryByText('(updated)')).not.toBeNull();
+                expect(update).toBeCalledTimes(1);
+                await act(() => {
+                    resolveUpdate();
+                });
+            });
+
+            it('should not wait for response to dispatch side effects in undoable mode', async () => {
+                const update = jest.fn({
+                    apply: () =>
+                        Promise.resolve({ data: { id: 1, updated: true } }),
+                });
+                const dataProvider = { update };
+                const UpdateButton = () => {
+                    const [updated, setUpdated] = useState(false);
+                    const dataProvider = useDataProvider();
+                    return (
+                        <button
+                            onClick={() =>
+                                dataProvider.update(
+                                    'foo',
+                                    {},
+                                    {
+                                        onSuccess: () => {
+                                            setUpdated(true);
+                                        },
+                                        mutationMode: 'undoable',
+                                    }
+                                )
+                            }
+                        >
+                            {updated ? '(updated)' : 'update'}
+                        </button>
+                    );
+                };
+                const { getByText, queryByText } = renderWithRedux(
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <UpdateButton />
+                    </DataProviderContext.Provider>,
+                    { admin: { resources: { posts: { data: {}, list: {} } } } }
+                );
+                // click on the update button
+                await act(async () => {
+                    fireEvent.click(getByText('update'));
+                    await new Promise(r => setTimeout(r));
+                });
+                // side effects should be applied now
+                expect(queryByText('(updated)')).not.toBeNull();
+                // update shouldn't be called at all
+                expect(update).toBeCalledTimes(0);
+                await act(() => {
+                    undoableEventEmitter.emit('end', {});
+                });
+                expect(update).toBeCalledTimes(1);
+            });
         });
     });
 
@@ -331,7 +481,7 @@ describe('useDataProvider', () => {
                 </DataProviderContext.Provider>,
                 { admin: { resources: { posts: { data: {}, list: {} } } } }
             );
-            // wait for the dataProvider to return
+            // waitFor for the dataProvider to return
             await act(async () => await new Promise(r => setTimeout(r)));
             expect(getOne).toBeCalledTimes(1);
             rerender(
@@ -339,7 +489,7 @@ describe('useDataProvider', () => {
                     <UseGetOne key="2" />
                 </DataProviderContext.Provider>
             );
-            // wait for the dataProvider to return
+            // waitFor for the dataProvider to return
             await act(async () => await new Promise(r => setTimeout(r)));
             expect(getOne).toBeCalledTimes(2);
         });
@@ -357,7 +507,7 @@ describe('useDataProvider', () => {
                 </DataProviderContext.Provider>,
                 { admin: { resources: { posts: { data: {}, list: {} } } } }
             );
-            // wait for the dataProvider to return
+            // waitFor for the dataProvider to return
             await act(async () => await new Promise(r => setTimeout(r)));
             expect(getOne).toBeCalledTimes(1);
             rerender(
@@ -365,7 +515,7 @@ describe('useDataProvider', () => {
                     <UseGetOne key="2" />
                 </DataProviderContext.Provider>
             );
-            // wait for the dataProvider to return
+            // waitFor for the dataProvider to return
             await act(async () => await new Promise(r => setTimeout(r)));
             expect(getOne).toBeCalledTimes(1);
         });
@@ -383,7 +533,7 @@ describe('useDataProvider', () => {
                 </DataProviderContext.Provider>,
                 { admin: { resources: { posts: { data: {}, list: {} } } } }
             );
-            // wait for the dataProvider to return
+            // waitFor for the dataProvider to return
             await act(async () => await new Promise(r => setTimeout(r)));
             expect(getOne).toBeCalledTimes(1);
             rerender(
@@ -391,7 +541,7 @@ describe('useDataProvider', () => {
                     <UseGetOne key="2" />
                 </DataProviderContext.Provider>
             );
-            // wait for the dataProvider to return
+            // waitFor for the dataProvider to return
             await act(async () => await new Promise(r => setTimeout(r)));
             expect(getOne).toBeCalledTimes(2);
         });
@@ -414,7 +564,7 @@ describe('useDataProvider', () => {
                 </DataProviderContext.Provider>,
                 { admin: { resources: { posts: { data: {}, list: {} } } } }
             );
-            // wait for the dataProvider to return
+            // waitFor for the dataProvider to return
             await act(async () => await new Promise(r => setTimeout(r)));
             // click on the refresh button
             expect(getOne).toBeCalledTimes(1);
@@ -427,7 +577,7 @@ describe('useDataProvider', () => {
                     <UseGetOne key="2" />
                 </DataProviderContext.Provider>
             );
-            // wait for the dataProvider to return
+            // waitFor for the dataProvider to return
             await act(async () => await new Promise(r => setTimeout(r)));
             expect(getOne).toBeCalledTimes(2);
         });
@@ -453,7 +603,7 @@ describe('useDataProvider', () => {
                 </DataProviderContext.Provider>,
                 { admin: { resources: { posts: { data: {}, list: {} } } } }
             );
-            // wait for the dataProvider to return
+            // waitFor for the dataProvider to return
             await act(async () => await new Promise(r => setTimeout(r)));
             expect(getOne).toBeCalledTimes(1);
             // click on the update button
@@ -466,7 +616,7 @@ describe('useDataProvider', () => {
                     <UseGetOne key="2" />
                 </DataProviderContext.Provider>
             );
-            // wait for the dataProvider to return
+            // waitFor for the dataProvider to return
             await act(async () => await new Promise(r => setTimeout(r)));
             expect(getOne).toBeCalledTimes(2);
         });

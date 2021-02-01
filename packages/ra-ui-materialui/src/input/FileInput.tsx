@@ -128,7 +128,7 @@ const FileInput: FunctionComponent<
         validate,
         ...rest,
     });
-    const { touched, error } = meta;
+    const { touched, error, submitError } = meta;
     const files = value ? (Array.isArray(value) ? value : [value]) : [];
 
     const onDrop = (newFiles, rejectedFiles, event) => {
@@ -209,7 +209,7 @@ const FileInput: FunctionComponent<
                 <FormHelperText>
                     <InputHelperText
                         touched={touched}
-                        error={error}
+                        error={error || submitError}
                         helperText={helperText}
                     />
                 </FormHelperText>

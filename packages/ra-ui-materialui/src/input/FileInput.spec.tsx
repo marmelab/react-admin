@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
 
 import ImageField from '../field/ImageField';
@@ -7,8 +7,6 @@ import FileField from '../field/FileField';
 import FileInput from './FileInput';
 
 describe('<FileInput />', () => {
-    afterEach(cleanup);
-
     const defaultProps = {
         source: 'image',
         resource: 'posts',
@@ -267,7 +265,6 @@ describe('<FileInput />', () => {
             );
 
             expect(getByText(expectedLabelText)).not.toBeNull();
-            cleanup();
         };
 
         const CustomLabel = () => <div>Custom label in component</div>;

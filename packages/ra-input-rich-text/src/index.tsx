@@ -110,7 +110,9 @@ const RichTextInput: FunctionComponent<Props> = props => {
 
         return () => {
             quillInstance.current.off('text-change', onTextChange);
-            onTextChange.cancel();
+            if (onTextChange.cancel) {
+                onTextChange.cancel();
+            }
             quillInstance.current = null;
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps

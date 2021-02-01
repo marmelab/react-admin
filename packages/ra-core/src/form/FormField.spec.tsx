@@ -1,12 +1,10 @@
 import * as React from 'react';
 import expect from 'expect';
 import { Form } from 'react-final-form';
-import { render, fireEvent, cleanup } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import FormField from './FormField';
 
 describe('<FormField>', () => {
-    afterEach(cleanup);
-
     // disable deprecation warnings
     let consoleSpy;
     beforeAll(() => {

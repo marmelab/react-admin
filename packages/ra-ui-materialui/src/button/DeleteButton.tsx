@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FC, ReactElement, SyntheticEvent } from 'react';
 import PropTypes from 'prop-types';
-import { Record, RedirectionSideEffect } from 'ra-core';
+import { Record, RedirectionSideEffect, MutationMode } from 'ra-core';
 
 import { ButtonProps } from './Button';
 import DeleteWithUndoButton from './DeleteWithUndoButton';
@@ -46,16 +46,21 @@ import DeleteWithConfirmButton from './DeleteWithConfirmButton';
  */
 const DeleteButton: FC<DeleteButtonProps> = ({
     undoable,
+    mutationMode,
     record,
     ...props
 }) => {
     if (!record || record.id == null) {
         return null;
     }
-    return undoable ? (
+    return undoable || mutationMode === 'undoable' ? (
         <DeleteWithUndoButton record={record} {...props} />
     ) : (
-        <DeleteWithConfirmButton record={record} {...props} />
+        <DeleteWithConfirmButton
+            mutationMode={mutationMode}
+            record={record}
+            {...props}
+        />
     );
 };
 
@@ -65,6 +70,7 @@ interface Props {
     className?: string;
     icon?: ReactElement;
     label?: string;
+    mutationMode?: MutationMode;
     onClick?: (e: MouseEvent) => void;
     record?: Record;
     redirect?: RedirectionSideEffect;
@@ -76,6 +82,7 @@ interface Props {
     pristine?: boolean;
     saving?: boolean;
     submitOnEnter?: boolean;
+    /** @deprecated use mutationMode: undoable instead */
     undoable?: boolean;
 }
 

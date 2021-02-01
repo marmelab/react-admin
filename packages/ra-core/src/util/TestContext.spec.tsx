@@ -1,5 +1,5 @@
 import expect from 'expect';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import * as React from 'react';
 
 import TestContext, { defaultStore } from './TestContext';
@@ -33,8 +33,6 @@ const primedStore = {
 };
 
 describe('TestContext.js', () => {
-    afterEach(cleanup);
-
     it('should render the given children', () => {
         const { queryAllByText } = render(
             <TestContext>

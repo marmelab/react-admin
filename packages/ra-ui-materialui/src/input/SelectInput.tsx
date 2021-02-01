@@ -17,6 +17,8 @@ import {
 import ResettableTextField from './ResettableTextField';
 import InputHelperText from './InputHelperText';
 import sanitizeInputRestProps from './sanitizeInputRestProps';
+import Labeled from './Labeled';
+import { LinearProgress } from '../layout';
 
 const sanitizeRestProps = ({
     addLabel,
@@ -150,6 +152,8 @@ const SelectInput: FunctionComponent<
         format,
         helperText,
         label,
+        loaded,
+        loading,
         onBlur,
         onChange,
         onFocus,
@@ -182,12 +186,7 @@ const SelectInput: FunctionComponent<
         translateChoice,
     });
 
-    const {
-        id,
-        input,
-        isRequired,
-        meta: { error, touched },
-    } = useInput({
+    const { id, input, isRequired, meta } = useInput({
         format,
         onBlur,
         onChange,
@@ -198,6 +197,8 @@ const SelectInput: FunctionComponent<
         validate,
         ...rest,
     });
+
+    const { touched, error, submitError } = meta;
 
     const renderEmptyItemOption = useCallback(() => {
         return React.isValidElement(emptyText)
@@ -210,6 +211,23 @@ const SelectInput: FunctionComponent<
     const renderMenuItemOption = useCallback(choice => getChoiceText(choice), [
         getChoiceText,
     ]);
+
+    if (loading) {
+        return (
+            <Labeled
+                id={id}
+                label={label}
+                source={source}
+                resource={resource}
+                className={className}
+                isRequired={isRequired}
+                meta={meta}
+                input={input}
+            >
+                <LinearProgress />
+            </Labeled>
+        );
+    }
 
     return (
         <ResettableTextField
@@ -229,11 +247,11 @@ const SelectInput: FunctionComponent<
             }
             className={`${classes.input} ${className}`}
             clearAlwaysVisible
-            error={!!(touched && error)}
+            error={!!(touched && (error || submitError))}
             helperText={
                 <InputHelperText
                     touched={touched}
-                    error={error}
+                    error={error || submitError}
                     helperText={helperText}
                 />
             }

@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, wait, getByText } from '@testing-library/react';
+import { fireEvent, waitFor, getByText } from '@testing-library/react';
 import * as React from 'react';
 import expect from 'expect';
 import {
@@ -24,8 +24,6 @@ describe('<SimpleFormIterator />', () => {
         confirmSpy.mockImplementation(jest.fn(() => true));
     });
     afterAll(() => confirmSpy.mockRestore());
-
-    afterEach(cleanup);
 
     const saveContextValue = {
         save: jest.fn(),
@@ -222,7 +220,7 @@ describe('<SimpleFormIterator />', () => {
         const addItemElement = getByText('ra.action.add').closest('button');
 
         fireEvent.click(addItemElement);
-        await wait(() => {
+        await waitFor(() => {
             const inputElements = queryAllByLabelText(
                 'resources.undefined.fields.email'
             );
@@ -231,7 +229,7 @@ describe('<SimpleFormIterator />', () => {
         });
 
         fireEvent.click(addItemElement);
-        await wait(() => {
+        await waitFor(() => {
             const inputElements = queryAllByLabelText(
                 'resources.undefined.fields.email'
             );
@@ -274,7 +272,7 @@ describe('<SimpleFormIterator />', () => {
         const addItemElement = getByText('ra.action.add').closest('button');
 
         fireEvent.click(addItemElement);
-        await wait(() => {
+        await waitFor(() => {
             const inputElements = queryAllByLabelText('CustomLabel');
 
             expect(inputElements.length).toBe(1);
@@ -317,7 +315,7 @@ describe('<SimpleFormIterator />', () => {
         const addItemElement = getByText('ra.action.add').closest('button');
 
         fireEvent.click(addItemElement);
-        await wait(() => {
+        await waitFor(() => {
             const inputElements = queryAllByLabelText('CustomLabel');
 
             expect(inputElements.length).toBe(1);
@@ -369,7 +367,7 @@ describe('<SimpleFormIterator />', () => {
         ).closest('button');
 
         fireEvent.click(removeFirstButton);
-        await wait(() => {
+        await waitFor(() => {
             const inputElements = queryAllByLabelText(
                 'resources.undefined.fields.email'
             );

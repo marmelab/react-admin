@@ -23,6 +23,7 @@ import {
 import InputHelperText from './InputHelperText';
 import AutocompleteSuggestionList from './AutocompleteSuggestionList';
 import AutocompleteSuggestionItem from './AutocompleteSuggestionItem';
+import { AutocompleteInputLoader } from './AutocompleteInputLoader';
 
 interface Options {
     suggestionsContainerProps?: any;
@@ -110,6 +111,8 @@ const AutocompleteArrayInput: FunctionComponent<
         input: inputOverride,
         isRequired: isRequiredOverride,
         label,
+        loaded,
+        loading,
         limitChoicesToValue,
         margin = 'dense',
         matchSuggestion,
@@ -164,7 +167,7 @@ const AutocompleteArrayInput: FunctionComponent<
         id,
         input,
         isRequired,
-        meta: { touched, error },
+        meta: { touched, error, submitError },
     } = useInput({
         format,
         id: idOverride,
@@ -410,6 +413,9 @@ const AutocompleteArrayInput: FunctionComponent<
                                         ))}
                                     </div>
                                 ),
+                                endAdornment: loading && (
+                                    <AutocompleteInputLoader />
+                                ),
                                 onBlur,
                                 onChange: event => {
                                     handleFilterChange(event);
@@ -421,7 +427,7 @@ const AutocompleteArrayInput: FunctionComponent<
                                 },
                                 onFocus,
                             }}
-                            error={!!(touched && error)}
+                            error={!!(touched && (error || submitError))}
                             label={
                                 <FieldTitle
                                     label={label}
@@ -442,7 +448,7 @@ const AutocompleteArrayInput: FunctionComponent<
                             helperText={
                                 <InputHelperText
                                     touched={touched}
-                                    error={error}
+                                    error={error || submitError}
                                     helperText={helperText}
                                 />
                             }

@@ -11,6 +11,7 @@ import classnames from 'classnames';
 import {
     FormWithRedirect,
     FormWithRedirectProps,
+    MutationMode,
     Record,
     RedirectionSideEffect,
 } from 'ra-core';
@@ -65,6 +66,7 @@ const SimpleForm: FC<SimpleFormProps> = props => (
 SimpleForm.propTypes = {
     children: PropTypes.node,
     initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     // @ts-ignore
     record: PropTypes.object,
     redirect: PropTypes.oneOfType([
@@ -91,11 +93,14 @@ export interface SimpleFormProps
     basePath?: string;
     children: ReactNode;
     className?: string;
+    component?: React.ComponentType<any>;
     initialValues?: any;
     margin?: 'none' | 'normal' | 'dense';
+    mutationMode?: MutationMode;
     resource?: string;
     submitOnEnter?: boolean;
     toolbar?: ReactElement;
+    /** @deprecated use mutationMode: undoable instead */
     undoable?: boolean;
     variant?: 'standard' | 'outlined' | 'filled';
 }
@@ -104,10 +109,12 @@ const SimpleFormView: FC<SimpleFormViewProps> = ({
     basePath,
     children,
     className,
+    component: Component,
     handleSubmit,
     handleSubmitWithRedirect,
     invalid,
     margin,
+    mutationMode,
     pristine,
     record,
     redirect,
@@ -123,7 +130,7 @@ const SimpleFormView: FC<SimpleFormViewProps> = ({
         className={classnames('simple-form', className)}
         {...sanitizeRestProps(rest)}
     >
-        <CardContentInner>
+        <Component>
             {Children.map(
                 children,
                 (input: ReactElement) =>
@@ -138,13 +145,14 @@ const SimpleFormView: FC<SimpleFormViewProps> = ({
                         />
                     )
             )}
-        </CardContentInner>
+        </Component>
         {toolbar &&
             React.cloneElement(toolbar, {
                 basePath,
                 handleSubmitWithRedirect,
                 handleSubmit,
                 invalid,
+                mutationMode,
                 pristine,
                 record,
                 redirect,
@@ -162,6 +170,7 @@ SimpleFormView.propTypes = {
     className: PropTypes.string,
     handleSubmit: PropTypes.func, // passed by react-final-form
     invalid: PropTypes.bool,
+    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     pristine: PropTypes.bool,
     // @ts-ignore
     record: PropTypes.object,
@@ -182,14 +191,17 @@ SimpleFormView.propTypes = {
 export interface SimpleFormViewProps extends FormRenderProps {
     basePath?: string;
     className?: string;
-    margin?: 'none' | 'normal' | 'dense';
+    component?: React.ComponentType<any>;
     handleSubmitWithRedirect?: (redirectTo: RedirectionSideEffect) => void;
+    margin?: 'none' | 'normal' | 'dense';
+    mutationMode?: MutationMode;
     record?: Record;
     redirect?: RedirectionSideEffect;
     resource?: string;
     save?: () => void;
     saving?: boolean;
     toolbar?: ReactElement;
+    /** @deprecated use mutationMode: undoable instead */
     undoable?: boolean;
     variant?: 'standard' | 'outlined' | 'filled';
     submitOnEnter?: boolean;
@@ -199,6 +211,7 @@ export interface SimpleFormViewProps extends FormRenderProps {
 SimpleFormView.defaultProps = {
     submitOnEnter: true,
     toolbar: <Toolbar />,
+    component: CardContentInner,
 };
 
 const sanitizeRestProps = ({

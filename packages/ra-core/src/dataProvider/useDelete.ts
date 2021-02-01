@@ -1,4 +1,4 @@
-import useMutation from './useMutation';
+import useMutation, { MutationOptions } from './useMutation';
 import { Identifier } from '../types';
 
 /**
@@ -32,7 +32,7 @@ const useDelete = (
     resource: string,
     id: Identifier,
     previousData: any = {},
-    options?: any
+    options?: MutationOptions
 ) =>
     useMutation(
         { type: 'delete', resource, payload: { id, previousData } },

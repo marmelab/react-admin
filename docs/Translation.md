@@ -698,3 +698,27 @@ const i18nProvider = polyglotI18nProvider(locale =>
 **Tip**: Check [the Polyglot documentation](https://airbnb.io/polyglot.js/#options-overview) for a list of options you can pass to Polyglot at startup. 
 
 This solution is all-or-nothing: you can't silence only *some* missing translation warnings. An alternative solution consists of passing a default translation using the `_` translation option, as explained in the [Using Specific Polyglot Features section](#using-specific-polyglot-features) above. 
+
+## Translating Record Fields
+
+Some of your records may contain fields that are translated in multiple languages. It's common, in such cases, to offer an interface allowing admin users to see and edit each translation. React-admin provides 2 components for that:
+
+- To display translatable fields, use the [`<TranslatableFields>`](/Fields.html#translatable-fields) component
+- To edit translatable fields, use the [`<TranslatableInputs>`](/Inputs.html#translatable-inputs) component
+
+They both expect the translatable values to have the following structure:
+
+```js
+{
+    name: {
+        en: 'The english value',
+        fr: 'The french value',
+        tlh: 'The klingon value',
+    },
+    description: {
+        en: 'The english value',
+        fr: 'The french value',
+        tlh: 'The klingon value',
+    }
+}
+```

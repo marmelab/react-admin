@@ -34,7 +34,7 @@ const BooleanInput: FunctionComponent<
         id,
         input: { onChange: finalFormOnChange, type, value, ...inputProps },
         isRequired,
-        meta: { error, touched },
+        meta: { error, submitError, touched },
     } = useInput({
         format,
         onBlur,
@@ -77,10 +77,10 @@ const BooleanInput: FunctionComponent<
                     />
                 }
             />
-            <FormHelperText error={!!error}>
+            <FormHelperText error={!!(error || submitError)}>
                 <InputHelperText
                     touched={touched}
-                    error={error}
+                    error={error || submitError}
                     helperText={helperText}
                 />
             </FormHelperText>

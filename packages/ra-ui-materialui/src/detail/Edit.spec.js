@@ -1,13 +1,15 @@
 import * as React from 'react';
 import expect from 'expect';
-import { cleanup, wait, fireEvent } from '@testing-library/react';
-import { renderWithRedux, DataProviderContext } from 'ra-core';
+import { waitFor, fireEvent, act } from '@testing-library/react';
+import {
+    renderWithRedux,
+    DataProviderContext,
+    undoableEventEmitter,
+} from 'ra-core';
 
 import { Edit } from './Edit';
 
 describe('<Edit />', () => {
-    afterEach(cleanup);
-
     const defaultEditProps = {
         basePath: '',
         id: '123',
@@ -30,7 +32,7 @@ describe('<Edit />', () => {
             </DataProviderContext.Provider>,
             { admin: { resources: { foo: { data: {} } } } }
         );
-        await wait(() => {
+        await waitFor(() => {
             expect(queryAllByText('lorem')).toHaveLength(1);
         });
     });
@@ -41,9 +43,7 @@ describe('<Edit />', () => {
             .mockImplementationOnce((_, { data }) => Promise.resolve({ data }));
         const dataProvider = {
             getOne: () =>
-                Promise.resolve({
-                    data: { id: 123, title: 'lorem' },
-                }),
+                Promise.resolve({ data: { id: 1234, title: 'lorem' } }),
             update,
         };
         const FakeForm = ({ record, save }) => (
@@ -54,24 +54,179 @@ describe('<Edit />', () => {
                 </button>
             </>
         );
+
         const { queryAllByText, getByText } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <Edit {...defaultEditProps} undoable={false}>
+                <Edit {...defaultEditProps} id="1234" undoable={false}>
                     <FakeForm />
                 </Edit>
             </DataProviderContext.Provider>,
             { admin: { resources: { foo: { data: {} } } } }
         );
-        await wait(() => {
+        await waitFor(() => {
             expect(queryAllByText('lorem')).toHaveLength(1);
         });
         fireEvent.click(getByText('Update'));
-        await wait(() => {
+        await waitFor(() => {
             expect(update).toHaveBeenCalledWith('foo', {
-                id: '123',
-                data: { id: 123, title: 'ipsum' },
-                previousData: { id: 123, title: 'lorem' },
+                id: '1234',
+                data: { id: 1234, title: 'ipsum' },
+                previousData: { id: 1234, title: 'lorem' },
             });
+        });
+    });
+
+    describe('mutationMode prop', () => {
+        it('should be undoable by default', async () => {
+            const update = jest
+                .fn()
+                .mockImplementationOnce((_, { data }) =>
+                    Promise.resolve({ data })
+                );
+            const dataProvider = {
+                getOne: () =>
+                    Promise.resolve({ data: { id: 1234, title: 'lorem' } }),
+                update,
+            };
+            const onSuccess = jest.fn();
+            const FakeForm = ({ record, save }) => (
+                <>
+                    <span>{record.title}</span>
+                    <button onClick={() => save({ ...record, title: 'ipsum' })}>
+                        Update
+                    </button>
+                </>
+            );
+
+            const { queryByText, getByText, findByText } = renderWithRedux(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <Edit {...defaultEditProps} id="1234" onSuccess={onSuccess}>
+                        <FakeForm />
+                    </Edit>
+                </DataProviderContext.Provider>,
+                { admin: { resources: { foo: { data: {} } } } }
+            );
+            await findByText('lorem');
+            fireEvent.click(getByText('Update'));
+            // waitFor for the next tick
+            await act(async () => {
+                await new Promise(resolve => setTimeout(resolve));
+            });
+            // changes applied locally
+            expect(queryByText('ipsum')).not.toBeNull();
+            // side effects called right away
+            expect(onSuccess).toHaveBeenCalledTimes(1);
+            // dataProvider not called
+            expect(update).toHaveBeenCalledTimes(0);
+            act(() => {
+                undoableEventEmitter.emit('end', {});
+            });
+            // dataProvider called
+            expect(update).toHaveBeenCalledTimes(1);
+        });
+
+        it('should accept optimistic mode', async () => {
+            const update = jest
+                .fn()
+                .mockImplementationOnce((_, { data }) =>
+                    Promise.resolve({ data })
+                );
+            const dataProvider = {
+                getOne: () =>
+                    Promise.resolve({ data: { id: 1234, title: 'lorem' } }),
+                update,
+            };
+            const onSuccess = jest.fn();
+            const FakeForm = ({ record, save }) => (
+                <>
+                    <span>{record.title}</span>
+                    <button onClick={() => save({ ...record, title: 'ipsum' })}>
+                        Update
+                    </button>
+                </>
+            );
+
+            const { queryByText, getByText, findByText } = renderWithRedux(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <Edit
+                        {...defaultEditProps}
+                        id="1234"
+                        mutationMode="optimistic"
+                        onSuccess={onSuccess}
+                    >
+                        <FakeForm />
+                    </Edit>
+                </DataProviderContext.Provider>,
+                { admin: { resources: { foo: { data: {} } } } }
+            );
+            await findByText('lorem');
+            fireEvent.click(getByText('Update'));
+            // waitFor for the next tick
+            await act(async () => {
+                await new Promise(resolve => setTimeout(resolve));
+            });
+            // changes applied locally
+            expect(queryByText('ipsum')).not.toBeNull();
+            // side effects called right away
+            expect(onSuccess).toHaveBeenCalledTimes(1);
+            // dataProvider called
+            expect(update).toHaveBeenCalledTimes(1);
+        });
+
+        it('should accept pessimistic mode', async () => {
+            let resolveUpdate;
+            const update = jest.fn().mockImplementationOnce((_, { data }) =>
+                new Promise(resolve => {
+                    resolveUpdate = resolve;
+                }).then(() => ({ data }))
+            );
+            const dataProvider = {
+                getOne: () =>
+                    Promise.resolve({ data: { id: 1234, title: 'lorem' } }),
+                update,
+            };
+            const onSuccess = jest.fn();
+            const FakeForm = ({ record, save }) => (
+                <>
+                    <span>{record.title}</span>
+                    <button onClick={() => save({ ...record, title: 'ipsum' })}>
+                        Update
+                    </button>
+                </>
+            );
+
+            const { queryByText, getByText, findByText } = renderWithRedux(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <Edit
+                        {...defaultEditProps}
+                        id="1234"
+                        mutationMode="pessimistic"
+                        onSuccess={onSuccess}
+                    >
+                        <FakeForm />
+                    </Edit>
+                </DataProviderContext.Provider>,
+                { admin: { resources: { foo: { data: {} } } } }
+            );
+            await findByText('lorem');
+            fireEvent.click(getByText('Update'));
+            // waitFor for the next tick
+            await act(async () => {
+                await new Promise(resolve => setTimeout(resolve));
+            });
+            // changes not applied locally
+            expect(queryByText('ipsum')).toBeNull();
+            // side effects not called right away
+            expect(onSuccess).toHaveBeenCalledTimes(0);
+            // dataProvider called
+            expect(update).toHaveBeenCalledTimes(1);
+            act(() => {
+                resolveUpdate();
+            });
+            // changes applied locally
+            await findByText('ipsum');
+            // side effects applied
+            expect(onSuccess).toHaveBeenCalledTimes(1);
         });
     });
 
@@ -105,11 +260,11 @@ describe('<Edit />', () => {
                 </DataProviderContext.Provider>,
                 { admin: { resources: { foo: { data: {} } } } }
             );
-            await wait(() => {
+            await waitFor(() => {
                 expect(queryAllByText('lorem')).toHaveLength(1);
             });
             fireEvent.click(getByText('Update'));
-            await wait(() => {
+            await waitFor(() => {
                 expect(onSuccess).toHaveBeenCalledWith({
                     data: { id: 123, title: 'ipsum' },
                 });
@@ -152,11 +307,11 @@ describe('<Edit />', () => {
                 </DataProviderContext.Provider>,
                 { admin: { resources: { foo: { data: {} } } } }
             );
-            await wait(() => {
+            await waitFor(() => {
                 expect(queryAllByText('lorem')).toHaveLength(1);
             });
             fireEvent.click(getByText('Update'));
-            await wait(() => {
+            await waitFor(() => {
                 expect(onSuccessSave).toHaveBeenCalledWith({
                     data: { id: 123, title: 'ipsum' },
                 });
@@ -196,11 +351,11 @@ describe('<Edit />', () => {
                 </DataProviderContext.Provider>,
                 { admin: { resources: { foo: { data: {} } } } }
             );
-            await wait(() => {
+            await waitFor(() => {
                 expect(queryAllByText('lorem')).toHaveLength(1);
             });
             fireEvent.click(getByText('Update'));
-            await wait(() => {
+            await waitFor(() => {
                 expect(onFailure).toHaveBeenCalledWith({ message: 'not good' });
             });
         });
@@ -242,11 +397,11 @@ describe('<Edit />', () => {
                 </DataProviderContext.Provider>,
                 { admin: { resources: { foo: { data: {} } } } }
             );
-            await wait(() => {
+            await waitFor(() => {
                 expect(queryAllByText('lorem')).toHaveLength(1);
             });
             fireEvent.click(getByText('Update'));
-            await wait(() => {
+            await waitFor(() => {
                 expect(onFailureSave).toHaveBeenCalledWith({
                     message: 'not good',
                 });
@@ -293,11 +448,11 @@ describe('<Edit />', () => {
                 </DataProviderContext.Provider>,
                 { admin: { resources: { foo: { data: {} } } } }
             );
-            await wait(() => {
+            await waitFor(() => {
                 expect(queryAllByText('lorem')).toHaveLength(1);
             });
             fireEvent.click(getByText('Update'));
-            await wait(() => {
+            await waitFor(() => {
                 expect(transform).toHaveBeenCalledWith({
                     id: 123,
                     title: 'ipsum',
@@ -354,11 +509,11 @@ describe('<Edit />', () => {
                 </DataProviderContext.Provider>,
                 { admin: { resources: { foo: { data: {} } } } }
             );
-            await wait(() => {
+            await waitFor(() => {
                 expect(queryAllByText('lorem')).toHaveLength(1);
             });
             fireEvent.click(getByText('Update'));
-            await wait(() => {
+            await waitFor(() => {
                 expect(transform).not.toHaveBeenCalled();
                 expect(transformSave).toHaveBeenCalledWith({
                     id: 123,

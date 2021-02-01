@@ -10,6 +10,7 @@ import { Location, History, LocationState } from 'history';
 
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 import { AuthActionType } from './auth/types';
+import { Mutation } from './dataProvider/useMutation';
 
 /**
  * data types
@@ -284,11 +285,15 @@ export type DataProviderProxy = {
     [key: string]: any;
 };
 
+export type MutationMode = 'pessimistic' | 'optimistic' | 'undoable';
+
 export interface UseDataProviderOptions {
     action?: string;
     fetch?: string;
     meta?: object;
+    // @deprecated use mode: 'undoable' instead
     undoable?: boolean;
+    mutationMode?: MutationMode;
     onSuccess?: any;
     onFailure?: any;
 }
@@ -503,6 +508,15 @@ export type Exporter = (
 export type SetOnSave = (
     onSave?: (values: object, redirect: any) => void
 ) => void;
+
+export type FormContextValue = {
+    setOnSave?: SetOnSave;
+    registerGroup: (name: string) => void;
+    unregisterGroup: (name: string) => void;
+    registerField: (source: string, group?: string) => void;
+    unregisterField: (source: string, group?: string) => void;
+    getGroupFields: (name: string) => string[];
+};
 
 export type FormFunctions = {
     setOnSave?: SetOnSave;

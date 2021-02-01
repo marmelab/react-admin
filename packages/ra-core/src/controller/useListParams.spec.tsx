@@ -3,8 +3,10 @@ import expect from 'expect';
 import { render } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { stringify } from 'query-string';
+import { createMemoryHistory } from 'history';
+import { fireEvent, waitFor } from '@testing-library/react';
+import { renderWithRedux, TestContext } from '../util';
 
-import TestContext from '../util/TestContext';
 import useListParams, { getQuery, getNumberOrDefault } from './useListParams';
 import {
     SORT_DESC,
@@ -190,13 +192,13 @@ describe('useListParams', () => {
         });
     });
     describe('showFilter', () => {
-        it('should initialize displayed filters', () => {
+        it('should initialize displayed filters', async () => {
             const TestedComponent = () => {
                 const [, { showFilter }] = useListParams({
                     resource: 'foo',
-                    location: {} as any,
+                    syncWithLocation: true,
                 });
-                showFilter('foo');
+                showFilter('foo', 'bar');
                 return <span />;
             };
             const history = {
@@ -211,24 +213,26 @@ describe('useListParams', () => {
                     </TestContext>
                 </Router>
             );
-            expect(history.push).toBeCalledWith({
-                search:
-                    '?' +
-                    stringify({
-                        displayedFilters: JSON.stringify({ foo: true }),
-                        filter: '{}',
-                        sort: 'id',
-                        order: 'ASC',
-                        page: 1,
-                        perPage: 10,
-                    }),
+            await waitFor(() => {
+                expect(history.push).toBeCalledWith({
+                    search:
+                        '?' +
+                        stringify({
+                            displayedFilters: JSON.stringify({ foo: true }),
+                            filter: JSON.stringify({ foo: 'bar' }),
+                            sort: 'id',
+                            order: 'ASC',
+                            page: 1,
+                            perPage: 10,
+                        }),
+                });
             });
         });
         it('should initialize filters', () => {
             const TestedComponent = () => {
                 const [, { showFilter }] = useListParams({
                     resource: 'foo',
-                    location: {} as any,
+                    syncWithLocation: true,
                 });
                 showFilter('foo', 'bar');
                 return <span />;
@@ -263,42 +267,7 @@ describe('useListParams', () => {
             const TestedComponent = () => {
                 const [, { showFilter }] = useListParams({
                     resource: 'foo',
-                    location: {} as any,
-                });
-                showFilter('foo.bar');
-                return <span />;
-            };
-            const history = {
-                listen: jest.fn(),
-                push: jest.fn(),
-                location: { pathname: '', search: '' },
-            } as any;
-            render(
-                <Router history={history}>
-                    <TestContext history={history}>
-                        <TestedComponent />
-                    </TestContext>
-                </Router>
-            );
-            expect(history.push).toBeCalledWith({
-                search:
-                    '?' +
-                    stringify({
-                        displayedFilters: JSON.stringify({ 'foo.bar': true }),
-                        filter: '{}',
-                        sort: 'id',
-                        order: 'ASC',
-                        page: 1,
-                        perPage: 10,
-                    }),
-            });
-        });
-
-        it('should initialize filters on compound filters', () => {
-            const TestedComponent = () => {
-                const [, { showFilter }] = useListParams({
-                    resource: 'foo',
-                    location: {} as any,
+                    syncWithLocation: true,
                 });
                 showFilter('foo.bar', 'baz');
                 return <span />;
@@ -326,6 +295,97 @@ describe('useListParams', () => {
                         page: 1,
                         perPage: 10,
                     }),
+            });
+        });
+
+        it('should initialize filters on compound filters', () => {
+            const TestedComponent = () => {
+                const [, { showFilter }] = useListParams({
+                    resource: 'foo',
+                    syncWithLocation: true,
+                });
+                showFilter('foo.bar', 'baz');
+                return <span />;
+            };
+            const history = {
+                listen: jest.fn(),
+                push: jest.fn(),
+                location: { pathname: '', search: '' },
+            } as any;
+            render(
+                <Router history={history}>
+                    <TestContext history={history}>
+                        <TestedComponent />
+                    </TestContext>
+                </Router>
+            );
+            expect(history.push).toBeCalledWith({
+                search:
+                    '?' +
+                    stringify({
+                        displayedFilters: JSON.stringify({ 'foo.bar': true }),
+                        filter: JSON.stringify({ foo: { bar: 'baz' } }),
+                        sort: 'id',
+                        order: 'ASC',
+                        page: 1,
+                        perPage: 10,
+                    }),
+            });
+        });
+    });
+    describe('useListParams', () => {
+        const Component = ({ syncWithLocation = false }) => {
+            const [, { setPage }] = useListParams({
+                resource: 'posts',
+                syncWithLocation,
+            });
+
+            const handleClick = () => {
+                setPage(10);
+            };
+
+            return <button onClick={handleClick}>update</button>;
+        };
+
+        test('should synchronize parameters with location and redux state when sync is enabled', async () => {
+            const history = createMemoryHistory();
+            jest.spyOn(history, 'push');
+            let dispatch;
+
+            const { getByText } = renderWithRedux(
+                <TestContext enableReducers history={history}>
+                    {({ store }) => {
+                        dispatch = jest.spyOn(store, 'dispatch');
+                        return <Component syncWithLocation />;
+                    }}
+                </TestContext>
+            );
+
+            fireEvent.click(getByText('update'));
+
+            expect(history.push).toHaveBeenCalled();
+            expect(dispatch).toHaveBeenCalled();
+        });
+
+        test('should not synchronize parameters with location and redux state when sync is not enabled', async () => {
+            const history = createMemoryHistory();
+            jest.spyOn(history, 'push');
+            let dispatch;
+
+            const { getByText } = renderWithRedux(
+                <TestContext enableReducers history={history}>
+                    {({ store }) => {
+                        dispatch = jest.spyOn(store, 'dispatch');
+                        return <Component />;
+                    }}
+                </TestContext>
+            );
+
+            fireEvent.click(getByText('update'));
+
+            await waitFor(() => {
+                expect(history.push).not.toHaveBeenCalled();
+                expect(dispatch).not.toHaveBeenCalled();
             });
         });
     });

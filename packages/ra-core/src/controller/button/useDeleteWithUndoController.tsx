@@ -99,7 +99,7 @@ const useDeleteWithUndoController = (
                       );
                       refresh();
                   },
-        undoable: true,
+        mutationMode: 'undoable',
     });
     const handleDelete = useCallback(
         event => {

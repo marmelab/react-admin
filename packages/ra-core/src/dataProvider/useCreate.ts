@@ -1,4 +1,4 @@
-import useMutation from './useMutation';
+import useMutation, { MutationOptions } from './useMutation';
 
 /**
  * Get a callback to call the dataProvider.create() method, the result and the loading state.
@@ -26,7 +26,10 @@ import useMutation from './useMutation';
  *     return <button disabled={loading} onClick={create}>Like</button>;
  * };
  */
-const useCreate = (resource: string, data: any = {}, options?: any) =>
-    useMutation({ type: 'create', resource, payload: { data } }, options);
+const useCreate = (
+    resource: string,
+    data: any = {},
+    options?: MutationOptions
+) => useMutation({ type: 'create', resource, payload: { data } }, options);
 
 export default useCreate;

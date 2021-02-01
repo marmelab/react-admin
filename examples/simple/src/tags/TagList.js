@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { Fragment, useState } from 'react';
-import { ListBase, useListContext, EditButton, Title } from 'react-admin';
+import {
+    ListBase,
+    ListActions,
+    useListContext,
+    EditButton,
+    Title,
+} from 'react-admin';
 import {
     Box,
     List,
@@ -15,6 +21,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 
 const TagList = props => (
     <ListBase perPage={1000} {...props}>
+        <ListActions />
         <Box maxWidth="20em" marginTop="1em">
             <Card>
                 <Tree />
@@ -79,7 +86,7 @@ const SubTree = ({
                 {hasChildren && open && <ExpandLess />}
                 {hasChildren && !open && <ExpandMore />}
                 {!hasChildren && <div style={{ width: 24 }}>&nbsp;</div>}
-                <ListItemText primary={root.name} />
+                <ListItemText primary={root.name.en} />
 
                 <ListItemSecondaryAction>
                     <EditButton record={root} basePath="/tags" />
