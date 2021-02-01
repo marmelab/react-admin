@@ -758,7 +758,7 @@ const TagsEdit = (props) => (
         </Edit>
         <ResourceProviderContext resource="posts">
             <List syncWithLocation basePath="/posts" filter={{ tags: [id]}}>
-                <Datagri>
+                <Datagrid>
                     <TextField source="title" />
                 </Datagrid>
             </List>
@@ -1812,9 +1812,9 @@ export const PaginationActions = props => <RaPaginationActions {...props} color=
 export const Pagination = props => <RaPagination {...props} ActionsComponent={PaginationActions} />;
 
 export const UserList = props => (
-    <List {...props} pagination={<Pagination />} />
-        ...
-    </List
+    <List {...props} pagination={<Pagination />} >
+        //...
+    </List>
 );
 ```
 
@@ -2367,7 +2367,7 @@ import keyBy from 'lodash/keyBy'
 import {
     useQuery,
     ResourceContextProvider,
-    ListContextProvider
+    ListContextProvider,
     Datagrid,
     TextField,
     Pagination,

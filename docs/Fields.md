@@ -1077,7 +1077,7 @@ To override the style of all instances of `<ReferenceArrayField>` using the [mat
 export const App = () => (
     <Admin dataProvider={restProvider('http://path.to.my.api')}>
         <Resource name="posts" list={PostList} />
-        <Resource name="tags" /> // <= this one is compulsory
+        <Resource name="tags" /> {/* <= this one is compulsory */}
     </Admin>
 );
 ```
@@ -1129,8 +1129,8 @@ This is how to use it:
 
 ```jsx
 <TranslatableFields locales={['en', 'fr']}>
-    <TextField source="name">
-    <TextField source="description">
+    <TextField source="name" />
+    <TextField source="description" />
 </TranslatableFields>
 ```
 
@@ -1138,8 +1138,8 @@ React-admin uses the user locale as the default locale in this field. You can ov
 
 ```jsx
 <TranslatableFields locales={['en', 'fr']} defaultLocale="fr">
-    <TextField source="name">
-    <TextField source="description">
+    <TextField source="name" />
+    <TextField source="description" />
 </TranslatableFields>
 ```
 
@@ -1157,7 +1157,7 @@ const Selector = () => {
         selectedLocale,
     } = useTranslatableContext();
 
-    const handleChange = (event): void => {
+    const handleChange = event => {
         selectLocale(event.target.value);
     };
 
@@ -1197,8 +1197,8 @@ If you have multiple `TranslatableFields` on the same page, you should specify a
 
 ```jsx
 <TranslatableFields locales={['en', 'fr']} groupKey="essential-fields">
-    <TextField source="name">
-    <TextField source="description">
+    <TextField source="name" />
+    <TextField source="description" />
 </TranslatableFields>
 ```
 
@@ -1210,13 +1210,13 @@ In this case, you'll have to get the current locale through the `useLocale` hook
 
 {% raw %}
 ```jsx
-const PostList = (props) => {
+const PostList = props => {
     const locale = useLocale();
 
     return (
         <List {...props}>
             <Datagrid>
-                <TextField source={`name.${locale}`}>
+                <TextField source={`name.${locale}`} />
                 <ReferenceArrayField
                     label="Tags"
                     reference="tags"
