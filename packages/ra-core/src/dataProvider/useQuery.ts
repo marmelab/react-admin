@@ -22,6 +22,7 @@ import useVersion from '../controller/useVersion';
  * @param {Object} query.payload The payload object, e.g; { post_id: 12 }
  * @param {Object} options
  * @param {string} options.action Redux action type
+ * @param {boolean} options.enabled Flag to conditionally run the query. True by default. If it's false, the query will not run
  * @param {Function} options.onSuccess Side effect function to be executed upon success, e.g. () => refresh()
  * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. (error) => notify(error.message)
  * @param {boolean} options.withDeclarativeSideEffectsSupport Set to true to support legacy side effects e.g. { onSuccess: { refresh: true } }
@@ -93,6 +94,9 @@ const useQuery = (
 
     /* eslint-disable react-hooks/exhaustive-deps */
     useEffect(() => {
+        if (options.enabled === false) {
+            return;
+        }
         /**
          * Support legacy side effects, e.g. { onSuccess: { refresh: true, unSelectAll: true }}
          *
@@ -145,6 +149,7 @@ export interface Query {
 
 export interface QueryOptions {
     action?: string;
+    enabled?: boolean;
     onSuccess?: OnSuccess | DeclarativeSideEffect;
     onFailure?: OnFailure | DeclarativeSideEffect;
     withDeclarativeSideEffectsSupport?: boolean;

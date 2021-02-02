@@ -26,6 +26,7 @@ export interface QueryOptions {
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
     action?: string;
+    enabled?: boolean;
     [key: string]: any;
 }
 
@@ -79,6 +80,7 @@ const defaultIsDataLoaded = (data: any): boolean => data !== undefined;
  * @param {Object} query.payload The payload object, e.g; { post_id: 12 }
  * @param {Object} options
  * @param {string} options.action Redux action type
+ * @param {boolean} options.enabled Flag to conditionally run the query. If it's false, the query will not run
  * @param {Function} options.onSuccess Side effect function to be executed upon success, e.g. () => refresh()
  * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. (error) => notify(error.message)
  * @param {Function} dataSelector Redux selector to get the result. Required.
@@ -137,6 +139,10 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
     });
 
     useEffect(() => {
+        if (options.enabled === false) {
+            return;
+        }
+
         if (requestSignatureRef.current !== requestSignature) {
             // request has changed, reset the loading state
             requestSignatureRef.current = requestSignature;
@@ -171,10 +177,15 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
         state.total,
         total,
         isDataLoaded,
+        options.enabled,
     ]);
 
     const dataProvider = useDataProvider();
     useEffect(() => {
+        if (options.enabled === false) {
+            return;
+        }
+
         // When several identical queries are issued during the same tick,
         // we only pass one query to the dataProvider.
         // To achieve that, the closure keeps a list of dataProvider promises

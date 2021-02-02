@@ -24,6 +24,11 @@ interface Query {
 interface QueriesToCall {
     [resource: string]: Query[];
 }
+interface UseGetManyOptions {
+    onSuccess?: Callback;
+    onFailure?: Callback;
+    enabled?: boolean;
+}
 interface UseGetManyResult {
     data: Record[];
     error?: any;
@@ -59,7 +64,10 @@ const DataProviderOptions = { action: CRUD_GET_MANY };
  *
  * @param resource The resource name, e.g. 'posts'
  * @param ids The resource identifiers, e.g. [123, 456, 789]
- * @param options Options object to pass to the dataProvider. May include side effects to be executed upon success or failure, e.g. { onSuccess: { refresh: true } }
+ * @param {Object} options Options object to pass to the dataProvider.
+ * @param {boolean} options.enabled Flag to conditionally run the query. If it's false, the query will not run
+ * @param {Function} options.onSuccess Side effect function to be executed upon success, e.g. { onSuccess: { refresh: true } }
+ * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) }
  *
  * @returns The current request state. Destructure as { data, error, loading, loaded }.
  *
@@ -83,7 +91,7 @@ const DataProviderOptions = { action: CRUD_GET_MANY };
 const useGetMany = (
     resource: string,
     ids: Identifier[],
-    options: any = {}
+    options: UseGetManyOptions = {}
 ): UseGetManyResult => {
     // we can't use useQueryWithStore here because we're aggregating queries first
     // therefore part of the useQueryWithStore logic will have to be repeated below
@@ -108,6 +116,10 @@ const useGetMany = (
     }
     dataProvider = useDataProvider(); // not the best way to pass the dataProvider to a function outside the hook, but I couldn't find a better one
     useEffect(() => {
+        if (options.enabled === false) {
+            return;
+        }
+
         if (!queriesToCall[resource]) {
             queriesToCall[resource] = [];
         }
