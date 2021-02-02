@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, HtmlHTMLAttributes, ReactElement } from 'react';
+import { HtmlHTMLAttributes, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { makeStyles } from '@material-ui/core/styles';
@@ -8,7 +8,14 @@ import { Record } from 'ra-core';
 import Labeled from '../input/Labeled';
 import { ClassesOverride } from '../types';
 
-const sanitizeRestProps = ({ basePath, record, ...rest }) => rest;
+const sanitizeRestProps = ({
+    basePath,
+    record,
+    ...rest
+}: {
+    basePath?: string;
+    record?: unknown;
+}) => rest;
 
 const useStyles = makeStyles(
     theme => ({
@@ -17,9 +24,12 @@ const useStyles = makeStyles(
     { name: 'RaFormInput' }
 );
 
-const FormInput: FC<FormInputProps> = props => {
+const FormInput = <RecordType extends Record | Omit<Record, 'id'> = Record>(
+    props: FormInputProps<RecordType>
+) => {
     const { input, classes: classesOverride, ...rest } = props;
     const classes = useStyles(props);
+    const { id, ...inputProps } = input ? input.props : { id: undefined };
     return input ? (
         <div
             className={classnames(
@@ -30,8 +40,8 @@ const FormInput: FC<FormInputProps> = props => {
         >
             {input.props.addLabel ? (
                 <Labeled
-                    id={input.props.id || input.props.source}
-                    {...input.props}
+                    id={id || input.props.source}
+                    {...inputProps}
                     {...sanitizeRestProps(rest)}
                 >
                     {React.cloneElement(input, {
@@ -67,13 +77,20 @@ FormInput.propTypes = {
     input: PropTypes.node,
 };
 
-export interface FormInputProps extends HtmlHTMLAttributes<HTMLDivElement> {
+export interface FormInputProps<
+    RecordType extends Record | Omit<Record, 'id'> = Record
+> extends HtmlHTMLAttributes<HTMLDivElement> {
     basePath: string;
     classes?: ClassesOverride<typeof useStyles>;
-    input: ReactElement;
+    input: ReactElement<{
+        label?: string;
+        source?: string;
+        id?: string;
+        [key: string]: unknown;
+    }>;
     margin?: 'none' | 'normal' | 'dense';
-    record: Record;
-    resource: string;
+    record?: RecordType;
+    resource?: string;
     variant?: 'standard' | 'outlined' | 'filled';
 }
 
