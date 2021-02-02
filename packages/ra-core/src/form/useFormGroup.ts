@@ -5,11 +5,12 @@ import { useFormContext } from './useFormContext';
 import { FieldState } from 'final-form';
 
 type FormGroupState = {
+    dirty: boolean;
     errors: object;
-    valid: boolean;
     invalid: boolean;
     pristine: boolean;
-    dirty: boolean;
+    touched: boolean;
+    valid: boolean;
 };
 
 /**
@@ -58,18 +59,23 @@ export const useFormGroup = (name: string): FormGroupState => {
     const form = useForm();
     const formContext = useFormContext();
     const [state, setState] = useState<FormGroupState>({
+        dirty: false,
         errors: undefined,
-        valid: true,
         invalid: false,
         pristine: true,
-        dirty: false,
+        touched: false,
+        valid: true,
     });
 
     useEffect(() => {
         const unsubscribe = form.subscribe(
             () => {
                 const fields = formContext.getGroupFields(name);
-                const fieldStates = fields.map(form.getFieldState);
+                const fieldStates = fields
+                    .map(field => {
+                        return form.getFieldState(field);
+                    })
+                    .filter(fieldState => fieldState != undefined);
                 const newState = getFormGroupState(fieldStates);
 
                 setState(oldState => {
@@ -86,6 +92,7 @@ export const useFormGroup = (name: string): FormGroupState => {
                 dirty: true,
                 pristine: true,
                 valid: true,
+                touched: true,
             }
         );
         return unsubscribe;
@@ -102,8 +109,8 @@ export const useFormGroup = (name: string): FormGroupState => {
  */
 export const getFormGroupState = (
     fieldStates: FieldState<any>[]
-): FormGroupState =>
-    fieldStates.reduce(
+): FormGroupState => {
+    return fieldStates.reduce(
         (acc, fieldState) => {
             let errors = acc.errors || {};
 
@@ -112,20 +119,23 @@ export const getFormGroupState = (
             }
 
             const newState = {
+                dirty: acc.dirty || fieldState.dirty,
                 errors,
-                valid: acc.valid && fieldState.valid,
                 invalid: acc.invalid || fieldState.invalid,
                 pristine: acc.pristine && fieldState.pristine,
-                dirty: acc.dirty || fieldState.dirty,
+                touched: acc.touched || fieldState.touched,
+                valid: acc.valid && fieldState.valid,
             };
 
             return newState;
         },
         {
+            dirty: false,
             errors: undefined,
-            valid: true,
             invalid: false,
             pristine: true,
-            dirty: false,
+            valid: true,
+            touched: false,
         }
     );
+};

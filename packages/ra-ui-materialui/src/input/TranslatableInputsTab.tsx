@@ -13,7 +13,8 @@ export const TranslatableInputsTab = (
     props: TranslatableInputsTabProps & TabProps
 ) => {
     const { groupKey = '', locale, classes: classesOverride, ...rest } = props;
-    const { invalid } = useFormGroup(`${groupKey}${locale}`);
+    const { invalid, touched } = useFormGroup(`${groupKey}${locale}`);
+
     const classes = useStyles(props);
     const translate = useTranslate();
 
@@ -23,7 +24,7 @@ export const TranslatableInputsTab = (
             label={translate(`ra.locales.${locale}`, {
                 _: capitalize(locale),
             })}
-            className={invalid ? classes.error : undefined}
+            className={invalid && touched ? classes.error : undefined}
             {...rest}
         />
     );
