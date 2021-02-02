@@ -69,6 +69,17 @@ describe('Edit Page', () => {
             );
         });
 
+        it('should validate inputs inside ArrayInput', () => {
+            EditPostPage.gotoTab(3);
+
+            cy.get(EditPostPage.elements.addBacklinkButton).click();
+
+            EditPostPage.clickInput('backlinks[0].url');
+            cy.get(EditPostPage.elements.input('backlinks[0].url')).blur();
+
+            cy.contains('Required');
+        });
+
         it('should change reference list correctly when changing filter', () => {
             const EditPostTagsPage = editPageFactory('/#/posts/13');
             EditPostTagsPage.navigate();

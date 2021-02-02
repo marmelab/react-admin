@@ -93,7 +93,7 @@ export const FormTabHeader = ({
             className={classnames('form-tab', className, {
                 [classes.errorTabButton]:
                     formGroup.invalid &&
-                    formGroup.dirty &&
+                    formGroup.touched &&
                     location.pathname !== value,
             })}
             component={Link}
