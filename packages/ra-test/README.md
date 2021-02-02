@@ -2,11 +2,11 @@
 
 Test utilities for react-admin, a frontend Framework for building admin applications on top of REST services, using ES6, React.
 
-By default, react-admin acts as a declarative admin configuration: list some resources, define their controllers and, plug some built-in components or your own to define their fields or inputs.
+By default, react-admin acts as a declarative admin configuration: list some resources, define their controllers, and,plug some built-in components or your own to define their fields or inputs.
 
-Thus, unit testing isn't really needed nor recommended at first, because the internal API of the framework is already tested by its maintainers and each custom component can be tested by its own by mocking react-admin. ([see how to do so with Jest](https://jestjs.io/docs/en/manual-mocks#mocking-node-modules))
+Thus, unit testing isn't really needed nor recommended at first, because the internal API of the framework is already tested by its maintainers and each custom component can be tested on its own by mocking react-admin. ([see how to do so with Jest](https://jestjs.io/docs/en/manual-mocks#mocking-node-modules))
 
-On the contrary, it is recommended to write end-to-end tests to secure your most common scenario at least.
+However, it is recommended to write end-to-end tests to secure your most common scenario at least.
 
 That being said, there are still some cases, listed below, where a unit test can be useful.
 
