@@ -4,7 +4,7 @@ import * as React from 'react';
 
 import { FieldTitle } from './FieldTitle';
 import TestTranslationProvider from '../i18n/TestTranslationProvider';
-import renderWithRedux from './renderWithRedux';
+import { renderWithRedux } from 'ra-test';
 
 describe('FieldTitle', () => {
     it('should return empty span by default', () => {

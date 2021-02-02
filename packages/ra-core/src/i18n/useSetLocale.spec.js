@@ -6,7 +6,7 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import useTranslate from './useTranslate';
 import useSetLocale from './useSetLocale';
 import { TranslationContext, TranslationProvider } from './';
-import { renderWithRedux } from '../util';
+import { renderWithRedux } from 'ra-test';
 
 describe('useSetLocale', () => {
     const Component = () => {

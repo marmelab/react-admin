@@ -1,7 +1,7 @@
 import expect from 'expect';
 import { fireEvent } from '@testing-library/react';
 import * as React from 'react';
-import { renderWithRedux } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 
 import FilterForm, { mergeInitialValuesWithDefaultValues } from './FilterForm';
 import TextInput from '../../input/TextInput';

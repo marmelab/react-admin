@@ -3,7 +3,7 @@ import expect from 'expect';
 
 import ReferenceArrayFieldController from './ReferenceArrayFieldController';
 import { DataProviderContext } from '../../dataProvider';
-import renderWithRedux from '../../util/renderWithRedux';
+import { renderWithRedux } from 'ra-test';
 
 describe('<ReferenceArrayFieldController />', () => {
     it('should set the loaded prop to false when related records are not yet fetched', () => {

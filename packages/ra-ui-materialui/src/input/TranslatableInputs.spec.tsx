@@ -3,12 +3,8 @@ import expect from 'expect';
 import { fireEvent } from '@testing-library/react';
 import { TranslatableInputs } from './TranslatableInputs';
 import TextInput from './TextInput';
-import {
-    FormWithRedirect,
-    renderWithRedux,
-    required,
-    useTranslatableContext,
-} from 'ra-core';
+import { FormWithRedirect, required, useTranslatableContext } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 import { TranslatableInputsTab } from './TranslatableInputsTab';
 import { Tabs } from '@material-ui/core';
 

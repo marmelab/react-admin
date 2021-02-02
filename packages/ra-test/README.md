@@ -1,19 +1,18 @@
----
-layout: default
-title: "Unit Testing"
----
+# ra-test
 
-# Unit Testing
+Test utilities for react-admin, a frontend Framework for building admin applications on top of REST services, using ES6, React.
 
-By default, react-admin acts as a declarative admin configuration: list some resources, define their controllers and, plug some built-in components or your own to define their fields or inputs.
+By default, react-admin acts as a declarative admin configuration: list some resources, define their controllers, and,plug some built-in components or your own to define their fields or inputs.
 
-Thus, unit testing isn't really needed nor recommended at first, because the internal API of the framework is already tested by its maintainers and each custom component can be tested by its own by mocking react-admin. ([see how to do so with Jest](https://jestjs.io/docs/en/manual-mocks#mocking-node-modules))
+Thus, unit testing isn't really needed nor recommended at first, because the internal API of the framework is already tested by its maintainers and each custom component can be tested on its own by mocking react-admin. ([see how to do so with Jest](https://jestjs.io/docs/en/manual-mocks#mocking-node-modules))
 
-On the contrary, it is recommended to write end-to-end tests to secure your most common scenario at least.
+However, it is recommended to write end-to-end tests to secure your most common scenario at least.
 
 That being said, there are still some cases, listed below, where a unit test can be useful.
 
-## Testing Custom Views
+## Usage
+
+### Testing Custom Views
 
 One issue you may run into when attempting to render custom `Create` or `Edit` views is that you need to provide the component with the expected props contained within the react-admin redux store.
 
@@ -52,7 +51,7 @@ You can then provide additional props, as needed, to your component (such as the
 
 At this point, your component should `mount` without errors and you can unit test your component.
 
-## Enabling reducers to ensure actions are dispatched
+### Enabling reducers to ensure actions are dispatched
 
 If your component relies on a reducer, you can enable reducers using the `enableReducers` prop:
 
@@ -66,7 +65,7 @@ testUtils = render(
 
 This means that reducers will work as they will within the app.
 
-## Spying on the store 'dispatch'
+### Spying on the store 'dispatch'
 
 If you are using `useDispatch` within your components, it is likely you will want to test that actions have been dispatched with the correct arguments. You can return the `store` being used within the tests using a `renderProp`.
 
@@ -87,7 +86,7 @@ it('should send the user to another url', () => {
 });
 ```
 
-## Testing Permissions
+### Testing Permissions
 
 As explained on the [Auth Provider chapter](./Authentication.md#authorization), it's possible to manage permissions via the `authProvider` in order to filter page and fields the users can see.
 

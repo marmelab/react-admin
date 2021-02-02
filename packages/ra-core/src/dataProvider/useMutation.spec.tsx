@@ -4,7 +4,7 @@ import expect from 'expect';
 
 import Mutation from './Mutation';
 import { CoreAdmin, Resource } from '../core';
-import renderWithRedux from '../util/renderWithRedux';
+import { renderWithRedux } from 'ra-test';
 import { DataProviderContext } from '.';
 
 describe('useMutation', () => {

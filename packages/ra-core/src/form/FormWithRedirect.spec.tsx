@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { renderWithRedux } from '../util';
+import { renderWithRedux } from 'ra-test';
 import FormWithRedirect from './FormWithRedirect';
 import useInput from './useInput';
 

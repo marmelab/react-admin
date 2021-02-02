@@ -6,7 +6,7 @@ import { EditBase } from './EditBase';
 import { useSaveContext } from './SaveContext';
 import { DataProviderContext } from '../../dataProvider';
 import { DataProvider } from '../../types';
-import { renderWithRedux } from '../../util';
+import { renderWithRedux } from 'ra-test';
 
 describe('EditBase', () => {
     afterEach(cleanup);

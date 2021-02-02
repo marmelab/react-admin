@@ -2,7 +2,7 @@ import * as React from 'react';
 import expect from 'expect';
 import { waitFor, fireEvent } from '@testing-library/react';
 import ReferenceArrayInputController from './ReferenceArrayInputController';
-import { renderWithRedux } from '../../util';
+import { renderWithRedux } from 'ra-test';
 import { CRUD_GET_MATCHING, CRUD_GET_MANY } from '../../../lib';
 
 describe('<ReferenceArrayInputController />', () => {

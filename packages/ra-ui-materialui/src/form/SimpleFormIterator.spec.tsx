@@ -1,11 +1,8 @@
 import { fireEvent, waitFor, getByText } from '@testing-library/react';
 import * as React from 'react';
 import expect from 'expect';
-import {
-    renderWithRedux,
-    SaveContextProvider,
-    SideEffectContextProvider,
-} from 'ra-core';
+import { SaveContextProvider, SideEffectContextProvider } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 import { ThemeProvider } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 

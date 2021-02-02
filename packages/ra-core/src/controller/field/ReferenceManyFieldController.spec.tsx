@@ -3,7 +3,7 @@ import { waitFor } from '@testing-library/react';
 import expect from 'expect';
 
 import ReferenceManyFieldController from './ReferenceManyFieldController';
-import renderWithRedux from '../../util/renderWithRedux';
+import { renderWithRedux } from 'ra-test';
 
 describe('<ReferenceManyFieldController />', () => {
     it('should set loaded to false when related records are not yet fetched', async () => {

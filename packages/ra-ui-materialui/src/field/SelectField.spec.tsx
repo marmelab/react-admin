@@ -3,7 +3,8 @@ import { FC } from 'react';
 import expect from 'expect';
 import { render } from '@testing-library/react';
 
-import { Record, TestTranslationProvider, renderWithRedux } from 'ra-core';
+import { Record, TestTranslationProvider } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 import SelectField from './SelectField';
 
 describe('<SelectField />', () => {

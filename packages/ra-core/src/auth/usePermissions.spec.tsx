@@ -4,7 +4,7 @@ import { waitFor } from '@testing-library/react';
 
 import usePermissions from './usePermissions';
 import AuthContext from './AuthContext';
-import renderWithRedux from '../util/renderWithRedux';
+import { renderWithRedux } from 'ra-test';
 
 const UsePermissions = ({ children, authParams }: any) => {
     const res = usePermissions(authParams);
