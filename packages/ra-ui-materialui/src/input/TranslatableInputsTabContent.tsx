@@ -21,9 +21,7 @@ import { useResourceContext } from 'ra-core';
  * Default container for a group of translatable inputs inside a TranslatableInputs component.
  * @see TranslatableInputs
  */
-export const TranslatableInputsTabContent = <
-    RecordType extends Record | Omit<Record, 'id'> = Record
->(
+export const TranslatableInputsTabContent = (
     props: TranslatableInputsTabContentProps
 ): ReactElement => {
     const {
