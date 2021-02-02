@@ -396,8 +396,8 @@ const PostEdit = props => {
     const refresh = useRefresh();
     const redirect = useRedirect();
 
-    const onSuccess = ({ data }) => {
-        notify(`Changes to post "${data.title}" saved`)
+    const onSuccess = () => {
+        notify(`Changes saved`)
         redirect('/posts');
         refresh();
     };
@@ -412,25 +412,52 @@ const PostEdit = props => {
 }
 ```
 
-The `onSuccess` function receives the response from the dataProvider call (`dataProvider.create()` or `dataProvider.update()`), which is the created/edited record (see [the dataProvider documentation for details](./DataProviders.md#response-format))
+By default, the `<Edit>` view runs updates in `mutationMode="undoable"`, which means that it calls the `onSuccess` side effects immediately, even before the `dataProvider` is called.
 
 The default `onSuccess` function is:
 
 ```jsx
 // for the <Create> component:
-({ data }) => {
+() => {
     notify('ra.notification.created', 'info', { smart_count: 1 });
     redirect('edit', basePath, data.id, data);
 }
 
 // for the <Edit> component: 
-({ data }) => {
+() => {
     notify('ra.notification.updated', 'info', { smart_count: 1 }, mutationMode === 'undoable');
     redirect('list', basePath, data.id, data);
 }
 ```
 
 To learn more about built-in side effect hooks like `useNotify`, `useRedirect` and `useRefresh`, check the [Querying the API documentation](./Actions.md#handling-side-effects-in-usedataprovider).
+
+**Tip**: When you use `mutationMode="pessimistic"`, the `onSuccess` function receives the response from the dataProvider call (`dataProvider.create()` or `dataProvider.update()`), which is the created/edited record (see [the dataProvider documentation for details](./DataProviders.md#response-format)). You can use that response in the success side effects: 
+
+```jsx
+import * as React from 'react';
+import { useNotify, useRefresh, useRedirect, Edit, SimpleForm } from 'react-admin';
+
+const PostEdit = props => {
+    const notify = useNotify();
+    const refresh = useRefresh();
+    const redirect = useRedirect();
+
+  const onSuccess = ({ data }) => {
+        notify(`Changes to post "${data.title}" saved`)
+        redirect('/posts');
+        refresh();
+    };
+
+    return (
+        <Edit onSuccess={onSuccess} mutationMode="pessimistic" {...props}>
+            <SimpleForm>
+                ...
+            </SimpleForm>
+        </Edit>
+    );
+}
+```
 
 **Tip**: When you set the `onSuccess` prop, the `successMessage` prop is ignored.
 
