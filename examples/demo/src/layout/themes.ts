@@ -130,6 +130,11 @@ export const lightTheme = {
                 },
             },
         },
+        MuiSnackbarContent: {
+            root: {
+                border: 'none',
+            },
+        },
     },
     props: {
         MuiButtonBase: {

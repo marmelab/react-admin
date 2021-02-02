@@ -1,5 +1,27 @@
 # Changelog
 
+## v3.12.0
+
+* Add support for submission validation errors in `<Edit>` and `<Create>` ([5778](https://github.com/marmelab/react-admin/pull/5778)) ([alanpoulain](https://github.com/alanpoulain))
+* Add `<Edit mutationMode>` prop, deprecate `<Edit undoable>` prop, and add optimistic mutation mode ([5799](https://github.com/marmelab/react-admin/pull/5799)) ([fzaninotto](https://github.com/fzaninotto))
+* Add support for keyboard navigation in Menu ([5772](https://github.com/marmelab/react-admin/pull/5772)) ([andrico1234](https://github.com/andrico1234))
+* Add skip to content button when navigating with the keyboard ([5804](https://github.com/marmelab/react-admin/pull/5804)) ([andrico1234](https://github.com/andrico1234))
+* Add ability to use `<List>` inside another page, without location sync ([5741](https://github.com/marmelab/react-admin/pull/5741)) ([djhi](https://github.com/djhi))
+* Add `<TranslatableInputs>` and `<TranslatableFields>` to edit and show translatable content ([5810](https://github.com/marmelab/react-admin/pull/5810)) ([djhi](https://github.com/djhi))
+* Add loading state support to the children of `<ReferenceInput>` ([5767](https://github.com/marmelab/react-admin/pull/5767)) ([djhi](https://github.com/djhi))
+* Add Form Groups to better show the validation status of a group of inputs ([5752](https://github.com/marmelab/react-admin/pull/5752)) ([djhi](https://github.com/djhi))
+* Add `<MenuItemLink TooltipPops>` to override tooltips in menus ([5714](https://github.com/marmelab/react-admin/pull/5714)) ([WiXSL](https://github.com/WiXSL))
+* Add `<SimpleForm component>` to override the root component in forms ([5703](https://github.com/marmelab/react-admin/pull/5703)) ([WiXSL](https://github.com/WiXSL))
+* Upgrade test dependencies ([5679](https://github.com/marmelab/react-admin/pull/5679)) ([Luwangel](https://github.com/Luwangel))
+* Fix typos in CHANGELOG ([5839](https://github.com/marmelab/react-admin/pull/5839)) ([WiXSL](https://github.com/WiXSL))
+* Fix `syncWithLocation` DOM warnings when using `<List>` ([5837](https://github.com/marmelab/react-admin/pull/5837)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `useResourceDefinition` isn't overridable with Props ([5829](https://github.com/marmelab/react-admin/pull/5829)) ([djhi](https://github.com/djhi))
+* Fix white page on load when using `<WithPermissions>` twice ([5822](https://github.com/marmelab/react-admin/pull/5822)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `useQueryWithStore` flaky Test ([5800](https://github.com/marmelab/react-admin/pull/5800)) ([djhi](https://github.com/djhi))
+* [TypeScript] Fix `<Edit transform>` and `<Create transform>` types don't accept async transformation ([5818](https://github.com/marmelab/react-admin/pull/5818)) ([Developerius](https://github.com/Developerius))
+* [Doc] Fix deprecated Hasura data provider ([5820](https://github.com/marmelab/react-admin/pull/5820)) ([cpv123](https://github.com/cpv123))
+* [Doc] Add coreBOS dataProvider ([5817](https://github.com/marmelab/react-admin/pull/5817)) ([joebordes](https://github.com/joebordes))
+
 ## v3.11.4
 
 * Fix "dataProvider should return a rejected Promise" error in GraphQL providers ([5795](https://github.com/marmelab/react-admin/pull/5795)) ([fzaninotto](https://github.com/fzaninotto))

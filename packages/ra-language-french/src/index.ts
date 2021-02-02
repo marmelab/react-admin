@@ -107,6 +107,7 @@ const frenchMessages: TranslationMessages = {
             page_rows_per_page: 'Lignes par page :',
             next: 'Suivant',
             prev: 'Précédent',
+            skip_nav: 'Aller au contenu',
         },
         sort: {
             sort_by: 'Trier par %{field} %{order}',

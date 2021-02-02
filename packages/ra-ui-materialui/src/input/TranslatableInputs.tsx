@@ -101,10 +101,9 @@ const useStyles = makeStyles(
     theme => ({
         root: {
             flexGrow: 1,
-            backgroundColor: theme.palette.background.default,
+            marginTop: theme.spacing(1),
+            marginBottom: theme.spacing(0.5),
         },
     }),
-    {
-        name: 'RaTranslatableInputs',
-    }
+    { name: 'RaTranslatableInputs' }
 );

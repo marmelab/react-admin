@@ -56,9 +56,7 @@ describe('<SaveButton />', () => {
             <TestContext>
                 <ThemeProvider theme={theme}>
                     <SaveContextProvider value={saveContextValue}>
-                        <FormContextProvider value={formContextValue}>
-                            <SaveButton {...invalidButtonDomProps} />
-                        </FormContextProvider>
+                        <SaveButton {...invalidButtonDomProps} />
                     </SaveContextProvider>
                 </ThemeProvider>
             </TestContext>
@@ -77,9 +75,7 @@ describe('<SaveButton />', () => {
             <TestContext>
                 <ThemeProvider theme={theme}>
                     <SaveContextProvider value={saveContextValue}>
-                        <FormContextProvider value={formContextValue}>
-                            <SaveButton disabled={true} />
-                        </FormContextProvider>
+                        <SaveButton disabled={true} />
                     </SaveContextProvider>
                 </ThemeProvider>
             </TestContext>
@@ -91,9 +87,7 @@ describe('<SaveButton />', () => {
         const { getByLabelText } = render(
             <TestContext>
                 <SaveContextProvider value={saveContextValue}>
-                    <FormContextProvider value={formContextValue}>
-                        <SaveButton submitOnEnter />
-                    </FormContextProvider>
+                    <SaveButton submitOnEnter />
                 </SaveContextProvider>
             </TestContext>
         );
@@ -106,9 +100,7 @@ describe('<SaveButton />', () => {
         const { getByLabelText } = render(
             <TestContext>
                 <SaveContextProvider value={saveContextValue}>
-                    <FormContextProvider value={formContextValue}>
-                        <SaveButton submitOnEnter={false} />
-                    </FormContextProvider>
+                    <SaveButton submitOnEnter={false} />
                 </SaveContextProvider>
             </TestContext>
         );
@@ -143,12 +135,7 @@ describe('<SaveButton />', () => {
         const { getByLabelText } = render(
             <TestContext>
                 <SaveContextProvider value={saveContextValue}>
-                    <FormContextProvider value={formContextValue}>
-                        <SaveButton
-                            handleSubmitWithRedirect={onSubmit}
-                            saving
-                        />
-                    </FormContextProvider>
+                    <SaveButton handleSubmitWithRedirect={onSubmit} saving />
                 </SaveContextProvider>
             </TestContext>
         );
@@ -167,12 +154,10 @@ describe('<SaveButton />', () => {
                     dispatchSpy = jest.spyOn(store, 'dispatch');
                     return (
                         <SaveContextProvider value={saveContextValue}>
-                            <FormContextProvider value={formContextValue}>
-                                <SaveButton
-                                    handleSubmitWithRedirect={onSubmit}
-                                    invalid
-                                />
-                            </FormContextProvider>
+                            <SaveButton
+                                handleSubmitWithRedirect={onSubmit}
+                                invalid
+                            />
                         </SaveContextProvider>
                     );
                 }}

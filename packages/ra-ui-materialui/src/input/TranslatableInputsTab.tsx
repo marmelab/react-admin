@@ -33,9 +33,7 @@ const useStyles = makeStyles(
     theme => ({
         error: { color: theme.palette.error.main },
     }),
-    {
-        name: 'RaTranslatableInputsTab',
-    }
+    { name: 'RaTranslatableInputsTab' }
 );
 
 interface TranslatableInputsTabProps {
