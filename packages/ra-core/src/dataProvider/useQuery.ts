@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
 
 import { useSafeSetState } from '../util/hooks';
+import { OnSuccess, OnFailure } from '../types';
 import useDataProvider from './useDataProvider';
 import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDeclarativeSideEffects';
+import { DeclarativeSideEffect } from './useDeclarativeSideEffects';
 import useVersion from '../controller/useVersion';
 
 /**
@@ -20,8 +22,8 @@ import useVersion from '../controller/useVersion';
  * @param {Object} query.payload The payload object, e.g; { post_id: 12 }
  * @param {Object} options
  * @param {string} options.action Redux action type
- * @param {Function} options.onSuccess Side effect function to be executed upon success or failure, e.g. { onSuccess: response => refresh() }
- * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) }
+ * @param {Function} options.onSuccess Side effect function to be executed upon success, e.g. () => refresh()
+ * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. (error) => notify(error.message)
  * @param {boolean} options.withDeclarativeSideEffectsSupport Set to true to support legacy side effects e.g. { onSuccess: { refresh: true } }
  *
  * @returns The current request state. Destructure as { data, total, error, loading, loaded }.
@@ -143,8 +145,8 @@ export interface Query {
 
 export interface QueryOptions {
     action?: string;
-    onSuccess?: (response: any) => any | Object;
-    onFailure?: (error?: any) => any | Object;
+    onSuccess?: OnSuccess | DeclarativeSideEffect;
+    onFailure?: OnFailure | DeclarativeSideEffect;
     withDeclarativeSideEffectsSupport?: boolean;
 }
 

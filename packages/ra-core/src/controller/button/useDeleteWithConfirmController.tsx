@@ -12,8 +12,7 @@ import {
     useRedirect,
     RedirectionSideEffect,
 } from '../../sideEffect';
-import { Record, MutationMode } from '../../types';
-import { OnFailure, OnSuccess } from '../saveModifiers';
+import { Record, MutationMode, OnFailure, OnSuccess } from '../../types';
 import { useResourceContext } from '../../core';
 
 /**

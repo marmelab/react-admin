@@ -2,9 +2,10 @@ import { useCallback } from 'react';
 import merge from 'lodash/merge';
 
 import { useSafeSetState } from '../util/hooks';
-import { MutationMode } from '../types';
+import { MutationMode, OnSuccess, OnFailure } from '../types';
 import useDataProvider from './useDataProvider';
 import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDeclarativeSideEffects';
+import { DeclarativeSideEffect } from './useDeclarativeSideEffects';
 
 /**
  * Get a callback to fetch the data provider through Redux, usually for mutations.
@@ -33,8 +34,8 @@ import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDecl
  * @param {string} options.action Redux action type
  * @param {boolean} options.undoable Set to true to run the mutation locally before calling the dataProvider
  * @param {boolean} options.returnPromise Set to true to return the result promise of the mutation
- * @param {Function} options.onSuccess Side effect function to be executed upon success or failure, e.g. { onSuccess: response => refresh() }
- * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) }
+ * @param {Function} options.onSuccess Side effect function to be executed upon success, e.g. () => refresh()
+ * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. (error) => notify(error.message)
  * @param {boolean} options.withDeclarativeSideEffectsSupport Set to true to support legacy side effects e.g. { onSuccess: { refresh: true } }
  *
  * @returns A tuple with the mutation callback and the request state. Destructure as [mutate, { data, total, error, loading, loaded }].
@@ -220,8 +221,8 @@ export interface Mutation {
 export interface MutationOptions {
     action?: string;
     returnPromise?: boolean;
-    onSuccess?: (response: any) => any | Object;
-    onFailure?: (error?: any) => any | Object;
+    onSuccess?: OnSuccess | DeclarativeSideEffect;
+    onFailure?: OnFailure | DeclarativeSideEffect;
     withDeclarativeSideEffectsSupport?: boolean;
     /** @deprecated use mutationMode: undoable instead */
     undoable?: boolean;

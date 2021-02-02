@@ -19,6 +19,8 @@ import {
     MutationMode,
     Record,
     RedirectionSideEffect,
+    OnSuccess,
+    OnFailure,
 } from 'ra-core';
 import { FormRenderProps } from 'react-final-form';
 import get from 'lodash/get';
@@ -141,8 +143,8 @@ export interface TabbedFormProps
         data: Partial<Record>,
         redirectTo: RedirectionSideEffect,
         options?: {
-            onSuccess?: (data?: any) => void;
-            onFailure?: (error: any) => void;
+            onSuccess?: OnSuccess;
+            onFailure?: OnFailure;
         }
     ) => void;
     submitOnEnter?: boolean;

@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { DataProvider } from '../../types';
+import { DataProvider, OnSuccess, OnFailure } from '../../types';
 
 export interface QueryFunctionParams {
     /** The fetch type, e.g. `UPDATE_MANY` */
@@ -8,9 +8,12 @@ export interface QueryFunctionParams {
     resource: string;
     /** The root action name, e.g. `CRUD_GET_MANY` */
     action: string;
-    rest: any;
-    onSuccess?: (args?: any) => void;
-    onFailure?: (error: any) => void;
+    rest?: {
+        fetch?: string;
+        meta?: object;
+    };
+    onSuccess?: OnSuccess;
+    onFailure?: OnFailure;
     dataProvider: DataProvider;
     dispatch: Dispatch;
     logoutIfAccessDenied: (error?: any) => Promise<boolean>;

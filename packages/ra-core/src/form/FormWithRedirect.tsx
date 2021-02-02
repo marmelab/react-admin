@@ -11,7 +11,7 @@ import useInitializeFormWithRecord from './useInitializeFormWithRecord';
 import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
 import sanitizeEmptyValues from './sanitizeEmptyValues';
 import getFormInitialValues from './getFormInitialValues';
-import { FormContextValue, Record } from '../types';
+import { FormContextValue, Record, OnSuccess, OnFailure } from '../types';
 import { RedirectionSideEffect } from '../sideEffect';
 import { useDispatch } from 'react-redux';
 import { setAutomaticRefresh } from '../actions/uiActions';
@@ -192,8 +192,8 @@ export type FormWithRedirectSave = (
     data: Partial<Record>,
     redirectTo: RedirectionSideEffect,
     options?: {
-        onSuccess?: (data?: any) => void;
-        onFailure?: (error: any) => void;
+        onSuccess?: OnSuccess;
+        onFailure?: OnFailure;
     }
 ) => void;
 export interface FormWithRedirectOwnProps {

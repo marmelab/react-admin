@@ -40,7 +40,10 @@ const useDataProviderWithDeclarativeSideEffects = (): DataProviderProxy => {
                             ['onSuccess', 'onFailure'].includes(key)
                         )
                     ) {
-                        const sideEffect = getSideEffects(resource, options);
+                        const sideEffect = getSideEffects(
+                            resource,
+                            options as unknown
+                        );
                         let {
                             onSuccess: ignoreOnSuccess, // Used to extract options without onSuccess
                             onFailure: ignoreOnFailure, // Used to extract options without onFailure
