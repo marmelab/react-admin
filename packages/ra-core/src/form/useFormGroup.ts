@@ -75,7 +75,7 @@ export const useFormGroup = (name: string): FormGroupState => {
                     .map(field => {
                         return form.getFieldState(field);
                     })
-                    .filter(fieldState => fieldState != undefined);
+                    .filter(fieldState => fieldState != undefined); // eslint-disable-line
                 const newState = getFormGroupState(fieldStates);
 
                 setState(oldState => {
