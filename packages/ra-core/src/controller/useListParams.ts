@@ -25,7 +25,7 @@ interface ListParamsOptions {
     // default value for a filter when displayed but not yet set
     filterDefaultValues?: FilterPayload;
     debounce?: number;
-    // Wether to synchronize the list parameters with the current location (URL search parameters)
+    // Whether to synchronize the list parameters with the current location (URL search parameters)
     // This is set to true automatically when a List is used inside a Resource component
     syncWithLocation?: boolean;
 }

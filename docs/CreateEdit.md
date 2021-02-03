@@ -1944,7 +1944,7 @@ const VisitorForm = ({ basePath, record, save, saving, version }) => {
             key={version} // support for refresh button
             keepDirtyOnReinitialize
             render={formProps => (
-                // render your custom form here
+                {/* render your custom form here */}
             )}
         />
     );
