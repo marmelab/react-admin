@@ -8,15 +8,9 @@ import {
     Identifier,
     Record,
     RecordMap,
+    UseDataProviderOptions,
 } from '../types';
 import useQueryWithStore from './useQueryWithStore';
-
-interface UseGetListOptions {
-    onSuccess?: (args?: any) => void;
-    onFailure?: (error: any) => void;
-    enabled?: boolean;
-    [key: string]: any;
-}
 
 const defaultIds = [];
 const defaultData = {};
@@ -67,7 +61,7 @@ const useGetList = <RecordType extends Record = Record>(
     pagination: PaginationPayload,
     sort: SortPayload,
     filter: object,
-    options?: UseGetListOptions
+    options?: UseDataProviderOptions
 ): {
     data?: RecordMap<RecordType>;
     ids?: Identifier[];

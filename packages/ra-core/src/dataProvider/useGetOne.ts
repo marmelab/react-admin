@@ -1,14 +1,12 @@
 import get from 'lodash/get';
 
-import { Identifier, Record, ReduxState } from '../types';
+import {
+    Identifier,
+    Record,
+    ReduxState,
+    UseDataProviderOptions,
+} from '../types';
 import useQueryWithStore from './useQueryWithStore';
-
-interface UseGetOneOptions {
-    onSuccess?: (args?: any) => void;
-    onFailure?: (error: any) => void;
-    enabled?: boolean;
-    [key: string]: any;
-}
 
 /**
  * Call the dataProvider.getOne() method and return the resolved value
@@ -46,7 +44,7 @@ interface UseGetOneOptions {
 const useGetOne = <RecordType extends Record = Record>(
     resource: string,
     id: Identifier,
-    options?: UseGetOneOptions
+    options?: UseDataProviderOptions
 ): UseGetOneHookValue<RecordType> =>
     useQueryWithStore(
         { type: 'getOne', resource, payload: { id } },
