@@ -46,7 +46,7 @@ import DeleteWithConfirmButton from './DeleteWithConfirmButton';
  */
 const DeleteButton: FC<DeleteButtonProps> = ({
     undoable,
-    mutationMode,
+    mutationMode = 'undoable',
     record,
     ...props
 }) => {
@@ -101,10 +101,6 @@ DeleteButton.propTypes = {
     resource: PropTypes.string,
     undoable: PropTypes.bool,
     icon: PropTypes.element,
-};
-
-DeleteButton.defaultProps = {
-    undoable: true,
 };
 
 export default DeleteButton;
