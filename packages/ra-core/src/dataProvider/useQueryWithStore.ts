@@ -173,7 +173,6 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
         state.total,
         total,
         isDataLoaded,
-        options.enabled,
     ]);
 
     const dataProvider = useDataProvider();
