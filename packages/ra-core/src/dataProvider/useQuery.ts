@@ -94,9 +94,6 @@ const useQuery = (
 
     /* eslint-disable react-hooks/exhaustive-deps */
     useEffect(() => {
-        if (options.enabled === false) {
-            return;
-        }
         /**
          * Support legacy side effects, e.g. { onSuccess: { refresh: true, unSelectAll: true }}
          *

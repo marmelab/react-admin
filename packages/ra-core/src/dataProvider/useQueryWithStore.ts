@@ -139,10 +139,6 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
     });
 
     useEffect(() => {
-        if (options.enabled === false) {
-            return;
-        }
-
         if (requestSignatureRef.current !== requestSignature) {
             // request has changed, reset the loading state
             requestSignatureRef.current = requestSignature;
@@ -182,10 +178,6 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
 
     const dataProvider = useDataProvider();
     useEffect(() => {
-        if (options.enabled === false) {
-            return;
-        }
-
         // When several identical queries are issued during the same tick,
         // we only pass one query to the dataProvider.
         // To achieve that, the closure keeps a list of dataProvider promises

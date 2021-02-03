@@ -116,10 +116,6 @@ const useGetMany = (
     }
     dataProvider = useDataProvider(); // not the best way to pass the dataProvider to a function outside the hook, but I couldn't find a better one
     useEffect(() => {
-        if (options.enabled === false) {
-            return;
-        }
-
         if (!queriesToCall[resource]) {
             queriesToCall[resource] = [];
         }
