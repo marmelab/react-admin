@@ -10,7 +10,6 @@ import { Location, History, LocationState } from 'history';
 
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 import { AuthActionType } from './auth/types';
-import { Mutation } from './dataProvider/useMutation';
 
 /**
  * data types
