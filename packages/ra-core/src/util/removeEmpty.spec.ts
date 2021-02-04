@@ -8,7 +8,7 @@ describe('removeEmpty', () => {
     });
 
     it('should remove the empty values with empty values', () => {
-        const input = { foo: '', bar: null };
+        const input = { foo: '', bar: undefined };
         expect(removeEmpty(input)).toEqual({});
     });
 

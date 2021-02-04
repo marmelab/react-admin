@@ -6,10 +6,7 @@ const isObject = obj =>
 const isEmpty = obj =>
     obj instanceof Date
         ? false
-        : obj === '' ||
-          obj === null ||
-          obj === undefined ||
-          shallowEqual(obj, {});
+        : obj === '' || obj === undefined || shallowEqual(obj, {});
 
 const removeEmpty = object =>
     Object.keys(object).reduce((acc, key) => {
