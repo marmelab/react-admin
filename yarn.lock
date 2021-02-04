@@ -3596,7 +3596,7 @@ babel-preset-react-app@^10.0.0:
     babel-plugin-macros "2.8.0"
     babel-plugin-transform-react-remove-prop-types "0.4.24"
 
-babel-runtime@^6.22.0, babel-runtime@^6.26.0:
+babel-runtime@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   integrity sha1-llxwWGaOgrVde/4E/yM3vItWR/4=
@@ -6872,12 +6872,12 @@ faker@^4.1.0:
   resolved "https://registry.yarnpkg.com/faker/-/faker-4.1.0.tgz#1e45bbbecc6774b3c195fad2835109c6d748cc3f"
   integrity sha1-HkW7vsxndLPBlfrSg1EJxtdIzD8=
 
-fakerest@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/fakerest/-/fakerest-2.2.0.tgz#68fc7663baee9243d998dcdb20c9f555ae7b6065"
-  integrity sha512-6ByPB2f7NfK7UJ7W4xt2oz6Cq/gefYCV5NJTCkDmZS+hh2scheLl7eLqOCmdx/yw67JinTvG8TgOufjhkM0UOg==
+fakerest@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/fakerest/-/fakerest-3.0.0.tgz#f17d0228fede9a863849b1221aa0be8a9a87371a"
+  integrity sha512-lwmsgHQm+EIz9XtKi/w9hfeiv8RkqgEgF4559rw5rbdUZQ4ASbjvK4VCp/Ii8Nwkd3XW9Qo+NesvZvGUEqTI0A==
   dependencies:
-    babel-runtime "^6.22.0"
+    babel-runtime "^6.26.0"
 
 fast-deep-equal@^3.1.1:
   version "3.1.1"
