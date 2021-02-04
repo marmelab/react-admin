@@ -140,6 +140,7 @@ title: "Reference"
 * `<TopToolbar>`
 * [`<UrlField>`](./Fields.md#urlfield)
 * [`<WizardForm>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#wizardform)<img class="icon" src="./img/premium.svg" />
+* [`linkToRecord`](./Fields.md#linking-to-other-records)
 * [`useAppLocationState`](https://marmelab.com/ra-enterprise/modules/ra-navigation#useapplocationstate-retrieve-and-define-app-location)<img class="icon" src="./img/premium.svg" />
 * [`useAppLocationMatcher`](https://marmelab.com/ra-enterprise/modules/ra-navigation#useapplocationmatcher-apply-a-matching-on-the-current-app-location)<img class="icon" src="./img/premium.svg" />
 * [`useAuthenticated`](./Authentication.md#useauthenticated-hook)
