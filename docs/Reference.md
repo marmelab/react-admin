@@ -75,7 +75,7 @@ title: "Reference"
 * [`<List>`](./List.md#the-list-component)
 * [`<ListBase>`](./List.md#the-listbase-component)
 * [`<ListGuesser>`](./List.md#the-listguesser-component)
-* `<ListButton>`
+* [`<ListButton>`](./CreateEdit.md#the-listbutton-component)
 * [`<MarkdownField>`](https://marmelab.com/ra-enterprise/modules/ra-markdown#markdownfield)<img class="icon" src="./img/premium.svg" />
 * [`<MarkdownInput>`](https://marmelab.com/ra-enterprise/modules/ra-markdown#markdowninput)<img class="icon" src="./img/premium.svg" />
 * [`<Menu>`](./Theming.md#using-a-custom-menu)
