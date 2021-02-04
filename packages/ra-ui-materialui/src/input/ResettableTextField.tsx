@@ -2,46 +2,23 @@ import * as React from 'react';
 import { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import IconButton from '@material-ui/core/IconButton';
-import MuiTextField from '@material-ui/core/TextField';
+import {
+    InputAdornment,
+    IconButton,
+    TextField as MuiTextField,
+    TextFieldProps,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ClearIcon from '@material-ui/icons/Clear';
-import { useTranslate } from 'ra-core';
-
-const useStyles = makeStyles(
-    {
-        clearIcon: {
-            height: 16,
-            width: 0,
-        },
-        visibleClearIcon: {
-            width: 16,
-        },
-        clearButton: {
-            height: 24,
-            width: 24,
-            padding: 0,
-        },
-        selectAdornment: {
-            position: 'absolute',
-            right: 24,
-        },
-        inputAdornedEnd: {
-            paddingRight: 0,
-        },
-    },
-    { name: 'RaResettableTextField' }
-);
-
-const handleMouseDownClearButton = event => {
-    event.preventDefault();
-};
+import { InputProps, useTranslate } from 'ra-core';
+import { ClassesOverride } from '../types';
 
 /**
  * An override of the default Material-UI TextField which is resettable
  */
-function ResettableTextField(props) {
+function ResettableTextField(
+    props: InputProps<ResettableTextFieldProps & TextFieldProps>
+) {
     const {
         classes: classesOverride,
         clearAlwaysVisible,
@@ -84,7 +61,6 @@ function ResettableTextField(props) {
         clearIcon,
         inputAdornedEnd,
         selectAdornment,
-        visibleClearButton,
         visibleClearIcon,
         ...restClasses
     } = classes;
@@ -196,6 +172,35 @@ function ResettableTextField(props) {
     );
 }
 
+const useStyles = makeStyles(
+    {
+        clearIcon: {
+            height: 16,
+            width: 0,
+        },
+        visibleClearIcon: {
+            width: 16,
+        },
+        clearButton: {
+            height: 24,
+            width: 24,
+            padding: 0,
+        },
+        selectAdornment: {
+            position: 'absolute',
+            right: 24,
+        },
+        inputAdornedEnd: {
+            paddingRight: 0,
+        },
+    },
+    { name: 'RaResettableTextField' }
+);
+
+const handleMouseDownClearButton = event => {
+    event.preventDefault();
+};
+
 ResettableTextField.propTypes = {
     classes: PropTypes.object,
     clearAlwaysVisible: PropTypes.bool,
@@ -207,5 +212,11 @@ ResettableTextField.propTypes = {
     resettable: PropTypes.bool,
     value: PropTypes.any.isRequired,
 };
+
+interface ResettableTextFieldProps {
+    classes?: ClassesOverride<typeof useStyles>;
+    clearAlwaysVisible?: boolean;
+    resettable?: boolean;
+}
 
 export default ResettableTextField;
