@@ -3,7 +3,13 @@ import inflection from 'inflection';
 
 import useVersion from '../useVersion';
 import { useCheckMinimumRequiredProps } from '../checkMinimumRequiredProps';
-import { Record, Identifier, MutationMode } from '../../types';
+import {
+    Record,
+    Identifier,
+    MutationMode,
+    OnSuccess,
+    OnFailure,
+} from '../../types';
 import {
     useNotify,
     useRedirect,
@@ -14,9 +20,7 @@ import { useGetOne, useUpdate } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
 import { CRUD_GET_ONE, CRUD_UPDATE } from '../../actions';
 import {
-    OnSuccess,
     SetOnSuccess,
-    OnFailure,
     SetOnFailure,
     TransformData,
     SetTransformData,

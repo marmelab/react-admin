@@ -8,6 +8,8 @@ import {
     ResourceComponentProps,
     ResourceComponentPropsWithId,
     MutationMode,
+    OnSuccess,
+    OnFailure,
 } from 'ra-core';
 
 export interface ListProps extends ResourceComponentProps {
@@ -38,8 +40,8 @@ export interface EditProps extends ResourceComponentPropsWithId {
     /** @deprecated use mutationMode: undoable instead */
     undoable?: boolean;
     mutationMode?: MutationMode;
-    onSuccess?: (data: RaRecord) => void;
-    onFailure?: (error: any) => void;
+    onSuccess?: OnSuccess;
+    onFailure?: OnFailure;
     transform?: (data: RaRecord) => RaRecord | Promise<RaRecord>;
     title?: string | ReactElement;
 }
@@ -51,8 +53,8 @@ export interface CreateProps extends ResourceComponentProps {
     className?: string;
     component?: ElementType;
     record?: Partial<RaRecord>;
-    onSuccess?: (data: RaRecord) => void;
-    onFailure?: (error: any) => void;
+    onSuccess?: OnSuccess;
+    onFailure?: OnFailure;
     transform?: (data: RaRecord) => RaRecord | Promise<RaRecord>;
     title?: string | ReactElement;
 }

@@ -3,9 +3,16 @@ import {
     useRedirect,
     useRefresh,
     useUnselectAll,
+    NotificationSideEffect,
+    RedirectionSideEffect,
 } from '../sideEffect';
+import { OnSuccess, OnFailure } from '../types';
 import { useMemo } from 'react';
 
+const defaultSideEffects = {
+    onSuccess: undefined,
+    onFailure: undefined,
+};
 const useDeclarativeSideEffects = () => {
     const notify = useNotify();
     const redirect = useRedirect();
@@ -15,11 +22,11 @@ const useDeclarativeSideEffects = () => {
     return useMemo(
         () => (
             resource,
-            { onSuccess, onFailure }: any = {
-                onSuccess: undefined,
-                onFailure: undefined,
-            }
-        ) => {
+            {
+                onSuccess,
+                onFailure,
+            }: DeclarativeSideEffects = defaultSideEffects
+        ): FunctionSideEffects => {
             const convertToFunctionSideEffect = (resource, sideEffects) => {
                 if (!sideEffects || typeof sideEffects === 'function') {
                     return sideEffects;
@@ -67,5 +74,21 @@ const useDeclarativeSideEffects = () => {
         [notify, redirect, refresh, unselectAll]
     );
 };
+
+export interface DeclarativeSideEffect {
+    notification?: NotificationSideEffect;
+    redirectTo?: RedirectionSideEffect;
+    refresh?: boolean;
+    unselectAll?: boolean;
+}
+
+export interface DeclarativeSideEffects {
+    onSuccess?: DeclarativeSideEffect;
+    onFailure?: DeclarativeSideEffect;
+}
+export interface FunctionSideEffects {
+    onSuccess: OnSuccess;
+    onFailure: OnFailure;
+}
 
 export default useDeclarativeSideEffects;
