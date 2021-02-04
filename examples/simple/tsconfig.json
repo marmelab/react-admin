@@ -5,6 +5,7 @@
         "rootDir": "src",
         "declaration": true,
         "allowJs": false,
+        "jsx": "react"
     },
     "exclude": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.spec.js"],
     "include": ["src"]
