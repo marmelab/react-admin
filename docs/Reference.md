@@ -117,7 +117,6 @@ title: "Reference"
 * `<ShowButton>`
 * `<Sidebar>`
 * [`<SidebarOpenPreferenceSync>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#sidebaropenpreferencesync-store-the-sidebar-openclose-state-in-preferences)<img class="icon" src="./img/premium.svg" />
-* `<SimpleList>`
 * [`<SimpleForm>`](./CreateEdit.md#the-simpleform-component)
 * [`<SimpleFormIterator>`](./Inputs.md#arrayinput)
 * [`<SimpleList>`](./List.md#the-simplelist-component)
