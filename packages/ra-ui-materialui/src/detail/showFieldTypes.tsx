@@ -12,9 +12,9 @@ import RichTextField from '../field/RichTextField';
 import SimpleShowLayout, { SimpleShowLayoutProps } from './SimpleShowLayout';
 import TextField from '../field/TextField';
 import UrlField from '../field/UrlField';
-import { InferredElement, InputProps } from 'ra-core';
+import { InferredElement, InferredTypeMap, InputProps } from 'ra-core';
 
-export default {
+const showFieldTypes: InferredTypeMap = {
     show: {
         component: (props: SimpleShowLayoutProps) => (
             <SimpleShowLayout {...props} />
@@ -71,7 +71,9 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             `<ReferenceField source="${props.source}" reference="${props.reference}"><TextField source="id" /></ReferenceField>`,
     },
     referenceChild: {
-        component: (props: InputProps) => <TextField source="id" {...props} />, // eslint-disable-line react/display-name
+        component: (props: { children: ReactNode } & InputProps) => (
+            <TextField source="id" {...props} />
+        ), // eslint-disable-line react/display-name
         representation: () => `<TextField source="id" />`,
     },
     referenceArray: {
@@ -80,7 +82,9 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             `<ReferenceArrayField source="${props.source}" reference="${props.reference}"><TextField source="id" /></ReferenceArrayField>`,
     },
     referenceArrayChild: {
-        component: (props: InputProps) => <TextField source="id" {...props} />, // eslint-disable-line react/display-name
+        component: (props: { children: ReactNode } & InputProps) => (
+            <TextField source="id" {...props} />
+        ), // eslint-disable-line react/display-name
         representation: () => `<TextField source="id" />`,
     },
     richText: {
@@ -99,3 +103,5 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             `<UrlField source="${props.source}" />`,
     },
 };
+
+export default showFieldTypes;

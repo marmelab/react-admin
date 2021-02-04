@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
+import { ReactNode, ReactElement } from 'react';
 import SimpleForm from '../form/SimpleForm';
 import SimpleFormIterator from '../form/SimpleFormIterator';
 import ArrayInput from '../input/ArrayInput';
@@ -12,9 +12,9 @@ import ReferenceArrayInput, {
 } from '../input/ReferenceArrayInput';
 import SelectInput from '../input/SelectInput';
 import TextInput from '../input/TextInput';
-import { InferredElement, InputProps } from 'ra-core';
+import { InferredElement, InferredTypeMap, InputProps } from 'ra-core';
 
-export default {
+const editFieldTypes: InferredTypeMap = {
     form: {
         component: SimpleForm,
         representation: (
@@ -74,7 +74,7 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             }">${children.getRepresentation()}</ReferenceInput>`,
     },
     referenceChild: {
-        component: (props: InputProps) => (
+        component: (props: { children: ReactNode } & InputProps) => (
             <SelectInput optionText="id" {...props} />
         ), // eslint-disable-line react/display-name
         representation: () => `<SelectInput optionText="id" />`,
@@ -85,9 +85,9 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             `<ReferenceArrayInput source="${props.source}" reference="${props.reference}"><TextInput source="id" /></ReferenceArrayInput>`,
     },
     referenceArrayChild: {
-        component: (props: InputProps) => (
-            <SelectInput optionText="id" {...props} />
-        ), // eslint-disable-line react/display-name
+        component: (
+            props: { children: ReactNode } & InputProps
+        ): ReactElement => <SelectInput optionText="id" {...props} />, // eslint-disable-line react/display-name
         representation: () => `<SelectInput optionText="id" />`,
     },
     richText: {
@@ -106,3 +106,5 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             `<TextInput source="${props.source}" />`,
     },
 };
+
+export default editFieldTypes;
