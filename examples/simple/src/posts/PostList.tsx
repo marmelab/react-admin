@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Children, Fragment, cloneElement, memo } from 'react';
 import BookIcon from '@material-ui/icons/Book';
-import Chip from '@material-ui/core/Chip';
-import { useMediaQuery } from '@material-ui/core';
+import { Chip, useMediaQuery } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import lodashGet from 'lodash/get';
 import jsonExport from 'jsonexport/dist';
