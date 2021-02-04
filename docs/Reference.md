@@ -37,6 +37,7 @@ title: "Reference"
 * `<DashboardMenuItem>`
 * [`<Datagrid>`](./List.md#the-datagrid-component)
 * `<DatagridBody>`
+* [`<DatagridRow>`](./List.md#body-element)
 * `<DatagridCell>`
 * `<DatagridHeaderCell>`
 * [`<DateField>`](./Fields.md#datefield)
