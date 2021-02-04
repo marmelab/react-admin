@@ -1533,7 +1533,7 @@ import { linkToRecord } from 'react-admin';
 import { Link } from 'react-router-dom';
 
 const MyCustomField = ({ record: post }) => {
-    const linkToUser = linkToRecord('users', post.user_id, 'show');
+    const linkToUser = linkToRecord('/users', post.user_id, 'show');
 
     return <Link to={linkToUser}>{seller.username}</Link>;
 };
