@@ -91,6 +91,7 @@ export default memo(CreateButton, (prevProps, nextProps) => {
         prevProps.basePath === nextProps.basePath &&
         prevProps.label === nextProps.label &&
         prevProps.translate === nextProps.translate &&
-        prevProps.to === nextProps.to
+        prevProps.to === nextProps.to &&
+        prevProps.disabled === nextProps.disabled
     );
 });
