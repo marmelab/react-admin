@@ -109,7 +109,7 @@ export interface ListControllerProps<RecordType extends Record = Record> {
 const useListController = <RecordType extends Record = Record>(
     props: ListProps
 ): ListControllerProps<RecordType> => {
-    useCheckMinimumRequiredProps('List', ['basePath', 'resource'], props);
+    useCheckMinimumRequiredProps('List', ['basePath'], props);
 
     const {
         basePath,
@@ -124,6 +124,11 @@ const useListController = <RecordType extends Record = Record>(
     } = props;
     const resource = useResourceContext(props);
 
+    if (!resource) {
+        throw new Error(
+            `<List> was called outside of a ResourceContext and without a resource prop. You must set the resource prop.`
+        );
+    }
     if (filter && isValidElement(filter)) {
         throw new Error(
             '<List> received a React element as `filter` props. If you intended to set the list filter elements, use the `filters` (with an s) prop instead. The `filter` prop is internal and should not be set by the developer.'
