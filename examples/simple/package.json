@@ -1,5 +1,5 @@
 {
-  "name": "simple-vite",
+  "name": "simple",
   "version": "0.0.0",
   "scripts": {
     "start": "vite",
