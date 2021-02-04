@@ -756,7 +756,7 @@ const TagsEdit = (props) => (
         <Edit {...props}>
             // ...
         </Edit>
-        <ResourceContextProvider resource="posts">
+        <ResourceContextProvider value="posts">
             <List syncWithLocation basePath="/posts" filter={{ tags: [id]}}>
                 <Datagrid>
                     <TextField source="title" />

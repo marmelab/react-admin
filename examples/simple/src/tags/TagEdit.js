@@ -23,7 +23,7 @@ const TagEdit = props => (
                 </TranslatableInputs>
             </SimpleForm>
         </Edit>
-        <ResourceContextProvider resource="posts">
+        <ResourceContextProvider value="posts">
             <List
                 hasCreate={false}
                 hasShow
