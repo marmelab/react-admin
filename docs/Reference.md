@@ -14,6 +14,7 @@ title: "Reference"
 * [`<AppBar>`](./Theming.md#customizing-the-appbar-content)
 * [`<ArrayField>`](./Fields.md#arrayfield)
 * [`<ArrayInput>`](./Inputs.md#arrayinput)
+* [`<Aside>`](./CreateEdit.md#aside-component)
 * [`<Authenticated>`](./Authentication.md#useauthenticated-hook)
 * [`<AutocompleteArrayInput>`](./Inputs.md#autocompletearrayinput)
 * [`<AutocompleteInput>`](./Inputs.md#autocompleteinput)
