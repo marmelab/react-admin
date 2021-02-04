@@ -1524,6 +1524,21 @@ export const UserList = (props) => (
 
 **Tip**: In such custom fields, the `source` is optional. React-admin uses it to determine which column to use for sorting when the column header is clicked. In case you use the `source` property for additional purposes, the sorting can be overridden by the `sortBy` property on any `Field` component.
 
+### Linking to other records
+
+Your custom Field component might need to display a link to another record. React Admin provides a `linkToRecord(basePath, id[, linkType])` method for this purpose.
+
+```js
+import { linkToRecord } from 'react-admin';
+import { Link } from 'react-router-dom';
+
+const MyCustomField = ({ record: post }) => {
+    const linkToUser = linkToRecord('/users', post.user_id, 'show');
+
+    return <Link to={linkToUser}>{seller.username}</Link>;
+};
+```
+
 ## Third-Party Components
 
 You can find components for react-admin in third-party repositories.
