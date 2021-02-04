@@ -105,6 +105,7 @@ export interface TranslationMessages extends StringMap {
             page_rows_per_page: string;
             next: string;
             prev: string;
+            skip_nav: string;
         };
         sort: {
             sort_by: string;
