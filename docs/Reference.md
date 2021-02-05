@@ -70,7 +70,7 @@ title: "Reference"
 * [`<Labeled>`](./Inputs.md#using-labeled)
 * [`<LanguageSwitcher>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#languageswitcher-store-the-locale-in-preferences)<img class="icon" src="./img/premium.svg" />
 * [`<Layout>`](./Theming.md#using-a-custom-layout)
-* [`<Loading>`](./Theming.md#Loading)
+* [`<Loading>`](./Theming.md#loading)
 * [`<Logout>`](./Theming.md#using-a-custom-logout-button)
 * [`linkToRecord`](./Fields.md#linking-to-other-records)
 * [`<List>`](./List.md#the-list-component)
