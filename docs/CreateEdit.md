@@ -171,6 +171,8 @@ export const PostEdit = (props) => (
 );
 ```
 
+### The `<ListButton>` component
+
 A common customization is to add a button to go back to the List. Use the `<ListButton>` for that:
 
 ```jsx
@@ -184,7 +186,7 @@ const PostEditActions = ({ basePath, data }) => (
 );
 ```
 
-If you want this button to look like a Back button, you can pass a custom label and icon to the ListButton:
+If you want this button to look like a Back button, you can pass a custom label and icon to the `ListButton`:
 
 ```jsx
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
