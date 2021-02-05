@@ -1,5 +1,25 @@
 # Changelog
 
+## v3.12.1
+
+* Fix `<CreateButton>` doesn't rerender when the disabled prop change ([5866](https://github.com/marmelab/react-admin/pull/5866)) ([andrico1234](https://github.com/andrico1234))
+* Fix missing type for `ra.navigation.skip_nav` translation message ([5867](https://github.com/marmelab/react-admin/pull/5867)) ([bicstone](https://github.com/bicstone))
+* Fix error when using `<List>` outside of a `ResourceContext` ([5863](https://github.com/marmelab/react-admin/pull/5863)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<DeleteButton mutationMode>` handling ([5855](https://github.com/marmelab/react-admin/pull/5855)) ([djhi](https://github.com/djhi))
+* Fix `form.restart` is not a function error ([5852](https://github.com/marmelab/react-admin/pull/5852)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix regression on `<ArrayInput>` children validation ([5850](https://github.com/marmelab/react-admin/pull/5850)) ([djhi](https://github.com/djhi))
+* Fix `<TranslatableInputs>` layout ([5848](https://github.com/marmelab/react-admin/pull/5848)) ([djhi](https://github.com/djhi))
+* Fix regression in `<SaveButton>` causing an error about missing `<FormContext>` ([5842](https://github.com/marmelab/react-admin/pull/5842)) ([djhi](https://github.com/djhi))
+* Fix missing French translation for the `ra.navigation.skip_nav` message ([5841](https://github.com/marmelab/react-admin/pull/5841)) ([adrien-may](https://github.com/adrien-may))
+* [TypeScript] Fix `onSuccess` / `onFailure` types ([5853](https://github.com/marmelab/react-admin/pull/5853)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Improve Reference section ([5864](https://github.com/marmelab/react-admin/pull/5864)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix typo in `<List aside>` example ([5861](https://github.com/marmelab/react-admin/pull/5861)) ([vdimitroff](https://github.com/vdimitroff))
+* [Doc] Add documentation for `linkToRecord` ([5860](https://github.com/marmelab/react-admin/pull/5860)) ([jgabriele](https://github.com/jgabriele))
+* [Doc] Fix typo in `<ResourceContextProvider>` documentation ([5859](https://github.com/marmelab/react-admin/pull/5859)) ([abdusco](https://github.com/abdusco))
+* [Doc] Fix typos in code snippets ([5845](https://github.com/marmelab/react-admin/pull/5845)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix onSuccess callback signature for optimistic and undoable queries ([5851](https://github.com/marmelab/react-admin/pull/5851)) ([fzaninotto](https://github.com/fzaninotto))
+* [docs] Added hindi transations to the ecosystem ([5798](https://github.com/marmelab/react-admin/pull/5798)) ([harshit-budhraja](https://github.com/harshit-budhraja))
+
 ## v3.12.0
 
 * Add support for submission validation errors in `<Edit>` and `<Create>` ([5778](https://github.com/marmelab/react-admin/pull/5778)) ([alanpoulain](https://github.com/alanpoulain))
