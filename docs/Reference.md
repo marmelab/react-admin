@@ -71,6 +71,7 @@ title: "Reference"
 * [`<LanguageSwitcher>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#languageswitcher-store-the-locale-in-preferences)<img class="icon" src="./img/premium.svg" />
 * [`<Layout>`](./Theming.md#using-a-custom-layout)
 * [`<Loading>`](./Theming.md#loading)
+* [`<LinearProgress>`](./Theming.md#linearprogress)
 * [`<Logout>`](./Theming.md#using-a-custom-logout-button)
 * [`linkToRecord`](./Fields.md#linking-to-other-records)
 * [`<List>`](./List.md#the-list-component)
