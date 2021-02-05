@@ -1,4 +1,6 @@
-import { useSelector, shallowEqual } from 'react-redux';
+import get from 'lodash/get';
+import { useMemo } from 'react';
+
 import { CRUD_GET_MANY_REFERENCE } from '../actions/dataActions/crudGetManyReference';
 import {
     PaginationPayload,
@@ -8,12 +10,13 @@ import {
 } from '../types';
 import useQueryWithStore from './useQueryWithStore';
 import {
-    getReferences,
     getIds,
     getTotal,
     nameRelatedTo,
 } from '../reducer/admin/references/oneToMany';
-import { useMemo } from 'react';
+
+const defaultIds = [];
+const defaultData = {};
 
 /**
  * Call the dataProvider.getManyReference() method and return the resolved result
@@ -75,29 +78,46 @@ const useGetManyReference = (
         [filter, resource, id, referencingResource, target]
     );
 
-    const { data: ids, total, error, loading, loaded } = useQueryWithStore(
+    const {
+        data: { ids, allRecords },
+        total,
+        error,
+        loading,
+        loaded,
+    } = useQueryWithStore(
         {
             type: 'getManyReference',
             resource: resource,
             payload: { target, id, pagination, sort, filter },
         },
         { ...options, relatedTo, action: CRUD_GET_MANY_REFERENCE },
-        selectIds(relatedTo),
-        selectTotal(relatedTo)
+        // ids and data selector
+        (state: ReduxState) => ({
+            ids: getIds(state, relatedTo) || defaultIds,
+            allRecords: get(
+                state.admin.resources,
+                [resource, 'data'],
+                defaultData
+            ),
+        }),
+        (state: ReduxState) => getTotal(state, relatedTo)
     );
-    const data = useSelector(selectData(resource, relatedTo), shallowEqual);
+
+    const data = useMemo(
+        () =>
+            ids === null
+                ? defaultData
+                : ids
+                      .map(id => allRecords[id])
+                      .reduce((acc, record) => {
+                          if (!record) return acc;
+                          acc[record.id] = record;
+                          return acc;
+                      }, {}),
+        [ids, allRecords]
+    );
 
     return { data, ids, total, error, loading, loaded };
 };
 
 export default useGetManyReference;
-
-const selectData = (reference: string, relatedTo: string) => (
-    state: ReduxState
-) => getReferences(state, reference, relatedTo);
-
-const selectIds = (relatedTo: string) => (state: ReduxState) =>
-    getIds(state, relatedTo);
-
-const selectTotal = (relatedTo: string) => (state: ReduxState) =>
-    getTotal(state, relatedTo);
