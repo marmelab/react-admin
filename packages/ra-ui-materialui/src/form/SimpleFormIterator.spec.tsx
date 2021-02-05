@@ -94,6 +94,37 @@ describe('<SimpleFormIterator />', () => {
         expect((inputElements[1] as HTMLInputElement).value).toBe('bar');
     });
 
+    it('should allow to override the disabled prop of each inputs', () => {
+        const { queryAllByLabelText } = renderWithRedux(
+            <ThemeProvider theme={theme}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffectValue}>
+                        <SimpleForm
+                            record={{
+                                id: 'whatever',
+                                emails: [{ email: 'foo' }, { email: 'bar' }],
+                            }}
+                        >
+                            <ArrayInput source="emails">
+                                <SimpleFormIterator>
+                                    <TextInput source="email" disabled />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
+        );
+        const inputElements = queryAllByLabelText(
+            'resources.undefined.fields.email'
+        );
+        expect(inputElements).toHaveLength(2);
+        expect((inputElements[0] as HTMLInputElement).disabled).toBeTruthy();
+        expect((inputElements[0] as HTMLInputElement).value).toBe('foo');
+        expect((inputElements[1] as HTMLInputElement).disabled).toBeTruthy();
+        expect((inputElements[1] as HTMLInputElement).value).toBe('bar');
+    });
+
     it('should display an add item button at least', () => {
         const { getByText } = renderWithRedux(
             <SaveContextProvider value={saveContextValue}>
