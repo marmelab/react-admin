@@ -232,7 +232,7 @@ export const PostList = (props) => (
 
 If you want to read more about higher-order components, check out this SitePoint tutorial: [Higher Order Components: A React Application Design Pattern](https://www.sitepoint.com/react-higher-order-components/)
 
-## useMediaQuery Hook
+## `useMediaQuery` Hook
 
 To provide an optimized experience on mobile, tablet, and desktop devices, you often need to display different components depending on the screen size. Material-ui provides a hook dedicated to help such responsive layouts: [useMediaQuery](https://material-ui.com/components/use-media-query/#usemediaquery).
 

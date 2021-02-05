@@ -1696,8 +1696,8 @@ This is how to use it:
 
 ```jsx
 <TranslatableInputs locales={['en', 'fr']}>
-    <TextInput source="name">
-    <RichTextInput source="description">
+    <TextInput source="name" />
+    <RichTextInput source="description" />
 </TranslatableInputs>
 ```
 
@@ -1705,8 +1705,8 @@ React-admin uses the user locale as the default locale in this field. You can ov
 
 ```jsx
 <TranslatableInputs locales={['en', 'fr']} defaultLocale="fr">
-    <TextInput source="name">
-    <RichTextInput source="description">
+    <TextInput source="name" />
+    <RichTextInput source="description" />
 </TranslatableInputs>
 ```
 
@@ -1724,7 +1724,7 @@ const Selector = () => {
         selectedLocale,
     } = useTranslatableContext();
 
-    const handleChange = (event): void => {
+    const handleChange = event => {
         selectLocale(event.target.value);
     };
 
@@ -1764,8 +1764,8 @@ If you have multiple `TranslatableInputs` on the same page, you should specify a
 
 ```jsx
 <TranslatableInputs locales={['en', 'fr']} groupKey="essential-fields">
-    <TextInput source="name">
-    <RichTextInput source="description">
+    <TextInput source="name" />
+    <RichTextInput source="description" />
 </TranslatableInputs>
 ```
 
@@ -1773,8 +1773,8 @@ You can add validators to any of the inputs inside a `TranslatableInputs`. If an
 
 ```jsx
 <TranslatableInputs locales={['en', 'fr']}>
-    <TextInput source="name" validate={[required()]}>
-    <RichTextInput source="description" validate={[maxLength(100)]}>
+    <TextInput source="name" validate={[required()]} />
+    <RichTextInput source="description" validate={[maxLength(100)]} />
 </TranslatableInputs>
 ```
 

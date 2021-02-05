@@ -477,7 +477,7 @@ import {
 } from 'react-admin';
 
 export const PostList = props => (
-    // ...
+  { /* ... */ }
 );
 
 export const PostEdit = props => (

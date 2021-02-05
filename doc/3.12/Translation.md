@@ -37,7 +37,7 @@ const App = () => (
         authProvider={authProvider}
         i18nProvider={i18nProvider}
     >
-        <Resource name="posts" list={...}>
+        <Resource name="posts" list={/* ... */}>
         // ...
 ```
 
@@ -179,6 +179,7 @@ You can find translation packages for the following languages:
 - French (`fr`): [marmelab/ra-language-french](https://github.com/marmelab/react-admin/tree/master/packages/ra-language-french)
 - German (`de`): [greenbananaCH/ra-language-german](https://github.com/greenbananaCH/ra-language-german) (tree translation: [straurob/ra-tree-language-german](https://github.com/straurob/ra-tree-language-german))
 - Hebrew (`he`): [ak-il/ra-language-hebrew](https://github.com/ak-il/ra-language-hebrew)
+- Hindi (`hi`): [harshit-budhraja/ra-language-hindi](https://github.com/harshit-budhraja/ra-language-hindi)
 - Hungarian (`hu`): [phelion/ra-language-hungarian](https://github.com/phelion/ra-language-hungarian)
 - Indonesian (`id`): [ronadi/ra-language-indonesian](https://github.com/ronadi/ra-language-indonesian)
 - Italian (`it`): [stefsava/ra-italian](https://github.com/stefsava/ra-italian)

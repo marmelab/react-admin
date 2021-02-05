@@ -609,7 +609,7 @@ const Aside = () => (
     <div style={{ width: 200, margin: '1em' }}>
         <Typography variant="h6">Post details</Typography>
         <Typography variant="body2">
-            Posts will only be published one an editor approves them
+            Posts will only be published once an editor approves them
         </Typography>
     </div>
 );
@@ -756,13 +756,13 @@ const TagsEdit = (props) => (
         <Edit {...props}>
             // ...
         </Edit>
-        <ResourceProviderContext resource="posts">
+        <ResourceContextProvider value="posts">
             <List syncWithLocation basePath="/posts" filter={{ tags: [id]}}>
-                <Datagri>
+                <Datagrid>
                     <TextField source="title" />
                 </Datagrid>
             </List>
-        </ResourceProviderContext>
+        </ResourceContextProvider>
     </>
 )
 ```
@@ -1812,9 +1812,9 @@ export const PaginationActions = props => <RaPaginationActions {...props} color=
 export const Pagination = props => <RaPagination {...props} ActionsComponent={PaginationActions} />;
 
 export const UserList = props => (
-    <List {...props} pagination={<Pagination />} />
-        ...
-    </List
+    <List {...props} pagination={<Pagination />} >
+        //...
+    </List>
 );
 ```
 
@@ -2367,7 +2367,7 @@ import keyBy from 'lodash/keyBy'
 import {
     useQuery,
     ResourceContextProvider,
-    ListContextProvider
+    ListContextProvider,
     Datagrid,
     TextField,
     Pagination,
