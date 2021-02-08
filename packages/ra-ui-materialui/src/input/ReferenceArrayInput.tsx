@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ReactElement } from 'react';
+import { ReactElement, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
     getFieldLabelTranslationArgs,
@@ -11,6 +11,7 @@ import {
     PaginationPayload,
     Translate,
     ResourceContextProvider,
+    ListContextProvider,
 } from 'ra-core';
 
 import sanitizeInputRestProps from './sanitizeInputRestProps';
@@ -107,7 +108,7 @@ export interface ReferenceArrayInputProps extends InputProps {
  *     <SelectArrayInput optionText="name" />
  * </ReferenceArrayInput>
  */
-const ReferenceArrayInput: FC<ReferenceArrayInputProps> = ({
+const ReferenceArrayInput = ({
     children,
     id: idOverride,
     onBlur,
@@ -117,7 +118,7 @@ const ReferenceArrayInput: FC<ReferenceArrayInputProps> = ({
     parse,
     format,
     ...props
-}) => {
+}: ReferenceArrayInputProps) => {
     if (React.Children.count(children) !== 1) {
         throw new Error(
             '<ReferenceArrayInput> only accepts a single child (like <Datagrid>)'
@@ -136,24 +137,41 @@ const ReferenceArrayInput: FC<ReferenceArrayInputProps> = ({
         ...props,
     });
 
-    const controllerProps = useReferenceArrayInputController({
+    const {
+        setSort,
+        setSortForList,
+        ...controllerProps
+    } = useReferenceArrayInputController({
         ...props,
         input,
     });
 
+    const listContext = useMemo(
+        () => ({
+            ...controllerProps,
+            setSort: setSortForList,
+        }),
+        [controllerProps, setSortForList]
+    );
+
     const translate = useTranslate();
 
     return (
-        <ReferenceArrayInputView
-            id={id}
-            input={input}
-            isRequired={isRequired}
-            meta={meta}
-            translate={translate}
-            children={children}
-            {...props}
-            {...controllerProps}
-        />
+        <ResourceContextProvider value={props.reference}>
+            <ListContextProvider value={listContext}>
+                <ReferenceArrayInputView
+                    id={id}
+                    input={input}
+                    isRequired={isRequired}
+                    meta={meta}
+                    translate={translate}
+                    children={children}
+                    setSort={setSort}
+                    {...props}
+                    {...controllerProps}
+                />
+            </ListContextProvider>
+        </ResourceContextProvider>
     );
 };
 
@@ -256,37 +274,33 @@ export const ReferenceArrayInputView = ({
         return <ReferenceError label={translatedLabel} error={error} />;
     }
 
-    return (
-        <ResourceContextProvider value={reference}>
-            {React.cloneElement(children, {
-                allowEmpty,
-                basePath,
-                choices,
-                className,
-                error,
-                input,
-                isRequired,
-                label: translatedLabel,
-                loaded,
-                loading,
-                meta: {
-                    ...meta,
-                    helperText: warning || false,
-                },
-                onChange,
-                options,
-                resource,
-                setFilter,
-                setPagination,
-                setSort,
-                source,
-                translateChoice: false,
-                limitChoicesToValue: true,
-                ...sanitizeRestProps(rest),
-                ...children.props,
-            })}
-        </ResourceContextProvider>
-    );
+    return React.cloneElement(children, {
+        allowEmpty,
+        basePath,
+        choices,
+        className,
+        error,
+        input,
+        isRequired,
+        label: translatedLabel,
+        loaded,
+        loading,
+        meta: {
+            ...meta,
+            helperText: warning || false,
+        },
+        onChange,
+        options,
+        resource,
+        setFilter,
+        setPagination,
+        setSort,
+        source,
+        translateChoice: false,
+        limitChoicesToValue: true,
+        ...sanitizeRestProps(rest),
+        ...children.props,
+    });
 };
 
 ReferenceArrayInputView.propTypes = {

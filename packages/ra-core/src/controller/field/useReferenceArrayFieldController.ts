@@ -11,6 +11,7 @@ import usePaginationState from '../usePaginationState';
 import useSelectionState from '../useSelectionState';
 import useSortState from '../useSortState';
 import { useResourceContext } from '../../core';
+import { indexById } from '../../util/indexById';
 
 interface Option {
     basePath: string;
@@ -238,13 +239,5 @@ const useReferenceArrayFieldController = (
         total: finalIds.length,
     };
 };
-
-const indexById = (records: Record[] = []): RecordMap =>
-    records
-        .filter(r => typeof r !== 'undefined')
-        .reduce((prev, current) => {
-            prev[current.id] = current;
-            return prev;
-        }, {});
 
 export default useReferenceArrayFieldController;

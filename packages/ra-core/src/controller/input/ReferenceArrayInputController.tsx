@@ -1,40 +1,8 @@
-import {
-    ComponentType,
-    FunctionComponent,
-    ReactElement,
-    useCallback,
-} from 'react';
+import { ComponentType, ReactElement, useCallback } from 'react';
 import debounce from 'lodash/debounce';
 
 import { Record, SortPayload, PaginationPayload } from '../../types';
 import useReferenceArrayInputController from './useReferenceArrayInputController';
-
-interface ChildrenFuncParams {
-    choices: Record[];
-    error?: string;
-    loaded: boolean;
-    loading: boolean;
-    setFilter: (filter: any) => void;
-    setPagination: (pagination: PaginationPayload) => void;
-    setSort: (sort: SortPayload) => void;
-    warning?: string;
-}
-
-interface Props {
-    allowEmpty?: boolean;
-    basePath: string;
-    children: (params: ChildrenFuncParams) => ReactElement;
-    filter?: object;
-    filterToQuery?: (filter: {}) => any;
-    input?: any;
-    meta?: object;
-    perPage?: number;
-    record?: Record;
-    reference: string;
-    resource: string;
-    sort?: SortPayload;
-    source: string;
-}
 
 /**
  * An Input component for fields containing a list of references to another resource.
@@ -114,7 +82,7 @@ interface Props {
  *     <SelectArrayInput optionText="name" />
  * </ReferenceArrayInput>
  */
-const ReferenceArrayInputController: FunctionComponent<Props> = ({
+const ReferenceArrayInputController = ({
     basePath,
     children,
     filter = {},
@@ -125,17 +93,8 @@ const ReferenceArrayInputController: FunctionComponent<Props> = ({
     resource,
     sort = { field: 'id', order: 'DESC' },
     source,
-}) => {
-    const {
-        choices,
-        error,
-        loaded,
-        loading,
-        setFilter,
-        setPagination,
-        setSort,
-        warning,
-    } = useReferenceArrayInputController({
+}: ReferenceArrayInputControllerProps) => {
+    const { setFilter, ...controllerProps } = useReferenceArrayInputController({
         basePath,
         filter,
         filterToQuery,
@@ -153,15 +112,38 @@ const ReferenceArrayInputController: FunctionComponent<Props> = ({
     ]);
 
     return children({
-        choices,
-        error,
-        loaded,
-        loading,
+        ...controllerProps,
         setFilter: debouncedSetFilter,
-        setPagination,
-        setSort,
-        warning,
     });
 };
 
-export default ReferenceArrayInputController as ComponentType<Props>;
+interface ChildrenFuncParams {
+    choices: Record[];
+    error?: string;
+    loaded: boolean;
+    loading: boolean;
+    setFilter: (filter: any) => void;
+    setPagination: (pagination: PaginationPayload) => void;
+    setSort: (sort: SortPayload) => void;
+    warning?: string;
+}
+
+interface ReferenceArrayInputControllerProps {
+    allowEmpty?: boolean;
+    basePath: string;
+    children: (params: ChildrenFuncParams) => ReactElement;
+    filter?: object;
+    filterToQuery?: (filter: {}) => any;
+    input?: any;
+    meta?: object;
+    perPage?: number;
+    record?: Record;
+    reference: string;
+    resource: string;
+    sort?: SortPayload;
+    source: string;
+}
+
+export default ReferenceArrayInputController as ComponentType<
+    ReferenceArrayInputControllerProps
+>;

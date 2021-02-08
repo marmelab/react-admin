@@ -11,6 +11,7 @@ import resolveRedirectTo from './resolveRedirectTo';
 import warning from './warning';
 import useWhyDidYouUpdate from './useWhyDidYouUpdate';
 import { useSafeSetState, useTimeout } from './hooks';
+export * from './indexById';
 
 export {
     escapePath,

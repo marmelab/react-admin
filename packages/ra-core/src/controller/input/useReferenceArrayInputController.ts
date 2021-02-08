@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect, useRef } from 'react';
+import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 import difference from 'lodash/difference';
@@ -14,6 +14,9 @@ import useGetMatching from '../../dataProvider/useGetMatching';
 import { useTranslate } from '../../i18n';
 import { getStatusForArrayInput as getDataStatus } from './referenceDataStatus';
 import { useResourceContext } from '../../core';
+import { usePaginationState, useSelectionState, useSortState } from '..';
+import { ListControllerProps } from '../useListController';
+import { indexById, removeEmpty, useSafeSetState } from '../../util';
 
 /**
  * Prepare data for the ReferenceArrayInput components
@@ -41,13 +44,15 @@ import { useResourceContext } from '../../core';
  */
 const useReferenceArrayInputController = (
     props: Option
-): ReferenceArrayInputProps => {
+): ReferenceArrayInputProps & Omit<ListControllerProps, 'setSort'> => {
     const {
+        basePath,
         filter: defaultFilter,
         filterToQuery = defaultFilterToQuery,
         input,
-        perPage = 25,
-        sort: defaultSort = { field: 'id', order: 'DESC' },
+        page: initialPage = 1,
+        perPage: initialPerPage = 25,
+        sort: initialSort = { field: 'id', order: 'DESC' },
         options,
         reference,
         source,
@@ -105,16 +110,43 @@ const useReferenceArrayInputController = (
         setIdsToGetFromStore,
     ]);
 
-    const [pagination, setPagination] = useState({ page: 1, perPage });
-    const [sort, setSort] = useState(defaultSort);
-    const [filter, setFilter] = useState('');
+    // pagination logic
+    const {
+        page,
+        setPage,
+        perPage,
+        setPerPage,
+        pagination,
+        setPagination,
+    } = usePaginationState({
+        page: initialPage,
+        perPage: initialPerPage,
+    });
+
+    // selection logic
+    const {
+        selectedIds,
+        onSelect,
+        onToggleItem,
+        onUnselectItems,
+    } = useSelectionState();
+
+    // sort logic
+    const { sort, setSort } = useSortState(initialSort);
+    const setSortForList = useCallback(
+        (field: string, order: string = 'ASC') => {
+            setSort({ field, order });
+            setPage(1);
+        },
+        [setPage, setSort]
+    );
 
     // Ensure sort can be updated through props too, not just by using the setSort function
     useEffect(() => {
-        if (!isEqual(defaultSort, sort)) {
-            setSort(defaultSort);
+        if (!isEqual(initialSort, sort)) {
+            setSort(initialSort);
         }
-    }, [setSort, defaultSort, sort]);
+    }, [setSort, initialSort, sort]);
 
     // Ensure pagination can be updated through props too, not just by using the setPagination function
     useEffect(() => {
@@ -127,13 +159,65 @@ const useReferenceArrayInputController = (
         }
     }, [setPagination, perPage, pagination]);
 
+    // filter logic
+    const [queryFilter, setFilter] = useState('');
+    const filterRef = useRef(defaultFilter);
+    const [displayedFilters, setDisplayedFilters] = useSafeSetState<{
+        [key: string]: boolean;
+    }>({});
+    const [filterValues, setFilterValues] = useSafeSetState<{
+        [key: string]: any;
+    }>(defaultFilter);
+    const hideFilter = useCallback(
+        (filterName: string) => {
+            setDisplayedFilters(previousState => {
+                const { [filterName]: _, ...newState } = previousState;
+                return newState;
+            });
+            setFilterValues(previousState => {
+                const { [filterName]: _, ...newState } = previousState;
+                return newState;
+            });
+        },
+        [setDisplayedFilters, setFilterValues]
+    );
+    const showFilter = useCallback(
+        (filterName: string, defaultValue: any) => {
+            setDisplayedFilters(previousState => ({
+                ...previousState,
+                [filterName]: true,
+            }));
+            setFilterValues(previousState => ({
+                ...previousState,
+                [filterName]: defaultValue,
+            }));
+        },
+        [setDisplayedFilters, setFilterValues]
+    );
+    const setFilters = useCallback(
+        (filters, displayedFilters) => {
+            setFilterValues(removeEmpty(filters));
+            setDisplayedFilters(displayedFilters);
+            setPage(1);
+        },
+        [setDisplayedFilters, setFilterValues, setPage]
+    );
+
+    // handle filter prop change
+    useEffect(() => {
+        if (!isEqual(defaultFilter, filterRef.current)) {
+            filterRef.current = defaultFilter;
+            setFilterValues(defaultFilter);
+        }
+    });
+
     // Merge the user filters with the default ones
     const finalFilter = useMemo(
         () => ({
             ...defaultFilter,
-            ...filterToQuery(filter),
+            ...filterToQuery(queryFilter),
         }),
-        [defaultFilter, filter, filterToQuery]
+        [queryFilter, defaultFilter, filterToQuery]
     );
 
     const { data: referenceRecordsFetched, loaded } = useGetMany(
@@ -148,7 +232,7 @@ const useReferenceArrayInputController = (
     // filter out not found references - happens when the dataProvider doesn't guarantee referential integrity
     const finalReferenceRecords = referenceRecords.filter(Boolean);
 
-    const { data: matchingReferences } = useGetMatching(
+    const { data: matchingReferences, total } = useGetMatching(
         reference,
         pagination,
         sort,
@@ -175,14 +259,37 @@ const useReferenceArrayInputController = (
     });
 
     return {
+        basePath: basePath.replace(resource, reference),
         choices: dataStatus.choices,
+        currentSort: sort,
+        data: indexById(dataStatus.choices),
+        displayedFilters,
         error: dataStatus.error,
+        filterValues,
+        hasCreate: false,
+        hideFilter,
+        ids: dataStatus.choices
+            .filter(data => typeof data !== 'undefined')
+            .map(data => data.id),
         loaded,
         loading: dataStatus.waiting,
+        onSelect,
+        onToggleItem,
+        onUnselectItems,
+        page,
+        perPage,
+        resource,
+        selectedIds,
         setFilter,
+        setFilters,
+        setPage,
         setPagination,
+        setPerPage,
         setSort,
+        setSortForList,
+        showFilter,
         warning: dataStatus.warning,
+        total,
     };
 };
 
@@ -219,6 +326,7 @@ interface ReferenceArrayInputProps {
     setFilter: (filter: any) => void;
     setPagination: (pagination: PaginationPayload) => void;
     setSort: (sort: SortPayload) => void;
+    setSortForList: (sort: string, order?: string) => void;
 }
 
 interface Option {
@@ -227,6 +335,7 @@ interface Option {
     filterToQuery?: (filter: any) => any;
     input: FieldInputProps<any, HTMLElement>;
     options?: any;
+    page?: number;
     perPage?: number;
     record?: Record;
     reference: string;
