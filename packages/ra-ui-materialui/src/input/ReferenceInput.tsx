@@ -222,7 +222,7 @@ export const ReferenceInputView: FunctionComponent<ReferenceInputViewProps> = ({
         return <ReferenceError label={label} error={error} />;
     }
 
-    // When the useReferenceInputController returns a warning, it means there it
+    // When the useReferenceInputController returns a warning, it means it
     // had an issue trying to load the referenced record
     // We display it by overriding the final-form meta
     const finalMeta = warning
