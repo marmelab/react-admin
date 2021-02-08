@@ -184,6 +184,7 @@ const Toolbar: FC<ToolbarProps> = props => {
                                       button.props.undoable,
                                       undoable
                                   ),
+                                  ...button.props,
                               })
                             : null
                     )

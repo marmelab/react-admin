@@ -44,6 +44,7 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
     } = props;
     const translate = useTranslate();
     const classes = useStyles(props);
+    const resource = useResourceContext(props);
     const {
         open,
         loading,
@@ -58,8 +59,8 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
         onClick,
         onSuccess,
         onFailure,
+        resource,
     });
-    const resource = useResourceContext(props);
 
     return (
         <Fragment>
