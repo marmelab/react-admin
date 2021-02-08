@@ -132,9 +132,11 @@ const useReferenceArrayInputController = (
     } = useSelectionState();
 
     // sort logic
+    const sortRef = useRef(initialSort);
     const { sort, setSort } = useSortState(initialSort);
     const setSortForList = useCallback(
         (field: string, order: string = 'ASC') => {
+            console.log({ field, order });
             setSort({ field, order });
             setPage(1);
         },
@@ -143,10 +145,10 @@ const useReferenceArrayInputController = (
 
     // Ensure sort can be updated through props too, not just by using the setSort function
     useEffect(() => {
-        if (!isEqual(initialSort, sort)) {
+        if (!isEqual(initialSort, sortRef.current)) {
             setSort(initialSort);
         }
-    }, [setSort, initialSort, sort]);
+    }, [setSort, initialSort]);
 
     // Ensure pagination can be updated through props too, not just by using the setPagination function
     useEffect(() => {
