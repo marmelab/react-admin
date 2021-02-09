@@ -18,7 +18,7 @@ import { ShowView } from './ShowView';
  * fetches the record from the data provider.
  * It is not responsible for rendering the actual form -
  * that's the job of its child component (usually `<SimpleShowLayout>`),
- * to which it passes pass the `record` as prop.
+ * to which it passes the `record` as prop.
  *
  * The <Show> component accepts the following props:
  *

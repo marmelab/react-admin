@@ -17,7 +17,7 @@ import { CreateView } from './CreateView';
  * The `<Create>` component renders the page title and actions.
  * It is not responsible for rendering the actual form -
  * that's the job of its child component (usually `<SimpleForm>`),
- * to which it passes pass the `record` as prop.
+ * to which it passes the `record` as prop.
  *
  * The <Create> component accepts the following props:
  *
