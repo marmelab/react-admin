@@ -20,6 +20,7 @@ import {
     TopToolbar,
     useListContext,
     useTranslate,
+    useScrollRestoration,
 } from 'react-admin';
 
 import GridList from './GridList';
@@ -69,6 +70,7 @@ const ListActions: FC<any> = ({ isSmall }) => (
 );
 
 const ProductList: FC<ListProps> = props => {
+    useScrollRestoration();
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
     return (
         <ListBase

@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { Children, cloneElement, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { CreateControllerProps, useCreateContext } from 'ra-core';
+import {
+    CreateControllerProps,
+    useCreateContext,
+    useScrollRestoration,
+} from 'ra-core';
 import { Card } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
@@ -16,10 +20,12 @@ export const CreateView = (props: CreateViewProps) => {
         classes: classesOverride,
         className,
         component: Content,
+        disableScrollRestoration,
         title,
         ...rest
     } = props;
 
+    useScrollRestoration(disableScrollRestoration);
     const classes = useStyles(props);
 
     const {

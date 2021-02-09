@@ -76,7 +76,7 @@ interface Options {
  * ];
  * const matchSuggestion = (filterValue, choice) => choice.first_name.match(filterValue) || choice.last_name.match(filterValue);
  * const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
- * <SelectInput source="gender" choices={choices} optionText={<FullNameField />} matchSuggestion={matchSuggestion} />
+ * <AutocompleteInput source="gender" choices={choices} optionText={<FullNameField />} matchSuggestion={matchSuggestion} />
  *
  * The choices are translated by default, so you can use translation identifiers as choices:
  * @example

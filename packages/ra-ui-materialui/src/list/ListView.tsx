@@ -10,6 +10,7 @@ import {
     ListControllerProps,
     useListContext,
     getListControllerProps,
+    useScrollRestoration,
     useVersion,
 } from 'ra-core';
 
@@ -36,8 +37,10 @@ export const ListView = (props: ListViewProps) => {
         exporter = defaultExporter,
         title,
         empty,
+        disableScrollRestoration,
         ...rest
     } = props;
+    useScrollRestoration(disableScrollRestoration);
     const controllerProps = getListControllerProps(props); // deprecated, to be removed in v4
     const listContext = useListContext(props);
     const classes = useStyles(props);
