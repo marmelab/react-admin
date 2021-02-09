@@ -1,5 +1,5 @@
 import { useHistory } from 'react-router-dom';
-import { useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 
 /**
  * Scroll the page to top when the route changes.
@@ -27,7 +27,7 @@ import { useLayoutEffect } from 'react';
  */
 export const useScrollRestoration = (disabled?: boolean): void => {
     const history = useHistory();
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (
             history.action !== 'POP' &&
             typeof window != 'undefined' &&
