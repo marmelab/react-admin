@@ -171,10 +171,11 @@ const useReferenceArrayFieldController = (
         if (!loaded) return;
         // 1. filter
         let tempData = data.filter(record =>
-            Object.entries(filterValues).every(
-                ([filterName, filterValue]) =>
-                    // eslint-disable-next-line eqeqeq
-                    filterValue == get(record, filterName)
+            Object.entries(filterValues).every(([filterName, filterValue]) =>
+                Array.isArray(get(record, filterName))
+                    ? get(record, filterName).includes(filterValue)
+                    : // eslint-disable-next-line eqeqeq
+                      filterValue == get(record, filterName)
             )
         );
         // 2. sort
