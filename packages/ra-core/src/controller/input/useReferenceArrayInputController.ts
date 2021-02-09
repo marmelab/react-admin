@@ -9,6 +9,7 @@ import {
     Record,
     SortPayload,
     ReduxState,
+    Identifier,
 } from '../../types';
 import { useGetMany } from '../../dataProvider';
 import { FieldInputProps, useForm } from 'react-final-form';
@@ -16,7 +17,7 @@ import useGetMatching from '../../dataProvider/useGetMatching';
 import { useTranslate } from '../../i18n';
 import { getStatusForArrayInput as getDataStatus } from './referenceDataStatus';
 import { useResourceContext } from '../../core';
-import { usePaginationState, useSelectionState, useSortState } from '..';
+import { usePaginationState, useSortState } from '..';
 import { ListControllerProps } from '../useListController';
 import { indexById, removeEmpty, useSafeSetState } from '../../util';
 import { SORT_DESC } from '../../reducer/admin/resource/list/queryReducer';
@@ -126,20 +127,36 @@ const useReferenceArrayInputController = (
         perPage: initialPerPage,
     });
 
-    // selection logic
-    const {
-        selectedIds,
-        onSelect,
-        onToggleItem,
-        onUnselectItems,
-    } = useSelectionState(input.value);
-
     const form = useForm();
-    useEffect(() => {
-        if (!isEqual(input.value, selectedIds)) {
-            form.change(input.name, selectedIds);
-        }
-    }, [input.name, input.value, selectedIds, form]);
+    const onSelect = useCallback(
+        (newIds: Identifier[]) => {
+            const newValue = new Set(input.value);
+            newIds.forEach(newId => {
+                newValue.add(newId);
+            });
+
+            form.change(input.name, Array.from(newValue));
+        },
+        [form, input.name, input.value]
+    );
+
+    const onUnselectItems = useCallback(() => {
+        form.change(input.name, []);
+    }, [form, input.name]);
+
+    const onToggleItem = useCallback(
+        (id: Identifier) => {
+            if (input.value.contains(id)) {
+                form.change(
+                    input.name,
+                    input.value.filter(selectedId => selectedId !== id)
+                );
+            } else {
+                form.change(input.name, [...input.value, id]);
+            }
+        },
+        [form, input.name, input.value]
+    );
 
     // sort logic
     const sortRef = useRef(initialSort);
@@ -296,7 +313,7 @@ const useReferenceArrayInputController = (
         page,
         perPage,
         resource,
-        selectedIds,
+        selectedIds: input.value,
         setFilter,
         setFilters,
         setPage,
