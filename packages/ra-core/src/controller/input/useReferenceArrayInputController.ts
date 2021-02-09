@@ -274,6 +274,8 @@ const useReferenceArrayInputController = (
         basePath: basePath.replace(resource, reference),
         choices: dataStatus.choices,
         currentSort: sort,
+        // For the ListContext, we don't want to always display the selected items first.
+        // Indeed it wouldn't work well regarding sorting and pagination
         data:
             matchingReferences && matchingReferences.length > 0
                 ? indexById(matchingReferences)
@@ -283,6 +285,8 @@ const useReferenceArrayInputController = (
         filterValues,
         hasCreate: false,
         hideFilter,
+        // For the ListContext, we don't want to always display the selected items first.
+        // Indeed it wouldn't work well regarding sorting and pagination
         ids: matchingReferencesIds || [],
         loaded,
         loading: dataStatus.waiting,
