@@ -153,15 +153,12 @@ const useReferenceArrayInputController = (
     }, [setSort, initialSort]);
 
     // Ensure pagination can be updated through props too, not just by using the setPagination function
+    const paginationRef = useRef({ initialPage, initialPerPage });
     useEffect(() => {
-        const newPagination = {
-            page: 1,
-            perPage,
-        };
-        if (!isEqual(newPagination, pagination)) {
-            setPagination(newPagination);
+        if (!isEqual({ initialPage, initialPerPage }, paginationRef.current)) {
+            setPagination({ page: initialPage, perPage: initialPerPage });
         }
-    }, [setPagination, perPage, pagination]);
+    }, [setPagination, initialPage, initialPerPage]);
 
     // filter logic
     const [queryFilter, setFilter] = useState('');
@@ -236,7 +233,11 @@ const useReferenceArrayInputController = (
     // filter out not found references - happens when the dataProvider doesn't guarantee referential integrity
     const finalReferenceRecords = referenceRecords.filter(Boolean);
 
-    const { data: matchingReferences, total } = useGetMatching(
+    const {
+        data: matchingReferences,
+        ids: matchingReferencesIds,
+        total,
+    } = useGetMatching(
         reference,
         pagination,
         sort,
@@ -262,19 +263,20 @@ const useReferenceArrayInputController = (
         translate,
     });
 
-    let sortedChoices = sortChoices(dataStatus.choices, sort);
-
     return {
         basePath: basePath.replace(resource, reference),
         choices: dataStatus.choices,
         currentSort: sort,
-        data: indexById(dataStatus.choices),
+        data:
+            matchingReferences && matchingReferences.length > 0
+                ? indexById(matchingReferences)
+                : {},
         displayedFilters,
         error: dataStatus.error,
         filterValues,
         hasCreate: false,
         hideFilter,
-        ids: sortedChoices.map(choice => choice.id),
+        ids: matchingReferencesIds || [],
         loaded,
         loading: dataStatus.waiting,
         onSelect,
