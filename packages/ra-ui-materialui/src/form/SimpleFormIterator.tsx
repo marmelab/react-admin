@@ -319,6 +319,7 @@ export interface SimpleFormIteratorProps
     extends Partial<Omit<FieldArrayRenderProps<any, HTMLElement>, 'meta'>> {
     addButton?: ReactElement;
     basePath?: string;
+    classes?: Partial<ReturnType<typeof useStyles>>;
     className?: string;
     defaultValue?: any;
     disabled?: boolean;
