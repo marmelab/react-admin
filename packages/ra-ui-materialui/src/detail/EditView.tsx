@@ -9,7 +9,7 @@ import {
     EditControllerProps,
     ComponentPropType,
     useEditContext,
-    useScrollRestoration,
+    useScrollToTop,
 } from 'ra-core';
 
 import DefaultActions from './EditActions';
@@ -24,14 +24,14 @@ export const EditView = (props: EditViewProps) => {
         classes: classesOverride,
         className,
         component: Content,
-        disableScrollRestoration,
+        disableScrollToTop,
         title,
         undoable,
         mutationMode,
         ...rest
     } = props;
 
-    useScrollRestoration(disableScrollRestoration);
+    useScrollToTop(disableScrollToTop);
     const classes = useStyles(props);
 
     const {

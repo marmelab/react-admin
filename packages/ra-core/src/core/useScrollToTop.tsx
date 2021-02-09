@@ -12,10 +12,10 @@ import { useEffect } from 'react';
  *
  * @example
  *
- * import { ListBase, useScrollRestoration } from 'react-admin';
+ * import { ListBase, useScrollToTop } from 'react-admin';
  *
  * const MyList = props => {
- *     useScrollRestoration();
+ *     useScrollToTop();
  *     return (
  *         <ListBase {...props}>
  *             ...
@@ -25,7 +25,7 @@ import { useEffect } from 'react';
  *
  * @param disabled Set to true to disable scroll to top. Required by the rules of hooks.
  */
-export const useScrollRestoration = (disabled?: boolean): void => {
+export const useScrollToTop = (disabled?: boolean): void => {
     const history = useHistory();
     useEffect(() => {
         if (

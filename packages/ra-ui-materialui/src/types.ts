@@ -17,7 +17,7 @@ export interface ListProps extends ResourceComponentProps {
     classes?: any;
     className?: string;
     component?: ElementType;
-    disableScrollRestoration?: boolean;
+    disableScrollToTop?: boolean;
     empty?: ReactElement | false;
     exporter?: Exporter | false;
     filter?: FilterPayload;
@@ -36,7 +36,7 @@ export interface EditProps extends ResourceComponentPropsWithId {
     classes?: any;
     className?: string;
     component?: ElementType;
-    disableScrollRestoration?: boolean;
+    disableScrollToTop?: boolean;
     /** @deprecated use mutationMode: undoable instead */
     undoable?: boolean;
     mutationMode?: MutationMode;
@@ -52,7 +52,7 @@ export interface CreateProps extends ResourceComponentProps {
     classes?: any;
     className?: string;
     component?: ElementType;
-    disableScrollRestoration?: boolean;
+    disableScrollToTop?: boolean;
     record?: Partial<RaRecord>;
     onSuccess?: (data: RaRecord) => void;
     onFailure?: (error: any) => void;
@@ -66,7 +66,7 @@ export interface ShowProps extends ResourceComponentPropsWithId {
     classes?: any;
     className?: string;
     component?: ElementType;
-    disableScrollRestoration?: boolean;
+    disableScrollToTop?: boolean;
     title?: string | ReactElement;
 }
 

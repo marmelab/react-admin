@@ -74,7 +74,7 @@ List.propTypes = {
     aside: PropTypes.element,
     // @ts-ignore-line
     bulkActionButtons: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    disableScrollRestoration: PropTypes.bool,
+    disableScrollToTop: PropTypes.bool,
     children: PropTypes.element,
     classes: PropTypes.object,
     className: PropTypes.string,

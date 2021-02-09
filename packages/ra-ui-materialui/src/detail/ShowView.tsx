@@ -8,7 +8,7 @@ import {
     ShowControllerProps,
     useResourceDefinition,
     useShowContext,
-    useScrollRestoration,
+    useScrollToTop,
 } from 'ra-core';
 
 import DefaultActions from './ShowActions';
@@ -23,12 +23,12 @@ export const ShowView = (props: ShowViewProps) => {
         classes: classesOverride,
         className,
         component: Content,
-        disableScrollRestoration,
+        disableScrollToTop,
         title,
         ...rest
     } = props;
 
-    useScrollRestoration(disableScrollRestoration);
+    useScrollToTop(disableScrollToTop);
     const classes = useStyles(props);
 
     const {

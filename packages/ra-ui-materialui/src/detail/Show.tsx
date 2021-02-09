@@ -80,7 +80,7 @@ Show.propTypes = {
     children: PropTypes.element,
     classes: PropTypes.object,
     className: PropTypes.string,
-    disableScrollRestoration: PropTypes.bool,
+    disableScrollToTop: PropTypes.bool,
     hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,
     hasList: PropTypes.bool,

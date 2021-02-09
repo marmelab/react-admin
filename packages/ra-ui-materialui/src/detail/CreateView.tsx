@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {
     CreateControllerProps,
     useCreateContext,
-    useScrollRestoration,
+    useScrollToTop,
 } from 'ra-core';
 import { Card } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -20,12 +20,12 @@ export const CreateView = (props: CreateViewProps) => {
         classes: classesOverride,
         className,
         component: Content,
-        disableScrollRestoration,
+        disableScrollToTop,
         title,
         ...rest
     } = props;
 
-    useScrollRestoration(disableScrollRestoration);
+    useScrollToTop(disableScrollToTop);
     const classes = useStyles(props);
 
     const {

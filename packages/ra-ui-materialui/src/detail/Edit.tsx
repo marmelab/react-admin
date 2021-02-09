@@ -82,7 +82,7 @@ Edit.propTypes = {
     children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
-    disableScrollRestoration: PropTypes.bool,
+    disableScrollToTop: PropTypes.bool,
     hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,
     hasShow: PropTypes.bool,

@@ -77,7 +77,7 @@ const ReviewList: FC<ListProps> = props => {
                                 filters={<ReviewFilter />}
                                 perPage={25}
                                 sort={{ field: 'date', order: 'DESC' }}
-                                disableScrollRestoration
+                                disableScrollToTop
                             >
                                 {isXSmall ? (
                                     <ReviewListMobile />
