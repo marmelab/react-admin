@@ -146,7 +146,7 @@ const useReferenceArrayInputController = (
 
     const onToggleItem = useCallback(
         (id: Identifier) => {
-            if (input.value.contains(id)) {
+            if (input.value.some(selectedId => selectedId === id)) {
                 form.change(
                     input.name,
                     input.value.filter(selectedId => selectedId !== id)
