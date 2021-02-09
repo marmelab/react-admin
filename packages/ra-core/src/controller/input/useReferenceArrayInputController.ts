@@ -11,7 +11,7 @@ import {
     ReduxState,
 } from '../../types';
 import { useGetMany } from '../../dataProvider';
-import { FieldInputProps } from 'react-final-form';
+import { FieldInputProps, useForm } from 'react-final-form';
 import useGetMatching from '../../dataProvider/useGetMatching';
 import { useTranslate } from '../../i18n';
 import { getStatusForArrayInput as getDataStatus } from './referenceDataStatus';
@@ -132,7 +132,14 @@ const useReferenceArrayInputController = (
         onSelect,
         onToggleItem,
         onUnselectItems,
-    } = useSelectionState();
+    } = useSelectionState(input.value);
+
+    const form = useForm();
+    useEffect(() => {
+        if (!isEqual(input.value, selectedIds)) {
+            form.change(input.name, selectedIds);
+        }
+    }, [input.name, input.value, selectedIds, form]);
 
     // sort logic
     const sortRef = useRef(initialSort);
