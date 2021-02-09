@@ -1,6 +1,8 @@
 import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import isEqual from 'lodash/isEqual';
+import get from 'lodash/get';
+import sortBy from 'lodash/sortBy';
 import difference from 'lodash/difference';
 import {
     PaginationPayload,
@@ -17,6 +19,7 @@ import { useResourceContext } from '../../core';
 import { usePaginationState, useSelectionState, useSortState } from '..';
 import { ListControllerProps } from '../useListController';
 import { indexById, removeEmpty, useSafeSetState } from '../../util';
+import { SORT_DESC } from '../../reducer/admin/resource/list/queryReducer';
 
 /**
  * Prepare data for the ReferenceArrayInput components
@@ -136,7 +139,6 @@ const useReferenceArrayInputController = (
     const { sort, setSort } = useSortState(initialSort);
     const setSortForList = useCallback(
         (field: string, order: string = 'ASC') => {
-            console.log({ field, order });
             setSort({ field, order });
             setPage(1);
         },
@@ -260,6 +262,8 @@ const useReferenceArrayInputController = (
         translate,
     });
 
+    let sortedChoices = sortChoices(dataStatus.choices, sort);
+
     return {
         basePath: basePath.replace(resource, reference),
         choices: dataStatus.choices,
@@ -270,9 +274,7 @@ const useReferenceArrayInputController = (
         filterValues,
         hasCreate: false,
         hideFilter,
-        ids: dataStatus.choices
-            .filter(data => typeof data !== 'undefined')
-            .map(data => data.id),
+        ids: sortedChoices.map(choice => choice.id),
         loaded,
         loading: dataStatus.waiting,
         onSelect,
@@ -293,6 +295,19 @@ const useReferenceArrayInputController = (
         warning: dataStatus.warning,
         total,
     };
+};
+
+const sortChoices = (choices: Record[], sort: SortPayload) => {
+    let sortedChoices = sortBy(
+        choices.filter(choice => typeof choice !== 'undefined'),
+        choice => get(choice, sort.field)
+    );
+
+    if (sort.order === SORT_DESC) {
+        return sortedChoices.reverse();
+    }
+
+    return sortedChoices;
 };
 
 // concatenate and deduplicate two lists of records
