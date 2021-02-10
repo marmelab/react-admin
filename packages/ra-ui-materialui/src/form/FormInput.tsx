@@ -29,7 +29,9 @@ const FormInput = <RecordType extends Record | Omit<Record, 'id'> = Record>(
 ) => {
     const { input, classes: classesOverride, ...rest } = props;
     const classes = useStyles(props);
-    const { id, ...inputProps } = input ? input.props : { id: undefined };
+    const { id, className, ...inputProps } = input
+        ? input.props
+        : { id: undefined, className: undefined };
     return input ? (
         <div
             className={classnames(
@@ -49,10 +51,11 @@ const FormInput = <RecordType extends Record | Omit<Record, 'id'> = Record>(
                             {
                                 [classes.input]: !input.props.fullWidth,
                             },
-                            input.props.className
+                            className
                         ),
                         id: input.props.id || input.props.source,
                         ...rest,
+                        ...inputProps,
                     })}
                 </Labeled>
             ) : (
@@ -61,10 +64,11 @@ const FormInput = <RecordType extends Record | Omit<Record, 'id'> = Record>(
                         {
                             [classes.input]: !input.props.fullWidth,
                         },
-                        input.props.className
+                        className
                     ),
                     id: input.props.id || input.props.source,
                     ...rest,
+                    ...inputProps,
                 })
             )}
         </div>
