@@ -28,6 +28,7 @@ const useStyles = makeStyles(
  * @typedef {Object} Props the props you can use
  * @prop {Object} classes CSS class names
  * @prop {string} className CSS class applied to the LinearProgress component
+ * @prop {integer} timeout Milliseconds to wait before showing the progress bar. One second by default
  *
  * @param {Props} props
  */

@@ -17,19 +17,19 @@ The `<List>` component fetches the list of records from the data provider, and r
 
 Here is the minimal code necessary to display a list of posts using a `<Datagrid>`:
 
-* [`title`](#page-title)
+* [`title`](#title)
 * [`actions`](#actions)
 * [`exporter`](#exporter)
-* [`bulkActionButtons`](#bulk-action-buttons)
-* [`filters`](#filters) (a React element used to display the filter form)
-* [`filterDefaultValues`](#filter-default-values) (the default values for `alwaysOn` filters)
-* [`perPage`](#records-per-page)
-* [`sort`](#default-sort-field)
-* [`filter`](#permanent-filter) (the permanent filter used in the REST request)
-* [`pagination`](#pagination)
-* [`aside`](#aside-component)
-* [`empty`](#empty-page)
-- [`syncWithLocation`](#synchronize-with-url)
+* [`bulkActionButtons`](#bulkactionbuttons)
+* [`filters`](#filters-filter-inputs) (a React element used to display the filter form)
+* [`filterDefaultValues`](#filterdefaultvalues) (the default values for `alwaysOn` filters)
+* [`perPage`](#perpage-pagination-size)
+* [`sort`](#sort-default-sort-field--order)
+* [`filter`](#filter-permanent-filter) (the permanent filter used in the REST request)
+* [`pagination`](#pagination-pagination-component)
+* [`aside`](#aside-aside-component)
+* [`empty`](#empty-empty-page-component)
+* [`syncWithLocation`](#synchronize-with-url)
 
 ```jsx
 // in src/posts.js
@@ -910,7 +910,7 @@ const PostFilter = (props) => (
 
 Children of the `<Filter>` component are regular inputs. That means you can build sophisticated filters based on references, array values, etc. `<Filter>` hides all inputs in the filter form by default, except those that have the `alwaysOn` prop.
 
-**Tip**: For technical reasons, react-admin does not accept children of `<Filter>` having both a `defaultValue` and `alwaysOn`. To set default values for always on filters, use the [`filterDefaultValues`](#filter-default-values) prop of the <List> component instead.
+**Tip**: For technical reasons, react-admin does not accept children of `<Filter>` having both a `defaultValue` and `alwaysOn`. To set default values for always on filters, use the [`filterDefaultValues`](#filterdefaultvalues) prop of the <List> component instead.
 
 To inject the filter form in a `<List>`, use the `filters` prop:
 
