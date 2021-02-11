@@ -171,6 +171,7 @@ describe('useListController', () => {
                                     cachedRequests: {},
                                     ids: [],
                                     selectedIds: [],
+                                    total: null,
                                 },
                             },
                         },
