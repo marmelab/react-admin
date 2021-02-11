@@ -153,7 +153,6 @@ describe('useListController', () => {
             const props = {
                 ...defaultProps,
                 debounce: 200,
-                crudGetList: jest.fn(),
                 children,
             };
 
@@ -171,6 +170,7 @@ describe('useListController', () => {
                                     params: {},
                                     cachedRequests: {},
                                     ids: [],
+                                    selectedIds: [],
                                 },
                             },
                         },

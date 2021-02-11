@@ -87,14 +87,15 @@ export const useGetMainList = <RecordType extends Record = Record>(
                 'cachedRequests',
                 requestSignature,
                 'ids',
-            ]);
+            ]); // default value undefined
             const total = get(state.admin.resources, [
                 resource,
                 'list',
                 'cachedRequests',
                 requestSignature,
                 'total',
-            ]);
+            ]); // default value undefined
+
             // When the user changes the page/sort/filter, the list of ids from
             // the cached requests is empty. To avoid rendering an empty list
             // at that moment, we override the ids and total with the latest
@@ -103,18 +104,21 @@ export const useGetMainList = <RecordType extends Record = Record>(
                 resource,
                 'list',
                 'ids',
-            ]);
+            ]); // default value [] (see list.ids reducer)
+
             // Since the total can be empty during the loading phase
             // We need to override that total with the latest loaded one
             const mainTotal = get(state.admin.resources, [
                 resource,
                 'list',
                 'total',
-            ]);
-            // can be null for a page that was never loaded. Useful for the isDataLoaded callback
+            ]); // default value null (see list.total reducer)
+
+            // Is [] for a page that was never loaded
             const finalIds = typeof ids === 'undefined' ? mainIds : ids;
-            // can be null for a page that was never loaded.
+            // Is null for a page that was never loaded.
             const finalTotal = typeof total === 'undefined' ? mainTotal : total;
+
             const allRecords = get(
                 state.admin.resources,
                 [resource, 'data'],
@@ -176,5 +180,4 @@ interface Memo<RecordType extends Record = Record> {
     result?: DataSelectorResult<RecordType>;
 }
 
-const isDataLoaded = (data: DataSelectorResult) =>
-    typeof data.finalIds !== 'undefined';
+const isDataLoaded = (data: DataSelectorResult) => data.finalTotal == null; // null or undefined
