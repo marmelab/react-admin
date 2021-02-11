@@ -17,20 +17,6 @@ The `<List>` component fetches the list of records from the data provider, and r
 
 Here is the minimal code necessary to display a list of posts using a `<Datagrid>`:
 
-* [`title`](#title)
-* [`actions`](#actions)
-* [`exporter`](#exporter)
-* [`bulkActionButtons`](#bulkactionbuttons)
-* [`filters`](#filters-filter-inputs) (a React element used to display the filter form)
-* [`filterDefaultValues`](#filterdefaultvalues) (the default values for `alwaysOn` filters)
-* [`perPage`](#perpage-pagination-size)
-* [`sort`](#sort-default-sort-field--order)
-* [`filter`](#filter-permanent-filter) (the permanent filter used in the REST request)
-* [`pagination`](#pagination-pagination-component)
-* [`aside`](#aside-aside-component)
-* [`empty`](#empty-empty-page-component)
-* [`syncWithLocation`](#synchronize-with-url)
-
 ```jsx
 // in src/posts.js
 import * as React from "react";
@@ -70,18 +56,20 @@ That's enough to display a basic post list, with functional sort and pagination:
 
 Here are all the props accepted by the `<List>` component:
 
-* [`title`](#title)
 * [`actions`](#actions)
-* [`exporter`](#exporter)
+* [`aside`](#aside-aside-component)
 * [`bulkActionButtons`](#bulkactionbuttons)
-* [`filters`](#filters-filter-inputs) (a React element used to display the filter form)
+* [`component`](#component)
+* [`empty`](#empty-empty-page-component)
+* [`exporter`](#exporter)
 * [`filter`](#filter-permanent-filter) (the permanent filter used in the REST request)
 * [`filterDefaultValues`](#filterdefaultvalues) (the default values for `alwaysOn` filters)
+* [`filters`](#filters-filter-inputs) (a React element used to display the filter form)
+* [`pagination`](#pagination-pagination-component)
 * [`perPage`](#perpage-pagination-size)
 * [`sort`](#sort-default-sort-field--order)
-* [`pagination`](#pagination-pagination-component)
-* [`aside`](#aside-aside-component)
-* [`empty`](#empty-empty-page-component)
+* [`title`](#title)
+* [`syncWithLocation`](#synchronize-with-url)
 
 ### `title`
 
