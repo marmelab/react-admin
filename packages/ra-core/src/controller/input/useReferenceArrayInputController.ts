@@ -327,19 +327,6 @@ const useReferenceArrayInputController = (
     };
 };
 
-const sortChoices = (choices: Record[], sort: SortPayload) => {
-    let sortedChoices = sortBy(
-        choices.filter(choice => typeof choice !== 'undefined'),
-        choice => get(choice, sort.field)
-    );
-
-    if (sort.order === SORT_DESC) {
-        return sortedChoices.reverse();
-    }
-
-    return sortedChoices;
-};
-
 // concatenate and deduplicate two lists of records
 const mergeReferences = (ref1: Record[], ref2: Record[]): Record[] => {
     const res = [...ref1];
