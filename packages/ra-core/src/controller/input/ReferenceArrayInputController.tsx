@@ -3,6 +3,7 @@ import debounce from 'lodash/debounce';
 
 import { Record, SortPayload, PaginationPayload } from '../../types';
 import useReferenceArrayInputController from './useReferenceArrayInputController';
+import { ListControllerProps } from '..';
 
 /**
  * An Input component for fields containing a list of references to another resource.
@@ -117,7 +118,8 @@ const ReferenceArrayInputController = ({
     });
 };
 
-interface ChildrenFuncParams {
+export interface ReferenceArrayInputControllerChildrenFuncParams
+    extends Omit<ListControllerProps, 'setSort'> {
     choices: Record[];
     error?: string;
     loaded: boolean;
@@ -125,13 +127,16 @@ interface ChildrenFuncParams {
     setFilter: (filter: any) => void;
     setPagination: (pagination: PaginationPayload) => void;
     setSort: (sort: SortPayload) => void;
+    setSortForList: (sort: string, order?: string) => void;
     warning?: string;
 }
 
 interface ReferenceArrayInputControllerProps {
     allowEmpty?: boolean;
     basePath: string;
-    children: (params: ChildrenFuncParams) => ReactElement;
+    children: (
+        params: ReferenceArrayInputControllerChildrenFuncParams
+    ) => ReactElement;
     filter?: object;
     filterToQuery?: (filter: {}) => any;
     input?: any;
