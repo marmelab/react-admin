@@ -59,7 +59,7 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
                         rowClick,
                         selectable:
                             !isRowSelectable || isRowSelectable(data[id]),
-                        selected: selectedIds.includes(id),
+                        selected: selectedIds?.includes(id),
                         style: rowStyle ? rowStyle(data[id], rowIndex) : null,
                     },
                     children
