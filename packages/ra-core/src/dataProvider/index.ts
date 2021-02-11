@@ -13,6 +13,7 @@ import useQueryWithStore, { QueryOptions } from './useQueryWithStore';
 import withDataProvider from './withDataProvider';
 import useGetOne, { UseGetOneHookValue } from './useGetOne';
 import useGetList from './useGetList';
+import { useGetMainList } from './useGetMainList';
 import useGetMany from './useGetMany';
 import useGetManyReference from './useGetManyReference';
 import useGetMatching from './useGetMatching';
@@ -45,6 +46,7 @@ export {
     useQuery,
     useGetOne,
     useGetList,
+    useGetMainList,
     useGetMany,
     useGetManyReference,
     useGetMatching,
