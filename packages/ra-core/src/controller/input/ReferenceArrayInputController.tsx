@@ -2,7 +2,7 @@ import { ComponentType, ReactElement, useCallback } from 'react';
 import debounce from 'lodash/debounce';
 
 import { Record, SortPayload, PaginationPayload } from '../../types';
-import useReferenceArrayInputController from './useReferenceArrayInputController';
+import { useReferenceArrayInputController } from './useReferenceArrayInputController';
 import { ListControllerProps } from '..';
 
 /**

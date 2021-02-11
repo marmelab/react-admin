@@ -11,6 +11,7 @@ import {
     PaginationPayload,
     Translate,
     ResourceContextProvider,
+    ReferenceArrayInputContextProvider,
     ListContextProvider,
 } from 'ra-core';
 
@@ -137,11 +138,7 @@ const ReferenceArrayInput = ({
         ...props,
     });
 
-    const {
-        setSort,
-        setSortForList,
-        ...controllerProps
-    } = useReferenceArrayInputController({
+    const controllerProps = useReferenceArrayInputController({
         ...props,
         input,
     });
@@ -149,28 +146,29 @@ const ReferenceArrayInput = ({
     const listContext = useMemo(
         () => ({
             ...controllerProps,
-            setSort: setSortForList,
+            setSort: controllerProps.setSortForList,
         }),
-        [controllerProps, setSortForList]
+        [controllerProps]
     );
 
     const translate = useTranslate();
 
     return (
         <ResourceContextProvider value={props.reference}>
-            <ListContextProvider value={listContext}>
-                <ReferenceArrayInputView
-                    id={id}
-                    input={input}
-                    isRequired={isRequired}
-                    meta={meta}
-                    translate={translate}
-                    children={children}
-                    setSort={setSort}
-                    {...props}
-                    {...controllerProps}
-                />
-            </ListContextProvider>
+            <ReferenceArrayInputContextProvider value={controllerProps}>
+                <ListContextProvider value={listContext}>
+                    <ReferenceArrayInputView
+                        id={id}
+                        input={input}
+                        isRequired={isRequired}
+                        meta={meta}
+                        translate={translate}
+                        children={children}
+                        {...props}
+                        {...controllerProps}
+                    />
+                </ListContextProvider>
+            </ReferenceArrayInputContextProvider>
         </ResourceContextProvider>
     );
 };

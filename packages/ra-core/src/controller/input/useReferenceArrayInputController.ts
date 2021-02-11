@@ -1,16 +1,8 @@
 import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import isEqual from 'lodash/isEqual';
-import get from 'lodash/get';
-import sortBy from 'lodash/sortBy';
 import difference from 'lodash/difference';
-import {
-    PaginationPayload,
-    Record,
-    SortPayload,
-    ReduxState,
-    Identifier,
-} from '../../types';
+import { Record, SortPayload, ReduxState, Identifier } from '../../types';
 import { useGetMany } from '../../dataProvider';
 import { FieldInputProps, useForm } from 'react-final-form';
 import useGetMatching from '../../dataProvider/useGetMatching';
@@ -20,7 +12,7 @@ import { useResourceContext } from '../../core';
 import { usePaginationState, useSortState } from '..';
 import { ListControllerProps } from '../useListController';
 import { indexById, removeEmpty, useSafeSetState } from '../../util';
-import { SORT_DESC } from '../../reducer/admin/resource/list/queryReducer';
+import { ReferenceArrayInputContextValue } from './ReferenceArrayInputContext';
 
 /**
  * Prepare data for the ReferenceArrayInput components
@@ -46,9 +38,9 @@ import { SORT_DESC } from '../../reducer/admin/resource/list/queryReducer';
  *
  * @return {Object} controllerProps Fetched data and callbacks for the ReferenceArrayInput components
  */
-const useReferenceArrayInputController = (
-    props: Option
-): ReferenceArrayInputProps & Omit<ListControllerProps, 'setSort'> => {
+export const useReferenceArrayInputController = (
+    props: UseReferenceArrayInputOptions
+): ReferenceArrayInputContextValue & Omit<ListControllerProps, 'setSort'> => {
     const {
         basePath,
         filter: defaultFilter,
@@ -340,30 +332,7 @@ const mergeReferences = (ref1: Record[], ref2: Record[]): Record[] => {
     return res;
 };
 
-export default useReferenceArrayInputController;
-
-/**
- * @typedef ReferenceArrayProps
- * @type {Object}
- * @property {Array} ids the list of ids.
- * @property {Object} data Object holding the reference data by their ids
- * @property {Object} error the error returned by the dataProvider
- * @property {boolean} loading is the reference currently loading
- * @property {boolean} loaded has the reference already been loaded
- */
-interface ReferenceArrayInputProps {
-    choices: Record[];
-    error?: any;
-    warning?: any;
-    loading: boolean;
-    loaded: boolean;
-    setFilter: (filter: any) => void;
-    setPagination: (pagination: PaginationPayload) => void;
-    setSort: (sort: SortPayload) => void;
-    setSortForList: (sort: string, order?: string) => void;
-}
-
-interface Option {
+export interface UseReferenceArrayInputOptions {
     basePath?: string;
     filter?: any;
     filterToQuery?: (filter: any) => any;
