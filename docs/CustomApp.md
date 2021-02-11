@@ -210,7 +210,7 @@ const App = () => (
 +           locale="en"
 +           i18nProvider={i18nProvider}
 +       >
-+           <ThemeProvider>
++           <ThemeProvider theme={theme}>
 +               <Resource name="posts" intent="registration" />
 +               <Resource name="comments" intent="registration" />
 +               <Resource name="users" intent="registration" />
