@@ -2,9 +2,12 @@ import * as React from 'react';
 import expect from 'expect';
 import { waitFor, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
-import ReferenceArrayInputController from './ReferenceArrayInputController';
 import { renderWithRedux } from 'ra-test';
+import ReferenceArrayInputController, {
+    ReferenceArrayInputControllerChildrenFuncParams,
+} from './ReferenceArrayInputController';
 import { CRUD_GET_MATCHING, CRUD_GET_MANY } from '../../../lib';
+import { SORT_ASC } from '../../reducer/admin/resource/list/queryReducer';
 
 describe('<ReferenceArrayInputController />', () => {
     const defaultProps = {
@@ -769,6 +772,116 @@ describe('<ReferenceArrayInputController />', () => {
                     call => call[0].type === CRUD_GET_MANY
                 ).length
             ).toEqual(1);
+        });
+    });
+
+    it('should props compatible with the ListContext', async () => {
+        const children = ({
+            setPage,
+            setPerPage,
+            setSortForList,
+        }: ReferenceArrayInputControllerChildrenFuncParams): React.ReactElement => {
+            const handleSetPage = () => {
+                setPage(2);
+            };
+            const handleSetPerPage = () => {
+                setPerPage(50);
+            };
+            const handleSetSort = () => {
+                setSortForList('name', SORT_ASC);
+            };
+
+            return (
+                <>
+                    <button aria-label="setPage" onClick={handleSetPage} />
+                    <button
+                        aria-label="setPerPage"
+                        onClick={handleSetPerPage}
+                    />
+                    <button aria-label="setSort" onClick={handleSetSort} />
+                </>
+            );
+        };
+
+        const { getByLabelText, dispatch } = renderWithRedux(
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <ReferenceArrayInputController
+                        {...defaultProps}
+                        input={{ value: [5, 6] }}
+                    >
+                        {children}
+                    </ReferenceArrayInputController>
+                )}
+            />,
+            { admin: { resources: { tags: { data: { 5: {}, 6: {} } } } } }
+        );
+
+        fireEvent.click(getByLabelText('setPage'));
+        await waitFor(() => {
+            expect(dispatch).toHaveBeenCalledWith({
+                type: CRUD_GET_MATCHING,
+                meta: {
+                    relatedTo: 'posts@tag_ids',
+                    resource: 'tags',
+                },
+                payload: {
+                    pagination: {
+                        page: 2,
+                        perPage: 25,
+                    },
+                    sort: {
+                        field: 'id',
+                        order: 'DESC',
+                    },
+                    filter: { q: '' },
+                },
+            });
+        });
+
+        fireEvent.click(getByLabelText('setPerPage'));
+        await waitFor(() => {
+            expect(dispatch).toHaveBeenCalledWith({
+                type: CRUD_GET_MATCHING,
+                meta: {
+                    relatedTo: 'posts@tag_ids',
+                    resource: 'tags',
+                },
+                payload: {
+                    pagination: {
+                        page: 2,
+                        perPage: 50,
+                    },
+                    sort: {
+                        field: 'id',
+                        order: 'DESC',
+                    },
+                    filter: { q: '' },
+                },
+            });
+        });
+
+        fireEvent.click(getByLabelText('setSort'));
+        await waitFor(() => {
+            expect(dispatch).toHaveBeenCalledWith({
+                type: CRUD_GET_MATCHING,
+                meta: {
+                    relatedTo: 'posts@tag_ids',
+                    resource: 'tags',
+                },
+                payload: {
+                    pagination: {
+                        page: 1,
+                        perPage: 50,
+                    },
+                    sort: {
+                        field: 'name',
+                        order: 'ASC',
+                    },
+                    filter: { q: '' },
+                },
+            });
         });
     });
 });
