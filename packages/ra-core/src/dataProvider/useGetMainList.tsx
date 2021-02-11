@@ -153,7 +153,7 @@ export const useGetMainList = <RecordType extends Record = Record>(
                           if (!record) return acc;
                           acc[record.id] = record;
                           return acc;
-                      }, {}),
+                      }, defaultData),
         [finalIds, allRecords]
     );
 
