@@ -180,4 +180,4 @@ interface Memo<RecordType extends Record = Record> {
     result?: DataSelectorResult<RecordType>;
 }
 
-const isDataLoaded = (data: DataSelectorResult) => data.finalTotal == null; // null or undefined
+const isDataLoaded = (data: DataSelectorResult) => data.finalTotal != null; // null or undefined
