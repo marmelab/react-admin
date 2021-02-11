@@ -1,9 +1,10 @@
 import * as React from 'react';
 import expect from 'expect';
-import { fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent, waitFor, act } from '@testing-library/react';
 import lolex from 'lolex';
 import TextField from '@material-ui/core/TextField/TextField';
 
+import { DataProviderContext } from '../dataProvider';
 import ListController from './ListController';
 import {
     getListControllerProps,
@@ -40,6 +41,73 @@ describe('useListController', () => {
         resource: 'posts',
         debounce: 200,
     };
+
+    describe('data', () => {
+        it('should be synchronized with ids after delete', async () => {
+            const FooField = ({ record }) => <span>{record.foo}</span>;
+            const dataProvider = {
+                getList: () =>
+                    Promise.resolve({
+                        data: [
+                            { id: 1, foo: 'foo1' },
+                            { id: 2, foo: 'foo2' },
+                        ],
+                        total: 2,
+                    }),
+            };
+            const { dispatch, queryByText } = renderWithRedux(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <ListController
+                        {...defaultProps}
+                        resource="comments"
+                        filter={{ foo: 1 }}
+                    >
+                        {({ data, ids }) => (
+                            <>
+                                {ids.map(id => (
+                                    <FooField key={id} record={data[id]} />
+                                ))}
+                            </>
+                        )}
+                    </ListController>
+                </DataProviderContext.Provider>,
+                {
+                    admin: {
+                        resources: {
+                            comments: {
+                                list: {
+                                    params: {},
+                                    cachedRequests: {},
+                                    ids: [],
+                                    selectedIds: [],
+                                    total: null,
+                                },
+                                data: {},
+                            },
+                        },
+                    },
+                }
+            );
+            await act(async () => await new Promise(r => setTimeout(r)));
+
+            // delete one post
+            act(() => {
+                dispatch({
+                    type: 'RA/CRUD_DELETE_OPTIMISTIC',
+                    payload: { id: 1 },
+                    meta: {
+                        resource: 'comments',
+                        fetch: 'DELETE',
+                        optimistic: true,
+                    },
+                });
+            });
+            await act(async () => await new Promise(r => setTimeout(r)));
+
+            expect(queryByText('foo1')).toBeNull();
+            expect(queryByText('foo2')).not.toBeNull();
+        });
+    });
 
     describe('setFilters', () => {
         let clock;
@@ -178,7 +246,6 @@ describe('useListController', () => {
                     },
                 }
             );
-
             const crudGetListCalls = dispatch.mock.calls.filter(
                 call => call[0].type === 'RA/CRUD_GET_LIST'
             );
