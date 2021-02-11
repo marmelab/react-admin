@@ -21,6 +21,7 @@ import classNames from 'classnames';
 import { FieldArrayRenderProps } from 'react-final-form-arrays';
 
 import FormInput from './FormInput';
+import { ClassesOverride } from '../types';
 
 const useStyles = makeStyles(
     theme => ({
@@ -319,7 +320,7 @@ export interface SimpleFormIteratorProps
     extends Partial<Omit<FieldArrayRenderProps<any, HTMLElement>, 'meta'>> {
     addButton?: ReactElement;
     basePath?: string;
-    classes?: Partial<ReturnType<typeof useStyles>>;
+    classes?: ClassesOverride<typeof useStyles>;
     className?: string;
     defaultValue?: any;
     disabled?: boolean;
