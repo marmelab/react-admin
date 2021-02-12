@@ -92,7 +92,7 @@ class LayoutWithoutTheme extends Component<
          *
          * @see https://stackoverflow.com/questions/48121750/browser-navigation-broken-by-use-of-react-error-boundaries
          */
-        props.history.listen((location, action) => {
+        props.history.listen(() => {
             if (this.state.hasError) {
                 this.setState({ hasError: false });
             }
