@@ -1,5 +1,20 @@
 # Changelog
 
+## v3.12.2
+
+* Fix `<DeleteWithConfirmButton>` does not allow to override `resource` ([5884](https://github.com/marmelab/react-admin/pull/5884)) ([djhi](https://github.com/djhi))
+* Fix List view error after delete when using a field with no record test ([5900](https://github.com/marmelab/react-admin/pull/5900)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Datagrid>` fails when `selectedIds` is undefined ([5892](https://github.com/marmelab/react-admin/pull/5892)) ([jtomaszewski](https://github.com/jtomaszewski))
+* Fix `useInput` doesn't pass down the `isRequired` option ([5812](https://github.com/marmelab/react-admin/pull/5812)) ([FACOLOMBANI](https://github.com/FACOLOMBANI))
+* Fix `<ReferenceManyField>` throws error after insert ([5877](https://github.com/marmelab/react-admin/pull/5877)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<ArrayInput>` always overrides `disabled` prop in its child Inputs ([5876](https://github.com/marmelab/react-admin/pull/5876)) ([djhi](https://github.com/djhi))
+* [Typescript] Add missing classes prop on `<SimpleFormIterator>` ([5890](https://github.com/marmelab/react-admin/pull/5890)) ([ValentinH](https://github.com/ValentinH))
+* [Doc] Fix `<List>` prop list is duplicated and incomplete ([5880](https://github.com/marmelab/react-admin/pull/5880)) ([f-jost](https://github.com/f-jost))
+* [Doc] Fix Custom App example ([5897](https://github.com/marmelab/react-admin/pull/5897)) ([f107](https://github.com/f107))
+* [Doc] Fix various links anchors ([5875](https://github.com/marmelab/react-admin/pull/5875)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix minor typos in jsDoc of `ra-ui-materialui` components ([5889](https://github.com/marmelab/react-admin/pull/5889)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix minor typo in `<ReferenceInput>` jsDoc ([5885](https://github.com/marmelab/react-admin/pull/5885)) ([WiXSL](https://github.com/WiXSL))
+
 ## v3.12.1
 
 * Fix missing type for `ra.navigation.skip_nav` translation message ([5867](https://github.com/marmelab/react-admin/pull/5867)) ([bicstone](https://github.com/bicstone))
