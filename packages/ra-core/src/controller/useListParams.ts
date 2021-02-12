@@ -173,6 +173,7 @@ const useListParams = ({
                         newParams.displayedFilters
                     ),
                 })}`,
+                state: { _scrollToTop: action.type === SET_PAGE },
             });
             dispatch(changeListParams(resource, newParams));
         } else {

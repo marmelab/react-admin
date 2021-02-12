@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ReactElement } from 'react';
+import { FC, ReactElement, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import ContentCreate from '@material-ui/icons/Create';
 import { ButtonProps as MuiButtonProps } from '@material-ui/core/Button';
@@ -13,11 +13,18 @@ const EditButton: FC<EditButtonProps> = ({
     label = 'ra.action.edit',
     record,
     icon = defaultIcon,
+    scrollToTop = true,
     ...rest
 }) => (
     <Button
         component={Link}
-        to={linkToRecord(basePath, record && record.id)}
+        to={useMemo(
+            () => ({
+                pathname: record ? linkToRecord(basePath, record.id) : '',
+                state: { _scrollToTop: scrollToTop },
+            }),
+            [basePath, record, scrollToTop]
+        )}
         label={label}
         onClick={stopPropagation}
         {...(rest as any)}
@@ -35,6 +42,7 @@ interface Props {
     basePath?: string;
     record?: Record;
     icon?: ReactElement;
+    scrollToTop?: boolean;
 }
 
 export type EditButtonProps = Props & ButtonProps & MuiButtonProps;

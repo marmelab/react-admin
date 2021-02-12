@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, memo, ReactElement } from 'react';
+import { FC, memo, useMemo, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ImageEye from '@material-ui/icons/RemoveRedEye';
 import { Link } from 'react-router-dom';
@@ -12,12 +12,20 @@ const ShowButton: FC<ShowButtonProps> = ({
     label = 'ra.action.show',
     record,
     icon = defaultIcon,
+    scrollToTop = true,
     ...rest
 }) => (
     <Button
         component={Link}
-        to={`${linkToRecord(basePath, record && record.id)}/show`}
-        label={label}
+        to={useMemo(
+            () => ({
+                pathname: record
+                    ? `${linkToRecord(basePath, record.id)}/show`
+                    : '',
+                state: { _scrollToTop: scrollToTop },
+            }),
+            [basePath, record, scrollToTop]
+        )}
         onClick={stopPropagation}
         {...(rest as any)}
     >
@@ -34,6 +42,7 @@ interface Props {
     basePath?: string;
     record?: Record;
     icon?: ReactElement;
+    scrollToTop?: boolean;
 }
 
 export type ShowButtonProps = Props & ButtonProps;

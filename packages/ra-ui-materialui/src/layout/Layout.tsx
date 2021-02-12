@@ -92,9 +92,16 @@ class LayoutWithoutTheme extends Component<
          *
          * @see https://stackoverflow.com/questions/48121750/browser-navigation-broken-by-use-of-react-error-boundaries
          */
-        props.history.listen(() => {
+        props.history.listen((location, action) => {
             if (this.state.hasError) {
                 this.setState({ hasError: false });
+            }
+            if (
+                action !== 'POP' &&
+                location.state?._scrollToTop &&
+                typeof window != 'undefined'
+            ) {
+                window.scrollTo(0, 0);
             }
         });
     }
