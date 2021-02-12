@@ -99,7 +99,7 @@ You can customize the `<Create>` and `<Edit>` components using the following pro
 * [`aside`](#aside-component)
 * [`component`](#component)
 * [`undoable`](#undoable) (`<Edit>` only) (deprecated)
-* [`mutationMode`](#mutationMode) (`<Edit>` only) 
+* [`mutationMode`](#mutationmode) (`<Edit>` only) 
 * [`onSuccess`](#onsuccess)
 * [`onFailure`](#onfailure)
 * [`transform`](#transform)

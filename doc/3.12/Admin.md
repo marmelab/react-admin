@@ -32,7 +32,7 @@ Here are all the props accepted by the component:
 - [`i18nProvider`](#i18nprovider)
 - [`title`](#title)
 - [`dashboard`](#dashboard)
-- [`disableTelemetry`](#disableTelemetry)
+- [`disableTelemetry`](#disabletelemetry)
 - [`catchAll`](#catchall)
 - [`menu`](#menu)
 - [`theme`](#theme)

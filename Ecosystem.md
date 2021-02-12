@@ -39,6 +39,8 @@ See the [Translation](./Translation.md#available-locales) page.
 
 See the [Auth Provider](./Authentication.md#available-providers) page. Here is a list of additional packages:
 
+## Authorization Management
+
 - **[Access Control List (ACL) for Resources](https://github.com/marmelab/ra-auth-acl)**: [marmelab/ra-auth-acl](https://github.com/marmelab/ra-auth-acl)
 
 ## Data Providers
