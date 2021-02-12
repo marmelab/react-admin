@@ -225,6 +225,7 @@ describe('useListParams', () => {
                             page: 1,
                             perPage: 10,
                         }),
+                    state: { _scrollToTop: false },
                 });
             });
         });
@@ -260,6 +261,7 @@ describe('useListParams', () => {
                         page: 1,
                         perPage: 10,
                     }),
+                state: { _scrollToTop: false },
             });
         });
 
@@ -295,6 +297,7 @@ describe('useListParams', () => {
                         page: 1,
                         perPage: 10,
                     }),
+                state: { _scrollToTop: false },
             });
         });
 
@@ -330,6 +333,7 @@ describe('useListParams', () => {
                         page: 1,
                         perPage: 10,
                     }),
+                state: { _scrollToTop: false },
             });
         });
     });
