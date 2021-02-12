@@ -161,7 +161,10 @@ const Toolbar: FC<ToolbarProps> = props => {
                     Children.map(children, (button: ReactElement) =>
                         button && isValidElement<any>(button)
                             ? React.cloneElement(button, {
-                                  basePath,
+                                  basePath: valueOrDefault(
+                                      button.props.basePath,
+                                      basePath
+                                  ),
                                   handleSubmit: valueOrDefault(
                                       button.props.handleSubmit,
                                       handleSubmit
@@ -173,8 +176,14 @@ const Toolbar: FC<ToolbarProps> = props => {
                                   onSave: button.props.onSave,
                                   invalid,
                                   pristine,
-                                  record,
-                                  resource,
+                                  record: valueOrDefault(
+                                      button.props.record,
+                                      record
+                                  ),
+                                  resource: valueOrDefault(
+                                      button.props.resource,
+                                      resource
+                                  ),
                                   saving,
                                   submitOnEnter: valueOrDefault(
                                       button.props.submitOnEnter,

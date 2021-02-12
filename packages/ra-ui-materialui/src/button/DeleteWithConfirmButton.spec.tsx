@@ -74,6 +74,49 @@ describe('<DeleteWithConfirmButton />', () => {
         undoable: false,
     };
 
+    it('should allow to override the resource', async () => {
+        const dataProvider = ({
+            getOne: () =>
+                Promise.resolve({
+                    data: { id: 123, title: 'lorem' },
+                }),
+            delete: jest.fn().mockResolvedValueOnce({ data: { id: 123 } }),
+        } as unknown) as DataProvider;
+        const EditToolbar = props => (
+            <Toolbar {...props}>
+                <DeleteWithConfirmButton resource="comments" />
+            </Toolbar>
+        );
+        const {
+            queryByDisplayValue,
+            getByLabelText,
+            getByText,
+        } = renderWithRedux(
+            <ThemeProvider theme={theme}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <Edit {...defaultEditProps}>
+                        <SimpleForm toolbar={<EditToolbar />}>
+                            <TextInput source="title" />
+                        </SimpleForm>
+                    </Edit>
+                </DataProviderContext.Provider>
+            </ThemeProvider>,
+            { admin: { resources: { posts: { data: {} } } } }
+        );
+        // waitFor for the dataProvider.getOne() return
+        await waitFor(() => {
+            expect(queryByDisplayValue('lorem')).not.toBeNull();
+        });
+        fireEvent.click(getByLabelText('ra.action.delete'));
+        fireEvent.click(getByText('ra.action.confirm'));
+        await waitFor(() => {
+            expect(dataProvider.delete).toHaveBeenCalledWith('comments', {
+                id: 123,
+                previousData: { id: 123, title: 'lorem' },
+            });
+        });
+    });
+
     it('should allow to override the onSuccess side effects', async () => {
         const dataProvider = ({
             getOne: () =>
