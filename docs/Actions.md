@@ -447,9 +447,9 @@ Fetching data is called a *side effect*, since it calls the outside world, and i
 
 ## Handling Side Effects In Other Hooks
 
-But the other hooks presented in this chapter, starting with `useMutation`, don't expose the `dataProvider` Promise. To allow for side effects with these hooks, they all accept an additional `options` argument. It's an object with `onSuccess` and `onFailure` functions, that react-admin executes on success... or on failure.
+The other hooks presented in this chapter, starting with `useQuery`, don't expose the `dataProvider` Promise. To allow for side effects with these hooks, they all accept an additional `options` argument. It's an object with `onSuccess` and `onFailure` functions, that react-admin executes on success... or on failure.
 
-So the `<ApproveButton>` written with `useMutation` instead of `useDataProvider` can specify side effects as follows:
+So an `<ApproveButton>` written with `useMutation` instead of `useDataProvider` can specify side effects as follows:
 
 ```jsx
 import * as React from "react";
@@ -478,13 +478,27 @@ const ApproveButton = ({ record }) => {
 
 ## Optimistic Rendering and Undo
 
-In the previous example, after clicking on the "Approve" button, a loading spinner appears while the data provider is fetched. Then, users are redirected to the comments list. But in most cases, the server returns a success response, so the user waits for this response for nothing.
+In the previous example, after clicking on the "Approve" button, a loading spinner appears while the data provider is fetched. Then, users are redirected to the comments list. But in most cases, the server returns a success response, so the user waits for this response for nothing. 
 
-For its own fetch actions, react-admin uses an approach called *optimistic rendering*. The idea is to handle the calls to the `dataProvider` on the client side first (i.e. updating entities in the Redux store), and re-render the screen immediately. The user sees the effect of their action with no delay. Then, react-admin applies the success side effects, and only after that, it triggers the call to the data provider. If the fetch ends with a success, react-admin does nothing more than a refresh to grab the latest data from the server. In most cases, the user sees no difference (the data in the Redux store and the data from the data provider are the same). If the fetch fails, react-admin shows an error notification, and forces a refresh, too.
+This is called **pessimistic rendering**, as all users are forced to wait because of the (usually rare) possibility of server failure. 
 
-As a bonus, while the success notification is displayed, users have the ability to cancel the action *before* the data provider is even called.
+An alternative mode for mutations is **optimistic rendering**. The idea is to handle the calls to the `dataProvider` on the client side first (i.e. updating entities in the Redux store), and re-render the screen immediately. The user sees the effect of their action with no delay. Then, react-admin applies the success side effects, and only after that, it triggers the call to the data provider. If the fetch ends with a success, react-admin does nothing more than a refresh to grab the latest data from the server. In most cases, the user sees no difference (the data in the Redux store and the data from the `dataProvider` are the same). If the fetch fails, react-admin shows an error notification, and forces a refresh, too.
 
-You can benefit from optimistic rendering when you call the `useMutation` hook, too. You just need to pass `undoable: true` in the `options` parameter:
+A third mutation mode is called **undoable**. It's like optimistic rendering, but with an added feature: after applying the changes and the side effects locally, react-admin *waits* for a few seconds before triggering the call to the `dataProvider`. During this delay, the end user sees an "undo" button that, when clicked, cancels the call to the `dataProvider` and refreshes the screen.
+
+Here is a quick recap of the three mutation modes:
+
+|                   | pessimistic               | optimistic | undoable  |
+|-------------------|---------------------------|------------|-----------|
+| dataProvider call | immediate                 | immediate  | delayed   |
+| local changes     | when dataProvider returns | immediate  | immediate |
+| side effects      | when dataProvider returns | immediate  | immediate |
+| cancellable       | no                        | no         | yes       |
+
+
+By default, react-admin uses the undoable mode for the Edit view. For the Create view, react-admin needs to wait for the response to know the id of the resource to redirect to, so the mutation mode is pessimistic.  
+
+You can benefit from optimistic and undoable modes when you call the `useMutation` hook, too. You just need to pass a `mutationMode` value in the `options` parameter:
 
 ```diff
 import * as React from "react";
@@ -500,8 +514,9 @@ const ApproveButton = ({ record }) => {
             payload: { id: record.id, data: { isApproved: true } },
         },
         {
-+           undoable: true,
-            onSuccess: ({ data }) => {
++           mutationMode: 'undoable',
+-           onSuccess: ({ data }) => {
++           onSuccess: () => {
                 redirect('/comments');
 -               notify('Comment approved');
 +               notify('Comment approved', 'info', {}, true);
@@ -513,9 +528,9 @@ const ApproveButton = ({ record }) => {
 };
 ```
 
-As you can see in this example, you need to tweak the notification for undoable actions: passing `true` as fourth parameter of `notify` displays the 'Undo' button in the notification.
+As you can see in this example, you need to tweak the notification for undoable calls: passing `true` as fourth parameter of `notify` displays the 'Undo' button in the notification. Also, as side effects are executed immediately, they can't rely on the response being passed to onSuccess.
 
-You can pass the `{ undoable: true }` options parameter to specialized hooks, too. they all accept an optional last argument with side effects.
+You can pass the `mutationMode` option parameter to specialized hooks, too. They all accept an optional last argument with side effects.
 
 ```jsx
 import * as React from "react";
@@ -530,8 +545,8 @@ const ApproveButton = ({ record }) => {
         { isApproved: true },
         record,
         {
-            undoable: true,
-            onSuccess: ({ data }) => {
+            mutationMode: 'undoable',
+            onSuccess: () => {
                 redirect('/comments');
                 notify('Comment approved', 'info', {}, true);
             },
@@ -565,7 +580,7 @@ const ApproveButton = ({ record }) => {
         { isApproved: true },
         {
 +           action: 'MY_CUSTOM_ACTION',
-            undoable: true,
+            mutationMode: 'undoable',
             onSuccess: ({ data }) => {
                 redirect('/comments');
                 notify('Comment approved', 'info', {}, true);
@@ -648,7 +663,7 @@ const ApproveButton = ({ record }) => {
     const redirect = useRedirect();
     const payload = { id: record.id, data: { ...record, is_approved: true } };
     const options = {
-        undoable: true,
+        mutationMode: 'undoable',
         onSuccess: ({ data }) => {
             notify('Comment approved', 'info', {}, true);
             redirect('/comments');

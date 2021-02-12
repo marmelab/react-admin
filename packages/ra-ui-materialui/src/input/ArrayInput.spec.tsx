@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 
@@ -9,8 +9,6 @@ import TextInput from './TextInput';
 import SimpleFormIterator from '../form/SimpleFormIterator';
 
 describe('<ArrayInput />', () => {
-    afterEach(cleanup);
-
     const onSubmit = jest.fn();
     const mutators = { ...arrayMutators };
 

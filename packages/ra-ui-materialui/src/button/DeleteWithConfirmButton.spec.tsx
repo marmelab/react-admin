@@ -1,4 +1,4 @@
-import { render, cleanup, wait, fireEvent } from '@testing-library/react';
+import { render, waitFor, fireEvent } from '@testing-library/react';
 import * as React from 'react';
 import expect from 'expect';
 import {
@@ -31,8 +31,6 @@ const invalidButtonDomProps = {
 };
 
 describe('<DeleteWithConfirmButton />', () => {
-    afterEach(cleanup);
-
     it('should render a button with no DOM errors', () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
@@ -76,6 +74,49 @@ describe('<DeleteWithConfirmButton />', () => {
         undoable: false,
     };
 
+    it('should allow to override the resource', async () => {
+        const dataProvider = ({
+            getOne: () =>
+                Promise.resolve({
+                    data: { id: 123, title: 'lorem' },
+                }),
+            delete: jest.fn().mockResolvedValueOnce({ data: { id: 123 } }),
+        } as unknown) as DataProvider;
+        const EditToolbar = props => (
+            <Toolbar {...props}>
+                <DeleteWithConfirmButton resource="comments" />
+            </Toolbar>
+        );
+        const {
+            queryByDisplayValue,
+            getByLabelText,
+            getByText,
+        } = renderWithRedux(
+            <ThemeProvider theme={theme}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <Edit {...defaultEditProps}>
+                        <SimpleForm toolbar={<EditToolbar />}>
+                            <TextInput source="title" />
+                        </SimpleForm>
+                    </Edit>
+                </DataProviderContext.Provider>
+            </ThemeProvider>,
+            { admin: { resources: { posts: { data: {} } } } }
+        );
+        // waitFor for the dataProvider.getOne() return
+        await waitFor(() => {
+            expect(queryByDisplayValue('lorem')).not.toBeNull();
+        });
+        fireEvent.click(getByLabelText('ra.action.delete'));
+        fireEvent.click(getByText('ra.action.confirm'));
+        await waitFor(() => {
+            expect(dataProvider.delete).toHaveBeenCalledWith('comments', {
+                id: 123,
+                previousData: { id: 123, title: 'lorem' },
+            });
+        });
+    });
+
     it('should allow to override the onSuccess side effects', async () => {
         const dataProvider = ({
             getOne: () =>
@@ -106,13 +147,13 @@ describe('<DeleteWithConfirmButton />', () => {
             </ThemeProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
-        // wait for the dataProvider.getOne() return
-        await wait(() => {
+        // waitFor for the dataProvider.getOne() return
+        await waitFor(() => {
             expect(queryByDisplayValue('lorem')).not.toBeNull();
         });
         fireEvent.click(getByLabelText('ra.action.delete'));
         fireEvent.click(getByText('ra.action.confirm'));
-        await wait(() => {
+        await waitFor(() => {
             expect(dataProvider.delete).toHaveBeenCalled();
             expect(onSuccess).toHaveBeenCalledWith({
                 data: { id: 123 },
@@ -151,13 +192,13 @@ describe('<DeleteWithConfirmButton />', () => {
             </ThemeProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
-        // wait for the dataProvider.getOne() return
-        await wait(() => {
+        // waitFor for the dataProvider.getOne() return
+        await waitFor(() => {
             expect(queryByDisplayValue('lorem')).toBeDefined();
         });
         fireEvent.click(getByLabelText('ra.action.delete'));
         fireEvent.click(getByText('ra.action.confirm'));
-        await wait(() => {
+        await waitFor(() => {
             expect(dataProvider.delete).toHaveBeenCalled();
             expect(onFailure).toHaveBeenCalledWith({
                 message: 'not good',

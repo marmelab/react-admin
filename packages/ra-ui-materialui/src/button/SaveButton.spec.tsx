@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, cleanup, wait, fireEvent } from '@testing-library/react';
+import { render, waitFor, fireEvent } from '@testing-library/react';
 import expect from 'expect';
 import {
     TestContext,
@@ -7,6 +7,7 @@ import {
     DataProviderContext,
     DataProvider,
     SaveContextProvider,
+    FormContextProvider,
 } from 'ra-core';
 import { ThemeProvider } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -35,12 +36,18 @@ const invalidButtonDomProps = {
 };
 
 describe('<SaveButton />', () => {
-    afterEach(cleanup);
-
     const saveContextValue = {
         save: jest.fn(),
         saving: false,
         setOnFailure: jest.fn(),
+    };
+    const formContextValue = {
+        setOnSave: jest.fn(),
+        registerGroup: jest.fn(),
+        unregisterField: jest.fn(),
+        unregisterGroup: jest.fn(),
+        registerField: jest.fn(),
+        getGroupFields: jest.fn(),
     };
 
     it('should render as submit type with no DOM errors', () => {
@@ -109,10 +116,12 @@ describe('<SaveButton />', () => {
         const { getByLabelText } = render(
             <TestContext>
                 <SaveContextProvider value={saveContextValue}>
-                    <SaveButton
-                        handleSubmitWithRedirect={onSubmit}
-                        saving={false}
-                    />
+                    <FormContextProvider value={formContextValue}>
+                        <SaveButton
+                            handleSubmitWithRedirect={onSubmit}
+                            saving={false}
+                        />
+                    </FormContextProvider>
                 </SaveContextProvider>
             </TestContext>
         );
@@ -216,8 +225,8 @@ describe('<SaveButton />', () => {
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
-        // wait for the dataProvider.getOne() return
-        await wait(() => {
+        // waitFor for the dataProvider.getOne() return
+        await waitFor(() => {
             expect(queryByDisplayValue('lorem')).toBeDefined();
         });
         // change one input to enable the SaveButton (which is disabled when the form is pristine)
@@ -225,7 +234,7 @@ describe('<SaveButton />', () => {
             target: { value: 'ipsum' },
         });
         fireEvent.click(getByText('ra.action.save'));
-        await wait(() => {
+        await waitFor(() => {
             expect(onSuccess).toHaveBeenCalledWith({
                 data: { id: 123, title: 'ipsum' },
             });
@@ -261,8 +270,8 @@ describe('<SaveButton />', () => {
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
-        // wait for the dataProvider.getOne() return
-        await wait(() => {
+        // waitFor for the dataProvider.getOne() return
+        await waitFor(() => {
             expect(queryByDisplayValue('lorem')).toBeDefined();
         });
         // change one input to enable the SaveButton (which is disabled when the form is pristine)
@@ -270,7 +279,7 @@ describe('<SaveButton />', () => {
             target: { value: 'ipsum' },
         });
         fireEvent.click(getByText('ra.action.save'));
-        await wait(() => {
+        await waitFor(() => {
             expect(onFailure).toHaveBeenCalledWith({
                 message: 'not good',
             });
@@ -311,8 +320,8 @@ describe('<SaveButton />', () => {
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
-        // wait for the dataProvider.getOne() return
-        await wait(() => {
+        // waitFor for the dataProvider.getOne() return
+        await waitFor(() => {
             expect(queryByDisplayValue('lorem')).toBeDefined();
         });
         // change one input to enable the SaveButton (which is disabled when the form is pristine)
@@ -320,7 +329,7 @@ describe('<SaveButton />', () => {
             target: { value: 'ipsum' },
         });
         fireEvent.click(getByText('ra.action.save'));
-        await wait(() => {
+        await waitFor(() => {
             expect(transform).toHaveBeenCalledWith({ id: 123, title: 'ipsum' });
             expect(update).toHaveBeenCalledWith('posts', {
                 id: '123',

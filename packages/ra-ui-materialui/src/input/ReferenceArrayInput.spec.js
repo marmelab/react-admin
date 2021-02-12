@@ -1,10 +1,8 @@
 import * as React from 'react';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { ReferenceArrayInputView } from './ReferenceArrayInput';
 
 describe('<ReferenceArrayInput />', () => {
-    afterEach(cleanup);
-
     const defaultProps = {
         input: {},
         meta: {},
@@ -14,42 +12,6 @@ describe('<ReferenceArrayInput />', () => {
         source: 'tag_ids',
         translate: x => `*${x}*`,
     };
-
-    it("should not render a progress bar if loading is true and a second hasn't passed", async () => {
-        const MyComponent = () => <div>MyComponent</div>;
-        const { queryByRole, queryByText } = render(
-            <ReferenceArrayInputView
-                {...{
-                    ...defaultProps,
-                    loading: true,
-                    input: {},
-                }}
-            >
-                <MyComponent />
-            </ReferenceArrayInputView>
-        );
-        await new Promise(resolve => setTimeout(resolve, 250));
-        expect(queryByRole('progressbar')).toBeNull();
-        expect(queryByText('MyComponent')).toBeNull();
-    });
-
-    it('should render a progress bar if loading is true and a second has passed', async () => {
-        const MyComponent = () => <div>MyComponent</div>;
-        const { queryByRole, queryByText } = render(
-            <ReferenceArrayInputView
-                {...{
-                    ...defaultProps,
-                    loading: true,
-                    input: {},
-                }}
-            >
-                <MyComponent />
-            </ReferenceArrayInputView>
-        );
-        await new Promise(resolve => setTimeout(resolve, 1001));
-        expect(queryByRole('progressbar')).not.toBeNull();
-        expect(queryByText('MyComponent')).toBeNull();
-    });
 
     it('should display an error if error is defined', () => {
         const MyComponent = () => <div>MyComponent</div>;

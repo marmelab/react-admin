@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 import { FormDataConsumerView } from './FormDataConsumer';
 
 describe('FormDataConsumerView', () => {
-    afterEach(cleanup);
-
     it('does not call its children function with scopedFormData and getSource if it did not receive an index prop', () => {
         const children = jest.fn();
         const formData = { id: 123, title: 'A title' };

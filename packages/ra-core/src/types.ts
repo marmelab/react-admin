@@ -284,13 +284,19 @@ export type DataProviderProxy = {
     [key: string]: any;
 };
 
+export type MutationMode = 'pessimistic' | 'optimistic' | 'undoable';
+export type OnSuccess = (response?: any) => void;
+export type OnFailure = (error?: any) => void;
+
 export interface UseDataProviderOptions {
     action?: string;
     fetch?: string;
     meta?: object;
+    // @deprecated use mode: 'undoable' instead
     undoable?: boolean;
-    onSuccess?: any;
-    onFailure?: any;
+    mutationMode?: MutationMode;
+    onSuccess?: OnSuccess;
+    onFailure?: OnFailure;
 }
 
 export type LegacyDataProvider = (
@@ -498,11 +504,20 @@ export type Exporter = (
     ) => Promise<any>,
     dataProvider: DataProvider,
     resource?: string
-) => Promise<void>;
+) => void | Promise<void>;
 
 export type SetOnSave = (
     onSave?: (values: object, redirect: any) => void
 ) => void;
+
+export type FormContextValue = {
+    setOnSave?: SetOnSave;
+    registerGroup: (name: string) => void;
+    unregisterGroup: (name: string) => void;
+    registerField: (source: string, group?: string) => void;
+    unregisterField: (source: string, group?: string) => void;
+    getGroupFields: (name: string) => string[];
+};
 
 export type FormFunctions = {
     setOnSave?: SetOnSave;

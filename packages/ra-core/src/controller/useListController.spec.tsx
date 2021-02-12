@@ -1,9 +1,10 @@
 import * as React from 'react';
 import expect from 'expect';
-import { fireEvent, wait, cleanup } from '@testing-library/react';
+import { fireEvent, waitFor, act } from '@testing-library/react';
 import lolex from 'lolex';
 import TextField from '@material-ui/core/TextField/TextField';
 
+import { DataProviderContext } from '../dataProvider';
 import ListController from './ListController';
 import {
     getListControllerProps,
@@ -41,6 +42,73 @@ describe('useListController', () => {
         debounce: 200,
     };
 
+    describe('data', () => {
+        it('should be synchronized with ids after delete', async () => {
+            const FooField = ({ record }) => <span>{record.foo}</span>;
+            const dataProvider = {
+                getList: () =>
+                    Promise.resolve({
+                        data: [
+                            { id: 1, foo: 'foo1' },
+                            { id: 2, foo: 'foo2' },
+                        ],
+                        total: 2,
+                    }),
+            };
+            const { dispatch, queryByText } = renderWithRedux(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <ListController
+                        {...defaultProps}
+                        resource="comments"
+                        filter={{ foo: 1 }}
+                    >
+                        {({ data, ids }) => (
+                            <>
+                                {ids.map(id => (
+                                    <FooField key={id} record={data[id]} />
+                                ))}
+                            </>
+                        )}
+                    </ListController>
+                </DataProviderContext.Provider>,
+                {
+                    admin: {
+                        resources: {
+                            comments: {
+                                list: {
+                                    params: {},
+                                    cachedRequests: {},
+                                    ids: [],
+                                    selectedIds: [],
+                                    total: null,
+                                },
+                                data: {},
+                            },
+                        },
+                    },
+                }
+            );
+            await act(async () => await new Promise(r => setTimeout(r)));
+
+            // delete one post
+            act(() => {
+                dispatch({
+                    type: 'RA/CRUD_DELETE_OPTIMISTIC',
+                    payload: { id: 1 },
+                    meta: {
+                        resource: 'comments',
+                        fetch: 'DELETE',
+                        optimistic: true,
+                    },
+                });
+            });
+            await act(async () => await new Promise(r => setTimeout(r)));
+
+            expect(queryByText('foo1')).toBeNull();
+            expect(queryByText('foo2')).not.toBeNull();
+        });
+    });
+
     describe('setFilters', () => {
         let clock;
         let fakeComponent = ({ setFilters, filterValues }) => (
@@ -68,7 +136,7 @@ describe('useListController', () => {
             };
 
             const { getByLabelText, dispatch, reduxStore } = renderWithRedux(
-                <ListController {...props} />,
+                <ListController syncWithLocation {...props} />,
                 {
                     admin: {
                         resources: {
@@ -112,7 +180,7 @@ describe('useListController', () => {
             };
 
             const { getByLabelText, dispatch, reduxStore } = renderWithRedux(
-                <ListController {...props} />,
+                <ListController syncWithLocation {...props} />,
                 {
                     admin: {
                         resources: {
@@ -153,12 +221,15 @@ describe('useListController', () => {
             const props = {
                 ...defaultProps,
                 debounce: 200,
-                crudGetList: jest.fn(),
                 children,
             };
 
             const { dispatch, rerender } = renderWithRedux(
-                <ListController {...props} filter={{ foo: 1 }} />,
+                <ListController
+                    syncWithLocation
+                    {...props}
+                    filter={{ foo: 1 }}
+                />,
                 {
                     admin: {
                         resources: {
@@ -167,13 +238,14 @@ describe('useListController', () => {
                                     params: {},
                                     cachedRequests: {},
                                     ids: [],
+                                    selectedIds: [],
+                                    total: null,
                                 },
                             },
                         },
                     },
                 }
             );
-
             const crudGetListCalls = dispatch.mock.calls.filter(
                 call => call[0].type === 'RA/CRUD_GET_LIST'
             );
@@ -186,7 +258,13 @@ describe('useListController', () => {
             // Check that the permanent filter is not included in the filterValues (passed to Filter form and button)
             expect(children.mock.calls[0][0].filterValues).toEqual({});
 
-            rerender(<ListController {...props} filter={{ foo: 2 }} />);
+            rerender(
+                <ListController
+                    syncWithLocation
+                    {...props}
+                    filter={{ foo: 2 }}
+                />
+            );
 
             const updatedCrudGetListCalls = dispatch.mock.calls.filter(
                 call => call[0].type === 'RA/CRUD_GET_LIST'
@@ -205,7 +283,6 @@ describe('useListController', () => {
 
         afterEach(() => {
             clock.uninstall();
-            cleanup();
         });
     });
     describe('showFilter', () => {
@@ -260,13 +337,13 @@ describe('useListController', () => {
             );
 
             fireEvent.click(getByLabelText('Show filter 1'));
-            await wait(() => {
+            await waitFor(() => {
                 expect(currentDisplayedFilters).toEqual({
                     'filter1.subdata': true,
                 });
             });
             fireEvent.click(getByLabelText('Show filter 2'));
-            await wait(() => {
+            await waitFor(() => {
                 expect(currentDisplayedFilters).toEqual({
                     'filter1.subdata': true,
                     filter2: true,

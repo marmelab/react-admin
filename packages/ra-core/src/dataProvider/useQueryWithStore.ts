@@ -6,7 +6,7 @@ import useDataProvider from './useDataProvider';
 import useVersion from '../controller/useVersion';
 import getFetchType from './getFetchType';
 import { useSafeSetState } from '../util/hooks';
-import { ReduxState } from '../types';
+import { ReduxState, OnSuccess, OnFailure } from '../types';
 
 export interface Query {
     type: string;
@@ -23,8 +23,8 @@ export interface StateResult {
 }
 
 export interface QueryOptions {
-    onSuccess?: (args?: any) => void;
-    onFailure?: (error: any) => void;
+    onSuccess?: OnSuccess;
+    onFailure?: OnFailure;
     action?: string;
     [key: string]: any;
 }
@@ -79,10 +79,11 @@ const defaultIsDataLoaded = (data: any): boolean => data !== undefined;
  * @param {Object} query.payload The payload object, e.g; { post_id: 12 }
  * @param {Object} options
  * @param {string} options.action Redux action type
- * @param {Function} options.onSuccess Side effect function to be executed upon success or failure, e.g. { onSuccess: response => refresh() }
- * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) }
+ * @param {Function} options.onSuccess Side effect function to be executed upon success, e.g. () => refresh()
+ * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. (error) => notify(error.message)
  * @param {Function} dataSelector Redux selector to get the result. Required.
  * @param {Function} totalSelector Redux selector to get the total (optional, only for LIST queries)
+ * @param {Function} isDataLoaded
  *
  * @returns The current request state. Destructure as { data, total, error, loading, loaded }.
  *
@@ -194,7 +195,7 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
                             if (
                                 requestSignature !== requestSignatureRef.current
                             ) {
-                                resolve();
+                                resolve(undefined);
                             }
 
                             resolve({
@@ -207,7 +208,7 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
                             if (
                                 requestSignature !== requestSignatureRef.current
                             ) {
-                                resolve();
+                                resolve(undefined);
                             }
                             resolve({
                                 error,

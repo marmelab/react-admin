@@ -165,7 +165,7 @@ const PostList = props => {
                         headerClassName={classes.hiddenOnSmallScreens}
                     >
                         <SingleFieldList>
-                            <ChipField source="name" size="small" />
+                            <ChipField source="name.en" size="small" />
                         </SingleFieldList>
                     </ReferenceArrayField>
                     <PostListActionToolbar>
@@ -178,6 +178,6 @@ const PostList = props => {
     );
 };
 
-const tagSort = { field: 'name', order: 'ASC' };
+const tagSort = { field: 'name.en', order: 'ASC' };
 
 export default PostList;

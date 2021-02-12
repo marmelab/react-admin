@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { cleanup } from '@testing-library/react';
 import expect from 'expect';
 
 import ReferenceFieldController from './ReferenceFieldController';
@@ -13,7 +12,6 @@ const defaultState = {
 };
 
 describe('<ReferenceFieldController />', () => {
-    afterEach(cleanup);
     it('should call the CRUD_GET_MANY action on mount if reference source is defined', async () => {
         const dataProvider = {
             getMany: jest.fn(() =>

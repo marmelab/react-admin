@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { cleanup, wait, fireEvent } from '@testing-library/react';
+import { waitFor, fireEvent } from '@testing-library/react';
 import ReferenceArrayInputController from './ReferenceArrayInputController';
 import { renderWithRedux } from '../../util';
 import { CRUD_GET_MATCHING, CRUD_GET_MANY } from '../../../lib';
@@ -14,8 +14,6 @@ describe('<ReferenceArrayInputController />', () => {
         resource: 'posts',
         source: 'tag_ids',
     };
-
-    afterEach(cleanup);
 
     it('should set loading to true as long as there are no references fetched and no selected references', () => {
         const children = jest.fn(({ loading }) => (
@@ -288,7 +286,7 @@ describe('<ReferenceArrayInputController />', () => {
 
     it('should call crudGetMatching on mount with default fetch values', async () => {
         const children = jest.fn(() => <div />);
-        await wait(); // empty the query deduplication in useQueryWithStore
+        await new Promise(resolve => setTimeout(resolve, 100)); // empty the query deduplication in useQueryWithStore
         const { dispatch } = renderWithRedux(
             <ReferenceArrayInputController {...defaultProps} allowEmpty>
                 {children}
@@ -361,7 +359,7 @@ describe('<ReferenceArrayInputController />', () => {
 
         fireEvent.click(getByLabelText('Filter'));
 
-        await wait(() => {
+        await waitFor(() => {
             expect(dispatch).toHaveBeenCalledWith({
                 type: CRUD_GET_MATCHING,
                 meta: {
@@ -399,7 +397,7 @@ describe('<ReferenceArrayInputController />', () => {
 
         fireEvent.click(getByLabelText('Filter'));
 
-        await wait(() => {
+        await waitFor(() => {
             expect(dispatch).toHaveBeenCalledWith({
                 type: CRUD_GET_MATCHING,
                 meta: {
@@ -433,7 +431,7 @@ describe('<ReferenceArrayInputController />', () => {
             </ReferenceArrayInputController>,
             { admin: { resources: { tags: { data: { 5: {}, 6: {} } } } } }
         );
-        await wait(() => {
+        await waitFor(() => {
             expect(dispatch).toHaveBeenCalledWith({
                 type: CRUD_GET_MANY,
                 meta: {
@@ -461,7 +459,7 @@ describe('<ReferenceArrayInputController />', () => {
 
         fireEvent.click(getByLabelText('Filter'));
 
-        await wait(() => {
+        await waitFor(() => {
             expect(
                 dispatch.mock.calls.filter(
                     call => call[0].type === CRUD_GET_MATCHING
@@ -498,7 +496,7 @@ describe('<ReferenceArrayInputController />', () => {
             </ReferenceArrayInputController>
         );
 
-        await wait(() => {
+        await waitFor(() => {
             expect(
                 dispatch.mock.calls.filter(
                     call => call[0].type === CRUD_GET_MATCHING
@@ -522,7 +520,7 @@ describe('<ReferenceArrayInputController />', () => {
             </ReferenceArrayInputController>
         );
 
-        await wait(() => {
+        await waitFor(() => {
             expect(
                 dispatch.mock.calls.filter(
                     call => call[0].type === CRUD_GET_MATCHING
@@ -547,7 +545,7 @@ describe('<ReferenceArrayInputController />', () => {
             </ReferenceArrayInputController>
         );
 
-        await wait(() => {
+        await waitFor(() => {
             expect(
                 dispatch.mock.calls.filter(
                     call => call[0].type === CRUD_GET_MATCHING
@@ -585,13 +583,14 @@ describe('<ReferenceArrayInputController />', () => {
             }
         );
 
-        await wait();
-        expect(dispatch).toHaveBeenCalledWith({
-            type: CRUD_GET_MANY,
-            meta: {
-                resource: 'tags',
-            },
-            payload: { ids: [5] },
+        await waitFor(() => {
+            expect(dispatch).toHaveBeenCalledWith({
+                type: CRUD_GET_MANY,
+                meta: {
+                    resource: 'tags',
+                },
+                payload: { ids: [5] },
+            });
         });
         rerender(
             <ReferenceArrayInputController
@@ -602,14 +601,14 @@ describe('<ReferenceArrayInputController />', () => {
             </ReferenceArrayInputController>
         );
 
-        await wait();
-
-        expect(dispatch).toHaveBeenCalledWith({
-            type: CRUD_GET_MANY,
-            meta: {
-                resource: 'tags',
-            },
-            payload: { ids: [6] },
+        await waitFor(() => {
+            expect(dispatch).toHaveBeenCalledWith({
+                type: CRUD_GET_MANY,
+                meta: {
+                    resource: 'tags',
+                },
+                payload: { ids: [6] },
+            });
         });
     });
 
@@ -625,13 +624,14 @@ describe('<ReferenceArrayInputController />', () => {
             </ReferenceArrayInputController>,
             { admin: { resources: { tags: { data: { 5: {}, 6: {} } } } } }
         );
-        await wait();
-        expect(dispatch).toHaveBeenCalledWith({
-            type: CRUD_GET_MANY,
-            meta: {
-                resource: 'tags',
-            },
-            payload: { ids: [5, 6] },
+        await waitFor(() => {
+            expect(dispatch).toHaveBeenCalledWith({
+                type: CRUD_GET_MANY,
+                meta: {
+                    resource: 'tags',
+                },
+                payload: { ids: [5, 6] },
+            });
         });
         rerender(
             <ReferenceArrayInputController
@@ -642,10 +642,12 @@ describe('<ReferenceArrayInputController />', () => {
             </ReferenceArrayInputController>
         );
 
-        await wait();
-        expect(
-            dispatch.mock.calls.filter(call => call[0].type === CRUD_GET_MANY)
-                .length
-        ).toEqual(1);
+        await waitFor(() => {
+            expect(
+                dispatch.mock.calls.filter(
+                    call => call[0].type === CRUD_GET_MANY
+                ).length
+            ).toEqual(1);
+        });
     });
 });

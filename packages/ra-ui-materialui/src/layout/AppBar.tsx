@@ -59,13 +59,14 @@ const useStyles = makeStyles(
 /**
  * The AppBar component renders a custom MuiAppBar.
  *
- * @param {ReactNode} children React node/s to be render as children of the AppBar
- * @param {Object} classes CSS class names
- * @param {string} className CSS class applied to the MuiAppBar component
- * @param {string} color The color of the AppBar
- * @param {Component} logout The logout button component that will be pass to the UserMenu component
- * @param {boolean} open State of the <Admin/> Sidebar
- * @param {Element | boolean} userMenu A custom user menu component for the AppBar. <UserMenu/> component by default. Pass false to disable.
+ * @param {Object} props
+ * @param {ReactNode} props.children React node/s to be render as children of the AppBar
+ * @param {Object} props.classes CSS class names
+ * @param {string} props.className CSS class applied to the MuiAppBar component
+ * @param {string} props.color The color of the AppBar
+ * @param {Component} props.logout The logout button component that will be pass to the UserMenu component
+ * @param {boolean} props.open State of the <Admin/> Sidebar
+ * @param {Element | boolean} props.userMenu A custom user menu component for the AppBar. <UserMenu/> component by default. Pass false to disable.
  *
  * @example
  *

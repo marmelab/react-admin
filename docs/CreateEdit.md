@@ -98,7 +98,8 @@ You can customize the `<Create>` and `<Edit>` components using the following pro
 * [`actions`](#actions)
 * [`aside`](#aside-component)
 * [`component`](#component)
-* [`undoable`](#undoable) (`<Edit>` only)
+* [`undoable`](#undoable) (`<Edit>` only) (deprecated)
+* [`mutationMode`](#mutationmode) (`<Edit>` only) 
 * [`onSuccess`](#onsuccess)
 * [`onFailure`](#onfailure)
 * [`transform`](#transform)
@@ -170,6 +171,8 @@ export const PostEdit = (props) => (
 );
 ```
 
+### The `<ListButton>` component
+
 A common customization is to add a button to go back to the List. Use the `<ListButton>` for that:
 
 ```jsx
@@ -183,7 +186,7 @@ const PostEditActions = ({ basePath, data }) => (
 );
 ```
 
-If you want this button to look like a Back button, you can pass a custom label and icon to the ListButton:
+If you want this button to look like a Back button, you can pass a custom label and icon to the `ListButton`:
 
 ```jsx
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
@@ -264,6 +267,8 @@ The default value for the `component` prop is `Card`.
 
 ### Undoable
 
+**Note**: This prop is deprecated, use `mutationMode="undoable"` instead.
+
 By default, the Save and Delete actions are undoable, i.e. react-admin only sends the related request to the data provider after a short delay, during which the user can cancel the action. This is part of the "optimistic rendering" strategy of react-admin ; it makes the user interactions more reactive.
 
 You can disable this behavior by setting `undoable={false}`. With that setting, clicking on the Delete button displays a confirmation dialog. Both the `Save` and `Delete` actions become blocking and delay the refresh of the screen until the data provider responds.
@@ -312,6 +317,74 @@ const PostEdit = props => (
 );
 ```
 
+### `mutationMode`
+
+The `<Edit>` view exposes two buttons, Save and Delete, which perform "mutations" (i.e. they alter the data). React-admin offers three modes for mutations. The mode determines when the side effects (redirection, notifications, etc.) are executed:
+
+- `pessimistic`: The mutation is passed to the dataProvider first. When the dataProvider returns successfully, the mutation is applied locally, and the side effects are executed. 
+- `optimistic`: The mutation is applied locally and the side effects are executed immediately. Then the mutation is passed to the dataProvider. If the dataProvider returns successfully, nothing happens (as the mutation was already applied locally). If the dataProvider returns in error, the page is refreshed and an error notification is shown. 
+- `undoable` (default): The mutation is applied locally and the side effects are executed immediately. Then a notification is shown with an undo button. If the user clicks on undo, the mutation is never sent to the dataProvider, and the page is refreshed. Otherwise, after a 5 seconds delay, the mutation is passed to the dataProvider. If the dataProvider returns successfully, nothing happens (as the mutation was already applied locally). If the dataProvider returns in error, the page is refreshed and an error notification is shown.
+
+By default, pages using `<Edit>` use the `undoable` mutation mode. This is part of the "optimistic rendering" strategy of react-admin ; it makes the user interactions more reactive. 
+
+You can change this default by setting the `mutationMode` prop - and this affects both the Save and Delete buttons. For instance, to remove the ability to undo the changes, use the `optimistic` mode:
+
+```jsx
+const PostEdit = props => (
+    <Edit mutationMode="optimistic" {...props}>
+        // ...
+    </Edit>
+);
+```
+
+And to make both the Save and Delete actions blocking, and wait for the dataProvider response to continue, use the `pessimistic` mode:
+
+```jsx
+const PostEdit = props => (
+    <Edit mutationMode="pessimistic" {...props}>
+        // ...
+    </Edit>
+);
+```
+
+**Tip**: When using any other mode than `undoable`, the `<DeleteButton>` displays a confirmation dialog before calling the dataProvider. 
+
+**Tip**: If you want a confirmation dialog for the Delete button but don't mind undoable Edits, then pass a [custom toolbar](#toolbar) to the form, as follows:
+
+```jsx
+import * as React from "react";
+import {
+    Toolbar,
+    SaveButton,
+    DeleteButton,
+    Edit,
+    SimpleForm,
+} from 'react-admin';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+    toolbar: {
+        display: 'flex',
+        justifyContent: 'space-between',
+    },
+});
+
+const CustomToolbar = props => (
+    <Toolbar {...props} classes={useStyles()}>
+        <SaveButton />
+        <DeleteButton mutationMode="pessimistic" />
+    </Toolbar>
+);
+
+const PostEdit = props => (
+    <Edit {...props}>
+        <SimpleForm toolbar={<CustomToolbar />}>
+            ...
+        </SimpleForm>
+    </Edit>
+);
+```
+
 ### `onSuccess`
 
 By default, when the save action succeeds, react-admin shows a notification, and redirects to another page. You can override this behavior and pass custom side effects by providing a function as `onSuccess` prop:
@@ -325,8 +398,8 @@ const PostEdit = props => {
     const refresh = useRefresh();
     const redirect = useRedirect();
 
-    const onSuccess = ({ data }) => {
-        notify(`Changes to post "${data.title}" saved`)
+    const onSuccess = () => {
+        notify(`Changes saved`)
         redirect('/posts');
         refresh();
     };
@@ -341,25 +414,52 @@ const PostEdit = props => {
 }
 ```
 
-The `onSuccess` function receives the response from the dataProvider call (`dataProvider.create()` or `dataProvider.update()`), which is the created/edited record (see [the dataProvider documentation for details](./DataProviders.md#response-format))
+By default, the `<Edit>` view runs updates in `mutationMode="undoable"`, which means that it calls the `onSuccess` side effects immediately, even before the `dataProvider` is called.
 
 The default `onSuccess` function is:
 
 ```jsx
 // for the <Create> component:
-({ data }) => {
-    notify('ra.notification.created', 'info', { smart_count: 1 }, undoable);
+() => {
+    notify('ra.notification.created', 'info', { smart_count: 1 });
     redirect('edit', basePath, data.id, data);
 }
 
 // for the <Edit> component: 
-({ data }) => {
-    notify('ra.notification.updated', 'info', { smart_count: 1 }, undoable);
+() => {
+    notify('ra.notification.updated', 'info', { smart_count: 1 }, mutationMode === 'undoable');
     redirect('list', basePath, data.id, data);
 }
 ```
 
 To learn more about built-in side effect hooks like `useNotify`, `useRedirect` and `useRefresh`, check the [Querying the API documentation](./Actions.md#handling-side-effects-in-usedataprovider).
+
+**Tip**: When you use `mutationMode="pessimistic"`, the `onSuccess` function receives the response from the dataProvider call (`dataProvider.create()` or `dataProvider.update()`), which is the created/edited record (see [the dataProvider documentation for details](./DataProviders.md#response-format)). You can use that response in the success side effects: 
+
+```jsx
+import * as React from 'react';
+import { useNotify, useRefresh, useRedirect, Edit, SimpleForm } from 'react-admin';
+
+const PostEdit = props => {
+    const notify = useNotify();
+    const refresh = useRefresh();
+    const redirect = useRedirect();
+
+  const onSuccess = ({ data }) => {
+        notify(`Changes to post "${data.title}" saved`)
+        redirect('/posts');
+        refresh();
+    };
+
+    return (
+        <Edit onSuccess={onSuccess} mutationMode="pessimistic" {...props}>
+            <SimpleForm>
+                ...
+            </SimpleForm>
+        </Edit>
+    );
+}
+```
 
 **Tip**: When you set the `onSuccess` prop, the `successMessage` prop is ignored.
 
@@ -367,7 +467,7 @@ To learn more about built-in side effect hooks like `useNotify`, `useRedirect` a
 
 ### `onFailure`
 
-By default, when the save action fails at the dataProvider level, react-admin shows an error notification. On an Edit page with `undoable` set to `true`, it refreshes the page, too.
+By default, when the save action fails at the dataProvider level, react-admin shows an error notification. On an Edit page with `mutationMode` set to `undoable` or `optimistic`, it refreshes the page, too.
 
 You can override this behavior and pass custom side effects by providing a function as `onFailure` prop:
 
@@ -409,7 +509,7 @@ The default `onOnFailure` function is:
 // for the <Edit> component: 
 (error) => {
     notify(typeof error === 'string' ? error : error.message || 'ra.notification.http_error', 'warning');
-    if (undoable) {
+    if (mutationMode === 'undoable' || mutationMode === 'pessimistic') {
         refresh();
     }
 }
@@ -710,7 +810,7 @@ export const PostCreate = (props) => (
 );
 ```
 
-**Tip**: `Create` and `Edit` inject more props to their child. So `SimpleForm` also expects these props to be set (but you shouldn't set them yourself):
+**Tip**: `Create` and `Edit` inject more props to their child. So `SimpleForm` also expects these props to be set (you should set them yourself only in particular cases like the [submission validation](#submission-validation)):
 
 * `save`: The function invoked when the form is submitted.
 * `saving`: A boolean indicating whether a save operation is ongoing.
@@ -1329,6 +1429,47 @@ export const UserCreate = (props) => (
 
 **Important**: Note that asynchronous validators are not supported on the `<ArrayInput>` component due to a limitation of [react-final-form-arrays](https://github.com/final-form/react-final-form-arrays).
 
+## Submission Validation
+
+The form can be validated by the server after its submission. In order to display the validation errors, a custom `save` function needs to be used:
+
+{% raw %}
+```jsx
+import { useMutation } from 'react-admin';
+
+export const UserCreate = (props) => {
+    const [mutate] = useMutation();
+    const save = useCallback(
+        async (values) => {
+            try {
+                await mutate({
+                    type: 'create',
+                    resource: 'users',
+                    payload: { data: values },
+                }, { returnPromise: true });
+            } catch (error) {
+                if (error.body.errors) {
+                    return error.body.errors;
+                }
+            }
+        },
+        [mutate],
+    );
+
+    return (
+        <Create undoable={false} {...props}>
+            <SimpleForm save={save}>
+                <TextInput label="First Name" source="firstName" />
+                <TextInput label="Age" source="age" />
+            </SimpleForm>
+        </Create>
+    );
+};
+```
+{% endraw %}
+
+**Tip**: The shape of the returned validation errors must correspond to the form: a key needs to match a `source` prop.
+
 ## Submit On Enter
 
 By default, pressing `ENTER` in any of the form fields submits the form - this is the expected behavior in most cases. However, some of your custom input components (e.g. Google Maps widget) may have special handlers for the `ENTER` key. In that case, to disable the automated form submission on enter, set the `submitOnEnter` prop of the form component to `false`:
@@ -1805,7 +1946,7 @@ const VisitorForm = ({ basePath, record, save, saving, version }) => {
             key={version} // support for refresh button
             keepDirtyOnReinitialize
             render={formProps => (
-                // render your custom form here
+                {/* render your custom form here */}
             )}
         />
     );
@@ -1947,10 +2088,6 @@ export const UserEdit = ({ permissions, ...props }) =>
 
 Once the `dataProvider` returns successfully after save, users see a generic notification ("Element created" / "Element updated"). You can customize this message by passing a custom success side effect function as [the `<Edit onSuccess>` prop](#onsuccess):
 
-By default, when saving with optimistic rendering, the `onSuccess` callback is called immediately. To change that, you need to pass `undoable={false}` to your `<Edit />` or `<Create />` component. The `onSuccess` callback will then be called at the end of the dataProvider call.
-
-In addition, the saved object will not be available as an argument of the `onSuccess` callback method when `undoable` feature is enabled.
-
 ```jsx
 import { Edit, useNotify, useRedirect } from 'react-admin';
 
@@ -1968,6 +2105,8 @@ const PostEdit = props => {
     );
 }
 ```
+
+**Tip**: In `optimistic` and `undoable` mutation modes, react-admin calls the the `onSuccess` callback method with no argument. In `pessimistic` mode, it calls it with the response returned by the dataProvider as argument.
 
 You can do the same for error notifications, e.g. to display a different message depending on the error returned by the `dataProvider`:
 
@@ -2097,3 +2236,46 @@ const SaveWithNoteButton = props => {
 ```
 
 The `onSave` value should be a function expecting 2 arguments: the form values to save, and the redirection to perform.
+
+## Grouping Inputs
+
+Sometimes, you may want to group inputs in order to make a form more approachable. You may use a [`<TabbedForm>`](#the-tabbedform-component), an [`<AccordionForm>`](#the-accordionform-component) or you may want to roll your own layout. In this case, you might need to know the state of a group of inputs: whether it's valid or if the user has changed them (dirty/pristine state).
+
+For this, you can use the `<FormGroupContextProvider>`, which accepts a group name. All inputs rendered inside this context will register to it (thanks to the `useInput` hook). You may then call the `useFormGroup` hook to retrieve the status of the group. For example:
+
+```jsx
+import { Edit, SimpleForm, TextInput, FormGroupContextProvider, useFormGroup } from 'react-admin';
+import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@material-ui/core';
+
+const PostEdit = (props) => (
+    <Edit {...props}>
+        <SimpleForm>
+            <TextInput source="title" />
+            <FormGroupContextProvider name="options">
+                <Accordion>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="options-content"
+                        id="options-header"
+                    >
+                        <AccordionSectionTitle name="options">Options</AccordionSectionTitle>
+                    </AccordionSummary>
+                    <AccordionDetails id="options-content" aria-labelledby="options-header">
+                        <TextInput source="teaser" validate={minLength(20)} />
+                    </AccordionDetails>
+                </Accordion>
+            </FormGroupContextProvider>
+        </SimpleForm>
+    </Edit>
+);
+
+const AccordionSectionTitle = ({ children, name }) => {
+    const formGroupState = useFormGroup(name);
+
+    return (
+        <Typography color={formGroupState.invalid && formGroupState.dirty ? 'error' : 'inherit'}>
+            {children}
+        </Typography>
+    );
+}
+```

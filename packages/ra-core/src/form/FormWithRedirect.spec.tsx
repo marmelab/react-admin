@@ -1,12 +1,10 @@
 import * as React from 'react';
-import { cleanup } from '@testing-library/react';
 
 import { renderWithRedux } from '../util';
 import FormWithRedirect from './FormWithRedirect';
 import useInput from './useInput';
 
 describe('FormWithRedirect', () => {
-    afterEach(cleanup);
     const Input = props => {
         const { input } = useInput(props);
 

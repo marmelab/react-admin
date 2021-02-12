@@ -1,9 +1,7 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Admin, Resource, DataProvider } from 'react-admin';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
-
-import './App.css';
 
 import authProvider from './authProvider';
 import themeReducer from './themeReducer';
@@ -19,9 +17,6 @@ import invoices from './invoices';
 import categories from './categories';
 import reviews from './reviews';
 
-import dataProviderFactory from './dataProvider';
-import fakeServerFactory from './fakeServer';
-
 const i18nProvider = polyglotI18nProvider(locale => {
     if (locale === 'fr') {
         return import('./i18n/fr').then(messages => messages.default);
@@ -31,37 +26,13 @@ const i18nProvider = polyglotI18nProvider(locale => {
     return englishMessages;
 }, 'en');
 
-const App = () => {
-    const [dataProvider, setDataProvider] = useState<DataProvider>();
+interface AppProps {
+    onUnmount: () => void;
+    dataProvider: DataProvider;
+}
 
-    useEffect(() => {
-        let restoreFetch;
-
-        const fetchDataProvider = async () => {
-            restoreFetch = await fakeServerFactory(
-                process.env.REACT_APP_DATA_PROVIDER || ''
-            );
-            const dataProviderInstance = await dataProviderFactory(
-                process.env.REACT_APP_DATA_PROVIDER || ''
-            );
-            setDataProvider(
-                // GOTCHA: dataProviderInstance can be a function
-                () => dataProviderInstance
-            );
-        };
-
-        fetchDataProvider();
-
-        return restoreFetch;
-    }, []);
-
-    if (!dataProvider) {
-        return (
-            <div className="loader-container">
-                <div className="loader">Loading...</div>
-            </div>
-        );
-    }
+const App = ({ onUnmount, dataProvider }: AppProps) => {
+    useEffect(() => onUnmount, [onUnmount]);
 
     return (
         <Admin

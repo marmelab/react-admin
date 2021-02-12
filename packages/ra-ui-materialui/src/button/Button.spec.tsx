@@ -1,4 +1,4 @@
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import * as React from 'react';
 import expect from 'expect';
 import { TestContext } from 'ra-core';
@@ -24,8 +24,6 @@ const invalidButtonDomProps = {
 };
 
 describe('<Button />', () => {
-    afterEach(cleanup);
-
     it('should render as submit type with no DOM errors', () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 

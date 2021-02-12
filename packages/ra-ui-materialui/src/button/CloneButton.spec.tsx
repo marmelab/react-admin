@@ -1,7 +1,7 @@
 import expect from 'expect';
 import { ThemeProvider } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
-import { cleanup, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import * as React from 'react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
@@ -27,8 +27,6 @@ const invalidButtonDomProps = {
 };
 
 describe('<CloneButton />', () => {
-    afterEach(cleanup);
-
     it('should pass a clone of the record in the location state', () => {
         const history = createMemoryHistory();
         const { getByRole } = render(

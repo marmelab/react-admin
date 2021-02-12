@@ -8,12 +8,13 @@ title: "Reference"
 <div style="column-count:3" markdown="1">
 
 * [`<AccordionForm>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#accordionform)<img class="icon" src="./img/premium.svg" />
-* `<Actions>`
+* [`<Actions>`](./CreateEdit.md#actions)
 * [`<Admin>`](./Admin.md)
 * `<AdminRoutes>`
 * [`<AppBar>`](./Theming.md#customizing-the-appbar-content)
 * [`<ArrayField>`](./Fields.md#arrayfield)
 * [`<ArrayInput>`](./Inputs.md#arrayinput)
+* [`<Aside>`](./CreateEdit.md#aside-component)
 * [`<Authenticated>`](./Authentication.md#useauthenticated-hook)
 * [`<AutocompleteArrayInput>`](./Inputs.md#autocompletearrayinput)
 * [`<AutocompleteInput>`](./Inputs.md#autocompleteinput)
@@ -26,7 +27,7 @@ title: "Reference"
 * [`<Calendar>`](https://marmelab.com/ra-enterprise/modules/ra-calendar#calendar)<img class="icon" src="./img/premium.svg" />
 * [`<CheckboxGroupInput>`](./Inputs.md#checkboxgroupinput)
 * [`<ChipField>`](./Fields.md#chipfield)
-* `<CloneButton>`
+* [`<CloneButton>`](./CreateEdit.md#prefilling-a-create-record)
 * [`<CompleteCalendar>`](https://marmelab.com/ra-enterprise/modules/ra-calendar#completecalendar)<img class="icon" src="./img/premium.svg" />
 * `<Confirm>`
 * [`<Create>`](./CreateEdit.md#the-create-and-edit-components)
@@ -35,7 +36,8 @@ title: "Reference"
 * [`<CreateDialog>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog--editdialog)<img class="icon" src="./img/premium.svg" />
 * `<DashboardMenuItem>`
 * [`<Datagrid>`](./List.md#the-datagrid-component)
-* `<DatagridBody>`
+* [`<DatagridBody>`](./List.md#body-element)
+* [`<DatagridRow>`](./List.md#body-element)
 * `<DatagridCell>`
 * `<DatagridHeaderCell>`
 * [`<DateField>`](./Fields.md#datefield)
@@ -53,8 +55,8 @@ title: "Reference"
 * [`<FileField>`](./Fields.md#filefield)
 * [`<FileInput>`](./Inputs.md#fileinput)
 * [`<Filter>`](./List.md#filters-filter-inputs)
-* `<FilterButton>`
-* `<FilterForm>`
+* [`<FilterButton>`](./List.md#custom-filter-button)
+* [`<FilterForm>`](./List.md#custom-form-component)
 * [`<FilterList>`](./List.md#the-filterlist-sidebar)
 * [`<FilterListItem>`](./List.md#the-filterlist-sidebar)
 * [`<FilterLiveSearch>`](./List.md#live-search)
@@ -65,21 +67,23 @@ title: "Reference"
 * [`<ImageField>`](./Fields.md#imagefield)
 * [`<ImageInput>`](./Inputs.md#imageinput)
 * [`<ImageInputPreview>`](./Inputs.md#imageinput)
-* `<Labeled>`
+* [`<Labeled>`](./Inputs.md#using-labeled)
 * [`<LanguageSwitcher>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#languageswitcher-store-the-locale-in-preferences)<img class="icon" src="./img/premium.svg" />
 * [`<Layout>`](./Theming.md#using-a-custom-layout)
-* [`<Loading>`](./Theming.md#Loading)
+* [`<Loading>`](./Theming.md#loading)
+* [`<LinearProgress>`](./Theming.md#linearprogress)
 * [`<Logout>`](./Theming.md#using-a-custom-logout-button)
+* [`linkToRecord`](./Fields.md#linking-to-other-records)
 * [`<List>`](./List.md#the-list-component)
 * [`<ListBase>`](./List.md#the-listbase-component)
 * [`<ListGuesser>`](./List.md#the-listguesser-component)
-* `<ListButton>`
+* [`<ListButton>`](./CreateEdit.md#the-listbutton-component)
 * [`<MarkdownField>`](https://marmelab.com/ra-enterprise/modules/ra-markdown#markdownfield)<img class="icon" src="./img/premium.svg" />
 * [`<MarkdownInput>`](https://marmelab.com/ra-enterprise/modules/ra-markdown#markdowninput)<img class="icon" src="./img/premium.svg" />
 * [`<Menu>`](./Theming.md#using-a-custom-menu)
 * [`<MultiLevelMenu>`](https://marmelab.com/ra-enterprise/modules/ra-navigation#multilevelmenu-replacing-the-default-menu-by-a-multi-level-one)<img class="icon" src="./img/premium.svg" />
 * [`<Mutation>`](./Actions.md#legacy-components-query-mutation-and-withdataprovider)
-* `<Notification>`
+* [`<Notification>`](./Theming.md#notifications)
 * [`<NullableBooleanInput>`](./Inputs.md#booleaninput-and-nullablebooleaninput)
 * [`<NumberField>`](./Fields.md#numberfield)
 * [`<NumberInput>`](./Inputs.md#numberinput)
@@ -107,7 +111,7 @@ title: "Reference"
 * `<SaveButton>`
 * [`<SavedFilterList>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#savedquerieslist-and-filterwithsave-store-user-queries-in-preferences)<img class="icon" src="./img/premium.svg" />
 * [`<Search>`](https://marmelab.com/ra-enterprise/modules/ra-search#the-search-component)<img class="icon" src="./img/premium.svg" />
-* `<SearchInput>`
+* [`<SearchInput>`](./List.md#full-text-search)
 * [`<SelectArrayInput>`](./Inputs.md#selectarrayinput)
 * [`<SelectColumnsButton>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#selectcolumnsbutton-store-datagrid-columns-in-preferences)<img class="icon" src="./img/premium.svg" />
 * [`<SelectField>`](./Fields.md#selectfield)
@@ -115,9 +119,8 @@ title: "Reference"
 * [`<Show>`](./Show.md#the-show-component)
 * [`<ShowGuesser`](./Show.md#the-showguesser-component)
 * `<ShowButton>`
-* `<Sidebar>`
+* [`<Sidebar>`](./Theming.md#sidebar-customization)
 * [`<SidebarOpenPreferenceSync>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#sidebaropenpreferencesync-store-the-sidebar-openclose-state-in-preferences)<img class="icon" src="./img/premium.svg" />
-* `<SimpleList>`
 * [`<SimpleForm>`](./CreateEdit.md#the-simpleform-component)
 * [`<SimpleFormIterator>`](./Inputs.md#arrayinput)
 * [`<SimpleList>`](./List.md#the-simplelist-component)
@@ -136,7 +139,7 @@ title: "Reference"
 * [`<Tree>`](https://marmelab.com/ra-enterprise/modules/ra-tree#tree-component)<img class="icon" src="./img/premium.svg" />
 * [`<TreeWithDetails>`](https://marmelab.com/ra-enterprise/modules/ra-tree#treewithdetails-component)<img class="icon" src="./img/premium.svg" />
 * [`translate`](./Translation.md#withtranslate-hoc)
-* `<Toolbar>`
+* [`<Toolbar>`](./CreateEdit.md#toolbar)
 * `<TopToolbar>`
 * [`<UrlField>`](./Fields.md#urlfield)
 * [`<WizardForm>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#wizardform)<img class="icon" src="./img/premium.svg" />
@@ -164,7 +167,7 @@ title: "Reference"
 * [`useGetPermissions`](./Authentication.md#usegetpermissions-hook)
 * [`useHasLock`](https://marmelab.com/ra-enterprise/modules/ra-realtime#locks-on-content)<img class="icon" src="./img/premium.svg" />
 * [`useHasLocks`](https://marmelab.com/ra-enterprise/modules/ra-realtime#locks-on-content)<img class="icon" src="./img/premium.svg" />
-* `useInput`
+* [`useInput`](./Inputs.md#the-useinput-hook)
 * [`useListContext`](./List.md#uselistcontext)
 * [`useListController`](./List.md#uselistcontroller)
 * `useListParams`

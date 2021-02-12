@@ -83,34 +83,38 @@ export default async options => {
             `${resource}.${aorFetchType}`
         );
 
-        const { parseResponse, ...query } = overriddenBuildQuery
-            ? {
-                  ...buildQuery(aorFetchType, resource, params),
-                  ...overriddenBuildQuery(params),
-              }
-            : buildQuery(aorFetchType, resource, params);
+        try {
+            const { parseResponse, ...query } = overriddenBuildQuery
+                ? {
+                      ...buildQuery(aorFetchType, resource, params),
+                      ...overriddenBuildQuery(params),
+                  }
+                : buildQuery(aorFetchType, resource, params);
 
-        const operation = getQueryOperation(query.query);
+            const operation = getQueryOperation(query.query);
 
-        if (operation === 'query') {
+            if (operation === 'query') {
+                const apolloQuery = {
+                    ...query,
+                    fetchPolicy: 'network-only',
+                    ...getOptions(otherOptions.query, aorFetchType, resource),
+                };
+
+                return client
+                    .query(apolloQuery)
+                    .then(response => parseResponse(response));
+            }
+
             const apolloQuery = {
-                ...query,
-                fetchPolicy: 'network-only',
-                ...getOptions(otherOptions.query, aorFetchType, resource),
+                mutation: query.query,
+                variables: query.variables,
+                ...getOptions(otherOptions.mutation, aorFetchType, resource),
             };
 
-            return client
-                .query(apolloQuery)
-                .then(response => parseResponse(response));
+            return client.mutate(apolloQuery).then(parseResponse);
+        } catch (e) {
+            return Promise.reject(e);
         }
-
-        const apolloQuery = {
-            mutation: query.query,
-            variables: query.variables,
-            ...getOptions(otherOptions.mutation, aorFetchType, resource),
-        };
-
-        return client.mutate(apolloQuery).then(parseResponse);
     };
 
     raDataProvider.observeRequest = (aorFetchType, resource, params) => {

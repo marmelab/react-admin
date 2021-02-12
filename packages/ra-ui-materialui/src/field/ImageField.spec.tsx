@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import ImageField from './ImageField';
 
 const defaultProps = {
@@ -9,8 +9,6 @@ const defaultProps = {
 };
 
 describe('<ImageField />', () => {
-    afterEach(cleanup);
-
     it('should return an empty div when record is not set', () => {
         const { container } = render(<ImageField {...defaultProps} />);
         expect(container.firstChild.textContent).toEqual('');

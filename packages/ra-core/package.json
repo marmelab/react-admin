@@ -1,6 +1,6 @@
 {
     "name": "ra-core",
-    "version": "3.11.1",
+    "version": "3.12.2",
     "description": "Core components of react-admin, a frontend Framework for building admin applications on top of REST services, using ES6, React",
     "files": [
         "*.md",
@@ -36,8 +36,6 @@
         "@types/react-router-dom": "^5.1.0",
         "connected-react-router": "^6.5.2",
         "cross-env": "^5.2.0",
-        "enzyme": "~3.9.0",
-        "enzyme-adapter-react-16": "~1.12.1",
         "final-form": "^4.20.0",
         "history": "^4.7.2",
         "ignore-styles": "~5.0.1",
@@ -65,7 +63,7 @@
         "redux-saga": "^1.0.0"
     },
     "dependencies": {
-        "@testing-library/react": "^8.0.7",
+        "@testing-library/react": "^11.2.3",
         "classnames": "~2.2.5",
         "date-fns": "^1.29.0",
         "eventemitter3": "^3.0.0",

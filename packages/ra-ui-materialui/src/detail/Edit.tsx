@@ -17,7 +17,7 @@ import { EditView } from './EditView';
  * fetches the record from the data provider.
  * It is not responsible for rendering the actual form -
  * that's the job of its child component (usually `<SimpleForm>`),
- * to which it passes pass the `record` as prop.
+ * to which it passes the `record` as prop.
  *
  * The <Edit> component accepts the following props:
  *
@@ -26,7 +26,8 @@ import { EditView } from './EditView';
  * - component
  * - successMessage
  * - title
- * - undoable
+ * - mutationMode
+ * - undoable (deprecated)
  *
  * @example
  *
@@ -86,11 +87,12 @@ Edit.propTypes = {
     hasShow: PropTypes.bool,
     hasList: PropTypes.bool,
     id: PropTypes.any.isRequired,
-    resource: PropTypes.string.isRequired,
-    title: PropTypes.node,
-    successMessage: PropTypes.string,
+    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     onSuccess: PropTypes.func,
     onFailure: PropTypes.func,
+    resource: PropTypes.string.isRequired,
+    successMessage: PropTypes.string,
+    title: PropTypes.node,
     transform: PropTypes.func,
     undoable: PropTypes.bool,
 };

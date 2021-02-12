@@ -21,6 +21,7 @@ import classNames from 'classnames';
 import { FieldArrayRenderProps } from 'react-final-form-arrays';
 
 import FormInput from './FormInput';
+import { ClassesOverride } from '../types';
 
 const useStyles = makeStyles(
     theme => ({
@@ -201,29 +202,37 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
                             <section className={classes.form}>
                                 {Children.map(
                                     children,
-                                    (input: ReactElement, index2) =>
-                                        isValidElement<any>(input) ? (
+                                    (input: ReactElement, index2) => {
+                                        if (!isValidElement<any>(input)) {
+                                            return null;
+                                        }
+                                        const {
+                                            source,
+                                            ...inputProps
+                                        } = input.props;
+                                        return (
                                             <FormInput
                                                 basePath={
                                                     input.props.basePath ||
                                                     basePath
                                                 }
                                                 input={cloneElement(input, {
-                                                    source: input.props.source
-                                                        ? `${member}.${input.props.source}`
+                                                    source: source
+                                                        ? `${member}.${source}`
                                                         : member,
-                                                    index: input.props.source
+                                                    index: source
                                                         ? undefined
                                                         : index2,
                                                     label:
                                                         typeof input.props
                                                             .label ===
                                                         'undefined'
-                                                            ? input.props.source
-                                                                ? `resources.${resource}.fields.${input.props.source}`
+                                                            ? source
+                                                                ? `resources.${resource}.fields.${source}`
                                                                 : undefined
                                                             : input.props.label,
                                                     disabled,
+                                                    ...inputProps,
                                                 })}
                                                 record={
                                                     (records &&
@@ -234,7 +243,8 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
                                                 variant={variant}
                                                 margin={margin}
                                             />
-                                        ) : null
+                                        );
+                                    }
                                 )}
                             </section>
                             {!disabled &&
@@ -310,6 +320,7 @@ export interface SimpleFormIteratorProps
     extends Partial<Omit<FieldArrayRenderProps<any, HTMLElement>, 'meta'>> {
     addButton?: ReactElement;
     basePath?: string;
+    classes?: ClassesOverride<typeof useStyles>;
     className?: string;
     defaultValue?: any;
     disabled?: boolean;

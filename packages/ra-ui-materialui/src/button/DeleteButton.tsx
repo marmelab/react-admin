@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FC, ReactElement, SyntheticEvent } from 'react';
 import PropTypes from 'prop-types';
-import { Record, RedirectionSideEffect } from 'ra-core';
+import { Record, RedirectionSideEffect, MutationMode } from 'ra-core';
 
 import { ButtonProps } from './Button';
 import DeleteWithUndoButton from './DeleteWithUndoButton';
@@ -11,13 +11,15 @@ import DeleteWithConfirmButton from './DeleteWithConfirmButton';
  * Button used to delete a single record. Added by default by the <Toolbar> of edit and show views.
  *
  * @typedef {Object} Props The props you can use (other props are injected if you used it in the <Toolbar>)
- * @param {Prop} props
  * @prop {boolean} undoable Confirm the deletion using an undo button in a notification or a confirmation dialog. Defaults to 'false'.
+ * @prop {Object} record The current resource record
  * @prop {string} className
  * @prop {string} label Button label. Defaults to 'ra.action.delete, translated.
  * @prop {boolean} disabled Disable the button.
  * @prop {string} variant Material-ui variant for the button. Defaults to 'contained'.
  * @prop {ReactElement} icon Override the icon. Defaults to the Delete icon from material-ui.
+ *
+ * @param {Props} props
  *
  * @example Usage in the <TopToolbar> of an <Edit> form
  *
@@ -44,16 +46,21 @@ import DeleteWithConfirmButton from './DeleteWithConfirmButton';
  */
 const DeleteButton: FC<DeleteButtonProps> = ({
     undoable,
+    mutationMode = 'undoable',
     record,
     ...props
 }) => {
     if (!record || record.id == null) {
         return null;
     }
-    return undoable ? (
+    return undoable || mutationMode === 'undoable' ? (
         <DeleteWithUndoButton record={record} {...props} />
     ) : (
-        <DeleteWithConfirmButton record={record} {...props} />
+        <DeleteWithConfirmButton
+            mutationMode={mutationMode}
+            record={record}
+            {...props}
+        />
     );
 };
 
@@ -63,6 +70,7 @@ interface Props {
     className?: string;
     icon?: ReactElement;
     label?: string;
+    mutationMode?: MutationMode;
     onClick?: (e: MouseEvent) => void;
     record?: Record;
     redirect?: RedirectionSideEffect;
@@ -74,6 +82,7 @@ interface Props {
     pristine?: boolean;
     saving?: boolean;
     submitOnEnter?: boolean;
+    /** @deprecated use mutationMode: undoable instead */
     undoable?: boolean;
 }
 
@@ -92,10 +101,6 @@ DeleteButton.propTypes = {
     resource: PropTypes.string,
     undoable: PropTypes.bool,
     icon: PropTypes.element,
-};
-
-DeleteButton.defaultProps = {
-    undoable: true,
 };
 
 export default DeleteButton;

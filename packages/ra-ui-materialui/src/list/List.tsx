@@ -26,13 +26,18 @@ import { ListProps } from '../types';
  *
  * - actions
  * - aside
+ * - bulkActionButtons
  * - component
+ * - empty
+ * - exporter
  * - filter (the permanent filter to apply to the query)
+ * - filterDefaultValues (the default values for `alwaysOn` filters)
  * - filters (a React component used to display the filter form)
  * - pagination
  * - perPage
  * - sort
  * - title
+ * - syncWithLocation
  *
  * @example
  *
@@ -99,6 +104,7 @@ List.propTypes = {
     match: PropTypes.any,
     path: PropTypes.string,
     resource: PropTypes.string.isRequired,
+    syncWithLocation: PropTypes.bool,
 };
 
 List.defaultProps = {

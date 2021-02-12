@@ -26,7 +26,7 @@ export function* handleUndoRace(undoableAction: { payload: { action: any } }) {
             optimistic: true,
         },
     });
-    // wait for undo or delay
+    // waitFor for undo or delay
     const { complete } = yield race({
         undo: take(UNDO),
         complete: take(COMPLETE),

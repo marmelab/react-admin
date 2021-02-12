@@ -522,13 +522,15 @@ import { AutocompleteInput } from 'react-admin';
 | Prop                      | Required | Type           | Default      | Description                          |
 | ------------------------- | -------- | -------------- | ------------ | ------------------------------------ |
 | `allowEmpty`              | Optional | `boolean`      | `false`      | If `false` and the `searchText` typed did not match any suggestion, the `searchText` will revert to the current value when the field is blurred. If `true` and the `searchText` is set to `''` then the field will set the input value to `null`. |
+| `clearAlwaysVisible`      | Optional | `boolean`      | `false`      | When `resettable` is true, set this prop to `true` to have the Reset button visible even when the field is empty |
 | `choices`                 | Required | `Object[]`     | `-`          | List of items to autosuggest |
 | `emptyValue`              | Optional | `any`          | `''`         | The value to use for the empty element |
 | `emptyText`               | Optional | `string`       | `''`         | The text to use for the empty element |
 | `matchSuggestion`         | Optional | `Function`     | `-`          | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean` |
-| `optionText`              | Optional | `string` &#124; `Function` &#124; `Component` | `name`       | Fieldname of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`) |
-| `optionValue`             | Optional | `string`       | `id`         | Fieldname of record containing the value to use as input value |
+| `optionText`              | Optional | `string` &#124; `Function` &#124; `Component` | `name`       | Field name of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`) |
+| `optionValue`             | Optional | `string`       | `id`         | Field name of record containing the value to use as input value |
 | `inputText`               | Optional | `Function`     | `-`          | If `optionText` is a custom Component, this function is needed to determine the text displayed for the current selection. |
+| `resettable`              | Optional | `boolean`      | `false`      | Display a button to reset the text filter. Useful when using `<AutocompleteInput>` inside `<Filter>` |
 | `setFilter`               | Optional | `Function`     | `null`       | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`. |
 | `shouldRenderSuggestions` | Optional | `Function`     | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
 | `suggestionLimit`         | Optional | `number`       | `null`       | Limits the numbers of suggestions that are shown in the dropdown list |
@@ -685,8 +687,8 @@ import { RadioButtonGroupInput } from 'react-admin';
 | ----------------- | -------- | -------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | `choices`         | Required | `Object[]`                 | -       | List of items to show as options                                                                                                       |
 | `options`         | Optional | `Object`                   | -       | Props to pass to the underlying `<RadioButtonGroup>` element                                                                           |
-| `optionText`      | Optional | `string` &#124; `Function` | `name`  | Fieldname of record to display in the suggestion item or function which accepts the current record as argument (`(record)=> {string}`) |
-| `optionValue`     | Optional | `string`                   | `id`    | Fieldname of record containing the value to use as input value                                                                         |
+| `optionText`      | Optional | `string` &#124; `Function` | `name`  | Field name of record to display in the suggestion item or function which accepts the current record as argument (`record => {string}`) |
+| `optionValue`     | Optional | `string`                   | `id`    | Field name of record containing the value to use as input value                                                                        |
 | `row`             | Optional | `boolean`                  | `true`  | Display options in a compact row.                                                                                                      |
 | `translateChoice` | Optional | `boolean`                  | `true`  | Whether the choices should be translated                                                                                               |
 
@@ -795,8 +797,8 @@ import { SelectInput } from 'react-admin';
 | `choices`         | Required | `Object[]`                 | -       | List of items to show as options                                                                                                       |
 | `emptyText`       | Optional | `string`                   | ''      | The text to display for the empty option                                                                                               |
 | `options`         | Optional | `Object`                   | -       | Props to pass to the underlying `<SelectInput>` element                                                                                |
-| `optionText`      | Optional | `string` &#124; `Function` | `name`  | Fieldname of record to display in the suggestion item or function which accepts the current record as argument (`(record)=> {string}`) |
-| `optionValue`     | Optional | `string`                   | `id`    | Fieldname of record containing the value to use as input value                                                                         |
+| `optionText`      | Optional | `string` &#124; `Function` | `name`  | Field name of record to display in the suggestion item or function which accepts the current record as argument (`record => {string}`) |
+| `optionValue`     | Optional | `string`                   | `id`    | Field name of record containing the value to use as input value                                                                        |
 | `resettable`      | Optional | `boolean`                  | `false` | If `true`, display a button to reset the changes in this input value                                                                   |
 | `translateChoice` | Optional | `boolean`                  | `true`  | Whether the choices should be translated                                                                                               |
 
@@ -1036,8 +1038,8 @@ import { AutocompleteArrayInput } from 'react-admin';
 | `allowDuplicates`         | Optional | `boolean`                  | `false`      | If `true`, the options can be selected several times                                                                                                                                                                                                                                                 |
 | `choices`                 | Required | `Object[]`                 | -            | List of items to autosuggest                                                                                                                                                                                                                                                                         |
 | `matchSuggestion`         | Optional | `Function`                 | -            | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean`                                                                                                                                              |
-| `optionValue`             | Optional | `string`                   | `id`         | Fieldname of record containing the value to use as input value                                                                                                                                                                                                                                       |
-| `optionText`              | Optional | `string` &#124; `Function` | `name`       | Fieldname of record to display in the suggestion item or function which accepts the current record as argument (`(record)=> {string}`)                                                                                                                                                               |
+| `optionValue`             | Optional | `string`                   | `id`         | Field name of record containing the value to use as input value                                                                                                                                                                                                                                       |
+| `optionText`              | Optional | `string` &#124; `Function` | `name`       | Field name of record to display in the suggestion item or function which accepts the current record as argument (`record => {string}`)                                                                                                                                                               |
 | `setFilter`               | Optional | `Function`                 | `null`       | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.                                                                                   |
 | `shouldRenderSuggestions` | Optional | `Function`                 | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
 | `source`                  | Required | `string`                   | -            | Name of field to edit, its type should match the type retrieved from `optionValue`                                                                                                                                                                                                                   |
@@ -1178,8 +1180,8 @@ import { CheckboxGroupInput } from 'react-admin';
 | Prop          | Required | Type                       | Default | Description                                                                                                                            |
 | ------------- | -------- | -------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------  |
 | `choices`     | Required | `Object[]`                 | -       | List of choices                                                                                                                        |
-| `optionText`  | Optional | `string` &#124; `Function` | `name`  | Fieldname of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`) |
-| `optionValue` | Optional | `string`                   | `id`    | Fieldname of record containing the value to use as input value                                                                         |
+| `optionText`  | Optional | `string` &#124; `Function` | `name`  | Field name of record to display in the suggestion item or function which accepts the correct record as argument (`record => {string}`) |
+| `optionValue` | Optional | `string`                   | `id`    | Field name of record containing the value to use as input value                                                                        |
 | `row`         | Optional | `boolean`                  | `true`  | Display group of elements in a compact row.                                                                                            |
 
 Refer to [Material UI Checkbox documentation](https://material-ui.com/api/checkbox/) for more details.
@@ -1670,6 +1672,111 @@ export default ArtistEdit;
 ```
 
 Check [the `ra-relationships` documentation](https://marmelab.com/ra-enterprise/modules/ra-relationships#referencemanytomanyinput) for more details.
+
+## Translatable Inputs
+
+You may have inputs which are translated in multiple languages and want users to edit translations for each language separately. To display them, you can use the `<TranslatableInputs>` component, which expects the translatable values to have the following structure:
+
+```js
+{
+    name: {
+        en: 'The english value',
+        fr: 'The french value',
+        tlh: 'The klingon value',
+    },
+    description: {
+        en: 'The english value',
+        fr: 'The french value',
+        tlh: 'The klingon value',
+    }
+}
+```
+
+This is how to use it:
+
+```jsx
+<TranslatableInputs locales={['en', 'fr']}>
+    <TextInput source="name" />
+    <RichTextInput source="description" />
+</TranslatableInputs>
+```
+
+React-admin uses the user locale as the default locale in this field. You can override this setting using the `defaultLocale` prop.
+
+```jsx
+<TranslatableInputs locales={['en', 'fr']} defaultLocale="fr">
+    <TextInput source="name" />
+    <RichTextInput source="description" />
+</TranslatableInputs>
+```
+
+By default, `<TranslatableInputs>` will allow users to select the displayed locale using Material-ui tabs with the locale code as their labels.
+
+You may override the tabs labels using translation keys following this format: `ra.locales.[locale_code]`. For instance, `ra.locales.en` or `ra.locales.fr`.
+
+You may override the language selector using the `selector` prop, which accepts a React element:
+
+```jsx
+const Selector = () => {
+    const {
+        locales,
+        selectLocale,
+        selectedLocale,
+    } = useTranslatableContext();
+
+    const handleChange = event => {
+        selectLocale(event.target.value);
+    };
+
+    return (
+        <select
+            aria-label="Select the locale"
+            onChange={handleChange}
+            value={selectedLocale}
+        >
+            {locales.map(locale => (
+                <option
+                    key={locale}
+                    value={locale}
+                    // This allows to correctly link the containers for each locale to their labels
+                    id={`translatable-header-${locale}`}
+                >
+                    {locale}
+                </option>
+            ))}
+        </select>
+    );
+};
+
+<TranslatableInputs
+    record={record}
+    resource="products"
+    basePath="/products"
+    locales={['en', 'fr']}
+    selector={<Selector />}
+>
+    <TextInput source="name" />
+    <RichTextInput source="description" />
+</TranslatableInputs>
+```
+
+If you have multiple `TranslatableInputs` on the same page, you should specify a `groupKey` so that react-admin can create unique identifiers for accessibility.
+
+```jsx
+<TranslatableInputs locales={['en', 'fr']} groupKey="essential-fields">
+    <TextInput source="name" />
+    <RichTextInput source="description" />
+</TranslatableInputs>
+```
+
+You can add validators to any of the inputs inside a `TranslatableInputs`. If an input has some validation error, the label of its parent tab will be highlighted as invalid:
+
+```jsx
+<TranslatableInputs locales={['en', 'fr']}>
+    <TextInput source="name" validate={[required()]} />
+    <RichTextInput source="description" validate={[maxLength(100)]} />
+</TranslatableInputs>
+```
 
 ## Recipes 
 

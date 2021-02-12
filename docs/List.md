@@ -56,18 +56,20 @@ That's enough to display a basic post list, with functional sort and pagination:
 
 Here are all the props accepted by the `<List>` component:
 
-* [`title`](#title)
 * [`actions`](#actions)
-* [`exporter`](#exporter)
+* [`aside`](#aside-aside-component)
 * [`bulkActionButtons`](#bulkactionbuttons)
-* [`filters`](#filters-filter-inputs) (a React element used to display the filter form)
+* [`component`](#component)
+* [`empty`](#empty-empty-page-component)
+* [`exporter`](#exporter)
 * [`filter`](#filter-permanent-filter) (the permanent filter used in the REST request)
 * [`filterDefaultValues`](#filterdefaultvalues) (the default values for `alwaysOn` filters)
+* [`filters`](#filters-filter-inputs) (a React element used to display the filter form)
+* [`pagination`](#pagination-pagination-component)
 * [`perPage`](#perpage-pagination-size)
 * [`sort`](#sort-default-sort-field--order)
-* [`pagination`](#pagination-pagination-component)
-* [`aside`](#aside-aside-component)
-* [`empty`](#empty-empty-page-component)
+* [`title`](#title)
+* [`syncWithLocation`](#synchronize-with-url)
 
 ### `title`
 
@@ -595,7 +597,7 @@ const Aside = () => (
     <div style={{ width: 200, margin: '1em' }}>
         <Typography variant="h6">Post details</Typography>
         <Typography variant="body2">
-            Posts will only be published one an editor approves them
+            Posts will only be published once an editor approves them
         </Typography>
     </div>
 );
@@ -728,6 +730,31 @@ const PostList = props => (
 ```
 
 The default value for the `component` prop is `Card`.
+
+## Synchronize With URL
+
+When a List based component (eg: `PostList`) is passed to the `list` prop of a `<Resource>`, it will automatically synchronize its parameters with the browser URL (using react-router location). However, when used anywhere outside of a `<Resource>`, it won't synchronize, which can be useful when you have multiple lists on a single page for example.
+
+In order to enable the synchronization with the URL, you can set the `syncWithLocation` prop. For example, adding a `List` to an `Edit` page:
+
+{% raw %}
+```jsx
+const TagsEdit = (props) => (
+    <>
+        <Edit {...props}>
+            // ...
+        </Edit>
+        <ResourceContextProvider value="posts">
+            <List syncWithLocation basePath="/posts" filter={{ tags: [id]}}>
+                <Datagrid>
+                    <TextField source="title" />
+                </Datagrid>
+            </List>
+        </ResourceContextProvider>
+    </>
+)
+```
+{% endraw %}
 
 ### CSS API
 
@@ -871,7 +898,7 @@ const PostFilter = (props) => (
 
 Children of the `<Filter>` component are regular inputs. That means you can build sophisticated filters based on references, array values, etc. `<Filter>` hides all inputs in the filter form by default, except those that have the `alwaysOn` prop.
 
-**Tip**: For technical reasons, react-admin does not accept children of `<Filter>` having both a `defaultValue` and `alwaysOn`. To set default values for always on filters, use the [`filterDefaultValues`](#filter-default-values) prop of the <List> component instead.
+**Tip**: For technical reasons, react-admin does not accept children of `<Filter>` having both a `defaultValue` and `alwaysOn`. To set default values for always on filters, use the [`filterDefaultValues`](#filterdefaultvalues) prop of the <List> component instead.
 
 To inject the filter form in a `<List>`, use the `filters` prop:
 
@@ -1400,7 +1427,7 @@ If you want to display a full-text search allowing to look for any record in the
 
 ![ra-search basic](https://marmelab.com/ra-enterprise/modules/assets/ra-search-overview.gif)
 
-`ra-search` can plug to any existing search engine (ElasticSearch, Lucene, or custom search engine), and lets you customize the search results to provide quick navigation to related items, turniun the search engine into an "Omnibox": 
+`ra-search` can plug to any existing search engine (ElasticSearch, Lucene, or custom search engine), and lets you customize the search results to provide quick navigation to related items, turning the search engine into an "Omnibox": 
 
 ![ra-search demo](https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.gif)
 
@@ -1773,9 +1800,9 @@ export const PaginationActions = props => <RaPaginationActions {...props} color=
 export const Pagination = props => <RaPagination {...props} ActionsComponent={PaginationActions} />;
 
 export const UserList = props => (
-    <List {...props} pagination={<Pagination />} />
-        ...
-    </List
+    <List {...props} pagination={<Pagination />} >
+        //...
+    </List>
 );
 ```
 
@@ -2328,7 +2355,7 @@ import keyBy from 'lodash/keyBy'
 import {
     useQuery,
     ResourceContextProvider,
-    ListContextProvider
+    ListContextProvider,
     Datagrid,
     TextField,
     Pagination,

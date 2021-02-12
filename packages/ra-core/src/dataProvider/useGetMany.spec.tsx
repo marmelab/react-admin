@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { cleanup } from '@testing-library/react';
 import expect from 'expect';
 
 import renderWithRedux from '../util/renderWithRedux';
@@ -19,8 +18,6 @@ const UseGetMany = ({
 };
 
 describe('useGetMany', () => {
-    afterEach(cleanup);
-
     it('should call the dataProvider with a GET_MANY on mount', async () => {
         const dataProvider = {
             getMany: jest.fn(() =>

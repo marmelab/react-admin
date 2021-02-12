@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { cleanup, wait } from '@testing-library/react';
+import { waitFor } from '@testing-library/react';
 import { renderWithRedux, DataProviderContext } from 'ra-core';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -12,8 +12,6 @@ import List from './List';
 const theme = createMuiTheme(defaultTheme);
 
 describe('<List />', () => {
-    afterEach(cleanup);
-
     const defaultProps = {
         hasCreate: true,
         hasEdit: true,
@@ -24,6 +22,7 @@ describe('<List />', () => {
         history: {} as any,
         location: {} as any,
         match: (() => {}) as any,
+        syncWithLocation: true,
     };
 
     const defaultStateForList = {
@@ -106,7 +105,7 @@ describe('<List />', () => {
             </ThemeProvider>,
             defaultStateForList
         );
-        await wait(() => {
+        await waitFor(() => {
             expect(queryAllByText('resources.posts.empty')).toHaveLength(1);
         });
     });
@@ -126,7 +125,7 @@ describe('<List />', () => {
             </ThemeProvider>,
             defaultStateForList
         );
-        await wait(() => {
+        await waitFor(() => {
             expect(queryAllByText('resources.posts.empty')).toHaveLength(0);
         });
     });
@@ -146,7 +145,7 @@ describe('<List />', () => {
             </ThemeProvider>,
             defaultStateForList
         );
-        await wait(() => {
+        await waitFor(() => {
             expect(queryAllByText('resources.posts.empty')).toHaveLength(1);
         });
     });

@@ -1,13 +1,11 @@
 import * as React from 'react';
 import expect from 'expect';
-import { fireEvent, render, cleanup, wait } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import { Form } from 'react-final-form';
 
 import NullableBooleanInput from './NullableBooleanInput';
 
 describe('<NullableBooleanInput />', () => {
-    afterEach(cleanup);
-
     const defaultProps = {
         source: 'isPublished',
         resource: 'posts',
@@ -31,19 +29,19 @@ describe('<NullableBooleanInput />', () => {
         expect(options.length).toEqual(3);
 
         fireEvent.click(getByText('ra.boolean.null'));
-        await wait(() => {
+        await waitFor(() => {
             expect(formApi.getState().values.isPublished).toBeUndefined();
         });
 
         fireEvent.mouseDown(select);
         fireEvent.click(getByText('ra.boolean.false'));
-        await wait(() => {
+        await waitFor(() => {
             expect(formApi.getState().values.isPublished).toEqual(false);
         });
 
         fireEvent.mouseDown(select);
         fireEvent.click(getByText('ra.boolean.true'));
-        await wait(() => {
+        await waitFor(() => {
             expect(formApi.getState().values.isPublished).toEqual(true);
         });
     });

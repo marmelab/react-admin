@@ -2,6 +2,7 @@ import * as React from 'react';
 import { FC } from 'react';
 import {
     useEditController,
+    EditContextProvider,
     useTranslate,
     TextInput,
     SimpleForm,
@@ -64,22 +65,36 @@ const ReviewEdit: FC<Props> = ({ onCancel, ...props }) => {
                     <CloseIcon />
                 </IconButton>
             </div>
-            <SimpleForm
-                className={classes.form}
-                basePath={controllerProps.basePath}
-                record={controllerProps.record}
-                save={controllerProps.save}
-                version={controllerProps.version}
-                redirect="list"
-                resource="reviews"
-                toolbar={<ReviewEditToolbar />}
-            >
-                <CustomerReferenceField formClassName={classes.inlineField} />
-                <ProductReferenceField formClassName={classes.inlineField} />
-                <DateField source="date" formClassName={classes.inlineField} />
-                <StarRatingField formClassName={classes.inlineField} />
-                <TextInput source="comment" rowsMax={15} multiline fullWidth />
-            </SimpleForm>
+            <EditContextProvider value={controllerProps}>
+                <SimpleForm
+                    className={classes.form}
+                    basePath={controllerProps.basePath}
+                    record={controllerProps.record}
+                    save={controllerProps.save}
+                    version={controllerProps.version}
+                    redirect="list"
+                    resource="reviews"
+                    toolbar={<ReviewEditToolbar />}
+                >
+                    <CustomerReferenceField
+                        formClassName={classes.inlineField}
+                    />
+                    <ProductReferenceField
+                        formClassName={classes.inlineField}
+                    />
+                    <DateField
+                        source="date"
+                        formClassName={classes.inlineField}
+                    />
+                    <StarRatingField formClassName={classes.inlineField} />
+                    <TextInput
+                        source="comment"
+                        rowsMax={15}
+                        multiline
+                        fullWidth
+                    />
+                </SimpleForm>
+            </EditContextProvider>
         </div>
     );
 };

@@ -1,10 +1,4 @@
-import React, {
-    useContext,
-    cloneElement,
-    FC,
-    ReactElement,
-    SyntheticEvent,
-} from 'react';
+import React, { cloneElement, FC, ReactElement, SyntheticEvent } from 'react';
 import PropTypes from 'prop-types';
 import Button, { ButtonProps } from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -19,9 +13,9 @@ import {
     OnFailure,
     TransformData,
     Record,
-    FormContext,
     HandleSubmitWithRedirect,
     useSaveContext,
+    useFormContext,
 } from 'ra-core';
 
 import { sanitizeButtonRestProps } from './Button';
@@ -42,7 +36,7 @@ import { FormRenderProps } from 'react-final-form';
  * @prop {function} onFailure Callback to execute instead of the default error side effects. Receives the dataProvider error response as argument.
  * @prop {function} transform Callback to execute before calling the dataProvider. Receives the data from the form, must return that transformed data. Can be asynchronous (and return a Promise)
  *
- * @param {Prop} props
+ * @param {Props} props
  *
  * @example // with custom redirection
  *
@@ -87,21 +81,37 @@ const SaveButton: FC<SaveButtonProps> = props => {
     const classes = useStyles(props);
     const notify = useNotify();
     const translate = useTranslate();
-    const { setOnSave } = useContext(FormContext);
+    const saveContext = useFormContext();
     const { setOnSuccess, setOnFailure, setTransform } = useSaveContext(props);
 
     const handleClick = event => {
         // deprecated: use onSuccess and transform instead of onSave
         if (typeof onSave === 'function') {
             if (process.env.NODE_ENV !== 'production') {
-                console.log(
+                console.warn(
                     '<SaveButton onSave> prop is deprecated, use the onSuccess prop instead.'
                 );
+                if (!saveContext || !saveContext.setOnSave) {
+                    console.warn(
+                        'Using <SaveButton> outside a FormContext is deprecated.'
+                    );
+                }
             }
-            setOnSave(onSave);
+            if (saveContext && saveContext.setOnSave) {
+                saveContext.setOnSave(onSave);
+            }
         } else {
-            // we reset to the Form default save function
-            setOnSave();
+            if (
+                (process.env.NODE_ENV !== 'production' && !saveContext) ||
+                !saveContext.setOnSave
+            ) {
+                console.warn(
+                    'Using <SaveButton> outside a FormContext is deprecated.'
+                );
+            } else {
+                // we reset to the Form default save function
+                saveContext.setOnSave();
+            }
         }
         if (onSuccess) {
             setOnSuccess(onSuccess);

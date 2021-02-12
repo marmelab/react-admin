@@ -29,6 +29,8 @@ import {
     required,
     FormDataConsumer,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
+import { Box } from '@material-ui/core';
+
 import PostTitle from './PostTitle';
 import TagReferenceInput from './TagReferenceInput';
 
@@ -43,12 +45,26 @@ const EditActions = ({ basePath, data, hasShow }) => (
     </TopToolbar>
 );
 
+const SanitizedBox = ({ fullWidth, basePath, ...props }) => <Box {...props} />;
+
 const PostEdit = ({ permissions, ...props }) => (
     <Edit title={<PostTitle />} actions={<EditActions />} {...props}>
         <TabbedForm initialValues={{ average_note: 0 }} warnWhenUnsavedChanges>
             <FormTab label="post.form.summary">
-                <TextInput disabled source="id" />
-                <TextInput source="title" validate={required()} resettable />
+                <SanitizedBox
+                    display="flex"
+                    flexDirection="column"
+                    width="100%"
+                    justifyContent="space-between"
+                    fullWidth
+                >
+                    <TextInput disabled source="id" />
+                    <TextInput
+                        source="title"
+                        validate={required()}
+                        resettable
+                    />
+                </SanitizedBox>
                 <TextInput
                     multiline={true}
                     fullWidth={true}
@@ -128,7 +144,7 @@ const PostEdit = ({ permissions, ...props }) => (
                 <ArrayInput source="backlinks">
                     <SimpleFormIterator>
                         <DateInput source="date" />
-                        <TextInput source="url" />
+                        <TextInput source="url" validate={required()} />
                     </SimpleFormIterator>
                 </ArrayInput>
                 <DateInput source="published_at" options={{ locale: 'pt' }} />

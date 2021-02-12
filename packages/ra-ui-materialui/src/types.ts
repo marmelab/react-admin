@@ -7,6 +7,9 @@ import {
     Record as RaRecord,
     ResourceComponentProps,
     ResourceComponentPropsWithId,
+    MutationMode,
+    OnSuccess,
+    OnFailure,
 } from 'ra-core';
 
 export interface ListProps extends ResourceComponentProps {
@@ -24,6 +27,7 @@ export interface ListProps extends ResourceComponentProps {
     pagination?: ReactElement | false;
     perPage?: number;
     sort?: SortPayload;
+    syncWithLocation?: boolean;
     title?: string | ReactElement;
 }
 
@@ -33,10 +37,12 @@ export interface EditProps extends ResourceComponentPropsWithId {
     classes?: any;
     className?: string;
     component?: ElementType;
+    /** @deprecated use mutationMode: undoable instead */
     undoable?: boolean;
-    onSuccess?: (data: RaRecord) => void;
-    onFailure?: (error: any) => void;
-    transform?: (data: RaRecord) => RaRecord;
+    mutationMode?: MutationMode;
+    onSuccess?: OnSuccess;
+    onFailure?: OnFailure;
+    transform?: (data: RaRecord) => RaRecord | Promise<RaRecord>;
     title?: string | ReactElement;
 }
 
@@ -47,9 +53,9 @@ export interface CreateProps extends ResourceComponentProps {
     className?: string;
     component?: ElementType;
     record?: Partial<RaRecord>;
-    onSuccess?: (data: RaRecord) => void;
-    onFailure?: (error: any) => void;
-    transform?: (data: RaRecord) => RaRecord;
+    onSuccess?: OnSuccess;
+    onFailure?: OnFailure;
+    transform?: (data: RaRecord) => RaRecord | Promise<RaRecord>;
     title?: string | ReactElement;
 }
 

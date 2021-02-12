@@ -12,10 +12,10 @@ import MuiToolbar from '@material-ui/core/Toolbar';
 import withWidth from '@material-ui/core/withWidth';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
+import { Record, RedirectionSideEffect, MutationMode } from 'ra-core';
+import { FormRenderProps } from 'react-final-form';
 
 import { SaveButton, DeleteButton } from '../button';
-import { Record, RedirectionSideEffect } from 'ra-core';
-import { FormRenderProps } from 'react-final-form';
 import { ClassesOverride } from '../types';
 
 const useStyles = makeStyles(
@@ -89,7 +89,7 @@ const valueOrDefault = (value, defaultValue) =>
  * );
  *
  * @typedef {Object} Props the props you can use (other props are injected by the <SimpleForm>)
- * @prop {boolean} alwaysEnableSaveButton Force enabling the <SaveButton>. It it's not defined, the <SaveButton> will be enabled using the `pristine` prop (disabled if pristine, enabled otherwise).
+ * @prop {boolean} alwaysEnableSaveButton Force enabling the <SaveButton>. If it's not defined, the <SaveButton> will be enabled using the `pristine` prop (disabled if pristine, enabled otherwise).
  * @prop {ReactElement[]} children Customize the buttons you want to display in the <Toolbar>.
  * @prop {string} width Apply the mobile or the desktop classes depending on the width. Pass "xs" to display the mobile version.
  *
@@ -111,6 +111,7 @@ const Toolbar: FC<ToolbarProps> = props => {
         saving,
         submitOnEnter,
         undoable,
+        mutationMode,
         width,
         ...rest
     } = props;
@@ -152,6 +153,7 @@ const Toolbar: FC<ToolbarProps> = props => {
                                 record={record}
                                 resource={resource}
                                 undoable={undoable}
+                                mutationMode={mutationMode}
                             />
                         )}
                     </div>
@@ -159,7 +161,10 @@ const Toolbar: FC<ToolbarProps> = props => {
                     Children.map(children, (button: ReactElement) =>
                         button && isValidElement<any>(button)
                             ? React.cloneElement(button, {
-                                  basePath,
+                                  basePath: valueOrDefault(
+                                      button.props.basePath,
+                                      basePath
+                                  ),
                                   handleSubmit: valueOrDefault(
                                       button.props.handleSubmit,
                                       handleSubmit
@@ -171,8 +176,14 @@ const Toolbar: FC<ToolbarProps> = props => {
                                   onSave: button.props.onSave,
                                   invalid,
                                   pristine,
-                                  record,
-                                  resource,
+                                  record: valueOrDefault(
+                                      button.props.record,
+                                      record
+                                  ),
+                                  resource: valueOrDefault(
+                                      button.props.resource,
+                                      resource
+                                  ),
                                   saving,
                                   submitOnEnter: valueOrDefault(
                                       button.props.submitOnEnter,
@@ -200,6 +211,7 @@ export interface ToolbarProps<RecordType extends Record = Record> {
     handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
     handleSubmit?: FormRenderProps['handleSubmit'];
     invalid?: boolean;
+    mutationMode?: MutationMode;
     pristine?: boolean;
     saving?: boolean;
     submitOnEnter?: boolean;
@@ -207,6 +219,7 @@ export interface ToolbarProps<RecordType extends Record = Record> {
     basePath?: string;
     record?: RecordType;
     resource?: string;
+    /** @deprecated use mutationMode: undoable instead */
     undoable?: boolean;
     width?: string;
 }

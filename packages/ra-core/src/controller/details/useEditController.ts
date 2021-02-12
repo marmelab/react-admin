@@ -3,7 +3,13 @@ import inflection from 'inflection';
 
 import useVersion from '../useVersion';
 import { useCheckMinimumRequiredProps } from '../checkMinimumRequiredProps';
-import { Record, Identifier } from '../../types';
+import {
+    Record,
+    Identifier,
+    MutationMode,
+    OnSuccess,
+    OnFailure,
+} from '../../types';
 import {
     useNotify,
     useRedirect,
@@ -14,9 +20,7 @@ import { useGetOne, useUpdate } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
 import { CRUD_GET_ONE, CRUD_UPDATE } from '../../actions';
 import {
-    OnSuccess,
     SetOnSuccess,
-    OnFailure,
     SetOnFailure,
     TransformData,
     SetTransformData,
@@ -32,7 +36,9 @@ export interface EditProps {
     hasList?: boolean;
     id?: Identifier;
     resource?: string;
+    /** @deprecated use mutationMode: undoable instead */
     undoable?: boolean;
+    mutationMode?: MutationMode;
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
     transform?: TransformData;
@@ -103,9 +109,11 @@ export const useEditController = <RecordType extends Record = Record>(
         hasShow,
         id,
         successMessage,
+        // @deprecated use mutationMode: undoable instead
         undoable = true,
         onSuccess,
         onFailure,
+        mutationMode = undoable ? 'undoable' : undefined,
         transform,
     } = props;
     const resource = useResourceContext(props);
@@ -193,7 +201,7 @@ export const useEditController = <RecordType extends Record = Record>(
                                       {
                                           smart_count: 1,
                                       },
-                                      undoable
+                                      mutationMode === 'undoable'
                                   );
                                   redirect(redirectTo, basePath, data.id, data);
                               },
@@ -217,11 +225,14 @@ export const useEditController = <RecordType extends Record = Record>(
                                                   : undefined,
                                       }
                                   );
-                                  if (undoable) {
+                                  if (
+                                      mutationMode === 'undoable' ||
+                                      mutationMode === 'pessimistic'
+                                  ) {
                                       refresh();
                                   }
                               },
-                        undoable,
+                        mutationMode,
                     }
                 )
             ),
@@ -230,12 +241,12 @@ export const useEditController = <RecordType extends Record = Record>(
             update,
             onSuccessRef,
             onFailureRef,
-            undoable,
             notify,
             successMessage,
             redirect,
             basePath,
             refresh,
+            mutationMode,
         ]
     );
 

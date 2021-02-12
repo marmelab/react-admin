@@ -1,7 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import FileField from './FileField';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 const defaultProps = {
     classes: {},
@@ -9,8 +9,6 @@ const defaultProps = {
 };
 
 describe('<FileField />', () => {
-    afterEach(cleanup);
-
     it('should return an empty div when record is not set', () => {
         const { container } = render(<FileField {...defaultProps} />);
         expect(container.firstChild.textContent).toEqual('');

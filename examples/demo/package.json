@@ -3,8 +3,8 @@
     "version": "3.0.0",
     "private": true,
     "dependencies": {
-        "@material-ui/core": "^4.11.1",
-        "@material-ui/icons": "^4.9.1",
+        "@material-ui/core": "^4.11.2",
+        "@material-ui/icons": "^4.11.2",
         "@types/inflection": "^1.5.28",
         "@types/recharts": "^1.8.10",
         "data-generator-retail": "^3.9.0",
@@ -26,7 +26,7 @@
         "react-redux": "^7.1.0",
         "react-router": "^5.1.0",
         "react-router-dom": "^5.1.0",
-        "react-scripts": "^4.0.0",
+        "react-scripts": "^4.0.1",
         "recharts": "^1.8.5",
         "redux-saga": "^1.0.0"
     },
@@ -46,7 +46,7 @@
     "devDependencies": {
         "@types/fetch-mock": "^7.3.2",
         "@types/classnames": "^2.2.9",
-        "@types/jest": "^26.0.15",
+        "@types/jest": "^26.0.19",
         "@types/node": "^12.12.14",
         "@types/query-string": "5.1.0",
         "@types/react": "^16.9.13",

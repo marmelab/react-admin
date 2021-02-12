@@ -12,7 +12,7 @@ import { StaticContext } from 'react-router';
 import { NavLink, NavLinkProps } from 'react-router-dom';
 import MenuItem, { MenuItemProps } from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import Tooltip from '@material-ui/core/Tooltip';
+import Tooltip, { TooltipProps } from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
 
 const NavLinkRef = forwardRef<HTMLAnchorElement, NavLinkProps>((props, ref) => (
@@ -40,6 +40,7 @@ const MenuItemLink: FC<MenuItemLinkProps> = forwardRef((props, ref) => {
         leftIcon,
         onClick,
         sidebarIsOpen,
+        tooltipProps,
         ...rest
     } = props;
     const classes = useStyles(props);
@@ -58,6 +59,7 @@ const MenuItemLink: FC<MenuItemLinkProps> = forwardRef((props, ref) => {
                 activeClassName={classes.active}
                 component={NavLinkRef}
                 ref={ref}
+                tabIndex={0}
                 {...rest}
                 onClick={handleMenuTap}
             >
@@ -78,7 +80,7 @@ const MenuItemLink: FC<MenuItemLinkProps> = forwardRef((props, ref) => {
     }
 
     return (
-        <Tooltip title={primaryText} placement="right">
+        <Tooltip title={primaryText} placement="right" {...tooltipProps}>
             {renderMenuItem()}
         </Tooltip>
     );
@@ -89,6 +91,7 @@ interface Props {
     primaryText?: ReactNode;
     staticContext?: StaticContext;
     sidebarIsOpen: boolean;
+    tooltipProps?: TooltipProps;
 }
 
 export type MenuItemLinkProps = Props &

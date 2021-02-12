@@ -6,13 +6,16 @@ import {
     InferredElement,
     getElementsFromRecords,
     ShowContextProvider,
+    useResourceContext,
+    useShowContext,
 } from 'ra-core';
 
 import { ShowView } from './ShowView';
 import showFieldTypes from './showFieldTypes';
 
 const ShowViewGuesser = props => {
-    const { record, resource } = props;
+    const resource = useResourceContext(props);
+    const { record } = useShowContext();
     const [inferredChild, setInferredChild] = useState(null);
     useEffect(() => {
         if (record && !inferredChild) {

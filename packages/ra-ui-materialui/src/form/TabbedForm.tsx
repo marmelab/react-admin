@@ -16,8 +16,11 @@ import {
     escapePath,
     FormWithRedirect,
     FormWithRedirectProps,
+    MutationMode,
     Record,
     RedirectionSideEffect,
+    OnSuccess,
+    OnFailure,
 } from 'ra-core';
 import { FormRenderProps } from 'react-final-form';
 import get from 'lodash/get';
@@ -91,7 +94,7 @@ import { ClassesOverride } from '../types';
  * @prop {string} margin Apply variant to all inputs. Possible values are 'none', 'normal', and 'dense' (default)
  * @prop {boolean} sanitizeEmptyValues Whether or not deleted record attributes should be recreated with a `null` value (default: true)
  *
- * @param {Prop} props
+ * @param {Props} props
  */
 const TabbedForm: FC<TabbedFormProps> = props => (
     <FormWithRedirect
@@ -103,6 +106,7 @@ const TabbedForm: FC<TabbedFormProps> = props => (
 TabbedForm.propTypes = {
     children: PropTypes.node,
     initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     // @ts-ignore
     record: PropTypes.object,
     redirect: PropTypes.oneOfType([
@@ -127,8 +131,10 @@ export interface TabbedFormProps
     basePath?: string;
     children: ReactNode;
     className?: string;
+    classes?: ClassesOverride<typeof useStyles>;
     initialValues?: any;
     margin?: 'none' | 'normal' | 'dense';
+    mutationMode?: MutationMode;
     record?: Record;
     redirect?: RedirectionSideEffect;
     resource?: string;
@@ -137,13 +143,14 @@ export interface TabbedFormProps
         data: Partial<Record>,
         redirectTo: RedirectionSideEffect,
         options?: {
-            onSuccess?: (data?: any) => void;
-            onFailure?: (error: any) => void;
+            onSuccess?: OnSuccess;
+            onFailure?: OnFailure;
         }
     ) => void;
     submitOnEnter?: boolean;
     tabs?: ReactElement;
     toolbar?: ReactElement;
+    /** @deprecated use mutationMode: undoable instead */
     undoable?: boolean;
     variant?: 'standard' | 'outlined' | 'filled';
     warnWhenUnsavedChanges?: boolean;
@@ -171,6 +178,7 @@ export const TabbedFormView: FC<TabbedFormViewProps> = props => {
         handleSubmit,
         handleSubmitWithRedirect,
         invalid,
+        mutationMode,
         pristine,
         record,
         redirect: defaultRedirect,
@@ -184,7 +192,6 @@ export const TabbedFormView: FC<TabbedFormViewProps> = props => {
         margin,
         ...rest
     } = props;
-    const tabsWithErrors = findTabsWithErrors(children, form.getState().errors);
     const classes = useStyles(props);
     const match = useRouteMatch();
     const location = useLocation();
@@ -200,7 +207,6 @@ export const TabbedFormView: FC<TabbedFormViewProps> = props => {
                 {
                     classes,
                     url,
-                    tabsWithErrors,
                 },
                 children
             )}
@@ -210,34 +216,31 @@ export const TabbedFormView: FC<TabbedFormViewProps> = props => {
                 on tabs not in focus. The tabs receive a `hidden` property, which they'll
                 use to hide the tab using CSS if it's not the one in focus.
                 See https://github.com/marmelab/react-admin/issues/1866 */}
-                {Children.map(
-                    children,
-                    (tab: ReactElement, index) =>
-                        tab && (
-                            <Route
-                                exact
-                                path={escapePath(
-                                    getTabFullPath(tab, index, url)
-                                )}
-                            >
-                                {routeProps =>
-                                    isValidElement<any>(tab)
-                                        ? React.cloneElement(tab, {
-                                              intent: 'content',
-                                              resource,
-                                              record,
-                                              basePath,
-                                              hidden: !routeProps.match,
-                                              variant:
-                                                  tab.props.variant || variant,
-                                              margin:
-                                                  tab.props.margin || margin,
-                                          })
-                                        : null
-                                }
-                            </Route>
-                        )
-                )}
+                {Children.map(children, (tab: ReactElement, index) => {
+                    if (!tab) {
+                        return;
+                    }
+                    const tabPath = getTabFullPath(tab, index, url);
+                    return (
+                        <Route exact path={escapePath(tabPath)}>
+                            {routeProps =>
+                                isValidElement<any>(tab)
+                                    ? React.cloneElement(tab, {
+                                          intent: 'content',
+                                          classes,
+                                          resource,
+                                          record,
+                                          basePath,
+                                          hidden: !routeProps.match,
+                                          variant: tab.props.variant || variant,
+                                          margin: tab.props.margin || margin,
+                                          value: tabPath,
+                                      })
+                                    : null
+                            }
+                        </Route>
+                    );
+                })}
             </div>
             {toolbar &&
                 React.cloneElement(toolbar, {
@@ -246,6 +249,7 @@ export const TabbedFormView: FC<TabbedFormViewProps> = props => {
                     handleSubmitWithRedirect,
                     handleSubmit,
                     invalid,
+                    mutationMode,
                     pristine,
                     record,
                     redirect: defaultRedirect,
@@ -264,11 +268,12 @@ TabbedFormView.propTypes = {
     className: PropTypes.string,
     classes: PropTypes.object,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
-    initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     handleSubmit: PropTypes.func, // passed by react-final-form
+    initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     invalid: PropTypes.bool,
     location: PropTypes.object,
     match: PropTypes.object,
+    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     pristine: PropTypes.bool,
     // @ts-ignore
     record: PropTypes.object,
@@ -282,7 +287,6 @@ TabbedFormView.propTypes = {
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
     tabs: PropTypes.element.isRequired,
-    tabsWithErrors: PropTypes.arrayOf(PropTypes.string),
     toolbar: PropTypes.element,
     translate: PropTypes.func,
     undoable: PropTypes.bool,
@@ -302,6 +306,7 @@ export interface TabbedFormViewProps extends FormRenderProps {
     classes?: ClassesOverride<typeof useStyles>;
     className?: string;
     margin?: 'none' | 'normal' | 'dense';
+    mutationMode?: MutationMode;
     handleSubmitWithRedirect?: (redirectTo: RedirectionSideEffect) => void;
     record?: Record;
     redirect?: RedirectionSideEffect;
@@ -310,6 +315,7 @@ export interface TabbedFormViewProps extends FormRenderProps {
     saving?: boolean;
     tabs?: ReactElement;
     toolbar?: ReactElement;
+    /** @deprecated use mutationMode: undoable instead */
     undoable?: boolean;
     variant?: 'standard' | 'outlined' | 'filled';
     submitOnEnter?: boolean;
@@ -344,7 +350,13 @@ const sanitizeRestProps = ({
     ...props
 }) => props;
 
+export default TabbedForm;
+
 export const findTabsWithErrors = (children, errors) => {
+    console.warn(
+        'Deprecated. FormTab now wrap their content inside a FormGroupContextProvider. If you implemented custom forms with tabs, please use the FormGroupContextProvider. See https://marmelab.com/react-admin/CreateEdit.html#grouping-inputs'
+    );
+
     return Children.toArray(children).reduce((acc: any[], child) => {
         if (!isValidElement(child)) {
             return acc;
@@ -364,5 +376,3 @@ export const findTabsWithErrors = (children, errors) => {
         return acc;
     }, []);
 };
-
-export default TabbedForm;

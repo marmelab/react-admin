@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FunctionComponent, ComponentType, useContext } from 'react';
+import { FunctionComponent, ComponentType, useContext, useState } from 'react';
 import { Provider, ReactReduxContext } from 'react-redux';
 import { History } from 'history';
 import { createHashHistory } from 'history';
@@ -87,6 +87,19 @@ React-admin requires a valid dataProvider function to work.`);
         );
     };
 
+    const [store] = useState(() =>
+        !reduxIsAlreadyInitialized
+            ? createAdminStore({
+                  authProvider: finalAuthProvider,
+                  customReducers,
+                  customSagas,
+                  dataProvider: finalDataProvider,
+                  initialState,
+                  history: finalHistory,
+              })
+            : undefined
+    );
+
     if (reduxIsAlreadyInitialized) {
         if (!history) {
             throw new Error(`Missing history prop.
@@ -95,20 +108,7 @@ React-admin uses this history for its own ConnectedRouter.`);
         }
         return renderCore();
     } else {
-        return (
-            <Provider
-                store={createAdminStore({
-                    authProvider: finalAuthProvider,
-                    customReducers,
-                    customSagas,
-                    dataProvider: finalDataProvider,
-                    initialState,
-                    history: finalHistory,
-                })}
-            >
-                {renderCore()}
-            </Provider>
-        );
+        return <Provider store={store}>{renderCore()}</Provider>;
     }
 };
 

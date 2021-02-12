@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, wait, getByText } from '@testing-library/react';
+import { fireEvent, waitFor, getByText } from '@testing-library/react';
 import * as React from 'react';
 import expect from 'expect';
 import {
@@ -24,8 +24,6 @@ describe('<SimpleFormIterator />', () => {
         confirmSpy.mockImplementation(jest.fn(() => true));
     });
     afterAll(() => confirmSpy.mockRestore());
-
-    afterEach(cleanup);
 
     const saveContextValue = {
         save: jest.fn(),
@@ -79,6 +77,37 @@ describe('<SimpleFormIterator />', () => {
                             <ArrayInput source="emails" disabled>
                                 <SimpleFormIterator>
                                     <TextInput source="email" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
+        );
+        const inputElements = queryAllByLabelText(
+            'resources.undefined.fields.email'
+        );
+        expect(inputElements).toHaveLength(2);
+        expect((inputElements[0] as HTMLInputElement).disabled).toBeTruthy();
+        expect((inputElements[0] as HTMLInputElement).value).toBe('foo');
+        expect((inputElements[1] as HTMLInputElement).disabled).toBeTruthy();
+        expect((inputElements[1] as HTMLInputElement).value).toBe('bar');
+    });
+
+    it('should allow to override the disabled prop of each inputs', () => {
+        const { queryAllByLabelText } = renderWithRedux(
+            <ThemeProvider theme={theme}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffectValue}>
+                        <SimpleForm
+                            record={{
+                                id: 'whatever',
+                                emails: [{ email: 'foo' }, { email: 'bar' }],
+                            }}
+                        >
+                            <ArrayInput source="emails">
+                                <SimpleFormIterator>
+                                    <TextInput source="email" disabled />
                                 </SimpleFormIterator>
                             </ArrayInput>
                         </SimpleForm>
@@ -222,7 +251,7 @@ describe('<SimpleFormIterator />', () => {
         const addItemElement = getByText('ra.action.add').closest('button');
 
         fireEvent.click(addItemElement);
-        await wait(() => {
+        await waitFor(() => {
             const inputElements = queryAllByLabelText(
                 'resources.undefined.fields.email'
             );
@@ -231,7 +260,7 @@ describe('<SimpleFormIterator />', () => {
         });
 
         fireEvent.click(addItemElement);
-        await wait(() => {
+        await waitFor(() => {
             const inputElements = queryAllByLabelText(
                 'resources.undefined.fields.email'
             );
@@ -274,7 +303,7 @@ describe('<SimpleFormIterator />', () => {
         const addItemElement = getByText('ra.action.add').closest('button');
 
         fireEvent.click(addItemElement);
-        await wait(() => {
+        await waitFor(() => {
             const inputElements = queryAllByLabelText('CustomLabel');
 
             expect(inputElements.length).toBe(1);
@@ -317,7 +346,7 @@ describe('<SimpleFormIterator />', () => {
         const addItemElement = getByText('ra.action.add').closest('button');
 
         fireEvent.click(addItemElement);
-        await wait(() => {
+        await waitFor(() => {
             const inputElements = queryAllByLabelText('CustomLabel');
 
             expect(inputElements.length).toBe(1);
@@ -369,7 +398,7 @@ describe('<SimpleFormIterator />', () => {
         ).closest('button');
 
         fireEvent.click(removeFirstButton);
-        await wait(() => {
+        await waitFor(() => {
             const inputElements = queryAllByLabelText(
                 'resources.undefined.fields.email'
             );

@@ -19,7 +19,11 @@ const initialState = {
     ids: [],
 };
 
-const getDataAndIds = (record: object, source: string, fieldKey: string) => {
+const getDataAndIds = (
+    record: object,
+    source: string,
+    fieldKey: string
+): State => {
     const list = get(record, source);
     if (!list) {
         return initialState;
@@ -111,7 +115,7 @@ const getDataAndIds = (record: object, source: string, fieldKey: string) => {
  *                  <li key={item.name}>{item.name}</li>
  *              ))}
  *          </ul>
- *     )
+ *     );
  *     TagsField.defaultProps = { addLabel: true };
  */
 export const ArrayField: FC<ArrayFieldProps> = memo<ArrayFieldProps>(

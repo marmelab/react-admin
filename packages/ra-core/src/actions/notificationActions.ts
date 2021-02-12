@@ -53,3 +53,13 @@ export interface HideNotificationAction {
 export const hideNotification = (): HideNotificationAction => ({
     type: HIDE_NOTIFICATION,
 });
+
+export const RESET_NOTIFICATION = 'RA/RESET_NOTIFICATION';
+
+export interface ResetNotificationAction {
+    readonly type: typeof RESET_NOTIFICATION;
+}
+
+export const resetNotification = (): ResetNotificationAction => ({
+    type: RESET_NOTIFICATION,
+});

@@ -7,8 +7,7 @@ import {
     useRedirect,
     RedirectionSideEffect,
 } from '../../sideEffect';
-import { Record } from '../../types';
-import { OnFailure, OnSuccess } from '../saveModifiers';
+import { Record, OnFailure, OnSuccess } from '../../types';
 import { useResourceContext } from '../../core';
 
 /**
@@ -99,7 +98,7 @@ const useDeleteWithUndoController = (
                       );
                       refresh();
                   },
-        undoable: true,
+        mutationMode: 'undoable',
     });
     const handleDelete = useCallback(
         event => {

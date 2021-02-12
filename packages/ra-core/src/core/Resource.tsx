@@ -130,6 +130,7 @@ const ResourceRoutes: FunctionComponent<ResourceProps> = ({
                                     basePath={basePath}
                                     {...routeProps}
                                     {...resourceData}
+                                    syncWithLocation
                                 />
                             )}
                         />

@@ -1,12 +1,10 @@
 import * as React from 'react';
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
 
 import BooleanInput from './BooleanInput';
 
 describe('<BooleanInput />', () => {
-    afterEach(cleanup);
-
     const defaultProps = {
         resource: 'posts',
         source: 'isPublished',
@@ -90,7 +88,7 @@ describe('<BooleanInput />', () => {
         expect(input.checked).toBe(true);
     });
 
-    it('should displays errors', () => {
+    it('should display errors', () => {
         // This validator always returns an error
         const validate = () => 'ra.validation.error';
 
