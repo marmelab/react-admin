@@ -99,7 +99,7 @@ You can customize the `<Create>` and `<Edit>` components using the following pro
 * [`aside`](#aside-component)
 * [`component`](#component)
 * [`undoable`](#undoable) (`<Edit>` only) (deprecated)
-* [`mutationMode`](#mutationMode) (`<Edit>` only) 
+* [`mutationMode`](#mutationmode) (`<Edit>` only) 
 * [`onSuccess`](#onsuccess)
 * [`onFailure`](#onfailure)
 * [`transform`](#transform)
@@ -171,6 +171,8 @@ export const PostEdit = (props) => (
 );
 ```
 
+### The `<ListButton>` component
+
 A common customization is to add a button to go back to the List. Use the `<ListButton>` for that:
 
 ```jsx
@@ -184,7 +186,7 @@ const PostEditActions = ({ basePath, data }) => (
 );
 ```
 
-If you want this button to look like a Back button, you can pass a custom label and icon to the ListButton:
+If you want this button to look like a Back button, you can pass a custom label and icon to the `ListButton`:
 
 ```jsx
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
@@ -396,8 +398,8 @@ const PostEdit = props => {
     const refresh = useRefresh();
     const redirect = useRedirect();
 
-    const onSuccess = ({ data }) => {
-        notify(`Changes to post "${data.title}" saved`)
+    const onSuccess = () => {
+        notify(`Changes saved`)
         redirect('/posts');
         refresh();
     };
@@ -412,25 +414,52 @@ const PostEdit = props => {
 }
 ```
 
-The `onSuccess` function receives the response from the dataProvider call (`dataProvider.create()` or `dataProvider.update()`), which is the created/edited record (see [the dataProvider documentation for details](./DataProviders.md#response-format))
+By default, the `<Edit>` view runs updates in `mutationMode="undoable"`, which means that it calls the `onSuccess` side effects immediately, even before the `dataProvider` is called.
 
 The default `onSuccess` function is:
 
 ```jsx
 // for the <Create> component:
-({ data }) => {
+() => {
     notify('ra.notification.created', 'info', { smart_count: 1 });
     redirect('edit', basePath, data.id, data);
 }
 
 // for the <Edit> component: 
-({ data }) => {
+() => {
     notify('ra.notification.updated', 'info', { smart_count: 1 }, mutationMode === 'undoable');
     redirect('list', basePath, data.id, data);
 }
 ```
 
 To learn more about built-in side effect hooks like `useNotify`, `useRedirect` and `useRefresh`, check the [Querying the API documentation](./Actions.md#handling-side-effects-in-usedataprovider).
+
+**Tip**: When you use `mutationMode="pessimistic"`, the `onSuccess` function receives the response from the dataProvider call (`dataProvider.create()` or `dataProvider.update()`), which is the created/edited record (see [the dataProvider documentation for details](./DataProviders.md#response-format)). You can use that response in the success side effects: 
+
+```jsx
+import * as React from 'react';
+import { useNotify, useRefresh, useRedirect, Edit, SimpleForm } from 'react-admin';
+
+const PostEdit = props => {
+    const notify = useNotify();
+    const refresh = useRefresh();
+    const redirect = useRedirect();
+
+  const onSuccess = ({ data }) => {
+        notify(`Changes to post "${data.title}" saved`)
+        redirect('/posts');
+        refresh();
+    };
+
+    return (
+        <Edit onSuccess={onSuccess} mutationMode="pessimistic" {...props}>
+            <SimpleForm>
+                ...
+            </SimpleForm>
+        </Edit>
+    );
+}
+```
 
 **Tip**: When you set the `onSuccess` prop, the `successMessage` prop is ignored.
 
@@ -1917,7 +1946,7 @@ const VisitorForm = ({ basePath, record, save, saving, version }) => {
             key={version} // support for refresh button
             keepDirtyOnReinitialize
             render={formProps => (
-                // render your custom form here
+                {/* render your custom form here */}
             )}
         />
     );

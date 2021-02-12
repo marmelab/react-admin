@@ -13,9 +13,7 @@ import {
     RedirectionSideEffect,
 } from '../../sideEffect';
 import {
-    OnSuccess,
     SetOnSuccess,
-    OnFailure,
     SetOnFailure,
     TransformData,
     SetTransformData,
@@ -24,7 +22,7 @@ import {
 import { useTranslate } from '../../i18n';
 import useVersion from '../useVersion';
 import { CRUD_CREATE } from '../../actions';
-import { Record } from '../../types';
+import { Record, OnSuccess, OnFailure } from '../../types';
 import { useResourceContext } from '../../core';
 
 export interface CreateProps<RecordType extends Omit<Record, 'id'> = Record> {

@@ -144,7 +144,7 @@ const PostEdit = ({ permissions, ...props }) => (
                 <ArrayInput source="backlinks">
                     <SimpleFormIterator>
                         <DateInput source="date" />
-                        <TextInput source="url" />
+                        <TextInput source="url" validate={required()} />
                     </SimpleFormIterator>
                 </ArrayInput>
                 <DateInput source="published_at" options={{ locale: 'pt' }} />

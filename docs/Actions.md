@@ -515,7 +515,8 @@ const ApproveButton = ({ record }) => {
         },
         {
 +           mutationMode: 'undoable',
-            onSuccess: ({ data }) => {
+-           onSuccess: ({ data }) => {
++           onSuccess: () => {
                 redirect('/comments');
 -               notify('Comment approved');
 +               notify('Comment approved', 'info', {}, true);
@@ -527,7 +528,7 @@ const ApproveButton = ({ record }) => {
 };
 ```
 
-As you can see in this example, you need to tweak the notification for undoable calls: passing `true` as fourth parameter of `notify` displays the 'Undo' button in the notification.
+As you can see in this example, you need to tweak the notification for undoable calls: passing `true` as fourth parameter of `notify` displays the 'Undo' button in the notification. Also, as side effects are executed immediately, they can't rely on the response being passed to onSuccess.
 
 You can pass the `mutationMode` option parameter to specialized hooks, too. They all accept an optional last argument with side effects.
 
@@ -545,7 +546,7 @@ const ApproveButton = ({ record }) => {
         record,
         {
             mutationMode: 'undoable',
-            onSuccess: ({ data }) => {
+            onSuccess: () => {
                 redirect('/comments');
                 notify('Comment approved', 'info', {}, true);
             },

@@ -1,15 +1,13 @@
 import { isValidElement, ReactElement, useEffect, useMemo } from 'react';
 import inflection from 'inflection';
 import { Location } from 'history';
-import { useSelector } from 'react-redux';
-import get from 'lodash/get';
 
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 import useListParams from './useListParams';
 import useRecordSelection from './useRecordSelection';
 import useTranslate from '../i18n/useTranslate';
 import useNotify from '../sideEffect/useNotify';
-import useGetList from '../dataProvider/useGetList';
+import { useGetMainList } from '../dataProvider/useGetMainList';
 import { SORT_ASC } from '../reducer/admin/resource/list/queryReducer';
 import { CRUD_GET_LIST } from '../actions';
 import defaultExporter from '../export/defaultExporter';
@@ -18,7 +16,6 @@ import {
     SortPayload,
     RecordMap,
     Identifier,
-    ReduxState,
     Record,
     Exporter,
 } from '../types';
@@ -42,7 +39,7 @@ export interface ListProps {
     location?: Location;
     path?: string;
     resource?: string;
-    // Wether to synchronize the list parameters with the current location (URL search parameters)
+    // Whether to synchronize the list parameters with the current location (URL search parameters)
     // This is set to true automatically when a List is used inside a Resource component
     syncWithLocation?: boolean;
     [key: string]: any;
@@ -52,8 +49,6 @@ const defaultSort = {
     field: 'id',
     order: SORT_ASC,
 };
-
-const defaultData = {};
 
 export interface ListControllerProps<RecordType extends Record = Record> {
     basePath: string;
@@ -109,7 +104,7 @@ export interface ListControllerProps<RecordType extends Record = Record> {
 const useListController = <RecordType extends Record = Record>(
     props: ListProps
 ): ListControllerProps<RecordType> => {
-    useCheckMinimumRequiredProps('List', ['basePath', 'resource'], props);
+    useCheckMinimumRequiredProps('List', ['basePath'], props);
 
     const {
         basePath,
@@ -124,6 +119,11 @@ const useListController = <RecordType extends Record = Record>(
     } = props;
     const resource = useResourceContext(props);
 
+    if (!resource) {
+        throw new Error(
+            `<List> was called outside of a ResourceContext and without a resource prop. You must set the resource prop.`
+        );
+    }
     if (filter && isValidElement(filter)) {
         throw new Error(
             '<List> received a React element as `filter` props. If you intended to set the list filter elements, use the `filters` (with an s) prop instead. The `filter` prop is internal and should not be set by the developer.'
@@ -148,7 +148,9 @@ const useListController = <RecordType extends Record = Record>(
      * We want the list of ids to be always available for optimistic rendering,
      * and therefore we need a custom action (CRUD_GET_LIST) that will be used.
      */
-    const { ids, total, error, loading, loaded } = useGetList<RecordType>(
+    const { ids, data, total, error, loading, loaded } = useGetMainList<
+        RecordType
+    >(
         resource,
         {
             page: query.page,
@@ -176,41 +178,12 @@ const useListController = <RecordType extends Record = Record>(
         }
     );
 
-    const data = useSelector(
-        (state: ReduxState): RecordMap<RecordType> =>
-            get(
-                state.admin.resources,
-                [resource, 'data'],
-                defaultData
-            ) as RecordMap<RecordType>
-    );
-
-    // When the user changes the page/sort/filter, this controller runs the
-    // useGetList hook again. While the result of this new call is loading,
-    // the ids and total are empty. To avoid rendering an empty list at that
-    // moment, we override the ids and total with the latest loaded ones.
-    const defaultIds = useSelector((state: ReduxState): Identifier[] =>
-        get(state.admin.resources, [resource, 'list', 'ids'], [])
-    );
-    const defaultTotal = useSelector((state: ReduxState): number =>
-        get(state.admin.resources, [resource, 'list', 'total'])
-    );
-
-    // Since the total can be empty during the loading phase
-    // We need to override that total with the latest loaded one
-    // This way, the useEffect bellow won't reset the page to 1
-    const finalTotal = typeof total === 'undefined' ? defaultTotal : total;
-
-    const finalIds = typeof total === 'undefined' ? defaultIds : ids;
-
-    const totalPages = useMemo(() => {
-        return Math.ceil(finalTotal / query.perPage) || 1;
-    }, [query.perPage, finalTotal]);
+    const totalPages = Math.ceil(total / query.perPage) || 1;
 
     useEffect(() => {
         if (
             query.page <= 0 ||
-            (!loading && query.page > 1 && (finalIds || []).length === 0)
+            (!loading && query.page > 1 && ids.length === 0)
         ) {
             // Query for a page that doesn't exist, set page to 1
             queryModifiers.setPage(1);
@@ -219,15 +192,7 @@ const useListController = <RecordType extends Record = Record>(
             // It occurs when deleting the last element of the last page
             queryModifiers.setPage(totalPages);
         }
-    }, [
-        loading,
-        query.page,
-        finalIds,
-        queryModifiers,
-        total,
-        totalPages,
-        defaultIds,
-    ]);
+    }, [loading, query.page, ids, queryModifiers, total, totalPages]);
 
     const currentSort = useMemo(
         () => ({
@@ -257,8 +222,8 @@ const useListController = <RecordType extends Record = Record>(
         filterValues: query.filterValues,
         hasCreate,
         hideFilter: queryModifiers.hideFilter,
-        ids: finalIds,
-        loaded: loaded || defaultIds.length > 0,
+        ids,
+        loaded: loaded || ids.length > 0,
         loading,
         onSelect: selectionModifiers.select,
         onToggleItem: selectionModifiers.toggle,
@@ -272,7 +237,7 @@ const useListController = <RecordType extends Record = Record>(
         setPerPage: queryModifiers.setPerPage,
         setSort: queryModifiers.setSort,
         showFilter: queryModifiers.showFilter,
-        total: finalTotal,
+        total: total,
     };
 };
 
