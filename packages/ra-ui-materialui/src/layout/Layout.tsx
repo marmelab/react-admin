@@ -96,13 +96,6 @@ class LayoutWithoutTheme extends Component<
             if (this.state.hasError) {
                 this.setState({ hasError: false });
             }
-            if (
-                action !== 'POP' &&
-                location.state?._scrollToTop &&
-                typeof window != 'undefined'
-            ) {
-                window.scrollTo(0, 0);
-            }
         });
     }
 

@@ -7,7 +7,7 @@ import React, {
     ReactElement,
     FunctionComponent,
 } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 
 import RoutesWithLayout from './RoutesWithLayout';
 import { useLogout, useGetPermissions, useAuthState } from '../auth';
@@ -41,6 +41,20 @@ const CoreAdminRouter: FunctionComponent<AdminRouterProps> = props => {
     const { authenticated } = useAuthState();
     const oneSecondHasPassed = useTimeout(1000);
     const [computedChildren, setComputedChildren] = useSafeSetState<State>([]);
+    const history = useHistory<{ _scrollToTop?: boolean }>();
+    useEffect(
+        () =>
+            history.listen((location, action) => {
+                if (
+                    action !== 'POP' &&
+                    location.state?._scrollToTop &&
+                    typeof window != 'undefined'
+                ) {
+                    window.scrollTo(0, 0);
+                }
+            }),
+        [history]
+    );
     useEffect(() => {
         if (typeof props.children === 'function') {
             initializeResources();
