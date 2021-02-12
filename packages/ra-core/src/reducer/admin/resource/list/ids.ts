@@ -22,6 +22,8 @@ type ActionTypes =
           meta: any;
       };
 
+const initialState = [];
+
 /**
  * List of the ids of the latest loaded page, regardless of params
  *
@@ -35,7 +37,7 @@ type ActionTypes =
  *
  */
 const idsReducer: Reducer<IdentifierArray> = (
-    previousState = [],
+    previousState = initialState,
     action: ActionTypes
 ) => {
     if (action.meta && action.meta.optimistic) {
