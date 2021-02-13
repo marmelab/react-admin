@@ -109,6 +109,8 @@ const useListContext = <RecordType extends Record = Record>(
     );
 };
 
+export default useListContext;
+
 /**
  * Extract only the list controller props
  *
@@ -167,5 +169,3 @@ const extractListContextProps = ({
     showFilter,
     total,
 });
-
-export default useListContext;
