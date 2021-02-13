@@ -62,6 +62,43 @@ import { ClassesOverride } from '../../types';
  *         <EditButton />
  *     </Datagrid>
  * </ReferenceManyField>
+ *
+ *
+ * @example Usage it outside of a <List> or a <ReferenceManyField>.
+ *
+ * const currentSort = { field: 'published_at', order: 'DESC' };
+ *
+ * export const MyCustomList = (props) => {
+ *     const { ids, data, total, loaded } = useGetList(
+ *         'posts',
+ *         { page: 1, perPage: 10 },
+ *         currentSort
+ *     );
+ *
+ *     return (
+ *         <Datagrid
+ *             basePath=""
+ *             currentSort={currentSort}
+ *             data={data}
+ *             ids={ids}
+ *             selectedIds={[]}
+ *             loaded={loaded}
+ *             total={total}
+ *             setSort={() => {
+ *                 console.log('set sort');
+ *             }}
+ *             onSelect={() => {
+ *                 console.log('on select');
+ *             }}
+ *             onToggleItem={() => {
+ *                 console.log('on toggle item');
+ *             }}
+ *         >
+ *             <TextField source="id" />
+ *             <TextField source="title" />
+ *         </Datagrid>
+ *     );
+ * }
  */
 const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     const classes = useDatagridStyles(props);
