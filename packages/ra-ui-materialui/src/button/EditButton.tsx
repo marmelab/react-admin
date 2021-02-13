@@ -8,11 +8,21 @@ import { linkToRecord, Record } from 'ra-core';
 
 import Button, { ButtonProps } from './Button';
 
+/**
+ * Opens the Edit view of a given record:
+ *
+ * @example // basic usage
+ * import { EditButton } from 'react-admin';
+ *
+ * const CommentEditButton = ({ record }) => (
+ *     <EditButton basePath="/comments" label="Edit comment" record={record} />
+ * );
+ */
 const EditButton: FC<EditButtonProps> = ({
     basePath = '',
+    icon = defaultIcon,
     label = 'ra.action.edit',
     record,
-    icon = defaultIcon,
     scrollToTop = true,
     ...rest
 }) => (
@@ -40,8 +50,9 @@ const stopPropagation = e => e.stopPropagation();
 
 interface Props {
     basePath?: string;
-    record?: Record;
     icon?: ReactElement;
+    label?: string;
+    record?: Record;
     scrollToTop?: boolean;
 }
 
@@ -52,6 +63,7 @@ EditButton.propTypes = {
     icon: PropTypes.element,
     label: PropTypes.string,
     record: PropTypes.any,
+    scrollToTop: PropTypes.bool,
 };
 
 export default EditButton;

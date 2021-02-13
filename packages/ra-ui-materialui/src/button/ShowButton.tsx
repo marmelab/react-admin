@@ -7,11 +7,21 @@ import { linkToRecord, Record } from 'ra-core';
 
 import Button, { ButtonProps } from './Button';
 
+/**
+ * Opens the Show view of a given record
+ *
+ * @example // basic usage
+ * import { ShowButton } from 'react-admin';
+ *
+ * const CommentShowButton = ({ record }) => (
+ *     <ShowButton basePath="/comments" label="Show comment" record={record} />
+ * );
+ */
 const ShowButton: FC<ShowButtonProps> = ({
     basePath = '',
+    icon = defaultIcon,
     label = 'ra.action.show',
     record,
-    icon = defaultIcon,
     scrollToTop = true,
     ...rest
 }) => (
@@ -41,8 +51,9 @@ const stopPropagation = e => e.stopPropagation();
 
 interface Props {
     basePath?: string;
-    record?: Record;
     icon?: ReactElement;
+    label?: string;
+    record?: Record;
     scrollToTop?: boolean;
 }
 
@@ -53,6 +64,7 @@ ShowButton.propTypes = {
     icon: PropTypes.element,
     label: PropTypes.string,
     record: PropTypes.any,
+    scrollToTop: PropTypes.bool,
 };
 
 const PureShowButton = memo(

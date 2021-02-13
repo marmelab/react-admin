@@ -10,13 +10,26 @@ import { useTranslate } from 'ra-core';
 
 import Button, { ButtonProps, sanitizeButtonRestProps } from './Button';
 
+/**
+ * Opens the Create view of a given resource
+ *
+ * Renders as a regular button on desktop, and a Floating Action Button
+ * on mobile.
+ *
+ * @example // basic usage
+ * import { CreateButton } from 'react-admin';
+ *
+ * const CommentCreateButton = () => (
+ *     <CreateButton basePath="/comments" label="Create comment" />
+ * );
+ */
 const CreateButton: FC<CreateButtonProps> = props => {
     const {
         basePath = '',
         className,
         classes: classesOverride,
-        label = 'ra.action.create',
         icon = defaultIcon,
+        label = 'ra.action.create',
         scrollToTop = true,
         variant,
         ...rest

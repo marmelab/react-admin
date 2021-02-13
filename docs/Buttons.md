@@ -119,8 +119,7 @@ const CommentListButton = () => (
 By default, react-admin doesn't display a `<ListButton>` in Edit and Show views action toolbar. This saves visual clutter, and users can always use the back button. You can add it by specifying your own `actions`:
 
 ```jsx
-// linking back to the list from the Edti view
-import Button from '@material-ui/core/Button';
+// linking back to the list from the Edit view
 import { TopToolbar, ListButton, ShowButton, Edit } from 'react-admin';
 
 const PostEditActions = ({ basePath, record, resource }) => (
@@ -149,7 +148,20 @@ It also supports [all the other `<Button>` props](#button).
 
 ## List Buttons
 
+The following buttons are designed to be used in List views.
+
 ### `<ExportButton>`
+
+Exports the current list, with filter applied, but without pagination. It relies on [the `exporter` function](./List.md#exporter) passed to the `<List>` component, via the `ListContext`. It's disabled for empty lists.
+
+| Prop         | Required | Type            | Default            | Description                         |
+| ------------ | -------- | --------------- | ------------------ | ----------------------------------- |
+| `maxResults` | Optional | `number`        | 1000               | Maximum number of records to export |
+| `label`      | Optional | `string`        | 'ra.action.export' | label or translation message to use |
+| `icon`       | Optional | `React.element` | -                  | iconElement, e.g. `<CommentIcon />` |
+| `exporter`   | Optional | `function`      | -                  | Override the List exporter function |
+
+
 ### `<BulkDeleteButton>`
 ### `<BulkExportButton>`
 ### `<SortButton>`
