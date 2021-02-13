@@ -247,7 +247,37 @@ export const PostList = (props) => (
 | `undoable`   | Optional | `boolean`       | true               | Allow users to cancel the deletion  |
 
 ### `<FilterButton>`
+
+This button is an internal component used by react-admin in [the `<Filter>` button/form combo](./List.md#the-filter-buttonform-combo).
+
+![List Filters](./img/list_filter.gif)
+
 ### `<SortButton>`
+
+Some List views don't have a natural UI for sorting - e.g. the `<SimpleList>`, or a list of images, don't have column headers like the `<Datagrid>`. For these cases, react-admin offers the `<SortButton>`, which displays a dropdown list of fields that the user can choose to sort on.
+
+![Sort Button](./img/sort-button.gif)
+
+`<SortButton>` expects one prop: `fields`, the list of fields it should allow to sort on. For instance, here is how to offer a button to sort on the `reference`, `sales`, and `stock` fields:
+
+```jsx
+import * as React from 'react';
+import { TopToolbar, SortButton, CreateButton, ExportButton } from 'react-admin';
+
+const ListActions = () => (
+    <TopToolbar>
+        <SortButton fields={['reference', 'sales', 'stock']} />
+        <CreateButton basePath="/products" />
+        <ExportButton />
+    </TopToolbar>
+);
+```
+
+| Prop         | Required | Type            | Default            | Description                         |
+| ------------ | -------- | --------------- | ------------------ | ----------------------------------- |
+| `fields`     | Required | `string[]`      | -                  | List of fields to offer sort on     |
+| `icon`       | Optional | `React.element` | `<DeleteIcon>`     | iconElement, e.g. `<CommentIcon />` |
+| `label`      | Optional | `string`        | 'ra.action.delete' | label or translation message to use |
 
 ## Record Buttons
 
@@ -259,17 +289,18 @@ export const PostList = (props) => (
 
 ### `<Button>`
 
-Responsive
+Base component for most react-admin buttons. Responsive (displays only the icon with a tooltip on mobile) and accessible.
 
-| Prop            | Required | Type                      | Default | Description           |
-| --------------- | -------- | ------------------------- | ------- | ------- |
-| `color`      | Optional | `string`                  | -       | path to link to, e.g. '/posts'                          |
-| `disabled`         | Optional | `string`                  | -       | path to link to, e.g. '/posts'                          |
-| `size`          | Optional | `React.element`           | -       | path to link to, e.g. '/posts'                          |
-| `alignIcon`          | Optional | `React.element`           | -       | path to link to, e.g. '/posts'                    |
-| `className`          | Optional | `React.element`           | -       | path to link to, e.g. '/posts'                    |
+| Prop         | Required | Type                           | Default | Description                              |
+| ------------ | -------- | ------------------------------ | ------- | ---------------------------------------- |
+| `alignIcon`  | Optional | `'left' | 'right`              | `'left'` | Icon position relative to the label     |
+| `children`   | Optional | `React.element`                | -        | icon to use                             |
+| `className`  | Optional | `string`                       | -        | path to link to, e.g. '/posts'          |
+| `color`      | Optional | `'default' | 'inherit'| 'primary' | 'secondary'` | `'primary'` | Label and icon color |
+| `disabled`   | Optional | `boolean`                      | `false`   | If `true`, the button will be disabled |
+| `size`       | Optional | `'large' | 'medium' | 'small'` | `'small'` | Button size                            |
 
-Other props are passed down to the underlying material-ui `<Button>`
+Other props are passed down to [the underlying material-ui `<Button>`](https://material-ui.com/api/button/).
 
 ### `<RefreshButton>`
 ### `<SkipNavigationButton>`
