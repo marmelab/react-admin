@@ -109,6 +109,65 @@ const useListContext = <RecordType extends Record = Record>(
     );
 };
 
+/**
+ * Extract only the list controller props
+ *
+ * @param {Object} props Props passed to the useListContext hook
+ *
+ * @returns {ListControllerProps} List controller props
+ */
+const extractListContextProps = ({
+    basePath,
+    currentSort,
+    data,
+    defaultTitle,
+    displayedFilters,
+    filterValues,
+    hasCreate,
+    hideFilter,
+    ids,
+    loaded,
+    loading,
+    onSelect,
+    onToggleItem,
+    onUnselectItems,
+    page,
+    perPage,
+    resource,
+    selectedIds,
+    setFilters,
+    setPage,
+    setPerPage,
+    setSort,
+    showFilter,
+    total,
+}) => ({
+    basePath,
+    currentSort,
+    data,
+    defaultTitle,
+    displayedFilters,
+    filterValues,
+    hasCreate,
+    hideFilter,
+    ids,
+    loaded,
+    loading,
+    onSelect,
+    onToggleItem,
+    onUnselectItems,
+    page,
+    perPage,
+    resource,
+    selectedIds,
+    setFilters,
+    setPage,
+    setPerPage,
+    setSort,
+    showFilter,
+    total,
+});
+
 export default useListContext;
 
 /**

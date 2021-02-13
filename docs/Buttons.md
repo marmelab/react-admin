@@ -154,16 +154,99 @@ The following buttons are designed to be used in List views.
 
 Exports the current list, with filter applied, but without pagination. It relies on [the `exporter` function](./List.md#exporter) passed to the `<List>` component, via the `ListContext`. It's disabled for empty lists.
 
+By default, the `<ExportButton>` is included in the List actions.
+
+```jsx
+import { CreateButton, ExportButton, TopToolbar } from 'react-admin';
+
+const PostListActions = ({ basePath }) => (
+    <TopToolbar>
+        <PostFilter context="button" />
+        <CreateButton basePath={basePath} />
+        <ExportButton />
+    </TopToolbar>
+);
+
+export const PostList = (props) => (
+    <List actions={<PostListActions />} {...props}>
+        ...
+    </List>
+);
+```
+
+![Export button](./img/export-button.png)
+
 | Prop         | Required | Type            | Default            | Description                         |
 | ------------ | -------- | --------------- | ------------------ | ----------------------------------- |
 | `maxResults` | Optional | `number`        | 1000               | Maximum number of records to export |
 | `label`      | Optional | `string`        | 'ra.action.export' | label or translation message to use |
-| `icon`       | Optional | `React.element` | -                  | iconElement, e.g. `<CommentIcon />` |
+| `icon`       | Optional | `React.element` | `<DownloadIcon>`   | iconElement, e.g. `<CommentIcon />` |
 | `exporter`   | Optional | `function`      | -                  | Override the List exporter function |
 
+### `<BulkExportButton>`
+
+Same as `<ExportButton>`, except it only exports the selected rows instead of the entire list. To be used inside [the `<List bulkActionButtons>` prop](./List.md#bulkactionbuttons).
+
+```jsx
+import * as React from 'react';
+import { Fragment } from 'react';
+import { BulkDeleteButton, BulkExportButton } from 'react-admin';
+
+const PostBulkActionButtons = ({ basePath }) => (
+    <Fragment>
+        <BulkExportButton />
+        <BulkDeleteButton basePath={basePath} />
+    </Fragment>
+);
+
+export const PostList = (props) => (
+    <List {...props} bulkActionButtons={<PostBulkActionButtons />}>
+        ...
+    </List>
+);
+```
+
+![Bulk Export button](./img/bulk-export-button.png)
+
+| Prop         | Required | Type            | Default            | Description                         |
+| ------------ | -------- | --------------- | ------------------ | ----------------------------------- |
+| `label`      | Optional | `string`        | 'ra.action.export' | label or translation message to use |
+| `icon`       | Optional | `React.element` | `<DownloadIcon>`   | iconElement, e.g. `<CommentIcon />` |
+| `exporter`   | Optional | `function`      | -                  | Override the List exporter function |
 
 ### `<BulkDeleteButton>`
-### `<BulkExportButton>`
+
+Deletes the selected rows. To be used inside [the `<List bulkActionButtons>` prop](./List.md#bulkactionbuttons) (where it's enabled by default).
+
+```jsx
+import * as React from 'react';
+import { Fragment } from 'react';
+import { BulkDeleteButton, BulkExportButton } from 'react-admin';
+
+const PostBulkActionButtons = ({ basePath }) => (
+    <Fragment>
+        <BulkExportButton />
+        <BulkDeleteButton basePath={basePath} />
+    </Fragment>
+);
+
+export const PostList = (props) => (
+    <List {...props} bulkActionButtons={<PostBulkActionButtons />}>
+        ...
+    </List>
+);
+```
+
+![Bulk Delete button](./img/bulk-delete-button.png)
+
+| Prop         | Required | Type            | Default            | Description                         |
+| ------------ | -------- | --------------- | ------------------ | ----------------------------------- |
+| `label`      | Optional | `string`        | 'ra.action.delete' | label or translation message to use |
+| `icon`       | Optional | `React.element` | `<DeleteIcon>`     | iconElement, e.g. `<CommentIcon />` |
+| `exporter`   | Optional | `function`      | -                  | Override the List exporter function |
+| `undoable`   | Optional | `boolean`       | true               | Allow users to cancel the deletion  |
+
+### `<FilterButton>`
 ### `<SortButton>`
 
 ## Record Buttons

@@ -12,6 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import ContentFilter from '@material-ui/icons/FilterList';
 import classnames from 'classnames';
 import lodashGet from 'lodash/get';
+import { useListContext, useResourceContext } from 'ra-core';
 
 import { FilterButtonMenuItem } from './FilterButtonMenuItem';
 import Button from '../../button/Button';
@@ -25,16 +26,11 @@ const useStyles = makeStyles(
 );
 
 const FilterButton = (props: FilterButtonProps): JSX.Element => {
-    const {
-        filters,
-        displayedFilters = {},
-        filterValues,
-        showFilter,
-        classes: classesOverride,
-        className,
-        resource,
-        ...rest
-    } = props;
+    const { filters, classes: classesOverride, className, ...rest } = props;
+    const resource = useResourceContext(props);
+    const { displayedFilters = {}, filterValues, showFilter } = useListContext(
+        props
+    );
     const [open, setOpen] = useState(false);
     const anchorEl = useRef();
     const classes = useStyles(props);

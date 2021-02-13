@@ -11,6 +11,7 @@ import {
     useUnselectAll,
     CRUD_DELETE_MANY,
     useResourceContext,
+    useListContext,
 } from 'ra-core';
 
 import Button, { ButtonProps } from './Button';
@@ -39,9 +40,9 @@ const BulkDeleteWithUndoButton: FC<BulkDeleteWithUndoButtonProps> = props => {
         icon,
         label,
         onClick,
-        selectedIds,
         ...rest
     } = props;
+    const { selectedIds } = useListContext(props);
     const classes = useStyles(props);
     const notify = useNotify();
     const unselectAll = useUnselectAll();
