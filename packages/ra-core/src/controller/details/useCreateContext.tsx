@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import merge from 'lodash/merge';
 
 import { Record } from '../../types';
@@ -32,12 +32,16 @@ export const useCreateContext = <
         // @ts-ignore
         CreateContext
     );
-
     // Props take precedence over the context
-    // @ts-ignore
-    return props != null
-        ? merge({}, context, extractCreateContextProps(props))
-        : context;
+    return useMemo(
+        () =>
+            merge(
+                {},
+                context,
+                props != null ? extractCreateContextProps(props) : {}
+            ),
+        [context, props]
+    );
 };
 
 /**
@@ -65,7 +69,7 @@ const extractCreateContextProps = ({
     saving,
     successMessage,
     version,
-}) => ({
+}: any) => ({
     basePath,
     record,
     defaultTitle,

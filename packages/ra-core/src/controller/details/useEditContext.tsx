@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import merge from 'lodash/merge';
 
 import { Record } from '../../types';
@@ -30,10 +30,15 @@ export const useEditContext = <RecordType extends Record = Record>(
     const context = useContext<EditControllerProps<RecordType>>(EditContext);
 
     // Props take precedence over the context
-    // @ts-ignore
-    return props != null
-        ? merge({}, context, extractEditContextProps(props))
-        : context;
+    return useMemo(
+        () =>
+            merge(
+                {},
+                context,
+                props != null ? extractEditContextProps(props) : {}
+            ),
+        [context, props]
+    );
 };
 
 /**
@@ -62,7 +67,7 @@ const extractEditContextProps = ({
     saving,
     successMessage,
     version,
-}) => ({
+}: any) => ({
     basePath,
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d

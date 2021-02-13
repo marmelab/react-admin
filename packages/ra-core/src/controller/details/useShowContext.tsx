@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import merge from 'lodash/merge';
 
 import { Record } from '../../types';
@@ -30,10 +30,15 @@ export const useShowContext = <RecordType extends Record = Record>(
     const context = useContext<ShowControllerProps<RecordType>>(ShowContext);
 
     // Props take precedence over the context
-    // @ts-ignore
-    return props != null
-        ? merge({}, context, extractShowContextProps(props))
-        : context;
+    return useMemo(
+        () =>
+            merge(
+                {},
+                context,
+                props != null ? extractShowContextProps(props) : {}
+            ),
+        [context, props]
+    );
 };
 
 /**
@@ -51,7 +56,7 @@ const extractShowContextProps = ({
     loading,
     resource,
     version,
-}) => ({
+}: any) => ({
     basePath,
     record,
     defaultTitle,

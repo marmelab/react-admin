@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import merge from 'lodash/merge';
 
 import ListContext from './ListContext';
@@ -97,12 +97,16 @@ const useListContext = <RecordType extends Record = Record>(
     props?: any
 ): ListControllerProps<RecordType> => {
     const context = useContext(ListContext);
-
     // Props take precedence over the context
-    // @ts-ignore
-    return props != null
-        ? merge({}, context, extractListContextProps(props))
-        : context;
+    return useMemo(
+        () =>
+            merge(
+                {},
+                context,
+                props != null ? extractListContextProps(props) : {}
+            ),
+        [context, props]
+    );
 };
 
 export default useListContext;
