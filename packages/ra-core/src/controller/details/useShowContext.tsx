@@ -51,6 +51,7 @@ export const useShowContext = <RecordType extends Record = Record>(
 const extractShowContextProps = ({
     basePath,
     record,
+    data,
     defaultTitle,
     loaded,
     loading,
@@ -58,7 +59,10 @@ const extractShowContextProps = ({
     version,
 }: any) => ({
     basePath,
-    record,
+    // Necessary for actions (EditActions) which expect a data prop containing the record
+    // @deprecated - to be removed in 4.0d
+    record: record || data,
+    data: record || data,
     defaultTitle,
     loaded,
     loading,
