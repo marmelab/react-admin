@@ -26,6 +26,7 @@ const ShowButton: FC<ShowButtonProps> = ({
             }),
             [basePath, record, scrollToTop]
         )}
+        label={label}
         onClick={stopPropagation}
         {...(rest as any)}
     >

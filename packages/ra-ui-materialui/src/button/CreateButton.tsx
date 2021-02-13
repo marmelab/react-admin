@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ReactElement, memo } from 'react';
+import { FC, ReactElement, memo, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Fab, useMediaQuery, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -17,6 +17,7 @@ const CreateButton: FC<CreateButtonProps> = props => {
         classes: classesOverride,
         label = 'ra.action.create',
         icon = defaultIcon,
+        scrollToTop = true,
         variant,
         ...rest
     } = props;
@@ -25,12 +26,19 @@ const CreateButton: FC<CreateButtonProps> = props => {
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('sm')
     );
+    const location = useMemo(
+        () => ({
+            pathname: `${basePath}/create`,
+            state: { _scrollToTop: scrollToTop },
+        }),
+        [basePath, scrollToTop]
+    );
     return isSmall ? (
         <Fab
             component={Link}
             color="primary"
             className={classnames(classes.floating, className)}
-            to={`${basePath}/create`}
+            to={location}
             aria-label={label && translate(label)}
             {...sanitizeButtonRestProps(rest)}
         >
@@ -39,7 +47,7 @@ const CreateButton: FC<CreateButtonProps> = props => {
     ) : (
         <Button
             component={Link}
-            to={`${basePath}/create`}
+            to={location}
             className={className}
             label={label}
             variant={variant}
@@ -74,6 +82,7 @@ const useStyles = makeStyles(
 interface Props {
     basePath?: string;
     icon?: ReactElement;
+    scrollToTop?: boolean;
 }
 
 export type CreateButtonProps = Props & ButtonProps;
