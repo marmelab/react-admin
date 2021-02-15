@@ -102,13 +102,13 @@ describe('inferTypeFromValues', () => {
             props: { source: 'foo' },
         });
     });
-    it('should return an url field for url name', () => {
+    it('should return a url field for url name', () => {
         expect(inferTypeFromValues('url', ['whatever', 'whatever'])).toEqual({
             type: 'url',
             props: { source: 'url' },
         });
     });
-    it.skip('should return an url field for url string values', () => {
+    it.skip('should return a url field for url string values', () => {
         expect(
             inferTypeFromValues('foo', [
                 'http://foo.com/bar',

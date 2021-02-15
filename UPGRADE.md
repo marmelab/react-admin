@@ -645,7 +645,7 @@ const i18nProvider = {
             // load new messages and update the translate function
         })
     },
-    getLocale: () => locale;
+    getLocale: () => locale
 } 
 ```
 
