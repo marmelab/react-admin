@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import MuiTab from '@material-ui/core/Tab';
 import classnames from 'classnames';
@@ -18,14 +19,19 @@ export const FormTabHeader = ({
     const formGroup = useFormGroup(value);
     const form = useForm();
     const [showError, setShowError] = React.useState(false);
-    form.subscribe(
-        state => {
-            if (!showError && (state.submitting || state.submitFailed)) {
-                setShowError(true);
-            }
-        },
-        { submitting: true, submitFailed: true }
-    );
+
+    useEffect(() => {
+        const unsubscribe = form.subscribe(
+            state => {
+                if (!showError && (state.submitting || state.submitFailed)) {
+                    setShowError(true);
+                }
+            },
+            { submitting: true, submitFailed: true }
+        );
+
+        return unsubscribe;
+    }, [form, showError]);
 
     return (
         <MuiTab
