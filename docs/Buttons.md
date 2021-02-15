@@ -334,5 +334,24 @@ To override the style of all instances of `<Button>` using the [material-ui styl
 
 ### `<RefreshButton>`
 ### `<SkipNavigationButton>`
+
+#### CSS API
+
+| Rule name             | Description                                     |
+| --------------------- | ----------------------------------------------- |
+| `skipToContentButton` | Applied to the underlying `MuiButton` component |
+
+To override the style of all instances of `<SkipNavigationButton>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaSkipNavigationButton` key.
+
 ### `<MenuItemLink>`
 ### `<UserMenu>`
+
+#### CSS API
+
+| Rule name    | Description                                     |
+| ------------ | ----------------------------------------------- |
+| `user`       | Applied to the underlying `MuiButton` component |
+| `userButton` | Applied to the underlying `MuiButton` component |
+| `avatar`     | Applied to the underlying `MuiButton` component |
+
+To override the style of all instances of `<UserMenu>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaUserMenu` key.
