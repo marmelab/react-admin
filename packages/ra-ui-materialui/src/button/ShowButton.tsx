@@ -74,7 +74,8 @@ const PureShowButton = memo(
             ? props.record.id === nextProps.record.id
             : props.record == nextProps.record) && // eslint-disable-line eqeqeq
         props.basePath === nextProps.basePath &&
-        props.to === nextProps.to
+        props.to === nextProps.to &&
+        props.disabled === nextProps.disabled
 );
 
 export default PureShowButton;
