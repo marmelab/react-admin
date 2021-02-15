@@ -5,7 +5,7 @@ title: "Buttons"
 
 # Buttons
 
-React provides button components for all the common uses. 
+React-Admin provides button components for all the common uses. 
 
 ## Navigation Buttons
 
@@ -152,7 +152,7 @@ The following buttons are designed to be used in List views.
 
 ### `<ExportButton>`
 
-Exports the current list, with filter applied, but without pagination. It relies on [the `exporter` function](./List.md#exporter) passed to the `<List>` component, via the `ListContext`. It's disabled for empty lists.
+Exports the current list, with filters applied, but without pagination. It relies on [the `exporter` function](./List.md#exporter) passed to the `<List>` component, via the `ListContext`. It's disabled for empty lists.
 
 By default, the `<ExportButton>` is included in the List actions.
 
