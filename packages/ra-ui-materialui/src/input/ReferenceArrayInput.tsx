@@ -302,7 +302,7 @@ ReferenceArrayInputView.propTypes = {
     meta: PropTypes.object,
     onChange: PropTypes.func,
     options: PropTypes.object,
-    resource: PropTypes.string.isRequired,
+    resource: PropTypes.string,
     setFilter: PropTypes.func,
     setPagination: PropTypes.func,
     setSort: PropTypes.func,
