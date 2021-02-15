@@ -335,4 +335,15 @@ To override the style of all instances of `<Button>` using the [material-ui styl
 ### `<RefreshButton>`
 ### `<SkipNavigationButton>`
 ### `<MenuItemLink>`
+
+#### CSS API
+
+| Rule name | Description                                                         |
+| --------- | ------------------------------------------------------------------- |
+| `root`    | Alternative to using `className`. Applied to the root element       |
+| `active`  | Applied to the underlying `MuiMenuItem`'s `activeClassName` prop    |
+| `icon`    | Applied to the `ListItemIcon` component when `leftIcon` prop is set |
+
+To override the style of all instances of `<MenuItemLink>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaMenuItemLink` key.
+
 ### `<UserMenu>`
