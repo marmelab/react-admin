@@ -359,7 +359,7 @@ const PostDetail = ({ id }) => {
 
 ## Authorization
 
-Some applications may require fine-grained permissions to enable or disable access to certain features depending on user permissions. Since there are many possible strategies (single role, multiple roles or rights, ACLs, etc.), react-admin delegates the permission logic to `autheProvider.getPermissions()`.
+Some applications may require fine-grained permissions to enable or disable access to certain features depending on user permissions. Since there are many possible strategies (single role, multiple roles or rights, ACLs, etc.), react-admin delegates the permission logic to `authProvider.getPermissions()`.
 
 By default, a react-admin app doesn't require any special permission on list, create, edit, and show pages. However, react-admin calls the `authProvider.getPermissions()` method before navigating to these pages, and passes the result to the main page component (`<List>`, `<Edit>`, etc.). You can then tweak the content of these pages based on permissions.
 
