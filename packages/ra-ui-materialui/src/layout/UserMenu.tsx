@@ -6,16 +6,19 @@ import { Tooltip, IconButton, Menu, Button, Avatar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 
-const useStyles = makeStyles(theme => ({
-    user: {},
-    userButton: {
-        textTransform: 'none',
-    },
-    avatar: {
-        width: theme.spacing(4),
-        height: theme.spacing(4),
-    },
-}));
+const useStyles = makeStyles(
+    theme => ({
+        root: {},
+        userButton: {
+            textTransform: 'none',
+        },
+        avatar: {
+            width: theme.spacing(4),
+            height: theme.spacing(4),
+        },
+    }),
+    { name: 'RaUserMenu' }
+);
 
 const UserMenu = props => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -31,7 +34,7 @@ const UserMenu = props => {
     const handleClose = () => setAnchorEl(null);
 
     return (
-        <div className={classes.user}>
+        <div className={classes.root}>
             {loaded && identity?.fullName ? (
                 <Button
                     aria-label={label && translate(label, { _: label })}
