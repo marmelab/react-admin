@@ -103,6 +103,7 @@ const sanitizeRestProps = ({
     classes,
     filterValues,
     label,
+    selectedIds,
     ...rest
 }: Omit<BulkDeleteWithUndoButtonProps, 'resource' | 'selectedIds' | 'icon'>) =>
     rest;

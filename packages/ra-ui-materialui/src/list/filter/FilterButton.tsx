@@ -67,7 +67,10 @@ const FilterButton = (props: FilterButtonProps): JSX.Element => {
 
     if (hiddenFilters.length === 0) return null;
     return (
-        <div className={classnames(classes.root, className)} {...rest}>
+        <div
+            className={classnames(classes.root, className)}
+            {...sanitizeRestProps(rest)}
+        >
             <Button
                 className="add-filter"
                 label="ra.action.add_filter"
@@ -92,6 +95,13 @@ const FilterButton = (props: FilterButtonProps): JSX.Element => {
         </div>
     );
 };
+
+const sanitizeRestProps = ({
+    displayedFilters,
+    filterValues,
+    showFilter,
+    ...rest
+}) => rest;
 
 FilterButton.propTypes = {
     resource: PropTypes.string.isRequired,
