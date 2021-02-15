@@ -81,7 +81,7 @@ const SaveButton: FC<SaveButtonProps> = props => {
     const classes = useStyles(props);
     const notify = useNotify();
     const translate = useTranslate();
-    const saveContext = useFormContext();
+    const formContext = useFormContext();
     const { setOnSuccess, setOnFailure, setTransform } = useSaveContext(props);
 
     const handleClick = event => {
@@ -91,26 +91,28 @@ const SaveButton: FC<SaveButtonProps> = props => {
                 console.warn(
                     '<SaveButton onSave> prop is deprecated, use the onSuccess prop instead.'
                 );
-                if (!saveContext || !saveContext.setOnSave) {
+                if (!formContext || !formContext.setOnSave) {
                     console.warn(
                         'Using <SaveButton> outside a FormContext is deprecated.'
                     );
                 }
             }
-            if (saveContext && saveContext.setOnSave) {
-                saveContext.setOnSave(onSave);
+            if (formContext && formContext.setOnSave) {
+                formContext.setOnSave(onSave);
             }
         } else {
             if (
-                (process.env.NODE_ENV !== 'production' && !saveContext) ||
-                !saveContext.setOnSave
+                process.env.NODE_ENV !== 'production' &&
+                (!formContext || !formContext.setOnSave)
             ) {
                 console.warn(
                     'Using <SaveButton> outside a FormContext is deprecated.'
                 );
-            } else {
+            }
+
+            if (formContext) {
                 // we reset to the Form default save function
-                saveContext.setOnSave();
+                formContext.setOnSave();
             }
         }
         if (onSuccess) {
