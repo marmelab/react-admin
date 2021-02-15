@@ -29,7 +29,9 @@ const useStyles = makeStyles(
             position: 'fixed',
             padding: theme.spacing(1),
             backgroundColor: theme.palette.background.default,
-            color: theme.palette.getContrastText(theme.palette.background.default),
+            color: theme.palette.getContrastText(
+                theme.palette.background.default
+            ),
             transition: theme.transitions.create(['top', 'opacity'], {
                 easing: theme.transitions.easing.easeIn,
                 duration: theme.transitions.duration.leavingScreen,
