@@ -8,7 +8,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 
 const useStyles = makeStyles(
     theme => ({
-        root: {},
+        user: {},
         userButton: {
             textTransform: 'none',
         },
@@ -34,7 +34,7 @@ const UserMenu = props => {
     const handleClose = () => setAnchorEl(null);
 
     return (
-        <div className={classes.root}>
+        <div className={classes.user}>
             {loaded && identity?.fullName ? (
                 <Button
                     aria-label={label && translate(label, { _: label })}

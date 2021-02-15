@@ -350,7 +350,7 @@ To override the style of all instances of `<SkipNavigationButton>` using the [ma
 
 | Rule name    | Description                                                                                                                              |
 | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `root`       | Alternative to using `className`. Applied to the root element                                                                            |
+| `user`       | Alternative to using `className`. Applied to the root element                                                                            |
 | `userButton` | Applied to the underlying `MuiButton` component when `useGetIdentity().loaded` is `true` and `useGetIdentity().identity.fullName` is set |
 | `avatar`     | Applied to the underlying `MuiAvatar` component when `useGetIdentity().avatar` is `true`                                                 |
 
