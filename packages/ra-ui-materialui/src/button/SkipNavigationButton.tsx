@@ -4,7 +4,7 @@ import Button from './Button';
 import { useTranslate } from 'ra-core';
 import classnames from 'classnames';
 
-function skipToContent() {
+const skipToContent = () => {
     const element = document.getElementById('main-content');
 
     if (!element) {
@@ -21,36 +21,41 @@ function skipToContent() {
     element.focus();
     element.blur();
     element.removeAttribute('tabIndex');
-}
+};
 
-const useStyles = makeStyles(theme => ({
-    skipToContentButton: {
-        position: 'fixed',
-        padding: theme.spacing(1),
-        backgroundColor: theme.palette.background.default,
-        color: theme.palette.getContrastText(theme.palette.background.default),
-        transition: theme.transitions.create(['top', 'opacity'], {
-            easing: theme.transitions.easing.easeIn,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        left: theme.spacing(2),
-        top: theme.spacing(-10),
-        zIndex: 5000,
-        '&:hover': {
-            opacity: 0.8,
+const useStyles = makeStyles(
+    theme => ({
+        skipToContentButton: {
+            position: 'fixed',
+            padding: theme.spacing(1),
             backgroundColor: theme.palette.background.default,
-        },
-        '&:focus': {
-            top: theme.spacing(2),
+            color: theme.palette.getContrastText(
+                theme.palette.background.default
+            ),
             transition: theme.transitions.create(['top', 'opacity'], {
-                easing: theme.transitions.easing.easeOut,
-                duration: theme.transitions.duration.enteringScreen,
+                easing: theme.transitions.easing.easeIn,
+                duration: theme.transitions.duration.leavingScreen,
             }),
+            left: theme.spacing(2),
+            top: theme.spacing(-10),
+            zIndex: 5000,
+            '&:hover': {
+                opacity: 0.8,
+                backgroundColor: theme.palette.background.default,
+            },
+            '&:focus': {
+                top: theme.spacing(2),
+                transition: theme.transitions.create(['top', 'opacity'], {
+                    easing: theme.transitions.easing.easeOut,
+                    duration: theme.transitions.duration.enteringScreen,
+                }),
+            },
         },
-    },
-}));
+    }),
+    { name: 'RaSkipToContentButton' }
+);
 
-function SkipNavigationButton() {
+const SkipNavigationButton = () => {
     const classes = useStyles();
     const translate = useTranslate();
 
@@ -65,6 +70,6 @@ function SkipNavigationButton() {
             variant="contained"
         />
     );
-}
+};
 
 export default SkipNavigationButton;
