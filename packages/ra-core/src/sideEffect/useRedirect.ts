@@ -52,7 +52,10 @@ const useRedirect = () => {
                 return;
             }
 
-            history.push(resolveRedirectTo(redirectTo, basePath, id, data));
+            history.push({
+                pathname: resolveRedirectTo(redirectTo, basePath, id, data),
+                state: { _scrollToTop: true },
+            });
         },
         [dispatch, history]
     );

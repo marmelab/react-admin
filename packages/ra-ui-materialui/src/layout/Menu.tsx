@@ -71,9 +71,6 @@ const Menu: FC<MenuProps> = props => {
     const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
     const resources = useSelector(getResources, shallowEqual) as Array<any>;
 
-    // Used to force redraw on navigation
-    useSelector((state: ReduxState) => state.router.location.pathname);
-
     return (
         <div
             className={classnames(
@@ -98,7 +95,10 @@ const Menu: FC<MenuProps> = props => {
                 .map(resource => (
                     <MenuItemLink
                         key={resource.name}
-                        to={`/${resource.name}`}
+                        to={{
+                            pathname: `/${resource.name}`,
+                            state: { _scrollToTop: true },
+                        }}
                         primaryText={translatedResourceName(
                             resource,
                             translate

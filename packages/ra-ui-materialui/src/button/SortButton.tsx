@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, memo } from 'react';
+import { FC, ReactElement, memo } from 'react';
 import {
     Button,
     Menu,
@@ -39,9 +39,10 @@ import { useListSortContext, useTranslate } from 'ra-core';
  *     </TopToolbar>
  * );
  */
-const SortButton: FC<{ fields: string[]; label?: string }> = ({
+const SortButton: FC<SortButtonProps> = ({
     fields,
     label = 'ra.sort.sort_by',
+    icon = defaultIcon,
 }) => {
     const { resource, currentSort, setSort } = useListSortContext();
     const translate = useTranslate();
@@ -85,7 +86,7 @@ const SortButton: FC<{ fields: string[]; label?: string }> = ({
                         color="primary"
                         onClick={handleClick}
                     >
-                        <SortIcon />
+                        {icon}
                     </IconButton>
                 </Tooltip>
             ) : (
@@ -94,7 +95,7 @@ const SortButton: FC<{ fields: string[]; label?: string }> = ({
                     aria-haspopup="true"
                     color="primary"
                     onClick={handleClick}
-                    startIcon={<SortIcon />}
+                    startIcon={icon}
                     endIcon={<ArrowDropDownIcon />}
                     size="small"
                 >
@@ -129,9 +130,17 @@ const SortButton: FC<{ fields: string[]; label?: string }> = ({
     );
 };
 
+const defaultIcon = <SortIcon />;
+
 const inverseOrder = (sort: string) => (sort === 'ASC' ? 'DESC' : 'ASC');
 
 const arePropsEqual = (prevProps, nextProps) =>
     shallowEqual(prevProps.fields, nextProps.fields);
+
+export interface SortButtonProps {
+    fields: string[];
+    label?: string;
+    icon?: ReactElement;
+}
 
 export default memo(SortButton, arePropsEqual);

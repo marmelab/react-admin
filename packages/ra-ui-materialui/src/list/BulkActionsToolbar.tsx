@@ -33,6 +33,9 @@ const useStyles = makeStyles(
                 'height'
             )}, ${theme.transitions.create('min-height')}`,
         },
+        topToolbar: {
+            paddingTop: theme.spacing(2),
+        },
         buttons: {},
         collapsed: {
             minHeight: 0,
@@ -93,7 +96,7 @@ const BulkActionsToolbar: FC<BulkActionsToolbarProps> = props => {
                     })}
                 </Typography>
             </div>
-            <TopToolbar>
+            <TopToolbar className={classes.topToolbar}>
                 {Children.map(children, child =>
                     isValidElement(child)
                         ? cloneElement(child, {

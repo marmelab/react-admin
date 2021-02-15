@@ -12,6 +12,7 @@ const useRefreshWhenVisible = (delay = 1000 * 60 * 5) => {
     const automaticRefreshEnabled = useIsAutomaticRefreshEnabled();
 
     useEffect(() => {
+        if (typeof document === 'undefined') return;
         let lastHiddenTime;
         const handleVisibilityChange = () => {
             if (!automaticRefreshEnabled) {
