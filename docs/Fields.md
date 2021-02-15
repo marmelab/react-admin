@@ -539,7 +539,7 @@ import { TextField } from 'react-admin';
 
 ### `<UrlField>`
 
-`<UrlField>` displays an url in a Material UI's `<Link href="" />` component.
+`<UrlField>` displays a url in a Material UI's `<Link href="" />` component.
 
 ```jsx
 import { UrlField } from 'react-admin';
