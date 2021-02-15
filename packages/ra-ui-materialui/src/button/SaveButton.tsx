@@ -110,7 +110,7 @@ const SaveButton: FC<SaveButtonProps> = props => {
                 );
             }
 
-            if (formContext) {
+            if (formContext && formContext.setOnSave) {
                 // we reset to the Form default save function
                 formContext.setOnSave();
             }
