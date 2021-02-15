@@ -85,9 +85,6 @@ const useStyles = makeStyles(
             position: 'fixed',
             zIndex: 1000,
         },
-        floatingLink: {
-            color: 'inherit',
-        },
     }),
     { name: 'RaCreateButton' }
 );
