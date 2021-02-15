@@ -105,8 +105,7 @@ const sanitizeRestProps = ({
     label,
     selectedIds,
     ...rest
-}: Omit<BulkDeleteWithUndoButtonProps, 'resource' | 'selectedIds' | 'icon'>) =>
-    rest;
+}: Omit<BulkDeleteWithUndoButtonProps, 'resource' | 'icon'>) => rest;
 
 export interface BulkDeleteWithUndoButtonProps
     extends BulkActionProps,
