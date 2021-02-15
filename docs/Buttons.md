@@ -5,7 +5,7 @@ title: "Buttons"
 
 # Buttons
 
-React-Admin provides button components for all the common uses. 
+React-Admin provides button components for all the common uses.
 
 ## Navigation Buttons
 
@@ -32,7 +32,7 @@ const CommentEditButton = ({ record }) => (
 | `basePath`    | Required | `string`        | -                | Base path to resource, e.g. '/posts'             |
 | `record`      | Required | `Object`        | -                | Record to link to, e.g. `{ id: 12, foo: 'bar' }` |
 | `label`       | Optional | `string`        | 'ra.action.edit' | Label or translation message to use              |
-| `icon`        | Optional | `React.element` | -                | Icon element, e.g. `<CommentIcon />`             |
+| `icon`        | Optional | `ReactElement`  | -                | Icon element, e.g. `<CommentIcon />`             |
 | `scrollToTop` | Optional | `boolean`       | `true`           | Scroll to top after link                         |
 
 It also supports [all the other `<Button>` props](#button).
@@ -61,8 +61,9 @@ const CommentShowButton = ({ record }) => (
 | ------------- | -------- | --------------- | ---------------- | ------------------------------------------------ |
 | `basePath`    | Required | `string`        | -                | Base path to resource, e.g. '/posts'             |
 | `record`      | Required | `Object`        | -                | Record to link to, e.g. `{ id: 12, foo: 'bar' }` |
+| `component`   | Optional | `ReactElement`  | -                | Base path to resource, e.g. '/posts'             |
 | `label`       | Optional | `string`        | 'ra.action.show' | Label or translation message to use              |
-| `icon`        | Optional | `React.element` | -                | Icon element, e.g. `<CommentIcon />`             |
+| `icon`        | Optional | `ReactElement`  | -                | Icon element, e.g. `<CommentIcon />`             |
 | `scrollToTop` | Optional | `boolean`       | `true`           | Scroll to top after link                         |
 
 It also supports [all the other `<Button>` props](#button).
@@ -93,12 +94,20 @@ const CommentCreateButton = () => (
 | ------------- | -------- | --------------- | ------------------ | -------------------------------------------- |
 | `basePath`    | Required | `string`        | -                  | base path to resource, e.g. '/posts'         |
 | `label`       | Optional | `string`        | 'ra.action.create' | label or translation message to use          |
-| `icon`        | Optional | `React.element` | -                  | iconElement, e.g. `<CommentIcon />`          |
+| `icon`        | Optional | `ReactElement`  | -                  | iconElement, e.g. `<CommentIcon />`          |
 | `scrollToTop` | Optional | `boolean`       | `true`             | Scroll to top after link                     |
 
 It also supports [all the other `<Button>` props](#button).
 
 **Tip**: If you want to link to the Create view manually, use the `/{resource}/create` location.
+
+#### CSS API
+
+| Rule name      | Description                                                        |
+| -------------- | ------------------------------------------------------------------ |
+| `floating`     | Applied to the underlying `MuiFab` component used in small screens |
+
+To override the style of all instances of `<CreateButton>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaCreateButton` key.
 
 ### `<ListButton>`
 
@@ -140,7 +149,7 @@ export const PostEdit = (props) => (
 | ---------- | -------- | --------------- | ---------------- | -------------------------------------------- |
 | `basePath` | Required | `string`        | -                | base path to resource, e.g. '/posts'         |
 | `label`    | Optional | `string`        | 'ra.action.list' | label or translation message to use          |
-| `icon`     | Optional | `React.element` | -                | iconElement, e.g. `<CommentIcon />`          |
+| `icon`     | Optional | `ReactElement`  | -                | iconElement, e.g. `<CommentIcon />`          |
 
 It also supports [all the other `<Button>` props](#button).
 
@@ -180,8 +189,8 @@ export const PostList = (props) => (
 | ------------ | -------- | --------------- | ------------------ | ----------------------------------- |
 | `maxResults` | Optional | `number`        | 1000               | Maximum number of records to export |
 | `label`      | Optional | `string`        | 'ra.action.export' | label or translation message to use |
-| `icon`       | Optional | `React.element` | `<DownloadIcon>`   | iconElement, e.g. `<CommentIcon />` |
-| `exporter`   | Optional | `function`      | -                  | Override the List exporter function |
+| `icon`       | Optional | `ReactElement`  | `<DownloadIcon>`   | iconElement, e.g. `<CommentIcon />` |
+| `exporter`   | Optional | `Function`      | -                  | Override the List exporter function |
 
 ### `<BulkExportButton>`
 
@@ -211,8 +220,8 @@ export const PostList = (props) => (
 | Prop         | Required | Type            | Default            | Description                         |
 | ------------ | -------- | --------------- | ------------------ | ----------------------------------- |
 | `label`      | Optional | `string`        | 'ra.action.export' | label or translation message to use |
-| `icon`       | Optional | `React.element` | `<DownloadIcon>`   | iconElement, e.g. `<CommentIcon />` |
-| `exporter`   | Optional | `function`      | -                  | Override the List exporter function |
+| `icon`       | Optional | `ReactElement`  | `<DownloadIcon>`   | iconElement, e.g. `<CommentIcon />` |
+| `exporter`   | Optional | `Function`      | -                  | Override the List exporter function |
 
 ### `<BulkDeleteButton>`
 
@@ -242,15 +251,23 @@ export const PostList = (props) => (
 | Prop         | Required | Type            | Default            | Description                         |
 | ------------ | -------- | --------------- | ------------------ | ----------------------------------- |
 | `label`      | Optional | `string`        | 'ra.action.delete' | label or translation message to use |
-| `icon`       | Optional | `React.element` | `<DeleteIcon>`     | iconElement, e.g. `<CommentIcon />` |
-| `exporter`   | Optional | `function`      | -                  | Override the List exporter function |
-| `undoable`   | Optional | `boolean`       | true               | Allow users to cancel the deletion  |
+| `icon`       | Optional | `ReactElement`  | `<DeleteIcon>`     | iconElement, e.g. `<CommentIcon />` |
+| `exporter`   | Optional | `Function`      | -                  | Override the List exporter function |
+| `undoable`   | Optional | `boolean`       | `true`             | Allow users to cancel the deletion  |
 
 ### `<FilterButton>`
 
 This button is an internal component used by react-admin in [the `<Filter>` button/form combo](./List.md#the-filter-buttonform-combo).
 
 ![List Filters](./img/list_filter.gif)
+
+#### CSS API
+
+| Rule name  | Description                                                   |
+| ---------- | ------------------------------------------------------------- |
+| `root`     | Alternative to using `className`. Applied to the root element |
+
+To override the style of all instances of `<FilterButton>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaFilterButton` key.
 
 ### `<SortButton>`
 
@@ -276,7 +293,7 @@ const ListActions = () => (
 | Prop         | Required | Type            | Default            | Description                         |
 | ------------ | -------- | --------------- | ------------------ | ----------------------------------- |
 | `fields`     | Required | `string[]`      | -                  | List of fields to offer sort on     |
-| `icon`       | Optional | `React.element` | `<DeleteIcon>`     | iconElement, e.g. `<CommentIcon />` |
+| `icon`       | Optional | `ReactElement`  | `<DeleteIcon>`     | iconElement, e.g. `<CommentIcon />` |
 | `label`      | Optional | `string`        | 'ra.action.delete' | label or translation message to use |
 
 ## Record Buttons
@@ -294,13 +311,26 @@ Base component for most react-admin buttons. Responsive (displays only the icon 
 | Prop         | Required | Type                           | Default | Description                              |
 | ------------ | -------- | ------------------------------ | ------- | ---------------------------------------- |
 | `alignIcon`  | Optional | `'left' | 'right`              | `'left'` | Icon position relative to the label     |
-| `children`   | Optional | `React.element`                | -        | icon to use                             |
+| `children`   | Optional | `ReactElement`                 | -        | icon to use                             |
 | `className`  | Optional | `string`                       | -        | path to link to, e.g. '/posts'          |
 | `color`      | Optional | `'default' | 'inherit'| 'primary' | 'secondary'` | `'primary'` | Label and icon color |
 | `disabled`   | Optional | `boolean`                      | `false`   | If `true`, the button will be disabled |
 | `size`       | Optional | `'large' | 'medium' | 'small'` | `'small'` | Button size                            |
 
 Other props are passed down to [the underlying material-ui `<Button>`](https://material-ui.com/api/button/).
+
+#### CSS API
+
+| Rule name        | Description                                                                                     |
+| ---------------- | ----------------------------------------------------------------------------------------------- |
+| `button`         | Applied to the underlying `MuiButton` component                                                 |
+| `label`          | Applied to the Button's label when `alignIcon` prop is 'left'                                   |
+| `labelRightIcon` | Applied to the Button's label when `alignIcon` prop is 'left'                                   |
+| `smallIcon`      | Applied to the Button's `children` when `size` prop is `small` and `alignIcon` prop is 'right'  |
+| `mediumIcon`     | Applied to the Button's `children` when `size` prop is `medium` and `alignIcon` prop is 'right' |
+| `largeIcon`      | Applied to the Button's `children` when `size` prop is `large` and `alignIcon` prop is 'right'  |
+
+To override the style of all instances of `<Button>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaButton` key.
 
 ### `<RefreshButton>`
 ### `<SkipNavigationButton>`
