@@ -163,7 +163,7 @@ const useDataProvider = (): DataProviderProxy => {
                     }
 
                     if (enabled === false) {
-                        return Promise.resolve();
+                        return Promise.resolve({});
                     }
 
                     const params = {

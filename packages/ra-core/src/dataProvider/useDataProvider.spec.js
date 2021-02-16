@@ -328,14 +328,7 @@ describe('useDataProvider', () => {
                 useEffect(() => {
                     dataProvider
                         .getOne('dummy', {}, { enabled: isEnabled })
-                        .then(res => {
-                            if (res) {
-                                // @fzaninotto I don't think this is correct
-                                // because we return a empty resolved Promise,
-                                // res is undefined here
-                                setData(res.data);
-                            }
-                        })
+                        .then(res => setData(res.data))
                         .catch(e => setError(e));
                 }, [dataProvider, isEnabled]);
 
