@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useMemo } from 'react';
 import { Record } from 'ra-core';
+import PropTypes from 'prop-types';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
@@ -46,6 +47,7 @@ FunctionField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
+    render: PropTypes.func.isRequired,
 };
 
 export interface FunctionFieldProps<RecordType extends Record = Record>
