@@ -23,7 +23,7 @@ import {
     useLocale,
 } from 'react-admin';
 import { Link } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
+import { Button } from '@material-ui/core';
 import PostTitle from './PostTitle';
 
 const CreateRelatedComment = ({ record }) => (
