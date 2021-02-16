@@ -271,7 +271,7 @@ export default {
 
 ### Logout Configuration
 
-If you enable authentication, react-admin adds a logout button in the user menu in the top bar (or in the sliding menu on mobile. When the user clicks on the logout button, this calls the `authProvider.logout()` method, and removes potentially sensitive data from the Redux store. Then the user gets redirected to the login page. The two previous sections also illustrated that react-admin can call `authProvider.logout()` itself, when the API returns a 403 error or when the local credentials expire. 
+If you enable authentication, react-admin adds a logout button in the user menu in the top bar (or in the sliding menu on mobile). When the user clicks on the logout button, this calls the `authProvider.logout()` method, and removes potentially sensitive data from the Redux store. Then the user gets redirected to the login page. The two previous sections also illustrated that react-admin can call `authProvider.logout()` itself, when the API returns a 403 error or when the local credentials expire. 
 
 It's the responsibility of the `authProvider.logout()` method to clean up the current authentication data. For instance, if the authentication was a token stored in local storage, here is the code to remove it:
 
@@ -359,7 +359,7 @@ const PostDetail = ({ id }) => {
 
 ## Authorization
 
-Some applications may require fine-grained permissions to enable or disable access to certain features depending on user permissions. Since there are many possible strategies (single role, multiple roles or rights, ACLs, etc.), react-admin delegates the permission logic to `autheProvider.getPermissions()`.
+Some applications may require fine-grained permissions to enable or disable access to certain features depending on user permissions. Since there are many possible strategies (single role, multiple roles or rights, ACLs, etc.), react-admin delegates the permission logic to `authProvider.getPermissions()`.
 
 By default, a react-admin app doesn't require any special permission on list, create, edit, and show pages. However, react-admin calls the `authProvider.getPermissions()` method before navigating to these pages, and passes the result to the main page component (`<List>`, `<Edit>`, etc.). You can then tweak the content of these pages based on permissions.
 
