@@ -233,8 +233,7 @@ describe('<SelectArrayInput />', () => {
             expect(queryByText('Required field.')).toBeDefined();
         });
 
-        // TODO: restore once master has been merged back to next
-        it.skip('should not render a LinearProgress if loading is true and a second has not passed yet', () => {
+        it('should not render a LinearProgress if loading is true and a second has not passed yet', () => {
             const { queryByRole } = render(
                 <Form
                     validateOnBlur
