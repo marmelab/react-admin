@@ -408,6 +408,26 @@ const BulkDeletePostsButton = ({ selectedIds }) => {
 };
 ```
 
+## Synchronizing Dependant Queries
+`useQuery` and all its corresponding specialized hooks support an `enabled` option. This is useful if you need to have a query executed only when a condition is met. For example, in the following example, we only fetch the categories if we have at least one post:
+```jsx
+// fetch posts
+const { ids, data: posts, loading: isLoading } = useGetList(
+    'posts',
+    { page: 1, perPage: 20 },
+    { field: 'name', order: 'ASC' },
+    {}
+);
+
+// then fetch categories for these posts
+const { data: categories, loading: isLoadingCategories } = useGetMany(
+    'categories',
+    ids.map(id=> posts[id].category_id),
+    // run only if the first query returns non-empty result
+    { enabled: ids.length > 0 }
+);
+```
+
 ## Handling Side Effects In `useDataProvider`
 
 `useDataProvider` returns a `dataProvider` object. Each call to its method return a Promise, allowing adding business logic on success in `then()`, and on failure in `catch()`.
