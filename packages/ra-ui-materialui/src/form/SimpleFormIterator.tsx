@@ -177,7 +177,7 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
 
     const records = get(record, source);
     return fields ? (
-        <ul className={classNames(classes.root, className)}>
+        <ol className={classNames(classes.root, className)}>
             {submitFailed && typeof error !== 'object' && error && (
                 <FormHelperText error>
                     <ValidationError error={error as string} />
@@ -192,77 +192,70 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
                         classNames="fade"
                         {...TransitionProps}
                     >
-                        <li className={classes.line}>
-                            {!disableIndex && (
-                                <ol className={classes.index}>{index + 1}</ol>
-                            )}
-                            <section className={classes.form}>
-                                {Children.map(
-                                    children,
-                                    (input: ReactElement, index2) => {
-                                        if (!isValidElement<any>(input)) {
-                                            return null;
-                                        }
-                                        const {
-                                            source,
-                                            ...inputProps
-                                        } = input.props;
-                                        return (
-                                            <FormInput
-                                                basePath={
-                                                    input.props.basePath ||
-                                                    basePath
-                                                }
-                                                input={cloneElement(input, {
-                                                    source: source
-                                                        ? `${member}.${source}`
-                                                        : member,
-                                                    index: source
-                                                        ? undefined
-                                                        : index2,
-                                                    label:
-                                                        typeof input.props
-                                                            .label ===
-                                                        'undefined'
-                                                            ? source
-                                                                ? `resources.${resource}.fields.${source}`
-                                                                : undefined
-                                                            : input.props.label,
-                                                    disabled,
-                                                    ...inputProps,
-                                                })}
-                                                record={
-                                                    (records &&
-                                                        records[index]) ||
-                                                    {}
-                                                }
-                                                resource={resource}
-                                                variant={variant}
-                                                margin={margin}
-                                            />
-                                        );
+                        {!disableIndex && <li className={classes.index} />}
+                        <section className={classes.form}>
+                            {Children.map(
+                                children,
+                                (input: ReactElement, index2) => {
+                                    if (!isValidElement<any>(input)) {
+                                        return null;
                                     }
-                                )}
-                            </section>
-                            {!disabled &&
-                                !disableRemoveField(
-                                    (records && records[index]) || {},
-                                    disableRemove
-                                ) && (
-                                    <span className={classes.action}>
-                                        {cloneElement(removeButton, {
-                                            onClick: handleRemoveButtonClick(
-                                                removeButton.props.onClick,
-                                                index
-                                            ),
-                                            className: classNames(
-                                                'button-remove',
-                                                `button-remove-${source}-${index}`
-                                            ),
-                                        })}
-                                    </span>
-                                )}
-                        </li>
+                                    const {
+                                        source,
+                                        ...inputProps
+                                    } = input.props;
+                                    return (
+                                        <FormInput
+                                            basePath={
+                                                input.props.basePath || basePath
+                                            }
+                                            input={cloneElement(input, {
+                                                source: source
+                                                    ? `${member}.${source}`
+                                                    : member,
+                                                index: source
+                                                    ? undefined
+                                                    : index2,
+                                                label:
+                                                    typeof input.props.label ===
+                                                    'undefined'
+                                                        ? source
+                                                            ? `resources.${resource}.fields.${source}`
+                                                            : undefined
+                                                        : input.props.label,
+                                                disabled,
+                                                ...inputProps,
+                                            })}
+                                            record={
+                                                (records && records[index]) ||
+                                                {}
+                                            }
+                                            resource={resource}
+                                            variant={variant}
+                                            margin={margin}
+                                        />
+                                    );
+                                }
+                            )}
+                        </section>
+                        {!disabled &&
+                            !disableRemoveField(
+                                (records && records[index]) || {},
+                                disableRemove
+                            ) && (
+                                <span className={classes.action}>
+                                    {cloneElement(removeButton, {
+                                        onClick: handleRemoveButtonClick(
+                                            removeButton.props.onClick,
+                                            index
+                                        ),
+                                        className: classNames(
+                                            'button-remove',
+                                            `button-remove-${source}-${index}`
+                                        ),
+                                    })}
+                                </span>
+                            )}
                     </CSSTransition>
                 ))}
             </TransitionGroup>
@@ -281,7 +274,7 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
                     </span>
                 </li>
             )}
-        </ul>
+        </ol>
     ) : null;
 };
 
