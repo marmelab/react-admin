@@ -42,6 +42,7 @@
         "ra-input-rich-text": "^3.9.0",
         "ra-language-english": "^3.9.0",
         "ra-language-french": "^3.9.0",
+        "ra-ui-materialui": "^3.9.0",
         "react": "^17.0.0",
         "react-admin": "^3.9.0",
         "react-dom": "^17.0.0"
