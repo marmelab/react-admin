@@ -7,6 +7,41 @@ import renderWithRedux from '../../util/renderWithRedux';
 
 describe('<ReferenceManyFieldController />', () => {
     it('should set loaded to false when related records are not yet fetched', async () => {
+        const ComponentToTest = ({ loaded }: { loaded?: boolean }) => {
+            return <div>loaded: {loaded.toString()}</div>;
+        };
+
+        const { queryByText } = renderWithRedux(
+            <ReferenceManyFieldController
+                resource="foo"
+                source="items"
+                reference="bar"
+                target="foo_id"
+                basePath=""
+            >
+                {props => <ComponentToTest {...props} />}
+            </ReferenceManyFieldController>,
+            {
+                admin: {
+                    references: {
+                        oneToMany: {},
+                        possibleValues: {},
+                    },
+                    resources: {
+                        bar: { data: {} },
+                        foo: { data: {} },
+                    },
+                },
+            }
+        );
+
+        expect(queryByText('loaded: false')).not.toBeNull();
+        await waitFor(() => {
+            expect(queryByText('loaded: true')).not.toBeNull();
+        });
+    });
+
+    it('should call dataProvider.getManyReferences on mount', async () => {
         const children = jest.fn().mockReturnValue('children');
         const { dispatch } = renderWithRedux(
             <ReferenceManyFieldController
@@ -15,6 +50,10 @@ describe('<ReferenceManyFieldController />', () => {
                 reference="bar"
                 target="foo_id"
                 basePath=""
+                record={{
+                    id: 'fooId',
+                    source: 'barId',
+                }}
             >
                 {children}
             </ReferenceManyFieldController>,

@@ -100,7 +100,8 @@ const useGetManyReference = (
                 defaultData
             ),
         }),
-        (state: ReduxState) => getTotal(state, relatedTo)
+        (state: ReduxState) => getTotal(state, relatedTo),
+        (data: any) => data.ids && data.ids.length > 0
     );
 
     const data = useMemo(
