@@ -91,7 +91,7 @@ BulkExportButton.propTypes = {
     basePath: PropTypes.string,
     exporter: PropTypes.func,
     label: PropTypes.string,
-    resource: PropTypes.string.isRequired,
+    resource: PropTypes.string,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
     icon: PropTypes.element,
 };

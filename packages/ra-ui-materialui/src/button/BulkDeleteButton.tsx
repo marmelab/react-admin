@@ -25,7 +25,7 @@ export type BulkDeleteButtonProps = Props &
 BulkDeleteButton.propTypes = {
     basePath: PropTypes.string,
     label: PropTypes.string,
-    resource: PropTypes.string.isRequired,
+    resource: PropTypes.string,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
     undoable: PropTypes.bool,
     icon: PropTypes.element,

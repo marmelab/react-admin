@@ -35,7 +35,7 @@ BulkDeleteAction.propTypes = {
     basePath: PropTypes.string,
     label: PropTypes.string,
     onExit: PropTypes.func.isRequired,
-    resource: PropTypes.string.isRequired,
+    resource: PropTypes.string,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
     translate: PropTypes.func.isRequired,
     undoable: PropTypes.bool,
