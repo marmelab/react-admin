@@ -16,6 +16,7 @@ import lodashGet from 'lodash/get';
 import { FilterButtonMenuItem } from './FilterButtonMenuItem';
 import Button from '../../button/Button';
 import { ClassesOverride } from '../../types';
+import { useResourceContext } from 'ra-core';
 
 const useStyles = makeStyles(
     {
@@ -32,9 +33,10 @@ const FilterButton = (props: FilterButtonProps): JSX.Element => {
         showFilter,
         classes: classesOverride,
         className,
-        resource,
+        resource: propsResource,
         ...rest
     } = props;
+    const resource = useResourceContext(props);
     const [open, setOpen] = useState(false);
     const anchorEl = useRef();
     const classes = useStyles(props);
