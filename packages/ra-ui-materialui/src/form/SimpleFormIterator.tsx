@@ -10,7 +10,6 @@ import {
 import PropTypes from 'prop-types';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import get from 'lodash/get';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { makeStyles } from '@material-ui/core/styles';
@@ -109,6 +108,7 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
         disabled,
         disableAdd,
         disableRemove,
+        disableIndex,
         variant,
         margin,
         TransitionProps,
@@ -193,12 +193,9 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
                         {...TransitionProps}
                     >
                         <li className={classes.line}>
-                            <Typography
-                                variant="body1"
-                                className={classes.index}
-                            >
-                                {index + 1}
-                            </Typography>
+                            {!disableIndex && (
+                                <ol className={classes.index}>{index + 1}</ol>
+                            )}
                             <section className={classes.form}>
                                 {Children.map(
                                     children,
@@ -291,6 +288,7 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
 SimpleFormIterator.defaultProps = {
     disableAdd: false,
     disableRemove: false,
+    disableIndex: false,
 };
 
 SimpleFormIterator.propTypes = {
@@ -311,6 +309,7 @@ SimpleFormIterator.propTypes = {
     translate: PropTypes.func,
     disableAdd: PropTypes.bool,
     disableRemove: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+    disableIndex: PropTypes.bool,
     TransitionProps: PropTypes.shape({}),
 };
 
@@ -326,6 +325,7 @@ export interface SimpleFormIteratorProps
     disabled?: boolean;
     disableAdd?: boolean;
     disableRemove?: boolean | DisableRemoveFunction;
+    disableIndex?: boolean;
     margin?: 'none' | 'normal' | 'dense';
     meta?: {
         // the type defined in FieldArrayRenderProps says error is boolean, which is wrong.
