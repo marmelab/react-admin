@@ -41,6 +41,41 @@ describe('<ReferenceManyFieldController />', () => {
         });
     });
 
+    it('should set loaded to true when related records have been fetched', async () => {
+        const ComponentToTest = ({ loaded }: { loaded?: boolean }) => {
+            return <div>loaded: {loaded.toString()}</div>;
+        };
+
+        const { queryByText } = renderWithRedux(
+            <ReferenceManyFieldController
+                resource="foo"
+                source="items"
+                reference="bar"
+                target="foo_id"
+                basePath=""
+            >
+                {props => <ComponentToTest {...props} />}
+            </ReferenceManyFieldController>,
+            {
+                admin: {
+                    references: {
+                        oneToMany: { ids: [] },
+                        possibleValues: {},
+                    },
+                    resources: {
+                        bar: { data: {} },
+                        foo: { data: {} },
+                    },
+                },
+            }
+        );
+
+        expect(queryByText('loaded: false')).not.toBeNull();
+        await waitFor(() => {
+            expect(queryByText('loaded: true')).not.toBeNull();
+        });
+    });
+
     it('should call dataProvider.getManyReferences on mount', async () => {
         const children = jest.fn().mockReturnValue('children');
         const { dispatch } = renderWithRedux(
