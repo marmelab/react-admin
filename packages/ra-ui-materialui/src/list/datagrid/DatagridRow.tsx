@@ -86,7 +86,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
     const handleToggleSelection = useCallback(
         event => {
             if (!selectable) return;
-            onToggleItem(id);
+            onToggleItem(id, event);
             event.stopPropagation();
         },
         [id, onToggleItem, selectable]
@@ -249,7 +249,10 @@ export interface DatagridRowProps
     hasBulkActions?: boolean;
     hover?: boolean;
     id?: Identifier;
-    onToggleItem?: (id: Identifier) => void;
+    onToggleItem?: (
+        id: Identifier,
+        event: React.TouchEvent | React.MouseEvent
+    ) => void;
     record?: Record;
     resource?: string;
     rowClick?: RowClickFunction | string;
