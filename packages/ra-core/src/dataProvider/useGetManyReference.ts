@@ -108,7 +108,7 @@ const useGetManyReference = (
 
     const data = useMemo(
         () =>
-            ids === null
+            ids == null
                 ? defaultData
                 : ids
                       .map(id => allRecords[id])
@@ -128,6 +128,6 @@ interface DataSelectorResult<RecordType extends Record = Record> {
     allRecords: RecordMap<RecordType>;
 }
 
-const isDataLoaded = (data: DataSelectorResult) => data.ids !== null;
+const isDataLoaded = (data: DataSelectorResult) => data.ids != null;
 
 export default useGetManyReference;

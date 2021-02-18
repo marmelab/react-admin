@@ -58,9 +58,8 @@ const oneToManyReducer: Reducer<OneToManyState> = (
 };
 
 export const getIds = (state: ReduxState, relatedTo: string) =>
-    (state.admin.references.oneToMany[relatedTo] &&
-        state.admin.references.oneToMany[relatedTo].ids) ||
-    null;
+    state.admin.references.oneToMany[relatedTo] &&
+    state.admin.references.oneToMany[relatedTo].ids;
 
 export const getTotal = (state: ReduxState, relatedTo: string) =>
     state.admin.references.oneToMany[relatedTo] &&

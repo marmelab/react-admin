@@ -23,13 +23,18 @@ describe('<ReferenceManyFieldController />', () => {
             </ReferenceManyFieldController>,
             {
                 admin: {
-                    references: {
-                        oneToMany: {},
-                        possibleValues: {},
-                    },
                     resources: {
-                        bar: { data: {} },
-                        foo: { data: {} },
+                        bar: {
+                            data: {
+                                1: { id: 1, title: 'hello' },
+                                2: { id: 2, title: 'world' },
+                            },
+                        },
+                    },
+                    references: {
+                        oneToMany: {
+                            'foo_bar@fooId_barId': {},
+                        },
                     },
                 },
             }
@@ -41,7 +46,7 @@ describe('<ReferenceManyFieldController />', () => {
         });
     });
 
-    it('should set loaded to true when related records have been fetched', async () => {
+    it('should set loaded to true when related records have been fetched and there are no results', async () => {
         const ComponentToTest = ({ loaded }: { loaded?: boolean }) => {
             return <div>loaded: {loaded.toString()}</div>;
         };
@@ -53,18 +58,75 @@ describe('<ReferenceManyFieldController />', () => {
                 reference="bar"
                 target="foo_id"
                 basePath=""
+                record={{
+                    id: 'fooId',
+                    source: 'barId',
+                }}
             >
                 {props => <ComponentToTest {...props} />}
             </ReferenceManyFieldController>,
             {
                 admin: {
-                    references: {
-                        oneToMany: { ids: [] },
-                        possibleValues: {},
-                    },
                     resources: {
-                        bar: { data: {} },
-                        foo: { data: {} },
+                        bar: {
+                            data: {
+                                1: { id: 1, title: 'hello' },
+                                2: { id: 2, title: 'world' },
+                            },
+                        },
+                    },
+                    references: {
+                        oneToMany: {
+                            'foo_bar@fooId_barId': {
+                                ids: [],
+                            },
+                        },
+                    },
+                },
+            }
+        );
+
+        expect(queryByText('loaded: false')).not.toBeNull();
+        await waitFor(() => {
+            expect(queryByText('loaded: true')).not.toBeNull();
+        });
+    });
+
+    it('should set loaded to true when related records have been fetched and there are results', async () => {
+        const ComponentToTest = ({ loaded }: { loaded?: boolean }) => {
+            return <div>loaded: {loaded.toString()}</div>;
+        };
+
+        const { queryByText } = renderWithRedux(
+            <ReferenceManyFieldController
+                resource="foo"
+                source="items"
+                reference="bar"
+                target="foo_id"
+                basePath=""
+                record={{
+                    id: 'fooId',
+                    source: 'barId',
+                }}
+            >
+                {props => <ComponentToTest {...props} />}
+            </ReferenceManyFieldController>,
+            {
+                admin: {
+                    resources: {
+                        bar: {
+                            data: {
+                                1: { id: 1, title: 'hello' },
+                                2: { id: 2, title: 'world' },
+                            },
+                        },
+                    },
+                    references: {
+                        oneToMany: {
+                            'foo_bar@fooId_barId': {
+                                ids: [1, 2],
+                            },
+                        },
                     },
                 },
             }
