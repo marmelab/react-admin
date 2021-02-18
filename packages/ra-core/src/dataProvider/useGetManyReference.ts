@@ -7,6 +7,8 @@ import {
     SortPayload,
     Identifier,
     ReduxState,
+    Record,
+    RecordMap,
 } from '../types';
 import useQueryWithStore from './useQueryWithStore';
 import {
@@ -93,19 +95,20 @@ const useGetManyReference = (
         { ...options, relatedTo, action: CRUD_GET_MANY_REFERENCE },
         // ids and data selector
         (state: ReduxState) => ({
-            ids: getIds(state, relatedTo) || defaultIds,
+            ids: getIds(state, relatedTo),
             allRecords: get(
                 state.admin.resources,
                 [resource, 'data'],
                 defaultData
             ),
         }),
-        (state: ReduxState) => getTotal(state, relatedTo)
+        (state: ReduxState) => getTotal(state, relatedTo),
+        isDataLoaded
     );
 
     const data = useMemo(
         () =>
-            ids === null
+            ids == null
                 ? defaultData
                 : ids
                       .map(id => allRecords[id])
@@ -117,7 +120,14 @@ const useGetManyReference = (
         [ids, allRecords]
     );
 
-    return { data, ids, total, error, loading, loaded };
+    return { data, ids: ids || defaultIds, total, error, loading, loaded };
 };
+
+interface DataSelectorResult<RecordType extends Record = Record> {
+    ids: Identifier[];
+    allRecords: RecordMap<RecordType>;
+}
+
+const isDataLoaded = (data: DataSelectorResult) => data.ids != null;
 
 export default useGetManyReference;
