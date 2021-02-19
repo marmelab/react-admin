@@ -1,27 +1,16 @@
-const GITHUB_API_URL = "https://api.github.com/graphql";
-const GITHUB_TOKEN = "4d25420927934f6bf6345d86627d8645e52038fb";
-
-const GITHUB_QUERY = `query {
-  stats: repository(owner:"marmelab" name:"react-admin"){
-    stargazers{totalCount}
-  }
-}`;
+const GITHUB_API_URL = 'https://api.github.com/repos/marmelab/react-admin';
 
 const getGithubStats = () => {
-  const headers = new Headers();
-  headers.append("Authorization", `bearer ${GITHUB_TOKEN}`);
-  headers.append("Content-Type", "application/x-www-form-urlencoded");
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
-  const request = new Request(GITHUB_API_URL, {
-    headers,
-    method: "POST",
-    body: JSON.stringify({ query: GITHUB_QUERY }),
-  });
+    const request = new Request(GITHUB_API_URL, {
+        headers,
+    });
 
-  return fetch(request).then((response) => response.json());
+    return fetch(request).then(response => response.json());
 };
 
-getGithubStats().then(({ data }) => {
-  document.getElementById("github-stars-content").innerText =
-    data.stats.stargazers.totalCount;
+getGithubStats().then(({ stargazers_count }) => {
+    document.getElementById('github-stars-content').innerText = stargazers_count;
 });
