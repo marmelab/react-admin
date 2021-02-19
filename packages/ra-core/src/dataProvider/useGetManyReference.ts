@@ -18,6 +18,13 @@ import {
 const defaultIds = [];
 const defaultData = {};
 
+interface UseGetManyReferenceOptions {
+    onSuccess?: (args?: any) => void;
+    onFailure?: (error: any) => void;
+    enabled?: boolean;
+    [key: string]: any;
+}
+
 /**
  * Call the dataProvider.getManyReference() method and return the resolved result
  * as well as the loading state.
@@ -38,7 +45,10 @@ const defaultData = {};
  * @param {Object} sort The request sort { field, order }, e.g. { field: 'id', order: 'DESC' }
  * @param {Object} filter The request filters, e.g. { body: 'hello, world' }
  * @param {string} referencingResource The resource name, e.g. 'posts'. Used to generate a cache key
- * @param {Object} options Options object to pass to the dataProvider. May include side effects to be executed upon success or failure, e.g. { onSuccess: { refresh: true } }
+ * @param {Object} options Options object to pass to the dataProvider.
+ * @param {boolean} options.enabled Flag to conditionally run the query. If it's false, the query will not run
+ * @param {Function} options.onSuccess Side effect function to be executed upon success, e.g. { onSuccess: { refresh: true } }
+ * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) }
  *
  * @returns The current request state. Destructure as { data, total, ids, error, loading, loaded }.
  *
@@ -71,7 +81,7 @@ const useGetManyReference = (
     sort: SortPayload,
     filter: object,
     referencingResource: string,
-    options?: any
+    options?: UseGetManyReferenceOptions
 ) => {
     const relatedTo = useMemo(
         () => nameRelatedTo(resource, id, referencingResource, target, filter),

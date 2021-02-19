@@ -9,6 +9,7 @@ const OptionsProperties = [
     'onSuccess',
     'undoable',
     'mutationMode',
+    'enabled',
 ];
 
 const isDataProviderOptions = (value: any) => {

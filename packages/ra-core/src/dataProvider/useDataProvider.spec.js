@@ -319,6 +319,64 @@ describe('useDataProvider', () => {
             expect(onFailure.mock.calls[0][0]).toEqual(new Error('foo'));
         });
 
+        it('should accept an enabled option to block the query until a condition is met', async () => {
+            const UseGetOneWithEnabled = () => {
+                const [data, setData] = useState();
+                const [error, setError] = useState();
+                const [isEnabled, setIsEnabled] = useState(false);
+                const dataProvider = useDataProvider();
+                useEffect(() => {
+                    dataProvider
+                        .getOne('dummy', {}, { enabled: isEnabled })
+                        .then(res => setData(res.data))
+                        .catch(e => setError(e));
+                }, [dataProvider, isEnabled]);
+
+                let content = <div data-testid="loading">loading</div>;
+                if (error)
+                    content = <div data-testid="error">{error.message}</div>;
+                if (data)
+                    content = (
+                        <div data-testid="data">{JSON.stringify(data)}</div>
+                    );
+                return (
+                    <div>
+                        {content}
+                        <button onClick={() => setIsEnabled(e => !e)}>
+                            toggle
+                        </button>
+                    </div>
+                );
+            };
+            const getOne = jest
+                .fn()
+                .mockResolvedValue({ data: { id: 1, title: 'foo' } });
+            const dataProvider = { getOne };
+            const { queryByTestId, getByRole } = renderWithRedux(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <UseGetOneWithEnabled />
+                </DataProviderContext.Provider>
+            );
+            expect(queryByTestId('loading')).not.toBeNull();
+            await act(async () => {
+                await new Promise(resolve => setTimeout(resolve));
+            });
+            expect(getOne).not.toBeCalled();
+            expect(queryByTestId('loading')).not.toBeNull();
+
+            // enable the query
+            fireEvent.click(getByRole('button', { name: 'toggle' }));
+
+            await act(async () => {
+                await new Promise(resolve => setTimeout(resolve));
+            });
+            expect(getOne).toBeCalledTimes(1);
+            expect(queryByTestId('loading')).toBeNull();
+            expect(queryByTestId('data').textContent).toBe(
+                '{"id":1,"title":"foo"}'
+            );
+        });
+
         describe('mutationMode', () => {
             it('should wait for response to dispatch side effects in pessimistic mode', async () => {
                 let resolveUpdate;
