@@ -120,7 +120,10 @@ export interface DatagridBodyProps extends Omit<TableBodyProps, 'classes'> {
     hasBulkActions?: boolean;
     hover?: boolean;
     ids?: Identifier[];
-    onToggleItem?: (id: Identifier) => void;
+    onToggleItem?: (
+        id: Identifier,
+        event: React.TouchEvent | React.MouseEvent
+    ) => void;
     record?: Record;
     resource?: string;
     row?: ReactElement;
