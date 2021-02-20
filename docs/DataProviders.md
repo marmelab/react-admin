@@ -99,6 +99,9 @@ Developers from the react-admin community have open-sourced Data Providers for m
 * **[Sails.js](https://sailsjs.com/)**: [mpampin/ra-data-json-sails](https://github.com/mpampin/ra-data-json-sails)
 * **[Spring Boot](https://spring.io/projects/spring-boot)**: [vishpat/ra-data-springboot-rest](https://github.com/vishpat/ra-data-springboot-rest) 
 * **[Strapi](https://strapi.io/)**: [nazirov91/ra-strapi-rest](https://github.com/nazirov91/ra-strapi-rest)
+* **[Loopback4 CRUD](https://loopback.io/)**: [ckoliber/ra-data-lb4](https://github.com/ckoliber/ra-data-lb4)
+* **[ProcessMaker3](https://github.com/ckoliber/ra-data-processmaker3)**: [ckoliber/ra-data-processmaker3](https://github.com/ckoliber/ra-data-processmaker3)
+* **[Mixer](https://github.com/ckoliber/ra-data-mixer)**: [ckoliber/ra-data-mixer](https://github.com/ckoliber/ra-data-mixer)
 
 If you've written a Data Provider for another backend, and open-sourced it, please help complete this list with your package.
 
