@@ -76,7 +76,7 @@ const useChoices = ({
     ]);
 
     const getDisableValue = useCallback(choice => get(choice, disableValue), [
-        optionValue,
+        disableValue,
     ]);
 
     return {
