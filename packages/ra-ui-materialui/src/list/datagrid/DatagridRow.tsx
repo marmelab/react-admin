@@ -57,22 +57,28 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
         selected,
         style,
         selectable,
+        expandable,
         ...rest
     } = props;
+    const isExpandable = expandable && expand;
     const resource = useResourceContext(props);
     const [expanded, toggleExpanded] = useExpanded(resource, id);
     const [nbColumns, setNbColumns] = useState(
-        computeNbColumns(expand, children, hasBulkActions)
+        computeNbColumns(isExpandable, children, hasBulkActions)
     );
     useEffect(() => {
         // Fields can be hidden dynamically based on permissions;
         // The expand panel must span over the remaining columns
         // So we must recompute the number of columns to span on
-        const newNbColumns = computeNbColumns(expand, children, hasBulkActions);
+        const newNbColumns = computeNbColumns(
+            isExpandable,
+            children,
+            hasBulkActions
+        );
         if (newNbColumns !== nbColumns) {
             setNbColumns(newNbColumns);
         }
-    }, [expand, nbColumns, children, hasBulkActions]);
+    }, [isExpandable, nbColumns, children, hasBulkActions]);
 
     const history = useHistory();
 
@@ -145,12 +151,14 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                         padding="none"
                         className={classes.expandIconCell}
                     >
-                        <ExpandRowButton
-                            classes={classes}
-                            expanded={expanded}
-                            onClick={handleToggleExpand}
-                            expandContentId={`${id}-expand`}
-                        />
+                        {expandable && (
+                            <ExpandRowButton
+                                classes={classes}
+                                expanded={expanded}
+                                onClick={handleToggleExpand}
+                                expandContentId={`${id}-expand`}
+                            />
+                        )}
                     </TableCell>
                 )}
                 {hasBulkActions && (
@@ -181,7 +189,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                     ) : null
                 )}
             </TableRow>
-            {expand && expanded && (
+            {isExpandable && expanded && (
                 <TableRow key={`${id}-expand`} id={`${id}-expand`}>
                     <TableCell colSpan={nbColumns}>
                         {isValidElement(expand)
@@ -224,6 +232,7 @@ DatagridRow.propTypes = {
     selected: PropTypes.bool,
     style: PropTypes.object,
     selectable: PropTypes.bool,
+    expandable: PropTypes.bool,
 };
 
 DatagridRow.defaultProps = {
@@ -231,6 +240,7 @@ DatagridRow.defaultProps = {
     hover: true,
     selected: false,
     selectable: true,
+    expandable: true,
 };
 
 export interface DatagridRowProps
@@ -259,6 +269,7 @@ export interface DatagridRowProps
     selected?: boolean;
     style?: any;
     selectable?: boolean;
+    expandable?: boolean;
 }
 
 export type RowClickFunction = (

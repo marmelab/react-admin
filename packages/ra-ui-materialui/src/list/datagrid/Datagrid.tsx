@@ -116,6 +116,7 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         hasBulkActions = false,
         hover,
         isRowSelectable,
+        isRowExpandable,
         resource,
         rowClick,
         rowStyle,
@@ -318,6 +319,7 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                     rowStyle,
                     selectedIds,
                     isRowSelectable,
+                    isRowExpandable,
                     version,
                 },
                 children
@@ -353,6 +355,7 @@ Datagrid.propTypes = {
     total: PropTypes.number,
     version: PropTypes.number,
     isRowSelectable: PropTypes.func,
+    isRowExpandable: PropTypes.func,
 };
 
 type RowClickFunction = (
@@ -376,6 +379,7 @@ export interface DatagridProps extends Omit<TableProps, 'size' | 'classes'> {
     hasBulkActions?: boolean;
     hover?: boolean;
     isRowSelectable?: (record: Record) => boolean;
+    isRowExpandable?: (record: Record) => boolean;
     optimized?: boolean;
     rowClick?: string | RowClickFunction;
     rowStyle?: (record: Record, index: number) => any;

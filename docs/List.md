@@ -1978,6 +1978,7 @@ Here are all the props accepted by the component:
 * [`rowStyle`](#row-style-function)
 * [`rowClick`](#rowclick)
 * [`expand`](#expand)
+* [`isRowExpandable`](#isrowexpandable)
 * [`isRowSelectable`](#isrowselectable)
 * [`optimized`](#performance)
 
@@ -2188,6 +2189,31 @@ const PostEdit = props => (
 const PostList = props => (
     <List {...props}>
         <Datagrid expand={<PostEdit />}>
+            <TextField source="id" />
+            <TextField source="title" />
+            <DateField source="published_at" />
+            <BooleanField source="commentable" />
+            <EditButton />
+        </Datagrid>
+    </List>
+)
+```
+
+### `isRowExpandable`
+
+You can customize which rows will allow to show an expandable panel below them using the `isRowExpandable` prop. It expects a function that will receive the record of each `<DatagridRow>` and returns a boolean expression.  For instance, this code shows an expand button only for rows with an id greater than 300:
+
+```jsx
+const PostPanel = ({ id, record, resource }) => (
+    <div dangerouslySetInnerHTML={{ __html: record.body }} />
+);
+
+const PostList = props => (
+    <List {...props}>
+        <Datagrid 
+            expand={<PostPanel />}
+            isRowExpandable={row => row.id > 300}    
+        >
             <TextField source="id" />
             <TextField source="title" />
             <DateField source="published_at" />
