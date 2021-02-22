@@ -2201,7 +2201,7 @@ const PostList = props => (
 
 ### `isRowExpandable`
 
-You can customize which rows will allow to show an expandable panel below them using the `isRowExpandable` prop. It expects a function that will receive the record of each `<DatagridRow>` and returns a boolean expression.  For instance, this code shows an expand button only for rows with an id greater than 300:
+You can customize which rows will allow to show an expandable panel below them using the `isRowExpandable` prop. It expects a function that will receive the record of each `<DatagridRow>` and returns a boolean expression.  For instance, this code shows an expand button only for rows that has a detail to show:
 
 ```jsx
 const PostPanel = ({ id, record, resource }) => (
@@ -2212,7 +2212,7 @@ const PostList = props => (
     <List {...props}>
         <Datagrid 
             expand={<PostPanel />}
-            isRowExpandable={row => row.id > 300}    
+            isRowExpandable={row => row.has_detail}    
         >
             <TextField source="id" />
             <TextField source="title" />
