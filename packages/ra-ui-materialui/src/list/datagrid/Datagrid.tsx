@@ -34,7 +34,7 @@ import DatagridLoading from './DatagridLoading';
 import DatagridBody, { PureDatagridBody } from './DatagridBody';
 import useDatagridStyles from './useDatagridStyles';
 import { ClassesOverride } from '../../types';
-import DatagridProvider from './DatagridProvider';
+import DatagridContextProvider from './DatagridContextProvider';
 
 /**
  * The Datagrid component renders a list of records as a table.
@@ -248,7 +248,7 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
      * the datagrid displays the current data.
      */
     return (
-        <DatagridProvider value={{ isRowExpandable }}>
+        <DatagridContextProvider value={{ isRowExpandable }}>
             <Table
                 ref={ref}
                 className={classnames(classes.table, className)}
@@ -328,7 +328,7 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                     children
                 )}
             </Table>
-        </DatagridProvider>
+        </DatagridContextProvider>
     );
 });
 

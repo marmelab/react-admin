@@ -1,7 +1,7 @@
 import React, { ReactElement, ReactNode } from 'react';
 import DatagridContext, { DatagridContextValue } from './DatagridContext';
 
-const DatagridProvider = ({
+const DatagridContextProvider = ({
     children,
     value,
 }: {
@@ -13,4 +13,4 @@ const DatagridProvider = ({
     </DatagridContext.Provider>
 );
 
-export default DatagridProvider;
+export default DatagridContextProvider;
