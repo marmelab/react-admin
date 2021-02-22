@@ -14,6 +14,7 @@ const TabbedFormTabs: FC<TabbedFormTabsProps> = ({
     children,
     classes,
     url,
+    syncWithLocation,
     ...rest
 }) => {
     const location = useLocation();
@@ -49,6 +50,7 @@ const TabbedFormTabs: FC<TabbedFormTabsProps> = ({
                     intent: 'header',
                     value: tabPath,
                     classes,
+                    syncWithLocation,
                 });
             })}
         </Tabs>
@@ -69,12 +71,13 @@ export const getTabFullPath = (
 ): string =>
     `${baseUrl}${
         tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
-    }`;
+    }`.replace('//', '/');
 
 export interface TabbedFormTabsProps extends Omit<TabsProps, 'value'> {
     classes?: any;
     url?: string;
     tabsWithErrors?: string[];
+    syncWithLocation?: boolean;
 }
 
 export default TabbedFormTabs;

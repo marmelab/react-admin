@@ -8,7 +8,7 @@ import { FormTabHeader } from './FormTabHeader';
 
 const hiddenStyle = { display: 'none' };
 
-const FormTab: FC<FormTabProps> = ({
+export const FormTab: FC<FormTabProps> = ({
     basePath,
     className,
     classes,
@@ -98,10 +98,9 @@ export interface FormTabProps {
     path?: string;
     record?: Record;
     resource?: string;
+    syncWithLocation?: boolean;
     value?: string;
     variant?: 'standard' | 'outlined' | 'filled';
 }
 
 FormTab.displayName = 'FormTab';
-
-export default FormTab;
