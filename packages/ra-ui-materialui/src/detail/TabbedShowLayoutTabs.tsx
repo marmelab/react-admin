@@ -1,15 +1,20 @@
 import * as React from 'react';
-import { Children, cloneElement, FC, isValidElement } from 'react';
+import { Children, cloneElement, ReactElement, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
 import { useLocation, useRouteMatch } from 'react-router-dom';
+import { TabProps } from './Tab';
 
 export const getTabFullPath = (tab, index, baseUrl) =>
     `${baseUrl}${
         tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
-    }`;
+    }`.replace('//', '/');
 
-const TabbedShowLayoutTabs: FC = ({ children, ...rest }) => {
+export const TabbedShowLayoutTabs = ({
+    children,
+    syncWithLocation,
+    ...rest
+}: TabbedShowLayoutTabsProps) => {
     const location = useLocation();
     const match = useRouteMatch();
 
@@ -30,14 +35,18 @@ const TabbedShowLayoutTabs: FC = ({ children, ...rest }) => {
                 return cloneElement(tab, {
                     context: 'header',
                     value: tabPath,
+                    syncWithLocation,
                 });
             })}
         </Tabs>
     );
 };
 
+export interface TabbedShowLayoutTabsProps {
+    children?: ReactElement<TabProps>;
+    syncWithLocation?: boolean;
+}
+
 TabbedShowLayoutTabs.propTypes = {
     children: PropTypes.node,
 };
-
-export default TabbedShowLayoutTabs;
