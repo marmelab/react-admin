@@ -28,7 +28,6 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
             rowStyle,
             selectedIds,
             isRowSelectable,
-            isRowExpandable,
             ...rest
         },
         ref
@@ -58,8 +57,6 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
                         record: data[id],
                         resource,
                         rowClick,
-                        expandable:
-                            !isRowExpandable || isRowExpandable(data[id]),
                         selectable:
                             !isRowSelectable || isRowSelectable(data[id]),
                         selected: selectedIds?.includes(id),
@@ -92,7 +89,6 @@ DatagridBody.propTypes = {
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     styles: PropTypes.object,
     isRowSelectable: PropTypes.func,
-    isRowExpandable: PropTypes.func,
 };
 
 DatagridBody.defaultProps = {
@@ -135,7 +131,6 @@ export interface DatagridBodyProps extends Omit<TableBodyProps, 'classes'> {
     rowStyle?: (record: Record, index: number) => any;
     selectedIds?: Identifier[];
     isRowSelectable?: (record: Record) => boolean;
-    isRowExpandable?: (record: Record) => boolean;
 }
 
 // trick material-ui Table into thinking this is one of the child type it supports
