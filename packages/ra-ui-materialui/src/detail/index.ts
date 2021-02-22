@@ -10,9 +10,10 @@ import { ShowView } from './ShowView';
 import ShowActions, { ShowActionsProps } from './ShowActions';
 import ShowGuesser from './ShowGuesser';
 import SimpleShowLayout, { SimpleShowLayoutProps } from './SimpleShowLayout';
-import TabbedShowLayout, { TabbedShowLayoutProps } from './TabbedShowLayout';
-import Tab, { TabProps } from './Tab';
-import TabbedShowLayoutTabs from './TabbedShowLayoutTabs';
+
+export * from './TabbedShowLayout';
+export * from './TabbedShowLayoutTabs';
+export * from './Tab';
 
 export {
     Create,
@@ -27,15 +28,6 @@ export {
     ShowActions,
     ShowGuesser,
     SimpleShowLayout,
-    TabbedShowLayout,
-    Tab,
-    TabbedShowLayoutTabs,
 };
 
-export type {
-    EditActionsProps,
-    SimpleShowLayoutProps,
-    ShowActionsProps,
-    TabProps,
-    TabbedShowLayoutProps,
-};
+export type { EditActionsProps, SimpleShowLayoutProps, ShowActionsProps };

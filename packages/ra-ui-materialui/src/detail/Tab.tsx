@@ -51,7 +51,7 @@ import Labeled from '../input/Labeled';
  *     );
  *     export default App;
  */
-const Tab = ({
+export const Tab = ({
     basePath,
     children,
     contentClassName,
@@ -61,6 +61,7 @@ const Tab = ({
     label,
     record,
     resource,
+    syncWithLocation = true,
     value,
     ...rest
 }: TabProps) => {
@@ -73,7 +74,9 @@ const Tab = ({
             value={value}
             icon={icon}
             className={classnames('show-tab', className)}
-            {...({ component: Link, to: value } as any)} // to avoid TypeScript screams, see https://github.com/mui-org/material-ui/issues/9106#issuecomment-451270521
+            {...(syncWithLocation
+                ? ({ component: Link, to: value } as any)
+                : {})} // to avoid TypeScript screams, see https://github.com/mui-org/material-ui/issues/9106#issuecomment-451270521
             {...rest}
         />
     );
@@ -140,7 +143,6 @@ export interface TabProps extends MuiTabProps {
     path?: string;
     record?: Record;
     resource?: string;
+    syncWithLocation?: bool;
     value?: string;
 }
-
-export default Tab;

@@ -1,12 +1,12 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render } from '@testing-library/react';
-
-import TabbedShowLayout from './TabbedShowLayout';
-import Tab from './Tab';
-import TextField from '../field/TextField';
+import { fireEvent, render } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
+
+import { TabbedShowLayout } from './TabbedShowLayout';
+import { Tab } from './Tab';
+import TextField from '../field/TextField';
 
 describe('<TabbedShowLayout />', () => {
     const renderWithRouter = children => {
@@ -49,5 +49,62 @@ describe('<TabbedShowLayout />', () => {
 
         expect(queryByText('Tab1')).not.toBeNull();
         expect(queryByText('Field On Tab1')).not.toBeNull();
+    });
+
+    it('should sync tabs with location by default', () => {
+        const history = createMemoryHistory({ initialEntries: ['/'] });
+
+        const { getAllByRole } = renderWithRouter(
+            <Router history={history}>
+                <TabbedShowLayout
+                    basePath="/"
+                    record={{ id: 123 }}
+                    resource="foo"
+                >
+                    {null}
+                    <Tab label="Tab1">
+                        <TextField label="Field On Tab1" source="field1" />
+                    </Tab>
+                    <Tab label="Tab2">
+                        <TextField label="Field On Tab2" source="field2" />
+                    </Tab>
+                </TabbedShowLayout>
+            </Router>
+        );
+
+        const tabs = getAllByRole('tab');
+        fireEvent.click(tabs[1]);
+        expect(history.location.pathname).toEqual('/1');
+        fireEvent.click(tabs[0]);
+        expect(history.location.pathname).toEqual('/');
+    });
+
+    it('should not sync tabs with location if syncWithLocation is false', () => {
+        const history = createMemoryHistory({ initialEntries: ['/'] });
+
+        const { getAllByRole } = renderWithRouter(
+            <Router history={history}>
+                <TabbedShowLayout
+                    basePath="/"
+                    record={{ id: 123 }}
+                    resource="foo"
+                    syncWithLocation={false}
+                >
+                    {null}
+                    <Tab label="Tab1">
+                        <TextField label="Field On Tab1" source="field1" />
+                    </Tab>
+                    <Tab label="Tab2">
+                        <TextField label="Field On Tab2" source="field2" />
+                    </Tab>
+                </TabbedShowLayout>
+            </Router>
+        );
+
+        const tabs = getAllByRole('tab');
+        fireEvent.click(tabs[1]);
+        expect(history.location.pathname).toEqual('/');
+        fireEvent.click(tabs[0]);
+        expect(history.location.pathname).toEqual('/');
     });
 });
