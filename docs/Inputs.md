@@ -1485,21 +1485,20 @@ In addition to the `ReferenceArrayInputContext`, `<ReferenceArrayInput>` also se
 
 The [`<ReferenceArrayInput>`](#referencearrayinput) component take care of fetching the data, and put that data in a context called `ReferenceArrayInputContext` so that it’s available for its descendants. This context also stores filters, pagination, sort state, and provides callbacks to update them.
 
-Any component can grab information from the `ReferenceArrayInputContext` using the `useReferenceArrayInputContext` hook. Here is what it returns:
+Any component decendent of `<ReferenceArryInput>` can grab information from the `ReferenceArrayInputContext` using the `useReferenceArrayInputContext` hook. Here is what it returns:
 
 ```js
 const {
-    choices, // An array of records mathcing both the current input value and the filters
-    error, // A potential error which may have occured while fetching the data
+    choices, // An array of records matching both the current input value and the filters
+    error, // A potential error that may have occured while fetching the data
     warning, // A potential warning regarding missing references 
     loaded, // boolean that is false until the data is available
     loading, // boolean that is true on mount, and false once the data was fetched
     setFilter, // a callback to update the filters, e.g. setFilters({ q: 'query' })
     setPagination, // a callback to change the pagination, e.g. setPagination({ page: 2, perPage: 50 })
     setSort, // a callback to change the sort, e.g. setSort({ field: 'name', order: 'DESC' })
-    
-    setSortForList, // // a callback to set the sort with the same signature as the one from the ListContext. This is required to not break backward compatibility and will be removed in v4.
-}
+    setSortForList, // a callback to set the sort with the same signature as the one from the ListContext. This is required to avoid breaking backward compatibility and will be removed in v4
+} = useReferenceArrayInputContext();
 ```
 
 ### `<ReferenceInput>`
