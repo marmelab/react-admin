@@ -1338,7 +1338,7 @@ const choices = [
 ];
 ```
 
-You can set disabled values by setting the `disabled` property of one item: 
+You can render any item as disabled by setting its `disabled` property to `true`: 
 
 ```jsx
 const choices = [
