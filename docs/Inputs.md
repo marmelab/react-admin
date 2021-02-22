@@ -1349,7 +1349,7 @@ const choices = [
 <SelectArrayInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
 ```
 
-You can use a custom field name by setting `disableValue` prop: 
+You can use a custom field name by setting the `disableValue` prop: 
 
 ```jsx
 const choices = [
