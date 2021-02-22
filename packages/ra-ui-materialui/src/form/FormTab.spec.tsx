@@ -6,8 +6,8 @@ import {
     SideEffectContextProvider,
 } from 'ra-core';
 
-import TabbedForm from './TabbedForm';
-import FormTab from './FormTab';
+import { TabbedForm } from './TabbedForm';
+import { FormTab } from './FormTab';
 import TextInput from '../input/TextInput';
 
 describe('<FormTab label="foo" />', () => {
