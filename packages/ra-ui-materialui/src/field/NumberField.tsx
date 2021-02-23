@@ -84,7 +84,7 @@ export const NumberField: FC<NumberFieldProps> = memo<NumberFieldProps>(
     }
 );
 
-// what? TypeScript looses the displayName if we don't set it explicitly
+// what? TypeScript loses the displayName if we don't set it explicitly
 NumberField.displayName = 'NumberField';
 
 NumberField.defaultProps = {

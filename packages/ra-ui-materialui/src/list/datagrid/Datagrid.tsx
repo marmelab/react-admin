@@ -64,7 +64,7 @@ import { ClassesOverride } from '../../types';
  * </ReferenceManyField>
  *
  *
- * @example Usage it outside of a <List> or a <ReferenceManyField>.
+ * @example Usage outside of a <List> or a <ReferenceManyField>.
  *
  * const currentSort = { field: 'published_at', order: 'DESC' };
  *

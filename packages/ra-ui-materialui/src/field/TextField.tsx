@@ -25,7 +25,7 @@ const TextField: FC<TextFieldProps> = memo<TextFieldProps>(
     }
 );
 
-// what? TypeScript looses the displayName if we don't set it explicitly
+// what? TypeScript loses the displayName if we don't set it explicitly
 TextField.displayName = 'TextField';
 
 TextField.defaultProps = {
