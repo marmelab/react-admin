@@ -42,7 +42,7 @@ const dataProviderDefaultResponse = { data: null };
  * Pass custom store values as store prop
  *
  * @example
- * // in an react testing-library test
+ * // in a react testing-library test
  * const utils = render(
  *     <TestContext initialState={{ admin: { resources: { post: { data: { 1: {id: 1, title: 'foo' } } } } } }}>
  *         <Show {...defaultShowProps} />
@@ -50,7 +50,7 @@ const dataProviderDefaultResponse = { data: null };
  * );
  *
  * @example
- * // in an react testing-library test, using jest.
+ * // in a react testing-library test, using jest.
  * const utils = render(
  *     <TestContext initialState={{ admin: { resources: { post: { data: { 1: {id: 1, title: 'foo' } } } } } }}>
  *         {({ store }) => {

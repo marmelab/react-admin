@@ -218,7 +218,7 @@ import { DateField } from 'react-admin';
 | ---------- | -------- | ------- | ------- | -------------------------------------------------------------------------------------------------------- |
 | `locales`  | Optional | string  | ''      | Override the browser locale in the date formatting. Passed as first argument to `Intl.DateTimeFormat()`. |
 | `options`  | Optional | Object  | -       | Date formatting options. Passed as second argument to `Intl.DateTimeFormat()`.                           |
-| `showTime` | Optional | boolean | false   | If true, show date and time. If false, show only date                                                    |
+| `showTime` | Optional | boolean | `false` | If true, show date and time. If false, show only date                                                    |
 
 `<DateField>` also accepts the [common field props](./Fields.md#common-field-props).
 

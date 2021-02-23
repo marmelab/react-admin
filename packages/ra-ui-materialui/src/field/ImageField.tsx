@@ -96,7 +96,7 @@ const ImageField: FC<ImageFieldProps> = props => {
     );
 };
 
-// wat? TypeScript looses the displayName if we don't set it explicitly
+// What? TypeScript loses the displayName if we don't set it explicitly
 ImageField.displayName = 'ImageField';
 
 ImageField.defaultProps = {

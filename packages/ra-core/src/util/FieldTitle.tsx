@@ -35,7 +35,7 @@ export const FieldTitle: FunctionComponent<Props> = ({
     );
 };
 
-// wat? TypeScript looses the displayName if we don't set it explicitly
+// What? TypeScript loses the displayName if we don't set it explicitly
 FieldTitle.displayName = 'FieldTitle';
 
 export default memo(FieldTitle);

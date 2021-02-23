@@ -98,7 +98,7 @@ export interface FormInputProps<
     variant?: 'standard' | 'outlined' | 'filled';
 }
 
-// wat? TypeScript looses the displayName if we don't set it explicitly
+// What? TypeScript loses the displayName if we don't set it explicitly
 FormInput.displayName = 'FormInput';
 
 export default FormInput;

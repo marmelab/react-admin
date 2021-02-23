@@ -209,7 +209,7 @@ export default {
 
 Redirecting to the login page whenever a REST response uses a 401 status code is usually not enough. React-admin keeps data on the client side, and could briefly display stale data while contacting the server - even after the credentials are no longer valid.
 
-Fortunately, each time the user navigates to a list, edit, create or show page, react-admin calls the `authProvider.checkAuth()` method. If this method returns a rejected Promise, react-admin calls `authProvider.logout()` and redirects the user to the login page. So it's the ideal place to make sure  the credentials are still valid.
+Fortunately, each time the user navigates to a list, edit, create or show page, react-admin calls the `authProvider.checkAuth()` method. If this method returns a rejected Promise, react-admin calls `authProvider.logout()` and redirects the user to the login page. So it's the ideal place to make sure the credentials are still valid.
 
 For instance, to check for the existence of the authentication data in local storage:
 

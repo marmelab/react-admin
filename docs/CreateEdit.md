@@ -86,7 +86,7 @@ The `<Create>` and `<Edit>` components call the `dataProvider`, prepare the form
 
 ![post creation form](./img/create-view.png)
 
-The `<Create>` component clones its child, and passes it an empty object `{}`) as `record` prop. It also passes a callback as `save` prop, which calls `dataProvider.create()`.
+The `<Create>` component clones its child, and passes it an empty object `{}` as `record` prop. It also passes a callback as `save` prop, which calls `dataProvider.create()`.
 
 ![post edition form](./img/edit-view.png)
 
