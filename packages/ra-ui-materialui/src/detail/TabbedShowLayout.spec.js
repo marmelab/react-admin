@@ -54,7 +54,7 @@ describe('<TabbedShowLayout />', () => {
     it('should sync tabs with location by default', () => {
         const history = createMemoryHistory({ initialEntries: ['/'] });
 
-        const { getAllByRole } = renderWithRouter(
+        const { getAllByRole, queryByText } = renderWithRouter(
             <Router history={history}>
                 <TabbedShowLayout
                     basePath="/"
@@ -75,14 +75,18 @@ describe('<TabbedShowLayout />', () => {
         const tabs = getAllByRole('tab');
         fireEvent.click(tabs[1]);
         expect(history.location.pathname).toEqual('/1');
+        expect(queryByText('Field On Tab2')).not.toBeNull();
+        expect(queryByText('Field On Tab1')).toBeNull();
         fireEvent.click(tabs[0]);
         expect(history.location.pathname).toEqual('/');
+        expect(queryByText('Field On Tab1')).not.toBeNull();
+        expect(queryByText('Field On Tab2')).toBeNull();
     });
 
     it('should not sync tabs with location if syncWithLocation is false', () => {
         const history = createMemoryHistory({ initialEntries: ['/'] });
 
-        const { getAllByRole } = renderWithRouter(
+        const { getAllByRole, queryByText } = renderWithRouter(
             <Router history={history}>
                 <TabbedShowLayout
                     basePath="/"
@@ -104,7 +108,11 @@ describe('<TabbedShowLayout />', () => {
         const tabs = getAllByRole('tab');
         fireEvent.click(tabs[1]);
         expect(history.location.pathname).toEqual('/');
+        expect(queryByText('Field On Tab2')).not.toBeNull();
+        expect(queryByText('Field On Tab1')).toBeNull();
         fireEvent.click(tabs[0]);
         expect(history.location.pathname).toEqual('/');
+        expect(queryByText('Field On Tab1')).not.toBeNull();
+        expect(queryByText('Field On Tab2')).toBeNull();
     });
 });

@@ -129,7 +129,7 @@ Tab.propTypes = {
     icon: PropTypes.element,
     label: PropTypes.string.isRequired,
     path: PropTypes.string,
-    value: PropTypes.string,
+    value: PropTypes.any,
 };
 
 export interface TabProps extends MuiTabProps {
@@ -143,6 +143,6 @@ export interface TabProps extends MuiTabProps {
     path?: string;
     record?: Record;
     resource?: string;
-    syncWithLocation?: bool;
-    value?: string;
+    syncWithLocation?: boolean;
+    value?: any;
 }

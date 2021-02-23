@@ -1,10 +1,12 @@
 import * as React from 'react';
 import {
+    ChangeEvent,
     Children,
     cloneElement,
     isValidElement,
     ReactElement,
     ReactNode,
+    useState,
 } from 'react';
 import PropTypes from 'prop-types';
 import Divider from '@material-ui/core/Divider';
@@ -99,10 +101,25 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
     const nonNullChildren = Children.toArray(children).filter(
         child => child !== null
     );
+    const [tabValue, setTabValue] = useState(0);
+
+    const handleTabChange = (event: ChangeEvent<{}>, value: any): void => {
+        if (!syncWithLocation) {
+            setTabValue(value);
+        }
+    };
 
     return (
         <div className={className} key={version} {...sanitizeRestProps(rest)}>
-            {cloneElement(tabs, { syncWithLocation }, nonNullChildren)}
+            {cloneElement(
+                tabs,
+                {
+                    syncWithLocation,
+                    onChange: handleTabChange,
+                    value: tabValue,
+                },
+                nonNullChildren
+            )}
 
             <Divider />
             <div className={classes.content}>
@@ -123,14 +140,14 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
                                     })
                                 }
                             />
-                        ) : (
+                        ) : tabValue === index ? (
                             cloneElement(tab, {
                                 context: 'content',
                                 resource,
                                 record,
                                 basePath,
                             })
-                        )
+                        ) : null
                     ) : null
                 )}
             </div>
