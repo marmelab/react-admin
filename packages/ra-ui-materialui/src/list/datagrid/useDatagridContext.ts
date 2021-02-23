@@ -1,14 +1,28 @@
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
+import { DatagridProps } from './Datagrid';
 import DatagridContext, { DatagridContextValue } from './DatagridContext';
+import merge from 'lodash/merge';
+import { warning } from 'ra-core';
 
-export const useDatagridContext = (): DatagridContextValue => {
+export const useDatagridContext = (
+    props?: DatagridProps
+): DatagridContextValue => {
     const context = useContext(DatagridContext);
 
-    if (!context) {
-        throw new Error(
-            'useDatagridContext must be used inside a DatagridContextProvider'
-        );
-    }
+    warning(
+        !context,
+        `useDatagridContext must be used inside a DatagridContextProvider`
+    );
 
-    return context;
+    return useMemo(
+        () =>
+            merge(
+                {},
+                context,
+                props != null
+                    ? { isRowExpandable: props.isRowExpandable }
+                    : { isRowExpandable: undefined }
+            ),
+        [context, props]
+    );
 };

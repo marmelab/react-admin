@@ -8,6 +8,7 @@ import {
     useEffect,
     FC,
     ReactElement,
+    useMemo,
 } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -242,13 +243,17 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         ? ids.filter(id => isRowSelectable(data[id]))
         : ids;
 
+    const contextValue = useMemo(() => ({ isRowExpandable }), [
+        isRowExpandable,
+    ]);
+
     /**
      * After the initial load, if the data for the list isn't empty,
      * and even if the data is refreshing (e.g. after a filter change),
      * the datagrid displays the current data.
      */
     return (
-        <DatagridContextProvider value={{ isRowExpandable }}>
+        <DatagridContextProvider value={contextValue}>
             <Table
                 ref={ref}
                 className={classnames(classes.table, className)}
