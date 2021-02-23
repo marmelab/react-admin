@@ -15,6 +15,7 @@ const TabbedFormTabs: FC<TabbedFormTabsProps> = ({
     classes,
     url,
     syncWithLocation,
+    value,
     ...rest
 }) => {
     const location = useLocation();
@@ -36,7 +37,11 @@ const TabbedFormTabs: FC<TabbedFormTabsProps> = ({
         : validTabPaths[0];
 
     return (
-        <Tabs value={tabValue} indicatorColor="primary" {...rest}>
+        <Tabs
+            value={syncWithLocation ? tabValue : value}
+            indicatorColor="primary"
+            {...rest}
+        >
             {Children.map(children, (tab: ReactElement, index) => {
                 if (!isValidElement<any>(tab)) return null;
 
@@ -48,7 +53,7 @@ const TabbedFormTabs: FC<TabbedFormTabsProps> = ({
 
                 return cloneElement(tab, {
                     intent: 'header',
-                    value: tabPath,
+                    value: syncWithLocation ? tabPath : index,
                     classes,
                     syncWithLocation,
                 });
@@ -73,7 +78,7 @@ export const getTabFullPath = (
         tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
     }`.replace('//', '/');
 
-export interface TabbedFormTabsProps extends Omit<TabsProps, 'value'> {
+export interface TabbedFormTabsProps extends TabsProps {
     classes?: any;
     url?: string;
     tabsWithErrors?: string[];

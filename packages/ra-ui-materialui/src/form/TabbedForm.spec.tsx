@@ -12,7 +12,7 @@ import {
 import { TabbedForm } from './TabbedForm';
 import { FormTab } from './FormTab';
 import TextInput from '../input/TextInput';
-import { fireEvent } from '@testing-library/react';
+import { fireEvent, isInaccessible, waitFor } from '@testing-library/react';
 
 describe('<TabbedForm />', () => {
     const saveContextValue = {
@@ -142,7 +142,7 @@ describe('<TabbedForm />', () => {
     it('should sync tabs with location by default', () => {
         const history = createMemoryHistory({ initialEntries: ['/'] });
 
-        const { getAllByRole } = renderWithRedux(
+        const { getAllByRole, getByLabelText } = renderWithRedux(
             <Router history={history}>
                 <SaveContextProvider value={saveContextValue}>
                     <TabbedForm
@@ -166,14 +166,24 @@ describe('<TabbedForm />', () => {
         const tabs = getAllByRole('tab');
         fireEvent.click(tabs[1]);
         expect(history.location.pathname).toEqual('/1');
+        expect(
+            getByLabelText('resources.posts.fields.description')
+        ).not.toBeNull();
+        expect(
+            isInaccessible(getByLabelText('resources.posts.fields.title *'))
+        ).toEqual(true);
         fireEvent.click(tabs[0]);
         expect(history.location.pathname).toEqual('/');
+        expect(getByLabelText('resources.posts.fields.title *')).not.toBeNull();
+        expect(
+            isInaccessible(getByLabelText('resources.posts.fields.description'))
+        ).toEqual(true);
     });
 
     it('should not sync tabs with location if syncWithLocation is false', () => {
         const history = createMemoryHistory({ initialEntries: ['/'] });
 
-        const { getAllByRole } = renderWithRedux(
+        const { getAllByRole, getByLabelText } = renderWithRedux(
             <Router history={history}>
                 <SaveContextProvider value={saveContextValue}>
                     <TabbedForm
@@ -198,7 +208,17 @@ describe('<TabbedForm />', () => {
         const tabs = getAllByRole('tab');
         fireEvent.click(tabs[1]);
         expect(history.location.pathname).toEqual('/');
+        expect(
+            getByLabelText('resources.posts.fields.description')
+        ).not.toBeNull();
+        expect(
+            isInaccessible(getByLabelText('resources.posts.fields.title *'))
+        ).toEqual(true);
         fireEvent.click(tabs[0]);
         expect(history.location.pathname).toEqual('/');
+        expect(getByLabelText('resources.posts.fields.title *')).not.toBeNull();
+        expect(
+            isInaccessible(getByLabelText('resources.posts.fields.description'))
+        ).toEqual(true);
     });
 });
