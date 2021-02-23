@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { Children, isValidElement, ReactElement } from 'react';
+import {
+    ChangeEvent,
+    Children,
+    cloneElement,
+    isValidElement,
+    ReactElement,
+    useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Route, useRouteMatch, useLocation } from 'react-router-dom';
@@ -44,20 +51,28 @@ export const TabbedFormView = (props: TabbedFormViewProps) => {
     const classes = useTabbedFormViewStyles(props);
     const match = useRouteMatch();
     const location = useLocation();
-
     const url = match ? match.url : location.pathname;
+    const [tabValue, setTabValue] = useState(0);
+
+    const handleTabChange = (event: ChangeEvent<{}>, value: any): void => {
+        if (!syncWithLocation) {
+            setTabValue(value);
+        }
+    };
 
     return (
         <form
             className={classnames('tabbed-form', className)}
             {...sanitizeRestProps(rest)}
         >
-            {React.cloneElement(
+            {cloneElement(
                 tabs,
                 {
                     classes,
                     url,
                     syncWithLocation,
+                    onChange: handleTabChange,
+                    value: tabValue,
                 },
                 children
             )}
@@ -82,10 +97,14 @@ export const TabbedFormView = (props: TabbedFormViewProps) => {
                                           resource,
                                           record,
                                           basePath,
-                                          hidden: !routeProps.match,
+                                          hidden: syncWithLocation
+                                              ? !routeProps.match
+                                              : tabValue !== index,
                                           variant: tab.props.variant || variant,
                                           margin: tab.props.margin || margin,
-                                          value: tabPath,
+                                          value: syncWithLocation
+                                              ? tabPath
+                                              : index,
                                       })
                                     : null
                             }

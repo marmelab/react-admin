@@ -44,6 +44,9 @@ export const FormTab: FC<FormTabProps> = ({
                 className={contentClassName}
                 id={`tabpanel-${value}`}
                 aria-labelledby={`tabheader-${value}`}
+                // Set undefined instead of false because WAI-ARIA Authoring Practices 1.1
+                // notes that aria-hidden="false" currently behaves inconsistently across browsers.
+                aria-hidden={hidden || undefined}
             >
                 {React.Children.map(
                     children,
