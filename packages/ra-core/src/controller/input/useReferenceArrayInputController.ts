@@ -153,6 +153,10 @@ export const useReferenceArrayInputController = (
     // sort logic
     const sortRef = useRef(initialSort);
     const { sort, setSort } = useSortState(initialSort);
+
+    // ReferenceArrayInput.setSort had a different signature than the one from ListContext.
+    // In order to not break backward compatibility, we added this temporary setSortForList in the
+    // ReferenceArrayInputContext
     const setSortForList = useCallback(
         (field: string, order: string = 'ASC') => {
             setSort({ field, order });

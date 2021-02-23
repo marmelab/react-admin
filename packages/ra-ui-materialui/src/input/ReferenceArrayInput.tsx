@@ -146,6 +146,9 @@ const ReferenceArrayInput = ({
     const listContext = useMemo(
         () => ({
             ...controllerProps,
+            // ReferenceArrayInput.setSort had a different signature than the one from ListContext.
+            // In order to not break backward compatibility, we added this temporary setSortForList in the
+            // ReferenceArrayInputContext
             setSort: controllerProps.setSortForList,
         }),
         [controllerProps]

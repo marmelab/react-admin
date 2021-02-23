@@ -1,4 +1,5 @@
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
+import merge from 'lodash/merge';
 import {
     ReferenceArrayInputContext,
     ReferenceArrayInputContextValue,
@@ -13,10 +14,40 @@ export const useReferenceArrayInputContext = <
     props: T
 ): ReferenceArrayInputContextValue => {
     const context = useContext(ReferenceArrayInputContext);
-
-    if (props.choices) {
-        return props;
-    }
-
-    return context;
+    // Props take precedence over the context
+    return useMemo(
+        () =>
+            merge(
+                {},
+                context,
+                props != null
+                    ? extractReferenceArrayInputContextProps(props)
+                    : {}
+            ),
+        [context, props]
+    );
 };
+
+const extractReferenceArrayInputContextProps = <
+    T extends ReferenceArrayInputContextValue = ReferenceArrayInputContextValue
+>({
+    choices,
+    error,
+    loaded,
+    loading,
+    setFilter,
+    setPagination,
+    setSort,
+    setSortForList,
+    warning,
+}: T) => ({
+    choices,
+    error,
+    loaded,
+    loading,
+    setFilter,
+    setPagination,
+    setSort,
+    setSortForList,
+    warning,
+});
