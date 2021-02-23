@@ -140,6 +140,10 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     } = useListContext(props);
     const version = useVersion();
 
+    const contextValue = useMemo(() => ({ isRowExpandable }), [
+        isRowExpandable,
+    ]);
+
     const updateSort = useCallback(
         event => {
             event.stopPropagation();
@@ -242,10 +246,6 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     const all = isRowSelectable
         ? ids.filter(id => isRowSelectable(data[id]))
         : ids;
-
-    const contextValue = useMemo(() => ({ isRowExpandable }), [
-        isRowExpandable,
-    ]);
 
     /**
      * After the initial load, if the data for the list isn't empty,
