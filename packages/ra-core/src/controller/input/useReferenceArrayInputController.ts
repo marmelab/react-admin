@@ -1,19 +1,18 @@
-import { useMemo, useState, useEffect, useRef } from 'react';
+import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 import difference from 'lodash/difference';
-import {
-    PaginationPayload,
-    Record,
-    SortPayload,
-    ReduxState,
-} from '../../types';
+import { Record, SortPayload, ReduxState, Identifier } from '../../types';
 import { useGetMany } from '../../dataProvider';
-import { FieldInputProps } from 'react-final-form';
+import { FieldInputProps, useForm } from 'react-final-form';
 import useGetMatching from '../../dataProvider/useGetMatching';
 import { useTranslate } from '../../i18n';
 import { getStatusForArrayInput as getDataStatus } from './referenceDataStatus';
 import { useResourceContext } from '../../core';
+import { usePaginationState, useSortState } from '..';
+import { ListControllerProps } from '../useListController';
+import { indexById, removeEmpty, useSafeSetState } from '../../util';
+import { ReferenceArrayInputContextValue } from './ReferenceArrayInputContext';
 
 /**
  * Prepare data for the ReferenceArrayInput components
@@ -39,15 +38,17 @@ import { useResourceContext } from '../../core';
  *
  * @return {Object} controllerProps Fetched data and callbacks for the ReferenceArrayInput components
  */
-const useReferenceArrayInputController = (
-    props: Option
-): ReferenceArrayInputProps => {
+export const useReferenceArrayInputController = (
+    props: UseReferenceArrayInputOptions
+): ReferenceArrayInputContextValue & Omit<ListControllerProps, 'setSort'> => {
     const {
+        basePath,
         filter: defaultFilter,
         filterToQuery = defaultFilterToQuery,
         input,
-        perPage = 25,
-        sort: defaultSort = { field: 'id', order: 'DESC' },
+        page: initialPage = 1,
+        perPage: initialPerPage = 25,
+        sort: initialSort = { field: 'id', order: 'DESC' },
         options,
         reference,
         source,
@@ -105,35 +106,139 @@ const useReferenceArrayInputController = (
         setIdsToGetFromStore,
     ]);
 
-    const [pagination, setPagination] = useState({ page: 1, perPage });
-    const [sort, setSort] = useState(defaultSort);
-    const [filter, setFilter] = useState('');
+    // pagination logic
+    const {
+        page,
+        setPage,
+        perPage,
+        setPerPage,
+        pagination,
+        setPagination,
+    } = usePaginationState({
+        page: initialPage,
+        perPage: initialPerPage,
+    });
+
+    const form = useForm();
+    const onSelect = useCallback(
+        (newIds: Identifier[]) => {
+            const newValue = new Set(input.value);
+            newIds.forEach(newId => {
+                newValue.add(newId);
+            });
+
+            form.change(input.name, Array.from(newValue));
+        },
+        [form, input.name, input.value]
+    );
+
+    const onUnselectItems = useCallback(() => {
+        form.change(input.name, []);
+    }, [form, input.name]);
+
+    const onToggleItem = useCallback(
+        (id: Identifier) => {
+            if (input.value.some(selectedId => selectedId === id)) {
+                form.change(
+                    input.name,
+                    input.value.filter(selectedId => selectedId !== id)
+                );
+            } else {
+                form.change(input.name, [...input.value, id]);
+            }
+        },
+        [form, input.name, input.value]
+    );
+
+    // sort logic
+    const sortRef = useRef(initialSort);
+    const { sort, setSort } = useSortState(initialSort);
+
+    // ReferenceArrayInput.setSort had a different signature than the one from ListContext.
+    // In order to not break backward compatibility, we added this temporary setSortForList in the
+    // ReferenceArrayInputContext
+    const setSortForList = useCallback(
+        (field: string, order: string = 'ASC') => {
+            setSort({ field, order });
+            setPage(1);
+        },
+        [setPage, setSort]
+    );
 
     // Ensure sort can be updated through props too, not just by using the setSort function
     useEffect(() => {
-        if (!isEqual(defaultSort, sort)) {
-            setSort(defaultSort);
+        if (!isEqual(initialSort, sortRef.current)) {
+            setSort(initialSort);
         }
-    }, [setSort, defaultSort, sort]);
+    }, [setSort, initialSort]);
 
     // Ensure pagination can be updated through props too, not just by using the setPagination function
+    const paginationRef = useRef({ initialPage, initialPerPage });
     useEffect(() => {
-        const newPagination = {
-            page: 1,
-            perPage,
-        };
-        if (!isEqual(newPagination, pagination)) {
-            setPagination(newPagination);
+        if (!isEqual({ initialPage, initialPerPage }, paginationRef.current)) {
+            setPagination({ page: initialPage, perPage: initialPerPage });
         }
-    }, [setPagination, perPage, pagination]);
+    }, [setPagination, initialPage, initialPerPage]);
+
+    // filter logic
+    const [queryFilter, setFilter] = useState('');
+    const filterRef = useRef(defaultFilter);
+    const [displayedFilters, setDisplayedFilters] = useSafeSetState<{
+        [key: string]: boolean;
+    }>({});
+    const [filterValues, setFilterValues] = useSafeSetState<{
+        [key: string]: any;
+    }>(defaultFilter);
+    const hideFilter = useCallback(
+        (filterName: string) => {
+            setDisplayedFilters(previousState => {
+                const { [filterName]: _, ...newState } = previousState;
+                return newState;
+            });
+            setFilterValues(previousState => {
+                const { [filterName]: _, ...newState } = previousState;
+                return newState;
+            });
+        },
+        [setDisplayedFilters, setFilterValues]
+    );
+    const showFilter = useCallback(
+        (filterName: string, defaultValue: any) => {
+            setDisplayedFilters(previousState => ({
+                ...previousState,
+                [filterName]: true,
+            }));
+            setFilterValues(previousState => ({
+                ...previousState,
+                [filterName]: defaultValue,
+            }));
+        },
+        [setDisplayedFilters, setFilterValues]
+    );
+    const setFilters = useCallback(
+        (filters, displayedFilters) => {
+            setFilterValues(removeEmpty(filters));
+            setDisplayedFilters(displayedFilters);
+            setPage(1);
+        },
+        [setDisplayedFilters, setFilterValues, setPage]
+    );
+
+    // handle filter prop change
+    useEffect(() => {
+        if (!isEqual(defaultFilter, filterRef.current)) {
+            filterRef.current = defaultFilter;
+            setFilterValues(defaultFilter);
+        }
+    });
 
     // Merge the user filters with the default ones
     const finalFilter = useMemo(
         () => ({
             ...defaultFilter,
-            ...filterToQuery(filter),
+            ...filterToQuery(queryFilter),
         }),
-        [defaultFilter, filter, filterToQuery]
+        [queryFilter, defaultFilter, filterToQuery]
     );
 
     const { data: referenceRecordsFetched, loaded } = useGetMany(
@@ -148,7 +253,11 @@ const useReferenceArrayInputController = (
     // filter out not found references - happens when the dataProvider doesn't guarantee referential integrity
     const finalReferenceRecords = referenceRecords.filter(Boolean);
 
-    const { data: matchingReferences } = useGetMatching(
+    const {
+        data: matchingReferences,
+        ids: matchingReferencesIds,
+        total,
+    } = useGetMatching(
         reference,
         pagination,
         sort,
@@ -175,14 +284,42 @@ const useReferenceArrayInputController = (
     });
 
     return {
+        basePath: basePath.replace(resource, reference),
         choices: dataStatus.choices,
+        currentSort: sort,
+        // For the ListContext, we don't want to always display the selected items first.
+        // Indeed it wouldn't work well regarding sorting and pagination
+        data:
+            matchingReferences && matchingReferences.length > 0
+                ? indexById(matchingReferences)
+                : {},
+        displayedFilters,
         error: dataStatus.error,
+        filterValues,
+        hasCreate: false,
+        hideFilter,
+        // For the ListContext, we don't want to always display the selected items first.
+        // Indeed it wouldn't work well regarding sorting and pagination
+        ids: matchingReferencesIds || [],
         loaded,
         loading: dataStatus.waiting,
+        onSelect,
+        onToggleItem,
+        onUnselectItems,
+        page,
+        perPage,
+        resource,
+        selectedIds: input.value,
         setFilter,
+        setFilters,
+        setPage,
         setPagination,
+        setPerPage,
         setSort,
+        setSortForList,
+        showFilter,
         warning: dataStatus.warning,
+        total,
     };
 };
 
@@ -199,34 +336,13 @@ const mergeReferences = (ref1: Record[], ref2: Record[]): Record[] => {
     return res;
 };
 
-export default useReferenceArrayInputController;
-
-/**
- * @typedef ReferenceArrayProps
- * @type {Object}
- * @property {Array} ids the list of ids.
- * @property {Object} data Object holding the reference data by their ids
- * @property {Object} error the error returned by the dataProvider
- * @property {boolean} loading is the reference currently loading
- * @property {boolean} loaded has the reference already been loaded
- */
-interface ReferenceArrayInputProps {
-    choices: Record[];
-    error?: any;
-    warning?: any;
-    loading: boolean;
-    loaded: boolean;
-    setFilter: (filter: any) => void;
-    setPagination: (pagination: PaginationPayload) => void;
-    setSort: (sort: SortPayload) => void;
-}
-
-interface Option {
+export interface UseReferenceArrayInputOptions {
     basePath?: string;
     filter?: any;
     filterToQuery?: (filter: any) => any;
     input: FieldInputProps<any, HTMLElement>;
     options?: any;
+    page?: number;
     perPage?: number;
     record?: Record;
     reference: string;

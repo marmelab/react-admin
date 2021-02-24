@@ -1406,7 +1406,7 @@ http://myapi.com/tags?id=[1,23,4]
 http://myapi.com/tags?page=1&perPage=25
 ```
 
-Once it receives the deduplicated reference resources, this component delegates rendering to a subcomponent, to which it passes the possible choices as the `choices` attribute.
+Once it receives the deduplicated reference resources, this component delegates rendering to a subcomponent, by providing the possible choices through the `ReferenceArrayInputContext`. This context value can be accessed with the [`useReferenceArrayInputContext`](#usereferencearrayinputcontext) hook.
 
 This means you can use `<ReferenceArrayInput>` with [`<SelectArrayInput>`](#selectarrayinput), or with the component of your choice, provided it supports the `choices` attribute.
 
@@ -1477,7 +1477,29 @@ You can tweak how this component fetches the possible values using the `perPage`
 ```
 {% endraw %}
 
+In addition to the `ReferenceArrayInputContext`, `<ReferenceArrayInput>` also sets up a `ListContext` providing access to the records from the reference resource in a similar fashion to that of the `<List>` component. This `ListContext` value is accessible with the [`useListContext`](/List.md#uselistcontext) hook.
+
 `<ReferenceArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
+### `useReferenceArrayInputContext`
+
+The [`<ReferenceArrayInput>`](#referencearrayinput) component take care of fetching the data, and put that data in a context called `ReferenceArrayInputContext` so that it’s available for its descendants. This context also stores filters, pagination, sort state, and provides callbacks to update them.
+
+Any component decendent of `<ReferenceArryInput>` can grab information from the `ReferenceArrayInputContext` using the `useReferenceArrayInputContext` hook. Here is what it returns:
+
+```js
+const {
+    choices, // An array of records matching both the current input value and the filters
+    error, // A potential error that may have occured while fetching the data
+    warning, // A potential warning regarding missing references 
+    loaded, // boolean that is false until the data is available
+    loading, // boolean that is true on mount, and false once the data was fetched
+    setFilter, // a callback to update the filters, e.g. setFilters({ q: 'query' })
+    setPagination, // a callback to change the pagination, e.g. setPagination({ page: 2, perPage: 50 })
+    setSort, // a callback to change the sort, e.g. setSort({ field: 'name', order: 'DESC' })
+    setSortForList, // a callback to set the sort with the same signature as the one from the ListContext. This is required to avoid breaking backward compatibility and will be removed in v4
+} = useReferenceArrayInputContext();
+```
 
 ### `<ReferenceInput>`
 
