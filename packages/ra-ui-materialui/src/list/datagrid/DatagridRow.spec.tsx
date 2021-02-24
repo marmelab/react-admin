@@ -40,7 +40,7 @@ describe('<DatagridRow />', () => {
         resource: 'posts',
     };
 
-    const dataGridContextValue = { isRowExpandable: undefined };
+    const dataGridContextValue = {};
 
     const renderWithRouter = children => {
         const history = createMemoryHistory();
