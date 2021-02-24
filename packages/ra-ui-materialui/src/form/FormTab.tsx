@@ -8,7 +8,7 @@ import { FormTabHeader } from './FormTabHeader';
 
 const hiddenStyle = { display: 'none' };
 
-const FormTab: FC<FormTabProps> = ({
+export const FormTab: FC<FormTabProps> = ({
     basePath,
     className,
     classes,
@@ -38,12 +38,15 @@ const FormTab: FC<FormTabProps> = ({
     );
 
     const renderContent = () => (
-        <FormGroupContextProvider name={value}>
+        <FormGroupContextProvider name={value.toString()}>
             <span
                 style={hidden ? hiddenStyle : null}
                 className={contentClassName}
                 id={`tabpanel-${value}`}
                 aria-labelledby={`tabheader-${value}`}
+                // Set undefined instead of false because WAI-ARIA Authoring Practices 1.1
+                // notes that aria-hidden="false" currently behaves inconsistently across browsers.
+                aria-hidden={hidden || undefined}
             >
                 {React.Children.map(
                     children,
@@ -80,7 +83,7 @@ FormTab.propTypes = {
     // @ts-ignore
     record: PropTypes.object,
     resource: PropTypes.string,
-    value: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     variant: PropTypes.oneOf(['standard', 'outlined', 'filled']),
 };
 
@@ -98,10 +101,9 @@ export interface FormTabProps {
     path?: string;
     record?: Record;
     resource?: string;
-    value?: string;
+    syncWithLocation?: boolean;
+    value?: string | number;
     variant?: 'standard' | 'outlined' | 'filled';
 }
 
 FormTab.displayName = 'FormTab';
-
-export default FormTab;

@@ -870,6 +870,7 @@ Here are all the props accepted by the `<TabbedForm>` component:
 * `saving`: A boolean indicating whether a save operation is ongoing. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
 * [`warnWhenUnsavedChanges`](#warning-about-unsaved-changes)
 * [`sanitizeEmptyValues`](#setting-empty-values-to-null)
+* [`syncWithLocation`](#sync-with-location)
 
 {% raw %}
 ```jsx
@@ -927,6 +928,45 @@ To style the tabs, the `<FormTab>` component accepts two props:
 - `className` is passed to the tab *header*
 - `contentClassName` is passed to the tab *content*
 
+### Sync With Location
+
+You can also opt out the location synchronization by passing `false` to the `syncWithLocation` prop of the `<TabbedForm>` component. This allows e.g. to have several `<TabbedForm>` components in a page.
+
+{% raw %}
+```jsx
+export const PostEdit = (props) => (
+    <Edit {...props}>
+        <TabbedForm syncWithLocation>
+            <FormTab label="summary">
+                <TextInput disabled label="Id" source="id" />
+                <TextInput source="title" validate={required()} />
+                <TextInput multiline source="teaser" validate={required()} />
+            </FormTab>
+            <FormTab label="body">
+                <RichTextInput source="body" validate={required()} addLabel={false} />
+            </FormTab>
+            <FormTab label="Miscellaneous">
+                <TextInput label="Password (if protected post)" source="password" type="password" />
+                <DateInput label="Publication date" source="published_at" />
+                <NumberInput source="average_note" validate={[ number(), minValue(0) ]} />
+                <BooleanInput label="Allow comments?" source="commentable" defaultValue />
+                <TextInput disabled label="Nb views" source="views" />
+            </FormTab>
+            <FormTab label="comments">
+                <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
+                    <Datagrid>
+                        <TextField source="body" />
+                        <DateField source="created_at" />
+                        <EditButton />
+                    </Datagrid>
+                </ReferenceManyField>
+            </FormTab>
+        </TabbedForm>
+    </Edit>
+);
+```
+{% endraw %}
+**Tip**: When `syncWithLocation` is `false`, the `path` prop of the `<FormTab>` components is ignored.
 ### Label Decoration
 
 `<FormTab>` scans its children for the `addLabel` prop, and automatically wraps a child in a `<Labeled>` component when found. This displays a label on top of the child, based on the `label` prop. This is not necessary for `<Input>` components, as they already contain their label. Also, all the react-admin `<Field>` components have a default prop `addLabel: true`, which explains why react-admin shows a label on top of Fields when they are used as children of `<FormTab>`. 

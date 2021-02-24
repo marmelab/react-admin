@@ -1,10 +1,12 @@
 import * as React from 'react';
 import {
+    ChangeEvent,
     Children,
     cloneElement,
     isValidElement,
     ReactElement,
     ReactNode,
+    useState,
 } from 'react';
 import PropTypes from 'prop-types';
 import Divider from '@material-ui/core/Divider';
@@ -13,7 +15,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useRouteMatch } from 'react-router-dom';
 import { escapePath, Record } from 'ra-core';
 
-import TabbedShowLayoutTabs, { getTabFullPath } from './TabbedShowLayoutTabs';
+import { TabbedShowLayoutTabs, getTabFullPath } from './TabbedShowLayoutTabs';
 import { ClassesOverride } from '../types';
 
 const sanitizeRestProps = ({
@@ -80,7 +82,7 @@ const useStyles = makeStyles(
  *     );
  *     export default App;
  */
-const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
+export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
     const {
         basePath,
         children,
@@ -88,9 +90,10 @@ const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
         className,
         record,
         resource,
-        version,
-        value,
+        syncWithLocation = true,
         tabs,
+        value,
+        version,
         ...rest
     } = props;
     const match = useRouteMatch();
@@ -98,29 +101,53 @@ const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
     const nonNullChildren = Children.toArray(children).filter(
         child => child !== null
     );
+    const [tabValue, setTabValue] = useState(0);
+
+    const handleTabChange = (event: ChangeEvent<{}>, value: any): void => {
+        if (!syncWithLocation) {
+            setTabValue(value);
+        }
+    };
 
     return (
         <div className={className} key={version} {...sanitizeRestProps(rest)}>
-            {cloneElement(tabs, {}, nonNullChildren)}
+            {cloneElement(
+                tabs,
+                {
+                    syncWithLocation,
+                    onChange: handleTabChange,
+                    value: tabValue,
+                },
+                nonNullChildren
+            )}
 
             <Divider />
             <div className={classes.content}>
                 {Children.map(nonNullChildren, (tab, index) =>
                     tab && isValidElement(tab) ? (
-                        <Route
-                            exact
-                            path={escapePath(
-                                getTabFullPath(tab, index, match.url)
-                            )}
-                            render={() =>
-                                cloneElement(tab, {
-                                    context: 'content',
-                                    resource,
-                                    record,
-                                    basePath,
-                                })
-                            }
-                        />
+                        syncWithLocation ? (
+                            <Route
+                                exact
+                                path={escapePath(
+                                    getTabFullPath(tab, index, match.url)
+                                )}
+                                render={() =>
+                                    cloneElement(tab, {
+                                        context: 'content',
+                                        resource,
+                                        record,
+                                        basePath,
+                                    })
+                                }
+                            />
+                        ) : tabValue === index ? (
+                            cloneElement(tab, {
+                                context: 'content',
+                                resource,
+                                record,
+                                basePath,
+                            })
+                        ) : null
                     ) : null
                 )}
             </div>
@@ -135,26 +162,26 @@ export interface TabbedShowLayoutProps {
     children: ReactNode;
     record?: Record;
     resource?: string;
+    syncWithLocation?: boolean;
     tabs: ReactElement;
     value?: any;
     version?: number;
 }
 
 TabbedShowLayout.propTypes = {
+    basePath: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string,
     location: PropTypes.object,
     match: PropTypes.object,
     record: PropTypes.object,
     resource: PropTypes.string,
-    basePath: PropTypes.string,
+    syncWithLocation: PropTypes.bool,
+    tabs: PropTypes.element,
     value: PropTypes.number,
     version: PropTypes.number,
-    tabs: PropTypes.element,
 };
 
 TabbedShowLayout.defaultProps = {
     tabs: <TabbedShowLayoutTabs />,
 };
-
-export default TabbedShowLayout;
