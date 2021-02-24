@@ -83,7 +83,7 @@ FormTab.propTypes = {
     // @ts-ignore
     record: PropTypes.object,
     resource: PropTypes.string,
-    value: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     variant: PropTypes.oneOf(['standard', 'outlined', 'filled']),
 };
 

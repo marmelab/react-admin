@@ -20,6 +20,10 @@ export const FormTabHeader = ({
     const translate = useTranslate();
     const location = useLocation();
     const formGroup = useFormGroup(value);
+    const propsForLink = {
+        component: Link,
+        to: { ...location, pathname: value },
+    };
 
     return (
         <MuiTab
@@ -32,8 +36,7 @@ export const FormTabHeader = ({
                     formGroup.touched &&
                     location.pathname !== value,
             })}
-            component={syncWithLocation ? Link : undefined}
-            to={{ ...location, pathname: value }}
+            {...(syncWithLocation ? propsForLink : {})} // to avoid TypeScript screams, see https://github.com/mui-org/material-ui/issues/9106#issuecomment-451270521
             id={`tabheader-${value}`}
             aria-controls={`tabpanel-${value}`}
             {...rest}
