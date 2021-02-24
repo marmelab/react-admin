@@ -218,7 +218,7 @@ import { DateField } from 'react-admin';
 | ---------- | -------- | ------- | ------- | -------------------------------------------------------------------------------------------------------- |
 | `locales`  | Optional | string  | ''      | Override the browser locale in the date formatting. Passed as first argument to `Intl.DateTimeFormat()`. |
 | `options`  | Optional | Object  | -       | Date formatting options. Passed as second argument to `Intl.DateTimeFormat()`.                           |
-| `showTime` | Optional | boolean | false   | If true, show date and time. If false, show only date                                                    |
+| `showTime` | Optional | boolean | `false` | If true, show date and time. If false, show only date                                                    |
 
 `<DateField>` also accepts the [common field props](./Fields.md#common-field-props).
 
@@ -539,7 +539,7 @@ import { TextField } from 'react-admin';
 
 ### `<UrlField>`
 
-`<UrlField>` displays an url in a Material UI's `<Link href="" />` component.
+`<UrlField>` displays a url in a Material UI's `<Link href="" />` component.
 
 ```jsx
 import { UrlField } from 'react-admin';
@@ -568,6 +568,7 @@ import { SelectField } from 'react-admin';
 
 | Prop              | Required | Type                          | Default | Description                                                                                                                                  |
 | ----------------- | -------- | ----------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `choices`         | Required | `Object[]`                    | -       | List of items to show as options                                                                                                             |
 | `optionText`      | Optional | `string | Function | Element` | 'name'  | Name of the field to use to display the matching choice, or function returning that field name, or a React element to render for that choice |
 | `optionValue`     | Optional | `string`                      | 'id'    | Name of the field to compare to the value to find the matching choice                                                                        |
 | `translateChoice` | Optional | `boolean`                     | `true`  | Whether or not the choice text should be translated                                                                                          |
@@ -576,10 +577,10 @@ import { SelectField } from 'react-admin';
 
 #### Usage
 
-By default, the text is built by:
+By default, the option is built by:
 
-- finding a choice where the 'id' property equals the field value
-- using the 'name' property and the option text
+- finding a choice where the `id` property equals the field value
+- using the `name` property as the option text
 
 You can also customize the properties to use for the lookup value and text, thanks to the `optionValue` and `optionText` attributes.
 

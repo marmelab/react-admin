@@ -1259,7 +1259,7 @@ const SongList: FC<Props> = props => (
 );
 ```
 
-For mode details about Saved Queries, check  the [`ra-preferences` module](https://marmelab.com/ra-enterprise/modules/ra-preferences#savedquerieslist-and-filterwithsave-store-user-queries-in-preferences) in React-Admin Enterprise Edition. 
+For mode details about Saved Queries, check the [`ra-preferences` module](https://marmelab.com/ra-enterprise/modules/ra-preferences#savedquerieslist-and-filterwithsave-store-user-queries-in-preferences) in React-Admin Enterprise Edition. 
 
 ### Building a Custom Filter
 

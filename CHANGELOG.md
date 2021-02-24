@@ -1,5 +1,33 @@
 # Changelog
 
+## v3.12.5
+
+* Fix `useGetManyReference` loading state detection ([5931](https://github.com/marmelab/react-admin/pull/5931)) ([djhi](https://github.com/djhi))
+* Fix warning about required `resource` prop in components using `ResourceContext` ([5929](https://github.com/marmelab/react-admin/pull/5929)) ([WiXSL](https://github.com/WiXSL))
+* Fix simple example doesn't run on CodeSandbox ([5928](https://github.com/marmelab/react-admin/pull/5928)) ([ValentinH](https://github.com/ValentinH))
+* Fix warning about `<ReferenceField label>` prop when using an element as value ([5927](https://github.com/marmelab/react-admin/pull/5927)) ([ValentinH](https://github.com/ValentinH))
+* Fix skipped Loading tests ([5925](https://github.com/marmelab/react-admin/pull/5925)) ([djhi](https://github.com/djhi))
+* Fix `<FunctionField>` misses PropType for the render prop ([5924](https://github.com/marmelab/react-admin/pull/5924)) ([WiXSL](https://github.com/WiXSL))
+* Fix form children props are overridden ([5895](https://github.com/marmelab/react-admin/pull/5895)) ([djhi](https://github.com/djhi))
+* [Doc] Add lb4, processmaker3, and mixer data provider links ([5939](https://github.com/marmelab/react-admin/pull/5939)) ([ckoliber](https://github.com/ckoliber))
+* [Doc] Fix minor typos ([5912](https://github.com/marmelab/react-admin/pull/5912)) ([WiXSL](https://github.com/WiXSL))
+* [TypeScript] Fix data provider mutation types don't allow to specify Record type ([5934](https://github.com/marmelab/react-admin/pull/5934)) ([andrico1234](https://github.com/andrico1234))
+
+## v3.12.4
+
+* Fix `useQueryWithStore` doesn't change loading state false when stacked queries end ([5922](https://github.com/marmelab/react-admin/pull/5922)) ([djhi](https://github.com/djhi))
+* Fix `<SkipNavigationButton>` does not allow global CSS override via theme ([5917](https://github.com/marmelab/react-admin/pull/5917)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<ReferenceArrayInputView>` propTypes warning about required `resource` prop ([5916](https://github.com/marmelab/react-admin/pull/5916)) ([ValentinH](https://github.com/ValentinH))
+* Fix warning when passing partial props to `useListContext` and other view context hooks ([5802](https://github.com/marmelab/react-admin/pull/5802)) ([Luwangel](https://github.com/Luwangel))
+* Fix `<SaveButton>` incorrectly checks `<FormContext>` presence ([5911](https://github.com/marmelab/react-admin/pull/5911)) ([djhi](https://github.com/djhi))
+* Fix `<TabbedForm>` does not display errors in hidden tabs on submit ([5903](https://github.com/marmelab/react-admin/pull/5903)) ([djhi](https://github.com/djhi))
+* [Doc] Fix `<SelectField>` definition ([5923](https://github.com/marmelab/react-admin/pull/5923)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix minor typo in Authorization introduction ([5920](https://github.com/marmelab/react-admin/pull/5920)) ([jormaechea](https://github.com/jormaechea))
+
+## v3.12.3
+
+* Failed release
+
 ## v3.12.2
 
 * Fix `<DeleteWithConfirmButton>` does not allow to override `resource` ([5884](https://github.com/marmelab/react-admin/pull/5884)) ([djhi](https://github.com/djhi))

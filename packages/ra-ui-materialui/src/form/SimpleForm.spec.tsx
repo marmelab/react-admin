@@ -56,7 +56,7 @@ describe('<SimpleForm />', () => {
             <SaveContextProvider value={saveContextValue}>
                 <SideEffectContextProvider value={sideEffects}>
                     <SimpleForm submitOnEnter={false} toolbar={<Toolbar />}>
-                        <div />
+                        <TextInput source="name" />
                     </SimpleForm>
                 </SideEffectContextProvider>
             </SaveContextProvider>
@@ -68,7 +68,7 @@ describe('<SimpleForm />', () => {
             <SaveContextProvider value={saveContextValue}>
                 <SideEffectContextProvider value={sideEffects}>
                     <SimpleForm submitOnEnter toolbar={<Toolbar />}>
-                        <div />
+                        <TextInput source="name" />
                     </SimpleForm>
                 </SideEffectContextProvider>
             </SaveContextProvider>

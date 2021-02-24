@@ -164,7 +164,7 @@ BulkDeleteWithConfirmButton.propTypes = {
     confirmTitle: PropTypes.string,
     confirmContent: PropTypes.string,
     label: PropTypes.string,
-    resource: PropTypes.string.isRequired,
+    resource: PropTypes.string,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
     icon: PropTypes.element,
 };

@@ -103,7 +103,7 @@ List.propTypes = {
     location: PropTypes.any,
     match: PropTypes.any,
     path: PropTypes.string,
-    resource: PropTypes.string.isRequired,
+    resource: PropTypes.string,
     syncWithLocation: PropTypes.bool,
 };
 

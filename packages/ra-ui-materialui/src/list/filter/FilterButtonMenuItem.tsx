@@ -37,7 +37,7 @@ export const FilterButtonMenuItem = forwardRef<any, FilterButtonMenuItemProps>(
 FilterButtonMenuItem.propTypes = {
     filter: PropTypes.element.isRequired,
     onShow: PropTypes.func.isRequired,
-    resource: PropTypes.string.isRequired,
+    resource: PropTypes.string,
 };
 
 export interface FilterButtonMenuItemProps {

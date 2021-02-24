@@ -90,7 +90,7 @@ Edit.propTypes = {
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     onSuccess: PropTypes.func,
     onFailure: PropTypes.func,
-    resource: PropTypes.string.isRequired,
+    resource: PropTypes.string,
     successMessage: PropTypes.string,
     title: PropTypes.node,
     transform: PropTypes.func,

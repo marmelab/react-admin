@@ -85,6 +85,6 @@ Show.propTypes = {
     hasList: PropTypes.bool,
     hasShow: PropTypes.bool,
     id: PropTypes.any.isRequired,
-    resource: PropTypes.string.isRequired,
+    resource: PropTypes.string,
     title: PropTypes.node,
 };

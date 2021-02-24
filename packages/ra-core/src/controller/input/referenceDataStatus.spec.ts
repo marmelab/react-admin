@@ -106,7 +106,7 @@ describe('References data status', () => {
                     referenceRecord: null,
                 },
                 null,
-                'there is no error if there is a linked reference without data but the references fetch succeeds  even empty'
+                'there is no error if there is a linked reference without data but the references fetch succeeds even empty'
             );
             test(
                 {
@@ -351,7 +351,7 @@ describe('References data status', () => {
                     referenceRecords: [],
                 },
                 null,
-                'there is no error if there is a linked reference without data but the references fetch succeeds  even empty'
+                'there is no error if there is a linked reference without data but the references fetch succeeds even empty'
             );
             test(
                 {

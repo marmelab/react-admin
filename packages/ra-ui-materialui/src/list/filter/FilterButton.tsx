@@ -104,7 +104,7 @@ const sanitizeRestProps = ({
 }) => rest;
 
 FilterButton.propTypes = {
-    resource: PropTypes.string.isRequired,
+    resource: PropTypes.string,
     filters: PropTypes.arrayOf(PropTypes.node).isRequired,
     displayedFilters: PropTypes.object,
     filterValues: PropTypes.object.isRequired,
