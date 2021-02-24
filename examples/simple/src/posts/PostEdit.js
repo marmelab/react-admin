@@ -74,7 +74,6 @@ const PostEdit = ({ permissions, ...props }) => (
                 />
                 <CheckboxGroupInput
                     source="notifications"
-                    validate={required()}
                     choices={[
                         { id: 12, name: 'Ray Hakt' },
                         { id: 31, name: 'Ann Gullar' },
