@@ -51,6 +51,46 @@ describe('<DatagridRow />', () => {
         };
     };
 
+    describe('isRowExpandable', () => {
+        it('should show the expand button if it returns true', () => {
+            const contextValue = { isRowExpandable: () => true };
+
+            const { queryAllByText, getByText } = renderWithRouter(
+                <DatagridContextProvider value={contextValue}>
+                    <DatagridRow
+                        {...defaultProps}
+                        rowClick="expand"
+                        expand={<ExpandPanel />}
+                    >
+                        <TitleField />
+                    </DatagridRow>
+                </DatagridContextProvider>
+            );
+            expect(queryAllByText('expanded')).toHaveLength(0);
+            fireEvent.click(getByText('hello'));
+            expect(queryAllByText('expanded')).toHaveLength(0);
+        });
+
+        it('should not show the expand button if it returns false', () => {
+            const contextValue = { isRowExpandable: () => false };
+
+            const { queryAllByText, getByText } = renderWithRouter(
+                <DatagridContextProvider value={contextValue}>
+                    <DatagridRow
+                        {...defaultProps}
+                        rowClick="expand"
+                        expand={<ExpandPanel />}
+                    >
+                        <TitleField />
+                    </DatagridRow>
+                </DatagridContextProvider>
+            );
+            expect(queryAllByText('expanded')).toHaveLength(0);
+            fireEvent.click(getByText('hello'));
+            expect(queryAllByText('expanded')).toHaveLength(1);
+        });
+    });
+
     describe('rowClick', () => {
         it("should redirect to edit page if the 'edit' option is selected", () => {
             const { getByText, history } = renderWithRouter(
