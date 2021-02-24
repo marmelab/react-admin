@@ -870,7 +870,7 @@ Here are all the props accepted by the `<TabbedForm>` component:
 * `saving`: A boolean indicating whether a save operation is ongoing. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
 * [`warnWhenUnsavedChanges`](#warning-about-unsaved-changes)
 * [`sanitizeEmptyValues`](#setting-empty-values-to-null)
-* [`syncWithLocation`](#syncwithlocation)
+* [`syncWithLocation`](#sync-with-location)
 
 {% raw %}
 ```jsx
