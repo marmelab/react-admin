@@ -68,7 +68,7 @@ describe('<DatagridRow />', () => {
             );
             expect(queryAllByText('expanded')).toHaveLength(0);
             fireEvent.click(getByText('hello'));
-            expect(queryAllByText('expanded')).toHaveLength(0);
+            expect(queryAllByText('expanded')).toHaveLength(1);
         });
 
         it('should not show the expand button if it returns false', () => {
@@ -87,7 +87,7 @@ describe('<DatagridRow />', () => {
             );
             expect(queryAllByText('expanded')).toHaveLength(0);
             fireEvent.click(getByText('hello'));
-            expect(queryAllByText('expanded')).toHaveLength(1);
+            expect(queryAllByText('expanded')).toHaveLength(0);
         });
     });
 
