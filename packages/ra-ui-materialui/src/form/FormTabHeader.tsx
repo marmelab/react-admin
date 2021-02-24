@@ -19,7 +19,7 @@ export const FormTabHeader = ({
 }: FormTabHeaderProps): ReactElement => {
     const translate = useTranslate();
     const location = useLocation();
-    const formGroup = useFormGroup(value);
+    const formGroup = useFormGroup(value.toString());
     const propsForLink = {
         component: Link,
         to: { ...location, pathname: value },
@@ -56,7 +56,7 @@ interface FormTabHeaderProps {
     path?: string;
     resource?: string;
     syncWithLocation?: boolean;
-    value?: string;
+    value?: string | number;
     variant?: 'standard' | 'outlined' | 'filled';
 }
 
@@ -74,6 +74,6 @@ FormTabHeader.propTypes = {
     // @ts-ignore
     record: PropTypes.object,
     resource: PropTypes.string,
-    value: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     variant: PropTypes.oneOf(['standard', 'outlined', 'filled']),
 };
