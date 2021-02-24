@@ -332,7 +332,7 @@ To style the tabs, the `<Tab>` component accepts two props:
 - `className` is passed to the tab *header*
 - `contentClassName` is passed to the tab *content*
 
-You can also opt out the location synchronization by passing `false` to the `syncWithLocation` prop of the `<TabbedShowLayout>` component, in which case, the `path` prop on the `Tab` components will be ignored.
+You can also opt out the location synchronization by passing `false` to the `syncWithLocation` prop of the `<TabbedShowLayout>` component. This allows e.g. to have several `<TabbedShowLayout>` components in a page.
 
 {% raw %}
 ```jsx
@@ -370,7 +370,7 @@ export const PostShow = (props) => (
 );
 ```
 {% endraw %}
-
+**Tip**: When `syncWithLocation` is `false`, the `path` prop of the `<Tab>` components is ignored.
 ### Tabs element
 
 By default, `<TabbedShowLayout>` renders its tabs using `<TabbedShowLayoutTabs>`, an internal react-admin component. You can pass a custom component as the `tabs` prop to override that default. Also, props passed to `<TabbedShowLayoutTabs>` are passed to the material-ui's `<Tabs>` component inside `<TabbedShowLayoutTabs>`. That means you can create a custom `tabs` component without copying several components from the react-admin source.
