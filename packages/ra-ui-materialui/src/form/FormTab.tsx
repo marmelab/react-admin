@@ -38,7 +38,7 @@ export const FormTab: FC<FormTabProps> = ({
     );
 
     const renderContent = () => (
-        <FormGroupContextProvider name={value}>
+        <FormGroupContextProvider name={value.toString()}>
             <span
                 style={hidden ? hiddenStyle : null}
                 className={contentClassName}
@@ -102,7 +102,7 @@ export interface FormTabProps {
     record?: Record;
     resource?: string;
     syncWithLocation?: boolean;
-    value?: string;
+    value?: string | number;
     variant?: 'standard' | 'outlined' | 'filled';
 }
 

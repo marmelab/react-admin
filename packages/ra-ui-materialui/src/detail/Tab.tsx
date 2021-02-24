@@ -147,5 +147,5 @@ export interface TabProps extends MuiTabProps {
     record?: Record;
     resource?: string;
     syncWithLocation?: boolean;
-    value?: any;
+    value?: string | number;
 }
