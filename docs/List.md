@@ -2366,7 +2366,7 @@ const CustomList = () => {
     const [page, setPage] = useState(1);
     const perPage = 50;
     const { data, total, loading, error } = useQuery({
-        type: 'GET_LIST',
+        type: 'getList',
         resource: 'posts',
         payload: {
             pagination: { page, perPage },
