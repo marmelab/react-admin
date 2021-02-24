@@ -17,7 +17,6 @@ const SegmentsInput: FC<Props> = ({ addField, ...rest }) => {
             choices={segments.map(segment => ({
                 id: segment.id,
                 name: translate(segment.name),
-                disabled: segment.disabled,
             }))}
         />
     );
