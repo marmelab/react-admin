@@ -21,7 +21,7 @@ export const useDatagridContext = (
                 context,
                 props != null
                     ? { isRowExpandable: props.isRowExpandable }
-                    : { isRowExpandable: undefined }
+                    : { }
             ),
         [context, props]
     );
