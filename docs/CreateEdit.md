@@ -930,7 +930,7 @@ To style the tabs, the `<FormTab>` component accepts two props:
 
 ### Sync With Location
 
-You can also opt out the location synchronization by passing `false` to the `syncWithLocation` prop of the `<TabbedForm>` component, in which case, the `path` prop on the `FormTab` components will be ignored.
+You can also opt out the location synchronization by passing `false` to the `syncWithLocation` prop of the `<TabbedForm>` component. This allows e.g. to have several `<TabbedForm>` components in a page.
 
 {% raw %}
 ```jsx
@@ -966,7 +966,7 @@ export const PostEdit = (props) => (
 );
 ```
 {% endraw %}
-
+**Tip**: When `syncWithLocation` is `false`, the `path` prop of the `<FormTab>` components is ignored.
 ### Label Decoration
 
 `<FormTab>` scans its children for the `addLabel` prop, and automatically wraps a child in a `<Labeled>` component when found. This displays a label on top of the child, based on the `label` prop. This is not necessary for `<Input>` components, as they already contain their label. Also, all the react-admin `<Field>` components have a default prop `addLabel: true`, which explains why react-admin shows a label on top of Fields when they are used as children of `<FormTab>`. 
