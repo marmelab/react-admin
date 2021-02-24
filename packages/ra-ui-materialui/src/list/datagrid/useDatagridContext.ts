@@ -9,19 +9,12 @@ export const useDatagridContext = (
 ): DatagridContextValue => {
     const context = useContext(DatagridContext);
 
-    warning(
-        !context,
-        `useDatagridContext must be used inside a DatagridContextProvider`
-    );
-
     return useMemo(
         () =>
             merge(
                 {},
                 context,
-                props != null
-                    ? { isRowExpandable: props.isRowExpandable }
-                    : { }
+                props != null ? { isRowExpandable: props.isRowExpandable } : {}
             ),
         [context, props]
     );
