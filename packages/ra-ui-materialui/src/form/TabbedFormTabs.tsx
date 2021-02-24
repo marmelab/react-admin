@@ -76,7 +76,7 @@ export const getTabFullPath = (
 ): string =>
     `${baseUrl}${
         tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
-    }`.replace('//', '/');
+    }`.replace('//', '/'); // Because baseUrl can be a single / when on the first tab
 
 export interface TabbedFormTabsProps extends TabsProps {
     classes?: any;

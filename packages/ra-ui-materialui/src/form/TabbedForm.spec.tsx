@@ -12,7 +12,7 @@ import {
 import { TabbedForm } from './TabbedForm';
 import { FormTab } from './FormTab';
 import TextInput from '../input/TextInput';
-import { fireEvent, isInaccessible, waitFor } from '@testing-library/react';
+import { fireEvent, isInaccessible } from '@testing-library/react';
 
 describe('<TabbedForm />', () => {
     const saveContextValue = {

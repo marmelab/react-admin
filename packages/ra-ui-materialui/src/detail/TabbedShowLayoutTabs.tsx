@@ -5,11 +5,6 @@ import Tabs, { TabsProps } from '@material-ui/core/Tabs';
 import { useLocation, useRouteMatch } from 'react-router-dom';
 import { TabProps } from './Tab';
 
-export const getTabFullPath = (tab, index, baseUrl) =>
-    `${baseUrl}${
-        tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
-    }`.replace('//', '/');
-
 export const TabbedShowLayoutTabs = ({
     children,
     syncWithLocation,
@@ -46,6 +41,11 @@ export const TabbedShowLayoutTabs = ({
         </Tabs>
     );
 };
+
+export const getTabFullPath = (tab, index, baseUrl) =>
+    `${baseUrl}${
+        tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
+    }`.replace('//', '/'); // Because baseUrl can be a single / when on the first tab
 
 export interface TabbedShowLayoutTabsProps extends TabsProps {
     children?: ReactElement<TabProps>;
