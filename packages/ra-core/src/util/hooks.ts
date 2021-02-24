@@ -11,7 +11,9 @@ export function useSafeSetState<T>(
     const mountedRef = useRef(false);
     useEffect(() => {
         mountedRef.current = true;
-        return () => (mountedRef.current = false);
+        return () => {
+            mountedRef.current = false;
+        };
     }, []);
     const safeSetState = useCallback(
         args => {
