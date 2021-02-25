@@ -83,8 +83,6 @@ const Confirm: FC<ConfirmProps> = props => {
         e.stopPropagation();
     }, []);
 
-    const isContentString = typeof content === 'string';
-
     return (
         <Dialog
             open={isOpen}
@@ -96,7 +94,7 @@ const Confirm: FC<ConfirmProps> = props => {
                 {translate(title, { _: title, ...translateOptions })}
             </DialogTitle>
             <DialogContent>
-                {isContentString ? (
+                {typeof content === 'string' ? (
                     <DialogContentText>
                         {translate(content, {
                             _: content,
