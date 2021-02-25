@@ -43,7 +43,7 @@ export const fieldPropTypes = {
     className: PropTypes.string,
     cellClassName: PropTypes.string,
     headerClassName: PropTypes.string,
-    textAlign: PropTypes.oneOf<TextAlign['align']>([
+    textAlign: PropTypes.oneOf([
         'inherit',
         'left',
         'center',
