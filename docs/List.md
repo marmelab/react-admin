@@ -1757,27 +1757,23 @@ import { Button, Toolbar } from '@material-ui/core';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 
-const PostPagination = () => {
-    const { page, perPage, total, setPage } = useListContext();
+const PostPagination = props => {
+    const { page, perPage, total, setPage } = useListContext(props);
     const nbPages = Math.ceil(total / perPage) || 1;
+  
     return (
-        nbPages > 1 &&
-            <Toolbar>
-                {page > 1 &&
-                    <Button color="primary" key="prev" onClick={() => setPage(page - 1)}>
-                        <ChevronLeft />
-                        Prev
-                    </Button>
-                }
-                {page !== nbPages &&
-                    <Button color="primary" key="next" onClick={() => setPage(page + 1)}>
-                        Next
-                        <ChevronRight />
-                    </Button>
-                }
-            </Toolbar>
+        <Toolbar>
+            <Button disabled={page === 1} color="primary" key="prev" onClick={() => setPage(page - 1)}>
+                <ChevronLeft />
+                Prev
+            </Button>
+            <Button disabled={page === nbPages} color="primary" key="next" onClick={() => setPage(page + 1)}>
+                Next
+                <ChevronRight />
+            </Button>
+        </Toolbar>
     );
-}
+};
 
 export const PostList = (props) => (
     <List {...props} pagination={<PostPagination />}>
