@@ -1625,6 +1625,7 @@ export const PostEdit = (props) => (
 
 Here are the props received by the `Toolbar` component when passed as the `toolbar` prop of the `SimpleForm` or `TabbedForm` components:
 
+* `alwaysEnableSaveButton`: Force enabling the `<SaveButton>`. If it's not defined, the `<SaveButton>` will be enabled using the `pristine` prop (disabled if pristine, enabled otherwise).
 * `handleSubmitWithRedirect`: The function to call in order to submit the form. It accepts a single parameter overriding the form's default redirect.
 * `handleSubmit` which is the same prop as in [react-final-form](https://final-form.org/docs/react-final-form/types/FormRenderProps#handlesubmit)
 * `invalid`: A boolean indicating whether the form is invalid
@@ -1632,6 +1633,21 @@ Here are the props received by the `Toolbar` component when passed as the `toolb
 * `redirect`: The default form's redirect
 * `saving`: A boolean indicating whether a save operation is ongoing.
 * `submitOnEnter`: A boolean indicating whether the form should be submitted when pressing `enter`
+* `width`: A string apply to the mobile or desktop classes depending on its value. Pass `xs` to display the mobile version.
+
+### CSS API
+
+The `<Toolbar>` accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
+
+| Rule name        | Description                                                                     |
+| ---------------- | ------------------------------------------------------------------------------- |
+| `toolbar`        | Applied to the underlying `MuiToolbar` component                                |
+| `defaultToolbar` | Applied to the container of the `<Toolbar>` buttons when no children are passed |
+| `desktopToolbar` | Applied to the underlying `MuiToolbar` component when `width` prop is not `xs`  |
+| `mobileToolbar`  | Applied to the underlying `MuiToolbar` component when `width` prop is `xs`      |
+| `spacer`         | Applied to the div  below the underlying `MuiToolbar` used as spacer            |
+
+To override the style of all instances of `<Toolbar>` components using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaToolbar` key.
 
 **Tip**: Use react-admin's `<Toolbar>` component instead of material-ui's `<Toolbar>` component. The former builds upon the latter and adds support for an alternative mobile layout (and is therefore responsive).
 
