@@ -1645,7 +1645,7 @@ The `<Toolbar>` accepts the usual `className` prop but you can override many cla
 | `defaultToolbar` | Applied to the container of the `<Toolbar>` buttons when no children are passed |
 | `desktopToolbar` | Applied to the underlying `MuiToolbar` component when `width` prop is not `xs`  |
 | `mobileToolbar`  | Applied to the underlying `MuiToolbar` component when `width` prop is `xs`      |
-| `spacer`         | Applied to the div  below the underlying `MuiToolbar` used as spacer            |
+| `spacer`         | Applied to the div below the underlying `MuiToolbar` used as spacer             |
 
 To override the style of all instances of `<Toolbar>` components using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaToolbar` key.
 
