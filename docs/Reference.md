@@ -34,7 +34,7 @@ title: "Reference"
 * `<CreateActions>`
 * `<CreateButton>`
 * [`<CreateDialog>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog--editdialog)<img class="icon" src="./img/premium.svg" />
-* `<DashboardMenuItem>`
+* [`<DashboardMenuItem>`](./Theming.md#using-a-custom-menu)
 * [`<Datagrid>`](./List.md#the-datagrid-component)
 * [`<DatagridBody>`](./List.md#body-element)
 * [`<DatagridRow>`](./List.md#body-element)
