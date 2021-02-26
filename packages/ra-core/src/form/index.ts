@@ -23,6 +23,7 @@ import useChoices, {
 } from './useChoices';
 import useSuggestions from './useSuggestions';
 import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
+import useResetSubmitErrors from './useResetSubmitErrors';
 
 export type {
     ChoicesProps,
@@ -52,6 +53,7 @@ export {
     useSuggestions,
     ValidationError,
     useWarnWhenUnsavedChanges,
+    useResetSubmitErrors,
 };
 export { isRequired } from './FormField';
 export * from './validate';

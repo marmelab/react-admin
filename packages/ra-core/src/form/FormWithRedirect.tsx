@@ -6,9 +6,11 @@ import {
     FormRenderProps as FinalFormFormRenderProps,
 } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
+import { submitErrorsMutators } from 'final-form-submit-errors';
 
 import useInitializeFormWithRecord from './useInitializeFormWithRecord';
 import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
+import useResetSubmitErrors from './useResetSubmitErrors';
 import sanitizeEmptyValues from './sanitizeEmptyValues';
 import getFormInitialValues from './getFormInitialValues';
 import { FormContextValue, Record, OnSuccess, OnFailure } from '../types';
@@ -51,7 +53,10 @@ const FormWithRedirect: FC<FormWithRedirectProps> = ({
     initialValues,
     initialValuesEqual,
     keepDirtyOnReinitialize = true,
-    mutators = arrayMutators as any, // FIXME see https://github.com/final-form/react-final-form/issues/704 and https://github.com/microsoft/TypeScript/issues/35771
+    mutators = {
+        ...arrayMutators,
+        ...submitErrorsMutators,
+    },
     record,
     render,
     save,
@@ -236,6 +241,7 @@ const FormView: FC<FormViewProps> = ({
     // if record changes (after a getOne success or a refresh), the form must be updated
     useInitializeFormWithRecord(props.record);
     useWarnWhenUnsavedChanges(warnWhenUnsavedChanges);
+    useResetSubmitErrors();
     const dispatch = useDispatch();
 
     useEffect(() => {
