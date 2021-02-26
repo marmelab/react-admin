@@ -1016,7 +1016,7 @@ import {
 
 export const PostEdit = (props) => (
     <Edit {...props}>
-        <TabbedForm tabs={<TabbedFormTabs scrollable={true} />}>
+        <TabbedForm tabs={<TabbedFormTabs scrollButtons="auto" />}>
             ...
         </TabbedForm>
     </Edit>
