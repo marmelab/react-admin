@@ -40,8 +40,6 @@ describe('<DatagridRow />', () => {
         resource: 'posts',
     };
 
-    const dataGridContextValue = {};
-
     const renderWithRouter = children => {
         const history = createMemoryHistory();
 
@@ -94,11 +92,9 @@ describe('<DatagridRow />', () => {
     describe('rowClick', () => {
         it("should redirect to edit page if the 'edit' option is selected", () => {
             const { getByText, history } = renderWithRouter(
-                <DatagridContextProvider value={dataGridContextValue}>
-                    <DatagridRow {...defaultProps} rowClick="edit">
-                        <TitleField />
-                    </DatagridRow>
-                </DatagridContextProvider>
+                <DatagridRow {...defaultProps} rowClick="edit">
+                    <TitleField />
+                </DatagridRow>
             );
             fireEvent.click(getByText('hello'));
             expect(history.location.pathname).toEqual(
@@ -108,11 +104,9 @@ describe('<DatagridRow />', () => {
 
         it("should redirect to show page if the 'show' option is selected", () => {
             const { getByText, history } = renderWithRouter(
-                <DatagridContextProvider value={dataGridContextValue}>
-                    <DatagridRow {...defaultProps} rowClick="show">
-                        <TitleField />
-                    </DatagridRow>
-                </DatagridContextProvider>
+                <DatagridRow {...defaultProps} rowClick="show">
+                    <TitleField />
+                </DatagridRow>
             );
             fireEvent.click(getByText('hello'));
             expect(history.location.pathname).toEqual(
@@ -122,15 +116,13 @@ describe('<DatagridRow />', () => {
 
         it("should change the expand state if the 'expand' option is selected", () => {
             const { queryAllByText, getByText } = renderWithRouter(
-                <DatagridContextProvider value={dataGridContextValue}>
-                    <DatagridRow
-                        {...defaultProps}
-                        rowClick="expand"
-                        expand={<ExpandPanel />}
-                    >
-                        <TitleField />
-                    </DatagridRow>
-                </DatagridContextProvider>
+                <DatagridRow
+                    {...defaultProps}
+                    rowClick="expand"
+                    expand={<ExpandPanel />}
+                >
+                    <TitleField />
+                </DatagridRow>
             );
             expect(queryAllByText('expanded')).toHaveLength(0);
             fireEvent.click(getByText('hello'));
@@ -142,15 +134,13 @@ describe('<DatagridRow />', () => {
         it("should execute the onToggleItem function if the 'toggleSelection' option is selected", () => {
             const onToggleItem = jest.fn();
             const { getByText } = renderWithRouter(
-                <DatagridContextProvider value={dataGridContextValue}>
-                    <DatagridRow
-                        {...defaultProps}
-                        onToggleItem={onToggleItem}
-                        rowClick="toggleSelection"
-                    >
-                        <TitleField />
-                    </DatagridRow>
-                </DatagridContextProvider>
+                <DatagridRow
+                    {...defaultProps}
+                    onToggleItem={onToggleItem}
+                    rowClick="toggleSelection"
+                >
+                    <TitleField />
+                </DatagridRow>
             );
             fireEvent.click(getByText('hello'));
             expect(onToggleItem.mock.calls.length).toEqual(1);
@@ -159,16 +149,14 @@ describe('<DatagridRow />', () => {
         it('should not execute the onToggleItem function if the row is not selectable', () => {
             const onToggleItem = jest.fn();
             const { getByText } = renderWithRouter(
-                <DatagridContextProvider value={dataGridContextValue}>
-                    <DatagridRow
-                        {...defaultProps}
-                        selectable={false}
-                        onToggleItem={onToggleItem}
-                        rowClick="toggleSelection"
-                    >
-                        <TitleField />
-                    </DatagridRow>
-                </DatagridContextProvider>
+                <DatagridRow
+                    {...defaultProps}
+                    selectable={false}
+                    onToggleItem={onToggleItem}
+                    rowClick="toggleSelection"
+                >
+                    <TitleField />
+                </DatagridRow>
             );
             fireEvent.click(getByText('hello'));
             expect(onToggleItem).not.toHaveBeenCalled();
@@ -177,11 +165,9 @@ describe('<DatagridRow />', () => {
         it('should redirect to the custom path if onRowClick is a string', () => {
             const path = '/foo/bar';
             const { getByText, history } = renderWithRouter(
-                <DatagridContextProvider value={dataGridContextValue}>
-                    <DatagridRow {...defaultProps} rowClick={path}>
-                        <TitleField />
-                    </DatagridRow>
-                </DatagridContextProvider>
+                <DatagridRow {...defaultProps} rowClick={path}>
+                    <TitleField />
+                </DatagridRow>
             );
             fireEvent.click(getByText('hello'));
             expect(history.location.pathname).toEqual(path);
@@ -190,11 +176,9 @@ describe('<DatagridRow />', () => {
         it('should evaluate the function and redirect to the result of that function if onRowClick is a custom function', async () => {
             const customRowClick = () => '/bar/foo';
             const { getByText, history } = renderWithRouter(
-                <DatagridContextProvider value={dataGridContextValue}>
-                    <DatagridRow {...defaultProps} rowClick={customRowClick}>
-                        <TitleField />
-                    </DatagridRow>
-                </DatagridContextProvider>
+                <DatagridRow {...defaultProps} rowClick={customRowClick}>
+                    <TitleField />
+                </DatagridRow>
             );
             fireEvent.click(getByText('hello'));
             await new Promise(setImmediate); // waitFor one tick
@@ -203,11 +187,9 @@ describe('<DatagridRow />', () => {
 
         it('should not call push if onRowClick is falsy', () => {
             const { getByText, history } = renderWithRouter(
-                <DatagridContextProvider value={dataGridContextValue}>
-                    <DatagridRow {...defaultProps} rowClick="">
-                        <TitleField />
-                    </DatagridRow>
-                </DatagridContextProvider>
+                <DatagridRow {...defaultProps} rowClick="">
+                    <TitleField />
+                </DatagridRow>
             );
             fireEvent.click(getByText('hello'));
             expect(history.location.pathname).toEqual('/');

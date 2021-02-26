@@ -2,7 +2,6 @@ import { useContext, useMemo } from 'react';
 import { DatagridProps } from './Datagrid';
 import DatagridContext, { DatagridContextValue } from './DatagridContext';
 import merge from 'lodash/merge';
-import { warning } from 'ra-core';
 
 export const useDatagridContext = (
     props?: DatagridProps
