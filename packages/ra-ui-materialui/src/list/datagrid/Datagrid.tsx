@@ -8,6 +8,7 @@ import {
     useEffect,
     FC,
     ReactElement,
+    useMemo,
 } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -34,6 +35,7 @@ import DatagridLoading from './DatagridLoading';
 import DatagridBody, { PureDatagridBody } from './DatagridBody';
 import useDatagridStyles from './useDatagridStyles';
 import { ClassesOverride } from '../../types';
+import DatagridContextProvider from './DatagridContextProvider';
 
 /**
  * The Datagrid component renders a list of records as a table.
@@ -116,6 +118,7 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         hasBulkActions = false,
         hover,
         isRowSelectable,
+        isRowExpandable,
         resource,
         rowClick,
         rowStyle,
@@ -136,6 +139,10 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         total,
     } = useListContext(props);
     const version = useVersion();
+
+    const contextValue = useMemo(() => ({ isRowExpandable }), [
+        isRowExpandable,
+    ]);
 
     const updateSort = useCallback(
         event => {
@@ -246,83 +253,87 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
      * the datagrid displays the current data.
      */
     return (
-        <Table
-            ref={ref}
-            className={classnames(classes.table, className)}
-            size={size}
-            {...sanitizeListRestProps(rest)}
-        >
-            <TableHead className={classes.thead}>
-                <TableRow
-                    className={classnames(classes.row, classes.headerRow)}
-                >
-                    {expand && (
-                        <TableCell
-                            padding="none"
-                            className={classnames(
-                                classes.headerCell,
-                                classes.expandHeader
-                            )}
-                        />
-                    )}
-                    {hasBulkActions && (
-                        <TableCell
-                            padding="checkbox"
-                            className={classes.headerCell}
-                        >
-                            <Checkbox
-                                className="select-all"
-                                color="primary"
-                                checked={
-                                    selectedIds.length > 0 &&
-                                    all.length > 0 &&
-                                    all.every(id => selectedIds.includes(id))
-                                }
-                                onChange={handleSelectAll}
+        <DatagridContextProvider value={contextValue}>
+            <Table
+                ref={ref}
+                className={classnames(classes.table, className)}
+                size={size}
+                {...sanitizeListRestProps(rest)}
+            >
+                <TableHead className={classes.thead}>
+                    <TableRow
+                        className={classnames(classes.row, classes.headerRow)}
+                    >
+                        {expand && (
+                            <TableCell
+                                padding="none"
+                                className={classnames(
+                                    classes.headerCell,
+                                    classes.expandHeader
+                                )}
                             />
-                        </TableCell>
-                    )}
-                    {Children.map(children, (field, index) =>
-                        isValidElement(field) ? (
-                            <DatagridHeaderCell
+                        )}
+                        {hasBulkActions && (
+                            <TableCell
+                                padding="checkbox"
                                 className={classes.headerCell}
-                                currentSort={currentSort}
-                                field={field}
-                                isSorting={
-                                    currentSort.field ===
-                                    ((field.props as any).sortBy ||
-                                        (field.props as any).source)
-                                }
-                                key={(field.props as any).source || index}
-                                resource={resource}
-                                updateSort={updateSort}
-                            />
-                        ) : null
-                    )}
-                </TableRow>
-            </TableHead>
-            {cloneElement(
-                body,
-                {
-                    basePath,
-                    className: classes.tbody,
-                    classes,
-                    expand,
-                    rowClick,
-                    data,
-                    hasBulkActions,
-                    hover,
-                    ids,
-                    onToggleItem: handleToggleItem,
-                    resource,
-                    rowStyle,
-                    selectedIds,
-                    isRowSelectable,
-                    version,
-                },
-                children
-            )}
-        </Table>
+                            >
+                                <Checkbox
+                                    className="select-all"
+                                    color="primary"
+                                    checked={
+                                        selectedIds.length > 0 &&
+                                        all.length > 0 &&
+                                        all.every(id =>
+                                            selectedIds.includes(id)
+                                        )
+                                    }
+                                    onChange={handleSelectAll}
+                                />
+                            </TableCell>
+                        )}
+                        {Children.map(children, (field, index) =>
+                            isValidElement(field) ? (
+                                <DatagridHeaderCell
+                                    className={classes.headerCell}
+                                    currentSort={currentSort}
+                                    field={field}
+                                    isSorting={
+                                        currentSort.field ===
+                                        ((field.props as any).sortBy ||
+                                            (field.props as any).source)
+                                    }
+                                    key={(field.props as any).source || index}
+                                    resource={resource}
+                                    updateSort={updateSort}
+                                />
+                            ) : null
+                        )}
+                    </TableRow>
+                </TableHead>
+                {cloneElement(
+                    body,
+                    {
+                        basePath,
+                        className: classes.tbody,
+                        classes,
+                        expand,
+                        rowClick,
+                        data,
+                        hasBulkActions,
+                        hover,
+                        ids,
+                        onToggleItem: handleToggleItem,
+                        resource,
+                        rowStyle,
+                        selectedIds,
+                        isRowSelectable,
+                        version,
+                    },
+                    children
+                )}
+            </Table>
+        </DatagridContextProvider>
     );
 });
 
@@ -353,6 +364,7 @@ Datagrid.propTypes = {
     total: PropTypes.number,
     version: PropTypes.number,
     isRowSelectable: PropTypes.func,
+    isRowExpandable: PropTypes.func,
 };
 
 type RowClickFunction = (
@@ -376,6 +388,7 @@ export interface DatagridProps extends Omit<TableProps, 'size' | 'classes'> {
     hasBulkActions?: boolean;
     hover?: boolean;
     isRowSelectable?: (record: Record) => boolean;
+    isRowExpandable?: (record: Record) => boolean;
     optimized?: boolean;
     rowClick?: string | RowClickFunction;
     rowStyle?: (record: Record, index: number) => any;
