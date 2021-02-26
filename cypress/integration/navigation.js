@@ -8,8 +8,14 @@ describe('Navigation', () => {
             ListPage.navigate();
 
             ListPage.waitUntilVisible();
+            // Wait for initial data loading of the list to finish
+            ListPage.waitUntilDataLoaded().should('be.visible');
+            ListPage.waitUntilDataLoaded().should('not.be.visible');
+            // Wait for references data loading of the list to finish
+            ListPage.waitUntilDataLoaded().should('be.visible');
+            ListPage.waitUntilDataLoaded().should('not.be.visible');
 
-            cy.get('body').tab().tab().tab().tab();
+            cy.get('body').tab().tab().tab().tab().tab();
 
             cy.get(`${ListPage.elements.menuItems}:first-child`).should(
                 'have.class',
