@@ -2248,7 +2248,7 @@ const dataProvider = {
 
 ## Using `onSave` To Alter the Form Submission Behavior
 
-**Deprecated**: use the `<Save onSuccess>` prop instead.
+**Deprecated**: use the `<SaveButton onSuccess>` prop instead.
 
 React-admin provides a way to override the data provider call executed upon submission, and its side effects, in the `<SaveButton>`. It's called `onSave`, and here is how you would use it:
 
