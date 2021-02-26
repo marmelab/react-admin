@@ -4,6 +4,8 @@ import {
     Children,
     cloneElement,
     useCallback,
+    useRef,
+    useEffect,
     FC,
     ReactElement,
 } from 'react';
@@ -24,6 +26,8 @@ import {
     TableRow,
 } from '@material-ui/core';
 import classnames from 'classnames';
+import union from 'lodash/union';
+import difference from 'lodash/difference';
 
 import DatagridHeaderCell from './DatagridHeaderCell';
 import DatagridLoading from './DatagridLoading';
@@ -167,6 +171,44 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         [data, ids, onSelect, isRowSelectable, selectedIds]
     );
 
+    const lastSelected = useRef(null);
+
+    useEffect(() => {
+        if (selectedIds.length === 0) {
+            lastSelected.current = null;
+        }
+    }, [selectedIds.length]);
+
+    const handleToggleItem = useCallback(
+        (id, event) => {
+            const lastSelectedIndex = ids.indexOf(lastSelected.current);
+            lastSelected.current = event.target.checked ? id : null;
+
+            if (event.shiftKey && lastSelectedIndex !== -1) {
+                const index = ids.indexOf(id);
+                const idsBetweenSelections = ids.slice(
+                    Math.min(lastSelectedIndex, index),
+                    Math.max(lastSelectedIndex, index) + 1
+                );
+
+                const newSelectedIds = event.target.checked
+                    ? union(selectedIds, idsBetweenSelections)
+                    : difference(selectedIds, idsBetweenSelections);
+
+                onSelect(
+                    isRowSelectable
+                        ? newSelectedIds.filter((id: Identifier) =>
+                              isRowSelectable(data[id])
+                          )
+                        : newSelectedIds
+                );
+            } else {
+                onToggleItem(id);
+            }
+        },
+        [data, ids, isRowSelectable, onSelect, onToggleItem, selectedIds]
+    );
+
     /**
      * if loaded is false, the list displays for the first time, and the dataProvider hasn't answered yet
      * if loaded is true, the data for the list has at least been returned once by the dataProvider
@@ -271,7 +313,7 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                     hasBulkActions,
                     hover,
                     ids,
-                    onToggleItem,
+                    onToggleItem: handleToggleItem,
                     resource,
                     rowStyle,
                     selectedIds,

@@ -4,7 +4,7 @@ import { waitFor } from '@testing-library/react';
 
 import useAuthState from './useAuthState';
 import AuthContext from './AuthContext';
-import renderWithRedux from '../util/renderWithRedux';
+import { renderWithRedux } from 'ra-test';
 
 const UseAuth = ({ children, authParams }: any) => {
     const res = useAuthState(authParams);

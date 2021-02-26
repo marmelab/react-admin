@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
-import { TestContext } from 'ra-core';
+import { TestContext } from 'ra-test';
 
 import ArrayField from './ArrayField';
 import NumberField from './NumberField';

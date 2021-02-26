@@ -41,6 +41,7 @@ const sanitizeRestProps = ({
     crudGetMInputWithOptionsPropsatching,
     crudGetOInputWithOptionsPropsne,
     defaultValue,
+    disableValue,
     filter,
     filterToQuery,
     formClassName,
@@ -143,6 +144,7 @@ const SelectArrayInput: FunctionComponent<SelectArrayInputProps> = props => {
         choices = [],
         classes: classesOverride,
         className,
+        disableValue,
         format,
         helperText,
         label,
@@ -173,9 +175,10 @@ const SelectArrayInput: FunctionComponent<SelectArrayInputProps> = props => {
         }
     }, []);
 
-    const { getChoiceText, getChoiceValue } = useChoices({
+    const { getChoiceText, getChoiceValue, getDisableValue } = useChoices({
         optionText,
         optionValue,
+        disableValue,
         translateChoice,
     });
     const {
@@ -204,12 +207,13 @@ const SelectArrayInput: FunctionComponent<SelectArrayInputProps> = props => {
                 <MenuItem
                     key={getChoiceValue(choice)}
                     value={getChoiceValue(choice)}
+                    disabled={getDisableValue(choice)}
                 >
                     {renderMenuItemOption(choice)}
                 </MenuItem>
             ) : null;
         },
-        [getChoiceValue, renderMenuItemOption]
+        [getChoiceValue, getDisableValue, renderMenuItemOption]
     );
 
     if (loading) {
@@ -311,6 +315,7 @@ SelectArrayInput.propTypes = {
         PropTypes.element,
     ]).isRequired,
     optionValue: PropTypes.string.isRequired,
+    disableValue: PropTypes.string,
     resource: PropTypes.string,
     source: PropTypes.string,
     translateChoice: PropTypes.bool,
@@ -320,6 +325,7 @@ SelectArrayInput.defaultProps = {
     options: {},
     optionText: 'name',
     optionValue: 'id',
+    disableValue: 'disabled',
     translateChoice: true,
 };
 

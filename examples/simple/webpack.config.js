@@ -1,79 +1,36 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-    .BundleAnalyzerPlugin;
-
-const packagesPath = [__dirname, '..', '..', 'packages'];
 
 module.exports = {
+    entry: './src/index.tsx',
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'bundle.js',
+    },
     devtool: 'cheap-module-source-map',
+    resolve: {
+        // Add `.ts` and `.tsx` as a resolvable extension.
+        extensions: ['.ts', '.tsx', '.js'],
+    },
     module: {
         rules: [
             {
                 test: /\.(t|j)sx?$/,
                 exclude: /node_modules/,
-                use: { loader: 'babel-loader' },
-            },
-            {
-                test: /\.html$/,
-                exclude: /node_modules/,
-                use: { loader: 'html-loader' },
+                use: {
+                    loader: 'ts-loader',
+                    options: {
+                        transpileOnly: true,
+                    },
+                },
             },
         ],
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: './src/index.html',
+            template: './index-webpack.html',
         }),
-    ].concat(
-        process.env.NODE_ENV === 'development'
-            ? [new BundleAnalyzerPlugin()]
-            : []
-    ),
-    resolve:
-        process.env.USE_ALIAS === 'true'
-            ? {
-                  extensions: ['.ts', '.js', '.tsx', '.json'],
-                  alias: {
-                      'ra-core': path.join(...packagesPath, 'ra-core', 'src'),
-                      'ra-language-french': path.join(
-                          ...packagesPath,
-                          'ra-language-french',
-                          'src'
-                      ),
-                      'ra-language-english': path.join(
-                          ...packagesPath,
-                          'ra-language-english',
-                          'src'
-                      ),
-                      'ra-ui-materialui': path.join(
-                          ...packagesPath,
-                          'ra-ui-materialui',
-                          'src'
-                      ),
-                      'react-admin': path.join(
-                          ...packagesPath,
-                          'react-admin',
-                          'src'
-                      ),
-                      'ra-data-fakerest': path.join(
-                          ...packagesPath,
-                          'ra-data-fakerest',
-                          'src'
-                      ),
-                      'ra-i18n-polyglot': path.join(
-                          ...packagesPath,
-                          'ra-i18n-polyglot',
-                          'src'
-                      ),
-                      'ra-input-rich-text': path.join(
-                          ...packagesPath,
-                          'ra-input-rich-text',
-                          'src'
-                      ),
-                  },
-              }
-            : {},
+    ],
     devServer: {
         disableHostCheck: true,
         host: '127.0.0.1',

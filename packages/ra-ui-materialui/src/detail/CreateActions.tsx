@@ -5,14 +5,6 @@ import TopToolbar from '../layout/TopToolbar';
 import { ListButton } from '../button';
 import { useCreateContext, useResourceDefinition } from 'ra-core';
 
-const sanitizeRestProps = ({
-    basePath,
-    className,
-    hasList,
-    resource,
-    ...rest
-}) => rest;
-
 /**
  * Action Toolbar for the Create view
  *
@@ -38,7 +30,7 @@ const sanitizeRestProps = ({
  *         </Create>
  *     );
  */
-const CreateActions = ({ className, ...rest }) => {
+const CreateActions = ({ className, ...rest }: CreateActionsProps) => {
     const { basePath } = useCreateContext(rest);
     const { hasList } = useResourceDefinition(rest);
     return (
@@ -47,6 +39,22 @@ const CreateActions = ({ className, ...rest }) => {
         </TopToolbar>
     );
 };
+
+const sanitizeRestProps = ({
+    basePath = null,
+    className = null,
+    hasList = null,
+    resource = null,
+    ...rest
+}) => rest;
+
+interface CreateActionsProps {
+    basePath?: string;
+    className?: string;
+    hasShow?: boolean;
+    hasList?: boolean;
+    resource?: string;
+}
 
 CreateActions.propTypes = {
     basePath: PropTypes.string,

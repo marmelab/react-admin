@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import * as React from 'react';
 
 import TestContext, { defaultStore } from './TestContext';
-import { refreshView } from '../actions';
+import { refreshView } from 'ra-core';
 
 const primedStore = {
     admin: {

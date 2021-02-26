@@ -1,7 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 
-import renderWithRedux from '../util/renderWithRedux';
+import { renderWithRedux } from 'ra-test';
 import useGetList from './useGetList';
 import { DataProviderContext } from '../dataProvider';
 

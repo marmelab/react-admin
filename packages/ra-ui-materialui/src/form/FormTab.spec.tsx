@@ -1,10 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
-import {
-    renderWithRedux,
-    SaveContextProvider,
-    SideEffectContextProvider,
-} from 'ra-core';
+import { SaveContextProvider, SideEffectContextProvider } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 
 import { TabbedForm } from './TabbedForm';
 import { FormTab } from './FormTab';

@@ -1,4 +1,4 @@
-import renderHook from '../../util/renderHook';
+import { renderHook } from 'ra-test';
 import useMatchingReferences from './useGetMatchingReferences';
 
 describe('useMatchingReferences', () => {

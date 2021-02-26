@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
-import { ReferenceArrayInputView } from './ReferenceArrayInput';
+import ReferenceArrayInput, {
+    ReferenceArrayInputView,
+} from './ReferenceArrayInput';
+import { Form } from 'react-final-form';
+import { useListContext } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 
 describe('<ReferenceArrayInput />', () => {
     const defaultProps = {
@@ -10,6 +15,7 @@ describe('<ReferenceArrayInput />', () => {
         reference: 'tags',
         resource: 'posts',
         source: 'tag_ids',
+        basePath: '/posts',
         translate: x => `*${x}*`,
     };
 
@@ -139,5 +145,64 @@ describe('<ReferenceArrayInput />', () => {
         expect(
             queryByText(JSON.stringify({ touched: false, helperText: false }))
         ).not.toBeNull();
+    });
+
+    it('should provide a ListContext with all available choices', async () => {
+        const Children = () => {
+            const listContext = useListContext();
+
+            return (
+                <>
+                    <div aria-label="total">{listContext.total}</div>
+                    <div aria-label="ids">{listContext.ids.join()}</div>
+                    <div aria-label="data">
+                        {JSON.stringify(listContext.data)}
+                    </div>
+                </>
+            );
+        };
+
+        const { getByLabelText } = renderWithRedux(
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <ReferenceArrayInput {...defaultProps}>
+                        <Children />
+                    </ReferenceArrayInput>
+                )}
+            />,
+            {
+                admin: {
+                    references: {
+                        possibleValues: {
+                            'posts@tag_ids': [5, 6],
+                        },
+                    },
+                    resources: {
+                        tags: {
+                            list: {
+                                cachedRequests: {
+                                    [JSON.stringify({
+                                        pagination: { page: 1, perPage: 25 },
+                                        sort: {
+                                            field: 'id',
+                                            order: 'DESC',
+                                        },
+                                        filter: {},
+                                    })]: {
+                                        total: 2,
+                                    },
+                                },
+                            },
+                            data: {
+                                5: { id: 5, name: 'test1' },
+                                6: { id: 6, name: 'test2' },
+                            },
+                        },
+                    },
+                },
+            }
+        );
+        expect(getByLabelText('total').innerHTML).toEqual('2');
     });
 });

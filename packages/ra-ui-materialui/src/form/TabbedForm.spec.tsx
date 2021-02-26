@@ -3,11 +3,11 @@ import { MemoryRouter, Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import {
     minLength,
-    renderWithRedux,
     required,
     SaveContextProvider,
     SideEffectContextProvider,
 } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 
 import { TabbedForm } from './TabbedForm';
 import { FormTab } from './FormTab';

@@ -297,6 +297,7 @@ export interface UseDataProviderOptions {
     mutationMode?: MutationMode;
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
+    enabled?: boolean;
 }
 
 export type LegacyDataProvider = (

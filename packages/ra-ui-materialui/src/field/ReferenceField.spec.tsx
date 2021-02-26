@@ -2,7 +2,8 @@ import * as React from 'react';
 import expect from 'expect';
 import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { renderWithRedux, DataProviderContext } from 'ra-core';
+import { DataProviderContext } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 
 import ReferenceField, { ReferenceFieldView } from './ReferenceField';
 import TextField from './TextField';

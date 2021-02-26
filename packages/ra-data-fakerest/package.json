@@ -37,7 +37,7 @@
         "watch": "tsc --outDir esm --module es2015 --watch"
     },
     "dependencies": {
-        "fakerest": "^2.2.0"
+        "fakerest": "^3.0.0"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",

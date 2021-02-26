@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html>
-
-<head>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>React Admin</title>
     <style>
-        body {
-            margin: 0;
-        }
+      body {
+        margin: 0;
+      }
     </style>
-    <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no" />
-</head>
-
-<body>
-    <div id="root">
-    </div>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>window.global = window</script>
+    <script type="module" src="/src/index.tsx"></script>
     <!-- This script adds the Roboto font to our project. For more detail go to this site:  http://www.google.com/fonts#UsePlace:use/Collection:Roboto:400,300,500 -->
     <script>
         var WebFontConfig = {
@@ -28,6 +28,5 @@
             s.parentNode.insertBefore(wf, s);
         })();
     </script>
-</body>
-
+  </body>
 </html>

@@ -2,13 +2,12 @@ import * as React from 'react';
 import { render, waitFor, fireEvent } from '@testing-library/react';
 import expect from 'expect';
 import {
-    TestContext,
-    renderWithRedux,
     DataProviderContext,
     DataProvider,
     SaveContextProvider,
     FormContextProvider,
 } from 'ra-core';
+import { renderWithRedux, TestContext } from 'ra-test';
 import { ThemeProvider } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 

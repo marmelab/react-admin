@@ -2,7 +2,7 @@ import * as React from 'react';
 import expect from 'expect';
 import { render } from '@testing-library/react';
 import useChoices from './useChoices';
-import { renderWithRedux } from '../util';
+import { renderWithRedux } from 'ra-test';
 import { TestTranslationProvider } from '../i18n';
 
 describe('useChoices hook', () => {

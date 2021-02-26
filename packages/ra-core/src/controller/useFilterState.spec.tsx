@@ -1,5 +1,5 @@
 import * as React from 'react';
-import renderHook from '../util/renderHook';
+import { renderHook } from 'ra-test';
 import useFilterState from './useFilterState';
 import { render, act } from '@testing-library/react';
 
