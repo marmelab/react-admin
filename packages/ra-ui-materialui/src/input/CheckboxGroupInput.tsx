@@ -17,27 +17,6 @@ import classnames from 'classnames';
 import Labeled from './Labeled';
 import { LinearProgress } from '../layout';
 
-const sanitizeRestProps = ({
-    setFilter,
-    setPagination,
-    setSort,
-    loaded,
-    ...rest
-}: any) => sanitizeInputRestProps(rest);
-
-const useStyles = makeStyles(
-    theme => ({
-        root: {},
-        label: {
-            transform: 'translate(0, 8px) scale(0.75)',
-            transformOrigin: `top ${
-                theme.direction === 'ltr' ? 'left' : 'right'
-            }`,
-        },
-    }),
-    { name: 'RaCheckboxGroupInput' }
-);
-
 /**
  * An Input component for a checkbox group, using an array of objects for the options
  *
@@ -232,6 +211,28 @@ const CheckboxGroupInput: FunctionComponent<
         </FormControl>
     );
 };
+
+const sanitizeRestProps = ({
+    setFilter,
+    setPagination,
+    setSort,
+    loaded,
+    touched,
+    ...rest
+}: any) => sanitizeInputRestProps(rest);
+
+const useStyles = makeStyles(
+    theme => ({
+        root: {},
+        label: {
+            transform: 'translate(0, 8px) scale(0.75)',
+            transformOrigin: `top ${
+                theme.direction === 'ltr' ? 'left' : 'right'
+            }`,
+        },
+    }),
+    { name: 'RaCheckboxGroupInput' }
+);
 
 CheckboxGroupInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
