@@ -1910,7 +1910,7 @@ const {
     // pagination
     page, // the current page. Starts at 1
     setPage, // a callback to change the current page, e.g. setPage(3)
-    perPage, // the number of results per page. Defaults to 25
+    perPage, // the number of results per page. Defaults to 10
     setPerPage, // a callback to change the number of results per page, e.g. setPerPage(25)
     // sorting
     currentSort, // a sort object { field, order }, e.g. { field: 'date', order: 'DESC' } 
