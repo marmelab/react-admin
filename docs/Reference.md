@@ -32,7 +32,7 @@ title: "Reference"
 * `<Confirm>`
 * [`<Create>`](./CreateEdit.md#the-create-and-edit-components)
 * `<CreateActions>`
-* `<CreateButton>`
+* [`<CreateButton>`](./Buttons.md#createbutton)
 * [`<CreateDialog>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog--editdialog)<img class="icon" src="./img/premium.svg" />
 * `<DashboardMenuItem>`
 * [`<Datagrid>`](./List.md#the-datagrid-component)
@@ -49,13 +49,13 @@ title: "Reference"
 * [`<EditableDatagrid>`](https://marmelab.com/ra-enterprise/modules/ra-editable-datagrid)<img class="icon" src="./img/premium.svg" />
 * [`<EditGuesser>`](./CreateEdit.md#the-editguesser-component)
 * `<EditActions>`
-* `<EditButton>`
+* [`<EditButton>`](./Buttons.md#editbutton)
 * [`<EditDialog>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog--editdialog)<img class="icon" src="./img/premium.svg" />
 * [`<EmailField>`](./Fields.md#emailfield)
 * [`<FileField>`](./Fields.md#filefield)
 * [`<FileInput>`](./Inputs.md#fileinput)
 * [`<Filter>`](./List.md#filters-filter-inputs)
-* [`<FilterButton>`](./List.md#custom-filter-button)
+* [`<FilterButton>`](./Buttons.md#filterbutton)
 * [`<FilterForm>`](./List.md#custom-form-component)
 * [`<FilterList>`](./List.md#the-filterlist-sidebar)
 * [`<FilterListItem>`](./List.md#the-filterlist-sidebar)
@@ -77,7 +77,7 @@ title: "Reference"
 * [`<List>`](./List.md#the-list-component)
 * [`<ListBase>`](./List.md#the-listbase-component)
 * [`<ListGuesser>`](./List.md#the-listguesser-component)
-* [`<ListButton>`](./CreateEdit.md#the-listbutton-component)
+* [`<ListButton>`](./Buttons.md#listbutton)
 * [`<MarkdownField>`](https://marmelab.com/ra-enterprise/modules/ra-markdown#markdownfield)<img class="icon" src="./img/premium.svg" />
 * [`<MarkdownInput>`](https://marmelab.com/ra-enterprise/modules/ra-markdown#markdowninput)<img class="icon" src="./img/premium.svg" />
 * [`<Menu>`](./Theming.md#using-a-custom-menu)
@@ -118,7 +118,7 @@ title: "Reference"
 * [`<SelectInput>`](./Inputs.md#selectinput)
 * [`<Show>`](./Show.md#the-show-component)
 * [`<ShowGuesser`](./Show.md#the-showguesser-component)
-* `<ShowButton>`
+* [`<ShowButton>`](./Buttons.md#showbutton)
 * [`<Sidebar>`](./Theming.md#sidebar-customization)
 * [`<SidebarOpenPreferenceSync>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#sidebaropenpreferencesync-store-the-sidebar-openclose-state-in-preferences)<img class="icon" src="./img/premium.svg" />
 * [`<SimpleForm>`](./CreateEdit.md#the-simpleform-component)
@@ -126,7 +126,7 @@ title: "Reference"
 * [`<SimpleList>`](./List.md#the-simplelist-component)
 * [`<SimpleShowLayout>`](./Show.md#the-simpleshowlayout-component)
 * [`<SingleFieldList>`](./List.md#the-singlefieldlist-component)
-* [`<SortButton>`](./List.md#the-sortbutton-component)
+* [`<SortButton>`](./Buttons.md#sortbutton)
 * `<Tab>`
 * [`<TabbedForm>`](./CreateEdit.md#the-tabbedform-component)
 * [`<TabbedShowLayout>`](./Show.md#the-tabbedshowlayout-component)
