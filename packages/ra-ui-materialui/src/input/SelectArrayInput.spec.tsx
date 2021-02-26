@@ -171,6 +171,29 @@ describe('<SelectArrayInput />', () => {
         expect(queryByText('Programming')).not.toBeNull();
     });
 
+    it('should render disable choices marked so', () => {
+        const { getByRole, getByText } = render(
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <SelectArrayInput
+                        {...defaultProps}
+                        choices={[
+                            { id: 'ang', name: 'Angular' },
+                            { id: 'rea', name: 'React', disabled: true },
+                        ]}
+                    />
+                )}
+            />
+        );
+        const select = getByRole('button');
+        fireEvent.mouseDown(select);
+        const option1 = getByText('Angular');
+        expect(option1.getAttribute('aria-disabled')).toEqual('false');
+
+        const option2 = getByText('React');
+        expect(option2.getAttribute('aria-disabled')).toEqual('true');
+    });
     it('should translate the choices', () => {
         const { getByRole, queryByText } = render(
             <TestTranslationProvider translate={x => `**${x}**`}>
