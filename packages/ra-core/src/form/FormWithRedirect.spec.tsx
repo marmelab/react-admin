@@ -41,7 +41,7 @@ describe('FormWithRedirect', () => {
 
         expect(renderProp.mock.calls[1][0].pristine).toEqual(true);
         expect(getByDisplayValue('Foo')).not.toBeNull();
-        expect(renderProp).toHaveBeenCalledTimes(3);
+        expect(renderProp).toHaveBeenCalledTimes(2);
     });
 
     it('Does not make the form dirty when reinitialized from a different record', () => {
@@ -75,6 +75,6 @@ describe('FormWithRedirect', () => {
 
         expect(renderProp.mock.calls[1][0].pristine).toEqual(true);
         expect(getByDisplayValue('Foo')).not.toBeNull();
-        expect(renderProp).toHaveBeenCalledTimes(3);
+        expect(renderProp).toHaveBeenCalledTimes(2);
     });
 });
