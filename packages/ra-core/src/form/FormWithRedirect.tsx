@@ -53,10 +53,7 @@ const FormWithRedirect: FC<FormWithRedirectProps> = ({
     initialValues,
     initialValuesEqual,
     keepDirtyOnReinitialize = true,
-    mutators = {
-        ...arrayMutators,
-        ...submitErrorsMutators,
-    },
+    mutators = defaultMutators,
     record,
     render,
     save,
@@ -212,6 +209,11 @@ export interface FormWithRedirectOwnProps {
     version?: number;
     warnWhenUnsavedChanges?: boolean;
 }
+
+const defaultMutators = {
+    ...arrayMutators,
+    ...submitErrorsMutators,
+};
 
 const defaultSubscription = {
     submitting: true,
