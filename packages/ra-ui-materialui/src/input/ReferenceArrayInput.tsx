@@ -169,7 +169,12 @@ const ReferenceArrayInput = ({
                         translate={translate}
                         children={children}
                         {...props}
-                        {...sanitizeListRestProps(controllerProps)}
+                        choices={controllerProps.choices}
+                        loaded={controllerProps.loaded}
+                        loading={controllerProps.loading}
+                        setFilter={controllerProps.setFilter}
+                        setPagination={controllerProps.setPagination}
+                        setSort={controllerProps.setSort}
                     />
                 </ListContextProvider>
             </ReferenceArrayInputContextProvider>
