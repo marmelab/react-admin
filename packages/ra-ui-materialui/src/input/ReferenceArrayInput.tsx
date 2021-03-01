@@ -18,6 +18,7 @@ import {
 import sanitizeInputRestProps from './sanitizeInputRestProps';
 import ReferenceError from './ReferenceError';
 import { FieldInputProps, FieldMetaState } from 'react-final-form';
+import { sanitizeListRestProps } from 'ra-core';
 
 export interface ReferenceArrayInputProps extends InputProps {
     allowEmpty?: boolean;
@@ -168,7 +169,7 @@ const ReferenceArrayInput = ({
                         translate={translate}
                         children={children}
                         {...props}
-                        {...controllerProps}
+                        {...sanitizeListRestProps(controllerProps)}
                     />
                 </ListContextProvider>
             </ReferenceArrayInputContextProvider>
@@ -202,11 +203,14 @@ ReferenceArrayInput.defaultProps = {
 };
 
 const sanitizeRestProps = ({
+    basePath,
     crudGetMany,
     crudGetMatching,
     filterToQuery,
     perPage,
+    reference,
     referenceSource,
+    resource,
     ...rest
 }: any) => sanitizeInputRestProps(rest);
 
@@ -277,7 +281,9 @@ export const ReferenceArrayInputView = ({
 
     return React.cloneElement(children, {
         allowEmpty,
-        basePath,
+        basePath: basePath
+            ? basePath.replace(resource, reference)
+            : `/${reference}`,
         choices,
         className,
         error,
@@ -292,7 +298,7 @@ export const ReferenceArrayInputView = ({
         },
         onChange,
         options,
-        resource,
+        resource: reference,
         setFilter,
         setPagination,
         setSort,

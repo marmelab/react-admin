@@ -13,8 +13,8 @@ describe('<ReferenceArrayInputController />', () => {
     const defaultProps = {
         input: { value: undefined },
         record: undefined,
-        basePath: '/tags',
         reference: 'tags',
+        basePath: '/posts',
         resource: 'posts',
         source: 'tag_ids',
     };
@@ -883,5 +883,26 @@ describe('<ReferenceArrayInputController />', () => {
                 },
             });
         });
+    });
+
+    it('should call its children with the correct resource and basePath', () => {
+        const children = jest.fn(() => null);
+        renderWithRedux(
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <ReferenceArrayInputController
+                        {...defaultProps}
+                        input={{ value: [1, 2] }}
+                    >
+                        {children}
+                    </ReferenceArrayInputController>
+                )}
+            />,
+            { admin: { resources: { tags: { data: {} } } } }
+        );
+
+        expect(children.mock.calls[0][0].resource).toEqual('posts');
+        expect(children.mock.calls[0][0].basePath).toEqual('/posts');
     });
 });
