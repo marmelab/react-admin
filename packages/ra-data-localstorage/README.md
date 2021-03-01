@@ -7,7 +7,7 @@ The provider issues no HTTP requests, every operation happens locally in the bro
 ## Installation
 
 ```sh
-npm install --save ra-data-localstorage
+npm install --save ra-data-local-storage
 ```
 
 ## Usage
