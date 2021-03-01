@@ -42,7 +42,6 @@ export const useReferenceArrayInputController = (
     props: UseReferenceArrayInputOptions
 ): ReferenceArrayInputContextValue & Omit<ListControllerProps, 'setSort'> => {
     const {
-        basePath,
         filter: defaultFilter,
         filterToQuery = defaultFilterToQuery,
         input,
@@ -284,7 +283,7 @@ export const useReferenceArrayInputController = (
     });
 
     return {
-        basePath: basePath.replace(resource, reference),
+        basePath: props.basePath || `/${resource}`,
         choices: dataStatus.choices,
         currentSort: sort,
         // For the ListContext, we don't want to always display the selected items first.
