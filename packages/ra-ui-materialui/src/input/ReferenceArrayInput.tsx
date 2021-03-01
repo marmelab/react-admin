@@ -18,7 +18,6 @@ import {
 import sanitizeInputRestProps from './sanitizeInputRestProps';
 import ReferenceError from './ReferenceError';
 import { FieldInputProps, FieldMetaState } from 'react-final-form';
-import { sanitizeListRestProps } from 'ra-core';
 
 export interface ReferenceArrayInputProps extends InputProps {
     allowEmpty?: boolean;
