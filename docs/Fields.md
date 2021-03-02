@@ -759,8 +759,8 @@ With this configuration, `<ReferenceField>` wraps the user's name in a link to t
 | ----------- | -------- | ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
 | `reference` | Required | `string`            | -        | The name of the resource for the referenced records, e.g. 'posts'                                                   |
 | `children`  | Required | `Element`           | -        | The Field element used to render the referenced record                                                              |
-| `link`      | Optional | `string | Function` | 'edit'   | Target of the link wrapping the rendered child                                                                      |
-| `sortBy`    | Optional | `string | Function` | `source` | Name of the field to use for sorting when the user clicks on the column header. Set to `false` to disable the link. |
+| `link`      | Optional | `string | Function` | `edit`   | Target of the link wrapping the rendered child. Set to `false` to disable the link.                                 |
+| `sortBy`    | Optional | `string | Function` | `source` | Name of the field to use for sorting when the user clicks on the column header.                                     |
 
 `<ReferenceField>` also accepts the [common field props](./Fields.md#common-field-props).
 
@@ -1052,7 +1052,7 @@ export const PostList = (props) => (
 | ------------ | -------- | ------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | `reference`  | Required | `string`            | -                                | The name of the resource for the referenced records, e.g. 'tags'                                                                           |
 | `children`   | Required | `Element`           | -                                | The Field element used to render the referenced records                                                                                    |
-| `sortBy`     | Optional | `string | Function` | `source`                         | When used in a `List`, name of the field to use for sorting when the user clicks on the column header. Set to `false` to disable the link. |
+| `sortBy`     | Optional | `string | Function` | `source`                         | When used in a `List`, name of the field to use for sorting when the user clicks on the column header. |
 | `filter`     | Optional | `Object`            | -                                | Filters to use when fetching the related records (the filtering is done client-side)                                                       |
 | `pagination` | Optional | `Element`           | -                                | Pagination element to display pagination controls. empty by default (no pagination)                                                        |
 | `perPage`    | Optional | `number`            | 1000                             | Maximum number of results to display                                                                                                       |
