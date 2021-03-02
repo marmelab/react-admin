@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { DataProviderContext, RecordContextProvider } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
@@ -262,10 +262,11 @@ describe('<ReferenceField />', () => {
                 </MemoryRouter>
             </DataProviderContext.Provider>
         );
-        await new Promise(resolve => setTimeout(resolve, 10));
-        const action = dispatch.mock.calls[0][0];
-        expect(action.type).toBe('RA/CRUD_GET_MANY');
-        expect(action.payload).toEqual({ ids: [123] });
+        await waitFor(() => {
+            const action = dispatch.mock.calls[0][0];
+            expect(action.type).toBe('RA/CRUD_GET_MANY');
+            expect(action.payload).toEqual({ ids: [123] });
+        });
     });
 
     it('should display an error icon if the dataProvider call fails', async () => {
@@ -287,10 +288,11 @@ describe('<ReferenceField />', () => {
                 </ReferenceField>
             </DataProviderContext.Provider>
         );
-        await new Promise(resolve => setTimeout(resolve, 10));
-        const ErrorIcon = getByRole('presentation', { hidden: true });
-        expect(ErrorIcon).toBeDefined();
-        expect(ErrorIcon.getAttribute('aria-errormessage')).toBe('boo');
+        await waitFor(() => {
+            const ErrorIcon = getByRole('presentation', { hidden: true });
+            expect(ErrorIcon).toBeDefined();
+            expect(ErrorIcon.getAttribute('aria-errormessage')).toBe('boo');
+        });
     });
 
     describe('ReferenceFieldView', () => {

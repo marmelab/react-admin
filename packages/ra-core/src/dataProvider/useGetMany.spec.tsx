@@ -4,6 +4,7 @@ import expect from 'expect';
 import { renderWithRedux } from 'ra-test';
 import useGetMany from './useGetMany';
 import { DataProviderContext } from '../dataProvider';
+import { waitFor } from '@testing-library/react';
 
 const UseGetMany = ({
     resource,
@@ -132,9 +133,10 @@ describe('useGetMany', () => {
                 <UseGetMany resource="posts" ids={[1]} />
             </DataProviderContext.Provider>
         );
-        await new Promise(resolve => setTimeout(resolve, 10));
-        expect(dispatch).toBeCalledTimes(5);
-        expect(dataProvider.getMany).toBeCalledTimes(1);
+        await waitFor(() => {
+            expect(dispatch).toBeCalledTimes(5);
+            expect(dataProvider.getMany).toBeCalledTimes(1);
+        });
     });
 
     it('should call the dataProvider on update when the resource changes', async () => {
@@ -154,9 +156,10 @@ describe('useGetMany', () => {
                 <UseGetMany resource="comments" ids={[1]} />
             </DataProviderContext.Provider>
         );
-        await new Promise(resolve => setTimeout(resolve));
-        expect(dispatch).toBeCalledTimes(10);
-        expect(dataProvider.getMany).toBeCalledTimes(2);
+        await waitFor(() => {
+            expect(dispatch).toBeCalledTimes(10);
+            expect(dataProvider.getMany).toBeCalledTimes(2);
+        });
     });
 
     it('should retrieve results from redux state on mount', () => {
@@ -207,15 +210,16 @@ describe('useGetMany', () => {
                 },
             }
         );
-        await new Promise(resolve => setTimeout(resolve, 10));
-        expect(hookValue.mock.calls.pop()[0]).toEqual({
-            data: [
-                { id: 1, title: 'foo' },
-                { id: 2, title: 'bar' },
-            ],
-            loading: false,
-            loaded: true,
-            error: null,
+        await waitFor(() => {
+            expect(hookValue.mock.calls.pop()[0]).toEqual({
+                data: [
+                    { id: 1, title: 'foo' },
+                    { id: 2, title: 'bar' },
+                ],
+                loading: false,
+                loaded: true,
+                error: null,
+            });
         });
     });
 
@@ -248,8 +252,9 @@ describe('useGetMany', () => {
             }
         );
         expect(hookValue.mock.calls.pop()[0].loading).toBe(true);
-        await new Promise(resolve => setTimeout(resolve, 10));
-        expect(hookValue.mock.calls.pop()[0].loading).toBe(false);
+        await waitFor(() => {
+            expect(hookValue.mock.calls.pop()[0].loading).toBe(false);
+        });
     });
 
     it('should set the loading state depending on the availability of the data in the redux store', () => {
@@ -286,10 +291,11 @@ describe('useGetMany', () => {
             </DataProviderContext.Provider>
         );
         expect(hookValue.mock.calls.pop()[0].error).toBe(null);
-        await new Promise(resolve => setTimeout(resolve, 10));
-        expect(hookValue.mock.calls.pop()[0].error).toEqual(
-            new Error('failed')
-        );
+        await waitFor(() => {
+            expect(hookValue.mock.calls.pop()[0].error).toEqual(
+                new Error('failed')
+            );
+        });
     });
 
     it('should execute success side effects on success', async () => {
@@ -329,20 +335,21 @@ describe('useGetMany', () => {
                 />
             </DataProviderContext.Provider>
         );
-        await new Promise(resolve => setTimeout(resolve, 10));
-        expect(onSuccess1).toBeCalledTimes(1);
-        expect(onSuccess1.mock.calls.pop()[0]).toEqual({
-            data: [
-                { id: 1, title: 'foo' },
-                { id: 2, title: 'bar' },
-            ],
-        });
-        expect(onSuccess2).toBeCalledTimes(1);
-        expect(onSuccess2.mock.calls.pop()[0]).toEqual({
-            data: [
-                { id: 3, foo: 1 },
-                { id: 4, foo: 2 },
-            ],
+        await waitFor(() => {
+            expect(onSuccess1).toBeCalledTimes(1);
+            expect(onSuccess1.mock.calls.pop()[0]).toEqual({
+                data: [
+                    { id: 1, title: 'foo' },
+                    { id: 2, title: 'bar' },
+                ],
+            });
+            expect(onSuccess2).toBeCalledTimes(1);
+            expect(onSuccess2.mock.calls.pop()[0]).toEqual({
+                data: [
+                    { id: 3, foo: 1 },
+                    { id: 4, foo: 2 },
+                ],
+            });
         });
     });
 
@@ -372,13 +379,14 @@ describe('useGetMany', () => {
                 />
             </DataProviderContext.Provider>
         );
-        await new Promise(resolve => setTimeout(resolve, 10));
-        expect(onSuccess).toBeCalledTimes(2);
-        expect(onSuccess.mock.calls.shift()[0]).toEqual({
-            data: [{ id: 1, title: 'foo' }],
-        });
-        expect(onSuccess.mock.calls.shift()[0]).toEqual({
-            data: [{ id: 2, title: 'bar' }],
+        await waitFor(() => {
+            expect(onSuccess).toBeCalledTimes(2);
+            expect(onSuccess.mock.calls.shift()[0]).toEqual({
+                data: [{ id: 1, title: 'foo' }],
+            });
+            expect(onSuccess.mock.calls.shift()[0]).toEqual({
+                data: [{ id: 2, title: 'bar' }],
+            });
         });
     });
 
@@ -397,9 +405,10 @@ describe('useGetMany', () => {
                 />
             </DataProviderContext.Provider>
         );
-        await new Promise(resolve => setTimeout(resolve, 10));
-        expect(onFailure).toBeCalledTimes(1);
-        expect(onFailure.mock.calls.pop()[0]).toEqual(new Error('failed'));
+        await waitFor(() => {
+            expect(onFailure).toBeCalledTimes(1);
+            expect(onFailure.mock.calls.pop()[0]).toEqual(new Error('failed'));
+        });
     });
 
     it('should execute failure side effects once for each hook call', async () => {
@@ -422,9 +431,14 @@ describe('useGetMany', () => {
                 />
             </DataProviderContext.Provider>
         );
-        await new Promise(resolve => setTimeout(resolve, 10));
-        expect(onFailure).toBeCalledTimes(2);
-        expect(onFailure.mock.calls.shift()[0]).toEqual(new Error('failed'));
-        expect(onFailure.mock.calls.shift()[0]).toEqual(new Error('failed'));
+        await waitFor(() => {
+            expect(onFailure).toBeCalledTimes(2);
+            expect(onFailure.mock.calls.shift()[0]).toEqual(
+                new Error('failed')
+            );
+            expect(onFailure.mock.calls.shift()[0]).toEqual(
+                new Error('failed')
+            );
+        });
     });
 });

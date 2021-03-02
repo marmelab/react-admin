@@ -60,8 +60,9 @@ describe('<CoreAdminRouter>', () => {
                     </CoreAdminRouter>
                 </Router>
             );
-            await new Promise(resolve => setTimeout(resolve, 10));
-            expect(getByText('Layout')).not.toBeNull();
+            await waitFor(() => {
+                expect(getByText('Layout')).not.toBeNull();
+            });
             history.push('/posts');
             expect(getByText('PostList')).not.toBeNull();
             history.push('/comments');
