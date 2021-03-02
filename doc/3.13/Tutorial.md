@@ -950,7 +950,6 @@ export default {
         };
         return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
             method: 'DELETE',
-            body: JSON.stringify(params.data),
         }).then(({ json }) => ({ data: json }));
     }
 };
