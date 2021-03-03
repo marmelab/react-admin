@@ -36,61 +36,32 @@ nav ul#nav-mobile a {
     font-size: 16px;
 }
 
-.input-field .label-icon {
-    -webkit-transform: none;
-    transform: none;
-    left: 2rem;
-}
-
-nav .input-field label.active i {
-    color: #8dbbe9;
-}
-
-.nav-wrapper .input-field input[type='search'] {
-    height: 2em;
-    margin-top: 1em;
-    margin-left: 1em;
-    background-color: #368fe7;
+#docsearch .DocSearch-Button {
+    position: absolute;
+    margin-top: 1rem;
+    width: 400px;
     border-radius: 4px;
-    color: #8dbbe9;
-    width: calc(100% - 6rem);
 }
 
-.nav-wrapper .input-field input[type='search']::placeholder {
-    color: #8dbbe9;
+div.DocSearch-Container {
+    z-index: 1000; /* navbar materialize is z-index: 999; */
 }
 
-.input-field input[type='search'] ~ .material-icons {
-    font-size: 1.5rem;
-    right: 1.5rem;
-}
-
-.nav-wrapper .input-field input[type='search']:hover,
-.nav-wrapper .input-field input[type='search']:active,
-.nav-wrapper .input-field input[type='search']:focus {
-    background-color: #5fa2e6;
-    color: white;
-}
-
-.input-field input[type='search']:focus:not(.browser-default) ~ label i,
-.input-field
-    input[type='search']:focus:not(.browser-default)
-    ~ .material-icons {
-    color: white;
-}
-
-.input-field input[type='search'] {
-    color: #1976d2;
-}
-
-@media only screen and (max-width: 600px) {
-    .nav-wrapper .input-field input[type='search'] {
-        margin-top: 0.7em;
+@media only screen and (max-width: 1300px) {
+    #docsearch .DocSearch-Button {
+        width: 250px;
     }
 }
 
-.algolia-docsearch-suggestion--wrapper {
-    line-height: initial;
+@media only screen and (max-width: 992px) {
+    #docsearch .DocSearch-Button {
+        width: 200px;
+    }
+}
+
+#docsearch .DocSearch-Button-Placeholder {
+    display: block; /* display on mobile  */
+    margin-right: auto;
 }
 
 .sidenav {
@@ -443,29 +414,6 @@ ul.sidenav code {
 .markdown-section .glossary-term {
     cursor: help;
     text-decoration: underline;
-}
-
-.search input[type='text'] {
-    font: inherit;
-    width: 100%;
-    color: inherit;
-    border: none;
-    margin: 10px;
-    cursor: inherit;
-    resize: none;
-    height: 38px;
-    outline: none;
-    padding: 0 8px 0 0;
-    background: transparent;
-    text-align: inherit;
-    box-sizing: border-box;
-    line-height: inherit;
-    border-radius: 3px;
-    font-size: 16px;
-}
-.search .octicon {
-    margin: 10px 0 10px 20px;
-    font-size: 16px;
 }
 
 .markdown-section .icon {
