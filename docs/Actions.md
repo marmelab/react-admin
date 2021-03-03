@@ -50,7 +50,7 @@ const UserProfile = ({ userId }) => {
 };
 ```
 
-**Tip**: The `dataProvider` returned by the hook is actually a *wrapper* around your Data Provider. This wrapper updates the Redux store on success, and keeps track of the loading state. In case you don't want to update the Redux store (e.g. when implementing an autosave feature), you should access the raw, non-wrapper Data Provider from the `DataProviderContext`:
+**Tip**: The `dataProvider` returned by the hook is actually a *wrapper* around your Data Provider. This wrapper updates the Redux store on success, and keeps track of the loading state. In case you don't want to update the Redux store (e.g. when implementing an autosave feature), you should access the raw, non-wrapped Data Provider from the `DataProviderContext`:
 
 ```diff
 import * as React from 'react';
