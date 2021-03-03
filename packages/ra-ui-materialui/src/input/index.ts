@@ -1,5 +1,7 @@
 import ArrayInput from './ArrayInput';
-import AutocompleteArrayInput from './AutocompleteArrayInput';
+import AutocompleteArrayInput, {
+    AutocompleteArrayInputProps,
+} from './AutocompleteArrayInput';
 import AutocompleteInput, { AutocompleteInputProps } from './AutocompleteInput';
 import BooleanInput from './BooleanInput';
 import CheckboxGroupInput from './CheckboxGroupInput';
@@ -54,4 +56,4 @@ export {
     sanitizeInputRestProps,
 };
 
-export type { AutocompleteInputProps };
+export type { AutocompleteInputProps, AutocompleteArrayInputProps };

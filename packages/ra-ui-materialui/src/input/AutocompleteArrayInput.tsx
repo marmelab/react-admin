@@ -2,7 +2,6 @@ import React, {
     useCallback,
     useEffect,
     useRef,
-    FunctionComponent,
     useMemo,
     isValidElement,
 } from 'react';
@@ -24,11 +23,6 @@ import InputHelperText from './InputHelperText';
 import AutocompleteSuggestionList from './AutocompleteSuggestionList';
 import AutocompleteSuggestionItem from './AutocompleteSuggestionItem';
 import { AutocompleteInputLoader } from './AutocompleteInputLoader';
-
-interface Options {
-    suggestionsContainerProps?: any;
-    labelProps?: any;
-}
 
 /**
  * An Input component for an autocomplete field, using an array of objects for the options
@@ -92,10 +86,7 @@ interface Options {
  * @example
  * <AutocompleteArrayInput source="author_id" options={{ color: 'secondary' }} />
  */
-const AutocompleteArrayInput: FunctionComponent<
-    ChoicesInputProps<TextFieldProps & Options> &
-        Omit<DownshiftProps<any>, 'onChange'>
-> = props => {
+const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
     const {
         allowDuplicates,
         allowEmpty,
@@ -542,5 +533,14 @@ const useStyles = makeStyles(
     },
     { name: 'RaAutocompleteArrayInput' }
 );
+
+interface Options {
+    suggestionsContainerProps?: any;
+    labelProps?: any;
+}
+
+export interface AutocompleteArrayInputProps
+    extends ChoicesInputProps<TextFieldProps & Options>,
+        Omit<DownshiftProps<any>, 'onChange'> {}
 
 export default AutocompleteArrayInput;
