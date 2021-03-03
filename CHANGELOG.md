@@ -17,7 +17,7 @@
 
 ## v3.13
 
-* [BC Break] Move test utils (`<TextContext>`, `renderWithRedux`, `renderHook`) out of `ra-core` into a new `ra-test` package ([5846](https://github.com/marmelab/react-admin/pull/5846)) ([djhi](https://github.com/djhi))
+* [BC Break] Move test utils (`<TestContext>`, `renderWithRedux`, `renderHook`) out of `ra-core` into a new `ra-test` package ([5846](https://github.com/marmelab/react-admin/pull/5846)) ([djhi](https://github.com/djhi))
 
 
 This is a slight BC break in development: any import of the Test utils from "ra-core" will fail and must be replaced by an import or "ra-test".
