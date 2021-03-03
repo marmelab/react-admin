@@ -108,7 +108,37 @@ describe('<TabbedForm />', () => {
         expect(tabs[1].classList.contains('error')).toEqual(true);
     });
 
-    it('should not set the style of an active Tab button with errors', () => {
+    it('should set the style of an active Tab button with errors', () => {
+        const { getAllByRole, getByLabelText } = renderWithRedux(
+            <MemoryRouter initialEntries={['/posts/1']} initialIndex={0}>
+                <SaveContextProvider value={saveContextValue}>
+                    <TabbedForm
+                        classes={{ errorTabButton: 'error' }}
+                        resource="posts"
+                    >
+                        <FormTab label="tab1">
+                            <TextInput source="title" validate={required()} />
+                        </FormTab>
+                        <FormTab label="tab2">
+                            <TextInput
+                                source="description"
+                                validate={required()}
+                            />
+                        </FormTab>
+                    </TabbedForm>
+                </SaveContextProvider>
+            </MemoryRouter>
+        );
+
+        const tabs = getAllByRole('tab');
+        fireEvent.click(tabs[1]);
+        const input = getByLabelText('resources.posts.fields.description *');
+        fireEvent.blur(input);
+        expect(tabs[0].classList.contains('error')).toEqual(false);
+        expect(tabs[1].classList.contains('error')).toEqual(true);
+    });
+
+    it('should set the style of any Tab button with errors on submit', () => {
         const { getAllByRole, getByLabelText } = renderWithRedux(
             <MemoryRouter initialEntries={['/posts/1']} initialIndex={0}>
                 <SaveContextProvider value={saveContextValue}>
@@ -133,9 +163,10 @@ describe('<TabbedForm />', () => {
         const tabs = getAllByRole('tab');
         fireEvent.click(tabs[1]);
         const input = getByLabelText('resources.posts.fields.description');
-        fireEvent.change(input, { target: { value: 'foo' } });
         fireEvent.blur(input);
-        expect(tabs[0].classList.contains('error')).toEqual(false);
+        fireEvent.change(input, { target: { value: 'fooooooooo' } });
+        fireEvent.click(getByLabelText('ra.action.save'));
+        expect(tabs[0].classList.contains('error')).toEqual(true);
         expect(tabs[1].classList.contains('error')).toEqual(false);
     });
 
