@@ -36,34 +36,6 @@ nav ul#nav-mobile a {
     font-size: 16px;
 }
 
-#docsearch .DocSearch-Button {
-    position: absolute;
-    margin-top: 1rem;
-    width: 400px;
-    border-radius: 4px;
-}
-
-div.DocSearch-Container {
-    z-index: 1000; /* navbar materialize is z-index: 999; */
-}
-
-@media only screen and (max-width: 1300px) {
-    #docsearch .DocSearch-Button {
-        width: 250px;
-    }
-}
-
-@media only screen and (max-width: 992px) {
-    #docsearch .DocSearch-Button {
-        width: 200px;
-    }
-}
-
-#docsearch .DocSearch-Button-Placeholder {
-    display: block; /* display on mobile  */
-    margin-right: auto;
-}
-
 .sidenav {
     height: 100%;
     padding-bottom: 1em;
