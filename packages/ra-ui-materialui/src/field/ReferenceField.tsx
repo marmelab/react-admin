@@ -12,6 +12,7 @@ import {
     getResourceLinkPath,
     LinkToType,
     ResourceContextProvider,
+    RecordContextProvider,
     Record,
     useRecordContext,
 } from 'ra-core';
@@ -216,33 +217,39 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
 
     if (resourceLinkPath) {
         return (
-            <Link
-                to={resourceLinkPath as string}
-                className={className}
-                onClick={stopPropagation}
-            >
-                {cloneElement(Children.only(children), {
-                    className: classnames(
-                        children.props.className,
-                        classes.link // force color override for Typography components
-                    ),
-                    record: referenceRecord,
-                    resource: reference,
-                    basePath,
-                    translateChoice,
-                    ...sanitizeFieldRestProps(rest),
-                })}
-            </Link>
+            <RecordContextProvider value={referenceRecord}>
+                <Link
+                    to={resourceLinkPath as string}
+                    className={className}
+                    onClick={stopPropagation}
+                >
+                    {cloneElement(Children.only(children), {
+                        className: classnames(
+                            children.props.className,
+                            classes.link // force color override for Typography components
+                        ),
+                        record: referenceRecord,
+                        resource: reference,
+                        basePath,
+                        translateChoice,
+                        ...sanitizeFieldRestProps(rest),
+                    })}
+                </Link>
+            </RecordContextProvider>
         );
     }
 
-    return cloneElement(Children.only(children), {
-        record: referenceRecord,
-        resource: reference,
-        basePath,
-        translateChoice,
-        ...sanitizeFieldRestProps(rest),
-    });
+    return (
+        <RecordContextProvider value={referenceRecord}>
+            {cloneElement(Children.only(children), {
+                record: referenceRecord,
+                resource: reference,
+                basePath,
+                translateChoice,
+                ...sanitizeFieldRestProps(rest),
+            })}
+        </RecordContextProvider>
+    );
 };
 
 ReferenceFieldView.propTypes = {

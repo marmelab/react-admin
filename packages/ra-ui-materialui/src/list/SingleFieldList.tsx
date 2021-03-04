@@ -9,6 +9,7 @@ import {
     sanitizeListRestProps,
     useListContext,
     useResourceContext,
+    RecordContextProvider,
 } from 'ra-core';
 
 import Link from '../Link';
@@ -96,29 +97,35 @@ const SingleFieldList: FC<SingleFieldListProps> = props => {
 
                 if (resourceLinkPath) {
                     return (
-                        <Link
-                            className={classes.link}
-                            key={id}
-                            to={resourceLinkPath}
-                            onClick={stopPropagation}
-                        >
-                            {cloneElement(Children.only(children), {
-                                record: data[id],
-                                resource,
-                                basePath,
-                                // Workaround to force ChipField to be clickable
-                                onClick: handleClick,
-                            })}
-                        </Link>
+                        <RecordContextProvider value={data[id]}>
+                            <Link
+                                className={classes.link}
+                                key={id}
+                                to={resourceLinkPath}
+                                onClick={stopPropagation}
+                            >
+                                {cloneElement(Children.only(children), {
+                                    record: data[id],
+                                    resource,
+                                    basePath,
+                                    // Workaround to force ChipField to be clickable
+                                    onClick: handleClick,
+                                })}
+                            </Link>
+                        </RecordContextProvider>
                     );
                 }
 
-                return cloneElement(Children.only(children), {
-                    key: id,
-                    record: data[id],
-                    resource,
-                    basePath,
-                });
+                return (
+                    <RecordContextProvider value={data[id]}>
+                        {cloneElement(Children.only(children), {
+                            key: id,
+                            record: data[id],
+                            resource,
+                            basePath,
+                        })}
+                    </RecordContextProvider>
+                );
             })}
         </div>
     );
