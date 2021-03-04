@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { createContext, ReactNode, useContext, useMemo } from 'react';
-import pick from 'lodash/pick';
+import { createContext, ReactNode, useContext } from 'react';
 import { Record } from '../types';
 
 /**
@@ -25,22 +24,21 @@ export const RecordContext = createContext<Record | Omit<Record, 'id'>>(
     undefined
 );
 
-export const RecordContextProvider = ({
+export const RecordContextProvider = <
+    RecordType extends Record | Omit<Record, 'id'> = Record
+>({
     children,
     value,
-}: RecordContextOptions) => (
+}: RecordContextOptions<RecordType>) => (
     <RecordContext.Provider value={value}>{children}</RecordContext.Provider>
 );
+
 RecordContext.displayName = 'RecordContext';
 
-export const usePickRecordContext = <
-    RecordType extends Record | Omit<Record, 'id'> = Record
->(
-    context: RecordType
-) => {
-    const value = useMemo(() => pick(context, ['record']), [context.record]); // eslint-disable-line
-    return value;
-};
+export interface RecordContextOptions<RecordType> {
+    children: ReactNode;
+    value?: RecordType;
+}
 
 /**
  * Hook to read the record from a RecordContext.
@@ -87,11 +85,4 @@ export interface UseRecordContextParams<
 > {
     record?: RecordType;
     [key: string]: any;
-}
-
-export interface RecordContextOptions<
-    RecordType extends Record | Omit<Record, 'id'> = Record
-> {
-    children: ReactNode;
-    value?: RecordType;
 }
