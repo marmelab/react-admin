@@ -54,6 +54,10 @@ export default {
             // disable ripple for perf reasons
             disableRipple: true,
         },
+        MuiTextField: {
+            variant: 'filled' as 'filled',
+            margin: 'dense' as 'dense',
+        },
     },
 };
 

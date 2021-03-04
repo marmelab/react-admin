@@ -26,8 +26,8 @@ function ResettableTextField(
         value,
         resettable,
         disabled,
-        variant = 'filled',
-        margin = 'dense',
+        variant,
+        margin,
         ...rest
     } = props;
     const classes = useStyles(props);
@@ -155,10 +155,7 @@ function ResettableTextField(
             classes={restClasses}
             value={value}
             InputProps={{
-                classes:
-                    props.select && variant === 'filled'
-                        ? { adornedEnd: inputAdornedEnd }
-                        : {},
+                classes: props.select ? { adornedEnd: inputAdornedEnd } : {},
                 endAdornment: getEndAdornment(),
                 ...InputPropsWithoutEndAdornment,
             }}
