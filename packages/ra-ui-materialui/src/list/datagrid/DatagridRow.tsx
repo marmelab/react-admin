@@ -1,5 +1,4 @@
 import React, {
-    Fragment,
     isValidElement,
     cloneElement,
     createElement,
@@ -24,6 +23,7 @@ import {
     Identifier,
     Record,
     useResourceContext,
+    RecordContextProvider,
 } from 'ra-core';
 import { shallowEqual } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -142,7 +142,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
     );
 
     return (
-        <Fragment>
+        <RecordContextProvider value={record}>
             <TableRow
                 ref={ref}
                 className={className}
@@ -215,7 +215,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                     </TableCell>
                 </TableRow>
             )}
-        </Fragment>
+        </RecordContextProvider>
     );
 });
 

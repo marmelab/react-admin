@@ -9,7 +9,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import { Tooltip, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { TypographyProps } from '@material-ui/core/Typography';
-import { useTranslate } from 'ra-core';
+import { useTranslate, useRecordContext } from 'ra-core';
 
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
@@ -32,13 +32,13 @@ export const BooleanField: FC<BooleanFieldProps> = memo<BooleanFieldProps>(
             classes: classesOverride,
             emptyText,
             source,
-            record = {},
             valueLabelTrue,
             valueLabelFalse,
             TrueIcon,
             FalseIcon,
             ...rest
         } = props;
+        const record = useRecordContext(props);
         const translate = useTranslate();
         const classes = useStyles(props);
         const value = get(record, source);

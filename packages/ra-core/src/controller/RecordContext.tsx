@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { createContext, ReactNode, useContext, useMemo } from 'react';
-import pick from 'lodash/pick';
+import { createContext, ReactNode, useContext } from 'react';
 import { Record } from '../types';
 
 /**
@@ -13,7 +12,7 @@ import { Record } from '../types';
  * import { useEditController, EditContext } from 'ra-core';
  *
  * const Edit = props => {
- *     const { record }= useEditController(props);
+ *     const { record } = useEditController(props);
  *     return (
  *         <RecordContextProvider value={record}>
  *             ...
@@ -25,22 +24,21 @@ export const RecordContext = createContext<Record | Omit<Record, 'id'>>(
     undefined
 );
 
-export const RecordContextProvider = ({
+export const RecordContextProvider = <
+    RecordType extends Record | Omit<Record, 'id'> = Record
+>({
     children,
     value,
-}: RecordContextOptions) => (
+}: RecordContextOptions<RecordType>) => (
     <RecordContext.Provider value={value}>{children}</RecordContext.Provider>
 );
+
 RecordContext.displayName = 'RecordContext';
 
-export const usePickRecordContext = <
-    RecordType extends Record | Omit<Record, 'id'> = Record
->(
-    context: RecordType
-) => {
-    const value = useMemo(() => pick(context, ['record']), [context.record]); // eslint-disable-line
-    return value;
-};
+export interface RecordContextOptions<RecordType> {
+    children: ReactNode;
+    value?: RecordType;
+}
 
 /**
  * Hook to read the record from a RecordContext.
@@ -49,30 +47,42 @@ export const usePickRecordContext = <
  * (e.g. as a descendent of <Edit> or <EditBase>) or within a <ShowContextProvider>
  * (e.g. as a descendent of <Show> or <ShowBase>)
  *
- * @returns {Record} The record context
+ * @example // basic usage
+ *
+ * import { useRecordContext } from 'ra-core';
+ *
+ * const TitleField = () => {
+ *     const record = useRecordContext();
+ *     return <span>{record && record.title}</span>;
+ * };
+ *
+ * @example // allow record override via props
+ *
+ * import { useRecordContext } from 'ra-core';
+ *
+ * const TitleField = (props) => {
+ *     const record = useRecordContext(props);
+ *     return <span>{record && record.title}</span>;
+ * };
+ * render(<TextField record={record} />);
+ *
+ * @returns {Record} A record object
  */
 export const useRecordContext = <
     RecordType extends Record | Omit<Record, 'id'> = Record
 >(
-    props: RecordType
+    props: UseRecordContextParams<RecordType>
 ): RecordType => {
     // Can't find a way to specify the RecordType when CreateContext is declared
     // @ts-ignore
     const context = useContext<RecordType>(RecordContext);
 
-    if (!context) {
-        // As the record could very well be undefined because not yet loaded
-        // We don't display a deprecation warning yet
-        // @deprecated - to be removed in 4.0
-        return props;
-    }
-
-    return context;
+    return (props && props.record) || context;
 };
 
-export interface RecordContextOptions<
+export interface UseRecordContextParams<
     RecordType extends Record | Omit<Record, 'id'> = Record
 > {
-    children: ReactNode;
-    value?: RecordType;
+    record?: RecordType;
+    [key: string]: any;
 }

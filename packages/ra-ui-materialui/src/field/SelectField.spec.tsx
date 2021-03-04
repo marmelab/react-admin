@@ -2,9 +2,13 @@ import * as React from 'react';
 import { FC } from 'react';
 import expect from 'expect';
 import { render } from '@testing-library/react';
-
-import { Record, TestTranslationProvider } from 'ra-core';
+import {
+    Record,
+    TestTranslationProvider,
+    RecordContextProvider,
+} from 'ra-core';
 import { renderWithRedux } from 'ra-test';
+
 import SelectField from './SelectField';
 
 describe('<SelectField />', () => {
@@ -51,6 +55,16 @@ describe('<SelectField />', () => {
             <SelectField {...defaultProps} record={{ id: 123, foo: 0 }} />
         );
         expect(queryAllByText('hello')).toHaveLength(1);
+    });
+
+    it('should use record from RecordContext', () => {
+        const record = { id: 123, foo: 0 };
+        const { queryByText } = render(
+            <RecordContextProvider value={record}>
+                <SelectField {...defaultProps} />
+            </RecordContextProvider>
+        );
+        expect(queryByText('hello')).not.toBeNull();
     });
 
     it('should use custom className', () => {

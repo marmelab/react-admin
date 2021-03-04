@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FC, memo } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import { ChoicesProps, useChoices } from 'ra-core';
+import { ChoicesProps, useChoices, useRecordContext } from 'ra-core';
 import Typography from '@material-ui/core/Typography';
 
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
@@ -68,17 +68,18 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  * **Tip**: <ReferenceField> sets `translateChoice` to false by default.
  */
 export const SelectField: FC<SelectFieldProps> = memo<SelectFieldProps>(
-    ({
-        className,
-        emptyText,
-        source,
-        record,
-        choices,
-        optionValue,
-        optionText,
-        translateChoice,
-        ...rest
-    }) => {
+    props => {
+        const {
+            className,
+            emptyText,
+            source,
+            choices,
+            optionValue,
+            optionText,
+            translateChoice,
+            ...rest
+        } = props;
+        const record = useRecordContext(props);
         const value = get(record, source);
         const { getChoiceText, getChoiceValue } = useChoices({
             optionText,

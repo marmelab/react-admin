@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import { RecordContextProvider, usePickRecordContext } from '../RecordContext';
+import { RecordContextProvider } from '../RecordContext';
 import { ShowContext } from './ShowContext';
 import { ShowControllerProps } from './useShowController';
 
@@ -19,7 +19,7 @@ import { ShowControllerProps } from './useShowController';
  * };
  *
  * const MyShowView = () => {
- *     const { record } = useRecordContext();
+ *     const record = useRecordContext();
  * }
  *
  * @see ShowContext
@@ -33,7 +33,7 @@ export const ShowContextProvider = ({
     value: ShowControllerProps;
 }) => (
     <ShowContext.Provider value={value}>
-        <RecordContextProvider value={usePickRecordContext(value)}>
+        <RecordContextProvider value={value && value.record}>
             {children}
         </RecordContextProvider>
     </ShowContext.Provider>
