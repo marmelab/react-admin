@@ -1,6 +1,8 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render } from '@testing-library/react';
+import { RecordContextProvider } from 'ra-core';
+
 import EmailField from './EmailField';
 
 const url = 'foo@bar.com';
@@ -10,6 +12,19 @@ describe('<EmailField />', () => {
         const record = { id: 123, foo: url };
         const { getByText } = render(
             <EmailField record={record} source="foo" />
+        );
+        const link = getByText(url) as HTMLAnchorElement;
+        expect(link.tagName).toEqual('A');
+        expect(link.href).toEqual(`mailto:${url}`);
+        expect(link.innerHTML).toEqual(url);
+    });
+
+    it('should use record from RecordContext', () => {
+        const record = { id: 123, foo: url };
+        const { getByText } = render(
+            <RecordContextProvider value={record}>
+                <EmailField source="foo" />
+            </RecordContextProvider>
         );
         const link = getByText(url) as HTMLAnchorElement;
         expect(link.tagName).toEqual('A');

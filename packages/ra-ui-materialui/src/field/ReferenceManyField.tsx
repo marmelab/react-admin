@@ -7,6 +7,7 @@ import {
     ListContextProvider,
     ListControllerProps,
     ResourceContextProvider,
+    useRecordContext,
 } from 'ra-core';
 
 import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
@@ -65,13 +66,13 @@ export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
         filter,
         page = 1,
         perPage,
-        record,
         reference,
         resource,
         sort,
         source,
         target,
     } = props;
+    const record = useRecordContext(props);
 
     if (React.Children.count(children) !== 1) {
         throw new Error(

@@ -2,7 +2,7 @@ import * as React from 'react';
 import expect from 'expect';
 import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { DataProviderContext } from 'ra-core';
+import { DataProviderContext, RecordContextProvider } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
 
 import ReferenceField, { ReferenceFieldView } from './ReferenceField';
@@ -31,6 +31,7 @@ describe('<ReferenceField />', () => {
             const links = container.getElementsByTagName('a');
             expect(links).toHaveLength(0);
         });
+
         it('should display a loader on mount if the reference is not in the store and a second has passed', async () => {
             const { queryByRole, container } = renderWithRedux(
                 <ReferenceFieldView
@@ -192,6 +193,36 @@ describe('<ReferenceField />', () => {
                 >
                     <TextField source="title" />
                 </ReferenceField>
+            </MemoryRouter>,
+            {
+                admin: {
+                    resources: {
+                        posts: {
+                            data: { 123: { id: 123, title: 'hello' } },
+                        },
+                    },
+                },
+            }
+        );
+        expect(getByText('hello')).not.toBeNull();
+        const links = container.getElementsByTagName('a');
+        expect(links).toHaveLength(1);
+        expect(links.item(0).href).toBe('http://localhost/posts/123');
+    });
+
+    it('should use record from RecordContext', () => {
+        const { container, getByText } = renderWithRedux(
+            <MemoryRouter>
+                <RecordContextProvider value={record}>
+                    <ReferenceField
+                        resource="comments"
+                        source="postId"
+                        reference="posts"
+                        basePath="/comments"
+                    >
+                        <TextField source="title" />
+                    </ReferenceField>
+                </RecordContextProvider>
             </MemoryRouter>,
             {
                 admin: {

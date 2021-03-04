@@ -3,6 +3,8 @@ import { FC, memo } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
+import { useRecordContext } from 'ra-core';
+
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { InjectedFieldProps, PublicFieldProps, fieldPropTypes } from './types';
 
@@ -10,7 +12,9 @@ export const removeTags = (input: string) =>
     input ? input.replace(/<[^>]+>/gm, '') : '';
 
 const RichTextField: FC<RichTextFieldProps> = memo<RichTextFieldProps>(
-    ({ className, emptyText, source, record = {}, stripTags, ...rest }) => {
+    props => {
+        const { className, emptyText, source, stripTags, ...rest } = props;
+        const record = useRecordContext(props);
         const value = get(record, source);
 
         return (

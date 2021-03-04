@@ -13,6 +13,7 @@ import {
     LinkToType,
     ResourceContextProvider,
     Record,
+    useRecordContext,
 } from 'ra-core';
 
 import LinearProgress from '../layout/LinearProgress';
@@ -65,21 +66,19 @@ import { ClassesOverride } from '../types';
  * In previous versions of React-Admin, the prop `linkType` was used. It is now deprecated and replaced with `link`. However
  * backward-compatibility is still kept
  */
-const ReferenceField: FC<ReferenceFieldProps> = ({
-    record,
-    source,
-    emptyText,
-    ...props
-}) =>
-    get(record, source) == null ? (
+const ReferenceField: FC<ReferenceFieldProps> = props => {
+    const { source, emptyText, ...rest } = props;
+    const record = useRecordContext(props);
+    return get(record, source) == null ? (
         emptyText ? (
             <Typography component="span" variant="body2">
                 {emptyText}
             </Typography>
         ) : null
     ) : (
-        <NonEmptyReferenceField {...props} record={record} source={source} />
+        <NonEmptyReferenceField {...rest} record={record} source={source} />
     );
+};
 
 ReferenceField.propTypes = {
     addLabel: PropTypes.bool,
