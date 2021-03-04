@@ -121,7 +121,7 @@ const buildGetListVariables = introspectionResults => (
                 const type = introspectionResults.types.find(
                     t => t.name === `${resource.type.name}Filter`
                 );
-                const filterSome = type.inputFields.find(
+                const filterSome = type?.inputFields?.find(
                     t => t.name === `${key}_some`
                 );
 
@@ -144,7 +144,7 @@ const buildGetListVariables = introspectionResults => (
                     const type = introspectionResults.types.find(
                         t => t.name === `${resource.type.name}Filter`
                     );
-                    const filterSome = type.inputFields.find(
+                    const filterSome = type?.inputFields?.find(
                         t => t.name === `${parts[0]}_some`
                     );
 
