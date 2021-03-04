@@ -81,7 +81,7 @@ describe('<SimpleForm />', () => {
         const { queryByLabelText } = renderWithRedux(
             <SaveContextProvider value={saveContextValue}>
                 <SideEffectContextProvider value={sideEffects}>
-                    <SimpleForm>
+                    <SimpleForm variant="filled">
                         <TextInput source="name" />
                     </SimpleForm>
                 </SideEffectContextProvider>

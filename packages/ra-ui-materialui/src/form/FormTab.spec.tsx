@@ -35,7 +35,7 @@ describe('<FormTab label="foo" />', () => {
         const { queryByLabelText } = renderWithRedux(
             <SaveContextProvider value={saveContextValue}>
                 <SideEffectContextProvider value={sideEffectValue}>
-                    <TabbedForm>
+                    <TabbedForm variant="filled">
                         <FormTab label="foo">
                             <TextInput source="name" />
                         </FormTab>
