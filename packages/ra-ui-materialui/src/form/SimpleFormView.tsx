@@ -5,6 +5,8 @@ import FormInput from './FormInput';
 import PropTypes from 'prop-types';
 import { FormRenderProps } from 'react-final-form';
 import { MutationMode, Record, RedirectionSideEffect } from 'ra-core';
+import Toolbar from './Toolbar';
+import CardContentInner from '../layout/CardContentInner';
 
 export const SimpleFormView: FC<SimpleFormViewProps> = ({
     basePath,
@@ -87,6 +89,12 @@ SimpleFormView.propTypes = {
     toolbar: PropTypes.element,
     undoable: PropTypes.bool,
     validate: PropTypes.func,
+};
+
+SimpleFormView.defaultProps = {
+    submitOnEnter: true,
+    toolbar: <Toolbar />,
+    component: CardContentInner,
 };
 
 export interface SimpleFormViewProps extends FormRenderProps {

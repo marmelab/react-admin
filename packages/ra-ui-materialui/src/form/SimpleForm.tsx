@@ -91,10 +91,4 @@ export interface SimpleFormProps
     variant?: 'standard' | 'outlined' | 'filled';
 }
 
-SimpleFormView.defaultProps = {
-    submitOnEnter: true,
-    toolbar: <Toolbar />,
-    component: CardContentInner,
-};
-
 export default SimpleForm;
