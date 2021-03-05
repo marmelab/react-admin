@@ -36,7 +36,7 @@ import CardContentInner from '../layout/CardContentInner';
  *     <Create {...props}>
  *         <SimpleForm>
  *             <TextInput source="title" />
- *             <TextInput source="teaser" options={{ multiLine: true }} />
+ *             <TextInput source="teaser" options={{ multiline: true }} />
  *             <RichTextInput source="body" />
  *             <DateInput label="Publication date" source="published_at" defaultValue={new Date()} />
  *         </SimpleForm>
