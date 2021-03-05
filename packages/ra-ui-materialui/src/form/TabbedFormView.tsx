@@ -12,12 +12,11 @@ import classnames from 'classnames';
 import { Route, useRouteMatch, useLocation } from 'react-router-dom';
 import { Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { FormRenderProps } from 'react-final-form';
 import {
     escapePath,
+    FormWithRedirectRenderProps,
     MutationMode,
     Record,
-    RedirectionSideEffect,
 } from 'ra-core';
 import Toolbar from './Toolbar';
 import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
@@ -29,7 +28,6 @@ export const TabbedFormView = (props: TabbedFormViewProps) => {
         children,
         className,
         classes: classesOverride,
-        form,
         handleSubmit,
         handleSubmitWithRedirect,
         invalid,
@@ -183,18 +181,14 @@ TabbedFormView.defaultProps = {
     toolbar: <Toolbar />,
 };
 
-export interface TabbedFormViewProps extends FormRenderProps {
+export interface TabbedFormViewProps extends FormWithRedirectRenderProps {
     basePath?: string;
     classes?: ClassesOverride<typeof useTabbedFormViewStyles>;
     className?: string;
     margin?: 'none' | 'normal' | 'dense';
     mutationMode?: MutationMode;
-    handleSubmitWithRedirect?: (redirectTo: RedirectionSideEffect) => void;
     record?: Record;
-    redirect?: RedirectionSideEffect;
     resource?: string;
-    save?: () => void;
-    saving?: boolean;
     syncWithLocation?: boolean;
     tabs?: ReactElement;
     toolbar?: ReactElement;
@@ -213,6 +207,7 @@ const sanitizeRestProps = ({
     dirtySinceLastSubmit,
     error,
     errors,
+    form,
     hasSubmitErrors,
     hasValidationErrors,
     initialValues,
