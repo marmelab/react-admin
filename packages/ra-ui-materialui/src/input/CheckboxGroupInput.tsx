@@ -80,10 +80,7 @@ import { ClassesOverride } from '../types';
  *
  * The object passed as `options` props is passed to the material-ui <Checkbox> components
  */
-const CheckboxGroupInput: FunctionComponent<
-    ChoicesInputProps<CheckboxProps> &
-        FormControlProps & { classes?: ClassesOverride<typeof useStyles> }
-> = props => {
+const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = props => {
     const {
         choices = [],
         className,
@@ -261,5 +258,11 @@ CheckboxGroupInput.defaultProps = {
     fullWidth: true,
     row: true,
 };
+
+export interface CheckboxGroupInputProps
+    extends ChoicesInputProps<CheckboxProps>,
+        FormControlProps {
+    classes?: ClassesOverride<typeof useStyles>;
+}
 
 export default CheckboxGroupInput;
