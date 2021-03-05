@@ -16,6 +16,7 @@ import InputHelperText from './InputHelperText';
 import classnames from 'classnames';
 import Labeled from './Labeled';
 import { LinearProgress } from '../layout';
+import { ClassesOverride } from '../types';
 
 /**
  * An Input component for a checkbox group, using an array of objects for the options
@@ -80,7 +81,8 @@ import { LinearProgress } from '../layout';
  * The object passed as `options` props is passed to the material-ui <Checkbox> components
  */
 const CheckboxGroupInput: FunctionComponent<
-    ChoicesInputProps<CheckboxProps> & FormControlProps
+    ChoicesInputProps<CheckboxProps> &
+        FormControlProps & { classes?: ClassesOverride<typeof useStyles> }
 > = props => {
     const {
         choices = [],
