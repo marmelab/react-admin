@@ -4,7 +4,9 @@ import AutocompleteArrayInput, {
 } from './AutocompleteArrayInput';
 import AutocompleteInput, { AutocompleteInputProps } from './AutocompleteInput';
 import BooleanInput from './BooleanInput';
-import CheckboxGroupInput from './CheckboxGroupInput';
+import CheckboxGroupInput, {
+    CheckboxGroupInputProps,
+} from './CheckboxGroupInput';
 import DateInput from './DateInput';
 import DateTimeInput from './DateTimeInput';
 import FileInput from './FileInput';
@@ -56,4 +58,8 @@ export {
     sanitizeInputRestProps,
 };
 
-export type { AutocompleteInputProps, AutocompleteArrayInputProps };
+export type {
+    AutocompleteInputProps,
+    AutocompleteArrayInputProps,
+    CheckboxGroupInputProps,
+};
