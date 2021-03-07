@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Identifier, Record } from '../types';
@@ -29,9 +29,12 @@ export type RedirectionSideEffect = string | boolean | RedirectToFunction;
  * // redirect to the result of a function
  * redirect((redirectTo, basePath, is, data) => ...)
  */
-const useRedirect = () => {
+const useRedirect = ({ baseURL = '' }: { baseURL?: string }) => {
     const dispatch = useDispatch();
     const history = useHistory(); // Note: history is mutable. This prevents render loops in useCallback.
+
+    const origin = useMemo(() => window.location.origin || '' + baseURL, []);
+
     return useCallback(
         (
             redirectTo: RedirectionSideEffect,
@@ -52,8 +55,14 @@ const useRedirect = () => {
                 return;
             }
 
+            const redirectPath =
+                resolveRedirectTo(redirectTo, basePath, id, data) ?? '';
+            //need create new URL to get search params
+            const url = new URL(origin + redirectPath);
+
             history.push({
-                pathname: resolveRedirectTo(redirectTo, basePath, id, data),
+                pathname: url.pathname,
+                search: url.search,
                 state: { _scrollToTop: true },
             });
         },
