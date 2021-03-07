@@ -76,7 +76,7 @@ That's enough to display the post edit form:
 
 ![post edition form](./img/post-edition.png)
 
-**Tip**: You might find it cumbersome to repeat the same input components for both the `<Create>` and the `<Edit>` view. In practice, these two views almost never have exactly the same form inputs. For instance, in the previous snippet, the `<Edit>` views show related comments to the current post, which makes no sense for a new post. Having two separate sets of input components for the two views is, therefore, a deliberate choice. However, if you have the same set of input components, export them as a custom Form component to avoid repetition.
+**Tip**: You might find it cumbersome to repeat the same input components for both the `<Create>` and the `<Edit>` view. In practice, these two views almost never have exactly the same form inputs. For instance, in the previous snippet, the `<Edit>` view shows related comments to the current post, which makes no sense for a new post. Having two separate sets of input components for the two views is, therefore, a deliberate choice. However, if you have the same set of input components, export them as a custom Form component to avoid repetition.
 
 React-admin injects a few props to the `create` and `edit` views: the `resource` name, the `basePath` (the root URL), the `permissions`, and, in the case of the `edit` view, the record `id`. That's why you need to pass the `props` to the `<Create>` and `<Edit>` components.
 
@@ -245,7 +245,7 @@ const Aside = ({ record }) => (
 
 By default, the `Create` and `Edit` views render the main form inside a material-ui `<Card>` element. The actual layout of the form depends on the `Form` component you're using (`<SimpleForm>`, `<TabbedForm>`, or a custom form component).
 
-Some form layouts also use `Card`, in which case the user ends up seeing a card inside a card, which is bad UI. To avoid that, you can override the main form container by passing a `component` prop :
+Some form layouts also use `Card`, in which case the user ends up seeing a card inside a card, which is bad UI. To avoid that, you can override the main page container by passing a `component` prop :
 
 ```jsx
 // use a div as root component
@@ -325,7 +325,7 @@ The `<Edit>` view exposes two buttons, Save and Delete, which perform "mutations
 - `optimistic`: The mutation is applied locally and the side effects are executed immediately. Then the mutation is passed to the dataProvider. If the dataProvider returns successfully, nothing happens (as the mutation was already applied locally). If the dataProvider returns in error, the page is refreshed and an error notification is shown. 
 - `undoable` (default): The mutation is applied locally and the side effects are executed immediately. Then a notification is shown with an undo button. If the user clicks on undo, the mutation is never sent to the dataProvider, and the page is refreshed. Otherwise, after a 5 seconds delay, the mutation is passed to the dataProvider. If the dataProvider returns successfully, nothing happens (as the mutation was already applied locally). If the dataProvider returns in error, the page is refreshed and an error notification is shown.
 
-By default, pages using `<Edit>` use the `undoable` mutation mode. This is part of the "optimistic rendering" strategy of react-admin ; it makes the user interactions more reactive. 
+By default, pages using `<Edit>` use the `undoable` mutation mode. This is part of the "optimistic rendering" strategy of react-admin ; it makes user interactions more reactive. 
 
 You can change this default by setting the `mutationMode` prop - and this affects both the Save and Delete buttons. For instance, to remove the ability to undo the changes, use the `optimistic` mode:
 
@@ -557,7 +557,7 @@ const PostEdit = props => (
 
 ## Prefilling a `<Create>` Record
 
-You may need to prepopulate a record based on another one. For that use case, use the `<CloneButton>` component. It expects a `record` and a `basePath` (usually injected to children of `<Datagrid>`, `<SimpleForm>`, `<SimpleShowLayout>`, etc.), so it's as simple to use as a regular field or input.
+Users may need to create a copy of an existing record. For that use case, use the `<CloneButton>` component. It expects a `record` and a `basePath` (usually injected to children of `<Datagrid>`, `<SimpleForm>`, `<SimpleShowLayout>`, etc.), so it's as simple to use as a regular field or input.
 
 For instance, to allow cloning all the posts from the list:
 
@@ -575,9 +575,9 @@ const PostList = props => (
 );
 ```
 
-Alternately, you may need to prepopulate a record based on a *related* record. For instance, in a `PostList` component, you may want to display a button to create a comment related to the current post. Clicking on that button would lead to a `CommentCreate` page where the `post_id` is preset to the id of the Post.
+**Note**: `<CloneButton>` is designed to be used in a `<Datagrid>` and in an edit view `<Actions>` component, not inside the form `<Toolbar>`. The `Toolbar` is basically for submitting the form, not for going to another resource.
 
-**Note**  `<CloneButton>` is designed to be used in an edit view `<Actions>` component, not inside a `<Toolbar>`. The `Toolbar` is basically for submitting the form, not for going to another resource.
+Alternately, users need to prepopulate a record based on a *related* record. For instance, to create a comment related to an exising post. 
 
 By default, the `<Create>` view starts with an empty `record`. However, if the `location` object (injected by [react-router-dom](https://reacttraining.com/react-router/web/api/location)) contains a `record` in its `state`, the `<Create>` view uses that `record` instead of the empty object. That's how the `<CloneButton>` works under the hood.
 
@@ -636,6 +636,8 @@ const CreateRelatedCommentButton = ({ record }) => (
 );
 ```
 {% endraw %}
+
+Should you use the location `state` or the location `search`? The latter modifies the URL, so it's only necessary if you want to build cross-application links (e.g. from one admin to the other). In general, using the location `state` is a safe bet.
 
 ## The `<EditGuesser>` component
 
@@ -2078,7 +2080,9 @@ export const PostEdit = (props) => (
 );
 ```
 
-## Displaying Fields or Inputs Depending on the User Permissions
+## Recipes
+
+### Displaying Fields or Inputs Depending on the User Permissions
 
 You might want to display some fields, inputs or filters only to users with specific permissions. 
 
@@ -2140,7 +2144,7 @@ export const UserEdit = ({ permissions, ...props }) =>
 ```
 {% endraw %}
 
-## Changing The Success or Failure Notification Message
+### Changing The Success or Failure Notification Message
 
 Once the `dataProvider` returns successfully after save, users see a generic notification ("Element created" / "Element updated"). You can customize this message by passing a custom success side effect function as [the `<Edit onSuccess>` prop](#onsuccess):
 
@@ -2193,7 +2197,7 @@ If the form has several save buttons, you can also pass a custom `onSuccess` or 
 
 **Tip**: The notify message will be translated.
 
-## Altering the Form Values Before Submitting
+### Altering the Form Values Before Submitting
 
 Sometimes, you may want to alter the form values before sending them to the `dataProvider`. For those cases, use [the `transform` prop](#transform) either on the view component (`<Create>` or `<Edit>`) or on the `<SaveButton>` component. 
 
@@ -2246,7 +2250,7 @@ const dataProvider = {
 }
 ```
 
-## Using `onSave` To Alter the Form Submission Behavior
+### Using `onSave` To Alter the Form Submission Behavior
 
 **Deprecated**: use the `<SaveButton onSuccess>` prop instead.
 
@@ -2293,7 +2297,7 @@ const SaveWithNoteButton = props => {
 
 The `onSave` value should be a function expecting 2 arguments: the form values to save, and the redirection to perform.
 
-## Grouping Inputs
+### Grouping Inputs
 
 Sometimes, you may want to group inputs in order to make a form more approachable. You may use a [`<TabbedForm>`](#the-tabbedform-component), an [`<AccordionForm>`](#the-accordionform-component) or you may want to roll your own layout. In this case, you might need to know the state of a group of inputs: whether it's valid or if the user has changed them (dirty/pristine state).
 
