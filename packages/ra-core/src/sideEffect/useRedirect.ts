@@ -30,13 +30,13 @@ export type RedirectionSideEffect = string | boolean | RedirectToFunction;
  * redirect((redirectTo, basePath, is, data) => ...)
  */
 
-const useRedirect = ({ baseURL = '' }: { baseURL?: string }) => {
+const useRedirect = (baseURL?: string) => {
     const dispatch = useDispatch();
     const history = useHistory(); // Note: history is mutable. This prevents render loops in useCallback.
 
     const origin = useMemo(
         () =>
-            new URL(baseURL ?? process.env.PUBLIC_URL, window.location.origin),
+            new URL(baseURL ?? process.env.PUBLIC_URL ?? "", window.location.origin),
         []
     );
 
