@@ -40,7 +40,7 @@ const useRedirect = (baseURL?: string) => {
                 baseURL ?? process.env.PUBLIC_URL ?? '',
                 window.location.origin
             ),
-        []
+        [baseURL]
     );
 
     return useCallback(
@@ -75,7 +75,7 @@ const useRedirect = (baseURL?: string) => {
                 state: { _scrollToTop: true },
             });
         },
-        [dispatch, history]
+        [dispatch, history, origin]
     );
 };
 
