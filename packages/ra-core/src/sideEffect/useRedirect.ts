@@ -36,7 +36,10 @@ const useRedirect = (baseURL?: string) => {
 
     const origin = useMemo(
         () =>
-            new URL(baseURL ?? process.env.PUBLIC_URL ?? "", window.location.origin),
+            new URL(
+                baseURL ?? process.env.PUBLIC_URL ?? '',
+                window.location.origin
+            ),
         []
     );
 
