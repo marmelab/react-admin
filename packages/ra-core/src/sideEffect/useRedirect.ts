@@ -29,11 +29,16 @@ export type RedirectionSideEffect = string | boolean | RedirectToFunction;
  * // redirect to the result of a function
  * redirect((redirectTo, basePath, is, data) => ...)
  */
+
 const useRedirect = ({ baseURL = '' }: { baseURL?: string }) => {
     const dispatch = useDispatch();
     const history = useHistory(); // Note: history is mutable. This prevents render loops in useCallback.
 
-    const origin = useMemo(() => window.location.origin || '' + baseURL, []);
+    const origin = useMemo(
+        () =>
+            new URL(baseURL ?? process.env.PUBLIC_URL, window.location.origin),
+        []
+    );
 
     return useCallback(
         (
@@ -57,8 +62,9 @@ const useRedirect = ({ baseURL = '' }: { baseURL?: string }) => {
 
             const redirectPath =
                 resolveRedirectTo(redirectTo, basePath, id, data) ?? '';
+            //because we manually add state: { _scrollToTop: true} to scroll to stop -> search params cannot catch
             //need create new URL to get search params
-            const url = new URL(origin + redirectPath);
+            const url = new URL(redirectPath, origin);
 
             history.push({
                 pathname: url.pathname,
