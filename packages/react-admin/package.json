@@ -40,6 +40,7 @@
         "connected-react-router": "^6.5.2",
         "final-form": "^4.20.0",
         "final-form-arrays": "^3.0.1",
+        "final-form-submit-errors": "^0.1.2",
         "ra-core": "~3.13.1",
         "ra-i18n-polyglot": "~3.13.1",
         "ra-language-english": "~3.13.1",
