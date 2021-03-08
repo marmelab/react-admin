@@ -60,7 +60,7 @@ export interface ListControllerProps<RecordType extends Record = Record> {
     exporter?: Exporter | false;
     filter?: FilterPayload;
     filterValues: any;
-    hasCreate: boolean;
+    hasCreate?: boolean;
     hideFilter: (filterName: string) => void;
     ids: Identifier[];
     loading: boolean;
