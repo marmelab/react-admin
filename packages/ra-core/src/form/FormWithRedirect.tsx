@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, useRef, useCallback, useEffect, useMemo } from 'react';
+import { useRef, useCallback, useEffect, useMemo } from 'react';
 import { Form, FormProps, FormRenderProps } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 import { submitErrorsMutators } from 'final-form-submit-errors';
