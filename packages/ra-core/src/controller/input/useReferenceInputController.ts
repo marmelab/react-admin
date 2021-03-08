@@ -72,6 +72,7 @@ export const useReferenceInputController = (
         reference,
         filterToQuery,
         sort: sortOverride,
+        isEnabled,
     } = props;
     const resource = useResourceContext(props);
     const translate = useTranslate();
@@ -121,7 +122,9 @@ export const useReferenceInputController = (
         loaded: possibleValuesLoaded,
         loading: possibleValuesLoading,
         error: possibleValuesError,
-    } = useGetList(reference, pagination, sort, filterValues);
+    } = useGetList(reference, pagination, sort, filterValues, {
+        enabled: isEnabled && isEnabled(filterValues),
+    });
 
     // fetch current value
     const {
@@ -255,4 +258,5 @@ interface Option {
     resource?: string;
     sort?: SortPayload;
     source: string;
+    isEnabled?: (filters: any) => boolean;
 }

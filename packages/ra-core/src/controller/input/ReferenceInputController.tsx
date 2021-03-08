@@ -26,6 +26,7 @@ interface Props {
     sort?: SortPayload;
     source: string;
     onChange: () => void;
+    isEnabled?: (filters: any) => boolean;
 }
 
 /**
