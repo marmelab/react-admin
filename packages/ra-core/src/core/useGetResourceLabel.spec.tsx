@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { renderWithRedux } from 'ra-test';
-import { useResourceLabel } from './useResourceLabel';
+import { useGetResourceLabel } from './useGetResourceLabel';
 import { TestTranslationProvider } from '../i18n';
 
 describe('useResourceLabel', () => {
@@ -12,7 +12,8 @@ describe('useResourceLabel', () => {
         (pluralization, expected) => {
             const Component = () => {
                 const pluralized = pluralization === 'pluralized';
-                const label = useResourceLabel('posts', pluralized);
+                const getResourceLabel = useGetResourceLabel();
+                const label = getResourceLabel('posts', pluralized);
 
                 return <p>{label}</p>;
             };
