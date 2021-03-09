@@ -36,6 +36,7 @@ export const BooleanField: FC<BooleanFieldProps> = memo<BooleanFieldProps>(
             valueLabelFalse,
             TrueIcon,
             FalseIcon,
+            strictTypeCheck,
             ...rest
         } = props;
         const record = useRecordContext(props);
@@ -49,7 +50,7 @@ export const BooleanField: FC<BooleanFieldProps> = memo<BooleanFieldProps>(
                 value === false ? 'ra.boolean.false' : 'ra.boolean.true';
         }
 
-        if (value === false || value === true) {
+        if (!strictTypeCheck || value === false || value === true) {
             return (
                 <Typography
                     component="span"
@@ -58,7 +59,7 @@ export const BooleanField: FC<BooleanFieldProps> = memo<BooleanFieldProps>(
                     {...sanitizeFieldRestProps(rest)}
                 >
                     <Tooltip title={translate(ariaLabel, { _: ariaLabel })}>
-                        {value === true ? (
+                        {value ? (
                             <span>
                                 <TrueIcon data-testid="true" fontSize="small" />
                             </span>
@@ -92,6 +93,7 @@ BooleanField.defaultProps = {
     addLabel: true,
     TrueIcon: DoneIcon,
     FalseIcon: ClearIcon,
+    strictTypeCheck: true,
 };
 
 BooleanField.propTypes = {
@@ -102,6 +104,7 @@ BooleanField.propTypes = {
     valueLabelTrue: PropTypes.string,
     TrueIcon: PropTypes.elementType,
     FalseIcon: PropTypes.elementType,
+    strictTypeCheck: PropTypes.bool,
 };
 
 export interface BooleanFieldProps
@@ -112,6 +115,7 @@ export interface BooleanFieldProps
     valueLabelFalse?: string;
     TrueIcon?: SvgIconComponent;
     FalseIcon?: SvgIconComponent;
+    strictTypeCheck?: boolean;
 }
 
 export default BooleanField;
