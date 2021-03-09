@@ -2091,7 +2091,7 @@ For highlights about this version, read [the 2.1 release announcement post](http
 * Fix `yarn.lock` to match `packages.json` ([fzaninotto](https://github.com/fzaninotto))
 * Fix select all checkbox selects rows twice ([fzaninotto](https://github.com/fzaninotto))
 * Fix typo in Inputs documentation ([afilp](https://github.com/afilp))
-* Fix custom `<Datagrid>` style fonction example ([afilp](https://github.com/afilp))
+* Fix custom `<Datagrid>` style function example ([afilp](https://github.com/afilp))
 
 ## v2.0.0
 
