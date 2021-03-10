@@ -46,8 +46,7 @@ export const BooleanField: FC<BooleanFieldProps> = memo<BooleanFieldProps>(
         let ariaLabel = value ? valueLabelTrue : valueLabelFalse;
 
         if (!ariaLabel) {
-            ariaLabel =
-                value === false ? 'ra.boolean.false' : 'ra.boolean.true';
+            ariaLabel = !value ? 'ra.boolean.false' : 'ra.boolean.true';
         }
 
         if (!strictTypeCheck || value === false || value === true) {
