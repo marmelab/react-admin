@@ -294,4 +294,63 @@ describe('<ReferenceInputController />', () => {
             });
         });
     });
+
+    describe('isEnabled', () => {
+        it('should not fetch possible values using getList on load but only when isEnabled returns true', async () => {
+            const children = jest.fn().mockReturnValue(<p>child</p>);
+            const isEnabled = jest.fn().mockImplementation(({ q }) => {
+                return q.length > 2;
+            });
+            const { dispatch } = renderWithRedux(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <ReferenceInputController
+                        {...defaultProps}
+                        isEnabled={isEnabled}
+                    >
+                        {children}
+                    </ReferenceInputController>
+                </DataProviderContext.Provider>
+            );
+
+            // not call on start
+            await waitFor(() => {
+                expect(dispatch).not.toHaveBeenCalled();
+            });
+            expect(isEnabled).toHaveBeenCalledWith({ q: '' });
+
+            const { setFilter } = children.mock.calls[0][0];
+            setFilter('hello world');
+
+            await waitFor(() => {
+                expect(dispatch).toHaveBeenCalledTimes(5);
+            });
+            expect(isEnabled).toHaveBeenCalledWith({ q: 'hello world' });
+        });
+
+        it('should fetch current value using getMany even if isEnabled is returning false', async () => {
+            const children = jest.fn().mockReturnValue(<p>child</p>);
+            const { dispatch } = renderWithRedux(
+                <DataProviderContext.Provider value={dataProvider}>
+                    <ReferenceInputController
+                        {...{
+                            ...defaultProps,
+                            input: { value: 1 } as any,
+                            isEnabled: () => false,
+                        }}
+                    >
+                        {children}
+                    </ReferenceInputController>
+                </DataProviderContext.Provider>
+            );
+
+            await waitFor(() => {
+                expect(dispatch).toBeCalledTimes(5); // 0 for getList, 5 for getMany
+                expect(dispatch.mock.calls[0][0]).toEqual({
+                    type: 'RA/CRUD_GET_MANY',
+                    payload: { ids: [1] },
+                    meta: { resource: 'posts' },
+                });
+            });
+        });
+    });
 });
