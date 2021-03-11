@@ -3,8 +3,7 @@ import { Children, FC, ReactElement } from 'react';
 import classnames from 'classnames';
 import FormInput from './FormInput';
 import PropTypes from 'prop-types';
-import { FormRenderProps } from 'react-final-form';
-import { MutationMode, Record, RedirectionSideEffect } from 'ra-core';
+import { FormWithRedirectRenderProps, MutationMode, Record } from 'ra-core';
 import Toolbar from './Toolbar';
 import CardContentInner from '../layout/CardContentInner';
 
@@ -97,18 +96,14 @@ SimpleFormView.defaultProps = {
     component: CardContentInner,
 };
 
-export interface SimpleFormViewProps extends FormRenderProps {
+export interface SimpleFormViewProps extends FormWithRedirectRenderProps {
     basePath?: string;
     className?: string;
     component?: React.ComponentType<any>;
-    handleSubmitWithRedirect?: (redirectTo: RedirectionSideEffect) => void;
     margin?: 'none' | 'normal' | 'dense';
     mutationMode?: MutationMode;
     record?: Record;
-    redirect?: RedirectionSideEffect;
     resource?: string;
-    save?: () => void;
-    saving?: boolean;
     toolbar?: ReactElement;
     /** @deprecated use mutationMode: undoable instead */
     undoable?: boolean;
