@@ -93,7 +93,7 @@ describe('<BooleanField />', () => {
             classes: {},
         };
         const { queryByTitle } = render(
-            <BooleanField {...defaultProps} looseValue={false} />
+            <BooleanField {...defaultProps} looseValue />
         );
         expect(queryByTitle('ra.boolean.true')).not.toBeNull();
         expect(
@@ -112,7 +112,7 @@ describe('<BooleanField />', () => {
         };
 
         const { queryByTitle } = render(
-            <BooleanField {...defaultProps} looseValue={false} />
+            <BooleanField {...defaultProps} looseValue />
         );
         expect(queryByTitle('ra.boolean.false')).not.toBeNull();
         expect(
