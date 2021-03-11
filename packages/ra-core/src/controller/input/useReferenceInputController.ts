@@ -124,7 +124,7 @@ export const useReferenceInputController = (
         error: possibleValuesError,
     } = useGetList(reference, pagination, sort, filterValues, {
         action: 'CUSTOM_QUERY',
-        enabled: isEnabled && isEnabled(filterValues),
+        enabled: isEnabled ? isEnabled(filterValues) : true,
     });
 
     // fetch current value
