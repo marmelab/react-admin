@@ -295,17 +295,17 @@ describe('<ReferenceInputController />', () => {
         });
     });
 
-    describe('isEnabled', () => {
-        it('should not fetch possible values using getList on load but only when isEnabled returns true', async () => {
+    describe('enableGetChoices', () => {
+        it('should not fetch possible values using getList on load but only when enableGetChoices returns true', async () => {
             const children = jest.fn().mockReturnValue(<p>child</p>);
-            const isEnabled = jest.fn().mockImplementation(({ q }) => {
+            const enableGetChoices = jest.fn().mockImplementation(({ q }) => {
                 return q.length > 2;
             });
             const { dispatch } = renderWithRedux(
                 <DataProviderContext.Provider value={dataProvider}>
                     <ReferenceInputController
                         {...defaultProps}
-                        isEnabled={isEnabled}
+                        enableGetChoices={enableGetChoices}
                     >
                         {children}
                     </ReferenceInputController>
@@ -316,7 +316,7 @@ describe('<ReferenceInputController />', () => {
             await waitFor(() => {
                 expect(dispatch).not.toHaveBeenCalled();
             });
-            expect(isEnabled).toHaveBeenCalledWith({ q: '' });
+            expect(enableGetChoices).toHaveBeenCalledWith({ q: '' });
 
             const { setFilter } = children.mock.calls[0][0];
             setFilter('hello world');
@@ -324,10 +324,10 @@ describe('<ReferenceInputController />', () => {
             await waitFor(() => {
                 expect(dispatch).toHaveBeenCalledTimes(5);
             });
-            expect(isEnabled).toHaveBeenCalledWith({ q: 'hello world' });
+            expect(enableGetChoices).toHaveBeenCalledWith({ q: 'hello world' });
         });
 
-        it('should fetch current value using getMany even if isEnabled is returning false', async () => {
+        it('should fetch current value using getMany even if enableGetChoices is returning false', async () => {
             const children = jest.fn().mockReturnValue(<p>child</p>);
             const { dispatch } = renderWithRedux(
                 <DataProviderContext.Provider value={dataProvider}>
@@ -335,7 +335,7 @@ describe('<ReferenceInputController />', () => {
                         {...{
                             ...defaultProps,
                             input: { value: 1 } as any,
-                            isEnabled: () => false,
+                            enableGetChoices: () => false,
                         }}
                     >
                         {children}

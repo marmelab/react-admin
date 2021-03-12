@@ -1560,7 +1560,7 @@ import { ReferenceInput, SelectInput } from 'react-admin';
 | `perPage`       | Optional | `number`                                    | 25                                    | Number of suggestions to show                                                                                         |
 | `reference`     | Required | `string`                                    | ''                                    | Name of the reference resource, e.g. 'posts'.                                                                         |
 | `sort`          | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`      | How to order the list of suggestions                                                                                  |
-| `isEnabled`     | Optional | `({q: string}) => boolean`                  | `() => true`                          | Function taking the `filterValues` and returning a boolean to enable the `getList` call.                              |
+| `enableGetChoices`     | Optional | `({q: string}) => boolean`                  | `() => true`                          | Function taking the `filterValues` and returning a boolean to enable the `getList` call.                              |
 
 
 `<ReferenceInput>` also accepts the [common input props](./Inputs.md#common-input-props).
@@ -1648,12 +1648,12 @@ The child component receives the following props from `<ReferenceInput>`:
 - `setPagination`: : function to call to update the pagination of the request for possible values
 - `setSort`: function to call to update the sorting of the request for possible values
 
-**Tip** You can make the `getList()` call lazy by using the `isEnabled` prop. This can be useful when using an `AutocompleteInput` on a resource with a lot of data. The following example only starts fetching the options when the query has at least 2 characters:
+**Tip** You can make the `getList()` call lazy by using the `enableGetChoices` prop. This prop should be a function that receives the `filterValues` as parameter and return a boolean. This can be useful when using an `AutocompleteInput` on a resource with a lot of data. The following example only starts fetching the options when the query has at least 2 characters:
 ```jsx
 <ReferenceInput
      source="post_id"
      reference="posts"
-     isEnabled={({ q }) => q.length >= 2}>
+     enableGetChoices={({ q }) => q.length >= 2}>
     <AutocompleteInput optionText="title" />
 </ReferenceInput>
 ```
