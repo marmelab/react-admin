@@ -12,7 +12,11 @@ import {
 import SortIcon from '@material-ui/icons/Sort';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { shallowEqual } from 'react-redux';
-import { useListSortContext, useTranslate } from 'ra-core';
+import {
+    useListSortContext,
+    useTranslate,
+    getFieldLabelTranslationArgs,
+} from 'ra-core';
 
 /**
  * A button allowing to change the sort field and order.
@@ -72,7 +76,12 @@ const SortButton: FC<SortButtonProps> = ({
     };
 
     const buttonLabel = translate(label, {
-        field: translate(`resources.${resource}.fields.${currentSort.field}`),
+        field: translate(
+            ...getFieldLabelTranslationArgs({
+                resource,
+                source: currentSort.field,
+            })
+        ),
         order: translate(`ra.sort.${currentSort.order}`),
         _: label,
     });
@@ -115,7 +124,12 @@ const SortButton: FC<SortButtonProps> = ({
                         data-sort={field}
                         key={field}
                     >
-                        {translate(`resources.${resource}.fields.${field}`)}{' '}
+                        {translate(
+                            ...getFieldLabelTranslationArgs({
+                                resource,
+                                source: field,
+                            })
+                        )}{' '}
                         {translate(
                             `ra.sort.${
                                 currentSort.field === field
