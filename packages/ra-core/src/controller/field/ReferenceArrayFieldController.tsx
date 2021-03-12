@@ -5,7 +5,7 @@ import { ListControllerProps } from '../useListController';
 import { Record, SortPayload } from '../../types';
 
 interface Props {
-    basePath: string;
+    basePath?: string;
     filter?: any;
     page?: number;
     perPage?: number;
