@@ -1134,6 +1134,7 @@ Lastly, `<AutocompleteArrayInput>` renders a [material-ui `<TextField>` componen
 {% endraw %}
 
 **Tip**: Like many other inputs, `<AutocompleteArrayInput>` accept a `fullWidth` prop.
+
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<AutocompleteArrayInput>` with [`<ReferenceArrayInput>`](#referenceinput), and leave the `choices` empty:
 
 ```jsx
@@ -1498,6 +1499,21 @@ You can tweak how this component fetches the possible values using the `perPage`
 </ReferenceArrayInput>
 ```
 {% endraw %}
+
+**Tip**: `<ReferenceArrayInput>` can also used with an `<AutocompleteArrayInput>` to allow filtering the choices. By default, it will fetch the choices on mount, but you can prevent this by using the `enableGetChoices`. This prop should be a function that receives the `filterValues` as parameter and return a boolean. In order to also hide the choices when `enableGetChoices` returns `false`, you should use `shouldRenderSuggestions` on the `<AutocompleteArrayInput>`:
+
+```jsx
+<ReferenceArrayInput
+  label="Tags"
+  reference="tags"
+  source="tags"
+  enableGetChoices={({ q }) => (q ? q.length >= 2 : false)}
+>
+  <AutocompleteArrayInput
+    shouldRenderSuggestions={(value: string) => value.length >= 2}
+  />
+</ReferenceArrayInput>
+```
 
 In addition to the `ReferenceArrayInputContext`, `<ReferenceArrayInput>` also sets up a `ListContext` providing access to the records from the reference resource in a similar fashion to that of the `<List>` component. This `ListContext` value is accessible with the [`useListContext`](/List.md#uselistcontext) hook.
 
