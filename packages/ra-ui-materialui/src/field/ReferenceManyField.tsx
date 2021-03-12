@@ -170,7 +170,7 @@ export interface ReferenceManyFieldViewProps
 }
 
 ReferenceManyFieldView.propTypes = {
-    basePath: PropTypes.string,
+    basePath: PropTypes.string.isRequired,
     children: PropTypes.element,
     className: PropTypes.string,
     currentSort: PropTypes.exact({

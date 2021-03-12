@@ -335,5 +335,27 @@ describe('<ReferenceField />', () => {
             const links = container.getElementsByTagName('a');
             expect(links).toHaveLength(0);
         });
+
+        it('should work without basePath', () => {
+            const { container } = render(
+                <MemoryRouter>
+                    <ReferenceFieldView
+                        record={record}
+                        source="postId"
+                        referenceRecord={{ id: 123, title: 'foo' }}
+                        reference="posts"
+                        resource="comments"
+                        resourceLinkPath="/posts/123"
+                        loaded={true}
+                        loading={false}
+                    >
+                        <TextField source="title" />
+                    </ReferenceFieldView>
+                </MemoryRouter>
+            );
+            const links = container.getElementsByTagName('a');
+            expect(links).toHaveLength(1);
+            expect(links.item(0).href).toBe('http://localhost/posts/123');
+        });
     });
 });
