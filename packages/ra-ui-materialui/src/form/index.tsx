@@ -8,7 +8,6 @@ import Toolbar, { ToolbarProps } from './Toolbar';
 import getFormInitialValues from './getFormInitialValues';
 import { SimpleFormView, SimpleFormViewProps } from './SimpleFormView';
 import { TabbedFormView, TabbedFormViewProps } from './TabbedFormView';
-export * from './FormTabHeader';
 
 export * from './TabbedForm';
 export * from './FormTab';
