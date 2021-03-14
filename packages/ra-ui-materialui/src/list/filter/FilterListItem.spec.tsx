@@ -8,6 +8,27 @@ import FilterListItem from './FilterListItem';
 describe('<FilterListItem/>', () => {
     afterEach(cleanup);
 
+    it("should display the item label when it's a string", () => {
+        const { queryByText } = render(
+            <ListContextProvider value={{ hideFilter: true }}>
+                <FilterListItem label="Foo" value={{ foo: 'bar' }} />
+            </ListContextProvider>
+        );
+        expect(queryByText('Foo')).not.toBeNull();
+    });
+
+    it("should display the item label when it's an element", () => {
+        const { queryByTestId } = render(
+            <ListContextProvider value={{ hideFilter: true }}>
+                <FilterListItem
+                    label={<span data-testid="123">Foo</span>}
+                    value={{ foo: 'bar' }}
+                />
+            </ListContextProvider>
+        );
+        expect(queryByTestId('123')).not.toBeNull();
+    });
+
     it('should not appear selected if filterValues is empty', () => {
         const { getByText } = render(
             <ListContextProvider value={{ hideFilter: true }}>
