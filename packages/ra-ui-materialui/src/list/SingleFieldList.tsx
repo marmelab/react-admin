@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { cloneElement, Children, HtmlHTMLAttributes, FC } from 'react';
+import {
+    cloneElement,
+    Children,
+    HtmlHTMLAttributes,
+    FC,
+    ComponentType,
+} from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -10,6 +16,7 @@ import {
     useListContext,
     useResourceContext,
     RecordContextProvider,
+    ComponentPropType,
 } from 'ra-core';
 
 import Link from '../Link';
@@ -74,19 +81,21 @@ const SingleFieldList: FC<SingleFieldListProps> = props => {
         className,
         children,
         linkType = 'edit',
+        component = 'div',
         ...rest
     } = props;
     const { ids, data, loaded, basePath } = useListContext(props);
     const resource = useResourceContext(props);
 
     const classes = useStyles(props);
+    const Component = component;
 
     if (loaded === false) {
         return <LinearProgress />;
     }
 
     return (
-        <div
+        <Component
             className={classnames(classes.root, className)}
             {...sanitizeListRestProps(rest)}
         >
@@ -97,7 +106,7 @@ const SingleFieldList: FC<SingleFieldListProps> = props => {
 
                 if (resourceLinkPath) {
                     return (
-                        <RecordContextProvider value={data[id]}>
+                        <RecordContextProvider value={data[id]} key={id}>
                             <Link
                                 className={classes.link}
                                 key={id}
@@ -117,7 +126,7 @@ const SingleFieldList: FC<SingleFieldListProps> = props => {
                 }
 
                 return (
-                    <RecordContextProvider value={data[id]}>
+                    <RecordContextProvider value={data[id]} key={id}>
                         {cloneElement(Children.only(children), {
                             key: id,
                             record: data[id],
@@ -127,7 +136,7 @@ const SingleFieldList: FC<SingleFieldListProps> = props => {
                     </RecordContextProvider>
                 );
             })}
-        </div>
+        </Component>
     );
 };
 
@@ -136,6 +145,7 @@ SingleFieldList.propTypes = {
     children: PropTypes.element.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
+    component: ComponentPropType,
     data: PropTypes.object,
     ids: PropTypes.array,
     // @ts-ignore
@@ -147,6 +157,7 @@ export interface SingleFieldListProps
     extends HtmlHTMLAttributes<HTMLDivElement> {
     className?: string;
     classes?: ClassesOverride<typeof useStyles>;
+    component?: ComponentType<any>;
     linkType?: string | false;
     children: React.ReactElement;
 }
