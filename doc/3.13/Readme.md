@@ -15,6 +15,8 @@ using:
 
 ```sh
 npm install react-admin
+#or
+yarn add react-admin
 ```
 
 ## Usage

@@ -106,6 +106,17 @@ Then you can display the author first name as follows:
 <TextField source="author.firstName" />
 ```
 
+**Tip**: If you want to display data from more than one field, check out [the `<FunctionField>`](#functionfield), which accepts a `render` function:
+
+```jsx
+import { FunctionField } from 'react-admin';
+
+<FunctionField
+    label="Name"
+    render={record => `${record.first_name} ${record.last_name}`}
+/>;
+```
+
 **Tip**: If you want to format a field according to the value, use a higher-order component to do conditional formatting, as described in the [Theming documentation](./Theming.md#conditional-formatting).
 
 **Tip**: If your interface has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.md#translating-resource-and-field-names) for details.
@@ -535,6 +546,17 @@ The simplest of all fields, `<TextField>` simply displays the record property as
 import { TextField } from 'react-admin';
 
 <TextField label="Author Name" source="name" />
+```
+
+**Tip**: If you want to display data from more than one field, check out [the `<FunctionField>`](#functionfield), which accepts a `render` function:
+
+```jsx
+import { FunctionField } from 'react-admin';
+
+<FunctionField
+    label="Name"
+    render={record => `${record.first_name} ${record.last_name}`}
+/>;
 ```
 
 ### `<UrlField>`
@@ -1341,18 +1363,41 @@ PriceField.defaultProps = {
 ```
 {% endraw %}
 
-### Adding Label To Custom Field Components In The Show View
+### Adding A Label To Custom Field Components
 
-React-admin lets you use the same `Field` components in the `List` view and in the `Show` view. But if you use the `<FullNameField>` custom field component defined earlier in a `Show` view, something is missing: the `Field` label. Why do other fields have a label and not this custom `Field`? And how can you create a `Field` component that has a label in the `Show` view, but not in the `List` view?
+When you use one of the react-admin `Field` components in an `Edit`, `Create` or `Show` view, react-admin includes a label on top of the field value, as in the following example:
 
-React-admin uses a trick: the `Show` view layouts (`<SimpleShowLayout>` and `<TabbedShowLayout>`) inspect their `Field` children, and whenever one has the `addLabel` prop set to `true`, the layout adds a label.
+![field labels](./img/field-addlabel.png)
 
-That means that the only thing you need to add to a custom component to make it usable in a `Show` view is an `addLabel: true` default prop.
+For your custom fields, however, the label doesn't appear by default. You need to opt in this feature by setting the `addLabel` prop to `true` in the `defaultProps`.
 
-```js
+```diff
+const FullNameField = ({ record = {} }) => (
+    <span>
+        {record.firstName} {record.lastName}
+    </span>
+);
+
 FullNameField.defaultProps = {
-    addLabel: true,
+    label: 'Name',
++   addLabel: true,
 };
+```
+
+React-admin uses a trick to make it work: the view layouts (`<SimpleShowLayout>`, `<TabbedShowLayout>`, `<SimpleForm>`, `<TabbedForm>`) inspect their children, and whenever one has the `addLabel` prop set to `true`, the layout decorates the component with a label.
+
+If you don't use any of these layouts, the `addLabel` trick won't work. You'll have to add a label manually by decorating your field with [the `<Labeled>` component](./Inputs.md#using-labeled):
+
+```jsx
+import { Labeled } from 'react-admin';
+
+const MyShowLayout = ({ record }) => (
+    <div>
+        <Labeled label="Name">
+            <FullNameField record={record} />
+        </Label>
+    </div>
+);
 ```
 
 ### Hiding A Field Based On The Value Of Another
