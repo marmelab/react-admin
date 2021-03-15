@@ -53,7 +53,7 @@ const getResourceLinkPath = ({
     reference,
     link = 'edit',
     record = { id: '' },
-    basePath = `/${resource}`,
+    basePath = '',
     linkType,
 }: Option): string | false => {
     if (linkType !== undefined) {
@@ -62,7 +62,9 @@ const getResourceLinkPath = ({
         );
     }
     const sourceId = get(record, source);
-    const rootPath = basePath.replace(resource, reference);
+    const rootPath = basePath
+        ? basePath.replace(resource, reference)
+        : `/${reference}`;
     const linkTo: LinkToType = linkType !== undefined ? linkType : link;
 
     // Backward compatibility: keep linkType but with warning

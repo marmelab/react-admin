@@ -165,7 +165,6 @@ const CommentGrid = () => {
                                 {translate('comment.list.about')}&nbsp;
                             </Typography>
                             <ReferenceField
-                                resource="comments"
                                 record={data[id]}
                                 source="post_id"
                                 reference="posts"
@@ -177,16 +176,8 @@ const CommentGrid = () => {
                             </ReferenceField>
                         </CardContent>
                         <CardActions className={classes.cardActions}>
-                            <EditButton
-                                resource="posts"
-                                basePath={basePath}
-                                record={data[id]}
-                            />
-                            <ShowButton
-                                resource="posts"
-                                basePath={basePath}
-                                record={data[id]}
-                            />
+                            <EditButton record={data[id]} />
+                            <ShowButton record={data[id]} />
                         </CardActions>
                     </Card>
                 </Grid>
