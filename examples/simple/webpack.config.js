@@ -1,7 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-    .BundleAnalyzerPlugin;
 
 module.exports = {
     entry: './src/index.tsx',
@@ -36,11 +34,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './index-webpack.html',
         }),
-    ].concat(
-        process.env.NODE_ENV === 'development'
-            ? [new BundleAnalyzerPlugin()]
-            : []
-    ),
+    ],
     devServer: {
         disableHostCheck: true,
         host: '127.0.0.1',
