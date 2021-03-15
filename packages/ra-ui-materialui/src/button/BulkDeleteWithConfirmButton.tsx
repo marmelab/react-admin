@@ -153,7 +153,7 @@ const sanitizeRestProps = ({
 export interface BulkDeleteWithConfirmButtonProps
     extends BulkActionProps,
         ButtonProps {
-    confirmContent?: string;
+    confirmContent?: React.ReactNode;
     confirmTitle?: string;
     icon?: ReactElement;
 }

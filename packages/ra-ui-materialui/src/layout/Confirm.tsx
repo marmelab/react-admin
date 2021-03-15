@@ -94,12 +94,16 @@ const Confirm: FC<ConfirmProps> = props => {
                 {translate(title, { _: title, ...translateOptions })}
             </DialogTitle>
             <DialogContent>
-                <DialogContentText>
-                    {translate(content, {
-                        _: content,
-                        ...translateOptions,
-                    })}
-                </DialogContentText>
+                {typeof content === 'string' ? (
+                    <DialogContentText>
+                        {translate(content, {
+                            _: content,
+                            ...translateOptions,
+                        })}
+                    </DialogContentText>
+                ) : (
+                    content
+                )}
             </DialogContent>
             <DialogActions>
                 <Button disabled={loading} onClick={onClose}>
@@ -130,7 +134,7 @@ export interface ConfirmProps {
     confirmColor?: string;
     ConfirmIcon?: ReactComponentLike;
     CancelIcon?: ReactComponentLike;
-    content: string;
+    content: React.ReactNode;
     isOpen?: boolean;
     loading?: boolean;
     onClose: MouseEventHandler;
@@ -146,7 +150,7 @@ Confirm.propTypes = {
     confirmColor: PropTypes.string,
     ConfirmIcon: PropTypes.elementType,
     CancelIcon: PropTypes.elementType,
-    content: PropTypes.string.isRequired,
+    content: PropTypes.node.isRequired,
     isOpen: PropTypes.bool,
     loading: PropTypes.bool,
     onClose: PropTypes.func.isRequired,
