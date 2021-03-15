@@ -13,7 +13,6 @@ describe('<ReferenceArrayFieldController />', () => {
             <ReferenceArrayFieldController
                 resource="foo"
                 reference="bar"
-                basePath=""
                 record={{ id: 1, barIds: [1, 2] }}
                 source="barIds"
             >
@@ -30,7 +29,7 @@ describe('<ReferenceArrayFieldController />', () => {
             }
         );
         expect(children.mock.calls[0][0]).toMatchObject({
-            basePath: '',
+            basePath: '/bar',
             currentSort: { field: 'id', order: 'ASC' },
             loaded: false,
             loading: true,
@@ -49,7 +48,6 @@ describe('<ReferenceArrayFieldController />', () => {
                 resource="foo"
                 reference="bar"
                 source="barIds"
-                basePath=""
             >
                 {children}
             </ReferenceArrayFieldController>,
@@ -70,7 +68,7 @@ describe('<ReferenceArrayFieldController />', () => {
         );
 
         expect(children.mock.calls[0][0]).toMatchObject({
-            basePath: '',
+            basePath: '/bar',
             currentSort: { field: 'id', order: 'ASC' },
             loaded: false,
             loading: true,
@@ -93,7 +91,6 @@ describe('<ReferenceArrayFieldController />', () => {
                 resource="foo"
                 reference="bar"
                 source="barIds"
-                basePath=""
             >
                 {children}
             </ReferenceArrayFieldController>,
@@ -111,7 +108,7 @@ describe('<ReferenceArrayFieldController />', () => {
             }
         );
         expect(children.mock.calls[0][0]).toMatchObject({
-            basePath: '',
+            basePath: '/bar',
             currentSort: { field: 'id', order: 'ASC' },
             loaded: true,
             loading: true,
@@ -132,7 +129,6 @@ describe('<ReferenceArrayFieldController />', () => {
                 resource="foo"
                 reference="bar"
                 source="barIds"
-                basePath=""
             >
                 {children}
             </ReferenceArrayFieldController>,
@@ -150,7 +146,7 @@ describe('<ReferenceArrayFieldController />', () => {
             }
         );
         expect(children.mock.calls[0][0]).toMatchObject({
-            basePath: '',
+            basePath: '/bar',
             currentSort: { field: 'id', order: 'ASC' },
             loaded: true,
             loading: true,
@@ -182,7 +178,6 @@ describe('<ReferenceArrayFieldController />', () => {
                     resource="foo"
                     reference="bar"
                     source="barIds"
-                    basePath=""
                 >
                     {children}
                 </ReferenceArrayFieldController>
@@ -212,7 +207,6 @@ describe('<ReferenceArrayFieldController />', () => {
                 resource="foo"
                 reference="bar"
                 source="barIds"
-                basePath=""
             >
                 {children}
             </ReferenceArrayFieldController>,
@@ -230,7 +224,7 @@ describe('<ReferenceArrayFieldController />', () => {
             }
         );
         expect(children.mock.calls[0][0]).toMatchObject({
-            basePath: '',
+            basePath: '/bar',
             currentSort: { field: 'id', order: 'ASC' },
             loaded: true,
             loading: true,
@@ -251,7 +245,6 @@ describe('<ReferenceArrayFieldController />', () => {
                 resource="foo"
                 reference="bar"
                 source="barIds"
-                basePath=""
             >
                 {children}
             </ReferenceArrayFieldController>,
@@ -271,7 +264,7 @@ describe('<ReferenceArrayFieldController />', () => {
             }
         );
         expect(children.mock.calls[0][0]).toMatchObject({
-            basePath: '',
+            basePath: '/bar',
             currentSort: { field: 'id', order: 'ASC' },
             loaded: true,
             loading: true,

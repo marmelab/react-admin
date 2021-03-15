@@ -8,13 +8,16 @@ export type LinkToFunctionType = (record: Record, reference: string) => string;
 export type LinkToType = string | boolean | LinkToFunctionType;
 
 interface Option {
-    basePath: string;
-    record?: Record;
     source: string;
     reference: string;
     resource: string;
+    basePath?: string;
+    record?: Record;
     link?: LinkToType;
-    linkType?: LinkToType; // deprecated, use link instead
+    /**
+     * @deprecated use link instead
+     */
+    linkType?: LinkToType;
 }
 
 /**
@@ -31,7 +34,7 @@ interface Option {
  *      },
  *      resource: 'comments',
  *      source: 'userId',
- * });
+ * }); // '/users/7'
  *
  * @param {Object} option
  * @param {string} option.basePath basepath to current resource
@@ -42,38 +45,32 @@ interface Option {
  * @param {string} option.resource The current resource name
  * @param {string} option.source The key of the linked resource identifier
  *
- * @returns {string | false} The reference props
+ * @returns {string | false} The link to the reference record
  */
 const getResourceLinkPath = ({
-    basePath,
-    link = 'edit',
-    linkType,
-    reference,
-    record = { id: '' },
     resource,
     source,
+    reference,
+    link = 'edit',
+    record = { id: '' },
+    basePath = `/${resource}`,
+    linkType,
 }: Option): string | false => {
-    const sourceId = get(record, source);
-    const rootPath = basePath.replace(resource, reference);
-    // Backward compatibility: keep linkType but with warning
-    const getResourceLinkPath = (linkTo: LinkToType) =>
-        !linkTo
-            ? false
-            : typeof linkTo === 'function'
-            ? linkTo(record, reference)
-            : linkToRecord(rootPath, sourceId, linkTo as string);
-
     if (linkType !== undefined) {
         console.warn(
             "The 'linkType' prop is deprecated and should be named to 'link' in <ReferenceField />"
         );
     }
+    const sourceId = get(record, source);
+    const rootPath = basePath.replace(resource, reference);
+    const linkTo: LinkToType = linkType !== undefined ? linkType : link;
 
-    const resourceLinkPath = getResourceLinkPath(
-        linkType !== undefined ? linkType : link
-    );
-
-    return resourceLinkPath;
+    // Backward compatibility: keep linkType but with warning
+    return !linkTo
+        ? false
+        : typeof linkTo === 'function'
+        ? linkTo(record, reference)
+        : linkToRecord(rootPath, sourceId, linkTo as string);
 };
 
 export default getResourceLinkPath;
