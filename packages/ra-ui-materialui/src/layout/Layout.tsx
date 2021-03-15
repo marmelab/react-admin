@@ -6,7 +6,6 @@ import React, {
     useState,
     ErrorInfo,
     ReactElement,
-    ReactNode,
     ComponentType,
     HtmlHTMLAttributes,
 } from 'react';
@@ -24,7 +23,7 @@ import { ThemeOptions } from '@material-ui/core';
 import { ComponentPropType, CoreLayoutProps } from 'ra-core';
 import compose from 'lodash/flowRight';
 
-import DefaultAppBar from './AppBar';
+import DefaultAppBar, { AppBarProps } from './AppBar';
 import DefaultSidebar from './Sidebar';
 import DefaultMenu, { MenuProps } from './Menu';
 import DefaultNotification from './Notification';
@@ -186,11 +185,7 @@ class LayoutWithoutTheme extends Component<
 export interface LayoutProps
     extends CoreLayoutProps,
         Omit<HtmlHTMLAttributes<HTMLDivElement>, 'title'> {
-    appBar?: ComponentType<{
-        title?: string | ReactElement<any>;
-        open?: boolean;
-        logout?: ReactNode;
-    }>;
+    appBar?: ComponentType<AppBarProps>;
     classes?: any;
     className?: string;
     error?: ComponentType<{
