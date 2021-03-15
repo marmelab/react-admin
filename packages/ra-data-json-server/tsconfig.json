@@ -4,6 +4,7 @@
         "outDir": "lib",
         "rootDir": "src",
         "declaration": true,
+        "declarationMap": true,
         "allowJs": false
     },
     "exclude": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.spec.js"],
