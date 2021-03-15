@@ -1,5 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+    .BundleAnalyzerPlugin;
 
 module.exports = {
     entry: './src/index.tsx',
@@ -9,8 +11,7 @@ module.exports = {
     },
     devtool: 'cheap-module-source-map',
     resolve: {
-        // Add `.ts` and `.tsx` as a resolvable extension.
-        extensions: ['.ts', '.tsx', '.js'],
+        extensions: ['.ts', '.js', '.tsx', '.json'],
     },
     module: {
         rules: [
@@ -24,13 +25,22 @@ module.exports = {
                     },
                 },
             },
+            {
+                test: /\.html$/,
+                exclude: /node_modules/,
+                use: { loader: 'html-loader' },
+            },
         ],
     },
     plugins: [
         new HtmlWebpackPlugin({
             template: './index-webpack.html',
         }),
-    ],
+    ].concat(
+        process.env.NODE_ENV === 'development'
+            ? [new BundleAnalyzerPlugin()]
+            : []
+    ),
     devServer: {
         disableHostCheck: true,
         host: '127.0.0.1',
