@@ -1,5 +1,17 @@
 # Changelog
 
+## v3.13.4
+
+* Fix Go to definition goes to the compiled code in VSCode ([6039](https://github.com/marmelab/react-admin/pull/6039)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<RecordContext>` and `useRecordContext` internal representation ([6038](https://github.com/marmelab/react-admin/pull/6038)) ([djhi](https://github.com/djhi))
+* Fix simple example in Webpack version (for CodeSandbox) ([6037](https://github.com/marmelab/react-admin/pull/6037)) ([djhi](https://github.com/djhi))
+* Fix `actions={false}` in a View component throws a runtime warning ([6033](https://github.com/marmelab/react-admin/pull/6033)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Admin>` with no i18nProvider logs warnings for missing translations ([6032](https://github.com/marmelab/react-admin/pull/6032)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix duplicated export in `ra-ui-materialui` Form components ([6030](https://github.com/marmelab/react-admin/pull/6030)) ([adrien-may](https://github.com/adrien-may))
+* [TypeScript] Fix cannot pass custom appbar to Layout ([6035](https://github.com/marmelab/react-admin/pull/6035)) ([yasharzolmajdi](https://github.com/yasharzolmajdi))
+* [Doc] Fix missing mention of `<Labeled>` in Fields doc ([6040](https://github.com/marmelab/react-admin/pull/6040)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Synchronize Readme files ([5994](https://github.com/marmelab/react-admin/pull/5994)) ([WiXSL](https://github.com/WiXSL))
+
 ## v3.13.3
 
 * Fix `<SortButton>` labels must have a valid translation message ([6029](https://github.com/marmelab/react-admin/pull/6029)) ([fzaninotto](https://github.com/fzaninotto))
