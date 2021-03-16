@@ -190,7 +190,7 @@ AppBar.defaultProps = {
 
 export interface AppBarProps extends Omit<MuiAppBarProps, 'title' | 'classes'> {
     classes?: ClassesOverride<typeof useStyles>;
-    logout?: JSX.Element;
+    logout?: React.ReactNode;
     open?: boolean;
     title?: string | JSX.Element;
     userMenu?: JSX.Element | boolean;

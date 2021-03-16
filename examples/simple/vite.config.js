@@ -32,4 +32,7 @@ export default {
             replacement: '@material-ui/core/es',
         },
     ],
+    server: {
+        port: 8080,
+    },
 };

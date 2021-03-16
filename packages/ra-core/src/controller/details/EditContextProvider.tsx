@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
+import { Record } from '../../types';
 import { RecordContextProvider } from '../RecordContext';
 import { EditContext } from './EditContext';
 import { EditControllerProps } from './useEditController';
@@ -37,7 +38,9 @@ export const EditContextProvider = ({
 }) => (
     <EditContext.Provider value={value}>
         <SaveContextProvider value={usePickSaveContext(value)}>
-            <RecordContextProvider value={value && value.record}>
+            <RecordContextProvider<Partial<Record>>
+                value={value && value.record}
+            >
                 {children}
             </RecordContextProvider>
         </SaveContextProvider>

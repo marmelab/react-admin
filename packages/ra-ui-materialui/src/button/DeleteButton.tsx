@@ -68,6 +68,8 @@ interface Props {
     basePath?: string;
     classes?: object;
     className?: string;
+    confirmTitle?: string;
+    confirmContent?: string;
     icon?: ReactElement;
     label?: string;
     mutationMode?: MutationMode;

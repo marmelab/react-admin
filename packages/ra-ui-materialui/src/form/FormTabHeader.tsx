@@ -1,10 +1,13 @@
 import * as React from 'react';
-import { useEffect } from 'react';
+import { ReactElement } from 'react';
+import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 import MuiTab from '@material-ui/core/Tab';
 import classnames from 'classnames';
 import { useTranslate, useFormGroup } from 'ra-core';
-import { useForm } from 'react-final-form';
+import { useTabbedFormViewStyles } from './TabbedFormView';
+import { ClassesOverride } from '../types';
+import { useFormState } from 'react-final-form';
 
 export const FormTabHeader = ({
     classes,
@@ -12,26 +15,17 @@ export const FormTabHeader = ({
     value,
     icon,
     className,
+    syncWithLocation,
     ...rest
-}) => {
+}: FormTabHeaderProps): ReactElement => {
     const translate = useTranslate();
     const location = useLocation();
-    const formGroup = useFormGroup(value);
-    const form = useForm();
-    const [showError, setShowError] = React.useState(false);
-
-    useEffect(() => {
-        const unsubscribe = form.subscribe(
-            state => {
-                if (!showError && (state.submitting || state.submitFailed)) {
-                    setShowError(true);
-                }
-            },
-            { submitting: true, submitFailed: true }
-        );
-
-        return unsubscribe;
-    }, [form, showError]);
+    const { submitFailed } = useFormState(UseFormStateOptions);
+    const formGroup = useFormGroup(value.toString());
+    const propsForLink = {
+        component: Link,
+        to: { ...location, pathname: value },
+    };
 
     return (
         <MuiTab
@@ -40,15 +34,52 @@ export const FormTabHeader = ({
             icon={icon}
             className={classnames('form-tab', className, {
                 [classes.errorTabButton]:
-                    formGroup.invalid &&
-                    (formGroup.touched || showError) &&
-                    location.pathname !== value,
+                    formGroup.invalid && (formGroup.touched || submitFailed),
             })}
-            component={Link}
-            to={{ ...location, pathname: value }}
+            {...(syncWithLocation ? propsForLink : {})} // to avoid TypeScript screams, see https://github.com/mui-org/material-ui/issues/9106#issuecomment-451270521
             id={`tabheader-${value}`}
             aria-controls={`tabpanel-${value}`}
             {...rest}
         />
     );
+};
+
+const UseFormStateOptions = {
+    subscription: {
+        submitFailed: true,
+    },
+};
+
+interface FormTabHeaderProps {
+    basePath?: string;
+    className?: string;
+    classes?: ClassesOverride<typeof useTabbedFormViewStyles>;
+    hidden?: boolean;
+    icon?: ReactElement;
+    intent?: 'header' | 'content';
+    label: string;
+    margin?: 'none' | 'normal' | 'dense';
+    path?: string;
+    resource?: string;
+    syncWithLocation?: boolean;
+    value?: string | number;
+    variant?: 'standard' | 'outlined' | 'filled';
+}
+
+FormTabHeader.propTypes = {
+    basePath: PropTypes.string,
+    className: PropTypes.string,
+    contentClassName: PropTypes.string,
+    children: PropTypes.node,
+    intent: PropTypes.oneOf(['header', 'content']),
+    hidden: PropTypes.bool,
+    icon: PropTypes.element,
+    label: PropTypes.string.isRequired,
+    margin: PropTypes.oneOf(['none', 'dense', 'normal']),
+    path: PropTypes.string,
+    // @ts-ignore
+    record: PropTypes.object,
+    resource: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    variant: PropTypes.oneOf(['standard', 'outlined', 'filled']),
 };

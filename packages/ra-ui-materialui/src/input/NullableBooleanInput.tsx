@@ -75,6 +75,7 @@ const NullableBooleanInput: FunctionComponent<NullableBooleanInputProps> = props
         resource,
         source,
         validate,
+        ...rest,
     });
 
     return (

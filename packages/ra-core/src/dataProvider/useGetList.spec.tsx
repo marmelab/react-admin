@@ -4,6 +4,7 @@ import expect from 'expect';
 import { renderWithRedux } from 'ra-test';
 import useGetList from './useGetList';
 import { DataProviderContext } from '../dataProvider';
+import { waitFor } from '@testing-library/react';
 
 const UseGetList = ({
     resource = 'posts',
@@ -62,9 +63,10 @@ describe('useGetList', () => {
                 <UseGetList />
             </DataProviderContext.Provider>
         );
-        await new Promise(resolve => setTimeout(resolve, 10));
-        expect(dispatch).toBeCalledTimes(5);
-        expect(dataProvider.getList).toBeCalledTimes(1);
+        await waitFor(() => {
+            expect(dispatch).toBeCalledTimes(5);
+            expect(dataProvider.getList).toBeCalledTimes(1);
+        });
     });
 
     it('should call the dataProvider on update when the resource changes', async () => {
@@ -164,14 +166,18 @@ describe('useGetList', () => {
                 },
             }
         );
-        await new Promise(resolve => setTimeout(resolve, 10));
-        expect(hookValue.mock.calls.pop()[0]).toEqual({
-            data: { 1: { id: 1, title: 'foo' }, 2: { id: 2, title: 'bar' } },
-            ids: [1, 2],
-            total: 2,
-            loading: false,
-            loaded: true,
-            error: null,
+        await waitFor(() => {
+            expect(hookValue.mock.calls.pop()[0]).toEqual({
+                data: {
+                    1: { id: 1, title: 'foo' },
+                    2: { id: 2, title: 'bar' },
+                },
+                ids: [1, 2],
+                total: 2,
+                loading: false,
+                loaded: true,
+                error: null,
+            });
         });
     });
 
@@ -211,8 +217,9 @@ describe('useGetList', () => {
             }
         );
         expect(hookValue.mock.calls.pop()[0].loading).toBe(true);
-        await new Promise(resolve => setTimeout(resolve, 10));
-        expect(hookValue.mock.calls.pop()[0].loading).toBe(false);
+        await waitFor(() => {
+            expect(hookValue.mock.calls.pop()[0].loading).toBe(false);
+        });
     });
 
     it('should set the loading state depending on the availability of the data in the redux store', () => {
@@ -245,10 +252,11 @@ describe('useGetList', () => {
             </DataProviderContext.Provider>
         );
         expect(hookValue.mock.calls.pop()[0].error).toBe(null);
-        await new Promise(resolve => setTimeout(resolve, 10));
-        expect(hookValue.mock.calls.pop()[0].error).toEqual(
-            new Error('failed')
-        );
+        await waitFor(() => {
+            expect(hookValue.mock.calls.pop()[0].error).toEqual(
+                new Error('failed')
+            );
+        });
     });
 
     it('should execute success side effects on success', async () => {
@@ -286,22 +294,23 @@ describe('useGetList', () => {
                 />
             </DataProviderContext.Provider>
         );
-        await new Promise(resolve => setTimeout(resolve, 10));
-        expect(onSuccess1).toBeCalledTimes(1);
-        expect(onSuccess1.mock.calls.pop()[0]).toEqual({
-            data: [
-                { id: 1, title: 'foo' },
-                { id: 2, title: 'bar' },
-            ],
-            total: 2,
-        });
-        expect(onSuccess2).toBeCalledTimes(1);
-        expect(onSuccess2.mock.calls.pop()[0]).toEqual({
-            data: [
-                { id: 3, foo: 1 },
-                { id: 4, foo: 2 },
-            ],
-            total: 2,
+        await waitFor(() => {
+            expect(onSuccess1).toBeCalledTimes(1);
+            expect(onSuccess1.mock.calls.pop()[0]).toEqual({
+                data: [
+                    { id: 1, title: 'foo' },
+                    { id: 2, title: 'bar' },
+                ],
+                total: 2,
+            });
+            expect(onSuccess2).toBeCalledTimes(1);
+            expect(onSuccess2.mock.calls.pop()[0]).toEqual({
+                data: [
+                    { id: 3, foo: 1 },
+                    { id: 4, foo: 2 },
+                ],
+                total: 2,
+            });
         });
     });
 
@@ -317,8 +326,9 @@ describe('useGetList', () => {
                 <UseGetList options={{ onFailure }} />
             </DataProviderContext.Provider>
         );
-        await new Promise(resolve => setTimeout(resolve, 10));
-        expect(onFailure).toBeCalledTimes(1);
-        expect(onFailure.mock.calls.pop()[0]).toEqual(new Error('failed'));
+        await waitFor(() => {
+            expect(onFailure).toBeCalledTimes(1);
+            expect(onFailure.mock.calls.pop()[0]).toEqual(new Error('failed'));
+        });
     });
 });

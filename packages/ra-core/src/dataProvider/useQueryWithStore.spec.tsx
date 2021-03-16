@@ -177,11 +177,13 @@ describe('useQueryWithStore', () => {
                 },
             }
         );
-        await new Promise(resolve => setTimeout(resolve, 100)); // dataProvider Promise returns result on next tick
-        expect(dataProvider.getOne).toBeCalledTimes(1);
+        await waitFor(() => {
+            expect(dataProvider.getOne).toBeCalledTimes(1);
+        });
         dispatch({ type: 'RA/REFRESH_VIEW' });
-        await new Promise(resolve => setTimeout(resolve, 100)); // dataProvider Promise returns result on next tick
-        expect(dataProvider.getOne).toBeCalledTimes(2);
+        await waitFor(() => {
+            expect(dataProvider.getOne).toBeCalledTimes(2);
+        });
     });
 
     it('should call the dataProvider twice for different requests in the same tick', async () => {
@@ -205,8 +207,9 @@ describe('useQueryWithStore', () => {
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
-        await new Promise(resolve => setImmediate(resolve)); // dataProvider Promise returns result on next tick
-        expect(dataProvider.getOne).toBeCalledTimes(2);
+        await waitFor(() => {
+            expect(dataProvider.getOne).toBeCalledTimes(2);
+        });
     });
 
     it('should not call the dataProvider twice for the same request in the same tick', async () => {
@@ -224,7 +227,8 @@ describe('useQueryWithStore', () => {
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
-        await new Promise(resolve => setImmediate(resolve)); // dataProvider Promise returns result on next tick
-        expect(dataProvider.getOne).toBeCalledTimes(1);
+        await waitFor(() => {
+            expect(dataProvider.getOne).toBeCalledTimes(1);
+        });
     });
 });

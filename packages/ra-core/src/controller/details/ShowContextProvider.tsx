@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
+import { Record } from '../../types';
 import { RecordContextProvider } from '../RecordContext';
 import { ShowContext } from './ShowContext';
 import { ShowControllerProps } from './useShowController';
@@ -33,7 +34,7 @@ export const ShowContextProvider = ({
     value: ShowControllerProps;
 }) => (
     <ShowContext.Provider value={value}>
-        <RecordContextProvider value={value && value.record}>
+        <RecordContextProvider<Partial<Record>> value={value && value.record}>
             {children}
         </RecordContextProvider>
     </ShowContext.Provider>

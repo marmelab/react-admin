@@ -3,8 +3,8 @@ import expect from 'expect';
 import { SaveContextProvider, SideEffectContextProvider } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
 
-import TabbedForm from './TabbedForm';
-import FormTab from './FormTab';
+import { TabbedForm } from './TabbedForm';
+import { FormTab } from './FormTab';
 import TextInput from '../input/TextInput';
 
 describe('<FormTab label="foo" />', () => {
