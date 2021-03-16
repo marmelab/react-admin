@@ -71,7 +71,7 @@ export interface RecordContextOptions<RecordType> {
 export const useRecordContext = <
     RecordType extends Record | Omit<Record, 'id'> = Record
 >(
-    props: UseRecordContextParams<RecordType>
+    props?: UseRecordContextParams<RecordType>
 ): RecordType => {
     // Can't find a way to specify the RecordType when CreateContext is declared
     // @ts-ignore
