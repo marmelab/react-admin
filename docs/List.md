@@ -404,7 +404,7 @@ export default ResetViewsButton;
 
 **Tip**: `<Confirm>` leverages material-ui's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
 
-**Tip**: `<Confirm>` text props such as `title` and `content` are translatable. You can pass use translation keys in these props.
+**Tip**: `<Confirm>` text props such as `title` and `content` are translatable. You can pass translation keys in these props.
 
 **Tip**: You can customize the text of the two `<Confirm>` component buttons using the `cancel` and `confirm` props which accept translation keys. You can customize the icons by setting the `ConfirmIcon` and `CancelIcon` props, which accept a SvgIcon type.
 
