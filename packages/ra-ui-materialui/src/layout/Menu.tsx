@@ -85,7 +85,7 @@ const Menu: FC<MenuProps> = props => {
                             pathname: `/${resource.name}`,
                             state: { _scrollToTop: true },
                         }}
-                        primaryText={getResourceLabel(resource.name, true)}
+                        primaryText={getResourceLabel(resource.name, 2)}
                         leftIcon={
                             resource.icon ? <resource.icon /> : <DefaultIcon />
                         }
