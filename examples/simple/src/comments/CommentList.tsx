@@ -128,7 +128,7 @@ const useListStyles = makeStyles(theme => ({
 }));
 
 const CommentGrid = () => {
-    const { ids, data, basePath } = useListContext();
+    const { ids, data } = useListContext();
     const translate = useTranslate();
     const classes = useListStyles();
 
