@@ -8,8 +8,7 @@ describe('Navigation', () => {
             ListPage.navigate();
 
             ListPage.waitUntilVisible();
-
-            cy.get('body').tab().tab().tab().tab();
+            cy.get(ListPage.elements.profile).focus().tab();
 
             cy.get(`${ListPage.elements.menuItems}:first-child`).should(
                 'have.class',

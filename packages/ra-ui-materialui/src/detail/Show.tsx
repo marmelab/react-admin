@@ -75,7 +75,7 @@ export const Show = (
 };
 
 Show.propTypes = {
-    actions: PropTypes.element,
+    actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     aside: PropTypes.element,
     children: PropTypes.element,
     classes: PropTypes.object,

@@ -18,6 +18,7 @@ export default url => ({
         sortBy: name => `th span[data-field="${name}"]`,
         svg: (name, criteria = '') =>
             `th span[data-field="${name}"] svg${criteria}`,
+        profile: '[aria-label="Profile"]',
         logout: '.logout',
         bulkActionsToolbar: '[data-test=bulk-actions-toolbar]',
         customBulkActionsButton:

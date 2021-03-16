@@ -4,6 +4,7 @@ import expect from 'expect';
 import ReferenceArrayFieldController from './ReferenceArrayFieldController';
 import { DataProviderContext } from '../../dataProvider';
 import { renderWithRedux } from 'ra-test';
+import { waitFor } from '@testing-library/react';
 
 describe('<ReferenceArrayFieldController />', () => {
     it('should set the loaded prop to false when related records are not yet fetched', () => {
@@ -192,10 +193,11 @@ describe('<ReferenceArrayFieldController />', () => {
                 },
             }
         );
-        await new Promise(resolve => setTimeout(resolve, 10));
-        expect(dispatch).toBeCalledTimes(5);
-        expect(dispatch.mock.calls[0][0].type).toBe('RA/CRUD_GET_MANY');
-        expect(dataProvider.getMany).toBeCalledTimes(1);
+        await waitFor(() => {
+            expect(dispatch).toBeCalledTimes(5);
+            expect(dispatch.mock.calls[0][0].type).toBe('RA/CRUD_GET_MANY');
+            expect(dataProvider.getMany).toBeCalledTimes(1);
+        });
     });
 
     it('should filter string data based on the filter props', () => {

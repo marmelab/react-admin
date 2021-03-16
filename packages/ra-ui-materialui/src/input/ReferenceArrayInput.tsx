@@ -168,7 +168,12 @@ const ReferenceArrayInput = ({
                         translate={translate}
                         children={children}
                         {...props}
-                        {...controllerProps}
+                        choices={controllerProps.choices}
+                        loaded={controllerProps.loaded}
+                        loading={controllerProps.loading}
+                        setFilter={controllerProps.setFilter}
+                        setPagination={controllerProps.setPagination}
+                        setSort={controllerProps.setSort}
                     />
                 </ListContextProvider>
             </ReferenceArrayInputContextProvider>
@@ -202,11 +207,14 @@ ReferenceArrayInput.defaultProps = {
 };
 
 const sanitizeRestProps = ({
+    basePath,
     crudGetMany,
     crudGetMatching,
     filterToQuery,
     perPage,
+    reference,
     referenceSource,
+    resource,
     ...rest
 }: any) => sanitizeInputRestProps(rest);
 
@@ -277,7 +285,9 @@ export const ReferenceArrayInputView = ({
 
     return React.cloneElement(children, {
         allowEmpty,
-        basePath,
+        basePath: basePath
+            ? basePath.replace(resource, reference)
+            : `/${reference}`,
         choices,
         className,
         error,
@@ -292,7 +302,7 @@ export const ReferenceArrayInputView = ({
         },
         onChange,
         options,
-        resource,
+        resource: reference,
         setFilter,
         setPagination,
         setSort,

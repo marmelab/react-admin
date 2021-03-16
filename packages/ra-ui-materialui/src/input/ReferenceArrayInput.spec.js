@@ -111,6 +111,28 @@ describe('<ReferenceArrayInput />', () => {
         expect(queryByText(JSON.stringify([]))).not.toBeNull();
     });
 
+    it('should pass the correct resource and basePath down to child component', () => {
+        let resourceProp;
+        let basePathProp;
+        const MyComponent = ({ resource, basePath }) => {
+            resourceProp = resource;
+            basePathProp = basePath;
+            return <div />;
+        };
+        const onChange = jest.fn();
+        render(
+            <ReferenceArrayInputView
+                {...defaultProps}
+                allowEmpty
+                onChange={onChange}
+            >
+                <MyComponent />
+            </ReferenceArrayInputView>
+        );
+        expect(resourceProp).toEqual('tags');
+        expect(basePathProp).toEqual('/tags');
+    });
+
     it('should pass onChange down to child component', () => {
         let onChangeCallback;
         const MyComponent = ({ onChange }) => {

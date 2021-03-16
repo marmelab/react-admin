@@ -17,9 +17,7 @@ import {
     hideNotification,
 } from '../actions/notificationActions';
 import { clearState } from '../actions/clearActions';
-
-const waitFor = (timeout = 100) =>
-    new Promise(resolve => setTimeout(resolve, timeout));
+import { waitFor } from '@testing-library/react';
 
 describe('Auth saga', () => {
     describe('Login saga', () => {
@@ -183,17 +181,18 @@ describe('Auth saga', () => {
                 resource: 'posts',
             });
             expect(authProvider.logout).toHaveBeenCalled();
-            await waitFor();
-            expect(dispatch).toHaveBeenCalledWith(
-                replace({
-                    pathname: '/custom',
-                    state: { nextPathname: '/posts' },
-                })
-            );
-            expect(dispatch).toHaveBeenCalledWith(clearState());
-            expect(dispatch).toHaveBeenCalledWith(
-                showNotification('Bazinga!', 'warning')
-            );
+            await waitFor(() => {
+                expect(dispatch).toHaveBeenCalledWith(
+                    replace({
+                        pathname: '/custom',
+                        state: { nextPathname: '/posts' },
+                    })
+                );
+                expect(dispatch).toHaveBeenCalledWith(clearState());
+                expect(dispatch).toHaveBeenCalledWith(
+                    showNotification('Bazinga!', 'warning')
+                );
+            });
         });
     });
     describe('Logout saga', () => {
@@ -246,18 +245,19 @@ describe('Auth saga', () => {
             );
             expect(authProvider.checkError).toHaveBeenCalledWith(error);
             expect(authProvider.logout).toHaveBeenCalled();
-            await waitFor();
-            expect(dispatch).toHaveBeenCalledWith(
-                push({
-                    pathname: '/custom',
-                    state: { nextPathname: '/posts' },
-                })
-            );
-            expect(dispatch).toHaveBeenCalledWith(hideNotification());
-            expect(dispatch).toHaveBeenCalledWith(
-                showNotification('ra.notification.logged_out', 'warning')
-            );
-            expect(dispatch).toHaveBeenCalledWith(clearState());
+            await waitFor(() => {
+                expect(dispatch).toHaveBeenCalledWith(
+                    push({
+                        pathname: '/custom',
+                        state: { nextPathname: '/posts' },
+                    })
+                );
+                expect(dispatch).toHaveBeenCalledWith(hideNotification());
+                expect(dispatch).toHaveBeenCalledWith(
+                    showNotification('ra.notification.logged_out', 'warning')
+                );
+                expect(dispatch).toHaveBeenCalledWith(clearState());
+            });
         });
     });
 });

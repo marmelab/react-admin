@@ -9,8 +9,7 @@ module.exports = {
     },
     devtool: 'cheap-module-source-map',
     resolve: {
-        // Add `.ts` and `.tsx` as a resolvable extension.
-        extensions: ['.ts', '.tsx', '.js'],
+        extensions: ['.ts', '.js', '.tsx', '.json'],
     },
     module: {
         rules: [
@@ -23,6 +22,11 @@ module.exports = {
                         transpileOnly: true,
                     },
                 },
+            },
+            {
+                test: /\.html$/,
+                exclude: /node_modules/,
+                use: { loader: 'html-loader' },
             },
         ],
     },

@@ -12,7 +12,7 @@ const defaultRecords = [];
  *
  * @returns {Object} Destructure as [selectedIds, { select, toggle, clearSelection }].
  */
-const useSelectItems = (
+const useRecordSelection = (
     resource: string
 ): [
     Identifier[],
@@ -51,4 +51,4 @@ const useSelectItems = (
     return [selectedIds, selectionModifiers];
 };
 
-export default useSelectItems;
+export default useRecordSelection;

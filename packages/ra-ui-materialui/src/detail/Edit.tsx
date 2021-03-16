@@ -77,7 +77,7 @@ export const Edit = (
 };
 
 Edit.propTypes = {
-    actions: PropTypes.element,
+    actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     aside: PropTypes.element,
     children: PropTypes.node,
     classes: PropTypes.object,
