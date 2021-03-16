@@ -4,11 +4,24 @@ import { getResources } from '../reducer';
 import { useTranslate } from '../i18n';
 
 /**
- * A hook which will return a translated resource name. It will use the label option of the `Resource` component if provided.
+ * A hook which returns function to get a translated resource name. It will use the label option of the `Resource` component if it was provided.
  *
- * @param resource The resource name
- * @param pluralize A boolean indicating whether the resource label should be pluralized.
- * @param lowFirstLetter A boolean indicating whether the first letter of the resource label should be lower cased.
+ * @returns {GetResourceLabel} A function which takes a resource name and an optional boolean indicating whether to pluralize the name and returns a translated string.
+ * @example
+ * const Menu = () => {
+ *     const resources = useSelector(getResources, shallowEqual);
+ *     const getResourceLabel = useGetResourceLabel();
+ *
+ *     return (
+ *         <ul>
+ *             {resources.map(resource => (
+ *                 <li key={resource.name}>
+ *                     {getResourceLabel(resource.name, true)}
+ *                 </li>
+ *             ))}
+ *         </ul>
+ *     )
+ * }
  */
 export const useGetResourceLabel = (): GetResourceLabel => {
     const resources = useSelector(getResources);
