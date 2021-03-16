@@ -78,7 +78,7 @@ export const useShowController = <RecordType extends Record = Record>(
 
     const getResourceLabel = useGetResourceLabel();
     const defaultTitle = translate('ra.page.show', {
-        name: getResourceLabel(resource, false),
+        name: getResourceLabel(resource, 1),
         id,
         record,
     });

@@ -152,7 +152,7 @@ export const useEditController = <RecordType extends Record = Record>(
 
     const getResourceLabel = useGetResourceLabel();
     const defaultTitle = translate('ra.page.edit', {
-        name: getResourceLabel(resource, false),
+        name: getResourceLabel(resource, 1),
         id,
         record,
     });

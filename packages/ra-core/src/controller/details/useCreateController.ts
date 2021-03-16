@@ -215,7 +215,7 @@ export const useCreateController = <
 
     const getResourceLabel = useGetResourceLabel();
     const defaultTitle = translate('ra.page.create', {
-        name: getResourceLabel(resource, false),
+        name: getResourceLabel(resource, 1),
     });
 
     return {

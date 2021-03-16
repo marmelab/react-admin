@@ -5,15 +5,14 @@ import { TestTranslationProvider } from '../i18n';
 
 describe('useResourceLabel', () => {
     test.each([
-        ['pluralized', 'Posts'],
-        ['singularized', 'Post'],
+        [2, 'Posts'],
+        [1, 'Post'],
     ])(
         'should infer the %s and %s version of the resource name',
-        (pluralization, expected) => {
+        (count, expected) => {
             const Component = () => {
-                const pluralized = pluralization === 'pluralized';
                 const getResourceLabel = useGetResourceLabel();
-                const label = getResourceLabel('posts', pluralized);
+                const label = getResourceLabel('posts', count);
 
                 return <p>{label}</p>;
             };

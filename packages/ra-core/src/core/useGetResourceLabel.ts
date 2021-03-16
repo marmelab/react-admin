@@ -6,7 +6,7 @@ import { useTranslate } from '../i18n';
 /**
  * A hook which returns function to get a translated resource name. It will use the label option of the `Resource` component if it was provided.
  *
- * @returns {GetResourceLabel} A function which takes a resource name and an optional boolean indicating whether to pluralize the name and returns a translated string.
+ * @returns {GetResourceLabel} A function which takes a resource name and an optional number indicating the number of items (used for pluralization) and returns a translated string.
  * @example
  * const Menu = () => {
  *     const resources = useSelector(getResources, shallowEqual);
@@ -16,7 +16,7 @@ import { useTranslate } from '../i18n';
  *         <ul>
  *             {resources.map(resource => (
  *                 <li key={resource.name}>
- *                     {getResourceLabel(resource.name, true)}
+ *                     {getResourceLabel(resource.name, 2)}
  *                 </li>
  *             ))}
  *         </ul>
@@ -27,21 +27,21 @@ export const useGetResourceLabel = (): GetResourceLabel => {
     const resources = useSelector(getResources);
     const translate = useTranslate();
 
-    return (resource: string, pluralize = true): string => {
+    return (resource: string, count = 2): string => {
         const resourceDefinition = resources.find(r => r?.name === resource);
 
         const label = translate(`resources.${resource}.name`, {
-            smart_count: pluralize ? 2 : 1,
+            smart_count: count,
             _:
                 resourceDefinition &&
                 resourceDefinition.options &&
                 resourceDefinition.options.label
                     ? translate(resourceDefinition.options.label, {
-                          smart_count: pluralize ? 2 : 1,
+                          smart_count: count,
                           _: resourceDefinition.options.label,
                       })
                     : inflection.humanize(
-                          pluralize
+                          count > 1
                               ? inflection.pluralize(resource)
                               : inflection.singularize(resource)
                       ),
@@ -51,7 +51,4 @@ export const useGetResourceLabel = (): GetResourceLabel => {
     };
 };
 
-export type GetResourceLabel = (
-    resource: string,
-    pluralize?: boolean
-) => string;
+export type GetResourceLabel = (resource: string, count?: number) => string;

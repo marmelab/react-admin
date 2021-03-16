@@ -203,7 +203,7 @@ const useListController = <RecordType extends Record = Record>(
 
     const getResourceLabel = useGetResourceLabel();
     const defaultTitle = translate('ra.page.list', {
-        name: getResourceLabel(resource, true),
+        name: getResourceLabel(resource, 2),
     });
 
     return {
