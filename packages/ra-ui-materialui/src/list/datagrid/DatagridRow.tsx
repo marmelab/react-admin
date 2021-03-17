@@ -55,6 +55,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
         onToggleItem,
         record,
         rowClick,
+        rowAuxClick,
         selected,
         style,
         selectable,
@@ -140,6 +141,43 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
             rowClick,
         ]
     );
+    const handleAuxClick = useCallback(
+        async event => {
+            if (!rowAuxClick) return;
+            event.preventDefault();
+
+            const effect =
+                typeof rowAuxClick === 'function'
+                    ? await rowAuxClick(id, basePath, record)
+                    : rowAuxClick;
+            switch (effect) {
+                case 'edit':
+                    history.push(linkToRecord(basePath, id));
+                    return;
+                case 'show':
+                    history.push(linkToRecord(basePath, id, 'show'));
+                    return;
+                case 'expand':
+                    handleToggleExpand(event);
+                    return;
+                case 'toggleSelection':
+                    handleToggleSelection(event);
+                    return;
+                default:
+                    if (effect) history.push(effect);
+                    return;
+            }
+        },
+        [
+            basePath,
+            history,
+            handleToggleExpand,
+            handleToggleSelection,
+            id,
+            record,
+            rowAuxClick,
+        ]
+    );
 
     return (
         <RecordContextProvider value={record}>
@@ -150,6 +188,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                 style={style}
                 hover={hover}
                 onClick={handleClick}
+                onAuxClick={handleAuxClick}
                 {...rest}
             >
                 {expand && (
@@ -235,6 +274,8 @@ DatagridRow.propTypes = {
     resource: PropTypes.string,
     // @ts-ignore
     rowClick: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+    // @ts-ignore
+    rowAuxClick: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     selected: PropTypes.bool,
     style: PropTypes.object,
     selectable: PropTypes.bool,
@@ -270,6 +311,7 @@ export interface DatagridRowProps
     record?: Record;
     resource?: string;
     rowClick?: RowClickFunction | string;
+    rowAuxClick?: RowClickFunction | string;
     selected?: boolean;
     style?: any;
     selectable?: boolean;
