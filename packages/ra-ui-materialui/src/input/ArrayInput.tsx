@@ -96,7 +96,7 @@ const ArrayInput: FC<ArrayInputProps> = ({
         );
     }
 
-    const { touched, error } = fieldProps.meta;
+    const { error, submitError, touched } = fieldProps.meta;
 
     return (
         <FormControl
@@ -105,7 +105,11 @@ const ArrayInput: FC<ArrayInputProps> = ({
             className={className}
             {...sanitizeInputRestProps(rest)}
         >
-            <InputLabel htmlFor={source} shrink error={touched && !!error}>
+            <InputLabel
+                htmlFor={source}
+                shrink
+                error={touched && !!(error || submitError)}
+            >
                 <FieldTitle
                     label={label}
                     source={source}
@@ -113,11 +117,11 @@ const ArrayInput: FC<ArrayInputProps> = ({
                     isRequired={isRequired(validate)}
                 />
             </InputLabel>
-            {(touched && error) || helperText ? (
+            {!!(touched && (error || submitError)) || helperText ? (
                 <FormHelperText error={touched && !!error}>
                     <InputHelperText
                         touched={touched}
-                        error={error}
+                        error={error || submitError}
                         helperText={helperText}
                     />
                 </FormHelperText>
