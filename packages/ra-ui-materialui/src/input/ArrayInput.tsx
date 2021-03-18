@@ -103,6 +103,7 @@ const ArrayInput: FC<ArrayInputProps> = ({
             fullWidth
             margin="normal"
             className={className}
+            error={touched && !!(error || submitError)}
             {...sanitizeInputRestProps(rest)}
         >
             <InputLabel
