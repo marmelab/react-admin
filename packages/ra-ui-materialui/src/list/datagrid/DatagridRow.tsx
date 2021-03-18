@@ -142,7 +142,9 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
     );
     const handleAuxClick = useCallback(
         async event => {
-            window.open(`#${linkToRecord(basePath, id)}`);
+            if (event.ctrlKey) {
+                window.open(`#${linkToRecord(basePath, id)}`);
+            }
             return;
         },
         [
