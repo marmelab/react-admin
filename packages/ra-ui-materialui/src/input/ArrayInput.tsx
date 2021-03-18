@@ -118,7 +118,7 @@ const ArrayInput: FC<ArrayInputProps> = ({
                 />
             </InputLabel>
             {!!(touched && (error || submitError)) || helperText ? (
-                <FormHelperText error={touched && !!error}>
+                <FormHelperText error={touched && !!(error || submitError)}>
                     <InputHelperText
                         touched={touched}
                         error={error || submitError}
