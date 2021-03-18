@@ -7,6 +7,7 @@ describe('useResourceLabel', () => {
     test.each([
         [2, 'Posts'],
         [1, 'Post'],
+        [0, 'Post'],
     ])(
         'should infer the %s and %s version of the resource name',
         (count, expected) => {

@@ -12,7 +12,7 @@ import { ResourceContext, ResourceContextValue } from './ResourceContext';
  * const ResourceName = (props) => {
  *   const { resource } = useResourceContext(props);
  *   const getResourceLabel = useGetResourceLabel();
- *   return <>{getResourceLabel(resource, false)}</>;
+ *   return <>{getResourceLabel(resource, 1)}</>;
  * }
  *
  * // use it in a resource context
