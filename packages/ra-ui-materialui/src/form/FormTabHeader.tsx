@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
+import { isValidElement, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 import MuiTab from '@material-ui/core/Tab';
@@ -29,7 +29,9 @@ export const FormTabHeader = ({
 
     return (
         <MuiTab
-            label={translate(label, { _: label })}
+            label={
+                isValidElement(label) ? label : translate(label, { _: label })
+            }
             value={value}
             icon={icon}
             className={classnames('form-tab', className, {
@@ -57,7 +59,7 @@ interface FormTabHeaderProps {
     hidden?: boolean;
     icon?: ReactElement;
     intent?: 'header' | 'content';
-    label: string;
+    label: string | ReactElement;
     margin?: 'none' | 'normal' | 'dense';
     path?: string;
     resource?: string;
@@ -74,7 +76,8 @@ FormTabHeader.propTypes = {
     intent: PropTypes.oneOf(['header', 'content']),
     hidden: PropTypes.bool,
     icon: PropTypes.element,
-    label: PropTypes.string.isRequired,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
+        .isRequired,
     margin: PropTypes.oneOf(['none', 'dense', 'normal']),
     path: PropTypes.string,
     // @ts-ignore
