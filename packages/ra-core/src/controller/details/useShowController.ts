@@ -1,5 +1,3 @@
-import inflection from 'inflection';
-
 import useVersion from '../useVersion';
 import { useCheckMinimumRequiredProps } from '../checkMinimumRequiredProps';
 import { Record, Identifier } from '../../types';
@@ -7,7 +5,7 @@ import { useGetOne } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
 import { useNotify, useRedirect, useRefresh } from '../../sideEffect';
 import { CRUD_GET_ONE } from '../../actions';
-import { useResourceContext } from '../../core';
+import { useResourceContext, useGetResourceLabel } from '../../core';
 
 export interface ShowProps {
     basePath?: string;
@@ -78,12 +76,9 @@ export const useShowController = <RecordType extends Record = Record>(
         }
     );
 
-    const resourceName = translate(`resources.${resource}.name`, {
-        smart_count: 1,
-        _: inflection.humanize(inflection.singularize(resource)),
-    });
+    const getResourceLabel = useGetResourceLabel();
     const defaultTitle = translate('ra.page.show', {
-        name: `${resourceName}`,
+        name: getResourceLabel(resource, 1),
         id,
         record,
     });

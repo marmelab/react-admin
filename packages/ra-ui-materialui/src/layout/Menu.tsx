@@ -4,12 +4,11 @@ import PropTypes from 'prop-types';
 import { shallowEqual, useSelector } from 'react-redux';
 import lodashGet from 'lodash/get';
 // @ts-ignore
-import inflection from 'inflection';
 import { useMediaQuery, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import DefaultIcon from '@material-ui/icons/ViewList';
 import classnames from 'classnames';
-import { getResources, useTranslate, Translate, ReduxState } from 'ra-core';
+import { useGetResourceLabel, getResources, ReduxState } from 'ra-core';
 
 import DashboardMenuItem from './DashboardMenuItem';
 import MenuItemLink from './MenuItemLink';
@@ -41,18 +40,6 @@ const useStyles = makeStyles(
     { name: 'RaMenu' }
 );
 
-const translatedResourceName = (resource: any, translate: Translate) =>
-    translate(`resources.${resource.name}.name`, {
-        smart_count: 2,
-        _:
-            resource.options && resource.options.label
-                ? translate(resource.options.label, {
-                      smart_count: 2,
-                      _: resource.options.label,
-                  })
-                : inflection.humanize(inflection.pluralize(resource.name)),
-    });
-
 const Menu: FC<MenuProps> = props => {
     const {
         classes: classesOverride,
@@ -63,14 +50,13 @@ const Menu: FC<MenuProps> = props => {
         logout,
         ...rest
     } = props;
-    const translate = useTranslate();
     const classes = useStyles(props);
     const isXSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('xs')
     );
     const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
     const resources = useSelector(getResources, shallowEqual) as Array<any>;
-
+    const getResourceLabel = useGetResourceLabel();
     return (
         <div
             className={classnames(
@@ -99,10 +85,7 @@ const Menu: FC<MenuProps> = props => {
                             pathname: `/${resource.name}`,
                             state: { _scrollToTop: true },
                         }}
-                        primaryText={translatedResourceName(
-                            resource,
-                            translate
-                        )}
+                        primaryText={getResourceLabel(resource.name, 2)}
                         leftIcon={
                             resource.icon ? <resource.icon /> : <DefaultIcon />
                         }
