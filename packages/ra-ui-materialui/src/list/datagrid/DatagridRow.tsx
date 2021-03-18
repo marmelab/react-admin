@@ -265,7 +265,7 @@ export type RowClickFunction = (
     id: Identifier,
     basePath: string,
     record: Record
-) => string;
+) => string | Promise<string>;
 
 const areEqual = (prevProps, nextProps) => {
     const { children: _1, expand: _2, ...prevPropsWithoutChildren } = prevProps;
