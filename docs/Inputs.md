@@ -1499,7 +1499,7 @@ You can tweak how this component fetches the possible values using the `perPage`
 ```
 {% endraw %}
 
-In addition to the `ReferenceArrayInputContext`, `<ReferenceArrayInput>` also sets up a `ListContext` providing access to the records from the reference resource in a similar fashion to that of the `<List>` component. This `ListContext` value is accessible with the [`useListContext`](/List.md#uselistcontext) hook.
+In addition to the `ReferenceArrayInputContext`, `<ReferenceArrayInput>` also sets up a `ListContext` providing access to the records from the reference resource in a similar fashion to that of the `<List>` component. This `ListContext` value is accessible with the [`useListContext`](./List.md#uselistcontext) hook.
 
 `<ReferenceArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
@@ -1507,7 +1507,7 @@ In addition to the `ReferenceArrayInputContext`, `<ReferenceArrayInput>` also se
 
 The [`<ReferenceArrayInput>`](#referencearrayinput) component take care of fetching the data, and put that data in a context called `ReferenceArrayInputContext` so that it’s available for its descendants. This context also stores filters, pagination, sort state, and provides callbacks to update them.
 
-Any component decendent of `<ReferenceArryInput>` can grab information from the `ReferenceArrayInputContext` using the `useReferenceArrayInputContext` hook. Here is what it returns:
+Any component descendant of `<ReferenceArryInput>` can grab information from the `ReferenceArrayInputContext` using the `useReferenceArrayInputContext` hook. Here is what it returns:
 
 ```js
 const {

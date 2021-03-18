@@ -59,12 +59,12 @@ Here is an example input:
 ```json
 {
     "posts": [
-        { "id": 0, "title": 'Hello, world!' },
-        { "id": 1, "title": 'FooBar' }
+        { "id": 0, "title": "Hello, world!" },
+        { "id": 1, "title": "FooBar" }
     ],
     "comments": [
-        { "id": 0, "post_id": 0, "author": 'John Doe', "body": 'Sensational!' },
-        { "id": 1, "post_id": 0, "author": 'Jane Doe', "body": 'I agree' }
+        { "id": 0, "post_id": 0, "author": "John Doe", "body": "Sensational!" },
+        { "id": 1, "post_id": 0, "author": "Jane Doe", "body": "I agree" }
     ]
 }
 ```
