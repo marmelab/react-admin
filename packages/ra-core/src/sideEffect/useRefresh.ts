@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { refreshView, softRefreshView } from '../actions/uiActions';
+import { refreshView } from '../actions/uiActions';
 
 /**
  * Hook for Refresh Side Effect
@@ -24,7 +24,7 @@ const useRefresh = () => {
     const dispatch = useDispatch();
     return useCallback(
         (hard?: boolean) => {
-            dispatch(hard ? refreshView() : softRefreshView());
+            dispatch(refreshView(hard));
         },
         [dispatch]
     );

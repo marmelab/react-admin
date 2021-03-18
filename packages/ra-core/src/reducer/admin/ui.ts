@@ -6,8 +6,6 @@ import {
     SetSidebarVisibilityAction,
     REFRESH_VIEW,
     RefreshViewAction,
-    SOFT_REFRESH_VIEW,
-    SoftRefreshViewAction,
     START_OPTIMISTIC_MODE,
     StartOptimisticModeAction,
     STOP_OPTIMISTIC_MODE,
@@ -22,7 +20,6 @@ type ActionTypes =
     | ToggleSidebarAction
     | SetSidebarVisibilityAction
     | RefreshViewAction
-    | SoftRefreshViewAction
     | StartOptimisticModeAction
     | StopOptimisticModeAction
     | SetAutomaticRefreshAction
@@ -70,7 +67,6 @@ const uiReducer: Reducer<UIState> = (
                 automaticRefreshEnabled: action.payload,
             };
         case REFRESH_VIEW:
-        case SOFT_REFRESH_VIEW:
             return {
                 ...previousState,
                 viewVersion: previousState.viewVersion + 1,

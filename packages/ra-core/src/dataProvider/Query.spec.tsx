@@ -6,11 +6,7 @@ import Query from './Query';
 import { CoreAdmin, Resource } from '../core';
 import { renderWithRedux, TestContext } from 'ra-test';
 import DataProviderContext from './DataProviderContext';
-import {
-    showNotification,
-    softRefreshView,
-    setListSelectedIds,
-} from '../actions';
+import { showNotification, refreshView, setListSelectedIds } from '../actions';
 import { useNotify, useRefresh } from '../sideEffect';
 import { History } from 'history';
 
@@ -315,7 +311,7 @@ describe('Query', () => {
                 })
             );
             expect(historyForAssertions.location.pathname).toEqual('/a_path');
-            expect(dispatchSpy).toHaveBeenCalledWith(softRefreshView());
+            expect(dispatchSpy).toHaveBeenCalledWith(refreshView());
             expect(dispatchSpy).toHaveBeenCalledWith(
                 setListSelectedIds('foo', [])
             );
@@ -436,7 +432,7 @@ describe('Query', () => {
                 })
             );
             expect(historyForAssertions.location.pathname).toEqual('/a_path');
-            expect(dispatchSpy).toHaveBeenCalledWith(softRefreshView());
+            expect(dispatchSpy).toHaveBeenCalledWith(refreshView());
             expect(dispatchSpy).toHaveBeenCalledWith(
                 setListSelectedIds('foo', [])
             );
