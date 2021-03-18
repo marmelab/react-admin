@@ -8,7 +8,8 @@ import {
     InputProps,
 } from 'ra-core';
 import { useFieldArray } from 'react-final-form-arrays';
-import { InputLabel, FormControl } from '@material-ui/core';
+import { InputLabel, FormControl, FormHelperText } from '@material-ui/core';
+import InputHelperText from './InputHelperText';
 
 import sanitizeInputRestProps from './sanitizeInputRestProps';
 import Labeled from './Labeled';
@@ -62,6 +63,7 @@ const ArrayInput: FC<ArrayInputProps> = ({
     loaded,
     loading,
     children,
+    helperText,
     record,
     resource,
     source,
@@ -94,6 +96,8 @@ const ArrayInput: FC<ArrayInputProps> = ({
         );
     }
 
+    const { touched, error } = fieldProps.meta;
+
     return (
         <FormControl
             fullWidth
@@ -101,7 +105,7 @@ const ArrayInput: FC<ArrayInputProps> = ({
             className={className}
             {...sanitizeInputRestProps(rest)}
         >
-            <InputLabel htmlFor={source} shrink>
+            <InputLabel htmlFor={source} shrink error={touched && !!error}>
                 <FieldTitle
                     label={label}
                     source={source}
@@ -109,6 +113,15 @@ const ArrayInput: FC<ArrayInputProps> = ({
                     isRequired={isRequired(validate)}
                 />
             </InputLabel>
+            {(touched && error) || helperText ? (
+                <FormHelperText error={touched && !!error}>
+                    <InputHelperText
+                        touched={touched}
+                        error={error}
+                        helperText={helperText}
+                    />
+                </FormHelperText>
+            ) : null}
             {cloneElement(Children.only(children), {
                 ...fieldProps,
                 record,
@@ -129,6 +142,7 @@ ArrayInput.propTypes = {
     defaultValue: PropTypes.any,
     isRequired: PropTypes.bool,
     label: PropTypes.string,
+    helperText: PropTypes.string,
     resource: PropTypes.string,
     source: PropTypes.string,
     record: PropTypes.object,
