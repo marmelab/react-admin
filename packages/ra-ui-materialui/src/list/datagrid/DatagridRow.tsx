@@ -55,7 +55,6 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
         onToggleItem,
         record,
         rowClick,
-        rowAuxClick,
         selected,
         style,
         selectable,
@@ -143,30 +142,8 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
     );
     const handleAuxClick = useCallback(
         async event => {
-            if (!rowAuxClick) return;
-            event.preventDefault();
-
-            const effect =
-                typeof rowAuxClick === 'function'
-                    ? await rowAuxClick(id, basePath, record)
-                    : rowAuxClick;
-            switch (effect) {
-                case 'edit':
-                    history.push(linkToRecord(basePath, id));
-                    return;
-                case 'show':
-                    history.push(linkToRecord(basePath, id, 'show'));
-                    return;
-                case 'expand':
-                    handleToggleExpand(event);
-                    return;
-                case 'toggleSelection':
-                    handleToggleSelection(event);
-                    return;
-                default:
-                    if (effect) history.push(effect);
-                    return;
-            }
+            window.open(`#${linkToRecord(basePath, id)}`);
+            return;
         },
         [
             basePath,
@@ -175,7 +152,6 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
             handleToggleSelection,
             id,
             record,
-            rowAuxClick,
         ]
     );
 
@@ -274,8 +250,6 @@ DatagridRow.propTypes = {
     resource: PropTypes.string,
     // @ts-ignore
     rowClick: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
-    // @ts-ignore
-    rowAuxClick: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     selected: PropTypes.bool,
     style: PropTypes.object,
     selectable: PropTypes.bool,
@@ -311,7 +285,6 @@ export interface DatagridRowProps
     record?: Record;
     resource?: string;
     rowClick?: RowClickFunction | string;
-    rowAuxClick?: RowClickFunction | string;
     selected?: boolean;
     style?: any;
     selectable?: boolean;
