@@ -147,14 +147,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
             }
             return;
         },
-        [
-            basePath,
-            history,
-            handleToggleExpand,
-            handleToggleSelection,
-            id,
-            record,
-        ]
+        [basePath, id]
     );
 
     return (
