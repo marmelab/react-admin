@@ -22,6 +22,7 @@ export const setSidebarVisibility = (
     payload: isOpen,
 });
 
+// refresh increases version (i.e. forces refetch) and empties the cache
 export const REFRESH_VIEW = 'RA/REFRESH_VIEW';
 
 export interface RefreshViewAction {
@@ -30,6 +31,17 @@ export interface RefreshViewAction {
 
 export const refreshView = (): RefreshViewAction => ({
     type: REFRESH_VIEW,
+});
+
+// soft refresh only increases version (i.e. forces refetch)
+export const SOFT_REFRESH_VIEW = 'RA/SOFT_REFRESH_VIEW';
+
+export interface SoftRefreshViewAction {
+    readonly type: typeof SOFT_REFRESH_VIEW;
+}
+
+export const softRefreshView = (): SoftRefreshViewAction => ({
+    type: SOFT_REFRESH_VIEW,
 });
 
 export const SET_AUTOMATIC_REFRESH = 'RA/SET_AUTOMATIC_REFRESH';

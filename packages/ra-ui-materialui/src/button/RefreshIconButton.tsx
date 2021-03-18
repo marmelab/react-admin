@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton, { IconButtonProps } from '@material-ui/core/IconButton';
 import NavigationRefresh from '@material-ui/icons/Refresh';
-import { refreshView, useTranslate } from 'ra-core';
+import { softRefreshView, useTranslate } from 'ra-core';
 
 const RefreshIconButton: FC<RefreshIconProps> = ({
     label = 'ra.action.refresh',
@@ -19,7 +19,7 @@ const RefreshIconButton: FC<RefreshIconProps> = ({
     const handleClick = useCallback(
         event => {
             event.preventDefault();
-            dispatch(refreshView());
+            dispatch(softRefreshView());
             if (typeof onClick === 'function') {
                 onClick(event);
             }

@@ -3,7 +3,7 @@ import { FC, ReactElement, MouseEvent, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import NavigationRefresh from '@material-ui/icons/Refresh';
-import { refreshView } from 'ra-core';
+import { softRefreshView } from 'ra-core';
 
 import Button, { ButtonProps } from './Button';
 
@@ -17,7 +17,7 @@ const RefreshButton: FC<RefreshButtonProps> = ({
     const handleClick = useCallback(
         event => {
             event.preventDefault();
-            dispatch(refreshView());
+            dispatch(softRefreshView());
             if (typeof onClick === 'function') {
                 onClick(event);
             }

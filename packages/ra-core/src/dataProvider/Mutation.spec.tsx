@@ -3,7 +3,11 @@ import { fireEvent, waitFor, act, render } from '@testing-library/react';
 import expect from 'expect';
 
 import Mutation from './Mutation';
-import { showNotification, refreshView, setListSelectedIds } from '../actions';
+import {
+    showNotification,
+    softRefreshView,
+    setListSelectedIds,
+} from '../actions';
 import DataProviderContext from './DataProviderContext';
 import { renderWithRedux, TestContext } from 'ra-test';
 import { useNotify } from '../sideEffect';
@@ -100,7 +104,7 @@ describe('Mutation', () => {
                 })
             );
             expect(historyForAssertions.location.pathname).toEqual('/a_path');
-            expect(dispatchSpy).toHaveBeenCalledWith(refreshView());
+            expect(dispatchSpy).toHaveBeenCalledWith(softRefreshView());
             expect(dispatchSpy).toHaveBeenCalledWith(
                 setListSelectedIds('foo', [])
             );
@@ -222,7 +226,7 @@ describe('Mutation', () => {
                 })
             );
             expect(historyForAssertions.location.pathname).toEqual('/a_path');
-            expect(dispatchSpy).toHaveBeenCalledWith(refreshView());
+            expect(dispatchSpy).toHaveBeenCalledWith(softRefreshView());
             expect(dispatchSpy).toHaveBeenCalledWith(
                 setListSelectedIds('foo', [])
             );

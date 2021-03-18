@@ -5,6 +5,8 @@ import {
     UnregisterResourceAction,
     REFRESH_VIEW,
     RefreshViewAction,
+    SOFT_REFRESH_VIEW,
+    SoftRefreshViewAction,
 } from '../../../actions';
 
 import data from './data';
@@ -17,6 +19,7 @@ type ActionTypes =
     | RegisterResourceAction
     | UnregisterResourceAction
     | RefreshViewAction
+    | SoftRefreshViewAction
     | { type: 'OTHER_ACTION'; payload?: any; meta?: { resource?: string } };
 
 export default (previousState = initialState, action: ActionTypes) => {
@@ -45,6 +48,7 @@ export default (previousState = initialState, action: ActionTypes) => {
 
     if (
         action.type !== REFRESH_VIEW &&
+        action.type !== SOFT_REFRESH_VIEW &&
         (!action.meta || !action.meta.resource)
     ) {
         return previousState;
@@ -56,6 +60,7 @@ export default (previousState = initialState, action: ActionTypes) => {
             ...acc,
             [resource]:
                 action.type === REFRESH_VIEW ||
+                action.type === SOFT_REFRESH_VIEW ||
                 action.meta.resource === resource
                     ? {
                           props: previousState[resource].props,

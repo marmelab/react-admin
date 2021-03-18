@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import { FETCH_END, REFRESH_VIEW } from '../../../actions';
+import { FETCH_END, REFRESH_VIEW, SOFT_REFRESH_VIEW } from '../../../actions';
 import {
     CREATE,
     DELETE,
@@ -25,7 +25,7 @@ const validityReducer: Reducer<ValidityRegistry> = (
     previousState = initialState,
     { type, payload, requestPayload, meta }
 ) => {
-    if (type === REFRESH_VIEW) {
+    if (type === REFRESH_VIEW || type === SOFT_REFRESH_VIEW) {
         return initialState;
     }
     if (
