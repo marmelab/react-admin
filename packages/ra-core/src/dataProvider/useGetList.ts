@@ -63,8 +63,8 @@ const useGetList = <RecordType extends Record = Record>(
     filter: object,
     options?: UseDataProviderOptions
 ): {
-    data?: RecordMap<RecordType>;
-    ids?: Identifier[];
+    data: RecordMap<RecordType>;
+    ids: Identifier[];
     total?: number;
     error?: any;
     loading: boolean;
