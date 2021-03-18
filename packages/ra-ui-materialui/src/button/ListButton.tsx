@@ -3,6 +3,7 @@ import { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ActionList from '@material-ui/icons/List';
 import { Link } from 'react-router-dom';
+import { useResourceContext } from 'ra-core';
 
 import Button, { ButtonProps } from './Button';
 
@@ -37,11 +38,19 @@ const ListButton: FC<ListButtonProps> = ({
     icon = defaultIcon,
     label = 'ra.action.list',
     ...rest
-}) => (
-    <Button component={Link} to={basePath} label={label} {...(rest as any)}>
-        {icon}
-    </Button>
-);
+}) => {
+    const resource = useResourceContext();
+    return (
+        <Button
+            component={Link}
+            to={basePath || `/${resource}`}
+            label={label}
+            {...(rest as any)}
+        >
+            {icon}
+        </Button>
+    );
+};
 
 const defaultIcon = <ActionList />;
 
