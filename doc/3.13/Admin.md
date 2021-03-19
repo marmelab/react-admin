@@ -578,7 +578,7 @@ const App = () => (
 
 **Caution**: Do not use the 5.x version of the `history` package. It's currently incompatible with another dependency of react-admin, `connected-react-router`. `history@4.10.1` works fine. 
 
-### `ready`
+## `ready`
 
 When you run an `<Admin>` with no child `<Resource>`, react-admin displays a "ready" screen:
 
