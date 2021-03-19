@@ -65,6 +65,20 @@ testUtils = render(
 
 This means that reducers will work as they will within the app.
 
+### Passing your custom reducers
+
+If your component relies on customReducers which are passed originally to the `<Admin/>` component, you can plug them in the TestContext using the `customReducers` props:
+
+```jsx
+testUtils = render(
+    <TestContext enableReducers customReducers={myCustomReducers}>
+        <MyCustomEditView />
+    </TestContext>
+);
+```
+
+Note you should also enable the default react-admin reducers in order to supply the custom ones. 
+
 ### Spying on the store 'dispatch'
 
 If you are using `useDispatch` within your components, it is likely you will want to test that actions have been dispatched with the correct arguments. You can return the `store` being used within the tests using a `renderProp`.
