@@ -100,6 +100,37 @@ it('should send the user to another url', () => {
 });
 ```
 
+### Using the 'renderWithRedux' wrapper function
+
+Instead of wrapping the component under test with the `TestContext` by yourself you can get use of all of the above options and test your components almost natively looking like using just `@testing-library/react` thanks to the `renderWithRedux` wrapper function.
+// to the way using
+
+It will return the same output as `@testing-library/react`'s  `render` method with added `dispatch` and `reduxStore` helpers
+
+```jsx
+import { defaultStore } from 'ra-test'
+...
+const { dispatch, reduxStore, ...testUtils } = renderWithRedux(
+    <MyCustomEditView />, 
+    initialState, 
+    options,
+    myCustomReducers
+);
+
+it('should initilize store', () => {
+    const storeState = reduxStore.getState();
+    storeState.router.location.key = ''
+    expect(storeState).toEqual({...defaultStore, ...initialState});
+});
+
+it('send the user to another url', () => {
+    fireEvent.click(testUtils.getByText('Go to next'));
+    expect(dispatch).toHaveBeenCalledWith(`/next-url`);
+});
+```
+
+All of the arguments except the first one - the component under test, are optional and could be omitted by passing an empty object - `{}`
+
 ### Testing Permissions
 
 As explained on the [Auth Provider chapter](./Authentication.md#authorization), it's possible to manage permissions via the `authProvider` in order to filter page and fields the users can see.
