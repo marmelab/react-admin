@@ -77,7 +77,8 @@ FormTab.propTypes = {
     intent: PropTypes.oneOf(['header', 'content']),
     hidden: PropTypes.bool,
     icon: PropTypes.element,
-    label: PropTypes.string.isRequired,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
+        .isRequired,
     margin: PropTypes.oneOf(['none', 'dense', 'normal']),
     path: PropTypes.string,
     // @ts-ignore
@@ -96,7 +97,7 @@ export interface FormTabProps {
     hidden?: boolean;
     icon?: ReactElement;
     intent?: 'header' | 'content';
-    label: string;
+    label: string | ReactElement;
     margin?: 'none' | 'normal' | 'dense';
     path?: string;
     record?: Record;
