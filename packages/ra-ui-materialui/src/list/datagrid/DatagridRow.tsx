@@ -140,9 +140,10 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
             rowClick,
         ]
     );
-    const handleAuxClick = useCallback(
+    const handleMouseDown = useCallback(
         async event => {
-            if (event.ctrlKey) {
+            if (event.button === 1 && event.ctrlKey) {
+                event.stopPropagation();
                 window.open(`#${linkToRecord(basePath, id)}`);
             }
             return;
@@ -159,7 +160,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                 style={style}
                 hover={hover}
                 onClick={handleClick}
-                onAuxClick={handleAuxClick}
+                onMouseDown={handleMouseDown}
                 {...rest}
             >
                 {expand && (
