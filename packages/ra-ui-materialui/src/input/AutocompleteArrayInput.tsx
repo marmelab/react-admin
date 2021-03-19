@@ -495,42 +495,40 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
 const emptyArray = [];
 
 const useStyles = makeStyles(
-    theme => {
-        const chipBackgroundColor =
-            theme.palette.type === 'light'
-                ? 'rgba(0, 0, 0, 0.09)'
-                : 'rgba(255, 255, 255, 0.09)';
-
-        return {
-            container: {
-                flexGrow: 1,
-                position: 'relative',
+    theme => ({
+        container: {
+            flexGrow: 1,
+            position: 'relative',
+        },
+        suggestionsContainer: {
+            zIndex: theme.zIndex.modal,
+        },
+        chip: {
+            margin: theme.spacing(0.5, 0.5, 0.5, 0),
+        },
+        chipContainerFilled: {
+            margin: '27px 12px 10px 0',
+        },
+        chipContainerOutlined: {
+            margin: '12px 12px 10px 0',
+        },
+        inputRoot: {
+            flexWrap: 'wrap',
+        },
+        inputRootFilled: {
+            flexWrap: 'wrap',
+            '& $chip': {
+                backgroundColor:
+                    theme.palette.type === 'light'
+                        ? 'rgba(0, 0, 0, 0.09)'
+                        : 'rgba(255, 255, 255, 0.09)',
             },
-            suggestionsContainer: {},
-            chip: {
-                margin: theme.spacing(0.5, 0.5, 0.5, 0),
-            },
-            chipContainerFilled: {
-                margin: '27px 12px 10px 0',
-            },
-            chipContainerOutlined: {
-                margin: '12px 12px 10px 0',
-            },
-            inputRoot: {
-                flexWrap: 'wrap',
-            },
-            inputRootFilled: {
-                flexWrap: 'wrap',
-                '& $chip': {
-                    backgroundColor: chipBackgroundColor,
-                },
-            },
-            inputInput: {
-                width: 'auto',
-                flexGrow: 1,
-            },
-        };
-    },
+        },
+        inputInput: {
+            width: 'auto',
+            flexGrow: 1,
+        },
+    }),
     { name: 'RaAutocompleteArrayInput' }
 );
 
