@@ -27,12 +27,17 @@ export interface RenderWithReduxResult extends RenderResult {
 export const renderWithRedux = (
     component,
     initialState = {},
-    options = {}
+    options = {},
+    customReducers = {}
 ): RenderWithReduxResult => {
     let dispatch;
     let reduxStore;
     const renderResult = render(
-        <TestContext initialState={initialState} enableReducers>
+        <TestContext
+            initialState={initialState}
+            customReducers={customReducers}
+            enableReducers
+        >
             {({ store }) => {
                 dispatch = jest.spyOn(store, 'dispatch');
                 reduxStore = store;
@@ -46,7 +51,11 @@ export const renderWithRedux = (
         ...renderResult,
         rerender: newComponent => {
             return renderResult.rerender(
-                <TestContext initialState={initialState} enableReducers>
+                <TestContext
+                    initialState={initialState}
+                    customReducers={customReducers}
+                    enableReducers
+                >
                     {({ store }) => {
                         dispatch = jest.spyOn(store, 'dispatch');
                         reduxStore = store;
