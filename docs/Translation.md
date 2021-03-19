@@ -669,8 +669,9 @@ resources: {
         fields: {
             id: 'Id',
             name: 'Bezeichnung',
-        },
-    },
+        }
+    }
+}
 ```
 
 ## Silencing Translation Warnings
