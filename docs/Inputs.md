@@ -1134,6 +1134,7 @@ Lastly, `<AutocompleteArrayInput>` renders a [material-ui `<TextField>` componen
 {% endraw %}
 
 **Tip**: Like many other inputs, `<AutocompleteArrayInput>` accept a `fullWidth` prop.
+
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<AutocompleteArrayInput>` with [`<ReferenceArrayInput>`](#referenceinput), and leave the `choices` empty:
 
 ```jsx
