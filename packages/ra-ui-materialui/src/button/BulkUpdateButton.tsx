@@ -21,7 +21,7 @@ import BulkUpdateWithUndoButton, {
  * const PostBulkActionButtons = ({ basePath }) => (
  *     <Fragment>
  *         <BulkExportButton />
- *         <BulkUpdateButton basePath={basePath} />
+ *         <BulkUpdateButton data={{ views: 0 }} basePath={basePath} />
  *     </Fragment>
  * );
  *
