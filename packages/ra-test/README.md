@@ -102,8 +102,7 @@ it('should send the user to another url', () => {
 
 ### Using the 'renderWithRedux' wrapper function
 
-Instead of wrapping the component under test with the `TestContext` by yourself you can get use of all of the above options and test your components almost natively looking like using just `@testing-library/react` thanks to the `renderWithRedux` wrapper function.
-// to the way using
+Instead of wrapping the component under test with the `TestContext` by yourself you can use all of the above options and test your components almost like using just `@testing-library/react` thanks to the `renderWithRedux` wrapper function.
 
 It will return the same output as the `render` method from `@testing-library/react` but will add the `dispatch` and `reduxStore` helpers.
 
