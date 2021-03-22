@@ -12,7 +12,7 @@ import {
 } from '../types';
 import useQueryWithStore from './useQueryWithStore';
 
-const defautlPagination = { page: 1, perPage: 25 };
+const defaultPagination = { page: 1, perPage: 25 };
 const defaultSort = { field: 'id', order: 'DESC' };
 const defaultFilter = {};
 const defaultIds = [];
@@ -61,7 +61,7 @@ const defaultData = {};
  */
 const useGetList = <RecordType extends Record = Record>(
     resource: string,
-    pagination: PaginationPayload = defautlPagination,
+    pagination: PaginationPayload = defaultPagination,
     sort: SortPayload = defaultSort,
     filter: object = defaultFilter,
     options?: UseDataProviderOptions
