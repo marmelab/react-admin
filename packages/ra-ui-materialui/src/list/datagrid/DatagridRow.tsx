@@ -269,7 +269,7 @@ export interface DatagridRowProps
     ) => void;
     record?: Record;
     resource?: string;
-    rowClick?: RowClickFunction | string;
+    rowClick?: string | RowClickFunction;
     selected?: boolean;
     style?: any;
     selectable?: boolean;
@@ -279,7 +279,7 @@ export type RowClickFunction = (
     id: Identifier,
     basePath: string,
     record: Record
-) => string;
+) => string | Promise<string>;
 
 const areEqual = (prevProps, nextProps) => {
     const { children: _1, expand: _2, ...prevPropsWithoutChildren } = prevProps;
