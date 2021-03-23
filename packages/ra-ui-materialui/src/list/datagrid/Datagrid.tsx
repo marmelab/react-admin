@@ -34,6 +34,7 @@ import DatagridLoading from './DatagridLoading';
 import DatagridBody, { PureDatagridBody } from './DatagridBody';
 import useDatagridStyles from './useDatagridStyles';
 import { ClassesOverride } from '../../types';
+import { RowClickFunction } from './DatagridRow';
 
 /**
  * The Datagrid component renders a list of records as a table.
@@ -354,12 +355,6 @@ Datagrid.propTypes = {
     version: PropTypes.number,
     isRowSelectable: PropTypes.func,
 };
-
-type RowClickFunction = (
-    id: Identifier,
-    basePath: string,
-    record: Record
-) => string;
 
 export interface DatagridProps extends Omit<TableProps, 'size' | 'classes'> {
     body?: ReactElement;
