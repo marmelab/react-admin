@@ -5,6 +5,7 @@ import {
     cloneElement,
     isValidElement,
     ReactElement,
+    ReactNode,
     useState,
 } from 'react';
 import PropTypes from 'prop-types';
@@ -183,6 +184,7 @@ TabbedFormView.defaultProps = {
 
 export interface TabbedFormViewProps extends FormWithRedirectRenderProps {
     basePath?: string;
+    children: ReactNode;
     classes?: ClassesOverride<typeof useTabbedFormViewStyles>;
     className?: string;
     margin?: 'none' | 'normal' | 'dense';
