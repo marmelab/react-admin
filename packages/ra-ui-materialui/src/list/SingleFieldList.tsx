@@ -9,6 +9,9 @@ import {
     sanitizeListRestProps,
     useListContext,
     useResourceContext,
+    Record,
+    RecordMap,
+    Identifier,
 } from 'ra-core';
 
 import Link from '../Link';
@@ -129,19 +132,24 @@ SingleFieldList.propTypes = {
     children: PropTypes.element.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
-    data: PropTypes.object,
+    data: PropTypes.any,
     ids: PropTypes.array,
     // @ts-ignore
     linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     resource: PropTypes.string,
 };
 
-export interface SingleFieldListProps
+export interface SingleFieldListProps<RecordType extends Record = Record>
     extends HtmlHTMLAttributes<HTMLDivElement> {
     className?: string;
     classes?: ClassesOverride<typeof useStyles>;
     linkType?: string | false;
     children: React.ReactElement;
+    // can be injected when using the component without context
+    basePath?: string;
+    data?: RecordMap<RecordType>;
+    ids?: Identifier[];
+    loaded?: boolean;
 }
 
 export default SingleFieldList;
