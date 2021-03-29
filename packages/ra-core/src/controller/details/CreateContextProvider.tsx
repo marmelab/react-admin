@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
+
+import { Record } from '../../types';
 import { RecordContextProvider } from '../RecordContext';
 import { CreateContext } from './CreateContext';
 import { CreateControllerProps } from './useCreateController';
 import { SaveContextProvider, usePickSaveContext } from './SaveContext';
-import { Record } from '../../types';
 
 /**
  * Create a Create Context.
@@ -21,7 +22,7 @@ import { Record } from '../../types';
  * };
  *
  * const MyCreateView = () => {
- *     const { record } = useRecordContext();
+ *     const record = useRecordContext();
  *     // or, to rerender only when the save operation change but not data
  *     const { saving } = useCreateContext();
  * }

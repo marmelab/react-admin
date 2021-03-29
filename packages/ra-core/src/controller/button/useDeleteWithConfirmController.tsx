@@ -90,7 +90,7 @@ const useDeleteWithConfirmController = (
             setOpen(false);
             if (onSuccess === undefined) {
                 notify('ra.notification.deleted', 'info', { smart_count: 1 });
-                redirect(redirectTo, basePath);
+                redirect(redirectTo, basePath || `/${resource}`);
                 refresh();
             } else {
                 onSuccess(response);

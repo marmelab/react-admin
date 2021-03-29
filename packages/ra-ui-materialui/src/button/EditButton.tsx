@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import ContentCreate from '@material-ui/icons/Create';
 import { ButtonProps as MuiButtonProps } from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
-import { linkToRecord, Record } from 'ra-core';
+import { linkToRecord, Record, useResourceContext } from 'ra-core';
 
 import Button, { ButtonProps } from './Button';
 
@@ -25,23 +25,28 @@ const EditButton: FC<EditButtonProps> = ({
     record,
     scrollToTop = true,
     ...rest
-}) => (
-    <Button
-        component={Link}
-        to={useMemo(
-            () => ({
-                pathname: record ? linkToRecord(basePath, record.id) : '',
-                state: { _scrollToTop: scrollToTop },
-            }),
-            [basePath, record, scrollToTop]
-        )}
-        label={label}
-        onClick={stopPropagation}
-        {...(rest as any)}
-    >
-        {icon}
-    </Button>
-);
+}) => {
+    const resource = useResourceContext();
+    return (
+        <Button
+            component={Link}
+            to={useMemo(
+                () => ({
+                    pathname: record
+                        ? linkToRecord(basePath || `/${resource}`, record.id)
+                        : '',
+                    state: { _scrollToTop: scrollToTop },
+                }),
+                [basePath, record, resource, scrollToTop]
+            )}
+            label={label}
+            onClick={stopPropagation}
+            {...(rest as any)}
+        >
+            {icon}
+        </Button>
+    );
+};
 
 const defaultIcon = <ContentCreate />;
 

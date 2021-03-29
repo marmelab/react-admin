@@ -1,5 +1,4 @@
 import React, {
-    Fragment,
     isValidElement,
     cloneElement,
     createElement,
@@ -24,6 +23,7 @@ import {
     Identifier,
     Record,
     useResourceContext,
+    RecordContextProvider,
 } from 'ra-core';
 import { shallowEqual } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -31,6 +31,7 @@ import { useHistory } from 'react-router-dom';
 import DatagridCell from './DatagridCell';
 import ExpandRowButton from './ExpandRowButton';
 import useDatagridStyles from './useDatagridStyles';
+import { useDatagridContext } from './useDatagridContext';
 
 const computeNbColumns = (expand, children, hasBulkActions) =>
     expand
@@ -59,20 +60,31 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
         selectable,
         ...rest
     } = props;
+
+    const context = useDatagridContext();
+    const expandable =
+        (!context ||
+            !context.isRowExpandable ||
+            context.isRowExpandable(record)) &&
+        expand;
     const resource = useResourceContext(props);
     const [expanded, toggleExpanded] = useExpanded(resource, id);
     const [nbColumns, setNbColumns] = useState(
-        computeNbColumns(expand, children, hasBulkActions)
+        computeNbColumns(expandable, children, hasBulkActions)
     );
     useEffect(() => {
         // Fields can be hidden dynamically based on permissions;
         // The expand panel must span over the remaining columns
         // So we must recompute the number of columns to span on
-        const newNbColumns = computeNbColumns(expand, children, hasBulkActions);
+        const newNbColumns = computeNbColumns(
+            expandable,
+            children,
+            hasBulkActions
+        );
         if (newNbColumns !== nbColumns) {
             setNbColumns(newNbColumns);
         }
-    }, [expand, nbColumns, children, hasBulkActions]);
+    }, [expandable, nbColumns, children, hasBulkActions]);
 
     const history = useHistory();
 
@@ -130,7 +142,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
     );
 
     return (
-        <Fragment>
+        <RecordContextProvider value={record}>
             <TableRow
                 ref={ref}
                 className={className}
@@ -145,12 +157,14 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                         padding="none"
                         className={classes.expandIconCell}
                     >
-                        <ExpandRowButton
-                            classes={classes}
-                            expanded={expanded}
-                            onClick={handleToggleExpand}
-                            expandContentId={`${id}-expand`}
-                        />
+                        {expandable && (
+                            <ExpandRowButton
+                                classes={classes}
+                                expanded={expanded}
+                                onClick={handleToggleExpand}
+                                expandContentId={`${id}-expand`}
+                            />
+                        )}
                     </TableCell>
                 )}
                 {hasBulkActions && (
@@ -181,7 +195,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                     ) : null
                 )}
             </TableRow>
-            {expand && expanded && (
+            {expandable && expanded && (
                 <TableRow key={`${id}-expand`} id={`${id}-expand`}>
                     <TableCell colSpan={nbColumns}>
                         {isValidElement(expand)
@@ -201,7 +215,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                     </TableCell>
                 </TableRow>
             )}
-        </Fragment>
+        </RecordContextProvider>
     );
 });
 

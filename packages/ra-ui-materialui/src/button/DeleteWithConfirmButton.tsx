@@ -125,7 +125,7 @@ interface Props {
     classes?: object;
     className?: string;
     confirmTitle?: string;
-    confirmContent?: string;
+    confirmContent?: React.ReactNode;
     icon?: ReactElement;
     label?: string;
     mutationMode?: MutationMode;

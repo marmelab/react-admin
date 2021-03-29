@@ -3,6 +3,7 @@ import { FC, memo } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
+import { useRecordContext } from 'ra-core';
 
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
@@ -42,16 +43,17 @@ const hasNumberFormat = !!(
  * <span>25,99 $US</span>
  */
 export const NumberField: FC<NumberFieldProps> = memo<NumberFieldProps>(
-    ({
-        className,
-        emptyText,
-        record,
-        source,
-        locales,
-        options,
-        textAlign,
-        ...rest
-    }) => {
+    props => {
+        const {
+            className,
+            emptyText,
+            source,
+            locales,
+            options,
+            textAlign,
+            ...rest
+        } = props;
+        const record = useRecordContext(props);
         if (!record) {
             return null;
         }

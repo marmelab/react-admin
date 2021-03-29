@@ -2,7 +2,7 @@ import * as React from 'react';
 import expect from 'expect';
 import { render, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { DataProviderContext } from 'ra-core';
+import { DataProviderContext, RecordContextProvider } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
 
 import ReferenceField, { ReferenceFieldView } from './ReferenceField';
@@ -31,6 +31,7 @@ describe('<ReferenceField />', () => {
             const links = container.getElementsByTagName('a');
             expect(links).toHaveLength(0);
         });
+
         it('should display a loader on mount if the reference is not in the store and a second has passed', async () => {
             const { queryByRole, container } = renderWithRedux(
                 <ReferenceFieldView
@@ -209,6 +210,36 @@ describe('<ReferenceField />', () => {
         expect(links.item(0).href).toBe('http://localhost/posts/123');
     });
 
+    it('should use record from RecordContext', () => {
+        const { container, getByText } = renderWithRedux(
+            <MemoryRouter>
+                <RecordContextProvider value={record}>
+                    <ReferenceField
+                        resource="comments"
+                        source="postId"
+                        reference="posts"
+                        basePath="/comments"
+                    >
+                        <TextField source="title" />
+                    </ReferenceField>
+                </RecordContextProvider>
+            </MemoryRouter>,
+            {
+                admin: {
+                    resources: {
+                        posts: {
+                            data: { 123: { id: 123, title: 'hello' } },
+                        },
+                    },
+                },
+            }
+        );
+        expect(getByText('hello')).not.toBeNull();
+        const links = container.getElementsByTagName('a');
+        expect(links).toHaveLength(1);
+        expect(links.item(0).href).toBe('http://localhost/posts/123');
+    });
+
     it('should call the dataProvider for the related record', async () => {
         const dataProvider = {
             getMany: jest.fn(() =>
@@ -305,6 +336,28 @@ describe('<ReferenceField />', () => {
             );
             const links = container.getElementsByTagName('a');
             expect(links).toHaveLength(0);
+        });
+
+        it('should work without basePath', () => {
+            const { container } = render(
+                <MemoryRouter>
+                    <ReferenceFieldView
+                        record={record}
+                        source="postId"
+                        referenceRecord={{ id: 123, title: 'foo' }}
+                        reference="posts"
+                        resource="comments"
+                        resourceLinkPath="/posts/123"
+                        loaded={true}
+                        loading={false}
+                    >
+                        <TextField source="title" />
+                    </ReferenceFieldView>
+                </MemoryRouter>
+            );
+            const links = container.getElementsByTagName('a');
+            expect(links).toHaveLength(1);
+            expect(links.item(0).href).toBe('http://localhost/posts/123');
         });
     });
 });

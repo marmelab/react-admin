@@ -11,6 +11,7 @@ import {
     CardHeader,
     Grid,
     Toolbar,
+    Typography,
     useMediaQuery,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -127,7 +128,7 @@ const useListStyles = makeStyles(theme => ({
 }));
 
 const CommentGrid = () => {
-    const { ids, data, basePath } = useListContext();
+    const { ids, data } = useListContext();
     const translate = useTranslate();
     const classes = useListStyles();
 
@@ -160,13 +161,13 @@ const CommentGrid = () => {
                             <TextField record={data[id]} source="body" />
                         </CardContent>
                         <CardContent className={classes.cardLink}>
-                            {translate('comment.list.about')}&nbsp;
+                            <Typography component="span" variant="body2">
+                                {translate('comment.list.about')}&nbsp;
+                            </Typography>
                             <ReferenceField
-                                resource="comments"
                                 record={data[id]}
                                 source="post_id"
                                 reference="posts"
-                                basePath={basePath}
                             >
                                 <TextField
                                     source="title"
@@ -175,16 +176,8 @@ const CommentGrid = () => {
                             </ReferenceField>
                         </CardContent>
                         <CardActions className={classes.cardActions}>
-                            <EditButton
-                                resource="posts"
-                                basePath={basePath}
-                                record={data[id]}
-                            />
-                            <ShowButton
-                                resource="posts"
-                                basePath={basePath}
-                                record={data[id]}
-                            />
+                            <EditButton record={data[id]} />
+                            <ShowButton record={data[id]} />
                         </CardActions>
                     </Card>
                 </Grid>

@@ -20,7 +20,7 @@ import { ShowControllerProps } from './useShowController';
  * };
  *
  * const MyShowView = () => {
- *     const { record } = useRecordContext();
+ *     const record = useRecordContext();
  * }
  *
  * @see ShowContext

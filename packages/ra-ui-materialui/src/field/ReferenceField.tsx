@@ -12,7 +12,9 @@ import {
     getResourceLinkPath,
     LinkToType,
     ResourceContextProvider,
+    RecordContextProvider,
     Record,
+    useRecordContext,
 } from 'ra-core';
 
 import LinearProgress from '../layout/LinearProgress';
@@ -65,21 +67,19 @@ import { ClassesOverride } from '../types';
  * In previous versions of React-Admin, the prop `linkType` was used. It is now deprecated and replaced with `link`. However
  * backward-compatibility is still kept
  */
-const ReferenceField: FC<ReferenceFieldProps> = ({
-    record,
-    source,
-    emptyText,
-    ...props
-}) =>
-    get(record, source) == null ? (
+const ReferenceField: FC<ReferenceFieldProps> = props => {
+    const { source, emptyText, ...rest } = props;
+    const record = useRecordContext(props);
+    return get(record, source) == null ? (
         emptyText ? (
             <Typography component="span" variant="body2">
                 {emptyText}
             </Typography>
         ) : null
     ) : (
-        <NonEmptyReferenceField {...props} record={record} source={source} />
+        <NonEmptyReferenceField {...rest} record={record} source={source} />
     );
+};
 
 ReferenceField.propTypes = {
     addLabel: PropTypes.bool,
@@ -217,33 +217,39 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
 
     if (resourceLinkPath) {
         return (
-            <Link
-                to={resourceLinkPath as string}
-                className={className}
-                onClick={stopPropagation}
-            >
-                {cloneElement(Children.only(children), {
-                    className: classnames(
-                        children.props.className,
-                        classes.link // force color override for Typography components
-                    ),
-                    record: referenceRecord,
-                    resource: reference,
-                    basePath,
-                    translateChoice,
-                    ...sanitizeFieldRestProps(rest),
-                })}
-            </Link>
+            <RecordContextProvider value={referenceRecord}>
+                <Link
+                    to={resourceLinkPath as string}
+                    className={className}
+                    onClick={stopPropagation}
+                >
+                    {cloneElement(Children.only(children), {
+                        className: classnames(
+                            children.props.className,
+                            classes.link // force color override for Typography components
+                        ),
+                        record: referenceRecord,
+                        resource: reference,
+                        basePath,
+                        translateChoice,
+                        ...sanitizeFieldRestProps(rest),
+                    })}
+                </Link>
+            </RecordContextProvider>
         );
     }
 
-    return cloneElement(Children.only(children), {
-        record: referenceRecord,
-        resource: reference,
-        basePath,
-        translateChoice,
-        ...sanitizeFieldRestProps(rest),
-    });
+    return (
+        <RecordContextProvider value={referenceRecord}>
+            {cloneElement(Children.only(children), {
+                record: referenceRecord,
+                resource: reference,
+                basePath,
+                translateChoice,
+                ...sanitizeFieldRestProps(rest),
+            })}
+        </RecordContextProvider>
+    );
 };
 
 ReferenceFieldView.propTypes = {

@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import ContentAdd from '@material-ui/icons/Add';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
-import { useTranslate } from 'ra-core';
+import { useTranslate, useResourceContext } from 'ra-core';
 
 import Button, { ButtonProps, sanitizeButtonRestProps } from './Button';
 
@@ -39,12 +39,13 @@ const CreateButton: FC<CreateButtonProps> = props => {
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('sm')
     );
+    const resource = useResourceContext();
     const location = useMemo(
         () => ({
-            pathname: `${basePath}/create`,
+            pathname: basePath ? `${basePath}/create` : `/${resource}/create`,
             state: { _scrollToTop: scrollToTop },
         }),
-        [basePath, scrollToTop]
+        [basePath, resource, scrollToTop]
     );
     return isSmall ? (
         <Fab

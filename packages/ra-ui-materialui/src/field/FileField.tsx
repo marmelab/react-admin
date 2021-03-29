@@ -5,6 +5,7 @@ import get from 'lodash/get';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import classnames from 'classnames';
+import { useRecordContext } from 'ra-core';
 
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
@@ -27,7 +28,6 @@ const FileField: FC<FileFieldProps> = props => {
         className,
         classes: classesOverride,
         emptyText,
-        record,
         source,
         title,
         src,
@@ -37,6 +37,7 @@ const FileField: FC<FileFieldProps> = props => {
         rel,
         ...rest
     } = props;
+    const record = useRecordContext(props);
     const sourceValue = get(record, source);
     const classes = useStyles(props);
 

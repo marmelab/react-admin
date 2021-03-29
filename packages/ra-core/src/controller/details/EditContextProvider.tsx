@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
+import { Record } from '../../types';
 import { RecordContextProvider } from '../RecordContext';
 import { EditContext } from './EditContext';
 import { EditControllerProps } from './useEditController';
 import { SaveContextProvider, usePickSaveContext } from './SaveContext';
-import { Record } from '../../types';
 
 /**
  * Create an Edit Context.
@@ -21,7 +21,7 @@ import { Record } from '../../types';
  * };
  *
  * const MyEditView = () => {
- *     const { record } = useRecordContext();
+ *     const record = useRecordContext();
  *     // or, to rerender only when the save operation change but not data
  *     const { saving } = useEditContext();
  * }

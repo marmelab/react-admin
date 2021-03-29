@@ -14,7 +14,7 @@ import { useResourceContext } from '../../core';
 import { indexById } from '../../util/indexById';
 
 interface Option {
-    basePath: string;
+    basePath?: string;
     filter?: any;
     page?: number;
     perPage?: number;
@@ -227,7 +227,9 @@ const useReferenceArrayFieldController = (
     }, [loading, loadingState, setLoadingState]);
 
     return {
-        basePath: basePath.replace(resource, reference),
+        basePath: basePath
+            ? basePath.replace(resource, reference)
+            : `/${reference}`,
         currentSort: sort,
         data: finalData,
         defaultTitle: null,

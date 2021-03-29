@@ -12,7 +12,7 @@ import { TestContext } from 'ra-test';
 const theme = createMuiTheme();
 
 const invalidButtonDomProps = {
-    basePath: '',
+    basePath: '/posts',
     handleSubmit: jest.fn(),
     handleSubmitWithRedirect: jest.fn(),
     invalid: false,
@@ -32,14 +32,17 @@ describe('<CloneButton />', () => {
         const { getByRole } = render(
             <Router history={history}>
                 <ThemeProvider theme={theme}>
-                    <CloneButton record={{ id: 123, foo: 'bar' }} basePath="" />
+                    <CloneButton
+                        record={{ id: 123, foo: 'bar' }}
+                        basePath="/posts"
+                    />
                 </ThemeProvider>
             </Router>
         );
 
         const button = getByRole('button');
         expect(button.getAttribute('href')).toEqual(
-            '/create?source=%7B%22foo%22%3A%22bar%22%7D'
+            '/posts/create?source=%7B%22foo%22%3A%22bar%22%7D'
         );
     });
 
@@ -56,7 +59,7 @@ describe('<CloneButton />', () => {
 
         expect(spy).not.toHaveBeenCalled();
         expect(getByRole('button').getAttribute('href')).toEqual(
-            '/create?source=%7B%22foo%22%3A%22bar%22%7D'
+            '/posts/create?source=%7B%22foo%22%3A%22bar%22%7D'
         );
 
         spy.mockRestore();

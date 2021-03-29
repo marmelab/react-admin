@@ -404,7 +404,7 @@ export default ResetViewsButton;
 
 **Tip**: `<Confirm>` leverages material-ui's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
 
-**Tip**: `<Confirm>` text props such as `title` and `content` are translatable. You can pass translation keys in these props.
+**Tip**: `<Confirm>` text props such as `title` and `content` are translatable. You can pass translation keys in these props. Note: `content` is only translateable when value is `string`, otherwise it renders the content as a `ReactNode`.
 
 **Tip**: You can customize the text of the two `<Confirm>` component buttons using the `cancel` and `confirm` props which accept translation keys. You can customize the icons by setting the `ConfirmIcon` and `CancelIcon` props, which accept a SvgIcon type.
 
@@ -1978,6 +1978,7 @@ Here are all the props accepted by the component:
 * [`rowStyle`](#row-style-function)
 * [`rowClick`](#rowclick)
 * [`expand`](#expand)
+* [`isRowExpandable`](#isrowexpandable)
 * [`isRowSelectable`](#isrowselectable)
 * [`optimized`](#performance)
 
@@ -2188,6 +2189,31 @@ const PostEdit = props => (
 const PostList = props => (
     <List {...props}>
         <Datagrid expand={<PostEdit />}>
+            <TextField source="id" />
+            <TextField source="title" />
+            <DateField source="published_at" />
+            <BooleanField source="commentable" />
+            <EditButton />
+        </Datagrid>
+    </List>
+)
+```
+
+### `isRowExpandable`
+
+You can customize which rows will allow to show an expandable panel below them using the `isRowExpandable` prop. It expects a function that will receive the record of each `<DatagridRow>` and returns a boolean expression.  For instance, this code shows an expand button only for rows that has a detail to show:
+
+```jsx
+const PostPanel = ({ id, record, resource }) => (
+    <div dangerouslySetInnerHTML={{ __html: record.body }} />
+);
+
+const PostList = props => (
+    <List {...props}>
+        <Datagrid 
+            expand={<PostPanel />}
+            isRowExpandable={row => row.has_detail}    
+        >
             <TextField source="id" />
             <TextField source="title" />
             <DateField source="published_at" />

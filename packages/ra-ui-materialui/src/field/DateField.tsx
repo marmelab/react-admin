@@ -3,6 +3,7 @@ import { FC, memo } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
+import { useRecordContext } from 'ra-core';
 
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
@@ -41,55 +42,54 @@ const toLocaleStringSupportsLocales = (() => {
  * // renders the record { id: 1234, new Date('2012-11-07') } as
  * <span>mercredi 7 novembre 2012</span>
  */
-export const DateField: FC<DateFieldProps> = memo<DateFieldProps>(
-    ({
+export const DateField: FC<DateFieldProps> = memo<DateFieldProps>(props => {
+    const {
         className,
         emptyText,
         locales,
         options,
-        record,
         showTime = false,
         source,
         ...rest
-    }) => {
-        if (!record) {
-            return null;
-        }
-        const value = get(record, source);
-        if (value == null) {
-            return emptyText ? (
-                <Typography
-                    component="span"
-                    variant="body2"
-                    className={className}
-                    {...sanitizeFieldRestProps(rest)}
-                >
-                    {emptyText}
-                </Typography>
-            ) : null;
-        }
-
-        const date = value instanceof Date ? value : new Date(value);
-        const dateString = showTime
-            ? toLocaleStringSupportsLocales
-                ? date.toLocaleString(locales, options)
-                : date.toLocaleString()
-            : toLocaleStringSupportsLocales
-            ? date.toLocaleDateString(locales, options)
-            : date.toLocaleDateString();
-
-        return (
+    } = props;
+    const record = useRecordContext(props);
+    if (!record) {
+        return null;
+    }
+    const value = get(record, source);
+    if (value == null) {
+        return emptyText ? (
             <Typography
                 component="span"
                 variant="body2"
                 className={className}
                 {...sanitizeFieldRestProps(rest)}
             >
-                {dateString}
+                {emptyText}
             </Typography>
-        );
+        ) : null;
     }
-);
+
+    const date = value instanceof Date ? value : new Date(value);
+    const dateString = showTime
+        ? toLocaleStringSupportsLocales
+            ? date.toLocaleString(locales, options)
+            : date.toLocaleString()
+        : toLocaleStringSupportsLocales
+        ? date.toLocaleDateString(locales, options)
+        : date.toLocaleDateString();
+
+    return (
+        <Typography
+            component="span"
+            variant="body2"
+            className={className}
+            {...sanitizeFieldRestProps(rest)}
+        >
+            {dateString}
+        </Typography>
+    );
+});
 
 DateField.defaultProps = {
     addLabel: true,

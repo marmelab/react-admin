@@ -10,6 +10,7 @@ import {
     SortPayload,
     FilterPayload,
     ResourceContextProvider,
+    useRecordContext,
 } from 'ra-core';
 
 import { fieldPropTypes, PublicFieldProps, InjectedFieldProps } from './types';
@@ -80,12 +81,12 @@ const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
         filter,
         page = 1,
         perPage,
-        record,
         reference,
         resource,
         sort,
         source,
     } = props;
+    const record = useRecordContext(props);
 
     if (React.Children.count(children) !== 1) {
         throw new Error(

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, memo } from 'react';
+import { memo, isValidElement, ReactElement } from 'react';
 import {
     IconButton,
     ListItem,
@@ -27,9 +27,10 @@ const useStyles = makeStyles(theme => ({
  *
  * Expects 2 props:
  *
- * - label: The text to be displayed for this item. Will be translated.
+ * - label: The text (or React element) to be displayed for this item.
+ *   If it's a string, the component will translate it.
  * - value: An object to be merged into the filter value when enabling the filter
- * (e.g. { is_published: true, published_at_gte: '2020-07-08' })
+ *   (e.g. { is_published: true, published_at_gte: '2020-07-08' })
  *
  * @example
  *
@@ -143,7 +144,10 @@ const useStyles = makeStyles(theme => ({
  *     </Card>
  * );
  */
-const FilterListItem: FC<{ label: string; value: any }> = props => {
+const FilterListItem = (props: {
+    label: string | ReactElement;
+    value: any;
+}) => {
     const { label, value } = props;
     const { filterValues, setFilters } = useListFilterContext();
     const translate = useTranslate();
@@ -180,7 +184,11 @@ const FilterListItem: FC<{ label: string; value: any }> = props => {
             className={classes.listItem}
         >
             <ListItemText
-                primary={translate(label, { _: label })}
+                primary={
+                    isValidElement(label)
+                        ? label
+                        : translate(label, { _: label })
+                }
                 className={classes.listItemText}
                 data-selected={isSelected ? 'true' : 'false'}
             />

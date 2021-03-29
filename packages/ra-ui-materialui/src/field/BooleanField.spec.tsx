@@ -2,6 +2,7 @@ import * as React from 'react';
 import expect from 'expect';
 import BooleanField from './BooleanField';
 import { render } from '@testing-library/react';
+import { RecordContextProvider } from 'ra-core';
 
 const defaultProps = {
     record: { id: 123, published: true },
@@ -13,6 +14,20 @@ const defaultProps = {
 describe('<BooleanField />', () => {
     it('should display tick and truthy text if value is true', () => {
         const { queryByTitle } = render(<BooleanField {...defaultProps} />);
+        expect(queryByTitle('ra.boolean.true')).not.toBeNull();
+        expect(
+            (queryByTitle('ra.boolean.true').firstChild as HTMLElement).dataset
+                .testid
+        ).toBe('true');
+        expect(queryByTitle('ra.boolean.false')).toBeNull();
+    });
+
+    it('should use record from RecordContext', () => {
+        const { queryByTitle } = render(
+            <RecordContextProvider value={{ id: 123, published: true }}>
+                <BooleanField source="published" />
+            </RecordContextProvider>
+        );
         expect(queryByTitle('ra.boolean.true')).not.toBeNull();
         expect(
             (queryByTitle('ra.boolean.true').firstChild as HTMLElement).dataset
