@@ -16,6 +16,8 @@ import {
     useVersion,
     Identifier,
     Record,
+    RecordMap,
+    SortPayload,
 } from 'ra-core';
 import {
     Checkbox,
@@ -337,7 +339,7 @@ Datagrid.propTypes = {
         field: PropTypes.string,
         order: PropTypes.string,
     }),
-    data: PropTypes.object,
+    data: PropTypes.any,
     // @ts-ignore
     expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     hasBulkActions: PropTypes.bool,
@@ -356,7 +358,8 @@ Datagrid.propTypes = {
     isRowSelectable: PropTypes.func,
 };
 
-export interface DatagridProps extends Omit<TableProps, 'size' | 'classes'> {
+export interface DatagridProps<RecordType extends Record = Record>
+    extends Omit<TableProps, 'size' | 'classes' | 'onSelect'> {
     body?: ReactElement;
     classes?: ClassesOverride<typeof useDatagridStyles>;
     className?: string;
@@ -375,6 +378,17 @@ export interface DatagridProps extends Omit<TableProps, 'size' | 'classes'> {
     rowClick?: string | RowClickFunction;
     rowStyle?: (record: Record, index: number) => any;
     size?: 'medium' | 'small';
+    // can be injected when using the component without context
+    basePath?: string;
+    currentsort?: SortPayload;
+    data?: RecordMap<RecordType>;
+    ids?: Identifier[];
+    loaded?: boolean;
+    onSelect?: (ids: Identifier[]) => void;
+    onToggleItem?: (id: Identifier) => void;
+    setSort?: (sort: string, order?: string) => void;
+    selectedIds?: Identifier[];
+    total?: number;
 }
 
 export default Datagrid;
