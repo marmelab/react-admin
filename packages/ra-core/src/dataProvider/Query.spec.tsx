@@ -4,8 +4,7 @@ import expect from 'expect';
 
 import Query from './Query';
 import { CoreAdmin, Resource } from '../core';
-import renderWithRedux from '../util/renderWithRedux';
-import TestContext from '../util/TestContext';
+import { renderWithRedux, TestContext } from 'ra-test';
 import DataProviderContext from './DataProviderContext';
 import { showNotification, refreshView, setListSelectedIds } from '../actions';
 import { useNotify, useRefresh } from '../sideEffect';

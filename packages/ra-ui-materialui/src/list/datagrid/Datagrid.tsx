@@ -4,6 +4,8 @@ import {
     Children,
     cloneElement,
     useCallback,
+    useRef,
+    useEffect,
     FC,
     ReactElement,
 } from 'react';
@@ -14,6 +16,8 @@ import {
     useVersion,
     Identifier,
     Record,
+    RecordMap,
+    SortPayload,
 } from 'ra-core';
 import {
     Checkbox,
@@ -24,12 +28,15 @@ import {
     TableRow,
 } from '@material-ui/core';
 import classnames from 'classnames';
+import union from 'lodash/union';
+import difference from 'lodash/difference';
 
 import DatagridHeaderCell from './DatagridHeaderCell';
 import DatagridLoading from './DatagridLoading';
 import DatagridBody, { PureDatagridBody } from './DatagridBody';
 import useDatagridStyles from './useDatagridStyles';
 import { ClassesOverride } from '../../types';
+import { RowClickFunction } from './DatagridRow';
 
 /**
  * The Datagrid component renders a list of records as a table.
@@ -64,7 +71,7 @@ import { ClassesOverride } from '../../types';
  * </ReferenceManyField>
  *
  *
- * @example Usage it outside of a <List> or a <ReferenceManyField>.
+ * @example Usage outside of a <List> or a <ReferenceManyField>.
  *
  * const currentSort = { field: 'published_at', order: 'DESC' };
  *
@@ -165,6 +172,44 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
             }
         },
         [data, ids, onSelect, isRowSelectable, selectedIds]
+    );
+
+    const lastSelected = useRef(null);
+
+    useEffect(() => {
+        if (selectedIds.length === 0) {
+            lastSelected.current = null;
+        }
+    }, [selectedIds.length]);
+
+    const handleToggleItem = useCallback(
+        (id, event) => {
+            const lastSelectedIndex = ids.indexOf(lastSelected.current);
+            lastSelected.current = event.target.checked ? id : null;
+
+            if (event.shiftKey && lastSelectedIndex !== -1) {
+                const index = ids.indexOf(id);
+                const idsBetweenSelections = ids.slice(
+                    Math.min(lastSelectedIndex, index),
+                    Math.max(lastSelectedIndex, index) + 1
+                );
+
+                const newSelectedIds = event.target.checked
+                    ? union(selectedIds, idsBetweenSelections)
+                    : difference(selectedIds, idsBetweenSelections);
+
+                onSelect(
+                    isRowSelectable
+                        ? newSelectedIds.filter((id: Identifier) =>
+                              isRowSelectable(data[id])
+                          )
+                        : newSelectedIds
+                );
+            } else {
+                onToggleItem(id);
+            }
+        },
+        [data, ids, isRowSelectable, onSelect, onToggleItem, selectedIds]
     );
 
     /**
@@ -271,7 +316,7 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                     hasBulkActions,
                     hover,
                     ids,
-                    onToggleItem,
+                    onToggleItem: handleToggleItem,
                     resource,
                     rowStyle,
                     selectedIds,
@@ -294,7 +339,7 @@ Datagrid.propTypes = {
         field: PropTypes.string,
         order: PropTypes.string,
     }),
-    data: PropTypes.object,
+    data: PropTypes.any,
     // @ts-ignore
     expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     hasBulkActions: PropTypes.bool,
@@ -313,13 +358,8 @@ Datagrid.propTypes = {
     isRowSelectable: PropTypes.func,
 };
 
-type RowClickFunction = (
-    id: Identifier,
-    basePath: string,
-    record: Record
-) => string;
-
-export interface DatagridProps extends Omit<TableProps, 'size' | 'classes'> {
+export interface DatagridProps<RecordType extends Record = Record>
+    extends Omit<TableProps, 'size' | 'classes' | 'onSelect'> {
     body?: ReactElement;
     classes?: ClassesOverride<typeof useDatagridStyles>;
     className?: string;
@@ -338,6 +378,17 @@ export interface DatagridProps extends Omit<TableProps, 'size' | 'classes'> {
     rowClick?: string | RowClickFunction;
     rowStyle?: (record: Record, index: number) => any;
     size?: 'medium' | 'small';
+    // can be injected when using the component without context
+    basePath?: string;
+    currentsort?: SortPayload;
+    data?: RecordMap<RecordType>;
+    ids?: Identifier[];
+    loaded?: boolean;
+    onSelect?: (ids: Identifier[]) => void;
+    onToggleItem?: (id: Identifier) => void;
+    setSort?: (sort: string, order?: string) => void;
+    selectedIds?: Identifier[];
+    total?: number;
 }
 
 export default Datagrid;

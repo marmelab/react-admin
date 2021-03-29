@@ -1,9 +1,9 @@
 import inflection from 'inflection';
 
 interface Args {
-    label: string;
-    resource: string;
-    source: string;
+    label?: string;
+    resource?: string;
+    source?: string;
 }
 
 type TranslationArguments = [string, any?];
@@ -17,7 +17,7 @@ type TranslationArguments = [string, any?];
  *      {translate(...getFieldLabelTranslationArgs({ label, resource, source }))}
  *  </span>
  */
-export default (options: Args): TranslationArguments => {
+export default (options?: Args): TranslationArguments => {
     if (!options) {
         return [''];
     }

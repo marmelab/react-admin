@@ -1,29 +1,35 @@
-import FormInput from './FormInput';
-import FormTab from './FormTab';
+import FormInput, { FormInputProps } from './FormInput';
 import SimpleForm, { SimpleFormProps } from './SimpleForm';
 import SimpleFormIterator, {
     SimpleFormIteratorProps,
 } from './SimpleFormIterator';
-import TabbedForm, { TabbedFormProps } from './TabbedForm';
-import TabbedFormTabs from './TabbedFormTabs';
+import TabbedFormTabs, { TabbedFormTabsProps } from './TabbedFormTabs';
 import Toolbar, { ToolbarProps } from './Toolbar';
 import getFormInitialValues from './getFormInitialValues';
+import { SimpleFormView, SimpleFormViewProps } from './SimpleFormView';
+import { TabbedFormView, TabbedFormViewProps } from './TabbedFormView';
+
+export * from './TabbedForm';
+export * from './FormTab';
 export * from './FormTabHeader';
 
 export type {
+    FormInputProps,
     SimpleFormProps,
     SimpleFormIteratorProps,
-    TabbedFormProps,
+    TabbedFormTabsProps,
+    SimpleFormViewProps,
+    TabbedFormViewProps,
     ToolbarProps,
 };
 
 export {
     FormInput,
-    FormTab,
     SimpleForm,
+    SimpleFormView,
     SimpleFormIterator,
-    TabbedForm,
     TabbedFormTabs,
+    TabbedFormView,
     Toolbar,
     getFormInitialValues,
 };

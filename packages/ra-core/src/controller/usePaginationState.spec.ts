@@ -1,4 +1,4 @@
-import renderHook from '../util/renderHook';
+import { renderHook } from 'ra-test';
 import usePaginationState from './usePaginationState';
 import { act } from '@testing-library/react';
 

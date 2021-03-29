@@ -106,6 +106,17 @@ Then you can display the author first name as follows:
 <TextField source="author.firstName" />
 ```
 
+**Tip**: If you want to display data from more than one field, check out [the `<FunctionField>`](#functionfield), which accepts a `render` function:
+
+```jsx
+import { FunctionField } from 'react-admin';
+
+<FunctionField
+    label="Name"
+    render={record => `${record.first_name} ${record.last_name}`}
+/>;
+```
+
 **Tip**: If you want to format a field according to the value, use a higher-order component to do conditional formatting, as described in the [Theming documentation](./Theming.md#conditional-formatting).
 
 **Tip**: If your interface has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.md#translating-resource-and-field-names) for details.
@@ -218,7 +229,7 @@ import { DateField } from 'react-admin';
 | ---------- | -------- | ------- | ------- | -------------------------------------------------------------------------------------------------------- |
 | `locales`  | Optional | string  | ''      | Override the browser locale in the date formatting. Passed as first argument to `Intl.DateTimeFormat()`. |
 | `options`  | Optional | Object  | -       | Date formatting options. Passed as second argument to `Intl.DateTimeFormat()`.                           |
-| `showTime` | Optional | boolean | false   | If true, show date and time. If false, show only date                                                    |
+| `showTime` | Optional | boolean | `false` | If true, show date and time. If false, show only date                                                    |
 
 `<DateField>` also accepts the [common field props](./Fields.md#common-field-props).
 
@@ -452,16 +463,16 @@ import { NumberField }  from 'react-admin';
 
 | Prop      | Required | Type   | Default | Description                                                                                              |
 | --------- | -------- | ------ | ------- | -------------------------------------------------------------------------------------------------------- |
-| `locales` | Optional | string | ''      | Override the browser locale in the date formatting. Passed as first argument to `Intl.DateTimeFormat()`. |
+| `locales` | Optional | string | ''      | Override the browser locale in the date formatting. Passed as first argument to `Intl.NumberFormat()`.   |
 | `options` | Optional | Object | -       | Number formatting options. Passed as second argument to `Intl.NumberFormat()`.                           |
 
 `<NumberField>` also accepts the [common field props](./Fields.md#common-field-props).
 
 #### Usage
 
-`<NumberField>` uses `Intl.NumberFormat()` if available, passing the `locales` and `options` props as arguments. This allows a perfect display of decimals, currencies, percentages, etc.
+`<NumberField>` uses `Intl.NumberFormat()` if available, passing the `locales` and `options` props as arguments. This allows a perfect display of decimals, currencies, percentages, etc. See [Intl.NumberFormat documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) for the `options` prop syntax.
 
-If Intl is not available, it outputs numbers as is (and ignores the `locales` and `options` props).
+If Intl is not available, `<NumberField>` outputs numbers as is (and ignores the `locales` and `options` props).
 
 {% raw %}
 ```jsx
@@ -484,8 +495,6 @@ import { NumberField }  from 'react-admin';
 <span>25,99 $US</span>
 ```
 {% endraw %}
-
-See [Intl.NumberFormat documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString) for the `options` prop syntax.
 
 **Tip**: If you need more formatting options than what `Intl.NumberFormat` can provide, build your own field component leveraging a third-party library like [numeral.js](http://numeraljs.com/).
 
@@ -535,6 +544,17 @@ The simplest of all fields, `<TextField>` simply displays the record property as
 import { TextField } from 'react-admin';
 
 <TextField label="Author Name" source="name" />
+```
+
+**Tip**: If you want to display data from more than one field, check out [the `<FunctionField>`](#functionfield), which accepts a `render` function:
+
+```jsx
+import { FunctionField } from 'react-admin';
+
+<FunctionField
+    label="Name"
+    render={record => `${record.first_name} ${record.last_name}`}
+/>;
 ```
 
 ### `<UrlField>`
@@ -759,8 +779,8 @@ With this configuration, `<ReferenceField>` wraps the user's name in a link to t
 | ----------- | -------- | ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
 | `reference` | Required | `string`            | -        | The name of the resource for the referenced records, e.g. 'posts'                                                   |
 | `children`  | Required | `Element`           | -        | The Field element used to render the referenced record                                                              |
-| `link`      | Optional | `string | Function` | 'edit'   | Target of the link wrapping the rendered child                                                                      |
-| `sortBy`    | Optional | `string | Function` | `source` | Name of the field to use for sorting when the user clicks on the column header. Set to `false` to disable the link. |
+| `link`      | Optional | `string | Function` | `edit`   | Target of the link wrapping the rendered child. Set to `false` to disable the link.                                 |
+| `sortBy`    | Optional | `string | Function` | `source` | Name of the field to use for sorting when the user clicks on the column header.                                     |
 
 `<ReferenceField>` also accepts the [common field props](./Fields.md#common-field-props).
 
@@ -1052,7 +1072,7 @@ export const PostList = (props) => (
 | ------------ | -------- | ------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | `reference`  | Required | `string`            | -                                | The name of the resource for the referenced records, e.g. 'tags'                                                                           |
 | `children`   | Required | `Element`           | -                                | The Field element used to render the referenced records                                                                                    |
-| `sortBy`     | Optional | `string | Function` | `source`                         | When used in a `List`, name of the field to use for sorting when the user clicks on the column header. Set to `false` to disable the link. |
+| `sortBy`     | Optional | `string | Function` | `source`                         | When used in a `List`, name of the field to use for sorting when the user clicks on the column header. |
 | `filter`     | Optional | `Object`            | -                                | Filters to use when fetching the related records (the filtering is done client-side)                                                       |
 | `pagination` | Optional | `Element`           | -                                | Pagination element to display pagination controls. empty by default (no pagination)                                                        |
 | `perPage`    | Optional | `number`            | 1000                             | Maximum number of results to display                                                                                                       |
@@ -1341,18 +1361,41 @@ PriceField.defaultProps = {
 ```
 {% endraw %}
 
-### Adding Label To Custom Field Components In The Show View
+### Adding A Label To Custom Field Components
 
-React-admin lets you use the same `Field` components in the `List` view and in the `Show` view. But if you use the `<FullNameField>` custom field component defined earlier in a `Show` view, something is missing: the `Field` label. Why do other fields have a label and not this custom `Field`? And how can you create a `Field` component that has a label in the `Show` view, but not in the `List` view?
+When you use one of the react-admin `Field` components in an `Edit`, `Create` or `Show` view, react-admin includes a label on top of the field value, as in the following example:
 
-React-admin uses a trick: the `Show` view layouts (`<SimpleShowLayout>` and `<TabbedShowLayout>`) inspect their `Field` children, and whenever one has the `addLabel` prop set to `true`, the layout adds a label.
+![field labels](./img/field-addlabel.png)
 
-That means that the only thing you need to add to a custom component to make it usable in a `Show` view is an `addLabel: true` default prop.
+For your custom fields, however, the label doesn't appear by default. You need to opt in this feature by setting the `addLabel` prop to `true` in the `defaultProps`.
 
-```js
+```diff
+const FullNameField = ({ record = {} }) => (
+    <span>
+        {record.firstName} {record.lastName}
+    </span>
+);
+
 FullNameField.defaultProps = {
-    addLabel: true,
+    label: 'Name',
++   addLabel: true,
 };
+```
+
+React-admin uses a trick to make it work: the view layouts (`<SimpleShowLayout>`, `<TabbedShowLayout>`, `<SimpleForm>`, `<TabbedForm>`) inspect their children, and whenever one has the `addLabel` prop set to `true`, the layout decorates the component with a label.
+
+If you don't use any of these layouts, the `addLabel` trick won't work. You'll have to add a label manually by decorating your field with [the `<Labeled>` component](./Inputs.md#using-labeled):
+
+```jsx
+import { Labeled } from 'react-admin';
+
+const MyShowLayout = ({ record }) => (
+    <div>
+        <Labeled label="Name">
+            <FullNameField record={record} />
+        </Label>
+    </div>
+);
 ```
 
 ### Hiding A Field Based On The Value Of Another

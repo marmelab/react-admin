@@ -4,7 +4,7 @@ import expect from 'expect';
 import useTranslate from './useTranslate';
 import TranslationProvider from './TranslationProvider';
 import { TranslationContext } from './TranslationContext';
-import { renderWithRedux } from '../util';
+import { renderWithRedux } from 'ra-test';
 
 describe('useTranslate', () => {
     const Component = () => {

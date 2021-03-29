@@ -3,7 +3,8 @@ import expect from 'expect';
 import CheckboxGroupInput from './CheckboxGroupInput';
 import { render, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
-import { renderWithRedux, TestTranslationProvider } from 'ra-core';
+import { TestTranslationProvider } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 
 describe('<CheckboxGroupInput />', () => {
     const defaultProps = {

@@ -404,7 +404,7 @@ export default ResetViewsButton;
 
 **Tip**: `<Confirm>` leverages material-ui's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
 
-**Tip**: `<Confirm>` text props such as `title` and `content` are translatable. You can pass use translation keys in these props.
+**Tip**: `<Confirm>` text props such as `title` and `content` are translatable. You can pass translation keys in these props.
 
 **Tip**: You can customize the text of the two `<Confirm>` component buttons using the `cancel` and `confirm` props which accept translation keys. You can customize the icons by setting the `ConfirmIcon` and `CancelIcon` props, which accept a SvgIcon type.
 
@@ -731,7 +731,7 @@ const PostList = props => (
 
 The default value for the `component` prop is `Card`.
 
-## Synchronize With URL
+### Synchronize With URL
 
 When a List based component (eg: `PostList`) is passed to the `list` prop of a `<Resource>`, it will automatically synchronize its parameters with the browser URL (using react-router location). However, when used anywhere outside of a `<Resource>`, it won't synchronize, which can be useful when you have multiple lists on a single page for example.
 
@@ -1259,7 +1259,7 @@ const SongList: FC<Props> = props => (
 );
 ```
 
-For mode details about Saved Queries, check  the [`ra-preferences` module](https://marmelab.com/ra-enterprise/modules/ra-preferences#savedquerieslist-and-filterwithsave-store-user-queries-in-preferences) in React-Admin Enterprise Edition. 
+For mode details about Saved Queries, check the [`ra-preferences` module](https://marmelab.com/ra-enterprise/modules/ra-preferences#savedquerieslist-and-filterwithsave-store-user-queries-in-preferences) in React-Admin Enterprise Edition. 
 
 ### Building a Custom Filter
 
@@ -1910,7 +1910,7 @@ const {
     // pagination
     page, // the current page. Starts at 1
     setPage, // a callback to change the current page, e.g. setPage(3)
-    perPage, // the number of results per page. Defaults to 25
+    perPage, // the number of results per page. Defaults to 10
     setPerPage, // a callback to change the number of results per page, e.g. setPerPage(25)
     // sorting
     currentSort, // a sort object { field, order }, e.g. { field: 'date', order: 'DESC' } 
@@ -2004,7 +2004,7 @@ export const PostList = (props) => (
 
 **Tip**: To let users hide or show columns at will, check the [`<SelectColumnsButton>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#selectcolumnsbutton-store-datagrid-columns-in-preferences)<img class="icon" src="./img/premium.svg" />, an [Enterprise Edition](https://marmelab.com/ra-enterprise) component.
 
-The `<Datagrid>` is an **iterator** component: it gets an array of ids and a data store from the `ListContext`, and iterates over the ids to display each record. Another example of iterator component is [`<SingleFieldList>`](#the-singlefieldlist-component).
+The `<Datagrid>` is an **iterator** component: it gets an array of ids and a data store from the `ListContext`, and iterates over the ids to display each record. Other examples of iterator component are [`<SimpleList>`](#the-simplelist-component) and [`<SingleFieldList>`](#the-singlefieldlist-component).
 
 ### Body element
 
@@ -2213,6 +2213,28 @@ export const PostList = props => (
 ```
 {% endraw %}
 
+### Performance
+
+When displaying large pages of data, you might experience some performance issues.
+This is mostly due to the fact that we iterate over the `<Datagrid>` children and clone them.
+
+In such cases, you can opt-in for an optimized version of the `<Datagrid>` by setting its `optimized` prop to `true`. 
+Be aware that you can't have dynamic children, such as those displayed or hidden by checking permissions, when using this mode.
+
+```jsx
+const PostList = props => (
+    <List {...props}>
+        <Datagrid optimized>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="views" />
+        </Datagrid>
+    </List>
+);
+
+export default withStyles(styles)(PostList);
+```
+
 ### CSS API
 
 The `Datagrid` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
@@ -2322,92 +2344,6 @@ export const ProductList = (props) => (
 ```
 
 For this kind of use case, you need to use a [custom datagrid body component](#body-element).
-
-### Performance
-
-When displaying large pages of data, you might experience some performance issues.
-This is mostly due to the fact that we iterate over the `<Datagrid>` children and clone them.
-
-In such cases, you can opt-in for an optimized version of the `<Datagrid>` by setting its `optimized` prop to `true`. 
-Be aware that you can't have dynamic children, such as those displayed or hidden by checking permissions, when using this mode.
-
-```jsx
-const PostList = props => (
-    <List {...props}>
-        <Datagrid optimized>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="views" />
-        </Datagrid>
-    </List>
-);
-
-export default withStyles(styles)(PostList);
-```
-
-### With Custom Query
-
-You can use the `<Datagrid>` component with [custom queries](./Actions.md#usequery-hook), provided you pass the result to a `<ListContextProvider>`:
-
-{% raw %}
-```jsx
-import keyBy from 'lodash/keyBy'
-import {
-    useQuery,
-    ResourceContextProvider,
-    ListContextProvider,
-    Datagrid,
-    TextField,
-    Pagination,
-    Loading,
-} from 'react-admin'
-
-const CustomList = () => {
-    const [page, setPage] = useState(1);
-    const perPage = 50;
-    const { data, total, loading, error } = useQuery({
-        type: 'GET_LIST',
-        resource: 'posts',
-        payload: {
-            pagination: { page, perPage },
-            sort: { field: 'id', order: 'ASC' },
-            filter: {},
-        }
-    });
-
-    if (loading) {
-        return <Loading />
-    }
-    if (error) {
-        return <p>ERROR: {error}</p>
-    }
-    return (
-        <ResourceContextProvider value="posts">
-            <ListContextProvider
-                value={{
-                    basePath: '/posts',
-                    data: keyBy(data, 'id'),
-                    ids: data.map(({ id }) => id),
-                    currentSort: { field: 'id', order: 'ASC' },
-                    selectedIds: [],
-                }}
-            >
-                <Datagrid rowClick="edit">
-                    <TextField source="id" />
-                    <TextField source="title" />
-                </Datagrid>
-                <Pagination
-                    page={page}
-                    perPage={perPage}
-                    setPage={setPage}
-                    total={total}
-                />
-            </ListContextProvider>
-        </ResourceContextProvider>
-    );
-}
-```
-{% endraw %}
 
 ## The `<SimpleList>` component
 
@@ -2736,7 +2672,9 @@ export const Basic = () => (
 
 Check [the `ra-calendar` documentation](https://marmelab.com/ra-enterprise/modules/ra-calendar) for more details.
 
-## Using a Custom Iterator
+## Recipes
+
+### Using a Custom Iterator
 
 A `<List>` can delegate to any iterator component - `<Datagrid>` is just one example. An iterator component can get the data to display from [the `useListContext` hook](#uselistcontext). The data comes in two constants:
 
@@ -2803,13 +2741,7 @@ export const CommentList = (props) => (
 
 As you can see, nothing prevents you from using `<Field>` components inside your own components... provided you inject the current `record`. Also, notice that components building links require the `basePath` component, which is also available from `useListContext`.
 
-## Third-Party Components
-
-You can find components for react-admin in third-party repositories.
-
-- [ra-customizable-datagrid](https://github.com/fizix-io/ra-customizable-datagrid): plugin that allows to hide / show columns dynamically.
-
-## Displaying Fields Depending On The User Permissions
+### Displaying Fields Depending On The User Permissions
 
 You might want to display some fields or filters only to users with specific permissions. 
 
@@ -2858,3 +2790,73 @@ export const UserList = ({ permissions, ...props }) => {
 {% endraw %}
 
 **Tip**: Note how the `permissions` prop is passed down to the custom `filters` component.
+
+### Rendering `<Datagrid>` With A Custom Query
+
+You can use the `<Datagrid>` component with [custom queries](./Actions.md#usequery-hook), provided you pass the result to a `<ListContextProvider>`:
+
+{% raw %}
+```jsx
+import keyBy from 'lodash/keyBy'
+import {
+    useQuery,
+    ResourceContextProvider,
+    ListContextProvider,
+    Datagrid,
+    TextField,
+    Pagination,
+    Loading,
+} from 'react-admin'
+
+const CustomList = () => {
+    const [page, setPage] = useState(1);
+    const perPage = 50;
+    const { data, total, loading, error } = useQuery({
+        type: 'getList',
+        resource: 'posts',
+        payload: {
+            pagination: { page, perPage },
+            sort: { field: 'id', order: 'ASC' },
+            filter: {},
+        }
+    });
+
+    if (loading) {
+        return <Loading />
+    }
+    if (error) {
+        return <p>ERROR: {error}</p>
+    }
+    return (
+        <ResourceContextProvider value="posts">
+            <ListContextProvider
+                value={{
+                    basePath: '/posts',
+                    data: keyBy(data, 'id'),
+                    ids: data.map(({ id }) => id),
+                    currentSort: { field: 'id', order: 'ASC' },
+                    selectedIds: [],
+                }}
+            >
+                <Datagrid rowClick="edit">
+                    <TextField source="id" />
+                    <TextField source="title" />
+                </Datagrid>
+                <Pagination
+                    page={page}
+                    perPage={perPage}
+                    setPage={setPage}
+                    total={total}
+                />
+            </ListContextProvider>
+        </ResourceContextProvider>
+    );
+}
+```
+{% endraw %}
+
+## Third-Party Components
+
+You can find components for react-admin in third-party repositories.
+
+- [ra-customizable-datagrid](https://github.com/fizix-io/ra-customizable-datagrid): plugin that allows to hide / show columns dynamically.

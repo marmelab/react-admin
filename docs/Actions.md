@@ -50,7 +50,45 @@ const UserProfile = ({ userId }) => {
 };
 ```
 
-**Tip**: The `dataProvider` returned by the hook is actually a *wrapper* around your Data Provider. This wrapper dispatches Redux actions on load, success and failure, which keeps track of the loading state.
+**Tip**: The `dataProvider` returned by the hook is actually a *wrapper* around your Data Provider. This wrapper updates the Redux store on success, and keeps track of the loading state. In case you don't want to update the Redux store (e.g. when implementing an autosave feature), you should access the raw, non-wrapped Data Provider from the `DataProviderContext`:
+
+```diff
+import * as React from 'react';
+-import { useState, useEffect } from 'react';
++import { useState, useEffect, useContext } from 'react';
+-import { useDataProvider, Loading, Error } from 'react-admin';
++import { DataProviderContext, Loading, Error } from 'react-admin';
+
+const UserProfile = ({ userId }) => {
+-   const dataProvider = useDataProvider();
++   const dataProvider = useContext(DataProviderContext);
+    const [user, setUser] = useState();
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState();
+    useEffect(() => {
+        dataProvider.getOne('users', { id: userId })
+            .then(({ data }) => {
+                setUser(data);
+                setLoading(false);
+            })
+            .catch(error => {
+                setError(error);
+                setLoading(false);
+            })
+    }, []);
+
+    if (loading) return <Loading />;
+    if (error) return <Error />;
+    if (!user) return null;
+
+    return (
+        <ul>
+            <li>Name: {user.name}</li>
+            <li>Email: {user.email}</li>
+        </ul>
+    )
+};
+```
 
 ## `useQuery` Hook
 
@@ -406,6 +444,26 @@ const BulkDeletePostsButton = ({ selectedIds }) => {
     if (error) { return <p>ERROR</p>; }
     return <button disabled={loading} onClick={deleteMany}>Delete selected posts</button>;
 };
+```
+
+## Synchronizing Dependant Queries
+`useQuery` and all its corresponding specialized hooks support an `enabled` option. This is useful if you need to have a query executed only when a condition is met. For example, in the following example, we only fetch the categories if we have at least one post:
+```jsx
+// fetch posts
+const { ids, data: posts, loading: isLoading } = useGetList(
+    'posts',
+    { page: 1, perPage: 20 },
+    { field: 'name', order: 'ASC' },
+    {}
+);
+
+// then fetch categories for these posts
+const { data: categories, loading: isLoadingCategories } = useGetMany(
+    'categories',
+    ids.map(id=> posts[id].category_id),
+    // run only if the first query returns non-empty result
+    { enabled: ids.length > 0 }
+);
 ```
 
 ## Handling Side Effects In `useDataProvider`

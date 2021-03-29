@@ -13,6 +13,29 @@ import {
 
 import Button, { ButtonProps } from './Button';
 
+/**
+ * Export the selected rows
+ *
+ * To be used inside the <List bulkActionButtons> prop.
+ *
+ * @example // basic usage
+ * import * as React from 'react';
+ * import { Fragment } from 'react';
+ * import { BulkDeleteButton, BulkExportButton } from 'react-admin';
+ *
+ * const PostBulkActionButtons = ({ basePath }) => (
+ *     <Fragment>
+ *         <BulkExportButton />
+ *         <BulkDeleteButton basePath={basePath} />
+ *     </Fragment>
+ * );
+ *
+ * export const PostList = (props) => (
+ *     <List {...props} bulkActionButtons={<PostBulkActionButtons />}>
+ *         ...
+ *     </List>
+ * );
+ */
 const BulkExportButton: FunctionComponent<BulkExportButtonProps> = props => {
     const {
         onClick,

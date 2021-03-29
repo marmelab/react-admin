@@ -7,7 +7,7 @@ The provider issues no HTTP requests, every operation happens locally in the bro
 ## Installation
 
 ```sh
-npm install --save ra-data-localstorage
+npm install --save ra-data-local-storage
 ```
 
 ## Usage
@@ -16,7 +16,7 @@ npm install --save ra-data-localstorage
 // in src/App.js
 import * as React from "react";
 import { Admin, Resource } from 'react-admin';
-import localStorageDataProvider from 'ra-data-localstorage';
+import localStorageDataProvider from 'ra-data-local-storage';
 
 const dataProvider = localStorageDataProvider();
 import { PostList } from './posts';

@@ -189,6 +189,25 @@ describe('List Page', () => {
             ListPagePosts.applyDeleteBulkAction();
             cy.contains('1-10 of 10');
         });
+
+        it('should allow to select items with the shift key on different pages', () => {
+            cy.contains('1-10 of 13'); // wait for data
+            cy.get(ListPagePosts.elements.selectItem).eq(0).click();
+            cy.get(ListPagePosts.elements.selectItem)
+                .eq(2)
+                .click({ shiftKey: true });
+            cy.contains('3 items selected');
+            ListPagePosts.nextPage();
+            cy.contains('11-13 of 13'); // wait for data
+            cy.get(ListPagePosts.elements.selectedItem).should(els => {
+                expect(els).to.have.length(0);
+            });
+            cy.get(ListPagePosts.elements.selectItem).eq(0).click();
+            cy.get(ListPagePosts.elements.selectItem)
+                .eq(2)
+                .click({ shiftKey: true });
+            cy.contains('6 items selected');
+        });
     });
 
     describe('rowClick', () => {

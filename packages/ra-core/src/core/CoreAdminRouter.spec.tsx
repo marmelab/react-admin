@@ -4,7 +4,7 @@ import expect from 'expect';
 import { Router, Route } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
-import renderWithRedux from '../util/renderWithRedux';
+import { renderWithRedux } from 'ra-test';
 import CoreAdminRouter from './CoreAdminRouter';
 import AuthContext from '../auth/AuthContext';
 import Resource from './Resource';
@@ -60,8 +60,9 @@ describe('<CoreAdminRouter>', () => {
                     </CoreAdminRouter>
                 </Router>
             );
-            await new Promise(resolve => setTimeout(resolve, 10));
-            expect(getByText('Layout')).not.toBeNull();
+            await waitFor(() => {
+                expect(getByText('Layout')).not.toBeNull();
+            });
             history.push('/posts');
             expect(getByText('PostList')).not.toBeNull();
             history.push('/comments');

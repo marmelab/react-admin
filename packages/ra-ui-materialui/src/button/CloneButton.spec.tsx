@@ -7,7 +7,7 @@ import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 
 import { CloneButton } from './CloneButton';
-import { TestContext } from 'ra-core';
+import { TestContext } from 'ra-test';
 
 const theme = createMuiTheme();
 

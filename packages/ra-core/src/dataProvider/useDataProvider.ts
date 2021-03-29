@@ -134,6 +134,7 @@ const useDataProvider = (): DataProviderProxy => {
                         onSuccess = undefined,
                         onFailure = undefined,
                         mutationMode = undoable ? 'undoable' : 'pessimistic',
+                        enabled = true,
                         ...rest
                     } = options || {};
 
@@ -156,6 +157,13 @@ const useDataProvider = (): DataProviderProxy => {
                         throw new Error(
                             'You must pass an onSuccess callback calling notify() to use the undoable mode'
                         );
+                    }
+                    if (typeof enabled !== 'boolean') {
+                        throw new Error('The enabled option must be a boolean');
+                    }
+
+                    if (enabled === false) {
+                        return Promise.resolve({});
                     }
 
                     const params = {

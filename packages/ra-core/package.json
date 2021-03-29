@@ -1,6 +1,6 @@
 {
     "name": "ra-core",
-    "version": "3.12.4",
+    "version": "3.13.5",
     "description": "Core components of react-admin, a frontend Framework for building admin applications on top of REST services, using ES6, React",
     "files": [
         "*.md",
@@ -28,6 +28,7 @@
     },
     "devDependencies": {
         "@redux-saga/testing-utils": "^1.0.2",
+        "@testing-library/react": "^11.2.3",
         "@types/history": "^4.7.2",
         "@types/node-polyglot": "^0.4.31",
         "@types/query-string": "5.1.0",
@@ -36,12 +37,13 @@
         "@types/react-router-dom": "^5.1.0",
         "connected-react-router": "^6.5.2",
         "cross-env": "^5.2.0",
-        "final-form": "^4.20.0",
+        "final-form": "^4.20.2",
         "history": "^4.7.2",
         "ignore-styles": "~5.0.1",
+        "ra-test": "^3.13.5",
         "react": "^17.0.0",
         "react-dom": "^17.0.0",
-        "react-final-form": "^6.5.0",
+        "react-final-form": "^6.5.2",
         "react-redux": "^7.1.0",
         "react-router": "^5.1.0",
         "react-router-dom": "^5.1.0",
@@ -52,10 +54,11 @@
     },
     "peerDependencies": {
         "connected-react-router": "^6.5.2",
-        "final-form": "^4.18.5",
+        "final-form": "^4.20.2",
+        "final-form-submit-errors": "^0.1.2",
         "react": "^16.9.0 || ^17.0.0",
         "react-dom": "^16.9.0 || ^17.0.0",
-        "react-final-form": "^6.3.3",
+        "react-final-form": "^6.5.2",
         "react-redux": "^7.1.0",
         "react-router": "^5.1.0",
         "react-router-dom": "^5.1.0",
@@ -63,7 +66,6 @@
         "redux-saga": "^1.0.0"
     },
     "dependencies": {
-        "@testing-library/react": "^11.2.3",
         "classnames": "~2.2.5",
         "date-fns": "^1.29.0",
         "eventemitter3": "^3.0.0",

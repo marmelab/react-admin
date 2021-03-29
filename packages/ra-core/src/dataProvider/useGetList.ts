@@ -8,6 +8,7 @@ import {
     Identifier,
     Record,
     RecordMap,
+    UseDataProviderOptions,
 } from '../types';
 import useQueryWithStore from './useQueryWithStore';
 
@@ -31,7 +32,10 @@ const defaultData = {};
  * @param {Object} pagination The request pagination { page, perPage }, e.g. { page: 1, perPage: 10 }
  * @param {Object} sort The request sort { field, order }, e.g. { field: 'id', order: 'DESC' }
  * @param {Object} filter The request filters, e.g. { title: 'hello, world' }
- * @param {Object} options Options object to pass to the dataProvider. May include side effects to be executed upon success or failure, e.g. { onSuccess: { refresh: true } }
+ * @param {Object} options Options object to pass to the dataProvider.
+ * @param {boolean} options.enabled Flag to conditionally run the query. If it's false, the query will not run
+ * @param {Function} options.onSuccess Side effect function to be executed upon success, e.g. { onSuccess: { refresh: true } }
+ * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) }
  *
  * @returns The current request state. Destructure as { data, total, ids, error, loading, loaded }.
  *
@@ -57,10 +61,10 @@ const useGetList = <RecordType extends Record = Record>(
     pagination: PaginationPayload,
     sort: SortPayload,
     filter: object,
-    options?: any
+    options?: UseDataProviderOptions
 ): {
-    data?: RecordMap<RecordType>;
-    ids?: Identifier[];
+    data: RecordMap<RecordType>;
+    ids: Identifier[];
     total?: number;
     error?: any;
     loading: boolean;

@@ -88,9 +88,7 @@ const useStyles = makeStyles(
  *
  * The object passed as `options` props is passed to the material-ui <RadioButtonGroup> component
  */
-const RadioButtonGroupInput: FunctionComponent<
-    ChoicesInputProps<RadioGroupProps> & FormControlProps
-> = props => {
+const RadioButtonGroupInput: FunctionComponent<RadioButtonGroupInputProps> = props => {
     const {
         choices = [],
         classes: classesOverride,
@@ -218,5 +216,8 @@ RadioButtonGroupInput.defaultProps = {
     row: true,
     translateChoice: true,
 };
+
+export type RadioButtonGroupInputProps = ChoicesInputProps<RadioGroupProps> &
+    FormControlProps;
 
 export default RadioButtonGroupInput;

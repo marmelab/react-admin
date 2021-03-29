@@ -5,6 +5,7 @@ import { useTranslate } from 'ra-core';
 import classnames from 'classnames';
 
 const skipToContent = () => {
+    if (typeof document === 'undefined') return;
     const element = document.getElementById('main-content');
 
     if (!element) {

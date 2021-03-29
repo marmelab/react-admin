@@ -48,7 +48,7 @@ LinearProgress.propTypes = {
     timeout: PropTypes.number,
 };
 
-// wat? TypeScript looses the displayName if we don't set it explicitly
+// What? TypeScript loses the displayName if we don't set it explicitly
 LinearProgress.displayName = 'LinearProgress';
 
 export interface LinearProgressProps extends ProgressProps {

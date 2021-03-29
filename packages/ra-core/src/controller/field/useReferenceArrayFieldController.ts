@@ -11,6 +11,7 @@ import usePaginationState from '../usePaginationState';
 import useSelectionState from '../useSelectionState';
 import useSortState from '../useSortState';
 import { useResourceContext } from '../../core';
+import { indexById } from '../../util/indexById';
 
 interface Option {
     basePath: string;
@@ -86,6 +87,9 @@ const useReferenceArrayFieldController = (
                 }
             ),
     });
+
+    const [loadingState, setLoadingState] = useSafeSetState<boolean>(loading);
+    const [loadedState, setLoadedState] = useSafeSetState<boolean>(loaded);
 
     const [finalData, setFinalData] = useSafeSetState<RecordMap>(
         indexById(data)
@@ -171,10 +175,11 @@ const useReferenceArrayFieldController = (
         if (!loaded) return;
         // 1. filter
         let tempData = data.filter(record =>
-            Object.entries(filterValues).every(
-                ([filterName, filterValue]) =>
-                    // eslint-disable-next-line eqeqeq
-                    filterValue == get(record, filterName)
+            Object.entries(filterValues).every(([filterName, filterValue]) =>
+                Array.isArray(get(record, filterName))
+                    ? get(record, filterName).includes(filterValue)
+                    : // eslint-disable-next-line eqeqeq
+                      filterValue == get(record, filterName)
             )
         );
         // 2. sort
@@ -209,6 +214,18 @@ const useReferenceArrayFieldController = (
         sort.order,
     ]);
 
+    useEffect(() => {
+        if (loaded !== loadedState) {
+            setLoadedState(loaded);
+        }
+    }, [loaded, loadedState, setLoadedState]);
+
+    useEffect(() => {
+        if (loading !== loadingState) {
+            setLoadingState(loading);
+        }
+    }, [loading, loadingState, setLoadingState]);
+
     return {
         basePath: basePath.replace(resource, reference),
         currentSort: sort,
@@ -220,8 +237,8 @@ const useReferenceArrayFieldController = (
         hasCreate: false,
         hideFilter,
         ids: finalIds,
-        loaded,
-        loading,
+        loaded: loadedState,
+        loading: loadingState,
         onSelect,
         onToggleItem,
         onUnselectItems,
@@ -237,13 +254,5 @@ const useReferenceArrayFieldController = (
         total: finalIds.length,
     };
 };
-
-const indexById = (records: Record[] = []): RecordMap =>
-    records
-        .filter(r => typeof r !== 'undefined')
-        .reduce((prev, current) => {
-            prev[current.id] = current;
-            return prev;
-        }, {});
 
 export default useReferenceArrayFieldController;

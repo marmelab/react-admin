@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import { RecordContextProvider, usePickRecordContext } from '../RecordContext';
+import { RecordContextProvider } from '../RecordContext';
 import { CreateContext } from './CreateContext';
 import { CreateControllerProps } from './useCreateController';
 import { SaveContextProvider, usePickSaveContext } from './SaveContext';
+import { Record } from '../../types';
 
 /**
  * Create a Create Context.
@@ -37,7 +38,9 @@ export const CreateContextProvider = ({
 }) => (
     <CreateContext.Provider value={value}>
         <SaveContextProvider value={usePickSaveContext(value)}>
-            <RecordContextProvider value={usePickRecordContext(value)}>
+            <RecordContextProvider<Partial<Record>>
+                value={value && value.record}
+            >
                 {children}
             </RecordContextProvider>
         </SaveContextProvider>

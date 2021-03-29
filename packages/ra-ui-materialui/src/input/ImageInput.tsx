@@ -38,7 +38,7 @@ const useStyles = makeStyles(
     { name: 'RaImageInput' }
 );
 
-const ImageInput = (props: FileInputProps & InputProps<FileInputOptions>) => {
+const ImageInput = (props: ImageInputProps) => {
     const classes = useStyles(props);
 
     return (
@@ -50,5 +50,7 @@ const ImageInput = (props: FileInputProps & InputProps<FileInputOptions>) => {
         />
     );
 };
+
+export type ImageInputProps = FileInputProps & InputProps<FileInputOptions>;
 
 export default ImageInput;

@@ -52,7 +52,7 @@ You can get more details about input params, response and error formats in the [
 
 ## Available Providers
 
-It's very common that your auth logic is so specific that so you'll need to write your own `authProvider`. However, the community has built a few open-source Auth Providers that may fit your need:
+It's very common that your auth logic is so specific that you'll need to write your own `authProvider`. However, the community has built a few open-source Auth Providers that may fit your need:
 
 - **[AWS Amplify](https://docs.amplify.aws)**: [MrHertal/react-admin-amplify](https://github.com/MrHertal/react-admin-amplify)
 - **[AWS Cognito](https://docs.aws.amazon.com/cognito/latest/developerguide/setting-up-the-javascript-sdk.html)**: [thedistance/ra-cognito](https://github.com/thedistance/ra-cognito)
@@ -209,7 +209,7 @@ export default {
 
 Redirecting to the login page whenever a REST response uses a 401 status code is usually not enough. React-admin keeps data on the client side, and could briefly display stale data while contacting the server - even after the credentials are no longer valid.
 
-Fortunately, each time the user navigates to a list, edit, create or show page, react-admin calls the `authProvider.checkAuth()` method. If this method returns a rejected Promise, react-admin calls `authProvider.logout()` and redirects the user to the login page. So it's the ideal place to make sure  the credentials are still valid.
+Fortunately, each time the user navigates to a list, edit, create or show page, react-admin calls the `authProvider.checkAuth()` method. If this method returns a rejected Promise, react-admin calls `authProvider.logout()` and redirects the user to the login page. So it's the ideal place to make sure the credentials are still valid.
 
 For instance, to check for the existence of the authentication data in local storage:
 

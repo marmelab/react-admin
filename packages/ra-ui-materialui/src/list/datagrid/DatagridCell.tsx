@@ -38,7 +38,7 @@ export interface DatagridCellProps extends TableCellProps {
     resource?: string;
 }
 
-// wat? TypeScript looses the displayName if we don't set it explicitly
+// What? TypeScript loses the displayName if we don't set it explicitly
 DatagridCell.displayName = 'DatagridCell';
 
 export default DatagridCell;

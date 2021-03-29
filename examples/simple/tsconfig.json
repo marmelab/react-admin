@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "outDir": "lib",
+        "rootDir": "src",
+        "declaration": true,
+        "allowJs": false,
+        "jsx": "react",
+        "lib": [
+            "es2017",
+            "dom"
+        ],
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true
+    },
+    "exclude": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.spec.js"],
+    "include": ["src"]
+}

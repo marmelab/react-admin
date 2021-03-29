@@ -6,7 +6,7 @@ import { createMemoryHistory } from 'history';
 
 import Resource from './Resource';
 import { registerResource, unregisterResource } from '../actions';
-import renderWithRedux from '../util/renderWithRedux';
+import { renderWithRedux } from 'ra-test';
 import AuthContext from '../auth/AuthContext';
 
 const PostList = () => <div>PostList</div>;

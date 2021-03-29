@@ -4,7 +4,7 @@ import { act } from '@testing-library/react';
 
 import { getRecord } from './useCreateController';
 import { CreateController } from './CreateController';
-import renderWithRedux from '../../util/renderWithRedux';
+import { renderWithRedux } from 'ra-test';
 import { DataProviderContext } from '../../dataProvider';
 import { DataProvider } from '../../types';
 
