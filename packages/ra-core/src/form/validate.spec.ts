@@ -30,7 +30,7 @@ describe('Validators', () => {
 
     describe('composeValidators', () => {
         const asyncSuccessfullValidator = async =>
-            new Promise(resolve => resolve());
+            new Promise(resolve => resolve(undefined));
         const asyncFailedValidator = async =>
             new Promise(resolve => resolve('async'));
 
