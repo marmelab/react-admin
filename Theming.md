@@ -1010,7 +1010,7 @@ const MyError = ({
             <div>
                 <Button
                     variant="contained"
-                    icon={<History />}
+                    startIcon={<History />}
                     onClick={() => history.go(-1)}
                 >
                     Back

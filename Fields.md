@@ -25,17 +25,20 @@ export const PostList = (props) => (
 );
 ```
 
-`Field` components need a `record` and a `source` prop to work, and basically display the `record[source]` data. There is nothing magic there - you can easily write your own:
+`Field` components read the current `record` from the current `RecordContext` (set by react-admin). There is nothing magic there - you can easily write your own:
 
 {% raw %}
 ```jsx
-const PurpleTextField = ({ record, source }) => (
-    <span style={{ color: 'purple' }}>{record[source]}</span>
-);
+import { useRecordContext } from 'react-admin';
+
+const PurpleTextField = ({ source }) => {
+    const record = useRecordContext();
+    return (<span style={{ color: 'purple' }}>{record && record[source]}</span>);
+};
 ```
 {% endraw %}
 
-Some react-admin components  (e.g. `<Datagrid>` or `<SimpleShowLayout>`) clone their children and pass them a `record` value. That's why most of the time, you don't have to pass the `record` manually. But you can totally render a `Field` component by passing it a `record` value ; in fact, it's a great way to understand how `Field` components work:
+React-admin Field components also accept a `record` prop. This allows you to use them outside of a `RecordContext`, or to use another `record` than the one in the current context.
 
 ```jsx
 // a post looks like
@@ -57,11 +60,11 @@ const PostShow = ({ id }) => {
 
 ## Common Field Props
 
-All field components accept the following props:
+All Field components accept the following props:
 
 | Prop              | Required | Type                           | Default  | Description                                                                                                                                                                        |
 | ----------------- | -------- | ------------------------------ | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `record`          | Required | `Object`                       | -        | Object containing the properties to display. `<Datagrid>`, `<SimpleForm>` and other components inject that prop to their children                                                  |
+| `record`          | Optional | `Object`                       | -        | Object containing the properties to display, to override the record from the current `RecordContext` |
 | `source`          | Required | `string`                       | -        | Name of the property to display                                                                                                                                                    |
 | `label`           | Optional | `string` &#124; `ReactElement` | `source` | Used as a table header or an input label                                                                                                                                           |
 | `sortable`        | Optional | `boolean`                      | `true`   | When used in a `List`, should the list be sortable using the `source` attribute? Setting it to `false` disables the click handler on the column header.                            |
@@ -463,16 +466,16 @@ import { NumberField }  from 'react-admin';
 
 | Prop      | Required | Type   | Default | Description                                                                                              |
 | --------- | -------- | ------ | ------- | -------------------------------------------------------------------------------------------------------- |
-| `locales` | Optional | string | ''      | Override the browser locale in the date formatting. Passed as first argument to `Intl.DateTimeFormat()`. |
+| `locales` | Optional | string | ''      | Override the browser locale in the date formatting. Passed as first argument to `Intl.NumberFormat()`.   |
 | `options` | Optional | Object | -       | Number formatting options. Passed as second argument to `Intl.NumberFormat()`.                           |
 
 `<NumberField>` also accepts the [common field props](./Fields.md#common-field-props).
 
 #### Usage
 
-`<NumberField>` uses `Intl.NumberFormat()` if available, passing the `locales` and `options` props as arguments. This allows a perfect display of decimals, currencies, percentages, etc.
+`<NumberField>` uses `Intl.NumberFormat()` if available, passing the `locales` and `options` props as arguments. This allows a perfect display of decimals, currencies, percentages, etc. See [Intl.NumberFormat documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) for the `options` prop syntax.
 
-If Intl is not available, it outputs numbers as is (and ignores the `locales` and `options` props).
+If Intl is not available, `<NumberField>` outputs numbers as is (and ignores the `locales` and `options` props).
 
 {% raw %}
 ```jsx
@@ -495,8 +498,6 @@ import { NumberField }  from 'react-admin';
 <span>25,99 $US</span>
 ```
 {% endraw %}
-
-See [Intl.NumberFormat documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString) for the `options` prop syntax.
 
 **Tip**: If you need more formatting options than what `Intl.NumberFormat` can provide, build your own field component leveraging a third-party library like [numeral.js](http://numeraljs.com/).
 
