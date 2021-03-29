@@ -190,7 +190,7 @@ export type FormWithRedirectProps = FormWithRedirectOwnProps &
 
 export type FormWithRedirectRenderProps = Omit<
     FormViewProps,
-    'chilren' | 'render' | 'setRedirect'
+    'children' | 'render' | 'setRedirect'
 >;
 export type FormWithRedirectRender = (
     props: FormWithRedirectRenderProps
