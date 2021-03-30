@@ -404,4 +404,6 @@ export interface DatagridProps<RecordType extends Record = Record>
     total?: number;
 }
 
+Datagrid.displayName = 'Datagrid';
+
 export default Datagrid;
