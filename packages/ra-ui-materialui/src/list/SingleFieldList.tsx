@@ -160,7 +160,7 @@ export interface SingleFieldListProps<RecordType extends Record = Record>
     extends HtmlHTMLAttributes<HTMLDivElement> {
     className?: string;
     classes?: ClassesOverride<typeof useStyles>;
-    component?: ComponentType<any>;
+    component?: string | ComponentType<any>;
     linkType?: string | false;
     children: React.ReactElement;
     // can be injected when using the component without context
