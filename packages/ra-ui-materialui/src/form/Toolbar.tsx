@@ -4,12 +4,10 @@ import {
     Fragment,
     isValidElement,
     ReactElement,
-    FC,
     ReactNode,
 } from 'react';
 import PropTypes from 'prop-types';
-import MuiToolbar from '@material-ui/core/Toolbar';
-import withWidth from '@material-ui/core/withWidth';
+import { Theme, useMediaQuery, Toolbar as MuiToolbar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import { Record, RedirectionSideEffect, MutationMode } from 'ra-core';
@@ -94,7 +92,7 @@ const valueOrDefault = (value, defaultValue) =>
  * @prop {string} width Apply to the mobile or desktop classes depending on its value. Pass `xs` to display the mobile version.
  *
  */
-const Toolbar: FC<ToolbarProps> = props => {
+const Toolbar = (props: ToolbarProps) => {
     const {
         alwaysEnableSaveButton,
         basePath,
@@ -112,10 +110,12 @@ const Toolbar: FC<ToolbarProps> = props => {
         submitOnEnter,
         undoable,
         mutationMode,
-        width,
         ...rest
     } = props;
     const classes = useStyles(props);
+    const isSmall = useMediaQuery((theme: Theme) =>
+        theme.breakpoints.down('xs')
+    );
 
     // Use form pristine to enable or disable the save button
     // if alwaysEnableSaveButton is undefined
@@ -127,8 +127,8 @@ const Toolbar: FC<ToolbarProps> = props => {
                 className={classnames(
                     classes.toolbar,
                     {
-                        [classes.mobileToolbar]: width === 'xs',
-                        [classes.desktopToolbar]: width !== 'xs',
+                        [classes.mobileToolbar]: isSmall,
+                        [classes.desktopToolbar]: !isSmall,
                     },
                     className
                 )}
@@ -221,7 +221,6 @@ export interface ToolbarProps<RecordType extends Record = Record> {
     resource?: string;
     /** @deprecated use mutationMode: undoable instead */
     undoable?: boolean;
-    width?: string;
 }
 
 Toolbar.propTypes = {
@@ -243,11 +242,10 @@ Toolbar.propTypes = {
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
     undoable: PropTypes.bool,
-    width: PropTypes.string,
 };
 
 Toolbar.defaultProps = {
     submitOnEnter: true,
 };
 
-export default withWidth({ initialWidth: 'xs' })(Toolbar);
+export default Toolbar;
