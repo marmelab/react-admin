@@ -71,8 +71,9 @@ const UserMenu = props => {
             <Menu
                 id="menu-appbar"
                 anchorEl={anchorEl}
+                getContentAnchorEl={null}
                 anchorOrigin={{
-                    vertical: 'top',
+                    vertical: 'bottom',
                     horizontal: 'right',
                 }}
                 transformOrigin={{
