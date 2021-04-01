@@ -52,8 +52,7 @@ export const DatagridHeaderCell = (
             variant="head"
             {...rest}
         >
-            {updateSort &&
-            field.props.sortable !== false &&
+            {field.props.sortable !== false &&
             (field.props.sortBy || field.props.source) ? (
                 <Tooltip
                     title={translate('ra.action.sort')}
@@ -104,7 +103,7 @@ DatagridHeaderCell.propTypes = {
     }).isRequired,
     isSorting: PropTypes.bool,
     resource: PropTypes.string,
-    updateSort: PropTypes.func,
+    updateSort: PropTypes.func.isRequired,
 };
 
 export interface DatagridHeaderCellProps
@@ -115,7 +114,7 @@ export interface DatagridHeaderCellProps
     isSorting?: boolean;
     resource: string;
     currentSort: SortPayload;
-    updateSort?: (event: any) => void;
+    updateSort: (event: any) => void;
 }
 
 export default memo(

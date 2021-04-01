@@ -147,7 +147,7 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         isRowExpandable,
     ]);
 
-    const updateSortCallback = useCallback(
+    const updateSort = useCallback(
         event => {
             event.stopPropagation();
             const newField = event.currentTarget.dataset.field;
@@ -162,8 +162,6 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         },
         [currentSort.field, currentSort.order, setSort]
     );
-
-    const updateSort = setSort ? updateSortCallback : null;
 
     const handleSelectAll = useCallback(
         event => {
@@ -186,10 +184,10 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     const lastSelected = useRef(null);
 
     useEffect(() => {
-        if (!selectedIds || selectedIds.length === 0) {
+        if (selectedIds.length === 0) {
             lastSelected.current = null;
         }
-    }, [JSON.stringify(selectedIds)]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [selectedIds.length]);
 
     const handleToggleItem = useCallback(
         (id, event) => {
@@ -278,7 +276,7 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                                 )}
                             />
                         )}
-                        {hasBulkActions && selectedIds && (
+                        {hasBulkActions && (
                             <TableCell
                                 padding="checkbox"
                                 className={classes.headerCell}
@@ -348,9 +346,9 @@ Datagrid.propTypes = {
     children: PropTypes.node.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
-    currentSort: PropTypes.exact({
-        field: PropTypes.string.isRequired,
-        order: PropTypes.string.isRequired,
+    currentSort: PropTypes.shape({
+        field: PropTypes.string,
+        order: PropTypes.string,
     }),
     data: PropTypes.any,
     // @ts-ignore
@@ -395,7 +393,7 @@ export interface DatagridProps<RecordType extends Record = Record>
     size?: 'medium' | 'small';
     // can be injected when using the component without context
     basePath?: string;
-    currentSort?: SortPayload;
+    currentsort?: SortPayload;
     data?: RecordMap<RecordType>;
     ids?: Identifier[];
     loaded?: boolean;

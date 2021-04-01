@@ -110,16 +110,14 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
 
             const effect =
                 typeof rowClick === 'function'
-                    ? await rowClick(id, basePath || `/${resource}`, record)
+                    ? await rowClick(id, basePath, record)
                     : rowClick;
             switch (effect) {
                 case 'edit':
-                    history.push(linkToRecord(basePath || `/${resource}`, id));
+                    history.push(linkToRecord(basePath, id));
                     return;
                 case 'show':
-                    history.push(
-                        linkToRecord(basePath || `/${resource}`, id, 'show')
-                    );
+                    history.push(linkToRecord(basePath, id, 'show'));
                     return;
                 case 'expand':
                     handleToggleExpand(event);
@@ -139,7 +137,6 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
             handleToggleSelection,
             id,
             record,
-            resource,
             rowClick,
         ]
     );

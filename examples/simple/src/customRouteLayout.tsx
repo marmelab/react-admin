@@ -26,13 +26,13 @@ const CustomRouteLayout = () => {
                 Found <span className="total">{total}</span> posts !
             </p>
             <Datagrid
-                basePath="/posts"
+                basePath=""
                 currentSort={currentSort}
                 data={data}
                 ids={ids}
+                selectedIds={[]}
                 loaded={loaded}
                 total={total}
-                rowClick="edit"
             >
                 <TextField source="id" sortable={false} />
                 <TextField source="title" sortable={false} />

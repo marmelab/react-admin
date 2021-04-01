@@ -2819,13 +2819,15 @@ export const UserList = ({ permissions, ...props }) => {
 
 ### Rendering `<Datagrid>` With A Custom Query
 
-You can use the `<Datagrid>` component with [custom queries](./Actions.md#usequery-hook):
+You can use the `<Datagrid>` component with [custom queries](./Actions.md#usequery-hook), provided you pass the result to a `<ListContextProvider>`:
 
 {% raw %}
 ```jsx
 import keyBy from 'lodash/keyBy'
 import {
     useQuery,
+    ResourceContextProvider,
+    ListContextProvider,
     Datagrid,
     TextField,
     Pagination,
@@ -2834,14 +2836,13 @@ import {
 
 const CustomList = () => {
     const [page, setPage] = useState(1);
-    const [perPage, setPerPage] = useState(25);
-    const [sort, setSort] = useState({ field: 'id', order: 'ASC' })
+    const perPage = 50;
     const { data, total, loading, error } = useQuery({
         type: 'getList',
         resource: 'posts',
         payload: {
             pagination: { page, perPage },
-            sort,
+            sort: { field: 'id', order: 'ASC' },
             filter: {},
         }
     });
@@ -2853,28 +2854,32 @@ const CustomList = () => {
         return <p>ERROR: {error}</p>
     }
     return (
-        <Datagrid 
-            data={keyBy(data, 'id')}
-            ids={data.map(({ id }) => id)}
-            currentSort={sort}
-            setSort={(field, order) => setSort({ field, order })}
-        >
-            <TextField source="id" />
-            <TextField source="title" />
-        </Datagrid>
-        <Pagination
-            page={page}
-            setPage={setPage}
-            perPage={perPage}
-            setPerPage={setPerPage}
-            total={total}
-        />
+        <ResourceContextProvider value="posts">
+            <ListContextProvider
+                value={{
+                    basePath: '/posts',
+                    data: keyBy(data, 'id'),
+                    ids: data.map(({ id }) => id),
+                    currentSort: { field: 'id', order: 'ASC' },
+                    selectedIds: [],
+                }}
+            >
+                <Datagrid rowClick="edit">
+                    <TextField source="id" />
+                    <TextField source="title" />
+                </Datagrid>
+                <Pagination
+                    page={page}
+                    perPage={perPage}
+                    setPage={setPage}
+                    total={total}
+                />
+            </ListContextProvider>
+        </ResourceContextProvider>
     );
 }
 ```
 {% endraw %}
-
-**Tip**: If you use the `<Datagrid rowClick>` prop in this case, you must also set the `basePath` prop to let the `<Datagrid>` compute the link to the record pages. 
 
 ## Third-Party Components
 
