@@ -1,5 +1,16 @@
 # Changelog
 
+## 3.14.2
+
+* Fix `<Datagrid>` requires too many props when used standalone ([6115](https://github.com/marmelab/react-admin/pull/6115)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix console warnings from `<Error>` component ([6114](https://github.com/marmelab/react-admin/pull/6114)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<UserMenu>` hides the scrollbar ([6113](https://github.com/marmelab/react-admin/pull/6113)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<UserMenu>` dropdown positioning ([6105](https://github.com/marmelab/react-admin/pull/6105)) ([djhi](https://github.com/djhi))
+* Fix `<Admin customRoutes>` aren't used when the resources are empty ([6112](https://github.com/marmelab/react-admin/pull/6112)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `ra-ui-material-ui` dependency version on `ra-core` ([6111](https://github.com/marmelab/react-admin/pull/6111)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix missing import in `ra-core` hook utils ([6071](https://github.com/marmelab/react-admin/pull/6071)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix `<TabbedForm syncWithLocation>` example ([6097](https://github.com/marmelab/react-admin/pull/6097)) ([djhi](https://github.com/djhi))
+
 ## 3.14.1
 
 * Fix performance regression ([6096](https://github.com/marmelab/react-admin/pull/6096)) ([fzaninotto](https://github.com/fzaninotto))
