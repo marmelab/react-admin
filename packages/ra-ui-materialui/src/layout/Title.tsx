@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FC, cloneElement, ReactElement } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
-import { useTranslate, Record, warning } from 'ra-core';
+import { useTranslate, Record, warning, useDocumentTitle } from 'ra-core';
 
 export interface TitleProps {
     className?: string;
@@ -23,6 +23,10 @@ const Title: FC<TitleProps> = ({
         typeof document !== 'undefined'
             ? document.getElementById('react-admin-title')
             : null;
+
+    const documentTitle = typeof title === 'string' ? title : defaultTitle;
+    useDocumentTitle(translate(documentTitle, { _: documentTitle }));
+
     if (!container) return null;
     warning(!defaultTitle && !title, 'Missing title prop in <Title> element');
 
