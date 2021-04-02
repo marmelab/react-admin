@@ -87,6 +87,7 @@ const UserMenu = props => {
             )}
             <Menu
                 id="menu-appbar"
+                disableScrollLock
                 anchorEl={anchorEl}
                 anchorOrigin={AnchorOrigin}
                 transformOrigin={TransformOrigin}
