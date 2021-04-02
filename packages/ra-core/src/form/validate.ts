@@ -77,10 +77,18 @@ export const composeValidators = (...validators) => async (
     ).filter(isFunction);
 
     for (const validator of allValidators) {
-        const error = await validator(value, values, meta);
+        const errorPromise = validator(value, values, meta);
 
-        if (error) {
-            return error;
+        if (errorPromise) {
+            let error = errorPromise;
+
+            if (errorPromise.then) {
+                error = await errorPromise;
+            }
+
+            if (error) {
+                return error;
+            }
         }
     }
 };

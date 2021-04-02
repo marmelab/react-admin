@@ -52,7 +52,7 @@ You can get more details about input params, response and error formats in the [
 
 ## Available Providers
 
-It's very common that your auth logic is so specific that so you'll need to write your own `authProvider`. However, the community has built a few open-source Auth Providers that may fit your need:
+It's very common that your auth logic is so specific that you'll need to write your own `authProvider`. However, the community has built a few open-source Auth Providers that may fit your need:
 
 - **[AWS Amplify](https://docs.amplify.aws)**: [MrHertal/react-admin-amplify](https://github.com/MrHertal/react-admin-amplify)
 - **[AWS Cognito](https://docs.aws.amazon.com/cognito/latest/developerguide/setting-up-the-javascript-sdk.html)**: [thedistance/ra-cognito](https://github.com/thedistance/ra-cognito)

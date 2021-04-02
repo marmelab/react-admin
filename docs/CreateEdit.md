@@ -577,7 +577,7 @@ const PostList = props => (
 
 **Note**: `<CloneButton>` is designed to be used in a `<Datagrid>` and in an edit view `<Actions>` component, not inside the form `<Toolbar>`. The `Toolbar` is basically for submitting the form, not for going to another resource.
 
-Alternately, users need to prepopulate a record based on a *related* record. For instance, to create a comment related to an exising post. 
+Alternately, users need to prepopulate a record based on a *related* record. For instance, to create a comment related to an existing post. 
 
 By default, the `<Create>` view starts with an empty `record`. However, if the `location` object (injected by [react-router-dom](https://reacttraining.com/react-router/web/api/location)) contains a `record` in its `state`, the `<Create>` view uses that `record` instead of the empty object. That's how the `<CloneButton>` works under the hood.
 
@@ -938,7 +938,7 @@ You can also opt out the location synchronization by passing `false` to the `syn
 ```jsx
 export const PostEdit = (props) => (
     <Edit {...props}>
-        <TabbedForm syncWithLocation>
+        <TabbedForm syncWithLocation={false}>
             <FormTab label="summary">
                 <TextInput disabled label="Id" source="id" />
                 <TextInput source="title" validate={required()} />
@@ -969,6 +969,7 @@ export const PostEdit = (props) => (
 ```
 {% endraw %}
 **Tip**: When `syncWithLocation` is `false`, the `path` prop of the `<FormTab>` components is ignored.
+
 ### Label Decoration
 
 `<FormTab>` scans its children for the `addLabel` prop, and automatically wraps a child in a `<Labeled>` component when found. This displays a label on top of the child, based on the `label` prop. This is not necessary for `<Input>` components, as they already contain their label. Also, all the react-admin `<Field>` components have a default prop `addLabel: true`, which explains why react-admin shows a label on top of Fields when they are used as children of `<FormTab>`. 

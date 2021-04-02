@@ -11,10 +11,7 @@ import sanitizeInputRestProps from './sanitizeInputRestProps';
 import InputHelperText from './InputHelperText';
 import InputPropTypes from './InputPropTypes';
 
-const BooleanInput: FunctionComponent<
-    InputProps<SwitchProps> &
-        Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'>
-> = ({
+const BooleanInput: FunctionComponent<BooleanInputProps> = ({
     format,
     label,
     fullWidth,
@@ -98,5 +95,8 @@ BooleanInput.propTypes = {
 BooleanInput.defaultProps = {
     options: {},
 };
+
+export type BooleanInputProps = InputProps<SwitchProps> &
+    Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'>;
 
 export default BooleanInput;

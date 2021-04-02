@@ -34,7 +34,7 @@ Failing to upgrade one of the `ra-` packages will result in a duplication of the
 
 * `react` and `react-dom` are now required to be >= 16.9. This version is backward compatible with 16.3, which was the minimum requirement in react-admin, and it offers the support for Hooks, on which react-admin v3 relies heavily.
 * `react-redux` requires a minimum version of 7.1.0 (instead of 5.0). Check their upgrade guide for [6.0](https://github.com/reduxjs/react-redux/releases/tag/v6.0.0) and [7.0](https://github.com/reduxjs/react-redux/releases/tag/v7.0.0)
-* `redux-saga` requires a minimim version of 1.0.0 (instead of ~0.16.0). Check their [list of breaking changes for redux-saga 1.0](https://github.com/redux-saga/redux-saga/releases/tag/v1.0.0) on GitHub. 
+* `redux-saga` requires a minimum version of 1.0.0 (instead of ~0.16.0). Check their [list of breaking changes for redux-saga 1.0](https://github.com/redux-saga/redux-saga/releases/tag/v1.0.0) on GitHub. 
 * `material-ui` requires a minimum of 4.0.0 (instead of 1.5). Check their [Upgrade guide](https://next.material-ui.com/guides/migration-v3/).
 
 ## `react-router-redux` replaced by `connected-react-router`
@@ -1118,17 +1118,17 @@ We've described how to pre-fill some fields in the create form in an [Advanced T
 
 ```jsx
 const AddNewCommentButton = ({ record }) => (
-  <Button
-    component={Link}
-    to={{
-      pathname: "/comments/create",
--     search: `?post_id=${record.id}`,
-+     search: `?source=${JSON.stringify({ post_id: record.id })}`,
-    }}
-    label="Add a comment"
-  >
-    <ChatBubbleIcon />
-  </Button>
+    <Button
+        component={Link}
+        to={{
+            pathname: "/comments/create",
+-           search: `?post_id=${record.id}`,
++           search: `?source=${JSON.stringify({ post_id: record.id })}`,
+        }}
+        label="Add a comment"
+    >
+        <ChatBubbleIcon />
+    </Button>
 );
 ```
 

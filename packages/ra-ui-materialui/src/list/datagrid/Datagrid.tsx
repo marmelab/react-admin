@@ -17,6 +17,8 @@ import {
     useVersion,
     Identifier,
     Record,
+    RecordMap,
+    SortPayload,
 } from 'ra-core';
 import {
     Checkbox,
@@ -35,6 +37,7 @@ import DatagridLoading from './DatagridLoading';
 import DatagridBody, { PureDatagridBody } from './DatagridBody';
 import useDatagridStyles from './useDatagridStyles';
 import { ClassesOverride } from '../../types';
+import { RowClickFunction } from './DatagridRow';
 import DatagridContextProvider from './DatagridContextProvider';
 
 /**
@@ -144,7 +147,7 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         isRowExpandable,
     ]);
 
-    const updateSort = useCallback(
+    const updateSortCallback = useCallback(
         event => {
             event.stopPropagation();
             const newField = event.currentTarget.dataset.field;
@@ -159,6 +162,8 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         },
         [currentSort.field, currentSort.order, setSort]
     );
+
+    const updateSort = setSort ? updateSortCallback : null;
 
     const handleSelectAll = useCallback(
         event => {
@@ -181,10 +186,10 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     const lastSelected = useRef(null);
 
     useEffect(() => {
-        if (selectedIds.length === 0) {
+        if (!selectedIds || selectedIds.length === 0) {
             lastSelected.current = null;
         }
-    }, [selectedIds.length]);
+    }, [JSON.stringify(selectedIds)]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const handleToggleItem = useCallback(
         (id, event) => {
@@ -273,7 +278,7 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                                 )}
                             />
                         )}
-                        {hasBulkActions && (
+                        {hasBulkActions && selectedIds && (
                             <TableCell
                                 padding="checkbox"
                                 className={classes.headerCell}
@@ -343,11 +348,11 @@ Datagrid.propTypes = {
     children: PropTypes.node.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
-    currentSort: PropTypes.shape({
-        field: PropTypes.string,
-        order: PropTypes.string,
+    currentSort: PropTypes.exact({
+        field: PropTypes.string.isRequired,
+        order: PropTypes.string.isRequired,
     }),
-    data: PropTypes.object,
+    data: PropTypes.any,
     // @ts-ignore
     expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     hasBulkActions: PropTypes.bool,
@@ -367,13 +372,8 @@ Datagrid.propTypes = {
     isRowExpandable: PropTypes.func,
 };
 
-type RowClickFunction = (
-    id: Identifier,
-    basePath: string,
-    record: Record
-) => string;
-
-export interface DatagridProps extends Omit<TableProps, 'size' | 'classes'> {
+export interface DatagridProps<RecordType extends Record = Record>
+    extends Omit<TableProps, 'size' | 'classes' | 'onSelect'> {
     body?: ReactElement;
     classes?: ClassesOverride<typeof useDatagridStyles>;
     className?: string;
@@ -393,6 +393,19 @@ export interface DatagridProps extends Omit<TableProps, 'size' | 'classes'> {
     rowClick?: string | RowClickFunction;
     rowStyle?: (record: Record, index: number) => any;
     size?: 'medium' | 'small';
+    // can be injected when using the component without context
+    basePath?: string;
+    currentSort?: SortPayload;
+    data?: RecordMap<RecordType>;
+    ids?: Identifier[];
+    loaded?: boolean;
+    onSelect?: (ids: Identifier[]) => void;
+    onToggleItem?: (id: Identifier) => void;
+    setSort?: (sort: string, order?: string) => void;
+    selectedIds?: Identifier[];
+    total?: number;
 }
+
+Datagrid.displayName = 'Datagrid';
 
 export default Datagrid;

@@ -1,5 +1,5 @@
 import inflection from 'inflection';
-import { useSelector } from 'react-redux';
+import { useStore } from 'react-redux';
 import { getResources } from '../reducer';
 import { useTranslate } from '../i18n';
 
@@ -24,11 +24,13 @@ import { useTranslate } from '../i18n';
  * }
  */
 export const useGetResourceLabel = (): GetResourceLabel => {
-    const resources = useSelector(getResources);
+    const store = useStore();
     const translate = useTranslate();
 
     return (resource: string, count = 2): string => {
-        const resourceDefinition = resources.find(r => r?.name === resource);
+        const resourceDefinition = getResources(store.getState()).find(
+            r => r?.name === resource
+        );
 
         const label = translate(`resources.${resource}.name`, {
             smart_count: count,

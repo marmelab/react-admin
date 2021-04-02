@@ -291,7 +291,7 @@ const SelectArrayInput: FunctionComponent<SelectArrayInputProps> = props => {
     );
 };
 
-interface SelectArrayInputProps
+export interface SelectArrayInputProps
     extends Omit<ChoicesProps, 'choices'>,
         Omit<InputProps<SelectProps>, 'source'>,
         Omit<

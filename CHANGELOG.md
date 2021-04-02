@@ -1,5 +1,53 @@
 # Changelog
 
+## 3.14.1
+
+* Fix performance regression ([6096](https://github.com/marmelab/react-admin/pull/6096)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix `<SingleFieldList component>` doesn't accept string components ([6094](https://github.com/marmelab/react-admin/pull/6094)) ([fzaninotto](https://github.com/fzaninotto))
+
+## v3.14.0
+
+* Add ability to use `record` from context in `Field` components ([5995](https://github.com/marmelab/react-admin/pull/5995)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `<Datagrid isRowExpandable` prop ([5941](https://github.com/marmelab/react-admin/pull/5941)) ([WiXSL](https://github.com/WiXSL))
+* Add `useResourceLabel` hook ([6016](https://github.com/marmelab/react-admin/pull/6016)) ([djhi](https://github.com/djhi))
+* Add ability to use an element as label in `<FormTab>` ([6061](https://github.com/marmelab/react-admin/pull/6061)) ([WiXSL](https://github.com/WiXSL))
+* Add ability to use an element as label in `<FilterListItem>` ([6034](https://github.com/marmelab/react-admin/pull/6034)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to call `useGetList` without pagination, sort, or filter params ([6056](https://github.com/marmelab/react-admin/pull/6056)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to omit `basePath` in buttons ([6041](https://github.com/marmelab/react-admin/pull/6041)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to omit `basePath` in Reference fields ([6028](https://github.com/marmelab/react-admin/pull/6028)) ([fzaninotto](https://github.com/fzaninotto))
+* Add support for `<SingleFieldList component>` ([6036](https://github.com/marmelab/react-admin/pull/6036)) ([fzaninotto](https://github.com/fzaninotto))
+* Add support for `<Labeled fullWidth>` ([6089](https://github.com/marmelab/react-admin/pull/6089)) ([seniorquico](https://github.com/seniorquico))
+* Add support for `<ArrayInput helperText>` ([6062](https://github.com/marmelab/react-admin/pull/6062)) ([WiXSL](https://github.com/WiXSL))
+* Add debounce to `<AutocompleteArrayInput>` `setFilter` call ([6003](https://github.com/marmelab/react-admin/pull/6003)) ([djhi](https://github.com/djhi))
+* Add `success` notification type ([5961](https://github.com/marmelab/react-admin/pull/5961)) ([WiXSL](https://github.com/WiXSL))
+* Add support for a React element as `<Confirm content` prop value ([5954](https://github.com/marmelab/react-admin/pull/5954)) ([andrico1234](https://github.com/andrico1234))
+* Fix refresh strategy to avoid empty page while refreshing ([6054](https://github.com/marmelab/react-admin/pull/6054)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix performance issue in forms with many validators ([6092](https://github.com/marmelab/react-admin/pull/6092)) ([djhi](https://github.com/djhi))
+* Fix `<ReferenceArrayField>` passes empty data to child when loaded ([6080](https://github.com/marmelab/react-admin/pull/6080)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix typo in private variable name in `useGetList` code ([6069](https://github.com/marmelab/react-admin/pull/6069)) ([WiXSL](https://github.com/WiXSL))
+* [TypeScript] Fix `ra-input-rich-text` is missing types ([6093](https://github.com/marmelab/react-admin/pull/6093)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix `<SimpleList>` and other list components can't be used without context ([6090](https://github.com/marmelab/react-admin/pull/6090)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Export more types for `ra-ui-materialui` Input components props ([6086](https://github.com/marmelab/react-admin/pull/6086)) ([tdnl](https://github.com/tdnl))
+* [TypeScript] Fix typo in `<FormWithRedirect>` props types ([6085](https://github.com/marmelab/react-admin/pull/6085)) ([djhi](https://github.com/djhi))
+* [TypeScript] Fix type definition for `<Datagrid rowClick>` prop doesn't allow for functions that return a Promise ([6060](https://github.com/marmelab/react-admin/pull/6060)) ([jvert](https://github.com/jvert))
+* [Doc] Fix error in snippet for custom error page ([6091](https://github.com/marmelab/react-admin/pull/6091)) ([danangekal](https://github.com/danangekal))
+* [Doc] Fix installation snippet for `'ra-data-local-storage` ([6083](https://github.com/marmelab/react-admin/pull/6083)) ([luoxi](https://github.com/luoxi))
+
+## v3.13.5
+
+* Fix `<FilterLiveSearch>` looses its value upon navigation ([6066](https://github.com/marmelab/react-admin/pull/6066)) ([djhi](https://github.com/djhi))
+* Fix `<AutocompleteInput>` and `<AutocompletearrayInput>` options appear behind Dialog ([6065](https://github.com/marmelab/react-admin/pull/6065)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<DeleteWithConfirmButton>` propagates click event down to `<DatagridRow>` ([6063](https://github.com/marmelab/react-admin/pull/6063)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<ReferenceInput>` incorrectly sets the `total` value ([6058](https://github.com/marmelab/react-admin/pull/6058)) ([WiXSL](https://github.com/WiXSL))
+* [TypeScript] Fix `useGetList` return type assumes `data` and `ids` are possibly `undefined` ([6053](https://github.com/marmelab/react-admin/pull/6053)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix `useRecordContext` doesn't work without props ([6046](https://github.com/marmelab/react-admin/pull/6046)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix various typos and doc anchors ([6059](https://github.com/marmelab/react-admin/pull/6059)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix missing newline in Inputs chapter ([6064](https://github.com/marmelab/react-admin/pull/6064)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix `<Admin ready>` prop doesn't appear in the side navigation ([6048](https://github.com/marmelab/react-admin/pull/6048)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix typo in `bulkActionButtons` documentation ([6043](https://github.com/marmelab/react-admin/pull/6043)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix `react-admin` package README is out of date ([6042](https://github.com/marmelab/react-admin/pull/6042)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix outdated indonesian translation ([5937](https://github.com/marmelab/react-admin/pull/5937)) ([danangekal](https://github.com/danangekal))
+
 ## v3.13.4
 
 * Fix Go to definition goes to the compiled code in VSCode ([6039](https://github.com/marmelab/react-admin/pull/6039)) ([fzaninotto](https://github.com/fzaninotto))

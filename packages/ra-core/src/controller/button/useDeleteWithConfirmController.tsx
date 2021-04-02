@@ -133,6 +133,7 @@ const useDeleteWithConfirmController = (
 
     const handleDelete = useCallback(
         event => {
+            event.stopPropagation();
             deleteOne({
                 payload: { id: record.id, previousData: record },
             });

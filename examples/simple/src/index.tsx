@@ -1,6 +1,6 @@
 /* eslint react/jsx-key: off */
 import * as React from 'react';
-import { Admin, Resource } from 'react-admin'; // eslint-disable-line import/no-unresolved
+import { Admin, Resource, CustomRoute } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import { render } from 'react-dom';
 import { Route } from 'react-router-dom';
 
@@ -23,7 +23,7 @@ render(
         title="Example Admin"
         layout={Layout}
         customRoutes={[
-            <Route
+            <Route<CustomRoute>
                 exact
                 path="/custom"
                 component={props => <CustomRouteNoLayout {...props} />}

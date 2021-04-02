@@ -88,6 +88,9 @@ const useReferenceArrayFieldController = (
             ),
     });
 
+    const [loadingState, setLoadingState] = useSafeSetState<boolean>(loading);
+    const [loadedState, setLoadedState] = useSafeSetState<boolean>(loaded);
+
     const [finalData, setFinalData] = useSafeSetState<RecordMap>(
         indexById(data)
     );
@@ -211,6 +214,18 @@ const useReferenceArrayFieldController = (
         sort.order,
     ]);
 
+    useEffect(() => {
+        if (loaded !== loadedState) {
+            setLoadedState(loaded);
+        }
+    }, [loaded, loadedState, setLoadedState]);
+
+    useEffect(() => {
+        if (loading !== loadingState) {
+            setLoadingState(loading);
+        }
+    }, [loading, loadingState, setLoadingState]);
+
     return {
         basePath: basePath
             ? basePath.replace(resource, reference)
@@ -224,8 +239,8 @@ const useReferenceArrayFieldController = (
         hasCreate: false,
         hideFilter,
         ids: finalIds,
-        loaded,
-        loading,
+        loaded: loadedState,
+        loading: loadingState,
         onSelect,
         onToggleItem,
         onUnselectItems,
