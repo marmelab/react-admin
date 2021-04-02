@@ -61,3 +61,11 @@ export function useTimeout(ms = 0) {
 
     return ready;
 }
+
+export function useDocumentTitle(title: string) {
+    React.useEffect(() => {
+        if (title) {
+            document.title = title;
+        }
+    }, [title]);
+}

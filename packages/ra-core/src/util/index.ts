@@ -10,7 +10,7 @@ import Ready from './Ready';
 import resolveRedirectTo from './resolveRedirectTo';
 import warning from './warning';
 import useWhyDidYouUpdate from './useWhyDidYouUpdate';
-import { useSafeSetState, useTimeout } from './hooks';
+import { useSafeSetState, useTimeout, useDocumentTitle } from './hooks';
 export * from './indexById';
 
 export {
@@ -28,4 +28,5 @@ export {
     useWhyDidYouUpdate,
     useSafeSetState,
     useTimeout,
+    useDocumentTitle,
 };
