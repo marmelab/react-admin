@@ -49,7 +49,7 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
                             [classes.clickableRow]: rowClick,
                         }),
                         expand,
-                        hasBulkActions: hasBulkActions && selectedIds,
+                        hasBulkActions: hasBulkActions && !!selectedIds,
                         hover,
                         id,
                         key: id,
