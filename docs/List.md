@@ -307,13 +307,12 @@ import { BulkUpdateButton } from 'react-admin';
 
 const views = { views: 0 };
 
-const ResetViewsButton = ({ selectedIds, ...rest }) => (
+const ResetViewsButton = (props) => (
     <BulkUpdateButton
+        {...props}
         label="Reset Views"
-        selectedIds={selectedIds}
         data={views}
         icon={VisibilityOff}
-        {...rest}
     />
 );
 
@@ -330,14 +329,13 @@ import { BulkUpdateButton } from 'react-admin';
 
 const views = { views: 0 };
 
-const ResetViewsButton = ({ selectedIds, ...rest }) => (
+const ResetViewsButton = (props) => (
     <BulkUpdateButton
+        {...props}
         label="Reset Views"
-        selectedIds={selectedIds}
         data={views}
         icon={VisibilityOff}
         undoable={false}
-        {...rest}
     />
 );
 
