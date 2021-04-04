@@ -48,6 +48,30 @@ const BulkUpdateWithConfirmButton: FC<BulkUpdateWithConfirmButtonProps> = props 
         label,
         onClick,
         selectedIds,
+        onSuccess = () => {
+            refresh();
+            notify('ra.notification.updated', 'info', {
+                smart_count: selectedIds.length,
+            });
+            unselectAll(resource);
+        },
+        onFailure = error => {
+            notify(
+                typeof error === 'string'
+                    ? error
+                    : error.message || 'ra.notification.http_error',
+                'warning',
+                {
+                    _:
+                        typeof error === 'string'
+                            ? error
+                            : error && error.message
+                            ? error.message
+                            : undefined,
+                }
+            );
+            setOpen(false);
+        },
         ...rest
     } = props;
     const [isOpen, setOpen] = useState(false);
@@ -63,30 +87,8 @@ const BulkUpdateWithConfirmButton: FC<BulkUpdateWithConfirmButtonProps> = props 
         data,
         {
             action: CRUD_UPDATE_MANY,
-            onSuccess: () => {
-                refresh();
-                notify('ra.notification.updated', 'info', {
-                    smart_count: selectedIds.length,
-                });
-                unselectAll(resource);
-            },
-            onFailure: error => {
-                notify(
-                    typeof error === 'string'
-                        ? error
-                        : error.message || 'ra.notification.http_error',
-                    'warning',
-                    {
-                        _:
-                            typeof error === 'string'
-                                ? error
-                                : error && error.message
-                                ? error.message
-                                : undefined,
-                    }
-                );
-                setOpen(false);
-            },
+            onSuccess,
+            onFailure,
         }
     );
 
@@ -163,6 +165,8 @@ export interface BulkUpdateWithConfirmButtonProps
     confirmTitle?: string;
     icon?: ReactElement;
     data: any;
+    onSuccess?: () => void;
+    onFailure?: (error: any) => void;
 }
 
 BulkUpdateWithConfirmButton.propTypes = {

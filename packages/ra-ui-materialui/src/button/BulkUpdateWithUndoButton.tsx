@@ -41,6 +41,31 @@ const BulkUpdateWithUndoButton: FC<BulkUpdateWithUndoButtonProps> = props => {
         icon,
         label,
         onClick,
+        onSuccess = () => {
+            notify(
+                'ra.notification.updated',
+                'info',
+                { smart_count: selectedIds.length },
+                true
+            );
+            unselectAll(resource);
+            refresh();
+        },
+        onFailure = error =>
+            notify(
+                typeof error === 'string'
+                    ? error
+                    : error.message || 'ra.notification.http_error',
+                'warning',
+                {
+                    _:
+                        typeof error === 'string'
+                            ? error
+                            : error && error.message
+                            ? error.message
+                            : undefined,
+                }
+            ),
         ...rest
     } = props;
     const { selectedIds } = useListContext(props);
@@ -55,31 +80,8 @@ const BulkUpdateWithUndoButton: FC<BulkUpdateWithUndoButtonProps> = props => {
         data,
         {
             action: CRUD_UPDATE_MANY,
-            onSuccess: () => {
-                notify(
-                    'ra.notification.updated',
-                    'info',
-                    { smart_count: selectedIds.length },
-                    true
-                );
-                unselectAll(resource);
-                refresh();
-            },
-            onFailure: error =>
-                notify(
-                    typeof error === 'string'
-                        ? error
-                        : error.message || 'ra.notification.http_error',
-                    'warning',
-                    {
-                        _:
-                            typeof error === 'string'
-                                ? error
-                                : error && error.message
-                                ? error.message
-                                : undefined,
-                    }
-                ),
+            onSuccess,
+            onFailure,
             undoable: true,
         }
     );
@@ -118,6 +120,8 @@ export interface BulkUpdateWithUndoButtonProps
         ButtonProps {
     icon?: ReactElement;
     data: any;
+    onSuccess?: () => void;
+    onFailure?: (error: any) => void;
 }
 
 BulkUpdateWithUndoButton.propTypes = {
