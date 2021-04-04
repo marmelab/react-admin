@@ -297,112 +297,52 @@ Bulk action button components receive several props allowing them to perform the
 * `filterValues`: the filter values. This can be useful if you want to apply your action on all items matching the filter.
 * `selectedIds`: the identifiers of the currently selected items.
 
-Here is an example leveraging the `useUpdateMany` hook, which sets the `views` property of all posts to `0`:
+Here is an example of `BulkUpdateButton` usage, which sets the `views` property of all posts to `0`:
 
 ```jsx
 // in ./ResetViewsButton.js
 import * as React from "react";
-import {
-    Button,
-    useUpdateMany,
-    useRefresh,
-    useNotify,
-    useUnselectAll,
-} from 'react-admin';
 import { VisibilityOff } from '@material-ui/icons';
+import { BulkUpdateButton } from 'react-admin';
 
-const ResetViewsButton = ({ selectedIds }) => {
-    const refresh = useRefresh();
-    const notify = useNotify();
-    const unselectAll = useUnselectAll();
-    const [updateMany, { loading }] = useUpdateMany(
-        'posts',
-        selectedIds,
-        { views: 0 },
-        {
-            onSuccess: () => {
-                refresh();
-                notify('Posts updated');
-                unselectAll('posts');
-            },
-            onFailure: error => notify('Error: posts not updated', 'warning'),
-        }
-    );
+const views = { views: 0 };
 
-    return (
-        <Button
-            label="simple.action.resetViews"
-            disabled={loading}
-            onClick={updateMany}
-        >
-            <VisibilityOff />
-        </Button>
-    );
-};
+const ResetViewsButton = ({ selectedIds }) => (
+    <BulkUpdateButton
+        label="Reset Views"
+        data={views}
+        icon={VisibilityOff}
+    />
+);
 
 export default ResetViewsButton;
 ```
 
-But most of the time, bulk actions are mini-applications with a standalone user interface (in a Dialog). Here is the same `ResetViewsAction` implemented behind a confirmation dialog:
+But most of the time, bulk actions are mini-applications with a standalone user interface (in a Dialog). Here is the same `ResetViewsButton` implemented behind a confirmation dialog:
 
 ```jsx
 // in ./ResetViewsButton.js
 import * as React from 'react';
-import { Fragment, useState } from 'react';
-import {
-    Button,
-    Confirm,
-    useUpdateMany,
-    useRefresh,
-    useNotify,
-    useUnselectAll,
-} from 'react-admin';
+import { VisibilityOff } from '@material-ui/icons';
+import { BulkUpdateButton } from 'react-admin';
 
-const ResetViewsButton = ({ selectedIds }) => {
-    const [open, setOpen] = useState(false);
-    const refresh = useRefresh();
-    const notify = useNotify();
-    const unselectAll = useUnselectAll();
-    const [updateMany, { loading }] = useUpdateMany(
-        'posts',
-        selectedIds,
-        { views: 0 },
-        {
-            onSuccess: () => {
-                refresh();
-                notify('Posts updated');
-                unselectAll('posts');
-            },
-            onFailure: error => notify('Error: posts not updated', 'warning'),
-        }
-    );
-    const handleClick = () => setOpen(true);
-    const handleDialogClose = () => setOpen(false);
+const views = { views: 0 };
 
-    const handleConfirm = () => {
-        updateMany();
-        setOpen(false);
-    };
-
-    return (
-        <Fragment>
-            <Button label="Reset Views" onClick={handleClick} />
-            <Confirm
-                isOpen={open}
-                loading={loading}
-                title="Update View Count"
-                content="Are you sure you want to reset the views for these items?"
-                onConfirm={handleConfirm}
-                onClose={handleDialogClose}
-            />
-        </Fragment>
-    );
-}
+const ResetViewsButton = ({ selectedIds }) => (
+    <BulkUpdateButton
+        label="Reset Views"
+        data={views}
+        icon={VisibilityOff}
+        undoable={false}
+    />
+);
 
 export default ResetViewsButton;
 ```
 
-**Tip**: `<Confirm>` leverages material-ui's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
+**Tip**: You can pass `onSuccess` and `onFailure` functions as props to be used by the underlying `useUpdateMany` hook.
+
+**Tip**: `<Confirm>` component used by `BulkUpdateButton` component leverages material-ui's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
 
 **Tip**: `<Confirm>` text props such as `title` and `content` are translatable. You can pass translation keys in these props. Note: `content` is only translateable when value is `string`, otherwise it renders the content as a `ReactNode`.
 
