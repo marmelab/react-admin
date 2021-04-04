@@ -56,6 +56,7 @@ BulkUpdateButton.propTypes = {
 
 BulkUpdateButton.defaultProps = {
     undoable: true,
+    data: [],
 };
 
 export default BulkUpdateButton;
