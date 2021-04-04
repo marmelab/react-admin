@@ -344,7 +344,7 @@ export default ResetViewsButton;
 
 **Tip**: You can pass `onSuccess` and `onFailure` props as functions to customize side effects used by the underlying `useUpdateMany` hook.
 
-**Tip**: `<Confirm>` component used by `BulkUpdateButton` component leverages material-ui's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
+**Tip**: When `undoable={false}` prop is passed to `BulkUpdateButton`, it uses `react-admin` `<Confirm>` component leveraging material-ui's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
 
 **Tip**: `<Confirm>` text props such as `title` and `content` are translatable. You can pass translation keys in these props. Note: `content` is only translateable when value is `string`, otherwise it renders the content as a `ReactNode`.
 
