@@ -152,6 +152,8 @@ const sanitizeRestProps = ({
     classes,
     filterValues,
     label,
+    onSuccess,
+    onFailure,
     ...rest
 }: Omit<
     BulkUpdateWithConfirmButtonProps,

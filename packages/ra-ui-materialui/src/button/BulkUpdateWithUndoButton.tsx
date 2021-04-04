@@ -112,6 +112,8 @@ const sanitizeRestProps = ({
     filterValues,
     label,
     selectedIds,
+    onSuccess,
+    onFailure,
     ...rest
 }: Omit<BulkUpdateWithUndoButtonProps, 'resource' | 'icon' | 'data'>) => rest;
 
