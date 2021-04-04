@@ -310,6 +310,7 @@ const views = { views: 0 };
 const ResetViewsButton = ({ selectedIds }) => (
     <BulkUpdateButton
         label="Reset Views"
+        selectedIds={selectedIds}
         data={views}
         icon={VisibilityOff}
     />
@@ -331,6 +332,7 @@ const views = { views: 0 };
 const ResetViewsButton = ({ selectedIds }) => (
     <BulkUpdateButton
         label="Reset Views"
+        selectedIds={selectedIds}
         data={views}
         icon={VisibilityOff}
         undoable={false}
