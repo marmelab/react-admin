@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 
@@ -20,6 +20,7 @@ export interface StateResult {
     error?: any;
     loading: boolean;
     loaded: boolean;
+    refetch: () => void;
 }
 
 export interface QueryOptions {
@@ -114,19 +115,26 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
     dataSelector: (state: State) => any = defaultDataSelector(query),
     totalSelector: (state: State) => number = defaultTotalSelector(query),
     isDataLoaded: (data: any) => boolean = defaultIsDataLoaded
-): {
-    data?: any;
-    total?: number;
-    error?: any;
-    loading: boolean;
-    loaded: boolean;
-} => {
+): StateResult => {
     const { type, resource, payload } = query;
     const version = useVersion(); // used to allow force reload
-    const requestSignature = JSON.stringify({ query, options, version });
+    // used to force a refetch without relying on version
+    // which might trigger other queries as well
+    const [innerVersion, setInnerVersion] = useState(0);
+    const requestSignature = JSON.stringify({
+        query,
+        options,
+        version,
+        innerVersion,
+    });
     const requestSignatureRef = useRef(requestSignature);
     const data = useSelector(dataSelector);
     const total = useSelector(totalSelector);
+
+    const refetch = useCallback(() => {
+        setInnerVersion(prevInnerVersion => prevInnerVersion + 1);
+    }, []);
+
     const [state, setState]: [
         StateResult,
         (StateResult) => void
@@ -136,19 +144,21 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
         error: null,
         loading: true,
         loaded: isDataLoaded(data),
+        refetch,
     });
 
     useEffect(() => {
         if (requestSignatureRef.current !== requestSignature) {
             // request has changed, reset the loading state
             requestSignatureRef.current = requestSignature;
-            setState({
+            setState(prev => ({
+                ...prev,
                 data,
                 total,
                 error: null,
                 loading: true,
                 loaded: isDataLoaded(data),
-            });
+            }));
         } else if (!isEqual(state.data, data) || state.total !== total) {
             // the dataProvider response arrived in the Redux store
             if (typeof total !== 'undefined' && isNaN(total)) {

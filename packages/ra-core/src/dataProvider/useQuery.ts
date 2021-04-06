@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { useSafeSetState } from '../util/hooks';
 import { OnSuccess, OnFailure } from '../types';
@@ -77,10 +77,19 @@ const useQuery = (
     const { type, resource, payload } = query;
     const { withDeclarativeSideEffectsSupport, ...otherOptions } = options;
     const version = useVersion(); // used to allow force reload
+    // used to force a refetch without relying on version
+    // which might trigger other queries as well
+    const [innerVersion, setInnerVersion] = useState(0);
+
+    const refetch = useCallback(() => {
+        setInnerVersion(prevInnerVersion => prevInnerVersion + 1);
+    }, []);
+
     const requestSignature = JSON.stringify({
         query,
         options: otherOptions,
         version,
+        innerVersion,
     });
     const [state, setState] = useSafeSetState<UseQueryValue>({
         data: undefined,
@@ -88,6 +97,7 @@ const useQuery = (
         total: null,
         loading: true,
         loaded: false,
+        refetch,
     });
     const dataProvider = useDataProvider();
     const dataProviderWithDeclarativeSideEffects = useDataProviderWithDeclarativeSideEffects();
@@ -113,19 +123,21 @@ const useQuery = (
                     : [payload, otherOptions]
             )
             .then(({ data, total }) => {
-                setState({
+                setState(prev => ({
+                    ...prev,
                     data,
                     total,
                     loading: false,
                     loaded: true,
-                });
+                }));
             })
             .catch(error => {
-                setState({
+                setState(prev => ({
+                    ...prev,
                     error,
                     loading: false,
                     loaded: false,
-                });
+                }));
             });
     }, [
         requestSignature,
@@ -158,6 +170,7 @@ export type UseQueryValue = {
     error?: any;
     loading: boolean;
     loaded: boolean;
+    refetch: () => void;
 };
 
 export default useQuery;
