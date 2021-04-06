@@ -151,14 +151,14 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
         if (requestSignatureRef.current !== requestSignature) {
             // request has changed, reset the loading state
             requestSignatureRef.current = requestSignature;
-            setState(prev => ({
-                ...prev,
+            setState({
                 data,
                 total,
                 error: null,
                 loading: true,
                 loaded: isDataLoaded(data),
-            }));
+                refetch,
+            });
         } else if (!isEqual(state.data, data) || state.total !== total) {
             // the dataProvider response arrived in the Redux store
             if (typeof total !== 'undefined' && isNaN(total)) {
@@ -183,6 +183,7 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
         state.total,
         total,
         isDataLoaded,
+        refetch,
     ]);
 
     const dataProvider = useDataProvider();

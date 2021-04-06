@@ -123,21 +123,21 @@ const useQuery = (
                     : [payload, otherOptions]
             )
             .then(({ data, total }) => {
-                setState(prev => ({
-                    ...prev,
+                setState({
                     data,
                     total,
                     loading: false,
                     loaded: true,
-                }));
+                    refetch,
+                });
             })
             .catch(error => {
-                setState(prev => ({
-                    ...prev,
+                setState({
                     error,
                     loading: false,
                     loaded: false,
-                }));
+                    refetch,
+                });
             });
     }, [
         requestSignature,
