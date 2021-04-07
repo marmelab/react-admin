@@ -201,6 +201,8 @@ const PostEditActions = ({ basePath, data }) => (
 
 ### Aside component
 
+![Aside component](./img/aside.png)
+
 You may want to display additional information on the side of the form. Use the `aside` prop for that, passing the component of your choice:
 
 {% raw %}
