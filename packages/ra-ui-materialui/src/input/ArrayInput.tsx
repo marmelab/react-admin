@@ -118,11 +118,10 @@ const ArrayInput: FC<ArrayInputProps> = ({
                     isRequired={isRequired(validate)}
                 />
             </InputLabel>
-            {!!(touched && (error || submitError)) || helperText ? (
-                <FormHelperText error={touched && !!(error || submitError)}>
+            {helperText ? (
+                <FormHelperText>
                     <InputHelperText
                         touched={touched}
-                        error={error || submitError}
                         helperText={helperText}
                     />
                 </FormHelperText>
