@@ -1401,6 +1401,20 @@ const MyShowLayout = ({ record }) => (
 );
 ```
 
+You can also leverage the default label resolution mechanism by providing the `resource` and `source` props instead of the `label`:
+
+```jsx
+import { Labeled } from 'react-admin';
+
+const MyShowLayout = ({ record }) => (
+    <div>
+        <Labeled resource="users" source="name">
+            <TextField source="name" />
+        </Label>
+    </div>
+);
+```
+
 ### Hiding A Field Based On The Value Of Another
 
 In a Show view, you may want to display or hide fields based on the value of another field - for instance, show an `email` field only if the `hasEmail` boolean field is `true`.
