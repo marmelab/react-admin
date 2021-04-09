@@ -159,7 +159,7 @@ const RadioButtonGroupInput: FunctionComponent<RadioButtonGroupInputProps> = pro
             component="fieldset"
             margin={margin}
             error={touched && !!(error || submitError)}
-            {...sanitizeInputRestProps(rest)}
+            {...sanitizeRestProps(rest)}
         >
             <FormLabel component="legend" className={classes.label}>
                 <FieldTitle
@@ -195,7 +195,7 @@ const RadioButtonGroupInput: FunctionComponent<RadioButtonGroupInputProps> = pro
 };
 
 RadioButtonGroupInput.propTypes = {
-    choices: PropTypes.arrayOf(PropTypes.any).isRequired,
+    choices: PropTypes.arrayOf(PropTypes.any),
     label: PropTypes.string,
     options: PropTypes.object,
     optionText: PropTypes.oneOfType([
@@ -216,6 +216,40 @@ RadioButtonGroupInput.defaultProps = {
     row: true,
     translateChoice: true,
 };
+
+const sanitizeRestProps = ({
+    addLabel,
+    afterSubmit,
+    allowNull,
+    beforeSubmit,
+    choices,
+    className,
+    crudGetMatching,
+    crudGetOne,
+    data,
+    filter,
+    filterToQuery,
+    formatOnBlur,
+    isEqual,
+    limitChoicesToValue,
+    multiple,
+    name,
+    pagination,
+    perPage,
+    ref,
+    reference,
+    render,
+    setFilter,
+    setPagination,
+    setSort,
+    sort,
+    subscription,
+    type,
+    validateFields,
+    validation,
+    value,
+    ...rest
+}: any) => sanitizeInputRestProps(rest);
 
 export type RadioButtonGroupInputProps = ChoicesInputProps<RadioGroupProps> &
     FormControlProps;
