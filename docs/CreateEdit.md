@@ -1215,12 +1215,17 @@ The value of the form `validate` prop must be a function taking the record as in
 const validateUserCreation = (values) => {
     const errors = {};
     if (!values.firstName) {
-        errors.firstName = ['The firstName is required'];
+        errors.firstName = 'The firstName is required';
     }
     if (!values.age) {
-        errors.age = ['The age is required'];
+        // You can return translation keys
+        errors.age = 'ra.validation.required';
     } else if (values.age < 18) {
-        errors.age = ['Must be over 18'];
+        // Or an object if the translation messages need parameters
+        errors.age = {
+            message: 'ra.validation.minValue',
+            args: { min: 18 }
+        };
     }
     return errors
 };
@@ -1272,7 +1277,7 @@ const validateFirstName = [required(), minLength(2), maxLength(15)];
 const validateEmail = email();
 const validateAge = [number(), minValue(18)];
 const validateZipCode = regex(/^\d{5}$/, 'Must be a valid Zip Code');
-const validateSex = choices(['m', 'f'], 'Must be Male or Female');
+const validateGenre = choices(['m', 'f', 'nc'], 'Please choose one of the values');
 
 export const UserCreate = (props) => (
     <Create {...props}>
@@ -1281,10 +1286,11 @@ export const UserCreate = (props) => (
             <TextInput label="Email" source="email" validate={validateEmail} />
             <TextInput label="Age" source="age" validate={validateAge}/>
             <TextInput label="Zip Code" source="zip" validate={validateZipCode}/>
-            <SelectInput label="Sex" source="sex" choices={[
+            <SelectInput label="Genre" source="genre" choices={[
                 { id: 'm', name: 'Male' },
                 { id: 'f', name: 'Female' },
-            ]} validate={validateSex}/>
+                { id: 'nc', name: 'Prefer not say' },
+            ]} validate={validateGenre}/>
         </SimpleForm>
     </Create>
 );
@@ -1319,7 +1325,7 @@ const ageValidation = (value, allValues) => {
     if (value < 18) {
         return 'Must be over 18';
     }
-    return [];
+    return undefined;
 };
 
 const validateFirstName = [required(), maxLength(15)];
@@ -1414,17 +1420,25 @@ You can validate the entire form data server-side by returning a Promise in the 
 const validateUserCreation = async (values) => {
     const errors = {};
     if (!values.firstName) {
-        errors.firstName = ['The firstName is required'];
+        errors.firstName = 'The firstName is required';
     }
     if (!values.age) {
-        errors.age = ['The age is required'];
+        errors.age = 'The age is required';
     } else if (values.age < 18) {
-        errors.age = ['Must be over 18'];
+        errors.age = 'Must be over 18';
     }
 
-    const isEmailUnique = await checkEmailIsUnique(values.userName);
+    const isEmailUnique = await checkEmailIsUnique(values.email);
     if (!isEmailUnique) {
-        errors.email = ['Email already used'];
+        // Return a message directly
+        errors.email = 'Email already used';
+        // Or a translation key
+        errors.email = 'myapp.validation.email_not_unique';
+        // Or an object if the translation needs parameters
+        errors.email = {
+            message: 'myapp.validation.email_not_unique',
+            args: { email: values.email }
+        };
     }
     return errors
 };
@@ -1514,6 +1528,8 @@ export const UserCreate = (props) => {
 {% endraw %}
 
 **Tip**: The shape of the returned validation errors must correspond to the form: a key needs to match a `source` prop.
+
+**Tip**: The returned validation errors might have any validation format we support (simple strings or object with message and args) for each key.
 
 ## Submit On Enter
 
