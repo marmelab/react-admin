@@ -40,6 +40,7 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
         redirect = 'list',
         onSuccess,
         onFailure,
+        translateOptions = {},
         ...rest
     } = props;
     const translate = useTranslate();
@@ -94,6 +95,7 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
                         ),
                     }),
                     id: record.id,
+                    ...translateOptions,
                 }}
                 onConfirm={handleDelete}
                 onClose={handleDialogClose}
@@ -143,6 +145,7 @@ interface Props {
     undoable?: boolean;
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
+    translateOptions?: object;
 }
 
 export type DeleteWithConfirmButtonProps = Props & ButtonProps;
@@ -162,6 +165,7 @@ DeleteWithConfirmButton.propTypes = {
     ]),
     resource: PropTypes.string,
     icon: PropTypes.element,
+    translateOptions: PropTypes.object,
 };
 
 export default DeleteWithConfirmButton;
