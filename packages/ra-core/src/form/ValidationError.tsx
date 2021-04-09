@@ -12,7 +12,6 @@ interface Props {
 
 const ValidationError: FunctionComponent<Props> = ({ error }) => {
     const translate = useTranslate();
-
     if ((error as ValidationErrorMessageWithArgs).message) {
         const { message, args } = error as ValidationErrorMessageWithArgs;
         return <>{translate(message, { _: message, ...args })}</>;
