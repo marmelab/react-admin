@@ -13,10 +13,11 @@ import {
     TextInput,
     Title,
     minLength,
+    Record,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
-const LinkToRelatedPost = ({ record }) => (
-    <Link to={`/posts/${record.post_id}`}>
+const LinkToRelatedPost = ({ record }: { record?: Record }) => (
+    <Link to={`/posts/${record?.post_id}`}>
         <Typography variant="caption" color="inherit" align="right">
             See related post
         </Typography>
@@ -33,9 +34,9 @@ const useEditStyles = makeStyles({
     },
 });
 
-const OptionRenderer = ({ record }) => (
+const OptionRenderer = ({ record }: { record?: Record }) => (
     <span>
-        {record.title} - {record.id}
+        {record?.title} - {record?.id}
     </span>
 );
 

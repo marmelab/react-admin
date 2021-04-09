@@ -14,7 +14,7 @@ import {
     Typography,
     useMediaQuery,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import jsonExport from 'jsonexport/dist';
 import {
     ListBase,
@@ -76,7 +76,7 @@ const CommentPagination = () => {
     const translate = useTranslate();
     const nbPages = Math.ceil(total / perPage) || 1;
     if (!loading && (total === 0 || (ids && !ids.length))) {
-        return <PaginationLimit total={total} page={page} ids={ids} />;
+        return <PaginationLimit />;
     }
 
     return (
@@ -209,7 +209,7 @@ const CommentList = props => (
 );
 
 const ListView = () => {
-    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
     const { defaultTitle } = useListContext();
     return (
         <>

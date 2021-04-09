@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Children, Fragment, cloneElement, memo } from 'react';
 import BookIcon from '@material-ui/icons/Book';
 import { Chip, useMediaQuery } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import lodashGet from 'lodash/get';
 import jsonExport from 'jsonexport/dist';
 import {
@@ -35,7 +35,7 @@ const useQuickFilterStyles = makeStyles(theme => ({
         marginBottom: theme.spacing(1),
     },
 }));
-const QuickFilter = ({ label }) => {
+const QuickFilter = ({ label, source, defaultValue }) => {
     const translate = useTranslate();
     const classes = useQuickFilterStyles();
     return <Chip className={classes.chip} label={translate(label)} />;
@@ -81,7 +81,7 @@ const useStyles = makeStyles(theme => ({
     publishedAt: { fontStyle: 'italic' },
 }));
 
-const PostListBulkActions = memo(props => (
+const PostListBulkActions = memo(({ children, ...props }) => (
     <Fragment>
         <ResetViewsButton {...props} />
         <BulkDeleteButton {...props} />
@@ -121,7 +121,7 @@ const PostPanel = ({ id, record, resource }) => (
 
 const PostList = props => {
     const classes = useStyles();
-    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
     return (
         <List
             {...props}

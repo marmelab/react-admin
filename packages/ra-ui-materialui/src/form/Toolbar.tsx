@@ -8,7 +8,9 @@ import {
     ReactNode,
 } from 'react';
 import PropTypes from 'prop-types';
-import MuiToolbar from '@material-ui/core/Toolbar';
+import MuiToolbar, {
+    ToolbarProps as MuiToolbarProps,
+} from '@material-ui/core/Toolbar';
 import withWidth from '@material-ui/core/withWidth';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
@@ -203,7 +205,8 @@ const Toolbar: FC<ToolbarProps> = props => {
     );
 };
 
-export interface ToolbarProps<RecordType extends Record = Record> {
+export interface ToolbarProps<RecordType extends Record = Record>
+    extends Omit<MuiToolbarProps, 'classes'> {
     children?: ReactNode;
     alwaysEnableSaveButton?: boolean;
     className?: string;
