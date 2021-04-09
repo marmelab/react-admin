@@ -1277,7 +1277,7 @@ const validateFirstName = [required(), minLength(2), maxLength(15)];
 const validateEmail = email();
 const validateAge = [number(), minValue(18)];
 const validateZipCode = regex(/^\d{5}$/, 'Must be a valid Zip Code');
-const validateGenre = choices(['m', 'f', 'nc'], 'Please choose one of the values');
+const validateGender = choices(['m', 'f', 'nc'], 'Please choose one of the values');
 
 export const UserCreate = (props) => (
     <Create {...props}>
@@ -1286,11 +1286,11 @@ export const UserCreate = (props) => (
             <TextInput label="Email" source="email" validate={validateEmail} />
             <TextInput label="Age" source="age" validate={validateAge}/>
             <TextInput label="Zip Code" source="zip" validate={validateZipCode}/>
-            <SelectInput label="Genre" source="genre" choices={[
+            <SelectInput label="Gender" source="gender" choices={[
                 { id: 'm', name: 'Male' },
                 { id: 'f', name: 'Female' },
                 { id: 'nc', name: 'Prefer not say' },
-            ]} validate={validateGenre}/>
+            ]} validate={validateGender}/>
         </SimpleForm>
     </Create>
 );
