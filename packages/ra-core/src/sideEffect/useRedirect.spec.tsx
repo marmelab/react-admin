@@ -11,7 +11,7 @@ const Redirect = ({ redirectTo, basePath = '', id = null, data = null }) => {
     const redirect = useRedirect();
     useEffect(() => {
         redirect(redirectTo, basePath, id, data);
-    }, []);
+    }, [basePath, data, id, redirect, redirectTo]);
     return null;
 };
 
