@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { useTranslate } from 'react-admin';
+import { useTranslate, Record } from 'react-admin';
 
-export default ({ record }) => {
+export default ({ record }: { record?: Record }) => {
     const translate = useTranslate();
     return (
         <span>

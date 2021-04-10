@@ -104,11 +104,11 @@ export const TranslatableFields = (
 };
 
 export interface TranslatableFieldsProps extends UseTranslatableOptions {
-    basePath: string;
+    basePath?: string;
     children: ReactNode;
     classes?: ClassesOverride<typeof useStyles>;
-    record: Record;
-    resource: string;
+    record?: Record;
+    resource?: string;
     selector?: ReactElement;
     groupKey?: string;
 }
