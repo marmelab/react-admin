@@ -53,7 +53,7 @@ const SimpleListLoading: FC<Props & ListProps> = props => {
     return oneSecondHasPassed ? (
         <List className={className} {...rest}>
             {times(nbFakeLines, key => (
-                <ListItem>
+                <ListItem key={key}>
                     {hasLeftAvatarOrIcon && (
                         <ListItemAvatar>
                             <Avatar>&nbsp;</Avatar>
