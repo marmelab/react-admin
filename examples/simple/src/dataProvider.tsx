@@ -8,6 +8,12 @@ const dataProvider = fakeRestProvider(data, true);
 const uploadCapableDataProvider = addUploadFeature(dataProvider);
 const sometimesFailsDataProvider = new Proxy(uploadCapableDataProvider, {
     get: (target, name) => (resource, params) => {
+        // set session_ended=true in localStorage to trigger an API auth error
+        if (localStorage.getItem('session_ended')) {
+            const error = new Error('Session ended') as ResponseError;
+            error.status = 403;
+            return Promise.reject(error);
+        }
         // add rejection by type or resource here for tests, e.g.
         // if (name === 'delete' && resource === 'posts') {
         //     return Promise.reject(new Error('deletion error'));
@@ -32,5 +38,9 @@ const delayedDataProvider = new Proxy(sometimesFailsDataProvider, {
             )
         ),
 });
+
+interface ResponseError extends Error {
+    status?: number;
+}
 
 export default cacheDataProviderProxy(delayedDataProvider);
