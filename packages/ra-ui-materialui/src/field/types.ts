@@ -3,7 +3,7 @@ import { Record } from 'ra-core';
 import PropTypes from 'prop-types';
 import { TableCellProps } from '@material-ui/core/TableCell';
 
-type TextAlign = Pick<TableCellProps, 'align'>;
+type TextAlign = TableCellProps['align'];
 type SortOrder = 'ASC' | 'DESC';
 
 export interface FieldProps<RecordType extends Record = Record>
@@ -43,7 +43,7 @@ export const fieldPropTypes = {
     className: PropTypes.string,
     cellClassName: PropTypes.string,
     headerClassName: PropTypes.string,
-    textAlign: PropTypes.oneOf([
+    textAlign: PropTypes.oneOf<TextAlign>([
         'inherit',
         'left',
         'center',
