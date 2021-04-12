@@ -8,7 +8,7 @@ import getFetchType from './getFetchType';
 import { useSafeSetState } from '../util/hooks';
 import { ReduxState, OnSuccess, OnFailure } from '../types';
 
-export interface Query {
+export interface DataProviderQuery {
     type: string;
     resource: string;
     payload: object;
@@ -110,7 +110,7 @@ const defaultIsDataLoaded = (data: any): boolean => data !== undefined;
  * };
  */
 export const useQueryWithStore = <State extends ReduxState = ReduxState>(
-    query: Query,
+    query: DataProviderQuery,
     options: QueryOptions = { action: 'CUSTOM_QUERY' },
     dataSelector: (state: State) => any = defaultDataSelector(query),
     totalSelector: (state: State) => number = defaultTotalSelector(query),

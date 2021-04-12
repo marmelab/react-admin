@@ -6,7 +6,7 @@ import useDataProvider from './useDataProvider';
 import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDeclarativeSideEffects';
 import { DeclarativeSideEffect } from './useDeclarativeSideEffects';
 import useVersion from '../controller/useVersion';
-import { Query } from './useQueryWithStore';
+import { DataProviderQuery } from './useQueryWithStore';
 
 /**
  * Call the data provider on mount
@@ -72,7 +72,7 @@ import { Query } from './useQueryWithStore';
  * };
  */
 const useQuery = (
-    query: Query,
+    query: DataProviderQuery,
     options: QueryOptions = { onSuccess: undefined }
 ): UseQueryValue => {
     const { type, resource, payload } = query;
