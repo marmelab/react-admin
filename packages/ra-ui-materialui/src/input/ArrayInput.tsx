@@ -96,20 +96,21 @@ const ArrayInput: FC<ArrayInputProps> = ({
         );
     }
 
-    const { error, submitError, touched } = fieldProps.meta;
+    const { error, submitError, touched, dirty } = fieldProps.meta;
+    const arrayInputError = getArrayInputError(error || submitError);
 
     return (
         <FormControl
             fullWidth
             margin="normal"
             className={className}
-            error={touched && !!(error || submitError)}
+            error={(touched || dirty) && !!arrayInputError}
             {...sanitizeInputRestProps(rest)}
         >
             <InputLabel
                 htmlFor={source}
                 shrink
-                error={touched && !!(error || submitError)}
+                error={(touched || dirty) && !!arrayInputError}
             >
                 <FieldTitle
                     label={label}
@@ -118,15 +119,6 @@ const ArrayInput: FC<ArrayInputProps> = ({
                     isRequired={isRequired(validate)}
                 />
             </InputLabel>
-            {!!(touched && (error || submitError)) || helperText ? (
-                <FormHelperText error={touched && !!(error || submitError)}>
-                    <InputHelperText
-                        touched={touched}
-                        error={error || submitError}
-                        helperText={helperText}
-                    />
-                </FormHelperText>
-            ) : null}
             {cloneElement(Children.only(children), {
                 ...fieldProps,
                 record,
@@ -136,6 +128,15 @@ const ArrayInput: FC<ArrayInputProps> = ({
                 margin,
                 disabled,
             })}
+            {!!((touched || dirty) && arrayInputError) || helperText ? (
+                <FormHelperText error={(touched || dirty) && !!arrayInputError}>
+                    <InputHelperText
+                        touched={touched || dirty}
+                        error={arrayInputError}
+                        helperText={helperText}
+                    />
+                </FormHelperText>
+            ) : null}
         </FormControl>
     );
 };
@@ -161,6 +162,13 @@ ArrayInput.propTypes = {
 ArrayInput.defaultProps = {
     options: {},
     fullWidth: true,
+};
+
+export const getArrayInputError = error => {
+    if (Array.isArray(error)) {
+        return undefined;
+    }
+    return error;
 };
 
 export interface ArrayInputProps extends InputProps {

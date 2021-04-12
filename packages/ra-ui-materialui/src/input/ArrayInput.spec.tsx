@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 
@@ -7,6 +7,7 @@ import ArrayInput from './ArrayInput';
 import NumberInput from './NumberInput';
 import TextInput from './TextInput';
 import SimpleFormIterator from '../form/SimpleFormIterator';
+import { minLength, required } from 'ra-core';
 
 describe('<ArrayInput />', () => {
     const onSubmit = jest.fn();
@@ -125,5 +126,57 @@ describe('<ArrayInput />', () => {
                 input => input.value
             )
         ).toEqual(['bar', 'baz']);
+    });
+
+    it('should apply validation to both itself and its inner inputs', async () => {
+        const { getByText, getAllByLabelText, queryByText } = render(
+            <FinalForm
+                render={() => (
+                    <form>
+                        <ArrayInput
+                            resource="bar"
+                            source="arr"
+                            validate={[minLength(2, 'array_min_length')]}
+                        >
+                            <SimpleFormIterator>
+                                <TextInput
+                                    source="id"
+                                    validate={[required('id_required')]}
+                                />
+                                <TextInput
+                                    source="foo"
+                                    validate={[required('foo_required')]}
+                                />
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </form>
+                )}
+            />
+        );
+
+        fireEvent.click(getByText('ra.action.add'));
+        expect(queryByText('array_min_length')).not.toBeNull();
+        fireEvent.click(getByText('ra.action.add'));
+        const firstId = getAllByLabelText('resources.bar.fields.id *')[0];
+        fireEvent.change(firstId, {
+            target: { value: 'aaa' },
+        });
+        fireEvent.change(firstId, {
+            target: { value: '' },
+        });
+        fireEvent.blur(firstId);
+        const firstFoo = getAllByLabelText('resources.bar.fields.foo *')[0];
+        fireEvent.change(firstFoo, {
+            target: { value: 'aaa' },
+        });
+        fireEvent.change(firstFoo, {
+            target: { value: '' },
+        });
+        fireEvent.blur(firstFoo);
+        expect(queryByText('array_min_length')).toBeNull();
+        await waitFor(() => {
+            expect(queryByText('id_required')).not.toBeNull();
+            expect(queryByText('foo_required')).not.toBeNull();
+        });
     });
 });
