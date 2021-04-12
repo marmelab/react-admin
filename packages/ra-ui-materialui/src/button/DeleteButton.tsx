@@ -1,11 +1,39 @@
 import * as React from 'react';
-import { FC, ReactElement, SyntheticEvent } from 'react';
+import { FC, ReactElement, SyntheticEvent, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Record, RedirectionSideEffect, MutationMode } from 'ra-core';
 
 import { ButtonProps } from './Button';
 import DeleteWithUndoButton from './DeleteWithUndoButton';
 import DeleteWithConfirmButton from './DeleteWithConfirmButton';
+
+const useMutationMode = (mutationMode, undoable) => {
+    useEffect(() => {
+        switch (undoable) {
+            case true:
+                console.warn(
+                    '<DeleteButton undoable={true}> prop is deprecated, use the mutationMode="undoable" prop instead.'
+                );
+                return;
+            case false:
+                console.warn(
+                    '<DeleteButton undoable={false}> prop is deprecated, use the mutationMode="pessimistic" prop instead.'
+                );
+                return;
+        }
+    }, [undoable]);
+    if (mutationMode) {
+        return mutationMode;
+    }
+    switch (undoable) {
+        case true:
+            return 'undoable';
+        case false:
+            return 'pessimistic';
+        default:
+            return 'undoable';
+    }
+};
 
 /**
  * Button used to delete a single record. Added by default by the <Toolbar> of edit and show views.
@@ -46,18 +74,20 @@ import DeleteWithConfirmButton from './DeleteWithConfirmButton';
  */
 const DeleteButton: FC<DeleteButtonProps> = ({
     undoable,
-    mutationMode = 'undoable',
+    mutationMode,
     record,
     ...props
 }) => {
+    const mode = useMutationMode(mutationMode, undoable);
     if (!record || record.id == null) {
         return null;
     }
-    return undoable || mutationMode === 'undoable' ? (
+
+    return mode === 'undoable' ? (
         <DeleteWithUndoButton record={record} {...props} />
     ) : (
         <DeleteWithConfirmButton
-            mutationMode={mutationMode}
+            mutationMode={mode}
             record={record}
             {...props}
         />
