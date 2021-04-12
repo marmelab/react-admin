@@ -6,6 +6,7 @@ import useDataProvider from './useDataProvider';
 import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDeclarativeSideEffects';
 import { DeclarativeSideEffect } from './useDeclarativeSideEffects';
 import useVersion from '../controller/useVersion';
+import { Query } from './useQueryWithStore';
 
 /**
  * Call the data provider on mount
@@ -149,12 +150,6 @@ const useQuery = (
 
     return state;
 };
-
-export interface Query {
-    type: string;
-    resource?: string;
-    payload: object;
-}
 
 export interface QueryOptions {
     action?: string;

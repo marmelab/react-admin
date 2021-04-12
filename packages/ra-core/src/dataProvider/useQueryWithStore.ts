@@ -14,7 +14,7 @@ export interface Query {
     payload: object;
 }
 
-export interface StateResult {
+export interface UseQueryWithStoreValue {
     data?: any;
     total?: number;
     error?: any;
@@ -31,7 +31,7 @@ export interface QueryOptions {
     [key: string]: any;
 }
 
-export type PartialQueryState = {
+type PartialQueryState = {
     error?: any;
     loading: boolean;
     loaded: boolean;
@@ -109,13 +109,13 @@ const defaultIsDataLoaded = (data: any): boolean => data !== undefined;
  *     return <div>User {data.username}</div>;
  * };
  */
-const useQueryWithStore = <State extends ReduxState = ReduxState>(
+export const useQueryWithStore = <State extends ReduxState = ReduxState>(
     query: Query,
     options: QueryOptions = { action: 'CUSTOM_QUERY' },
     dataSelector: (state: State) => any = defaultDataSelector(query),
     totalSelector: (state: State) => number = defaultTotalSelector(query),
     isDataLoaded: (data: any) => boolean = defaultIsDataLoaded
-): StateResult => {
+): UseQueryWithStoreValue => {
     const { type, resource, payload } = query;
     const version = useVersion(); // used to allow force reload
     // used to force a refetch without relying on version
@@ -136,7 +136,7 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
     }, []);
 
     const [state, setState]: [
-        StateResult,
+        UseQueryWithStoreValue,
         (StateResult) => void
     ] = useSafeSetState({
         data,
@@ -245,5 +245,3 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
 
     return state;
 };
-
-export default useQueryWithStore;
