@@ -3,7 +3,7 @@ import { fireEvent, waitFor } from '@testing-library/react';
 import expect from 'expect';
 
 import { renderWithRedux } from 'ra-test';
-import useQueryWithStore from './useQueryWithStore';
+import { useQueryWithStore } from './useQueryWithStore';
 import { DataProviderContext } from '../dataProvider';
 
 const UseQueryWithStore = ({
