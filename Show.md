@@ -125,6 +125,8 @@ export const PostShow = (props) => (
 
 ### Aside component
 
+![Aside component](./img/aside.png)
+
 You may want to display additional information on the side of the resource detail. Use the `aside` prop for that, passing the component of your choice:
 
 {% raw %}
@@ -385,7 +387,7 @@ import {
 } from 'react-admin';
 
 const ScrollableTabbedShowLayout = props => (
-    <Show{...props}>
+    <Show {...props}>
         <TabbedShowLayout tabs={<TabbedShowLayoutTabs variant="scrollable" {...props} />}>
             ...
         </TabbedShowLayout>
