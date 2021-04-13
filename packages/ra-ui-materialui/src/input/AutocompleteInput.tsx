@@ -3,7 +3,6 @@ import React, {
     useEffect,
     useRef,
     useState,
-    FunctionComponent,
     useMemo,
     isValidElement,
 } from 'react';
@@ -27,6 +26,10 @@ import InputHelperText from './InputHelperText';
 import AutocompleteSuggestionList from './AutocompleteSuggestionList';
 import AutocompleteSuggestionItem from './AutocompleteSuggestionItem';
 import { AutocompleteInputLoader } from './AutocompleteInputLoader';
+import {
+    SupportCreateSuggestionOptions,
+    useSupportCreateSuggestion,
+} from './useSupportCreateSuggestion';
 
 interface Options {
     suggestionsContainerProps?: any;
@@ -95,13 +98,17 @@ interface Options {
  * @example
  * <AutocompleteInput source="author_id" options={{ color: 'secondary', InputLabelProps: { shrink: true } }} />
  */
-const AutocompleteInput: FunctionComponent<AutocompleteInputProps> = props => {
+export const AutocompleteInput = (props: AutocompleteInputProps) => {
     const {
         allowEmpty,
         className,
         classes: classesOverride,
         clearAlwaysVisible,
         choices = [],
+        createLabel,
+        createItemLabel,
+        createValue = '@@ra-create',
+        create,
         disabled,
         emptyText,
         emptyValue,
@@ -120,6 +127,7 @@ const AutocompleteInput: FunctionComponent<AutocompleteInputProps> = props => {
         meta: metaOverride,
         onBlur,
         onChange,
+        onCreate,
         onFocus,
         options: {
             suggestionsContainerProps,
@@ -177,7 +185,6 @@ const AutocompleteInput: FunctionComponent<AutocompleteInputProps> = props => {
 
     let inputEl = useRef<HTMLInputElement>();
     let anchorEl = useRef<any>();
-
     const translate = useTranslate();
 
     const {
@@ -212,9 +219,26 @@ const AutocompleteInput: FunctionComponent<AutocompleteInputProps> = props => {
         [input.value, getSuggestionFromValue]
     );
 
+    const {
+        getCreateItemLabel,
+        handleChange,
+        createElement,
+    } = useSupportCreateSuggestion({
+        create,
+        createLabel,
+        createItemLabel,
+        createValue,
+        filter: filterValue,
+        onCreate,
+        source,
+    });
+
     const { getChoiceText, getChoiceValue, getSuggestions } = useSuggestions({
+        allowCreate: !!onCreate || !!create,
         allowEmpty,
         choices,
+        createText: getCreateItemLabel(),
+        createValue,
         emptyText,
         emptyValue,
         limitChoicesToValue,
@@ -266,15 +290,18 @@ const AutocompleteInput: FunctionComponent<AutocompleteInputProps> = props => {
         inputText,
     ]);
 
-    const handleChange = useCallback(
-        (item: any) => {
-            if (getChoiceValue(item) == null && filterValue) {
-                setFilterValue('');
-            }
+    const handleDownshiftChange = useCallback(
+        async (item: any) => {
+            const value = getChoiceValue(item);
+            handleChange(value, () => {
+                if (value == null && filterValue) {
+                    setFilterValue('');
+                }
 
-            input.onChange(getChoiceValue(item));
+                input.onChange(value);
+            });
         },
-        [filterValue, getChoiceValue, input]
+        [filterValue, getChoiceValue, input, handleChange]
     );
 
     // This function ensures that the suggestion list stay aligned to the
@@ -432,133 +459,136 @@ const AutocompleteInput: FunctionComponent<AutocompleteInputProps> = props => {
     };
 
     return (
-        <Downshift
-            inputValue={filterValue}
-            onChange={handleChange}
-            selectedItem={selectedItem}
-            itemToString={item => getChoiceValue(item)}
-            {...rest}
-        >
-            {({
-                getInputProps,
-                getItemProps,
-                getLabelProps,
-                getMenuProps,
-                isOpen,
-                highlightedIndex,
-                openMenu,
-            }) => {
-                const isMenuOpen =
-                    isOpen && shouldRenderSuggestions(filterValue);
-                const {
-                    id: downshiftId, // We want to ignore this to correctly link our label and the input
-                    value,
-                    onBlur,
-                    onChange,
-                    onFocus,
-                    ref,
-                    size,
-                    color,
-                    ...inputProps
-                } = getInputProps({
-                    onBlur: handleBlur,
-                    onFocus: handleFocus(openMenu),
-                    ...InputProps,
-                });
-                const suggestions = getSuggestions(filterValue);
+        <>
+            <Downshift
+                inputValue={filterValue}
+                onChange={handleDownshiftChange}
+                selectedItem={selectedItem}
+                itemToString={item => getChoiceValue(item)}
+                {...rest}
+            >
+                {({
+                    getInputProps,
+                    getItemProps,
+                    getLabelProps,
+                    getMenuProps,
+                    isOpen,
+                    highlightedIndex,
+                    openMenu,
+                }) => {
+                    const isMenuOpen =
+                        isOpen && shouldRenderSuggestions(filterValue);
+                    const {
+                        id: downshiftId, // We want to ignore this to correctly link our label and the input
+                        value,
+                        onBlur,
+                        onChange,
+                        onFocus,
+                        ref,
+                        size,
+                        color,
+                        ...inputProps
+                    } = getInputProps({
+                        onBlur: handleBlur,
+                        onFocus: handleFocus(openMenu),
+                        ...InputProps,
+                    });
+                    const suggestions = getSuggestions(filterValue);
 
-                return (
-                    <div className={classes.container}>
-                        <TextField
-                            id={id}
-                            name={input.name}
-                            InputProps={{
-                                inputRef: storeInputRef,
-                                endAdornment: getEndAdornment(openMenu),
-                                onBlur,
-                                onChange: event => {
-                                    handleFilterChange(event);
-                                    setFilterValue(event.target.value);
-                                    onChange!(
-                                        event as React.ChangeEvent<
-                                            HTMLInputElement
-                                        >
-                                    );
-                                },
-                                onFocus,
-                                ...InputPropsWithoutEndAdornment,
-                            }}
-                            error={!!(touched && (error || submitError))}
-                            label={
-                                <FieldTitle
-                                    label={label}
-                                    {...labelProps}
-                                    source={source}
-                                    resource={resource}
-                                    isRequired={
-                                        typeof isRequiredOverride !==
-                                        'undefined'
-                                            ? isRequiredOverride
-                                            : isRequired
-                                    }
-                                />
-                            }
-                            InputLabelProps={getLabelProps({
-                                htmlFor: id,
-                            })}
-                            helperText={
-                                <InputHelperText
-                                    touched={touched}
-                                    error={error || submitError}
-                                    helperText={helperText}
-                                />
-                            }
-                            disabled={disabled}
-                            variant={variant}
-                            margin={margin}
-                            fullWidth={fullWidth}
-                            value={filterValue}
-                            className={className}
-                            size={size as any}
-                            color={color as any}
-                            {...inputProps}
-                            {...options}
-                        />
-                        <AutocompleteSuggestionList
-                            isOpen={isMenuOpen}
-                            menuProps={getMenuProps(
-                                {},
-                                // https://github.com/downshift-js/downshift/issues/235
-                                { suppressRefError: true }
-                            )}
-                            inputEl={inputEl.current}
-                            suggestionsContainerProps={
-                                suggestionsContainerProps
-                            }
-                            className={classes.suggestionsContainer}
-                        >
-                            {suggestions.map((suggestion, index) => (
-                                <AutocompleteSuggestionItem
-                                    key={getChoiceValue(suggestion)}
-                                    suggestion={suggestion}
-                                    index={index}
-                                    highlightedIndex={highlightedIndex}
-                                    isSelected={
-                                        input.value ===
-                                        getChoiceValue(suggestion)
-                                    }
-                                    filterValue={filterValue}
-                                    getSuggestionText={getChoiceText}
-                                    {...getItemProps({
-                                        item: suggestion,
-                                    })}
-                                />
-                            ))}
-                        </AutocompleteSuggestionList>
-                    </div>
-                );
-            }}
-        </Downshift>
+                    return (
+                        <div className={classes.container}>
+                            <TextField
+                                id={id}
+                                name={input.name}
+                                InputProps={{
+                                    inputRef: storeInputRef,
+                                    endAdornment: getEndAdornment(openMenu),
+                                    onBlur,
+                                    onChange: event => {
+                                        handleFilterChange(event);
+                                        setFilterValue(event.target.value);
+                                        onChange!(
+                                            event as React.ChangeEvent<
+                                                HTMLInputElement
+                                            >
+                                        );
+                                    },
+                                    onFocus,
+                                    ...InputPropsWithoutEndAdornment,
+                                }}
+                                error={!!(touched && (error || submitError))}
+                                label={
+                                    <FieldTitle
+                                        label={label}
+                                        {...labelProps}
+                                        source={source}
+                                        resource={resource}
+                                        isRequired={
+                                            typeof isRequiredOverride !==
+                                            'undefined'
+                                                ? isRequiredOverride
+                                                : isRequired
+                                        }
+                                    />
+                                }
+                                InputLabelProps={getLabelProps({
+                                    htmlFor: id,
+                                })}
+                                helperText={
+                                    <InputHelperText
+                                        touched={touched}
+                                        error={error || submitError}
+                                        helperText={helperText}
+                                    />
+                                }
+                                disabled={disabled}
+                                variant={variant}
+                                margin={margin}
+                                fullWidth={fullWidth}
+                                value={filterValue}
+                                className={className}
+                                size={size as any}
+                                color={color as any}
+                                {...inputProps}
+                                {...options}
+                            />
+                            <AutocompleteSuggestionList
+                                isOpen={isMenuOpen}
+                                menuProps={getMenuProps(
+                                    {},
+                                    // https://github.com/downshift-js/downshift/issues/235
+                                    { suppressRefError: true }
+                                )}
+                                inputEl={inputEl.current}
+                                suggestionsContainerProps={
+                                    suggestionsContainerProps
+                                }
+                                className={classes.suggestionsContainer}
+                            >
+                                {suggestions.map((suggestion, index) => (
+                                    <AutocompleteSuggestionItem
+                                        key={getChoiceValue(suggestion)}
+                                        suggestion={suggestion}
+                                        index={index}
+                                        highlightedIndex={highlightedIndex}
+                                        isSelected={
+                                            input.value ===
+                                            getChoiceValue(suggestion)
+                                        }
+                                        filterValue={filterValue}
+                                        getSuggestionText={getChoiceText}
+                                        {...getItemProps({
+                                            item: suggestion,
+                                        })}
+                                    />
+                                ))}
+                            </AutocompleteSuggestionList>
+                        </div>
+                    );
+                }}
+            </Downshift>
+            {createElement}
+        </>
     );
 };
 
@@ -600,11 +630,10 @@ const useStyles = makeStyles(
 
 export interface AutocompleteInputProps
     extends ChoicesInputProps<TextFieldProps & Options>,
+        Omit<SupportCreateSuggestionOptions, 'source'>,
         Omit<DownshiftProps<any>, 'onChange'> {
     clearAlwaysVisible?: boolean;
     resettable?: boolean;
     loaded?: boolean;
     loading?: boolean;
 }
-
-export default AutocompleteInput;

@@ -12,6 +12,7 @@ const englishMessages: TranslationMessages = {
             clone: 'Clone',
             confirm: 'Confirm',
             create: 'Create',
+            create_item: 'Create %{item}',
             delete: 'Delete',
             edit: 'Edit',
             export: 'Export',

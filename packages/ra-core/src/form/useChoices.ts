@@ -8,7 +8,8 @@ import { InputProps } from '.';
 export type OptionTextElement = ReactElement<{
     record: Record;
 }>;
-export type OptionText = (choice: object) => string | OptionTextElement;
+export type OptionTextFunc = (choice: object) => string | OptionTextElement;
+export type OptionText = OptionTextElement | OptionTextFunc | string;
 
 export interface ChoicesInputProps<T = any>
     extends Omit<InputProps<T>, 'source'> {
@@ -22,13 +23,13 @@ export interface ChoicesInputProps<T = any>
 export interface ChoicesProps {
     choices: object[];
     optionValue?: string;
-    optionText?: OptionTextElement | OptionText | string;
+    optionText?: OptionText;
     translateChoice?: boolean;
 }
 
 export interface UseChoicesOptions {
     optionValue?: string;
-    optionText?: OptionTextElement | OptionText | string;
+    optionText?: OptionText;
     disableValue?: string;
     translateChoice?: boolean;
 }
@@ -63,6 +64,12 @@ const useChoices = ({
                 typeof optionText === 'function'
                     ? optionText(choice)
                     : get(choice, optionText);
+
+            if (isValidElement<{ record: any }>(choiceName)) {
+                return cloneElement<{ record: any }>(choiceName, {
+                    record: choice,
+                });
+            }
 
             return translateChoice
                 ? translate(choiceName, { _: choiceName })
