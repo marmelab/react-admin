@@ -1981,6 +1981,7 @@ Here are all the props accepted by the component:
 * [`isRowExpandable`](#isrowexpandable)
 * [`isRowSelectable`](#isrowselectable)
 * [`optimized`](#performance)
+* [`empty`](#empty)
 
 Additional props are passed down to [the material-ui `<Table>` element](https://material-ui.com/api/table/).
 
@@ -2261,6 +2262,10 @@ const PostList = props => (
 export default withStyles(styles)(PostList);
 ```
 
+### Empty
+
+It's possible that a Datagrid will have no records to display. If the Datagrid's parent component handles the loading state, the Datagrid will return `null` and render nothing.
+Passing through a component to the `empty` prop will cause the Datagrid to render the `empty` component instead of `null`.
 ### CSS API
 
 The `Datagrid` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
