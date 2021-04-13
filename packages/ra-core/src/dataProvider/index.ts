@@ -8,8 +8,6 @@ import cacheDataProviderProxy from './cacheDataProviderProxy';
 import undoableEventEmitter from './undoableEventEmitter';
 import useDataProvider from './useDataProvider';
 import useMutation, { UseMutationValue } from './useMutation';
-import useQuery, { UseQueryValue } from './useQuery';
-import useQueryWithStore, { QueryOptions } from './useQueryWithStore';
 import withDataProvider from './withDataProvider';
 import useGetOne, { UseGetOneHookValue } from './useGetOne';
 import useGetList from './useGetList';
@@ -25,12 +23,10 @@ import useDeleteMany from './useDeleteMany';
 import useRefreshWhenVisible from './useRefreshWhenVisible';
 import useIsAutomaticRefreshEnabled from './useIsAutomaticRefreshEnabled';
 
-export type {
-    QueryOptions,
-    UseMutationValue,
-    UseQueryValue,
-    UseGetOneHookValue,
-};
+export * from './useQueryWithStore';
+export * from './useQuery';
+
+export type { UseMutationValue, UseGetOneHookValue };
 
 export {
     cacheDataProviderProxy,
@@ -43,7 +39,6 @@ export {
     undoableEventEmitter,
     useDataProvider,
     useMutation,
-    useQuery,
     useGetOne,
     useGetList,
     useGetMainList,
@@ -55,7 +50,6 @@ export {
     useCreate,
     useDelete,
     useDeleteMany,
-    useQueryWithStore,
     useRefreshWhenVisible,
     withDataProvider,
     useIsAutomaticRefreshEnabled,
