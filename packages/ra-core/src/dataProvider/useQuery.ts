@@ -71,9 +71,9 @@ import { DataProviderQuery } from './useQueryWithStore';
  *     );
  * };
  */
-const useQuery = (
+export const useQuery = (
     query: DataProviderQuery,
-    options: QueryOptions = { onSuccess: undefined }
+    options: UseQueryOptions = { onSuccess: undefined }
 ): UseQueryValue => {
     const { type, resource, payload } = query;
     const { withDeclarativeSideEffectsSupport, ...otherOptions } = options;
@@ -151,7 +151,7 @@ const useQuery = (
     return state;
 };
 
-export interface QueryOptions {
+export interface UseQueryOptions {
     action?: string;
     enabled?: boolean;
     onSuccess?: OnSuccess | DeclarativeSideEffect;
@@ -167,5 +167,3 @@ export type UseQueryValue = {
     loaded: boolean;
     refetch: () => void;
 };
-
-export default useQuery;
