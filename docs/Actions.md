@@ -390,14 +390,35 @@ const LikeButton = ({ record }) => {
 ```jsx
 // syntax
 const [update, { data, loading, loaded, error }] = useUpdate(resource, id, data, previousData, options);
+```
 
-// example
+The `update()` method can be called in 3 different ways:
+ - with the same parameters as the `useUpdate()` hook: `update(resource, id, data, previousData, options)`
+ - with the same syntax as `useMutation`: `update({ resource, payload: { id, data, previousData } }, options)`
+ - with no parameter (if they were already passed to useUpdate()): `update()`
+
+```jsx
+// set params when calling the update callback
 import { useUpdate } from 'react-admin';
+
+const IncreaseLikeButton = ({ record }) => {
+    const diff = { likes: record.likes + 1 };
+    const [update, { loading, error }] = useUpdate();
+    const handleClick = () => {
+        update('likes', record.id, diff, record)
+    }
+    if (error) { return <p>ERROR</p>; }
+    return <button disabled={loading} onClick={handleClick}>Like</div>;
+};
+
+// or set params when calling the hook
+import { useUpdate } from 'react-admin';
+
 const IncreaseLikeButton = ({ record }) => {
     const diff = { likes: record.likes + 1 };
     const [update, { loading, error }] = useUpdate('likes', record.id, diff, record);
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={loading} onClick={update}>Like</button>;
+    return <button disabled={loading} onClick={update}>Like</div>;
 };
 ```
 
