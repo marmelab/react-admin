@@ -53,7 +53,7 @@ BulkUpdateButton.propTypes = {
     basePath: PropTypes.string,
     label: PropTypes.string,
     resource: PropTypes.string,
-    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
+    selectedIds: PropTypes.arrayOf(PropTypes.any),
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     icon: PropTypes.element,
 };

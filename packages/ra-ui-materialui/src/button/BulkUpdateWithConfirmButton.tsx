@@ -182,7 +182,7 @@ BulkUpdateWithConfirmButton.propTypes = {
     confirmContent: PropTypes.string,
     label: PropTypes.string,
     resource: PropTypes.string,
-    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
+    selectedIds: PropTypes.arrayOf(PropTypes.any),
     icon: PropTypes.element,
     data: PropTypes.any.isRequired,
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
