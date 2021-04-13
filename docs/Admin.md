@@ -500,8 +500,7 @@ export default [
 ];
 ```
 
-When a user browses to `/register`, the `<Register>` component will appear outside of the defined Layout, leaving you the freedom
-to design the screen the way you want.
+When a user browses to `/register`, the `<Register>` component will appear outside of the defined Layout, leaving you the freedom to design the screen the way you want.
 
 **Tip**: In previous versions of react-admin, you had to write `<Route noLayout>` instead of `<RouteWithoutLayout>`. The former still works in Js projects but TypeScript won't compile it.
 
