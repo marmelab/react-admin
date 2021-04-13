@@ -33,6 +33,7 @@ export interface TestContextProps {
     initialState?: object;
     enableReducers?: boolean;
     history?: History;
+    customReducers?: object;
     children: ReactNode | TextContextChildrenFunction;
 }
 
@@ -69,7 +70,11 @@ export class TestContext extends Component<TestContextProps> {
     constructor(props) {
         super(props);
         this.history = props.history || createMemoryHistory();
-        const { initialState = {}, enableReducers = false } = props;
+        const {
+            initialState = {},
+            enableReducers = false,
+            customReducers = {},
+        } = props;
 
         this.storeWithDefault = enableReducers
             ? createAdminStore({
@@ -78,6 +83,7 @@ export class TestContext extends Component<TestContextProps> {
                       Promise.resolve(dataProviderDefaultResponse)
                   ),
                   history: createMemoryHistory(),
+                  customReducers,
               })
             : createStore(() => merge({}, defaultStore, initialState));
     }
