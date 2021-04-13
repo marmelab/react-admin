@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 
-import AutocompleteInput from './AutocompleteInput';
+import { AutocompleteInput } from './AutocompleteInput';
 import { Form } from 'react-final-form';
 import { TestTranslationProvider } from 'ra-core';
 
