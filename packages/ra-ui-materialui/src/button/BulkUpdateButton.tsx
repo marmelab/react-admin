@@ -7,6 +7,7 @@ import BulkUpdateWithConfirmButton, {
 import BulkUpdateWithUndoButton, {
     BulkUpdateWithUndoButtonProps,
 } from './BulkUpdateWithUndoButton';
+import { MutationMode } from 'ra-core';
 
 /**
  * Updates the selected rows.
@@ -31,15 +32,18 @@ import BulkUpdateWithUndoButton, {
  *     </List>
  * );
  */
-const BulkUpdateButton: FC<BulkUpdateButtonProps> = ({ undoable, ...props }) =>
-    undoable ? (
+const BulkUpdateButton: FC<BulkUpdateButtonProps> = ({
+    mutationMode,
+    ...props
+}) =>
+    mutationMode === 'undoable' ? (
         <BulkUpdateWithUndoButton {...props} />
     ) : (
-        <BulkUpdateWithConfirmButton {...props} />
+        <BulkUpdateWithConfirmButton mutationMode={mutationMode} {...props} />
     );
 
 interface Props {
-    undoable?: boolean;
+    mutationMode?: MutationMode;
 }
 
 export type BulkUpdateButtonProps = Props &
@@ -50,12 +54,12 @@ BulkUpdateButton.propTypes = {
     label: PropTypes.string,
     resource: PropTypes.string,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
-    undoable: PropTypes.bool,
+    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     icon: PropTypes.element,
 };
 
 BulkUpdateButton.defaultProps = {
-    undoable: true,
+    mutationMode: 'undoable',
     data: [],
 };
 

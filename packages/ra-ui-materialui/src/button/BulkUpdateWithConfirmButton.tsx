@@ -13,6 +13,7 @@ import {
     useUnselectAll,
     CRUD_UPDATE_MANY,
     useResourceContext,
+    MutationMode,
 } from 'ra-core';
 
 import Confirm from '../layout/Confirm';
@@ -40,6 +41,7 @@ const defaultIcon = <ActionUpdate />;
 const BulkUpdateWithConfirmButton: FC<BulkUpdateWithConfirmButtonProps> = props => {
     const {
         basePath,
+        mutationMode,
         classes: classesOverride,
         confirmTitle = 'ra.message.bulk_update_title',
         confirmContent = 'ra.message.bulk_update_content',
@@ -89,6 +91,7 @@ const BulkUpdateWithConfirmButton: FC<BulkUpdateWithConfirmButtonProps> = props 
             action: CRUD_UPDATE_MANY,
             onSuccess,
             onFailure,
+            mutationMode,
         }
     );
 
@@ -169,6 +172,7 @@ export interface BulkUpdateWithConfirmButtonProps
     data: any;
     onSuccess?: () => void;
     onFailure?: (error: any) => void;
+    mutationMode?: MutationMode;
 }
 
 BulkUpdateWithConfirmButton.propTypes = {
@@ -181,10 +185,12 @@ BulkUpdateWithConfirmButton.propTypes = {
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
     icon: PropTypes.element,
     data: PropTypes.any.isRequired,
+    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
 };
 
 BulkUpdateWithConfirmButton.defaultProps = {
     label: 'ra.action.update',
+    mutationMode: 'pessimistic',
 };
 
 export default BulkUpdateWithConfirmButton;
