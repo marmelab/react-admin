@@ -206,7 +206,8 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
     });
 
     // eslint-disable-next-line
-    const debouncedSetFilter = useCallback(debounce(setFilter || DefaultSetFilter, debounceDelay),
+    const debouncedSetFilter = useCallback(
+        debounce(setFilter || DefaultSetFilter, debounceDelay),
         [setFilter, debounceDelay]
     );
 
