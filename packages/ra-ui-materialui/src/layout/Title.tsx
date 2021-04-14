@@ -11,6 +11,17 @@ export interface TitleProps {
     title?: string | ReactElement;
 }
 
+interface TitleTextProps {
+    text: string;
+    className: string;
+}
+
+function TitleText({ text, ...rest }: TitleTextProps) {
+    useDocumentTitle(text);
+
+    return <span {...rest}>{text}</span>;
+}
+
 const Title: FC<TitleProps> = ({
     className,
     defaultTitle,
@@ -24,20 +35,17 @@ const Title: FC<TitleProps> = ({
             ? document.getElementById('react-admin-title')
             : null;
 
-    const documentTitle = typeof title === 'string' ? title : defaultTitle;
-    useDocumentTitle(translate(documentTitle, { _: documentTitle }));
-
     if (!container) return null;
     warning(!defaultTitle && !title, 'Missing title prop in <Title> element');
 
     const titleElement = !title ? (
-        <span className={className} {...rest}>
-            {defaultTitle}
-        </span>
+        <TitleText className={className} {...rest} text={defaultTitle} />
     ) : typeof title === 'string' ? (
-        <span className={className} {...rest}>
-            {translate(title, { _: title })}
-        </span>
+        <TitleText
+            className={className}
+            {...rest}
+            text={translate(title, { _: title })}
+        />
     ) : (
         cloneElement(title, { className, record, ...rest })
     );
