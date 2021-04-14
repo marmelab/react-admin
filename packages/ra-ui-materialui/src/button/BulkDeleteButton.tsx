@@ -49,7 +49,7 @@ BulkDeleteButton.propTypes = {
     basePath: PropTypes.string,
     label: PropTypes.string,
     resource: PropTypes.string,
-    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
+    selectedIds: PropTypes.arrayOf(PropTypes.any),
     undoable: PropTypes.bool,
     icon: PropTypes.element,
 };
