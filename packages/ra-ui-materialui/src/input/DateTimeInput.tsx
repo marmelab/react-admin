@@ -65,9 +65,7 @@ const parseDateTime = (value: string) => new Date(value);
 /**
  * Input component for entering a date and a time with timezone, using the browser locale
  */
-const DateTimeInput: FunctionComponent<
-    InputProps<TextFieldProps> & Omit<TextFieldProps, 'helperText' | 'label'>
-> = ({
+const DateTimeInput: FunctionComponent<DateTimeInputProps> = ({
     format = formatDateTime,
     label,
     helperText,
@@ -140,5 +138,8 @@ DateTimeInput.propTypes = {
 DateTimeInput.defaultProps = {
     options: {},
 };
+
+export type DateTimeInputProps = InputProps<TextFieldProps> &
+    Omit<TextFieldProps, 'helperText' | 'label'>;
 
 export default DateTimeInput;

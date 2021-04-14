@@ -104,7 +104,7 @@ interface Props {
     icon?: JSX.Element;
     label?: string;
     onClick?: (e: Event) => void;
-    selectedIds: Identifier[];
+    selectedIds?: Identifier[];
     resource?: string;
 }
 

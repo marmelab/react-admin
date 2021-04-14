@@ -389,6 +389,7 @@ export type AdminChildren = RenderResourcesFunction | ReactNode;
 
 export interface CustomRoute extends RouteProps {
     noLayout?: boolean;
+    [key: string]: any;
 }
 
 export type CustomRoutes = Array<ReactElement<CustomRoute>>;

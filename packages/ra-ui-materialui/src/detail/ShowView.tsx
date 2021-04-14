@@ -96,7 +96,7 @@ export const ShowView = (props: ShowViewProps) => {
 
 interface ShowViewProps
     extends ShowProps,
-        Omit<ShowControllerProps, 'resource'> {
+        Partial<Omit<ShowControllerProps, 'resource'>> {
     children: ReactElement;
 }
 

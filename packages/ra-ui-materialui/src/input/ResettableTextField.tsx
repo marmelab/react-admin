@@ -16,9 +16,7 @@ import { ClassesOverride } from '../types';
 /**
  * An override of the default Material-UI TextField which is resettable
  */
-function ResettableTextField(
-    props: InputProps<ResettableTextFieldProps & TextFieldProps>
-) {
+function ResettableTextField(props: ResettableTextFieldProps) {
     const {
         classes: classesOverride,
         clearAlwaysVisible,
@@ -213,10 +211,12 @@ ResettableTextField.propTypes = {
     value: PropTypes.any.isRequired,
 };
 
-interface ResettableTextFieldProps {
+interface Props {
     classes?: ClassesOverride<typeof useStyles>;
     clearAlwaysVisible?: boolean;
     resettable?: boolean;
 }
+
+export type ResettableTextFieldProps = InputProps<Props & TextFieldProps>;
 
 export default ResettableTextField;

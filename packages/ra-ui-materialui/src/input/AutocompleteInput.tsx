@@ -567,7 +567,7 @@ const handleMouseDownClearButton = event => {
 };
 
 const useStyles = makeStyles(
-    {
+    theme => ({
         container: {
             flexGrow: 1,
             position: 'relative',
@@ -591,8 +591,10 @@ const useStyles = makeStyles(
         inputAdornedEnd: {
             paddingRight: 0,
         },
-        suggestionsContainer: {},
-    },
+        suggestionsContainer: {
+            zIndex: theme.zIndex.modal,
+        },
+    }),
     { name: 'RaAutocompleteInput' }
 );
 

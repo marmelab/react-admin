@@ -13,14 +13,7 @@ import {
 
 import Aside from './Aside';
 
-const UserEditToolbar = ({
-    permissions,
-    hasList,
-    hasEdit,
-    hasShow,
-    hasCreate,
-    ...props
-}) => (
+const UserEditToolbar = ({ permissions, ...props }) => (
     <Toolbar {...props}>
         <SaveButton
             label="user.action.save_and_show"
@@ -39,8 +32,10 @@ const UserEditToolbar = ({
 );
 
 const isValidName = async value =>
-    new Promise(resolve =>
-        setTimeout(resolve(value === 'Admin' ? "Can't be Admin" : undefined))
+    new Promise<string>(resolve =>
+        setTimeout(() =>
+            resolve(value === 'Admin' ? "Can't be Admin" : undefined)
+        )
     );
 
 const UserCreate = ({ permissions, ...props }) => (

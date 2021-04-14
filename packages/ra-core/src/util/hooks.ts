@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import isEqual from 'lodash/isEqual';
 

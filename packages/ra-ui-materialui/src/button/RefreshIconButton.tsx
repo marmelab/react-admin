@@ -7,7 +7,7 @@ import IconButton, { IconButtonProps } from '@material-ui/core/IconButton';
 import NavigationRefresh from '@material-ui/icons/Refresh';
 import { refreshView, useTranslate } from 'ra-core';
 
-const RefreshIconButton: FC<RefreshIconProps> = ({
+const RefreshIconButton: FC<RefreshIconButtonProps> = ({
     label = 'ra.action.refresh',
     icon = defaultIcon,
     onClick,
@@ -51,7 +51,7 @@ interface Props {
     onClick?: (e: MouseEvent) => void;
 }
 
-export type RefreshIconProps = Props & IconButtonProps;
+export type RefreshIconButtonProps = Props & IconButtonProps;
 
 RefreshIconButton.propTypes = {
     className: PropTypes.string,
