@@ -30,10 +30,10 @@ import ResettableTextField, {
 } from './ResettableTextField';
 import SearchInput, { SearchInputProps } from './SearchInput';
 import SelectArrayInput, { SelectArrayInputProps } from './SelectArrayInput';
-import SelectInput, { SelectInputProps } from './SelectInput';
 import TextInput, { TextInputProps } from './TextInput';
 import sanitizeInputRestProps from './sanitizeInputRestProps';
 export * from './AutocompleteInput';
+export * from './SelectInput';
 export * from './useSupportCreateSuggestion';
 export * from './TranslatableInputs';
 export * from './TranslatableInputsTabContent';
@@ -61,7 +61,6 @@ export {
     ResettableTextField,
     SearchInput,
     SelectArrayInput,
-    SelectInput,
     TextInput,
     sanitizeInputRestProps,
 };
@@ -85,6 +84,5 @@ export type {
     ResettableTextFieldProps,
     SearchInputProps,
     SelectArrayInputProps,
-    SelectInputProps,
     TextInputProps,
 };

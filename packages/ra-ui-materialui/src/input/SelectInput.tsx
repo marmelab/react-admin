@@ -24,7 +24,7 @@ import {
     SupportCreateSuggestionOptions,
 } from './useSupportCreateSuggestion';
 
-interface SelectInputProps
+export interface SelectInputProps
     extends ChoicesInputProps<TextFieldProps>,
         Omit<SupportCreateSuggestionOptions, 'source'>,
         Omit<TextFieldProps, 'label' | 'helperText'> {}
@@ -103,7 +103,7 @@ interface SelectInputProps
  * <SelectInput source="gender" choices={choices} disableValue="not_available" />
  *
  */
-const SelectInput = (props: SelectInputProps) => {
+export const SelectInput = (props: SelectInputProps) => {
     const {
         allowEmpty,
         choices = [],
@@ -351,5 +351,3 @@ const useStyles = makeStyles(
     }),
     { name: 'RaSelectInput' }
 );
-
-export default SelectInput;
