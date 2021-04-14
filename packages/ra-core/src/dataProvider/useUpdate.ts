@@ -20,7 +20,7 @@ import useMutation, { MutationOptions, Mutation } from './useMutation';
  *
  * @returns The current request state. Destructure as [update, { data, error, loading, loaded }].
  *
- * The update() method can be called in 3 different ways:
+ * The update() function can be called in 3 different ways:
  *  - with the same parameters as the useUpdate() hook: update(resource, id, data, previousData, options)
  *  - with the same syntax as useMutation: update({ resource, payload: { id, data, previousData } }, options)
  *  - with no parameter (if they were already passed to useUpdate()): update()
