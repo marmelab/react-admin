@@ -9,7 +9,7 @@ import {
     Record,
     ReduxState,
 } from '../types';
-import useQueryWithStore from './useQueryWithStore';
+import { useQueryWithStore } from './useQueryWithStore';
 import {
     getReferenceResource,
     getPossibleReferenceValues,

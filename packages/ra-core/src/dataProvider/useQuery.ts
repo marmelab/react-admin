@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { useSafeSetState } from '../util/hooks';
 import { OnSuccess, OnFailure } from '../types';
@@ -6,6 +6,7 @@ import useDataProvider from './useDataProvider';
 import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDeclarativeSideEffects';
 import { DeclarativeSideEffect } from './useDeclarativeSideEffects';
 import useVersion from '../controller/useVersion';
+import { DataProviderQuery } from './useQueryWithStore';
 
 /**
  * Call the data provider on mount
@@ -70,17 +71,26 @@ import useVersion from '../controller/useVersion';
  *     );
  * };
  */
-const useQuery = (
-    query: Query,
-    options: QueryOptions = { onSuccess: undefined }
+export const useQuery = (
+    query: DataProviderQuery,
+    options: UseQueryOptions = { onSuccess: undefined }
 ): UseQueryValue => {
     const { type, resource, payload } = query;
     const { withDeclarativeSideEffectsSupport, ...otherOptions } = options;
     const version = useVersion(); // used to allow force reload
+    // used to force a refetch without relying on version
+    // which might trigger other queries as well
+    const [innerVersion, setInnerVersion] = useState(0);
+
+    const refetch = useCallback(() => {
+        setInnerVersion(prevInnerVersion => prevInnerVersion + 1);
+    }, []);
+
     const requestSignature = JSON.stringify({
         query,
         options: otherOptions,
         version,
+        innerVersion,
     });
     const [state, setState] = useSafeSetState<UseQueryValue>({
         data: undefined,
@@ -88,6 +98,7 @@ const useQuery = (
         total: null,
         loading: true,
         loaded: false,
+        refetch,
     });
     const dataProvider = useDataProvider();
     const dataProviderWithDeclarativeSideEffects = useDataProviderWithDeclarativeSideEffects();
@@ -118,6 +129,7 @@ const useQuery = (
                     total,
                     loading: false,
                     loaded: true,
+                    refetch,
                 });
             })
             .catch(error => {
@@ -125,6 +137,7 @@ const useQuery = (
                     error,
                     loading: false,
                     loaded: false,
+                    refetch,
                 });
             });
     }, [
@@ -138,13 +151,7 @@ const useQuery = (
     return state;
 };
 
-export interface Query {
-    type: string;
-    resource?: string;
-    payload: object;
-}
-
-export interface QueryOptions {
+export interface UseQueryOptions {
     action?: string;
     enabled?: boolean;
     onSuccess?: OnSuccess | DeclarativeSideEffect;
@@ -158,6 +165,5 @@ export type UseQueryValue = {
     error?: any;
     loading: boolean;
     loaded: boolean;
+    refetch: () => void;
 };
-
-export default useQuery;

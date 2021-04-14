@@ -133,6 +133,7 @@ The return value of `useQuery` is an object representing the query state, using 
 - `error`: `null` unless the `dataProvider` threw an error, in which case it contains that error.
 - `loading`: A boolean updating according to the request state
 - `loaded`: A boolean updating according to the request state
+- `refetch`: A function you can call to trigger a refetch. It's different from the `refresh` function returned by `useRefresh` as it won't trigger a refresh of the view, only this specific query.
 
 This object updates according to the request state:
 
@@ -174,6 +175,8 @@ const UserProfile = ({ record }) => {
 ```
 
 In practice, react-admin uses `useQueryWithStore` instead of `useQuery` everywhere, and you should probably do the same in your components. It really improves the User Experience, with only one little drawback: if the data changed on the backend side between two calls for the same query, the user may briefly see outdated data before the screen updates with the up-to-date data. 
+
+Just like `useQuery`, `useQueryWithStore` also returns a `refetch` function you can call to trigger a refetch. It's different from the `refresh` function returned by `useRefresh` as it won't trigger a refresh of the view, only this specific query.
 
 ## `useMutation` Hook
 
