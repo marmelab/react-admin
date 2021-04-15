@@ -142,7 +142,7 @@ const useMutation = (
     /* eslint-disable react-hooks/exhaustive-deps */
     const mutate = useCallback(
         (
-            callTimeQuery?: Mutation | Event,
+            callTimeQuery?: Partial<Mutation> | Event,
             callTimeOptions?: MutationOptions
         ): void | Promise<any> => {
             const finalDataProvider = hasDeclarativeSideEffectsSupport(
@@ -231,7 +231,7 @@ export interface MutationOptions {
 
 export type UseMutationValue = [
     (
-        query?: Partial<Mutation>,
+        query?: Partial<Mutation> | Event,
         options?: Partial<MutationOptions>
     ) => void | Promise<any>,
     {
@@ -278,7 +278,7 @@ export type UseMutationValue = [
  */
 const mergeDefinitionAndCallTimeParameters = (
     query?: Mutation,
-    callTimeQuery?: Mutation | Event,
+    callTimeQuery?: Partial<Mutation> | Event,
     options?: MutationOptions,
     callTimeOptions?: MutationOptions
 ) => {
