@@ -53,7 +53,7 @@ const CreateCategory = ({
     const [value, setValue] = React.useState(filter || '');
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
-        const choice = { name: value, id: value };
+        const choice = { name: value, id: value.toLowerCase() };
         onAddChoice(choice);
         onCreate(value, choice);
         setValue('');

@@ -31,11 +31,6 @@ import {
     useSupportCreateSuggestion,
 } from './useSupportCreateSuggestion';
 
-interface Options {
-    suggestionsContainerProps?: any;
-    labelProps?: any;
-}
-
 /**
  * An Input component for an autocomplete field, using an array of objects for the options
  *
@@ -107,7 +102,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         choices = [],
         createLabel,
         createItemLabel,
-        createValue = '@@ra-create',
+        createValue,
         create,
         disabled,
         emptyText,
@@ -117,6 +112,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         helperText,
         id: idOverride,
         input: inputOverride,
+        inputText,
         isRequired: isRequiredOverride,
         label,
         limitChoicesToValue,
@@ -140,9 +136,9 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
             InputProps: undefined,
         },
         optionText = 'name',
-        inputText,
         optionValue = 'id',
         parse,
+        refetch,
         resettable,
         resource,
         setFilter,
@@ -182,7 +178,6 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
     );
 
     const classes = useStyles(props);
-
     let inputEl = useRef<HTMLInputElement>();
     let anchorEl = useRef<any>();
     const translate = useTranslate();
@@ -219,26 +214,9 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         [input.value, getSuggestionFromValue]
     );
 
-    const {
-        getCreateItemLabel,
-        handleChange,
-        createElement,
-    } = useSupportCreateSuggestion({
-        create,
-        createLabel,
-        createItemLabel,
-        createValue,
-        filter: filterValue,
-        onCreate,
-        source,
-    });
-
     const { getChoiceText, getChoiceValue, getSuggestions } = useSuggestions({
-        allowCreate: !!onCreate || !!create,
         allowEmpty,
         choices,
-        createText: getCreateItemLabel(),
-        createValue,
         emptyText,
         emptyValue,
         limitChoicesToValue,
@@ -248,6 +226,32 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         selectedItem,
         suggestionLimit,
         translateChoice,
+    });
+
+    const handleChange = useCallback(
+        async (item: any, newItem: any) => {
+            const value = getChoiceValue(newItem || item);
+            if (value == null && filterValue) {
+                setFilterValue('');
+            }
+
+            input.onChange(value);
+        },
+        [filterValue, getChoiceValue, input]
+    );
+
+    const {
+        getCreateItem,
+        handleChange: handleChangeWithCreateSupport,
+        createElement,
+    } = useSupportCreateSuggestion({
+        create,
+        createLabel,
+        createItemLabel,
+        createValue,
+        handleChange,
+        filter: filterValue,
+        onCreate,
     });
 
     const handleFilterChange = useCallback(
@@ -289,20 +293,6 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         getChoiceText,
         inputText,
     ]);
-
-    const handleDownshiftChange = useCallback(
-        async (item: any) => {
-            const value = getChoiceValue(item);
-            handleChange(value, () => {
-                if (value == null && filterValue) {
-                    setFilterValue('');
-                }
-
-                input.onChange(value);
-            });
-        },
-        [filterValue, getChoiceValue, input, handleChange]
-    );
 
     // This function ensures that the suggestion list stay aligned to the
     // input element even if it moves (because user scrolled for example)
@@ -462,7 +452,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         <>
             <Downshift
                 inputValue={filterValue}
-                onChange={handleDownshiftChange}
+                onChange={handleChangeWithCreateSupport}
                 selectedItem={selectedItem}
                 itemToString={item => getChoiceValue(item)}
                 {...rest}
@@ -493,7 +483,10 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                         onFocus: handleFocus(openMenu),
                         ...InputProps,
                     });
-                    const suggestions = getSuggestions(filterValue);
+                    const suggestions = [
+                        ...getSuggestions(filterValue),
+                        ...(onCreate || create ? [getCreateItem()] : []),
+                    ];
 
                     return (
                         <div className={classes.container}>
@@ -505,8 +498,8 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                                     endAdornment: getEndAdornment(openMenu),
                                     onBlur,
                                     onChange: event => {
-                                        handleFilterChange(event);
                                         setFilterValue(event.target.value);
+                                        handleFilterChange(event);
                                         onChange!(
                                             event as React.ChangeEvent<
                                                 HTMLInputElement
@@ -628,9 +621,14 @@ const useStyles = makeStyles(
     { name: 'RaAutocompleteInput' }
 );
 
+interface Options {
+    suggestionsContainerProps?: any;
+    labelProps?: any;
+}
+
 export interface AutocompleteInputProps
     extends ChoicesInputProps<TextFieldProps & Options>,
-        Omit<SupportCreateSuggestionOptions, 'source'>,
+        Omit<SupportCreateSuggestionOptions, 'handleChange'>,
         Omit<DownshiftProps<any>, 'onChange'> {
     clearAlwaysVisible?: boolean;
     resettable?: boolean;
