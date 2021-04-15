@@ -2,30 +2,31 @@ import * as React from 'react';
 import { FC, memo, ElementType } from 'react';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
+import { useRecordContext } from 'ra-core';
 
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
-const TextField: FC<TextFieldProps> = memo<TextFieldProps>(
-    ({ className, source, record = {}, emptyText, ...rest }) => {
-        const value = get(record, source);
+const TextField: FC<TextFieldProps> = memo<TextFieldProps>(props => {
+    const { className, source, emptyText, ...rest } = props;
+    const record = useRecordContext(props);
+    const value = get(record, source);
 
-        return (
-            <Typography
-                component="span"
-                variant="body2"
-                className={className}
-                {...sanitizeFieldRestProps(rest)}
-            >
-                {value != null && typeof value !== 'string'
-                    ? JSON.stringify(value)
-                    : value || emptyText}
-            </Typography>
-        );
-    }
-);
+    return (
+        <Typography
+            component="span"
+            variant="body2"
+            className={className}
+            {...sanitizeFieldRestProps(rest)}
+        >
+            {value != null && typeof value !== 'string'
+                ? JSON.stringify(value)
+                : value || emptyText}
+        </Typography>
+    );
+});
 
-// what? TypeScript looses the displayName if we don't set it explicitly
+// what? TypeScript loses the displayName if we don't set it explicitly
 TextField.displayName = 'TextField';
 
 TextField.defaultProps = {

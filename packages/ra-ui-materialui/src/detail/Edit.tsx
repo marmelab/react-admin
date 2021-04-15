@@ -77,7 +77,7 @@ export const Edit = (
 };
 
 Edit.propTypes = {
-    actions: PropTypes.element,
+    actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     aside: PropTypes.element,
     children: PropTypes.node,
     classes: PropTypes.object,
@@ -90,7 +90,7 @@ Edit.propTypes = {
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     onSuccess: PropTypes.func,
     onFailure: PropTypes.func,
-    resource: PropTypes.string.isRequired,
+    resource: PropTypes.string,
     successMessage: PropTypes.string,
     title: PropTypes.node,
     transform: PropTypes.func,

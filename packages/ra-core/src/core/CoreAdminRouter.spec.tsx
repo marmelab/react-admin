@@ -4,7 +4,7 @@ import expect from 'expect';
 import { Router, Route } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
-import renderWithRedux from '../util/renderWithRedux';
+import { renderWithRedux } from 'ra-test';
 import CoreAdminRouter from './CoreAdminRouter';
 import AuthContext from '../auth/AuthContext';
 import Resource from './Resource';
@@ -60,8 +60,9 @@ describe('<CoreAdminRouter>', () => {
                     </CoreAdminRouter>
                 </Router>
             );
-            await new Promise(resolve => setTimeout(resolve, 10));
-            expect(getByText('Layout')).not.toBeNull();
+            await waitFor(() => {
+                expect(getByText('Layout')).not.toBeNull();
+            });
             history.push('/posts');
             expect(getByText('PostList')).not.toBeNull();
             history.push('/comments');
@@ -80,10 +81,10 @@ describe('<CoreAdminRouter>', () => {
                 getPermissions: jest.fn().mockResolvedValue(''),
             };
 
-            const { getByText } = renderWithRedux(
+            const { queryByText } = renderWithRedux(
                 <AuthContext.Provider value={authProvider}>
                     <Router history={history}>
-                        <CoreAdminRouter {...defaultProps} layout={Layout}>
+                        <CoreAdminRouter layout={Layout}>
                             {() => [
                                 <Resource
                                     key="posts"
@@ -103,12 +104,54 @@ describe('<CoreAdminRouter>', () => {
             );
             // Timeout needed because of the authProvider call
             await waitFor(() => {
-                expect(getByText('Layout')).not.toBeNull();
+                expect(queryByText('Layout')).not.toBeNull();
             });
             history.push('/posts');
-            expect(getByText('PostList')).not.toBeNull();
+            expect(queryByText('PostList')).not.toBeNull();
             history.push('/comments');
-            expect(getByText('CommentList')).not.toBeNull();
+            expect(queryByText('CommentList')).not.toBeNull();
+        });
+
+        it('should return loading while the resources are not resolved', async () => {
+            const history = createMemoryHistory();
+            const authProvider = {
+                login: jest.fn().mockResolvedValue(''),
+                logout: jest.fn().mockResolvedValue(''),
+                checkAuth: jest.fn().mockResolvedValue(''),
+                checkError: jest.fn().mockResolvedValue(''),
+                getPermissions: jest.fn().mockResolvedValue(''),
+            };
+            const Loading = () => <>Loading</>;
+            const Custom = () => <>Custom</>;
+
+            const { queryByText } = renderWithRedux(
+                <AuthContext.Provider value={authProvider}>
+                    <Router history={history}>
+                        <CoreAdminRouter
+                            {...defaultProps}
+                            layout={Layout}
+                            loading={Loading}
+                            customRoutes={[
+                                <Route
+                                    key="foo"
+                                    noLayout
+                                    path="/foo"
+                                    component={Custom}
+                                />,
+                            ]}
+                        >
+                            {() => new Promise(() => {})}
+                        </CoreAdminRouter>
+                    </Router>
+                </AuthContext.Provider>
+            );
+            // Timeout needed because of the authProvider call
+            await new Promise(resolve => setTimeout(resolve, 1010));
+            history.push('/posts');
+            expect(queryByText('Loading')).not.toBeNull();
+            history.push('/foo');
+            expect(queryByText('Loading')).toBeNull();
+            expect(queryByText('Custom')).not.toBeNull();
         });
     });
 

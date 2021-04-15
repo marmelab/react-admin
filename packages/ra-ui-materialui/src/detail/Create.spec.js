@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { renderWithRedux } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 
 import { Create } from './Create';
 

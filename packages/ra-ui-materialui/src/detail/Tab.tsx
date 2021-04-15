@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { isValidElement, ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import MuiTab, { TabProps as MuiTabProps } from '@material-ui/core/Tab';
 import { useTranslate, Record } from 'ra-core';
 import classnames from 'classnames';
@@ -51,7 +51,7 @@ import Labeled from '../input/Labeled';
  *     );
  *     export default App;
  */
-const Tab = ({
+export const Tab = ({
     basePath,
     children,
     contentClassName,
@@ -61,10 +61,16 @@ const Tab = ({
     label,
     record,
     resource,
+    syncWithLocation = true,
     value,
     ...rest
 }: TabProps) => {
     const translate = useTranslate();
+    const location = useLocation();
+    const propsForLink = {
+        component: Link,
+        to: { ...location, pathname: value },
+    };
 
     const renderHeader = () => (
         <MuiTab
@@ -73,7 +79,7 @@ const Tab = ({
             value={value}
             icon={icon}
             className={classnames('show-tab', className)}
-            {...({ component: Link, to: value } as any)} // to avoid TypeScript screams, see https://github.com/mui-org/material-ui/issues/9106#issuecomment-451270521
+            {...(syncWithLocation ? propsForLink : {})} // to avoid TypeScript screams, see https://github.com/mui-org/material-ui/issues/9106#issuecomment-451270521
             {...rest}
         />
     );
@@ -126,7 +132,7 @@ Tab.propTypes = {
     icon: PropTypes.element,
     label: PropTypes.string.isRequired,
     path: PropTypes.string,
-    value: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 export interface TabProps extends MuiTabProps {
@@ -140,7 +146,6 @@ export interface TabProps extends MuiTabProps {
     path?: string;
     record?: Record;
     resource?: string;
-    value?: string;
+    syncWithLocation?: boolean;
+    value?: string | number;
 }
-
-export default Tab;

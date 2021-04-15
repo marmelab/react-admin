@@ -157,7 +157,7 @@ const useListParams = ({
 
     // On mount, if the location includes params (for example from a link like
     // the categories products on the demo), we need to persist them in the
-    // redux state as well so that we don't loose them after a redirection back
+    // redux state as well so that we don't lose them after a redirection back
     // to the list
     useEffect(() => {
         if (Object.keys(queryFromLocation).length > 0) {
@@ -176,6 +176,7 @@ const useListParams = ({
                         newParams.displayedFilters
                     ),
                 })}`,
+                state: { _scrollToTop: action.type === SET_PAGE },
             });
             dispatch(changeListParams(resource, newParams));
         } else {

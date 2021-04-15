@@ -1,10 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
-import {
-    renderWithRedux,
-    SaveContextProvider,
-    SideEffectContextProvider,
-} from 'ra-core';
+import { SaveContextProvider, SideEffectContextProvider } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 
 import SimpleForm from './SimpleForm';
 import TextInput from '../input/TextInput';
@@ -59,7 +56,7 @@ describe('<SimpleForm />', () => {
             <SaveContextProvider value={saveContextValue}>
                 <SideEffectContextProvider value={sideEffects}>
                     <SimpleForm submitOnEnter={false} toolbar={<Toolbar />}>
-                        <div />
+                        <TextInput source="name" />
                     </SimpleForm>
                 </SideEffectContextProvider>
             </SaveContextProvider>
@@ -71,7 +68,7 @@ describe('<SimpleForm />', () => {
             <SaveContextProvider value={saveContextValue}>
                 <SideEffectContextProvider value={sideEffects}>
                     <SimpleForm submitOnEnter toolbar={<Toolbar />}>
-                        <div />
+                        <TextInput source="name" />
                     </SimpleForm>
                 </SideEffectContextProvider>
             </SaveContextProvider>

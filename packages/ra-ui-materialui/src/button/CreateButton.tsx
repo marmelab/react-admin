@@ -1,22 +1,36 @@
 import * as React from 'react';
-import { FC, ReactElement, memo } from 'react';
+import { FC, ReactElement, memo, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Fab, useMediaQuery, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ContentAdd from '@material-ui/icons/Add';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
-import { useTranslate } from 'ra-core';
+import { useTranslate, useResourceContext } from 'ra-core';
 
 import Button, { ButtonProps, sanitizeButtonRestProps } from './Button';
 
+/**
+ * Opens the Create view of a given resource
+ *
+ * Renders as a regular button on desktop, and a Floating Action Button
+ * on mobile.
+ *
+ * @example // basic usage
+ * import { CreateButton } from 'react-admin';
+ *
+ * const CommentCreateButton = () => (
+ *     <CreateButton basePath="/comments" label="Create comment" />
+ * );
+ */
 const CreateButton: FC<CreateButtonProps> = props => {
     const {
         basePath = '',
         className,
         classes: classesOverride,
-        label = 'ra.action.create',
         icon = defaultIcon,
+        label = 'ra.action.create',
+        scrollToTop = true,
         variant,
         ...rest
     } = props;
@@ -25,12 +39,20 @@ const CreateButton: FC<CreateButtonProps> = props => {
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('sm')
     );
+    const resource = useResourceContext();
+    const location = useMemo(
+        () => ({
+            pathname: basePath ? `${basePath}/create` : `/${resource}/create`,
+            state: { _scrollToTop: scrollToTop },
+        }),
+        [basePath, resource, scrollToTop]
+    );
     return isSmall ? (
         <Fab
             component={Link}
             color="primary"
             className={classnames(classes.floating, className)}
-            to={`${basePath}/create`}
+            to={location}
             aria-label={label && translate(label)}
             {...sanitizeButtonRestProps(rest)}
         >
@@ -39,7 +61,7 @@ const CreateButton: FC<CreateButtonProps> = props => {
     ) : (
         <Button
             component={Link}
-            to={`${basePath}/create`}
+            to={location}
             className={className}
             label={label}
             variant={variant}
@@ -64,9 +86,6 @@ const useStyles = makeStyles(
             position: 'fixed',
             zIndex: 1000,
         },
-        floatingLink: {
-            color: 'inherit',
-        },
     }),
     { name: 'RaCreateButton' }
 );
@@ -74,6 +93,7 @@ const useStyles = makeStyles(
 interface Props {
     basePath?: string;
     icon?: ReactElement;
+    scrollToTop?: boolean;
 }
 
 export type CreateButtonProps = Props & ButtonProps;
@@ -91,6 +111,7 @@ export default memo(CreateButton, (prevProps, nextProps) => {
         prevProps.basePath === nextProps.basePath &&
         prevProps.label === nextProps.label &&
         prevProps.translate === nextProps.translate &&
-        prevProps.to === nextProps.to
+        prevProps.to === nextProps.to &&
+        prevProps.disabled === nextProps.disabled
     );
 });

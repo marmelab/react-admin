@@ -7,6 +7,7 @@ import FormField from './FormField';
 import FormWithRedirect, {
     FormWithRedirectProps,
     FormWithRedirectRender,
+    FormWithRedirectRenderProps,
     FormWithRedirectSave,
     HandleSubmitWithRedirect,
 } from './FormWithRedirect';
@@ -23,6 +24,7 @@ import useChoices, {
 } from './useChoices';
 import useSuggestions from './useSuggestions';
 import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
+import useResetSubmitErrors from './useResetSubmitErrors';
 
 export type {
     ChoicesProps,
@@ -30,6 +32,7 @@ export type {
     FormDataConsumerRender,
     FormDataConsumerRenderParams,
     FormWithRedirectProps,
+    FormWithRedirectRenderProps,
     FormWithRedirectRender,
     FormWithRedirectSave,
     HandleSubmitWithRedirect,
@@ -52,6 +55,7 @@ export {
     useSuggestions,
     ValidationError,
     useWarnWhenUnsavedChanges,
+    useResetSubmitErrors,
 };
 export { isRequired } from './FormField';
 export * from './validate';

@@ -2,7 +2,7 @@ import * as React from 'react';
 import expect from 'expect';
 
 import ReferenceFieldController from './ReferenceFieldController';
-import renderWithRedux from '../../util/renderWithRedux';
+import { renderWithRedux } from 'ra-test';
 import { DataProviderContext } from '../../dataProvider';
 
 const defaultState = {

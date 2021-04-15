@@ -4,7 +4,7 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import ValidationError from './ValidationError';
 import { TranslationProvider } from '../i18n';
 
-import { renderWithRedux } from '../util';
+import { renderWithRedux } from 'ra-test';
 
 const translate = jest.fn(key => key);
 

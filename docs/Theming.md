@@ -407,7 +407,7 @@ export default MyLayout;
 
 ### UserMenu Customization
 
-You can replace the default user menu by your own by setting the `userMenu` prop of the `<AppBar>` component. For instance, to add custom menu items, just decorate the default `<UserMenu>` by adding children to it:
+You can replace the default user menu by your own by setting the `userMenu` prop of the `<AppBar>` component. For instance, to add custom menu items, just decorate the default [`<UserMenu>`](./Buttons.md#usermenu) by adding children to it:
 
 ```jsx
 import * as React from 'react';
@@ -1010,7 +1010,7 @@ const MyError = ({
             <div>
                 <Button
                     variant="contained"
-                    icon={<History />}
+                    startIcon={<History />}
                     onClick={() => history.go(-1)}
                 >
                     Back

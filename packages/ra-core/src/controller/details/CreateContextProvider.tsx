@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import { RecordContextProvider, usePickRecordContext } from '../RecordContext';
+
+import { Record } from '../../types';
+import { RecordContextProvider } from '../RecordContext';
 import { CreateContext } from './CreateContext';
 import { CreateControllerProps } from './useCreateController';
 import { SaveContextProvider, usePickSaveContext } from './SaveContext';
@@ -20,7 +22,7 @@ import { SaveContextProvider, usePickSaveContext } from './SaveContext';
  * };
  *
  * const MyCreateView = () => {
- *     const { record } = useRecordContext();
+ *     const record = useRecordContext();
  *     // or, to rerender only when the save operation change but not data
  *     const { saving } = useCreateContext();
  * }
@@ -37,7 +39,9 @@ export const CreateContextProvider = ({
 }) => (
     <CreateContext.Provider value={value}>
         <SaveContextProvider value={usePickSaveContext(value)}>
-            <RecordContextProvider value={usePickRecordContext(value)}>
+            <RecordContextProvider<Partial<Record>>
+                value={value && value.record}
+            >
                 {children}
             </RecordContextProvider>
         </SaveContextProvider>

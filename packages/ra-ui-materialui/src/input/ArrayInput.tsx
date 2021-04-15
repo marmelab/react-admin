@@ -8,7 +8,8 @@ import {
     InputProps,
 } from 'ra-core';
 import { useFieldArray } from 'react-final-form-arrays';
-import { InputLabel, FormControl } from '@material-ui/core';
+import { InputLabel, FormControl, FormHelperText } from '@material-ui/core';
+import InputHelperText from './InputHelperText';
 
 import sanitizeInputRestProps from './sanitizeInputRestProps';
 import Labeled from './Labeled';
@@ -62,6 +63,7 @@ const ArrayInput: FC<ArrayInputProps> = ({
     loaded,
     loading,
     children,
+    helperText,
     record,
     resource,
     source,
@@ -94,14 +96,22 @@ const ArrayInput: FC<ArrayInputProps> = ({
         );
     }
 
+    const { error, submitError, touched, dirty } = fieldProps.meta;
+    const arrayInputError = getArrayInputError(error || submitError);
+
     return (
         <FormControl
             fullWidth
             margin="normal"
             className={className}
+            error={(touched || dirty) && !!arrayInputError}
             {...sanitizeInputRestProps(rest)}
         >
-            <InputLabel htmlFor={source} shrink>
+            <InputLabel
+                htmlFor={source}
+                shrink
+                error={(touched || dirty) && !!arrayInputError}
+            >
                 <FieldTitle
                     label={label}
                     source={source}
@@ -118,6 +128,15 @@ const ArrayInput: FC<ArrayInputProps> = ({
                 margin,
                 disabled,
             })}
+            {!!((touched || dirty) && arrayInputError) || helperText ? (
+                <FormHelperText error={(touched || dirty) && !!arrayInputError}>
+                    <InputHelperText
+                        touched={touched || dirty}
+                        error={arrayInputError}
+                        helperText={helperText}
+                    />
+                </FormHelperText>
+            ) : null}
         </FormControl>
     );
 };
@@ -129,6 +148,7 @@ ArrayInput.propTypes = {
     defaultValue: PropTypes.any,
     isRequired: PropTypes.bool,
     label: PropTypes.string,
+    helperText: PropTypes.string,
     resource: PropTypes.string,
     source: PropTypes.string,
     record: PropTypes.object,
@@ -142,6 +162,13 @@ ArrayInput.propTypes = {
 ArrayInput.defaultProps = {
     options: {},
     fullWidth: true,
+};
+
+export const getArrayInputError = error => {
+    if (Array.isArray(error)) {
+        return undefined;
+    }
+    return error;
 };
 
 export interface ArrayInputProps extends InputProps {

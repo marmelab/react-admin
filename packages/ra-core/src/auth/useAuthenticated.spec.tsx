@@ -4,7 +4,7 @@ import { waitFor } from '@testing-library/react';
 
 import Authenticated from './Authenticated';
 import AuthContext from './AuthContext';
-import renderWithRedux from '../util/renderWithRedux';
+import { renderWithRedux } from 'ra-test';
 import { showNotification } from '../actions/notificationActions';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
@@ -100,7 +100,10 @@ describe('useAuthenticated', () => {
                 type: 'RA/CLEAR_STATE',
             });
             expect(history.location.pathname).toEqual('/login');
-            expect(history.location.state).toEqual({ nextPathname: '/' });
+            expect(history.location.state).toEqual({
+                nextPathname: '/',
+                nextSearch: '',
+            });
         });
     });
 });

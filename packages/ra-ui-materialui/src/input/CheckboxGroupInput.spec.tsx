@@ -3,7 +3,8 @@ import expect from 'expect';
 import CheckboxGroupInput from './CheckboxGroupInput';
 import { render, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
-import { renderWithRedux, TestTranslationProvider } from 'ra-core';
+import { TestTranslationProvider } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 
 describe('<CheckboxGroupInput />', () => {
     const defaultProps = {
@@ -268,8 +269,7 @@ describe('<CheckboxGroupInput />', () => {
         });
     });
 
-    // TODO: restore once master has been merged back to next
-    it.skip('should not render a LinearProgress if loading is true and a second has not passed yet', () => {
+    it('should not render a LinearProgress if loading is true and a second has not passed yet', () => {
         const { queryByRole } = render(
             <Form
                 validateOnBlur

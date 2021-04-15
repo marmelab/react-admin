@@ -5,6 +5,7 @@ import {
     useTranslatable,
     UseTranslatableOptions,
     Record,
+    useRecordContext,
 } from 'ra-core';
 import { TranslatableFieldsTabs } from './TranslatableFieldsTabs';
 import { TranslatableFieldsTabContent } from './TranslatableFieldsTabContent';
@@ -74,10 +75,10 @@ export const TranslatableFields = (
         groupKey = '',
         selector = <TranslatableFieldsTabs groupKey={groupKey} />,
         children,
-        record,
         resource,
         basePath,
     } = props;
+    const record = useRecordContext(props);
     const context = useTranslatable({ defaultLocale, locales });
     const classes = useStyles(props);
 
@@ -103,11 +104,11 @@ export const TranslatableFields = (
 };
 
 export interface TranslatableFieldsProps extends UseTranslatableOptions {
-    basePath: string;
+    basePath?: string;
     children: ReactNode;
     classes?: ClassesOverride<typeof useStyles>;
-    record: Record;
-    resource: string;
+    record?: Record;
+    resource?: string;
     selector?: ReactElement;
     groupKey?: string;
 }

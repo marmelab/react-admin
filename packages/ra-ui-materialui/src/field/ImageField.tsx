@@ -5,6 +5,7 @@ import get from 'lodash/get';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import classnames from 'classnames';
+import { useRecordContext } from 'ra-core';
 
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
@@ -34,12 +35,12 @@ const ImageField: FC<ImageFieldProps> = props => {
         className,
         classes: classesOverride,
         emptyText,
-        record,
         source,
         src,
         title,
         ...rest
     } = props;
+    const record = useRecordContext(props);
     const sourceValue = get(record, source);
     const classes = useStyles(props);
     if (!sourceValue) {
@@ -96,7 +97,7 @@ const ImageField: FC<ImageFieldProps> = props => {
     );
 };
 
-// wat? TypeScript looses the displayName if we don't set it explicitly
+// What? TypeScript loses the displayName if we don't set it explicitly
 ImageField.displayName = 'ImageField';
 
 ImageField.defaultProps = {

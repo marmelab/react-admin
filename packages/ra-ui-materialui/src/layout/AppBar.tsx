@@ -29,8 +29,8 @@ const useStyles = makeStyles(
             paddingRight: 24,
         },
         menuButton: {
-            marginLeft: '0.5em',
-            marginRight: '0.5em',
+            marginLeft: '0.2em',
+            marginRight: '0.2em',
         },
         menuButtonIconClosed: {
             transition: theme.transitions.create(['transform'], {
@@ -190,7 +190,7 @@ AppBar.defaultProps = {
 
 export interface AppBarProps extends Omit<MuiAppBarProps, 'title' | 'classes'> {
     classes?: ClassesOverride<typeof useStyles>;
-    logout?: JSX.Element;
+    logout?: React.ReactNode;
     open?: boolean;
     title?: string | JSX.Element;
     userMenu?: JSX.Element | boolean;

@@ -200,7 +200,7 @@ What you've just done reflects the early stages of development with react-admin:
 
 You've just met the `<TextField>` and the `<EmailField>` components. React-admin provides [many more Field components](./Fields.md), mapping various data types: number, date, image, HTML, array, reference, etc.
 
-For instance, the `website` field looks like an URL. Instead of displaying it as text, why not display it using a clickable link? That's exactly what the `<UrlField>` does:
+For instance, the `website` field looks like a URL. Instead of displaying it as text, why not display it using a clickable link? That's exactly what the `<UrlField>` does:
 
 ```diff
 // in src/users.js
@@ -950,7 +950,6 @@ export default {
         };
         return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
             method: 'DELETE',
-            body: JSON.stringify(params.data),
         }).then(({ json }) => ({ data: json }));
     }
 };

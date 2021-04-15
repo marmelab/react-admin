@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { parsePath } from 'history';
 
 import { Identifier, Record } from '../types';
 import resolveRedirectTo from '../util/resolveRedirectTo';
 import { refreshView } from '../actions/uiActions';
-import { useHistory } from 'react-router-dom';
 
 type RedirectToFunction = (
     basePath?: string,
@@ -52,7 +53,10 @@ const useRedirect = () => {
                 return;
             }
 
-            history.push(resolveRedirectTo(redirectTo, basePath, id, data));
+            history.push({
+                ...parsePath(resolveRedirectTo(redirectTo, basePath, id, data)),
+                state: { _scrollToTop: true },
+            });
         },
         [dispatch, history]
     );

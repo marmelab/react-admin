@@ -187,7 +187,7 @@ describe('inferElementFromValues', () => {
             ).getElement()
         ).toEqual(<Good source="foo" />);
     });
-    it('should return an url field for url name', () => {
+    it('should return a url field for url name', () => {
         const types = {
             url: { component: Good },
             string: { component: Bad },
@@ -200,7 +200,7 @@ describe('inferElementFromValues', () => {
             ).getElement()
         ).toEqual(<Good source="url" />);
     });
-    it.skip('should return an url field for url string values', () => {
+    it.skip('should return a url field for url string values', () => {
         const types = {
             url: { component: Good },
             string: { component: Bad },

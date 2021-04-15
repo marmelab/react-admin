@@ -75,7 +75,7 @@ const useDeleteWithUndoController = (
                           { smart_count: 1 },
                           true
                       );
-                      redirect(redirectTo, basePath);
+                      redirect(redirectTo, basePath || `/${resource}`);
                       refresh();
                   },
         onFailure:

@@ -181,7 +181,7 @@ You can find translation packages for the following languages:
 - Hebrew (`he`): [ak-il/ra-language-hebrew](https://github.com/ak-il/ra-language-hebrew)
 - Hindi (`hi`): [harshit-budhraja/ra-language-hindi](https://github.com/harshit-budhraja/ra-language-hindi)
 - Hungarian (`hu`): [phelion/ra-language-hungarian](https://github.com/phelion/ra-language-hungarian)
-- Indonesian (`id`): [ronadi/ra-language-indonesian](https://github.com/ronadi/ra-language-indonesian)
+- Indonesian (`id`): [danangekal/ra-language-indonesian-new](https://github.com/danangekal/ra-language-indonesian-new)
 - Italian (`it`): [stefsava/ra-italian](https://github.com/stefsava/ra-italian)
 - Japanese (`ja`): [bicstone/ra-language-japanese](https://github.com/bicstone/ra-language-japanese)
 - Korean (`ko`): [acidsound/ra-language-korean](https://github.com/acidsound/ra-language-korean)
@@ -195,7 +195,7 @@ You can find translation packages for the following languages:
 - Russian (`ru`): [klucherev/ra-language-russian](https://github.com/klucherev/ra-language-russian)
 - Slovak (`sk`): [zavadpe/ra-language-slovak](https://github.com/zavadpe/ra-language-slovak)
 - Spanish (`es`): [blackboxvision/ra-language-spanish](https://github.com/BlackBoxVision/ra-language-spanish)
-- Swedish (`sv`): [jolixab/ra-language-swedish](https://github.com/jolixab/ra-language-swedish)
+- Swedish (`sv`): [kolben/ra-language-swedish](https://github.com/kolben/ra-language-swedish)
 - Turkish (`tr`): [KamilGunduz/ra-language-turkish](https://github.com/KamilGunduz/ra-language-turkish)
 - Ukrainian (`ua`): [koresar/ra-language-ukrainian](https://github.com/koresar/ra-language-ukrainian)
 - Vietnamese (`vi`): [hieunguyendut/ra-language-vietnamese](https://github.com/hieunguyendut/ra-language-vietnamese)
@@ -669,8 +669,9 @@ resources: {
         fields: {
             id: 'Id',
             name: 'Bezeichnung',
-        },
-    },
+        }
+    }
+}
 ```
 
 ## Silencing Translation Warnings

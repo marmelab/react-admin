@@ -18,9 +18,7 @@ const useStyles = makeStyles(
     { name: 'RaSearchInput' }
 );
 
-const SearchInput: FunctionComponent<
-    InputProps<TextFieldProps> & Omit<TextFieldProps, 'label' | 'helperText'>
-> = props => {
+const SearchInput: FunctionComponent<SearchInputProps> = props => {
     const { classes: classesOverride, ...rest } = props;
     const translate = useTranslate();
     const classes = useStyles(props);
@@ -52,5 +50,8 @@ const SearchInput: FunctionComponent<
 SearchInput.propTypes = {
     classes: PropTypes.object,
 };
+
+export type SearchInputProps = InputProps<TextFieldProps> &
+    Omit<TextFieldProps, 'label' | 'helperText'>;
 
 export default SearchInput;

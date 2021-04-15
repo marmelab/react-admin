@@ -125,6 +125,8 @@ export const PostShow = (props) => (
 
 ### Aside component
 
+![Aside component](./img/aside.png)
+
 You may want to display additional information on the side of the resource detail. Use the `aside` prop for that, passing the component of your choice:
 
 {% raw %}
@@ -332,6 +334,45 @@ To style the tabs, the `<Tab>` component accepts two props:
 - `className` is passed to the tab *header*
 - `contentClassName` is passed to the tab *content*
 
+You can also opt out the location synchronization by passing `false` to the `syncWithLocation` prop of the `<TabbedShowLayout>` component. This allows e.g. to have several `<TabbedShowLayout>` components in a page.
+
+{% raw %}
+```jsx
+import { TabbedShowLayout, Tab } from 'react-admin'
+
+export const PostShow = (props) => (
+    <Show {...props}>
+        <TabbedShowLayout syncWithLocation={false}>
+            <Tab label="summary">
+                <TextField label="Id" source="id" />
+                <TextField source="title" />
+                <TextField source="teaser" />
+            </Tab>
+            <Tab label="body" path="body">
+                <RichTextField source="body" addLabel={false} />
+            </Tab>
+            <Tab label="Miscellaneous" path="miscellaneous">
+                <TextField label="Password (if protected post)" source="password" type="password" />
+                <DateField label="Publication date" source="published_at" />
+                <NumberField source="average_note" />
+                <BooleanField label="Allow comments?" source="commentable" defaultValue />
+                <TextField label="Nb views" source="views" />
+            </Tab>
+            <Tab label="comments" path="comments">
+                <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
+                    <Datagrid>
+                        <TextField source="body" />
+                        <DateField source="created_at" />
+                        <EditButton />
+                    </Datagrid>
+                </ReferenceManyField>
+            </Tab>
+        </TabbedShowLayout>
+    </Show>
+);
+```
+{% endraw %}
+**Tip**: When `syncWithLocation` is `false`, the `path` prop of the `<Tab>` components is ignored.
 ### Tabs element
 
 By default, `<TabbedShowLayout>` renders its tabs using `<TabbedShowLayoutTabs>`, an internal react-admin component. You can pass a custom component as the `tabs` prop to override that default. Also, props passed to `<TabbedShowLayoutTabs>` are passed to the material-ui's `<Tabs>` component inside `<TabbedShowLayoutTabs>`. That means you can create a custom `tabs` component without copying several components from the react-admin source.
@@ -346,7 +387,7 @@ import {
 } from 'react-admin';
 
 const ScrollableTabbedShowLayout = props => (
-    <Show{...props}>
+    <Show {...props}>
         <TabbedShowLayout tabs={<TabbedShowLayoutTabs variant="scrollable" {...props} />}>
             ...
         </TabbedShowLayout>

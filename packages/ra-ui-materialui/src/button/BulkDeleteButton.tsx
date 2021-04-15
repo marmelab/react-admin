@@ -8,6 +8,29 @@ import BulkDeleteWithUndoButton, {
     BulkDeleteWithUndoButtonProps,
 } from './BulkDeleteWithUndoButton';
 
+/**
+ * Deletes the selected rows.
+ *
+ * To be used inside the <List bulkActionButtons> prop (where it's enabled by default).
+ *
+ * @example // basic usage
+ * import * as React from 'react';
+ * import { Fragment } from 'react';
+ * import { BulkDeleteButton, BulkExportButton } from 'react-admin';
+ *
+ * const PostBulkActionButtons = ({ basePath }) => (
+ *     <Fragment>
+ *         <BulkExportButton />
+ *         <BulkDeleteButton basePath={basePath} />
+ *     </Fragment>
+ * );
+ *
+ * export const PostList = (props) => (
+ *     <List {...props} bulkActionButtons={<PostBulkActionButtons />}>
+ *         ...
+ *     </List>
+ * );
+ */
 const BulkDeleteButton: FC<BulkDeleteButtonProps> = ({ undoable, ...props }) =>
     undoable ? (
         <BulkDeleteWithUndoButton {...props} />
@@ -25,8 +48,8 @@ export type BulkDeleteButtonProps = Props &
 BulkDeleteButton.propTypes = {
     basePath: PropTypes.string,
     label: PropTypes.string,
-    resource: PropTypes.string.isRequired,
-    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
+    resource: PropTypes.string,
+    selectedIds: PropTypes.arrayOf(PropTypes.any),
     undoable: PropTypes.bool,
     icon: PropTypes.element,
 };

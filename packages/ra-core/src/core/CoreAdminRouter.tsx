@@ -12,6 +12,7 @@ import { Route, Switch } from 'react-router-dom';
 import RoutesWithLayout from './RoutesWithLayout';
 import { useLogout, useGetPermissions, useAuthState } from '../auth';
 import { useTimeout, useSafeSetState } from '../util';
+import { useScrollToTop } from './useScrollToTop';
 import {
     AdminChildren,
     CustomRoutes,
@@ -41,6 +42,7 @@ const CoreAdminRouter: FunctionComponent<AdminRouterProps> = props => {
     const { authenticated } = useAuthState();
     const oneSecondHasPassed = useTimeout(1000);
     const [computedChildren, setComputedChildren] = useSafeSetState<State>([]);
+    useScrollToTop();
     useEffect(() => {
         if (typeof props.children === 'function') {
             initializeResources();
@@ -105,33 +107,43 @@ const CoreAdminRouter: FunctionComponent<AdminRouterProps> = props => {
         loading: LoadingPage,
         logout,
         menu,
-        ready,
+        ready: Ready,
         theme,
         title,
     } = props;
 
-    if (
-        (typeof children !== 'function' && !children) ||
-        (Array.isArray(children) && children.length === 0)
-    ) {
-        return createElement(ready);
+    if (typeof children !== 'function' && !children) {
+        return <Ready />;
     }
 
     if (
-        typeof children === 'function' &&
-        (!computedChildren || computedChildren.length === 0)
+        (typeof children === 'function' &&
+            (!computedChildren || computedChildren.length === 0)) ||
+        (Array.isArray(children) && children.length === 0)
     ) {
-        if (oneSecondHasPassed) {
-            return (
-                <Route
-                    path="/"
-                    key="loading"
-                    render={() => <LoadingPage theme={theme} />}
-                />
-            );
-        } else {
-            return null;
-        }
+        return (
+            <Switch>
+                {customRoutes
+                    .filter(route => route.props.noLayout)
+                    .map((route, key) =>
+                        cloneElement(route, {
+                            key,
+                            render: routeProps =>
+                                renderCustomRoutesWithoutLayout(
+                                    route,
+                                    routeProps
+                                ),
+                            component: undefined,
+                        })
+                    )}
+                {oneSecondHasPassed && (
+                    <Route
+                        key="loading"
+                        render={() => <LoadingPage theme={theme} />}
+                    />
+                )}
+            </Switch>
+        );
     }
 
     const childrenToRender = (typeof children === 'function'
@@ -165,6 +177,7 @@ const CoreAdminRouter: FunctionComponent<AdminRouterProps> = props => {
                                     route,
                                     routeProps
                                 ),
+                            component: undefined,
                         })
                     )}
                 <Route

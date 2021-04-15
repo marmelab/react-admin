@@ -140,7 +140,7 @@ const handleSubmit = event => {
 };
 
 FilterForm.propTypes = {
-    resource: PropTypes.string.isRequired,
+    resource: PropTypes.string,
     filters: PropTypes.arrayOf(PropTypes.node).isRequired,
     displayedFilters: PropTypes.object,
     hideFilter: PropTypes.func.isRequired,

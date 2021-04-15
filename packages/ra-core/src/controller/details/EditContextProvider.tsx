@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import { RecordContextProvider, usePickRecordContext } from '../RecordContext';
+import { Record } from '../../types';
+import { RecordContextProvider } from '../RecordContext';
 import { EditContext } from './EditContext';
 import { EditControllerProps } from './useEditController';
 import { SaveContextProvider, usePickSaveContext } from './SaveContext';
@@ -20,7 +21,7 @@ import { SaveContextProvider, usePickSaveContext } from './SaveContext';
  * };
  *
  * const MyEditView = () => {
- *     const { record } = useRecordContext();
+ *     const record = useRecordContext();
  *     // or, to rerender only when the save operation change but not data
  *     const { saving } = useEditContext();
  * }
@@ -37,7 +38,9 @@ export const EditContextProvider = ({
 }) => (
     <EditContext.Provider value={value}>
         <SaveContextProvider value={usePickSaveContext(value)}>
-            <RecordContextProvider value={usePickRecordContext(value)}>
+            <RecordContextProvider<Partial<Record>>
+                value={value && value.record}
+            >
                 {children}
             </RecordContextProvider>
         </SaveContextProvider>

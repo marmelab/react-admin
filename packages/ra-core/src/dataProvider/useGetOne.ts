@@ -1,6 +1,11 @@
 import get from 'lodash/get';
 
-import { Identifier, Record, ReduxState } from '../types';
+import {
+    Identifier,
+    Record,
+    ReduxState,
+    UseDataProviderOptions,
+} from '../types';
 import useQueryWithStore from './useQueryWithStore';
 
 /**
@@ -18,7 +23,10 @@ import useQueryWithStore from './useQueryWithStore';
  *
  * @param resource The resource name, e.g. 'posts'
  * @param id The resource identifier, e.g. 123
- * @param options Options object to pass to the dataProvider. May include side effects to be executed upon success or failure, e.g. { onSuccess: { refresh: true } }
+ * @param {Object} options Options object to pass to the dataProvider.
+ * @param {boolean} options.enabled Flag to conditionally run the query. If it's false, the query will not run
+ * @param {Function} options.onSuccess Side effect function to be executed upon success, e.g. { onSuccess: { refresh: true } }
+ * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) }
  *
  * @returns The current request state. Destructure as { data, error, loading, loaded }.
  *
@@ -36,7 +44,7 @@ import useQueryWithStore from './useQueryWithStore';
 const useGetOne = <RecordType extends Record = Record>(
     resource: string,
     id: Identifier,
-    options?: any
+    options?: UseDataProviderOptions
 ): UseGetOneHookValue<RecordType> =>
     useQueryWithStore(
         { type: 'getOne', resource, payload: { id } },

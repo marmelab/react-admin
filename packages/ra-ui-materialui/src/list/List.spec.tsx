@@ -1,7 +1,8 @@
 import * as React from 'react';
 import expect from 'expect';
 import { waitFor } from '@testing-library/react';
-import { renderWithRedux, DataProviderContext } from 'ra-core';
+import { DataProviderContext } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { MemoryRouter } from 'react-router-dom';

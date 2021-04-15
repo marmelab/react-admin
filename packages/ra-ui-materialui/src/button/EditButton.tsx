@@ -1,30 +1,52 @@
 import * as React from 'react';
-import { FC, ReactElement } from 'react';
+import { FC, ReactElement, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import ContentCreate from '@material-ui/icons/Create';
 import { ButtonProps as MuiButtonProps } from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
-import { linkToRecord, Record } from 'ra-core';
+import { linkToRecord, Record, useResourceContext } from 'ra-core';
 
 import Button, { ButtonProps } from './Button';
 
+/**
+ * Opens the Edit view of a given record:
+ *
+ * @example // basic usage
+ * import { EditButton } from 'react-admin';
+ *
+ * const CommentEditButton = ({ record }) => (
+ *     <EditButton basePath="/comments" label="Edit comment" record={record} />
+ * );
+ */
 const EditButton: FC<EditButtonProps> = ({
     basePath = '',
+    icon = defaultIcon,
     label = 'ra.action.edit',
     record,
-    icon = defaultIcon,
+    scrollToTop = true,
     ...rest
-}) => (
-    <Button
-        component={Link}
-        to={linkToRecord(basePath, record && record.id)}
-        label={label}
-        onClick={stopPropagation}
-        {...(rest as any)}
-    >
-        {icon}
-    </Button>
-);
+}) => {
+    const resource = useResourceContext();
+    return (
+        <Button
+            component={Link}
+            to={useMemo(
+                () => ({
+                    pathname: record
+                        ? linkToRecord(basePath || `/${resource}`, record.id)
+                        : '',
+                    state: { _scrollToTop: scrollToTop },
+                }),
+                [basePath, record, resource, scrollToTop]
+            )}
+            label={label}
+            onClick={stopPropagation}
+            {...(rest as any)}
+        >
+            {icon}
+        </Button>
+    );
+};
 
 const defaultIcon = <ContentCreate />;
 
@@ -33,8 +55,10 @@ const stopPropagation = e => e.stopPropagation();
 
 interface Props {
     basePath?: string;
-    record?: Record;
     icon?: ReactElement;
+    label?: string;
+    record?: Record;
+    scrollToTop?: boolean;
 }
 
 export type EditButtonProps = Props & ButtonProps & MuiButtonProps;
@@ -44,6 +68,7 @@ EditButton.propTypes = {
     icon: PropTypes.element,
     label: PropTypes.string,
     record: PropTypes.any,
+    scrollToTop: PropTypes.bool,
 };
 
 export default EditButton;

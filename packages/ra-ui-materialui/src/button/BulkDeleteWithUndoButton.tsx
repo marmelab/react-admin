@@ -11,6 +11,7 @@ import {
     useUnselectAll,
     CRUD_DELETE_MANY,
     useResourceContext,
+    useListContext,
 } from 'ra-core';
 
 import Button, { ButtonProps } from './Button';
@@ -39,9 +40,9 @@ const BulkDeleteWithUndoButton: FC<BulkDeleteWithUndoButtonProps> = props => {
         icon,
         label,
         onClick,
-        selectedIds,
         ...rest
     } = props;
+    const { selectedIds } = useListContext(props);
     const classes = useStyles(props);
     const notify = useNotify();
     const unselectAll = useUnselectAll();
@@ -102,9 +103,9 @@ const sanitizeRestProps = ({
     classes,
     filterValues,
     label,
+    selectedIds,
     ...rest
-}: Omit<BulkDeleteWithUndoButtonProps, 'resource' | 'selectedIds' | 'icon'>) =>
-    rest;
+}: Omit<BulkDeleteWithUndoButtonProps, 'resource' | 'icon'>) => rest;
 
 export interface BulkDeleteWithUndoButtonProps
     extends BulkActionProps,
@@ -117,7 +118,7 @@ BulkDeleteWithUndoButton.propTypes = {
     classes: PropTypes.object,
     label: PropTypes.string,
     resource: PropTypes.string,
-    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
+    selectedIds: PropTypes.arrayOf(PropTypes.any),
     icon: PropTypes.element,
 };
 

@@ -125,7 +125,7 @@ interface EditViewProps
 }
 
 EditView.propTypes = {
-    actions: PropTypes.element,
+    actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     aside: PropTypes.element,
     basePath: PropTypes.string,
     children: PropTypes.element,

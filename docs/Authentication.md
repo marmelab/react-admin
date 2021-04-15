@@ -52,7 +52,7 @@ You can get more details about input params, response and error formats in the [
 
 ## Available Providers
 
-It's very common that your auth logic is so specific that so you'll need to write your own `authProvider`. However, the community has built a few open-source Auth Providers that may fit your need:
+It's very common that your auth logic is so specific that you'll need to write your own `authProvider`. However, the community has built a few open-source Auth Providers that may fit your need:
 
 - **[AWS Amplify](https://docs.amplify.aws)**: [MrHertal/react-admin-amplify](https://github.com/MrHertal/react-admin-amplify)
 - **[AWS Cognito](https://docs.aws.amazon.com/cognito/latest/developerguide/setting-up-the-javascript-sdk.html)**: [thedistance/ra-cognito](https://github.com/thedistance/ra-cognito)
@@ -209,7 +209,7 @@ export default {
 
 Redirecting to the login page whenever a REST response uses a 401 status code is usually not enough. React-admin keeps data on the client side, and could briefly display stale data while contacting the server - even after the credentials are no longer valid.
 
-Fortunately, each time the user navigates to a list, edit, create or show page, react-admin calls the `authProvider.checkAuth()` method. If this method returns a rejected Promise, react-admin calls `authProvider.logout()` and redirects the user to the login page. So it's the ideal place to make sure  the credentials are still valid.
+Fortunately, each time the user navigates to a list, edit, create or show page, react-admin calls the `authProvider.checkAuth()` method. If this method returns a rejected Promise, react-admin calls `authProvider.logout()` and redirects the user to the login page. So it's the ideal place to make sure the credentials are still valid.
 
 For instance, to check for the existence of the authentication data in local storage:
 
@@ -271,7 +271,7 @@ export default {
 
 ### Logout Configuration
 
-If you enable authentication, react-admin adds a logout button in the user menu in the top bar (or in the sliding menu on mobile. When the user clicks on the logout button, this calls the `authProvider.logout()` method, and removes potentially sensitive data from the Redux store. Then the user gets redirected to the login page. The two previous sections also illustrated that react-admin can call `authProvider.logout()` itself, when the API returns a 403 error or when the local credentials expire. 
+If you enable authentication, react-admin adds a logout button in the user menu in the top bar (or in the sliding menu on mobile). When the user clicks on the logout button, this calls the `authProvider.logout()` method, and removes potentially sensitive data from the Redux store. Then the user gets redirected to the login page. The two previous sections also illustrated that react-admin can call `authProvider.logout()` itself, when the API returns a 403 error or when the local credentials expire. 
 
 It's the responsibility of the `authProvider.logout()` method to clean up the current authentication data. For instance, if the authentication was a token stored in local storage, here is the code to remove it:
 
@@ -359,7 +359,7 @@ const PostDetail = ({ id }) => {
 
 ## Authorization
 
-Some applications may require fine-grained permissions to enable or disable access to certain features depending on user permissions. Since there are many possible strategies (single role, multiple roles or rights, ACLs, etc.), react-admin delegates the permission logic to `autheProvider.getPermissions()`.
+Some applications may require fine-grained permissions to enable or disable access to certain features depending on user permissions. Since there are many possible strategies (single role, multiple roles or rights, ACLs, etc.), react-admin delegates the permission logic to `authProvider.getPermissions()`.
 
 By default, a react-admin app doesn't require any special permission on list, create, edit, and show pages. However, react-admin calls the `authProvider.getPermissions()` method before navigating to these pages, and passes the result to the main page component (`<List>`, `<Edit>`, etc.). You can then tweak the content of these pages based on permissions.
 

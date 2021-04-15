@@ -2,7 +2,6 @@ import React, {
     useCallback,
     useEffect,
     useRef,
-    FunctionComponent,
     useMemo,
     isValidElement,
 } from 'react';
@@ -19,16 +18,12 @@ import {
     useSuggestions,
     warning,
 } from 'ra-core';
+import debounce from 'lodash/debounce';
 
 import InputHelperText from './InputHelperText';
 import AutocompleteSuggestionList from './AutocompleteSuggestionList';
 import AutocompleteSuggestionItem from './AutocompleteSuggestionItem';
 import { AutocompleteInputLoader } from './AutocompleteInputLoader';
-
-interface Options {
-    suggestionsContainerProps?: any;
-    labelProps?: any;
-}
 
 /**
  * An Input component for an autocomplete field, using an array of objects for the options
@@ -92,15 +87,13 @@ interface Options {
  * @example
  * <AutocompleteArrayInput source="author_id" options={{ color: 'secondary' }} />
  */
-const AutocompleteArrayInput: FunctionComponent<
-    ChoicesInputProps<TextFieldProps & Options> &
-        Omit<DownshiftProps<any>, 'onChange'>
-> = props => {
+const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
     const {
         allowDuplicates,
         allowEmpty,
         classes: classesOverride,
         choices = [],
+        debounce: debounceDelay = 250,
         disabled,
         emptyText,
         emptyValue,
@@ -212,6 +205,12 @@ const AutocompleteArrayInput: FunctionComponent<
         translateChoice,
     });
 
+    // eslint-disable-next-line
+    const debouncedSetFilter = useCallback(
+        debounce(setFilter || DefaultSetFilter, debounceDelay),
+        [setFilter, debounceDelay]
+    );
+
     const handleFilterChange = useCallback(
         (eventOrValue: React.ChangeEvent<{ value: string }> | string) => {
             const event = eventOrValue as React.ChangeEvent<{ value: string }>;
@@ -221,10 +220,10 @@ const AutocompleteArrayInput: FunctionComponent<
 
             setFilterValue(value);
             if (setFilter) {
-                setFilter(value);
+                debouncedSetFilter(value);
             }
         },
-        [setFilter, setFilterValue]
+        [debouncedSetFilter, setFilter, setFilterValue]
     );
 
     // We must reset the filter every time the value changes to ensure we
@@ -504,43 +503,52 @@ const AutocompleteArrayInput: FunctionComponent<
 const emptyArray = [];
 
 const useStyles = makeStyles(
-    theme => {
-        const chipBackgroundColor =
-            theme.palette.type === 'light'
-                ? 'rgba(0, 0, 0, 0.09)'
-                : 'rgba(255, 255, 255, 0.09)';
-
-        return {
-            container: {
-                flexGrow: 1,
-                position: 'relative',
+    theme => ({
+        container: {
+            flexGrow: 1,
+            position: 'relative',
+        },
+        suggestionsContainer: {
+            zIndex: theme.zIndex.modal,
+        },
+        chip: {
+            margin: theme.spacing(0.5, 0.5, 0.5, 0),
+        },
+        chipContainerFilled: {
+            margin: '27px 12px 10px 0',
+        },
+        chipContainerOutlined: {
+            margin: '12px 12px 10px 0',
+        },
+        inputRoot: {
+            flexWrap: 'wrap',
+        },
+        inputRootFilled: {
+            flexWrap: 'wrap',
+            '& $chip': {
+                backgroundColor:
+                    theme.palette.type === 'light'
+                        ? 'rgba(0, 0, 0, 0.09)'
+                        : 'rgba(255, 255, 255, 0.09)',
             },
-            suggestionsContainer: {},
-            chip: {
-                margin: theme.spacing(0.5, 0.5, 0.5, 0),
-            },
-            chipContainerFilled: {
-                margin: '27px 12px 10px 0',
-            },
-            chipContainerOutlined: {
-                margin: '12px 12px 10px 0',
-            },
-            inputRoot: {
-                flexWrap: 'wrap',
-            },
-            inputRootFilled: {
-                flexWrap: 'wrap',
-                '& $chip': {
-                    backgroundColor: chipBackgroundColor,
-                },
-            },
-            inputInput: {
-                width: 'auto',
-                flexGrow: 1,
-            },
-        };
-    },
+        },
+        inputInput: {
+            width: 'auto',
+            flexGrow: 1,
+        },
+    }),
     { name: 'RaAutocompleteArrayInput' }
 );
+
+const DefaultSetFilter = () => {};
+
+interface Options {
+    suggestionsContainerProps?: any;
+    labelProps?: any;
+}
+
+export interface AutocompleteArrayInputProps
+    extends ChoicesInputProps<TextFieldProps & Options>,
+        Omit<DownshiftProps<any>, 'onChange'> {}
 
 export default AutocompleteArrayInput;

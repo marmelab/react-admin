@@ -1,6 +1,8 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render } from '@testing-library/react';
+import { RecordContextProvider } from 'ra-core';
+
 import DateField from './DateField';
 
 describe('<DateField />', () => {
@@ -23,6 +25,19 @@ describe('<DateField />', () => {
                 source="foo"
                 locales="en-US"
             />
+        );
+
+        const date = new Date('2017-04-23').toLocaleDateString('en-US');
+        expect(queryByText(date)).not.toBeNull();
+    });
+
+    it('should use record from RecordContext', () => {
+        const { queryByText } = render(
+            <RecordContextProvider
+                value={{ id: 123, foo: new Date('2017-04-23') }}
+            >
+                <DateField source="foo" locales="en-US" />
+            </RecordContextProvider>
         );
 
         const date = new Date('2017-04-23').toLocaleDateString('en-US');

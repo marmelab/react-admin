@@ -1,21 +1,14 @@
 import * as React from 'react';
 import { FC, ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import { Link, useLocation } from 'react-router-dom';
-import MuiTab from '@material-ui/core/Tab';
-import classnames from 'classnames';
-import {
-    FormGroupContextProvider,
-    useTranslate,
-    Record,
-    useFormGroup,
-} from 'ra-core';
+import { FormGroupContextProvider, Record } from 'ra-core';
 
 import FormInput from './FormInput';
+import { FormTabHeader } from './FormTabHeader';
 
 const hiddenStyle = { display: 'none' };
 
-const FormTab: FC<FormTabProps> = ({
+export const FormTab: FC<FormTabProps> = ({
     basePath,
     className,
     classes,
@@ -45,12 +38,15 @@ const FormTab: FC<FormTabProps> = ({
     );
 
     const renderContent = () => (
-        <FormGroupContextProvider name={value}>
+        <FormGroupContextProvider name={value.toString()}>
             <span
                 style={hidden ? hiddenStyle : null}
                 className={contentClassName}
                 id={`tabpanel-${value}`}
                 aria-labelledby={`tabheader-${value}`}
+                // Set undefined instead of false because WAI-ARIA Authoring Practices 1.1
+                // notes that aria-hidden="false" currently behaves inconsistently across browsers.
+                aria-hidden={hidden || undefined}
             >
                 {React.Children.map(
                     children,
@@ -73,38 +69,6 @@ const FormTab: FC<FormTabProps> = ({
     return intent === 'header' ? renderHeader() : renderContent();
 };
 
-export const FormTabHeader = ({
-    classes,
-    label,
-    value,
-    icon,
-    className,
-    ...rest
-}) => {
-    const translate = useTranslate();
-    const location = useLocation();
-    const formGroup = useFormGroup(value);
-
-    return (
-        <MuiTab
-            label={translate(label, { _: label })}
-            value={value}
-            icon={icon}
-            className={classnames('form-tab', className, {
-                [classes.errorTabButton]:
-                    formGroup.invalid &&
-                    formGroup.touched &&
-                    location.pathname !== value,
-            })}
-            component={Link}
-            to={{ ...location, pathname: value }}
-            id={`tabheader-${value}`}
-            aria-controls={`tabpanel-${value}`}
-            {...rest}
-        />
-    );
-};
-
 FormTab.propTypes = {
     basePath: PropTypes.string,
     className: PropTypes.string,
@@ -113,13 +77,14 @@ FormTab.propTypes = {
     intent: PropTypes.oneOf(['header', 'content']),
     hidden: PropTypes.bool,
     icon: PropTypes.element,
-    label: PropTypes.string.isRequired,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
+        .isRequired,
     margin: PropTypes.oneOf(['none', 'dense', 'normal']),
     path: PropTypes.string,
     // @ts-ignore
     record: PropTypes.object,
     resource: PropTypes.string,
-    value: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     variant: PropTypes.oneOf(['standard', 'outlined', 'filled']),
 };
 
@@ -132,15 +97,14 @@ export interface FormTabProps {
     hidden?: boolean;
     icon?: ReactElement;
     intent?: 'header' | 'content';
-    label: string;
+    label: string | ReactElement;
     margin?: 'none' | 'normal' | 'dense';
     path?: string;
     record?: Record;
     resource?: string;
-    value?: string;
+    syncWithLocation?: boolean;
+    value?: string | number;
     variant?: 'standard' | 'outlined' | 'filled';
 }
 
 FormTab.displayName = 'FormTab';
-
-export default FormTab;

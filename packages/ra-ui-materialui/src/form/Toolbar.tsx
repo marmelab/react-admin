@@ -8,7 +8,9 @@ import {
     ReactNode,
 } from 'react';
 import PropTypes from 'prop-types';
-import MuiToolbar from '@material-ui/core/Toolbar';
+import MuiToolbar, {
+    ToolbarProps as MuiToolbarProps,
+} from '@material-ui/core/Toolbar';
 import withWidth from '@material-ui/core/withWidth';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
@@ -91,7 +93,7 @@ const valueOrDefault = (value, defaultValue) =>
  * @typedef {Object} Props the props you can use (other props are injected by the <SimpleForm>)
  * @prop {boolean} alwaysEnableSaveButton Force enabling the <SaveButton>. If it's not defined, the <SaveButton> will be enabled using the `pristine` prop (disabled if pristine, enabled otherwise).
  * @prop {ReactElement[]} children Customize the buttons you want to display in the <Toolbar>.
- * @prop {string} width Apply the mobile or the desktop classes depending on the width. Pass "xs" to display the mobile version.
+ * @prop {string} width Apply to the mobile or desktop classes depending on its value. Pass `xs` to display the mobile version.
  *
  */
 const Toolbar: FC<ToolbarProps> = props => {
@@ -203,7 +205,8 @@ const Toolbar: FC<ToolbarProps> = props => {
     );
 };
 
-export interface ToolbarProps<RecordType extends Record = Record> {
+export interface ToolbarProps<RecordType extends Record = Record>
+    extends Omit<MuiToolbarProps, 'classes'> {
     children?: ReactNode;
     alwaysEnableSaveButton?: boolean;
     className?: string;

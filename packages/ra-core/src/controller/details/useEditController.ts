@@ -1,5 +1,4 @@
 import { useCallback, MutableRefObject } from 'react';
-import inflection from 'inflection';
 
 import useVersion from '../useVersion';
 import { useCheckMinimumRequiredProps } from '../checkMinimumRequiredProps';
@@ -26,7 +25,7 @@ import {
     SetTransformData,
     useSaveModifiers,
 } from '../saveModifiers';
-import { useResourceContext } from '../../core';
+import { useResourceContext, useGetResourceLabel } from '../../core';
 
 export interface EditProps {
     basePath?: string;
@@ -151,12 +150,9 @@ export const useEditController = <RecordType extends Record = Record>(
         }
     );
 
-    const resourceName = translate(`resources.${resource}.name`, {
-        smart_count: 1,
-        _: inflection.humanize(inflection.singularize(resource)),
-    });
+    const getResourceLabel = useGetResourceLabel();
     const defaultTitle = translate('ra.page.edit', {
-        name: `${resourceName}`,
+        name: getResourceLabel(resource, 1),
         id,
         record,
     });

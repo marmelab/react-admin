@@ -13,7 +13,7 @@ import useSortState from '../useSortState';
 import { useResourceContext } from '../../core';
 
 interface Options {
-    basePath: string;
+    basePath?: string;
     data?: RecordMap;
     filter?: any;
     ids?: any[];
@@ -186,7 +186,9 @@ const useReferenceManyFieldController = (
     );
 
     return {
-        basePath: basePath.replace(resource, reference),
+        basePath: basePath
+            ? basePath.replace(resource, reference)
+            : `/${reference}`,
         currentSort: sort,
         data,
         defaultTitle: null,

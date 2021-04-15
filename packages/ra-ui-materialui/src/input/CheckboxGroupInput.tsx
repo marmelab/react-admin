@@ -16,27 +16,7 @@ import InputHelperText from './InputHelperText';
 import classnames from 'classnames';
 import Labeled from './Labeled';
 import { LinearProgress } from '../layout';
-
-const sanitizeRestProps = ({
-    setFilter,
-    setPagination,
-    setSort,
-    loaded,
-    ...rest
-}: any) => sanitizeInputRestProps(rest);
-
-const useStyles = makeStyles(
-    theme => ({
-        root: {},
-        label: {
-            transform: 'translate(0, 8px) scale(0.75)',
-            transformOrigin: `top ${
-                theme.direction === 'ltr' ? 'left' : 'right'
-            }`,
-        },
-    }),
-    { name: 'RaCheckboxGroupInput' }
-);
+import { ClassesOverride } from '../types';
 
 /**
  * An Input component for a checkbox group, using an array of objects for the options
@@ -100,9 +80,7 @@ const useStyles = makeStyles(
  *
  * The object passed as `options` props is passed to the material-ui <Checkbox> components
  */
-const CheckboxGroupInput: FunctionComponent<
-    ChoicesInputProps<CheckboxProps> & FormControlProps
-> = props => {
+const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = props => {
     const {
         choices = [],
         className,
@@ -233,6 +211,28 @@ const CheckboxGroupInput: FunctionComponent<
     );
 };
 
+const sanitizeRestProps = ({
+    setFilter,
+    setPagination,
+    setSort,
+    loaded,
+    touched,
+    ...rest
+}: any) => sanitizeInputRestProps(rest);
+
+const useStyles = makeStyles(
+    theme => ({
+        root: {},
+        label: {
+            transform: 'translate(0, 8px) scale(0.75)',
+            transformOrigin: `top ${
+                theme.direction === 'ltr' ? 'left' : 'right'
+            }`,
+        },
+    }),
+    { name: 'RaCheckboxGroupInput' }
+);
+
 CheckboxGroupInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
     className: PropTypes.string,
@@ -258,5 +258,11 @@ CheckboxGroupInput.defaultProps = {
     fullWidth: true,
     row: true,
 };
+
+export interface CheckboxGroupInputProps
+    extends ChoicesInputProps<CheckboxProps>,
+        FormControlProps {
+    classes?: ClassesOverride<typeof useStyles>;
+}
 
 export default CheckboxGroupInput;

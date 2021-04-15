@@ -3,7 +3,7 @@ import expect from 'expect';
 import { act, waitFor } from '@testing-library/react';
 
 import { EditController } from './EditController';
-import renderWithRedux from '../../util/renderWithRedux';
+import { renderWithRedux } from 'ra-test';
 import { DataProviderContext } from '../../dataProvider';
 import { DataProvider } from '../../types';
 import { SaveContextProvider } from '../../../esm';

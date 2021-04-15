@@ -7,6 +7,8 @@ import {
     SortPayload,
     Identifier,
     ReduxState,
+    Record,
+    RecordMap,
 } from '../types';
 import useQueryWithStore from './useQueryWithStore';
 import {
@@ -17,6 +19,13 @@ import {
 
 const defaultIds = [];
 const defaultData = {};
+
+interface UseGetManyReferenceOptions {
+    onSuccess?: (args?: any) => void;
+    onFailure?: (error: any) => void;
+    enabled?: boolean;
+    [key: string]: any;
+}
 
 /**
  * Call the dataProvider.getManyReference() method and return the resolved result
@@ -38,7 +47,10 @@ const defaultData = {};
  * @param {Object} sort The request sort { field, order }, e.g. { field: 'id', order: 'DESC' }
  * @param {Object} filter The request filters, e.g. { body: 'hello, world' }
  * @param {string} referencingResource The resource name, e.g. 'posts'. Used to generate a cache key
- * @param {Object} options Options object to pass to the dataProvider. May include side effects to be executed upon success or failure, e.g. { onSuccess: { refresh: true } }
+ * @param {Object} options Options object to pass to the dataProvider.
+ * @param {boolean} options.enabled Flag to conditionally run the query. If it's false, the query will not run
+ * @param {Function} options.onSuccess Side effect function to be executed upon success, e.g. { onSuccess: { refresh: true } }
+ * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) }
  *
  * @returns The current request state. Destructure as { data, total, ids, error, loading, loaded }.
  *
@@ -71,7 +83,7 @@ const useGetManyReference = (
     sort: SortPayload,
     filter: object,
     referencingResource: string,
-    options?: any
+    options?: UseGetManyReferenceOptions
 ) => {
     const relatedTo = useMemo(
         () => nameRelatedTo(resource, id, referencingResource, target, filter),
@@ -93,19 +105,20 @@ const useGetManyReference = (
         { ...options, relatedTo, action: CRUD_GET_MANY_REFERENCE },
         // ids and data selector
         (state: ReduxState) => ({
-            ids: getIds(state, relatedTo) || defaultIds,
+            ids: getIds(state, relatedTo),
             allRecords: get(
                 state.admin.resources,
                 [resource, 'data'],
                 defaultData
             ),
         }),
-        (state: ReduxState) => getTotal(state, relatedTo)
+        (state: ReduxState) => getTotal(state, relatedTo),
+        isDataLoaded
     );
 
     const data = useMemo(
         () =>
-            ids === null
+            ids == null
                 ? defaultData
                 : ids
                       .map(id => allRecords[id])
@@ -117,7 +130,14 @@ const useGetManyReference = (
         [ids, allRecords]
     );
 
-    return { data, ids, total, error, loading, loaded };
+    return { data, ids: ids || defaultIds, total, error, loading, loaded };
 };
+
+interface DataSelectorResult<RecordType extends Record = Record> {
+    ids: Identifier[];
+    allRecords: RecordMap<RecordType>;
+}
+
+const isDataLoaded = (data: DataSelectorResult) => data.ids != null;
 
 export default useGetManyReference;

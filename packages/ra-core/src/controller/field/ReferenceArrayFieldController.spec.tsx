@@ -3,7 +3,8 @@ import expect from 'expect';
 
 import ReferenceArrayFieldController from './ReferenceArrayFieldController';
 import { DataProviderContext } from '../../dataProvider';
-import renderWithRedux from '../../util/renderWithRedux';
+import { renderWithRedux } from 'ra-test';
+import { waitFor } from '@testing-library/react';
 
 describe('<ReferenceArrayFieldController />', () => {
     it('should set the loaded prop to false when related records are not yet fetched', () => {
@@ -13,7 +14,6 @@ describe('<ReferenceArrayFieldController />', () => {
             <ReferenceArrayFieldController
                 resource="foo"
                 reference="bar"
-                basePath=""
                 record={{ id: 1, barIds: [1, 2] }}
                 source="barIds"
             >
@@ -30,7 +30,7 @@ describe('<ReferenceArrayFieldController />', () => {
             }
         );
         expect(children.mock.calls[0][0]).toMatchObject({
-            basePath: '',
+            basePath: '/bar',
             currentSort: { field: 'id', order: 'ASC' },
             loaded: false,
             loading: true,
@@ -49,7 +49,6 @@ describe('<ReferenceArrayFieldController />', () => {
                 resource="foo"
                 reference="bar"
                 source="barIds"
-                basePath=""
             >
                 {children}
             </ReferenceArrayFieldController>,
@@ -70,7 +69,7 @@ describe('<ReferenceArrayFieldController />', () => {
         );
 
         expect(children.mock.calls[0][0]).toMatchObject({
-            basePath: '',
+            basePath: '/bar',
             currentSort: { field: 'id', order: 'ASC' },
             loaded: false,
             loading: true,
@@ -93,7 +92,6 @@ describe('<ReferenceArrayFieldController />', () => {
                 resource="foo"
                 reference="bar"
                 source="barIds"
-                basePath=""
             >
                 {children}
             </ReferenceArrayFieldController>,
@@ -111,7 +109,7 @@ describe('<ReferenceArrayFieldController />', () => {
             }
         );
         expect(children.mock.calls[0][0]).toMatchObject({
-            basePath: '',
+            basePath: '/bar',
             currentSort: { field: 'id', order: 'ASC' },
             loaded: true,
             loading: true,
@@ -132,7 +130,6 @@ describe('<ReferenceArrayFieldController />', () => {
                 resource="foo"
                 reference="bar"
                 source="barIds"
-                basePath=""
             >
                 {children}
             </ReferenceArrayFieldController>,
@@ -150,7 +147,7 @@ describe('<ReferenceArrayFieldController />', () => {
             }
         );
         expect(children.mock.calls[0][0]).toMatchObject({
-            basePath: '',
+            basePath: '/bar',
             currentSort: { field: 'id', order: 'ASC' },
             loaded: true,
             loading: true,
@@ -182,7 +179,6 @@ describe('<ReferenceArrayFieldController />', () => {
                     resource="foo"
                     reference="bar"
                     source="barIds"
-                    basePath=""
                 >
                     {children}
                 </ReferenceArrayFieldController>
@@ -197,9 +193,90 @@ describe('<ReferenceArrayFieldController />', () => {
                 },
             }
         );
-        await new Promise(resolve => setTimeout(resolve, 10));
-        expect(dispatch).toBeCalledTimes(5);
-        expect(dispatch.mock.calls[0][0].type).toBe('RA/CRUD_GET_MANY');
-        expect(dataProvider.getMany).toBeCalledTimes(1);
+        await waitFor(() => {
+            expect(dispatch).toBeCalledTimes(5);
+            expect(dispatch.mock.calls[0][0].type).toBe('RA/CRUD_GET_MANY');
+            expect(dataProvider.getMany).toBeCalledTimes(1);
+        });
+    });
+
+    it('should filter string data based on the filter props', () => {
+        const children = jest.fn().mockReturnValue('child');
+        renderWithRedux(
+            <ReferenceArrayFieldController
+                record={{ id: 1, barIds: [1, 2] }}
+                filter={{ title: 'world' }}
+                resource="foo"
+                reference="bar"
+                source="barIds"
+            >
+                {children}
+            </ReferenceArrayFieldController>,
+            {
+                admin: {
+                    resources: {
+                        bar: {
+                            data: {
+                                1: { id: 1, title: 'hello' },
+                                2: { id: 2, title: 'world' },
+                            },
+                        },
+                    },
+                },
+            }
+        );
+        expect(children.mock.calls[0][0]).toMatchObject({
+            basePath: '/bar',
+            currentSort: { field: 'id', order: 'ASC' },
+            loaded: true,
+            loading: true,
+            data: {
+                2: { id: 2, title: 'world' },
+            },
+            ids: [1, 2],
+            error: null,
+        });
+    });
+
+    it('should filter array data based on the filter props', () => {
+        const children = jest.fn().mockReturnValue('child');
+        renderWithRedux(
+            <ReferenceArrayFieldController
+                record={{ id: 1, barIds: [1, 2, 3, 4] }}
+                filter={{ items: ['two', 'four', 'five'] }}
+                resource="foo"
+                reference="bar"
+                source="barIds"
+            >
+                {children}
+            </ReferenceArrayFieldController>,
+            {
+                admin: {
+                    resources: {
+                        bar: {
+                            data: {
+                                1: { id: 1, items: ['one', 'two'] },
+                                2: { id: 2, items: ['three'] },
+                                3: { id: 3, items: 'four' },
+                                4: { id: 4, items: ['five'] },
+                            },
+                        },
+                    },
+                },
+            }
+        );
+        expect(children.mock.calls[0][0]).toMatchObject({
+            basePath: '/bar',
+            currentSort: { field: 'id', order: 'ASC' },
+            loaded: true,
+            loading: true,
+            data: {
+                1: { id: 1, items: ['one', 'two'] },
+                3: { id: 3, items: 'four' },
+                4: { id: 4, items: ['five'] },
+            },
+            ids: [1, 2, 3, 4],
+            error: null,
+        });
     });
 });

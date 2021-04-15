@@ -1,8 +1,9 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { renderWithRedux, DataProviderContext } from 'ra-core';
+import { DataProviderContext, RecordContextProvider } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 
 import ReferenceField, { ReferenceFieldView } from './ReferenceField';
 import TextField from './TextField';
@@ -30,6 +31,7 @@ describe('<ReferenceField />', () => {
             const links = container.getElementsByTagName('a');
             expect(links).toHaveLength(0);
         });
+
         it('should display a loader on mount if the reference is not in the store and a second has passed', async () => {
             const { queryByRole, container } = renderWithRedux(
                 <ReferenceFieldView
@@ -208,6 +210,36 @@ describe('<ReferenceField />', () => {
         expect(links.item(0).href).toBe('http://localhost/posts/123');
     });
 
+    it('should use record from RecordContext', () => {
+        const { container, getByText } = renderWithRedux(
+            <MemoryRouter>
+                <RecordContextProvider value={record}>
+                    <ReferenceField
+                        resource="comments"
+                        source="postId"
+                        reference="posts"
+                        basePath="/comments"
+                    >
+                        <TextField source="title" />
+                    </ReferenceField>
+                </RecordContextProvider>
+            </MemoryRouter>,
+            {
+                admin: {
+                    resources: {
+                        posts: {
+                            data: { 123: { id: 123, title: 'hello' } },
+                        },
+                    },
+                },
+            }
+        );
+        expect(getByText('hello')).not.toBeNull();
+        const links = container.getElementsByTagName('a');
+        expect(links).toHaveLength(1);
+        expect(links.item(0).href).toBe('http://localhost/posts/123');
+    });
+
     it('should call the dataProvider for the related record', async () => {
         const dataProvider = {
             getMany: jest.fn(() =>
@@ -230,10 +262,11 @@ describe('<ReferenceField />', () => {
                 </MemoryRouter>
             </DataProviderContext.Provider>
         );
-        await new Promise(resolve => setTimeout(resolve, 10));
-        const action = dispatch.mock.calls[0][0];
-        expect(action.type).toBe('RA/CRUD_GET_MANY');
-        expect(action.payload).toEqual({ ids: [123] });
+        await waitFor(() => {
+            const action = dispatch.mock.calls[0][0];
+            expect(action.type).toBe('RA/CRUD_GET_MANY');
+            expect(action.payload).toEqual({ ids: [123] });
+        });
     });
 
     it('should display an error icon if the dataProvider call fails', async () => {
@@ -255,10 +288,11 @@ describe('<ReferenceField />', () => {
                 </ReferenceField>
             </DataProviderContext.Provider>
         );
-        await new Promise(resolve => setTimeout(resolve, 10));
-        const ErrorIcon = getByRole('presentation', { hidden: true });
-        expect(ErrorIcon).toBeDefined();
-        expect(ErrorIcon.getAttribute('aria-errormessage')).toBe('boo');
+        await waitFor(() => {
+            const ErrorIcon = getByRole('presentation', { hidden: true });
+            expect(ErrorIcon).toBeDefined();
+            expect(ErrorIcon.getAttribute('aria-errormessage')).toBe('boo');
+        });
     });
 
     describe('ReferenceFieldView', () => {
@@ -302,6 +336,28 @@ describe('<ReferenceField />', () => {
             );
             const links = container.getElementsByTagName('a');
             expect(links).toHaveLength(0);
+        });
+
+        it('should work without basePath', () => {
+            const { container } = render(
+                <MemoryRouter>
+                    <ReferenceFieldView
+                        record={record}
+                        source="postId"
+                        referenceRecord={{ id: 123, title: 'foo' }}
+                        reference="posts"
+                        resource="comments"
+                        resourceLinkPath="/posts/123"
+                        loaded={true}
+                        loading={false}
+                    >
+                        <TextField source="title" />
+                    </ReferenceFieldView>
+                </MemoryRouter>
+            );
+            const links = container.getElementsByTagName('a');
+            expect(links).toHaveLength(1);
+            expect(links.item(0).href).toBe('http://localhost/posts/123');
         });
     });
 });

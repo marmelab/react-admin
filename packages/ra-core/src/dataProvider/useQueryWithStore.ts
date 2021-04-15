@@ -26,6 +26,7 @@ export interface QueryOptions {
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
     action?: string;
+    enabled?: boolean;
     [key: string]: any;
 }
 
@@ -79,6 +80,7 @@ const defaultIsDataLoaded = (data: any): boolean => data !== undefined;
  * @param {Object} query.payload The payload object, e.g; { post_id: 12 }
  * @param {Object} options
  * @param {string} options.action Redux action type
+ * @param {boolean} options.enabled Flag to conditionally run the query. If it's false, the query will not run
  * @param {Function} options.onSuccess Side effect function to be executed upon success, e.g. () => refresh()
  * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. (error) => notify(error.message)
  * @param {Function} dataSelector Redux selector to get the result. Required.

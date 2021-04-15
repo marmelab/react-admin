@@ -1,6 +1,5 @@
 import { useCallback, MutableRefObject } from 'react';
 // @ts-ignore
-import inflection from 'inflection';
 import { parse } from 'query-string';
 import { Location } from 'history';
 import { match as Match, useLocation } from 'react-router-dom';
@@ -23,7 +22,7 @@ import { useTranslate } from '../../i18n';
 import useVersion from '../useVersion';
 import { CRUD_CREATE } from '../../actions';
 import { Record, OnSuccess, OnFailure } from '../../types';
-import { useResourceContext } from '../../core';
+import { useResourceContext, useGetResourceLabel } from '../../core';
 
 export interface CreateProps<RecordType extends Omit<Record, 'id'> = Record> {
     basePath?: string;
@@ -214,12 +213,9 @@ export const useCreateController = <
         ]
     );
 
-    const resourceName = translate(`resources.${resource}.name`, {
-        smart_count: 1,
-        _: inflection.humanize(inflection.singularize(resource)),
-    });
+    const getResourceLabel = useGetResourceLabel();
     const defaultTitle = translate('ra.page.create', {
-        name: `${resourceName}`,
+        name: getResourceLabel(resource, 1),
     });
 
     return {

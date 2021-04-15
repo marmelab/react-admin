@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { cloneElement, Children, HtmlHTMLAttributes, FC } from 'react';
+import {
+    cloneElement,
+    Children,
+    HtmlHTMLAttributes,
+    FC,
+    ComponentType,
+} from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -9,6 +15,11 @@ import {
     sanitizeListRestProps,
     useListContext,
     useResourceContext,
+    Record,
+    RecordMap,
+    Identifier,
+    RecordContextProvider,
+    ComponentPropType,
 } from 'ra-core';
 
 import Link from '../Link';
@@ -73,19 +84,21 @@ const SingleFieldList: FC<SingleFieldListProps> = props => {
         className,
         children,
         linkType = 'edit',
+        component = 'div',
         ...rest
     } = props;
     const { ids, data, loaded, basePath } = useListContext(props);
     const resource = useResourceContext(props);
 
     const classes = useStyles(props);
+    const Component = component;
 
     if (loaded === false) {
         return <LinearProgress />;
     }
 
     return (
-        <div
+        <Component
             className={classnames(classes.root, className)}
             {...sanitizeListRestProps(rest)}
         >
@@ -96,31 +109,37 @@ const SingleFieldList: FC<SingleFieldListProps> = props => {
 
                 if (resourceLinkPath) {
                     return (
-                        <Link
-                            className={classes.link}
-                            key={id}
-                            to={resourceLinkPath}
-                            onClick={stopPropagation}
-                        >
-                            {cloneElement(Children.only(children), {
-                                record: data[id],
-                                resource,
-                                basePath,
-                                // Workaround to force ChipField to be clickable
-                                onClick: handleClick,
-                            })}
-                        </Link>
+                        <RecordContextProvider value={data[id]} key={id}>
+                            <Link
+                                className={classes.link}
+                                key={id}
+                                to={resourceLinkPath}
+                                onClick={stopPropagation}
+                            >
+                                {cloneElement(Children.only(children), {
+                                    record: data[id],
+                                    resource,
+                                    basePath,
+                                    // Workaround to force ChipField to be clickable
+                                    onClick: handleClick,
+                                })}
+                            </Link>
+                        </RecordContextProvider>
                     );
                 }
 
-                return cloneElement(Children.only(children), {
-                    key: id,
-                    record: data[id],
-                    resource,
-                    basePath,
-                });
+                return (
+                    <RecordContextProvider value={data[id]} key={id}>
+                        {cloneElement(Children.only(children), {
+                            key: id,
+                            record: data[id],
+                            resource,
+                            basePath,
+                        })}
+                    </RecordContextProvider>
+                );
             })}
-        </div>
+        </Component>
     );
 };
 
@@ -129,19 +148,26 @@ SingleFieldList.propTypes = {
     children: PropTypes.element.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
-    data: PropTypes.object,
+    component: ComponentPropType,
+    data: PropTypes.any,
     ids: PropTypes.array,
     // @ts-ignore
     linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     resource: PropTypes.string,
 };
 
-export interface SingleFieldListProps
+export interface SingleFieldListProps<RecordType extends Record = Record>
     extends HtmlHTMLAttributes<HTMLDivElement> {
     className?: string;
     classes?: ClassesOverride<typeof useStyles>;
+    component?: string | ComponentType<any>;
     linkType?: string | false;
     children: React.ReactElement;
+    // can be injected when using the component without context
+    basePath?: string;
+    data?: RecordMap<RecordType>;
+    ids?: Identifier[];
+    loaded?: boolean;
 }
 
 export default SingleFieldList;

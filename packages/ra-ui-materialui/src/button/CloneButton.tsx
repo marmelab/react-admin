@@ -4,36 +4,42 @@ import PropTypes from 'prop-types';
 import Queue from '@material-ui/icons/Queue';
 import { Link } from 'react-router-dom';
 import { stringify } from 'query-string';
-import { Record } from 'ra-core';
+import { Record, useResourceContext } from 'ra-core';
 
 import Button, { ButtonProps } from './Button';
 
 export const CloneButton: FC<CloneButtonProps> = ({
     basePath = '',
     label = 'ra.action.clone',
+    scrollToTop = true,
     record,
     icon = defaultIcon,
     ...rest
-}) => (
-    <Button
-        component={Link}
-        to={
-            record
-                ? {
-                      pathname: `${basePath}/create`,
-                      search: stringify({
-                          source: JSON.stringify(omitId(record)),
-                      }),
-                  }
-                : `${basePath}/create`
-        }
-        label={label}
-        onClick={stopPropagation}
-        {...rest}
-    >
-        {icon}
-    </Button>
-);
+}) => {
+    const resource = useResourceContext();
+    const pathname = basePath ? `${basePath}/create` : `/${resource}/create`;
+    return (
+        <Button
+            component={Link}
+            to={
+                record
+                    ? {
+                          pathname,
+                          search: stringify({
+                              source: JSON.stringify(omitId(record)),
+                          }),
+                          state: { _scrollToTop: scrollToTop },
+                      }
+                    : pathname
+            }
+            label={label}
+            onClick={stopPropagation}
+            {...rest}
+        >
+            {icon}
+        </Button>
+    );
+};
 
 const defaultIcon = <Queue />;
 
@@ -46,6 +52,7 @@ interface Props {
     basePath?: string;
     record?: Record;
     icon?: ReactElement;
+    scrollToTop?: boolean;
 }
 
 export type CloneButtonProps = Props & ButtonProps;

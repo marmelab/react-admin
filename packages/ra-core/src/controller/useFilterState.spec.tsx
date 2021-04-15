@@ -1,7 +1,7 @@
 import * as React from 'react';
-import renderHook from '../util/renderHook';
+import { renderHook } from 'ra-test';
 import useFilterState from './useFilterState';
-import { render, act } from '@testing-library/react';
+import { render, act, waitFor } from '@testing-library/react';
 
 describe('useFilterState', () => {
     it('should initialize filterState with default filter', () => {
@@ -36,9 +36,9 @@ describe('useFilterState', () => {
         act(() => hookValue.setFilter('needle in a haystack'));
 
         expect(childrenMock).toBeCalledTimes(1);
-        await new Promise(resolve => setTimeout(resolve, 70));
-
-        expect(childrenMock).toBeCalledTimes(2);
+        await waitFor(() => {
+            expect(childrenMock).toBeCalledTimes(2);
+        });
 
         expect(childrenMock.mock.calls[1][0].filter).toEqual({
             q: 'needle in a haystack',
@@ -60,10 +60,11 @@ describe('useFilterState', () => {
         render(<Test />);
 
         act(() => ret.setFilter('needle in a haystack'));
-        await new Promise(resolve => setTimeout(resolve, 70));
-        expect(ret.filter).toEqual({
-            type: 'thisOne',
-            search: 'needle in a haystack',
+        await waitFor(() => {
+            expect(ret.filter).toEqual({
+                type: 'thisOne',
+                search: 'needle in a haystack',
+            });
         });
     });
 
@@ -80,10 +81,12 @@ describe('useFilterState', () => {
         const { rerender } = render(<Test permanentFilter={{ foo: 'bar' }} />);
         expect(ret.filter).toEqual({ foo: 'bar', q: '' });
         act(() => ret.setFilter('search'));
-        await new Promise(resolve => setTimeout(resolve, 10));
-        expect(ret.filter).toEqual({ foo: 'bar', q: 'search' });
+        await waitFor(() => {
+            expect(ret.filter).toEqual({ foo: 'bar', q: 'search' });
+        });
         rerender(<Test permanentFilter={{ foo: 'baz' }} />);
-        await new Promise(resolve => setTimeout(resolve, 10));
-        expect(ret.filter).toEqual({ foo: 'baz', q: 'search' });
+        await waitFor(() => {
+            expect(ret.filter).toEqual({ foo: 'baz', q: 'search' });
+        });
     });
 });

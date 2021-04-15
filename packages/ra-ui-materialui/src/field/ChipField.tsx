@@ -5,6 +5,7 @@ import Chip, { ChipProps } from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
+import { useRecordContext } from 'ra-core';
 
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
@@ -21,10 +22,10 @@ export const ChipField: FC<ChipFieldProps> = memo<ChipFieldProps>(props => {
         className,
         classes: classesOverride,
         source,
-        record = {},
         emptyText,
         ...rest
     } = props;
+    const record = useRecordContext(props);
     const classes = useStyles(props);
     const value = get(record, source);
 
