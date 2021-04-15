@@ -90,6 +90,16 @@ const UserProfile = ({ userId }) => {
 };
 ```
 
+**Tip**: If you use TypeScript, you can specify a record type for more type safety:
+
+```jsx
+dataProvider.getOne<Product>('users', { id: 123 })
+    .then(({ data }) => {
+        //     \- type of data is Product
+        // ...
+    })
+```
+
 ## `useQuery` Hook
 
 The `useQuery` hook calls the Data Provider on mount, and returns an object that updates as the response arrives. It reduces the boilerplate code for calling the Data Provider.
@@ -277,6 +287,13 @@ const ApproveButton = ({ record }) => {
 ```
 
 The specialized hooks based on `useQuery` (`useGetList`, `useGetOne`, `useGetMany`, `useGetManyReference`) execute on mount. The specialized hooks based on `useMutation` (`useCreate`, `useUpdate`, `useUpdateMany`, `useDelete`, `useDeleteMany`) return a callback.
+
+**Tip**: If you use TypeScript, you can specify the record type for more type safety:
+
+```jsx
+const { data, loaded } = useGetOne<Product>('products', 123);
+//        \- type of data is Product
+```
 
 ### `useGetList`
 
