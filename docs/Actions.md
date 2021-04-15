@@ -517,10 +517,30 @@ const DeleteButton = ({ record }) => {
 
 ```jsx
 // syntax
-const [deleteOne, { data, loading, loaded, error }] = useDeleteMany(resource, ids, options);
+const [deleteMany, { data, loading, loaded, error }] = useDeleteMany(resource, ids, options);
+```
 
-// example
+The `deleteMany()` function can be called in 3 different ways:
+ - with the same parameters as the `useDeleteMany()` hook: `deleteMany(resource, ids, options)`
+ - with the same syntax as `useMutation`: `deleteMany({ resource, payload: { ids } }, options)`
+ - with no parameter (if they were already passed to `useDeleteMany()`): `deleteMany()`
+
+```jsx
+// set params when calling the dleteMany callback
 import { useDeleteMany } from 'react-admin';
+
+const BulkDeletePostsButton = ({ selectedIds }) => {
+    const [deleteMany, { loading, error }] = useDeleteMany();
+    const handleClick = () => {
+        deleteMany('posts', selectedIds)
+    }
+    if (error) { return <p>ERROR</p>; }
+    return <button disabled={loading} onClick={deleteMany}>Delete selected posts</button>;
+};
+
+// set params when calling the hook
+import { useDeleteMany } from 'react-admin';
+
 const BulkDeletePostsButton = ({ selectedIds }) => {
     const [deleteMany, { loading, error }] = useDeleteMany('posts', selectedIds);
     if (error) { return <p>ERROR</p>; }

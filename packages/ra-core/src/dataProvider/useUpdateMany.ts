@@ -63,7 +63,8 @@ const useUpdateMany = <RecordType extends Record = Record>(
         (
             resource?: string | Partial<Mutation> | Event,
             ids?: Identifier[] | Partial<MutationOptions>,
-            data?: Partial<RecordType>
+            data?: Partial<RecordType>,
+            options?: MutationOptions
         ) => {
             if (typeof resource === 'string') {
                 const query = {
@@ -96,7 +97,7 @@ type UseUpdateManyHookValue<RecordType extends Record = Record> = [
         options?: MutationOptions
     ) => void | Promise<any>,
     {
-        data?: RecordType;
+        data?: Identifier[];
         total?: number;
         error?: any;
         loading: boolean;

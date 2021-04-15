@@ -4,17 +4,17 @@ import expect from 'expect';
 
 import { DataProvider } from '../types';
 import DataProviderContext from './DataProviderContext';
-import useUpdateMany from './useUpdateMany';
+import useDeleteMany from './useDeleteMany';
 
-describe('useUpdateMany', () => {
+describe('useDeleteMany', () => {
     it('returns a callback that can be used with update arguments', () => {
         const dataProvider: Partial<DataProvider> = {
-            updateMany: jest.fn(() => Promise.resolve({ data: [1, 2] } as any)),
+            deleteMany: jest.fn(() => Promise.resolve({ data: [1, 2] } as any)),
         };
-        let localUpdateMany;
+        let localDeleteMany;
         const Dummy = () => {
-            const [updateMany] = useUpdateMany();
-            localUpdateMany = updateMany;
+            const [deleteMany] = useDeleteMany();
+            localDeleteMany = deleteMany;
             return <span />;
         };
 
@@ -24,21 +24,20 @@ describe('useUpdateMany', () => {
                 <Dummy />
             </DataProviderContext.Provider>
         );
-        localUpdateMany('foo', [1, 2], { bar: 'baz' });
-        expect(dataProvider.updateMany).toHaveBeenCalledWith('foo', {
+        localDeleteMany('foo', [1, 2]);
+        expect(dataProvider.deleteMany).toHaveBeenCalledWith('foo', {
             ids: [1, 2],
-            data: { bar: 'baz' },
         });
     });
 
     it('returns a callback that can be used with mutation payload', () => {
         const dataProvider: Partial<DataProvider> = {
-            updateMany: jest.fn(() => Promise.resolve({ data: [1, 2] } as any)),
+            deleteMany: jest.fn(() => Promise.resolve({ data: [1, 2] } as any)),
         };
-        let localUpdateMany;
+        let localDeleteMany;
         const Dummy = () => {
-            const [updateMany] = useUpdateMany();
-            localUpdateMany = updateMany;
+            const [deleteMany] = useDeleteMany();
+            localDeleteMany = deleteMany;
             return <span />;
         };
 
@@ -48,28 +47,26 @@ describe('useUpdateMany', () => {
                 <Dummy />
             </DataProviderContext.Provider>
         );
-        localUpdateMany({
-            type: 'updateMany',
+        localDeleteMany({
+            type: 'deleteMany',
             resource: 'foo',
             payload: {
                 ids: [1, 2],
-                data: { bar: 'baz' },
             },
         });
-        expect(dataProvider.updateMany).toHaveBeenCalledWith('foo', {
+        expect(dataProvider.deleteMany).toHaveBeenCalledWith('foo', {
             ids: [1, 2],
-            data: { bar: 'baz' },
         });
     });
 
     it('returns a callback that can be used with no arguments', () => {
         const dataProvider: Partial<DataProvider> = {
-            updateMany: jest.fn(() => Promise.resolve({ data: [1, 2] } as any)),
+            deleteMany: jest.fn(() => Promise.resolve({ data: [1, 2] } as any)),
         };
-        let localUpdateMany;
+        let localDeleteMany;
         const Dummy = () => {
-            const [updateMany] = useUpdateMany('foo', [1, 2], { bar: 'baz' });
-            localUpdateMany = updateMany;
+            const [deleteMany] = useDeleteMany('foo', [1, 2]);
+            localDeleteMany = deleteMany;
             return <span />;
         };
 
@@ -79,21 +76,20 @@ describe('useUpdateMany', () => {
                 <Dummy />
             </DataProviderContext.Provider>
         );
-        localUpdateMany();
-        expect(dataProvider.updateMany).toHaveBeenCalledWith('foo', {
+        localDeleteMany();
+        expect(dataProvider.deleteMany).toHaveBeenCalledWith('foo', {
             ids: [1, 2],
-            data: { bar: 'baz' },
         });
     });
 
     it('merges hook call time and callback call time queries', () => {
         const dataProvider: Partial<DataProvider> = {
-            updateMany: jest.fn(() => Promise.resolve({ data: [1, 2] } as any)),
+            deleteMany: jest.fn(() => Promise.resolve({ data: [1, 2] } as any)),
         };
-        let localUpdateMany;
+        let localDeleteMany;
         const Dummy = () => {
-            const [updateMany] = useUpdateMany('foo', [1, 2], { bar: 'baz' });
-            localUpdateMany = updateMany;
+            const [deleteMany] = useDeleteMany('foo', [1, 2]);
+            localDeleteMany = deleteMany;
             return <span />;
         };
 
@@ -103,10 +99,9 @@ describe('useUpdateMany', () => {
                 <Dummy />
             </DataProviderContext.Provider>
         );
-        localUpdateMany({ payload: { data: { foo: 456 } } });
-        expect(dataProvider.updateMany).toHaveBeenCalledWith('foo', {
-            ids: [1, 2],
-            data: { bar: 'baz', foo: 456 },
+        localDeleteMany({ payload: { ids: [3, 4] } });
+        expect(dataProvider.deleteMany).toHaveBeenCalledWith('foo', {
+            ids: [3, 4],
         });
     });
 });
