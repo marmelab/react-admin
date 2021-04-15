@@ -82,15 +82,13 @@ export const FormDataConsumerView: FunctionComponent<Props> = ({
     index,
     ...rest
 }) => {
-    let scopedFormData = formData;
-    let getSource;
     let getSourceHasBeenCalled = false;
     let ret;
 
     // If we have an index, we are in an iterator like component (such as the SimpleFormIterator)
     if (typeof index !== 'undefined') {
-        scopedFormData = get(formData, source);
-        getSource = (scopedSource: string) => {
+        const scopedFormData = get(formData, source);
+        const getSource = (scopedSource: string) => {
             getSourceHasBeenCalled = true;
             return `${source}.${scopedSource}`;
         };
