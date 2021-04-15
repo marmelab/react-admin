@@ -448,9 +448,29 @@ const IncreaseLikeButton = ({ record }) => {
 ```jsx
 // syntax
 const [updateMany, { data, loading, loaded, error }] = useUpdateMany(resource, ids, data, options);
+```
 
-// example
+The `updateMany()` function can be called in 3 different ways:
+ - with the same parameters as the `useUpdateMany()` hook: `update(resource, ids, data, options)`
+ - with the same syntax as `useMutation`: `update({ resource, payload: { ids, data } }, options)`
+ - with no parameter (if they were already passed to `useUpdateMany()`): `updateMany()`
+
+```jsx
+// set params when calling the updateMany callback
 import { useUpdateMany } from 'react-admin';
+
+const BulkResetViewsButton = ({ selectedIds }) => {
+    const [updateMany, { loading, error }] = useUpdateMany();
+    const handleClick = () => {
+        updateMany('posts', selectedIds, { views: 0 });
+    }
+    if (error) { return <p>ERROR</p>; }
+    return <button disabled={loading} onClick={handleClick}>Reset views</button>;
+};
+
+// set params when calling the hook
+import { useUpdateMany } from 'react-admin';
+
 const BulkResetViewsButton = ({ selectedIds }) => {
     const [updateMany, { loading, error }] = useUpdateMany('posts', selectedIds, { views: 0 });
     if (error) { return <p>ERROR</p>; }
