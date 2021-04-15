@@ -1,5 +1,5 @@
 import { Record } from '../types';
-import { useGetMany } from '../dataProvider';
+import { Refetch, useGetMany } from '../dataProvider';
 
 interface Option {
     id: string;
@@ -11,6 +11,7 @@ export interface UseReferenceProps {
     loaded: boolean;
     referenceRecord?: Record;
     error?: any;
+    refetch: Refetch;
 }
 
 /**
@@ -41,9 +42,12 @@ export interface UseReferenceProps {
  * @returns {ReferenceProps} The reference record
  */
 export const useReference = ({ reference, id }: Option): UseReferenceProps => {
-    const { data, error, loading, loaded } = useGetMany(reference, [id]);
+    const { data, error, loading, loaded, refetch } = useGetMany(reference, [
+        id,
+    ]);
     return {
         referenceRecord: error ? undefined : data[0],
+        refetch,
         error,
         loading,
         loaded,

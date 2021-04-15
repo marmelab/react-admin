@@ -7,8 +7,7 @@ import {
     useContext,
     useState,
 } from 'react';
-import { useTranslate } from 'ra-core';
-import { useForm } from 'react-final-form';
+import { Identifier, useTranslate } from 'ra-core';
 
 /**
  * This hook provides support for suggestion creation in inputs which have choices.
@@ -20,10 +19,9 @@ import { useForm } from 'react-final-form';
  * @param {any} options.createValue Optional. The value for the choice item allowing users to create a new choice. Defaults to `@@ra-create`.
  * @param {String} options.filter Optional. The filter users may have already entered. Useful for autocomplete inputs for example.
  * @param {OnCreateHandler} options.onCreate Optional. A function which will be called when users choose to create a new choice, if the `create` option wasn't provided.
- * @param {String} options.source The input source. Used to trigger a form change upon successful creation.
+ * @param handleChange: a function to pass to the input. Receives the same parameter as the original event handler and an additional newItem parameter if a new item was create.
  * @returns {UseSupportCreateValue} An object with the following properties:
- * - getCreateItemLabel: a function which will return the label of the choice for create a new choice.
- * - handleChange: a function to pass to the input. Accept the event or the value selected and the original onChange handler of the input. This original handler will be called if users haven't asked to create a new choice.
+ * - getCreateItem: a function which will return the label of the choice for create a new choice.
  * - createElement: a React element to render after the input. It will be rendered when users choose to create a new choice. It renders null otherwise.
  */
 export const useSupportCreateSuggestion = (
@@ -35,11 +33,10 @@ export const useSupportCreateSuggestion = (
         createItemLabel = 'ra.action.create_item',
         createValue = '@@ra-create',
         filter,
+        handleChange,
         onCreate,
-        source,
     } = options;
     const translate = useTranslate();
-    const form = useForm();
     const [renderOnCreate, setRenderOnCreate] = useState(false);
 
     const context = {
@@ -47,28 +44,31 @@ export const useSupportCreateSuggestion = (
         onCancel: () => setRenderOnCreate(false),
         onCreate: (value, item) => {
             setRenderOnCreate(false);
-            form.change(source, value);
+            handleChange(undefined, item);
         },
     };
 
     return {
-        getCreateItemLabel: () => {
-            return filter && createItemLabel
-                ? translate(createItemLabel, {
-                      item: filter,
-                      _: createItemLabel,
-                  })
-                : translate(createLabel, { _: createLabel });
+        getCreateItem: () => {
+            return {
+                id: createValue,
+                name:
+                    filter && createItemLabel
+                        ? translate(createItemLabel, {
+                              item: filter,
+                              _: createItemLabel,
+                          })
+                        : translate(createLabel, { _: createLabel }),
+            };
         },
-        handleChange: async (eventOrValue, handleChange) => {
+        handleChange: async eventOrValue => {
             const value = eventOrValue.target?.value || eventOrValue;
-
-            if (value === createValue) {
+            if (value?.id === createValue || value === createValue) {
                 if (!isValidElement(create)) {
                     const newSuggestion = await onCreate(filter);
 
                     if (newSuggestion) {
-                        form.change(source, value);
+                        handleChange(eventOrValue, newSuggestion);
                         return;
                     }
                 } else {
@@ -76,7 +76,7 @@ export const useSupportCreateSuggestion = (
                     return;
                 }
             }
-            handleChange();
+            handleChange(eventOrValue, undefined);
         },
         createElement:
             renderOnCreate && isValidElement(create) ? (
@@ -93,16 +93,13 @@ export interface SupportCreateSuggestionOptions {
     createLabel?: string;
     createItemLabel?: string;
     filter?: string;
+    handleChange: (value: any, newChoice: any) => void;
     onCreate?: OnCreateHandler;
-    source: string;
 }
 
 export interface UseSupportCreateValue {
-    getCreateItemLabel: () => string;
-    handleChange: (
-        eventOrValue: ChangeEvent | any,
-        handleChange: (value?: any) => void
-    ) => Promise<void>;
+    getCreateItem: () => { id: Identifier; name: string };
+    handleChange: (eventOrValue: ChangeEvent | any) => Promise<void>;
     createElement: ReactElement | null;
 }
 

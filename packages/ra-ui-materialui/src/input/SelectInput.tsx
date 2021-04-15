@@ -23,11 +23,7 @@ import {
     useSupportCreateSuggestion,
     SupportCreateSuggestionOptions,
 } from './useSupportCreateSuggestion';
-
-export interface SelectInputProps
-    extends ChoicesInputProps<TextFieldProps>,
-        Omit<SupportCreateSuggestionOptions, 'source'>,
-        Omit<TextFieldProps, 'label' | 'helperText'> {}
+import { useForm } from 'react-final-form';
 
 /**
  * An Input component for a select box, using an array of objects for the options
@@ -111,7 +107,7 @@ export const SelectInput = (props: SelectInputProps) => {
         className,
         create,
         createLabel,
-        createValue = '@@ra-create',
+        createValue,
         disableValue,
         emptyText,
         emptyValue,
@@ -153,17 +149,6 @@ export const SelectInput = (props: SelectInputProps) => {
         translateChoice,
     });
 
-    const {
-        getCreateItemLabel,
-        handleChange,
-        createElement,
-    } = useSupportCreateSuggestion({
-        create,
-        createLabel,
-        createValue,
-        onCreate,
-        source,
-    });
     const { id, input, isRequired, meta } = useInput({
         format,
         onBlur,
@@ -190,15 +175,31 @@ export const SelectInput = (props: SelectInputProps) => {
         getChoiceText,
     ]);
 
-    const handleInputChange = useCallback(
-        async (event: React.ChangeEvent<HTMLSelectElement>) => {
-            handleChange(event, () => {
-                input.onChange(event);
-            });
+    const form = useForm();
+    const handleChange = useCallback(
+        async (event: React.ChangeEvent<HTMLSelectElement>, newItem) => {
+            if (newItem) {
+                const value = getChoiceValue(newItem);
+                form.change(source, value);
+                return;
+            }
+
+            input.onChange(event);
         },
-        [handleChange, input]
+        [input, form, getChoiceValue, source]
     );
 
+    const {
+        getCreateItem,
+        handleChange: handleChangeWithCreateSupport,
+        createElement,
+    } = useSupportCreateSuggestion({
+        create,
+        createLabel,
+        createValue,
+        handleChange,
+        onCreate,
+    });
     if (loading) {
         return (
             <Labeled
@@ -216,12 +217,14 @@ export const SelectInput = (props: SelectInputProps) => {
         );
     }
 
+    const createItem = getCreateItem();
+
     return (
         <>
             <ResettableTextField
                 id={id}
                 {...input}
-                onChange={handleInputChange}
+                onChange={handleChangeWithCreateSupport}
                 select
                 label={
                     label !== '' &&
@@ -267,8 +270,8 @@ export const SelectInput = (props: SelectInputProps) => {
                     </MenuItem>
                 ))}
                 {onCreate || create ? (
-                    <MenuItem value={createValue} key={createValue}>
-                        {getCreateItemLabel()}
+                    <MenuItem value={createItem.id} key={createItem.id}>
+                        {createItem.name}
                     </MenuItem>
                 ) : null}
             </ResettableTextField>
@@ -351,3 +354,8 @@ const useStyles = makeStyles(
     }),
     { name: 'RaSelectInput' }
 );
+
+export interface SelectInputProps
+    extends ChoicesInputProps<TextFieldProps>,
+        Omit<SupportCreateSuggestionOptions, 'handleChange'>,
+        Omit<TextFieldProps, 'label' | 'helperText'> {}

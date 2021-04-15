@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -12,6 +12,8 @@ import { Identifier, Record, ReduxState, DataProviderProxy } from '../types';
 import { useSafeSetState } from '../util/hooks';
 import useDataProvider from './useDataProvider';
 import { useEffect } from 'react';
+import { useVersion } from '../controller';
+import { Refetch } from './useQueryWithStore';
 
 type Callback = (args?: any) => void;
 type SetState = (args: any) => void;
@@ -34,6 +36,7 @@ interface UseGetManyResult {
     error?: any;
     loading: boolean;
     loaded: boolean;
+    refetch: Refetch;
 }
 let queriesToCall: QueriesToCall = {};
 let dataProvider: DataProviderProxy;
@@ -99,6 +102,14 @@ const useGetMany = (
     const data = useSelector((state: ReduxState) =>
         selectMany(state, resource, ids)
     );
+    const version = useVersion(); // used to allow force reload
+    // used to force a refetch without relying on version
+    // which might trigger other queries as well
+    const [innerVersion, setInnerVersion] = useState(0);
+
+    const refetch = useCallback(() => {
+        setInnerVersion(prevInnerVersion => prevInnerVersion + 1);
+    }, []);
     const [state, setState] = useSafeSetState({
         data,
         error: null,
@@ -106,6 +117,7 @@ const useGetMany = (
         loaded:
             ids.length === 0 ||
             (data.length !== 0 && !data.includes(undefined)),
+        refetch,
     });
     if (!isEqual(state.data, data)) {
         setState({
@@ -115,36 +127,50 @@ const useGetMany = (
         });
     }
     dataProvider = useDataProvider(); // not the best way to pass the dataProvider to a function outside the hook, but I couldn't find a better one
-    useEffect(() => {
-        if (options.enabled === false) {
-            return;
-        }
+    useEffect(
+        () => {
+            if (options.enabled === false) {
+                return;
+            }
 
-        if (!queriesToCall[resource]) {
-            queriesToCall[resource] = [];
-        }
-        /**
-         * queriesToCall stores the queries to call under the following shape:
-         *
-         * {
-         *   'posts': [
-         *     { ids: [1, 2], setState }
-         *     { ids: [2, 3], setState, onSuccess }
-         *     { ids: [4, 5], setState }
-         *   ],
-         *   'comments': [
-         *     { ids: [345], setState, onFailure }
-         *   ]
-         * }
-         */
-        queriesToCall[resource] = queriesToCall[resource].concat({
-            ids,
-            setState,
-            onSuccess: options && options.onSuccess,
-            onFailure: options && options.onFailure,
-        });
-        callQueries(); // debounced by lodash
-    }, [JSON.stringify({ resource, ids, options }), dataProvider]); // eslint-disable-line react-hooks/exhaustive-deps
+            if (!queriesToCall[resource]) {
+                queriesToCall[resource] = [];
+            }
+            /**
+             * queriesToCall stores the queries to call under the following shape:
+             *
+             * {
+             *   'posts': [
+             *     { ids: [1, 2], setState }
+             *     { ids: [2, 3], setState, onSuccess }
+             *     { ids: [4, 5], setState }
+             *   ],
+             *   'comments': [
+             *     { ids: [345], setState, onFailure }
+             *   ]
+             * }
+             */
+            queriesToCall[resource] = queriesToCall[resource].concat({
+                ids,
+                setState,
+                onSuccess: options && options.onSuccess,
+                onFailure: options && options.onFailure,
+            });
+            callQueries(); // debounced by lodash
+        },
+        /* eslint-disable react-hooks/exhaustive-deps */
+        [
+            JSON.stringify({
+                resource,
+                ids,
+                options,
+                version,
+                innerVersion,
+            }),
+            dataProvider,
+        ]
+        /* eslint-enable react-hooks/exhaustive-deps */
+    );
 
     return state;
 };

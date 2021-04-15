@@ -17,6 +17,7 @@ import { useSortState } from '..';
 import useFilterState from '../useFilterState';
 import useSelectionState from '../useSelectionState';
 import { useResourceContext } from '../../core';
+import { Refetch } from '../../dataProvider';
 
 const defaultReferenceSource = (resource: string, source: string) =>
     `${resource}@${source}`;
@@ -126,6 +127,7 @@ export const useReferenceInputController = (
     // fetch current value
     const {
         referenceRecord,
+        refetch,
         error: referenceError,
         loading: referenceLoading,
         loaded: referenceLoaded,
@@ -202,6 +204,7 @@ export const useReferenceInputController = (
         loading: possibleValuesLoading || referenceLoading,
         loaded: possibleValuesLoaded && referenceLoaded,
         filter: filterValues,
+        refetch,
         setFilter,
         pagination,
         setPagination,
@@ -238,6 +241,7 @@ export interface ReferenceInputValue {
     setSort: (sort: SortPayload) => void;
     sort: SortPayload;
     warning?: string;
+    refetch: Refetch;
 }
 
 interface Option {
