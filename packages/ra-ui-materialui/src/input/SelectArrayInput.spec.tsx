@@ -1,10 +1,11 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, waitFor } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import { TestTranslationProvider } from 'ra-core';
 
 import SelectArrayInput from './SelectArrayInput';
+import { useCreateSuggestion } from './useSupportCreateSuggestion';
 
 describe('<SelectArrayInput />', () => {
     const defaultProps = {
@@ -303,17 +304,137 @@ describe('<SelectArrayInput />', () => {
                 <Form
                     validateOnBlur
                     onSubmit={jest.fn()}
-                    render={() => (
-                        <SelectArrayInput
-                            {...{
-                                ...defaultProps,
-                            }}
-                        />
-                    )}
+                    render={() => <SelectArrayInput {...defaultProps} />}
                 />
             );
 
             expect(queryByRole('progressbar')).toBeNull();
         });
+    });
+
+    test('should support creation of a new choice through the onCreate event', async () => {
+        const choices = [...defaultProps.choices];
+        const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
+
+        const {
+            debug,
+            getByLabelText,
+            getByRole,
+            getByText,
+            queryAllByText,
+        } = render(
+            <Form
+                validateOnBlur
+                onSubmit={jest.fn()}
+                render={() => (
+                    <SelectArrayInput
+                        {...defaultProps}
+                        choices={choices}
+                        onCreate={() => {
+                            choices.push(newChoice);
+                            return newChoice;
+                        }}
+                    />
+                )}
+            />
+        );
+
+        const input = getByLabelText(
+            'resources.posts.fields.categories'
+        ) as HTMLInputElement;
+        input.focus();
+        const select = getByRole('button');
+        fireEvent.mouseDown(select);
+
+        fireEvent.click(getByText('ra.action.create'));
+        await new Promise(resolve => setImmediate(resolve));
+        input.blur();
+        // 2 because there is both the chip for the new selected item and the option (event if hidden)
+        expect(queryAllByText(newChoice.name).length).toEqual(2);
+    });
+
+    test('should support creation of a new choice through the onCreate event with a promise', async () => {
+        const choices = [...defaultProps.choices];
+        const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
+
+        const { getByLabelText, getByRole, getByText, queryAllByText } = render(
+            <Form
+                validateOnBlur
+                onSubmit={jest.fn()}
+                render={() => (
+                    <SelectArrayInput
+                        {...defaultProps}
+                        choices={choices}
+                        onCreate={() => {
+                            return new Promise(resolve => {
+                                setTimeout(() => {
+                                    choices.push(newChoice);
+                                    resolve(newChoice);
+                                }, 200);
+                            });
+                        }}
+                    />
+                )}
+            />
+        );
+
+        const input = getByLabelText(
+            'resources.posts.fields.categories'
+        ) as HTMLInputElement;
+        input.focus();
+        const select = getByRole('button');
+        fireEvent.mouseDown(select);
+
+        fireEvent.click(getByText('ra.action.create'));
+        await new Promise(resolve => setImmediate(resolve));
+        input.blur();
+
+        await waitFor(() => {
+            // 2 because there is both the chip for the new selected item and the option (event if hidden)
+            expect(queryAllByText(newChoice.name).length).toEqual(2);
+        });
+    });
+
+    test('should support creation of a new choice through the create element', async () => {
+        const choices = [...defaultProps.choices];
+        const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
+
+        const Create = () => {
+            const context = useCreateSuggestion();
+            const handleClick = () => {
+                choices.push(newChoice);
+                context.onCreate(newChoice.id, newChoice);
+            };
+
+            return <button onClick={handleClick}>Get the kid</button>;
+        };
+
+        const { getByLabelText, getByRole, getByText, queryAllByText } = render(
+            <Form
+                validateOnBlur
+                onSubmit={jest.fn()}
+                render={() => (
+                    <SelectArrayInput
+                        {...defaultProps}
+                        choices={choices}
+                        create={<Create />}
+                    />
+                )}
+            />
+        );
+
+        const input = getByLabelText(
+            'resources.posts.fields.categories'
+        ) as HTMLInputElement;
+        input.focus();
+        const select = getByRole('button');
+        fireEvent.mouseDown(select);
+
+        fireEvent.click(getByText('ra.action.create'));
+        fireEvent.click(getByText('Get the kid'));
+        input.blur();
+
+        // 2 because there is both the chip for the new selected item and the option (event if hidden)
+        expect(queryAllByText(newChoice.name).length).toEqual(2);
     });
 });
