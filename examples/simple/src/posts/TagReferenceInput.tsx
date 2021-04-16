@@ -84,7 +84,7 @@ const CreateTag = () => {
                 onSuccess: ({ data }) => {
                     setValue('');
                     const choice = data;
-                    onCreate(value, choice);
+                    onCreate(choice);
                 },
             }
         );

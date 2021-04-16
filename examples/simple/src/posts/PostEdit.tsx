@@ -55,7 +55,7 @@ const CreateCategory = ({
         event.preventDefault();
         const choice = { name: value, id: value.toLowerCase() };
         onAddChoice(choice);
-        onCreate(value, choice);
+        onCreate(choice);
         setValue('');
         return false;
     };
