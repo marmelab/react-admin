@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Children, cloneElement, memo } from 'react';
+import { Children, cloneElement, Fragment, memo } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
@@ -103,6 +103,7 @@ const AppBar = (props: AppBarProps): JSX.Element => {
         open,
         title,
         userMenu,
+        hideOnScroll,
         ...rest
     } = props;
     const classes = useStyles(props);
@@ -111,9 +112,10 @@ const AppBar = (props: AppBarProps): JSX.Element => {
         theme.breakpoints.down('xs')
     );
     const translate = useTranslate();
+    const Container = hideOnScroll ? HideOnScroll : Fragment;
 
     return (
-        <HideOnScroll>
+        <Container>
             <MuiAppBar className={className} color={color} {...rest}>
                 <Toolbar
                     disableGutters
@@ -163,7 +165,7 @@ const AppBar = (props: AppBarProps): JSX.Element => {
                         : cloneElement(userMenu, { logout })}
                 </Toolbar>
             </MuiAppBar>
-        </HideOnScroll>
+        </Container>
     );
 };
 
@@ -179,6 +181,7 @@ AppBar.propTypes = {
         'secondary',
         'transparent',
     ]),
+    hideOnScroll: PropTypes.bool,
     logout: PropTypes.element,
     open: PropTypes.bool,
     userMenu: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
@@ -186,10 +189,12 @@ AppBar.propTypes = {
 
 AppBar.defaultProps = {
     userMenu: <DefaultUserMenu />,
+    hideOnScroll: true,
 };
 
 export interface AppBarProps extends Omit<MuiAppBarProps, 'title' | 'classes'> {
     classes?: ClassesOverride<typeof useStyles>;
+    hideOnScroll?: boolean;
     logout?: React.ReactNode;
     open?: boolean;
     title?: string | JSX.Element;
