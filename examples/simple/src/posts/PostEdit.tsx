@@ -213,9 +213,8 @@ const PostEdit = ({ permissions, ...props }) => {
                     <SelectInput
                         create={
                             <CreateCategory
-                                // Ajouté sur le composant parce que je ne suis pas
-                                // dans un ReferenceInput donc faut que je mette
-                                // à jour ma liste de choix à donner à l'AutocompleteInput
+                                // Added on the component because we have to update the choices
+                                // ourselves as we don't use a ReferenceInput
                                 onAddChoice={choice => categories.push(choice)}
                             />
                         }
