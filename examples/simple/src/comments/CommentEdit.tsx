@@ -77,7 +77,7 @@ const CreatePost = () => {
                 onSuccess: ({ data }) => {
                     setValue('');
                     const choice = data;
-                    onCreate(value, choice);
+                    onCreate(data.id, choice);
                 },
             }
         );
