@@ -42,7 +42,7 @@ export const useSupportCreateSuggestion = (
     const context = {
         filter,
         onCancel: () => setRenderOnCreate(false),
-        onCreate: (value, item) => {
+        onCreate: item => {
             setRenderOnCreate(false);
             handleChange(undefined, item);
         },
@@ -115,7 +115,7 @@ const CreateSuggestionContext = createContext<CreateSuggestionContextValue>(
 
 interface CreateSuggestionContextValue {
     filter?: string;
-    onCreate: (value: any, choice: any) => void;
+    onCreate: (choice: any) => void;
     onCancel: () => void;
 }
 export const useCreateSuggestion = () => useContext(CreateSuggestionContext);

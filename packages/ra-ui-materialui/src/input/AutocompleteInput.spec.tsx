@@ -748,10 +748,7 @@ describe('<AutocompleteInput />', () => {
         );
         fireEvent.click(getByLabelText('ra.action.clear_input_value'));
 
-        expect(
-            // The selector ensure we don't get the options from the menu but the select value
-            queryByText('New Kid On The Block')
-        ).not.toBeNull();
+        expect(queryByText('New Kid On The Block')).not.toBeNull();
     });
 
     test('should support creation of a new choice through the onCreate event with a promise', async () => {
@@ -780,6 +777,7 @@ describe('<AutocompleteInput />', () => {
                         resource="posts"
                         choices={choices}
                         onCreate={handleCreate}
+                        resettable
                     />
                 )}
             />
@@ -809,10 +807,7 @@ describe('<AutocompleteInput />', () => {
         );
         fireEvent.click(getByLabelText('ra.action.clear_input_value'));
 
-        expect(
-            // The selector ensure we don't get the options from the menu but the select value
-            queryByText('New Kid On The Block')
-        ).not.toBeNull();
+        expect(queryByText('New Kid On The Block')).not.toBeNull();
     });
 
     test('should support creation of a new choice through the create element', async () => {
@@ -842,6 +837,7 @@ describe('<AutocompleteInput />', () => {
                         resource="posts"
                         choices={choices}
                         create={<Create />}
+                        resettable
                     />
                 )}
             />
@@ -872,9 +868,6 @@ describe('<AutocompleteInput />', () => {
         );
         fireEvent.click(getByLabelText('ra.action.clear_input_value'));
 
-        expect(
-            // The selector ensure we don't get the options from the menu but the select value
-            queryByText('New Kid On The Block')
-        ).not.toBeNull();
+        expect(queryByText('New Kid On The Block')).not.toBeNull();
     });
 });
