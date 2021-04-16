@@ -397,7 +397,7 @@ describe('<SelectArrayInput />', () => {
             const context = useCreateSuggestion();
             const handleClick = () => {
                 choices.push(newChoice);
-                context.onCreate(newChoice.id, newChoice);
+                context.onCreate(newChoice);
             };
 
             return <button onClick={handleClick}>Get the kid</button>;
