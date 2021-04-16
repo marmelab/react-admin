@@ -316,13 +316,7 @@ describe('<SelectArrayInput />', () => {
         const choices = [...defaultProps.choices];
         const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
 
-        const {
-            debug,
-            getByLabelText,
-            getByRole,
-            getByText,
-            queryAllByText,
-        } = render(
+        const { getByLabelText, getByRole, getByText, queryAllByText } = render(
             <Form
                 validateOnBlur
                 onSubmit={jest.fn()}
