@@ -23,7 +23,6 @@ import {
     useSupportCreateSuggestion,
     SupportCreateSuggestionOptions,
 } from './useSupportCreateSuggestion';
-import { useForm } from 'react-final-form';
 
 /**
  * An Input component for a select box, using an array of objects for the options
@@ -175,18 +174,17 @@ export const SelectInput = (props: SelectInputProps) => {
         getChoiceText,
     ]);
 
-    const form = useForm();
     const handleChange = useCallback(
         async (event: React.ChangeEvent<HTMLSelectElement>, newItem) => {
             if (newItem) {
                 const value = getChoiceValue(newItem);
-                form.change(source, value);
+                input.onChange(value);
                 return;
             }
 
             input.onChange(event);
         },
-        [input, form, getChoiceValue, source]
+        [input, getChoiceValue]
     );
 
     const {

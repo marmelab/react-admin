@@ -63,7 +63,13 @@ export const useSupportCreateSuggestion = (
         },
         handleChange: async eventOrValue => {
             const value = eventOrValue.target?.value || eventOrValue;
-            if (value?.id === createValue || value === createValue) {
+            const finalValue = Array.isArray(value) ? [...value].pop() : value;
+
+            if (eventOrValue?.preventDefault) {
+                eventOrValue.preventDefault();
+                eventOrValue.stopPropagation();
+            }
+            if (finalValue?.id === createValue || finalValue === createValue) {
                 if (!isValidElement(create)) {
                     const newSuggestion = await onCreate(filter);
 
