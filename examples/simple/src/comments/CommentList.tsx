@@ -14,7 +14,7 @@ import {
     Typography,
     useMediaQuery,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import jsonExport from 'jsonexport/dist';
 import {
     ListBase,
@@ -76,7 +76,7 @@ const CommentPagination = () => {
     const translate = useTranslate();
     const nbPages = Math.ceil(total / perPage) || 1;
     if (!loading && (total === 0 || (ids && !ids.length))) {
-        return <PaginationLimit total={total} page={page} ids={ids} />;
+        return <PaginationLimit />;
     }
 
     return (
@@ -128,7 +128,7 @@ const useListStyles = makeStyles(theme => ({
 }));
 
 const CommentGrid = () => {
-    const { ids, data, basePath } = useListContext();
+    const { ids, data } = useListContext();
     const translate = useTranslate();
     const classes = useListStyles();
 
@@ -165,7 +165,6 @@ const CommentGrid = () => {
                                 {translate('comment.list.about')}&nbsp;
                             </Typography>
                             <ReferenceField
-                                resource="comments"
                                 record={data[id]}
                                 source="post_id"
                                 reference="posts"
@@ -177,16 +176,8 @@ const CommentGrid = () => {
                             </ReferenceField>
                         </CardContent>
                         <CardActions className={classes.cardActions}>
-                            <EditButton
-                                resource="posts"
-                                basePath={basePath}
-                                record={data[id]}
-                            />
-                            <ShowButton
-                                resource="posts"
-                                basePath={basePath}
-                                record={data[id]}
-                            />
+                            <EditButton record={data[id]} />
+                            <ShowButton record={data[id]} />
                         </CardActions>
                     </Card>
                 </Grid>
@@ -218,7 +209,7 @@ const CommentList = props => (
 );
 
 const ListView = () => {
-    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
     const { defaultTitle } = useListContext();
     return (
         <>

@@ -1,4 +1,4 @@
-import ArrayInput from './ArrayInput';
+import ArrayInput, { ArrayInputProps } from './ArrayInput';
 import AutocompleteArrayInput, {
     AutocompleteArrayInputProps,
 } from './AutocompleteArrayInput';
@@ -7,24 +7,32 @@ import BooleanInput from './BooleanInput';
 import CheckboxGroupInput, {
     CheckboxGroupInputProps,
 } from './CheckboxGroupInput';
-import DateInput from './DateInput';
-import DateTimeInput from './DateTimeInput';
-import FileInput from './FileInput';
-import ImageInput from './ImageInput';
-import InputHelperText from './InputHelperText';
+import DateInput, { DateInputProps } from './DateInput';
+import DateTimeInput, { DateTimeInputProps } from './DateTimeInput';
+import FileInput, { FileInputProps } from './FileInput';
+import ImageInput, { ImageInputProps } from './ImageInput';
+import InputHelperText, { InputHelperTextProps } from './InputHelperText';
 import InputPropTypes from './InputPropTypes';
-import Labeled from './Labeled';
-import NullableBooleanInput from './NullableBooleanInput';
-import NumberInput from './NumberInput';
-import PasswordInput from './PasswordInput';
-import RadioButtonGroupInput from './RadioButtonGroupInput';
-import ReferenceArrayInput from './ReferenceArrayInput';
-import ReferenceInput from './ReferenceInput';
-import ResettableTextField from './ResettableTextField';
-import SearchInput from './SearchInput';
-import SelectArrayInput from './SelectArrayInput';
-import SelectInput from './SelectInput';
-import TextInput from './TextInput';
+import Labeled, { LabeledProps } from './Labeled';
+import NullableBooleanInput, {
+    NullableBooleanInputProps,
+} from './NullableBooleanInput';
+import NumberInput, { NumberInputProps } from './NumberInput';
+import PasswordInput, { PasswordInputProps } from './PasswordInput';
+import RadioButtonGroupInput, {
+    RadioButtonGroupInputProps,
+} from './RadioButtonGroupInput';
+import ReferenceArrayInput, {
+    ReferenceArrayInputProps,
+} from './ReferenceArrayInput';
+import ReferenceInput, { ReferenceInputProps } from './ReferenceInput';
+import ResettableTextField, {
+    ResettableTextFieldProps,
+} from './ResettableTextField';
+import SearchInput, { SearchInputProps } from './SearchInput';
+import SelectArrayInput, { SelectArrayInputProps } from './SelectArrayInput';
+import SelectInput, { SelectInputProps } from './SelectInput';
+import TextInput, { TextInputProps } from './TextInput';
 import sanitizeInputRestProps from './sanitizeInputRestProps';
 export * from './TranslatableInputs';
 export * from './TranslatableInputsTabContent';
@@ -59,7 +67,25 @@ export {
 };
 
 export type {
+    ArrayInputProps,
     AutocompleteInputProps,
     AutocompleteArrayInputProps,
     CheckboxGroupInputProps,
+    DateInputProps,
+    DateTimeInputProps,
+    FileInputProps,
+    ImageInputProps,
+    InputHelperTextProps,
+    LabeledProps,
+    NullableBooleanInputProps,
+    NumberInputProps,
+    PasswordInputProps,
+    RadioButtonGroupInputProps,
+    ReferenceArrayInputProps,
+    ReferenceInputProps,
+    ResettableTextFieldProps,
+    SearchInputProps,
+    SelectArrayInputProps,
+    SelectInputProps,
+    TextInputProps,
 };

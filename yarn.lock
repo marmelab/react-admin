@@ -8219,11 +8219,6 @@ final-form-arrays@^3.0.2:
   resolved "https://registry.yarnpkg.com/final-form-arrays/-/final-form-arrays-3.0.2.tgz#9f3bef778dec61432357744eb6f3abef7e7f3847"
   integrity sha512-TfO8aZNz3RrsZCDx8GHMQcyztDNpGxSSi9w4wpSNKlmv2PfFWVVM8P7Yj5tj4n0OWax+x5YwTLhT5BnqSlCi+w==
 
-final-form-submit-errors@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/final-form-submit-errors/-/final-form-submit-errors-0.1.2.tgz#1c59d10386d7b5a1a5e89f9389fa7cf85d1255c5"
-  integrity sha512-2EwHSdf9Sy80bnsGRrDKBLp5C2uY7hL65o8tpqK/FWxyBpXtT519SsIZC4etLpGen2kjFCpYrxYkzFUfbIEXsQ==
-
 final-form@^4.20.2:
   version "4.20.2"
   resolved "https://registry.yarnpkg.com/final-form/-/final-form-4.20.2.tgz#c820b37d7ebb73d71169480256a36c7e6e6c9155"

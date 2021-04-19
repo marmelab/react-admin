@@ -32,8 +32,20 @@ const cachedRequestsReducer: Reducer<State> = (
     action
 ) => {
     if (action.type === REFRESH_VIEW) {
-        // force refresh
-        return initialState;
+        if (action.payload?.hard) {
+            // force refresh
+            return initialState;
+        } else {
+            // remove validity only
+            const newState = {};
+            Object.keys(previousState).forEach(key => {
+                newState[key] = {
+                    ...previousState[key],
+                    validity: undefined,
+                };
+            });
+            return newState;
+        }
     }
     if (action.meta && action.meta.optimistic) {
         if (

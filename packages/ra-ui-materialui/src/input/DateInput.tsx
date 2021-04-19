@@ -44,9 +44,7 @@ const getStringFromDate = (value: string | Date) => {
     return convertDateToString(new Date(value));
 };
 
-const DateInput: FunctionComponent<
-    InputProps<TextFieldProps> & Omit<TextFieldProps, 'helperText' | 'label'>
-> = ({
+const DateInput: FunctionComponent<DateInputProps> = ({
     format = getStringFromDate,
     label,
     options,
@@ -119,5 +117,8 @@ DateInput.propTypes = {
 DateInput.defaultProps = {
     options: {},
 };
+
+export type DateInputProps = InputProps<TextFieldProps> &
+    Omit<TextFieldProps, 'helperText' | 'label'>;
 
 export default DateInput;

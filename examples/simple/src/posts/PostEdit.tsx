@@ -29,12 +29,12 @@ import {
     required,
     FormDataConsumer,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
-import { Box } from '@material-ui/core';
+import { Box, BoxProps } from '@material-ui/core';
 
 import PostTitle from './PostTitle';
 import TagReferenceInput from './TagReferenceInput';
 
-const EditActions = ({ basePath, data, hasShow }) => (
+const EditActions = ({ basePath, data, hasShow }: any) => (
     <TopToolbar>
         <CloneButton
             className="button-clone"
@@ -45,7 +45,11 @@ const EditActions = ({ basePath, data, hasShow }) => (
     </TopToolbar>
 );
 
-const SanitizedBox = ({ fullWidth, basePath, ...props }) => <Box {...props} />;
+const SanitizedBox = ({
+    fullWidth,
+    basePath,
+    ...props
+}: BoxProps & { fullWidth?: boolean; basePath?: string }) => <Box {...props} />;
 
 const PostEdit = ({ permissions, ...props }) => (
     <Edit title={<PostTitle />} actions={<EditActions />} {...props}>
@@ -147,7 +151,7 @@ const PostEdit = ({ permissions, ...props }) => (
                         <TextInput source="url" validate={required()} />
                     </SimpleFormIterator>
                 </ArrayInput>
-                <DateInput source="published_at" options={{ locale: 'pt' }} />
+                <DateInput source="published_at" />
                 <SelectInput
                     allowEmpty
                     resettable

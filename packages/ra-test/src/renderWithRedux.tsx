@@ -16,9 +16,19 @@ export interface RenderWithReduxResult extends RenderResult {
  *     initialState
  * );
  *
+ * render with react-testing library adding redux context for unit test and passing customReducers.
+ * @example
+ * const { dispatch, reduxStore, ...otherReactTestingLibraryHelper } = renderWithRedux(
+ *     <TestedComponent />,
+ *     initialState,
+ *     {},
+ *     customReducers
+ * );
+ *
  * @param {ReactNode} component: The component you want to test in jsx
  * @param {Object} initialState: Optional initial state of the redux store
  * @param {Object} options: Render options, e.g. to use a custom container element
+ * @param {Object} customReducers: Custom reducers to be added to the default store
  * @return {{ dispatch, reduxStore, ...rest }} helper function to test rendered component.
  * Same as @testing-library/react render method with added dispatch and reduxStore helper
  * dispatch: spy on the redux store dispatch method
@@ -27,12 +37,17 @@ export interface RenderWithReduxResult extends RenderResult {
 export const renderWithRedux = (
     component,
     initialState = {},
-    options = {}
+    options = {},
+    customReducers = {}
 ): RenderWithReduxResult => {
     let dispatch;
     let reduxStore;
     const renderResult = render(
-        <TestContext initialState={initialState} enableReducers>
+        <TestContext
+            initialState={initialState}
+            customReducers={customReducers}
+            enableReducers
+        >
             {({ store }) => {
                 dispatch = jest.spyOn(store, 'dispatch');
                 reduxStore = store;
@@ -46,7 +61,11 @@ export const renderWithRedux = (
         ...renderResult,
         rerender: newComponent => {
             return renderResult.rerender(
-                <TestContext initialState={initialState} enableReducers>
+                <TestContext
+                    initialState={initialState}
+                    customReducers={customReducers}
+                    enableReducers
+                >
                     {({ store }) => {
                         dispatch = jest.spyOn(store, 'dispatch');
                         reduxStore = store;

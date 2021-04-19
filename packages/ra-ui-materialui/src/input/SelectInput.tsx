@@ -137,10 +137,7 @@ const useStyles = makeStyles(
  * <SelectInput source="gender" choices={choices} disableValue="not_available" />
  *
  */
-const SelectInput: FunctionComponent<
-    ChoicesInputProps<TextFieldProps> &
-        Omit<TextFieldProps, 'label' | 'helperText'>
-> = props => {
+const SelectInput: FunctionComponent<SelectInputProps> = props => {
     const {
         allowEmpty,
         choices = [],
@@ -312,5 +309,8 @@ SelectInput.defaultProps = {
     translateChoice: true,
     disableValue: 'disabled',
 };
+
+export type SelectInputProps = ChoicesInputProps<TextFieldProps> &
+    Omit<TextFieldProps, 'label' | 'helperText'>;
 
 export default SelectInput;

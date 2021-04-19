@@ -1,5 +1,4 @@
 import { isValidElement, ReactElement, useEffect, useMemo } from 'react';
-import inflection from 'inflection';
 import { Location } from 'history';
 
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
@@ -19,7 +18,7 @@ import {
     Record,
     Exporter,
 } from '../types';
-import { useResourceContext } from '../core';
+import { useResourceContext, useGetResourceLabel } from '../core';
 
 export interface ListProps {
     // the props you can change
@@ -202,12 +201,9 @@ const useListController = <RecordType extends Record = Record>(
         [query.sort, query.order]
     );
 
-    const resourceName = translate(`resources.${resource}.name`, {
-        smart_count: 2,
-        _: inflection.humanize(inflection.pluralize(resource)),
-    });
+    const getResourceLabel = useGetResourceLabel();
     const defaultTitle = translate('ra.page.list', {
-        name: resourceName,
+        name: getResourceLabel(resource, 2),
     });
 
     return {

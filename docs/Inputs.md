@@ -544,26 +544,6 @@ import { AutocompleteInput } from 'react-admin';
 | `container`            | Applied to the root element          |
 | `suggestionsContainer` | Applied to the suggestions container |
 
-The suggestions container has a `z-index` of 2. When using `<AutocompleteInput>` in a `<Dialog>`, this will cause suggestions to appear beneath the Dialog. The solution is to override the `suggestionsContainer` class name, as follows:
-
-```diff
-import { AutocompleteInput } from 'react-admin';
--import { Dialog } from '@material-ui/core';
-+import { Dialog, withStyles } from '@material-ui/core';
-
-+const AutocompleteInputInDialog = withStyles({
-+    suggestionsContainer: { zIndex: 2000 },
-+})(AutocompleteInput);
-
-const EditForm = () => (
-    <Dialog open>
-        ...
--       <AutocompleteInput source="foo" choices={[...]}>
-+       <AutocompleteInputInDialog source="foo" choices={[...]}>
-    </Dialog>
-)
-```
-
 To override the style of all instances of `<AutocompleteInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaAutocompleteInput` key.
 
 #### Usage
@@ -1036,6 +1016,7 @@ import { AutocompleteArrayInput } from 'react-admin';
 | ------------------------- | -------- | -------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `allowEmpty`              | Optional | `boolean`                  | `false`      | If `true`, the first option is an empty one                                                                                                                                                                                                                                                          |
 | `allowDuplicates`         | Optional | `boolean`                  | `false`      | If `true`, the options can be selected several times                                                                                                                                                                                                                                                 |
+| `debounce`         | Optional | `number`                  | `250`      | The delay to wait before calling the setFilter function injected when used in a ReferenceInput.                                                                                                                                                                                                                                                 |
 | `choices`                 | Required | `Object[]`                 | -            | List of items to autosuggest                                                                                                                                                                                                                                                                         |
 | `matchSuggestion`         | Optional | `Function`                 | -            | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean`                                                                                                                                              |
 | `optionValue`             | Optional | `string`                   | `id`         | Field name of record containing the value to use as input value                                                                                                                                                                                                                                       |
@@ -1059,26 +1040,6 @@ import { AutocompleteArrayInput } from 'react-admin';
 | `inputRoot`             | Styles pass as the `root` class of the underlying Material UI's `TextField` component input                                 |
 | `inputRootFilled`       | Styles pass as the `root` class of the underlying Material UI's `TextField` component input when `variant` prop is `filled` |
 | `inputInput`            | Styles pass as the `input` class of the underlying Material UI's `TextField` component input                                |
-
-The suggestions container has a `z-index` of 2. When using `<AutocompleteArrayInput>` in a `<Dialog>`, this will cause suggestions to appear beneath the Dialog. The solution is to override the `suggestionsContainer` class name, as follows:
-
-```diff
-import { AutocompleteArrayInput } from 'react-admin';
--import { Dialog } from '@material-ui/core';
-+import { Dialog, withStyles } from '@material-ui/core';
-
-+const AutocompleteArrayInputInDialog = withStyles({
-+    suggestionsContainer: { zIndex: 2000 },
-+})(AutocompleteArrayInput);
-
-const EditForm = () => (
-    <Dialog open>
-        ...
--       <AutocompleteArrayInput source="foo" choices={[...]}>
-+       <AutocompleteArrayInputInDialog source="foo" choices={[...]}>
-    </Dialog>
-)
-```
 
 To override the style of all instances of `<AutocompleteArrayInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaAutocompleteArrayInput` key.
 
@@ -1515,7 +1476,7 @@ You can tweak how this component fetches the possible values using the `perPage`
 </ReferenceArrayInput>
 ```
 
-In addition to the `ReferenceArrayInputContext`, `<ReferenceArrayInput>` also sets up a `ListContext` providing access to the records from the reference resource in a similar fashion to that of the `<List>` component. This `ListContext` value is accessible with the [`useListContext`](/List.md#uselistcontext) hook.
+In addition to the `ReferenceArrayInputContext`, `<ReferenceArrayInput>` also sets up a `ListContext` providing access to the records from the reference resource in a similar fashion to that of the `<List>` component. This `ListContext` value is accessible with the [`useListContext`](./List.md#uselistcontext) hook.
 
 `<ReferenceArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
@@ -1523,7 +1484,7 @@ In addition to the `ReferenceArrayInputContext`, `<ReferenceArrayInput>` also se
 
 The [`<ReferenceArrayInput>`](#referencearrayinput) component take care of fetching the data, and put that data in a context called `ReferenceArrayInputContext` so that it’s available for its descendants. This context also stores filters, pagination, sort state, and provides callbacks to update them.
 
-Any component decendent of `<ReferenceArryInput>` can grab information from the `ReferenceArrayInputContext` using the `useReferenceArrayInputContext` hook. Here is what it returns:
+Any component descendant of `<ReferenceArryInput>` can grab information from the `ReferenceArrayInputContext` using the `useReferenceArrayInputContext` hook. Here is what it returns:
 
 ```js
 const {

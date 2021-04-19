@@ -217,7 +217,7 @@ interface Props {
     undoable?: boolean;
 }
 
-type SaveButtonProps = Props & ButtonProps;
+export type SaveButtonProps = Props & ButtonProps;
 
 SaveButton.propTypes = {
     className: PropTypes.string,

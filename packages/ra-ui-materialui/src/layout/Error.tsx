@@ -3,9 +3,9 @@ import { Fragment, HtmlHTMLAttributes, ErrorInfo } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Button from '@material-ui/core/Button';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
 import { makeStyles } from '@material-ui/core/styles';
 import ErrorIcon from '@material-ui/icons/Report';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -75,17 +75,21 @@ const Error = (props: ErrorProps): JSX.Element => {
                 </h1>
                 <div>{translate('ra.message.error')}</div>
                 {process.env.NODE_ENV !== 'production' && (
-                    <ExpansionPanel className={classes.panel}>
-                        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                    <Accordion className={classes.panel}>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                             {translate('ra.message.details')}
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails className={classes.panelDetails}>
+                        </AccordionSummary>
+                        <AccordionDetails className={classes.panelDetails}>
                             <div>
-                                <h2>{translate(error.toString())}</h2>
+                                <h2>
+                                    {translate(error.toString(), {
+                                        _: error.toString(),
+                                    })}
+                                </h2>
                                 {errorInfo && errorInfo.componentStack}
                             </div>
-                        </ExpansionPanelDetails>
-                    </ExpansionPanel>
+                        </AccordionDetails>
+                    </Accordion>
                 )}
                 <div className={classes.toolbar}>
                     <Button

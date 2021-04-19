@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useRef, useCallback, useEffect, useMemo } from 'react';
 import { Form, FormProps, FormRenderProps } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
-import { submitErrorsMutators } from 'final-form-submit-errors';
 
 import useInitializeFormWithRecord from './useInitializeFormWithRecord';
 import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
@@ -19,6 +18,7 @@ import { RedirectionSideEffect } from '../sideEffect';
 import { useDispatch } from 'react-redux';
 import { setAutomaticRefresh } from '../actions/uiActions';
 import { FormContextProvider } from './FormContextProvider';
+import submitErrorsMutators from './submitErrorsMutators';
 
 /**
  * Wrapper around react-final-form's Form to handle redirection on submit,
@@ -190,7 +190,7 @@ export type FormWithRedirectProps = FormWithRedirectOwnProps &
 
 export type FormWithRedirectRenderProps = Omit<
     FormViewProps,
-    'chilren' | 'render' | 'setRedirect'
+    'children' | 'render' | 'setRedirect'
 >;
 export type FormWithRedirectRender = (
     props: FormWithRedirectRenderProps

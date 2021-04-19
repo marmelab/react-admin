@@ -5,6 +5,7 @@ import {
     cloneElement,
     isValidElement,
     ReactElement,
+    ReactNode,
     useState,
 } from 'react';
 import PropTypes from 'prop-types';
@@ -22,7 +23,7 @@ import Toolbar from './Toolbar';
 import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
 import { ClassesOverride } from '../types';
 
-export const TabbedFormView = (props: TabbedFormViewProps) => {
+export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
     const {
         basePath,
         children,
@@ -183,6 +184,7 @@ TabbedFormView.defaultProps = {
 
 export interface TabbedFormViewProps extends FormWithRedirectRenderProps {
     basePath?: string;
+    children?: ReactNode;
     classes?: ClassesOverride<typeof useTabbedFormViewStyles>;
     className?: string;
     margin?: 'none' | 'normal' | 'dense';

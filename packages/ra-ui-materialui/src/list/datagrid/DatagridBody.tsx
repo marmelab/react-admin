@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import { shallowEqual } from 'react-redux';
 import { Identifier, Record, RecordMap } from 'ra-core';
 
-import DatagridRow, { PureDatagridRow } from './DatagridRow';
+import DatagridRow, { PureDatagridRow, RowClickFunction } from './DatagridRow';
 import useDatagridStyles from './useDatagridStyles';
 
 const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
@@ -49,7 +49,7 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
                             [classes.clickableRow]: rowClick,
                         }),
                         expand,
-                        hasBulkActions,
+                        hasBulkActions: hasBulkActions && !!selectedIds,
                         hover,
                         id,
                         key: id,
@@ -97,12 +97,6 @@ DatagridBody.defaultProps = {
     ids: [],
     row: <DatagridRow />,
 };
-
-type RowClickFunction = (
-    id: Identifier,
-    basePath: string,
-    record: Record
-) => string;
 
 export interface DatagridBodyProps extends Omit<TableBodyProps, 'classes'> {
     basePath?: string;

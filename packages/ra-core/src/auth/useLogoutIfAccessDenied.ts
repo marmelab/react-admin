@@ -4,7 +4,7 @@ import useAuthProvider from './useAuthProvider';
 import useLogout from './useLogout';
 import { useNotify } from '../sideEffect';
 
-let authCheckPromise;
+let timer;
 
 /**
  * Returns a callback used to call the authProvider.checkError() method
@@ -42,37 +42,44 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
     const logout = useLogout();
     const notify = useNotify();
     const logoutIfAccessDenied = useCallback(
-        (error?: any, disableNotification?: boolean) => {
-            // Sometimes, a component might trigger multiple simultaneous
-            // dataProvider calls which all fail and call this function.
-            // To avoid having multiple notifications, we first verify if
-            // a checkError promise is already ongoing
-            if (!authCheckPromise) {
-                authCheckPromise = authProvider
-                    .checkError(error)
-                    .then(() => false)
-                    .catch(async e => {
-                        const redirectTo =
-                            e && e.redirectTo
-                                ? e.redirectTo
-                                : error && error.redirectTo
-                                ? error.redirectTo
-                                : undefined;
-                        logout({}, redirectTo);
-                        const shouldSkipNotify =
-                            disableNotification ||
-                            (e && e.message === false) ||
-                            (error && error.message === false);
-                        !shouldSkipNotify &&
-                            notify('ra.notification.logged_out', 'warning');
+        (error?: any, disableNotification?: boolean) =>
+            authProvider
+                .checkError(error)
+                .then(() => false)
+                .catch(async e => {
+                    //manual debounce
+                    if (timer) {
+                        // side effects already triggered in this tick, exit
                         return true;
-                    })
-                    .finally(() => {
-                        authCheckPromise = undefined;
-                    });
-            }
-            return authCheckPromise;
-        },
+                    }
+                    timer = setTimeout(() => {
+                        timer = undefined;
+                    }, 0);
+
+                    const shouldNotify = !(
+                        disableNotification ||
+                        (e && e.message === false) ||
+                        (error && error.message === false)
+                    );
+                    if (shouldNotify) {
+                        // notify only if not yet logged out
+                        authProvider
+                            .checkAuth({})
+                            .then(() => {
+                                notify('ra.notification.logged_out', 'warning');
+                            })
+                            .catch(() => {});
+                    }
+                    const redirectTo =
+                        e && e.redirectTo
+                            ? e.redirectTo
+                            : error && error.redirectTo
+                            ? error.redirectTo
+                            : undefined;
+                    logout({}, redirectTo);
+
+                    return true;
+                }),
         [authProvider, logout, notify]
     );
     return authProvider

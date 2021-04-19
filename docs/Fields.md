@@ -466,16 +466,16 @@ import { NumberField }  from 'react-admin';
 
 | Prop      | Required | Type   | Default | Description                                                                                              |
 | --------- | -------- | ------ | ------- | -------------------------------------------------------------------------------------------------------- |
-| `locales` | Optional | string | ''      | Override the browser locale in the date formatting. Passed as first argument to `Intl.DateTimeFormat()`. |
+| `locales` | Optional | string | ''      | Override the browser locale in the date formatting. Passed as first argument to `Intl.NumberFormat()`.   |
 | `options` | Optional | Object | -       | Number formatting options. Passed as second argument to `Intl.NumberFormat()`.                           |
 
 `<NumberField>` also accepts the [common field props](./Fields.md#common-field-props).
 
 #### Usage
 
-`<NumberField>` uses `Intl.NumberFormat()` if available, passing the `locales` and `options` props as arguments. This allows a perfect display of decimals, currencies, percentages, etc.
+`<NumberField>` uses `Intl.NumberFormat()` if available, passing the `locales` and `options` props as arguments. This allows a perfect display of decimals, currencies, percentages, etc. See [Intl.NumberFormat documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) for the `options` prop syntax.
 
-If Intl is not available, it outputs numbers as is (and ignores the `locales` and `options` props).
+If Intl is not available, `<NumberField>` outputs numbers as is (and ignores the `locales` and `options` props).
 
 {% raw %}
 ```jsx
@@ -498,8 +498,6 @@ import { NumberField }  from 'react-admin';
 <span>25,99 $US</span>
 ```
 {% endraw %}
-
-See [Intl.NumberFormat documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString) for the `options` prop syntax.
 
 **Tip**: If you need more formatting options than what `Intl.NumberFormat` can provide, build your own field component leveraging a third-party library like [numeral.js](http://numeraljs.com/).
 
@@ -1398,6 +1396,20 @@ const MyShowLayout = ({ record }) => (
     <div>
         <Labeled label="Name">
             <FullNameField record={record} />
+        </Label>
+    </div>
+);
+```
+
+You can also leverage the default label resolution mechanism by providing the `resource` and `source` props instead of the `label`:
+
+```jsx
+import { Labeled } from 'react-admin';
+
+const MyShowLayout = ({ record }) => (
+    <div>
+        <Labeled resource="users" source="name">
+            <TextField source="name" />
         </Label>
     </div>
 );

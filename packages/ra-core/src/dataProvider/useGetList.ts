@@ -10,8 +10,11 @@ import {
     RecordMap,
     UseDataProviderOptions,
 } from '../types';
-import useQueryWithStore from './useQueryWithStore';
+import { useQueryWithStore } from './useQueryWithStore';
 
+const defaultPagination = { page: 1, perPage: 25 };
+const defaultSort = { field: 'id', order: 'DESC' };
+const defaultFilter = {};
 const defaultIds = [];
 const defaultData = {};
 
@@ -58,13 +61,13 @@ const defaultData = {};
  */
 const useGetList = <RecordType extends Record = Record>(
     resource: string,
-    pagination: PaginationPayload,
-    sort: SortPayload,
-    filter: object,
+    pagination: PaginationPayload = defaultPagination,
+    sort: SortPayload = defaultSort,
+    filter: object = defaultFilter,
     options?: UseDataProviderOptions
 ): {
-    data?: RecordMap<RecordType>;
-    ids?: Identifier[];
+    data: RecordMap<RecordType>;
+    ids: Identifier[];
     total?: number;
     error?: any;
     loading: boolean;

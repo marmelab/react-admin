@@ -149,7 +149,7 @@ export const useReferenceInputController = (
     } else {
         finalIds = [input.value, ...possibleValuesIds];
         finalData = { [input.value]: referenceRecord, ...possibleValuesData };
-        finalTotal += 1;
+        finalTotal = possibleValuesTotal + 1;
     }
 
     // overall status

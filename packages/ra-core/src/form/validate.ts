@@ -23,7 +23,18 @@ export type Validator = (
     value: any,
     values: any,
     props: any
-) => ValidationErrorMessage | null | undefined;
+) =>
+    | ValidationErrorMessage
+    | null
+    | undefined
+    | Promise<ValidationErrorMessage | null | undefined>;
+
+// type predicate, see https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates
+function isValidationErrorMessageWithArgs(
+    error: ReturnType<Validator>
+): error is ValidationErrorMessageWithArgs {
+    return error.hasOwnProperty('message');
+}
 
 interface MessageFuncParams {
     args: any;
@@ -74,13 +85,24 @@ export const composeValidators = (...validators) => async (
     const allValidators = (Array.isArray(validators[0])
         ? validators[0]
         : validators
-    ).filter(isFunction);
+    ).filter(isFunction) as Validator[];
 
     for (const validator of allValidators) {
-        const error = await validator(value, values, meta);
+        const errorPromise = validator(value, values, meta);
 
-        if (error) {
-            return error;
+        if (errorPromise) {
+            if (typeof errorPromise == 'string') {
+                return errorPromise;
+            }
+            if (isValidationErrorMessageWithArgs(errorPromise)) {
+                return errorPromise;
+            }
+
+            const error = await errorPromise;
+
+            if (error) {
+                return error;
+            }
         }
     }
 };
@@ -94,7 +116,7 @@ export const composeSyncValidators = (...validators) => (
     const allValidators = (Array.isArray(validators[0])
         ? validators[0]
         : validators
-    ).filter(isFunction);
+    ).filter(isFunction) as Validator[];
 
     for (const validator of allValidators) {
         const error = validator(value, values, meta);

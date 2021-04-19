@@ -18,7 +18,13 @@ const useStyles = makeStyles({
     },
 });
 
-const TagReferenceInput = ({ ...props }) => {
+const TagReferenceInput = ({
+    ...props
+}: {
+    reference: string;
+    source: string;
+    label?: string;
+}) => {
     const classes = useStyles();
     const { change } = useForm();
     const [filter, setFilter] = useState(true);

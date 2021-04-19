@@ -18,6 +18,7 @@ import {
     sanitizeListRestProps,
     useListContext,
     Record,
+    RecordMap,
     Identifier,
 } from 'ra-core';
 
@@ -186,7 +187,8 @@ export type FunctionToElement = (
     id: Identifier
 ) => ReactElement | string;
 
-export interface SimpleListProps extends Omit<ListProps, 'classes'> {
+export interface SimpleListProps<RecordType extends Record = Record>
+    extends Omit<ListProps, 'classes'> {
     className?: string;
     classes?: ClassesOverride<typeof useStyles>;
     hasBulkActions?: boolean;
@@ -199,6 +201,12 @@ export interface SimpleListProps extends Omit<ListProps, 'classes'> {
     secondaryText?: FunctionToElement;
     tertiaryText?: FunctionToElement;
     rowStyle?: (record: Record, index: number) => any;
+    // can be injected when using the component without context
+    basePath?: string;
+    data?: RecordMap<RecordType>;
+    ids?: Identifier[];
+    loaded?: boolean;
+    total?: number;
 }
 
 const useLinkOrNotStyles = makeStyles(

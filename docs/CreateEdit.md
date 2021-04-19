@@ -201,6 +201,8 @@ const PostEditActions = ({ basePath, data }) => (
 
 ### Aside component
 
+![Aside component](./img/aside.png)
+
 You may want to display additional information on the side of the form. Use the `aside` prop for that, passing the component of your choice:
 
 {% raw %}
@@ -577,7 +579,7 @@ const PostList = props => (
 
 **Note**: `<CloneButton>` is designed to be used in a `<Datagrid>` and in an edit view `<Actions>` component, not inside the form `<Toolbar>`. The `Toolbar` is basically for submitting the form, not for going to another resource.
 
-Alternately, users need to prepopulate a record based on a *related* record. For instance, to create a comment related to an exising post. 
+Alternately, users need to prepopulate a record based on a *related* record. For instance, to create a comment related to an existing post. 
 
 By default, the `<Create>` view starts with an empty `record`. However, if the `location` object (injected by [react-router-dom](https://reacttraining.com/react-router/web/api/location)) contains a `record` in its `state`, the `<Create>` view uses that `record` instead of the empty object. That's how the `<CloneButton>` works under the hood.
 
@@ -938,7 +940,7 @@ You can also opt out the location synchronization by passing `false` to the `syn
 ```jsx
 export const PostEdit = (props) => (
     <Edit {...props}>
-        <TabbedForm syncWithLocation>
+        <TabbedForm syncWithLocation={false}>
             <FormTab label="summary">
                 <TextInput disabled label="Id" source="id" />
                 <TextInput source="title" validate={required()} />
@@ -969,6 +971,7 @@ export const PostEdit = (props) => (
 ```
 {% endraw %}
 **Tip**: When `syncWithLocation` is `false`, the `path` prop of the `<FormTab>` components is ignored.
+
 ### Label Decoration
 
 `<FormTab>` scans its children for the `addLabel` prop, and automatically wraps a child in a `<Labeled>` component when found. This displays a label on top of the child, based on the `label` prop. This is not necessary for `<Input>` components, as they already contain their label. Also, all the react-admin `<Field>` components have a default prop `addLabel: true`, which explains why react-admin shows a label on top of Fields when they are used as children of `<FormTab>`. 
@@ -1212,12 +1215,17 @@ The value of the form `validate` prop must be a function taking the record as in
 const validateUserCreation = (values) => {
     const errors = {};
     if (!values.firstName) {
-        errors.firstName = ['The firstName is required'];
+        errors.firstName = 'The firstName is required';
     }
     if (!values.age) {
-        errors.age = ['The age is required'];
+        // You can return translation keys
+        errors.age = 'ra.validation.required';
     } else if (values.age < 18) {
-        errors.age = ['Must be over 18'];
+        // Or an object if the translation messages need parameters
+        errors.age = {
+            message: 'ra.validation.minValue',
+            args: { min: 18 }
+        };
     }
     return errors
 };
@@ -1269,7 +1277,7 @@ const validateFirstName = [required(), minLength(2), maxLength(15)];
 const validateEmail = email();
 const validateAge = [number(), minValue(18)];
 const validateZipCode = regex(/^\d{5}$/, 'Must be a valid Zip Code');
-const validateSex = choices(['m', 'f'], 'Must be Male or Female');
+const validateGender = choices(['m', 'f', 'nc'], 'Please choose one of the values');
 
 export const UserCreate = (props) => (
     <Create {...props}>
@@ -1278,10 +1286,11 @@ export const UserCreate = (props) => (
             <TextInput label="Email" source="email" validate={validateEmail} />
             <TextInput label="Age" source="age" validate={validateAge}/>
             <TextInput label="Zip Code" source="zip" validate={validateZipCode}/>
-            <SelectInput label="Sex" source="sex" choices={[
+            <SelectInput label="Gender" source="gender" choices={[
                 { id: 'm', name: 'Male' },
                 { id: 'f', name: 'Female' },
-            ]} validate={validateSex}/>
+                { id: 'nc', name: 'Prefer not say' },
+            ]} validate={validateGender}/>
         </SimpleForm>
     </Create>
 );
@@ -1316,7 +1325,7 @@ const ageValidation = (value, allValues) => {
     if (value < 18) {
         return 'Must be over 18';
     }
-    return [];
+    return undefined;
 };
 
 const validateFirstName = [required(), maxLength(15)];
@@ -1411,17 +1420,25 @@ You can validate the entire form data server-side by returning a Promise in the 
 const validateUserCreation = async (values) => {
     const errors = {};
     if (!values.firstName) {
-        errors.firstName = ['The firstName is required'];
+        errors.firstName = 'The firstName is required';
     }
     if (!values.age) {
-        errors.age = ['The age is required'];
+        errors.age = 'The age is required';
     } else if (values.age < 18) {
-        errors.age = ['Must be over 18'];
+        errors.age = 'Must be over 18';
     }
 
-    const isEmailUnique = await checkEmailIsUnique(values.userName);
+    const isEmailUnique = await checkEmailIsUnique(values.email);
     if (!isEmailUnique) {
-        errors.email = ['Email already used'];
+        // Return a message directly
+        errors.email = 'Email already used';
+        // Or a translation key
+        errors.email = 'myapp.validation.email_not_unique';
+        // Or an object if the translation needs parameters
+        errors.email = {
+            message: 'myapp.validation.email_not_unique',
+            args: { email: values.email }
+        };
     }
     return errors
 };
@@ -1511,6 +1528,8 @@ export const UserCreate = (props) => {
 {% endraw %}
 
 **Tip**: The shape of the returned validation errors must correspond to the form: a key needs to match a `source` prop.
+
+**Tip**: The returned validation errors might have any validation format we support (simple strings or object with message and args) for each key.
 
 ## Submit On Enter
 

@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react';
-import useQuery from './useQuery';
+import { useQuery } from './useQuery';
 
 interface ChildrenFuncParams {
     data?: any;

@@ -18,6 +18,7 @@ import {
     useSuggestions,
     warning,
 } from 'ra-core';
+import debounce from 'lodash/debounce';
 
 import InputHelperText from './InputHelperText';
 import AutocompleteSuggestionList from './AutocompleteSuggestionList';
@@ -92,6 +93,7 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
         allowEmpty,
         classes: classesOverride,
         choices = [],
+        debounce: debounceDelay = 250,
         disabled,
         emptyText,
         emptyValue,
@@ -203,6 +205,11 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
         translateChoice,
     });
 
+    // eslint-disable-next-line
+    const debouncedSetFilter = useCallback(debounce(setFilter || DefaultSetFilter, debounceDelay),
+        [setFilter, debounceDelay]
+    );
+
     const handleFilterChange = useCallback(
         (eventOrValue: React.ChangeEvent<{ value: string }> | string) => {
             const event = eventOrValue as React.ChangeEvent<{ value: string }>;
@@ -212,10 +219,10 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
 
             setFilterValue(value);
             if (setFilter) {
-                setFilter(value);
+                debouncedSetFilter(value);
             }
         },
-        [setFilter, setFilterValue]
+        [debouncedSetFilter, setFilter, setFilterValue]
     );
 
     // We must reset the filter every time the value changes to ensure we
@@ -495,44 +502,44 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
 const emptyArray = [];
 
 const useStyles = makeStyles(
-    theme => {
-        const chipBackgroundColor =
-            theme.palette.type === 'light'
-                ? 'rgba(0, 0, 0, 0.09)'
-                : 'rgba(255, 255, 255, 0.09)';
-
-        return {
-            container: {
-                flexGrow: 1,
-                position: 'relative',
+    theme => ({
+        container: {
+            flexGrow: 1,
+            position: 'relative',
+        },
+        suggestionsContainer: {
+            zIndex: theme.zIndex.modal,
+        },
+        chip: {
+            margin: theme.spacing(0.5, 0.5, 0.5, 0),
+        },
+        chipContainerFilled: {
+            margin: '27px 12px 10px 0',
+        },
+        chipContainerOutlined: {
+            margin: '12px 12px 10px 0',
+        },
+        inputRoot: {
+            flexWrap: 'wrap',
+        },
+        inputRootFilled: {
+            flexWrap: 'wrap',
+            '& $chip': {
+                backgroundColor:
+                    theme.palette.type === 'light'
+                        ? 'rgba(0, 0, 0, 0.09)'
+                        : 'rgba(255, 255, 255, 0.09)',
             },
-            suggestionsContainer: {},
-            chip: {
-                margin: theme.spacing(0.5, 0.5, 0.5, 0),
-            },
-            chipContainerFilled: {
-                margin: '27px 12px 10px 0',
-            },
-            chipContainerOutlined: {
-                margin: '12px 12px 10px 0',
-            },
-            inputRoot: {
-                flexWrap: 'wrap',
-            },
-            inputRootFilled: {
-                flexWrap: 'wrap',
-                '& $chip': {
-                    backgroundColor: chipBackgroundColor,
-                },
-            },
-            inputInput: {
-                width: 'auto',
-                flexGrow: 1,
-            },
-        };
-    },
+        },
+        inputInput: {
+            width: 'auto',
+            flexGrow: 1,
+        },
+    }),
     { name: 'RaAutocompleteArrayInput' }
 );
+
+const DefaultSetFilter = () => {};
 
 interface Options {
     suggestionsContainerProps?: any;
