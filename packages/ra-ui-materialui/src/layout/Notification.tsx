@@ -34,9 +34,9 @@ const useStyles = makeStyles(
             backgroundColor: theme.palette.error.light,
             color: theme.palette.error.contrastText,
         },
-        undo: {
-            color: theme.palette.primary.light,
-        },
+        undo: props => ({
+            color: theme.palette[props.type].contrastText,
+        }),
     }),
     { name: 'RaNotification' }
 );
