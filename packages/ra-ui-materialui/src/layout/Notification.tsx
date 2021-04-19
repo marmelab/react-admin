@@ -34,9 +34,12 @@ const useStyles = makeStyles(
             backgroundColor: theme.palette.error.light,
             color: theme.palette.error.contrastText,
         },
-        undo: {
-            color: theme.palette.primary.light,
-        },
+        undo: (props: Props & Omit<SnackbarProps, 'open'>) => ({
+            color:
+                props.type === 'success'
+                    ? theme.palette[props.type].contrastText
+                    : theme.palette.primary.light,
+        }),
     }),
     { name: 'RaNotification' }
 );
