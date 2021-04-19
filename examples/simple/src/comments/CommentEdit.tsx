@@ -75,6 +75,7 @@ const CommentEdit = props => {
                             record={record}
                             save={save}
                             version={version}
+                            warnWhenUnsavedChanges
                         >
                             <TextInput disabled source="id" fullWidth />
                             <ReferenceInput
