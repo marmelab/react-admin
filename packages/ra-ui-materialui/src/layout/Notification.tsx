@@ -15,6 +15,10 @@ import {
     useTranslate,
 } from 'ra-core';
 
+interface Props {
+    type?: string;
+    multiLine?: boolean;
+}
 const PREFIX = 'RaNotification';
 
 const classes = {
@@ -47,6 +51,9 @@ const StyledButton = styled(Button)(
                     ? theme.palette.success.contrastText
                     : theme.palette.primary.light,
         },
+        multiLine: {
+            whiteSpace: 'pre-wrap',
+        },
     })
 );
 
@@ -62,6 +69,7 @@ const Notification = (
         type,
         className,
         autoHideDuration,
+        multiLine,
         ...rest
     } = props;
     const [open, setOpen] = useState(false);
@@ -108,6 +116,7 @@ const Notification = (
             ContentProps={{
                 className: classnames(
                     classes[(notification && notification.type) || type],
+                    { [styles['multiLine']]: multiLine },
                     className
                 ),
             }}
@@ -130,11 +139,13 @@ const Notification = (
 
 Notification.propTypes = {
     type: PropTypes.string,
+    multiLine: PropTypes.bool,
 };
 
 Notification.defaultProps = {
     type: 'info',
     autoHideDuration: 4000,
+    multiLine: false,
 };
 
 export default Notification;
