@@ -37,7 +37,7 @@ const useStyles = makeStyles(
         undo: (props: Props & Omit<SnackbarProps, 'open'>) => ({
             color:
                 props.type === 'success'
-                    ? theme.palette[props.type].contrastText
+                    ? theme.palette.success.contrastText
                     : theme.palette.primary.light,
         }),
     }),
