@@ -18,6 +18,7 @@ import {
 
 interface Props {
     type?: string;
+    multiLine?: boolean;
 }
 
 const useStyles = makeStyles(
@@ -40,6 +41,9 @@ const useStyles = makeStyles(
                     ? theme.palette.success.contrastText
                     : theme.palette.primary.light,
         }),
+        multiLine: {
+            whiteSpace: 'pre-wrap',
+        },
     }),
     { name: 'RaNotification' }
 );
@@ -52,6 +56,7 @@ const Notification: React.FunctionComponent<
         type,
         className,
         autoHideDuration,
+        multiLine,
         ...rest
     } = props;
     const [open, setOpen] = useState(false);
@@ -99,6 +104,7 @@ const Notification: React.FunctionComponent<
             ContentProps={{
                 className: classnames(
                     styles[(notification && notification.type) || type],
+                    { [styles['multiLine']]: multiLine },
                     className
                 ),
             }}
@@ -121,11 +127,13 @@ const Notification: React.FunctionComponent<
 
 Notification.propTypes = {
     type: PropTypes.string,
+    multiLine: PropTypes.bool,
 };
 
 Notification.defaultProps = {
     type: 'info',
     autoHideDuration: 4000,
+    multiLine: false,
 };
 
 export default Notification;
