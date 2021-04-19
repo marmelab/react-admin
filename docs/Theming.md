@@ -740,9 +740,22 @@ const App = () => (
 
 ## Replacing The AppBar
 
-For more drastic changes of the top component, you will probably want to create an `<AppBar>` from scratch instead of just passing children to react-admin's `<AppBar>`.
+By default, React-admin uses [Material-ui's `<AppBar>` component](https://material-ui.com/api/app-bar/) together with a custom container that internally uses a [Slide](https://material-ui.com/api/slide) to hide the `AppBar` on scroll. Here is an example of how to change this container with any component:
 
-By default, React-admin uses [Material-ui's `<AppBar>` component](https://material-ui.com/api/app-bar/) together with [react-headroom](https://github.com/KyleAMathews/react-headroom) to hide the `AppBar` on scroll. Here is an example top bar rebuilt from scratch to remove the "headroom" effect:
+```jsx
+// in src/MyAppBar.js
+import * as React from 'react';
+import { Fragment } from 'react';
+import { AppBar } from 'react-admin';
+
+const MyAppBar = props => (
+    <AppBar {...props} conatainer={Fragment} />
+);
+
+export default MyAppBar;
+```
+
+For more drastic changes of the top component, you will probably want to create an `<AppBar>` from scratch instead of just passing children to react-admin's `<AppBar>`. Here is an example top bar rebuilt from scratch:
 
 ```jsx
 // in src/MyAppBar.js
