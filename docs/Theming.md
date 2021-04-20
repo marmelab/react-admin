@@ -749,7 +749,7 @@ import { Fragment } from 'react';
 import { AppBar } from 'react-admin';
 
 const MyAppBar = props => (
-    <AppBar {...props} conatainer={Fragment} />
+    <AppBar {...props} container={Fragment} />
 );
 
 export default MyAppBar;
