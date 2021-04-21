@@ -67,6 +67,7 @@ const DateInput: FunctionComponent<DateInputProps> = ({
         meta: { error, submitError, touched },
     } = useInput({
         format,
+        formatOnBlur: true,
         onBlur,
         onChange,
         onFocus,
