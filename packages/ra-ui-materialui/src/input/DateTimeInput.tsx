@@ -112,7 +112,9 @@ const DateTimeInput = ({
 
     // Workaround for https://github.com/final-form/react-final-form/issues/431
     useEffect(() => {
-        input.onBlur();
+        if (defaultValue || initialValue) {
+            input.onBlur();
+        }
     }, [input.onBlur]); // eslint-disable-line
 
     return (
