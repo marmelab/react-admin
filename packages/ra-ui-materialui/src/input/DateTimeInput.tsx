@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FunctionComponent } from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import TextField, { TextFieldProps } from '@material-ui/core/TextField';
 import { useInput, FieldTitle, InputProps } from 'ra-core';
@@ -65,8 +65,10 @@ const parseDateTime = (value: string) => new Date(value);
 /**
  * Input component for entering a date and a time with timezone, using the browser locale
  */
-const DateTimeInput: FunctionComponent<DateTimeInputProps> = ({
+const DateTimeInput = ({
+    defaultValue,
     format = formatDateTime,
+    initialValue,
     label,
     helperText,
     margin = 'dense',
@@ -80,14 +82,23 @@ const DateTimeInput: FunctionComponent<DateTimeInputProps> = ({
     validate,
     variant = 'filled',
     ...rest
-}) => {
+}: DateTimeInputProps) => {
+    const sanitizedDefaultValue = defaultValue
+        ? format(new Date(defaultValue))
+        : undefined;
+    const sanitizedInitialValue = initialValue
+        ? format(new Date(initialValue))
+        : undefined;
+
     const {
         id,
         input,
         isRequired,
         meta: { error, submitError, touched },
     } = useInput({
+        defaultValue: sanitizedDefaultValue,
         format,
+        initialValue: sanitizedInitialValue,
         onBlur,
         onChange,
         onFocus,
@@ -99,10 +110,17 @@ const DateTimeInput: FunctionComponent<DateTimeInputProps> = ({
         ...rest,
     });
 
+    // Workaround for https://github.com/final-form/react-final-form/issues/431
+    useEffect(() => {
+        input.onBlur();
+    }, [input.onBlur]); // eslint-disable-line
+
     return (
         <TextField
             id={id}
             {...input}
+            // Workaround https://github.com/final-form/react-final-form/issues/529
+            value={input.value || ''}
             variant={variant}
             margin={margin}
             error={!!(touched && (error || submitError))}
