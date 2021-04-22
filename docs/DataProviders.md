@@ -98,6 +98,7 @@ Developers from the react-admin community have open-sourced Data Providers for m
 * **[Prisma](https://github.com/weakky/ra-data-prisma)**: [weakky/ra-data-prisma](https://github.com/weakky/ra-data-prisma)
 * **[Prisma Version 2](https://www.prisma.io/)**: [panter/ra-data-prisma](https://github.com/panter/ra-data-prisma)
 * **[ProcessMaker3](https://www.processmaker.com/)**: [ckoliber/ra-data-processmaker3](https://github.com/ckoliber/ra-data-processmaker3)
+* **[OData](https://www.odata.org/)**: [Groopit/ra-data-odata-server](https://github.com/Groopit/ra-data-odata-server)
 * **[OpenCRUD](https://www.opencrud.org/)**: [weakky/ra-data-opencrud](https://github.com/Weakky/ra-data-opencrud)
 * **[REST-HAPI](https://github.com/JKHeadley/rest-hapi)**: [ra-data-rest-hapi](https://github.com/mkg20001/ra-data-rest-hapi)
 * **[Sails.js](https://sailsjs.com/)**: [mpampin/ra-data-json-sails](https://github.com/mpampin/ra-data-json-sails)
