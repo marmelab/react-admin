@@ -90,12 +90,7 @@ const DateTimeInput = ({
         ? format(new Date(initialValue))
         : undefined;
 
-    const {
-        id,
-        input,
-        isRequired,
-        meta: { error, submitError, touched },
-    } = useInput({
+    const { id, input, isRequired, meta } = useInput({
         defaultValue: sanitizedDefaultValue,
         format,
         initialValue: sanitizedInitialValue,
@@ -110,12 +105,16 @@ const DateTimeInput = ({
         ...rest,
     });
 
+    const { error, submitError, touched } = meta;
+
     // Workaround for https://github.com/final-form/react-final-form/issues/431
     useEffect(() => {
-        if (defaultValue || initialValue) {
+        // Checking for meta.initial allows the format function to work
+        // on inputs inside an ArrayInput
+        if (defaultValue || initialValue || meta.initial) {
             input.onBlur();
         }
-    }, [input.onBlur]); // eslint-disable-line
+    }, [input.onBlur, meta.initial]); // eslint-disable-line
 
     return (
         <TextField
