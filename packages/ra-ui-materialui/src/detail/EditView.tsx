@@ -11,7 +11,7 @@ import {
     useEditContext,
 } from 'ra-core';
 
-import DefaultActions from './EditActions';
+import { EditActions as DefaultActions } from './EditActions';
 import TitleForRecord from '../layout/TitleForRecord';
 import { EditProps } from '../types';
 

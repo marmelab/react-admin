@@ -39,7 +39,7 @@ const sanitizeRestProps = ({
  *         </Show>
  *     );
  */
-const ShowActions = ({ className, ...rest }: ShowActionsProps) => {
+export const ShowActions = ({ className, ...rest }: ShowActionsProps) => {
     const { basePath, record } = useShowContext(rest);
     const { hasEdit } = useResourceDefinition(rest);
     return (
@@ -53,7 +53,9 @@ export interface ShowActionsProps {
     basePath?: string;
     className?: string;
     data?: Record;
+    hasCreate?: boolean;
     hasEdit?: boolean;
+    hasShow?: boolean;
     hasList?: boolean;
     resource?: string;
 }
@@ -62,9 +64,9 @@ ShowActions.propTypes = {
     basePath: PropTypes.string,
     className: PropTypes.string,
     data: PropTypes.object,
+    hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,
+    hasShow: PropTypes.bool,
     hasList: PropTypes.bool,
     resource: PropTypes.string,
 };
-
-export default ShowActions;
