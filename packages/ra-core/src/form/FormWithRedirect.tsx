@@ -73,7 +73,7 @@ const FormWithRedirect = ({
     const finalMutators =
         mutators === defaultMutators
             ? mutators
-            : { ...mutators, ...defaultMutators };
+            : { ...defaultMutators, ...mutators };
 
     // We don't use state here for two reasons:
     // 1. There no way to execute code only after the state has been updated
