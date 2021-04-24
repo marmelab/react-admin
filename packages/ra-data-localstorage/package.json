@@ -1,6 +1,6 @@
 {
     "name": "ra-data-local-storage",
-    "version": "3.14.0",
+    "version": "3.14.5",
     "description": "Local storage data provider for react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",
