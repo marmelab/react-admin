@@ -76,35 +76,38 @@ const memoize: Memoize = (fn: any) =>
 
 const isFunction = value => typeof value === 'function';
 
+export const combine2Validators = (
+    validator1: Validator,
+    validator2: Validator
+): Validator => {
+    return (value, values, meta) => {
+        const result1 = validator1(value, values, meta);
+        if (!result1) {
+            return validator2(value, values, meta);
+        }
+        if (
+            typeof result1 === 'string' ||
+            isValidationErrorMessageWithArgs(result1)
+        ) {
+            return result1;
+        }
+
+        return result1.then(resolvedResult1 => {
+            if (!resolvedResult1) {
+                return validator2(value, values, meta);
+            }
+            return resolvedResult1;
+        });
+    };
+};
+
 // Compose multiple validators into a single one for use with final-form
-export const composeValidators = (...validators) => async (
-    value,
-    values,
-    meta
-) => {
+export const composeValidators = (...validators) => {
     const allValidators = (Array.isArray(validators[0])
         ? validators[0]
         : validators
     ).filter(isFunction) as Validator[];
-
-    for (const validator of allValidators) {
-        const errorPromise = validator(value, values, meta);
-
-        if (errorPromise) {
-            if (typeof errorPromise == 'string') {
-                return errorPromise;
-            }
-            if (isValidationErrorMessageWithArgs(errorPromise)) {
-                return errorPromise;
-            }
-
-            const error = await errorPromise;
-
-            if (error) {
-                return error;
-            }
-        }
-    }
+    return allValidators.reduce(combine2Validators, () => null);
 };
 
 // Compose multiple validators into a single one for use with final-form

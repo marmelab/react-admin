@@ -867,7 +867,7 @@ const ApproveButton = ({ record }) => {
 export default ApproveButton;
 ```
 
-And here is the `<UserProfile>` component using the `withDataProvider` HOC instead of the `useProvider` hook:
+And here is the `<UserProfile>` component using the `withDataProvider` HOC instead of the `useDataProvider` hook:
 
 ```diff
 import { useState, useEffect } from 'react';

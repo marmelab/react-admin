@@ -29,8 +29,8 @@ const useStyles = makeStyles(
             paddingRight: 24,
         },
         menuButton: {
-            marginLeft: '0.5em',
-            marginRight: '0.5em',
+            marginLeft: '0.2em',
+            marginRight: '0.2em',
         },
         menuButtonIconClosed: {
             transition: theme.transitions.create(['transform'], {

@@ -91,7 +91,7 @@ const DataProviderOptions = { action: CRUD_GET_MANY };
 const useGetMany = (
     resource: string,
     ids: Identifier[],
-    options: UseGetManyOptions = {}
+    options: UseGetManyOptions = { enabled: true }
 ): UseGetManyResult => {
     // we can't use useQueryWithStore here because we're aggregating queries first
     // therefore part of the useQueryWithStore logic will have to be repeated below
@@ -116,6 +116,10 @@ const useGetMany = (
     }
     dataProvider = useDataProvider(); // not the best way to pass the dataProvider to a function outside the hook, but I couldn't find a better one
     useEffect(() => {
+        if (options.enabled === false) {
+            return;
+        }
+
         if (!queriesToCall[resource]) {
             queriesToCall[resource] = [];
         }
