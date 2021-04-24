@@ -225,18 +225,23 @@ export const UserList = props => (
 
 ![Url Field](./img/tutorial_url_field.png)
 
-In react-admin, fields are simple React components. At runtime, they receive the `record` fetched from the API (e.g. `{ "id": 2, "name": "Ervin Howell", "website": "anastasia.net", ... }`), and the `source` field they should display (e.g. `website`).
+In react-admin, fields are simple React components. At runtime, they grab the `record` fetched from the API (e.g. `{ "id": 2, "name": "Ervin Howell", "website": "anastasia.net", ... }`) with a custom hook, and use the `source` field (e.g. `website`) to get the value they should display (e.g. "anastasia.net").
 
 That means that writing a custom Field component is really straightforward. For instance, here is a simplified version of the `UrlField`:
 
 ```jsx
 // in src/MyUrlField.js
 import * as React from "react";
+import { useRecordContext } from 'react-admin';
 
-const MyUrlField = ({ record = {}, source }) =>
-    <a href={record[source]}>
-        {record[source]}
-    </a>;
+const MyUrlField = ({ source }) => {
+    const record = useRecordContext();
+    return record ? (
+        <a href={record[source]}>
+            {record[source]}
+        </a>
+    ) : null;
+}
 
 export default MyUrlField;
 ```
@@ -274,6 +279,7 @@ The `MyUrlField` component is a perfect opportunity to illustrate how to customi
 ```jsx
 // in src/MyUrlField.js
 import * as React from "react";
+import { useRecordContext } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 import LaunchIcon from '@material-ui/icons/Launch';
 
@@ -283,18 +289,20 @@ const useStyles = makeStyles({
     },
     icon: {
         width: '0.5em',
+        height: '0.5em',
         paddingLeft: 2,
     },
 });
 
-const MyUrlField = ({ record = {}, source }) => {
+const MyUrlField = ({ source }) => {
+    const record = useRecordContext();
     const classes = useStyles();
-    return (
+    return record ? (
         <a href={record[source]} className={classes.link}>
             {record[source]}
             <LaunchIcon className={classes.icon} />
         </a>
-    );
+    ) : null;
 }
 
 export default MyUrlField;
