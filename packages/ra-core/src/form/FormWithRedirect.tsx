@@ -70,10 +70,13 @@ const FormWithRedirect = ({
     const redirect = useRef(props.redirect);
     const onSave = useRef(save);
     const formGroups = useRef<{ [key: string]: string[] }>({});
-    const finalMutators =
-        mutators === defaultMutators
-            ? mutators
-            : { ...defaultMutators, ...mutators };
+    const finalMutators = useMemo(
+        () =>
+            mutators === defaultMutators
+                ? mutators
+                : { ...defaultMutators, ...mutators },
+        [mutators]
+    );
 
     // We don't use state here for two reasons:
     // 1. There no way to execute code only after the state has been updated
