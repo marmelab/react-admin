@@ -10,7 +10,7 @@ export const valuesAreInteger = (values: any[]) => values.every(isInteger);
 
 export const isBoolean = (value: any) =>
     typeof value === 'boolean' ||
-    ['true', 'false'].includes(value.toLowerCase());
+    ['true', 'false'].includes(value.toString().toLowerCase());
 export const valuesAreBoolean = (values: any[]) => values.every(isBoolean);
 
 export const isString = (value: any) => typeof value === 'string';
