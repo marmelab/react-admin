@@ -28,7 +28,7 @@ import {
     number,
     required,
     FormDataConsumer,
-    useCreateSuggestion,
+    useCreateSuggestionContext,
     EditActionsProps,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import {
@@ -49,7 +49,7 @@ const CreateCategory = ({
 }: {
     onAddChoice: (record: any) => void;
 }) => {
-    const { filter, onCancel, onCreate } = useCreateSuggestion();
+    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
     const [value, setValue] = React.useState(filter || '');
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();

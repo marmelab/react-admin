@@ -65,12 +65,6 @@ const useChoices = ({
                     ? optionText(choice)
                     : get(choice, optionText);
 
-            if (isValidElement<{ record: any }>(choiceName)) {
-                return cloneElement<{ record: any }>(choiceName, {
-                    record: choice,
-                });
-            }
-
             return translateChoice
                 ? translate(choiceName, { _: choiceName })
                 : choiceName;

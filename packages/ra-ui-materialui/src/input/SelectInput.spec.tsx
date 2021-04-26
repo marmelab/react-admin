@@ -5,7 +5,7 @@ import { TestTranslationProvider } from 'ra-core';
 
 import { SelectInput } from './SelectInput';
 import { required } from 'ra-core';
-import { useCreateSuggestion } from './useSupportCreateSuggestion';
+import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 
 describe('<SelectInput />', () => {
     const defaultProps = {
@@ -590,7 +590,7 @@ describe('<SelectInput />', () => {
         const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
 
         const Create = () => {
-            const context = useCreateSuggestion();
+            const context = useCreateSuggestionContext();
             const handleClick = () => {
                 choices.push(newChoice);
                 context.onCreate(newChoice);

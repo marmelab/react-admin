@@ -5,7 +5,7 @@ import { Form } from 'react-final-form';
 import { TestTranslationProvider } from 'ra-core';
 
 import SelectArrayInput from './SelectArrayInput';
-import { useCreateSuggestion } from './useSupportCreateSuggestion';
+import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 
 describe('<SelectArrayInput />', () => {
     const defaultProps = {
@@ -394,7 +394,7 @@ describe('<SelectArrayInput />', () => {
         const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
 
         const Create = () => {
-            const context = useCreateSuggestion();
+            const context = useCreateSuggestionContext();
             const handleClick = () => {
                 choices.push(newChoice);
                 context.onCreate(newChoice);
