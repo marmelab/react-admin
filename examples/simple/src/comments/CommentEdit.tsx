@@ -22,7 +22,7 @@ import {
     Title,
     minLength,
     Record,
-    useCreateSuggestion,
+    useCreateSuggestionContext,
     useCreate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
@@ -60,7 +60,7 @@ const inputText = record =>
         : `${record.title} - ${record.id}`;
 
 const CreatePost = () => {
-    const { filter, onCancel, onCreate } = useCreateSuggestion();
+    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
     const [value, setValue] = React.useState(filter || '');
     const [create] = useCreate('posts');
     const handleSubmit = (event: React.FormEvent) => {

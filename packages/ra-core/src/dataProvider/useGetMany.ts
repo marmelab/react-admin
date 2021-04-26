@@ -105,11 +105,12 @@ const useGetMany = (
     const version = useVersion(); // used to allow force reload
     // used to force a refetch without relying on version
     // which might trigger other queries as well
-    const [innerVersion, setInnerVersion] = useState(0);
+    const [innerVersion, setInnerVersion] = useSafeSetState(0);
 
     const refetch = useCallback(() => {
         setInnerVersion(prevInnerVersion => prevInnerVersion + 1);
-    }, []);
+    }, [setInnerVersion]);
+
     const [state, setState] = useSafeSetState({
         data,
         error: null,

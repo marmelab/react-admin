@@ -5,7 +5,7 @@ import {
     AutocompleteArrayInput,
     ReferenceArrayInput,
     useCreate,
-    useCreateSuggestion,
+    useCreateSuggestionContext,
 } from 'react-admin';
 import {
     Button,
@@ -65,7 +65,7 @@ const TagReferenceInput = ({
 };
 
 const CreateTag = () => {
-    const { filter, onCancel, onCreate } = useCreateSuggestion();
+    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
     const [value, setValue] = React.useState(filter || '');
     const [create] = useCreate('tags');
     const handleSubmit = (event: React.FormEvent) => {

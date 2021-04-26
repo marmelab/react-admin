@@ -13,7 +13,7 @@ import { Identifier, useTranslate } from 'ra-core';
  * This hook provides support for suggestion creation in inputs which have choices.
  *
  * @param options The hook option
- * @param {ReactElement} options.create A react element which will be rendered when users choose to create a new choice. This component must call the `useCreateSuggestion` hook which provides `onCancel`, `onCreate` and `filter`. See the examples.
+ * @param {ReactElement} options.create A react element which will be rendered when users choose to create a new choice. This component must call the `useCreateSuggestionContext` hook which provides `onCancel`, `onCreate` and `filter`. See the examples.
  * @param {String} options.createLabel Optional. The label for the choice item allowing users to create a new choice. Can be a translation key. Defaults to `ra.action.create`.
  * @param {String} options.createItemLabel Optional. The label for the choice item allowing users to create a new choice when they already entered a filter. Can be a translation key. The translation will receive an `item` parameter. Defaults to `ra.action.create_item`.
  * @param {any} options.createValue Optional. The value for the choice item allowing users to create a new choice. Defaults to `@@ra-create`.
@@ -118,6 +118,7 @@ interface CreateSuggestionContextValue {
     onCreate: (choice: any) => void;
     onCancel: () => void;
 }
-export const useCreateSuggestion = () => useContext(CreateSuggestionContext);
+export const useCreateSuggestionContext = () =>
+    useContext(CreateSuggestionContext);
 
 export type OnCreateHandler = (filter?: string) => any | Promise<any>;

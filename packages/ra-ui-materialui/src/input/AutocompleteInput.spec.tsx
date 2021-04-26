@@ -4,7 +4,7 @@ import { render, fireEvent, waitFor } from '@testing-library/react';
 import { AutocompleteInput } from './AutocompleteInput';
 import { Form } from 'react-final-form';
 import { TestTranslationProvider } from 'ra-core';
-import { useCreateSuggestion } from './useSupportCreateSuggestion';
+import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 
 describe('<AutocompleteInput />', () => {
     // Fix document.createRange is not a function error on fireEvent usage (Fixed in jsdom v16.0.0)
@@ -695,7 +695,7 @@ describe('<AutocompleteInput />', () => {
         expect(queryByRole('progressbar')).toBeNull();
     });
 
-    test('should support creation of a new choice through the onCreate event', async () => {
+    it('should support creation of a new choice through the onCreate event', async () => {
         const choices = [
             { id: 'ang', name: 'Angular' },
             { id: 'rea', name: 'React' },
@@ -751,7 +751,7 @@ describe('<AutocompleteInput />', () => {
         expect(queryByText('New Kid On The Block')).not.toBeNull();
     });
 
-    test('should support creation of a new choice through the onCreate event with a promise', async () => {
+    it('should support creation of a new choice through the onCreate event with a promise', async () => {
         const choices = [
             { id: 'ang', name: 'Angular' },
             { id: 'rea', name: 'React' },
@@ -810,7 +810,7 @@ describe('<AutocompleteInput />', () => {
         expect(queryByText('New Kid On The Block')).not.toBeNull();
     });
 
-    test('should support creation of a new choice through the create element', async () => {
+    it('should support creation of a new choice through the create element', async () => {
         const choices = [
             { id: 'ang', name: 'Angular' },
             { id: 'rea', name: 'React' },
@@ -818,7 +818,7 @@ describe('<AutocompleteInput />', () => {
         const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
 
         const Create = () => {
-            const context = useCreateSuggestion();
+            const context = useCreateSuggestionContext();
             const handleClick = () => {
                 choices.push(newChoice);
                 context.onCreate(newChoice);
