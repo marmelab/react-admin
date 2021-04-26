@@ -2,7 +2,7 @@
 
 **Disclaimer**: Don't use this yet. This is a work in progress. 🐉🐉🐉
 
-A set of components to build a new react-admin application from CSV files with everything (data and configuration) stored in local storage.
+A distribution of the react-admin framework for building offline-first admins through a configuration GUI. Stores data and configuration in local storage.
 
 ## License
 

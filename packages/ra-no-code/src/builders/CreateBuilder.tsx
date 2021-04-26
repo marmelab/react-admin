@@ -6,10 +6,8 @@ import {
     useCreateController,
 } from 'ra-core';
 import { CreateProps, CreateView, SimpleForm } from 'ra-ui-materialui';
-import {
-    getInputFromFieldDefinition,
-    useGetFieldDefinitions,
-} from './useGetFieldDefinitions';
+import { useGetFieldDefinitions } from './useGetFieldDefinitions';
+import { getInputFromFieldDefinition } from './getInputFromFieldDefinition';
 
 export const CreateBuilder = (props: CreateProps) => {
     const controllerProps = useCreateController(props);

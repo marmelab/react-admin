@@ -32,6 +32,13 @@ export default defineConfig({
             ),
         },
         {
+            find: /^ra-no-code$/,
+            replacement: path.resolve(
+                __dirname,
+                '../../packages/ra-no-code/src'
+            ),
+        },
+        {
             find: /^@material-ui\/icons\/(.*)/,
             replacement: '@material-ui/icons/esm/$1',
         },

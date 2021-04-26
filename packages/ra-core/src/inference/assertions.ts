@@ -24,11 +24,15 @@ const UrlRegexp = /http(s*):\/\/.*/i;
 export const isUrl = (value: any) => !value || UrlRegexp.test(value);
 export const valuesAreUrl = (values: any[]) => values.every(isUrl);
 
-const ImageUrlRegexp = /.*\.(jpeg|jpg|jfif|pjpeg|pjp|png|svg|gif|webp|apng|bmp|ico|cur|tif|tiff)/i;
+const ImageUrlRegexp = /http(s*):\/\/.*\.(jpeg|jpg|jfif|pjpeg|pjp|png|svg|gif|webp|apng|bmp|ico|cur|tif|tiff)/i;
 export const isImageUrl = (value: any) => !value || ImageUrlRegexp.test(value);
 export const valuesAreImageUrl = (values: any[]) => values.every(isImageUrl);
 
-export const isEmail = (value: any) => !value || value.indexOf('@') > -1;
+// This is a very simple regex to find emails
+// It it NOT meant to validate emails as the spec is way more complicated but is
+// enough for our inference needs
+const EmailRegexp = /@{1}/;
+export const isEmail = (value: any) => !value || EmailRegexp.test(value);
 export const valuesAreEmail = (values: any[]) => values.every(isEmail);
 
 export const isArray = (value: any) => Array.isArray(value);

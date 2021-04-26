@@ -1,4 +1,4 @@
-import React, { FormEvent, useContext, useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { parse } from 'papaparse';
 import {
     Button,
@@ -12,7 +12,7 @@ import {
     TextField,
 } from '@material-ui/core';
 import { useDropzone } from 'react-dropzone';
-import { ResourceBuilderContext } from '../ResourceBuilderContext';
+import { useResourceBuilder } from '../ResourceBuilderContext';
 import { Record, useDataProvider, useRefresh } from 'ra-core';
 import { useHistory } from 'react-router-dom';
 
@@ -21,7 +21,7 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
     const [parsing, setParsing] = useState(false);
     const [file, setFile] = useState<File>();
     const [resource, setResource] = useState<string>();
-    const [, { addResource }] = useContext(ResourceBuilderContext);
+    const [, { addResource }] = useResourceBuilder();
     const history = useHistory();
     const refresh = useRefresh();
 

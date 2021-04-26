@@ -18,6 +18,9 @@ run: run-simple
 run-simple: ## run the simple example
 	@yarn -s run-simple
 
+run-no-code: ## run the no-code example
+	@yarn -s run-no-code
+
 run-tutorial: ## run the tutorial example
 	@yarn -s run-tutorial
 

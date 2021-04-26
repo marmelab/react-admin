@@ -6,10 +6,8 @@ import {
 } from 'ra-core';
 import { Datagrid, ListProps, ListView, ListViewProps } from 'ra-ui-materialui';
 
-import {
-    getFieldFromFieldDefinition,
-    useGetFieldDefinitions,
-} from './useGetFieldDefinitions';
+import { useGetFieldDefinitions } from './useGetFieldDefinitions';
+import { getFieldFromFieldDefinition } from './getFieldFromFieldDefinition';
 
 export const ListBuilder = (props: ListProps) => {
     const controllerProps = useListController(props);

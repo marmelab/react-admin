@@ -14,11 +14,11 @@ export const Admin = () => {
     return (
         <ResourceBuilderContext.Provider value={resourcesState}>
             <RaAdmin dataProvider={dataProvider} ready={Ready} layout={Layout}>
-                {resources?.map(resource => (
+                {Object.keys(resources).map(resource => (
                     <Resource
-                        key={resource.name}
-                        name={resource.name}
-                        options={{ label: resource.label }}
+                        key={resource}
+                        name={resource}
+                        options={{ label: resources[resource].label }}
                         list={ListBuilder}
                         edit={EditBuilder}
                         create={CreateBuilder}

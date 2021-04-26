@@ -6,10 +6,8 @@ import {
     useEditController,
 } from 'ra-core';
 import { EditProps, EditView, SimpleForm } from 'ra-ui-materialui';
-import {
-    getInputFromFieldDefinition,
-    useGetFieldDefinitions,
-} from './useGetFieldDefinitions';
+import { useGetFieldDefinitions } from './useGetFieldDefinitions';
+import { getInputFromFieldDefinition } from './getInputFromFieldDefinition';
 
 export const EditBuilder = (props: EditProps) => {
     const controllerProps = useEditController(props);

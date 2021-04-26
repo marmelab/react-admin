@@ -1,11 +1,18 @@
-import { useEffect, useMemo, useState } from 'react';
+import { InferredElementDescription } from 'ra-core';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { StorageKey } from '../constants';
 
 type ResourceDefinition = {
     name: string;
     label?: string;
+    fields?: InferredElementDescription[];
 };
 
-type ResourceDefinitionState = ResourceDefinition[] | undefined;
+type ResourceDefinitionMap =
+    | {
+          [key: string]: ResourceDefinition;
+      }
+    | undefined;
 
 type ResourceDefinitionStateActions = {
     addResource: (resourceDefinition: ResourceDefinition) => void;
@@ -15,20 +22,20 @@ type ResourceDefinitionStateActions = {
     ) => void;
     removeResource: (resourceDefinition: ResourceDefinition) => void;
     setResources: (
-        value: (prevState: ResourceDefinitionState) => ResourceDefinitionState
+        value: (prevState: ResourceDefinitionMap) => ResourceDefinitionMap
     ) => void;
 };
-const storageKey = '@@ra-no-code.resources';
-
 export const useResources = (): [
-    ResourceDefinitionState,
+    ResourceDefinitionMap,
     ResourceDefinitionStateActions
 ] => {
-    const [resources, setInternalResources] = useState<ResourceDefinition[]>();
+    const [resources, setInternalResources] = useState<ResourceDefinitionMap>(
+        {}
+    );
 
     useEffect(() => {
         const storedResourceDefinitions = window.localStorage.getItem(
-            storageKey
+            StorageKey
         );
 
         if (!storedResourceDefinitions) {
@@ -39,93 +46,106 @@ export const useResources = (): [
         setInternalResources(resourceDefinitions);
     }, []);
 
-    const actions = useMemo(() => {
-        const setResources = (
-            value: (
-                prevState: ResourceDefinitionState
-            ) => ResourceDefinitionState
+    const setResources = useCallback(
+        (
+            value: (prevState: ResourceDefinitionMap) => ResourceDefinitionMap
         ) => {
             setInternalResources(prevState => {
                 const newState = value(prevState);
 
-                if (newState != undefined) {
+            if (newState != undefined) { // eslint-disable-line
                     window.localStorage.setItem(
-                        storageKey,
+                        StorageKey,
                         JSON.stringify(newState)
                     );
                 } else {
-                    window.localStorage.removeItem(storageKey);
+                    window.localStorage.removeItem(StorageKey);
                 }
                 return newState;
             });
-        };
+        },
+        []
+    );
+
+    const addResource = useCallback(
+        (resource: ResourceDefinition) => {
+            setResources(current => {
+                const allResources = current || {};
+                if (allResources[resource.name]) {
+                    return allResources;
+                }
+                return {
+                    ...current,
+                    [resource.name]: resource,
+                };
+            });
+        },
+        [setResources]
+    );
+
+    const updateResource = useCallback(
+        (name: string, newResource: Partial<ResourceDefinition>) => {
+            setResources(current => {
+                const allResources = current || {};
+                const resource = allResources[name];
+                if (!resource) {
+                    return allResources;
+                }
+                const nextResources: ResourceDefinitionMap = {
+                    ...current,
+                    [name]: {
+                        ...current[name],
+                        ...newResource,
+                    },
+                };
+                return nextResources;
+            });
+        },
+        [setResources]
+    );
+
+    const removeResource = useCallback(
+        (resource: ResourceDefinition) => {
+            setResources(current => {
+                const allResources = current || {};
+                const resourceToRemove = allResources[resource.name];
+
+                if (!resourceToRemove) {
+                    return allResources;
+                }
+                const storedData = window.localStorage.getItem(
+                    'ra-data-local-storage'
+                );
+                if (storedData) {
+                    const {
+                        [resource.name]: removedResource,
+                        ...data
+                    } = JSON.parse(storedData);
+                    window.localStorage.setItem(
+                        'ra-data-local-storage',
+                        JSON.stringify(data)
+                    );
+                }
+
+                const {
+                    [resource.name]: currentResource,
+                    ...nextResources
+                } = current;
+
+                return nextResources;
+            });
+        },
+        [setResources]
+    );
+
+    const actions = useMemo(() => {
         return {
-            addResource: (resource: ResourceDefinition) => {
-                setResources(current => {
-                    const allResources = current || [];
-                    if (allResources.some(r => r.name === resource.name)) {
-                        return allResources;
-                    }
-                    return [...(current || []), resource];
-                });
-            },
-            updateResource: (
-                name: string,
-                newResource: Partial<ResourceDefinition>
-            ) => {
-                setResources(current => {
-                    const allResources = current || [];
-                    const resource = allResources.find(r => r.name === name);
-                    if (!resource) {
-                        return allResources;
-                    }
-                    const nextResources = [
-                        ...allResources.slice(
-                            0,
-                            allResources.indexOf(resource)
-                        ),
-                        { ...resource, ...newResource },
-                        ...allResources.slice(
-                            allResources.indexOf(resource) + 1
-                        ),
-                    ];
-                    return nextResources;
-                });
-            },
-            removeResource: (resource: ResourceDefinition) => {
-                setResources(current => {
-                    const allResources = current || [];
-                    const index = allResources.findIndex(
-                        r => r.name === resource.name
-                    );
-                    if (index < 0) {
-                        return allResources;
-                    }
-                    const storedData = window.localStorage.getItem(
-                        'ra-data-local-storage'
-                    );
-                    if (storedData) {
-                        const {
-                            [resource.name]: removedResource,
-                            ...data
-                        } = JSON.parse(storedData);
-                        window.localStorage.setItem(
-                            'ra-data-local-storage',
-                            JSON.stringify(data)
-                        );
-                    }
-
-                    const nextResources = [
-                        ...allResources.slice(0, index),
-                        ...allResources.slice(index + 1),
-                    ];
-
-                    return nextResources.length > 0 ? nextResources : undefined;
-                });
-            },
+            addResource,
+            updateResource,
+            removeResource,
             setResources,
         };
-    }, []);
+    }, [addResource, updateResource, removeResource, setResources]);
 
     return [resources, actions];
 };
