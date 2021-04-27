@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useForm } from 'react-final-form';
 import { useHistory } from 'react-router-dom';
+import get from 'lodash/get';
 
 import { useTranslate } from '../i18n';
 
@@ -39,6 +40,7 @@ const useWarnWhenUnsavedChanges = (enable: boolean) => {
         const unsavedChanges = JSON.parse(
             window.sessionStorage.getItem('unsavedChanges')
         );
+
         if (unsavedChanges) {
             Object.keys(unsavedChanges).forEach(key =>
                 form.change(key, unsavedChanges[key])
@@ -61,7 +63,7 @@ const useWarnWhenUnsavedChanges = (enable: boolean) => {
                         : formState.dirtyFields;
                     const dirtyFieldValues = Object.keys(dirtyFields).reduce(
                         (acc, key) => {
-                            acc[key] = formState.values[key];
+                            acc[key] = get(formState.values, key);
                             return acc;
                         },
                         {}

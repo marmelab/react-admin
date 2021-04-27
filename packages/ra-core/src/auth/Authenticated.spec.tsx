@@ -58,7 +58,10 @@ describe('<Authenticated>', () => {
                 type: 'RA/CLEAR_STATE',
             });
             expect(history.location.pathname).toEqual('/login');
-            expect(history.location.state).toEqual({ nextPathname: '/' });
+            expect(history.location.state).toEqual({
+                nextPathname: '/',
+                nextSearch: '',
+            });
         });
     });
 });

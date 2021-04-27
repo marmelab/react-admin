@@ -90,6 +90,16 @@ const UserProfile = ({ userId }) => {
 };
 ```
 
+**Tip**: If you use TypeScript, you can specify a record type for more type safety:
+
+```jsx
+dataProvider.getOne<Product>('users', { id: 123 })
+    .then(({ data }) => {
+        //     \- type of data is Product
+        // ...
+    })
+```
+
 ## `useQuery` Hook
 
 The `useQuery` hook calls the Data Provider on mount, and returns an object that updates as the response arrives. It reduces the boilerplate code for calling the Data Provider.
@@ -278,6 +288,13 @@ const ApproveButton = ({ record }) => {
 
 The specialized hooks based on `useQuery` (`useGetList`, `useGetOne`, `useGetMany`, `useGetManyReference`) execute on mount. The specialized hooks based on `useMutation` (`useCreate`, `useUpdate`, `useUpdateMany`, `useDelete`, `useDeleteMany`) return a callback.
 
+**Tip**: If you use TypeScript, you can specify the record type for more type safety:
+
+```jsx
+const { data, loaded } = useGetOne<Product>('products', 123);
+//        \- type of data is Product
+```
+
 ### `useGetList`
 
 ```jsx
@@ -377,9 +394,30 @@ const PostComments = ({ post_id }) => {
 ```jsx
 // syntax
 const [create, { data, loading, loaded, error }] = useCreate(resource, data, options);
+```
 
-// example
+The `create()` function can be called in 3 different ways:
+ - with the same parameters as the `useCreate()` hook: `create(resource, data, options)`
+ - with the same syntax as `useMutation`: `create({ resource, payload: { data } }, options)`
+ - with no parameter (if they were already passed to `useCreate()`): `create()`
+
+```jsx
+// set params when calling the update callback
 import { useCreate } from 'react-admin';
+
+const LikeButton = ({ record }) => {
+    const like = { postId: record.id };
+    const [create, { loading, error }] = useCreate();
+    const handleClick = () => {
+        create('likes', like)
+    }
+    if (error) { return <p>ERROR</p>; }
+    return <button disabled={loading} onClick={handleClick}>Like</button>;
+};
+
+// set params when calling the hook
+import { useCreate } from 'react-admin';
+
 const LikeButton = ({ record }) => {
     const like = { postId: record.id };
     const [create, { loading, error }] = useCreate('likes', like);
@@ -393,14 +431,35 @@ const LikeButton = ({ record }) => {
 ```jsx
 // syntax
 const [update, { data, loading, loaded, error }] = useUpdate(resource, id, data, previousData, options);
+```
 
-// example
+The `update()` method can be called in 3 different ways:
+ - with the same parameters as the `useUpdate()` hook: `update(resource, id, data, previousData, options)`
+ - with the same syntax as `useMutation`: `update({ resource, payload: { id, data, previousData } }, options)`
+ - with no parameter (if they were already passed to useUpdate()): `update()`
+
+```jsx
+// set params when calling the update callback
 import { useUpdate } from 'react-admin';
+
+const IncreaseLikeButton = ({ record }) => {
+    const diff = { likes: record.likes + 1 };
+    const [update, { loading, error }] = useUpdate();
+    const handleClick = () => {
+        update('likes', record.id, diff, record)
+    }
+    if (error) { return <p>ERROR</p>; }
+    return <button disabled={loading} onClick={handleClick}>Like</div>;
+};
+
+// or set params when calling the hook
+import { useUpdate } from 'react-admin';
+
 const IncreaseLikeButton = ({ record }) => {
     const diff = { likes: record.likes + 1 };
     const [update, { loading, error }] = useUpdate('likes', record.id, diff, record);
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={loading} onClick={update}>Like</button>;
+    return <button disabled={loading} onClick={update}>Like</div>;
 };
 ```
 
@@ -409,9 +468,29 @@ const IncreaseLikeButton = ({ record }) => {
 ```jsx
 // syntax
 const [updateMany, { data, loading, loaded, error }] = useUpdateMany(resource, ids, data, options);
+```
 
-// example
+The `updateMany()` function can be called in 3 different ways:
+ - with the same parameters as the `useUpdateMany()` hook: `update(resource, ids, data, options)`
+ - with the same syntax as `useMutation`: `update({ resource, payload: { ids, data } }, options)`
+ - with no parameter (if they were already passed to `useUpdateMany()`): `updateMany()`
+
+```jsx
+// set params when calling the updateMany callback
 import { useUpdateMany } from 'react-admin';
+
+const BulkResetViewsButton = ({ selectedIds }) => {
+    const [updateMany, { loading, error }] = useUpdateMany();
+    const handleClick = () => {
+        updateMany('posts', selectedIds, { views: 0 });
+    }
+    if (error) { return <p>ERROR</p>; }
+    return <button disabled={loading} onClick={handleClick}>Reset views</button>;
+};
+
+// set params when calling the hook
+import { useUpdateMany } from 'react-admin';
+
 const BulkResetViewsButton = ({ selectedIds }) => {
     const [updateMany, { loading, error }] = useUpdateMany('posts', selectedIds, { views: 0 });
     if (error) { return <p>ERROR</p>; }
@@ -424,13 +503,33 @@ const BulkResetViewsButton = ({ selectedIds }) => {
 ```jsx
 // syntax
 const [deleteOne, { data, loading, loaded, error }] = useDelete(resource, id, previousData, options);
+```
 
-// example
+The `deleteOne()` function can be called in 3 different ways:
+ - with the same parameters as the `useDelete()` hook: `deleteOne(resource, id, previousData, options)`
+ - with the same syntax as `useMutation`: `deleteOne({ resource, payload: { id, previousData } }, options)`
+ - with no parameter (if they were already passed to `useDelete()`): `deleteOne()`
+
+```jsx
+// set params when calling the deleteOne callback
 import { useDelete } from 'react-admin';
+
 const DeleteButton = ({ record }) => {
-    const [deleteOne, { loading, error }] = useDelete('likes', record.id);
+    const [deleteOne, { loading, error }] = useDelete();
+    const handleClick = () => {
+        deleteOne('likes', record.id, record)
+    }
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={loading} onClick={deleteOne}>Delete</button>;
+    return <button disabled={loading} onClick={handleClick}>Delete</div>;
+};
+
+// set params when calling the hook
+import { useDelete } from 'react-admin';
+
+const DeleteButton = ({ record }) => {
+    const [deleteOne, { loading, error }] = useDelete('likes', record.id, record);
+    if (error) { return <p>ERROR</p>; }
+    return <button disabled={loading} onClick={deleteOne}>Delete</div>;
 };
 ```
 
@@ -438,10 +537,30 @@ const DeleteButton = ({ record }) => {
 
 ```jsx
 // syntax
-const [deleteOne, { data, loading, loaded, error }] = useDeleteMany(resource, ids, options);
+const [deleteMany, { data, loading, loaded, error }] = useDeleteMany(resource, ids, options);
+```
 
-// example
+The `deleteMany()` function can be called in 3 different ways:
+ - with the same parameters as the `useDeleteMany()` hook: `deleteMany(resource, ids, options)`
+ - with the same syntax as `useMutation`: `deleteMany({ resource, payload: { ids } }, options)`
+ - with no parameter (if they were already passed to `useDeleteMany()`): `deleteMany()`
+
+```jsx
+// set params when calling the dleteMany callback
 import { useDeleteMany } from 'react-admin';
+
+const BulkDeletePostsButton = ({ selectedIds }) => {
+    const [deleteMany, { loading, error }] = useDeleteMany();
+    const handleClick = () => {
+        deleteMany('posts', selectedIds)
+    }
+    if (error) { return <p>ERROR</p>; }
+    return <button disabled={loading} onClick={deleteMany}>Delete selected posts</button>;
+};
+
+// set params when calling the hook
+import { useDeleteMany } from 'react-admin';
+
 const BulkDeletePostsButton = ({ selectedIds }) => {
     const [deleteMany, { loading, error }] = useDeleteMany('posts', selectedIds);
     if (error) { return <p>ERROR</p>; }
@@ -748,7 +867,7 @@ const ApproveButton = ({ record }) => {
 export default ApproveButton;
 ```
 
-And here is the `<UserProfile>` component using the `withDataProvider` HOC instead of the `useProvider` hook:
+And here is the `<UserProfile>` component using the `withDataProvider` HOC instead of the `useDataProvider` hook:
 
 ```diff
 import { useState, useEffect } from 'react';

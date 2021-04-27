@@ -6,7 +6,7 @@ import useDataProvider from './useDataProvider';
 import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDeclarativeSideEffects';
 import { DeclarativeSideEffect } from './useDeclarativeSideEffects';
 import useVersion from '../controller/useVersion';
-import { DataProviderQuery } from './useQueryWithStore';
+import { DataProviderQuery, Refetch } from './useQueryWithStore';
 
 /**
  * Call the data provider on mount
@@ -165,5 +165,5 @@ export type UseQueryValue = {
     error?: any;
     loading: boolean;
     loaded: boolean;
-    refetch: () => void;
+    refetch: Refetch;
 };

@@ -32,7 +32,7 @@ interface Props extends ConnectedProps {
 
 /**
  * Get the current (edited) value of the record from the form and pass it
- * to child function
+ * to a child function
  *
  * @example
  *

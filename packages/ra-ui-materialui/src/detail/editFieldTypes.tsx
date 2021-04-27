@@ -10,7 +10,7 @@ import ReferenceInput from '../input/ReferenceInput';
 import ReferenceArrayInput, {
     ReferenceArrayInputProps,
 } from '../input/ReferenceArrayInput';
-import SelectInput from '../input/SelectInput';
+import { SelectInput } from '../input/SelectInput';
 import TextInput from '../input/TextInput';
 import { InferredElement, InferredTypeMap, InputProps } from 'ra-core';
 

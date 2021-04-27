@@ -118,7 +118,7 @@ BulkDeleteWithUndoButton.propTypes = {
     classes: PropTypes.object,
     label: PropTypes.string,
     resource: PropTypes.string,
-    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
+    selectedIds: PropTypes.arrayOf(PropTypes.any),
     icon: PropTypes.element,
 };
 

@@ -16,7 +16,7 @@ import {
 const TagEdit = props => (
     <>
         <Edit {...props}>
-            <SimpleForm redirect="list">
+            <SimpleForm redirect="list" warnWhenUnsavedChanges>
                 <TextField source="id" />
                 <TranslatableInputs locales={['en', 'fr']}>
                     <TextInput source="name" validate={[required()]} />
