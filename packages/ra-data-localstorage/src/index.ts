@@ -29,7 +29,7 @@ import pullAt from 'lodash/pullAt';
  *   }
  * });
  */
-export default (params: LocalStorageDataProviderParams): DataProvider => {
+export default (params?: LocalStorageDataProviderParams): DataProvider => {
     const {
         defaultData = {},
         localStorageKey = 'ra-data-local-storage',
@@ -148,8 +148,8 @@ export default (params: LocalStorageDataProviderParams): DataProvider => {
 };
 
 export interface LocalStorageDataProviderParams {
-    defaultData: any;
-    localStorageKey: string;
-    loggingEnabled: boolean;
-    localStorageUpdateDelay: number;
+    defaultData?: any;
+    localStorageKey?: string;
+    loggingEnabled?: boolean;
+    localStorageUpdateDelay?: number;
 }

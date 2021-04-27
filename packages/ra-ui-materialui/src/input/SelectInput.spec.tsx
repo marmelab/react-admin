@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, waitFor } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import { TestTranslationProvider } from 'ra-core';
 
-import SelectInput from './SelectInput';
+import { SelectInput } from './SelectInput';
 import { required } from 'ra-core';
+import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 
 describe('<SelectInput />', () => {
     const defaultProps = {
@@ -495,16 +496,137 @@ describe('<SelectInput />', () => {
             <Form
                 validateOnBlur
                 onSubmit={jest.fn()}
+                render={() => <SelectInput {...defaultProps} />}
+            />
+        );
+
+        expect(queryByRole('progressbar')).toBeNull();
+    });
+
+    it('should support creation of a new choice through the onCreate event', async () => {
+        const choices = [...defaultProps.choices];
+        const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
+
+        const { getByLabelText, getByRole, getByText, queryByText } = render(
+            <Form
+                validateOnBlur
+                onSubmit={jest.fn()}
                 render={() => (
                     <SelectInput
-                        {...{
-                            ...defaultProps,
+                        {...defaultProps}
+                        choices={choices}
+                        onCreate={() => {
+                            choices.push(newChoice);
+                            return newChoice;
                         }}
                     />
                 )}
             />
         );
 
-        expect(queryByRole('progressbar')).toBeNull();
+        const input = getByLabelText(
+            'resources.posts.fields.language'
+        ) as HTMLInputElement;
+        input.focus();
+        const select = getByRole('button');
+        fireEvent.mouseDown(select);
+
+        fireEvent.click(getByText('ra.action.create'));
+        await new Promise(resolve => setImmediate(resolve));
+        input.blur();
+
+        expect(
+            // The selector ensure we don't get the options from the menu but the select value
+            queryByText(newChoice.name, { selector: '[role=button]' })
+        ).not.toBeNull();
+    });
+
+    it('should support creation of a new choice through the onCreate event with a promise', async () => {
+        const choices = [...defaultProps.choices];
+        const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
+
+        const { getByLabelText, getByRole, getByText, queryByText } = render(
+            <Form
+                validateOnBlur
+                onSubmit={jest.fn()}
+                render={() => (
+                    <SelectInput
+                        {...defaultProps}
+                        choices={choices}
+                        onCreate={() => {
+                            return new Promise(resolve => {
+                                setTimeout(() => {
+                                    choices.push(newChoice);
+                                    resolve(newChoice);
+                                }, 200);
+                            });
+                        }}
+                    />
+                )}
+            />
+        );
+
+        const input = getByLabelText(
+            'resources.posts.fields.language'
+        ) as HTMLInputElement;
+        input.focus();
+        const select = getByRole('button');
+        fireEvent.mouseDown(select);
+
+        fireEvent.click(getByText('ra.action.create'));
+        await new Promise(resolve => setImmediate(resolve));
+        input.blur();
+
+        await waitFor(() => {
+            expect(
+                // The selector ensure we don't get the options from the menu but the select value
+                queryByText(newChoice.name, { selector: '[role=button]' })
+            ).not.toBeNull();
+        });
+    });
+
+    it('should support creation of a new choice through the create element', async () => {
+        const choices = [...defaultProps.choices];
+        const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
+
+        const Create = () => {
+            const context = useCreateSuggestionContext();
+            const handleClick = () => {
+                choices.push(newChoice);
+                context.onCreate(newChoice);
+            };
+
+            return <button onClick={handleClick}>Get the kid</button>;
+        };
+
+        const { getByLabelText, getByRole, getByText, queryByText } = render(
+            <Form
+                validateOnBlur
+                onSubmit={jest.fn()}
+                render={() => (
+                    <SelectInput
+                        {...defaultProps}
+                        choices={choices}
+                        create={<Create />}
+                    />
+                )}
+            />
+        );
+
+        const input = getByLabelText(
+            'resources.posts.fields.language'
+        ) as HTMLInputElement;
+        input.focus();
+        const select = getByRole('button');
+        fireEvent.mouseDown(select);
+
+        fireEvent.click(getByText('ra.action.create'));
+        fireEvent.click(getByText('Get the kid'));
+        input.blur();
+
+        expect(
+            // The selector ensure we don't get the options from the menu but the select value
+            queryByText(newChoice.name, { selector: '[role=button]' })
+        ).not.toBeNull();
     });
 });

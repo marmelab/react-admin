@@ -65,8 +65,8 @@ export interface RaThemeOverrides extends Overrides {
 
 export interface RaThemeOptions extends ThemeOptions {
     sidebar?: {
-        width: number;
-        closedWidth: number;
+        width?: number;
+        closedWidth?: number;
     };
     overrides?: RaThemeOverrides;
 }

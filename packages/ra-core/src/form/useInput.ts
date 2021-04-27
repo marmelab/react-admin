@@ -37,6 +37,7 @@ export interface UseInputValue extends FieldRenderProps<any, HTMLElement> {
 
 const useInput = ({
     defaultValue,
+    initialValue,
     id,
     name,
     source,
@@ -67,7 +68,7 @@ const useInput = ({
         : validate;
 
     const { input, meta } = useFinalFormField(finalName, {
-        initialValue: defaultValue,
+        initialValue: initialValue || defaultValue,
         validate: sanitizedValidate,
         ...options,
     });
@@ -79,7 +80,6 @@ const useInput = ({
     const handleBlur = useCallback(
         event => {
             onBlur(event);
-
             if (typeof customOnBlur === 'function') {
                 customOnBlur(event);
             }
