@@ -90,7 +90,37 @@ The title can be either a string or an element of your own.
 
 ![Actions Toolbar](./img/actions-toolbar.png)
 
-You can replace the list of default actions by your own element using the `actions` prop:
+You can add extra actions to a `<List>` by using the `actions` prop:
+
+{% raw %}
+```jsx
+import * as React from 'react';
+import { ListActions, Button } from 'react-admin';
+import IconEvent from '@material-ui/icons/Event';
+
+const CustomListActions = (props) => {
+    return (
+        <ListActions {...props}>
+            {/* Add your custom actions */}
+            <Button
+                onClick={() => { alert('Your custom action'); }}
+                label="Show calendar"
+            >
+                <IconEvent />
+            </Button>
+        </ListActions>
+    );
+};
+
+export const PostList = (props) => (
+    <List {...props} actions={<CustomListActions />}>
+        ...
+    </List>
+);
+```
+{% endraw %}
+
+If you want to have control over default actions as well, you can replace the entire `actions` component by your own:
 
 {% raw %}
 ```jsx
