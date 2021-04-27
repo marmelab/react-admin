@@ -18,7 +18,7 @@ import {
     valuesAreEmail,
 } from './assertions';
 
-const types = [
+export const InferenceTypes = [
     'array',
     'boolean',
     'date',
@@ -35,7 +35,7 @@ const types = [
     'url',
 ] as const;
 
-export type PossibleInferredElementTypes = typeof types[number];
+export type PossibleInferredElementTypes = typeof InferenceTypes[number];
 
 export interface InferredElementDescription {
     type: PossibleInferredElementTypes;
