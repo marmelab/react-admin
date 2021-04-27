@@ -18,6 +18,7 @@ import Notification from './Notification';
 import Responsive, { ResponsiveProps } from './Responsive';
 import Sidebar, { SidebarProps } from './Sidebar';
 import Title, { TitleProps, TitlePropType } from './Title';
+import TitleText, { TitleTextProps } from './TitleText';
 import TitleForRecord from './TitleForRecord';
 import TopToolbar from './TopToolbar';
 import UserMenu from './UserMenu';
@@ -45,6 +46,7 @@ export {
     Title,
     TitleForRecord,
     TitlePropType,
+    TitleText,
     TopToolbar,
     UserMenu,
 };
@@ -63,4 +65,5 @@ export type {
     ResponsiveProps,
     SidebarProps,
     TitleProps,
+    TitleTextProps,
 };
