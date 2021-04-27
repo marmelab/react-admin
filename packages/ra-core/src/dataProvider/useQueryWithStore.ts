@@ -14,13 +14,15 @@ export interface DataProviderQuery {
     payload: object;
 }
 
+export type Refetch = () => void;
+
 export interface UseQueryWithStoreValue {
     data?: any;
     total?: number;
     error?: any;
     loading: boolean;
     loaded: boolean;
-    refetch: () => void;
+    refetch: Refetch;
 }
 
 export interface QueryOptions {

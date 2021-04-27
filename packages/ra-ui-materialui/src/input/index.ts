@@ -2,7 +2,6 @@ import ArrayInput, { ArrayInputProps } from './ArrayInput';
 import AutocompleteArrayInput, {
     AutocompleteArrayInputProps,
 } from './AutocompleteArrayInput';
-import AutocompleteInput, { AutocompleteInputProps } from './AutocompleteInput';
 import BooleanInput from './BooleanInput';
 import CheckboxGroupInput, {
     CheckboxGroupInputProps,
@@ -31,9 +30,11 @@ import ResettableTextField, {
 } from './ResettableTextField';
 import SearchInput, { SearchInputProps } from './SearchInput';
 import SelectArrayInput, { SelectArrayInputProps } from './SelectArrayInput';
-import SelectInput, { SelectInputProps } from './SelectInput';
 import TextInput, { TextInputProps } from './TextInput';
 import sanitizeInputRestProps from './sanitizeInputRestProps';
+export * from './AutocompleteInput';
+export * from './SelectInput';
+export * from './useSupportCreateSuggestion';
 export * from './TranslatableInputs';
 export * from './TranslatableInputsTabContent';
 export * from './TranslatableInputsTabs';
@@ -42,7 +43,6 @@ export * from './TranslatableInputsTab';
 export {
     ArrayInput,
     AutocompleteArrayInput,
-    AutocompleteInput,
     BooleanInput,
     CheckboxGroupInput,
     DateInput,
@@ -61,14 +61,12 @@ export {
     ResettableTextField,
     SearchInput,
     SelectArrayInput,
-    SelectInput,
     TextInput,
     sanitizeInputRestProps,
 };
 
 export type {
     ArrayInputProps,
-    AutocompleteInputProps,
     AutocompleteArrayInputProps,
     CheckboxGroupInputProps,
     DateInputProps,
@@ -86,6 +84,5 @@ export type {
     ResettableTextFieldProps,
     SearchInputProps,
     SelectArrayInputProps,
-    SelectInputProps,
     TextInputProps,
 };

@@ -13,6 +13,7 @@ const sanitizeFieldRestProps: (props: any) => any = ({
     link,
     locale,
     record,
+    refetch,
     resource,
     sortable,
     sortBy,

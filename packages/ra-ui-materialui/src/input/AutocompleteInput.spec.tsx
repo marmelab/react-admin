@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 
-import AutocompleteInput from './AutocompleteInput';
+import { AutocompleteInput } from './AutocompleteInput';
 import { Form } from 'react-final-form';
 import { TestTranslationProvider } from 'ra-core';
+import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 
 describe('<AutocompleteInput />', () => {
     // Fix document.createRange is not a function error on fireEvent usage (Fixed in jsdom v16.0.0)
@@ -687,16 +688,186 @@ describe('<AutocompleteInput />', () => {
             <Form
                 validateOnBlur
                 onSubmit={jest.fn()}
+                render={() => <AutocompleteInput {...defaultProps} />}
+            />
+        );
+
+        expect(queryByRole('progressbar')).toBeNull();
+    });
+
+    it('should support creation of a new choice through the onCreate event', async () => {
+        const choices = [
+            { id: 'ang', name: 'Angular' },
+            { id: 'rea', name: 'React' },
+        ];
+        const handleCreate = filter => {
+            const newChoice = {
+                id: 'js_fatigue',
+                name: filter,
+            };
+            choices.push(newChoice);
+            return newChoice;
+        };
+
+        const { getByLabelText, getByText, queryByText, rerender } = render(
+            <Form
+                validateOnBlur
+                onSubmit={jest.fn()}
                 render={() => (
                     <AutocompleteInput
-                        {...{
-                            ...defaultProps,
-                        }}
+                        source="language"
+                        resource="posts"
+                        choices={choices}
+                        onCreate={handleCreate}
                     />
                 )}
             />
         );
 
-        expect(queryByRole('progressbar')).toBeNull();
+        const input = getByLabelText('resources.posts.fields.language', {
+            selector: 'input',
+        }) as HTMLInputElement;
+        input.focus();
+        fireEvent.change(input, { target: { value: 'New Kid On The Block' } });
+        fireEvent.click(getByText('ra.action.create_item'));
+        await new Promise(resolve => setImmediate(resolve));
+        rerender(
+            <Form
+                validateOnBlur
+                onSubmit={jest.fn()}
+                render={() => (
+                    <AutocompleteInput
+                        source="language"
+                        resource="posts"
+                        resettable
+                        choices={choices}
+                        onCreate={handleCreate}
+                    />
+                )}
+            />
+        );
+        fireEvent.click(getByLabelText('ra.action.clear_input_value'));
+
+        expect(queryByText('New Kid On The Block')).not.toBeNull();
+    });
+
+    it('should support creation of a new choice through the onCreate event with a promise', async () => {
+        const choices = [
+            { id: 'ang', name: 'Angular' },
+            { id: 'rea', name: 'React' },
+        ];
+        const handleCreate = filter => {
+            return new Promise(resolve => {
+                const newChoice = {
+                    id: 'js_fatigue',
+                    name: filter,
+                };
+                choices.push(newChoice);
+                setTimeout(() => resolve(newChoice), 100);
+            });
+        };
+
+        const { getByLabelText, getByText, queryByText, rerender } = render(
+            <Form
+                validateOnBlur
+                onSubmit={jest.fn()}
+                render={() => (
+                    <AutocompleteInput
+                        source="language"
+                        resource="posts"
+                        choices={choices}
+                        onCreate={handleCreate}
+                        resettable
+                    />
+                )}
+            />
+        );
+
+        const input = getByLabelText('resources.posts.fields.language', {
+            selector: 'input',
+        }) as HTMLInputElement;
+        input.focus();
+        fireEvent.change(input, { target: { value: 'New Kid On The Block' } });
+        fireEvent.click(getByText('ra.action.create_item'));
+        await new Promise(resolve => setImmediate(resolve));
+        rerender(
+            <Form
+                validateOnBlur
+                onSubmit={jest.fn()}
+                render={() => (
+                    <AutocompleteInput
+                        source="language"
+                        resource="posts"
+                        resettable
+                        choices={choices}
+                        onCreate={handleCreate}
+                    />
+                )}
+            />
+        );
+        fireEvent.click(getByLabelText('ra.action.clear_input_value'));
+
+        expect(queryByText('New Kid On The Block')).not.toBeNull();
+    });
+
+    it('should support creation of a new choice through the create element', async () => {
+        const choices = [
+            { id: 'ang', name: 'Angular' },
+            { id: 'rea', name: 'React' },
+        ];
+        const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
+
+        const Create = () => {
+            const context = useCreateSuggestionContext();
+            const handleClick = () => {
+                choices.push(newChoice);
+                context.onCreate(newChoice);
+            };
+
+            return <button onClick={handleClick}>Get the kid</button>;
+        };
+
+        const { getByLabelText, rerender, getByText, queryByText } = render(
+            <Form
+                validateOnBlur
+                onSubmit={jest.fn()}
+                render={() => (
+                    <AutocompleteInput
+                        source="language"
+                        resource="posts"
+                        choices={choices}
+                        create={<Create />}
+                        resettable
+                    />
+                )}
+            />
+        );
+
+        const input = getByLabelText('resources.posts.fields.language', {
+            selector: 'input',
+        }) as HTMLInputElement;
+        input.focus();
+        fireEvent.change(input, { target: { value: 'New Kid On The Block' } });
+        fireEvent.click(getByText('ra.action.create_item'));
+        fireEvent.click(getByText('Get the kid'));
+        await new Promise(resolve => setImmediate(resolve));
+        rerender(
+            <Form
+                validateOnBlur
+                onSubmit={jest.fn()}
+                render={() => (
+                    <AutocompleteInput
+                        source="language"
+                        resource="posts"
+                        resettable
+                        choices={choices}
+                        create={<Create />}
+                    />
+                )}
+            />
+        );
+        fireEvent.click(getByLabelText('ra.action.clear_input_value'));
+
+        expect(queryByText('New Kid On The Block')).not.toBeNull();
     });
 });

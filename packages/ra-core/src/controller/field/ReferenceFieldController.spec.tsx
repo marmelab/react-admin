@@ -84,6 +84,7 @@ describe('<ReferenceFieldController />', () => {
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/posts/123',
             error: null,
+            refetch: expect.any(Function),
         });
     });
 
@@ -116,6 +117,7 @@ describe('<ReferenceFieldController />', () => {
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/prefix/posts/123',
             error: null,
+            refetch: expect.any(Function),
         });
     });
 
@@ -148,6 +150,7 @@ describe('<ReferenceFieldController />', () => {
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/edit/123',
             error: null,
+            refetch: expect.any(Function),
         });
     });
 
@@ -180,6 +183,7 @@ describe('<ReferenceFieldController />', () => {
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/show/123',
             error: null,
+            refetch: expect.any(Function),
         });
     });
 
@@ -205,6 +209,7 @@ describe('<ReferenceFieldController />', () => {
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/posts/123/show',
             error: null,
+            refetch: expect.any(Function),
         });
     });
 
@@ -238,6 +243,7 @@ describe('<ReferenceFieldController />', () => {
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/edit/123/show',
             error: null,
+            refetch: expect.any(Function),
         });
     });
 
@@ -271,6 +277,7 @@ describe('<ReferenceFieldController />', () => {
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: '/show/123/show',
             error: null,
+            refetch: expect.any(Function),
         });
     });
 
@@ -296,6 +303,7 @@ describe('<ReferenceFieldController />', () => {
             referenceRecord: { id: 123, title: 'foo' },
             resourceLinkPath: false,
             error: null,
+            refetch: expect.any(Function),
         });
     });
 });

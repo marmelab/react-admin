@@ -5,7 +5,7 @@ import { renderWithRedux } from 'ra-test';
 
 import FilterForm, { mergeInitialValuesWithDefaultValues } from './FilterForm';
 import TextInput from '../../input/TextInput';
-import SelectInput from '../../input/SelectInput';
+import { SelectInput } from '../../input/SelectInput';
 
 describe('<FilterForm />', () => {
     const defaultProps = {
