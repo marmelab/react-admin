@@ -6,41 +6,34 @@ import {
     Record,
 } from 'ra-core';
 import inflection from 'inflection';
-import { StorageKey } from '../constants';
+import { useResource } from '../ResourceBuilderContext';
 
 export const useGetFieldDefinitions = (resource: string, records?: any[]) => {
     let [fieldDefinitions, setFieldDefinitions] = useState<
         InferredElementDescription[]
     >([]);
 
+    const [resourceDefinition, resourceDefinitionActions] = useResource(
+        resource
+    );
+
     useEffect(() => {
-        setFieldDefinitions(getFieldDefinition(resource, records));
-    }, [resource, records]);
-
-    return fieldDefinitions;
-};
-
-const getFieldDefinition = (resource: string, records?: any[]) => {
-    const storedDefinitions = localStorage.getItem(StorageKey);
-    let definitions;
-
-    if (storedDefinitions) {
-        definitions = JSON.parse(storedDefinitions);
-        if (definitions[resource] && definitions[resource].fields) {
-            return definitions[resource].fields;
+        if (!resourceDefinition) {
+            return;
         }
-    }
 
-    if (!records || records.length === 0) {
-        return [];
-    }
+        if (resourceDefinition.fields && resourceDefinition.fields.length > 0) {
+            setFieldDefinitions(resourceDefinition.fields);
+        } else {
+            const inferredFieldDefinitions = getFieldDefinitionsFromRecords(
+                records
+            );
+            resourceDefinitionActions.update({
+                fields: inferredFieldDefinitions,
+            });
+        }
+    }, [resource, resourceDefinition, resourceDefinitionActions, records]);
 
-    const fieldDefinitions = getFieldDefinitionsFromRecords(records);
-    definitions[resource] = {
-        ...definitions[resource],
-        fields: fieldDefinitions,
-    };
-    localStorage.setItem(StorageKey, JSON.stringify(definitions));
     return fieldDefinitions;
 };
 

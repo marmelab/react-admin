@@ -2,7 +2,7 @@ import { InferredElementDescription } from 'ra-core';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { StorageKey } from '../constants';
 
-type ResourceDefinition = {
+export type ResourceDefinition = {
     name: string;
     label?: string;
     fields?: InferredElementDescription[];
@@ -20,7 +20,7 @@ type ResourceDefinitionStateActions = {
         name: string,
         resourceDefinition: Partial<Omit<ResourceDefinition, 'name'>>
     ) => void;
-    removeResource: (resourceDefinition: ResourceDefinition) => void;
+    removeResource: (name: string) => void;
     setResources: (
         value: (prevState: ResourceDefinitionMap) => ResourceDefinitionMap
     ) => void;
@@ -105,10 +105,10 @@ export const useResources = (): [
     );
 
     const removeResource = useCallback(
-        (resource: ResourceDefinition) => {
+        (name: string) => {
             setResources(current => {
                 const allResources = current || {};
-                const resourceToRemove = allResources[resource.name];
+                const resourceToRemove = allResources[name];
 
                 if (!resourceToRemove) {
                     return allResources;
@@ -117,20 +117,16 @@ export const useResources = (): [
                     'ra-data-local-storage'
                 );
                 if (storedData) {
-                    const {
-                        [resource.name]: removedResource,
-                        ...data
-                    } = JSON.parse(storedData);
+                    const { [name]: removedResource, ...data } = JSON.parse(
+                        storedData
+                    );
                     window.localStorage.setItem(
                         'ra-data-local-storage',
                         JSON.stringify(data)
                     );
                 }
 
-                const {
-                    [resource.name]: currentResource,
-                    ...nextResources
-                } = current;
+                const { [name]: currentResource, ...nextResources } = current;
 
                 return nextResources;
             });
