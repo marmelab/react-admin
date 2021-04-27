@@ -2,9 +2,11 @@ import React from 'react';
 import { Admin as RaAdmin, Resource } from 'react-admin';
 import localStorageDataProvider from 'ra-data-local-storage';
 import { CreateBuilder, EditBuilder, ListBuilder } from './builders';
-import { useResourceConfigurations } from './ResourceBuilderContext';
+import {
+    useResourceConfigurations,
+    ResourceConfigurationProvider,
+} from './ResourceConfiguration';
 import { Layout, Ready } from './ui';
-import { ResourceConfigurationProvider } from './ResourceBuilderContext/ResourceConfigurationProvider';
 
 const dataProvider = localStorageDataProvider();
 

@@ -15,7 +15,7 @@ import { useDropzone } from 'react-dropzone';
 import {
     useResourceConfigurations,
     getFieldDefinitionsFromRecords,
-} from '../ResourceBuilderContext';
+} from '../ResourceConfiguration';
 import { Record, useDataProvider, useRefresh } from 'ra-core';
 import { useHistory } from 'react-router-dom';
 

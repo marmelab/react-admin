@@ -12,7 +12,7 @@ import { useGetResourceLabel, ReduxState } from 'ra-core';
 
 import { DashboardMenuItem, MenuItemLink } from 'react-admin';
 import { NewResourceMenuItem } from './NewResourceMenuItem';
-import { useResourceConfigurations } from '../ResourceBuilderContext';
+import { useResourceConfigurations } from '../ResourceConfiguration';
 
 export const MENU_WIDTH = 240;
 export const CLOSED_MENU_WIDTH = 55;

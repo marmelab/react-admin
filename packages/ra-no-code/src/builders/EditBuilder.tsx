@@ -6,7 +6,7 @@ import {
     useEditController,
 } from 'ra-core';
 import { EditProps, EditView, SimpleForm } from 'ra-ui-materialui';
-import { useResource } from '../ResourceBuilderContext';
+import { useResource } from '../ResourceConfiguration';
 import { getInputFromFieldDefinition } from './getInputFromFieldDefinition';
 
 export const EditBuilder = (props: EditProps) => {

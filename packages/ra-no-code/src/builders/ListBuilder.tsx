@@ -6,7 +6,7 @@ import {
 } from 'ra-core';
 import { Datagrid, ListProps, ListView, ListViewProps } from 'ra-ui-materialui';
 
-import { useResource } from '../ResourceBuilderContext';
+import { useResource } from '../ResourceConfiguration';
 import { getFieldFromFieldDefinition } from './getFieldFromFieldDefinition';
 
 export const ListBuilder = (props: ListProps) => {

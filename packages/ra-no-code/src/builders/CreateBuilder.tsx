@@ -7,7 +7,7 @@ import {
 } from 'ra-core';
 import { CreateProps, CreateView, SimpleForm } from 'ra-ui-materialui';
 import { getInputFromFieldDefinition } from './getInputFromFieldDefinition';
-import { useResource } from '../ResourceBuilderContext';
+import { useResource } from '../ResourceConfiguration';
 
 export const CreateBuilder = (props: CreateProps) => {
     const controllerProps = useCreateController(props);
