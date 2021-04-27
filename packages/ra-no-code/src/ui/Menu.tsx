@@ -1,17 +1,18 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import { shallowEqual, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import lodashGet from 'lodash/get';
 // @ts-ignore
 import { useMediaQuery, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import DefaultIcon from '@material-ui/icons/ViewList';
 import classnames from 'classnames';
-import { useGetResourceLabel, getResources, ReduxState } from 'ra-core';
+import { useGetResourceLabel, ReduxState } from 'ra-core';
 
 import { DashboardMenuItem, MenuItemLink } from 'react-admin';
 import { NewResourceMenuItem } from './NewResourceMenuItem';
+import { useResourceConfigurations } from '../ResourceBuilderContext';
 
 export const MENU_WIDTH = 240;
 export const CLOSED_MENU_WIDTH = 55;
@@ -32,7 +33,7 @@ const Menu = (props: MenuProps) => {
         theme.breakpoints.down('xs')
     );
     const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
-    const resources = useSelector(getResources, shallowEqual) as Array<any>;
+    const { resources } = useResourceConfigurations();
     const getResourceLabel = useGetResourceLabel();
 
     return (
@@ -55,28 +56,20 @@ const Menu = (props: MenuProps) => {
                         sidebarIsOpen={open}
                     />
                 )}
-                {resources
-                    .filter(r => r.hasList)
-                    .map(resource => (
-                        <MenuItemLink
-                            key={resource.name}
-                            to={{
-                                pathname: `/${resource.name}`,
-                                state: { _scrollToTop: true },
-                            }}
-                            primaryText={getResourceLabel(resource.name, 2)}
-                            leftIcon={
-                                resource.icon ? (
-                                    <resource.icon />
-                                ) : (
-                                    <DefaultIcon />
-                                )
-                            }
-                            onClick={onMenuClick}
-                            dense={dense}
-                            sidebarIsOpen={open}
-                        />
-                    ))}
+                {Object.keys(resources).map(resource => (
+                    <MenuItemLink
+                        key={resource}
+                        to={{
+                            pathname: `/${resource}`,
+                            state: { _scrollToTop: true },
+                        }}
+                        primaryText={getResourceLabel(resource, 2)}
+                        leftIcon={<DefaultIcon />}
+                        onClick={onMenuClick}
+                        dense={dense}
+                        sidebarIsOpen={open}
+                    />
+                ))}
                 <NewResourceMenuItem
                     onClick={onMenuClick}
                     dense={dense}

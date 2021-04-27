@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
     ListContextProvider,
     useListContext,
@@ -6,7 +6,7 @@ import {
 } from 'ra-core';
 import { Datagrid, ListProps, ListView, ListViewProps } from 'ra-ui-materialui';
 
-import { useGetFieldDefinitions } from './useGetFieldDefinitions';
+import { useResource } from '../ResourceBuilderContext';
 import { getFieldFromFieldDefinition } from './getFieldFromFieldDefinition';
 
 export const ListBuilder = (props: ListProps) => {
@@ -20,14 +20,13 @@ export const ListBuilder = (props: ListProps) => {
 };
 
 export const ListBuilderView = (props: Omit<ListViewProps, 'children'>) => {
-    const { resource, data, ids } = useListContext(props);
-    const records = useMemo(() => ids.map(id => data[id]), [ids, data]);
-    const definitions = useGetFieldDefinitions(resource, records);
+    const { resource } = useListContext(props);
+    const [resourceConfiguration] = useResource(resource);
 
     return (
         <ListView {...props}>
             <Datagrid rowClick="edit">
-                {definitions.map(definition =>
+                {resourceConfiguration.fields.map(definition =>
                     getFieldFromFieldDefinition(definition)
                 )}
             </Datagrid>

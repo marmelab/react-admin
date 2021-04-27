@@ -1,4 +1,4 @@
+export * from './getFieldDefinitionsFromRecords';
 export * from './useResource';
-export * from './useResources';
-export * from './useResourceBuilder';
-export * from './ResourceBuilderContext';
+export * from './useResourceConfigurations';
+export * from './ResourceConfigurationContext';

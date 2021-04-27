@@ -1,30 +1,35 @@
 import { useCallback, useMemo } from 'react';
-import { ResourceDefinition, useResources } from './useResources';
+import { ResourceConfiguration } from './ResourceConfigurationContext';
+import { useResourceConfigurations } from './useResourceConfigurations';
 
 type ResourceDefinitionStateActions = {
     update: (
-        resourceDefinition: Partial<Omit<ResourceDefinition, 'name'>>
+        resourceDefinition: Partial<Omit<ResourceConfiguration, 'name'>>
     ) => void;
     remove: (resource: string) => void;
 };
 
 export const useResource = (
     name: string
-): [ResourceDefinition, ResourceDefinitionStateActions] => {
-    const [resources, resourcesActions] = useResources();
+): [ResourceConfiguration, ResourceDefinitionStateActions] => {
+    const resourceConfigurations = useResourceConfigurations();
 
     const update = useCallback(
         newDefinition => {
-            resourcesActions.updateResource(name, newDefinition);
+            resourceConfigurations.updateResource(name, newDefinition);
         },
-        [resourcesActions, name]
+        [resourceConfigurations, name]
     );
 
     const remove = useCallback(() => {
-        resourcesActions.removeResource(name);
-    }, [resourcesActions, name]);
+        resourceConfigurations.removeResource(name);
+    }, [resourceConfigurations, name]);
 
     const actions = useMemo(() => ({ update, remove }), [update, remove]);
+    const resource = useMemo(() => resourceConfigurations.resources[name], [
+        resourceConfigurations,
+        name,
+    ]);
 
-    return [resources[name], actions];
+    return [resource, actions];
 };

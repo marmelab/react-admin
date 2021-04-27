@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
     EditContextProvider,
     EditControllerProps,
@@ -6,7 +6,7 @@ import {
     useEditController,
 } from 'ra-core';
 import { EditProps, EditView, SimpleForm } from 'ra-ui-materialui';
-import { useGetFieldDefinitions } from './useGetFieldDefinitions';
+import { useResource } from '../ResourceBuilderContext';
 import { getInputFromFieldDefinition } from './getInputFromFieldDefinition';
 
 export const EditBuilder = (props: EditProps) => {
@@ -22,14 +22,13 @@ export const EditBuilder = (props: EditProps) => {
 export const EditBuilderView = (
     props: EditProps & Omit<EditControllerProps, 'resource'>
 ) => {
-    const { resource, record } = useEditContext(props);
-    const records = useMemo(() => (record ? [record] : []), [record]);
-    const definitions = useGetFieldDefinitions(resource as string, records);
+    const { resource } = useEditContext(props);
+    const [resourceConfiguration] = useResource(resource);
 
     return (
         <EditView {...props}>
             <SimpleForm>
-                {definitions.map(definition =>
+                {resourceConfiguration.fields.map(definition =>
                     getInputFromFieldDefinition(definition)
                 )}
             </SimpleForm>

@@ -1,59 +1,30 @@
-import { InferredElementDescription } from 'ra-core';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { StorageKey } from '../constants';
+import * as React from 'react';
+import { ReactNode, useCallback, useMemo, useState } from 'react';
+import {
+    ResourceConfigurationMap,
+    ResourceConfiguration,
+    ResourceConfigurationContext,
+} from './ResourceConfigurationContext';
 
-export type ResourceDefinition = {
-    name: string;
-    label?: string;
-    fields?: InferredElementDescription[];
-};
-
-type ResourceDefinitionMap =
-    | {
-          [key: string]: ResourceDefinition;
-      }
-    | undefined;
-
-type ResourceDefinitionStateActions = {
-    addResource: (resourceDefinition: ResourceDefinition) => void;
-    updateResource: (
-        name: string,
-        resourceDefinition: Partial<Omit<ResourceDefinition, 'name'>>
-    ) => void;
-    removeResource: (name: string) => void;
-    setResources: (
-        value: (prevState: ResourceDefinitionMap) => ResourceDefinitionMap
-    ) => void;
-};
-export const useResources = (): [
-    ResourceDefinitionMap,
-    ResourceDefinitionStateActions
-] => {
-    const [resources, setInternalResources] = useState<ResourceDefinitionMap>(
-        {}
-    );
-
-    useEffect(() => {
-        const storedResourceDefinitions = window.localStorage.getItem(
-            StorageKey
-        );
-
-        if (!storedResourceDefinitions) {
-            return;
-        }
-
-        const resourceDefinitions = JSON.parse(storedResourceDefinitions);
-        setInternalResources(resourceDefinitions);
-    }, []);
+export const ResourceConfigurationProvider = ({
+    children,
+}: {
+    children: ReactNode;
+}) => {
+    const [resources, setInternalResources] = useState<
+        ResourceConfigurationMap
+    >(() => loadConfigurationsFromLocalStorage());
 
     const setResources = useCallback(
         (
-            value: (prevState: ResourceDefinitionMap) => ResourceDefinitionMap
+            value: (
+                prevState: ResourceConfigurationMap
+            ) => ResourceConfigurationMap
         ) => {
             setInternalResources(prevState => {
                 const newState = value(prevState);
 
-            if (newState != undefined) { // eslint-disable-line
+                if (newState != undefined) { // eslint-disable-line
                     window.localStorage.setItem(
                         StorageKey,
                         JSON.stringify(newState)
@@ -68,7 +39,7 @@ export const useResources = (): [
     );
 
     const addResource = useCallback(
-        (resource: ResourceDefinition) => {
+        (resource: ResourceConfiguration) => {
             setResources(current => {
                 const allResources = current || {};
                 if (allResources[resource.name]) {
@@ -84,14 +55,14 @@ export const useResources = (): [
     );
 
     const updateResource = useCallback(
-        (name: string, newResource: Partial<ResourceDefinition>) => {
+        (name: string, newResource: Partial<ResourceConfiguration>) => {
             setResources(current => {
                 const allResources = current || {};
                 const resource = allResources[name];
                 if (!resource) {
                     return allResources;
                 }
-                const nextResources: ResourceDefinitionMap = {
+                const nextResources: ResourceConfigurationMap = {
                     ...current,
                     [name]: {
                         ...current[name],
@@ -134,14 +105,31 @@ export const useResources = (): [
         [setResources]
     );
 
-    const actions = useMemo(() => {
+    const context = useMemo(() => {
         return {
+            resources,
             addResource,
             updateResource,
             removeResource,
-            setResources,
         };
-    }, [addResource, updateResource, removeResource, setResources]);
+    }, [resources, addResource, updateResource, removeResource]);
 
-    return [resources, actions];
+    return (
+        <ResourceConfigurationContext.Provider value={context}>
+            {children}
+        </ResourceConfigurationContext.Provider>
+    );
+};
+
+export const StorageKey = '@@ra-no-code';
+
+const loadConfigurationsFromLocalStorage = () => {
+    const storedResourceDefinitions = window.localStorage.getItem(StorageKey);
+
+    if (!storedResourceDefinitions) {
+        return;
+    }
+
+    const resourceDefinitions = JSON.parse(storedResourceDefinitions);
+    return resourceDefinitions;
 };

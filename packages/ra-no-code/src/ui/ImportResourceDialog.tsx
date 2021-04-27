@@ -12,7 +12,10 @@ import {
     TextField,
 } from '@material-ui/core';
 import { useDropzone } from 'react-dropzone';
-import { useResourceBuilder } from '../ResourceBuilderContext';
+import {
+    useResourceConfigurations,
+    getFieldDefinitionsFromRecords,
+} from '../ResourceBuilderContext';
 import { Record, useDataProvider, useRefresh } from 'ra-core';
 import { useHistory } from 'react-router-dom';
 
@@ -21,7 +24,7 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
     const [parsing, setParsing] = useState(false);
     const [file, setFile] = useState<File>();
     const [resource, setResource] = useState<string>();
-    const [, { addResource }] = useResourceBuilder();
+    const { addResource } = useResourceConfigurations();
     const history = useHistory();
     const refresh = useRefresh();
 
@@ -55,7 +58,8 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
                         }
                     });
                     setParsing(false);
-                    addResource({ name: resource });
+                    const fields = getFieldDefinitionsFromRecords(data);
+                    addResource({ name: resource, fields });
                     history.push(`/${resource}`);
                     handleClose();
                     refresh();
