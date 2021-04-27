@@ -6,7 +6,7 @@ import {
 } from 'ra-core';
 import { Datagrid, ListProps, ListView, ListViewProps } from 'ra-ui-materialui';
 
-import { useResource } from '../ResourceConfiguration';
+import { useResourceConfiguration } from '../ResourceConfiguration';
 import { getFieldFromFieldDefinition } from './getFieldFromFieldDefinition';
 
 export const ListBuilder = (props: ListProps) => {
@@ -21,7 +21,7 @@ export const ListBuilder = (props: ListProps) => {
 
 export const ListBuilderView = (props: Omit<ListViewProps, 'children'>) => {
     const { resource } = useListContext(props);
-    const [resourceConfiguration] = useResource(resource);
+    const [resourceConfiguration] = useResourceConfiguration(resource);
 
     return (
         <ListView {...props}>

@@ -9,7 +9,7 @@ type ResourceDefinitionStateActions = {
     remove: (resource: string) => void;
 };
 
-export const useResource = (
+export const useResourceConfiguration = (
     name: string
 ): [ResourceConfiguration, ResourceDefinitionStateActions] => {
     const resourceConfigurations = useResourceConfigurations();

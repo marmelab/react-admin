@@ -7,7 +7,7 @@ import {
 } from 'ra-core';
 import { CreateProps, CreateView, SimpleForm } from 'ra-ui-materialui';
 import { getInputFromFieldDefinition } from './getInputFromFieldDefinition';
-import { useResource } from '../ResourceConfiguration';
+import { useResourceConfiguration } from '../ResourceConfiguration';
 
 export const CreateBuilder = (props: CreateProps) => {
     const controllerProps = useCreateController(props);
@@ -23,7 +23,7 @@ export const CreateBuilderView = (
     props: CreateProps & Omit<CreateControllerProps, 'resource'>
 ) => {
     const { resource } = useCreateContext(props);
-    const [resourceConfiguration] = useResource(resource);
+    const [resourceConfiguration] = useResourceConfiguration(resource);
 
     return (
         <CreateView {...props}>

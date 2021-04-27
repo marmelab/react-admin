@@ -1,5 +1,5 @@
 export * from './getFieldDefinitionsFromRecords';
-export * from './useResource';
+export * from './useResourceConfiguration';
 export * from './useResourceConfigurations';
 export * from './ResourceConfigurationContext';
 export * from './ResourceConfigurationProvider';
