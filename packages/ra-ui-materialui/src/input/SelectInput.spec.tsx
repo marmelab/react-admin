@@ -503,7 +503,7 @@ describe('<SelectInput />', () => {
         expect(queryByRole('progressbar')).toBeNull();
     });
 
-    test('should support creation of a new choice through the onCreate event', async () => {
+    it('should support creation of a new choice through the onCreate event', async () => {
         const choices = [...defaultProps.choices];
         const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
 
@@ -541,7 +541,7 @@ describe('<SelectInput />', () => {
         ).not.toBeNull();
     });
 
-    test('should support creation of a new choice through the onCreate event with a promise', async () => {
+    it('should support creation of a new choice through the onCreate event with a promise', async () => {
         const choices = [...defaultProps.choices];
         const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
 
@@ -585,7 +585,7 @@ describe('<SelectInput />', () => {
         });
     });
 
-    test('should support creation of a new choice through the create element', async () => {
+    it('should support creation of a new choice through the create element', async () => {
         const choices = [...defaultProps.choices];
         const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
 

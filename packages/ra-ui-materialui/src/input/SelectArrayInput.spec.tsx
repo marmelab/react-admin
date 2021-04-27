@@ -195,6 +195,7 @@ describe('<SelectArrayInput />', () => {
         const option2 = getByText('React');
         expect(option2.getAttribute('aria-disabled')).toEqual('true');
     });
+
     it('should translate the choices', () => {
         const { getByRole, queryByText } = render(
             <TestTranslationProvider translate={x => `**${x}**`}>
@@ -312,7 +313,7 @@ describe('<SelectArrayInput />', () => {
         });
     });
 
-    test('should support creation of a new choice through the onCreate event', async () => {
+    it('should support creation of a new choice through the onCreate event', async () => {
         const choices = [...defaultProps.choices];
         const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
 
@@ -347,7 +348,7 @@ describe('<SelectArrayInput />', () => {
         expect(queryAllByText(newChoice.name).length).toEqual(2);
     });
 
-    test('should support creation of a new choice through the onCreate event with a promise', async () => {
+    it('should support creation of a new choice through the onCreate event with a promise', async () => {
         const choices = [...defaultProps.choices];
         const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
 
@@ -389,7 +390,7 @@ describe('<SelectArrayInput />', () => {
         });
     });
 
-    test('should support creation of a new choice through the create element', async () => {
+    it('should support creation of a new choice through the create element', async () => {
         const choices = [...defaultProps.choices];
         const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
 

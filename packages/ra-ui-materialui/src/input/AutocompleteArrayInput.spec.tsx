@@ -752,7 +752,7 @@ describe('<AutocompleteArrayInput />', () => {
         expect(queryByRole('progressbar')).toBeNull();
     });
 
-    test('should support creation of a new choice through the onCreate event', async () => {
+    it('should support creation of a new choice through the onCreate event', async () => {
         const choices = [
             { id: 'ang', name: 'Angular' },
             { id: 'rea', name: 'React' },
@@ -807,7 +807,7 @@ describe('<AutocompleteArrayInput />', () => {
         expect(queryByText('New Kid On The Block')).not.toBeNull();
     });
 
-    test('should support creation of a new choice through the onCreate event with a promise', async () => {
+    it('should support creation of a new choice through the onCreate event with a promise', async () => {
         const choices = [
             { id: 'ang', name: 'Angular' },
             { id: 'rea', name: 'React' },
@@ -865,7 +865,7 @@ describe('<AutocompleteArrayInput />', () => {
         expect(queryByText('New Kid On The Block')).not.toBeNull();
     });
 
-    test('should support creation of a new choice through the create element', async () => {
+    it('should support creation of a new choice through the create element', async () => {
         const choices = [
             { id: 'ang', name: 'Angular' },
             { id: 'rea', name: 'React' },
