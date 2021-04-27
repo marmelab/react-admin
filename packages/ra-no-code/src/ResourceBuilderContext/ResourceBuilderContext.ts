@@ -4,7 +4,7 @@ import { useResources } from './useResources';
 export const ResourceBuilderContext = createContext<
     ResourceBuilderContextValue
 >([
-    [],
+    {},
     {
         addResource: () => {},
         updateResource: () => {},
