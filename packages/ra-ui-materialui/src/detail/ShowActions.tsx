@@ -4,6 +4,7 @@ import { Record, useResourceDefinition, useShowContext } from 'ra-core';
 
 import { EditButton } from '../button';
 import TopToolbar from '../layout/TopToolbar';
+import { ReactNode } from 'react';
 
 const sanitizeRestProps = ({
     basePath,
@@ -39,18 +40,24 @@ const sanitizeRestProps = ({
  *         </Show>
  *     );
  */
-export const ShowActions = ({ className, ...rest }: ShowActionsProps) => {
+export const ShowActions = ({
+    children,
+    className,
+    ...rest
+}: ShowActionsProps) => {
     const { basePath, record } = useShowContext(rest);
     const { hasEdit } = useResourceDefinition(rest);
     return (
         <TopToolbar className={className} {...sanitizeRestProps(rest)}>
             {hasEdit && <EditButton basePath={basePath} record={record} />}
+            {children}
         </TopToolbar>
     );
 };
 
 export interface ShowActionsProps {
     basePath?: string;
+    children?: ReactNode;
     className?: string;
     data?: Record;
     hasCreate?: boolean;
@@ -62,6 +69,7 @@ export interface ShowActionsProps {
 
 ShowActions.propTypes = {
     basePath: PropTypes.string,
+    children: PropTypes.node,
     className: PropTypes.string,
     data: PropTypes.object,
     hasCreate: PropTypes.bool,

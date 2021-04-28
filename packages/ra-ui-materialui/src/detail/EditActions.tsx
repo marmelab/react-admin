@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Record, useEditContext, useResourceDefinition } from 'ra-core';
 import { ShowButton } from '../button';
 import TopToolbar from '../layout/TopToolbar';
+import { ReactNode } from 'react';
 
 /**
  * Action Toolbar for the Edit view
@@ -30,13 +31,18 @@ import TopToolbar from '../layout/TopToolbar';
  *         </Edit>
  *     );
  */
-export const EditActions = ({ className, ...rest }: EditActionsProps) => {
+export const EditActions = ({
+    children,
+    className,
+    ...rest
+}: EditActionsProps) => {
     const { basePath, record } = useEditContext(rest);
     const { hasShow } = useResourceDefinition(rest);
 
     return (
         <TopToolbar className={className} {...sanitizeRestProps(rest)}>
             {hasShow && <ShowButton basePath={basePath} record={record} />}
+            {children}
         </TopToolbar>
     );
 };
@@ -52,6 +58,7 @@ const sanitizeRestProps = ({
 
 export interface EditActionsProps {
     basePath?: string;
+    children?: ReactNode;
     className?: string;
     data?: Record;
     hasCreate?: boolean;
@@ -63,6 +70,7 @@ export interface EditActionsProps {
 
 EditActions.propTypes = {
     basePath: PropTypes.string,
+    children: PropTypes.node,
     className: PropTypes.string,
     data: PropTypes.object,
     hasCreate: PropTypes.bool,
