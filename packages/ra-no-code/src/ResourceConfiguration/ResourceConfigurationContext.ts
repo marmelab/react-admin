@@ -3,15 +3,21 @@ import { InferredElementDescription } from 'ra-core';
 
 export const ResourceConfigurationContext = createContext<
     ResourceConfigurationContextValue
->({
-    resources: {},
-    addResource: () => {},
-    updateResource: () => {},
-    removeResource: () => {},
-});
+>([
+    {},
+    {
+        addResource: () => {},
+        updateResource: () => {},
+        removeResource: () => {},
+    },
+]);
 
-export type ResourceConfigurationContextValue = {
-    resources: ResourceConfigurationMap;
+export type ResourceConfigurationContextValue = [
+    ResourceConfigurationMap,
+    ResourceConfigurationContextHelpers
+];
+
+export type ResourceConfigurationContextHelpers = {
     addResource: (resourceDefinition: ResourceConfiguration) => void;
     updateResource: (
         name: string,

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Admin as RaAdmin, Resource } from 'react-admin';
 import localStorageDataProvider from 'ra-data-local-storage';
-import { CreateBuilder, EditBuilder, ListBuilder } from './builders';
+import { Create, Edit, List } from './builders';
 import {
-    useResourceConfigurations,
+    useResourcesConfiguration,
     ResourceConfigurationProvider,
 } from './ResourceConfiguration';
 import { Layout, Ready } from './ui';
@@ -11,13 +11,13 @@ import { Layout, Ready } from './ui';
 const dataProvider = localStorageDataProvider();
 
 export const Admin = () => (
-    <ResourceConfigurationProvider>
+    <ResourceConfigurationProvider dataProvider={dataProvider}>
         <InnerAdmin />
     </ResourceConfigurationProvider>
 );
 
 const InnerAdmin = () => {
-    const { resources } = useResourceConfigurations();
+    const [resources] = useResourcesConfiguration();
     const hasResources = !!resources && Object.keys(resources).length > 0;
     return (
         <RaAdmin dataProvider={dataProvider} ready={Ready} layout={Layout}>
@@ -27,9 +27,9 @@ const InnerAdmin = () => {
                           key={resource}
                           name={resource}
                           options={{ label: resources[resource].label }}
-                          list={ListBuilder}
-                          edit={EditBuilder}
-                          create={CreateBuilder}
+                          list={List}
+                          edit={Edit}
+                          create={Create}
                       />
                   ))
                 : undefined}

@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core';
 import { useDropzone } from 'react-dropzone';
 import {
-    useResourceConfigurations,
+    useResourcesConfiguration,
     getFieldDefinitionsFromRecords,
 } from '../ResourceConfiguration';
 import { Record, useDataProvider, useRefresh } from 'ra-core';
@@ -24,7 +24,7 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
     const [parsing, setParsing] = useState(false);
     const [file, setFile] = useState<File>();
     const [resource, setResource] = useState<string>();
-    const { addResource } = useResourceConfigurations();
+    const [resources, { addResource }] = useResourcesConfiguration();
     const history = useHistory();
     const refresh = useRefresh();
 
@@ -52,6 +52,8 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
             parse<Record>(file, {
                 header: true,
                 complete: ({ data }) => {
+                    const resourceAlreadyExists = !!resources[resource];
+
                     data.forEach(record => {
                         if (record.id) {
                             dataProvider.create(resource, { data: record });
@@ -62,7 +64,12 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
                     addResource({ name: resource, fields });
                     history.push(`/${resource}`);
                     handleClose();
-                    refresh();
+
+                    if (resourceAlreadyExists) {
+                        // If we imported more records for an existing resource,
+                        // we must refresh the list
+                        refresh();
+                    }
                 },
             });
         }
@@ -86,7 +93,8 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
                 {parsing ? (
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            Generating the resource interfaces, please wait...
+                            Generating the user interface for the resource,
+                            please wait...
                         </DialogContentText>
                     </DialogContent>
                 ) : (
@@ -95,8 +103,7 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
                             <DialogContent {...rootProps}>
                                 <input {...getInputProps()} />
                                 <DialogContentText id="alert-dialog-description">
-                                    Welcome to React Admin! Let's generate your
-                                    application.
+                                    Welcome to react-admin no-code!
                                 </DialogContentText>
                                 <DialogContentText>
                                     Drop a csv file here or click here to choose

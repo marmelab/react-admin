@@ -12,7 +12,7 @@ import { useGetResourceLabel, ReduxState } from 'ra-core';
 
 import { DashboardMenuItem, MenuItemLink } from 'react-admin';
 import { NewResourceMenuItem } from './NewResourceMenuItem';
-import { useResourceConfigurations } from '../ResourceConfiguration';
+import { useResourcesConfiguration } from '../ResourceConfiguration';
 
 export const MENU_WIDTH = 240;
 export const CLOSED_MENU_WIDTH = 55;
@@ -33,7 +33,7 @@ const Menu = (props: MenuProps) => {
         theme.breakpoints.down('xs')
     );
     const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
-    const { resources } = useResourceConfigurations();
+    const [resources] = useResourcesConfiguration();
     const getResourceLabel = useGetResourceLabel();
 
     return (
