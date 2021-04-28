@@ -18,7 +18,7 @@ import { useImportResourceFromCsv } from './useImportResourceFromCsv';
 
 export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
     const [file, setFile] = useState<File>();
-    const [resource, setResource] = useState<string>();
+    const [resource, setResource] = useState<string>('');
     const history = useHistory();
     const refresh = useRefresh();
 
@@ -62,6 +62,7 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
     };
 
     const { getRootProps, getInputProps } = useDropzone({
+        accept: 'text/csv',
         onDrop,
     });
     const { ref, ...rootProps } = getRootProps();
@@ -87,11 +88,15 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
                     <>
                         <RootRef rootRef={ref}>
                             <DialogContent {...rootProps}>
-                                <input {...getInputProps()} />
+                                <input
+                                    aria-label="CSV File"
+                                    aria-describedby="#csv-description"
+                                    {...getInputProps()}
+                                />
                                 <DialogContentText id="alert-dialog-description">
                                     Welcome to react-admin no-code!
                                 </DialogContentText>
-                                <DialogContentText>
+                                <DialogContentText id="csv-description">
                                     Drop a csv file here or click here to choose
                                     a local file.
                                 </DialogContentText>
