@@ -9,7 +9,7 @@ import {
     Record,
     RecordMap,
 } from '../types';
-import useQueryWithStore from './useQueryWithStore';
+import { useQueryWithStore } from './useQueryWithStore';
 
 const defaultIds = [];
 const defaultData = {};

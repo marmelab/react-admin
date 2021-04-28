@@ -6,7 +6,7 @@ import {
     ReduxState,
     UseDataProviderOptions,
 } from '../types';
-import useQueryWithStore from './useQueryWithStore';
+import { useQueryWithStore } from './useQueryWithStore';
 
 /**
  * Call the dataProvider.getOne() method and return the resolved value

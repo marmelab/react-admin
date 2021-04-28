@@ -170,6 +170,7 @@ describe('<ReferenceInputController />', () => {
                     'possibleValues.showFilter',
                 ])
             ).toEqual({
+                refetch: expect.any(Function),
                 possibleValues: {
                     basePath: '/comments',
                     currentSort: {

@@ -13,6 +13,7 @@ const frenchMessages: TranslationMessages = {
             clone: 'Dupliquer',
             confirm: 'Confirmer',
             create: 'Créer',
+            create_item: 'Créer %{item}',
             delete: 'Supprimer',
             edit: 'Éditer',
             export: 'Exporter',

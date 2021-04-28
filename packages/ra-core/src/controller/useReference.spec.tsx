@@ -143,6 +143,7 @@ describe('useReference', () => {
             loading: true,
             loaded: true,
             error: null,
+            refetch: expect.any(Function),
         });
     });
 
@@ -171,6 +172,7 @@ describe('useReference', () => {
             loading: true,
             loaded: false,
             error: null,
+            refetch: expect.any(Function),
         });
     });
 });

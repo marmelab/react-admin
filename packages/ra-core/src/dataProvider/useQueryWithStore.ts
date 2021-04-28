@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 
@@ -8,18 +8,21 @@ import getFetchType from './getFetchType';
 import { useSafeSetState } from '../util/hooks';
 import { ReduxState, OnSuccess, OnFailure } from '../types';
 
-export interface Query {
+export interface DataProviderQuery {
     type: string;
     resource: string;
     payload: object;
 }
 
-export interface StateResult {
+export type Refetch = () => void;
+
+export interface UseQueryWithStoreValue {
     data?: any;
     total?: number;
     error?: any;
     loading: boolean;
     loaded: boolean;
+    refetch: Refetch;
 }
 
 export interface QueryOptions {
@@ -30,7 +33,7 @@ export interface QueryOptions {
     [key: string]: any;
 }
 
-export type PartialQueryState = {
+type PartialQueryState = {
     error?: any;
     loading: boolean;
     loaded: boolean;
@@ -108,27 +111,34 @@ const defaultIsDataLoaded = (data: any): boolean => data !== undefined;
  *     return <div>User {data.username}</div>;
  * };
  */
-const useQueryWithStore = <State extends ReduxState = ReduxState>(
-    query: Query,
+export const useQueryWithStore = <State extends ReduxState = ReduxState>(
+    query: DataProviderQuery,
     options: QueryOptions = { action: 'CUSTOM_QUERY' },
     dataSelector: (state: State) => any = defaultDataSelector(query),
     totalSelector: (state: State) => number = defaultTotalSelector(query),
     isDataLoaded: (data: any) => boolean = defaultIsDataLoaded
-): {
-    data?: any;
-    total?: number;
-    error?: any;
-    loading: boolean;
-    loaded: boolean;
-} => {
+): UseQueryWithStoreValue => {
     const { type, resource, payload } = query;
     const version = useVersion(); // used to allow force reload
-    const requestSignature = JSON.stringify({ query, options, version });
+    // used to force a refetch without relying on version
+    // which might trigger other queries as well
+    const [innerVersion, setInnerVersion] = useState(0);
+    const requestSignature = JSON.stringify({
+        query,
+        options,
+        version,
+        innerVersion,
+    });
     const requestSignatureRef = useRef(requestSignature);
     const data = useSelector(dataSelector);
     const total = useSelector(totalSelector);
+
+    const refetch = useCallback(() => {
+        setInnerVersion(prevInnerVersion => prevInnerVersion + 1);
+    }, []);
+
     const [state, setState]: [
-        StateResult,
+        UseQueryWithStoreValue,
         (StateResult) => void
     ] = useSafeSetState({
         data,
@@ -136,6 +146,7 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
         error: null,
         loading: true,
         loaded: isDataLoaded(data),
+        refetch,
     });
 
     useEffect(() => {
@@ -148,6 +159,7 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
                 error: null,
                 loading: true,
                 loaded: isDataLoaded(data),
+                refetch,
             });
         } else if (!isEqual(state.data, data) || state.total !== total) {
             // the dataProvider response arrived in the Redux store
@@ -173,6 +185,7 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
         state.total,
         total,
         isDataLoaded,
+        refetch,
     ]);
 
     const dataProvider = useDataProvider();
@@ -234,5 +247,3 @@ const useQueryWithStore = <State extends ReduxState = ReduxState>(
 
     return state;
 };
-
-export default useQueryWithStore;
