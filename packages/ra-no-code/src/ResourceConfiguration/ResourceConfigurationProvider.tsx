@@ -127,7 +127,7 @@ const loadConfigurationsFromLocalStorage = storageKey => {
     const storedResourceDefinitions = window.localStorage.getItem(storageKey);
 
     if (!storedResourceDefinitions) {
-        return;
+        return {};
     }
 
     const resourceDefinitions = JSON.parse(storedResourceDefinitions);
