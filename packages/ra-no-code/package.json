@@ -27,6 +27,7 @@
     },
     "devDependencies": {
         "@testing-library/react": "^11.2.3",
+        "@testing-library/user-event": "^13.1.5",
         "@types/history": "^4.7.2",
         "@types/react-router": "^5.1.0",
         "@types/react-router-dom": "^5.1.0",
