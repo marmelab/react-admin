@@ -24,14 +24,21 @@ export const useImportResourceFromCsv = (
         setParsing(true);
         parse<Record>(file, {
             header: true,
-            complete: ({ data }) => {
+            complete: async ({ data }) => {
                 const resourceAlreadyExists = !!resources[resource];
 
-                data.forEach(record => {
-                    if (record.id) {
-                        dataProvider.create(resource, { data: record });
-                    }
-                });
+                await Promise.all(
+                    data.map(record => {
+                        if (record.id) {
+                            return dataProvider
+                                .create(resource, {
+                                    data: record,
+                                })
+                                .catch(error => console.error(error));
+                        }
+                        return Promise.resolve();
+                    })
+                );
                 setParsing(false);
                 const fields = getFieldDefinitionsFromRecords(data);
                 addResource({ name: resource, fields });
