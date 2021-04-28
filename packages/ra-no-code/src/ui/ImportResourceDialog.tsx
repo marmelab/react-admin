@@ -110,6 +110,8 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
                                     onChange={event =>
                                         setResource(event.target.value)
                                     }
+                                    autoFocus
+                                    onFocus={e => e.currentTarget.select()}
                                 />
                             </DialogContent>
                         )}
