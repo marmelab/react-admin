@@ -13,6 +13,7 @@ import {
 } from './ResourceConfiguration';
 import { Layout, Ready } from './ui';
 import { Route } from 'react-router';
+import { Application } from './ApplicationsDashboard';
 
 const dataProvider = localStorageDataProvider();
 
@@ -31,7 +32,7 @@ export const Admin = (props: AdminProps) => (
     </ResourceConfigurationProvider>
 );
 
-const InnerAdmin = (props: AdminProps) => {
+const InnerAdmin = (props: RaAdminProps) => {
     const [resources] = useResourcesConfiguration();
     const hasResources = !!resources && Object.keys(resources).length > 0;
     return (
@@ -59,4 +60,6 @@ const InnerAdmin = (props: AdminProps) => {
     );
 };
 
-interface AdminProps extends Omit<RaAdminProps, 'dataProvider'> {}
+interface AdminProps extends Omit<RaAdminProps, 'dataProvider'> {
+    application: Application;
+}
