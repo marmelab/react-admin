@@ -1,4 +1,4 @@
-import convertLegacyDataProvider from './convertLegacyDataProvider';
+import convertLegacyDataProvider, { ConvertedDataProvider } from './convertLegacyDataProvider';
 import DataProviderContext from './DataProviderContext';
 import HttpError from './HttpError';
 import * as fetchUtils from './fetch';
@@ -30,6 +30,7 @@ export type {
     UseMutationValue,
     UseQueryValue,
     UseGetOneHookValue,
+    ConvertedDataProvider,
 };
 
 export {
