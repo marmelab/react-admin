@@ -2021,14 +2021,14 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 
-const MyDatagridRow = ({ record, resource, id, onToggleItem, children, selected, basePath }) => (
+const MyDatagridRow = ({ record, resource, id, onToggleItem, children, selected, selectable, basePath }) => (
     <TableRow key={id}>
         {/* first column: selection checkbox */}
         <TableCell padding="none">
             <Checkbox
-                disabled={record.selectable}
+                disabled={selectable}
                 checked={selected}
-                onClick={() => onToggleItem(id)}
+                onClick={event => onToggleItem(id, event)}
             />
         </TableCell>
         {/* data columns based on children */}
