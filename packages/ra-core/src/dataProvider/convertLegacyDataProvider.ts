@@ -34,7 +34,7 @@ const fetchMap = {
     updateMany: UPDATE_MANY,
 };
 
-interface ConvertedDataProvider extends DataProvider {
+export interface ConvertedDataProvider extends DataProvider {
     (type: string, resource: string, params: any): Promise<any>;
 }
 /**
