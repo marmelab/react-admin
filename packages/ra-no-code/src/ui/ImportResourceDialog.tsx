@@ -1,5 +1,4 @@
 import React, { FormEvent, useState } from 'react';
-import { parse } from 'papaparse';
 import {
     Button,
     Dialog,
@@ -12,21 +11,37 @@ import {
     TextField,
 } from '@material-ui/core';
 import { useDropzone } from 'react-dropzone';
-import {
-    useResourcesConfiguration,
-    getFieldDefinitionsFromRecords,
-} from '../ResourceConfiguration';
-import { Record, useDataProvider, useRefresh } from 'ra-core';
+
+import { useRefresh } from 'ra-core';
 import { useHistory } from 'react-router-dom';
+import { useImportResourceFromCsv } from './useImportResourceFromCsv';
 
 export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
-    const dataProvider = useDataProvider();
-    const [parsing, setParsing] = useState(false);
     const [file, setFile] = useState<File>();
     const [resource, setResource] = useState<string>();
-    const [resources, { addResource }] = useResourcesConfiguration();
     const history = useHistory();
     const refresh = useRefresh();
+
+    const handleClose = () => {
+        if (props.onClose) {
+            props.onClose();
+        }
+    };
+
+    const handleImportCompleted = ({ resourceAlreadyExists }) => {
+        handleClose();
+        history.push(`/${resource}`);
+
+        if (resourceAlreadyExists) {
+            // If we imported more records for an existing resource,
+            // we must refresh the list
+            refresh();
+        }
+    };
+
+    const [parsing, importResource] = useImportResourceFromCsv(
+        handleImportCompleted
+    );
 
     const onDrop = (acceptedFiles: File[]) => {
         if (acceptedFiles.length > 0) {
@@ -38,40 +53,11 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
         }
     };
 
-    const handleClose = () => {
-        if (props.onClose) {
-            props.onClose();
-        }
-    };
-
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
 
         if (resource && file) {
-            setParsing(true);
-            parse<Record>(file, {
-                header: true,
-                complete: ({ data }) => {
-                    const resourceAlreadyExists = !!resources[resource];
-
-                    data.forEach(record => {
-                        if (record.id) {
-                            dataProvider.create(resource, { data: record });
-                        }
-                    });
-                    setParsing(false);
-                    const fields = getFieldDefinitionsFromRecords(data);
-                    addResource({ name: resource, fields });
-                    history.push(`/${resource}`);
-                    handleClose();
-
-                    if (resourceAlreadyExists) {
-                        // If we imported more records for an existing resource,
-                        // we must refresh the list
-                        refresh();
-                    }
-                },
-            });
+            importResource(resource, file);
         }
     };
 
