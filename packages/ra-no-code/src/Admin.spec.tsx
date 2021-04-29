@@ -25,7 +25,7 @@ describe('Admin', () => {
                 encoding: 'utf-8',
             }
         );
-        // jest.setTimeout(31000);
+
         let file = new File([customers], 'customers.csv', {
             type: 'text/csv',
         });
