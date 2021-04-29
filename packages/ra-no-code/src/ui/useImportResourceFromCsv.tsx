@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { parse } from 'papaparse';
-import { Record, useDataProvider } from 'ra-core';
+import { getValuesFromRecords, Record, useDataProvider } from 'ra-core';
+import set from 'lodash/set';
 
 import {
     useResourcesConfiguration,
@@ -24,23 +25,23 @@ export const useImportResourceFromCsv = (
         setParsing(true);
         parse<Record>(file, {
             header: true,
-            complete: async ({ data }) => {
+            skipEmptyLines: true,
+            complete: async ({ data, meta }) => {
                 const resourceAlreadyExists = !!resources[resource];
-
+                const records = sanitizeRecords(
+                    data.filter(record => !!record.id),
+                    meta
+                );
+                console.log({ records });
                 await Promise.all(
-                    data.map(record => {
-                        if (record.id) {
-                            return dataProvider
-                                .create(resource, {
-                                    data: record,
-                                })
-                                .catch(error => console.error(error));
-                        }
-                        return Promise.resolve();
+                    records.map(record => {
+                        return dataProvider.create(resource, {
+                            data: record,
+                        });
                     })
                 );
                 setParsing(false);
-                const fields = getFieldDefinitionsFromRecords(data);
+                const fields = getFieldDefinitionsFromRecords(records);
                 addResource({ name: resource, fields });
                 onImportCompleted({ resource, resourceAlreadyExists });
             },
@@ -58,3 +59,37 @@ type ImportCompletedHandler = ({
     resourceAlreadyExists: boolean;
     resource: string;
 }) => void;
+
+const sanitizeRecords = (
+    records: Record[],
+    { fields }: { fields: string[] }
+): Record[] => {
+    const values = getValuesFromRecords(records);
+    return fields.reduce(
+        (newRecords, field) => sanitizeRecord(newRecords, values, field),
+        [...records]
+    );
+};
+
+const sanitizeRecord = (records, values, field) => {
+    if (field.split('.').length > 1) {
+        return records.map(record => {
+            let { [field]: pathField, ...newRecord } = record;
+            return set(newRecord, field, record[field]);
+        });
+    }
+
+    const fieldValues = values[field];
+
+    if (
+        fieldValues.some(value =>
+            ['false', 'true'].includes(value.toString().toLowerCase())
+        )
+    ) {
+        return records.map(record =>
+            set(record, field, Boolean(record[field]))
+        );
+    }
+
+    return records;
+};
