@@ -6,7 +6,7 @@ import path from 'path';
 import { Admin } from './Admin';
 
 describe('Admin', () => {
-    test('should be functional', async () => {
+    it('should be functional', async () => {
         const customers = fs.readFileSync(
             path.resolve(__dirname, '../assets/ra-customers.csv'),
             {
