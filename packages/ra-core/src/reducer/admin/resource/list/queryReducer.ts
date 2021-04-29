@@ -123,13 +123,16 @@ const queryReducer: Reducer<ListParams> = (
                 ),
                 // we don't use lodash.set() for displayed filters
                 // to avoid problems with compound filter names (e.g. 'author.name')
-                displayedFilters: Object.keys(
-                    previousState.displayedFilters
-                ).reduce((filters, filter) => {
-                    return filter !== action.payload
-                        ? { ...filters, [filter]: true }
-                        : filters;
-                }, {}),
+                displayedFilters: previousState.displayedFilters
+                    ? Object.keys(previousState.displayedFilters).reduce(
+                          (filters, filter) => {
+                              return filter !== action.payload
+                                  ? { ...filters, [filter]: true }
+                                  : filters;
+                          },
+                          {}
+                      )
+                    : previousState.displayedFilters,
             };
         }
 
