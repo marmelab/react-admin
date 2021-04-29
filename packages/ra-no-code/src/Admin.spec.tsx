@@ -30,7 +30,7 @@ describe('Admin', () => {
             type: 'text/csv',
         });
         const { getByLabelText, getByText, getByDisplayValue } = render(
-            <Admin />
+            <Admin application={{ name: 'test', created_at: new Date() }} />
         );
 
         userEvents.upload(getByLabelText('CSV File'), file);
