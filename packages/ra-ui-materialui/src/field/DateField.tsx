@@ -57,7 +57,7 @@ export const DateField: FC<DateFieldProps> = memo<DateFieldProps>(props => {
         return null;
     }
     const value = get(record, source);
-    if (value == null) {
+    if (value == null || value === '') {
         return emptyText ? (
             <Typography
                 component="span"
