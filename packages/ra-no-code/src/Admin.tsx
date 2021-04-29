@@ -5,7 +5,7 @@ import {
     Resource,
 } from 'react-admin';
 import localStorageDataProvider from 'ra-data-local-storage';
-import { Create, Edit, List } from './builders';
+import { Create, Edit, List, Show } from './builders';
 import {
     useResourcesConfiguration,
     ResourceConfigurationPage,
@@ -51,6 +51,7 @@ const InnerAdmin = (props: AdminProps) => {
                           list={List}
                           edit={Edit}
                           create={Create}
+                          show={Show}
                       />
                   ))
                 : undefined}
