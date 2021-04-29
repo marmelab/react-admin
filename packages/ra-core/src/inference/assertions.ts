@@ -8,10 +8,13 @@ export const isInteger = (value: any) =>
     Number.isInteger(value) || !isNaN(parseInt(value));
 export const valuesAreInteger = (values: any[]) => values.every(isInteger);
 
-export const isBoolean = (value: any) =>
-    typeof value === 'boolean' ||
-    ['true', 'false'].includes(value.toString().toLowerCase());
+export const isBoolean = (value: any) => typeof value === 'boolean';
 export const valuesAreBoolean = (values: any[]) => values.every(isBoolean);
+
+export const isBooleanString = (value: any) =>
+    ['true', 'false'].includes(value.toString().toLowerCase());
+export const valuesAreBooleanString = (values: any[]) =>
+    values.every(isBooleanString);
 
 export const isString = (value: any) => typeof value === 'string';
 export const valuesAreString = (values: any[]) => values.every(isString);
