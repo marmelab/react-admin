@@ -22,9 +22,9 @@ export const Datagrid = (props: Omit<DatagridProps, 'children'>) => {
 
     return (
         <RaDatagrid rowClick="edit" {...props}>
-            {resourceConfiguration.fields.map(definition =>
-                getFieldFromFieldDefinition(definition)
-            )}
+            {resourceConfiguration.fields
+                .filter(definition => definition.views.includes('list'))
+                .map(definition => getFieldFromFieldDefinition(definition))}
         </RaDatagrid>
     );
 };

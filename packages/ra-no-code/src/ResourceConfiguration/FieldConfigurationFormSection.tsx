@@ -4,11 +4,10 @@ import {
     InferenceTypes,
     useTranslate,
 } from 'ra-core';
-import { SelectInput, TextInput } from 'ra-ui-materialui';
+import { CheckboxGroupInput, SelectInput, TextInput } from 'ra-ui-materialui';
 import { CardContent } from '@material-ui/core';
-import { textChangeRangeIsUnchanged } from 'typescript';
 
-export const FieldConfiguration = props => {
+export const FieldConfigurationFormSection = props => {
     const { index, field, resource } = props;
     const translate = useTranslate();
     const labelArgs = getFieldLabelTranslationArgs({
@@ -35,11 +34,41 @@ export const FieldConfiguration = props => {
                 source={`fields[${index}].type`}
                 label="Type"
                 fullWidth
-                choices={InferenceTypes.map(type => ({
-                    id: type,
-                    name: type,
-                }))}
+                choices={INFERENCE_TYPES}
+            />
+            <CheckboxGroupInput
+                source={`fields[${index}].views`}
+                label="Views"
+                fullWidth
+                choices={VIEWS}
+                initialValue={VIEWS_INITIAL_VALUE}
             />
         </CardContent>
     );
 };
+
+const INFERENCE_TYPES = InferenceTypes.map(type => ({
+    id: type,
+    name: type,
+}));
+
+const VIEWS = [
+    {
+        id: 'list',
+        name: 'List',
+    },
+    {
+        id: 'edit',
+        name: 'Edit',
+    },
+    {
+        id: 'create',
+        name: 'Create',
+    },
+    {
+        id: 'show',
+        name: 'Show',
+    },
+];
+
+const VIEWS_INITIAL_VALUE = ['list', 'edit', 'create', 'show'];

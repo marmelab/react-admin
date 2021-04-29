@@ -21,9 +21,9 @@ export const EditForm = (props: Omit<SimpleFormProps, 'children'>) => {
 
     return (
         <SimpleForm {...props}>
-            {resourceConfiguration.fields.map(definition =>
-                getInputFromFieldDefinition(definition)
-            )}
+            {resourceConfiguration.fields
+                .filter(definition => definition.views.includes('edit'))
+                .map(definition => getInputFromFieldDefinition(definition))}
         </SimpleForm>
     );
 };

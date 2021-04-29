@@ -14,14 +14,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {
     FormWithRedirect,
-    InferredElementDescription,
     RecordContextProvider,
     SaveContextProvider,
 } from 'ra-core';
 import { SaveButton, TextInput } from 'ra-ui-materialui';
-import { ResourceConfiguration } from './ResourceConfigurationContext';
+import {
+    ResourceConfiguration,
+    FieldConfiguration,
+} from './ResourceConfigurationContext';
 import { useResourceConfiguration } from './useResourceConfiguration';
-import { FieldConfiguration } from './FieldConfiguration';
+import { FieldConfigurationFormSection } from './FieldConfigurationFormSection';
 import { FieldConfigurationTab } from './FieldConfigurationTab';
 
 export const ResourceConfigurationPage = ({
@@ -30,9 +32,7 @@ export const ResourceConfigurationPage = ({
     resource: string;
 }) => {
     const [resourceConfiguration, actions] = useResourceConfiguration(resource);
-    const [activeField, setActiveField] = useState<
-        InferredElementDescription
-    >();
+    const [activeField, setActiveField] = useState<FieldConfiguration>();
     const classes = useStyles();
 
     const save = (values: ResourceConfiguration) => {
@@ -133,7 +133,7 @@ export const ResourceConfigurationPage = ({
                                         >
                                             {activeField.props.source ===
                                             field.props.source ? (
-                                                <FieldConfiguration
+                                                <FieldConfigurationFormSection
                                                     key={field.props.source}
                                                     field={field}
                                                     index={index}
