@@ -51,9 +51,6 @@ const Menu: FC<MenuProps> = props => {
         ...rest
     } = props;
     const classes = useStyles(props);
-    const isXSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('xs')
-    );
     const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
     const resources = useSelector(getResources, shallowEqual) as Array<any>;
     const getResourceLabel = useGetResourceLabel();
@@ -69,13 +66,7 @@ const Menu: FC<MenuProps> = props => {
             )}
             {...rest}
         >
-            {hasDashboard && (
-                <DashboardMenuItem
-                    onClick={onMenuClick}
-                    dense={dense}
-                    sidebarIsOpen={open}
-                />
-            )}
+            {hasDashboard && <DashboardMenuItem dense={dense} />}
             {resources
                 .filter(r => r.hasList)
                 .map(resource => (
@@ -89,12 +80,9 @@ const Menu: FC<MenuProps> = props => {
                         leftIcon={
                             resource.icon ? <resource.icon /> : <DefaultIcon />
                         }
-                        onClick={onMenuClick}
                         dense={dense}
-                        sidebarIsOpen={open}
                     />
                 ))}
-            {isXSmall && logout}
         </div>
     );
 };
@@ -104,7 +92,13 @@ export interface MenuProps {
     className?: string;
     dense?: boolean;
     hasDashboard?: boolean;
+    /**
+     * @deprecated
+     */
     logout?: ReactNode;
+    /**
+     * @deprecated
+     */
     onMenuClick?: () => void;
 }
 
