@@ -11,6 +11,7 @@ import resolveRedirectTo from './resolveRedirectTo';
 import warning from './warning';
 import useWhyDidYouUpdate from './useWhyDidYouUpdate';
 import { useSafeSetState, useTimeout } from './hooks';
+import { getMutationMode } from './getMutationMode';
 export * from './indexById';
 
 export {
@@ -28,4 +29,5 @@ export {
     useWhyDidYouUpdate,
     useSafeSetState,
     useTimeout,
+    getMutationMode,
 };
