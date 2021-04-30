@@ -159,8 +159,18 @@ describe('inferTypeFromValues', () => {
                 { bar: 3, baz: 4 },
             ])
         ).toEqual({
-            type: 'number',
-            props: { source: 'foo.bar' },
+            type: 'object',
+            props: { source: 'foo' },
+            children: [
+                {
+                    type: 'number',
+                    props: { source: 'bar' },
+                },
+                {
+                    type: 'number',
+                    props: { source: 'baz' },
+                },
+            ],
         });
     });
 });
