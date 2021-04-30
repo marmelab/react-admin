@@ -56,7 +56,6 @@ const defaultSort = {
 };
 
 const defaultParams = {};
-let tempParams;
 
 /**
  * Get the list parameters (page, sort, filters) and modifiers.
@@ -126,6 +125,7 @@ const useListParams = ({
                 : defaultParams,
         shallowEqual
     );
+    const tempParams = useRef<ListParams>();
 
     const requestSignature = [
         location.search,
@@ -164,31 +164,31 @@ const useListParams = ({
     }, []); // eslint-disable-line
 
     const changeParams = useCallback(action => {
-        if (!tempParams) {
+        if (!tempParams.current) {
             // no other changeParams action dispatched this tick
-            tempParams = queryReducer(query, action);
+            tempParams.current = queryReducer(query, action);
             // schedule side effects for next tick
             setTimeout(() => {
                 if (syncWithLocation) {
                     history.push({
                         search: `?${stringify({
-                            ...tempParams,
-                            filter: JSON.stringify(tempParams.filter),
+                            ...tempParams.current,
+                            filter: JSON.stringify(tempParams.current.filter),
                             displayedFilters: JSON.stringify(
-                                tempParams.displayedFilters
+                                tempParams.current.displayedFilters
                             ),
                         })}`,
                         state: { _scrollToTop: action.type === SET_PAGE },
                     });
-                    dispatch(changeListParams(resource, tempParams));
+                    dispatch(changeListParams(resource, tempParams.current));
                 } else {
-                    setLocalParams(tempParams);
+                    setLocalParams(tempParams.current);
                 }
-                tempParams = undefined;
+                tempParams.current = undefined;
             }, 0);
         } else {
             // side effects already scheduled, just change the params
-            tempParams = queryReducer(tempParams, action);
+            tempParams.current = queryReducer(tempParams.current, action);
         }
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
