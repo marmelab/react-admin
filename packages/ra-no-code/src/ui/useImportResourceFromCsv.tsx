@@ -32,7 +32,6 @@ export const useImportResourceFromCsv = (
                     data.filter(record => !!record.id),
                     meta
                 );
-                console.log({ records });
                 await Promise.all(
                     records.map(record => {
                         return dataProvider.create(resource, {
