@@ -1,13 +1,14 @@
-import { useCallback, useMemo, useEffect, useState } from 'react';
+import { useCallback, useMemo, useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { parse, stringify } from 'query-string';
 import lodashDebounce from 'lodash/debounce';
-import set from 'lodash/set';
 import pickBy from 'lodash/pickBy';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import queryReducer, {
     SET_FILTER,
+    HIDE_FILTER,
+    SHOW_FILTER,
     SET_PAGE,
     SET_PER_PAGE,
     SET_SORT,
@@ -16,7 +17,6 @@ import queryReducer, {
 import { changeListParams, ListParams } from '../actions/listActions';
 import { SortPayload, ReduxState, FilterPayload } from '../types';
 import removeEmpty from '../util/removeEmpty';
-import removeKey from '../util/removeKey';
 
 interface ListParamsOptions {
     resource: string;
@@ -125,6 +125,7 @@ const useListParams = ({
                 : defaultParams,
         shallowEqual
     );
+    const tempParams = useRef<ListParams>();
 
     const requestSignature = [
         location.search,
@@ -163,21 +164,31 @@ const useListParams = ({
     }, []); // eslint-disable-line
 
     const changeParams = useCallback(action => {
-        const newParams = queryReducer(query, action);
-        if (syncWithLocation) {
-            history.push({
-                search: `?${stringify({
-                    ...newParams,
-                    filter: JSON.stringify(newParams.filter),
-                    displayedFilters: JSON.stringify(
-                        newParams.displayedFilters
-                    ),
-                })}`,
-                state: { _scrollToTop: action.type === SET_PAGE },
-            });
-            dispatch(changeListParams(resource, newParams));
+        if (!tempParams.current) {
+            // no other changeParams action dispatched this tick
+            tempParams.current = queryReducer(query, action);
+            // schedule side effects for next tick
+            setTimeout(() => {
+                if (syncWithLocation) {
+                    history.push({
+                        search: `?${stringify({
+                            ...tempParams.current,
+                            filter: JSON.stringify(tempParams.current.filter),
+                            displayedFilters: JSON.stringify(
+                                tempParams.current.displayedFilters
+                            ),
+                        })}`,
+                        state: { _scrollToTop: action.type === SET_PAGE },
+                    });
+                    dispatch(changeListParams(resource, tempParams.current));
+                } else {
+                    setLocalParams(tempParams.current);
+                }
+                tempParams.current = undefined;
+            }, 0);
         } else {
-            setLocalParams(newParams);
+            // side effects already scheduled, just change the params
+            tempParams.current = queryReducer(tempParams.current, action);
         }
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -229,38 +240,18 @@ const useListParams = ({
     );
 
     const hideFilter = useCallback((filterName: string) => {
-        // we don't use lodash.set() for displayed filters
-        // to avoid problems with compound filter names (e.g. 'author.name')
-        const displayedFilters = Object.keys(displayedFilterValues).reduce(
-            (filters, filter) => {
-                return filter !== filterName
-                    ? { ...filters, [filter]: true }
-                    : filters;
-            },
-            {}
-        );
-        const filter = removeEmpty(removeKey(filterValues, filterName));
         changeParams({
-            type: SET_FILTER,
-            payload: { filter, displayedFilters },
+            type: HIDE_FILTER,
+            payload: filterName,
         });
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
     const showFilter = useCallback((filterName: string, defaultValue: any) => {
-        // we don't use lodash.set() for displayed filters
-        // to avoid problems with compound filter names (e.g. 'author.name')
-        const displayedFilters = {
-            ...displayedFilterValues,
-            [filterName]: true,
-        };
-        const filter = defaultValue
-            ? set(filterValues, filterName, defaultValue)
-            : filterValues;
         changeParams({
-            type: SET_FILTER,
+            type: SHOW_FILTER,
             payload: {
-                filter,
-                displayedFilters,
+                filterName,
+                defaultValue,
             },
         });
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps

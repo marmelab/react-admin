@@ -350,6 +350,50 @@ describe('useListController', () => {
                 });
             });
         });
+
+        it('should support to sync calls', async () => {
+            const { getByLabelText, queryByText } = renderWithRedux(
+                <ListController {...defaultProps}>
+                    {({ displayedFilters, showFilter }) => (
+                        <>
+                            <button
+                                aria-label="Show filters"
+                                onClick={() => {
+                                    showFilter('filter1.subdata', 'bob');
+                                    showFilter('filter2', '');
+                                }}
+                            />
+                            {Object.keys(displayedFilters).map(
+                                (displayedFilter, index) => (
+                                    <div key={index}>{displayedFilter}</div>
+                                )
+                            )}
+                        </>
+                    )}
+                </ListController>,
+                {
+                    admin: {
+                        resources: {
+                            posts: {
+                                list: {
+                                    params: {
+                                        filter: { q: 'hello' },
+                                    },
+                                    cachedRequests: {},
+                                },
+                            },
+                        },
+                    },
+                }
+            );
+
+            fireEvent.click(getByLabelText('Show filters'));
+
+            await waitFor(() => {
+                expect(queryByText('filter1.subdata')).not.toBeNull();
+                expect(queryByText('filter2')).not.toBeNull();
+            });
+        });
     });
 
     describe('getListControllerProps', () => {
