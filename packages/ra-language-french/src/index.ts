@@ -84,7 +84,7 @@ const frenchMessages: TranslationMessages = {
             bulk_update_content:
                 'Êtes-vous sûr(e) de vouloir modifier cet élément ? |||| Êtes-vous sûr(e) de vouloir modifier ces %{smart_count} éléments ?',
             bulk_update_title:
-                'À jour %{name} |||| À jour %{smart_count} %{name}',
+                'Modifier %{name} |||| Modifier %{smart_count} %{name}',
             delete_content:
                 'Êtes-vous sûr(e) de vouloir supprimer cet élément ?',
             delete_title: 'Supprimer %{name} #%{id}',
