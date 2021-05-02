@@ -147,7 +147,7 @@ export const PostEdit = (props) => (
 );
 ```
 
-React Admin also internally updates the document's title. If you're passing an element as `title`, like in the example of above, you will be required to update the document's title yourself. React Admin exports a `useDocumentTitle` hook to make this simple:
+React Admin also updates the page title based on this `title` prop, as long as it's a string. If you're passing an element as `title`, like in the example above, you have to update the page title yourself. React-admin exports a hook called `useDocumentTitle` to make this simple:
 
 ```jsx
 const PostTitle = ({ record }) => {
