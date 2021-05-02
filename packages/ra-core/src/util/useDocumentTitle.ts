@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 /**
- * A hook that updates the document's title whenever the title argument changes
+ * A hook that updates the document title whenever the argument changes
  * @example
  *
  * const MyComponent = (props => {
