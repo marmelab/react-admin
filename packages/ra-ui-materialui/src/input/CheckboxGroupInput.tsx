@@ -212,6 +212,7 @@ const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = props => 
 };
 
 const sanitizeRestProps = ({
+    refetch,
     setFilter,
     setPagination,
     setSort,

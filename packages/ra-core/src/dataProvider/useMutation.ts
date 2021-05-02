@@ -215,7 +215,7 @@ const useMutation = (
 export interface Mutation {
     type: string;
     resource?: string;
-    payload: object;
+    payload?: object;
 }
 
 export interface MutationOptions {
@@ -281,7 +281,12 @@ const mergeDefinitionAndCallTimeParameters = (
     callTimeQuery?: Partial<Mutation> | Event,
     options?: MutationOptions,
     callTimeOptions?: MutationOptions
-) => {
+): {
+    type: string;
+    resource: string;
+    payload?: object;
+    options: MutationOptions;
+} => {
     if (!query && (!callTimeQuery || callTimeQuery instanceof Event)) {
         throw new Error('Missing query either at definition or at call time');
     }

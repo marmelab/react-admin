@@ -94,7 +94,7 @@ describe('inferTypeFromValues', () => {
             props: { source: 'email' },
         });
     });
-    it.skip('should return an email field for email string values', () => {
+    it('should return an email field for email string values', () => {
         expect(
             inferTypeFromValues('foo', ['me@example.com', 'you@foo.co.uk'])
         ).toEqual({
@@ -108,7 +108,7 @@ describe('inferTypeFromValues', () => {
             props: { source: 'url' },
         });
     });
-    it.skip('should return a url field for url string values', () => {
+    it('should return a url field for url string values', () => {
         expect(
             inferTypeFromValues('foo', [
                 'http://foo.com/bar',

@@ -1,7 +1,12 @@
 import * as React from 'react';
 import { FC, ReactElement, SyntheticEvent } from 'react';
 import PropTypes from 'prop-types';
-import { Record, RedirectionSideEffect, MutationMode } from 'ra-core';
+import {
+    Record,
+    RedirectionSideEffect,
+    MutationMode,
+    getMutationMode,
+} from 'ra-core';
 
 import { ButtonProps } from './Button';
 import DeleteWithUndoButton from './DeleteWithUndoButton';
@@ -46,18 +51,20 @@ import DeleteWithConfirmButton from './DeleteWithConfirmButton';
  */
 const DeleteButton: FC<DeleteButtonProps> = ({
     undoable,
-    mutationMode = 'undoable',
+    mutationMode,
     record,
     ...props
 }) => {
+    const mode = getMutationMode(mutationMode, undoable);
     if (!record || record.id == null) {
         return null;
     }
-    return undoable || mutationMode === 'undoable' ? (
+
+    return mode === 'undoable' ? (
         <DeleteWithUndoButton record={record} {...props} />
     ) : (
         <DeleteWithConfirmButton
-            mutationMode={mutationMode}
+            mutationMode={mode}
             record={record}
             {...props}
         />
