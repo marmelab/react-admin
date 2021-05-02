@@ -524,9 +524,13 @@ import { AutocompleteInput } from 'react-admin';
 | `allowEmpty`              | Optional | `boolean`      | `false`      | If `false` and the `searchText` typed did not match any suggestion, the `searchText` will revert to the current value when the field is blurred. If `true` and the `searchText` is set to `''` then the field will set the input value to `null`. |
 | `clearAlwaysVisible`      | Optional | `boolean`      | `false`      | When `resettable` is true, set this prop to `true` to have the Reset button visible even when the field is empty |
 | `choices`                 | Required | `Object[]`     | `-`          | List of items to autosuggest |
+| `create`                 | Optional | `Element`     | `-`          | A React Element to render when users want to create a new choice |
+| `createLabel`                 | Optional | `string`     | `ra.action.create`          | The label for the menu item allowing users to create a new choice. Used when the filter is empty |
+| `createItemLabel`                 | Optional | `string`     | `ra.action.create_item`          | The label for the menu item allowing users to create a new choice. Used when the filter is not empty |
 | `emptyValue`              | Optional | `any`          | `''`         | The value to use for the empty element |
 | `emptyText`               | Optional | `string`       | `''`         | The text to use for the empty element |
 | `matchSuggestion`         | Optional | `Function`     | `-`          | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean` |
+| `onCreate`              | Optional | `Function`     | `-`       | A function called with the current filter value when users choose to create a new choice. |
 | `optionText`              | Optional | `string` &#124; `Function` &#124; `Component` | `name`       | Field name of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`) |
 | `optionValue`             | Optional | `string`       | `id`         | Field name of record containing the value to use as input value |
 | `inputText`               | Optional | `Function`     | `-`          | If `optionText` is a custom Component, this function is needed to determine the text displayed for the current selection. |
@@ -644,6 +648,124 @@ Lastly, would you need to override the props of the suggestion's container (a `P
 {% endraw %}
 
 **Tip**: `<AutocompleteInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceInput>`](#referenceinput) doesn't cover your need), you'll have to [write your own Input component](#writing-your-own-input-component) based on material-ui `<AutoComplete>` component.
+
+#### Creating New Choices
+
+The `<AutocompleteInput>` can allow users to create a new choice if either the `create` or `onCreate` prop is provided.
+
+Use the `onCreate` prop when you only require users to provide a simple string and a `prompt` is enough. You can return either the new choice directly or a Promise resolving to the new choice.
+
+{% raw %}
+```js
+import { AutocompleteInput, Create, SimpleForm, TextInput } from 'react-admin';
+
+const PostCreate = (props) => {
+    const categories = [
+        { name: 'Tech', id: 'tech' },
+        { name: 'Lifestyle', id: 'lifestyle' },
+    ];
+    return (
+        <Create {...props}>
+            <SimpleForm>
+                <TextInput source="title" />
+                <AutocompleteInput
+                    onCreate={() => {
+                        const newCategoryName = prompt('Enter a new category');
+                        const newCategory = { id: newCategoryName.toLowerCase(), name: newCategoryName };
+                        categories.push(newCategory);
+                        return newCategory;
+                    }}
+                    source="category"
+                    choices={categories}
+                />
+            </SimpleForm>
+        </Create>
+    );
+}
+```
+{% endraw %}
+
+Use the `create` prop when you want a more polished or complex UI. For example a Material UI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
+
+{% raw %}
+```js
+import {
+    AutocompleteInput,
+    Create,
+    ReferenceInput,
+    SimpleForm,
+    TextInput,
+    useCreateSuggestion
+} from 'react-admin';
+
+import {
+    Box,
+    BoxProps,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    TextField,
+} from '@material-ui/core';
+
+const PostCreate = (props) => {
+    return (
+        <Create {...props}>
+            <SimpleForm>
+                <TextInput source="title" />
+                <ReferenceInput source="category_id" reference="categories">
+                    <AutocompleteInput create={<CreateCategory />} />
+                </ReferenceInput>
+            </SimpleForm>
+        </Create>
+    );
+}
+
+const CreateCategory = () => {
+    const { filter, onCancel, onCreate } = useCreateSuggestion();
+    const [value, setValue] = React.useState(filter || '');
+    const [create] = useCreate('categories');
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        create(
+            {
+                payload: {
+                    data: {
+                        title: value,
+                    },
+                },
+            },
+            {
+                onSuccess: ({ data }) => {
+                    setValue('');
+                    onCreate(data);
+                },
+            }
+        );
+    };
+
+    return (
+        <Dialog open onClose={onCancel}>
+            <form onSubmit={handleSubmit}>
+                <DialogContent>
+                    <TextField
+                        label="New category name"
+                        value={value}
+                        onChange={event => setValue(event.target.value)}
+                        autoFocus
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button type="submit">Save</Button>
+                    <Button onClick={onCancel}>Cancel</Button>
+                </DialogActions>
+            </form>
+        </Dialog>
+    );
+};
+```
+{% endraw %}
 
 ### `<RadioButtonGroupInput>`
 
@@ -775,7 +897,10 @@ import { SelectInput } from 'react-admin';
 | ----------------- | -------- | -------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | `allowEmpty`      | Optional | `boolean`                  | `false` | If true, the first option is an empty one                                                                                              |
 | `choices`         | Required | `Object[]`                 | -       | List of items to show as options                                                                                                       |
+| `create`                 | Optional | `Element`     | `-`          | A React Element to render when users want to create a new choice |
+| `createLabel`                 | Optional | `string`     | `ra.action.create`          | The label for the menu item allowing users to create a new choice. Used when the filter is empty |
 | `emptyText`       | Optional | `string`                   | ''      | The text to display for the empty option                                                                                               |
+| `onCreate`              | Optional | `Function`     | `-`       | A function called with the current filter value when users choose to create a new choice. |
 | `options`         | Optional | `Object`                   | -       | Props to pass to the underlying `<SelectInput>` element                                                                                |
 | `optionText`      | Optional | `string` &#124; `Function` | `name`  | Field name of record to display in the suggestion item or function which accepts the current record as argument (`record => {string}`) |
 | `optionValue`     | Optional | `string`                   | `id`    | Field name of record containing the value to use as input value                                                                        |
@@ -903,6 +1028,124 @@ const choices = [
 <SelectInput source="contact_id" choices={choices} optionText="full_name" optionValue="_id" disableValue="not_available" />
 ```
 
+#### Creating New Choices
+
+The `<SelectInput>` can allow users to create a new choice if either the `create` or `onCreate` prop is provided.
+
+Use the `onCreate` prop when you only require users to provide a simple string and a `prompt` is enough. You can return either the new choice directly or a Promise resolving to the new choice.
+
+{% raw %}
+```js
+import { SelectInput, Create, SimpleForm, TextInput } from 'react-admin';
+
+const PostCreate = (props) => {
+    const categories = [
+        { name: 'Tech', id: 'tech' },
+        { name: 'Lifestyle', id: 'lifestyle' },
+    ];
+    return (
+        <Create {...props}>
+            <SimpleForm>
+                <TextInput source="title" />
+                <SelectInput
+                    onCreate={() => {
+                        const newCategoryName = prompt('Enter a new category');
+                        const newCategory = { id: newCategoryName.toLowerCase(), name: newCategoryName };
+                        categories.push(newCategory);
+                        return newCategory;
+                    }}
+                    source="category"
+                    choices={categories}
+                />
+            </SimpleForm>
+        </Create>
+    );
+}
+```
+{% endraw %}
+
+Use the `create` prop when you want a more polished or complex UI. For example a Material UI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
+
+{% raw %}
+```js
+import {
+    SelectInput,
+    Create,
+    ReferenceInput,
+    SimpleForm,
+    TextInput,
+    useCreateSuggestion
+} from 'react-admin';
+
+import {
+    Box,
+    BoxProps,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    TextField,
+} from '@material-ui/core';
+
+const PostCreate = (props) => {
+    return (
+        <Create {...props}>
+            <SimpleForm>
+                <TextInput source="title" />
+                <ReferenceInput source="category_id" reference="categories">
+                    <SelectInput create={<CreateCategory />} />
+                </ReferenceInput>
+            </SimpleForm>
+        </Create>
+    );
+}
+
+const CreateCategory = () => {
+    const { filter, onCancel, onCreate } = useCreateSuggestion();
+    const [value, setValue] = React.useState(filter || '');
+    const [create] = useCreate('categories');
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        create(
+            {
+                payload: {
+                    data: {
+                        title: value,
+                    },
+                },
+            },
+            {
+                onSuccess: ({ data }) => {
+                    setValue('');
+                    onCreate(data);
+                },
+            }
+        );
+    };
+
+    return (
+        <Dialog open onClose={onCancel}>
+            <form onSubmit={handleSubmit}>
+                <DialogContent>
+                    <TextField
+                        label="New category name"
+                        value={value}
+                        onChange={event => setValue(event.target.value)}
+                        autoFocus
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button type="submit">Save</Button>
+                    <Button onClick={onCancel}>Cancel</Button>
+                </DialogActions>
+            </form>
+        </Dialog>
+    );
+};
+```
+{% endraw %}
+
 ## Array Inputs
 
 ### `<ArrayInput>`
@@ -1016,9 +1259,13 @@ import { AutocompleteArrayInput } from 'react-admin';
 | ------------------------- | -------- | -------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `allowEmpty`              | Optional | `boolean`                  | `false`      | If `true`, the first option is an empty one                                                                                                                                                                                                                                                          |
 | `allowDuplicates`         | Optional | `boolean`                  | `false`      | If `true`, the options can be selected several times                                                                                                                                                                                                                                                 |
+| `create`                 | Optional | `Element`     | `-`          | A React Element to render when users want to create a new choice |
+| `createLabel`                 | Optional | `string`     | `ra.action.create`          | The label for the menu item allowing users to create a new choice. Used when the filter is empty |
+| `createItemLabel`                 | Optional | `string`     | `ra.action.create_item`          | The label for the menu item allowing users to create a new choice. Used when the filter is not empty |
 | `debounce`         | Optional | `number`                  | `250`      | The delay to wait before calling the setFilter function injected when used in a ReferenceInput.                                                                                                                                                                                                                                                 |
 | `choices`                 | Required | `Object[]`                 | -            | List of items to autosuggest                                                                                                                                                                                                                                                                         |
 | `matchSuggestion`         | Optional | `Function`                 | -            | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean`                                                                                                                                              |
+| `onCreate`              | Optional | `Function`     | `-`       | A function called with the current filter value when users choose to create a new choice. |
 | `optionValue`             | Optional | `string`                   | `id`         | Field name of record containing the value to use as input value                                                                                                                                                                                                                                       |
 | `optionText`              | Optional | `string` &#124; `Function` | `name`       | Field name of record to display in the suggestion item or function which accepts the current record as argument (`record => {string}`)                                                                                                                                                               |
 | `setFilter`               | Optional | `Function`                 | `null`       | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.                                                                                   |
@@ -1120,6 +1367,124 @@ If you need to override the props of the suggestion's container (a `Popper` elem
 **Tip**: `<ReferenceArrayInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceArrayInput>`](#referencearrayinput) doesn't cover your need), you'll have to [write your own Input component](#writing-your-own-input-component) based on [material-ui-chip-input](https://github.com/TeamWertarbyte/material-ui-chip-input).
 
 **Tip**: React-admin's `<AutocompleteInput>` has only a capital A, while material-ui's `<AutoComplete>` has a capital A and a capital C. Don't mix up the components!
+
+#### Creating New Choices
+
+The `<AutocompleteArrayInput>` can allow users to create a new choice if either the `create` or `onCreate` prop is provided.
+
+Use the `onCreate` prop when you only require users to provide a simple string and a `prompt` is enough. You can return either the new choice directly or a Promise resolving to the new choice.
+
+{% raw %}
+```js
+import { AutocompleteArrayInput, Create, SimpleForm, TextInput } from 'react-admin';
+
+const PostCreate = (props) => {
+    const tags = [
+        { name: 'Tech', id: 'tech' },
+        { name: 'Lifestyle', id: 'lifestyle' },
+    ];
+    return (
+        <Create {...props}>
+            <SimpleForm>
+                <TextInput source="title" />
+                <AutocompleteArrayInput
+                    onCreate={() => {
+                        const newTagName = prompt('Enter a new tag');
+                        const newTag = { id: newTagName.toLowerCase(), name: newTagName };
+                        categories.push(newTag);
+                        return newTag;
+                    }}
+                    source="tags"
+                    choices={tags}
+                />
+            </SimpleForm>
+        </Create>
+    );
+}
+```
+{% endraw %}
+
+Use the `create` prop when you want a more polished or complex UI. For example a Material UI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
+
+{% raw %}
+```js
+import {
+    AutocompleteArrayInput,
+    Create,
+    ReferenceArrayInput,
+    SimpleForm,
+    TextInput,
+    useCreateSuggestion
+} from 'react-admin';
+
+import {
+    Box,
+    BoxProps,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    TextField,
+} from '@material-ui/core';
+
+const PostCreate = (props) => {
+    return (
+        <Create {...props}>
+            <SimpleForm>
+                <TextInput source="title" />
+                <ReferenceArrayInput source="tags" reference="tags">
+                    <AutocompleteArrayInput create={<CreateTag />} />
+                </ReferenceArrayInput>
+            </SimpleForm>
+        </Create>
+    );
+}
+
+const CreateTag = () => {
+    const { filter, onCancel, onCreate } = useCreateSuggestion();
+    const [value, setValue] = React.useState(filter || '');
+    const [create] = useCreate('tags');
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        create(
+            {
+                payload: {
+                    data: {
+                        title: value,
+                    },
+                },
+            },
+            {
+                onSuccess: ({ data }) => {
+                    setValue('');
+                    onCreate(data);
+                },
+            }
+        );
+    };
+
+    return (
+        <Dialog open onClose={onCancel}>
+            <form onSubmit={handleSubmit}>
+                <DialogContent>
+                    <TextField
+                        label="New tag"
+                        value={value}
+                        onChange={event => setValue(event.target.value)}
+                        autoFocus
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button type="submit">Save</Button>
+                    <Button onClick={onCancel}>Cancel</Button>
+                </DialogActions>
+            </form>
+        </Dialog>
+    );
+};
+```
+{% endraw %}
 
 ### `<CheckboxGroupInput>`
 
@@ -1243,6 +1608,25 @@ Check [the `ra-relationships` documentation](https://marmelab.com/ra-enterprise/
 
 To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [Material ui's `<Select>`](https://material-ui.com/api/select). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
+
+#### Properties
+
+| Prop              | Required | Type                       | Default | Description                                                                                                                            |
+| ----------------- | -------- | -------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `allowEmpty`      | Optional | `boolean`                  | `false` | If true, the first option is an empty one                                                                                              |
+| `choices`         | Required | `Object[]`                 | -       | List of items to show as options                                                                                                       |
+| `create`                 | Optional | `Element`     | `-`          | A React Element to render when users want to create a new choice |
+| `createLabel`                 | Optional | `string`     | `ra.action.create`          | The label for the menu item allowing users to create a new choice. Used when the filter is empty |
+| `emptyText`       | Optional | `string`                   | ''      | The text to display for the empty option                                                                                               |
+| `onCreate`              | Optional | `Function`     | `-`       | A function called with the current filter value when users choose to create a new choice. |
+| `options`         | Optional | `Object`                   | -       | Props to pass to the underlying `<SelectInput>` element                                                                                |
+| `optionText`      | Optional | `string` &#124; `Function` | `name`  | Field name of record to display in the suggestion item or function which accepts the current record as argument (`record => {string}`) |
+| `optionValue`     | Optional | `string`                   | `id`    | Field name of record containing the value to use as input value                                                                        |
+| `resettable`      | Optional | `boolean`                  | `false` | If `true`, display a button to reset the changes in this input value                                                                   |
+| `translateChoice` | Optional | `boolean`                  | `true`  | Whether the choices should be translated                                                                                               |
+
+`<SelectArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
 #### CSS API
 
 | Rule name  | Description                                                                        |
@@ -1252,6 +1636,8 @@ To let users choose several values in a list using a dropdown, use `<SelectArray
 | `chips`    | Applied to the container of Material UI's `Chip` components used as selected items |
 
 To override the style of all instances of `<SelectArrayInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaSelectArrayInput` key.
+
+#### Usage
 
 ```jsx
 import { SelectArrayInput } from 'react-admin';
@@ -1365,6 +1751,124 @@ export const PostCreate = props => (
 **Tip**: As it does not provide autocompletion, the `SelectArrayInput` might not be suited when the referenced resource has a lot of items.
 
 `<SelectArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
+#### Creating New Choices
+
+The `<SelectArrayInput>` can allow users to create a new choice if either the `create` or `onCreate` prop is provided.
+
+Use the `onCreate` prop when you only require users to provide a simple string and a `prompt` is enough. You can return either the new choice directly or a Promise resolving to the new choice.
+
+{% raw %}
+```js
+import { SelectArrayInput, Create, SimpleForm, TextInput } from 'react-admin';
+
+const PostCreate = (props) => {
+    const tags = [
+        { name: 'Tech', id: 'tech' },
+        { name: 'Lifestyle', id: 'lifestyle' },
+    ];
+    return (
+        <Create {...props}>
+            <SimpleForm>
+                <TextInput source="title" />
+                <SelectArrayInput
+                    onCreate={() => {
+                        const newTagName = prompt('Enter a new tag');
+                        const newTag = { id: newTagName.toLowerCase(), name: newTagName };
+                        categories.push(newTag);
+                        return newTag;
+                    }}
+                    source="tags"
+                    choices={tags}
+                />
+            </SimpleForm>
+        </Create>
+    );
+}
+```
+{% endraw %}
+
+Use the `create` prop when you want a more polished or complex UI. For example a Material UI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
+
+{% raw %}
+```js
+import {
+    SelectArrayInput,
+    Create,
+    ReferenceArrayInput,
+    SimpleForm,
+    TextInput,
+    useCreateSuggestion
+} from 'react-admin';
+
+import {
+    Box,
+    BoxProps,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    TextField,
+} from '@material-ui/core';
+
+const PostCreate = (props) => {
+    return (
+        <Create {...props}>
+            <SimpleForm>
+                <TextInput source="title" />
+                <ReferenceArrayInput source="tags" reference="tags">
+                    <SelectArrayInput create={<CreateTag />} />
+                </ReferenceArrayInput>
+            </SimpleForm>
+        </Create>
+    );
+}
+
+const CreateTag = () => {
+    const { filter, onCancel, onCreate } = useCreateSuggestion();
+    const [value, setValue] = React.useState(filter || '');
+    const [create] = useCreate('tags');
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        create(
+            {
+                payload: {
+                    data: {
+                        title: value,
+                    },
+                },
+            },
+            {
+                onSuccess: ({ data }) => {
+                    setValue('');
+                    onCreate(data);
+                },
+            }
+        );
+    };
+
+    return (
+        <Dialog open onClose={onCancel}>
+            <form onSubmit={handleSubmit}>
+                <DialogContent>
+                    <TextField
+                        label="New tag"
+                        value={value}
+                        onChange={event => setValue(event.target.value)}
+                        autoFocus
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button type="submit">Save</Button>
+                    <Button onClick={onCancel}>Cancel</Button>
+                </DialogActions>
+            </form>
+        </Dialog>
+    );
+};
+```
+{% endraw %}
 
 ## Reference Inputs 
 

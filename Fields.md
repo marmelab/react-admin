@@ -141,11 +141,12 @@ import { BooleanField } from 'react-admin';
 #### Properties
 
 | Prop              | Required | Type             | Default                    | Description                       |
-| ----------------- | -------- | ---------------- | -------------------------- | --------------------------------- |
+| ----------------- | -------- | ---------------- | -------------------------- | -------------------------------------------------------------------- |
 | `valueLabelTrue`  | Optional | string           | 'true'                     | Aria label for the truthy value   |
 | `valueLabelFalse` | Optional | string           | 'false'                    | Aria label for the falsy value    |
 | `TrueIcon`        | Optional | SvgIconComponent | `@material-ui/icons/Done`  | Icon to show for the truthy value |
 | `FalseIcon`       | Optional | SvgIconComponent | `@material-ui/icons/Clear` | Icon to show for the falsy value  |
+| `looseValue`      | Optional | boolean          | `false`                    | If `true` the field's value is not evaluated strictly as a `boolean` |
 
 `<BooleanField>` also accepts the [common field props](./Fields.md#common-field-props).
 

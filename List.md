@@ -1981,6 +1981,7 @@ Here are all the props accepted by the component:
 * [`isRowExpandable`](#isrowexpandable)
 * [`isRowSelectable`](#isrowselectable)
 * [`optimized`](#performance)
+* [`empty`](#empty)
 
 Additional props are passed down to [the material-ui `<Table>` element](https://material-ui.com/api/table/).
 
@@ -2021,14 +2022,14 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 
-const MyDatagridRow = ({ record, resource, id, onToggleItem, children, selected, basePath }) => (
+const MyDatagridRow = ({ record, resource, id, onToggleItem, children, selected, selectable, basePath }) => (
     <TableRow key={id}>
         {/* first column: selection checkbox */}
         <TableCell padding="none">
             <Checkbox
-                disabled={record.selectable}
+                disabled={selectable}
                 checked={selected}
-                onClick={() => onToggleItem(id)}
+                onClick={event => onToggleItem(id, event)}
             />
         </TableCell>
         {/* data columns based on children */}
@@ -2261,6 +2262,10 @@ const PostList = props => (
 export default withStyles(styles)(PostList);
 ```
 
+### Empty
+
+It's possible that a Datagrid will have no records to display. If the Datagrid's parent component handles the loading state, the Datagrid will return `null` and render nothing.
+Passing through a component to the `empty` prop will cause the Datagrid to render the `empty` component instead of `null`.
 ### CSS API
 
 The `Datagrid` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
