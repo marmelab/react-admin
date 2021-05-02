@@ -238,6 +238,7 @@ const sanitizeRestProps = ({
     perPage,
     ref,
     reference,
+    refetch,
     render,
     setFilter,
     setPagination,

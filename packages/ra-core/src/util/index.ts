@@ -12,6 +12,7 @@ import warning from './warning';
 import useWhyDidYouUpdate from './useWhyDidYouUpdate';
 import useDocumentTitle from './useDocumentTitle';
 import { useSafeSetState, useTimeout } from './hooks';
+import { getMutationMode } from './getMutationMode';
 export * from './indexById';
 
 export {
@@ -30,4 +31,5 @@ export {
     useSafeSetState,
     useTimeout,
     useDocumentTitle,
+    getMutationMode,
 };

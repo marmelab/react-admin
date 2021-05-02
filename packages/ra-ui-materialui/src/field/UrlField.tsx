@@ -11,7 +11,7 @@ const UrlField: FC<UrlFieldProps> = memo<UrlFieldProps>(props => {
     const record = useRecordContext(props);
     const value = get(record, source);
 
-    if (value == null && emptyText) {
+    if (value == null) {
         return (
             <Typography
                 component="span"

@@ -13,6 +13,9 @@ import {
     valuesAreNumeric,
     valuesAreObject,
     valuesAreString,
+    valuesAreUrl,
+    valuesAreImageUrl,
+    valuesAreEmail,
 } from './assertions';
 
 const types = [
@@ -21,6 +24,7 @@ const types = [
     'date',
     'email',
     'id',
+    'image',
     'number',
     'reference',
     'referenceChild',
@@ -141,10 +145,13 @@ export const inferTypeFromValues = (
         return { type: 'date', props: { source: name } };
     }
     if (valuesAreString(values)) {
-        if (name === 'email') {
+        if (name === 'email' || valuesAreEmail(values)) {
             return { type: 'email', props: { source: name } };
         }
-        if (name === 'url') {
+        if (name === 'url' || valuesAreUrl(values)) {
+            if (valuesAreImageUrl(values)) {
+                return { type: 'image', props: { source: name } };
+            }
             return { type: 'url', props: { source: name } };
         }
         if (valuesAreDateString(values)) {
@@ -152,6 +159,9 @@ export const inferTypeFromValues = (
         }
         if (valuesAreHtml(values)) {
             return { type: 'richText', props: { source: name } };
+        }
+        if (valuesAreInteger(values) || valuesAreNumeric(values)) {
+            return { type: 'number', props: { source: name } };
         }
         return { type: 'string', props: { source: name } };
     }

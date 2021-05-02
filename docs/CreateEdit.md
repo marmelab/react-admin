@@ -1820,7 +1820,7 @@ import { Edit, SimpleForm, SaveButton, Toolbar } from 'react-admin';
 
 const PostEditToolbar = props => (
     <Toolbar {...props}>
-        <SaveButton disabled={!props.pristine} />
+        <SaveButton disabled={props.pristine} />
     </Toolbar>
 );
 

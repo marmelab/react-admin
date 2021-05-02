@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import {
     AppBar as MuiAppBar,
+    AppBarProps as MuiAppBarProps,
     IconButton,
     Toolbar,
     Tooltip,
@@ -12,11 +13,9 @@ import {
     useMediaQuery,
     Theme,
 } from '@material-ui/core';
-import { AppBarProps as MuiAppBarProps } from '@material-ui/core/AppBar';
-
 import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
-import { toggleSidebar, useTranslate } from 'ra-core';
+import { toggleSidebar, useTranslate, ComponentPropType } from 'ra-core';
 
 import LoadingIndicator from './LoadingIndicator';
 import DefaultUserMenu from './UserMenu';
@@ -180,7 +179,7 @@ AppBar.propTypes = {
         'secondary',
         'transparent',
     ]),
-    container: PropTypes.element,
+    container: ComponentPropType,
     logout: PropTypes.element,
     open: PropTypes.bool,
     userMenu: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
@@ -193,7 +192,7 @@ AppBar.defaultProps = {
 
 export interface AppBarProps extends Omit<MuiAppBarProps, 'title' | 'classes'> {
     classes?: ClassesOverride<typeof useStyles>;
-    container?: React.ComponentType<any>;
+    container?: React.ElementType<any>;
     logout?: React.ReactNode;
     open?: boolean;
     title?: string | JSX.Element;

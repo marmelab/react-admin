@@ -70,6 +70,13 @@ const FormWithRedirect = ({
     const redirect = useRef(props.redirect);
     const onSave = useRef(save);
     const formGroups = useRef<{ [key: string]: string[] }>({});
+    const finalMutators = useMemo(
+        () =>
+            mutators === defaultMutators
+                ? mutators
+                : { ...defaultMutators, ...mutators },
+        [mutators]
+    );
 
     // We don't use state here for two reasons:
     // 1. There no way to execute code only after the state has been updated
@@ -162,7 +169,7 @@ const FormWithRedirect = ({
                 initialValues={finalInitialValues}
                 initialValuesEqual={initialValuesEqual}
                 keepDirtyOnReinitialize={keepDirtyOnReinitialize}
-                mutators={mutators} // necessary for ArrayInput
+                mutators={finalMutators} // necessary for ArrayInput
                 onSubmit={submit}
                 subscription={subscription} // don't redraw entire form each time one field changes
                 validate={validate}
