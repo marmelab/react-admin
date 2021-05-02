@@ -46,7 +46,6 @@ export {
     Title,
     TitleForRecord,
     TitlePropType,
-    TitleText,
     TopToolbar,
     UserMenu,
 };
@@ -65,5 +64,4 @@ export type {
     ResponsiveProps,
     SidebarProps,
     TitleProps,
-    TitleTextProps,
 };
