@@ -6,7 +6,7 @@ import {
     ReduxState,
     UseDataProviderOptions,
 } from '../types';
-import { useQueryWithStore } from './useQueryWithStore';
+import { useQueryWithStore, Refetch } from './useQueryWithStore';
 
 /**
  * Call the dataProvider.getOne() method and return the resolved value
@@ -69,6 +69,7 @@ export type UseGetOneHookValue<RecordType extends Record = Record> = {
     loading: boolean;
     loaded: boolean;
     error?: any;
+    refetch: Refetch;
 };
 
 export default useGetOne;

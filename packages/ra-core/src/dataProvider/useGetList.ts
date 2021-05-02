@@ -10,7 +10,7 @@ import {
     RecordMap,
     UseDataProviderOptions,
 } from '../types';
-import { useQueryWithStore } from './useQueryWithStore';
+import { useQueryWithStore, Refetch } from './useQueryWithStore';
 
 const defaultPagination = { page: 1, perPage: 25 };
 const defaultSort = { field: 'id', order: 'DESC' };
@@ -72,6 +72,7 @@ const useGetList = <RecordType extends Record = Record>(
     error?: any;
     loading: boolean;
     loaded: boolean;
+    refetch: Refetch;
 } => {
     const requestSignature = JSON.stringify({ pagination, sort, filter });
 
@@ -81,6 +82,7 @@ const useGetList = <RecordType extends Record = Record>(
         error,
         loading,
         loaded,
+        refetch,
     } = useQueryWithStore(
         { type: 'getList', resource, payload: { pagination, sort, filter } },
         options,
@@ -130,6 +132,7 @@ const useGetList = <RecordType extends Record = Record>(
         error,
         loading,
         loaded,
+        refetch,
     };
 };
 
