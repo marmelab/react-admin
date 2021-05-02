@@ -96,6 +96,7 @@ const useGetManyReference = (
         error,
         loading,
         loaded,
+        refetch,
     } = useQueryWithStore(
         {
             type: 'getManyReference',
@@ -130,7 +131,15 @@ const useGetManyReference = (
         [ids, allRecords]
     );
 
-    return { data, ids: ids || defaultIds, total, error, loading, loaded };
+    return {
+        data,
+        ids: ids || defaultIds,
+        total,
+        error,
+        loading,
+        loaded,
+        refetch,
+    };
 };
 
 interface DataSelectorResult<RecordType extends Record = Record> {

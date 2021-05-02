@@ -9,7 +9,7 @@ import {
     Record,
     ReduxState,
 } from '../types';
-import { useQueryWithStore } from './useQueryWithStore';
+import { useQueryWithStore, Refetch } from './useQueryWithStore';
 import {
     getReferenceResource,
     getPossibleReferenceValues,
@@ -93,6 +93,7 @@ const useGetMatching = (
         error,
         loading,
         loaded,
+        refetch,
     } = useQueryWithStore(
         {
             type: 'getList',
@@ -143,6 +144,7 @@ const useGetMatching = (
         error,
         loading,
         loaded,
+        refetch,
     };
 };
 
@@ -153,6 +155,7 @@ interface UseGetMatchingResult {
     error?: any;
     loading: boolean;
     loaded: boolean;
+    refetch: Refetch;
 }
 
 export default useGetMatching;

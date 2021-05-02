@@ -9,7 +9,7 @@ import {
     Record,
     RecordMap,
 } from '../types';
-import { useQueryWithStore } from './useQueryWithStore';
+import { useQueryWithStore, Refetch } from './useQueryWithStore';
 
 const defaultIds = [];
 const defaultData = {};
@@ -68,6 +68,7 @@ export const useGetMainList = <RecordType extends Record = Record>(
     error?: any;
     loading: boolean;
     loaded: boolean;
+    refetch: Refetch;
 } => {
     const requestSignature = JSON.stringify({ pagination, sort, filter });
     const memo = useRef<Memo<RecordType>>({});
@@ -76,6 +77,7 @@ export const useGetMainList = <RecordType extends Record = Record>(
         error,
         loading,
         loaded,
+        refetch,
     } = useQueryWithStore(
         { type: 'getList', resource, payload: { pagination, sort, filter } },
         options,
@@ -164,6 +166,7 @@ export const useGetMainList = <RecordType extends Record = Record>(
         error,
         loading,
         loaded,
+        refetch,
     };
 };
 
