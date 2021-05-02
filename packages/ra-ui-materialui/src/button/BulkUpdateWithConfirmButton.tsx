@@ -39,6 +39,14 @@ const useStyles = makeStyles(
 const defaultIcon = <ActionUpdate />;
 
 const BulkUpdateWithConfirmButton: FC<BulkUpdateWithConfirmButtonProps> = props => {
+    const notify = useNotify();
+    const refresh = useRefresh();
+    const translate = useTranslate();
+    const unselectAll = useUnselectAll();
+    const resource = useResourceContext(props);
+    const classes = useStyles(props);
+    const [isOpen, setOpen] = useState(false);
+
     const {
         basePath,
         mutationMode,
@@ -76,13 +84,7 @@ const BulkUpdateWithConfirmButton: FC<BulkUpdateWithConfirmButtonProps> = props 
         },
         ...rest
     } = props;
-    const [isOpen, setOpen] = useState(false);
-    const classes = useStyles(props);
-    const notify = useNotify();
-    const unselectAll = useUnselectAll();
-    const refresh = useRefresh();
-    const translate = useTranslate();
-    const resource = useResourceContext(props);
+
     const [updateMany, { loading }] = useUpdateMany(
         resource,
         selectedIds,

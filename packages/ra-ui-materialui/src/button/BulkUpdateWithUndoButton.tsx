@@ -34,6 +34,13 @@ const useStyles = makeStyles(
 );
 
 const BulkUpdateWithUndoButton: FC<BulkUpdateWithUndoButtonProps> = props => {
+    const { selectedIds } = useListContext(props);
+    const classes = useStyles(props);
+    const notify = useNotify();
+    const unselectAll = useUnselectAll();
+    const refresh = useRefresh();
+    const resource = useResourceContext(props);
+
     const {
         basePath,
         classes: classesOverride,
@@ -68,12 +75,7 @@ const BulkUpdateWithUndoButton: FC<BulkUpdateWithUndoButtonProps> = props => {
             ),
         ...rest
     } = props;
-    const { selectedIds } = useListContext(props);
-    const classes = useStyles(props);
-    const notify = useNotify();
-    const unselectAll = useUnselectAll();
-    const refresh = useRefresh();
-    const resource = useResourceContext(props);
+
     const [updateMany, { loading }] = useUpdateMany(
         resource,
         selectedIds,
