@@ -47,7 +47,7 @@ import useMutation, { MutationOptions, Mutation } from './useMutation';
  *     const diff = { likes: record.likes + 1 };
  *     const [update, { loading, error }] = useUpdate('likes', record.id, diff, record);
  *     if (error) { return <p>ERROR</p>; }
- *     return <button disabled={loading} onClick={update}>Like</div>;
+ *     return <button disabled={loading} onClick={update}>Like</button>;
  * };
  *
  * @example // TypeScript
