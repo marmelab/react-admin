@@ -6,10 +6,8 @@ export interface TitleTextProps {
     className: string;
 }
 
-function TitleText({ text, ...rest }: TitleTextProps) {
+export function TitleText({ text, ...rest }: TitleTextProps) {
     useDocumentTitle(text);
 
     return <span {...rest}>{text}</span>;
 }
-
-export default TitleText;

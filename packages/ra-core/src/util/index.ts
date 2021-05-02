@@ -10,9 +10,9 @@ import Ready from './Ready';
 import resolveRedirectTo from './resolveRedirectTo';
 import warning from './warning';
 import useWhyDidYouUpdate from './useWhyDidYouUpdate';
-import useDocumentTitle from './useDocumentTitle';
 import { useSafeSetState, useTimeout } from './hooks';
 import { getMutationMode } from './getMutationMode';
+export * from './useDocumentTitle';
 export * from './indexById';
 
 export {
@@ -30,6 +30,5 @@ export {
     useWhyDidYouUpdate,
     useSafeSetState,
     useTimeout,
-    useDocumentTitle,
     getMutationMode,
 };

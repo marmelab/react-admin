@@ -12,12 +12,10 @@ import { useEffect } from 'react';
  * });
  *
  */
-function useDocumentTitle(title: string) {
+export function useDocumentTitle(title: string) {
     useEffect(() => {
         if (title) {
             document.title = title;
         }
     }, [title]);
 }
-
-export default useDocumentTitle;
