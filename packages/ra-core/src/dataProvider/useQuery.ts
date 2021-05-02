@@ -136,7 +136,7 @@ export const useQuery = (
                 setState({
                     error,
                     loading: false,
-                    loaded: false,
+                    loaded: true,
                     refetch,
                 });
             });
