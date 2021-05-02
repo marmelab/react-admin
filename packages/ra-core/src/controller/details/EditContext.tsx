@@ -32,6 +32,7 @@ export const EditContext = createContext<EditControllerProps>({
     setOnFailure: null,
     setOnSuccess: null,
     setTransform: null,
+    refetch: null,
     resource: null,
     save: null,
     saving: null,
