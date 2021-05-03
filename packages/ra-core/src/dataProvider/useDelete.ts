@@ -45,7 +45,7 @@ import useMutation, { MutationOptions, Mutation } from './useMutation';
  * const DeleteButton = ({ record }) => {
  *     const [deleteOne, { loading, error }] = useDelete('likes', record.id, record);
  *     if (error) { return <p>ERROR</p>; }
- *     return <button disabled={loading} onClick={deleteOne}>Delete</div>;
+ *     return <button disabled={loading} onClick={deleteOne}>Delete</button>;
  * };
  */
 const useDelete = <RecordType extends Record = Record>(
