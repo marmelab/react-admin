@@ -398,3 +398,14 @@ ul.sidenav code {
     margin-left: -4px;
     margin-right: -4px;
 }
+
+/* Prism overrides */
+/* Added the container selector to have a greater specificity */
+.container .token.operator,
+.container .token.entity,
+.container .token.url,
+.container .language-css .token.string,
+.container .style .token.string {
+	color: #9a6e3a;
+    background: none;
+}
