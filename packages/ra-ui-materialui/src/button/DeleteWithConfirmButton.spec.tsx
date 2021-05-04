@@ -201,4 +201,43 @@ describe('<DeleteWithConfirmButton />', () => {
             });
         });
     });
+
+    it('should allow to override the translateOptions props', async () => {
+        const dataProvider = ({
+            getOne: () =>
+                Promise.resolve({
+                    data: { id: 123, title: 'lorem' },
+                }),
+            delete: () => Promise.resolve({ data: { id: 123 } }),
+        } as unknown) as DataProvider;
+
+        const translateOptions = {
+            id: '#20061703',
+        };
+        const EditToolbar = props => (
+            <Toolbar {...props}>
+                <DeleteWithConfirmButton translateOptions={translateOptions} />
+            </Toolbar>
+        );
+        const { queryByDisplayValue, getByLabelText } = renderWithRedux(
+            <ThemeProvider theme={theme}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <Edit {...defaultEditProps}>
+                        <SimpleForm toolbar={<EditToolbar />}>
+                            <TextInput source="title" />
+                        </SimpleForm>
+                    </Edit>
+                </DataProviderContext.Provider>
+            </ThemeProvider>,
+            { admin: { resources: { posts: { data: {} } } } }
+        );
+
+        // waitFor for the dataProvider.getOne() return
+        await waitFor(() => {
+            expect(queryByDisplayValue('lorem')).toBeDefined();
+        });
+
+        fireEvent.click(getByLabelText('ra.action.delete'));
+        expect(queryByDisplayValue('#20061703')).toBeDefined();
+    });
 });

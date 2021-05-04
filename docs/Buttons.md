@@ -299,6 +299,35 @@ const ListActions = () => (
 ## Record Buttons
 
 ### `<DeleteButton>`
+
+### `<DeleteWithConfirmButton>`
+
+Delete the selected element. To be used inside a <Toolbar> conponent.
+Overriding translateOptions prop allows to make custom message for the deletion.
+
+
+```jsx
+import * as React from 'react';
+import { Toolbar, SimpleForm } from '../form';
+
+translateOptions = {
+    id: 'custom identifier',
+    name: 'custom name'
+}
+
+const EditToolbar = props => (
+    <Toolbar {...props}>
+        <DeleteWithConfirmButton translateOptions={translateOptions} />
+    </Toolbar>
+);
+```
+
+| Prop         | Required | Type            | Default            | Description                         |
+| ------------ | -------- | --------------- | ------------------ | ----------------------------------- |
+| `name`       | Optional | `string`        | 'resource.name'    | label or translation message to use |
+| `id`         | Optional | `string`        | 'record.id'        | id to use in deletion message       |
+
+
 ### `<CloneButton>`
 ### `<SaveButton>`
 
