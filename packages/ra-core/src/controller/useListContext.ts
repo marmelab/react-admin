@@ -98,6 +98,7 @@ const useListContext = <RecordType extends Record = Record>(
 ): ListControllerProps<RecordType> => {
     const context = useContext(ListContext);
     // Props take precedence over the context
+    // @ts-ignore
     return useMemo(
         () =>
             merge(

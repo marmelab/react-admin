@@ -95,7 +95,7 @@ const useGetList = <RecordType extends Record = Record>(
                 state.admin.resources,
                 [resource, 'data'],
                 defaultData
-            ),
+            ) as RecordMap<RecordType>,
         }),
         // total selector (may return undefined)
         (state: ReduxState): number =>

@@ -123,7 +123,7 @@ export const useGetMainList = <RecordType extends Record = Record>(
                 state.admin.resources,
                 [resource, 'data'],
                 defaultData
-            );
+            ) as RecordMap<RecordType>;
             // poor man's useMemo inside a hook using a ref
             if (
                 memo.current.finalIds !== finalIds ||
