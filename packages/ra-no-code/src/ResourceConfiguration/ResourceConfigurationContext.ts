@@ -32,9 +32,24 @@ export type ResourceConfiguration = {
     fields?: FieldConfiguration[];
 };
 
-export interface FieldConfiguration extends InferredElementDescription {
-    views: FieldView[];
+export interface ReferenceFieldConfiguration extends BaseFieldConfiguration {
+    type: 'reference';
+    options: {
+        selectionType: 'select' | 'autocomplete' | 'radio';
+        referenceField: 'string';
+    };
 }
+
+export interface BaseFieldConfiguration extends InferredElementDescription {
+    views: FieldView[];
+    options?: {
+        [key: string]: any;
+    };
+}
+
+export type FieldConfiguration =
+    | BaseFieldConfiguration
+    | ReferenceFieldConfiguration;
 
 export type FieldView = 'list' | 'create' | 'edit' | 'show';
 

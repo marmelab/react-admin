@@ -6,12 +6,18 @@ import {
     EmailField,
     ImageField,
     NumberField,
+    ReferenceField,
     TextField,
     UrlField,
 } from 'ra-ui-materialui';
+import {
+    FieldConfiguration,
+    ResourceConfigurationMap,
+} from '../ResourceConfiguration';
 
 export const getFieldFromFieldDefinition = (
-    definition: InferredElementDescription
+    definition: FieldConfiguration,
+    resources: ResourceConfigurationMap
 ) => {
     switch (definition.type) {
         case 'date':
@@ -52,6 +58,30 @@ export const getFieldFromFieldDefinition = (
         case 'url':
             return (
                 <UrlField key={definition.props.source} {...definition.props} />
+            );
+        case 'reference':
+            const reference = resources[definition.props.reference];
+
+            if (reference) {
+                const field = reference.fields.find(
+                    field =>
+                        field.props.source === definition.options.referenceField
+                );
+                return (
+                    <ReferenceField
+                        key={definition.props.source}
+                        {...definition.props}
+                    >
+                        {getFieldFromFieldDefinition(field, resources)}
+                    </ReferenceField>
+                );
+            }
+
+            return (
+                <TextField
+                    key={definition.props.source}
+                    {...definition.props}
+                />
             );
         default:
             return (

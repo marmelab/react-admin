@@ -4,6 +4,7 @@ import { TextInput } from 'ra-ui-materialui';
 import { CardContent } from '@material-ui/core';
 import { FieldTypeInput } from './FieldConfiguration/FieldTypeInput';
 import { FieldViewsInput } from './FieldConfiguration/FieldViewsInput';
+import { ConfigurationInputsFromFieldDefinition } from './ConfigurationInputsFromFieldDefinition';
 
 export const FieldConfigurationFormSection = props => {
     const { sourcePrefix, field, resource } = props;
@@ -37,6 +38,10 @@ export const FieldConfigurationFormSection = props => {
                 source={`${sourcePrefix}.views`}
                 label="Views"
                 fullWidth
+            />
+            <ConfigurationInputsFromFieldDefinition
+                definition={field}
+                sourcePrefix={sourcePrefix}
             />
         </CardContent>
     );

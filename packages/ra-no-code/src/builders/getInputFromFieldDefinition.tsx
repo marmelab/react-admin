@@ -5,11 +5,19 @@ import {
     DateInput,
     ImageInput,
     NumberInput,
+    ReferenceInput,
     TextInput,
 } from 'ra-ui-materialui';
+import {
+    FieldConfiguration,
+    ReferenceFieldConfiguration,
+    ResourceConfigurationMap,
+} from '../ResourceConfiguration';
+import { ReferenceInputChildFromDefinition } from './ReferenceInputChildFromDefinition';
 
 export const getInputFromFieldDefinition = (
-    definition: InferredElementDescription,
+    definition: FieldConfiguration | InferredElementDescription,
+    resources: ResourceConfigurationMap,
     keyPrefix?: string
 ) => {
     switch (definition.type) {
@@ -59,10 +67,46 @@ export const getInputFromFieldDefinition = (
         case 'object':
             if (Array.isArray(definition.children)) {
                 return definition.children.map((child, index) =>
-                    getInputFromFieldDefinition(child, index.toString())
+                    getInputFromFieldDefinition(
+                        child,
+                        resources,
+                        index.toString()
+                    )
                 );
             }
-            return <>{getInputFromFieldDefinition(definition.children)}</>;
+            return (
+                <>
+                    {getInputFromFieldDefinition(
+                        definition.children,
+                        resources,
+                        undefined
+                    )}
+                </>
+            );
+        case 'reference':
+            const referenceDefinition = definition as ReferenceFieldConfiguration;
+            const reference = resources[definition.props.reference];
+
+            if (reference) {
+                return (
+                    <ReferenceInput
+                        key={definition.props.source}
+                        {...definition.props}
+                    >
+                        <ReferenceInputChildFromDefinition
+                            definition={referenceDefinition}
+                        />
+                    </ReferenceInput>
+                );
+            }
+
+            return (
+                <TextInput
+                    key={definition.props.source}
+                    {...definition.props}
+                />
+            );
+
         default:
             return (
                 <TextInput

@@ -6,8 +6,19 @@ export const getFieldDefinitionsFromRecords = (
 ): FieldConfiguration[] => {
     const values = getValuesFromRecords(records);
 
-    return Object.keys(values).map(key => ({
-        ...inferTypeFromValues(key, values[key]),
-        views: ['list', 'create', 'edit', 'show'],
-    }));
+    return Object.keys(values).map(key => {
+        const inferedDefinition = inferTypeFromValues(key, values[key]);
+
+        return {
+            ...inferedDefinition,
+            options:
+                inferedDefinition.type === 'reference'
+                    ? {
+                          referenceField: 'id',
+                          selectionType: 'select',
+                      }
+                    : undefined,
+            views: ['list', 'create', 'edit', 'show'],
+        };
+    });
 };
