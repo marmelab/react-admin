@@ -170,19 +170,10 @@ export const inferTypeFromValues = (
         return { type: 'number', props: { source: name } };
     }
     if (valuesAreObject(values)) {
-        // we need to go deeper
-        // Arbitrarily, choose the first object
-        // FIXME bad visual representation
-        return {
-            type: 'object',
-            props: { source: name },
-            children: Object.keys(values[0]).map(leafName =>
-                inferTypeFromValues(
-                    leafName,
-                    values.map(value => value[leafName])
-                )
-            ),
-        };
+        /// Arbitrarily, choose the first prop of the first object
+        const propName = Object.keys(values[0]).shift();
+        const leafValues = values.map(v => v[propName]);
+        return inferTypeFromValues(`${name}.${propName}`, leafValues);
     }
     return { type: 'string', props: { source: name } };
 };

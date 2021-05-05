@@ -73,7 +73,7 @@ export const ResourceConfigurationPage = ({
                                 avatar={
                                     <Avatar>
                                         {
-                                            // Here will go an icon selector
+                                            // TODO: Add an icon selector
                                             (
                                                 resourceConfiguration.label ||
                                                 resourceConfiguration.name
@@ -82,7 +82,7 @@ export const ResourceConfigurationPage = ({
                                     </Avatar>
                                 }
                                 action={
-                                    // Will display a menu to delete the resource maybe ?
+                                    // TODO: Add a menu with resource related actions (delete, etc.)
                                     <IconButton aria-label="settings">
                                         <MoreVertIcon />
                                     </IconButton>

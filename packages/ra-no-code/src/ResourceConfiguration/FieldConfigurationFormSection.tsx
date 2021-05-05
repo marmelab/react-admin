@@ -6,6 +6,8 @@ import {
 } from 'ra-core';
 import { CheckboxGroupInput, SelectInput, TextInput } from 'ra-ui-materialui';
 import { CardContent } from '@material-ui/core';
+import { FieldTypeInput } from './FieldConfiguration/FieldTypeInput';
+import { FieldViewsInput } from './FieldConfiguration/FieldViewsInput';
 
 export const FieldConfigurationFormSection = props => {
     const { index, field, resource } = props;
@@ -30,45 +32,16 @@ export const FieldConfigurationFormSection = props => {
                 fullWidth
                 initialValue={translate(...labelArgs)}
             />
-            <SelectInput
+            <FieldTypeInput
                 source={`fields[${index}].type`}
                 label="Type"
                 fullWidth
-                choices={INFERENCE_TYPES}
             />
-            <CheckboxGroupInput
+            <FieldViewsInput
                 source={`fields[${index}].views`}
                 label="Views"
                 fullWidth
-                choices={VIEWS}
-                initialValue={VIEWS_INITIAL_VALUE}
             />
         </CardContent>
     );
 };
-
-const INFERENCE_TYPES = InferenceTypes.map(type => ({
-    id: type,
-    name: type,
-}));
-
-const VIEWS = [
-    {
-        id: 'list',
-        name: 'List',
-    },
-    {
-        id: 'edit',
-        name: 'Edit',
-    },
-    {
-        id: 'create',
-        name: 'Create',
-    },
-    {
-        id: 'show',
-        name: 'Show',
-    },
-];
-
-const VIEWS_INITIAL_VALUE = ['list', 'edit', 'create', 'show'];

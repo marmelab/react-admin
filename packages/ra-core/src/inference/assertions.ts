@@ -1,5 +1,5 @@
-import isValid from 'date-fns/isValid';
-import parseDate from 'date-fns/parseISO';
+import isValid from 'date-fns/is_valid';
+import parseDate from 'date-fns/parse';
 
 export const isNumeric = (value: any) =>
     !isNaN(parseFloat(value)) && isFinite(value);
