@@ -136,7 +136,7 @@ export const ResourceConfigurationPage = ({
                                                 <FieldConfigurationFormSection
                                                     key={field.props.source}
                                                     field={field}
-                                                    index={index}
+                                                    sourcePrefix={`fields[${index}]`}
                                                     className={
                                                         classes.fieldPanel
                                                     }

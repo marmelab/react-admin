@@ -1,16 +1,12 @@
 import * as React from 'react';
-import {
-    getFieldLabelTranslationArgs,
-    InferenceTypes,
-    useTranslate,
-} from 'ra-core';
-import { CheckboxGroupInput, SelectInput, TextInput } from 'ra-ui-materialui';
+import { getFieldLabelTranslationArgs, useTranslate } from 'ra-core';
+import { TextInput } from 'ra-ui-materialui';
 import { CardContent } from '@material-ui/core';
 import { FieldTypeInput } from './FieldConfiguration/FieldTypeInput';
 import { FieldViewsInput } from './FieldConfiguration/FieldViewsInput';
 
 export const FieldConfigurationFormSection = props => {
-    const { index, field, resource } = props;
+    const { sourcePrefix, field, resource } = props;
     const translate = useTranslate();
     const labelArgs = getFieldLabelTranslationArgs({
         source: field.props.source,
@@ -21,24 +17,24 @@ export const FieldConfigurationFormSection = props => {
     return (
         <CardContent>
             <TextInput
-                source={`fields[${index}].props.source`}
+                source={`${sourcePrefix}.props.source`}
                 label="Source"
                 fullWidth
                 disabled
             />
             <TextInput
-                source={`fields[${index}].props.label`}
+                source={`${sourcePrefix}.props.label`}
                 label="Label"
                 fullWidth
                 initialValue={translate(...labelArgs)}
             />
             <FieldTypeInput
-                source={`fields[${index}].type`}
+                source={`${sourcePrefix}.type`}
                 label="Type"
                 fullWidth
             />
             <FieldViewsInput
-                source={`fields[${index}].views`}
+                source={`${sourcePrefix}.views`}
                 label="Views"
                 fullWidth
             />
