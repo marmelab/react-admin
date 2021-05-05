@@ -168,7 +168,8 @@ TabbedFormView.propTypes = {
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
     tabs: PropTypes.element.isRequired,
-    toolbar: PropTypes.element,
+    // @ts-ignore-line
+    toolbar: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     translate: PropTypes.func,
     undoable: PropTypes.bool,
     validate: PropTypes.func,
@@ -193,7 +194,7 @@ export interface TabbedFormViewProps extends FormWithRedirectRenderProps {
     resource?: string;
     syncWithLocation?: boolean;
     tabs?: ReactElement;
-    toolbar?: ReactElement;
+    toolbar?: ReactElement | false;
     /** @deprecated use mutationMode: undoable instead */
     undoable?: boolean;
     variant?: 'standard' | 'outlined' | 'filled';
