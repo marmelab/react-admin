@@ -82,7 +82,7 @@ describe('Admin', () => {
             getByText('Reference', { selector: 'th *' });
             getByText('Date', { selector: 'th *' });
             getByText('Customer', { selector: 'th *' });
-            getByText('Basket', { selector: 'th *' });
+            getByText('Basket.product', { selector: 'th *' });
             getByText('Total ex taxes', { selector: 'th *' });
             getByText('Delivery fees', { selector: 'th *' });
             getByText('Tax rate', { selector: 'th *' });
