@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { parse } from 'papaparse';
-import { getValuesFromRecords, Record, useDataProvider } from 'ra-core';
+import {
+    DataProvider,
+    getValuesFromRecords,
+    Record,
+    useDataProvider,
+} from 'ra-core';
 import set from 'lodash/set';
 
 import {
@@ -14,50 +19,67 @@ import {
  * @param onImportCompleted A function called once the import is completed. Receive an object containing the resource imported and the resourceAlreadyExists boolean.
  * @returns {[boolean, ImportResource]}
  */
-export const useImportResourceFromCsv = (
-    onImportCompleted: ImportCompletedHandler
-): [boolean, ImportResource] => {
+export const useImportResourceFromCsv = (): [boolean, ImportResource] => {
     const [parsing, setParsing] = useState(false);
     const dataProvider = useDataProvider();
     const [resources, { addResource }] = useResourcesConfiguration();
 
-    const importResource = (resource: string, file: File) => {
+    const importResource = async (resource: string, file: File) => {
         setParsing(true);
-        parse<Record>(file, {
-            header: true,
-            skipEmptyLines: true,
-            complete: async ({ data, meta }) => {
-                const resourceAlreadyExists = !!resources[resource];
-                const records = sanitizeRecords(
-                    data.filter(record => !!record.id),
-                    meta
-                );
-                await Promise.all(
-                    records.map(record => {
-                        return dataProvider.create(resource, {
-                            data: record,
-                        });
+        const resourceAlreadyExists = !!resources[resource];
+        const { data, meta } = await parseCSV(file);
+        const records = sanitizeRecords(
+            data.filter(record => !!record.id),
+            meta
+        );
+        await Promise.all(
+            records.map(record => {
+                return dataProvider
+                    .create(resource, {
+                        data: record,
                     })
-                );
-                setParsing(false);
-                const fields = getFieldDefinitionsFromRecords(records);
-                addResource({ name: resource, fields });
-                onImportCompleted({ resource, resourceAlreadyExists });
-            },
-        });
+                    .catch(error => {
+                        // Ignore errors while adding a single record
+                        console.error(
+                            `Error while importing record ${JSON.stringify(
+                                record,
+                                null,
+                                4
+                            )}`
+                        );
+                    });
+            })
+        );
+        setParsing(false);
+        const fields = getFieldDefinitionsFromRecords(records);
+        addResource({ name: resource, fields });
+        return { resource, resourceAlreadyExists };
     };
 
     return [parsing, importResource];
 };
 
-type ImportResource = (resource: string, file: File) => void;
-type ImportCompletedHandler = ({
-    resourceAlreadyExists,
-    resource,
-}: {
+const parseCSV = (file: File): Promise<{ data: Record[]; meta: any }> =>
+    new Promise((resolve, reject) => {
+        parse<Record>(file, {
+            header: true,
+            skipEmptyLines: true,
+            complete: async ({ data, meta }) => {
+                resolve({ data, meta });
+            },
+            error: error => {
+                reject(error);
+            },
+        });
+    });
+
+type ImportResource = (
+    resource: string,
+    file: File
+) => Promise<{
     resourceAlreadyExists: boolean;
     resource: string;
-}) => void;
+}>;
 
 const sanitizeRecords = (
     records: Record[],
