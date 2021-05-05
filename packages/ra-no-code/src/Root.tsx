@@ -1,10 +1,11 @@
+import { RaThemeOptions } from 'ra-ui-materialui';
 import * as React from 'react';
 import { useMemo, useState } from 'react';
 import { Admin } from './Admin';
 import { ApplicationContext } from './ApplicationContext';
 import { ApplicationsDashboard } from './ApplicationsDashboard';
 
-export const Root = () => {
+export const Root = ({ theme }: { theme: RaThemeOptions }) => {
     const [application, setApplication] = useState();
 
     const handleExitApplication = () => {
@@ -26,7 +27,7 @@ export const Root = () => {
     if (context.application) {
         return (
             <ApplicationContext.Provider value={context}>
-                <Admin />
+                <Admin theme={theme} />
             </ApplicationContext.Provider>
         );
     }
@@ -34,6 +35,7 @@ export const Root = () => {
     return (
         <ApplicationsDashboard
             onApplicationSelected={handleApplicationSelected}
+            theme={theme}
         />
     );
 };
