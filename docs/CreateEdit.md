@@ -1684,6 +1684,21 @@ export const PostEdit = (props) => (
 );
 ```
 
+In case you don't want to have a toolbar to be displayed, you can set `false` to the `toolbar` prop:
+
+```jsx
+import * as React from "react";
+import { Edit, SimpleForm } from 'react-admin';
+
+export const PostEdit = (props) => (
+    <Edit {...props}>
+        <SimpleForm toolbar={false}>
+            // ...
+        </SimpleForm>
+    </Edit>
+);
+```
+
 Here are the props received by the `Toolbar` component when passed as the `toolbar` prop of the `SimpleForm` or `TabbedForm` components:
 
 * `alwaysEnableSaveButton`: Force enabling the `<SaveButton>`. If it's not defined, the `<SaveButton>` will be enabled using the `pristine` prop (disabled if pristine, enabled otherwise).
