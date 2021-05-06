@@ -30,6 +30,60 @@ const UseQueryWithStore = ({
 };
 
 describe('useQueryWithStore', () => {
+    it('should not call the dataProvider if options.enabled is set to false and run when it changes to true', async () => {
+        const dataProvider = {
+            getOne: jest.fn(() =>
+                Promise.resolve({
+                    data: { id: 1, title: 'titleFromDataProvider' },
+                })
+            ),
+        };
+        const callback = jest.fn();
+        const { rerender } = renderWithRedux(
+            <DataProviderContext.Provider value={dataProvider}>
+                <UseQueryWithStore
+                    callback={callback}
+                    options={{ enabled: false }}
+                />
+            </DataProviderContext.Provider>,
+            { admin: { resources: { posts: { data: {} } } } }
+        );
+        let callArgs = callback.mock.calls[0][0];
+        expect(callArgs.data).toBeUndefined();
+        expect(callArgs.loading).toEqual(false);
+        expect(callArgs.loaded).toEqual(false);
+        expect(callArgs.error).toBeNull();
+        expect(callArgs.total).toBeNull();
+
+        rerender(
+            <DataProviderContext.Provider value={dataProvider}>
+                <UseQueryWithStore
+                    callback={callback}
+                    options={{ enabled: true }}
+                />
+            </DataProviderContext.Provider>,
+            { admin: { resources: { posts: { data: {} } } } }
+        );
+        await new Promise(resolve => setImmediate(resolve)); // dataProvider Promise returns result on next tick
+        callArgs = callback.mock.calls[2][0];
+        expect(callArgs.data).toBeUndefined();
+        expect(callArgs.loading).toEqual(true);
+        expect(callArgs.loaded).toEqual(false);
+        expect(callArgs.error).toBeNull();
+        expect(callArgs.total).toBeNull();
+
+        await new Promise(resolve => setImmediate(resolve)); // dataProvider Promise returns result on next tick
+        callArgs = callback.mock.calls[4][0];
+        expect(callArgs.data).toEqual({
+            id: 1,
+            title: 'titleFromDataProvider',
+        });
+        expect(callArgs.loading).toEqual(false);
+        expect(callArgs.loaded).toEqual(true);
+        expect(callArgs.error).toBeNull();
+        expect(callArgs.total).toBeNull();
+    });
+
     it('should return data from dataProvider', async () => {
         const dataProvider = {
             getOne: jest.fn(() =>
