@@ -207,6 +207,7 @@ describe('<ReferenceInputController />', () => {
                     error: null,
                     loaded: true,
                     loading: true,
+                    refetch: expect.any(Function),
                 },
                 dataStatus: {
                     error: null,
