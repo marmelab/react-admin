@@ -1930,6 +1930,7 @@ const {
     basePath, // deduced from the location, useful for action buttons
     defaultTitle, // the translated title based on the resource, e.g. 'Posts'
     resource, // the resource name, deduced from the location. e.g. 'posts'
+    refetch, // a callback to refresh the list data
 } = useListContext();
 ```
 

@@ -15,7 +15,7 @@ import {
     useRefresh,
     RedirectionSideEffect,
 } from '../../sideEffect';
-import { useGetOne, useUpdate } from '../../dataProvider';
+import { useGetOne, useUpdate, Refetch } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
 import { CRUD_GET_ONE, CRUD_UPDATE } from '../../actions';
 import {
@@ -74,6 +74,7 @@ export interface EditControllerProps<RecordType extends Record = Record> {
     setTransform: SetTransformData;
     successMessage?: string;
     record?: RecordType;
+    refetch: Refetch;
     redirect: RedirectionSideEffect;
     resource: string;
     version: number;
@@ -137,7 +138,7 @@ export const useEditController = <RecordType extends Record = Record>(
         setTransform,
     } = useSaveModifiers({ onSuccess, onFailure, transform });
 
-    const { data: record, loading, loaded } = useGetOne<RecordType>(
+    const { data: record, loading, loaded, refetch } = useGetOne<RecordType>(
         resource,
         id,
         {
@@ -262,6 +263,7 @@ export const useEditController = <RecordType extends Record = Record>(
         setOnSuccess,
         setOnFailure,
         setTransform,
+        refetch,
         resource,
         basePath,
         record,

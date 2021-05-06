@@ -70,23 +70,27 @@ const useReferenceArrayFieldController = (
     const resource = useResourceContext(props);
     const notify = useNotify();
     const ids = get(record, source) || emptyArray;
-    const { data, error, loading, loaded } = useGetMany(reference, ids, {
-        onFailure: error =>
-            notify(
-                typeof error === 'string'
-                    ? error
-                    : error.message || 'ra.notification.http_error',
-                'warning',
-                {
-                    _:
-                        typeof error === 'string'
-                            ? error
-                            : error && error.message
-                            ? error.message
-                            : undefined,
-                }
-            ),
-    });
+    const { data, error, loading, loaded, refetch } = useGetMany(
+        reference,
+        ids,
+        {
+            onFailure: error =>
+                notify(
+                    typeof error === 'string'
+                        ? error
+                        : error.message || 'ra.notification.http_error',
+                    'warning',
+                    {
+                        _:
+                            typeof error === 'string'
+                                ? error
+                                : error && error.message
+                                ? error.message
+                                : undefined,
+                    }
+                ),
+        }
+    );
 
     const [loadingState, setLoadingState] = useSafeSetState<boolean>(loading);
     const [loadedState, setLoadedState] = useSafeSetState<boolean>(loaded);
@@ -246,6 +250,7 @@ const useReferenceArrayFieldController = (
         onUnselectItems,
         page,
         perPage,
+        refetch,
         resource: reference,
         selectedIds,
         setFilters,

@@ -188,6 +188,7 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
         record,
         reference,
         referenceRecord,
+        refetch,
         resource,
         resourceLinkPath,
         source,
@@ -229,6 +230,7 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
                             classes.link // force color override for Typography components
                         ),
                         record: referenceRecord,
+                        refetch,
                         resource: reference,
                         basePath,
                         translateChoice,

@@ -241,6 +241,7 @@ const sanitizeRestProps: (
     page = null,
     permissions = null,
     perPage = null,
+    refetch = null,
     resource = null,
     selectedIds = null,
     setFilters = null,
