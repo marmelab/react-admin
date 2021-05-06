@@ -21,9 +21,9 @@ export const CreateForm = (props: Omit<SimpleFormProps, 'children'>) => {
 
     return (
         <SimpleForm {...props}>
-            {resourceConfiguration.fields.map(definition =>
-                getInputFromFieldDefinition(definition)
-            )}
+            {resourceConfiguration.fields
+                .filter(definition => definition.views.includes('create'))
+                .map(definition => getInputFromFieldDefinition(definition))}
         </SimpleForm>
     );
 };

@@ -1,3 +1,4 @@
+import isValid from 'date-fns/is_valid';
 import parseDate from 'date-fns/parse';
 
 export const isNumeric = (value: any) =>
@@ -45,7 +46,7 @@ export const isDate = (value: any) => !value || value instanceof Date;
 export const valuesAreDate = (values: any[]) => values.every(isDate);
 
 export const isDateString = (value: any) =>
-    !value || (typeof value === 'string' && !isNaN(parseDate(value).getDate()));
+    !value || (typeof value === 'string' && isValid(parseDate(value)));
 export const valuesAreDateString = (values: any[]) =>
     values.every(isDateString);
 

@@ -9,20 +9,21 @@ import {
 } from 'ra-ui-materialui';
 
 export const getInputFromFieldDefinition = (
-    definition: InferredElementDescription
+    definition: InferredElementDescription,
+    keyPrefix?: string
 ) => {
     switch (definition.type) {
         case 'date':
             return (
                 <DateInput
-                    key={definition.props.source}
+                    key={getKey(keyPrefix, definition.props.source)}
                     {...definition.props}
                 />
             );
         case 'email':
             return (
                 <TextInput
-                    key={definition.props.source}
+                    key={getKey(keyPrefix, definition.props.source)}
                     validate={email()}
                     {...definition.props}
                 />
@@ -30,37 +31,46 @@ export const getInputFromFieldDefinition = (
         case 'boolean':
             return (
                 <BooleanInput
-                    key={definition.props.source}
+                    key={getKey(keyPrefix, definition.props.source)}
                     {...definition.props}
                 />
             );
         case 'number':
             return (
                 <NumberInput
-                    key={definition.props.source}
+                    key={getKey(keyPrefix, definition.props.source)}
                     {...definition.props}
                 />
             );
         case 'image':
             return (
                 <ImageInput
-                    key={definition.props.source}
+                    key={getKey(keyPrefix, definition.props.source)}
                     {...definition.props}
                 />
             );
         case 'url':
             return (
                 <TextInput
-                    key={definition.props.source}
+                    key={getKey(keyPrefix, definition.props.source)}
                     {...definition.props}
                 />
             );
+        case 'object':
+            if (Array.isArray(definition.children)) {
+                return definition.children.map((child, index) =>
+                    getInputFromFieldDefinition(child, index.toString())
+                );
+            }
+            return <>{getInputFromFieldDefinition(definition.children)}</>;
         default:
             return (
                 <TextInput
-                    key={definition.props.source}
+                    key={getKey(keyPrefix, definition.props.source)}
                     {...definition.props}
                 />
             );
     }
 };
+
+const getKey = (prefix, source) => (prefix ? `${prefix}_${source}` : source);
