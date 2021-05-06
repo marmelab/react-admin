@@ -330,10 +330,7 @@ export interface ReduxState {
         resources: {
             [name: string]: {
                 props: ResourceDefinition;
-                data: {
-                    [key: string]: Record;
-                    [key: number]: Record;
-                };
+                data: RecordMap;
                 list: {
                     cachedRequests?: {
                         ids: Identifier[];

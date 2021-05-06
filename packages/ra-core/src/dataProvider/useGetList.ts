@@ -24,9 +24,9 @@ const defaultData = {};
  *
  * The return value updates according to the request state:
  *
- * - start: { loading: true, loaded: false }
- * - success: { data: [data from store], ids: [ids from response], total: [total from response], loading: false, loaded: true }
- * - error: { error: [error from response], loading: false, loaded: true }
+ * - start: { loading: true, loaded: false, refetch }
+ * - success: { data: [data from store], ids: [ids from response], total: [total from response], loading: false, loaded: true, refetch }
+ * - error: { error: [error from response], loading: false, loaded: true, refetch }
  *
  * This hook will return the cached result when called a second time
  * with the same parameters, until the response arrives.
@@ -40,7 +40,7 @@ const defaultData = {};
  * @param {Function} options.onSuccess Side effect function to be executed upon success, e.g. { onSuccess: { refresh: true } }
  * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) }
  *
- * @returns The current request state. Destructure as { data, total, ids, error, loading, loaded }.
+ * @returns The current request state. Destructure as { data, total, ids, error, loading, loaded, refetch }.
  *
  * @example
  *
@@ -97,7 +97,7 @@ const useGetList = <RecordType extends Record = Record>(
                 state.admin.resources,
                 [resource, 'data'],
                 defaultData
-            ),
+            ) as RecordMap<RecordType>,
         }),
         // total selector (may return undefined)
         (state: ReduxState): number =>
