@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { parse } from 'papaparse';
 import {
-    DataProvider,
     getValuesFromRecords,
     Record,
     useDataProvider,
