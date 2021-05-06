@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { shallowEqual, useSelector } from 'react-redux';
 import lodashGet from 'lodash/get';
 // @ts-ignore
-import { useMediaQuery, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import DefaultIcon from '@material-ui/icons/ViewList';
 import classnames from 'classnames';

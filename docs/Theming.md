@@ -916,7 +916,7 @@ import Badge from '@material-ui/core/Badge';
 } />
 ```
 
-The `icon` prop allows to set the menu left icon.
+The `letfIcon` prop allows to set the menu left icon.
 
 Additional props are passed down to [the underling material-ui `<MenuItem>` component](https://material-ui.com/api/menu-item/#menuitem-api).
 
