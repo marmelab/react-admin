@@ -198,6 +198,7 @@ export const useReferenceInputController = (
             loaded: referenceLoaded,
             loading: referenceLoading,
             error: referenceError,
+            refetch: refetchReference,
         },
         dataStatus: {
             error: dataStatus.error,
@@ -231,6 +232,7 @@ export interface ReferenceInputValue {
         loaded: boolean;
         loading: boolean;
         error?: any;
+        refetch: Refetch;
     };
     dataStatus: {
         error?: any;
