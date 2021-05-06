@@ -143,6 +143,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         resource,
         setFilter,
         shouldRenderSuggestions: shouldRenderSuggestionsOverride,
+        size,
         source,
         suggestionLimit,
         translateChoice = true,
@@ -475,7 +476,6 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                         onChange,
                         onFocus,
                         ref,
-                        size,
                         color,
                         ...inputProps
                     } = getInputProps({
