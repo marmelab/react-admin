@@ -1,10 +1,6 @@
 import { useState } from 'react';
 import { parse } from 'papaparse';
-import {
-    getValuesFromRecords,
-    Record,
-    useDataProvider,
-} from 'ra-core';
+import { getValuesFromRecords, Record, useDataProvider } from 'ra-core';
 import set from 'lodash/set';
 
 import {
