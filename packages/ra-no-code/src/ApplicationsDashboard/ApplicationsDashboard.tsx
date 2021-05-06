@@ -19,6 +19,10 @@ import { defaultTheme } from 'ra-ui-materialui';
 import FolderIcon from '@material-ui/icons/Folder';
 import { Application } from './types';
 import { NewApplicationForm } from './NewApplicationForm';
+import {
+    loadApplicationsFromStorage,
+    storeApplicationsInStorage,
+} from './applicationStorage';
 
 export const ApplicationsDashboard = ({ onApplicationSelected }) => (
     <ThemeProvider theme={createMuiTheme(defaultTheme)}>
@@ -82,25 +86,6 @@ const Applications = ({ onApplicationSelected }) => {
                 </Card>
             )}
         </Container>
-    );
-};
-
-const loadApplicationsFromStorage = () => {
-    const storedValue = window.localStorage.getItem(
-        '@@ra-no-code/applications'
-    );
-
-    if (storedValue) {
-        return JSON.parse(storedValue);
-    }
-
-    return [];
-};
-
-const storeApplicationsInStorage = applications => {
-    window.localStorage.setItem(
-        '@@ra-no-code/applications',
-        JSON.stringify(applications)
     );
 };
 
