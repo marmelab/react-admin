@@ -45,7 +45,7 @@ import { DeclarativeSideEffect } from './useDeclarativeSideEffects';
  * - mount:         [mutate, { loading: false, loaded: false }]
  * - mutate called: [mutate, { loading: true, loaded: false }]
  * - success:       [mutate, { data: [data from response], total: [total from response], loading: false, loaded: true }]
- * - error:         [mutate, { error: [error from response], loading: false, loaded: true }]
+ * - error:         [mutate, { error: [error from response], loading: false, loaded: false }]
  *
  * The mutate function accepts the following arguments
  * - {Object} query

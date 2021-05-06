@@ -11,7 +11,7 @@ import useMutation, { MutationOptions, Mutation } from './useMutation';
  * - initial: [updateMany, { loading: false, loaded: false }]
  * - start:   [updateMany, { loading: true, loaded: false }]
  * - success: [updateMany, { data: [data from response], loading: false, loaded: true }]
- * - error:   [updateMany, { error: [error from response], loading: false, loaded: true }]
+ * - error:   [updateMany, { error: [error from response], loading: false, loaded: false }]
  *
  * @param resource The resource name, e.g. 'posts'
  * @param ids The resource identifiers, e.g. [123, 456]

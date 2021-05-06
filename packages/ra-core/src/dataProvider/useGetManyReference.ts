@@ -35,7 +35,7 @@ interface UseGetManyReferenceOptions {
  *
  * - start: { loading: true, loaded: false }
  * - success: { data: [data from store], ids: [ids from response], total: [total from response], loading: false, loaded: true }
- * - error: { error: [error from response], loading: false, loaded: true }
+ * - error: { error: [error from response], loading: false, loaded: false }
  *
  * This hook will return the cached result when called a second time
  * with the same parameters, until the response arrives.

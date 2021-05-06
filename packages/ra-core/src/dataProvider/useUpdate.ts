@@ -10,7 +10,7 @@ import useMutation, { MutationOptions, Mutation } from './useMutation';
  * - initial: [update, { loading: false, loaded: false }]
  * - start:   [update, { loading: true, loaded: false }]
  * - success: [update, { data: [data from response], loading: false, loaded: true }]
- * - error:   [update, { error: [error from response], loading: false, loaded: true }]
+ * - error:   [update, { error: [error from response], loading: false, loaded: false }]
  *
  * @param resource The resource name, e.g. 'posts'
  * @param id The resource identifier, e.g. 123
