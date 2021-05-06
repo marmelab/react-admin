@@ -144,7 +144,7 @@ export const useQueryWithStore = <State extends ReduxState = ReduxState>(
         data,
         total,
         error: null,
-        loading: true,
+        loading: options?.enabled === false ? false : true,
         loaded: isDataLoaded(data),
         refetch,
     });
@@ -157,7 +157,7 @@ export const useQueryWithStore = <State extends ReduxState = ReduxState>(
                 data,
                 total,
                 error: null,
-                loading: true,
+                loading: options?.enabled === false ? false : true,
                 loaded: isDataLoaded(data),
                 refetch,
             });
@@ -186,6 +186,7 @@ export const useQueryWithStore = <State extends ReduxState = ReduxState>(
         total,
         isDataLoaded,
         refetch,
+        options.enabled,
     ]);
 
     const dataProvider = useDataProvider();
