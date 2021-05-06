@@ -149,7 +149,7 @@ This object updates according to the request state:
 
 - start: `{ loading: true, loaded: false }`
 - success: `{ data: [data from response], total: [total from response], loading: false, loaded: true }`
-- error: `{ error: [error from response], loading: false, loaded: true }`
+- error: `{ error: [error from response], loading: false, loaded: false }`
 
 As a reminder, here are the read query types handled by Data Providers:
 
@@ -228,7 +228,7 @@ This object updates according to the request state:
 - mount: `{ loading: false, loaded: false }`
 - mutate called: `{ loading: true, loaded: false }`
 - success: `{ data: [data from response], total: [total from response], loading: false, loaded: true }`
-- error: `{ error: [error from response], loading: false, loaded: true }`
+- error: `{ error: [error from response], loading: false, loaded: false }`
 
 You can destructure the return value of the `useMutation` hook as `[mutate,  { data, total, error, loading, loaded }]`.
 

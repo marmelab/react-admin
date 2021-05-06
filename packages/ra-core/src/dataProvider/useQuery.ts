@@ -15,7 +15,7 @@ import { DataProviderQuery, Refetch } from './useQueryWithStore';
  *
  * - start: { loading: true, loaded: false }
  * - success: { data: [data from response], total: [total from response], loading: false, loaded: true }
- * - error: { error: [error from response], loading: false, loaded: true }
+ * - error: { error: [error from response], loading: false, loaded: false }
  *
  * @param {Object} query
  * @param {string} query.type The method called on the data provider, e.g. 'getList', 'getOne'. Can also be a custom method if the dataProvider supports is.
