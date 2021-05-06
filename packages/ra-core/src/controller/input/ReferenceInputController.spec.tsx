@@ -194,6 +194,7 @@ describe('<ReferenceInputController />', () => {
                     loading: true,
                     page: 1,
                     perPage: 25,
+                    refetch: expect.any(Function),
                     resource: 'comments',
                     selectedIds: [],
 
