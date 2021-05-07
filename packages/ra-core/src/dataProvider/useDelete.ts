@@ -18,7 +18,7 @@ import useMutation, { MutationOptions, Mutation } from './useMutation';
  * @param previousData The record before the delete is applied
  * @param options Options object to pass to the dataProvider. May include side effects to be executed upon success or failure, e.g. { onSuccess: { refresh: true } }
  *
- * @returns The current request state. Destructure as [delteOne, { data, error, loading, loaded }].
+ * @returns The current request state. Destructure as [deleteOne, { data, error, loading, loaded }].
  *
  * The deleteOne() function can be called in 3 different ways:
  *  - with the same parameters as the useDelete() hook: deleteOne(resource, id, previousData, options)
