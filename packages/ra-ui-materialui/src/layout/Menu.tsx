@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { FC, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { shallowEqual, useSelector } from 'react-redux';
 import lodashGet from 'lodash/get';
 // @ts-ignore
-import { useMediaQuery, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import DefaultIcon from '@material-ui/icons/ViewList';
 import classnames from 'classnames';
@@ -40,7 +39,7 @@ const useStyles = makeStyles(
     { name: 'RaMenu' }
 );
 
-const Menu: FC<MenuProps> = props => {
+const Menu = (props: MenuProps) => {
     const {
         classes: classesOverride,
         className,
@@ -51,9 +50,6 @@ const Menu: FC<MenuProps> = props => {
         ...rest
     } = props;
     const classes = useStyles(props);
-    const isXSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('xs')
-    );
     const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
     const resources = useSelector(getResources, shallowEqual) as Array<any>;
     const getResourceLabel = useGetResourceLabel();
@@ -69,13 +65,7 @@ const Menu: FC<MenuProps> = props => {
             )}
             {...rest}
         >
-            {hasDashboard && (
-                <DashboardMenuItem
-                    onClick={onMenuClick}
-                    dense={dense}
-                    sidebarIsOpen={open}
-                />
-            )}
+            {hasDashboard && <DashboardMenuItem dense={dense} />}
             {resources
                 .filter(r => r.hasList)
                 .map(resource => (
@@ -89,12 +79,9 @@ const Menu: FC<MenuProps> = props => {
                         leftIcon={
                             resource.icon ? <resource.icon /> : <DefaultIcon />
                         }
-                        onClick={onMenuClick}
                         dense={dense}
-                        sidebarIsOpen={open}
                     />
                 ))}
-            {isXSmall && logout}
         </div>
     );
 };
@@ -104,7 +91,13 @@ export interface MenuProps {
     className?: string;
     dense?: boolean;
     hasDashboard?: boolean;
+    /**
+     * @deprecated
+     */
     logout?: ReactNode;
+    /**
+     * @deprecated
+     */
     onMenuClick?: () => void;
 }
 
