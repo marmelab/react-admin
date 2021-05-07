@@ -226,11 +226,13 @@ export const getSuggestionsFactory = ({
         matchSuggestion(filter, suggestion, true)
     );
 
-    const filterIsSelectedItem = !!selectedItem
-        ? matchSuggestion(filter, selectedItem, true)
-        : false;
-
     if (allowCreate) {
+        const filterIsSelectedItem =
+            // If the selectedItem is an array (for example AutocompleteArrayInput)
+            // we should't try to match
+            !!selectedItem && !Array.isArray(selectedItem)
+                ? matchSuggestion(filter, selectedItem, true)
+                : false;
         if (!hasExactMatch && !filterIsSelectedItem) {
             suggestions.push(
                 getSuggestion({
