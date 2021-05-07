@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { shallowEqual, useSelector } from 'react-redux';
 import lodashGet from 'lodash/get';
@@ -39,7 +39,7 @@ const useStyles = makeStyles(
     { name: 'RaMenu' }
 );
 
-const Menu: FC<MenuProps> = props => {
+const Menu = (props: MenuProps) => {
     const {
         classes: classesOverride,
         className,

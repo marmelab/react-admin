@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import LabelIcon from '@material-ui/icons/Label';
-import { Box } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import {
     useTranslate,
     DashboardMenuItem,
@@ -21,7 +21,7 @@ import { AppState } from '../types';
 
 type MenuName = 'menuCatalog' | 'menuSales' | 'menuCustomers';
 
-const Menu: FC<MenuProps> = ({ dense = false }) => {
+const Menu = ({ dense = false }: MenuProps) => {
     const [state, setState] = useState({
         menuCatalog: true,
         menuSales: true,
@@ -29,13 +29,14 @@ const Menu: FC<MenuProps> = ({ dense = false }) => {
     });
     const translate = useTranslate();
     useSelector((state: AppState) => state.theme); // force rerender on theme change
+    const classes = useStyles();
 
     const handleToggle = (menu: MenuName) => {
         setState(state => ({ ...state, [menu]: !state[menu] }));
     };
 
     return (
-        <Box mt={1}>
+        <div className={classes.root}>
             {' '}
             <DashboardMenuItem />
             <SubMenu
@@ -118,8 +119,14 @@ const Menu: FC<MenuProps> = ({ dense = false }) => {
                 leftIcon={<reviews.icon />}
                 dense={dense}
             />
-        </Box>
+        </div>
     );
 };
+
+const useStyles = makeStyles(theme => ({
+    root: {
+        marginTop: theme.spacing(1),
+    },
+}));
 
 export default Menu;
