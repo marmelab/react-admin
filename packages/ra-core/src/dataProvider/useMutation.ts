@@ -327,8 +327,7 @@ const hasDeclarativeSideEffectsSupport = (
     if (!options && !callTimeOptions) return false;
     if (callTimeOptions && callTimeOptions.withDeclarativeSideEffectsSupport)
         return true;
-    if (options && options.withDeclarativeSideEffectsSupport) return true;
-    return false;
+    return options && options.withDeclarativeSideEffectsSupport;
 };
 
 const sanitizeOptions = (args?: MutationOptions) => {
