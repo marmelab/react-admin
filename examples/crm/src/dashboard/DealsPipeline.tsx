@@ -13,10 +13,11 @@ import {
 
 import { CompanyAvatar } from '../companies/CompanyAvatar';
 import { stages, stageNames } from '../deals/stages';
+import { Deal } from '../types';
 
 export const DealsPipeline = () => {
     const { identity } = useGetIdentity();
-    const { data, ids: unorderedIds, total, loaded } = useGetList(
+    const { data, ids: unorderedIds, total, loaded } = useGetList<Deal>(
         'deals',
         { page: 1, perPage: 10 },
         { field: 'last_seen', order: 'DESC' },
@@ -53,7 +54,7 @@ export const DealsPipeline = () => {
                 </Link>
             </Box>
             <Card>
-                <SimpleList
+                <SimpleList<Deal>
                     basePath="/deals"
                     linkType="show"
                     ids={ids}
