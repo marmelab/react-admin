@@ -13,6 +13,8 @@ import {
 import { Box, Typography, Divider, List, ListItem } from '@material-ui/core';
 import { TagsListEdit } from './TagsListEdit';
 
+import { Sale } from '../types';
+
 export const ContactAside = ({ record, link = 'edit' }: any) => (
     <Box ml={4} width={250} minWidth={250}>
         <Box textAlign="center" mb={2}>
@@ -89,10 +91,10 @@ export const ContactAside = ({ record, link = 'edit' }: any) => (
                 source="sales_id"
                 reference="sales"
             >
-                <FunctionField
+                <FunctionField<Sale>
                     source="last_name"
-                    render={(record: any) =>
-                        `${record.first_name} ${record.last_name}`
+                    render={record =>
+                        record ? `${record.first_name} ${record.last_name}` : ''
                     }
                 />
             </ReferenceField>

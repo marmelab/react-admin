@@ -9,7 +9,7 @@ import {
 } from 'react-admin';
 import { Box, Typography, Divider, Link } from '@material-ui/core';
 
-import { Company } from '../types';
+import { Company, Sale } from '../types';
 
 export const CompanyAside = ({
     record,
@@ -92,10 +92,12 @@ export const CompanyAside = ({
                     source="sales_id"
                     reference="sales"
                 >
-                    <FunctionField
+                    <FunctionField<Sale>
                         source="last_name"
-                        render={(record: any) =>
-                            `${record.first_name} ${record.last_name}`
+                        render={record =>
+                            record
+                                ? `${record.first_name} ${record.last_name}`
+                                : ''
                         }
                     />
                 </ReferenceField>

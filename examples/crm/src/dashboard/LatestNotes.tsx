@@ -11,6 +11,8 @@ import {
 } from 'react-admin';
 import { formatDistance } from 'date-fns';
 
+import { Contact as ContactType } from '../types';
+
 const useStyles = makeStyles(theme => ({
     note: {
         marginBottom: theme.spacing(2),
@@ -148,10 +150,10 @@ const Contact = ({ note }: any) => (
             basePath="/contacts"
             link="show"
         >
-            <FunctionField
+            <FunctionField<ContactType>
                 variant="body1"
-                render={(contact: any) =>
-                    `${contact.first_name} ${contact.last_name}`
+                render={contact =>
+                    contact ? `${contact.first_name} ${contact.last_name}` : ''
                 }
             />
         </ReferenceField>
