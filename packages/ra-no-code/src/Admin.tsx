@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-    Admin as RaAdmin,
-    AdminProps as RaAdminProps,
-    Resource,
-} from 'react-admin';
+import { Admin as RaAdmin, AdminProps, Resource } from 'react-admin';
 import localStorageDataProvider from 'ra-data-local-storage';
 import { Create, Edit, List, Show } from './builders';
 import {
@@ -13,8 +9,7 @@ import {
 } from './ResourceConfiguration';
 import { Layout, Ready } from './ui';
 import { Route } from 'react-router';
-
-const dataProvider = localStorageDataProvider();
+import { useApplication } from './ApplicationContext';
 
 const customRoutes = [
     <Route
@@ -25,18 +20,33 @@ const customRoutes = [
     />,
 ];
 
-export const Admin = (props: AdminProps) => (
-    <ResourceConfigurationProvider dataProvider={dataProvider}>
-        <InnerAdmin {...props} />
-    </ResourceConfigurationProvider>
-);
+export const Admin = (props: Omit<AdminProps, 'dataProvider'>) => {
+    const { application } = useApplication();
+    if (!application) {
+        return null;
+    }
+    const dataProvider = localStorageDataProvider({
+        localStorageKey: `@@ra-no-code/${application.name}/data`,
+    });
+    return (
+        <ResourceConfigurationProvider
+            dataProvider={dataProvider}
+            storageKey={`@@ra-no-code/${application.name}`}
+        >
+            <InnerAdmin
+                {...props}
+                title={application.name}
+                dataProvider={dataProvider}
+            />
+        </ResourceConfigurationProvider>
+    );
+};
 
 const InnerAdmin = (props: AdminProps) => {
     const [resources] = useResourcesConfiguration();
     const hasResources = !!resources && Object.keys(resources).length > 0;
     return (
         <RaAdmin
-            dataProvider={dataProvider}
             ready={Ready}
             layout={Layout}
             customRoutes={customRoutes}
@@ -58,5 +68,3 @@ const InnerAdmin = (props: AdminProps) => {
         </RaAdmin>
     );
 };
-
-interface AdminProps extends Omit<RaAdminProps, 'dataProvider'> {}

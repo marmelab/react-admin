@@ -4,6 +4,7 @@ import userEvents from '@testing-library/user-event';
 import fs from 'fs';
 import path from 'path';
 import { Admin } from './Admin';
+import { ApplicationContext } from './ApplicationContext';
 
 describe('Admin', () => {
     it('should be functional', async () => {
@@ -30,7 +31,14 @@ describe('Admin', () => {
             type: 'text/csv',
         });
         const { getByLabelText, getByText, getByDisplayValue } = render(
-            <Admin />
+            <ApplicationContext.Provider
+                value={{
+                    application: { name: 'test', created_at: new Date() },
+                    onExit: () => {},
+                }}
+            >
+                <Admin />
+            </ApplicationContext.Provider>
         );
 
         userEvents.upload(getByLabelText('CSV File'), file);
