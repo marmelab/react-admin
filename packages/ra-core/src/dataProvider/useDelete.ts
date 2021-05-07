@@ -11,7 +11,7 @@ import useMutation, { MutationOptions, Mutation } from './useMutation';
  * - initial: [deleteOne, { loading: false, loaded: false }]
  * - start:   [deleteOne, { loading: true, loaded: false }]
  * - success: [deleteOne, { data: [data from response], loading: false, loaded: true }]
- * - error:   [deleteOne, { error: [error from response], loading: false, loaded: true }]
+ * - error:   [deleteOne, { error: [error from response], loading: false, loaded: false }]
  *
  * @param resource The resource name, e.g. 'posts'
  * @param id The resource identifier, e.g. 123
@@ -45,7 +45,7 @@ import useMutation, { MutationOptions, Mutation } from './useMutation';
  * const DeleteButton = ({ record }) => {
  *     const [deleteOne, { loading, error }] = useDelete('likes', record.id, record);
  *     if (error) { return <p>ERROR</p>; }
- *     return <button disabled={loading} onClick={deleteOne}>Delete</div>;
+ *     return <button disabled={loading} onClick={deleteOne}>Delete</button>;
  * };
  */
 const useDelete = <RecordType extends Record = Record>(

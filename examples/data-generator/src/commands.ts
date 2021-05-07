@@ -21,7 +21,10 @@ export default (db, { serializeDate }) => {
         );
         const basket = Array.from(Array(nbProducts).keys()).map(() => ({
             product_id: random.number({ min: 0, max: 10 * 13 - 1 }),
-            quantity: weightedArrayElement([1, 2, 3, 4, 5], [10, 5, 3, 2, 1]),
+            quantity: weightedArrayElement(
+                [1, 2, 3, 4, 5],
+                [10, 5, 3, 2, 1]
+            ) as number,
         }));
 
         const total_ex_taxes = basket.reduce(
@@ -36,7 +39,7 @@ export default (db, { serializeDate }) => {
         const taxes = parseFloat(
             ((total_ex_taxes + delivery_fees) * tax_rate).toFixed(2)
         );
-        const customer = random.arrayElement(realCustomers);
+        const customer = random.arrayElement<any>(realCustomers);
         const date = randomDate(customer.first_seen, customer.last_seen);
 
         const status =

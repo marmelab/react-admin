@@ -51,7 +51,7 @@ const DataProviderOptions = { action: CRUD_GET_MANY };
  *
  * - start: { loading: true, loaded: false, refetch }
  * - success: { data: [data from response], loading: false, loaded: true, refetch }
- * - error: { error: [error from response], loading: false, loaded: true, refetch }
+ * - error: { error: [error from response], loading: false, loaded: false, refetch }
  *
  * This hook will return the cached result when called a second time
  * with the same parameters, until the response arrives.

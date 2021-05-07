@@ -72,7 +72,7 @@ const defaultIsDataLoaded = (data: any): boolean => data !== undefined;
  *
  * - start: { loading: true, loaded: false, refetch }
  * - success: { data: [data from response], total: [total from response], loading: false, loaded: true, refetch }
- * - error: { error: [error from response], loading: false, loaded: true, refetch }
+ * - error: { error: [error from response], loading: false, loaded: false, refetch }
  *
  * This hook will return the cached result when called a second time
  * with the same parameters, until the response arrives.
@@ -144,7 +144,7 @@ export const useQueryWithStore = <State extends ReduxState = ReduxState>(
         data,
         total,
         error: null,
-        loading: true,
+        loading: options?.enabled === false ? false : true,
         loaded: isDataLoaded(data),
         refetch,
     });
@@ -157,7 +157,7 @@ export const useQueryWithStore = <State extends ReduxState = ReduxState>(
                 data,
                 total,
                 error: null,
-                loading: true,
+                loading: options?.enabled === false ? false : true,
                 loaded: isDataLoaded(data),
                 refetch,
             });
@@ -186,6 +186,7 @@ export const useQueryWithStore = <State extends ReduxState = ReduxState>(
         total,
         isDataLoaded,
         refetch,
+        options.enabled,
     ]);
 
     const dataProvider = useDataProvider();
