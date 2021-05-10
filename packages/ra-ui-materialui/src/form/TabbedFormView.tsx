@@ -149,7 +149,7 @@ TabbedFormView.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
     classes: PropTypes.object,
-    component: PropTypes.element,
+    component: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
     handleSubmit: PropTypes.func, // passed by react-final-form
     initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
