@@ -178,11 +178,16 @@ TabbedFormView.propTypes = {
     version: PropTypes.number,
 };
 
+const DefaultInnerContainer = (props): JSX.Element => {
+    const { className, children } = props;
+    return <div className={className}>{children}</div>;
+};
+
 TabbedFormView.defaultProps = {
     submitOnEnter: true,
     tabs: <TabbedFormTabs />,
     toolbar: <Toolbar />,
-    component: () => <div />,
+    component: DefaultInnerContainer,
 };
 
 export interface TabbedFormViewProps extends FormWithRedirectRenderProps {
