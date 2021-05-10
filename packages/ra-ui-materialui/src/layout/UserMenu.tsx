@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Children, cloneElement, isValidElement, useState } from 'react';
-import PropTypes from 'prop-types';
+import { Children, cloneElement, FC, isValidElement, useState } from 'react';
+import PropTypes, { ReactNodeLike } from 'prop-types';
 import { useTranslate, useGetIdentity } from 'ra-core';
 import {
     Tooltip,
@@ -37,7 +37,7 @@ const TransformOrigin: PopoverOrigin = {
     horizontal: 'right',
 };
 
-const UserMenu = props => {
+const UserMenu: FC<UserMenuProps> = props => {
     const [anchorEl, setAnchorEl] = useState(null);
     const translate = useTranslate();
     const { loaded, identity } = useGetIdentity();
@@ -121,5 +121,14 @@ UserMenu.defaultProps = {
     label: 'ra.auth.user_menu',
     icon: <AccountCircle />,
 };
+
+export interface UserMenuProps {
+    children?: React.ReactNode;
+    classes?: object;
+    className?: string;
+    label?: string;
+    logout?: React.ReactNode;
+    icon?: ReactNodeLike;
+}
 
 export default UserMenu;
