@@ -29,6 +29,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         children,
         className,
         classes: classesOverride,
+        component: Component,
         handleSubmit,
         handleSubmitWithRedirect,
         invalid,
@@ -76,7 +77,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                 children
             )}
             <Divider />
-            <div className={classes.content}>
+            <Component className={classes.content}>
                 {/* All tabs are rendered (not only the one in focus), to allow validation
                 on tabs not in focus. The tabs receive a `hidden` property, which they'll
                 use to hide the tab using CSS if it's not the one in focus.
@@ -110,7 +111,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                         </Route>
                     );
                 })}
-            </div>
+            </Component>
             {toolbar &&
                 React.cloneElement(toolbar, {
                     basePath,
@@ -148,6 +149,7 @@ TabbedFormView.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
     classes: PropTypes.object,
+    component: PropTypes.element,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
     handleSubmit: PropTypes.func, // passed by react-final-form
     initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
@@ -180,6 +182,7 @@ TabbedFormView.defaultProps = {
     submitOnEnter: true,
     tabs: <TabbedFormTabs />,
     toolbar: <Toolbar />,
+    component: 'div',
 };
 
 export interface TabbedFormViewProps extends FormWithRedirectRenderProps {
@@ -187,6 +190,7 @@ export interface TabbedFormViewProps extends FormWithRedirectRenderProps {
     children?: ReactNode;
     classes?: ClassesOverride<typeof useTabbedFormViewStyles>;
     className?: string;
+    component?: React.ComponentType<any>;
     margin?: 'none' | 'normal' | 'dense';
     mutationMode?: MutationMode;
     record?: Record;
