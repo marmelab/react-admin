@@ -182,7 +182,7 @@ TabbedFormView.defaultProps = {
     submitOnEnter: true,
     tabs: <TabbedFormTabs />,
     toolbar: <Toolbar />,
-    component: 'div',
+    component: React.createElement('div'),
 };
 
 export interface TabbedFormViewProps extends FormWithRedirectRenderProps {
