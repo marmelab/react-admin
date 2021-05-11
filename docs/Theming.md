@@ -999,6 +999,20 @@ export default MyNotification;
 
 **Tip**: if you use the `showNotification` action, then you can define `autoHideDuration` per message as the third parameter of the `showNotification` action creator.
 
+You can also decide to customize the displaing of the message in a single line or in multiple lines. It defaults to `false`, you can override it using the `multiLine` prop:
+
+```diff
+// in src/MyNotification.js
+  import { Notification } from 'react-admin';
+
+-  const MyNotification = props => <Notification {...props} autoHideDuration={5000} />;
++  const MyNotification = props => <Notification {...props} autoHideDuration={5000} multiLine />;
+
+  export default MyNotification;
+```
+
+**Tip**: if you use the `showNotification` action, then you can define `multiLine` per message as the fourth parameter of the `showNotification` action creator.
+
 To use this custom notification component, pass it to a custom Layout, as explained above:
 
 ```jsx
