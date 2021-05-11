@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Children, cloneElement, FC, isValidElement, useState } from 'react';
+import { Children, cloneElement, isValidElement, useState } from 'react';
 import PropTypes, { ReactNodeLike } from 'prop-types';
 import { useTranslate, useGetIdentity } from 'ra-core';
 import {
@@ -37,7 +37,7 @@ const TransformOrigin: PopoverOrigin = {
     horizontal: 'right',
 };
 
-const UserMenu: FC<UserMenuProps> = props => {
+const UserMenu: React.FC<UserMenuProps> = props => {
     const [anchorEl, setAnchorEl] = useState(null);
     const translate = useTranslate();
     const { loaded, identity } = useGetIdentity();
