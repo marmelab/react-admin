@@ -28,13 +28,15 @@ const useNotify = () => {
             type: NotificationType = 'info',
             messageArgs: any = {},
             undoable: boolean = false,
-            autoHideDuration?: number
+            autoHideDuration?: number,
+            multiLine?: boolean
         ) => {
             dispatch(
                 showNotification(message, type, {
                     messageArgs,
                     undoable,
                     autoHideDuration,
+                    multiLine,
                 })
             );
         },
