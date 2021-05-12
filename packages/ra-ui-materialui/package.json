@@ -37,6 +37,7 @@
         "final-form-arrays": "^3.0.2",
         "ignore-styles": "~5.0.1",
         "ra-core": "^3.15.1",
+        "ra-test": "^3.15.1",
         "react": "^17.0.0",
         "react-dom": "^17.0.0",
         "react-final-form": "^6.5.2",
