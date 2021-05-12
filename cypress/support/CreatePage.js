@@ -43,7 +43,9 @@ export default url => ({
         if (clearPreviousValue) {
             cy.get(this.elements.input(name, type)).clear();
         }
-        cy.get(this.elements.input(name, type)).type(value);
+        cy.get(this.elements.input(name, type)).type(
+            `${clearPreviousValue ? '{selectall}' : ''}${value}`
+        );
         if (type === 'rich-text-input') {
             cy.wait(500);
         }
