@@ -141,7 +141,7 @@ const PostTitle = ({ record }) => {
     return <span>Post {record ? `"${record.title}"` : ''}</span>;
 };
 export const PostEdit = (props) => (
-    <Edit title={<PostTitle />} {...props}>
+    <Edit title={<PostTitle record={props}/>} {...props}>
         ...
     </Edit>
 );
