@@ -5,9 +5,7 @@ import { useEffect } from 'react';
  * @example
  *
  * const MyComponent = (props => {
- *   const { title } = props.record;
- *
- *   useDocumentTitle(title);
+ *   useDocumentTitle(props.record && props.record.title);
  *   return <div...;
  * });
  *
