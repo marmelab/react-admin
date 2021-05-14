@@ -1939,27 +1939,30 @@ You can tweak how this component fetches the possible values using the `perPage`
 // by default, fetches only the first 25 values. You can extend this limit
 // by setting the `perPage` prop.
 <ReferenceArrayInput
-     source="tag_ids"
-     reference="tags"
-     perPage={100}>
+    source="tag_ids"
+    reference="tags"
+    perPage={100}
+>
     <SelectArrayInput optionText="name" />
 </ReferenceArrayInput>
 
 // by default, orders the possible values by id desc. You can change this order
 // by setting the `sort` prop (an object with `field` and `order` properties).
 <ReferenceArrayInput
-     source="tag_ids"
-     reference="tags"
-     sort={{ field: 'title', order: 'ASC' }}>
+    source="tag_ids"
+    reference="tags"
+    sort={{ field: 'title', order: 'ASC' }}
+>
     <SelectArrayInput optionText="name" />
 </ReferenceArrayInput>
 
 // you can filter the query used to populate the possible values. Use the
 // `filter` prop for that.
 <ReferenceArrayInput
-     source="tag_ids"
-     reference="tags"
-     filter={{ is_published: true }}>
+    source="tag_ids"
+    reference="tags"
+    filter={{ is_published: true }}
+>
     <SelectArrayInput optionText="name" />
 </ReferenceArrayInput>
 ```
