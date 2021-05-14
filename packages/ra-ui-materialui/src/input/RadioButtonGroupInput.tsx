@@ -147,6 +147,7 @@ const RadioButtonGroupInput: FunctionComponent<RadioButtonGroupInputProps> = pro
                 resource={resource}
                 className={rest.className}
                 isRequired={isRequired}
+                margin={margin}
                 meta={meta}
                 input={input}
             >
