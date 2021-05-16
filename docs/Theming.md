@@ -999,7 +999,7 @@ export default MyNotification;
 
 **Tip**: if you use the `showNotification` action, then you can define `autoHideDuration` per message as the third parameter of the `showNotification` action creator.
 
-You can also decide to customize the displaing of the message in a single line or in multiple lines. It defaults to `false`, you can override it using the `multiLine` prop:
+You can also decide to customize the displaing of the message in a single line or in multiple lines by using the `multiLine` prop.
 
 ```diff
 // in src/MyNotification.js
