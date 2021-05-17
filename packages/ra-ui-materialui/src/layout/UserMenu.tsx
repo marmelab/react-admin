@@ -37,7 +37,7 @@ const TransformOrigin: PopoverOrigin = {
     horizontal: 'right',
 };
 
-const UserMenu: React.FC<UserMenuProps> = props => {
+const UserMenu = (props: UserMenuProps) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const translate = useTranslate();
     const { loaded, identity } = useGetIdentity();
