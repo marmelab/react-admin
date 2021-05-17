@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import merge from 'lodash/merge';
+import extend from 'lodash/extend';
 import { getResources } from '../reducer';
 import { ResourceDefinition } from '../types';
 import { useResourceContext } from './useResourceContext';
@@ -17,7 +17,7 @@ export const useResourceDefinition = (
 
     const definition = useMemo(() => {
         const definitionFromRedux = resources.find(r => r?.name === resource);
-        return merge({}, definitionFromRedux, {
+        return extend({}, definitionFromRedux, {
             hasCreate,
             hasEdit,
             hasList,

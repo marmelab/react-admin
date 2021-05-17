@@ -1,5 +1,5 @@
 import { useContext, useMemo } from 'react';
-import merge from 'lodash/merge';
+import extend from 'lodash/extend';
 
 import { Record } from '../../types';
 import { CreateContext } from './CreateContext';
@@ -35,7 +35,7 @@ export const useCreateContext = <
     // Props take precedence over the context
     return useMemo(
         () =>
-            merge(
+            extend(
                 {},
                 context,
                 props != null ? extractCreateContextProps(props) : {}

@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import merge from 'lodash/merge';
+import extend from 'lodash/extend';
 
 import { useSafeSetState } from '../util/hooks';
 import { MutationMode, OnSuccess, OnFailure } from '../types';
@@ -302,10 +302,10 @@ const mergeDefinitionAndCallTimeParameters = (
             type: query.type || callTimeQuery.type,
             resource: query.resource || callTimeQuery.resource,
             payload: callTimeQuery
-                ? merge({}, query.payload, callTimeQuery.payload)
+                ? extend({}, query.payload, callTimeQuery.payload)
                 : query.payload,
             options: callTimeOptions
-                ? merge(
+                ? extend(
                       {},
                       sanitizeOptions(options),
                       sanitizeOptions(callTimeOptions)

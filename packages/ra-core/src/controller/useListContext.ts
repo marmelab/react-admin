@@ -1,5 +1,5 @@
 import { useContext, useMemo } from 'react';
-import merge from 'lodash/merge';
+import extend from 'lodash/extend';
 
 import ListContext from './ListContext';
 import { ListControllerProps } from './useListController';
@@ -101,7 +101,7 @@ const useListContext = <RecordType extends Record = Record>(
     // @ts-ignore
     return useMemo(
         () =>
-            merge(
+            extend(
                 {},
                 context,
                 props != null ? extractListContextProps(props) : {}

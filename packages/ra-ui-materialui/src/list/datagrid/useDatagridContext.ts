@@ -1,7 +1,7 @@
 import { useContext, useMemo } from 'react';
 import { DatagridProps } from './Datagrid';
 import DatagridContext, { DatagridContextValue } from './DatagridContext';
-import merge from 'lodash/merge';
+import extend from 'lodash/extend';
 
 export const useDatagridContext = (
     props?: DatagridProps
@@ -10,7 +10,7 @@ export const useDatagridContext = (
 
     return useMemo(
         () =>
-            merge(
+            extend(
                 {},
                 context,
                 props != null ? { isRowExpandable: props.isRowExpandable } : {}
