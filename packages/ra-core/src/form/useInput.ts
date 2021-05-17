@@ -1,14 +1,16 @@
+import { useCallback, ChangeEvent, FocusEvent, useEffect } from 'react';
 import {
     useField as useFinalFormField,
     FieldProps,
     FieldRenderProps,
     FieldInputProps,
+    useForm,
 } from 'react-final-form';
 import { Validator, composeValidators } from './validate';
 import isRequired from './isRequired';
-import { useCallback, ChangeEvent, FocusEvent, useEffect } from 'react';
 import { useFormGroupContext } from './useFormGroupContext';
 import { useFormContext } from './useFormContext';
+import { useRecordContext } from '../controller';
 
 export interface InputProps<T = any>
     extends Omit<
@@ -51,6 +53,7 @@ const useInput = ({
     const finalName = name || source;
     const formGroupName = useFormGroupContext();
     const formContext = useFormContext();
+    const record = useRecordContext();
 
     useEffect(() => {
         if (!formContext || !formGroupName) {
@@ -68,7 +71,8 @@ const useInput = ({
         : validate;
 
     const { input, meta } = useFinalFormField(finalName, {
-        initialValue: initialValue || defaultValue,
+        initialValue,
+        defaultValue,
         validate: sanitizedValidate,
         ...options,
     });
@@ -106,6 +110,28 @@ const useInput = ({
         },
         [onFocus, customOnFocus]
     );
+
+    // Every time the record changes and didn't include a value for this field
+    const form = useForm();
+    const recordId = record?.id;
+    useEffect(() => {
+        if (!!input.value) {
+            return;
+        }
+        // Apply the default value if provided
+        // We use a change here which will make the form dirty but this is expected
+        // and identical to what FinalForm does (https://final-form.org/docs/final-form/types/FieldConfig#defaultvalue)
+        if (!!defaultValue) {
+            form.change(source, defaultValue);
+        }
+
+        if (!!initialValue) {
+            form.batch(() => {
+                form.change(source, initialValue);
+                form.resetFieldState(source);
+            });
+        }
+    }, [recordId, input.value, defaultValue, initialValue, source, form]);
 
     // If there is an input prop, this input has already been enhanced by final-form
     // This is required in for inputs used inside other inputs (such as the SelectInput inside a ReferenceInput)
