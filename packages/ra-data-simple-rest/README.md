@@ -26,7 +26,7 @@ This Data Provider fits REST APIs using simple GET parameters for filters and so
 | `delete`           | `DELETE http://my.api.url/posts/123`                                                    |
 | `deleteMany`       | Multiple calls to `DELETE http://my.api.url/posts/123`                                  |
 
-An example of `getList` data is:
+The API response when called by `getList` should look like this:
 
 ```json
 [
