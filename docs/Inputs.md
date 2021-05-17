@@ -695,7 +695,7 @@ import {
     ReferenceInput,
     SimpleForm,
     TextInput,
-    useCreateSuggestion
+    useCreateSuggestionContext
 } from 'react-admin';
 
 import {
@@ -722,7 +722,7 @@ const PostCreate = (props) => {
 }
 
 const CreateCategory = () => {
-    const { filter, onCancel, onCreate } = useCreateSuggestion();
+    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
     const [value, setValue] = React.useState(filter || '');
     const [create] = useCreate('categories');
 
@@ -1074,7 +1074,7 @@ import {
     ReferenceInput,
     SimpleForm,
     TextInput,
-    useCreateSuggestion
+    useCreateSuggestionContext
 } from 'react-admin';
 
 import {
@@ -1101,7 +1101,7 @@ const PostCreate = (props) => {
 }
 
 const CreateCategory = () => {
-    const { filter, onCancel, onCreate } = useCreateSuggestion();
+    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
     const [value, setValue] = React.useState(filter || '');
     const [create] = useCreate('categories');
 
@@ -1414,7 +1414,7 @@ import {
     ReferenceArrayInput,
     SimpleForm,
     TextInput,
-    useCreateSuggestion
+    useCreateSuggestionContext
 } from 'react-admin';
 
 import {
@@ -1441,7 +1441,7 @@ const PostCreate = (props) => {
 }
 
 const CreateTag = () => {
-    const { filter, onCancel, onCreate } = useCreateSuggestion();
+    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
     const [value, setValue] = React.useState(filter || '');
     const [create] = useCreate('tags');
 
@@ -1798,7 +1798,7 @@ import {
     ReferenceArrayInput,
     SimpleForm,
     TextInput,
-    useCreateSuggestion
+    useCreateSuggestionContext
 } from 'react-admin';
 
 import {
@@ -1825,7 +1825,7 @@ const PostCreate = (props) => {
 }
 
 const CreateTag = () => {
-    const { filter, onCancel, onCreate } = useCreateSuggestion();
+    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
     const [value, setValue] = React.useState(filter || '');
     const [create] = useCreate('tags');
 
