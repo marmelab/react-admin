@@ -500,7 +500,7 @@ describe('<SimpleFormIterator />', () => {
     });
 
     it('should call the onClick method when the custom add button is clicked', async () => {
-        const onClick = jest.fn();
+        const onClick = jest.fn().mockImplementation(e => e.preventDefault());
         const { getByText } = renderWithRedux(
             <ThemeProvider theme={theme}>
                 <SaveContextProvider value={saveContextValue}>
@@ -527,7 +527,7 @@ describe('<SimpleFormIterator />', () => {
     });
 
     it('should call the onClick method when the custom remove button is clicked', async () => {
-        const onClick = jest.fn();
+        const onClick = jest.fn().mockImplementation(e => e.preventDefault());
         const { getByText } = renderWithRedux(
             <ThemeProvider theme={theme}>
                 <SaveContextProvider value={saveContextValue}>
