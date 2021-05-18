@@ -163,6 +163,7 @@ const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = props => 
                 resource={resource}
                 className={className}
                 isRequired={isRequired}
+                margin={margin}
             >
                 <LinearProgress />
             </Labeled>
