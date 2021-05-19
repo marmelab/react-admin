@@ -45,6 +45,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         undoable,
         variant,
         margin,
+        validating,
         ...rest
     } = props;
     const classes = useTabbedFormViewStyles(props);
@@ -125,6 +126,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                     resource,
                     saving,
                     submitOnEnter,
+                    validating,
                     undoable,
                 })}
         </form>
@@ -223,7 +225,6 @@ const sanitizeRestProps = ({
     submitting,
     touched = null,
     valid,
-    validating,
     values,
     visited = null,
     __versions = null,

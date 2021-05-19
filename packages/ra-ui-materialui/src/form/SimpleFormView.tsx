@@ -26,6 +26,7 @@ export const SimpleFormView = ({
     toolbar,
     undoable,
     variant,
+    validating,
     ...rest
 }: SimpleFormViewProps): ReactElement => (
     <form
@@ -61,6 +62,7 @@ export const SimpleFormView = ({
                 resource,
                 saving,
                 submitOnEnter,
+                validating,
                 undoable,
             })}
     </form>
@@ -135,7 +137,6 @@ const sanitizeRestProps = ({
     submitting,
     touched = null,
     valid,
-    validating,
     values,
     visited = null,
     __versions = null,
