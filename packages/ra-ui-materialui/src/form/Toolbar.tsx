@@ -150,7 +150,7 @@ const Toolbar: FC<ToolbarProps> = props => {
                             disabled={disabled}
                             invalid={invalid}
                             redirect={redirect}
-                            saving={saving}
+                            saving={saving || validating}
                             submitOnEnter={submitOnEnter}
                         />
                         {record && typeof record.id !== 'undefined' && (
