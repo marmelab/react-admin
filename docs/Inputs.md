@@ -1712,7 +1712,7 @@ Lastly, use the `options` attribute if you want to override any of the `<Select>
 
 {% raw %}
 ```jsx
-<SelectArrayInput source="category" options={{ fullWidth: true }} />
+<SelectArrayInput source="category" options={{ autoWidth: true }} />
 ```
 {% endraw %}
 
