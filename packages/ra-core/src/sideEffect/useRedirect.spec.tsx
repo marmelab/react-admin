@@ -7,11 +7,17 @@ import { Router } from 'react-router-dom';
 
 import useRedirect from './useRedirect';
 
-const Redirect = ({ redirectTo, basePath = '', id = null, data = null }) => {
+const Redirect = ({
+    redirectTo,
+    basePath = '',
+    id = null,
+    data = null,
+    state = null,
+}) => {
     const redirect = useRedirect();
     useEffect(() => {
-        redirect(redirectTo, basePath, id, data);
-    }, [basePath, data, id, redirect, redirectTo]);
+        redirect(redirectTo, basePath, id, data, state);
+    }, [basePath, data, id, redirect, redirectTo, state]);
     return null;
 };
 
@@ -27,6 +33,18 @@ describe('useRedirect', () => {
             pathname: '/foo',
             search: '?bar=baz',
             state: { _scrollToTop: true },
+        });
+    });
+    it('should redirect to the path with state', () => {
+        const history = createMemoryHistory();
+        renderWithRedux(
+            <Router history={history}>
+                <Redirect redirectTo="/foo" state={{ bar: 'baz' }} />
+            </Router>
+        );
+        expect(history.location).toMatchObject({
+            pathname: '/foo',
+            state: { _scrollToTop: true, bar: 'baz' },
         });
     });
 });
