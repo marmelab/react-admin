@@ -352,4 +352,60 @@ describe('<SaveButton />', () => {
             });
         });
     });
+
+    it('should disable <SaveButton/> if an input is being validated asynchronously', async () => {
+        const dataProvider = ({
+            getOne: () =>
+                Promise.resolve({
+                    data: { id: 123, title: 'lorem' },
+                }),
+            update: (_, { data }) => Promise.resolve({ data }),
+        } as unknown) as DataProvider;
+
+        const defaultSubscription = {
+            submitting: true,
+            pristine: true,
+            valid: true,
+            invalid: true,
+            validating: true, // Necessary for async validations
+        };
+
+        const validateAgainstServer = value =>
+            new Promise(resolve => setTimeout(() => value !== 'ipsum', 400));
+
+        const validateAsync = async (value, allValues) => {
+            const isUnique = await validateAgainstServer(value);
+            if (!isUnique) {
+                return 'Already used!';
+            }
+            return undefined;
+        };
+
+        const { queryByDisplayValue, getByLabelText } = renderWithRedux(
+            <DataProviderContext.Provider value={dataProvider}>
+                <ThemeProvider theme={theme}>
+                    <Edit {...defaultEditProps}>
+                        <SimpleForm subscription={defaultSubscription}>
+                            <TextInput
+                                source="title"
+                                validate={validateAsync}
+                            />
+                        </SimpleForm>
+                    </Edit>
+                </ThemeProvider>
+            </DataProviderContext.Provider>,
+            { admin: { resources: { posts: { data: {} } } } }
+        );
+        // waitFor for the dataProvider.getOne() return
+        await waitFor(() => {
+            expect(queryByDisplayValue('lorem')).toBeDefined();
+        });
+
+        // change one input to enable the SaveButton (which is disabled when the form is pristine)
+        fireEvent.change(getByLabelText('resources.posts.fields.title'), {
+            target: { value: 'ipsum' },
+        });
+
+        expect(getByLabelText('ra.action.save')['disabled']).toEqual(true);
+    });
 });
