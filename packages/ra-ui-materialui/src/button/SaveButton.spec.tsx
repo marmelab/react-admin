@@ -362,14 +362,6 @@ describe('<SaveButton />', () => {
             update: (_, { data }) => Promise.resolve({ data }),
         } as unknown) as DataProvider;
 
-        const defaultSubscription = {
-            submitting: true,
-            pristine: true,
-            valid: true,
-            invalid: true,
-            validating: true, // Necessary for async validations
-        };
-
         const validateAgainstServer = value =>
             new Promise(resolve => setTimeout(() => value, 400));
 
@@ -385,7 +377,7 @@ describe('<SaveButton />', () => {
             <DataProviderContext.Provider value={dataProvider}>
                 <ThemeProvider theme={theme}>
                     <Edit {...defaultEditProps}>
-                        <SimpleForm subscription={defaultSubscription}>
+                        <SimpleForm>
                             <TextInput
                                 source="title"
                                 validate={validateAsync}
