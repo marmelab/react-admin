@@ -371,7 +371,7 @@ describe('<SaveButton />', () => {
         };
 
         const validateAgainstServer = value =>
-            new Promise(resolve => setTimeout(() => value !== 'ipsum', 400));
+            new Promise(resolve => setTimeout(() => value, 400));
 
         const validateAsync = async (value, allValues) => {
             const isUnique = await validateAgainstServer(value);
