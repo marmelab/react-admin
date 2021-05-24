@@ -1,6 +1,6 @@
 {
     "name": "ra-language-english",
-    "version": "3.15.1",
+    "version": "3.15.2",
     "description": "English messages for react-admin, the frontend framework for building admin applications on top of REST/GraphQL services",
     "repository": {
         "type": "git",
@@ -22,7 +22,7 @@
         "watch": "tsc --outDir esm --module es2015 --watch"
     },
     "dependencies": {
-        "ra-core": "^3.15.1"
+        "ra-core": "^3.15.2"
     },
     "keywords": [
         "react",
