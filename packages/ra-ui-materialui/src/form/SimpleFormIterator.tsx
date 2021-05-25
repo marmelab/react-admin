@@ -113,6 +113,7 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
         margin,
         TransitionProps,
         defaultValue,
+        labelFn = index => index + 1,
     } = props;
     const classes = useStyles(props);
     const nodeRef = useRef(null);
@@ -197,7 +198,7 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
                                 variant="body1"
                                 className={classes.index}
                             >
-                                {index + 1}
+                                {labelFn(index)}
                             </Typography>
                             <section className={classes.form}>
                                 {Children.map(
@@ -326,6 +327,7 @@ export interface SimpleFormIteratorProps
     disabled?: boolean;
     disableAdd?: boolean;
     disableRemove?: boolean | DisableRemoveFunction;
+    labelFn?: (index: number) => string;
     margin?: 'none' | 'normal' | 'dense';
     meta?: {
         // the type defined in FieldArrayRenderProps says error is boolean, which is wrong.
