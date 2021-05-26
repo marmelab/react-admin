@@ -163,7 +163,7 @@ export interface TabbedShowLayoutProps {
     record?: Record;
     resource?: string;
     syncWithLocation?: boolean;
-    tabs: ReactElement;
+    tabs?: ReactElement;
     value?: any;
     version?: number;
 }
