@@ -122,10 +122,10 @@ const UserMenu = (props: UserMenuProps) => {
 
 UserMenu.propTypes = {
     children: PropTypes.node,
+    classes: PropTypes.object,
     label: PropTypes.string,
     logout: PropTypes.element,
     icon: PropTypes.node,
-    classes: PropTypes.object,
 };
 
 export interface UserMenuProps {
