@@ -5,6 +5,9 @@ import BulkDeleteWithConfirmButton, {
 import BulkDeleteWithUndoButton, {
     BulkDeleteWithUndoButtonProps,
 } from './BulkDeleteWithUndoButton';
+import BulkUpdateButton, { BulkUpdateButtonProps } from './BulkUpdateButton';
+import BulkUpdateWithConfirmButton from './BulkUpdateWithConfirmButton';
+import BulkUpdateWithUndoButton from './BulkUpdateWithUndoButton';
 import BulkExportButton, { BulkExportButtonProps } from './BulkExportButton';
 import Button, { ButtonProps } from './Button';
 import CloneButton, { CloneButtonProps } from './CloneButton';
@@ -36,6 +39,7 @@ export type {
     DeleteButtonProps,
     DeleteWithConfirmButtonProps,
     DeleteWithUndoButtonProps,
+    BulkUpdateButtonProps,
     EditButtonProps,
     ExportButtonProps,
     ListButtonProps,
@@ -50,6 +54,9 @@ export {
     BulkDeleteButton,
     BulkDeleteWithConfirmButton,
     BulkDeleteWithUndoButton,
+    BulkUpdateButton,
+    BulkUpdateWithConfirmButton,
+    BulkUpdateWithUndoButton,
     BulkExportButton,
     Button,
     CloneButton,
