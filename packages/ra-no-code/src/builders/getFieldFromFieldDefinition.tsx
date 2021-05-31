@@ -1,5 +1,4 @@
 import React from 'react';
-import { InferredElementDescription } from 'ra-core';
 import {
     BooleanField,
     DateField,
