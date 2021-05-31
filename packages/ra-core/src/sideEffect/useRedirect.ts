@@ -10,7 +10,8 @@ import { refreshView } from '../actions/uiActions';
 type RedirectToFunction = (
     basePath?: string,
     id?: Identifier,
-    data?: Record
+    data?: Record,
+    state?: object
 ) => string;
 
 export type RedirectionSideEffect = string | boolean | RedirectToFunction;
@@ -25,10 +26,12 @@ export type RedirectionSideEffect = string | boolean | RedirectToFunction;
  * redirect('list', '/posts');
  * // redirect to edit view
  * redirect('edit', '/posts', 123);
+ * // redirect to edit view with state data
+ * redirect('edit', '/comment', 123, {}, { record: { post_id: record.id } });
  * // do not redirect (resets the record form)
  * redirect(false);
  * // redirect to the result of a function
- * redirect((redirectTo, basePath, is, data) => ...)
+ * redirect((redirectTo, basePath, id, data) => ...)
  */
 const useRedirect = () => {
     const dispatch = useDispatch();
@@ -38,13 +41,14 @@ const useRedirect = () => {
             redirectTo: RedirectionSideEffect,
             basePath: string = '',
             id?: Identifier,
-            data?: Partial<Record>
+            data?: Partial<Record>,
+            state: object = {}
         ) => {
             if (!redirectTo) {
                 if (history.location.state || history.location.search) {
                     history.replace({
                         ...history.location,
-                        state: {},
+                        state,
                         search: undefined,
                     });
                 } else {
@@ -55,7 +59,7 @@ const useRedirect = () => {
 
             history.push({
                 ...parsePath(resolveRedirectTo(redirectTo, basePath, id, data)),
-                state: { _scrollToTop: true },
+                state: { _scrollToTop: true, ...state },
             });
         },
         [dispatch, history]
