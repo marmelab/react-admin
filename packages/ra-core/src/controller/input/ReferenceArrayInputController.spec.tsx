@@ -200,7 +200,7 @@ describe('<ReferenceArrayInputController />', () => {
                         {...defaultProps}
                         // Avoid global collision in useGetMany with queriesToCall
                         basePath="/articles"
-                        resource="'articles"
+                        resource="articles"
                         input={{ value: [1, 2] }}
                     >
                         {children}
@@ -246,7 +246,7 @@ describe('<ReferenceArrayInputController />', () => {
                         {...defaultProps}
                         // Avoid global collision in useGetMany with queriesToCall
                         basePath="/products"
-                        resource="'products"
+                        resource="products"
                         input={{ value: [1, 2] }}
                     >
                         {children}
@@ -292,7 +292,7 @@ describe('<ReferenceArrayInputController />', () => {
                         {...defaultProps}
                         // Avoid global collision in useGetMany with queriesToCall
                         basePath="/posters"
-                        resource="'posters"
+                        resource="posters"
                         input={{ value: [1, 2] }}
                     >
                         {children}
