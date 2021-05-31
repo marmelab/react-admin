@@ -14,8 +14,12 @@ import {
     createMuiTheme,
     makeStyles,
     ThemeProvider,
+    unstable_createMuiStrictModeTheme,
 } from '@material-ui/core/styles';
-import { defaultTheme } from 'ra-ui-materialui';
+import {
+    defaultTheme as RaDefaultTheme,
+    RaThemeOptions,
+} from 'ra-ui-materialui';
 import FolderIcon from '@material-ui/icons/Folder';
 import { Application } from './types';
 import { NewApplicationForm } from './NewApplicationForm';
@@ -24,8 +28,19 @@ import {
     storeApplicationsInStorage,
 } from './applicationStorage';
 
-export const ApplicationsDashboard = ({ onApplicationSelected }) => (
-    <ThemeProvider theme={createMuiTheme(defaultTheme)}>
+const defaultTheme =
+    process.env.NODE_ENV !== 'production'
+        ? unstable_createMuiStrictModeTheme(RaDefaultTheme)
+        : createMuiTheme(RaDefaultTheme);
+
+export const ApplicationsDashboard = ({
+    onApplicationSelected,
+    theme = defaultTheme,
+}: {
+    onApplicationSelected: any;
+    theme: RaThemeOptions;
+}) => (
+    <ThemeProvider theme={createMuiTheme(theme)}>
         <Applications onApplicationSelected={onApplicationSelected} />
     </ThemeProvider>
 );

@@ -6,7 +6,10 @@ import {
     SimpleShowLayout,
     SimpleShowLayoutProps,
 } from 'ra-ui-materialui';
-import { useResourceConfiguration } from '../ResourceConfiguration';
+import {
+    useResourceConfiguration,
+    useResourcesConfiguration,
+} from '../ResourceConfiguration';
 import { getFieldFromFieldDefinition } from './getFieldFromFieldDefinition';
 
 export const Show = (props: ShowProps) => (
@@ -17,13 +20,16 @@ export const Show = (props: ShowProps) => (
 
 export const ShowForm = (props: Omit<SimpleShowLayoutProps, 'children'>) => {
     const resource = useResourceContext(props);
+    const [resources] = useResourcesConfiguration();
     const [resourceConfiguration] = useResourceConfiguration(resource);
 
     return (
         <SimpleShowLayout {...props}>
             {resourceConfiguration.fields
                 .filter(definition => definition.views.includes('show'))
-                .map(definition => getFieldFromFieldDefinition(definition))}
+                .map(definition =>
+                    getFieldFromFieldDefinition(definition, resources)
+                )}
         </SimpleShowLayout>
     );
 };

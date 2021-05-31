@@ -7,7 +7,10 @@ import {
     SimpleFormProps,
 } from 'ra-ui-materialui';
 import { getInputFromFieldDefinition } from './getInputFromFieldDefinition';
-import { useResourceConfiguration } from '../ResourceConfiguration';
+import {
+    useResourceConfiguration,
+    useResourcesConfiguration,
+} from '../ResourceConfiguration';
 
 export const Create = (props: CreateProps) => (
     <RaCreate {...props}>
@@ -17,13 +20,16 @@ export const Create = (props: CreateProps) => (
 
 export const CreateForm = (props: Omit<SimpleFormProps, 'children'>) => {
     const resource = useResourceContext(props);
+    const [resources] = useResourcesConfiguration();
     const [resourceConfiguration] = useResourceConfiguration(resource);
 
     return (
         <SimpleForm {...props}>
             {resourceConfiguration.fields
                 .filter(definition => definition.views.includes('create'))
-                .map(definition => getInputFromFieldDefinition(definition))}
+                .map(definition =>
+                    getInputFromFieldDefinition(definition, resources)
+                )}
         </SimpleForm>
     );
 };
