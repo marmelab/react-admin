@@ -122,7 +122,7 @@ const UserMenu = (props: UserMenuProps) => {
 
 UserMenu.propTypes = {
     children: PropTypes.node,
-    label: PropTypes.string.isRequired,
+    label: PropTypes.string,
     logout: PropTypes.element,
     icon: PropTypes.node,
     classes: PropTypes.object,
