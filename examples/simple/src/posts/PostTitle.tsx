@@ -1,13 +1,11 @@
 import * as React from 'react';
-import { TitleProps, useTranslate } from 'react-admin';
+import { useTranslate, TitleProps, useDocumentTitle } from 'react-admin';
 
 export default ({ record }: TitleProps) => {
     const translate = useTranslate();
-    return (
-        <span>
-            {record
-                ? translate('post.edit.title', { title: record.title })
-                : ''}
-        </span>
-    );
+    const title = translate('post.edit.title', { title: record?.title ?? '' });
+
+    useDocumentTitle(title);
+
+    return <span>{record ? title : ''}</span>;
 };

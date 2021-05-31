@@ -156,6 +156,7 @@ title: "Reference"
 * [`useDataProvider`](./Actions.md#usedataprovider-hook)
 * [`useDelete`](./Actions.md#usedelete)
 * [`useDeleteMany`](./Actions.md#usedeletemany)
+* `useDocumentTitle`
 * [`useEditController`](./CreateEdit.md#useeditcontroller)
 * `useFilterState`
 * [`useGetIdentity`](./Authentication.md#usegetidentity-hook)
