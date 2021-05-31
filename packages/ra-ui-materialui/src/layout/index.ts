@@ -20,7 +20,7 @@ import Sidebar, { SidebarProps } from './Sidebar';
 import Title, { TitleProps, TitlePropType } from './Title';
 import TitleForRecord from './TitleForRecord';
 import TopToolbar from './TopToolbar';
-import UserMenu from './UserMenu';
+import UserMenu, { UserMenuProps } from './UserMenu';
 
 export {
     AppBar,
@@ -63,4 +63,5 @@ export type {
     ResponsiveProps,
     SidebarProps,
     TitleProps,
+    UserMenuProps,
 };
