@@ -77,7 +77,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                 children
             )}
             <Divider />
-            <Component className={classes.content}>
+            <Component>
                 {/* All tabs are rendered (not only the one in focus), to allow validation
                 on tabs not in focus. The tabs receive a `hidden` property, which they'll
                 use to hide the tab using CSS if it's not the one in focus.
@@ -179,8 +179,9 @@ TabbedFormView.propTypes = {
 };
 
 const DefaultInnerContainer = (props): JSX.Element => {
-    const { className, children } = props;
-    return <div className={className}>{children}</div>;
+    const { children } = props;
+    const classes = useTabbedFormViewStyles(props);
+    return <div className={classes.content}>{children}</div>;
 };
 
 TabbedFormView.defaultProps = {
