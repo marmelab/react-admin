@@ -359,14 +359,12 @@ describe('<SaveButton />', () => {
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
-            update: (_, { data }) => Promise.resolve({ data }),
         } as unknown) as DataProvider;
 
-        const validateAgainstServer = value =>
-            new Promise(resolve => setTimeout(() => value, 400));
-
         const validateAsync = async (value, allValues) => {
-            const isUnique = await validateAgainstServer(value);
+            const isUnique = await new Promise(resolve =>
+                setTimeout(resolve, 400)
+            );
             if (!isUnique) {
                 return 'Already used!';
             }
