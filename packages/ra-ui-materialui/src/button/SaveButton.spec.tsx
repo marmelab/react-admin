@@ -362,10 +362,9 @@ describe('<SaveButton />', () => {
         } as unknown) as DataProvider;
 
         const validateAsync = async (value, allValues) => {
-            const isUnique = await new Promise(resolve =>
-                setTimeout(resolve, 400)
-            );
-            if (!isUnique) {
+            await new Promise(resolve => setTimeout(resolve, 400));
+
+            if (value === 'ipsum') {
                 return 'Already used!';
             }
             return undefined;
@@ -397,5 +396,10 @@ describe('<SaveButton />', () => {
         });
 
         expect(getByLabelText('ra.action.save')['disabled']).toEqual(true);
+
+        // The SaveButton should be enabled again after validation
+        await waitFor(() => {
+            expect(getByLabelText('ra.action.save')['disabled']).toEqual(false);
+        });
     });
 });
