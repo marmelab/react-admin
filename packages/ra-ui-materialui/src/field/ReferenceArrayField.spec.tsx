@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, act } from '@testing-library/react';
+import { render, act, waitFor } from '@testing-library/react';
 import { renderWithRedux } from 'ra-test';
 import { MemoryRouter } from 'react-router-dom';
 import { ListContextProvider, DataProviderContext } from 'ra-core';
@@ -241,7 +241,8 @@ describe('<ReferenceArrayField />', () => {
         );
         expect(queryByText('bar1')).toBeNull();
         act(() => resolve());
-        await new Promise(resolve => setTimeout(resolve)); // wait for loaded to be true
-        expect(queryByText('bar1')).not.toBeNull();
+        await waitFor(() => {
+            expect(queryByText('bar1')).not.toBeNull();
+        });
     });
 });
