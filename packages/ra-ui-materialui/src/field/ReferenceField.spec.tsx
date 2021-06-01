@@ -278,7 +278,7 @@ describe('<ReferenceField />', () => {
         const dataProvider = {
             getMany: jest.fn(() => Promise.reject('boo')),
         };
-        const { getByRole } = renderWithRedux(
+        const { queryByRole } = renderWithRedux(
             // @ts-ignore-line
             <DataProviderContext.Provider value={dataProvider}>
                 <ReferenceField
@@ -294,8 +294,8 @@ describe('<ReferenceField />', () => {
             { admin: { resources: { posts: { data: {} } } } }
         );
         await waitFor(() => {
-            const ErrorIcon = getByRole('presentation', { hidden: true });
-            expect(ErrorIcon).toBeDefined();
+            const ErrorIcon = queryByRole('presentation', { hidden: true });
+            expect(ErrorIcon).not.toBeNull();
             expect(ErrorIcon.getAttribute('aria-errormessage')).toBe('boo');
         });
     });

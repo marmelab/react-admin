@@ -695,7 +695,7 @@ import {
     ReferenceInput,
     SimpleForm,
     TextInput,
-    useCreateSuggestion
+    useCreateSuggestionContext
 } from 'react-admin';
 
 import {
@@ -722,7 +722,7 @@ const PostCreate = (props) => {
 }
 
 const CreateCategory = () => {
-    const { filter, onCancel, onCreate } = useCreateSuggestion();
+    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
     const [value, setValue] = React.useState(filter || '');
     const [create] = useCreate('categories');
 
@@ -1074,7 +1074,7 @@ import {
     ReferenceInput,
     SimpleForm,
     TextInput,
-    useCreateSuggestion
+    useCreateSuggestionContext
 } from 'react-admin';
 
 import {
@@ -1101,7 +1101,7 @@ const PostCreate = (props) => {
 }
 
 const CreateCategory = () => {
-    const { filter, onCancel, onCreate } = useCreateSuggestion();
+    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
     const [value, setValue] = React.useState(filter || '');
     const [create] = useCreate('categories');
 
@@ -1414,7 +1414,7 @@ import {
     ReferenceArrayInput,
     SimpleForm,
     TextInput,
-    useCreateSuggestion
+    useCreateSuggestionContext
 } from 'react-admin';
 
 import {
@@ -1441,7 +1441,7 @@ const PostCreate = (props) => {
 }
 
 const CreateTag = () => {
-    const { filter, onCancel, onCreate } = useCreateSuggestion();
+    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
     const [value, setValue] = React.useState(filter || '');
     const [create] = useCreate('tags');
 
@@ -1712,7 +1712,7 @@ Lastly, use the `options` attribute if you want to override any of the `<Select>
 
 {% raw %}
 ```jsx
-<SelectArrayInput source="category" options={{ fullWidth: true }} />
+<SelectArrayInput source="category" options={{ autoWidth: true }} />
 ```
 {% endraw %}
 
@@ -1798,7 +1798,7 @@ import {
     ReferenceArrayInput,
     SimpleForm,
     TextInput,
-    useCreateSuggestion
+    useCreateSuggestionContext
 } from 'react-admin';
 
 import {
@@ -1825,7 +1825,7 @@ const PostCreate = (props) => {
 }
 
 const CreateTag = () => {
-    const { filter, onCancel, onCreate } = useCreateSuggestion();
+    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
     const [value, setValue] = React.useState(filter || '');
     const [create] = useCreate('tags');
 
@@ -1939,27 +1939,30 @@ You can tweak how this component fetches the possible values using the `perPage`
 // by default, fetches only the first 25 values. You can extend this limit
 // by setting the `perPage` prop.
 <ReferenceArrayInput
-     source="tag_ids"
-     reference="tags"
-     perPage={100}>
+    source="tag_ids"
+    reference="tags"
+    perPage={100}
+>
     <SelectArrayInput optionText="name" />
 </ReferenceArrayInput>
 
 // by default, orders the possible values by id desc. You can change this order
 // by setting the `sort` prop (an object with `field` and `order` properties).
 <ReferenceArrayInput
-     source="tag_ids"
-     reference="tags"
-     sort={{ field: 'title', order: 'ASC' }}>
+    source="tag_ids"
+    reference="tags"
+    sort={{ field: 'title', order: 'ASC' }}
+>
     <SelectArrayInput optionText="name" />
 </ReferenceArrayInput>
 
 // you can filter the query used to populate the possible values. Use the
 // `filter` prop for that.
 <ReferenceArrayInput
-     source="tag_ids"
-     reference="tags"
-     filter={{ is_published: true }}>
+    source="tag_ids"
+    reference="tags"
+    filter={{ is_published: true }}
+>
     <SelectArrayInput optionText="name" />
 </ReferenceArrayInput>
 ```
@@ -2061,27 +2064,30 @@ You can tweak how this component fetches the possible values using the `perPage`
 // by default, fetches only the first 25 values. You can extend this limit
 // by setting the `perPage` prop.
 <ReferenceInput
-     source="post_id"
-     reference="posts"
-     perPage={100}>
+    source="post_id"
+    reference="posts"
+    perPage={100}
+>
     <SelectInput optionText="title" />
 </ReferenceInput>
 
 // by default, orders the possible values by id desc. You can change this order
 // by setting the `sort` prop (an object with `field` and `order` properties).
 <ReferenceInput
-     source="post_id"
-     reference="posts"
-     sort={{ field: 'title', order: 'ASC' }}>
+    source="post_id"
+    reference="posts"
+    sort={{ field: 'title', order: 'ASC' }}
+>
     <SelectInput optionText="title" />
 </ReferenceInput>
 
 // you can filter the query used to populate the possible values. Use the
 // `filter` prop for that.
 <ReferenceInput
-     source="post_id"
-     reference="posts"
-     filter={{ is_published: true }}>
+    source="post_id"
+    reference="posts"
+    filter={{ is_published: true }}
+>
     <SelectInput optionText="title" />
 </ReferenceInput>
 ```
@@ -2092,9 +2098,10 @@ The child component may further filter results (that's the case, for instance, f
 
 ```jsx
 <ReferenceInput
-     source="post_id"
-     reference="posts"
-     filterToQuery={searchText => ({ title: searchText })}>
+    source="post_id"
+    reference="posts"
+    filterToQuery={searchText => ({ title: searchText })}
+>
     <AutocompleteInput optionText="title" />
 </ReferenceInput>
 ```

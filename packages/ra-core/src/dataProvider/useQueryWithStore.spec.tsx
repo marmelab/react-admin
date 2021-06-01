@@ -55,6 +55,12 @@ describe('useQueryWithStore', () => {
         expect(callArgs.error).toBeNull();
         expect(callArgs.total).toBeNull();
 
+        await new Promise(resolve => setImmediate(resolve)); // wait for useEffect
+        callArgs = callback.mock.calls[1][0];
+        expect(callArgs.loading).toEqual(false);
+        expect(callArgs.loaded).toEqual(false);
+
+        callback.mockClear();
         rerender(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseQueryWithStore
@@ -64,22 +70,57 @@ describe('useQueryWithStore', () => {
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
-        await new Promise(resolve => setImmediate(resolve)); // dataProvider Promise returns result on next tick
-        callArgs = callback.mock.calls[2][0];
+        callArgs = callback.mock.calls[0][0];
+        expect(callArgs.data).toBeUndefined();
+        expect(callArgs.loading).toEqual(false);
+        expect(callArgs.loaded).toEqual(false);
+        expect(callArgs.error).toBeNull();
+        expect(callArgs.total).toBeNull();
+
+        callback.mockClear();
+        await new Promise(resolve => setImmediate(resolve)); // wait for useEffect
+        callArgs = callback.mock.calls[0][0];
         expect(callArgs.data).toBeUndefined();
         expect(callArgs.loading).toEqual(true);
         expect(callArgs.loaded).toEqual(false);
         expect(callArgs.error).toBeNull();
         expect(callArgs.total).toBeNull();
 
-        await new Promise(resolve => setImmediate(resolve)); // dataProvider Promise returns result on next tick
-        callArgs = callback.mock.calls[4][0];
+        callArgs = callback.mock.calls[1][0];
         expect(callArgs.data).toEqual({
             id: 1,
             title: 'titleFromDataProvider',
         });
         expect(callArgs.loading).toEqual(false);
         expect(callArgs.loaded).toEqual(true);
+        expect(callArgs.error).toBeNull();
+        expect(callArgs.total).toBeNull();
+
+        callback.mockClear();
+        rerender(
+            <DataProviderContext.Provider value={dataProvider}>
+                <UseQueryWithStore
+                    callback={callback}
+                    options={{ enabled: false }}
+                />
+            </DataProviderContext.Provider>,
+            { admin: { resources: { posts: { data: {} } } } }
+        );
+        callArgs = callback.mock.calls[0][0];
+        expect(callArgs.data).toEqual({
+            id: 1,
+            title: 'titleFromDataProvider',
+        });
+        expect(callArgs.loading).toEqual(false);
+        expect(callArgs.loaded).toEqual(true);
+        expect(callArgs.error).toBeNull();
+        expect(callArgs.total).toBeNull();
+
+        callback.mockClear();
+        await new Promise(resolve => setImmediate(resolve)); // wait for useEffect
+        callArgs = callback.mock.calls[0][0];
+        expect(callArgs.loading).toEqual(false);
+        expect(callArgs.loaded).toEqual(false);
         expect(callArgs.error).toBeNull();
         expect(callArgs.total).toBeNull();
     });

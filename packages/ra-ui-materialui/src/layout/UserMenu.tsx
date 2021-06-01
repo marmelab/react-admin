@@ -13,6 +13,10 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 
+import { ClassesOverride } from '../types';
+
+const defaultIcon = <AccountCircle />;
+
 const useStyles = makeStyles(
     theme => ({
         user: {},
@@ -37,13 +41,19 @@ const TransformOrigin: PopoverOrigin = {
     horizontal: 'right',
 };
 
-const UserMenu = props => {
+const UserMenu = (props: UserMenuProps) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const translate = useTranslate();
     const { loaded, identity } = useGetIdentity();
     const classes = useStyles(props);
 
-    const { children, label, icon, logout } = props;
+    const {
+        children,
+        label = 'ra.auth.user_menu',
+        icon = defaultIcon,
+        logout,
+    } = props;
+
     if (!logout && !children) return null;
     const open = Boolean(anchorEl);
 
@@ -112,14 +122,18 @@ const UserMenu = props => {
 
 UserMenu.propTypes = {
     children: PropTypes.node,
-    label: PropTypes.string.isRequired,
+    classes: PropTypes.object,
+    label: PropTypes.string,
     logout: PropTypes.element,
     icon: PropTypes.node,
 };
 
-UserMenu.defaultProps = {
-    label: 'ra.auth.user_menu',
-    icon: <AccountCircle />,
-};
+export interface UserMenuProps {
+    children?: React.ReactNode;
+    classes?: ClassesOverride<typeof useStyles>;
+    label?: string;
+    logout?: React.ReactNode;
+    icon?: React.ReactNode;
+}
 
 export default UserMenu;

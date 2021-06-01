@@ -62,7 +62,6 @@ export const CompanyCard = ({ record }: { record: Company }) => {
                             {record.name}
                         </Typography>
                         <SelectField
-                            // @ts-ignore
                             color="textSecondary"
                             source="sector"
                             choices={sectors}

@@ -23,6 +23,7 @@ import EditButton, { EditButtonProps } from './EditButton';
 import ExportButton, { ExportButtonProps } from './ExportButton';
 import ListButton, { ListButtonProps } from './ListButton';
 import SaveButton, { SaveButtonProps } from './SaveButton';
+import SkipNavigationButton from './SkipNavigationButton';
 import ShowButton, { ShowButtonProps } from './ShowButton';
 import SortButton, { SortButtonProps } from './SortButton';
 import RefreshButton, { RefreshButtonProps } from './RefreshButton';
@@ -69,6 +70,7 @@ export {
     ListButton,
     SaveButton,
     ShowButton,
+    SkipNavigationButton,
     SortButton,
     RefreshButton,
     RefreshIconButton,

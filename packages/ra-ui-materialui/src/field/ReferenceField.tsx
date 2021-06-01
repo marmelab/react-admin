@@ -209,9 +209,6 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
     } = props;
     const classes = useStyles(props);
 
-    if (!loaded) {
-        return <LinearProgress />;
-    }
     if (error) {
         return (
             /* eslint-disable jsx-a11y/role-supports-aria-props */
@@ -223,6 +220,9 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
             />
             /* eslint-enable */
         );
+    }
+    if (!loaded) {
+        return <LinearProgress />;
     }
     if (!referenceRecord) {
         return null;

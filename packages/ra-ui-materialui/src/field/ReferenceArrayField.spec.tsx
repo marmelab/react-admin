@@ -241,8 +241,9 @@ describe('<ReferenceArrayField />', () => {
         );
         expect(queryByText('bar1')).toBeNull();
         act(() => resolve());
-        await new Promise(resolve => setTimeout(resolve)); // wait for loaded to be true
-        expect(queryByText('bar1')).not.toBeNull();
+        await waitFor(() => {
+            expect(queryByText('bar1')).not.toBeNull();
+        });
     });
 
     it('should throw an error if used without a Resource for the reference', async () => {

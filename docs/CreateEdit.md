@@ -1479,7 +1479,7 @@ const validateEmailUnicity = async (value) => {
 
     }
 
-    return errors
+    return undefined;
 };
 
 const emailValidators = [required(), validateEmailUnicity];

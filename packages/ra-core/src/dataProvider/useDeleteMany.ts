@@ -24,7 +24,7 @@ import useMutation, { MutationOptions, Mutation } from './useMutation';
  *  - with the same syntax as useMutation: deleteMany({ resource, payload: { ids } }, options)
  *  - with no parameter (if they were already passed to useDeleteMany()): deleteMany()
  *
- * @example // set params when calling the dleteMany callback
+ * @example // set params when calling the deleteMany callback
  *
  * import { useDeleteMany } from 'react-admin';
  *

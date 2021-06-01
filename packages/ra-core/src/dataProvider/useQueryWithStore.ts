@@ -145,7 +145,7 @@ export const useQueryWithStore = <State extends ReduxState = ReduxState>(
         total,
         error: null,
         loading: options?.enabled === false ? false : true,
-        loaded: isDataLoaded(data),
+        loaded: options?.enabled === false ? false : isDataLoaded(data),
         refetch,
     });
 
@@ -158,7 +158,7 @@ export const useQueryWithStore = <State extends ReduxState = ReduxState>(
                 total,
                 error: null,
                 loading: options?.enabled === false ? false : true,
-                loaded: isDataLoaded(data),
+                loaded: options?.enabled === false ? false : isDataLoaded(data),
                 refetch,
             });
         } else if (!isEqual(state.data, data) || state.total !== total) {
@@ -217,7 +217,8 @@ export const useQueryWithStore = <State extends ReduxState = ReduxState>(
                             resolve({
                                 error: null,
                                 loading: false,
-                                loaded: true,
+                                loaded:
+                                    options?.enabled === false ? false : true,
                             });
                         })
                         .catch(error => {

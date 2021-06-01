@@ -229,7 +229,7 @@ const Layout = ({
     ...props
 }: LayoutProps): JSX.Element => {
     const themeProp = useRef(themeOverride);
-    const [theme, setTheme] = useState(createMuiTheme(themeOverride));
+    const [theme, setTheme] = useState(() => createMuiTheme(themeOverride));
 
     useEffect(() => {
         if (themeProp.current !== themeOverride) {
