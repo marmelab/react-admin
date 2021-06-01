@@ -352,4 +352,54 @@ describe('<SaveButton />', () => {
             });
         });
     });
+
+    it('should disable <SaveButton/> if an input is being validated asynchronously', async () => {
+        const dataProvider = ({
+            getOne: () =>
+                Promise.resolve({
+                    data: { id: 123, title: 'lorem' },
+                }),
+        } as unknown) as DataProvider;
+
+        const validateAsync = async (value, allValues) => {
+            await new Promise(resolve => setTimeout(resolve, 400));
+
+            if (value === 'ipsum') {
+                return 'Already used!';
+            }
+            return undefined;
+        };
+
+        const { queryByDisplayValue, getByLabelText } = renderWithRedux(
+            <DataProviderContext.Provider value={dataProvider}>
+                <ThemeProvider theme={theme}>
+                    <Edit {...defaultEditProps}>
+                        <SimpleForm>
+                            <TextInput
+                                source="title"
+                                validate={validateAsync}
+                            />
+                        </SimpleForm>
+                    </Edit>
+                </ThemeProvider>
+            </DataProviderContext.Provider>,
+            { admin: { resources: { posts: { data: {} } } } }
+        );
+        // waitFor for the dataProvider.getOne() return
+        await waitFor(() => {
+            expect(queryByDisplayValue('lorem')).toBeDefined();
+        });
+
+        // change one input to enable the SaveButton (which is disabled when the form is pristine)
+        fireEvent.change(getByLabelText('resources.posts.fields.title'), {
+            target: { value: 'ipsum' },
+        });
+
+        expect(getByLabelText('ra.action.save')['disabled']).toEqual(true);
+
+        // The SaveButton should be enabled again after validation
+        await waitFor(() => {
+            expect(getByLabelText('ra.action.save')['disabled']).toEqual(false);
+        });
+    });
 });

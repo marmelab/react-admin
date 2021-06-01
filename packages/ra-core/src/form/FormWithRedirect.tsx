@@ -232,6 +232,7 @@ const defaultSubscription = {
     pristine: true,
     valid: true,
     invalid: true,
+    validating: true,
 };
 
 export type SetRedirect = (redirect: RedirectionSideEffect) => void;
