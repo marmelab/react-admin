@@ -123,17 +123,21 @@ export const useList = (props: UseListOptions): UseListValue => {
                 ...previousState,
                 [filterName]: true,
             }));
-            setFilterValues(previousState => ({
-                ...previousState,
-                [filterName]: defaultValue,
-            }));
+            setFilterValues(previousState =>
+                removeEmpty({
+                    ...previousState,
+                    [filterName]: defaultValue,
+                })
+            );
         },
         [setDisplayedFilters, setFilterValues]
     );
     const setFilters = useCallback(
         (filters, displayedFilters) => {
             setFilterValues(removeEmpty(filters));
-            setDisplayedFilters(displayedFilters);
+            if (displayedFilters) {
+                setDisplayedFilters(displayedFilters);
+            }
             setPage(1);
         },
         [setDisplayedFilters, setFilterValues, setPage]
