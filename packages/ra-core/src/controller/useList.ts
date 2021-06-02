@@ -17,16 +17,34 @@ import { ListControllerProps } from '.';
  *     { id: 2, name: 'Sylvester' },
  *     { id: 3, name: 'Jean-Claude' },
  * ]
- * const { ids, data, error, loaded, loading } = useList({
- *      ids: providedIds,
- *      data: providedData,
- *      basePath: '/resource';
- *      resource: 'resource';
- * });
  *
- * @param {Object} props
- * @param {string} props.basePath basepath to current resource
- * @param {string} props.resource The current resource name
+ * const MyComponent = () => {
+ *     const listContext = useList({
+ *         ids: providedIds,
+ *         data: providedData,
+ *         basePath: '/resource';
+ *         resource: 'resource';
+ *     });
+ *     return (
+ *         <ListContextProvider value={listContext}>
+ *             <Datagrid>
+ *                 <TextField source="id" />
+ *                 <TextField source="name" />
+ *             </Datagrid>
+ *         </ListContextProvider>
+ *     );
+ * };
+ *
+ * @param {UseListOptions} props Also optionally accepts all the ListController props
+ * @param {Record[]} props.data An array of records
+ * @param {Identifier[]} props.ids An array of the record identifiers
+ * @param {Boolean} props.loaded: A boolean indicating whether the data has been loaded at least once
+ * @param {Boolean} props.loading: A boolean indicating whether the data is being loaded
+ * @param {Error | String} props.error: Optional. The error if any occured while loading the data
+ * @param {Object} props.filter: Optional. An object containing the filters applied on the data
+ * @param {Number} props.initialPage: Optional. The initial page index
+ * @param {Number} props.initialPerPage: Optional. The initial page size
+ * @param {SortPayload} props.initialSort: Optional. The initial sort (field and order)
  */
 export const useList = (props: UseListOptions): UseListValue => {
     const {
@@ -131,6 +149,11 @@ export const useList = (props: UseListOptions): UseListValue => {
     // We do all the data processing (filtering, sorting, paginating) client-side
     useEffect(() => {
         if (!loaded) return;
+        // Assume that if setFilters is provided then so are methods for pagination and sorting
+        if (props.setFilters) {
+            return;
+        }
+
         // 1. filter
         let tempData = initialData.filter(record =>
             Object.entries(filterValues).every(([filterName, filterValue]) => {
@@ -174,6 +197,7 @@ export const useList = (props: UseListOptions): UseListValue => {
         loaded,
         page,
         perPage,
+        props.setFilters,
         setFinalItems,
         sort.field,
         sort.order,
