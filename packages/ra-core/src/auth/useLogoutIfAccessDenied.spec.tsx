@@ -81,7 +81,7 @@ describe('useLogoutIfAccessDenied', () => {
     it('should not logout if passed no error', async () => {
         const { queryByText } = renderComponent(
             <AuthContext.Provider value={authProvider}>
-                <TestComponent error={new Error()} />
+                <TestComponent />
             </AuthContext.Provider>
         );
 
