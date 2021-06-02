@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import { useDropzone } from 'react-dropzone';
 
-import { useRefresh } from 'ra-core';
+import { useNotify, useRefresh } from 'ra-core';
 import { useHistory } from 'react-router-dom';
 import { useImportResourceFromCsv } from './useImportResourceFromCsv';
 
@@ -21,6 +21,7 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
     const [resource, setResource] = useState<string>('');
     const history = useHistory();
     const refresh = useRefresh();
+    const notify = useNotify();
 
     const handleClose = () => {
         if (props.onClose) {
@@ -28,20 +29,7 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
         }
     };
 
-    const handleImportCompleted = ({ resourceAlreadyExists }) => {
-        handleClose();
-        history.push(`/${resource}`);
-
-        if (resourceAlreadyExists) {
-            // If we imported more records for an existing resource,
-            // we must refresh the list
-            refresh();
-        }
-    };
-
-    const [parsing, importResource] = useImportResourceFromCsv(
-        handleImportCompleted
-    );
+    const [parsing, importResource] = useImportResourceFromCsv();
 
     const onDrop = (acceptedFiles: File[]) => {
         if (acceptedFiles.length > 0) {
@@ -57,7 +45,20 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
         event.preventDefault();
 
         if (resource && file) {
-            importResource(resource, file);
+            importResource(resource, file)
+                .then(({ resource, resourceAlreadyExists }) => {
+                    handleClose();
+                    history.push(`/${resource}`);
+
+                    if (resourceAlreadyExists) {
+                        // If we imported more records for an existing resource,
+                        // we must refresh the list
+                        refresh();
+                    }
+                })
+                .catch(() => {
+                    notify('An error occured while handling this CSV file');
+                });
         }
     };
 

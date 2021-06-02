@@ -147,6 +147,15 @@ export const PostEdit = (props) => (
 );
 ```
 
+React Admin also updates the page title based on this `title` prop, as long as it's a string. If you're passing an element as `title`, like in the example above, you have to update the page title yourself. React-admin exports a hook called `useDocumentTitle` to make this simple:
+
+```jsx
+const PostTitle = ({ record }) => {
+    useDocumentTitle(record ?? record.title);
+    return <span>Post {record ? `"${record.title}"` : ''}</span>;
+};
+```
+
 ### Actions
 
 You can replace the list of default actions by your own element using the `actions` prop:
@@ -1470,7 +1479,7 @@ const validateEmailUnicity = async (value) => {
 
     }
 
-    return errors
+    return undefined;
 };
 
 const emailValidators = [required(), validateEmailUnicity];

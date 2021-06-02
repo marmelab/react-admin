@@ -203,9 +203,9 @@ import { DateTimeInput } from 'react-admin';
 
 | Prop            | Required | Type                        | Default                          | Description                                                                                                                                                                                                                                                         |
 | --------------- | -------- | --------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `accept`        | Optional | `string | string[]`         | -                                | Accepted file type(s), e. g. 'image/*,.pdf'. If left empty, all file types are accepted. Equivalent of the `accept` attribute of an `<input type="file">`. See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept for syntax and examples. |
+| `accept`        | Optional | `string | string[]`         | -                                | Accepted file type(s), e. g. 'image/*,.pdf'. If left empty, all file types are accepted. Equivalent of the `accept` attribute of an `<input type="file">`. See [MDN input docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept) for syntax and examples. |
 | `children`      | Optional | `ReactNode`                 | -                                | Element used to display the preview of an image (cloned several times if the select accepts multiple files).                                                                                                                                                        |
-| `minSize`       | Optional | `number`                    | 0                                | Minimum image size (in bytes), e.g. 5000 form 5KB                                                                                                                                                                                                                   |
+| `minSize`       | Optional | `number`                    | 0                                | Minimum image size (in bytes), e.g. 5000 for 5KB                                                                                                                                                                                                                   |
 | `maxSize`       | Optional | `number`                    | `Infinity`                       | Maximum image size (in bytes), e.g. 5000000 for 5MB                                                                                                                                                                                                                 |
 | `multiple`      | Optional | `boolean`                   | `false`                          | Set to true if the input should accept a list of images, false if it should only accept one image                                                                                                                                                                   |
 | `labelSingle`   | Optional | `string`                    | 'ra.input.image. upload_single'  | Invite displayed in the drop zone if the input accepts one image                                                                                                                                                                                                    |
@@ -240,7 +240,7 @@ Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and 
 
 Writing a custom preview component is quite straightforward: it's a standard [field](./Fields.md#writing-your-own-field-component).
 
-When receiving **new** images, `ImageInput` will add a `rawFile` property to the object passed as the `record` prop of children. This `rawFile` is the [File](https://developer.mozilla.org/en-US/docs/Web/API/File) instance of the newly added file. This can be useful to display information about size or mimetype inside a custom field.
+When receiving **new** images, `ImageInput` will add a `rawFile` property to the object passed as the `record` prop of children. This `rawFile` is the [File](https://developer.mozilla.org/en-US/docs/Web/API/File) instance of the newly added file. This can be useful to display information about size or MIME type inside a custom field.
 
 The `ImageInput` component accepts an `options` prop, allowing to set the [react-dropzone properties](https://react-dropzone.netlify.com/#proptypes).
 
@@ -264,9 +264,9 @@ Note that the image upload returns a [File](https://developer.mozilla.org/en/doc
 
 | Prop            | Required | Type                 | Default                         | Description                                                                                                                                                                                                                                                                                                                                            |
 | --------------- | -------- | -------------------- | ------------------------------- | -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  |
-| `accept`        | Optional | `string | string[]`  | -                               | Accepted file type(s), e. g. 'application/json,video/*' or 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'. If left empty, all file types are accepted. Equivalent of the `accept` attribute of an `<input type="file">`. See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept for syntax and examples. |
+| `accept`        | Optional | `string | string[]`  | -                               | Accepted file type(s), e. g. 'application/json,video/*' or 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'. If left empty, all file types are accepted. Equivalent of the `accept` attribute of an `<input type="file">`. See [MDN input docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept) for syntax and examples. |
 | `children`      | Optional | `ReactNode`          | -                               | Element used to display the preview of a file (cloned several times if the select accepts multiple files).                                                                                                                                                                                                                                             |
-| `minSize`       | Optional | `number`             | 0                               | Minimum file size (in bytes), e.g. 5000 form 5KB                                                                                                                                                                                                                                                                                                       |
+| `minSize`       | Optional | `number`             | 0                               | Minimum file size (in bytes), e.g. 5000 for 5KB                                                                                                                                                                                                                                                                                                       |
 | `maxSize`       | Optional | `number`             | `Infinity`                      | Maximum file size (in bytes), e.g. 5000000 for 5MB                                                                                                                                                                                                                                                                                                     |
 | `multiple`      | Optional | `boolean`            | `false`                         | Set to true if the input should accept a list of files, false if it should only accept one file                                                                                                                                                                                                                                                        |
 | `labelSingle`   | Optional | `string`             | 'ra.input.file. upload_single'  | Invite displayed in the drop zone if the input accepts one file                                                                                                                                                                                                                                                                                        |
@@ -301,7 +301,7 @@ Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and 
 
 Writing a custom preview component is quite straightforward: it's a standard [field](./Fields.md#writing-your-own-field-component).
 
-When receiving **new** files, `FileInput` will add a `rawFile` property to the object passed as the `record` prop of children. This `rawFile` is the [File](https://developer.mozilla.org/en-US/docs/Web/API/File) instance of the newly added file. This can be useful to display information about size or mimetype inside a custom field.
+When receiving **new** files, `FileInput` will add a `rawFile` property to the object passed as the `record` prop of children. This `rawFile` is the [File](https://developer.mozilla.org/en-US/docs/Web/API/File) instance of the newly added file. This can be useful to display information about size or MIME type inside a custom field.
 
 The `FileInput` component accepts an `options` prop into which you can pass all the [react-dropzone properties](https://react-dropzone.netlify.com/#proptypes). 
 
@@ -695,7 +695,7 @@ import {
     ReferenceInput,
     SimpleForm,
     TextInput,
-    useCreateSuggestion
+    useCreateSuggestionContext
 } from 'react-admin';
 
 import {
@@ -722,7 +722,7 @@ const PostCreate = (props) => {
 }
 
 const CreateCategory = () => {
-    const { filter, onCancel, onCreate } = useCreateSuggestion();
+    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
     const [value, setValue] = React.useState(filter || '');
     const [create] = useCreate('categories');
 
@@ -1074,7 +1074,7 @@ import {
     ReferenceInput,
     SimpleForm,
     TextInput,
-    useCreateSuggestion
+    useCreateSuggestionContext
 } from 'react-admin';
 
 import {
@@ -1101,7 +1101,7 @@ const PostCreate = (props) => {
 }
 
 const CreateCategory = () => {
-    const { filter, onCancel, onCreate } = useCreateSuggestion();
+    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
     const [value, setValue] = React.useState(filter || '');
     const [create] = useCreate('categories');
 
@@ -1414,7 +1414,7 @@ import {
     ReferenceArrayInput,
     SimpleForm,
     TextInput,
-    useCreateSuggestion
+    useCreateSuggestionContext
 } from 'react-admin';
 
 import {
@@ -1441,7 +1441,7 @@ const PostCreate = (props) => {
 }
 
 const CreateTag = () => {
-    const { filter, onCancel, onCreate } = useCreateSuggestion();
+    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
     const [value, setValue] = React.useState(filter || '');
     const [create] = useCreate('tags');
 
@@ -1712,7 +1712,7 @@ Lastly, use the `options` attribute if you want to override any of the `<Select>
 
 {% raw %}
 ```jsx
-<SelectArrayInput source="category" options={{ fullWidth: true }} />
+<SelectArrayInput source="category" options={{ autoWidth: true }} />
 ```
 {% endraw %}
 
@@ -1798,7 +1798,7 @@ import {
     ReferenceArrayInput,
     SimpleForm,
     TextInput,
-    useCreateSuggestion
+    useCreateSuggestionContext
 } from 'react-admin';
 
 import {
@@ -1825,7 +1825,7 @@ const PostCreate = (props) => {
 }
 
 const CreateTag = () => {
-    const { filter, onCancel, onCreate } = useCreateSuggestion();
+    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
     const [value, setValue] = React.useState(filter || '');
     const [create] = useCreate('tags');
 
@@ -1939,27 +1939,30 @@ You can tweak how this component fetches the possible values using the `perPage`
 // by default, fetches only the first 25 values. You can extend this limit
 // by setting the `perPage` prop.
 <ReferenceArrayInput
-     source="tag_ids"
-     reference="tags"
-     perPage={100}>
+    source="tag_ids"
+    reference="tags"
+    perPage={100}
+>
     <SelectArrayInput optionText="name" />
 </ReferenceArrayInput>
 
 // by default, orders the possible values by id desc. You can change this order
 // by setting the `sort` prop (an object with `field` and `order` properties).
 <ReferenceArrayInput
-     source="tag_ids"
-     reference="tags"
-     sort={{ field: 'title', order: 'ASC' }}>
+    source="tag_ids"
+    reference="tags"
+    sort={{ field: 'title', order: 'ASC' }}
+>
     <SelectArrayInput optionText="name" />
 </ReferenceArrayInput>
 
 // you can filter the query used to populate the possible values. Use the
 // `filter` prop for that.
 <ReferenceArrayInput
-     source="tag_ids"
-     reference="tags"
-     filter={{ is_published: true }}>
+    source="tag_ids"
+    reference="tags"
+    filter={{ is_published: true }}
+>
     <SelectArrayInput optionText="name" />
 </ReferenceArrayInput>
 ```
@@ -2061,27 +2064,30 @@ You can tweak how this component fetches the possible values using the `perPage`
 // by default, fetches only the first 25 values. You can extend this limit
 // by setting the `perPage` prop.
 <ReferenceInput
-     source="post_id"
-     reference="posts"
-     perPage={100}>
+    source="post_id"
+    reference="posts"
+    perPage={100}
+>
     <SelectInput optionText="title" />
 </ReferenceInput>
 
 // by default, orders the possible values by id desc. You can change this order
 // by setting the `sort` prop (an object with `field` and `order` properties).
 <ReferenceInput
-     source="post_id"
-     reference="posts"
-     sort={{ field: 'title', order: 'ASC' }}>
+    source="post_id"
+    reference="posts"
+    sort={{ field: 'title', order: 'ASC' }}
+>
     <SelectInput optionText="title" />
 </ReferenceInput>
 
 // you can filter the query used to populate the possible values. Use the
 // `filter` prop for that.
 <ReferenceInput
-     source="post_id"
-     reference="posts"
-     filter={{ is_published: true }}>
+    source="post_id"
+    reference="posts"
+    filter={{ is_published: true }}
+>
     <SelectInput optionText="title" />
 </ReferenceInput>
 ```
@@ -2092,9 +2098,10 @@ The child component may further filter results (that's the case, for instance, f
 
 ```jsx
 <ReferenceInput
-     source="post_id"
-     reference="posts"
-     filterToQuery={searchText => ({ title: searchText })}>
+    source="post_id"
+    reference="posts"
+    filterToQuery={searchText => ({ title: searchText })}
+>
     <AutocompleteInput optionText="title" />
 </ReferenceInput>
 ```

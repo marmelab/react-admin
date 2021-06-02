@@ -24,20 +24,26 @@ run-no-code: ## run the no-code example
 run-tutorial: ## run the tutorial example
 	@yarn -s run-tutorial
 
-run-demo: ## run the demo example
+run-demo: ## run the ecommerce example
 	@yarn -s run-demo
 
-run-demo-watch: ## run the demo example with watch on the ra dependencies
+run-demo-watch: ## run the ecommerce example and watch changes in ra dependencies
 	@yarn -s run-demo-watch
 
-build-demo: ## compile the demo example to static js
+build-demo: ## compile the ecommerce example to static js
 	@yarn -s build-demo
 
-run-graphql-demo: ## run the demo example
+run-graphql-demo: ## run the ecommerce example with a graphql backend
 	@yarn -s run-graphql-demo
 
-run-graphql-demo-watch: ## run the demo example with watch on the ra dependencies
+run-graphql-demo-watch: ## run the ecommerce example with a graphql backend and watch changes in ra dependencies
 	@yarn -s run-graphql-demo-watch
+
+run-crm: ## run the crm example
+	@yarn -s run-crm
+
+build-crm: ## run the crm example
+	@yarn -s build-crm
 
 build-ra-core:
 	@echo "Transpiling ra-core files...";

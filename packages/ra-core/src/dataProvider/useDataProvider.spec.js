@@ -422,7 +422,7 @@ describe('useDataProvider', () => {
                 expect(update).toBeCalledTimes(1);
                 // make sure the side effect hasn't been applied yet
                 expect(queryByText('(updated)')).toBeNull();
-                await act(() => {
+                await act(async () => {
                     resolveUpdate();
                 });
                 // side effects should be applied now
@@ -473,7 +473,7 @@ describe('useDataProvider', () => {
                 // side effects should be applied now
                 expect(queryByText('(updated)')).not.toBeNull();
                 expect(update).toBeCalledTimes(1);
-                await act(() => {
+                act(() => {
                     resolveUpdate();
                 });
             });
@@ -521,7 +521,7 @@ describe('useDataProvider', () => {
                 expect(queryByText('(updated)')).not.toBeNull();
                 // update shouldn't be called at all
                 expect(update).toBeCalledTimes(0);
-                await act(() => {
+                act(() => {
                     undoableEventEmitter.emit('end', {});
                 });
                 expect(update).toBeCalledTimes(1);

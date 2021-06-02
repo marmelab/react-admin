@@ -153,6 +153,7 @@ const sanitizeRestProps = ({
     location = null,
     match = null,
     options = null,
+    refetch = null,
     permissions = null,
     ...rest
 }) => rest;

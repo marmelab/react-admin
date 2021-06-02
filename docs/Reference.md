@@ -24,6 +24,7 @@ title: "Reference"
 * [`<BooleanInput>`](./Inputs.md#booleaninput-and-nullablebooleaninput)
 * [`<BulkDeleteButton>`](./List.md#bulkactionbuttons)
 * [`<BulkExportButton>`](./List.md#bulkactionbuttons)
+* [`<BulkUpdateButton>`](./List.md#bulkactionbuttons)
 * [`<Calendar>`](https://marmelab.com/ra-enterprise/modules/ra-calendar#calendar)<img class="icon" src="./img/premium.svg" />
 * [`<CheckboxGroupInput>`](./Inputs.md#checkboxgroupinput)
 * [`<ChipField>`](./Fields.md#chipfield)
@@ -156,6 +157,7 @@ title: "Reference"
 * [`useDataProvider`](./Actions.md#usedataprovider-hook)
 * [`useDelete`](./Actions.md#usedelete)
 * [`useDeleteMany`](./Actions.md#usedeletemany)
+* `useDocumentTitle`
 * [`useEditController`](./CreateEdit.md#useeditcontroller)
 * `useFilterState`
 * [`useGetIdentity`](./Authentication.md#usegetidentity-hook)

@@ -4,7 +4,6 @@
     "scripts": {
         "build": "lerna run build",
         "watch": "lerna run --parallel watch",
-        "build-demo": "cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=rest yarn -s build",
         "test-unit": "cross-env NODE_ENV=test cross-env BABEL_ENV=cjs NODE_ICU_DATA=./node_modules/full-icu jest",
         "test-unit-ci": "cross-env NODE_ENV=test cross-env BABEL_ENV=cjs NODE_ICU_DATA=./node_modules/full-icu jest --runInBand",
         "test-e2e": "yarn run -s build && cross-env NODE_ENV=test && cd cypress && yarn -s test",
@@ -17,9 +16,12 @@
         "run-no-code": "cd examples/no-code && yarn dev",
         "run-tutorial": "cd examples/tutorial && yarn -s start",
         "run-demo": "cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=rest yarn -s start",
+        "build-demo": "cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=rest yarn -s build",
         "run-graphql-demo": "cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=graphql yarn -s start",
         "run-demo-watch": "concurrently \"yarn run watch\" \"yarn run run-demo\"",
-        "run-graphql-demo-watch": "concurrently \"yarn run watch\" \"yarn run run-graphql-demo\""
+        "run-graphql-demo-watch": "concurrently \"yarn run watch\" \"yarn run run-graphql-demo\"",
+        "run-crm": "cd examples/crm && yarn -s start",
+        "build-crm": "cd examples/crm && yarn -s build"
     },
     "jest": {
         "setupFilesAfterEnv": [

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import TextField, { TextFieldProps } from '@material-ui/core/TextField';
 import { useInput, FieldTitle, InputProps } from 'ra-core';
@@ -49,6 +48,7 @@ const DateInput = ({
     format = getStringFromDate,
     initialValue,
     label,
+    name,
     options,
     source,
     resource,
@@ -74,6 +74,7 @@ const DateInput = ({
         format,
         formatOnBlur: true,
         initialValue: sanitizedInitialValue,
+        name,
         onBlur,
         onChange,
         onFocus,
@@ -86,21 +87,13 @@ const DateInput = ({
 
     const { error, submitError, touched } = meta;
 
-    // Workaround for https://github.com/final-form/react-final-form/issues/431
-    useEffect(() => {
-        // Checking for meta.initial allows the format function to work
-        // on inputs inside an ArrayInput
-        if (defaultValue || initialValue || meta.initial) {
-            input.onBlur();
-        }
-    }, [input.onBlur, meta.initial]); // eslint-disable-line
-
     return (
         <TextField
             id={id}
             {...input}
             // Workaround https://github.com/final-form/react-final-form/issues/529
-            value={input.value || ''}
+            // & https://github.com/final-form/react-final-form/issues/431
+            value={format(input.value) || ''}
             variant={variant}
             margin={margin}
             type="date"

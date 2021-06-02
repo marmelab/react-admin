@@ -156,11 +156,13 @@ const AppBar = (props: AppBarProps): JSX.Element => {
                         children
                     )}
                     <LoadingIndicator />
-                    {typeof userMenu === 'boolean'
-                        ? userMenu === true
-                            ? cloneElement(<DefaultUserMenu />, { logout })
-                            : null
-                        : cloneElement(userMenu, { logout })}
+                    {typeof userMenu === 'boolean' ? (
+                        userMenu === true ? (
+                            <DefaultUserMenu logout={logout} />
+                        ) : null
+                    ) : (
+                        cloneElement(userMenu, { logout })
+                    )}
                 </Toolbar>
             </MuiAppBar>
         </Container>

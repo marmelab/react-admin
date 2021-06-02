@@ -16,6 +16,7 @@ export interface TranslationMessages extends StringMap {
             clone: string;
             confirm: string;
             create: string;
+            create_item: string;
             delete: string;
             edit: string;
             export: string;

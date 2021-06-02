@@ -200,6 +200,7 @@ const SelectArrayInput = (props: SelectArrayInputProps) => {
                 resource={resource}
                 className={className}
                 isRequired={isRequired}
+                margin={margin}
             >
                 <LinearProgress />
             </Labeled>

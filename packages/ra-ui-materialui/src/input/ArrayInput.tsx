@@ -90,6 +90,7 @@ const ArrayInput: FC<ArrayInputProps> = ({
                 source={source}
                 resource={resource}
                 className={className}
+                margin={margin}
             >
                 <LinearProgress />
             </Labeled>

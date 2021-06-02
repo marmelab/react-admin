@@ -8,11 +8,19 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { useDispatch, useSelector } from 'react-redux';
 import { StaticContext } from 'react-router';
 import { NavLink, NavLinkProps } from 'react-router-dom';
-import MenuItem, { MenuItemProps } from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import Tooltip, { TooltipProps } from '@material-ui/core/Tooltip';
+import { ReduxState, setSidebarVisibility } from 'ra-core';
+import {
+    MenuItem,
+    MenuItemProps,
+    ListItemIcon,
+    Tooltip,
+    TooltipProps,
+    useMediaQuery,
+    Theme,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const NavLinkRef = forwardRef<HTMLAnchorElement, NavLinkProps>((props, ref) => (
@@ -44,12 +52,17 @@ const MenuItemLink: FC<MenuItemLinkProps> = forwardRef((props, ref) => {
         ...rest
     } = props;
     const classes = useStyles(props);
-
+    const dispatch = useDispatch();
+    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
+    const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
     const handleMenuTap = useCallback(
         e => {
+            if (isSmall) {
+                dispatch(setSidebarVisibility(false));
+            }
             onClick && onClick(e);
         },
-        [onClick]
+        [dispatch, isSmall, onClick]
     );
 
     const renderMenuItem = () => {
@@ -75,11 +88,9 @@ const MenuItemLink: FC<MenuItemLinkProps> = forwardRef((props, ref) => {
         );
     };
 
-    if (sidebarIsOpen) {
-        return renderMenuItem();
-    }
-
-    return (
+    return open ? (
+        renderMenuItem()
+    ) : (
         <Tooltip title={primaryText} placement="right" {...tooltipProps}>
             {renderMenuItem()}
         </Tooltip>
@@ -90,7 +101,10 @@ interface Props {
     leftIcon?: ReactElement;
     primaryText?: ReactNode;
     staticContext?: StaticContext;
-    sidebarIsOpen: boolean;
+    /**
+     * @deprecated
+     */
+    sidebarIsOpen?: boolean;
     tooltipProps?: TooltipProps;
 }
 

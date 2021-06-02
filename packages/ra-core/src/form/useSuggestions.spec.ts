@@ -110,6 +110,35 @@ describe('getSuggestions', () => {
         ]);
     });
 
+    it('should not add createSuggestion if allowCreate is true and the current filter matches exactly the selected item', () => {
+        expect(
+            getSuggestions({
+                ...defaultOptions,
+                selectedItem: { id: 1, value: 'one' },
+                allowCreate: true,
+            })('one')
+        ).toEqual([
+            { id: 2, value: 'two' },
+            { id: 3, value: 'three' },
+        ]);
+    });
+
+    it('should add createSuggestion if allowCreate is true and selectedItem is an array', () => {
+        expect(
+            getSuggestions({
+                ...defaultOptions,
+                selectedItem: [
+                    { id: 1, value: 'one' },
+                    { id: 2, value: 'two' },
+                ],
+                allowCreate: true,
+            })('')
+        ).toEqual([
+            { id: 3, value: 'three' },
+            { id: '@@create', value: 'ra.action.create' },
+        ]);
+    });
+
     it('should limit the number of choices', () => {
         expect(
             getSuggestions({

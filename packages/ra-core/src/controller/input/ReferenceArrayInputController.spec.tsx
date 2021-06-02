@@ -190,7 +190,7 @@ describe('<ReferenceArrayInputController />', () => {
         expect(queryByText('ra.input.references.all_missing')).toBeNull();
     });
 
-    it('should set warning if references fetch fails but selected references are not empty', () => {
+    it('should set warning if references fetch fails but selected references are not empty', async () => {
         const children = jest.fn(({ warning }) => <div>{warning}</div>);
         const { queryByText } = renderWithRedux(
             <Form
@@ -198,6 +198,9 @@ describe('<ReferenceArrayInputController />', () => {
                 render={() => (
                     <ReferenceArrayInputController
                         {...defaultProps}
+                        // Avoid global collision in useGetMany with queriesToCall
+                        basePath="/articles"
+                        resource="articles"
                         input={{ value: [1, 2] }}
                     >
                         {children}
@@ -220,16 +223,20 @@ describe('<ReferenceArrayInputController />', () => {
                     },
                     references: {
                         possibleValues: {
-                            'posts@tag_ids': { error: 'boom' },
+                            'articles@tag_ids': { error: 'boom' },
                         },
                     },
                 },
             }
         );
-        expect(queryByText('ra.input.references.many_missing')).not.toBeNull();
+        await waitFor(() => {
+            expect(
+                queryByText('ra.input.references.many_missing')
+            ).not.toBeNull();
+        });
     });
 
-    it('should set warning if references were found but selected references are not complete', () => {
+    it('should set warning if references were found but selected references are not complete', async () => {
         const children = jest.fn(({ warning }) => <div>{warning}</div>);
         const { queryByText } = renderWithRedux(
             <Form
@@ -237,6 +244,9 @@ describe('<ReferenceArrayInputController />', () => {
                 render={() => (
                     <ReferenceArrayInputController
                         {...defaultProps}
+                        // Avoid global collision in useGetMany with queriesToCall
+                        basePath="/products"
+                        resource="products"
                         input={{ value: [1, 2] }}
                     >
                         {children}
@@ -259,13 +269,17 @@ describe('<ReferenceArrayInputController />', () => {
                     },
                     references: {
                         possibleValues: {
-                            'posts@tag_ids': [],
+                            'products@tag_ids': [],
                         },
                     },
                 },
             }
         );
-        expect(queryByText('ra.input.references.many_missing')).not.toBeNull();
+        await waitFor(() => {
+            expect(
+                queryByText('ra.input.references.many_missing')
+            ).not.toBeNull();
+        });
     });
 
     it('should set warning if references were found but selected references are empty', () => {
@@ -276,6 +290,9 @@ describe('<ReferenceArrayInputController />', () => {
                 render={() => (
                     <ReferenceArrayInputController
                         {...defaultProps}
+                        // Avoid global collision in useGetMany with queriesToCall
+                        basePath="/posters"
+                        resource="posters"
                         input={{ value: [1, 2] }}
                     >
                         {children}
@@ -287,7 +304,7 @@ describe('<ReferenceArrayInputController />', () => {
                     resources: { tags: { data: { 5: {}, 6: {} } } },
                     references: {
                         possibleValues: {
-                            'posts@tag_ids': [],
+                            'posters@tag_ids': [],
                         },
                     },
                 },
@@ -296,7 +313,7 @@ describe('<ReferenceArrayInputController />', () => {
         expect(queryByText('ra.input.references.many_missing')).not.toBeNull();
     });
 
-    it('should not set warning if all references were found', () => {
+    it('should not set warning if all references were found', async () => {
         const children = jest.fn(({ warning }) => <div>{warning}</div>);
         const { queryByText } = renderWithRedux(
             <Form
@@ -335,7 +352,9 @@ describe('<ReferenceArrayInputController />', () => {
                 },
             }
         );
-        expect(queryByText('ra.input.references.many_missing')).toBeNull();
+        await waitFor(() => {
+            expect(queryByText('ra.input.references.many_missing')).toBeNull();
+        });
     });
 
     it('should call crudGetMatching on mount with default fetch values', async () => {

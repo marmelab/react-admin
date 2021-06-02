@@ -45,7 +45,7 @@ import { DeclarativeSideEffect } from './useDeclarativeSideEffects';
  * - mount:         [mutate, { loading: false, loaded: false }]
  * - mutate called: [mutate, { loading: true, loaded: false }]
  * - success:       [mutate, { data: [data from response], total: [total from response], loading: false, loaded: true }]
- * - error:         [mutate, { error: [error from response], loading: false, loaded: true }]
+ * - error:         [mutate, { error: [error from response], loading: false, loaded: false }]
  *
  * The mutate function accepts the following arguments
  * - {Object} query
@@ -327,8 +327,7 @@ const hasDeclarativeSideEffectsSupport = (
     if (!options && !callTimeOptions) return false;
     if (callTimeOptions && callTimeOptions.withDeclarativeSideEffectsSupport)
         return true;
-    if (options && options.withDeclarativeSideEffectsSupport) return true;
-    return false;
+    return options && options.withDeclarativeSideEffectsSupport;
 };
 
 const sanitizeOptions = (args?: MutationOptions) => {

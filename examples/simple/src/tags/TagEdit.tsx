@@ -32,7 +32,7 @@ const TagEdit = props => (
                 basePath="/posts"
                 resource="posts"
                 filter={{ tags: [props.id] }}
-                title=" "
+                title={false}
             >
                 <Datagrid>
                     <TextField source="id" />

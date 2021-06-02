@@ -147,9 +147,9 @@ The return value of `useQuery` is an object representing the query state, using 
 
 This object updates according to the request state:
 
-- start: `{ loading: true, loaded: false }`
-- success: `{ data: [data from response], total: [total from response], loading: false, loaded: true }`
-- error: `{ error: [error from response], loading: false, loaded: true }`
+- start: `{ loading: true, loaded: false, refetch }`
+- success: `{ data: [data from response], total: [total from response], loading: false, loaded: true, refetch }`
+- error: `{ error: [error from response], loading: false, loaded: false, refetch }`
 
 As a reminder, here are the read query types handled by Data Providers:
 
@@ -228,7 +228,7 @@ This object updates according to the request state:
 - mount: `{ loading: false, loaded: false }`
 - mutate called: `{ loading: true, loaded: false }`
 - success: `{ data: [data from response], total: [total from response], loading: false, loaded: true }`
-- error: `{ error: [error from response], loading: false, loaded: true }`
+- error: `{ error: [error from response], loading: false, loaded: false }`
 
 You can destructure the return value of the `useMutation` hook as `[mutate,  { data, total, error, loading, loaded }]`.
 
@@ -299,7 +299,7 @@ const { data, loaded } = useGetOne<Product>('products', 123);
 
 ```jsx
 // syntax
-const { data, ids, total, loading, loaded, error } = useGetList(resource, pagination, sort, filter, options);
+const { data, ids, total, loading, loaded, error, refetch } = useGetList(resource, pagination, sort, filter, options);
 
 // example
 import { useGetList } from 'react-admin';
@@ -325,7 +325,7 @@ const LatestNews = () => {
 
 ```jsx
 // syntax
-const { data, loading, loaded, error } = useGetOne(resource, id, options);
+const { data, loading, loaded, error, refetch } = useGetOne(resource, id, options);
 
 // example
 import { useGetOne } from 'react-admin';
@@ -341,7 +341,7 @@ const UserProfile = ({ record }) => {
 
 ```jsx
 // syntax
-const { data, loading, loaded, error } = useGetMany(resource, ids, options);
+const { data, loading, loaded, error, refetch } = useGetMany(resource, ids, options);
 
 // example
 import { useGetMany } from 'react-admin';
@@ -363,7 +363,7 @@ const PostTags = ({ record }) => {
 
 ```jsx
 // syntax
-const { data, ids, total, loading, loaded, error } = useGetManyReference(resource, target, id, pagination, sort, filter, referencingResource, options);
+const { data, ids, total, loading, loaded, error, refetch } = useGetManyReference(resource, target, id, pagination, sort, filter, referencingResource, options);
 
 // example
 import { useGetManyReference } from 'react-admin';
@@ -620,7 +620,7 @@ const ApproveButton = ({ record }) => {
 
 Fetching data is called a *side effect*, since it calls the outside world, and is asynchronous. Usual actions may have other side effects, like showing a notification, or redirecting the user to another page. React-admin provides the following hooks to handle most common side effects:
 
-- `useNotify`: Return a function to display a notification. The arguments should be a message (it can be a translation key), a level (either `info` or `warning`), an `options` object to pass to the `translate` function (in the case of the default i18n provider, using Polyglot.js, it will be the interpolation options used for passing variables), a boolean to set to `true` if the notification should contain an "undo" button and a number corresponding to the notification duration.
+- `useNotify`: Return a function to display a notification. The arguments should be a message (it can be a translation key), a level (either `info`, `success` or `warning`), an `options` object to pass to the `translate` function (in the case of the default i18n provider, using Polyglot.js, it will be the interpolation options used for passing variables), a boolean to set to `true` if the notification should contain an "undo" button and a number corresponding to the notification duration.
 - `useRedirect`: Return a function to redirect the user to another page. The arguments should be the path to redirect the user to, and the current `basePath`.
 - `useRefresh`: Return a function to force a rerender of the current view (equivalent to pressing the Refresh button).
 - `useUnselectAll`: Return a function to unselect all lines in the current `Datagrid`. Pass the name of the resource as argument.

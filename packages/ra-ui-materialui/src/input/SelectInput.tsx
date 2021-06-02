@@ -115,6 +115,7 @@ export const SelectInput = (props: SelectInputProps) => {
         label,
         loaded,
         loading,
+        margin = 'dense',
         onBlur,
         onChange,
         onCreate,
@@ -209,6 +210,7 @@ export const SelectInput = (props: SelectInputProps) => {
                 isRequired={isRequired}
                 meta={meta}
                 input={input}
+                margin={margin}
             >
                 <LinearProgress />
             </Labeled>
@@ -245,6 +247,7 @@ export const SelectInput = (props: SelectInputProps) => {
                         helperText={helperText}
                     />
                 }
+                margin={margin}
                 {...options}
                 {...sanitizeRestProps(rest)}
             >
