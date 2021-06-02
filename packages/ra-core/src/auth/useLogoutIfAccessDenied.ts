@@ -3,6 +3,8 @@ import { useCallback } from 'react';
 import useAuthProvider from './useAuthProvider';
 import useLogout from './useLogout';
 import { useNotify } from '../sideEffect';
+import { useHistory } from 'react-router';
+import { LocationDescriptorObject } from 'history';
 
 let timer;
 
@@ -41,12 +43,15 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
     const authProvider = useAuthProvider();
     const logout = useLogout();
     const notify = useNotify();
+    const history = useHistory();
     const logoutIfAccessDenied = useCallback(
         (error?: any, disableNotification?: boolean) =>
             authProvider
                 .checkError(error)
                 .then(() => false)
                 .catch(async e => {
+                    const logoutUser = e?.logoutUser ?? true;
+
                     //manual debounce
                     if (timer) {
                         // side effects already triggered in this tick, exit
@@ -76,11 +81,33 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                             : error && error.redirectTo
                             ? error.redirectTo
                             : undefined;
-                    logout({}, redirectTo);
+
+                    if (logoutUser) {
+                        logout({}, redirectTo);
+                    } else {
+                        const redirectToParts = redirectTo.split('?');
+                        const newLocation: LocationDescriptorObject = {
+                            pathname: redirectToParts[0],
+                        };
+
+                        if (history.location && history.location.pathname) {
+                            newLocation.state = {
+                                nextPathname: history.location.pathname,
+                                nextSearch: history.location.search,
+                            };
+                        }
+
+                        if (redirectToParts[1]) {
+                            newLocation.search = redirectToParts[1];
+                        }
+                        history.push(redirectTo);
+
+                        return false;
+                    }
 
                     return true;
                 }),
-        [authProvider, logout, notify]
+        [authProvider, logout, notify, history]
     );
     return authProvider
         ? logoutIfAccessDenied
