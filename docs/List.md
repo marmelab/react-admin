@@ -147,7 +147,7 @@ const ListActions = (props) => {
             <Button
                 onClick={() => { alert('Your custom action'); }}
                 label="Show calendar"
-            >
+            />
                 <IconEvent />
             </Button>
         </TopToolbar>
