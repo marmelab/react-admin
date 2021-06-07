@@ -303,7 +303,8 @@ const ListActions = () => (
 ### `<DeleteWithConfirmButton>`
 
 Delete the selected element. To be used inside a <Toolbar> conponent.
-Overriding translateOptions prop allows to make custom message for the deletion.
+
+Overriding `translateOptions` name and id props allows to customize the notification message confirming the deletion.
 
 
 ```jsx
@@ -321,6 +322,7 @@ const EditToolbar = props => (
     </Toolbar>
 );
 ```
+The table below describes the props needed to customize the notification message confirming the deletion.
 
 | Prop         | Required | Type            | Default            | Description                         |
 | ------------ | -------- | --------------- | ------------------ | ----------------------------------- |
