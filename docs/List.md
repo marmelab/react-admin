@@ -94,25 +94,29 @@ You can add extra actions to a `<List>` by using the `actions` prop:
 
 ```jsx
 import * as React from 'react';
+import { cloneElement } from 'react';
 import { List, ListActions, Button } from 'react-admin';
 import IconEvent from '@material-ui/icons/Event';
 
-const CustomListActions = (props) => (
-    <ListActions {...props}>
+const ListActions = (props) => (
+    <TopToolbar>
+        {cloneElement(props.filters, { context: 'button' })}
+        <CreateButton/>
+        <ExportButton/>
         {/* Add your custom actions */}
         <Button
             onClick={() => { alert('Your custom action'); }}
             label="Show calendar"
         >
-            <IconEvent />
+            <IconEvent/>
         </Button>
-    </ListActions>
+    </TopToolbar>
 );
 
 export const PostList = (props) => (
-    <List {...props} actions={<CustomListActions />}>
-        ...
-    </List>
+        <List {...props} actions={<ListActions/>}>
+          ...
+        </List>
 );
 ```
 
@@ -130,12 +134,14 @@ import {
     ExportButton,
     Button,
     sanitizeListRestProps,
+    useListContext
 } from 'react-admin';
 import IconEvent from '@material-ui/icons/Event';
 
 const ListActions = (props) => {
     const {
         className,
+        filters,
         maxResults,
         ...rest
     } = props;

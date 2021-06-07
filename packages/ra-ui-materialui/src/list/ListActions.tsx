@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cloneElement, useMemo, FC, ReactElement, ReactNode } from 'react';
+import { cloneElement, useMemo, FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     sanitizeListRestProps,
@@ -36,7 +36,7 @@ import { CreateButton, ExportButton } from '../button';
  *          total,
  *     } = useListContext();
  *
- *     const PostCreateActions = ({ basePath }) => (
+ *     const PostListActions = ({ basePath }) => (
  *         <TopToolbar>
  *             <CreateButton basePath={basePath} />
  *             <ExportButton
@@ -57,7 +57,7 @@ import { CreateButton, ExportButton } from '../button';
  *     );
  */
 const ListActions: FC<ListActionsProps> = props => {
-    const { className, exporter, filters, children, ...rest } = props;
+    const { className, exporter, filters, ...rest } = props;
     const {
         currentSort,
         displayedFilters,
@@ -89,7 +89,6 @@ const ListActions: FC<ListActionsProps> = props => {
                         filterValues={filterValues}
                     />
                 )}
-                {children}
             </TopToolbar>
         ),
         [resource, displayedFilters, filterValues, selectedIds, filters, total] // eslint-disable-line react-hooks/exhaustive-deps
@@ -98,7 +97,6 @@ const ListActions: FC<ListActionsProps> = props => {
 
 ListActions.propTypes = {
     basePath: PropTypes.string,
-    children: PropTypes.node,
     className: PropTypes.string,
     currentSort: PropTypes.any,
     displayedFilters: PropTypes.object,
@@ -119,7 +117,6 @@ ListActions.defaultProps = {
 };
 
 export interface ListActionsProps extends ToolbarProps {
-    children?: ReactNode;
     currentSort?: SortPayload;
     className?: string;
     resource?: string;
