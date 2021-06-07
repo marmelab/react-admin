@@ -102,35 +102,11 @@ export const PostShow = (props) => (
 
 ### Actions
 
-You can add extra actions to a `<Show>` by using the `actions` prop:
+You can replace the list of default actions by your own component using the `actions` prop:
 
 ```jsx
 import Button from '@material-ui/core/Button';
-import { Show, ShowActions } from 'react-admin';
-
-const PostShowActions = (props) => (
-    <ShowActions {...props}>
-        {/* Add your custom actions */}
-        <Button 
-            color="primary"
-            onClick={() => { alert('Your custom action'); }}
-        >
-            Custom Action
-        </Button>
-    </ShowActions>
-);
-
-export const PostShow = (props) => (
-    <Show actions={<PostShowActions />} {...props}>
-        ...
-    </Show>
-);
-```
-If you want to have control over default actions as well, you can replace the entire `actions` component by your own:
-
-```jsx
-import Button from '@material-ui/core/Button';
-import { Show, EditButton, TopToolbar } from 'react-admin';
+import { EditButton, TopToolbar } from 'react-admin';
 
 const PostShowActions = ({ basePath, data, resource }) => (
     <TopToolbar>

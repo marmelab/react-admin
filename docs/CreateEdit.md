@@ -158,47 +158,18 @@ const PostTitle = ({ record }) => {
 
 ### Actions
 
-You can add extra actions to an `<Edit>` or `<Create>`  by using the `actions` prop:
-
-```jsx
-import Button from '@material-ui/core/Button';
-import { Edit, EditActions } from 'react-admin';
-
-const PostEditActions = (props) => (
-    <EditActions {...props}>
-        {/* Add your custom actions */}
-        <Button 
-            color="primary"
-            onClick={() => { alert('Your custom action'); }}
-        >
-            Custom Action
-        </Button>
-    </EditActions>
-);
-
-export const PostEdit = (props) => (
-    <Edit actions={<PostEditActions />} {...props}>
-        ...
-    </Edit>
-);
-```
-If you want to have control over default actions as well, you can replace the entire `actions` component by your own:
+You can replace the list of default actions by your own element using the `actions` prop:
 
 ```jsx
 import * as React from "react";
 import Button from '@material-ui/core/Button';
-import { Edit, TopToolbar, ShowButton } from 'react-admin';
+import { TopToolbar, ShowButton } from 'react-admin';
 
 const PostEditActions = ({ basePath, data, resource }) => (
     <TopToolbar>
         <ShowButton basePath={basePath} record={data} />
         {/* Add your custom actions */}
-        <Button 
-          color="primary"
-          onClick={() => { alert('Your custom action'); }}
-        >
-            Custom Action
-        </Button>
+        <Button color="primary" onClick={customAction}>Custom Action</Button>
     </TopToolbar>
 );
 

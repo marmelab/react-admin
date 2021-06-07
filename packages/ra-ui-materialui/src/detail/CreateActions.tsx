@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import TopToolbar from '../layout/TopToolbar';
 import { ListButton } from '../button';
 import { useCreateContext, useResourceDefinition } from 'ra-core';
-import { ReactNode } from 'react';
 
 /**
  * Action Toolbar for the Create view
@@ -31,17 +30,12 @@ import { ReactNode } from 'react';
  *         </Create>
  *     );
  */
-export const CreateActions = ({
-    children,
-    className,
-    ...rest
-}: CreateActionsProps) => {
+export const CreateActions = ({ className, ...rest }: CreateActionsProps) => {
     const { basePath } = useCreateContext(rest);
     const { hasList } = useResourceDefinition(rest);
     return (
         <TopToolbar className={className} {...sanitizeRestProps(rest)}>
             {hasList && <ListButton basePath={basePath} />}
-            {children}
         </TopToolbar>
     );
 };
@@ -55,7 +49,6 @@ const sanitizeRestProps = ({
 }) => rest;
 
 export interface CreateActionsProps {
-    children?: ReactNode;
     basePath?: string;
     className?: string;
     hasCreate?: boolean;
@@ -67,7 +60,6 @@ export interface CreateActionsProps {
 
 CreateActions.propTypes = {
     basePath: PropTypes.string,
-    children: PropTypes.node,
     className: PropTypes.string,
     hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,
