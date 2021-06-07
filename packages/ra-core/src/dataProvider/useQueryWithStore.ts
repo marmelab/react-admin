@@ -70,9 +70,9 @@ const defaultIsDataLoaded = (data: any): boolean => data !== undefined;
  *
  * The return value updates according to the request state:
  *
- * - start: { loading: true, loaded: false }
- * - success: { data: [data from response], total: [total from response], loading: false, loaded: true }
- * - error: { error: [error from response], loading: false, loaded: false }
+ * - start: { loading: true, loaded: false, refetch }
+ * - success: { data: [data from response], total: [total from response], loading: false, loaded: true, refetch }
+ * - error: { error: [error from response], loading: false, loaded: false, refetch }
  *
  * This hook will return the cached result when called a second time
  * with the same parameters, until the response arrives.
@@ -90,7 +90,7 @@ const defaultIsDataLoaded = (data: any): boolean => data !== undefined;
  * @param {Function} totalSelector Redux selector to get the total (optional, only for LIST queries)
  * @param {Function} isDataLoaded
  *
- * @returns The current request state. Destructure as { data, total, error, loading, loaded }.
+ * @returns The current request state. Destructure as { data, total, error, loading, loaded, refetch }.
  *
  * @example
  *

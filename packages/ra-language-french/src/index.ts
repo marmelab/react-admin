@@ -31,6 +31,7 @@ const frenchMessages: TranslationMessages = {
             close: 'Fermer',
             open_menu: 'Ouvrir le menu',
             close_menu: 'Fermer le menu',
+            update: 'Modifier',
         },
         boolean: {
             true: 'Oui',
@@ -81,6 +82,10 @@ const frenchMessages: TranslationMessages = {
                 'Êtes-vous sûr(e) de vouloir supprimer cet élément ? |||| Êtes-vous sûr(e) de vouloir supprimer ces %{smart_count} éléments ?',
             bulk_delete_title:
                 'Supprimer %{name} |||| Supprimer %{smart_count} %{name}',
+            bulk_update_content:
+                'Êtes-vous sûr(e) de vouloir modifier cet élément ? |||| Êtes-vous sûr(e) de vouloir modifier ces %{smart_count} éléments ?',
+            bulk_update_title:
+                'Modifier %{name} |||| Modifier %{smart_count} %{name}',
             delete_content:
                 'Êtes-vous sûr(e) de vouloir supprimer cet élément ?',
             delete_title: 'Supprimer %{name} #%{id}',

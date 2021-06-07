@@ -1,5 +1,5 @@
-import { createContext } from 'react';
 import { InferredElementDescription } from 'ra-core';
+import { createContext } from 'react';
 
 export const ResourceConfigurationContext = createContext<
     ResourceConfigurationContextValue
@@ -29,8 +29,29 @@ export type ResourceConfigurationContextHelpers = {
 export type ResourceConfiguration = {
     name: string;
     label?: string;
-    fields?: InferredElementDescription[];
+    fields?: FieldConfiguration[];
 };
+
+export interface ReferenceFieldConfiguration extends BaseFieldConfiguration {
+    type: 'reference';
+    options: {
+        selectionType: 'select' | 'autocomplete' | 'radio';
+        referenceField: 'string';
+    };
+}
+
+export interface BaseFieldConfiguration extends InferredElementDescription {
+    views: FieldView[];
+    options?: {
+        [key: string]: any;
+    };
+}
+
+export type FieldConfiguration =
+    | BaseFieldConfiguration
+    | ReferenceFieldConfiguration;
+
+export type FieldView = 'list' | 'create' | 'edit' | 'show';
 
 export type ResourceConfigurationMap =
     | {

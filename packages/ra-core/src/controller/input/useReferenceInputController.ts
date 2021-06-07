@@ -122,12 +122,13 @@ export const useReferenceInputController = (
         loaded: possibleValuesLoaded,
         loading: possibleValuesLoading,
         error: possibleValuesError,
+        refetch: refetchGetList,
     } = useGetList(reference, pagination, sort, filterValues);
 
     // fetch current value
     const {
         referenceRecord,
-        refetch,
+        refetch: refetchReference,
         error: referenceError,
         loading: referenceLoading,
         loaded: referenceLoaded,
@@ -158,6 +159,11 @@ export const useReferenceInputController = (
         translate,
     });
 
+    const refetch = useCallback(() => {
+        refetchGetList();
+        refetchReference();
+    }, [refetchGetList, refetchReference]);
+
     return {
         // should match the ListContext shape
         possibleValues: {
@@ -184,6 +190,7 @@ export const useReferenceInputController = (
             onSelect,
             onToggleItem,
             onUnselectItems,
+            refetch,
             resource,
         },
         referenceRecord: {
@@ -191,6 +198,7 @@ export const useReferenceInputController = (
             loaded: referenceLoaded,
             loading: referenceLoading,
             error: referenceError,
+            refetch: refetchReference,
         },
         dataStatus: {
             error: dataStatus.error,
@@ -224,6 +232,7 @@ export interface ReferenceInputValue {
         loaded: boolean;
         loading: boolean;
         error?: any;
+        refetch: Refetch;
     };
     dataStatus: {
         error?: any;

@@ -807,9 +807,56 @@ Check [the `ra-preferences` documentation](https://marmelab.com/ra-enterprise/mo
 
 ## Using a Custom Menu
 
-By default, React-admin uses the list of `<Resource>` components passed as children of `<Admin>` to build a menu to each resource with a `list` component.
+By default, React-admin uses the list of `<Resource>` components passed as children of `<Admin>` to build a menu to each resource with a `list` component. If you want to reorder, add or remove menu items, for instance to link to non-resources pages, you have to provide a custom `<Menu>` component to your `Layout`.
 
-If you want to add or remove menu items, for instance to link to non-resources pages, you can create your own menu component:
+### Custom Menu Example
+
+You can create a custom menu component using the `<DashboardMenuItem>` and `<MenuItemLink>` components:
+
+```jsx
+// in src/Menu.js
+import * as React from 'react';
+import { DashboardMenuItem, MenuItemLink } from 'react-admin';
+import BookIcon from '@material-ui/icons/Book';
+import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
+import PeopleIcon from '@material-ui/icons/People';
+import LabelIcon from '@material-ui/icons/Label';
+
+export const Menu = () => (
+    <div>
+        <DashboardMenuItem />
+        <MenuItemLink to="/posts" primaryText="Posts" leftIcon={<BookIcon />}/>
+        <MenuItemLink to="/comments" primaryText="Comments" leftIcon={<ChatBubbleIcon />}/>
+        <MenuItemLink to="/users" primaryText="Users" leftIcon={<PeopleIcon />}/>
+        <MenuItemLink to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />}/>
+    </div>
+);
+```
+
+To use this custom menu component, pass it to a custom Layout, as explained above:
+
+```jsx
+// in src/Layout.js
+import { Layout } from 'react-admin';
+import { Menu } from './Menu';
+
+export const Layout = (props) => <Layout {...props} menu={Menu} />;
+```
+
+Then, use this layout in the `<Admin>` `layout` prop:
+
+```jsx
+// in src/App.js
+import { Layout }  from './Layout';
+
+const App = () => (
+    <Admin layout={Layout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        // ...
+    </Admin>
+);
+```
+
+**Tip**: You can generate the menu items for each of the resources by reading the Resource configurations from the Redux store: 
 
 ```jsx
 // in src/Menu.js
@@ -821,13 +868,11 @@ import { DashboardMenuItem, MenuItemLink, getResources } from 'react-admin';
 import DefaultIcon from '@material-ui/icons/ViewList';
 import LabelIcon from '@material-ui/icons/Label';
 
-const Menu = ({ onMenuClick, logout }) => {
-    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
-    const open = useSelector(state => state.admin.ui.sidebarOpen);
+export const Menu = () => {
     const resources = useSelector(getResources);
     return (
         <div>
-            <DashboardMenuItem onClick={onMenuClick} sidebarIsOpen={open} />
+            <DashboardMenuItem />
             {resources.map(resource => (
                 <MenuItemLink
                     key={resource.name}
@@ -843,71 +888,88 @@ const Menu = ({ onMenuClick, logout }) => {
                     sidebarIsOpen={open}
                 />
             ))}
-            <MenuItemLink
-                to="/custom-route"
-                primaryText="Miscellaneous"
-                leftIcon={<LabelIcon />}
-                onClick={onMenuClick}
-                sidebarIsOpen={open}
-            />
-            {isXSmall && logout}
+            {/* add your custom menus here */}
         </div>
     );
 };
-
-export default Menu;
 ```
-
-**Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views.
-
-**Tip**: Note that we include the `logout` item only on small devices. Indeed, the `logout` button is already displayed in the AppBar on larger devices.
-
-**Tip**: The `primaryText` prop accepts a React node. You can pass a custom element in it. For example:
-
-```jsx
-    import Badge from '@material-ui/core/Badge';
-
-    <MenuItemLink to="/custom-route" primaryText={
-        <Badge badgeContent={4} color="primary">
-            Notifications
-        </Badge>
-    } onClick={onMenuClick} />
-```
-
-To use this custom menu component, pass it to a custom Layout, as explained above:
-
-```jsx
-// in src/MyLayout.js
-import { Layout } from 'react-admin';
-import MyMenu from './MyMenu';
-
-const MyLayout = (props) => <Layout {...props} menu={MyMenu} />;
-
-export default MyLayout;
-```
-
-Then, use this layout in the `<Admin>` `layout` prop:
-
-```jsx
-// in src/App.js
-import MyLayout from './MyLayout';
-
-const App = () => (
-    <Admin layout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
-        // ...
-    </Admin>
-);
-```
-
-**Tip**: If you use authentication, don't forget to render the `logout` prop in your custom menu component. Also, the `onMenuClick` function passed as prop is used to close the sidebar on mobile.
-
-The `MenuItemLink` component make use of the React Router [NavLink](https://reacttraining.com/react-router/web/api/NavLink) component, hence allowing to customize its style when it targets the current page.
 
 **Tip**: If you need a multi-level menu, or a Mega Menu opening panels with custom content, check out [the `ra-navigation`<img class="icon" src="./img/premium.svg" /> module](https://marmelab.com/ra-enterprise/modules/ra-navigation) (part of the [Enterprise Edition](https://marmelab.com/ra-enterprise))
 
 ![multi-level menu](https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-item.gif)
 
 ![MegaMenu and Breadcrumb](https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.gif)
+
+### `<MenuItemLink>`
+
+The `<MenuItemLink>` component displays a menu item with a label and an icon - or only the icon with a tooltip when the sidebar is minimized. It also handles the automatic closing of the menu on tap on mobile.
+
+The `primaryText` prop accepts a string or a React node. You can use it e.g. to display a badge on top of the menu item:
+
+```jsx
+import Badge from '@material-ui/core/Badge';
+
+<MenuItemLink to="/custom-route" primaryText={
+    <Badge badgeContent={4} color="primary">
+        Notifications
+    </Badge>
+} />
+```
+
+The `letfIcon` prop allows to set the menu left icon.
+
+Additional props are passed down to [the underling material-ui `<MenuItem>` component](https://material-ui.com/api/menu-item/#menuitem-api).
+
+**Tip**: The `<MenuItemLink>` component makes use of the React Router [NavLink](https://reacttraining.com/react-router/web/api/NavLink) component, hence allowing to customize the active menu style. For instance, here is how to use a custom theme to show a left border for the active menu:
+
+```jsx
+export const theme = {
+    palette: {
+        // ...
+    },
+    overrides: {
+        RaMenuItemLink: {
+            active: {
+                borderLeft: '3px solid #4f3cc9',
+            },
+            root: {
+                borderLeft: '3px solid #fff', // invisible menu when not active, to avoid scrolling the text when selecting the menu
+            },
+        },
+    },
+};
+```
+
+### Menu To A Filtered List
+
+As the filter values are taken from the URL, you can link to a pre-filtered list by setting the `filter` query parameter.
+
+For instance, to include a menu to a list of published posts:
+
+```jsx
+<MenuItemLink
+    to={{
+        pathname: '/posts',
+        search: `filter=${JSON.stringify({ is_published: true })}`,
+    }}
+    primaryText="Posts"
+    leftIcon={<BookIcon />}
+/>
+```
+
+### Menu To A List Without Filters
+
+By default, a click on `<MenuItemLink >` for a list page opens the list with the same filters as they were applied the last time the user saw them. This is usually the expected behavior, but your users may prefer that clicking on a menu item resets the list filters.
+
+Just use an empty `filter` query parameter to force empty filters:
+
+```jsx
+<MenuItemLink
+    to="/posts?filter=%7B%7D" // %7B%7D is JSON.stringify({})
+    primaryText="Posts"
+    leftIcon={<BookIcon />}
+/>
+```
 
 ## Using a Custom Login Page
 

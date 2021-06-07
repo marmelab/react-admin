@@ -6,18 +6,18 @@ import lodashGet from 'lodash/get';
 // @ts-ignore
 import { useMediaQuery, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import DefaultIcon from '@material-ui/icons/ViewList';
 import classnames from 'classnames';
-import { useGetResourceLabel, ReduxState } from 'ra-core';
+import { ReduxState } from 'ra-core';
 
-import { DashboardMenuItem, MenuItemLink } from 'react-admin';
+import { DashboardMenuItem } from 'react-admin';
 import { NewResourceMenuItem } from './NewResourceMenuItem';
 import { useResourcesConfiguration } from '../ResourceConfiguration';
+import { ResourceMenuItem } from './ResourceMenuItem';
 
 export const MENU_WIDTH = 240;
 export const CLOSED_MENU_WIDTH = 55;
 
-const Menu = (props: MenuProps) => {
+export const Menu = (props: MenuProps) => {
     const {
         classes: classesOverride,
         className,
@@ -34,7 +34,6 @@ const Menu = (props: MenuProps) => {
     );
     const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
     const [resources] = useResourcesConfiguration();
-    const getResourceLabel = useGetResourceLabel();
 
     return (
         <>
@@ -57,14 +56,9 @@ const Menu = (props: MenuProps) => {
                     />
                 )}
                 {Object.keys(resources).map(resource => (
-                    <MenuItemLink
+                    <ResourceMenuItem
                         key={resource}
-                        to={{
-                            pathname: `/${resource}`,
-                            state: { _scrollToTop: true },
-                        }}
-                        primaryText={getResourceLabel(resource, 2)}
-                        leftIcon={<DefaultIcon />}
+                        resource={resources[resource]}
                         onClick={onMenuClick}
                         dense={dense}
                         sidebarIsOpen={open}
@@ -126,5 +120,3 @@ Menu.propTypes = {
 Menu.defaultProps = {
     onMenuClick: () => null,
 };
-
-export default Menu;

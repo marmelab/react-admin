@@ -147,9 +147,9 @@ The return value of `useQuery` is an object representing the query state, using 
 
 This object updates according to the request state:
 
-- start: `{ loading: true, loaded: false }`
-- success: `{ data: [data from response], total: [total from response], loading: false, loaded: true }`
-- error: `{ error: [error from response], loading: false, loaded: false }`
+- start: `{ loading: true, loaded: false, refetch }`
+- success: `{ data: [data from response], total: [total from response], loading: false, loaded: true, refetch }`
+- error: `{ error: [error from response], loading: false, loaded: false, refetch }`
 
 As a reminder, here are the read query types handled by Data Providers:
 
@@ -299,7 +299,7 @@ const { data, loaded } = useGetOne<Product>('products', 123);
 
 ```jsx
 // syntax
-const { data, ids, total, loading, loaded, error } = useGetList(resource, pagination, sort, filter, options);
+const { data, ids, total, loading, loaded, error, refetch } = useGetList(resource, pagination, sort, filter, options);
 
 // example
 import { useGetList } from 'react-admin';
@@ -325,7 +325,7 @@ const LatestNews = () => {
 
 ```jsx
 // syntax
-const { data, loading, loaded, error } = useGetOne(resource, id, options);
+const { data, loading, loaded, error, refetch } = useGetOne(resource, id, options);
 
 // example
 import { useGetOne } from 'react-admin';
@@ -341,7 +341,7 @@ const UserProfile = ({ record }) => {
 
 ```jsx
 // syntax
-const { data, loading, loaded, error } = useGetMany(resource, ids, options);
+const { data, loading, loaded, error, refetch } = useGetMany(resource, ids, options);
 
 // example
 import { useGetMany } from 'react-admin';
@@ -363,7 +363,7 @@ const PostTags = ({ record }) => {
 
 ```jsx
 // syntax
-const { data, ids, total, loading, loaded, error } = useGetManyReference(resource, target, id, pagination, sort, filter, referencingResource, options);
+const { data, ids, total, loading, loaded, error, refetch } = useGetManyReference(resource, target, id, pagination, sort, filter, referencingResource, options);
 
 // example
 import { useGetManyReference } from 'react-admin';

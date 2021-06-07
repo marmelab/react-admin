@@ -1,14 +1,17 @@
 import * as React from 'react';
 import { FC, Fragment, ReactElement } from 'react';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import List from '@material-ui/core/List';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import Typography from '@material-ui/core/Typography';
-import Collapse from '@material-ui/core/Collapse';
-import Tooltip from '@material-ui/core/Tooltip';
+import { useSelector } from 'react-redux';
+import {
+    List,
+    MenuItem,
+    ListItemIcon,
+    Typography,
+    Collapse,
+    Tooltip,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { useTranslate } from 'react-admin';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import { useTranslate, ReduxState } from 'react-admin';
 
 const useStyles = makeStyles(theme => ({
     icon: { minWidth: theme.spacing(5) },
@@ -32,12 +35,10 @@ interface Props {
     icon: ReactElement;
     isOpen: boolean;
     name: string;
-    sidebarIsOpen: boolean;
 }
 
 const SubMenu: FC<Props> = ({
     handleToggle,
-    sidebarIsOpen,
     isOpen,
     name,
     icon,
@@ -46,6 +47,9 @@ const SubMenu: FC<Props> = ({
 }) => {
     const translate = useTranslate();
     const classes = useStyles();
+    const sidebarIsOpen = useSelector<ReduxState, boolean>(
+        state => state.admin.ui.sidebarOpen
+    );
 
     const header = (
         <MenuItem dense={dense} button onClick={handleToggle}>

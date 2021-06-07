@@ -39,7 +39,7 @@ export const HotContacts = () => {
                 </Link>
             </Box>
             <Card>
-                <SimpleList
+                <SimpleList<Contact>
                     basePath="/contacts"
                     linkType="show"
                     ids={contactIds}
@@ -58,10 +58,7 @@ export const HotContacts = () => {
                             }
                         )
                     }
-                    /* @ts-ignore */
-                    leftAvatar={(contact: Contact) => (
-                        <Avatar record={contact} />
-                    )}
+                    leftAvatar={contact => <Avatar record={contact} />}
                 />
             </Card>
         </>

@@ -30,6 +30,7 @@ const englishMessages: TranslationMessages = {
             close: 'Close',
             open_menu: 'Open menu',
             close_menu: 'Close menu',
+            update: 'Update',
         },
         boolean: {
             true: 'Yes',
@@ -79,6 +80,10 @@ const englishMessages: TranslationMessages = {
                 'Are you sure you want to delete this %{name}? |||| Are you sure you want to delete these %{smart_count} items?',
             bulk_delete_title:
                 'Delete %{name} |||| Delete %{smart_count} %{name}',
+            bulk_update_content:
+                'Are you sure you want to update this %{name}? |||| Are you sure you want to update these %{smart_count} items?',
+            bulk_update_title:
+                'Update %{name} |||| Update %{smart_count} %{name}',
             delete_content: 'Are you sure you want to delete this item?',
             delete_title: 'Delete %{name} #%{id}',
             details: 'Details',

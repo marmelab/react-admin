@@ -158,7 +158,15 @@ const useReferenceManyFieldController = (
     });
 
     const referenceId = get(record, source);
-    const { data, ids, total, error, loading, loaded } = useGetManyReference(
+    const {
+        data,
+        ids,
+        total,
+        error,
+        loading,
+        loaded,
+        refetch,
+    } = useGetManyReference(
         reference,
         target,
         referenceId,
@@ -205,6 +213,7 @@ const useReferenceManyFieldController = (
         onUnselectItems,
         page,
         perPage,
+        refetch,
         resource: reference,
         selectedIds,
         setFilters,

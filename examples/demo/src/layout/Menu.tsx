@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import SettingsIcon from '@material-ui/icons/Settings';
 import LabelIcon from '@material-ui/icons/Label';
-import { useMediaQuery, Theme, Box } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import {
     useTranslate,
     DashboardMenuItem,
@@ -22,31 +21,27 @@ import { AppState } from '../types';
 
 type MenuName = 'menuCatalog' | 'menuSales' | 'menuCustomers';
 
-const Menu: FC<MenuProps> = ({ onMenuClick, logout, dense = false }) => {
+const Menu = ({ dense = false }: MenuProps) => {
     const [state, setState] = useState({
         menuCatalog: true,
         menuSales: true,
         menuCustomers: true,
     });
     const translate = useTranslate();
-    const isXSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('xs')
-    );
-    const open = useSelector((state: AppState) => state.admin.ui.sidebarOpen);
     useSelector((state: AppState) => state.theme); // force rerender on theme change
+    const classes = useStyles();
 
     const handleToggle = (menu: MenuName) => {
         setState(state => ({ ...state, [menu]: !state[menu] }));
     };
 
     return (
-        <Box mt={1}>
+        <div className={classes.root}>
             {' '}
-            <DashboardMenuItem onClick={onMenuClick} sidebarIsOpen={open} />
+            <DashboardMenuItem />
             <SubMenu
                 handleToggle={() => handleToggle('menuSales')}
                 isOpen={state.menuSales}
-                sidebarIsOpen={open}
                 name="pos.menu.sales"
                 icon={<orders.icon />}
                 dense={dense}
@@ -57,8 +52,6 @@ const Menu: FC<MenuProps> = ({ onMenuClick, logout, dense = false }) => {
                         smart_count: 2,
                     })}
                     leftIcon={<orders.icon />}
-                    onClick={onMenuClick}
-                    sidebarIsOpen={open}
                     dense={dense}
                 />
                 <MenuItemLink
@@ -67,15 +60,12 @@ const Menu: FC<MenuProps> = ({ onMenuClick, logout, dense = false }) => {
                         smart_count: 2,
                     })}
                     leftIcon={<invoices.icon />}
-                    onClick={onMenuClick}
-                    sidebarIsOpen={open}
                     dense={dense}
                 />
             </SubMenu>
             <SubMenu
                 handleToggle={() => handleToggle('menuCatalog')}
                 isOpen={state.menuCatalog}
-                sidebarIsOpen={open}
                 name="pos.menu.catalog"
                 icon={<products.icon />}
                 dense={dense}
@@ -86,8 +76,6 @@ const Menu: FC<MenuProps> = ({ onMenuClick, logout, dense = false }) => {
                         smart_count: 2,
                     })}
                     leftIcon={<products.icon />}
-                    onClick={onMenuClick}
-                    sidebarIsOpen={open}
                     dense={dense}
                 />
                 <MenuItemLink
@@ -96,15 +84,12 @@ const Menu: FC<MenuProps> = ({ onMenuClick, logout, dense = false }) => {
                         smart_count: 2,
                     })}
                     leftIcon={<categories.icon />}
-                    onClick={onMenuClick}
-                    sidebarIsOpen={open}
                     dense={dense}
                 />
             </SubMenu>
             <SubMenu
                 handleToggle={() => handleToggle('menuCustomers')}
                 isOpen={state.menuCustomers}
-                sidebarIsOpen={open}
                 name="pos.menu.customers"
                 icon={<visitors.icon />}
                 dense={dense}
@@ -115,8 +100,6 @@ const Menu: FC<MenuProps> = ({ onMenuClick, logout, dense = false }) => {
                         smart_count: 2,
                     })}
                     leftIcon={<visitors.icon />}
-                    onClick={onMenuClick}
-                    sidebarIsOpen={open}
                     dense={dense}
                 />
                 <MenuItemLink
@@ -125,8 +108,6 @@ const Menu: FC<MenuProps> = ({ onMenuClick, logout, dense = false }) => {
                         smart_count: 2,
                     })}
                     leftIcon={<LabelIcon />}
-                    onClick={onMenuClick}
-                    sidebarIsOpen={open}
                     dense={dense}
                 />
             </SubMenu>
@@ -136,23 +117,16 @@ const Menu: FC<MenuProps> = ({ onMenuClick, logout, dense = false }) => {
                     smart_count: 2,
                 })}
                 leftIcon={<reviews.icon />}
-                onClick={onMenuClick}
-                sidebarIsOpen={open}
                 dense={dense}
             />
-            {isXSmall && (
-                <MenuItemLink
-                    to="/configuration"
-                    primaryText={translate('pos.configuration')}
-                    leftIcon={<SettingsIcon />}
-                    onClick={onMenuClick}
-                    sidebarIsOpen={open}
-                    dense={dense}
-                />
-            )}
-            {isXSmall && logout}
-        </Box>
+        </div>
     );
 };
+
+const useStyles = makeStyles(theme => ({
+    root: {
+        marginTop: theme.spacing(1),
+    },
+}));
 
 export default Menu;
