@@ -79,6 +79,7 @@ export const DealsPipeline = () => {
                             reference="companies"
                             resource="deals"
                             basePath="/deals"
+                            link={false}
                         >
                             <CompanyAvatar size="small" />
                         </ReferenceField>
