@@ -100,6 +100,20 @@ describe('Query Reducer', () => {
             });
         });
 
+        it('should work with false default value', () => {
+            const updatedState = queryReducer(
+                { filter: {}, displayedFilters: {} },
+                {
+                    type: 'SHOW_FILTER',
+                    payload: { filterName: 'foo', defaultValue: false },
+                }
+            );
+            expect(updatedState.filter).toEqual({ foo: false });
+            expect(updatedState.displayedFilters).toEqual({
+                foo: true,
+            });
+        });
+
         it('should work without default value', () => {
             const updatedState = queryReducer(
                 {
