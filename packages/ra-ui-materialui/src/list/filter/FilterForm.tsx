@@ -186,8 +186,8 @@ const EnhancedFilterForm = props => {
                 <>
                     <FormSpy
                         subscription={FormSpySubscription}
-                        onChange={({ pristine, values }) => {
-                            if (pristine) {
+                        onChange={({ pristine, values, invalid }) => {
+                            if (pristine || invalid) {
                                 return;
                             }
                             rest && rest.setFilters(values);
@@ -203,6 +203,6 @@ const EnhancedFilterForm = props => {
 const handleFinalFormSubmit = () => {};
 
 // Options to instruct the FormSpy that it should only listen to the values and pristine changes
-const FormSpySubscription = { values: true, pristine: true };
+const FormSpySubscription = { values: true, pristine: true, invalid: true };
 
 export default EnhancedFilterForm;
