@@ -73,7 +73,7 @@ A Spotify clone, allowing to manage songs, artists, playlists, and favorites.
 
 ### Broadcom Layer 7 API Hub
 
-A framework build on top of react-admin for building developer portals.
+A framework built on top of react-admin for building developer portals.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/ecHsgNmug9E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
