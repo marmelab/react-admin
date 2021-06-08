@@ -99,13 +99,14 @@ const queryReducer: Reducer<ListParams> = (
             }
             return {
                 ...previousState,
-                filter: action.payload.defaultValue
-                    ? set(
-                          previousState.filter,
-                          action.payload.filterName,
-                          action.payload.defaultValue
-                      )
-                    : previousState.filter,
+                filter:
+                    typeof action.payload.defaultValue !== 'undefined'
+                        ? set(
+                              previousState.filter,
+                              action.payload.filterName,
+                              action.payload.defaultValue
+                          )
+                        : previousState.filter,
                 // we don't use lodash.set() for displayed filters
                 // to avoid problems with compound filter names (e.g. 'author.name')
                 displayedFilters: {
