@@ -30,5 +30,7 @@ export {
     nameRelatedTo,
 } from './reducer/admin/references/oneToMany';
 
+export { uiDefaultState } from './reducer/admin/ui';
+
 export * from './sideEffect';
 export * from './types';
