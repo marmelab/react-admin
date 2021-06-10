@@ -43,7 +43,7 @@ export interface EditProps extends ResourceComponentPropsWithId {
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
     transform?: (data: RaRecord) => RaRecord | Promise<RaRecord>;
-    title?: string | ReactElement;
+    title?: string | ReactElement | false;
 }
 
 export interface CreateProps extends ResourceComponentProps {
@@ -56,7 +56,7 @@ export interface CreateProps extends ResourceComponentProps {
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
     transform?: (data: RaRecord) => RaRecord | Promise<RaRecord>;
-    title?: string | ReactElement;
+    title?: string | ReactElement | false;
 }
 
 export interface ShowProps extends ResourceComponentPropsWithId {
@@ -65,7 +65,7 @@ export interface ShowProps extends ResourceComponentPropsWithId {
     classes?: any;
     className?: string;
     component?: ElementType;
-    title?: string | ReactElement;
+    title?: string | ReactElement | false;
 }
 
 export interface BulkActionProps {
