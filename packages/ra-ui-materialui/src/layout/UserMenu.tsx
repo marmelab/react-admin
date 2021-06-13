@@ -80,7 +80,7 @@ const UserMenu = (props: UserMenuProps) => {
                     }
                     onClick={handleMenu}
                 >
-                    {identity.fullName}
+                    <span>{identity.fullName}</span>
                 </Button>
             ) : (
                 <Tooltip title={label && translate(label, { _: label })}>
