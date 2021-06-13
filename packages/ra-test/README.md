@@ -122,7 +122,7 @@ it('should initilize store', () => {
     expect(storeState).toEqual({...defaultStore, ...initialState});
 });
 
-it('send the user to another url', () => {
+it('should send the user to another url', () => {
     fireEvent.click(testUtils.getByText('Go to next'));
     expect(dispatch).toHaveBeenCalledWith(`/next-url`);
 });
