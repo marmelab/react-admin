@@ -28,7 +28,7 @@ export interface ListProps extends ResourceComponentProps {
     perPage?: number;
     sort?: SortPayload;
     syncWithLocation?: boolean;
-    title?: string | ReactElement | false;
+    title?: string | ReactElement;
 }
 
 export interface EditProps extends ResourceComponentPropsWithId {
@@ -43,7 +43,7 @@ export interface EditProps extends ResourceComponentPropsWithId {
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
     transform?: (data: RaRecord) => RaRecord | Promise<RaRecord>;
-    title?: string | ReactElement | false;
+    title?: string | ReactElement;
 }
 
 export interface CreateProps extends ResourceComponentProps {
@@ -56,7 +56,7 @@ export interface CreateProps extends ResourceComponentProps {
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
     transform?: (data: RaRecord) => RaRecord | Promise<RaRecord>;
-    title?: string | ReactElement | false;
+    title?: string | ReactElement;
 }
 
 export interface ShowProps extends ResourceComponentPropsWithId {
@@ -65,7 +65,7 @@ export interface ShowProps extends ResourceComponentPropsWithId {
     classes?: any;
     className?: string;
     component?: ElementType;
-    title?: string | ReactElement | false;
+    title?: string | ReactElement;
 }
 
 export interface BulkActionProps {
