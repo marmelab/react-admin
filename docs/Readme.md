@@ -120,7 +120,7 @@ See the [Data Providers documentation](./DataProviders.md) for details.
 
 React-admin is designed as a library of loosely coupled React components built on top of [material-ui](https://material-ui.com/), in addition to React hooks allowing to reuse the logic with a custom UI. 
 
-It is very easy to replace one part of react-admin with your own, e.g. to use a custom Datagrid, GraphQL instead of REST, or Bootstrap instead of Material Design.
+You may replace one part of react-admin with your own, e.g. to use a custom Datagrid, GraphQL instead of REST, or Bootstrap instead of Material Design.
 
 Read more about the [Architecture choices](./Architecture.md).
 
