@@ -79,12 +79,15 @@ const NumberInput: FunctionComponent<NumberInputProps> = ({
                 />
             }
             label={
-                <FieldTitle
-                    label={label}
-                    source={source}
-                    resource={resource}
-                    isRequired={isRequired}
-                />
+                label !== '' &&
+                label !== false && (
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                )
             }
             margin={margin}
             inputProps={inputProps}
@@ -95,7 +98,7 @@ const NumberInput: FunctionComponent<NumberInputProps> = ({
 };
 
 NumberInput.propTypes = {
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
