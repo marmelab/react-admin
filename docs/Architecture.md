@@ -67,7 +67,7 @@ export const PostEdit = (props) => (
 
 This allows overriding only part of the logic of a component by composing it with another component.
 
-So many react-admin components can be overridden by passing custom components as children or via props.
+Many react-admin components can be overridden by passing custom components as children or via props.
 
 The drawback is that react-admin sometimes forces you to override several components just to enable one feature. For instance, to override the Menu, you must pass it to a custom `<Layout>`, and pass the custom `<Layout>` to `<Admin>`:
 
