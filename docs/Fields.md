@@ -1423,7 +1423,7 @@ The component will be:
 import * as React from "react";
 import { List, Datagrid, TextField, useRecordContext } from 'react-admin';
 
-const FullNameField = () => {
+const FullNameField = (props) => {
     const record = useRecordContext(props);
 
     return <span>{record.firstName} {record.lastName}</span>;
