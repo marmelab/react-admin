@@ -120,7 +120,7 @@ export const PostList = (props) => (
 );
 ```
 
-This allows you to further control how the default actions behaves. For example, you could disable the `<ExportButton>` when the list is empty:
+This allows you to further control how the default actions behave. For example, you could disable the `<ExportButton>` when the list is empty:
 
 {% raw %}
 ```jsx
