@@ -90,7 +90,7 @@ The title can be either a string or an element of your own.
 
 ![Actions Toolbar](./img/actions-toolbar.png)
 
-You can add extra actions to a `<List>` by using the `actions` prop:
+You can replace the list of default actions by your own element using the `actions` prop:
 
 ```jsx
 import * as React from 'react';
