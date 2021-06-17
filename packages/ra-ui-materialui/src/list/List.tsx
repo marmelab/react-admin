@@ -84,7 +84,10 @@ List.propTypes = {
     className: PropTypes.string,
     filter: PropTypes.object,
     filterDefaultValues: PropTypes.object,
-    filters: PropTypes.element,
+    filters: PropTypes.oneOfType([
+        PropTypes.element,
+        PropTypes.arrayOf(PropTypes.element),
+    ]),
     // @ts-ignore-line
     pagination: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     perPage: PropTypes.number.isRequired,

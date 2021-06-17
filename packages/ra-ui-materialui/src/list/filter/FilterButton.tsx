@@ -5,6 +5,7 @@ import {
     useRef,
     ReactNode,
     HtmlHTMLAttributes,
+    useContext,
 } from 'react';
 import PropTypes from 'prop-types';
 import Menu from '@material-ui/core/Menu';
@@ -17,6 +18,7 @@ import { useListContext, useResourceContext } from 'ra-core';
 import { FilterButtonMenuItem } from './FilterButtonMenuItem';
 import Button from '../../button/Button';
 import { ClassesOverride } from '../../types';
+import { FilterContext } from '../FilterContext';
 
 const useStyles = makeStyles(
     {
@@ -26,7 +28,13 @@ const useStyles = makeStyles(
 );
 
 const FilterButton = (props: FilterButtonProps): JSX.Element => {
-    const { filters, classes: classesOverride, className, ...rest } = props;
+    const {
+        filters: filtersProp,
+        classes: classesOverride,
+        className,
+        ...rest
+    } = props;
+    const filters = useContext(FilterContext) || filtersProp;
     const resource = useResourceContext(props);
     const { displayedFilters = {}, filterValues, showFilter } = useListContext(
         props
@@ -97,18 +105,18 @@ const FilterButton = (props: FilterButtonProps): JSX.Element => {
 };
 
 const sanitizeRestProps = ({
-    displayedFilters,
-    filterValues,
-    showFilter,
+    displayedFilters = null,
+    filterValues = null,
+    showFilter = null,
     ...rest
 }) => rest;
 
 FilterButton.propTypes = {
     resource: PropTypes.string,
-    filters: PropTypes.arrayOf(PropTypes.node).isRequired,
+    filters: PropTypes.arrayOf(PropTypes.node),
     displayedFilters: PropTypes.object,
-    filterValues: PropTypes.object.isRequired,
-    showFilter: PropTypes.func.isRequired,
+    filterValues: PropTypes.object,
+    showFilter: PropTypes.func,
     classes: PropTypes.object,
     className: PropTypes.string,
 };
@@ -117,10 +125,10 @@ export interface FilterButtonProps extends HtmlHTMLAttributes<HTMLDivElement> {
     classes?: ClassesOverride<typeof useStyles>;
     className?: string;
     resource?: string;
-    filterValues: any;
-    showFilter: (filterName: string, defaultValue: any) => void;
-    displayedFilters: any;
-    filters: ReactNode[];
+    filterValues?: any;
+    showFilter?: (filterName: string, defaultValue: any) => void;
+    displayedFilters?: any;
+    filters?: ReactNode[];
 }
 
 export default FilterButton;

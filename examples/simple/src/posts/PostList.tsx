@@ -14,7 +14,6 @@ import {
     DateField,
     downloadCSV,
     EditButton,
-    Filter,
     List,
     NumberField,
     ReferenceArrayField,
@@ -41,20 +40,15 @@ const QuickFilter = ({ label, source, defaultValue }) => {
     return <Chip className={classes.chip} label={translate(label)} />;
 };
 
-const PostFilter = props => (
-    <Filter {...props}>
-        <SearchInput source="q" alwaysOn />
-        <TextInput
-            source="title"
-            defaultValue="Qui tempore rerum et voluptates"
-        />
-        <QuickFilter
-            label="resources.posts.fields.commentable"
-            source="commentable"
-            defaultValue
-        />
-    </Filter>
-);
+const postFilter = [
+    <SearchInput source="q" alwaysOn />,
+    <TextInput source="title" defaultValue="Qui tempore rerum et voluptates" />,
+    <QuickFilter
+        label="resources.posts.fields.commentable"
+        source="commentable"
+        defaultValue
+    />,
+];
 
 const exporter = posts => {
     const data = posts.map(post => ({
@@ -126,7 +120,7 @@ const PostList = props => {
         <List
             {...props}
             bulkActionButtons={<PostListBulkActions />}
-            filters={<PostFilter />}
+            filters={postFilter}
             sort={{ field: 'published_at', order: 'DESC' }}
             exporter={exporter}
         >
