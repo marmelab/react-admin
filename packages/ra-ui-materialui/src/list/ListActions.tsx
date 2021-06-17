@@ -23,28 +23,15 @@ import { CreateButton, ExportButton } from '../button';
  * use it in the `actions` prop to pass a custom component.
  *
  * @example
+ *     import { cloneElement } from 'react';
  *     import Button from '@material-ui/core/Button';
  *     import { TopToolbar, List, CreateButton, ExportButton } from 'react-admin';
- *     const {
- *          currentSort,
- *          resource,
- *          filterValues,
- *          hasCreate,
- *          basePath,
- *          selectedIds,
- *          showFilter,
- *          total,
- *     } = useListContext();
  *
- *     const PostListActions = ({ basePath }) => (
+ *     const PostListActions = ({ basePath, filters }) => (
  *         <TopToolbar>
- *             <CreateButton basePath={basePath} />
- *             <ExportButton
- *                 disabled={total === 0}
- *                 resource={resource}
- *                 sort={currentSort}
- *                 filterValues={filterValues}
- *             />
+ *             { cloneElement(filters, { context: 'button' }) }
+ *             <CreateButton/>
+ *             <ExportButton/>
  *             // Add your custom actions here //
  *             <Button onClick={customAction}>Custom Action</Button>
  *         </TopToolbar>

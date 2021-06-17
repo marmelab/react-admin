@@ -133,8 +133,7 @@ import {
     CreateButton,
     ExportButton,
     Button,
-    sanitizeListRestProps,
-    useListContext
+    sanitizeListRestProps    
 } from 'react-admin';
 import IconEvent from '@material-ui/icons/Event';
 
