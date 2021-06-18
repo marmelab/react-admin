@@ -1211,13 +1211,13 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admi
 </ArrayInput>
 ```
 
-Furthermore, if you want to customize the label displayed for each item, you can pass a function to `SimpleFormIterator` via the `labelFn` prop.
+Furthermore, if you want to customize the label displayed for each item, you can pass a function to `SimpleFormIterator` via the `getItemLabel` prop.
 
 ```jsx
 import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admin';
 
 <ArrayInput source="backlinks">
-    <SimpleFormIterator labelFn={(index) => `${index + 1}. link`}>
+    <SimpleFormIterator getItemLabel={(index) => `${index + 1}. link`}>
         <DateInput source="date" />
         <TextInput source="url" />
     </SimpleFormIterator>

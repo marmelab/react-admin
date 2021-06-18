@@ -511,7 +511,7 @@ describe('<SimpleFormIterator />', () => {
                         >
                             <ArrayInput source="emails">
                                 <SimpleFormIterator
-                                    labelFn={index => `3.${index}`}
+                                    getItemLabel={index => `3.${index}`}
                                 >
                                     <TextInput source="email" />
                                 </SimpleFormIterator>
