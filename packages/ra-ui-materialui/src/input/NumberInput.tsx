@@ -79,15 +79,12 @@ const NumberInput: FunctionComponent<NumberInputProps> = ({
                 />
             }
             label={
-                label !== '' &&
-                label !== false && (
-                    <FieldTitle
-                        label={label}
-                        source={source}
-                        resource={resource}
-                        isRequired={isRequired}
-                    />
-                )
+                <FieldTitle
+                    label={label}
+                    source={source}
+                    resource={resource}
+                    isRequired={isRequired}
+                />
             }
             margin={margin}
             inputProps={inputProps}
