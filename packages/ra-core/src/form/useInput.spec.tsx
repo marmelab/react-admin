@@ -2,9 +2,10 @@ import * as React from 'react';
 import { FunctionComponent, ReactElement } from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
-
+import FormWithRedirect from './FormWithRedirect';
 import useInput, { InputProps } from './useInput';
 import { required } from './validate';
+import { renderWithRedux } from '../../../ra-test/esm';
 
 const Input: FunctionComponent<
     { children: (props: any) => ReactElement } & InputProps
@@ -115,5 +116,123 @@ describe('useInput', () => {
         input.blur();
         expect(handleBlur).toHaveBeenCalled();
         expect(formApi.getState().active).toBeUndefined();
+    });
+
+    it('applies the defaultValue when input does not have a value', () => {
+        const { queryByDisplayValue } = renderWithRedux(
+            <FormWithRedirect
+                onSubmit={jest.fn()}
+                render={() => {
+                    return (
+                        <Input
+                            source="title"
+                            resource="posts"
+                            defaultValue="foo"
+                        >
+                            {({ id, input }) => {
+                                return (
+                                    <input
+                                        type="text"
+                                        id={id}
+                                        aria-label="Title"
+                                        {...input}
+                                    />
+                                );
+                            }}
+                        </Input>
+                    );
+                }}
+            />
+        );
+        expect(queryByDisplayValue('foo')).not.toBeNull();
+    });
+
+    it('does not apply the defaultValue when input has a value of 0', () => {
+        const { queryByDisplayValue } = renderWithRedux(
+            <FormWithRedirect
+                onSubmit={jest.fn()}
+                record={{ id: 1, views: 0 }}
+                render={() => {
+                    return (
+                        <Input
+                            source="views"
+                            resource="posts"
+                            defaultValue={99}
+                        >
+                            {({ id, input }) => {
+                                return (
+                                    <input
+                                        type="number"
+                                        id={id}
+                                        aria-label="Views"
+                                        {...input}
+                                    />
+                                );
+                            }}
+                        </Input>
+                    );
+                }}
+            />
+        );
+        expect(queryByDisplayValue('99')).toBeNull();
+    });
+
+    it('applies the initialValue when input does not have a value', () => {
+        const { queryByDisplayValue } = renderWithRedux(
+            <FormWithRedirect
+                onSubmit={jest.fn()}
+                render={() => {
+                    return (
+                        <Input
+                            source="title"
+                            resource="posts"
+                            initialValue="foo"
+                        >
+                            {({ id, input }) => {
+                                return (
+                                    <input
+                                        type="text"
+                                        id={id}
+                                        aria-label="Title"
+                                        {...input}
+                                    />
+                                );
+                            }}
+                        </Input>
+                    );
+                }}
+            />
+        );
+        expect(queryByDisplayValue('foo')).not.toBeNull();
+    });
+
+    it('does not apply the initialValue when input has a value of 0', () => {
+        const { queryByDisplayValue } = renderWithRedux(
+            <FormWithRedirect
+                onSubmit={jest.fn()}
+                record={{ id: 1, views: 0 }}
+                render={() => {
+                    return (
+                        <Input
+                            source="views"
+                            resource="posts"
+                            initialValue={99}
+                        >
+                            {({ id, input }) => {
+                                return (
+                                    <input
+                                        type="number"
+                                        id={id}
+                                        aria-label="Views"
+                                        {...input}
+                                    />
+                                );
+                            }}
+                        </Input>
+                    );
+                }}
+            />
+        );
+        expect(queryByDisplayValue('99')).toBeNull();
     });
 });
