@@ -1,6 +1,6 @@
 {
     "name": "ra-test",
-    "version": "3.16.2",
+    "version": "3.16.3",
     "description": "Test utilities for react-admin, a frontend Framework for building admin applications on top of REST services, using ES6, React",
     "files": [
         "*.md",
@@ -39,7 +39,7 @@
         "final-form": "^4.20.2",
         "history": "^4.7.2",
         "ignore-styles": "~5.0.1",
-        "ra-core": "^3.16.2",
+        "ra-core": "^3.16.3",
         "react": "^17.0.0",
         "react-dom": "^17.0.0",
         "react-redux": "^7.1.0",

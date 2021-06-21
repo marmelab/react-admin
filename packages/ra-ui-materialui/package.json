@@ -1,6 +1,6 @@
 {
     "name": "ra-ui-materialui",
-    "version": "3.16.2",
+    "version": "3.16.3",
     "description": "UI Components for react-admin with MaterialUI",
     "files": [
         "*.md",
@@ -36,8 +36,8 @@
         "final-form": "^4.20.2",
         "final-form-arrays": "^3.0.2",
         "ignore-styles": "~5.0.1",
-        "ra-core": "^3.16.2",
-        "ra-test": "^3.16.2",
+        "ra-core": "^3.16.3",
+        "ra-test": "^3.16.3",
         "react": "^17.0.0",
         "react-dom": "^17.0.0",
         "react-final-form": "^6.5.2",
