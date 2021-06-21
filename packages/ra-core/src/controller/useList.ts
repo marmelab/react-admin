@@ -9,7 +9,9 @@ import useSelectionState from './useSelectionState';
 import { ListControllerProps } from '.';
 
 /**
- * Hook that applies list filtering, sorting and pagination on the provided data, either in memory or through the provided function.
+ * Handle filtering, sorting and pagination on local data.
+ *
+ * Returns the data and callbacks expected by <ListContext>.
  *
  * @example
  * const data = [
@@ -17,11 +19,12 @@ import { ListControllerProps } from '.';
  *     { id: 2, name: 'Sylvester' },
  *     { id: 3, name: 'Jean-Claude' },
  * ]
+ * const ids = [1, 2, 3];
  *
  * const MyComponent = () => {
  *     const listContext = useList({
- *         ids: providedIds,
- *         data: providedData,
+ *         initialData: data,
+ *         initialIds: ids,
  *         basePath: '/resource';
  *         resource: 'resource';
  *     });
@@ -36,8 +39,8 @@ import { ListControllerProps } from '.';
  * };
  *
  * @param {UseListOptions} props Also optionally accepts all the ListController props
- * @param {Record[]} props.data An array of records
- * @param {Identifier[]} props.ids An array of the record identifiers
+ * @param {Record[]} props.initialData An array of records
+ * @param {Identifier[]} props.initialIds An array of the record identifiers
  * @param {Boolean} props.loaded: A boolean indicating whether the data has been loaded at least once
  * @param {Boolean} props.loading: A boolean indicating whether the data is being loaded
  * @param {Error | String} props.error: Optional. The error if any occured while loading the data
