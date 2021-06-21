@@ -92,6 +92,36 @@ The title can be either a string or an element of your own.
 
 You can replace the list of default actions by your own element using the `actions` prop:
 
+```jsx
+import * as React from 'react';
+import { cloneElement } from 'react';
+import { List, ListActions, Button } from 'react-admin';
+import IconEvent from '@material-ui/icons/Event';
+
+const ListActions = (props) => (
+    <TopToolbar>
+        {cloneElement(props.filters, { context: 'button' })}
+        <CreateButton/>
+        <ExportButton/>
+        {/* Add your custom actions */}
+        <Button
+            onClick={() => { alert('Your custom action'); }}
+            label="Show calendar"
+        >
+            <IconEvent/>
+        </Button>
+    </TopToolbar>
+);
+
+export const PostList = (props) => (
+        <List {...props} actions={<ListActions/>}>
+          ...
+        </List>
+);
+```
+
+This allows you to further control how the default actions behave. For example, you could disable the `<ExportButton>` when the list is empty:
+
 {% raw %}
 ```jsx
 import * as React from 'react';
@@ -103,46 +133,25 @@ import {
     CreateButton,
     ExportButton,
     Button,
-    sanitizeListRestProps,
+    sanitizeListRestProps    
 } from 'react-admin';
 import IconEvent from '@material-ui/icons/Event';
 
 const ListActions = (props) => {
     const {
         className,
-        exporter,
         filters,
         maxResults,
         ...rest
     } = props;
     const {
-        currentSort,
-        resource,
-        displayedFilters,
-        filterValues,
-        hasCreate,
-        basePath,
-        selectedIds,
-        showFilter,
         total,
     } = useListContext();
     return (
         <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
-            {filters && cloneElement(filters, {
-                resource,
-                showFilter,
-                displayedFilters,
-                filterValues,
-                context: 'button',
-            })}
-            <CreateButton basePath={basePath} />
-            <ExportButton
-                disabled={total === 0}
-                resource={resource}
-                sort={currentSort}
-                filterValues={filterValues}
-                maxResults={maxResults}
-            />
+            {cloneElement(filters, { context: 'button' })}
+            <CreateButton />
+            <ExportButton disabled={total === 0} maxResults={maxResults} />
             {/* Add your custom actions */}
             <Button
                 onClick={() => { alert('Your custom action'); }}
