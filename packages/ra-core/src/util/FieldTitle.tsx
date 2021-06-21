@@ -19,7 +19,7 @@ export const FieldTitle: FunctionComponent<Props> = ({
 }) => {
     const translate = useTranslate();
 
-    if (label === false && label === '') {
+    if (label === false || label === '') {
         return null;
     }
 
