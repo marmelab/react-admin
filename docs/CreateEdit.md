@@ -37,7 +37,7 @@ export default App;
 
 // in src/posts.js
 import * as React from "react";
-import { Create, Edit, SimpleForm, TextInput, DateInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton } from 'react-admin';
+import { Create, Edit, SimpleForm, TextInput, DateInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton, required } from 'react-admin';
 import RichTextInput from 'ra-input-rich-text';
 
 export const PostCreate = (props) => (
@@ -145,15 +145,6 @@ export const PostEdit = (props) => (
         ...
     </Edit>
 );
-```
-
-React Admin also updates the page title based on this `title` prop, as long as it's a string. If you're passing an element as `title`, like in the example above, you have to update the page title yourself. React-admin exports a hook called `useDocumentTitle` to make this simple:
-
-```jsx
-const PostTitle = ({ record }) => {
-    useDocumentTitle(record ?? record.title);
-    return <span>Post {record ? `"${record.title}"` : ''}</span>;
-};
 ```
 
 ### Actions

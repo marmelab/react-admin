@@ -28,7 +28,7 @@ export interface ListProps extends ResourceComponentProps {
     perPage?: number;
     sort?: SortPayload;
     syncWithLocation?: boolean;
-    title?: string | ReactElement | false;
+    title?: string | ReactElement;
 }
 
 export interface EditProps extends ResourceComponentPropsWithId {

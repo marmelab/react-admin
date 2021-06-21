@@ -54,7 +54,7 @@ const AutocompleteSuggestionItem: FunctionComponent<
     const classes = useStyles(props);
     const isHighlighted = highlightedIndex === index;
     const suggestionText =
-        suggestion?.id === createValue
+        'id' in suggestion && suggestion.id === createValue
             ? suggestion.name
             : getSuggestionText(suggestion);
     let matches;

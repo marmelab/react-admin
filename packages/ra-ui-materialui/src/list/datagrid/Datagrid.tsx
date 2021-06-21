@@ -354,8 +354,8 @@ Datagrid.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
     currentSort: PropTypes.exact({
-        field: PropTypes.string.isRequired,
-        order: PropTypes.string.isRequired,
+        field: PropTypes.string,
+        order: PropTypes.string,
     }),
     data: PropTypes.any,
     empty: PropTypes.element,

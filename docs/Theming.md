@@ -946,6 +946,7 @@ As the filter values are taken from the URL, you can link to a pre-filtered list
 
 For instance, to include a menu to a list of published posts:
 
+{% raw %}
 ```jsx
 <MenuItemLink
     to={{
@@ -956,6 +957,7 @@ For instance, to include a menu to a list of published posts:
     leftIcon={<BookIcon />}
 />
 ```
+{% endraw %}
 
 ### Menu To A List Without Filters
 

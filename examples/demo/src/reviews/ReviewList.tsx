@@ -107,7 +107,8 @@ const ReviewList: FC<ListProps> = props => {
                                     <ReviewEdit
                                         id={(match as any).params.id}
                                         onCancel={handleClose}
-                                        {...props}
+                                        resource={props.resource}
+                                        basePath={props.basePath}
                                     />
                                 ) : null}
                             </Drawer>
