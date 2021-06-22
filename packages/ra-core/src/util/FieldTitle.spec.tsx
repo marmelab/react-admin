@@ -89,7 +89,7 @@ describe('FieldTitle', () => {
     });
 
     it('should return null if label is empty string', () => {
-        const { container } = render(<FieldTitle label="hhh" isRequired />);
+        const { container } = render(<FieldTitle label="" isRequired />);
         expect(container.firstChild).toBeNull();
     });
 });
