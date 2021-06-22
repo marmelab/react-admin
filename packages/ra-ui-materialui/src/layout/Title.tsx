@@ -3,13 +3,12 @@ import { FC, cloneElement, ReactElement } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import { useTranslate, Record, warning } from 'ra-core';
-import { TitleText } from './TitleText';
 
 export interface TitleProps {
     className?: string;
     defaultTitle?: string;
     record?: Record;
-    title?: string | ReactElement | false;
+    title?: string | ReactElement;
 }
 
 const Title: FC<TitleProps> = ({
@@ -27,18 +26,16 @@ const Title: FC<TitleProps> = ({
 
     if (!container) return null;
 
-    if (typeof title === 'boolean' && !title) return null;
-
     warning(!defaultTitle && !title, 'Missing title prop in <Title> element');
 
     const titleElement = !title ? (
-        <TitleText className={className} {...rest} text={defaultTitle} />
+        <span className={className} {...rest}>
+            {defaultTitle}
+        </span>
     ) : typeof title === 'string' ? (
-        <TitleText
-            className={className}
-            {...rest}
-            text={translate(title, { _: title })}
-        />
+        <span className={className} {...rest}>
+            {translate(title, { _: title })}
+        </span>
     ) : (
         cloneElement(title, { className, record, ...rest })
     );
@@ -48,14 +45,12 @@ const Title: FC<TitleProps> = ({
 export const TitlePropType = PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.element,
-    PropTypes.bool,
 ]);
 
 Title.propTypes = {
     defaultTitle: PropTypes.string,
     className: PropTypes.string,
     record: PropTypes.any,
-    // @ts-ignore
     title: TitlePropType,
 };
 

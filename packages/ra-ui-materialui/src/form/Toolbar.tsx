@@ -19,6 +19,7 @@ import { FormRenderProps } from 'react-final-form';
 
 import { SaveButton, DeleteButton } from '../button';
 import { ClassesOverride } from '../types';
+import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
 
 const useStyles = makeStyles(
     theme => ({
@@ -229,7 +230,7 @@ export interface ToolbarProps<RecordType extends Record = Record>
     /** @deprecated use mutationMode: undoable instead */
     undoable?: boolean;
     validating?: boolean;
-    width?: string;
+    width?: Breakpoint;
 }
 
 Toolbar.propTypes = {
@@ -252,7 +253,7 @@ Toolbar.propTypes = {
     submitOnEnter: PropTypes.bool,
     undoable: PropTypes.bool,
     validating: PropTypes.bool,
-    width: PropTypes.string,
+    width: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
 };
 
 Toolbar.defaultProps = {

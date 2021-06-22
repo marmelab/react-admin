@@ -570,6 +570,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                                         }
                                         filterValue={filterValue}
                                         getSuggestionText={getChoiceText}
+                                        createValue={createValue}
                                         {...getItemProps({
                                             item: suggestion,
                                         })}
