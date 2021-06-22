@@ -543,9 +543,6 @@ import { RichTextField } from 'react-admin';
 ### `<TextField>`
 
 The simplest of all fields, `<TextField>` simply displays the record property as plain text.
-
-You can hide label by passing `label={false}`.
-
 ```jsx
 import { TextField } from 'react-admin';
 
