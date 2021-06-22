@@ -54,11 +54,11 @@ const useReferenceArrayFieldController = (
     const {
         basePath,
         filter = defaultFilter,
-        page: initialPage = 1,
-        perPage: initialPerPage = 1000,
+        page = 1,
+        perPage = 1000,
         record,
         reference,
-        sort: initialSort = defaultSort,
+        sort = defaultSort,
         source,
     } = props;
     const resource = useResourceContext(props);
@@ -87,15 +87,15 @@ const useReferenceArrayFieldController = (
     );
 
     const listProps = useList({
+        data,
         error,
         filter,
-        initialData: data,
-        initialIds: ids,
-        initialPage,
-        initialPerPage,
-        initialSort,
-        loading,
+        ids,
         loaded,
+        loading,
+        page,
+        perPage,
+        sort,
     });
 
     return {

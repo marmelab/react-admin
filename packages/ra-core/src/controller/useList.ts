@@ -2,7 +2,13 @@ import { useCallback, useEffect, useRef } from 'react';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import { indexById, removeEmpty, useSafeSetState } from '../util';
-import { Identifier, Record, RecordMap, SortPayload } from '../types';
+import {
+    FilterPayload,
+    Identifier,
+    Record,
+    RecordMap,
+    SortPayload,
+} from '../types';
 import usePaginationState from './usePaginationState';
 import useSortState from './useSortState';
 import useSelectionState from './useSelectionState';
@@ -38,16 +44,16 @@ import { ListControllerProps } from '.';
  *     );
  * };
  *
- * @param {UseListOptions} props Also optionally accepts all the ListController props
- * @param {Record[]} props.initialData An array of records
- * @param {Identifier[]} props.initialIds An array of the record identifiers
+ * @param {UseListOptions} props
+ * @param {Record[]} props.data An array of records
+ * @param {Identifier[]} props.ids An array of the record identifiers
  * @param {Boolean} props.loaded: A boolean indicating whether the data has been loaded at least once
  * @param {Boolean} props.loading: A boolean indicating whether the data is being loaded
  * @param {Error | String} props.error: Optional. The error if any occured while loading the data
  * @param {Object} props.filter: Optional. An object containing the filters applied on the data
- * @param {Number} props.initialPage: Optional. The initial page index
- * @param {Number} props.initialPerPage: Optional. The initial page size
- * @param {SortPayload} props.initialSort: Optional. The initial sort (field and order)
+ * @param {Number} props.page: Optional. The initial page index
+ * @param {Number} props.perPage: Optional. The initial page size
+ * @param {SortPayload} props.sort: Optional. The initial sort (field and order)
  */
 export const useList = (props: UseListOptions): UseListValue => {
     const {
@@ -55,14 +61,11 @@ export const useList = (props: UseListOptions): UseListValue => {
         error,
         filter = defaultFilter,
         ids,
-        initialData,
-        initialIds,
         loaded,
         loading,
-        initialPage = 1,
-        initialPerPage = 1000,
-        initialSort = defaultSort,
-        total,
+        page: initialPage = 1,
+        perPage: initialPerPage = 1000,
+        sort: initialSort = defaultSort,
     } = props;
     const [loadingState, setLoadingState] = useSafeSetState<boolean>(loading);
     const [loadedState, setLoadedState] = useSafeSetState<boolean>(loaded);
@@ -70,10 +73,18 @@ export const useList = (props: UseListOptions): UseListValue => {
     const [finalItems, setFinalItems] = useSafeSetState<{
         data: RecordMap;
         ids: Identifier[];
-    }>(() => ({
-        data: indexById(initialData),
-        ids: initialIds,
-    }));
+    }>(() => {
+        return {
+            data: ids.reduce((acc, id) => {
+                const record = data.find(r => !!r && r.id === id);
+                if (record) {
+                    acc[id] = record;
+                }
+                return acc;
+            }, {}),
+            ids,
+        };
+    });
 
     // pagination logic
     const { page, setPage, perPage, setPerPage } = usePaginationState({
@@ -156,13 +167,9 @@ export const useList = (props: UseListOptions): UseListValue => {
     // We do all the data processing (filtering, sorting, paginating) client-side
     useEffect(() => {
         if (!loaded) return;
-        // Assume that if setFilters is provided then so are methods for pagination and sorting
-        if (props.setFilters) {
-            return;
-        }
 
         // 1. filter
-        let tempData = initialData.filter(record =>
+        let tempData = Object.values(data).filter(record =>
             Object.entries(filterValues).every(([filterName, filterValue]) => {
                 const recordValue = get(record, filterName);
                 const result = Array.isArray(recordValue)
@@ -199,12 +206,11 @@ export const useList = (props: UseListOptions): UseListValue => {
             ids: finalIds,
         });
     }, [
-        initialData,
+        data,
         filterValues,
         loaded,
         page,
         perPage,
-        props.setFilters,
         setFinalItems,
         sort.field,
         sort.order,
@@ -223,43 +229,40 @@ export const useList = (props: UseListOptions): UseListValue => {
     }, [loading, loadingState, setLoadingState]);
 
     return {
-        currentSort: props.currentSort || sort,
-        data: data || finalItems.data,
+        currentSort: sort,
+        data: finalItems.data,
         error,
-        displayedFilters: props.displayedFilters || displayedFilters,
-        filterValues: props.filterValues || filterValues,
-        hideFilter: props.hideFilter || hideFilter,
-        ids: ids || finalItems.ids,
+        displayedFilters,
+        filterValues,
+        hideFilter,
+        ids: finalItems.ids,
         loaded: loadedState,
         loading: loadingState,
-        onSelect: props.onSelect || onSelect,
-        onToggleItem: props.onToggleItem || onToggleItem,
-        onUnselectItems: props.onUnselectItems || onUnselectItems,
-        page: props.page || page,
-        perPage: props.perPage || perPage,
-        selectedIds: props.selectedIds || selectedIds,
-        setFilters: props.setFilters || setFilters,
-        setPage: props.setPage || setPage,
-        setPerPage: props.setPerPage || setPerPage,
-        setSort: props.setSort || setSort,
-        showFilter: props.showFilter || showFilter,
-        total: total || finalItems.ids.length,
+        onSelect,
+        onToggleItem,
+        onUnselectItems,
+        page,
+        perPage,
+        selectedIds,
+        setFilters,
+        setPage,
+        setPerPage,
+        setSort,
+        showFilter,
+        total: finalItems.ids.length,
     };
 };
 
-export interface UseListOptions
-    extends Partial<
-        Omit<ListControllerProps, 'resource' | 'basePath' | 'refetch'>
-    > {
+export interface UseListOptions<RecordType extends Record = Record> {
+    data: RecordType[];
+    ids: Identifier[];
     error?: any;
-    filter?: any;
-    initialPage?: number;
-    initialPerPage?: number;
-    initialSort?: SortPayload;
-    initialData: Record[];
-    initialIds: Identifier[];
-    loaded: boolean;
+    filter?: FilterPayload;
     loading: boolean;
+    loaded: boolean;
+    page?: number;
+    perPage?: number;
+    sort?: SortPayload;
 }
 
 export type UseListValue = Omit<

@@ -24,12 +24,12 @@ describe('<useList />', () => {
 
         render(
             <UseList
-                initialData={data}
-                initialIds={ids}
+                data={data}
+                ids={ids}
                 loaded
                 loading
                 filter={{ title: 'world' }}
-                initialSort={{ field: 'id', order: 'ASC' }}
+                sort={{ field: 'id', order: 'ASC' }}
                 callback={callback}
             />
         );
@@ -60,12 +60,12 @@ describe('<useList />', () => {
 
         render(
             <UseList
-                initialData={data}
-                initialIds={ids}
+                data={data}
+                ids={ids}
                 loaded
                 loading
                 filter={{ items: ['two', 'four', 'five'] }}
-                initialSort={{ field: 'id', order: 'ASC' }}
+                sort={{ field: 'id', order: 'ASC' }}
                 callback={callback}
             />
         );
@@ -98,11 +98,11 @@ describe('<useList />', () => {
 
         render(
             <UseList
-                initialData={data}
-                initialIds={ids}
+                data={data}
+                ids={ids}
                 loaded
                 loading
-                initialSort={{ field: 'title', order: 'DESC' }}
+                sort={{ field: 'title', order: 'DESC' }}
                 callback={callback}
             />
         );
@@ -139,13 +139,13 @@ describe('<useList />', () => {
 
         render(
             <UseList
-                initialData={data}
-                initialIds={ids}
+                data={data}
+                ids={ids}
                 loaded
                 loading
-                initialSort={{ field: 'id', order: 'ASC' }}
-                initialPage={2}
-                initialPerPage={5}
+                sort={{ field: 'id', order: 'ASC' }}
+                page={2}
+                perPage={5}
                 callback={callback}
             />
         );
