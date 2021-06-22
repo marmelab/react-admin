@@ -73,12 +73,10 @@ export const useList = (props: UseListOptions): UseListValue => {
     const [finalItems, setFinalItems] = useSafeSetState<{
         data: RecordMap;
         ids: Identifier[];
-    }>(() => {
-        return {
-            data: indexById(data),
-            ids,
-        };
-    });
+    }>(() => ({
+        data: indexById(data),
+        ids,
+    }));
 
     // pagination logic
     const { page, setPage, perPage, setPerPage } = usePaginationState({
