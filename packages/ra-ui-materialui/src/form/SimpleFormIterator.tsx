@@ -1,27 +1,26 @@
+import Button from '@material-ui/core/Button';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import AddIcon from '@material-ui/icons/AddCircleOutline';
+import CloseIcon from '@material-ui/icons/RemoveCircleOutline';
+import classNames from 'classnames';
+import get from 'lodash/get';
+import PropTypes from 'prop-types';
+import { Record, useTranslate, ValidationError } from 'ra-core';
 import * as React from 'react';
 import {
     Children,
     cloneElement,
-    isValidElement,
-    useRef,
-    ReactElement,
     FC,
+    isValidElement,
+    ReactElement,
+    useRef,
 } from 'react';
-import PropTypes from 'prop-types';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import get from 'lodash/get';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import { makeStyles } from '@material-ui/core/styles';
-import CloseIcon from '@material-ui/icons/RemoveCircleOutline';
-import AddIcon from '@material-ui/icons/AddCircleOutline';
-import { useTranslate, ValidationError, Record } from 'ra-core';
-import classNames from 'classnames';
 import { FieldArrayRenderProps } from 'react-final-form-arrays';
-
-import FormInput from './FormInput';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { ClassesOverride } from '../types';
+import FormInput from './FormInput';
 
 const useStyles = makeStyles(
     theme => ({
@@ -83,6 +82,8 @@ const DefaultAddButton = props => {
     );
 };
 
+const DefaultLabelFn = index => index + 1;
+
 const DefaultRemoveButton = props => {
     const classes = useStyles(props);
     const translate = useTranslate();
@@ -113,6 +114,7 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
         margin,
         TransitionProps,
         defaultValue,
+        getItemLabel = DefaultLabelFn,
     } = props;
     const classes = useStyles(props);
     const nodeRef = useRef(null);
@@ -197,7 +199,7 @@ const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
                                 variant="body1"
                                 className={classes.index}
                             >
-                                {index + 1}
+                                {getItemLabel(index)}
                             </Typography>
                             <section className={classes.form}>
                                 {Children.map(
@@ -326,6 +328,7 @@ export interface SimpleFormIteratorProps
     disabled?: boolean;
     disableAdd?: boolean;
     disableRemove?: boolean | DisableRemoveFunction;
+    getItemLabel?: (index: number) => string;
     margin?: 'none' | 'normal' | 'dense';
     meta?: {
         // the type defined in FieldArrayRenderProps says error is boolean, which is wrong.
