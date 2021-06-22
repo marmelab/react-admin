@@ -194,7 +194,8 @@ const useStyles = makeStyles(
 
 export interface ListViewProps
     extends Omit<ListProps, 'basePath' | 'hasCreate' | 'perPage' | 'resource'>,
-        ListControllerProps {
+        // Partial because we now get those props via context
+        Partial<ListControllerProps> {
     children: ReactElement;
 }
 

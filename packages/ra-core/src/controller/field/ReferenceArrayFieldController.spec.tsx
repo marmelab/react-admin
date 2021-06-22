@@ -200,7 +200,7 @@ describe('<ReferenceArrayFieldController />', () => {
         });
     });
 
-    it('should filter string data based on the filter props', () => {
+    it('should filter string data based on the filter props', async () => {
         const children = jest.fn().mockReturnValue('child');
         renderWithRedux(
             <ReferenceArrayFieldController
@@ -225,20 +225,24 @@ describe('<ReferenceArrayFieldController />', () => {
                 },
             }
         );
-        expect(children.mock.calls[0][0]).toMatchObject({
-            basePath: '/bar',
-            currentSort: { field: 'id', order: 'ASC' },
-            loaded: true,
-            loading: true,
-            data: {
-                2: { id: 2, title: 'world' },
-            },
-            ids: [1, 2],
-            error: null,
+        await waitFor(() => {
+            expect(children).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    basePath: '/bar',
+                    currentSort: { field: 'id', order: 'ASC' },
+                    loaded: true,
+                    loading: true,
+                    data: {
+                        2: { id: 2, title: 'world' },
+                    },
+                    ids: [2],
+                    error: null,
+                })
+            );
         });
     });
 
-    it('should filter array data based on the filter props', () => {
+    it('should filter array data based on the filter props', async () => {
         const children = jest.fn().mockReturnValue('child');
         renderWithRedux(
             <ReferenceArrayFieldController
@@ -265,18 +269,22 @@ describe('<ReferenceArrayFieldController />', () => {
                 },
             }
         );
-        expect(children.mock.calls[0][0]).toMatchObject({
-            basePath: '/bar',
-            currentSort: { field: 'id', order: 'ASC' },
-            loaded: true,
-            loading: true,
-            data: {
-                1: { id: 1, items: ['one', 'two'] },
-                3: { id: 3, items: 'four' },
-                4: { id: 4, items: ['five'] },
-            },
-            ids: [1, 2, 3, 4],
-            error: null,
+        await waitFor(() => {
+            expect(children).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    basePath: '/bar',
+                    currentSort: { field: 'id', order: 'ASC' },
+                    loaded: true,
+                    loading: true,
+                    data: {
+                        1: { id: 1, items: ['one', 'two'] },
+                        3: { id: 3, items: 'four' },
+                        4: { id: 4, items: ['five'] },
+                    },
+                    ids: [1, 3, 4],
+                    error: null,
+                })
+            );
         });
     });
 });
