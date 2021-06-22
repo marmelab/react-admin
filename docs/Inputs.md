@@ -2048,13 +2048,11 @@ import { ReferenceInput, SelectInput } from 'react-admin';
 **Tip**: `allowEmpty` is set by default for all Input components passed as `<List filters>`:
 
 ```jsx
-const CommentFilter = (props) => (
-    <Filter {...props}>
-        <ReferenceInput label="Post" source="post_id" reference="posts"> // no need for allowEmpty
-            <SelectInput optionText="title" />
-        </ReferenceInput>
-    </Filter>
-);
+const commentFilters = [
+    <ReferenceInput label="Post" source="post_id" reference="posts"> // no need for allowEmpty
+        <SelectInput optionText="title" />
+    </ReferenceInput>
+];
 ```
 
 You can tweak how this component fetches the possible values using the `perPage`, `sort`, and `filter` props.

@@ -23,6 +23,25 @@ export interface FilterProps {
     variant?: string;
 }
 
+/**
+ * Filter button/form combo
+ *
+ * @example
+ *
+ * const PostFilter = (props) => (
+ *     <Filter {...props}>
+ *         <TextInput label="Search" source="q" alwaysOn />
+ *         <TextInput label="Title" source="title" defaultValue="Hello, World!" />
+ *     </Filter>
+ * );
+ *
+ * export const PostList = (props) => (
+ *     <List {...props} filters={<PostFilter />}>
+ *         ...
+ *     </List>
+ * );
+ *
+ */
 const Filter: FC<FilterProps> = props => {
     const classes = useStyles(props);
     const {

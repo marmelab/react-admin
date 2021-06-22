@@ -1,13 +1,13 @@
 import * as React from 'react';
 import {
+    CreateButton,
+    ExportButton,
+    FilterButton,
     List,
     ListProps,
-    Filter,
     SearchInput,
     SelectInput,
     TopToolbar,
-    CreateButton,
-    ExportButton,
     useGetIdentity,
 } from 'react-admin';
 import { Route } from 'react-router';
@@ -27,7 +27,7 @@ export const DealList = (props: ListProps) => {
                 {...props}
                 perPage={100}
                 sort={{ field: 'index', order: 'ASC' }}
-                filters={<DealFilters />}
+                filters={dealFilters}
                 filterDefaultValues={{ sales_id: identity && identity?.id }}
                 actions={<DealActions />}
                 pagination={false}
@@ -49,24 +49,22 @@ export const DealList = (props: ListProps) => {
     ) : null;
 };
 
-const DealFilters = (props: any) => (
-    <Filter {...props}>
-        <SearchInput source="q" alwaysOn />
-        <OnlyMineInput alwaysOn />
-        <SelectInput source="type" choices={typeChoices} />
-    </Filter>
-);
+const dealFilters = [
+    <SearchInput source="q" alwaysOn />,
+    <OnlyMineInput alwaysOn />,
+    <SelectInput source="type" choices={typeChoices} />,
+];
 
 const useActionStyles = makeStyles(theme => ({
     createButton: {
         marginLeft: theme.spacing(2),
     },
 }));
-const DealActions = (props: any) => {
+const DealActions = () => {
     const classes = useActionStyles();
     return (
         <TopToolbar>
-            <DealFilters context="button" />
+            <FilterButton />
             <ExportButton />
             <CreateButton
                 basePath="/deals"
