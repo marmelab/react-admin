@@ -1915,19 +1915,19 @@ const PostList = props => (
     </MyList>
 );
 
-const MyList = ({children, title, ...props}) => (
+const MyList = ({children, actions, bulkActionButtons, filters, title, ...props}) => (
     <ListBase {...props}>
-        <Title title={props.title}/>
+        <Title title={title}/>
         <ListToolbar
-            filters={props.filters}
-            actions={props.actions}
+            filters={filters}
+            actions={actions}
         />
         <Card>
             <BulkActionsToolbar>
-                {props.bulkActionButtons}
+                {bulkActionButtons}
             </BulkActionsToolbar>
             {cloneElement(children, {
-                hasBulkActions: props.bulkActionButtons !== false,
+                hasBulkActions: bulkActionButtons !== false,
             })}
             <Pagination />
         </Card>
