@@ -449,7 +449,7 @@ const IncreaseLikeButton = ({ record }) => {
         update('likes', record.id, diff, record)
     }
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={loading} onClick={handleClick}>Like</div>;
+    return <button disabled={loading} onClick={handleClick}>Like</button>;
 };
 
 // or set params when calling the hook
@@ -459,7 +459,7 @@ const IncreaseLikeButton = ({ record }) => {
     const diff = { likes: record.likes + 1 };
     const [update, { loading, error }] = useUpdate('likes', record.id, diff, record);
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={loading} onClick={update}>Like</div>;
+    return <button disabled={loading} onClick={update}>Like</button>;
 };
 ```
 
@@ -520,7 +520,7 @@ const DeleteButton = ({ record }) => {
         deleteOne('likes', record.id, record)
     }
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={loading} onClick={handleClick}>Delete</div>;
+    return <button disabled={loading} onClick={handleClick}>Delete</button>;
 };
 
 // set params when calling the hook
@@ -529,7 +529,7 @@ import { useDelete } from 'react-admin';
 const DeleteButton = ({ record }) => {
     const [deleteOne, { loading, error }] = useDelete('likes', record.id, record);
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={loading} onClick={deleteOne}>Delete</div>;
+    return <button disabled={loading} onClick={deleteOne}>Delete</button>;
 };
 ```
 
