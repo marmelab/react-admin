@@ -75,13 +75,7 @@ export const useList = (props: UseListOptions): UseListValue => {
         ids: Identifier[];
     }>(() => {
         return {
-            data: ids.reduce((acc, id) => {
-                const record = data.find(r => !!r && r.id === id);
-                if (record) {
-                    acc[id] = record;
-                }
-                return acc;
-            }, {}),
+            data: indexById(data),
             ids,
         };
     });
@@ -169,7 +163,7 @@ export const useList = (props: UseListOptions): UseListValue => {
         if (!loaded) return;
 
         // 1. filter
-        let tempData = Object.values(data).filter(record =>
+        let tempData = data.filter(record =>
             Object.entries(filterValues).every(([filterName, filterValue]) => {
                 const recordValue = get(record, filterName);
                 const result = Array.isArray(recordValue)
