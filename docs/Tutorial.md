@@ -632,23 +632,21 @@ export const PostEdit = props => (
 
 Let's get back to the post list for a minute. It offers sorting and pagination, but one feature is missing: the ability to search content.
 
-React-admin can use Input components to create a multi-criteria search engine in the list view. First, create a `<Filter>` component just like you would write a `<SimpleForm>` component, using input components as children. Then, add it to the list using the `filters` prop:
+React-admin can use Input components to create a multi-criteria search engine in the list view. Pass an array of such Input components to the List `filters` prop to enable filtering:
 
 ```jsx
 // in src/posts.js
-import { Filter, ReferenceInput, SelectInput, TextInput, List } from 'react-admin';
+import { ReferenceInput, SelectInput, TextInput, List } from 'react-admin';
 
-const PostFilter = (props) => (
-    <Filter {...props}>
-        <TextInput label="Search" source="q" alwaysOn />
-        <ReferenceInput label="User" source="userId" reference="users" allowEmpty>
-            <SelectInput optionText="name" />
-        </ReferenceInput>
-    </Filter>
-);
+const postFilters = [
+    <TextInput source="q" label="Search" alwaysOn />,
+    <ReferenceInput source="userId" label="User" reference="users" allowEmpty>
+        <SelectInput optionText="name" />
+    </ReferenceInput>,
+];
 
 export const PostList = (props) => (
-    <List filters={<PostFilter />} {...props}>
+    <List filters={postFilters} {...props}>
         // ...
     </List>
 );

@@ -5,7 +5,7 @@ import { ListControllerProps } from './useListController';
  * Context to store the result of the useListController() hook.
  *
  * Use the useListContext() hook to read the context. That's what many
- * List components do in react-admin (e.g. <Datagrid>, <Filter>, <Pagination>).
+ * List components do in react-admin (e.g. <Datagrid>, <FilterForm>, <Pagination>).
  *
  * @typedef {Object} ListControllerProps
  * @prop {Object}   data an id-based dictionary of the list data, e.g. { 123: { id: 123, title: 'hello world' }, 456: { ... } }
