@@ -238,7 +238,7 @@ const useStyles = makeStyles(
 CheckboxGroupInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
     className: PropTypes.string,
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     source: PropTypes.string,
     options: PropTypes.object,
     optionText: PropTypes.oneOfType([
