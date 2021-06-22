@@ -137,16 +137,14 @@ const RichTextInput: FunctionComponent<Props> = props => {
             className="ra-rich-text-input"
             margin={margin}
         >
-            {label !== '' && label !== false && (
-                <InputLabel shrink htmlFor={id} className={classes.label}>
-                    <FieldTitle
-                        label={label}
-                        source={source}
-                        resource={resource}
-                        isRequired={isRequired}
-                    />
-                </InputLabel>
-            )}
+            <InputLabel shrink htmlFor={id} className={classes.label}>
+                <FieldTitle
+                    label={label}
+                    source={source}
+                    resource={resource}
+                    isRequired={isRequired}
+                />
+            </InputLabel>
             <div data-testid="quill" ref={divRef} className={variant} />
             <FormHelperText
                 error={!!error}
@@ -163,7 +161,7 @@ const RichTextInput: FunctionComponent<Props> = props => {
 };
 
 RichTextInput.propTypes = {
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     options: PropTypes.object,
     source: PropTypes.string,
     fullWidth: PropTypes.bool,
