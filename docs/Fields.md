@@ -543,6 +543,7 @@ import { RichTextField } from 'react-admin';
 ### `<TextField>`
 
 The simplest of all fields, `<TextField>` simply displays the record property as plain text.
+
 ```jsx
 import { TextField } from 'react-admin';
 
