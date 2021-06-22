@@ -33,7 +33,7 @@ All input components accept the following props:
 | Prop            | Required | Type                      | Default | Description                                                                                                                  |
 | --------------- | -------- | ------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | `source`        | Required | `string`                  | -       | Name of the entity property to use for the input value                                                                       |
-| `label`         | Optional | `string`                  | -       | Input label. In i18n apps, the label is passed to the `translate` function. Defaults to the humanized `source` when omitted. |
+| `label`         | Optional | `string`                  | -       | Input label. In i18n apps, the label is passed to the `translate` function. Defaults to the humanized `source` when omitted. Set `label={false}` to hide the label. |
 | `validate`      | Optional | `Function` &#124; `array` | -       | Validation rules for the current property. See the [Validation Documentation](./CreateEdit.md#validation) for details.       |
 | `helperText`    | Optional | `string`                  | -       | Text to be displayed under the input                                                                                         |
 | `fullWidth`     | Optional | `boolean`                 | `false` | If `true`, the input will expand to fill the form width                                                                      |
