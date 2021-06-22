@@ -7,7 +7,7 @@ import {
     ReactNode,
 } from 'react';
 import PropTypes from 'prop-types';
-import { useListContext } from 'ra-core';
+import { useListContext, useResourceContext } from 'ra-core';
 import { Form, FormRenderProps, FormSpy } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 import classnames from 'classnames';
@@ -23,13 +23,13 @@ export const FilterForm = (props: FilterFormProps) => {
     const {
         classes = {},
         className,
-        resource,
         margin,
         filters,
         variant,
         initialValues,
         ...rest
     } = props;
+    const resource = useResourceContext(props);
     const { displayedFilters = {}, hideFilter } = useListContext(props);
     useEffect(() => {
         filters.forEach((filter: JSX.Element) => {
@@ -126,6 +126,7 @@ const sanitizeRestProps = ({
     modified,
     modifiedSinceLastSubmit,
     pristine,
+    resource,
     setFilters,
     submitError,
     submitErrors,
