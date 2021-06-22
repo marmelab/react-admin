@@ -57,7 +57,10 @@ describe('<FilterForm />', () => {
         fireEvent.change(queryByLabelText('Title'), {
             target: { value: 'foo' },
         });
-        expect(setFilters).toHaveBeenCalledWith({ title: 'foo' });
+        expect(setFilters).toHaveBeenCalledWith(
+            { title: 'foo' },
+            { title: true }
+        );
     });
 
     it('should not change the filter when the user updates an input with an invalid value', () => {
@@ -211,7 +214,7 @@ describe('<FilterForm />', () => {
             ];
 
             expect(
-                mergeInitialValuesWithDefaultValues({ initialValues, filters })
+                mergeInitialValuesWithDefaultValues(initialValues, filters)
             ).toEqual({
                 title: 'initial title',
                 url: 'default url',
