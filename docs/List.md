@@ -1904,31 +1904,32 @@ import {
     ListToolbar,
     BulkActionsToolbar,
     Pagination,
+    Title,
     useListContext,
 } from 'react-admin';
 import Card from '@material-ui/core/Card';
 
 const PostList = props => (
-    <MyList {...props}>
+    <MyList {...props} title="Post List">
         <Datagrid>
             ...
         </Datagrid>
     </MyList>
 );
 
-const MyList = ({children, ...props}) => (
+const MyList = ({children, actions, bulkActionButtons, filters, title, ...props}) => (
     <ListBase {...props}>
-        <h1>{props.title}</h1>
+        <Title title={title}/>
         <ListToolbar
-            filters={props.filters}
-            actions={props.actions}
+            filters={filters}
+            actions={actions}
         />
         <Card>
             <BulkActionsToolbar>
-                {props.bulkActionButtons}
+                {bulkActionButtons}
             </BulkActionsToolbar>
             {cloneElement(children, {
-                hasBulkActions: props.bulkActionButtons !== false,
+                hasBulkActions: bulkActionButtons !== false,
             })}
             <Pagination />
         </Card>
