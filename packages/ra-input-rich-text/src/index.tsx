@@ -161,6 +161,7 @@ const RichTextInput: FunctionComponent<Props> = props => {
 };
 
 RichTextInput.propTypes = {
+    // @ts-ignore
     label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     options: PropTypes.object,
     source: PropTypes.string,
