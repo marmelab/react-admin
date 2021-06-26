@@ -116,7 +116,7 @@ Now the user has logged in, you can use their credentials in the `dataProvider` 
 For instance, to pass the token obtained during login as an `Authorization` header, configure the Data Provider as follows:
 
 ```jsx
-// src/App.jsx
+// src/App.js
 import { fetchUtils, Admin, Resource } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
 
