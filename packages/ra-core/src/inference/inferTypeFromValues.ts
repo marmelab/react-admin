@@ -18,7 +18,7 @@ import {
     valuesAreEmail,
 } from './assertions';
 
-const types = [
+export const InferenceTypes = [
     'array',
     'boolean',
     'date',
@@ -33,9 +33,10 @@ const types = [
     'richText',
     'string',
     'url',
+    'object',
 ] as const;
 
-export type PossibleInferredElementTypes = typeof types[number];
+export type PossibleInferredElementTypes = typeof InferenceTypes[number];
 
 export interface InferredElementDescription {
     type: PossibleInferredElementTypes;
@@ -169,8 +170,7 @@ export const inferTypeFromValues = (
         return { type: 'number', props: { source: name } };
     }
     if (valuesAreObject(values)) {
-        // we need to go deeper
-        // Arbitrarily, choose the first prop of the first object
+        /// Arbitrarily, choose the first prop of the first object
         const propName = Object.keys(values[0]).shift();
         const leafValues = values.map(v => v[propName]);
         return inferTypeFromValues(`${name}.${propName}`, leafValues);

@@ -92,6 +92,36 @@ The title can be either a string or an element of your own.
 
 You can replace the list of default actions by your own element using the `actions` prop:
 
+```jsx
+import * as React from 'react';
+import { cloneElement } from 'react';
+import { List, ListActions, Button } from 'react-admin';
+import IconEvent from '@material-ui/icons/Event';
+
+const ListActions = (props) => (
+    <TopToolbar>
+        {cloneElement(props.filters, { context: 'button' })}
+        <CreateButton/>
+        <ExportButton/>
+        {/* Add your custom actions */}
+        <Button
+            onClick={() => { alert('Your custom action'); }}
+            label="Show calendar"
+        >
+            <IconEvent/>
+        </Button>
+    </TopToolbar>
+);
+
+export const PostList = (props) => (
+        <List {...props} actions={<ListActions/>}>
+          ...
+        </List>
+);
+```
+
+This allows you to further control how the default actions behave. For example, you could disable the `<ExportButton>` when the list is empty:
+
 {% raw %}
 ```jsx
 import * as React from 'react';
@@ -103,46 +133,25 @@ import {
     CreateButton,
     ExportButton,
     Button,
-    sanitizeListRestProps,
+    sanitizeListRestProps    
 } from 'react-admin';
 import IconEvent from '@material-ui/icons/Event';
 
 const ListActions = (props) => {
     const {
         className,
-        exporter,
         filters,
         maxResults,
         ...rest
     } = props;
     const {
-        currentSort,
-        resource,
-        displayedFilters,
-        filterValues,
-        hasCreate,
-        basePath,
-        selectedIds,
-        showFilter,
         total,
     } = useListContext();
     return (
         <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
-            {filters && cloneElement(filters, {
-                resource,
-                showFilter,
-                displayedFilters,
-                filterValues,
-                context: 'button',
-            })}
-            <CreateButton basePath={basePath} />
-            <ExportButton
-                disabled={total === 0}
-                resource={resource}
-                sort={currentSort}
-                filterValues={filterValues}
-                maxResults={maxResults}
-            />
+            {cloneElement(filters, { context: 'button' })}
+            <CreateButton />
+            <ExportButton disabled={total === 0} maxResults={maxResults} />
             {/* Add your custom actions */}
             <Button
                 onClick={() => { alert('Your custom action'); }}
@@ -286,7 +295,7 @@ export const PostList = (props) => (
 );
 ```
 
-**Tip**: React-admin provides 2 components that you can use in `bulkActionButtons`: `<BulkDeleteButton>`, and `<BulkExportButton>`.
+**Tip**: React-admin provides three components that you can use in `bulkActionButtons`: `<BulkDeleteButton>`, `<BulkUpdateButton>`, and `<BulkExportButton>`.
 
 **Tip**: You can also disable bulk actions altogether by passing `false` to the `bulkActionButtons` prop. When using a `Datagrid` inside a `List` with disabled bulk actions, the checkboxes column won't be added.
 
@@ -297,10 +306,55 @@ Bulk action button components receive several props allowing them to perform the
 * `filterValues`: the filter values. This can be useful if you want to apply your action on all items matching the filter.
 * `selectedIds`: the identifiers of the currently selected items.
 
-Here is an example leveraging the `useUpdateMany` hook, which sets the `views` property of all posts to `0`:
+Here is an example of `BulkUpdateButton` usage, which sets the `views` property of all posts to `0` optimistically:
 
 ```jsx
 // in ./ResetViewsButton.js
+import * as React from 'react';
+import { VisibilityOff } from '@material-ui/icons';
+import { BulkUpdateButton } from 'react-admin';
+
+const views = { views: 0 };
+
+const ResetViewsButton = (props) => (
+    <BulkUpdateButton
+        {...props}
+        label="Reset Views"
+        data={views}
+        icon={VisibilityOff}
+    />
+);
+
+export default ResetViewsButton;
+```
+
+You can also implement the same `ResetViewsButton` behind a confirmation dialog by using the [`mutationMode`](./CreateEdit.md#mutationmode) prop:
+
+```diff
+// in ./ResetViewsButton.js
+import * as React from 'react';
+import { VisibilityOff } from '@material-ui/icons';
+import { BulkUpdateButton } from 'react-admin';
+
+const views = { views: 0 };
+
+const ResetViewsButton = (props) => (
+    <BulkUpdateButton
+        {...props}
+        label="Reset Views"
+        data={views}
+        icon={VisibilityOff}
++       mutationMode="pessimistic"
+    />
+);
+
+export default ResetViewsButton;
+```
+
+But let's say you need a customized bulkAction button, here is an example leveraging the `useUpdateMany` hook, which sets the `views` property of all posts to `0`:
+
+```jsx
+// in ./CustomResetViewsButton.js
 import * as React from "react";
 import {
     Button,
@@ -311,7 +365,7 @@ import {
 } from 'react-admin';
 import { VisibilityOff } from '@material-ui/icons';
 
-const ResetViewsButton = ({ selectedIds }) => {
+const CustomResetViewsButton = ({ selectedIds }) => {
     const refresh = useRefresh();
     const notify = useNotify();
     const unselectAll = useUnselectAll();
@@ -340,13 +394,13 @@ const ResetViewsButton = ({ selectedIds }) => {
     );
 };
 
-export default ResetViewsButton;
+export default CustomResetViewsButton;
 ```
 
-But most of the time, bulk actions are mini-applications with a standalone user interface (in a Dialog). Here is the same `ResetViewsAction` implemented behind a confirmation dialog:
+But most of the time, bulk actions are mini-applications with a standalone user interface (in a Dialog). Here is the same `CustomResetViewsAction` implemented behind a confirmation dialog:
 
 ```jsx
-// in ./ResetViewsButton.js
+// in ./CustomResetViewsButton.js
 import * as React from 'react';
 import { Fragment, useState } from 'react';
 import {
@@ -358,7 +412,7 @@ import {
     useUnselectAll,
 } from 'react-admin';
 
-const ResetViewsButton = ({ selectedIds }) => {
+const CustomResetViewsButton = ({ selectedIds }) => {
     const [open, setOpen] = useState(false);
     const refresh = useRefresh();
     const notify = useNotify();
@@ -399,7 +453,7 @@ const ResetViewsButton = ({ selectedIds }) => {
     );
 }
 
-export default ResetViewsButton;
+export default CustomResetViewsButton;
 ```
 
 **Tip**: `<Confirm>` leverages material-ui's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
@@ -411,7 +465,7 @@ export default ResetViewsButton;
 **Tip**: React-admin doesn't use the `<Confirm>` component internally, because deletes and updates are applied locally immediately, then dispatched to the server after a few seconds, unless the user chooses to undo the modification. That's what we call optimistic rendering. You can do the same for the `ResetViewsButton` by setting `undoable: true` in the last argument of `useUpdateMany()`, as follows:
 
 ```diff
-// in ./ResetViewsButton.js
+// in ./CustomResetViewsButton.js
 import * as React from "react";
 import {
     Button,
@@ -423,7 +477,7 @@ import {
 } from 'react-admin';
 import { VisibilityOff } from '@material-ui/icons';
 
-const ResetViewsButton = ({ selectedIds }) => {
+const CustomResetViewsButton = ({ selectedIds }) => {
     const refresh = useRefresh();
     const notify = useNotify();
     const unselectAll = useUnselectAll();
@@ -439,7 +493,7 @@ const ResetViewsButton = ({ selectedIds }) => {
                 unselectAll('posts');
             },
             onFailure: error => notify('Error: posts not updated', 'warning'),
-+           undoable: true
++           mutationMode: 'undoable'
         }
     );
 
@@ -733,25 +787,27 @@ The default value for the `component` prop is `Card`.
 
 ### Synchronize With URL
 
-When a List based component (eg: `PostList`) is passed to the `list` prop of a `<Resource>`, it will automatically synchronize its parameters with the browser URL (using react-router location). However, when used anywhere outside of a `<Resource>`, it won't synchronize, which can be useful when you have multiple lists on a single page for example.
+When a `<List>` based component (eg: `<PostList>`) is passed as a `<Resource list>`, react-admin synchronizes its parameters (sort, pagination, filters) with the query string in the URL (using `react-router` location). It does so by setting the `<List syncWithLocation>` prop by default.
 
-In order to enable the synchronization with the URL, you can set the `syncWithLocation` prop. For example, adding a `List` to an `Edit` page:
+When you use a `<List>` component anywhere else than as `<Resource list>`, `syncWithLocation` isn't enabled, and so `<List>` doesn't synchronize its parameters with the URL - the `<List>` parameters are kept in a local state, independent for each `<List>` instance. This allows to have multiple lists on a single page. The drawback is that a hit on the "back" button doesn't restore the previous list parameters.
+
+You may, however, wish to enable `syncWithLocation` on a `<List>` component that is not a `<Resource list>`. For instance, you may want to display a `<List>` of Posts in a Dashboard, and allow users to use the "back" button to undo a sort, pagination, or filter change on that list. In such cases, set the `syncWithLocation` prop to `true`:
 
 {% raw %}
 ```jsx
-const TagsEdit = (props) => (
-    <>
-        <Edit {...props}>
-            // ...
-        </Edit>
+const Dashboard = () => (
+    <div>
+        // ...
         <ResourceContextProvider value="posts">
-            <List syncWithLocation basePath="/posts" filter={{ tags: [id]}}>
-                <Datagrid>
-                    <TextField source="title" />
-                </Datagrid>
+            <List syncWithLocation basePath="/posts" >
+                <SimpleList
+                    primaryText={record => record.title}
+                    secondaryText={record => `${record.views} views`}
+                    tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+                />
             </List>
         </ResourceContextProvider>
-    </>
+    </div>
 )
 ```
 {% endraw %}
@@ -1103,7 +1159,7 @@ const SegmentFilter = () => (
 
 #### Placing Filters In A Sidebar
 
-You can place these `<FilterList>` anywhere inside a `<List>`. The most common case is to put them in a sidebar that is on the left hand side of the datagrid. You can use the `aside` property for that:
+You can place these `<FilterList>` anywhere inside a `<List>`. The most common case is to put them in a sidebar that is on the left-hand side of the `Datagrid`. You can use the `aside` property for that:
 
 ```jsx
 import * as React from 'react';
@@ -1848,31 +1904,32 @@ import {
     ListToolbar,
     BulkActionsToolbar,
     Pagination,
+    Title,
     useListContext,
 } from 'react-admin';
 import Card from '@material-ui/core/Card';
 
 const PostList = props => (
-    <MyList {...props}>
+    <MyList {...props} title="Post List">
         <Datagrid>
             ...
         </Datagrid>
     </MyList>
 );
 
-const MyList = ({children, ...props}) => (
+const MyList = ({children, actions, bulkActionButtons, filters, title, ...props}) => (
     <ListBase {...props}>
-        <h1>{props.title}</h1>
+        <Title title={title}/>
         <ListToolbar
-            filters={props.filters}
-            actions={props.actions}
+            filters={filters}
+            actions={actions}
         />
         <Card>
             <BulkActionsToolbar>
-                {props.bulkActionButtons}
+                {bulkActionButtons}
             </BulkActionsToolbar>
             {cloneElement(children, {
-                hasBulkActions: props.bulkActionButtons !== false,
+                hasBulkActions: bulkActionButtons !== false,
             })}
             <Pagination />
         </Card>
@@ -1930,6 +1987,7 @@ const {
     basePath, // deduced from the location, useful for action buttons
     defaultTitle, // the translated title based on the resource, e.g. 'Posts'
     resource, // the resource name, deduced from the location. e.g. 'posts'
+    refetch, // a callback to refresh the list data
 } = useListContext();
 ```
 
@@ -1970,7 +2028,7 @@ As you can see, the controller part of the List view is handled by a hook called
 
 ![The `<Datagrid>` component](./img/tutorial_post_list_less_columns.png)
 
-The `Datagrid` component renders a list of records as a table. It is usually used as a descendant of the [`<List>`](#the-list-component) and [`<ReferenceManyField>`](./Fields.md#referencemanyfield) components. Outside of these components, it must be used inside a `ListContext`.
+The `Datagrid` component renders a list of records as a table. It is usually used as a descendant of the [`<List>`](#the-list-component) and [`<ReferenceManyField>`](./Fields.md#referencemanyfield) components. Outside these components, it must be used inside a `ListContext`.
 
 Here are all the props accepted by the component:
 

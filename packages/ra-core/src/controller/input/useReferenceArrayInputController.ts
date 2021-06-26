@@ -240,10 +240,11 @@ export const useReferenceArrayInputController = (
         [queryFilter, defaultFilter, filterToQuery]
     );
 
-    const { data: referenceRecordsFetched, loaded } = useGetMany(
-        reference,
-        idsToFetch || []
-    );
+    const {
+        data: referenceRecordsFetched,
+        loaded,
+        refetch: refetchGetMany,
+    } = useGetMany(reference, idsToFetch || []);
 
     const referenceRecords = referenceRecordsFetched
         ? referenceRecordsFetched.concat(referenceRecordsFromStore)
@@ -256,6 +257,7 @@ export const useReferenceArrayInputController = (
         data: matchingReferences,
         ids: matchingReferencesIds,
         total,
+        refetch: refetchGetMatching,
     } = useGetMatching(
         reference,
         pagination,
@@ -282,6 +284,11 @@ export const useReferenceArrayInputController = (
         translate,
     });
 
+    const refetch = useCallback(() => {
+        refetchGetMany();
+        refetchGetMatching();
+    }, [refetchGetMany, refetchGetMatching]);
+
     return {
         basePath: props.basePath || `/${resource}`,
         choices: dataStatus.choices,
@@ -307,6 +314,7 @@ export const useReferenceArrayInputController = (
         onUnselectItems,
         page,
         perPage,
+        refetch,
         resource,
         selectedIds: input.value,
         setFilter,

@@ -15,6 +15,34 @@ import { ToolbarProps } from '@material-ui/core';
 import TopToolbar from '../layout/TopToolbar';
 import { CreateButton, ExportButton } from '../button';
 
+/**
+ * Action Toolbar for the List view
+ *
+ * Internal component. If you want to add or remove actions for a List view,
+ * write your own ListActions Component. Then, in the <List> component,
+ * use it in the `actions` prop to pass a custom component.
+ *
+ * @example
+ *     import { cloneElement } from 'react';
+ *     import Button from '@material-ui/core/Button';
+ *     import { TopToolbar, List, CreateButton, ExportButton } from 'react-admin';
+ *
+ *     const PostListActions = ({ basePath, filters }) => (
+ *         <TopToolbar>
+ *             { cloneElement(filters, { context: 'button' }) }
+ *             <CreateButton/>
+ *             <ExportButton/>
+ *             // Add your custom actions here //
+ *             <Button onClick={customAction}>Custom Action</Button>
+ *         </TopToolbar>
+ *     );
+ *
+ *     export const PostList = (props) => (
+ *         <List actions={<PostListActions />} {...props}>
+ *             ...
+ *         </List>
+ *     );
+ */
 const ListActions: FC<ListActionsProps> = props => {
     const { className, exporter, filters, ...rest } = props;
     const {

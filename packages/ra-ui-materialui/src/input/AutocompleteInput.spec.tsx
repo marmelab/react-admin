@@ -69,8 +69,8 @@ describe('<AutocompleteInput />', () => {
         expect(queryByDisplayValue('foo')).not.toBeNull();
     });
 
-    it('should use optionValue as value identifier', () => {
-        const { queryByDisplayValue } = render(
+    it('should use optionValue as value identifier', async () => {
+        const { getByLabelText, queryByText, queryByDisplayValue } = render(
             <Form
                 onSubmit={jest.fn()}
                 initialValues={{ role: 2 }}
@@ -78,16 +78,26 @@ describe('<AutocompleteInput />', () => {
                     <AutocompleteInput
                         {...defaultProps}
                         optionValue="foobar"
-                        choices={[{ foobar: 2, name: 'foo' }]}
+                        choices={[
+                            { foobar: 2, name: 'foo' },
+                            { foobar: 3, name: 'bar' },
+                        ]}
                     />
                 )}
             />
         );
         expect(queryByDisplayValue('foo')).not.toBeNull();
+        const input = getByLabelText('resources.users.fields.role', {
+            selector: 'input',
+        });
+        fireEvent.focus(input);
+        await waitFor(() => {
+            expect(queryByText('bar')).not.toBeNull();
+        });
     });
 
-    it('should use optionValue including "." as value identifier', () => {
-        const { queryByDisplayValue } = render(
+    it('should use optionValue including "." as value identifier', async () => {
+        const { getByLabelText, queryByDisplayValue, queryByText } = render(
             <Form
                 onSubmit={jest.fn()}
                 initialValues={{ role: 2 }}
@@ -95,16 +105,26 @@ describe('<AutocompleteInput />', () => {
                     <AutocompleteInput
                         {...defaultProps}
                         optionValue="foobar.id"
-                        choices={[{ foobar: { id: 2 }, name: 'foo' }]}
+                        choices={[
+                            { foobar: { id: 2 }, name: 'foo' },
+                            { foobar: { id: 3 }, name: 'bar' },
+                        ]}
                     />
                 )}
             />
         );
         expect(queryByDisplayValue('foo')).not.toBeNull();
+        const input = getByLabelText('resources.users.fields.role', {
+            selector: 'input',
+        });
+        fireEvent.focus(input);
+        await waitFor(() => {
+            expect(queryByText('bar')).not.toBeNull();
+        });
     });
 
-    it('should use optionText with a string value as text identifier', () => {
-        const { queryByDisplayValue } = render(
+    it('should use optionText with a string value as text identifier', async () => {
+        const { getByLabelText, queryByText, queryByDisplayValue } = render(
             <Form
                 onSubmit={jest.fn()}
                 initialValues={{ role: 2 }}
@@ -112,16 +132,27 @@ describe('<AutocompleteInput />', () => {
                     <AutocompleteInput
                         {...defaultProps}
                         optionText="foobar"
-                        choices={[{ id: 2, foobar: 'foo' }]}
+                        choices={[
+                            { id: 2, foobar: 'foo' },
+                            { id: 3, foobar: 'bar' },
+                        ]}
                     />
                 )}
             />
         );
         expect(queryByDisplayValue('foo')).not.toBeNull();
+
+        const input = getByLabelText('resources.users.fields.role', {
+            selector: 'input',
+        });
+        fireEvent.focus(input);
+        await waitFor(() => {
+            expect(queryByText('bar')).not.toBeNull();
+        });
     });
 
-    it('should use optionText with a string value including "." as text identifier', () => {
-        const { queryByDisplayValue } = render(
+    it('should use optionText with a string value including "." as text identifier', async () => {
+        const { getByLabelText, queryByText, queryByDisplayValue } = render(
             <Form
                 onSubmit={jest.fn()}
                 initialValues={{ role: 2 }}
@@ -129,16 +160,27 @@ describe('<AutocompleteInput />', () => {
                     <AutocompleteInput
                         {...defaultProps}
                         optionText="foobar.name"
-                        choices={[{ id: 2, foobar: { name: 'foo' } }]}
+                        choices={[
+                            { id: 2, foobar: { name: 'foo' } },
+                            { id: 3, foobar: { name: 'bar' } },
+                        ]}
                     />
                 )}
             />
         );
         expect(queryByDisplayValue('foo')).not.toBeNull();
+
+        const input = getByLabelText('resources.users.fields.role', {
+            selector: 'input',
+        });
+        fireEvent.focus(input);
+        await waitFor(() => {
+            expect(queryByText('bar')).not.toBeNull();
+        });
     });
 
-    it('should use optionText with a function value as text identifier', () => {
-        const { queryByDisplayValue } = render(
+    it('should use optionText with a function value as text identifier', async () => {
+        const { getByLabelText, queryByText, queryByDisplayValue } = render(
             <Form
                 onSubmit={jest.fn()}
                 initialValues={{ role: 2 }}
@@ -146,12 +188,23 @@ describe('<AutocompleteInput />', () => {
                     <AutocompleteInput
                         {...defaultProps}
                         optionText={choice => choice.foobar}
-                        choices={[{ id: 2, foobar: 'foo' }]}
+                        choices={[
+                            { id: 2, foobar: 'foo' },
+                            { id: 3, foobar: 'bar' },
+                        ]}
                     />
                 )}
             />
         );
         expect(queryByDisplayValue('foo')).not.toBeNull();
+
+        const input = getByLabelText('resources.users.fields.role', {
+            selector: 'input',
+        });
+        fireEvent.focus(input);
+        await waitFor(() => {
+            expect(queryByText('bar')).not.toBeNull();
+        });
     });
 
     it('should translate the value by default', () => {

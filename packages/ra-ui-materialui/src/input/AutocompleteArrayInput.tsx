@@ -404,10 +404,9 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
                         onKeyDown: handleKeyDown,
                     });
 
-                    const createItem = getCreateItem();
                     const suggestions = [
                         ...getSuggestions(suggestionFilter),
-                        ...(onCreate || create ? [createItem] : []),
+                        ...(onCreate || create ? [getCreateItem()] : []),
                     ];
                     return (
                         <div className={classes.container}>
@@ -512,7 +511,7 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
                                 {suggestions.map((suggestion, index) => (
                                     <AutocompleteSuggestionItem
                                         key={getChoiceValue(suggestion)}
-                                        createValue={createItem.id}
+                                        createValue={createValue}
                                         suggestion={suggestion}
                                         index={index}
                                         highlightedIndex={highlightedIndex}

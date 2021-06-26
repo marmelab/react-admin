@@ -13,9 +13,9 @@ import { DataProviderQuery, Refetch } from './useQueryWithStore';
  *
  * The return value updates according to the request state:
  *
- * - start: { loading: true, loaded: false }
- * - success: { data: [data from response], total: [total from response], loading: false, loaded: true }
- * - error: { error: [error from response], loading: false, loaded: false }
+ * - start: { loading: true, loaded: false, refetch }
+ * - success: { data: [data from response], total: [total from response], loading: false, loaded: true, refetch }
+ * - error: { error: [error from response], loading: false, loaded: false, refetch }
  *
  * @param {Object} query
  * @param {string} query.type The method called on the data provider, e.g. 'getList', 'getOne'. Can also be a custom method if the dataProvider supports is.
@@ -28,7 +28,7 @@ import { DataProviderQuery, Refetch } from './useQueryWithStore';
  * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. (error) => notify(error.message)
  * @param {boolean} options.withDeclarativeSideEffectsSupport Set to true to support legacy side effects e.g. { onSuccess: { refresh: true } }
  *
- * @returns The current request state. Destructure as { data, total, error, loading, loaded }.
+ * @returns The current request state. Destructure as { data, total, error, loading, loaded, refetch }.
  *
  * @example
  *

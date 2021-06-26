@@ -1,7 +1,7 @@
 import useVersion from '../useVersion';
 import { useCheckMinimumRequiredProps } from '../checkMinimumRequiredProps';
 import { Record, Identifier } from '../../types';
-import { useGetOne } from '../../dataProvider';
+import { useGetOne, Refetch } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
 import { useNotify, useRedirect, useRefresh } from '../../sideEffect';
 import { CRUD_GET_ONE } from '../../actions';
@@ -32,6 +32,7 @@ export interface ShowControllerProps<RecordType extends Record = Record> {
     hasShow?: boolean;
     resource: string;
     record?: RecordType;
+    refetch: Refetch;
     version: number;
 }
 
@@ -63,7 +64,7 @@ export const useShowController = <RecordType extends Record = Record>(
     const redirect = useRedirect();
     const refresh = useRefresh();
     const version = useVersion();
-    const { data: record, loading, loaded } = useGetOne<RecordType>(
+    const { data: record, loading, loaded, refetch } = useGetOne<RecordType>(
         resource,
         id,
         {
@@ -90,6 +91,7 @@ export const useShowController = <RecordType extends Record = Record>(
         resource,
         basePath,
         record,
+        refetch,
         hasCreate,
         hasEdit,
         hasList,

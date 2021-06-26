@@ -8,13 +8,11 @@ import MenuItemLink from './MenuItemLink';
 
 const DashboardMenuItem: FC<DashboardMenuItemProps> = ({
     locale,
-    onClick,
     ...props
 }) => {
     const translate = useTranslate();
     return (
         <MenuItemLink
-            onClick={onClick}
             to="/"
             primaryText={translate('ra.page.dashboard')}
             leftIcon={<DashboardIcon />}
@@ -29,7 +27,10 @@ export interface DashboardMenuItemProps {
     locale?: string;
     onClick?: () => void;
     dense?: boolean;
-    sidebarIsOpen: boolean;
+    /**
+     * @deprcated
+     */
+    sidebarIsOpen?: boolean;
 }
 
 DashboardMenuItem.propTypes = {

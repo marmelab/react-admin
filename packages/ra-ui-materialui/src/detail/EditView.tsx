@@ -190,6 +190,7 @@ const sanitizeRestProps = ({
     onSuccessRef = null,
     options = null,
     permissions = null,
+    refetch = null,
     save = null,
     saving = null,
     setOnFailure = null,
