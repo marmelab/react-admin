@@ -16,31 +16,33 @@ import users from './users';
 import tags from './tags';
 
 render(
-    <Admin
-        authProvider={authProvider}
-        dataProvider={dataProvider}
-        i18nProvider={i18nProvider}
-        title="Example Admin"
-        layout={Layout}
-        customRoutes={[
-            <RouteWithoutLayout
-                exact
-                path="/custom"
-                component={props => <CustomRouteNoLayout {...props} />}
-            />,
-            <Route
-                exact
-                path="/custom2"
-                component={props => <CustomRouteLayout {...props} />}
-            />,
-        ]}
-    >
-        {permissions => [
-            <Resource name="posts" {...posts} />,
-            <Resource name="comments" {...comments} />,
-            permissions ? <Resource name="users" {...users} /> : null,
-            <Resource name="tags" {...tags} />,
-        ]}
-    </Admin>,
+    <React.StrictMode>
+        <Admin
+            authProvider={authProvider}
+            dataProvider={dataProvider}
+            i18nProvider={i18nProvider}
+            title="Example Admin"
+            layout={Layout}
+            customRoutes={[
+                <RouteWithoutLayout
+                    exact
+                    path="/custom"
+                    component={props => <CustomRouteNoLayout {...props} />}
+                />,
+                <Route
+                    exact
+                    path="/custom2"
+                    component={props => <CustomRouteLayout {...props} />}
+                />,
+            ]}
+        >
+            {permissions => [
+                <Resource name="posts" {...posts} />,
+                <Resource name="comments" {...comments} />,
+                permissions ? <Resource name="users" {...users} /> : null,
+                <Resource name="tags" {...tags} />,
+            ]}
+        </Admin>
+    </React.StrictMode>,
     document.getElementById('root')
 );
