@@ -9,6 +9,6 @@ import {
  * @see https://github.com/mui-org/material-ui/issues/13394
  */
 export const createMuiTheme =
-    process.env.NODE_END === 'production'
+    process.env.NODE_ENV === 'production'
         ? createLegacyModeTheme
         : createStrictModeTheme;
