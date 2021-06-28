@@ -197,7 +197,7 @@ const RadioButtonGroupInput: FunctionComponent<RadioButtonGroupInputProps> = pro
 
 RadioButtonGroupInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.any),
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     options: PropTypes.object,
     optionText: PropTypes.oneOfType([
         PropTypes.string,
