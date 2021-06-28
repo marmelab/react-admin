@@ -5,7 +5,7 @@ title: "Input Components"
 
 # Input Components
 
-An `Input` component displays an input, or a dropdown list, a list of radio buttons, etc. Such components allow to edit a record property, and are common in the `<Edit>`, `<Create>` component, and in the List Filters.
+An `Input` component displays an input, or a dropdown list, a list of radio buttons, etc. Such components allow to edit a record property, and are common in the `<Edit>` and `<Create>` components, and in the List Filters.
 
 ```jsx
 // in src/posts.js
