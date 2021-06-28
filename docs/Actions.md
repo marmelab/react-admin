@@ -627,7 +627,7 @@ Fetching data is called a *side effect*, since it calls the outside world, and i
 
 ### `useNotify`
 
-This hook returns a function that displays a notification in the bottom banner of the page.
+This hook returns a function that displays a notification in the bottom of the page.
 
 ```jsx
 import { useNotify } from 'react-admin';
