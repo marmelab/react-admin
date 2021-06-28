@@ -24,7 +24,7 @@ import { useResourceContext, useGetResourceLabel } from '../core';
 export interface ListProps {
     // the props you can change
     filter?: FilterPayload;
-    filters?: ReactElement<any>;
+    filters?: ReactElement | ReactElement[];
     filterDefaultValues?: object;
     perPage?: number;
     sort?: SortPayload;

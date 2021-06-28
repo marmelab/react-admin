@@ -4,8 +4,6 @@ import {
     Datagrid,
     DateField,
     DateInput,
-    Filter,
-    FilterProps,
     List,
     ListProps,
     NullableBooleanInput,
@@ -23,15 +21,13 @@ import MobileGrid from './MobileGrid';
 import VisitorListAside from './VisitorListAside';
 import { ReactElement } from 'react';
 
-const VisitorFilter = (props: Omit<FilterProps, 'children'>) => (
-    <Filter {...props}>
-        <SearchInput source="q" alwaysOn />
-        <DateInput source="last_seen_gte" />
-        <NullableBooleanInput source="has_ordered" />
-        <NullableBooleanInput source="has_newsletter" defaultValue />
-        <SegmentInput />
-    </Filter>
-);
+const visitorFilters = [
+    <SearchInput source="q" alwaysOn />,
+    <DateInput source="last_seen_gte" />,
+    <NullableBooleanInput source="has_ordered" />,
+    <NullableBooleanInput source="has_newsletter" defaultValue />,
+    <SegmentInput />,
+];
 
 const useStyles = makeStyles(theme => ({
     nb_commands: { color: 'purple' },
@@ -52,7 +48,7 @@ const VisitorList = (props: ListProps): ReactElement => {
     return (
         <List
             {...props}
-            filters={isSmall ? <VisitorFilter /> : undefined}
+            filters={isSmall ? visitorFilters : undefined}
             sort={{ field: 'last_seen', order: 'DESC' }}
             perPage={25}
             aside={<VisitorListAside />}

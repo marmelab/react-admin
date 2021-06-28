@@ -124,7 +124,10 @@ ListView.propTypes = {
     // @ts-ignore-line
     exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     filterDefaultValues: PropTypes.object,
-    filters: PropTypes.element,
+    filters: PropTypes.oneOfType([
+        PropTypes.element,
+        PropTypes.arrayOf(PropTypes.element),
+    ]),
     filterValues: PropTypes.object,
     hasCreate: PropTypes.bool,
     hideFilter: PropTypes.func,

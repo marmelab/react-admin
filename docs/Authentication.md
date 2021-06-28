@@ -995,25 +995,17 @@ export const UserEdit = ({ permissions, ...props }) =>
 ```
 {% endraw %}
 
-What about the `List` view, the `Datagrid`, `SimpleList` and `Filter` components? It works there, too. And in the next example, the `permissions` prop is passed down to a custom `filters` component.
+What about the `List` view, the `Datagrid`, `SimpleList`? It works there, too. And in the next example, the `permissions` prop is passed down to a custom `filters` selector.
 
 ```jsx
-const UserFilter = ({ permissions, ...props }) =>
-    <Filter {...props}>
-        <TextInput
-            label="user.list.search"
-            source="q"
-            alwaysOn
-        />
-        <TextInput source="name" />
-        {permissions === 'admin' && <TextInput source="role" />}
-    </Filter>;
+const getUserFilters = (permissions) => ([
+    <TextInput label="user.list.search" source="q" alwaysOn />,
+    <TextInput source="name" />,
+    permissions === 'admin' ? <TextInput source="role" /> : null,
+].filter(filter => filter !== null)));
 
 export const UserList = ({ permissions, ...props }) =>
-    <List
-        {...props}
-        filters={props => <UserFilter permissions={permissions} {...props} />}
-    >
+    <List {...props} filters={getUserFilters(permissions)}>
         <Datagrid>
             <TextField source="id" />
             <TextField source="name" />

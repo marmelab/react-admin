@@ -5,7 +5,7 @@ title: "Input Components"
 
 # Input Components
 
-An `Input` component displays an input, or a dropdown list, a list of radio buttons, etc. Such components allow to edit a record property, and are common in the `<Edit>`, `<Create>`, and `<Filter>` views.
+An `Input` component displays an input, or a dropdown list, a list of radio buttons, etc. Such components allow to edit a record property, and are common in the `<Edit>` and `<Create>` components, and in the List Filters.
 
 ```jsx
 // in src/posts.js
@@ -534,7 +534,7 @@ import { AutocompleteInput } from 'react-admin';
 | `optionText`              | Optional | `string` &#124; `Function` &#124; `Component` | `name`       | Field name of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`) |
 | `optionValue`             | Optional | `string`       | `id`         | Field name of record containing the value to use as input value |
 | `inputText`               | Optional | `Function`     | `-`          | If `optionText` is a custom Component, this function is needed to determine the text displayed for the current selection. |
-| `resettable`              | Optional | `boolean`      | `false`      | Display a button to reset the text filter. Useful when using `<AutocompleteInput>` inside `<Filter>` |
+| `resettable`              | Optional | `boolean`      | `false`      | Display a button to reset the text filter. Useful when using `<AutocompleteInput>` inside the list filters |
 | `setFilter`               | Optional | `Function`     | `null`       | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`. |
 | `shouldRenderSuggestions` | Optional | `Function`     | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
 | `suggestionLimit`         | Optional | `number`       | `null`       | Limits the numbers of suggestions that are shown in the dropdown list |
@@ -1943,7 +1943,7 @@ import { ReferenceArrayInput, SelectArrayInput } from 'react-admin';
 </ReferenceArrayInput>
 ```
 
-**Tip**: `allowEmpty` is set by default for all Input components children of the `<Filter>` component
+**Tip**: `allowEmpty` is set by default for all Input components passed as `<List filters>`.
 
 You can tweak how this component fetches the possible values using the `perPage`, `sort`, and `filter` props.
 
@@ -2058,16 +2058,14 @@ import { ReferenceInput, SelectInput } from 'react-admin';
 </ReferenceInput>
 ```
 
-**Tip**: `allowEmpty` is set by default for all Input components children of the `<Filter>` component:
+**Tip**: `allowEmpty` is set by default for all Input components passed as `<List filters>`:
 
 ```jsx
-const CommentFilter = (props) => (
-    <Filter {...props}>
-        <ReferenceInput label="Post" source="post_id" reference="posts"> // no need for allowEmpty
-            <SelectInput optionText="title" />
-        </ReferenceInput>
-    </Filter>
-);
+const commentFilters = [
+    <ReferenceInput label="Post" source="post_id" reference="posts"> // no need for allowEmpty
+        <SelectInput optionText="title" />
+    </ReferenceInput>
+];
 ```
 
 You can tweak how this component fetches the possible values using the `perPage`, `sort`, and `filter` props.

@@ -22,7 +22,6 @@ import {
     ListActions,
     DateField,
     EditButton,
-    Filter,
     PaginationLimit,
     ReferenceField,
     ReferenceInput,
@@ -37,14 +36,12 @@ import {
     useTranslate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
-const CommentFilter = props => (
-    <Filter {...props}>
-        <SearchInput source="q" alwaysOn />
-        <ReferenceInput source="post_id" reference="posts">
-            <SelectInput optionText="title" />
-        </ReferenceInput>
-    </Filter>
-);
+const commentFilters = [
+    <SearchInput source="q" alwaysOn />,
+    <ReferenceInput source="post_id" reference="posts">
+        <SelectInput optionText="title" />
+    </ReferenceInput>,
+];
 
 const exporter = (records, fetchRelatedRecords) =>
     fetchRelatedRecords(records, 'post_id', 'posts').then(posts => {
@@ -214,10 +211,7 @@ const ListView = () => {
     return (
         <>
             <Title defaultTitle={defaultTitle} />
-            <ListToolbar
-                filters={<CommentFilter />}
-                actions={<ListActions />}
-            />
+            <ListToolbar filters={commentFilters} actions={<ListActions />} />
             {isSmall ? <CommentMobileList /> : <CommentGrid />}
             <CommentPagination />
         </>
