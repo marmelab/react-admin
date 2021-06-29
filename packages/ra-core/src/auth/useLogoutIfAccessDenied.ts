@@ -71,7 +71,17 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                         authProvider
                             .checkAuth({})
                             .then(() => {
-                                notify('ra.notification.logged_out', 'warning');
+                                if (logoutUser) {
+                                    notify(
+                                        'ra.notification.logged_out',
+                                        'warning'
+                                    );
+                                } else {
+                                    notify(
+                                        'ra.notification.not_authorized',
+                                        'warning'
+                                    );
+                                }
                             })
                             .catch(() => {});
                     }
@@ -85,24 +95,11 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                     if (logoutUser) {
                         logout({}, redirectTo);
                     } else {
-                        const redirectToParts = redirectTo.split('?');
                         const newLocation: LocationDescriptorObject = {
-                            pathname: redirectToParts[0],
+                            pathname: redirectTo,
                         };
 
-                        if (history.location && history.location.pathname) {
-                            newLocation.state = {
-                                nextPathname: history.location.pathname,
-                                nextSearch: history.location.search,
-                            };
-                        }
-
-                        if (redirectToParts[1]) {
-                            newLocation.search = redirectToParts[1];
-                        }
-                        history.push(redirectTo);
-
-                        return false;
+                        history.push(newLocation);
                     }
 
                     return true;
