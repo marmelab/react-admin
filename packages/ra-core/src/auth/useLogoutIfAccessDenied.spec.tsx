@@ -60,7 +60,7 @@ const notify = jest.fn();
 //@ts-expect-error
 useNotify.mockImplementation(() => notify);
 
-function renderComponent(children) {
+function renderInRouter(children) {
     const history = createMemoryHistory();
     const api = render(<Router history={history}>{children}</Router>);
 
@@ -79,7 +79,7 @@ describe('useLogoutIfAccessDenied', () => {
     });
 
     it('should not logout if passed no error', async () => {
-        const { queryByText } = renderComponent(
+        const { queryByText } = renderInRouter(
             <AuthContext.Provider value={authProvider}>
                 <TestComponent />
             </AuthContext.Provider>
@@ -93,7 +93,7 @@ describe('useLogoutIfAccessDenied', () => {
     });
 
     it('should not log out if passed an error that does not make the authProvider throw', async () => {
-        const { queryByText } = renderComponent(
+        const { queryByText } = renderInRouter(
             <AuthContext.Provider value={authProvider}>
                 <TestComponent error={new Error()} />
             </AuthContext.Provider>
@@ -106,7 +106,7 @@ describe('useLogoutIfAccessDenied', () => {
     });
 
     it('should logout if passed an error that makes the authProvider throw', async () => {
-        const { queryByText } = renderComponent(
+        const { queryByText } = renderInRouter(
             <AuthContext.Provider value={authProvider}>
                 <TestComponent error={new Error('denied')} />
             </AuthContext.Provider>
@@ -119,7 +119,7 @@ describe('useLogoutIfAccessDenied', () => {
     });
 
     it('should not send multiple notifications if already logged out', async () => {
-        const { queryByText } = renderComponent(
+        const { queryByText } = renderInRouter(
             <AuthContext.Provider value={authProvider}>
                 <TestComponent error={new Error('denied')} />
                 <TestComponent error={new Error('denied')} />
@@ -142,7 +142,7 @@ describe('useLogoutIfAccessDenied', () => {
                     index++; // answers immediately first, then after 100ms the second time
                 }),
         };
-        const { queryByText } = renderComponent(
+        const { queryByText } = renderInRouter(
             <AuthContext.Provider value={delayedAuthProvider}>
                 <TestComponent />
                 <TestComponent />
@@ -156,7 +156,7 @@ describe('useLogoutIfAccessDenied', () => {
     });
 
     it('should logout without showing a notification if disableAuthentication is true', async () => {
-        const { queryByText } = renderComponent(
+        const { queryByText } = renderInRouter(
             <AuthContext.Provider value={authProvider}>
                 <TestComponent
                     error={new Error('denied')}
@@ -172,7 +172,7 @@ describe('useLogoutIfAccessDenied', () => {
     });
 
     it('should logout without showing a notification if authProvider returns error with message false', async () => {
-        const { queryByText } = renderComponent(
+        const { queryByText } = renderInRouter(
             <AuthContext.Provider
                 value={{
                     ...authProvider,
@@ -192,7 +192,7 @@ describe('useLogoutIfAccessDenied', () => {
     });
 
     it('should not logout the user if logoutUser is set to false', async () => {
-        const { queryByText, history } = renderComponent(
+        const { queryByText, history } = renderInRouter(
             <AuthContext.Provider
                 value={{
                     ...authProvider,
