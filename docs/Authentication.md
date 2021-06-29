@@ -510,40 +510,40 @@ const authProvider = {
 
 React-admin calls the `authProvider` methods with the following params:
 
-| Method           | Usage                                                    | Parameters format                                                                            |
-| ---------------- | -------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `login`          | Log a user in                                            | `Object` whatever fields the login form contains                                             |
-| `checkError`     | Check if a dataProvider error is an authentication error | `{ message: string, status: number, body: Object }` the error returned by the `dataProvider` |
-| `checkAuth`      | Check credentials before moving to a new route           | `Object` whatever params passed to `useCheckAuth()` - empty for react-admin default routes   |
-| `logout`         | Log a user out                                           |                                                                                              |
-| `getIdentity`    | Get the current user identity                            |                                                                                              |
-| `getPermissions` | Get the current user credentials                         | `Object` whatever params passed to `usePermissions()` - empty for react-admin default routes |
+| Method           | Usage                                           | Parameters format  |
+| ---------------- | ----------------------------------------------- | ------------------ |
+| `login`          | Log a user in                                   | `Object` whatever fields the login form contains |
+| `checkError`     | Check if a dataProvider error is an authentication error  | `{ message: string, status: number, body: Object }` the error returned by the `dataProvider` |
+| `checkAuth`      | Check credentials before moving to a new route  | `Object` whatever params passed to `useCheckAuth()` - empty for react-admin default routes |
+| `logout`         | Log a user out                                  |                    |
+| `getIdentity`    | Get the current user identity                   |                    | 
+| `getPermissions` | Get the current user credentials                | `Object` whatever params passed to `usePermissions()` - empty for react-admin default routes |
 
 ### Response Format
 
 `authProvider` methods must return a Promise. In case of success, the Promise should resolve to the following value:
 
-| Method           | Resolve if                        | Response format                                                                                |
-| ---------------- | --------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `login`          | Login credentials were accepted   | `void`                                                                                         |
-| `checkError`     | Error is not an auth error        | `void`                                                                                         |
-| `checkAuth`      | User is authenticated             | `void`                                                                                         |
-| `logout`         | Auth backend acknowledged logout  | `string | false | void` route to redirect to after logout, defaults to `/login`                |
-| `getIdentity`    | Auth backend returned identity    | `{ id: string | number, fullName?: string, avatar?: string }`                                  |
+| Method           | Resolve if                        | Response format |
+| ---------------- | --------------------------------- | --------------- |
+| `login`          | Login credentials were accepted   | `void`          |
+| `checkError`     | Error is not an auth error        | `void`          |
+| `checkAuth`      | User is authenticated             | `void`          |
+| `logout`         | Auth backend acknowledged logout  | `string | false | void` route to redirect to after logout, defaults to `/login` |
+| `getIdentity`    | Auth backend returned identity    | `{ id: string | number, fullName?: string, avatar?: string }`  | 
 | `getPermissions` | Auth backend returned permissions | `Object | Array` free format - the response will be returned when `usePermissions()` is called |
 
 ### Error Format
 
 When the auth backend returns an error, the Auth Provider should return a rejected Promise, with the following value: 
 
-| Method           | Reject if                                 | Error format                                                                                                                     |
-| ---------------- | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `login`          | Login credentials weren't accepted        | `string | { message?: string }` error message to display                                                                         |
+| Method           | Reject if                                 | Error format |
+| ---------------- | ----------------------------------------- | --------------- |
+| `login`          | Login credentials weren't accepted        | `string | { message?: string }` error message to display |
 | `checkError`     | Error is an auth error                    | `void | { redirectTo?: string, message?: boolean }` route to redirect to after logout, and whether to disable error notification |
-| `checkAuth`      | User is not authenticated                 | `void | { redirectTo?: string, message?: string }` route to redirect to after logout, message to notify the user                 |
-| `logout`         | Auth backend failed to log the user out   | `void`                                                                                                                           |
-| `getIdentity`    | Auth backend failed to return identity    | `Object` free format - returned as `error` when `useGetIdentity()` is called                                                     |
-| `getPermissions` | Auth backend failed to return permissions | `Object` free format - returned as `error` when `usePermissions()` is called                                                     |
+| `checkAuth`      | User is not authenticated                 | `void | { redirectTo?: string, message?: string }` route to redirect to after logout, message to notify the user |
+| `logout`         | Auth backend failed to log the user out   | `void` |
+| `getIdentity`    | Auth backend failed to return identity    | `Object` free format - returned as `error` when `useGetIdentity()` is called | 
+| `getPermissions` | Auth backend failed to return permissions | `Object` free format - returned as `error` when `usePermissions()` is called |
 
 ## Hooks
 
