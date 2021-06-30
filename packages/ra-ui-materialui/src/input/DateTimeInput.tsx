@@ -59,7 +59,7 @@ const formatDateTime = (value: string | Date) => {
  * @param {string} value Date string, formatted as yyyy-MM-ddThh:mm
  * @return {Date}
  */
-const parseDateTime = (value: string) => new Date(value);
+const parseDateTime = (value: string) => new Date(value).toISOString();
 
 /**
  * Input component for entering a date and a time with timezone, using the browser locale

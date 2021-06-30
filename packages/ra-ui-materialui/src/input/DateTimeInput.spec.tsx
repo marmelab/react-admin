@@ -6,26 +6,26 @@ import { required, FormWithRedirect } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
 import format from 'date-fns/format';
 
-import DateInput from './DateInput';
+import DateTimeInput from './DateTimeInput';
 import { FormApi } from 'final-form';
 
-describe('<DateInput />', () => {
+describe('<DateTimeInput />', () => {
     const defaultProps = {
         resource: 'posts',
         source: 'publishedAt',
     };
 
-    it('should render a date input', () => {
+    it('should render a date time input', () => {
         const { getByLabelText } = render(
             <Form
                 onSubmit={jest.fn}
-                render={() => <DateInput {...defaultProps} />}
+                render={() => <DateTimeInput {...defaultProps} />}
             />
         );
         const input = getByLabelText(
             'resources.posts.fields.publishedAt'
         ) as HTMLInputElement;
-        expect(input.type).toBe('date');
+        expect(input.type).toBe('datetime-local');
     });
 
     it('should not make the form dirty on initialization', () => {
@@ -37,12 +37,36 @@ describe('<DateInput />', () => {
                 record={{ id: 1, publishedAt }}
                 render={({ form }) => {
                     formApi = form;
-                    return <DateInput {...defaultProps} />;
+                    return <DateTimeInput {...defaultProps} />;
                 }}
             />
         );
-        expect(getByDisplayValue(format(publishedAt, 'YYYY-MM-DD')));
+        expect(getByDisplayValue(format(publishedAt, 'YYYY-MM-DDTHH:mm')));
         expect(formApi.getState().dirty).toEqual(false);
+    });
+
+    it('should submit initial value with its timezone', () => {
+        const publishedAt = new Date().toISOString();
+        const onSubmit = jest.fn();
+        const { getByDisplayValue, getByText } = renderWithRedux(
+            <Form
+                onSubmit={onSubmit}
+                initialValues={{ publishedAt }}
+                render={({ handleSubmit }) => {
+                    return (
+                        <form onSubmit={handleSubmit}>
+                            <DateTimeInput {...defaultProps} />
+                            <button type="submit">save</button>
+                        </form>
+                    );
+                }}
+            />
+        );
+        expect(getByDisplayValue(format(publishedAt, 'YYYY-MM-DDTHH:mm')));
+        fireEvent.click(getByText('save'));
+        expect(onSubmit.mock.calls[0][0]).toEqual({
+            publishedAt,
+        });
     });
 
     it('should call `input.onChange` method when changed', () => {
@@ -52,15 +76,17 @@ describe('<DateInput />', () => {
                 onSubmit={jest.fn()}
                 render={({ form }) => {
                     formApi = form;
-                    return <DateInput {...defaultProps} />;
+                    return <DateTimeInput {...defaultProps} />;
                 }}
             />
         );
         const input = getByLabelText('resources.posts.fields.publishedAt');
         fireEvent.change(input, {
-            target: { value: '2010-01-04' },
+            target: { value: '2010-01-04T10:20' },
         });
-        expect(formApi.getState().values.publishedAt).toEqual('2010-01-04');
+        expect(formApi.getState().values.publishedAt).toEqual(
+            '2010-01-04T09:20:00.000Z'
+        );
     });
 
     describe('error message', () => {
@@ -69,7 +95,10 @@ describe('<DateInput />', () => {
                 <Form
                     onSubmit={jest.fn}
                     render={() => (
-                        <DateInput {...defaultProps} validate={required()} />
+                        <DateTimeInput
+                            {...defaultProps}
+                            validate={required()}
+                        />
                     )}
                 />
             );
@@ -82,7 +111,10 @@ describe('<DateInput />', () => {
                     onSubmit={jest.fn}
                     validateOnBlur
                     render={() => (
-                        <DateInput {...defaultProps} validate={required()} />
+                        <DateTimeInput
+                            {...defaultProps}
+                            validate={required()}
+                        />
                     )}
                 />
             );
