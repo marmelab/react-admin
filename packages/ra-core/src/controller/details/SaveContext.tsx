@@ -1,11 +1,5 @@
 import * as React from 'react';
-import {
-    createContext,
-    MutableRefObject,
-    ReactNode,
-    useContext,
-    useMemo,
-} from 'react';
+import { createContext, MutableRefObject, useContext, useMemo } from 'react';
 import pick from 'lodash/pick';
 
 import { RedirectionSideEffect } from '../../sideEffect';
@@ -30,17 +24,9 @@ interface SaveContextValue extends SideEffectContextValue {
 
 export const SaveContext = createContext<SaveContextValue>(undefined);
 
-export const SaveContextProvider = ({
-    children,
-    value,
-}: SaveContextProviderProps) => (
+export const SaveContextProvider = ({ children, value }) => (
     <SaveContext.Provider value={value}>{children}</SaveContext.Provider>
 );
-
-export type SaveContextProviderProps = {
-    children: ReactNode;
-    value: SaveContextValue;
-};
 
 /**
  * Get the save() function and its status
