@@ -1,12 +1,14 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, waitFor } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import { required, FormWithRedirect } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
 import format from 'date-fns/format';
 
 import DateTimeInput from './DateTimeInput';
+import ArrayInput from './ArrayInput';
+import SimpleFormIterator from '../form/SimpleFormIterator';
 import { FormApi } from 'final-form';
 
 describe('<DateTimeInput />', () => {
@@ -45,6 +47,39 @@ describe('<DateTimeInput />', () => {
         expect(formApi.getState().dirty).toEqual(false);
     });
 
+    it('should display a default value inside an ArrayInput', () => {
+        const date = new Date('Wed Oct 05 2011 16:48:00 GMT+0200');
+        const backlinksDefaultValue = [
+            {
+                date,
+            },
+        ];
+        let formApi: FormApi;
+        const { getByDisplayValue } = renderWithRedux(
+            <FormWithRedirect
+                onSubmit={jest.fn}
+                render={({ form }) => {
+                    formApi = form;
+                    return (
+                        <ArrayInput
+                            defaultValue={backlinksDefaultValue}
+                            source="backlinks"
+                        >
+                            <SimpleFormIterator>
+                                <DateTimeInput source="date" />
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    );
+                }}
+            />
+        );
+
+        expect(getByDisplayValue(format(date, 'YYYY-MM-DDTHH:mm')));
+        expect(formApi.getState().values.backlinks[0].date).toEqual(
+            new Date('2011-10-05T14:48:00.000Z')
+        );
+    });
+
     it('should submit initial value with its timezone', () => {
         let formApi;
         const publishedAt = new Date('Wed Oct 05 2011 16:48:00 GMT+0200');
@@ -57,6 +92,33 @@ describe('<DateTimeInput />', () => {
                     formApi = form;
 
                     return <DateTimeInput {...defaultProps} />;
+                }}
+            />
+        );
+        expect(
+            queryByDisplayValue(format(publishedAt, 'YYYY-MM-DDTHH:mm'))
+        ).not.toBeNull();
+        expect(formApi.getState().values.publishedAt).toEqual(
+            new Date('2011-10-05T14:48:00.000Z')
+        );
+    });
+
+    it('should submit default value on input with its timezone', () => {
+        let formApi;
+        const publishedAt = new Date('Wed Oct 05 2011 16:48:00 GMT+0200');
+        const onSubmit = jest.fn();
+        const { queryByDisplayValue } = renderWithRedux(
+            <Form
+                onSubmit={onSubmit}
+                render={({ form }) => {
+                    formApi = form;
+
+                    return (
+                        <DateTimeInput
+                            {...defaultProps}
+                            defaultValue={publishedAt}
+                        />
+                    );
                 }}
             />
         );
