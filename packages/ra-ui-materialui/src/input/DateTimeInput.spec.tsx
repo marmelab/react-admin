@@ -46,27 +46,26 @@ describe('<DateTimeInput />', () => {
     });
 
     it('should submit initial value with its timezone', () => {
-        const publishedAt = new Date().toISOString();
+        let formApi;
+        const publishedAt = new Date('Wed Oct 05 2011 16:48:00 GMT+0200');
         const onSubmit = jest.fn();
-        const { getByDisplayValue, getByText } = renderWithRedux(
+        const { queryByDisplayValue } = renderWithRedux(
             <Form
                 onSubmit={onSubmit}
                 initialValues={{ publishedAt }}
-                render={({ handleSubmit }) => {
-                    return (
-                        <form onSubmit={handleSubmit}>
-                            <DateTimeInput {...defaultProps} />
-                            <button type="submit">save</button>
-                        </form>
-                    );
+                render={({ form }) => {
+                    formApi = form;
+
+                    return <DateTimeInput {...defaultProps} />;
                 }}
             />
         );
-        expect(getByDisplayValue(format(publishedAt, 'YYYY-MM-DDTHH:mm')));
-        fireEvent.click(getByText('save'));
-        expect(onSubmit.mock.calls[0][0]).toEqual({
-            publishedAt,
-        });
+        expect(
+            queryByDisplayValue(format(publishedAt, 'YYYY-MM-DDTHH:mm'))
+        ).not.toBeNull();
+        expect(formApi.getState().values.publishedAt).toEqual(
+            new Date('2011-10-05T14:48:00.000Z')
+        );
     });
 
     it('should call `input.onChange` method when changed', () => {
@@ -85,7 +84,7 @@ describe('<DateTimeInput />', () => {
             target: { value: '2010-01-04T10:20' },
         });
         expect(formApi.getState().values.publishedAt).toEqual(
-            '2010-01-04T09:20:00.000Z'
+            new Date('2010-01-04T09:20:00.000Z')
         );
     });
 
