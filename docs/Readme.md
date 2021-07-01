@@ -4,9 +4,11 @@ title: "Documentation"
 ---
 # react-admin
 
-A frontend Framework for building admin applications running in the browser, on top of REST/GraphQL APIs, using ES6, [React](https://facebook.github.io/react/) and [Material Design](https://material.io/). Open sourced and maintained by [marmelab](https://marmelab.com/).
+A frontend Framework for building data-driven applications running in the browser, on top of REST/GraphQL APIs, using [React](https://facebook.github.io/react/) and [Material Design](https://material.io/). Open sourced and maintained by [marmelab](https://marmelab.com/).
 
 [![react-admin-demo](https://marmelab.com/react-admin/img/react-admin-demo-still.png)](https://vimeo.com/474999017)
+
+Check out [the demos page](./Demos.md) for real-life examples.
 
 ## Installation
 
@@ -19,11 +21,18 @@ npm install react-admin
 yarn add react-admin
 ```
 
+## How To Learn React-Admin
+
+1. Read the [Tutorial](./Tutorial.md) for a 30 minutes introduction. 
+2. Read the source code of [the demos](./Demos.md) for real-life examples.
+3. Read the [Documentation](./Admin.md) for a deep dive into the react-admin components and hooks.
+4. Red the [Architecture decisions](./Architecture.md) to better understand why features are implemented that way.
+5. Check out the [API Reference](./Reference.md) for a complete list of the public API.
+6. Get [Support](#support) for fixing your own problems
+
 ## Usage
 
-Read the [Tutorial](./Tutorial.md) for a 30 minutes introduction. After that, continue reading the [Documentation](./DataProviders.md), or checkout the [source code of the demo](https://github.com/marmelab/react-admin/tree/master/examples/demo) for an example usage.
-
-## At a Glance
+Here is a simple example of how to use React-admin:
 
 ```jsx
 // in app.js
@@ -107,13 +116,18 @@ React-admin uses an adapter approach, with a concept called *Data Providers*. Ex
 
 See the [Data Providers documentation](./DataProviders.md) for details.
 
-## Batteries Included But Removable
+## Architecture: Batteries Included But Removable
 
-React-admin is designed as a library of loosely coupled React components built on top of [material-ui](https://material-ui.com/), in addition to controller functions implemented the Redux way. It is very easy to replace one part of react-admin with your own, e.g. to use a custom Datagrid, GraphQL instead of REST, or bootstrap instead of Material Design.
+React-admin is designed as a library of loosely coupled React components built on top of [material-ui](https://material-ui.com/), in addition to React hooks allowing to reuse the logic with a custom UI. 
+
+You may replace one part of react-admin with your own, e.g. to use a custom Datagrid, GraphQL instead of REST, or Bootstrap instead of Material Design.
+
+Read more about the [Architecture choices](./Architecture.md).
 
 ## Support
 
-You can get professional support from Marmelab via [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise), or community support via [StackOverflow](https://stackoverflow.com/questions/tagged/react-admin).
+* Get professional support from Marmelab via [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise)
+* Get community support via [StackOverflow](https://stackoverflow.com/questions/tagged/react-admin)
 
 ## Enterprise Edition
 

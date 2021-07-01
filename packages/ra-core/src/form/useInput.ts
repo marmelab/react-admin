@@ -115,17 +115,17 @@ const useInput = ({
     const form = useForm();
     const recordId = record?.id;
     useEffect(() => {
-        if (!!input.value) {
+        if (input.value != null && input.value !== '') {
             return;
         }
         // Apply the default value if provided
         // We use a change here which will make the form dirty but this is expected
         // and identical to what FinalForm does (https://final-form.org/docs/final-form/types/FieldConfig#defaultvalue)
-        if (!!defaultValue) {
+        if (defaultValue != null) {
             form.change(source, defaultValue);
         }
 
-        if (!!initialValue) {
+        if (initialValue != null) {
             form.batch(() => {
                 form.change(source, initialValue);
                 form.resetFieldState(source);

@@ -8607,11 +8607,12 @@ faker@~5.4.0:
   integrity sha512-Y9n/Ky/xZx/Bj8DePvXspUYRtHl/rGQytoIT5LaxmNwSe3wWyOeOXb3lT6Dpipq240PVpeFaGKzScz/5fvff2g==
 
 fakerest@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/fakerest/-/fakerest-3.0.0.tgz#f17d0228fede9a863849b1221aa0be8a9a87371a"
-  integrity sha512-lwmsgHQm+EIz9XtKi/w9hfeiv8RkqgEgF4559rw5rbdUZQ4ASbjvK4VCp/Ii8Nwkd3XW9Qo+NesvZvGUEqTI0A==
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/fakerest/-/fakerest-3.3.0.tgz#81f41d096fd7145825b058ee3d4b9d518f4ed92b"
+  integrity sha512-D1y6a13dh34n738YMztecCX36JRKI5kxPaNVQukXUXvUyK7eANWyB5zczy0SMoMUDXC/ceKfjkgwbc1AYqYYOQ==
   dependencies:
     babel-runtime "^6.26.0"
+    lodash "^4.17.21"
 
 fast-deep-equal@^3.1.1:
   version "3.1.1"
@@ -12385,6 +12386,11 @@ lodash@^4.13.1, lodash@^4.17.10, lodash@^4.17.19, lodash@^4.17.20:
   version "4.17.20"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
   integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
+
+lodash@^4.17.21:
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
+  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
 log-symbols@^1.0.2:
   version "1.0.2"

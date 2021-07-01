@@ -7,7 +7,10 @@ import {
     ListProps,
 } from 'ra-ui-materialui';
 
-import { useResourceConfiguration } from '../ResourceConfiguration';
+import {
+    useResourceConfiguration,
+    useResourcesConfiguration,
+} from '../ResourceConfiguration';
 import { getFieldFromFieldDefinition } from './getFieldFromFieldDefinition';
 
 export const List = (props: ListProps) => (
@@ -18,13 +21,16 @@ export const List = (props: ListProps) => (
 
 export const Datagrid = (props: Omit<DatagridProps, 'children'>) => {
     const resource = useResourceContext(props);
+    const [resources] = useResourcesConfiguration();
     const [resourceConfiguration] = useResourceConfiguration(resource);
 
     return (
         <RaDatagrid rowClick="edit" {...props}>
-            {resourceConfiguration.fields.map(definition =>
-                getFieldFromFieldDefinition(definition)
-            )}
+            {resourceConfiguration.fields
+                .filter(definition => definition.views.includes('list'))
+                .map(definition =>
+                    getFieldFromFieldDefinition(definition, resources)
+                )}
         </RaDatagrid>
     );
 };

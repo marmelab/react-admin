@@ -11,6 +11,7 @@ import {
     useEditContext,
 } from 'react-admin';
 import { Card, CardContent, Divider, Box } from '@material-ui/core';
+import omit from 'lodash/omit';
 
 import { Avatar } from './Avatar';
 import { ContactAside } from './ContactAside';
@@ -19,7 +20,7 @@ import { Contact } from '../types';
 const Spacer = () => <Box width={20} component="span" />;
 
 const ContactEditContent = () => {
-    const { record, loaded } = useEditContext<Contact>();
+    const { record, loaded, save } = useEditContext<Contact>();
     if (!loaded || !record) return null;
     return (
         <Box mt={2} display="flex">
@@ -27,6 +28,7 @@ const ContactEditContent = () => {
                 <FormWithRedirect
                     record={record}
                     redirect="show"
+                    save={save}
                     render={formProps => (
                         <Card>
                             <CardContent>
@@ -80,7 +82,24 @@ const ContactEditContent = () => {
                                     </Box>
                                 </Box>
                             </CardContent>
-                            <Toolbar {...formProps} />
+                            <Toolbar
+                                {...omit(formProps, [
+                                    // FIXME Not super user firendly way to remove warnings
+                                    'dirtyFields',
+                                    'dirtyFieldsSinceLastSubmit',
+                                    'dirtySinceLastSubmit',
+                                    'hasSubmitErrors',
+                                    'hasValidationErrors',
+                                    'initialValues',
+                                    'modifiedSinceLastSubmit',
+                                    'submitError',
+                                    'submitErrors',
+                                    'submitFailed',
+                                    'submitSucceeded',
+                                    'submitting',
+                                    'valid',
+                                ])}
+                            />
                         </Card>
                     )}
                 />

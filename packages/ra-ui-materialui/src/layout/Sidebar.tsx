@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Children, cloneElement, ReactElement } from 'react';
+import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Drawer, DrawerProps, useMediaQuery, Theme } from '@material-ui/core';
@@ -28,7 +28,6 @@ const Sidebar = (props: SidebarProps) => {
         state => state.admin.ui.sidebarOpen
     );
     useLocale(); // force redraw on locale change
-    const handleClose = () => dispatch(setSidebarVisibility(false));
     const toggleSidebar = () => dispatch(setSidebarVisibility(!open));
     const { drawerPaper, ...classes } = useStyles({ ...props, open });
 
@@ -43,9 +42,7 @@ const Sidebar = (props: SidebarProps) => {
             classes={classes}
             {...rest}
         >
-            {cloneElement(Children.only(children), {
-                onMenuClick: handleClose,
-            })}
+            {children}
         </Drawer>
     ) : isSmall ? (
         <Drawer
@@ -58,9 +55,7 @@ const Sidebar = (props: SidebarProps) => {
             classes={classes}
             {...rest}
         >
-            {cloneElement(Children.only(children), {
-                onMenuClick: handleClose,
-            })}
+            {children}
         </Drawer>
     ) : (
         <Drawer
@@ -73,9 +68,7 @@ const Sidebar = (props: SidebarProps) => {
             classes={classes}
             {...rest}
         >
-            {cloneElement(Children.only(children), {
-                onMenuClick: defaultOnMenuClick,
-            })}
+            {children}
         </Drawer>
     );
 };
@@ -83,8 +76,6 @@ const Sidebar = (props: SidebarProps) => {
 Sidebar.propTypes = {
     children: PropTypes.node.isRequired,
 };
-
-const defaultOnMenuClick = () => null;
 
 const useStyles = makeStyles(
     theme => ({

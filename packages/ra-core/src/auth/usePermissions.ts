@@ -3,11 +3,11 @@ import { useEffect } from 'react';
 import useGetPermissions from './useGetPermissions';
 import { useSafeSetState } from '../util/hooks';
 
-interface State {
+interface State<Permissions, Error> {
     loading: boolean;
     loaded: boolean;
-    permissions?: any;
-    error?: any;
+    permissions?: Permissions;
+    error?: Error;
 }
 
 const emptyParams = {};
@@ -42,8 +42,10 @@ const emptyParams = {};
  *         }
  *     };
  */
-const usePermissions = (params = emptyParams) => {
-    const [state, setState] = useSafeSetState<State>({
+const usePermissions = <Permissions = any, Error = any>(
+    params = emptyParams
+): State<Permissions, Error> => {
+    const [state, setState] = useSafeSetState<State<Permissions, Error>>({
         loading: true,
         loaded: false,
     });

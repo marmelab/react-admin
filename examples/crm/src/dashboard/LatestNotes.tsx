@@ -94,6 +94,7 @@ export const LatestNotes = () => {
                     {allNotes.map(note => (
                         <div
                             id={`${note.type}_${note.id}`}
+                            key={`${note.type}_${note.id}`}
                             className={classes.note}
                         >
                             <Typography color="textSecondary" gutterBottom>

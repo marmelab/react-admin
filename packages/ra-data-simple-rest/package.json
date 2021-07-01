@@ -1,6 +1,6 @@
 {
     "name": "ra-data-simple-rest",
-    "version": "3.13.4",
+    "version": "3.16.0",
     "description": "Simple REST data provider for react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",
