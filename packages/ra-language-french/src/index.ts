@@ -144,7 +144,7 @@ const frenchMessages: TranslationMessages = {
             canceled: 'Action annulée',
             logged_out: 'Votre session a pris fin, veuillez vous reconnecter.',
             not_authorized:
-                "Vous n'êtes pas autorisé à accéder à cette ressource.",
+                "Vous n'êtes pas autorisé(e) à accéder à cette ressource.",
         },
         validation: {
             required: 'Ce champ est requis',
