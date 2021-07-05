@@ -4,7 +4,6 @@ import useAuthProvider from './useAuthProvider';
 import useLogout from './useLogout';
 import { useNotify } from '../sideEffect';
 import { useHistory } from 'react-router';
-import { LocationDescriptorObject } from 'history';
 
 let timer;
 
@@ -95,11 +94,7 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                     if (logoutUser) {
                         logout({}, redirectTo);
                     } else {
-                        const newLocation: LocationDescriptorObject = {
-                            pathname: redirectTo,
-                        };
-
-                        history.push(newLocation);
+                        history.push(redirectTo);
                     }
 
                     return true;
