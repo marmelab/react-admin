@@ -8,8 +8,6 @@ import {
     DateField,
     ReferenceField,
     NumberField,
-    Filter,
-    FilterProps,
     DateInput,
 } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
@@ -18,12 +16,10 @@ import FullNameField from '../visitors/FullNameField';
 import AddressField from '../visitors/AddressField';
 import InvoiceShow from './InvoiceShow';
 
-const ListFilters = (props: Omit<FilterProps, 'children'>) => (
-    <Filter {...props}>
-        <DateInput source="date_gte" alwaysOn />
-        <DateInput source="date_lte" alwaysOn />
-    </Filter>
-);
+const listFilters = [
+    <DateInput source="date_gte" alwaysOn />,
+    <DateInput source="date_lte" alwaysOn />,
+];
 
 const useStyles = makeStyles(theme => ({
     hiddenOnSmallScreens: {
@@ -39,7 +35,7 @@ const InvoiceList: FC<ListProps> = props => {
     return (
         <List
             {...props}
-            filters={<ListFilters />}
+            filters={listFilters}
             perPage={25}
             sort={{ field: 'date', order: 'desc' }}
         >

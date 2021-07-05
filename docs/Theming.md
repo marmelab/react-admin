@@ -46,7 +46,7 @@ export const ProductList = (props) => (
 
 For some components, you may want to override not only the root component style, but also the style of components inside the root. In this case, the `className` property isn't enough. You can take advantage of the `classes` property to customize the classes that the component uses internally.
 
-Here is an example using the `classes` property of the `Filter` and `List` components:
+Here is an example using the `classes` property of the `<Datagrid>` component:
 
 {% raw %}
 ```jsx
@@ -55,76 +55,39 @@ import {
     BooleanField,
     Datagrid,
     DateField,
-    DateInput,
     EditButton,
-    Filter,
     List,
-    NullableBooleanInput,
     NumberField,
-    TextInput,
+    TextField,
+    ShowButton,
 } from 'react-admin';
 import Icon from '@material-ui/icons/Person';
 import { makeStyles } from '@material-ui/core/styles';
 
 export const VisitorIcon = Icon;
 
-// The Filter component supports the `form` and `button` CSS classes. Here we override the `form` class
-const useFilterStyles = makeStyles({
-    form: {
+// The `Datagrid` component uses makeStyles, and supports overriding styles through the `classes` property 
+const useStyles = makeStyles({
+    table: {
         backgroundColor: 'Lavender',
+    },
+    headerCell: {
+        backgroundColor: 'MistyRose',
     },
 });
 
-const VisitorFilter = props => {
-    const classes = useFilterStyles();
+export const PostList = props => {
+    const classes = useStyles();
     return (
-        <Filter classes={classes} {...props}>
-            <TextInput
-                className={classes.searchInput}
-                label="pos.search"
-                source="q"
-                alwaysOn
-            />
-            <DateInput source="last_seen_gte" />
-            <NullableBooleanInput source="has_ordered" />
-            <NullableBooleanInput source="has_newsletter" defaultValue />
-        </Filter>
-    );
-};
-
-// The `List` component supports the `root`, `header`, `actions` and `noResults` CSS classes. Here we override the `header` and `actions` classes
-const useListStyles = makeStyles({
-    actions: {
-        backgroundColor: 'Lavender',
-    },
-    header: {
-        backgroundColor: 'Lavender',
-    },
-});
-
-export const VisitorList = props => {
-    const classes = useListStyles();
-    return (
-        <List
-            classes={classes}
-            {...props}
-            filters={<VisitorFilter />}
-            sort={{ field: 'last_seen', order: 'DESC' }}
-            perPage={25}
-        >
+        <List {...props}>
             <Datagrid classes={classes} {...props}>
-                <DateField source="last_seen" type="date" />
-                <NumberField
-                    source="nb_commands"
-                    label="resources.customers.fields.commands"
-                />
-                <NumberField
-                    source="total_spent"
-                    options={{ style: 'currency', currency: 'USD' }}
-                />
-                <DateField source="latest_purchase" showTime />
-                <BooleanField source="has_newsletter" label="News." />
+                <TextField source="id" />
+                <TextField source="title" />
+                <DateField source="published_at" sortByOrder="DESC"/>
+                <BooleanField source="commentable" sortable={false} />
+                <NumberField source="views" sortByOrder="DESC" />
                 <EditButton />
+                <ShowButton />
             </Datagrid>
         </List>
     )
@@ -136,7 +99,7 @@ This example results in:
 
 ![Visitor List with customized CSS classes](./img/list_with_customized_css.png)
 
-Take a look at a component documentation and source code to know which classes are available for styling. For instance, you can have a look at the [Datagrid CSS documentation](./List.md#the-datagrid-component).
+Take a look at a component documentation and source code to know which classes are available for styling. For instance, you can have a look at the [Datagrid CSS documentation](./List.md##css-api-1).
 
 If you need more control over the HTML code, you can also create your own [Field](./Fields.md#writing-your-own-field-component) and [Input](./Inputs.md#writing-your-own-input-component) components.
 

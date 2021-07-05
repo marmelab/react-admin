@@ -11,6 +11,7 @@ import SimpleList, { SimpleListProps } from './SimpleList';
 import SimpleListLoading from './SimpleListLoading';
 import SingleFieldList from './SingleFieldList';
 
+export * from './FilterContext';
 export * from './filter';
 export * from './datagrid';
 export * from './ListView';

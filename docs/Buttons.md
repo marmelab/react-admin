@@ -257,7 +257,7 @@ export const PostList = (props) => (
 
 ### `<FilterButton>`
 
-This button is an internal component used by react-admin in [the `<Filter>` button/form combo](./List.md#the-filter-buttonform-combo).
+This button is an internal component used by react-admin in [the Filter button/form combo](./List.md#the-filter-buttonform-combo).
 
 ![List Filters](./img/list_filter.gif)
 

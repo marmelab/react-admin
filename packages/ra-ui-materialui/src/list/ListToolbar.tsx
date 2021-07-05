@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { FC, ReactElement } from 'react';
+import { FC, ReactElement, Children } from 'react';
 import PropTypes from 'prop-types';
 import { Toolbar, ToolbarProps } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Exporter } from 'ra-core';
 
 import { ClassesOverride } from '../types';
+import { FilterForm } from './filter';
+import { FilterContext } from './FilterContext';
 
 const useStyles = makeStyles(
     theme => ({
@@ -36,7 +38,21 @@ const useStyles = makeStyles(
 const ListToolbar: FC<ListToolbarProps> = props => {
     const { classes: classesOverride, filters, actions, ...rest } = props;
     const classes = useStyles(props);
-    return (
+
+    return Array.isArray(filters) ? (
+        <FilterContext.Provider value={filters}>
+            <Toolbar className={classes.toolbar}>
+                <FilterForm />
+                <span />
+                {actions &&
+                    React.cloneElement(actions, {
+                        ...rest,
+                        className: classes.actions,
+                        ...actions.props,
+                    })}
+            </Toolbar>
+        </FilterContext.Provider>
+    ) : (
         <Toolbar className={classes.toolbar}>
             {filters &&
                 React.cloneElement(filters, {
@@ -57,7 +73,10 @@ const ListToolbar: FC<ListToolbarProps> = props => {
 
 ListToolbar.propTypes = {
     classes: PropTypes.object,
-    filters: PropTypes.element,
+    filters: PropTypes.oneOfType([
+        PropTypes.element,
+        PropTypes.arrayOf(PropTypes.element),
+    ]),
     // @ts-ignore
     actions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     // @ts-ignore
@@ -68,7 +87,7 @@ export interface ListToolbarProps
     extends Omit<ToolbarProps, 'classes' | 'onSelect'> {
     actions?: ReactElement | false;
     classes?: ClassesOverride<typeof useStyles>;
-    filters?: ReactElement;
+    filters?: ReactElement | ReactElement[];
     exporter?: Exporter | false;
 }
 

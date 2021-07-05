@@ -113,7 +113,7 @@ const NullableBooleanInput: FunctionComponent<NullableBooleanInputProps> = props
 };
 
 NullableBooleanInput.propTypes = {
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
