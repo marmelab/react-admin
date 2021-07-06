@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Inbox from '@material-ui/icons/Inbox';
@@ -13,30 +12,7 @@ import {
 import { ClassesOverride } from '../types';
 import { CreateButton } from '../button';
 
-const useStyles = makeStyles(
-    theme => ({
-        message: {
-            textAlign: 'center',
-            opacity: theme.palette.type === 'light' ? 0.5 : 0.8,
-            margin: '0 1em',
-            color:
-                theme.palette.type === 'light'
-                    ? 'inherit'
-                    : theme.palette.text.primary,
-        },
-        icon: {
-            width: '9em',
-            height: '9em',
-        },
-        toolbar: {
-            textAlign: 'center',
-            marginTop: '2em',
-        },
-    }),
-    { name: 'RaEmpty' }
-);
-
-const Empty: FC<EmptyProps> = props => {
+const Empty = (props: EmptyProps) => {
     const { basePath, hasCreate } = useListContext(props);
     const resource = useResourceContext(props);
     const classes = useStyles(props);
@@ -81,5 +57,28 @@ export interface EmptyProps {
     classes?: ClassesOverride<typeof useStyles>;
     resource?: string;
 }
+
+const useStyles = makeStyles(
+    theme => ({
+        message: {
+            textAlign: 'center',
+            opacity: theme.palette.type === 'light' ? 0.5 : 0.8,
+            margin: '0 1em',
+            color:
+                theme.palette.type === 'light'
+                    ? 'inherit'
+                    : theme.palette.text.primary,
+        },
+        icon: {
+            width: '9em',
+            height: '9em',
+        },
+        toolbar: {
+            textAlign: 'center',
+            marginTop: '2em',
+        },
+    }),
+    { name: 'RaEmpty' }
+);
 
 export default Empty;
