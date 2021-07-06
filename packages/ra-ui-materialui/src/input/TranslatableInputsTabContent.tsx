@@ -55,7 +55,7 @@ export const TranslatableInputsTabContent = (
                             input={cloneElement(child, {
                                 ...child.props,
                                 label:
-                                    child.props.label ||
+                                    child.props.label ??
                                     getLabel(child.props.source),
                                 source: getSource(child.props.source, locale),
                             })}
