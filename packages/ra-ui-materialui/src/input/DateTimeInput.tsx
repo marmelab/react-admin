@@ -82,17 +82,10 @@ const DateTimeInput = ({
     variant = 'filled',
     ...rest
 }: DateTimeInputProps) => {
-    const sanitizedDefaultValue = defaultValue
-        ? format(new Date(defaultValue))
-        : undefined;
-    const sanitizedInitialValue = initialValue
-        ? format(new Date(initialValue))
-        : undefined;
-
     const { id, input, isRequired, meta } = useInput({
-        defaultValue: sanitizedDefaultValue,
+        defaultValue,
         format,
-        initialValue: sanitizedInitialValue,
+        initialValue,
         onBlur,
         onChange,
         onFocus,

@@ -24,6 +24,7 @@
         "build-crm": "cd examples/crm && yarn -s build"
     },
     "jest": {
+        "globalSetup": "./test-global-setup.js",
         "setupFilesAfterEnv": [
             "./test-setup.js"
         ],

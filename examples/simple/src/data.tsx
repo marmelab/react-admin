@@ -262,7 +262,6 @@ export default {
             published_at: new Date('2012-12-01'),
             tags: [3, 5],
             category: 'lifestyle',
-            backlinks: [],
             notifications: [],
         },
     ],

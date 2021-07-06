@@ -22,9 +22,10 @@ describe('<DateInput />', () => {
                 render={() => <DateInput {...defaultProps} />}
             />
         );
-        expect(getByLabelText('resources.posts.fields.publishedAt').type).toBe(
-            'date'
-        );
+        const input = getByLabelText(
+            'resources.posts.fields.publishedAt'
+        ) as HTMLInputElement;
+        expect(input.type).toBe('date');
     });
 
     it('should not make the form dirty on initialization', () => {
