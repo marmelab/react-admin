@@ -12,7 +12,7 @@ import {
 import { ClassesOverride } from '../types';
 import { CreateButton } from '../button';
 
-const Empty = (props: EmptyProps) => {
+export const Empty = (props: EmptyProps) => {
     const { basePath, hasCreate } = useListContext(props);
     const resource = useResourceContext(props);
     const classes = useStyles(props);
@@ -80,5 +80,3 @@ const useStyles = makeStyles(
     }),
     { name: 'RaEmpty' }
 );
-
-export default Empty;
