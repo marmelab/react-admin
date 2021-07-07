@@ -19,7 +19,7 @@ import DefaultPagination from './pagination/Pagination';
 import BulkDeleteButton from '../button/BulkDeleteButton';
 import BulkActionsToolbar from './BulkActionsToolbar';
 import DefaultActions from './ListActions';
-import Empty from './Empty';
+import { Empty } from './Empty';
 import { ListProps } from '../types';
 
 export const ListView = (props: ListViewProps) => {
