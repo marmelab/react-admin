@@ -186,6 +186,25 @@ export default {
 };
 ```
 
+It's possible to not log the user out, and to instead redirect them. You can do this by passing `error.logoutUser = false` to the `Promise.reject` along with an `error.redirectTo` url.
+
+
+```js
+// in src/authProvider.js
+export default {
+    login: ({ username, password }) => { /* ... */ },
+    checkError: (error) => {
+        const status = error.status;
+        if (status === 401 || status === 403) {
+            return Promise.reject({ redirectTo: '/unauthorized', logoutUser: false });
+        }
+        // other error code (404, 500, etc): no need to log out
+        return Promise.resolve();
+    },
+    // ...
+};
+```
+
 When `authProvider.checkError()` returns a rejected Promise, react-admin displays a notification to the end user, unless the `error.message` is `false`. That means you can disable the notification on error as follows:
 
 ```js

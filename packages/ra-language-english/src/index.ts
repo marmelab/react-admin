@@ -138,6 +138,7 @@ const englishMessages: TranslationMessages = {
                 'Cannot load the translations for the specified language',
             canceled: 'Action cancelled',
             logged_out: 'Your session has ended, please reconnect.',
+            not_authorized: "You're not authorized to access this resource.",
         },
         validation: {
             required: 'Required',
