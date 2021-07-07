@@ -102,6 +102,21 @@ const SimpleList = <RecordType extends Record = Record>(
         );
     }
 
+    const renderAvatar = (
+        id: Identifier,
+        avatarCallback: FunctionToElement<RecordType>
+    ) => {
+        const avatarValue = avatarCallback(data[id], id);
+        if (
+            typeof avatarValue === 'string' &&
+            (avatarValue.startsWith('http') || avatarValue.startsWith('data:'))
+        ) {
+            return <Avatar src={avatarValue} />;
+        } else {
+            return <Avatar>{avatarValue}</Avatar>;
+        }
+    };
+
     return (
         total > 0 && (
             <List className={className} {...sanitizeListRestProps(rest)}>
@@ -128,7 +143,7 @@ const SimpleList = <RecordType extends Record = Record>(
                             )}
                             {leftAvatar && (
                                 <ListItemAvatar>
-                                    <Avatar>{leftAvatar(data[id], id)}</Avatar>
+                                    {renderAvatar(id, leftAvatar)}
                                 </ListItemAvatar>
                             )}
                             <ListItemText
@@ -150,7 +165,7 @@ const SimpleList = <RecordType extends Record = Record>(
                                 <ListItemSecondaryAction>
                                     {rightAvatar && (
                                         <Avatar>
-                                            {rightAvatar(data[id], id)}
+                                            {renderAvatar(id, rightAvatar)}
                                         </Avatar>
                                     )}
                                     {rightIcon && (
