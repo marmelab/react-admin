@@ -107,7 +107,10 @@ const SimpleList = <RecordType extends Record = Record>(
         avatarCallback: FunctionToElement<RecordType>
     ) => {
         const avatarValue = avatarCallback(data[id], id);
-        if (typeof avatarValue === 'string' && avatarValue.startsWith('http')) {
+        if (
+            typeof avatarValue === 'string' &&
+            (avatarValue.startsWith('http') || avatarValue.startsWith('data:'))
+        ) {
             return <Avatar src={avatarValue} />;
         } else {
             return <Avatar>{avatarValue}</Avatar>;
