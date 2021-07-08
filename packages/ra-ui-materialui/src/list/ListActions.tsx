@@ -86,7 +86,7 @@ ListActions.propTypes = {
     basePath: PropTypes.string,
     className: PropTypes.string,
     currentSort: PropTypes.any,
-    displayedFilters: PropTypes.object,
+    displayedFilters: PropTypes.objectOf(PropTypes.bool),
     exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     filters: PropTypes.element,
     filterValues: PropTypes.object,
@@ -108,7 +108,7 @@ export interface ListActionsProps extends ToolbarProps {
     className?: string;
     resource?: string;
     filters?: ReactElement<any>;
-    displayedFilters?: any;
+    displayedFilters?: { [key: string]: boolean } | null;
     exporter?: Exporter | boolean;
     filterValues?: any;
     permanentFilter?: any;

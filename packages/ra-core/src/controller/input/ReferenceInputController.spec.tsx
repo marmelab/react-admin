@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { useState, useCallback } from 'react';
 import { fireEvent, waitFor } from '@testing-library/react';
 import omit from 'lodash/omit';
@@ -182,13 +182,12 @@ describe('<ReferenceInputController />', () => {
                             id: 1,
                         },
                     },
-                    displayedFilters: [],
+                    displayedFilters: {},
                     error: null,
                     filterValues: {
                         q: '',
                     },
                     hasCreate: false,
-
                     ids: [1],
                     loaded: false,
                     loading: true,
@@ -197,7 +196,6 @@ describe('<ReferenceInputController />', () => {
                     refetch: expect.any(Function),
                     resource: 'comments',
                     selectedIds: [],
-
                     total: NaN,
                 },
                 referenceRecord: {

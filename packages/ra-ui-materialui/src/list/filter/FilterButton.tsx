@@ -119,7 +119,7 @@ export interface FilterButtonProps extends HtmlHTMLAttributes<HTMLDivElement> {
     resource?: string;
     filterValues: any;
     showFilter: (filterName: string, defaultValue: any) => void;
-    displayedFilters: any;
+    displayedFilters: { [key: string]: boolean } | null;
     filters: ReactNode[];
 }
 

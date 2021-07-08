@@ -32,9 +32,9 @@ interface ListParamsOptions {
 
 interface Parameters extends ListParams {
     filterValues: object;
-    displayedFilters: {
+    displayedFilters?: {
         [key: string]: boolean;
-    };
+    } | null;
     requestSignature: any[];
 }
 
@@ -43,7 +43,10 @@ interface Modifiers {
     setPage: (page: number) => void;
     setPerPage: (pageSize: number) => void;
     setSort: (sort: string, order?: string) => void;
-    setFilters: (filters: any, displayedFilters: any) => void;
+    setFilters: (
+        filters: any,
+        displayedFilters?: { [key: string]: boolean } | null
+    ) => void;
     hideFilter: (filterName: string) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
 }

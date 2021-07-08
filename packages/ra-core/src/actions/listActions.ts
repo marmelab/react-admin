@@ -8,7 +8,7 @@ export interface ListParams {
     page: number;
     perPage: number;
     filter: any;
-    displayedFilters: any;
+    displayedFilters?: { [key: string]: boolean } | null;
 }
 
 export interface ChangeListParamsAction {

@@ -20,7 +20,7 @@ describe('<ReferenceInput />', () => {
             currentSort: {},
             setSort: () => {},
             filterValues: {},
-            displayedFilters: [],
+            displayedFilters: {},
             setFilters: () => {},
             showFilter: () => {},
             hideFilter: () => {},
