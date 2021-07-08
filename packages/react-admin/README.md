@@ -39,9 +39,14 @@ npm install react-admin
 yarn add react-admin
 ```
 
-## Documentation
+## How To Learn React-Admin
 
-Read the [Tutorial](https://marmelab.com/react-admin/Tutorial.html) for a 30 minutes introduction. After that, head to the [Documentation](https://marmelab.com/react-admin/Readme.html), or checkout the [source code of the demo](https://github.com/marmelab/react-admin-demo) for an example usage.
+1. Read the [Tutorial](https://marmelab.com/react-admin/Tutorial.html) for a 30 minutes introduction. 
+2. Read the source code of [the demos](https://marmelab.com/react-admin/Demos.html) for real-life examples.
+3. Read the [Documentation](https://marmelab.com/react-admin/Readme.html) for a deep dive into the react-admin components and hooks.
+4. Red the [Architecture decisions](https://marmelab.com/react-admin/Architecture.html) to better understand why features are implemented that way.
+5. Check out the [API Reference](https://marmelab.com/react-admin/Reference.html) for a complete list of the public API.
+6. Get [Support](#support) for fixing your own problems
 
 ## At a Glance
 

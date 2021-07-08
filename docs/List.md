@@ -781,25 +781,27 @@ The default value for the `component` prop is `Card`.
 
 ### Synchronize With URL
 
-When a List based component (eg: `PostList`) is passed to the `list` prop of a `<Resource>`, it will automatically synchronize its parameters with the browser URL (using react-router location). However, when used anywhere outside a `<Resource>`, it won't synchronize, which can be useful when you have multiple lists on a single page for example.
+When a `<List>` based component (eg: `<PostList>`) is passed as a `<Resource list>`, react-admin synchronizes its parameters (sort, pagination, filters) with the query string in the URL (using `react-router` location). It does so by setting the `<List syncWithLocation>` prop by default.
 
-In order to enable the synchronization with the URL, you can set the `syncWithLocation` prop. For example, adding a `List` to an `Edit` page:
+When you use a `<List>` component anywhere else than as `<Resource list>`, `syncWithLocation` isn't enabled, and so `<List>` doesn't synchronize its parameters with the URL - the `<List>` parameters are kept in a local state, independent for each `<List>` instance. This allows to have multiple lists on a single page. The drawback is that a hit on the "back" button doesn't restore the previous list parameters.
+
+You may, however, wish to enable `syncWithLocation` on a `<List>` component that is not a `<Resource list>`. For instance, you may want to display a `<List>` of Posts in a Dashboard, and allow users to use the "back" button to undo a sort, pagination, or filter change on that list. In such cases, set the `syncWithLocation` prop to `true`:
 
 {% raw %}
 ```jsx
-const TagsEdit = (props) => (
-    <>
-        <Edit {...props}>
-            // ...
-        </Edit>
+const Dashboard = () => (
+    <div>
+        // ...
         <ResourceContextProvider value="posts">
-            <List syncWithLocation basePath="/posts" filter={{ tags: [id]}}>
-                <Datagrid>
-                    <TextField source="title" />
-                </Datagrid>
+            <List syncWithLocation basePath="/posts" >
+                <SimpleList
+                    primaryText={record => record.title}
+                    secondaryText={record => `${record.views} views`}
+                    tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+                />
             </List>
         </ResourceContextProvider>
-    </>
+    </div>
 )
 ```
 {% endraw %}
@@ -1885,31 +1887,32 @@ import {
     ListToolbar,
     BulkActionsToolbar,
     Pagination,
+    Title,
     useListContext,
 } from 'react-admin';
 import Card from '@material-ui/core/Card';
 
 const PostList = props => (
-    <MyList {...props}>
+    <MyList {...props} title="Post List">
         <Datagrid>
             ...
         </Datagrid>
     </MyList>
 );
 
-const MyList = ({children, ...props}) => (
+const MyList = ({children, actions, bulkActionButtons, filters, title, ...props}) => (
     <ListBase {...props}>
-        <h1>{props.title}</h1>
+        <Title title={title}/>
         <ListToolbar
-            filters={props.filters}
-            actions={props.actions}
+            filters={filters}
+            actions={actions}
         />
         <Card>
             <BulkActionsToolbar>
-                {props.bulkActionButtons}
+                {bulkActionButtons}
             </BulkActionsToolbar>
             {cloneElement(children, {
-                hasBulkActions: props.bulkActionButtons !== false,
+                hasBulkActions: bulkActionButtons !== false,
             })}
             <Pagination />
         </Card>

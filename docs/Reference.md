@@ -181,13 +181,14 @@ title: "Reference"
 * `useLogoutIfAccessDenied`
 * [`useMediaQuery`](./Theming.md#usemediaquery-hook)
 * [`useMutation`](./Actions.md#usemutation-hook)
-* [`useNotify`](./Actions.md#handling-side-effects-in-usedataprovider)
+* [`useNotify`](./Actions.md#usenotify)
 * `usePaginationState`
 * [`usePermissions`](./Authentication.md#usepermissions-hook)
 * [`usePreferences`](https://marmelab.com/ra-enterprise/modules/ra-preferences#usepreferences-reading-and-writing-user-preferences)<img class="icon" src="./img/premium.svg" />
 * [`useQuery`](./Actions.md#usequery-hook)
 * [`useQueryWithStore`](./Actions.md#usequerywithstore-hook)
-* [`useRedirect`](./Actions.md#handling-side-effects-in-usedataprovider)
+* [`useRedirect`](./Actions.md#useredirect)
+* [`useRefresh`](./Actions.md#userefresh)
 * [`useResourceAppLocation`](https://marmelab.com/ra-enterprise/modules/ra-navigation#useresourceapplocation-access-current-resource-app-location)<img class="icon" src="./img/premium.svg" />
 * `useReference`
 * `useReferenceArrayFieldController`
@@ -206,7 +207,7 @@ title: "Reference"
 * [`useUpdate`](./Actions.md#useupdate)
 * `useUpdateLoading`
 * [`useUpdateMany`](./Actions.md#useupdatemany)
-* [`useUnselectAll`](./Actions.md#handling-side-effects-in-usedataprovider)
+* [`useUnselectAll`](./Actions.md#useunselectall)
 * [`useWarnWhenUnsavedChanges`](./CreateEdit.md#warning-about-unsaved-changes)
 * `useVersion`
 * [`withDataProvider`](./Actions.md#legacy-components-query-mutation-and-withdataprovider)

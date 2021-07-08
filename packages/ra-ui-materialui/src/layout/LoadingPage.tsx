@@ -1,7 +1,8 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { ThemeProvider } from '@material-ui/styles';
-import { createMuiTheme } from '@material-ui/core/styles';
+
+import { createMuiTheme } from './createMuiTheme';
 import Loading from './Loading';
 
 const LoadingPage = ({ theme, ...props }) => (
