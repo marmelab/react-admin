@@ -17,7 +17,6 @@
     ],
     "rules": {
         "no-use-before-define": "off",
-        "prettier/prettier": "error",
         "no-restricted-imports": [
             "error",
             {
@@ -31,6 +30,12 @@
             }
         ],
         "no-redeclare": "off",
-        "@typescript-eslint/no-redeclare": ["error"]
+        "@typescript-eslint/no-redeclare": ["error"],
+        "prettier/prettier": [
+            "error",
+            {
+              "endOfLine": "auto"
+            }
+        ]
     }
 }
