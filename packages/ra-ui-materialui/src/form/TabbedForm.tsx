@@ -125,6 +125,7 @@ export interface TabbedFormProps
     children: ReactNode;
     className?: string;
     classes?: ClassesOverride<typeof useTabbedFormViewStyles>;
+    component?: React.ComponentType<any>;
     initialValues?: any;
     margin?: 'none' | 'normal' | 'dense';
     mutationMode?: MutationMode;
