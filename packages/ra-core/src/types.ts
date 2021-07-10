@@ -68,8 +68,8 @@ export interface UserIdentity {
 export type AuthProvider = {
     login: (params: any) => Promise<any>;
     logout: (params: any) => Promise<void | false | string>;
-    checkAuth: (params: any) => Promise<void>;
-    checkError: (error: any) => Promise<void>;
+    checkAuth: <T = any>(params: any) => Promise<T>;
+    checkError: <T = any>(error: any) => Promise<T>;
     getPermissions: (params: any) => Promise<any>;
     getIdentity?: () => Promise<UserIdentity>;
     [key: string]: any;
