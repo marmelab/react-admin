@@ -1,11 +1,15 @@
 import merge from 'lodash/merge';
-import buildDataProvider from 'ra-data-graphql';
+import buildDataProvider, {
+    GET_COUNT as INNER_GET_COUNT,
+} from 'ra-data-graphql';
 import { DELETE, DELETE_MANY, UPDATE, UPDATE_MANY } from 'ra-core';
 
 import defaultBuildQuery from './buildQuery';
 const defaultOptions = {
     buildQuery: defaultBuildQuery,
 };
+
+export const GET_COUNT = INNER_GET_COUNT;
 
 export const buildQuery = defaultBuildQuery;
 

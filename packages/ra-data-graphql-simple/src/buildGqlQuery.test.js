@@ -8,6 +8,7 @@ import {
     CREATE,
     DELETE,
 } from 'ra-core';
+import { GET_COUNT } from 'ra-data-graphql';
 import buildGqlQuery, {
     buildApolloArgs,
     buildArgs,
@@ -293,6 +294,18 @@ describe('buildGqlQuery', () => {
     };
 
     const resource = {
+        [GET_COUNT]: {
+            name: '_allCommandMeta',
+            args: [
+                {
+                    name: 'foo',
+                    type: {
+                        kind: TypeKind.NON_NULL,
+                        ofType: { kind: TypeKind.SCALAR, name: 'Int' },
+                    },
+                },
+            ],
+        },
         type: {
             fields: [
                 { type: { kind: TypeKind.SCALAR, name: '' }, name: 'foo' },

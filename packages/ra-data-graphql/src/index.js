@@ -16,17 +16,20 @@ import {
     QUERY_TYPES as INNER_QUERY_TYPES,
     MUTATION_TYPES as INNER_MUTATION_TYPES,
     ALL_TYPES as INNER_ALL_TYPES,
+    GET_COUNT as INNER_GET_COUNT,
 } from './constants';
 import defaultResolveIntrospection from './introspection';
 export const QUERY_TYPES = INNER_QUERY_TYPES;
 export const MUTATION_TYPES = INNER_MUTATION_TYPES;
 export const ALL_TYPES = INNER_ALL_TYPES;
+export const GET_COUNT = INNER_GET_COUNT;
 
 const defaultOptions = {
     resolveIntrospection: defaultResolveIntrospection,
     introspection: {
         operationNames: {
             [GET_LIST]: resource => `all${pluralize(resource.name)}`,
+            [GET_COUNT]: resource => `_all${pluralize(resource.name)}Meta`,
             [GET_ONE]: resource => `${resource.name}`,
             [GET_MANY]: resource => `all${pluralize(resource.name)}`,
             [GET_MANY_REFERENCE]: resource => `all${pluralize(resource.name)}`,
