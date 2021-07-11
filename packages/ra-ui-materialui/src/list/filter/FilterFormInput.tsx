@@ -15,6 +15,9 @@ const useStyles = makeStyles(
             alignItems: 'flex-end',
             pointerEvents: 'auto',
         },
+        fullWidthBody: {
+            width: '100%',
+        },
         spacer: { width: theme.spacing(2) },
         hideButton: {},
     }),
@@ -29,7 +32,11 @@ const FilterFormInput = props => {
     return (
         <div
             data-source={filterElement.props.source}
-            className={classnames('filter-field', classes.body)}
+            className={classnames(
+                'filter-field',
+                classes.body,
+                filterElement.props.fullWidth && classes.fullWidthBody
+            )}
         >
             {!filterElement.props.alwaysOn && (
                 <IconButton

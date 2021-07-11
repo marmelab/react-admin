@@ -95,6 +95,7 @@ const useStyles = makeStyles(
     theme => ({
         form: {
             marginTop: -theme.spacing(2),
+            flexGrow: 1,
             paddingTop: 0,
             display: 'flex',
             alignItems: 'flex-end',
