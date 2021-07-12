@@ -302,7 +302,7 @@ const ListActions = () => (
 
 ### `<DeleteWithConfirmButton>`
 
-Delete the selected element. To be used inside a <Toolbar> conponent.
+Delete the current record. To be used inside a <Toolbar> conponent.
 
 Overriding `translateOptions` name and id props allows to customize the notification message confirming the deletion.
 
