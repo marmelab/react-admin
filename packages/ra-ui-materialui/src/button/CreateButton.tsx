@@ -62,6 +62,7 @@ const CreateButton: FC<CreateButtonProps> = props => {
         <Button
             component={Link}
             to={location}
+            classes={classes}
             className={className}
             label={label}
             variant={variant}
