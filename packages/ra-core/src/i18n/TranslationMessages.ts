@@ -2,11 +2,9 @@ interface StringMap {
     [key: string]: StringMap | string | undefined;
 }
 
-export interface TranslationMessages extends StringMap {
+export interface RATranslationMessages {
     ra: {
         action: {
-            // for custom translation strings
-            [key: string]: StringMap | string;
             add_filter: string;
             add: string;
             back: string;
@@ -36,13 +34,11 @@ export interface TranslationMessages extends StringMap {
             close_menu: string;
         };
         boolean: {
-            [key: string]: StringMap | string;
             true: string;
             false: string;
             null: string;
         };
         page: {
-            [key: string]: StringMap | string;
             create: string;
             dashboard: string;
             edit: string;
@@ -55,31 +51,25 @@ export interface TranslationMessages extends StringMap {
             invite: string;
         };
         input: {
-            [key: string]: StringMap | string;
             file: {
-                [key: string]: StringMap | string;
                 upload_several: string;
                 upload_single: string;
             };
             image: {
-                [key: string]: StringMap | string;
                 upload_several: string;
                 upload_single: string;
             };
             references: {
-                [key: string]: StringMap | string;
                 all_missing: string;
                 many_missing: string;
                 single_missing: string;
             };
             password: {
-                [key: string]: StringMap | string;
                 toggle_visible: string;
                 toggle_hidden: string;
             };
         };
         message: {
-            [key: string]: StringMap | string;
             about: string;
             are_you_sure: string;
             bulk_delete_content: string;
@@ -96,7 +86,6 @@ export interface TranslationMessages extends StringMap {
             unsaved_changes: string;
         };
         navigation: {
-            [key: string]: StringMap | string;
             no_results: string;
             no_more_results: string;
             page_out_of_boundaries: string;
@@ -114,7 +103,6 @@ export interface TranslationMessages extends StringMap {
             DESC: string;
         };
         auth: {
-            [key: string]: StringMap | string;
             auth_check_error: string;
             user_menu: string;
             username: string;
@@ -124,7 +112,6 @@ export interface TranslationMessages extends StringMap {
             logout: string;
         };
         notification: {
-            [key: string]: StringMap | string;
             updated: string;
             created: string;
             deleted: string;
@@ -137,7 +124,6 @@ export interface TranslationMessages extends StringMap {
             logged_out: string;
         };
         validation: {
-            [key: string]: StringMap | string;
             required: string;
             minLength: string;
             maxLength: string;
@@ -150,3 +136,5 @@ export interface TranslationMessages extends StringMap {
         };
     };
 }
+
+export type TranslationMessages<T = {}> = RATranslationMessages & T;
