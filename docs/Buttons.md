@@ -304,7 +304,7 @@ const ListActions = () => (
 
 Delete the current record. To be used inside a <Toolbar> conponent.
 
-Overriding `translateOptions` name and id props allows to customize the notification message confirming the deletion.
+You can customize the notification message confirming the deletion by providing a `translateOptions` prop. It accepts an object with a `name` and `id` property:
 
 
 ```jsx
