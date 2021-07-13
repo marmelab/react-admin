@@ -6,7 +6,7 @@ import arrayMutators from 'final-form-arrays';
 import ArrayInput from './ArrayInput';
 import NumberInput from './NumberInput';
 import TextInput from './TextInput';
-import SimpleFormIterator from '../form/SimpleFormIterator';
+import { SimpleFormIterator } from '../form/SimpleFormIterator';
 import { minLength, required } from 'ra-core';
 
 describe('<ArrayInput />', () => {

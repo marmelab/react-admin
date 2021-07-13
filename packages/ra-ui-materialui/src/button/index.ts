@@ -29,6 +29,8 @@ import SortButton, { SortButtonProps } from './SortButton';
 import RefreshButton, { RefreshButtonProps } from './RefreshButton';
 import RefreshIconButton, { RefreshIconButtonProps } from './RefreshIconButton';
 
+export * from './IconButtonWithTooltip';
+
 export type {
     BulkDeleteButtonProps,
     BulkDeleteWithConfirmButtonProps,

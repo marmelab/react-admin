@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReactNode, ReactElement } from 'react';
 import SimpleForm from '../form/SimpleForm';
-import SimpleFormIterator from '../form/SimpleFormIterator';
+import { SimpleFormIterator } from '../form/SimpleFormIterator';
 import ArrayInput from '../input/ArrayInput';
 import BooleanInput from '../input/BooleanInput';
 import DateInput from '../input/DateInput';
