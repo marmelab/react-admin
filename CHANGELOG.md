@@ -2260,7 +2260,7 @@ For highlights about this version, read [the 2.2 release announcement post](http
 ## v2.1.1
 
 * Fix FormInput not passing `resource` to `Labeled` inputs ([djhi](https://github.com/djhi))
-* Add documentaton on how to prefill a `<Create>` form based on another record ([fzaninotto](https://github.com/fzaninotto))
+* Add documentation on how to prefill a `<Create>` form based on another record ([fzaninotto](https://github.com/fzaninotto))
 * Add polish translations ([tskorupka](https://github.com/tskorupka))
 * Add documentation on tabs routing ([djhi](https://github.com/djhi))
 
