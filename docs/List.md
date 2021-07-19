@@ -321,7 +321,7 @@ const ResetViewsButton = (props) => (
         {...props}
         label="Reset Views"
         data={views}
-        icon={VisibilityOff}
+        icon={<VisibilityOff/>}
     />
 );
 
