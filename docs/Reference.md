@@ -57,7 +57,7 @@ title: "Reference"
 * [`<FileInput>`](./Inputs.md#fileinput)
 * [`<Filter>`](./List.md#filters-filter-inputs)
 * [`<FilterButton>`](./Buttons.md#filterbutton)
-* [`<FilterForm>`](./List.md#custom-form-component)
+* [`<FilterForm>`](./List.md#custom-filter-form)
 * [`<FilterList>`](./List.md#the-filterlist-sidebar)
 * [`<FilterListItem>`](./List.md#the-filterlist-sidebar)
 * [`<FilterLiveSearch>`](./List.md#live-search)
