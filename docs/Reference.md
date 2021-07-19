@@ -53,11 +53,12 @@ title: "Reference"
 * [`<EditButton>`](./Buttons.md#editbutton)
 * [`<EditDialog>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog--editdialog)<img class="icon" src="./img/premium.svg" />
 * [`<EmailField>`](./Fields.md#emailfield)
+* [`<Empty>`](./List.md#empty-empty-page-component)  
 * [`<FileField>`](./Fields.md#filefield)
 * [`<FileInput>`](./Inputs.md#fileinput)
 * [`<Filter>`](./List.md#filters-filter-inputs)
 * [`<FilterButton>`](./Buttons.md#filterbutton)
-* [`<FilterForm>`](./List.md#custom-form-component)
+* [`<FilterForm>`](./List.md#custom-filter-form)
 * [`<FilterList>`](./List.md#the-filterlist-sidebar)
 * [`<FilterListItem>`](./List.md#the-filterlist-sidebar)
 * [`<FilterLiveSearch>`](./List.md#live-search)

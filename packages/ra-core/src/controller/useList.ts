@@ -49,7 +49,7 @@ import { ListControllerProps } from '.';
  * @param {Identifier[]} props.ids An array of the record identifiers
  * @param {Boolean} props.loaded: A boolean indicating whether the data has been loaded at least once
  * @param {Boolean} props.loading: A boolean indicating whether the data is being loaded
- * @param {Error | String} props.error: Optional. The error if any occured while loading the data
+ * @param {Error | String} props.error: Optional. The error if any occurred while loading the data
  * @param {Object} props.filter: Optional. An object containing the filters applied on the data
  * @param {Number} props.page: Optional. The initial page index
  * @param {Number} props.perPage: Optional. The initial page size
