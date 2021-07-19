@@ -123,7 +123,7 @@ const App = () => (
 
 ## Resource Context
 
-`<Resource>` also creates a `RecordContext`, that gives access to the current resource name to all descendents of the main page components (`list`, `create`, `edit`, `show`). 
+`<Resource>` also creates a `ResourceContext`, that gives access to the current resource name to all descendents of the main page components (`list`, `create`, `edit`, `show`). 
 
 to read the current resource name, use the `useResourceContext()` hook.
 
