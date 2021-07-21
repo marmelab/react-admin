@@ -14,7 +14,7 @@ import {
     warning,
 } from 'ra-core';
 
-import ResettableTextField from './ResettableTextField';
+import ResettableTextField, { resettableStyles } from './ResettableTextField';
 import InputHelperText from './InputHelperText';
 import sanitizeInputRestProps from './sanitizeInputRestProps';
 import Labeled from './Labeled';
@@ -23,6 +23,7 @@ import {
     useSupportCreateSuggestion,
     SupportCreateSuggestionOptions,
 } from './useSupportCreateSuggestion';
+import { ClassesOverride } from '../types';
 
 /**
  * An Input component for a select box, using an array of objects for the options
@@ -350,6 +351,7 @@ const sanitizeRestProps = ({
 
 const useStyles = makeStyles(
     theme => ({
+        ...resettableStyles,
         input: {
             minWidth: theme.spacing(20),
         },
@@ -360,4 +362,6 @@ const useStyles = makeStyles(
 export interface SelectInputProps
     extends ChoicesInputProps<TextFieldProps>,
         Omit<SupportCreateSuggestionOptions, 'handleChange'>,
-        Omit<TextFieldProps, 'label' | 'helperText'> {}
+        Omit<TextFieldProps, 'label' | 'helperText' | 'classes'> {
+    classes?: ClassesOverride<typeof useStyles>;
+}

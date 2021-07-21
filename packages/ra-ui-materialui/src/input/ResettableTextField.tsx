@@ -7,11 +7,13 @@ import {
     IconButton,
     TextField as MuiTextField,
     TextFieldProps,
+    Theme,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ClearIcon from '@material-ui/icons/Clear';
 import { InputProps, useTranslate } from 'ra-core';
 import { ClassesOverride } from '../types';
+import { Styles } from '@material-ui/styles';
 
 /**
  * An override of the default Material-UI TextField which is resettable
@@ -170,30 +172,31 @@ function ResettableTextField(props: ResettableTextFieldProps) {
     );
 }
 
-const useStyles = makeStyles(
-    {
-        clearIcon: {
-            height: 16,
-            width: 0,
-        },
-        visibleClearIcon: {
-            width: 16,
-        },
-        clearButton: {
-            height: 24,
-            width: 24,
-            padding: 0,
-        },
-        selectAdornment: {
-            position: 'absolute',
-            right: 24,
-        },
-        inputAdornedEnd: {
-            paddingRight: 0,
-        },
+export const resettableStyles: Styles<Theme, ResettableTextFieldProps> = {
+    clearIcon: {
+        height: 16,
+        width: 0,
     },
-    { name: 'RaResettableTextField' }
-);
+    visibleClearIcon: {
+        width: 16,
+    },
+    clearButton: {
+        height: 24,
+        width: 24,
+        padding: 0,
+    },
+    selectAdornment: {
+        position: 'absolute',
+        right: 24,
+    },
+    inputAdornedEnd: {
+        paddingRight: 0,
+    },
+};
+
+const useStyles = makeStyles(resettableStyles, {
+    name: 'RaResettableTextField',
+});
 
 const handleMouseDownClearButton = event => {
     event.preventDefault();
