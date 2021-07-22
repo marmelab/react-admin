@@ -9,7 +9,12 @@ import React, {
 import Downshift, { DownshiftProps } from 'downshift';
 import get from 'lodash/get';
 import classNames from 'classnames';
-import { TextField, InputAdornment, IconButton } from '@material-ui/core';
+import {
+    TextField,
+    InputAdornment,
+    IconButton,
+    InputProps,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ClearIcon from '@material-ui/icons/Clear';
 import { TextFieldProps } from '@material-ui/core/TextField';
@@ -17,6 +22,7 @@ import {
     useInput,
     FieldTitle,
     ChoicesInputProps,
+    mergeRefs,
     useSuggestions,
     useTranslate,
     warning,
@@ -364,7 +370,8 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         return true;
     };
 
-    const { endAdornment, ...InputPropsWithoutEndAdornment } = InputProps || {};
+    const { endAdornment, inputRef, ...InputPropsWithoutEndAdornment } =
+        InputProps || {};
 
     const handleClickClearButton = useCallback(
         openMenu => event => {
@@ -494,7 +501,10 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                                 id={id}
                                 name={input.name}
                                 InputProps={{
-                                    inputRef: storeInputRef,
+                                    inputRef: mergeRefs([
+                                        storeInputRef,
+                                        inputRef,
+                                    ]),
                                     endAdornment: getEndAdornment(openMenu),
                                     onBlur,
                                     onChange: event => {
@@ -623,16 +633,18 @@ const useStyles = makeStyles(
 );
 
 interface Options {
-    suggestionsContainerProps?: any;
+    InputProps?: InputProps;
     labelProps?: any;
+    suggestionsContainerProps?: any;
 }
 
 export interface AutocompleteInputProps
-    extends ChoicesInputProps<TextFieldProps & Options>,
+    extends ChoicesInputProps<TextFieldProps>,
         Omit<SupportCreateSuggestionOptions, 'handleChange'>,
         Omit<DownshiftProps<any>, 'onChange'> {
     clearAlwaysVisible?: boolean;
     resettable?: boolean;
     loaded?: boolean;
     loading?: boolean;
+    options?: Options;
 }
