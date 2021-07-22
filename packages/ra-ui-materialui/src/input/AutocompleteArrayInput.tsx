@@ -8,7 +8,7 @@ import React, {
 import Downshift, { DownshiftProps } from 'downshift';
 import classNames from 'classnames';
 import get from 'lodash/get';
-import { TextField, Chip } from '@material-ui/core';
+import { TextField, Chip, InputProps } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextFieldProps } from '@material-ui/core/TextField';
 import {
@@ -17,6 +17,7 @@ import {
     ChoicesInputProps,
     useSuggestions,
     warning,
+    mergeRefs,
 } from 'ra-core';
 import debounce from 'lodash/debounce';
 
@@ -367,6 +368,8 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
         return true;
     };
 
+    const { inputRef, ...InputPropsWithoutInputRef } = InputProps || {};
+
     return (
         <>
             <Downshift
@@ -414,7 +417,10 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
                                 id={id}
                                 fullWidth={fullWidth}
                                 InputProps={{
-                                    inputRef: storeInputRef,
+                                    inputRef: mergeRefs([
+                                        storeInputRef,
+                                        inputRef,
+                                    ]),
                                     classes: {
                                         root: classNames(classes.inputRoot, {
                                             [classes.inputRootFilled]:
@@ -461,6 +467,7 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
                                         );
                                     },
                                     onFocus,
+                                    ...InputPropsWithoutInputRef,
                                 }}
                                 error={!!(touched && (error || submitError))}
                                 label={
@@ -580,13 +587,16 @@ const useStyles = makeStyles(
 const DefaultSetFilter = () => {};
 
 interface Options {
-    suggestionsContainerProps?: any;
+    InputProps?: InputProps;
     labelProps?: any;
+    suggestionsContainerProps?: any;
 }
 
 export interface AutocompleteArrayInputProps
-    extends ChoicesInputProps<TextFieldProps & Options>,
+    extends ChoicesInputProps<TextFieldProps>,
         Omit<SupportCreateSuggestionOptions, 'handleChange'>,
-        Omit<DownshiftProps<any>, 'onChange'> {}
+        Omit<DownshiftProps<any>, 'onChange'> {
+    options?: Options;
+}
 
 export default AutocompleteArrayInput;
