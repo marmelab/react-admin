@@ -29,17 +29,18 @@
     "@types/react": "^16.9.13",
     "@types/react-beautiful-dnd": "^13.0.0",
     "@types/react-dom": "^16.9.9",
+    "rewire": "^5.0.0",
     "source-map-explorer": "^2.0.0",
     "typescript": "^4.0.2",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "node ./build.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "homepage": "https://marmelab.com/react-admin-crm",
+  "homepage": ".",
   "browserslist": {
     "production": [
       ">0.2%",
