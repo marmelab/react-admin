@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ReactElement, Children } from 'react';
+import { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { Toolbar, ToolbarProps } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
