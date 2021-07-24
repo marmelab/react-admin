@@ -94,6 +94,6 @@ describe('ui reducer', () => {
             optimistic: false,
             sidebarOpen: true,
             viewVersion: 1,
-        }).toEqual(reducer({ siebaropen: true }, { type: '@@INIT' }));
+        }).toEqual(reducer({ sidebarOpen: true }, { type: '@@INIT' }));
     });
 });
