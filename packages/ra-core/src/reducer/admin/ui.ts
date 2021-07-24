@@ -76,7 +76,7 @@ const uiReducer: Reducer<UIState> = (
         case STOP_OPTIMISTIC_MODE:
             return { ...previousState, optimistic: false };
         default:
-            return { ...defaultState, ...previousState};
+            return { ...defaultState, ...previousState };
     }
 };
 
