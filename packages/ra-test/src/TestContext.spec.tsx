@@ -15,6 +15,9 @@ const primedStore = {
         },
         resources: {},
         ui: {
+            automaticRefreshEnabled: true,
+            sidebarOpen: false,
+            optimistic: false,
             viewVersion: 1,
         },
         customQueries: {},

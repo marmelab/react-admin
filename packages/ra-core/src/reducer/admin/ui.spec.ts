@@ -93,7 +93,7 @@ describe('ui reducer', () => {
             automaticRefreshEnabled: true,
             optimistic: false,
             sidebarOpen: true,
-            viewVersion: 1,
+            viewVersion: 0,
         }).toEqual(reducer({ sidebarOpen: true }, { type: '@@INIT' }));
     });
 });
