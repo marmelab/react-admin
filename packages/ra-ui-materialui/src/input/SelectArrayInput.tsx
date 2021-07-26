@@ -256,8 +256,8 @@ const SelectArrayInput = (props: SelectArrayInputProps) => {
                     {...input}
                     onChange={handleChangeWithCreateSupport}
                     value={input.value || []}
-                    {...options}
                     labelWidth={labelWidth}
+                    {...options}
                 >
                     {finalChoices.map(renderMenuItem)}
                 </Select>
