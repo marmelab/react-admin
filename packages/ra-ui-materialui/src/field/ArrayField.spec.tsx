@@ -8,8 +8,10 @@ import TextField from './TextField';
 import Datagrid from '../list/datagrid/Datagrid';
 
 describe('<ArrayField />', () => {
+    const currentSort = { field: 'id', order: 'ASC' };
+
     const DummyIterator = props => (
-        <Datagrid {...props}>
+        <Datagrid {...props} currentSort={currentSort}>
             <NumberField source="id" />
             <TextField source="foo" />
         </Datagrid>

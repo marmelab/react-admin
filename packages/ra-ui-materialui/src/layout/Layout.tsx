@@ -13,11 +13,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import {
-    createMuiTheme,
-    withStyles,
-    createStyles,
-} from '@material-ui/core/styles';
+import { withStyles, createStyles } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { ThemeOptions } from '@material-ui/core';
 import { ComponentPropType, CoreLayoutProps } from 'ra-core';
@@ -30,6 +26,7 @@ import DefaultNotification from './Notification';
 import DefaultError from './Error';
 import defaultTheme from '../defaultTheme';
 import SkipNavigationButton from '../button/SkipNavigationButton';
+import { createMuiTheme } from './createMuiTheme';
 
 const styles = theme =>
     createStyles({
@@ -229,7 +226,7 @@ const Layout = ({
     ...props
 }: LayoutProps): JSX.Element => {
     const themeProp = useRef(themeOverride);
-    const [theme, setTheme] = useState(createMuiTheme(themeOverride));
+    const [theme, setTheme] = useState(() => createMuiTheme(themeOverride));
 
     useEffect(() => {
         if (themeProp.current !== themeOverride) {

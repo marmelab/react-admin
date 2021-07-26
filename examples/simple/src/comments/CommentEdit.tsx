@@ -1,6 +1,14 @@
-import { Card, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import * as React from 'react';
+import {
+    Card,
+    Typography,
+    Dialog,
+    DialogContent,
+    TextField as MuiTextField,
+    DialogActions,
+    Button,
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import {
     AutocompleteInput,
     DateInput,
@@ -14,6 +22,8 @@ import {
     Title,
     minLength,
     Record,
+    useCreateSuggestionContext,
+    useCreate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 const LinkToRelatedPost = ({ record }: { record?: Record }) => (
@@ -34,13 +44,64 @@ const useEditStyles = makeStyles({
     },
 });
 
-const OptionRenderer = ({ record }: { record?: Record }) => (
-    <span>
-        {record?.title} - {record?.id}
-    </span>
-);
+const OptionRenderer = ({ record }: { record?: Record }) => {
+    return record.id === '@@ra-create' ? (
+        <span>{record.name}</span>
+    ) : (
+        <span>
+            {record?.title} - {record?.id}
+        </span>
+    );
+};
 
-const inputText = record => `${record.title} - ${record.id}`;
+const inputText = record =>
+    record.id === '@@ra-create'
+        ? record.name
+        : `${record.title} - ${record.id}`;
+
+const CreatePost = () => {
+    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
+    const [value, setValue] = React.useState(filter || '');
+    const [create] = useCreate('posts');
+    const handleSubmit = (event: React.FormEvent) => {
+        event.preventDefault();
+        create(
+            {
+                payload: {
+                    data: {
+                        title: value,
+                    },
+                },
+            },
+            {
+                onSuccess: ({ data }) => {
+                    setValue('');
+                    const choice = data;
+                    onCreate(choice);
+                },
+            }
+        );
+        return false;
+    };
+    return (
+        <Dialog open onClose={onCancel}>
+            <form onSubmit={handleSubmit}>
+                <DialogContent>
+                    <MuiTextField
+                        label="New post title"
+                        value={value}
+                        onChange={event => setValue(event.target.value)}
+                        autoFocus
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button type="submit">Save</Button>
+                    <Button onClick={onCancel}>Cancel</Button>
+                </DialogActions>
+            </form>
+        </Dialog>
+    );
+};
 
 const CommentEdit = props => {
     const classes = useEditStyles();
@@ -53,6 +114,7 @@ const CommentEdit = props => {
         basePath,
         version,
     } = controllerProps;
+
     return (
         <EditContextProvider value={controllerProps}>
             <div className="edit-page">
@@ -75,6 +137,7 @@ const CommentEdit = props => {
                             record={record}
                             save={save}
                             version={version}
+                            warnWhenUnsavedChanges
                         >
                             <TextInput disabled source="id" fullWidth />
                             <ReferenceInput
@@ -85,13 +148,16 @@ const CommentEdit = props => {
                                 fullWidth
                             >
                                 <AutocompleteInput
+                                    create={<CreatePost />}
                                     matchSuggestion={(
                                         filterValue,
                                         suggestion
                                     ) => true}
                                     optionText={<OptionRenderer />}
                                     inputText={inputText}
-                                    options={{ fullWidth: true }}
+                                    options={{
+                                        fullWidth: true,
+                                    }}
                                 />
                             </ReferenceInput>
 

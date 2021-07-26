@@ -40,9 +40,7 @@ const isValidName = async value =>
 
 const UserCreate = ({ permissions, ...props }) => (
     <Create {...props} aside={<Aside />}>
-        <TabbedForm
-            toolbar={<UserEditToolbar permissions={permissions} {...props} />}
-        >
+        <TabbedForm toolbar={<UserEditToolbar permissions={permissions} />}>
             <FormTab label="user.form.summary" path="">
                 <TextInput
                     source="name"

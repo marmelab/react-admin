@@ -37,7 +37,7 @@ export default App;
 
 // in src/posts.js
 import * as React from "react";
-import { Create, Edit, SimpleForm, TextInput, DateInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton } from 'react-admin';
+import { Create, Edit, SimpleForm, TextInput, DateInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton, required } from 'react-admin';
 import RichTextInput from 'ra-input-rich-text';
 
 export const PostCreate = (props) => (
@@ -1470,7 +1470,7 @@ const validateEmailUnicity = async (value) => {
 
     }
 
-    return errors
+    return undefined;
 };
 
 const emailValidators = [required(), validateEmailUnicity];
@@ -1671,7 +1671,7 @@ import { Edit, SimpleForm, SaveButton, Toolbar } from 'react-admin';
 
 const PostEditToolbar = props => (
     <Toolbar {...props} >
-        <SaveButton disabled={!props.pristine} />
+        <SaveButton disabled={props.pristine} />
     </Toolbar>
 );
 

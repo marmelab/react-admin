@@ -1,3 +1,5 @@
+import merge from 'lodash/merge';
+
 export default function getFormInitialValues(
     initialValues,
     defaultValue,
@@ -9,11 +11,13 @@ export default function getFormInitialValues(
         );
     }
 
-    return {
-        ...getValues(defaultValue, record),
-        ...getValues(initialValues, record),
-        ...record,
-    };
+    const finalInitialValues = merge(
+        {},
+        getValues(defaultValue, record),
+        getValues(initialValues, record),
+        record
+    );
+    return finalInitialValues;
 }
 
 function getValues(values, record) {

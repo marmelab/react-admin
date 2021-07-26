@@ -1,10 +1,13 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, fireEvent } from '@testing-library/react';
+import { Form } from 'react-final-form';
+import { required, FormWithRedirect } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
+import format from 'date-fns/format';
 
 import DateInput from './DateInput';
-import { Form } from 'react-final-form';
-import { required } from 'ra-core';
+import { FormApi } from 'final-form';
 
 describe('<DateInput />', () => {
     const defaultProps = {
@@ -19,9 +22,27 @@ describe('<DateInput />', () => {
                 render={() => <DateInput {...defaultProps} />}
             />
         );
-        expect(getByLabelText('resources.posts.fields.publishedAt').type).toBe(
-            'date'
+        const input = getByLabelText(
+            'resources.posts.fields.publishedAt'
+        ) as HTMLInputElement;
+        expect(input.type).toBe('date');
+    });
+
+    it('should not make the form dirty on initialization', () => {
+        const publishedAt = new Date().toISOString();
+        let formApi: FormApi;
+        const { getByDisplayValue } = renderWithRedux(
+            <FormWithRedirect
+                onSubmit={jest.fn}
+                record={{ id: 1, publishedAt }}
+                render={({ form }) => {
+                    formApi = form;
+                    return <DateInput {...defaultProps} />;
+                }}
+            />
         );
+        expect(getByDisplayValue(format(publishedAt, 'YYYY-MM-DD')));
+        expect(formApi.getState().dirty).toEqual(false);
     });
 
     it('should call `input.onChange` method when changed', () => {

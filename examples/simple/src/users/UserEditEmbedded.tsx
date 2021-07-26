@@ -3,7 +3,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Edit, SimpleForm, TextInput, required } from 'react-admin';
 
-const UserEditEmbedded = ({ permissions, ...props }) => (
+const UserEditEmbedded = props => (
     /* Passing " " as title disables the custom title */
     <Edit title=" " {...props}>
         <SimpleForm initialValues={{ role: 'user' }}>

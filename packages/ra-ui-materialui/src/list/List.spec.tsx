@@ -1,7 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
-import { waitFor } from '@testing-library/react';
-import { DataProviderContext } from 'ra-core';
+import { waitFor, fireEvent } from '@testing-library/react';
+import { DataProviderContext, ResourceContextProvider } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -9,6 +9,8 @@ import { MemoryRouter } from 'react-router-dom';
 
 import defaultTheme from '../defaultTheme';
 import List from './List';
+import { Filter } from './filter';
+import { TextInput } from '../input';
 
 const theme = createMuiTheme(defaultTheme);
 
@@ -50,7 +52,8 @@ describe('<List />', () => {
                 <List {...defaultProps}>
                     <Datagrid />
                 </List>
-            </ThemeProvider>
+            </ThemeProvider>,
+            defaultStateForList
         );
         expect(container.querySelectorAll('.list-page')).toHaveLength(1);
     });
@@ -70,7 +73,8 @@ describe('<List />', () => {
                         <Datagrid />
                     </List>
                 </MemoryRouter>
-            </ThemeProvider>
+            </ThemeProvider>,
+            defaultStateForList
         );
         expect(queryAllByText('filters')).toHaveLength(2);
         expect(queryAllByLabelText('ra.action.export')).toHaveLength(1);
@@ -86,7 +90,8 @@ describe('<List />', () => {
                 <List {...defaultProps} aside={<Aside />}>
                     <Dummy />
                 </List>
-            </ThemeProvider>
+            </ThemeProvider>,
+            defaultStateForList
         );
         expect(queryAllByText('Hello')).toHaveLength(1);
     });
@@ -148,6 +153,79 @@ describe('<List />', () => {
         );
         await waitFor(() => {
             expect(queryAllByText('resources.posts.empty')).toHaveLength(1);
+        });
+    });
+
+    it('should render a filter button/form combo when passed an element in filters', async () => {
+        const DummyFilters = props => (
+            <Filter {...props}>
+                <TextInput source="foo" alwaysOn />
+                <TextInput source="bar" />
+            </Filter>
+        );
+        const Dummy = () => <div>Dummy</div>;
+        const dataProvider = {
+            getList: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 0 }], total: 1 })
+            ),
+        } as any;
+        const { getByText, queryAllByLabelText } = renderWithRedux(
+            <ThemeProvider theme={theme}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <List filters={<DummyFilters />} {...defaultProps}>
+                        <Dummy />
+                    </List>
+                </DataProviderContext.Provider>
+            </ThemeProvider>,
+            defaultStateForList
+        );
+        await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
+        expect(queryAllByLabelText('resources.posts.fields.foo')).toHaveLength(
+            1
+        );
+        fireEvent.click(getByText('ra.action.add_filter'));
+        fireEvent.click(getByText('resources.posts.fields.bar'));
+        await waitFor(() => {
+            expect(
+                queryAllByLabelText('resources.posts.fields.bar')
+            ).toHaveLength(1);
+        });
+    });
+
+    it('should render a filter button/form combo when passed an array in filters', async () => {
+        const dummyFilters = [
+            <TextInput source="foo" alwaysOn />,
+            <TextInput source="bar" />,
+        ];
+        const Dummy = () => <div>Dummy</div>;
+        const dataProvider = {
+            getList: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 0 }], total: 1 })
+            ),
+        } as any;
+        const { getByText, queryAllByLabelText } = renderWithRedux(
+            // As FilterForm doesn't receive rest parameters, it must grab the resource from the context
+            <ResourceContextProvider value="posts">
+                <ThemeProvider theme={theme}>
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <List filters={dummyFilters} {...defaultProps}>
+                            <Dummy />
+                        </List>
+                    </DataProviderContext.Provider>
+                </ThemeProvider>
+            </ResourceContextProvider>,
+            defaultStateForList
+        );
+        await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
+        expect(queryAllByLabelText('resources.posts.fields.foo')).toHaveLength(
+            1
+        );
+        fireEvent.click(getByText('ra.action.add_filter'));
+        fireEvent.click(getByText('resources.posts.fields.bar'));
+        await waitFor(() => {
+            expect(
+                queryAllByLabelText('resources.posts.fields.bar')
+            ).toHaveLength(1);
         });
     });
 });

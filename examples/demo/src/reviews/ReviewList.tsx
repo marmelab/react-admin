@@ -15,7 +15,7 @@ import BulkAcceptButton from './BulkAcceptButton';
 import BulkRejectButton from './BulkRejectButton';
 import ReviewListMobile from './ReviewListMobile';
 import ReviewListDesktop from './ReviewListDesktop';
-import ReviewFilter from './ReviewFilter';
+import reviewFilters from './reviewFilters';
 import ReviewEdit from './ReviewEdit';
 
 const ReviewsBulkActionButtons = (props: BulkActionProps) => (
@@ -74,7 +74,7 @@ const ReviewList: FC<ListProps> = props => {
                                     [classes.listWithDrawer]: isMatch,
                                 })}
                                 bulkActionButtons={<ReviewsBulkActionButtons />}
-                                filters={<ReviewFilter />}
+                                filters={reviewFilters}
                                 perPage={25}
                                 sort={{ field: 'date', order: 'DESC' }}
                             >
@@ -107,7 +107,8 @@ const ReviewList: FC<ListProps> = props => {
                                     <ReviewEdit
                                         id={(match as any).params.id}
                                         onCancel={handleClose}
-                                        {...props}
+                                        resource={props.resource}
+                                        basePath={props.basePath}
                                     />
                                 ) : null}
                             </Drawer>

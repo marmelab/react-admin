@@ -1,5 +1,5 @@
 import { useContext, useMemo } from 'react';
-import merge from 'lodash/merge';
+import defaults from 'lodash/defaults';
 
 import { Record } from '../../types';
 import { ShowContext } from './ShowContext';
@@ -32,10 +32,10 @@ export const useShowContext = <RecordType extends Record = Record>(
     // Props take precedence over the context
     return useMemo(
         () =>
-            merge(
+            defaults(
                 {},
-                context,
-                props != null ? extractShowContextProps(props) : {}
+                props != null ? extractShowContextProps(props) : {},
+                context
             ),
         [context, props]
     );

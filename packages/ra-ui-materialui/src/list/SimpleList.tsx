@@ -66,7 +66,9 @@ const useStyles = makeStyles(
  *     </List>
  * );
  */
-const SimpleList: FC<SimpleListProps> = props => {
+const SimpleList = <RecordType extends Record = Record>(
+    props: SimpleListProps<RecordType>
+) => {
     const {
         className,
         classes: classesOverride,
@@ -82,7 +84,9 @@ const SimpleList: FC<SimpleListProps> = props => {
         rowStyle,
         ...rest
     } = props;
-    const { basePath, data, ids, loaded, total } = useListContext(props);
+    const { basePath, data, ids, loaded, total } = useListContext<RecordType>(
+        props
+    );
     const classes = useStyles(props);
 
     if (loaded === false) {
@@ -97,6 +101,21 @@ const SimpleList: FC<SimpleListProps> = props => {
             />
         );
     }
+
+    const renderAvatar = (
+        id: Identifier,
+        avatarCallback: FunctionToElement<RecordType>
+    ) => {
+        const avatarValue = avatarCallback(data[id], id);
+        if (
+            typeof avatarValue === 'string' &&
+            (avatarValue.startsWith('http') || avatarValue.startsWith('data:'))
+        ) {
+            return <Avatar src={avatarValue} />;
+        } else {
+            return <Avatar>{avatarValue}</Avatar>;
+        }
+    };
 
     return (
         total > 0 && (
@@ -124,7 +143,7 @@ const SimpleList: FC<SimpleListProps> = props => {
                             )}
                             {leftAvatar && (
                                 <ListItemAvatar>
-                                    <Avatar>{leftAvatar(data[id], id)}</Avatar>
+                                    {renderAvatar(id, leftAvatar)}
                                 </ListItemAvatar>
                             )}
                             <ListItemText
@@ -146,7 +165,7 @@ const SimpleList: FC<SimpleListProps> = props => {
                                 <ListItemSecondaryAction>
                                     {rightAvatar && (
                                         <Avatar>
-                                            {rightAvatar(data[id], id)}
+                                            {renderAvatar(id, rightAvatar)}
                                         </Avatar>
                                     )}
                                     {rightIcon && (
@@ -182,8 +201,8 @@ SimpleList.propTypes = {
     rowStyle: PropTypes.func,
 };
 
-export type FunctionToElement = (
-    record: Record,
+export type FunctionToElement<RecordType extends Record = Record> = (
+    record: RecordType,
     id: Identifier
 ) => ReactElement | string;
 
@@ -192,14 +211,14 @@ export interface SimpleListProps<RecordType extends Record = Record>
     className?: string;
     classes?: ClassesOverride<typeof useStyles>;
     hasBulkActions?: boolean;
-    leftAvatar?: FunctionToElement;
-    leftIcon?: FunctionToElement;
-    primaryText?: FunctionToElement;
+    leftAvatar?: FunctionToElement<RecordType>;
+    leftIcon?: FunctionToElement<RecordType>;
+    primaryText?: FunctionToElement<RecordType>;
     linkType?: string | FunctionLinkType | boolean;
-    rightAvatar?: FunctionToElement;
-    rightIcon?: FunctionToElement;
-    secondaryText?: FunctionToElement;
-    tertiaryText?: FunctionToElement;
+    rightAvatar?: FunctionToElement<RecordType>;
+    rightIcon?: FunctionToElement<RecordType>;
+    secondaryText?: FunctionToElement<RecordType>;
+    tertiaryText?: FunctionToElement<RecordType>;
     rowStyle?: (record: Record, index: number) => any;
     // can be injected when using the component without context
     basePath?: string;

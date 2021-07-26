@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, act } from '@testing-library/react';
+import { render, act, waitFor } from '@testing-library/react';
 import { renderWithRedux } from 'ra-test';
 import { MemoryRouter } from 'react-router-dom';
 import { ListContextProvider, DataProviderContext } from 'ra-core';
@@ -241,7 +241,68 @@ describe('<ReferenceArrayField />', () => {
         );
         expect(queryByText('bar1')).toBeNull();
         act(() => resolve());
-        await new Promise(resolve => setTimeout(resolve)); // wait for loaded to be true
-        expect(queryByText('bar1')).not.toBeNull();
+        await waitFor(() => {
+            expect(queryByText('bar1')).not.toBeNull();
+        });
+    });
+
+    it('should throw an error if used without a Resource for the reference', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        class ErrorBoundary extends React.Component<
+            {
+                onError?: (
+                    error: Error,
+                    info: { componentStack: string }
+                ) => void;
+            },
+            { error: Error | null }
+        > {
+            constructor(props) {
+                super(props);
+                this.state = { error: null };
+            }
+
+            static getDerivedStateFromError(error) {
+                // Update state so the next render will show the fallback UI.
+                return { error };
+            }
+
+            componentDidCatch(error, errorInfo) {
+                // You can also log the error to an error reporting service
+                this.props.onError(error, errorInfo);
+            }
+
+            render() {
+                if (this.state.error) {
+                    // You can render any custom fallback UI
+                    return <h1>Something went wrong.</h1>;
+                }
+
+                return this.props.children;
+            }
+        }
+        const onError = jest.fn();
+        renderWithRedux(
+            <ErrorBoundary onError={onError}>
+                <ReferenceArrayField
+                    record={{ id: 123, barIds: [1, 2] }}
+                    className="myClass"
+                    resource="foos"
+                    reference="bars"
+                    source="barIds"
+                    basePath="/foos"
+                >
+                    <SingleFieldList>
+                        <TextField source="title" />
+                    </SingleFieldList>
+                </ReferenceArrayField>
+            </ErrorBoundary>,
+            { admin: { resources: { comments: { data: {} } } } }
+        );
+        await waitFor(() => {
+            expect(onError.mock.calls[0][0].message).toBe(
+                'You must declare a <Resource name="bars"> in order to use a <ReferenceArrayField reference="bars">'
+            );
+        });
     });
 });

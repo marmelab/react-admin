@@ -141,11 +141,12 @@ import { BooleanField } from 'react-admin';
 #### Properties
 
 | Prop              | Required | Type             | Default                    | Description                       |
-| ----------------- | -------- | ---------------- | -------------------------- | --------------------------------- |
+| ----------------- | -------- | ---------------- | -------------------------- | -------------------------------------------------------------------- |
 | `valueLabelTrue`  | Optional | string           | 'true'                     | Aria label for the truthy value   |
 | `valueLabelFalse` | Optional | string           | 'false'                    | Aria label for the falsy value    |
 | `TrueIcon`        | Optional | SvgIconComponent | `@material-ui/icons/Done`  | Icon to show for the truthy value |
 | `FalseIcon`       | Optional | SvgIconComponent | `@material-ui/icons/Clear` | Icon to show for the falsy value  |
+| `looseValue`      | Optional | boolean          | `false`                    | If `true` the field's value is not evaluated strictly as a `boolean` |
 
 `<BooleanField>` also accepts the [common field props](./Fields.md#common-field-props).
 
@@ -260,7 +261,7 @@ This component accepts a `showTime` attribute (`false` by default) to force the 
 ```
 {% endraw %}
 
-See [Intl.DateTimeFormat documentation](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Date/toLocaleDateString) for the `options` prop syntax.
+See [Intl.DateTimeFormat documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString) for the `options` prop syntax.
 
 **Tip**: If you need more formatting options than what `Intl.DateTimeFormat` can provide, build your own field component leveraging a third-party library like [moment.js](https://momentjs.com/).
 
@@ -746,8 +747,6 @@ TagsField.defaultProps = {
 
 ## Reference Fields
 
-
-
 ### `<ReferenceField>`
 
 `<ReferenceField>` is useful for displaying many-to-one and one-to-one relationships. This component fetches a referenced record (using the `dataProvider.getMany()` method), and passes it to its child. A `<ReferenceField>` displays nothing on its own, it just fetches the data and expects its child to render it. Usual child components for `<ReferenceField>` are other `<Field>` components.
@@ -989,7 +988,7 @@ Also, you can filter the query used to populate the possible values. Use the `fi
 
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component fetches a list of referenced records by lookup in an associative table, and passes the records down to its child component, which must be an iterator component.
 
-For instance, here is how to fetch the authors related to a book record by matching book.id to book_authors.post_id, then matching book_authors.author_id to authors.id, and then display the author last_name for each, in a <ChipField>:
+For instance, here is how to fetch the authors related to a book record by matching book.id to book_authors.post_id, then matching book_authors.author_id to authors.id, and then display the author last_name for each, in a `<ChipField>`:
 
 ```jsx
 import * as React from 'react';
@@ -1364,6 +1363,85 @@ PriceField.defaultProps = {
 ```
 {% endraw %}
 
+## Writing Your Own Field Component
+
+If you don't find what you need in the list above, you can write your own Field component. It must be a regular React component, accepting a `source` attribute and retrieving the `record` from the `RecordContext` with the `useRecordContext` hook. React-admin will set the `record` in this context based on the API response data at render time. The field component only needs to find the `source` in the `record` and display it.
+
+For instance, here is an equivalent of react-admin's `<TextField>` component:
+
+```jsx
+import * as React from "react";
+import PropTypes from 'prop-types';
+import { useRecordContext } from 'react-admin';
+
+const TextField = (props) => {
+    const { source } = props;
+    const record = useRecordContext(props);
+    return <span>{record[source]}</span>;
+}
+
+TextField.propTypes = {
+    label: PropTypes.string,
+    record: PropTypes.object,
+    source: PropTypes.string.isRequired,
+};
+
+export default TextField;
+```
+
+**Tip**: The `label` attribute isn't used in the `render()` method, but react-admin uses it to display the table header.
+
+**Tip**: If you want to support deep field sources (e.g. source values like `author.name`), use [lodash/get](https://www.npmjs.com/package/lodash.get) to replace the simple object lookup:
+
+```jsx
+import * as React from "react";
+import PropTypes from 'prop-types';
+import get from 'lodash/get';
+import { useRecordContext } from 'react-admin';
+
+const TextField = (props) => {
+    const { source } = props;
+    const record = useRecordContext(props);
+
+    return <span>{get(record, source)}</span>;
+}
+```
+
+If you are not looking for reusability, you can create even simpler components, with no attributes. Let's say an API returns user records with `firstName` and `lastName` properties, and that you want to display a full name in a user list.
+
+```js
+{
+    id: 123,
+    firstName: 'John',
+    lastName: 'Doe'
+}
+```
+
+The component will be:
+
+```jsx
+import * as React from "react";
+import { List, Datagrid, TextField, useRecordContext } from 'react-admin';
+
+const FullNameField = (props) => {
+    const record = useRecordContext(props);
+
+    return <span>{record.firstName} {record.lastName}</span>;
+}
+
+FullNameField.defaultProps = { label: 'Name' };
+
+export const UserList = (props) => (
+    <List {...props}>
+        <Datagrid>
+            <FullNameField source="lastName" />
+        </Datagrid>
+    </List>
+);
+```
+
+**Tip**: In such custom fields, the `source` is optional. React-admin uses it to determine which column to use for sorting when the column header is clicked. In case you use the `source` property for additional purposes, the sorting can be overridden by the `sortBy` property on any `Field` component.
+
 ### Adding A Label To Custom Field Components
 
 When you use one of the react-admin `Field` components in an `Edit`, `Create` or `Show` view, react-admin includes a label on top of the field value, as in the following example:
@@ -1373,11 +1451,14 @@ When you use one of the react-admin `Field` components in an `Edit`, `Create` or
 For your custom fields, however, the label doesn't appear by default. You need to opt in this feature by setting the `addLabel` prop to `true` in the `defaultProps`.
 
 ```diff
-const FullNameField = ({ record = {} }) => (
-    <span>
-        {record.firstName} {record.lastName}
-    </span>
-);
+const FullNameField = (props) => {
+    const record = useRecordContext(props);
+    return (
+        <span>
+            {record.firstName} {record.lastName}
+        </span>
+    );
+}
 
 FullNameField.defaultProps = {
     label: 'Name',
@@ -1392,10 +1473,10 @@ If you don't use any of these layouts, the `addLabel` trick won't work. You'll h
 ```jsx
 import { Labeled } from 'react-admin';
 
-const MyShowLayout = ({ record }) => (
+const MyShowLayout = () => (
     <div>
         <Labeled label="Name">
-            <FullNameField record={record} />
+            <FullNameField />
         </Label>
     </div>
 );
@@ -1406,11 +1487,11 @@ You can also leverage the default label resolution mechanism by providing the `r
 ```jsx
 import { Labeled } from 'react-admin';
 
-const MyShowLayout = ({ record }) => (
+const MyShowLayout = () => (
     <div>
         <Labeled resource="users" source="name">
             <TextField source="name" />
-        </Label>
+        </Labeled>
     </div>
 );
 ```
@@ -1425,10 +1506,12 @@ For such cases, you can use the custom field approach: use the injected `record`
 import * as React from "react";
 import { EmailField } from 'react-admin';
 
-const ConditionalEmailField = ({ record, ...rest }) =>
-    record && record.hasEmail
-        ? <EmailField source="email" record={record} {...rest} />
+const ConditionalEmailField = (props) => {
+    const record = useRecordContext(props);
+    return record && record.hasEmail
+        ? <EmailField source="email" {...props} />
         : null;
+}
 
 export default ConditionalEmailField;
 ```
@@ -1443,14 +1526,17 @@ One solution is to add the label manually in the custom component:
 import * as React from "react";
 import { Labeled, EmailField } from 'react-admin';
 
-const ConditionalEmailField = ({ record, ...rest }) =>
-    record && record.hasEmail
+const ConditionalEmailField = (props) => {
+    const record = useRecordContext(props);
+
+    return record && record.hasEmail
         ? (
             <Labeled label="Email">
-                <EmailField source="email" record={record} {...rest} />
+                <EmailField source="email" {...props} />
             </Labeled>
         )
         : null;
+}
 
 export default ConditionalEmailField;
 ```
@@ -1525,75 +1611,16 @@ const UserShow = props => (
 
 And now you can use a regular Field component, and the label displays correctly in the Show view.
 
-## Writing Your Own Field Component
-
-If you don't find what you need in the list above, you can write your own Field component. It must be a regular React component, accepting not only a `source` attribute, but also a `record` attribute. React-admin will inject the `record` based on the API response data at render time. The field component only needs to find the `source` in the `record` and display it.
-
-For instance, here is an equivalent of react-admin's `<TextField>` component:
-
-```jsx
-import * as React from "react";
-import PropTypes from 'prop-types';
-
-const TextField = ({ source, record = {} }) => <span>{record[source]}</span>;
-
-TextField.propTypes = {
-    label: PropTypes.string,
-    record: PropTypes.object,
-    source: PropTypes.string.isRequired,
-};
-
-export default TextField;
-```
-
-**Tip**: The `label` attribute isn't used in the `render()` method, but react-admin uses it to display the table header.
-
-**Tip**: If you want to support deep field sources (e.g. source values like `author.name`), use [lodash/get](https://www.npmjs.com/package/lodash.get) to replace the simple object lookup:
-
-```jsx
-import get from 'lodash/get';
-const TextField = ({ source, record = {} }) => <span>{get(record, source)}</span>;
-```
-
-If you are not looking for reusability, you can create even simpler components, with no attributes. Let's say an API returns user records with `firstName` and `lastName` properties, and that you want to display a full name in a user list.
-
-```js
-{
-    id: 123,
-    firstName: 'John',
-    lastName: 'Doe'
-}
-```
-
-The component will be:
-
-```jsx
-import * as React from "react";
-import { List, Datagrid, TextField } from 'react-admin';
-
-const FullNameField = ({ record = {} }) => <span>{record.firstName} {record.lastName}</span>;
-FullNameField.defaultProps = { label: 'Name' };
-
-export const UserList = (props) => (
-    <List {...props}>
-        <Datagrid>
-            <FullNameField source="lastName" />
-        </Datagrid>
-    </List>
-);
-```
-
-**Tip**: In such custom fields, the `source` is optional. React-admin uses it to determine which column to use for sorting when the column header is clicked. In case you use the `source` property for additional purposes, the sorting can be overridden by the `sortBy` property on any `Field` component.
-
 ### Linking to other records
 
 Your custom Field component might need to display a link to another record. React Admin provides a `linkToRecord(basePath, id[, linkType])` method for this purpose.
 
 ```js
-import { linkToRecord } from 'react-admin';
+import { linkToRecord, useRecordContext } from 'react-admin';
 import { Link } from 'react-router-dom';
 
-const MyCustomField = ({ record: post }) => {
+const MyCustomField = () => {
+    const post = useRecordContext(props);
     const linkToUser = linkToRecord('/users', post.user_id, 'show');
 
     return <Link to={linkToUser}>{seller.username}</Link>;

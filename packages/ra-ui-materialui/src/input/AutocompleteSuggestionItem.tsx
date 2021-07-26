@@ -26,7 +26,8 @@ const useStyles = makeStyles(
     { name: 'RaAutocompleteSuggestionItem' }
 );
 
-interface Props {
+export interface AutocompleteSuggestionItemProps {
+    createValue?: any;
     suggestion: any;
     index: number;
     highlightedIndex: number;
@@ -37,9 +38,10 @@ interface Props {
 }
 
 const AutocompleteSuggestionItem: FunctionComponent<
-    Props & MenuItemProps<'li', { button?: true }>
+    AutocompleteSuggestionItemProps & MenuItemProps<'li', { button?: true }>
 > = props => {
     const {
+        createValue,
         suggestion,
         index,
         highlightedIndex,
@@ -51,7 +53,10 @@ const AutocompleteSuggestionItem: FunctionComponent<
     } = props;
     const classes = useStyles(props);
     const isHighlighted = highlightedIndex === index;
-    const suggestionText = getSuggestionText(suggestion);
+    const suggestionText =
+        'id' in suggestion && suggestion.id === createValue
+            ? suggestion.name
+            : getSuggestionText(suggestion);
     let matches;
     let parts;
 

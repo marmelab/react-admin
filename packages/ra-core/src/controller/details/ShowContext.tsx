@@ -25,6 +25,7 @@ export const ShowContext = createContext<ShowControllerProps>({
     defaultTitle: null,
     loaded: null,
     loading: null,
+    refetch: null,
     resource: null,
     version: null,
 });

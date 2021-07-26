@@ -23,7 +23,9 @@ const Title: FC<TitleProps> = ({
         typeof document !== 'undefined'
             ? document.getElementById('react-admin-title')
             : null;
+
     if (!container) return null;
+
     warning(!defaultTitle && !title, 'Missing title prop in <Title> element');
 
     const titleElement = !title ? (

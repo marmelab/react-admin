@@ -8,7 +8,7 @@ interface Props {
     isRequired?: boolean;
     resource?: string;
     source?: string;
-    label?: string | ReactElement;
+    label?: string | ReactElement | false;
 }
 
 export const FieldTitle: FunctionComponent<Props> = ({
@@ -18,9 +18,15 @@ export const FieldTitle: FunctionComponent<Props> = ({
     isRequired,
 }) => {
     const translate = useTranslate();
+
+    if (label === false || label === '') {
+        return null;
+    }
+
     if (label && typeof label !== 'string') {
         return label;
     }
+
     return (
         <span>
             {translate(

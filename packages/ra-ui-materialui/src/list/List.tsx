@@ -32,7 +32,7 @@ import { ListProps } from '../types';
  * - exporter
  * - filter (the permanent filter to apply to the query)
  * - filterDefaultValues (the default values for `alwaysOn` filters)
- * - filters (a React component used to display the filter form)
+ * - filters (a list of inputs used to display the filter button/form combo)
  * - pagination
  * - perPage
  * - sort
@@ -41,18 +41,16 @@ import { ListProps } from '../types';
  *
  * @example
  *
- * const PostFilter = (props) => (
- *     <Filter {...props}>
- *         <TextInput label="Search" source="q" alwaysOn />
- *         <TextInput label="Title" source="title" />
- *     </Filter>
- * );
+ * const postFilters = [
+ *     <TextInput label="Search" source="q" alwaysOn />,
+ *     <TextInput label="Title" source="title" />
+ * ];
  * export const PostList = (props) => (
  *     <List {...props}
  *         title="List of posts"
  *         sort={{ field: 'published_at' }}
  *         filter={{ is_published: true }}
- *         filters={PostFilter}
+ *         filters={postFilters}
  *     >
  *         <Datagrid>
  *             <TextField source="id" />
@@ -84,7 +82,10 @@ List.propTypes = {
     className: PropTypes.string,
     filter: PropTypes.object,
     filterDefaultValues: PropTypes.object,
-    filters: PropTypes.element,
+    filters: PropTypes.oneOfType([
+        PropTypes.element,
+        PropTypes.arrayOf(PropTypes.element),
+    ]),
     // @ts-ignore-line
     pagination: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     perPage: PropTypes.number.isRequired,

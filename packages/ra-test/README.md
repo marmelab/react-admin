@@ -65,6 +65,20 @@ testUtils = render(
 
 This means that reducers will work as they will within the app.
 
+### Passing your custom reducers
+
+If your component relies on customReducers which are passed originally to the `<Admin/>` component, you can plug them in the TestContext using the `customReducers` props:
+
+```jsx
+testUtils = render(
+    <TestContext enableReducers customReducers={myCustomReducers}>
+        <MyCustomEditView />
+    </TestContext>
+);
+```
+
+Note you should also enable the default react-admin reducers in order to supply the custom ones. 
+
 ### Spying on the store 'dispatch'
 
 If you are using `useDispatch` within your components, it is likely you will want to test that actions have been dispatched with the correct arguments. You can return the `store` being used within the tests using a `renderProp`.
@@ -85,6 +99,36 @@ it('should send the user to another url', () => {
     expect(dispatchSpy).toHaveBeenCalledWith(`/next-url`);
 });
 ```
+
+### Using the 'renderWithRedux' wrapper function
+
+Instead of wrapping the component under test with the `TestContext` by yourself you can use all of the above options and test your components almost like using just `@testing-library/react` thanks to the `renderWithRedux` wrapper function.
+
+It will return the same output as the `render` method from `@testing-library/react` but will add the `dispatch` and `reduxStore` helpers.
+
+```jsx
+import { defaultStore } from 'ra-test';
+//...
+const { dispatch, reduxStore, ...testUtils } = renderWithRedux(
+    <MyCustomEditView />, 
+    initialState, 
+    options,
+    myCustomReducers
+);
+
+it('should initilize store', () => {
+    const storeState = reduxStore.getState();
+    storeState.router.location.key = ''
+    expect(storeState).toEqual({...defaultStore, ...initialState});
+});
+
+it('should send the user to another url', () => {
+    fireEvent.click(testUtils.getByText('Go to next'));
+    expect(dispatch).toHaveBeenCalledWith(`/next-url`);
+});
+```
+
+All of the arguments except the first one - the component under test, are optional and could be omitted by passing an empty object - `{}`
 
 ### Testing Permissions
 

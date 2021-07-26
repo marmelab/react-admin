@@ -9,7 +9,7 @@ import {
     Record,
     ReduxState,
 } from '../types';
-import useQueryWithStore from './useQueryWithStore';
+import { useQueryWithStore, Refetch } from './useQueryWithStore';
 import {
     getReferenceResource,
     getPossibleReferenceValues,
@@ -35,9 +35,9 @@ const referenceSource = (resource, source) => `${resource}@${source}`;
  *
  * The return value updates according to the request state:
  *
- * - start: { loading: true, loaded: false }
- * - success: { data: [data from store], ids: [ids from response], total: [total from response], loading: false, loaded: true }
- * - error: { error: [error from response], loading: false, loaded: true }
+ * - start: { loading: true, loaded: false, refetch }
+ * - success: { data: [data from store], ids: [ids from response], total: [total from response], loading: false, loaded: true, refetch }
+ * - error: { error: [error from response], loading: false, loaded: false, refetch }
  *
  * This hook will return the cached result when called a second time
  * with the same parameters, until the response arrives.
@@ -53,7 +53,7 @@ const referenceSource = (resource, source) => `${resource}@${source}`;
  * @param {Function} options.onSuccess Side effect function to be executed upon success, e.g. { onSuccess: { refresh: true } }
  * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) }
  *
- * @returns The current request state. Destructure as { data, total, ids, error, loading, loaded }.
+ * @returns The current request state. Destructure as { data, total, ids, error, loading, loaded, refetch }.
  *
  * @example
  *
@@ -93,6 +93,7 @@ const useGetMatching = (
         error,
         loading,
         loaded,
+        refetch,
     } = useQueryWithStore(
         {
             type: 'getList',
@@ -143,6 +144,7 @@ const useGetMatching = (
         error,
         loading,
         loaded,
+        refetch,
     };
 };
 
@@ -153,6 +155,7 @@ interface UseGetMatchingResult {
     error?: any;
     loading: boolean;
     loaded: boolean;
+    refetch: Refetch;
 }
 
 export default useGetMatching;

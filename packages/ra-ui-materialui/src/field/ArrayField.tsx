@@ -173,7 +173,7 @@ export const ArrayField: FC<ArrayFieldProps> = memo<ArrayFieldProps>(props => {
                 data,
                 loading: false,
                 basePath,
-                currentSort: {},
+                currentSort: { field: null, order: null },
                 resource,
                 ...rest,
             })}
@@ -199,5 +199,7 @@ interface State {
     data: object;
     ids: Identifier[];
 }
+
+ArrayField.displayName = 'ArrayField';
 
 export default ArrayField;

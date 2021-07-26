@@ -2,10 +2,13 @@ import * as React from 'react';
 import { Fragment, HtmlHTMLAttributes, ErrorInfo } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import Button from '@material-ui/core/Button';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
+import {
+    Button,
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    Typography,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ErrorIcon from '@material-ui/icons/Report';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -39,11 +42,15 @@ const useStyles = makeStyles(
         },
         panel: {
             marginTop: '1em',
+            maxWidth: '60em',
         },
         panelDetails: {
             whiteSpace: 'pre-wrap',
         },
         toolbar: {
+            marginTop: '2em',
+        },
+        advice: {
             marginTop: '2em',
         },
     }),
@@ -65,6 +72,7 @@ const Error = (props: ErrorProps): JSX.Element => {
     } = props;
     const classes = useStyles(props);
     const translate = useTranslate();
+
     return (
         <Fragment>
             {title && <Title defaultTitle={title} />}
@@ -75,21 +83,51 @@ const Error = (props: ErrorProps): JSX.Element => {
                 </h1>
                 <div>{translate('ra.message.error')}</div>
                 {process.env.NODE_ENV !== 'production' && (
-                    <Accordion className={classes.panel}>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                            {translate('ra.message.details')}
-                        </AccordionSummary>
-                        <AccordionDetails className={classes.panelDetails}>
-                            <div>
-                                <h2>
-                                    {translate(error.toString(), {
-                                        _: error.toString(),
-                                    })}
-                                </h2>
-                                {errorInfo && errorInfo.componentStack}
-                            </div>
-                        </AccordionDetails>
-                    </Accordion>
+                    <>
+                        <Accordion className={classes.panel}>
+                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                {translate(error.toString(), {
+                                    _: error.toString(),
+                                })}
+                            </AccordionSummary>
+                            {errorInfo && (
+                                <AccordionDetails
+                                    className={classes.panelDetails}
+                                >
+                                    {errorInfo.componentStack}
+                                </AccordionDetails>
+                            )}
+                        </Accordion>
+
+                        <div className={classes.advice}>
+                            <Typography align="center">
+                                Need help with this error? Try the following:
+                            </Typography>
+                            <Typography component="div">
+                                <ul>
+                                    <li>
+                                        Check the{' '}
+                                        <a href="https://marmelab.com/react-admin/Readme.html">
+                                            react-admin documentation
+                                        </a>
+                                    </li>
+                                    <li>
+                                        Search on{' '}
+                                        <a href="https://stackoverflow.com/questions/tagged/react-admin">
+                                            StackOverflow
+                                        </a>{' '}
+                                        for community answers
+                                    </li>
+                                    <li>
+                                        Get help from the core team via{' '}
+                                        <a href="https://marmelab.com/ra-enterprise/#fromsww">
+                                            react-admin Enterprise Edition
+                                        </a>
+                                    </li>
+                                </ul>
+                            </Typography>
+                        </div>
+                    </>
                 )}
                 <div className={classes.toolbar}>
                     <Button

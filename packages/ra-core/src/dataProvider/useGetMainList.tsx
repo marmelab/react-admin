@@ -9,7 +9,7 @@ import {
     Record,
     RecordMap,
 } from '../types';
-import useQueryWithStore from './useQueryWithStore';
+import { useQueryWithStore, Refetch } from './useQueryWithStore';
 
 const defaultIds = [];
 const defaultData = {};
@@ -23,9 +23,9 @@ const defaultData = {};
  *
  * The return value updates according to the request state:
  *
- * - start: { loading: true, loaded: false }
- * - success: { data: [data from store], ids: [ids from response], total: [total from response], loading: false, loaded: true }
- * - error: { error: [error from response], loading: false, loaded: true }
+ * - start: { loading: true, loaded: false, refetch }
+ * - success: { data: [data from store], ids: [ids from response], total: [total from response], loading: false, loaded: true, refetch }
+ * - error: { error: [error from response], loading: false, loaded: false, refetch }
  *
  * This hook will return the cached result when called a second time
  * with the same parameters, until the response arrives.
@@ -36,7 +36,7 @@ const defaultData = {};
  * @param {Object} filter The request filters, e.g. { title: 'hello, world' }
  * @param {Object} options Options object to pass to the dataProvider. May include side effects to be executed upon success or failure, e.g. { onSuccess: { refresh: true } }
  *
- * @returns The current request state. Destructure as { data, total, ids, error, loading, loaded }.
+ * @returns The current request state. Destructure as { data, total, ids, error, loading, loaded, refetch }.
  *
  * @example
  *
@@ -68,6 +68,7 @@ export const useGetMainList = <RecordType extends Record = Record>(
     error?: any;
     loading: boolean;
     loaded: boolean;
+    refetch: Refetch;
 } => {
     const requestSignature = JSON.stringify({ pagination, sort, filter });
     const memo = useRef<Memo<RecordType>>({});
@@ -76,6 +77,7 @@ export const useGetMainList = <RecordType extends Record = Record>(
         error,
         loading,
         loaded,
+        refetch,
     } = useQueryWithStore(
         { type: 'getList', resource, payload: { pagination, sort, filter } },
         options,
@@ -123,7 +125,7 @@ export const useGetMainList = <RecordType extends Record = Record>(
                 state.admin.resources,
                 [resource, 'data'],
                 defaultData
-            );
+            ) as RecordMap<RecordType>;
             // poor man's useMemo inside a hook using a ref
             if (
                 memo.current.finalIds !== finalIds ||
@@ -164,6 +166,7 @@ export const useGetMainList = <RecordType extends Record = Record>(
         error,
         loading,
         loaded,
+        refetch,
     };
 };
 

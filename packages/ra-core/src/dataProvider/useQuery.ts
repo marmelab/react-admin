@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { useSafeSetState } from '../util/hooks';
 import { OnSuccess, OnFailure } from '../types';
@@ -6,15 +6,16 @@ import useDataProvider from './useDataProvider';
 import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDeclarativeSideEffects';
 import { DeclarativeSideEffect } from './useDeclarativeSideEffects';
 import useVersion from '../controller/useVersion';
+import { DataProviderQuery, Refetch } from './useQueryWithStore';
 
 /**
  * Call the data provider on mount
  *
  * The return value updates according to the request state:
  *
- * - start: { loading: true, loaded: false }
- * - success: { data: [data from response], total: [total from response], loading: false, loaded: true }
- * - error: { error: [error from response], loading: false, loaded: true }
+ * - start: { loading: true, loaded: false, refetch }
+ * - success: { data: [data from response], total: [total from response], loading: false, loaded: true, refetch }
+ * - error: { error: [error from response], loading: false, loaded: false, refetch }
  *
  * @param {Object} query
  * @param {string} query.type The method called on the data provider, e.g. 'getList', 'getOne'. Can also be a custom method if the dataProvider supports is.
@@ -27,7 +28,7 @@ import useVersion from '../controller/useVersion';
  * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. (error) => notify(error.message)
  * @param {boolean} options.withDeclarativeSideEffectsSupport Set to true to support legacy side effects e.g. { onSuccess: { refresh: true } }
  *
- * @returns The current request state. Destructure as { data, total, error, loading, loaded }.
+ * @returns The current request state. Destructure as { data, total, error, loading, loaded, refetch }.
  *
  * @example
  *
@@ -70,17 +71,26 @@ import useVersion from '../controller/useVersion';
  *     );
  * };
  */
-const useQuery = (
-    query: Query,
-    options: QueryOptions = { onSuccess: undefined }
+export const useQuery = (
+    query: DataProviderQuery,
+    options: UseQueryOptions = { onSuccess: undefined }
 ): UseQueryValue => {
     const { type, resource, payload } = query;
     const { withDeclarativeSideEffectsSupport, ...otherOptions } = options;
     const version = useVersion(); // used to allow force reload
+    // used to force a refetch without relying on version
+    // which might trigger other queries as well
+    const [innerVersion, setInnerVersion] = useState(0);
+
+    const refetch = useCallback(() => {
+        setInnerVersion(prevInnerVersion => prevInnerVersion + 1);
+    }, []);
+
     const requestSignature = JSON.stringify({
         query,
         options: otherOptions,
         version,
+        innerVersion,
     });
     const [state, setState] = useSafeSetState<UseQueryValue>({
         data: undefined,
@@ -88,6 +98,7 @@ const useQuery = (
         total: null,
         loading: true,
         loaded: false,
+        refetch,
     });
     const dataProvider = useDataProvider();
     const dataProviderWithDeclarativeSideEffects = useDataProviderWithDeclarativeSideEffects();
@@ -118,6 +129,7 @@ const useQuery = (
                     total,
                     loading: false,
                     loaded: true,
+                    refetch,
                 });
             })
             .catch(error => {
@@ -125,6 +137,7 @@ const useQuery = (
                     error,
                     loading: false,
                     loaded: false,
+                    refetch,
                 });
             });
     }, [
@@ -138,13 +151,7 @@ const useQuery = (
     return state;
 };
 
-export interface Query {
-    type: string;
-    resource?: string;
-    payload: object;
-}
-
-export interface QueryOptions {
+export interface UseQueryOptions {
     action?: string;
     enabled?: boolean;
     onSuccess?: OnSuccess | DeclarativeSideEffect;
@@ -158,6 +165,5 @@ export type UseQueryValue = {
     error?: any;
     loading: boolean;
     loaded: boolean;
+    refetch: Refetch;
 };
-
-export default useQuery;

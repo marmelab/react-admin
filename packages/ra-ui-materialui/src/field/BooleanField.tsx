@@ -36,20 +36,21 @@ export const BooleanField: FC<BooleanFieldProps> = memo<BooleanFieldProps>(
             valueLabelFalse,
             TrueIcon,
             FalseIcon,
+            looseValue,
             ...rest
         } = props;
         const record = useRecordContext(props);
         const translate = useTranslate();
         const classes = useStyles(props);
         const value = get(record, source);
+        const isTruthyValue = value === true || (looseValue && value);
         let ariaLabel = value ? valueLabelTrue : valueLabelFalse;
 
         if (!ariaLabel) {
-            ariaLabel =
-                value === false ? 'ra.boolean.false' : 'ra.boolean.true';
+            ariaLabel = isTruthyValue ? 'ra.boolean.true' : 'ra.boolean.false';
         }
 
-        if (value === false || value === true) {
+        if (looseValue || value === false || value === true) {
             return (
                 <Typography
                     component="span"
@@ -58,7 +59,7 @@ export const BooleanField: FC<BooleanFieldProps> = memo<BooleanFieldProps>(
                     {...sanitizeFieldRestProps(rest)}
                 >
                     <Tooltip title={translate(ariaLabel, { _: ariaLabel })}>
-                        {value === true ? (
+                        {isTruthyValue ? (
                             <span>
                                 <TrueIcon data-testid="true" fontSize="small" />
                             </span>
@@ -92,6 +93,7 @@ BooleanField.defaultProps = {
     addLabel: true,
     TrueIcon: DoneIcon,
     FalseIcon: ClearIcon,
+    looseValue: false,
 };
 
 BooleanField.propTypes = {
@@ -102,6 +104,7 @@ BooleanField.propTypes = {
     valueLabelTrue: PropTypes.string,
     TrueIcon: PropTypes.elementType,
     FalseIcon: PropTypes.elementType,
+    looseValue: PropTypes.bool,
 };
 
 export interface BooleanFieldProps
@@ -112,6 +115,7 @@ export interface BooleanFieldProps
     valueLabelFalse?: string;
     TrueIcon?: SvgIconComponent;
     FalseIcon?: SvgIconComponent;
+    looseValue?: boolean;
 }
 
 export default BooleanField;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cloneElement, useMemo, FC, ReactElement } from 'react';
+import { cloneElement, useMemo, useContext, FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     sanitizeListRestProps,
@@ -14,9 +14,39 @@ import { ToolbarProps } from '@material-ui/core';
 
 import TopToolbar from '../layout/TopToolbar';
 import { CreateButton, ExportButton } from '../button';
+import { FilterContext } from './FilterContext';
+import FilterButton from './filter/FilterButton';
 
+/**
+ * Action Toolbar for the List view
+ *
+ * Internal component. If you want to add or remove actions for a List view,
+ * write your own ListActions Component. Then, in the <List> component,
+ * use it in the `actions` prop to pass a custom component.
+ *
+ * @example
+ *     import { cloneElement } from 'react';
+ *     import Button from '@material-ui/core/Button';
+ *     import { TopToolbar, List, CreateButton, ExportButton } from 'react-admin';
+ *
+ *     const PostListActions = ({ basePath, filters }) => (
+ *         <TopToolbar>
+ *             { cloneElement(filters, { context: 'button' }) }
+ *             <CreateButton/>
+ *             <ExportButton/>
+ *             // Add your custom actions here //
+ *             <Button onClick={customAction}>Custom Action</Button>
+ *         </TopToolbar>
+ *     );
+ *
+ *     export const PostList = (props) => (
+ *         <List actions={<PostListActions />} {...props}>
+ *             ...
+ *         </List>
+ *     );
+ */
 const ListActions: FC<ListActionsProps> = props => {
-    const { className, exporter, filters, ...rest } = props;
+    const { className, exporter, filters: filtersProp, ...rest } = props;
     const {
         currentSort,
         displayedFilters,
@@ -28,17 +58,19 @@ const ListActions: FC<ListActionsProps> = props => {
     } = useListContext(props);
     const resource = useResourceContext(rest);
     const { hasCreate } = useResourceDefinition(rest);
+    const filters = useContext(FilterContext) || filtersProp;
     return useMemo(
         () => (
             <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
-                {filters &&
-                    cloneElement(filters, {
-                        resource,
-                        showFilter,
-                        displayedFilters,
-                        filterValues,
-                        context: 'button',
-                    })}
+                {filtersProp
+                    ? cloneElement(filtersProp, {
+                          resource,
+                          showFilter,
+                          displayedFilters,
+                          filterValues,
+                          context: 'button',
+                      })
+                    : filters && <FilterButton />}
                 {hasCreate && <CreateButton basePath={basePath} />}
                 {exporter !== false && (
                     <ExportButton

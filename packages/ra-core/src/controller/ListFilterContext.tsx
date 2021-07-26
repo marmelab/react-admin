@@ -6,7 +6,7 @@ import { ListControllerProps } from './useListController';
  * Context to store the filter part of the useListController() result.
  *
  * Use the useListFilterContext() hook to read the context. That's what many
- * List components do in react-admin (e.g. <Filter>, <FilterListItem>).
+ * List components do in react-admin (e.g. <FilterForm>, <FilterListItem>).
  *
  * @typedef {Object} ListFilterContextValue
  * @prop {Object}   filterValues a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }

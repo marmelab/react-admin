@@ -90,6 +90,16 @@ const UserProfile = ({ userId }) => {
 };
 ```
 
+**Tip**: If you use TypeScript, you can specify a record type for more type safety:
+
+```jsx
+dataProvider.getOne<Product>('users', { id: 123 })
+    .then(({ data }) => {
+        //     \- type of data is Product
+        // ...
+    })
+```
+
 ## `useQuery` Hook
 
 The `useQuery` hook calls the Data Provider on mount, and returns an object that updates as the response arrives. It reduces the boilerplate code for calling the Data Provider.
@@ -133,12 +143,13 @@ The return value of `useQuery` is an object representing the query state, using 
 - `error`: `null` unless the `dataProvider` threw an error, in which case it contains that error.
 - `loading`: A boolean updating according to the request state
 - `loaded`: A boolean updating according to the request state
+- `refetch`: A function you can call to trigger a refetch. It's different from the `refresh` function returned by `useRefresh` as it won't trigger a refresh of the view, only this specific query.
 
 This object updates according to the request state:
 
-- start: `{ loading: true, loaded: false }`
-- success: `{ data: [data from response], total: [total from response], loading: false, loaded: true }`
-- error: `{ error: [error from response], loading: false, loaded: true }`
+- start: `{ loading: true, loaded: false, refetch }`
+- success: `{ data: [data from response], total: [total from response], loading: false, loaded: true, refetch }`
+- error: `{ error: [error from response], loading: false, loaded: false, refetch }`
 
 As a reminder, here are the read query types handled by Data Providers:
 
@@ -174,6 +185,8 @@ const UserProfile = ({ record }) => {
 ```
 
 In practice, react-admin uses `useQueryWithStore` instead of `useQuery` everywhere, and you should probably do the same in your components. It really improves the User Experience, with only one little drawback: if the data changed on the backend side between two calls for the same query, the user may briefly see outdated data before the screen updates with the up-to-date data. 
+
+Just like `useQuery`, `useQueryWithStore` also returns a `refetch` function you can call to trigger a refetch. It's different from the `refresh` function returned by `useRefresh` as it won't trigger a refresh of the view, only this specific query.
 
 ## `useMutation` Hook
 
@@ -215,7 +228,7 @@ This object updates according to the request state:
 - mount: `{ loading: false, loaded: false }`
 - mutate called: `{ loading: true, loaded: false }`
 - success: `{ data: [data from response], total: [total from response], loading: false, loaded: true }`
-- error: `{ error: [error from response], loading: false, loaded: true }`
+- error: `{ error: [error from response], loading: false, loaded: false }`
 
 You can destructure the return value of the `useMutation` hook as `[mutate,  { data, total, error, loading, loaded }]`.
 
@@ -275,11 +288,18 @@ const ApproveButton = ({ record }) => {
 
 The specialized hooks based on `useQuery` (`useGetList`, `useGetOne`, `useGetMany`, `useGetManyReference`) execute on mount. The specialized hooks based on `useMutation` (`useCreate`, `useUpdate`, `useUpdateMany`, `useDelete`, `useDeleteMany`) return a callback.
 
+**Tip**: If you use TypeScript, you can specify the record type for more type safety:
+
+```jsx
+const { data, loaded } = useGetOne<Product>('products', 123);
+//        \- type of data is Product
+```
+
 ### `useGetList`
 
 ```jsx
 // syntax
-const { data, ids, total, loading, loaded, error } = useGetList(resource, pagination, sort, filter, options);
+const { data, ids, total, loading, loaded, error, refetch } = useGetList(resource, pagination, sort, filter, options);
 
 // example
 import { useGetList } from 'react-admin';
@@ -305,7 +325,7 @@ const LatestNews = () => {
 
 ```jsx
 // syntax
-const { data, loading, loaded, error } = useGetOne(resource, id, options);
+const { data, loading, loaded, error, refetch } = useGetOne(resource, id, options);
 
 // example
 import { useGetOne } from 'react-admin';
@@ -321,7 +341,7 @@ const UserProfile = ({ record }) => {
 
 ```jsx
 // syntax
-const { data, loading, loaded, error } = useGetMany(resource, ids, options);
+const { data, loading, loaded, error, refetch } = useGetMany(resource, ids, options);
 
 // example
 import { useGetMany } from 'react-admin';
@@ -343,7 +363,7 @@ const PostTags = ({ record }) => {
 
 ```jsx
 // syntax
-const { data, ids, total, loading, loaded, error } = useGetManyReference(resource, target, id, pagination, sort, filter, referencingResource, options);
+const { data, ids, total, loading, loaded, error, refetch } = useGetManyReference(resource, target, id, pagination, sort, filter, referencingResource, options);
 
 // example
 import { useGetManyReference } from 'react-admin';
@@ -374,9 +394,30 @@ const PostComments = ({ post_id }) => {
 ```jsx
 // syntax
 const [create, { data, loading, loaded, error }] = useCreate(resource, data, options);
+```
 
-// example
+The `create()` function can be called in 3 different ways:
+ - with the same parameters as the `useCreate()` hook: `create(resource, data, options)`
+ - with the same syntax as `useMutation`: `create({ resource, payload: { data } }, options)`
+ - with no parameter (if they were already passed to `useCreate()`): `create()`
+
+```jsx
+// set params when calling the update callback
 import { useCreate } from 'react-admin';
+
+const LikeButton = ({ record }) => {
+    const like = { postId: record.id };
+    const [create, { loading, error }] = useCreate();
+    const handleClick = () => {
+        create('likes', like)
+    }
+    if (error) { return <p>ERROR</p>; }
+    return <button disabled={loading} onClick={handleClick}>Like</button>;
+};
+
+// set params when calling the hook
+import { useCreate } from 'react-admin';
+
 const LikeButton = ({ record }) => {
     const like = { postId: record.id };
     const [create, { loading, error }] = useCreate('likes', like);
@@ -390,9 +431,30 @@ const LikeButton = ({ record }) => {
 ```jsx
 // syntax
 const [update, { data, loading, loaded, error }] = useUpdate(resource, id, data, previousData, options);
+```
 
-// example
+The `update()` method can be called in 3 different ways:
+ - with the same parameters as the `useUpdate()` hook: `update(resource, id, data, previousData, options)`
+ - with the same syntax as `useMutation`: `update({ resource, payload: { id, data, previousData } }, options)`
+ - with no parameter (if they were already passed to useUpdate()): `update()`
+
+```jsx
+// set params when calling the update callback
 import { useUpdate } from 'react-admin';
+
+const IncreaseLikeButton = ({ record }) => {
+    const diff = { likes: record.likes + 1 };
+    const [update, { loading, error }] = useUpdate();
+    const handleClick = () => {
+        update('likes', record.id, diff, record)
+    }
+    if (error) { return <p>ERROR</p>; }
+    return <button disabled={loading} onClick={handleClick}>Like</button>;
+};
+
+// or set params when calling the hook
+import { useUpdate } from 'react-admin';
+
 const IncreaseLikeButton = ({ record }) => {
     const diff = { likes: record.likes + 1 };
     const [update, { loading, error }] = useUpdate('likes', record.id, diff, record);
@@ -406,9 +468,29 @@ const IncreaseLikeButton = ({ record }) => {
 ```jsx
 // syntax
 const [updateMany, { data, loading, loaded, error }] = useUpdateMany(resource, ids, data, options);
+```
 
-// example
+The `updateMany()` function can be called in 3 different ways:
+ - with the same parameters as the `useUpdateMany()` hook: `update(resource, ids, data, options)`
+ - with the same syntax as `useMutation`: `update({ resource, payload: { ids, data } }, options)`
+ - with no parameter (if they were already passed to `useUpdateMany()`): `updateMany()`
+
+```jsx
+// set params when calling the updateMany callback
 import { useUpdateMany } from 'react-admin';
+
+const BulkResetViewsButton = ({ selectedIds }) => {
+    const [updateMany, { loading, error }] = useUpdateMany();
+    const handleClick = () => {
+        updateMany('posts', selectedIds, { views: 0 });
+    }
+    if (error) { return <p>ERROR</p>; }
+    return <button disabled={loading} onClick={handleClick}>Reset views</button>;
+};
+
+// set params when calling the hook
+import { useUpdateMany } from 'react-admin';
+
 const BulkResetViewsButton = ({ selectedIds }) => {
     const [updateMany, { loading, error }] = useUpdateMany('posts', selectedIds, { views: 0 });
     if (error) { return <p>ERROR</p>; }
@@ -421,11 +503,31 @@ const BulkResetViewsButton = ({ selectedIds }) => {
 ```jsx
 // syntax
 const [deleteOne, { data, loading, loaded, error }] = useDelete(resource, id, previousData, options);
+```
 
-// example
+The `deleteOne()` function can be called in 3 different ways:
+ - with the same parameters as the `useDelete()` hook: `deleteOne(resource, id, previousData, options)`
+ - with the same syntax as `useMutation`: `deleteOne({ resource, payload: { id, previousData } }, options)`
+ - with no parameter (if they were already passed to `useDelete()`): `deleteOne()`
+
+```jsx
+// set params when calling the deleteOne callback
 import { useDelete } from 'react-admin';
+
 const DeleteButton = ({ record }) => {
-    const [deleteOne, { loading, error }] = useDelete('likes', record.id);
+    const [deleteOne, { loading, error }] = useDelete();
+    const handleClick = () => {
+        deleteOne('likes', record.id, record)
+    }
+    if (error) { return <p>ERROR</p>; }
+    return <button disabled={loading} onClick={handleClick}>Delete</button>;
+};
+
+// set params when calling the hook
+import { useDelete } from 'react-admin';
+
+const DeleteButton = ({ record }) => {
+    const [deleteOne, { loading, error }] = useDelete('likes', record.id, record);
     if (error) { return <p>ERROR</p>; }
     return <button disabled={loading} onClick={deleteOne}>Delete</button>;
 };
@@ -435,10 +537,30 @@ const DeleteButton = ({ record }) => {
 
 ```jsx
 // syntax
-const [deleteOne, { data, loading, loaded, error }] = useDeleteMany(resource, ids, options);
+const [deleteMany, { data, loading, loaded, error }] = useDeleteMany(resource, ids, options);
+```
 
-// example
+The `deleteMany()` function can be called in 3 different ways:
+ - with the same parameters as the `useDeleteMany()` hook: `deleteMany(resource, ids, options)`
+ - with the same syntax as `useMutation`: `deleteMany({ resource, payload: { ids } }, options)`
+ - with no parameter (if they were already passed to `useDeleteMany()`): `deleteMany()`
+
+```jsx
+// set params when calling the dleteMany callback
 import { useDeleteMany } from 'react-admin';
+
+const BulkDeletePostsButton = ({ selectedIds }) => {
+    const [deleteMany, { loading, error }] = useDeleteMany();
+    const handleClick = () => {
+        deleteMany('posts', selectedIds)
+    }
+    if (error) { return <p>ERROR</p>; }
+    return <button disabled={loading} onClick={deleteMany}>Delete selected posts</button>;
+};
+
+// set params when calling the hook
+import { useDeleteMany } from 'react-admin';
+
 const BulkDeletePostsButton = ({ selectedIds }) => {
     const [deleteMany, { loading, error }] = useDeleteMany('posts', selectedIds);
     if (error) { return <p>ERROR</p>; }
@@ -498,10 +620,152 @@ const ApproveButton = ({ record }) => {
 
 Fetching data is called a *side effect*, since it calls the outside world, and is asynchronous. Usual actions may have other side effects, like showing a notification, or redirecting the user to another page. React-admin provides the following hooks to handle most common side effects:
 
-- `useNotify`: Return a function to display a notification. The arguments should be a message (it can be a translation key), a level (either `info` or `warning`), an `options` object to pass to the `translate` function (in the case of the default i18n provider, using Polyglot.js, it will be the interpolation options used for passing variables), a boolean to set to `true` if the notification should contain an "undo" button and a number corresponding to the notification duration.
-- `useRedirect`: Return a function to redirect the user to another page. The arguments should be the path to redirect the user to, and the current `basePath`.
-- `useRefresh`: Return a function to force a rerender of the current view (equivalent to pressing the Refresh button).
-- `useUnselectAll`: Return a function to unselect all lines in the current `Datagrid`. Pass the name of the resource as argument.
+- [`useNotify`](#usenotify): Return a function to display a notification. 
+- [`useRedirect`](#useredirect): Return a function to redirect the user to another page. 
+- [`useRefresh`](#userefresh): Return a function to force a rerender of the current view (equivalent to pressing the Refresh button).
+- [`useUnselectAll`](#useunselectall): Return a function to unselect all lines in the current `Datagrid`. 
+
+### `useNotify`
+
+This hook returns a function that displays a notification in the bottom of the page.
+
+```jsx
+import { useNotify } from 'react-admin';
+
+const NotifyButton = () => {
+    const notify = useNotify();
+    const handleClick = () => {
+        notify(`Comment approved`, 'success');
+    }
+    return <button onClick={handleClick}>Notify</button>;
+};
+```
+
+The callback takes 5 arguments:
+ - the message to display
+ - the level of the notification (`info`, `success` or `warning` - the default is `info`)
+ - an `options` object to pass to the `translate` function (because notification messages are translated if your admin has an `i18nProvider`). It is useful for inserting variables into the translation.
+ - an `undoable` boolean. Set it to `true` if the notification should contain an "undo" button
+ - a `duration` number. Set it to `0` if the notification should not be dismissible.
+
+Here are more examples of `useNotify` calls: 
+
+```jsx
+// notify a warning
+notify(`This is a warning`, 'warning');
+// pass translation arguments
+notify('item.created', 'info', { resource: 'post' });
+// send an undoable notification
+notify('Element updated', 'info', undefined, true);
+```
+
+**Tip**: When using `useNotify` as a side effect for an `undoable` Edit form, you MUST set the fourth argument to `true`, otherwise the "undo" button will not appear, and the actual update will never occur.
+
+```jsx
+import * as React from 'react';
+import { useNotify, Edit, SimpleForm } from 'react-admin';
+
+const PostEdit = props => {
+    const notify = useNotify();
+
+    const onSuccess = () => {
+        notify(`Changes saved`, undefined, undefined, true);
+    };
+
+    return (
+        <Edit undoable onSuccess={onSuccess} {...props}>
+            <SimpleForm>
+                ...
+            </SimpleForm>
+        </Edit>
+    );
+}
+```
+
+### `useRedirect`
+
+This hook returns a function that redirects the user to another page.
+
+```jsx
+import { useRedirect } from 'react-admin';
+
+const DashboardButton = () => {
+    const redirect = useRedirect();
+    const handleClick = () => {
+        redirect('/dashboard');
+    }
+    return <button onClick={handleClick}>Dashboard</button>;
+};
+```
+
+The callback takes 3 arguments:
+ - the page to redirect the user to ('list', 'create', 'edit', 'show', or a custom path)
+ - the current `basePath`
+ - the `id` of the record to redirect to (if any)
+
+Here are more examples of `useRedirect` calls: 
+
+```jsx
+// redirect to the post list page
+redirect('list', '/posts');
+// redirect to the edit page of a post:
+redirect('edit', '/posts', 1);
+// redirect to the post creation page:
+redirect('create', '/posts');
+```
+
+Note that `useRedirect` doesn't allow to redirect to pages outside the current React app. For that, you should use `document.location`.
+
+### `useRefresh`
+
+This hook returns a function that forces a rerender of the current view.
+
+```jsx
+import { useRefresh } from 'react-admin';
+
+const RefreshButton = () => {
+    const refresh = useRefresh();
+    const handleClick = () => {
+        refresh();
+    }
+    return <button onClick={handleClick}>Refresh</button>;
+};
+```
+
+To make this work, react-admin stores a `version` number in its state. The `useDataProvider()` hook uses this `version` in its effect dependencies. Also, page components use the `version` as `key`. The `refresh` callback increases the `version`, which forces a re-execution all queries based on the `useDataProvider()` hook, and a rerender of all components using the `version` as key.
+
+This means that you can make any component inside a react-admin app refreshable by using the right key:
+
+```jsx
+import * as React from 'react';
+import { useVersion } from 'react-admin';
+
+const MyComponent = () => {
+    const version = useVersion();
+    return <div key={version}>
+        ...
+    </div>;
+};
+```
+
+The callback takes 1 argument:
+ - `hard`: when set to true, the callback empties the cache, too
+
+### `useUnselectAll`
+
+This hook returns a function that unselects all lines in the current `Datagrid`. Pass the name of the resource as argument.
+
+```jsx
+import { useUnselectAll } from 'react-admin';
+
+const UnselectAllButton = () => {
+    const unselectAll = useUnselectAll();
+    const handleClick = () => {
+        unselectAll('posts');
+    }
+    return <button onClick={handleClick}>Unselect all</button>;
+};
+```
 
 ## Handling Side Effects In Other Hooks
 

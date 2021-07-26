@@ -3,7 +3,7 @@ import { FC, memo } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import { ChoicesProps, useChoices, useRecordContext } from 'ra-core';
-import Typography from '@material-ui/core/Typography';
+import { Typography, TypographyProps } from '@material-ui/core';
 
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
@@ -144,7 +144,8 @@ SelectField.propTypes = {
 export interface SelectFieldProps
     extends ChoicesProps,
         PublicFieldProps,
-        InjectedFieldProps {}
+        InjectedFieldProps,
+        TypographyProps {}
 
 SelectField.displayName = 'SelectField';
 

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import TextField, { TextFieldProps } from '@material-ui/core/TextField';
 import { useInput, FieldTitle, InputProps } from 'ra-core';
@@ -65,8 +64,10 @@ const parseDateTime = (value: string) => new Date(value);
 /**
  * Input component for entering a date and a time with timezone, using the browser locale
  */
-const DateTimeInput: FunctionComponent<DateTimeInputProps> = ({
+const DateTimeInput = ({
+    defaultValue,
     format = formatDateTime,
+    initialValue,
     label,
     helperText,
     margin = 'dense',
@@ -80,14 +81,11 @@ const DateTimeInput: FunctionComponent<DateTimeInputProps> = ({
     validate,
     variant = 'filled',
     ...rest
-}) => {
-    const {
-        id,
-        input,
-        isRequired,
-        meta: { error, submitError, touched },
-    } = useInput({
+}: DateTimeInputProps) => {
+    const { id, input, isRequired, meta } = useInput({
+        defaultValue,
         format,
+        initialValue,
         onBlur,
         onChange,
         onFocus,
@@ -99,10 +97,15 @@ const DateTimeInput: FunctionComponent<DateTimeInputProps> = ({
         ...rest,
     });
 
+    const { error, submitError, touched } = meta;
+
     return (
         <TextField
             id={id}
             {...input}
+            // Workaround https://github.com/final-form/react-final-form/issues/529
+            // and https://github.com/final-form/react-final-form/issues/431
+            value={format(input.value) || ''}
             variant={variant}
             margin={margin}
             error={!!(touched && (error || submitError))}
@@ -129,7 +132,7 @@ const DateTimeInput: FunctionComponent<DateTimeInputProps> = ({
 };
 
 DateTimeInput.propTypes = {
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,

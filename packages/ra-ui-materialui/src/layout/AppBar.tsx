@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import {
     AppBar as MuiAppBar,
+    AppBarProps as MuiAppBarProps,
     IconButton,
     Toolbar,
     Tooltip,
@@ -12,11 +13,9 @@ import {
     useMediaQuery,
     Theme,
 } from '@material-ui/core';
-import { AppBarProps as MuiAppBarProps } from '@material-ui/core/AppBar';
-
 import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
-import { toggleSidebar, useTranslate } from 'ra-core';
+import { toggleSidebar, useTranslate, ComponentPropType } from 'ra-core';
 
 import LoadingIndicator from './LoadingIndicator';
 import DefaultUserMenu from './UserMenu';
@@ -103,6 +102,7 @@ const AppBar = (props: AppBarProps): JSX.Element => {
         open,
         title,
         userMenu,
+        container: Container,
         ...rest
     } = props;
     const classes = useStyles(props);
@@ -113,7 +113,7 @@ const AppBar = (props: AppBarProps): JSX.Element => {
     const translate = useTranslate();
 
     return (
-        <HideOnScroll>
+        <Container>
             <MuiAppBar className={className} color={color} {...rest}>
                 <Toolbar
                     disableGutters
@@ -156,14 +156,16 @@ const AppBar = (props: AppBarProps): JSX.Element => {
                         children
                     )}
                     <LoadingIndicator />
-                    {typeof userMenu === 'boolean'
-                        ? userMenu === true
-                            ? cloneElement(<DefaultUserMenu />, { logout })
-                            : null
-                        : cloneElement(userMenu, { logout })}
+                    {typeof userMenu === 'boolean' ? (
+                        userMenu === true ? (
+                            <DefaultUserMenu logout={logout} />
+                        ) : null
+                    ) : (
+                        cloneElement(userMenu, { logout })
+                    )}
                 </Toolbar>
             </MuiAppBar>
-        </HideOnScroll>
+        </Container>
     );
 };
 
@@ -179,6 +181,7 @@ AppBar.propTypes = {
         'secondary',
         'transparent',
     ]),
+    container: ComponentPropType,
     logout: PropTypes.element,
     open: PropTypes.bool,
     userMenu: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
@@ -186,10 +189,12 @@ AppBar.propTypes = {
 
 AppBar.defaultProps = {
     userMenu: <DefaultUserMenu />,
+    container: HideOnScroll,
 };
 
 export interface AppBarProps extends Omit<MuiAppBarProps, 'title' | 'classes'> {
     classes?: ClassesOverride<typeof useStyles>;
+    container?: React.ElementType<any>;
     logout?: React.ReactNode;
     open?: boolean;
     title?: string | JSX.Element;

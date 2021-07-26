@@ -117,6 +117,7 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         children,
         classes: classesOverride,
         className,
+        empty,
         expand,
         hasBulkActions = false,
         hover,
@@ -242,9 +243,13 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     /**
      * Once loaded, the data for the list may be empty. Instead of
      * displaying the table header with zero data rows,
-     * the datagrid displays nothing in this case.
+     * the datagrid displays nothing or a custom empty component.
      */
     if (loaded && (ids.length === 0 || total === 0)) {
+        if (empty) {
+            return empty;
+        }
+
         return null;
     }
 
@@ -349,10 +354,11 @@ Datagrid.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
     currentSort: PropTypes.exact({
-        field: PropTypes.string.isRequired,
-        order: PropTypes.string.isRequired,
+        field: PropTypes.string,
+        order: PropTypes.string,
     }),
     data: PropTypes.any,
+    empty: PropTypes.element,
     // @ts-ignore
     expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     hasBulkActions: PropTypes.bool,
@@ -387,6 +393,7 @@ export interface DatagridProps<RecordType extends Record = Record>
           }>;
     hasBulkActions?: boolean;
     hover?: boolean;
+    empty?: ReactElement;
     isRowSelectable?: (record: Record) => boolean;
     isRowExpandable?: (record: Record) => boolean;
     optimized?: boolean;

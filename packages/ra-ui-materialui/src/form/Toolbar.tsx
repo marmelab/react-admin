@@ -19,6 +19,7 @@ import { FormRenderProps } from 'react-final-form';
 
 import { SaveButton, DeleteButton } from '../button';
 import { ClassesOverride } from '../types';
+import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
 
 const useStyles = makeStyles(
     theme => ({
@@ -91,7 +92,7 @@ const valueOrDefault = (value, defaultValue) =>
  * );
  *
  * @typedef {Object} Props the props you can use (other props are injected by the <SimpleForm>)
- * @prop {boolean} alwaysEnableSaveButton Force enabling the <SaveButton>. If it's not defined, the <SaveButton> will be enabled using the `pristine` prop (disabled if pristine, enabled otherwise).
+ * @prop {boolean} alwaysEnableSaveButton Force enabling the <SaveButton>. If it's not defined, the <SaveButton> will be enabled using the `pristine` and `validating` props (disabled if pristine or validating, enabled otherwise).
  * @prop {ReactElement[]} children Customize the buttons you want to display in the <Toolbar>.
  * @prop {string} width Apply to the mobile or desktop classes depending on its value. Pass `xs` to display the mobile version.
  *
@@ -114,14 +115,18 @@ const Toolbar: FC<ToolbarProps> = props => {
         submitOnEnter,
         undoable,
         mutationMode,
+        validating,
         width,
         ...rest
     } = props;
     const classes = useStyles(props);
 
-    // Use form pristine to enable or disable the save button
+    // Use form pristine and validating to enable or disable the save button
     // if alwaysEnableSaveButton is undefined
-    const disabled = !valueOrDefault(alwaysEnableSaveButton, !pristine);
+    const disabled = !valueOrDefault(
+        alwaysEnableSaveButton,
+        !pristine && !validating
+    );
 
     return (
         <Fragment>
@@ -146,7 +151,7 @@ const Toolbar: FC<ToolbarProps> = props => {
                             disabled={disabled}
                             invalid={invalid}
                             redirect={redirect}
-                            saving={saving}
+                            saving={saving || validating}
                             submitOnEnter={submitOnEnter}
                         />
                         {record && typeof record.id !== 'undefined' && (
@@ -224,7 +229,8 @@ export interface ToolbarProps<RecordType extends Record = Record>
     resource?: string;
     /** @deprecated use mutationMode: undoable instead */
     undoable?: boolean;
-    width?: string;
+    validating?: boolean;
+    width?: Breakpoint;
 }
 
 Toolbar.propTypes = {
@@ -246,7 +252,8 @@ Toolbar.propTypes = {
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
     undoable: PropTypes.bool,
-    width: PropTypes.string,
+    validating: PropTypes.bool,
+    width: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
 };
 
 Toolbar.defaultProps = {

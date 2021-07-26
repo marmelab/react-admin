@@ -4,7 +4,6 @@
     "scripts": {
         "build": "lerna run build",
         "watch": "lerna run --parallel watch",
-        "build-demo": "cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=rest yarn -s build",
         "test-unit": "cross-env NODE_ENV=test cross-env BABEL_ENV=cjs NODE_ICU_DATA=./node_modules/full-icu jest",
         "test-unit-ci": "cross-env NODE_ENV=test cross-env BABEL_ENV=cjs NODE_ICU_DATA=./node_modules/full-icu jest --runInBand",
         "test-e2e": "yarn run -s build && cross-env NODE_ENV=test && cd cypress && yarn -s test",
@@ -14,13 +13,18 @@
         "lint": "eslint --ext .js,.ts,.tsx \"./packages/**/src/**/*.{js,ts,tsx}\" \"./examples/**/src/**/*.{js,ts,tsx}\" \"./cypress/**/*.{js,ts,tsx}\"",
         "prettier": "prettier --config ./.prettierrc.js --write --list-different \"packages/*/src/**/*.{js,json,ts,tsx,css,md}\" \"examples/*/src/**/*.{js,ts,json,tsx,css,md}\" \"cypress/**/*.{js,ts,json,tsx,css,md}\"",
         "run-simple": "cd examples/simple && yarn -s start",
-        "run-tutorial": "yarn run -s build && cd examples/tutorial && yarn -s start",
+        "run-no-code": "cd examples/no-code && yarn dev",
+        "run-tutorial": "cd examples/tutorial && yarn -s start",
         "run-demo": "cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=rest yarn -s start",
+        "build-demo": "cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=rest yarn -s build",
         "run-graphql-demo": "cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=graphql yarn -s start",
         "run-demo-watch": "concurrently \"yarn run watch\" \"yarn run run-demo\"",
-        "run-graphql-demo-watch": "concurrently \"yarn run watch\" \"yarn run run-graphql-demo\""
+        "run-graphql-demo-watch": "concurrently \"yarn run watch\" \"yarn run run-graphql-demo\"",
+        "run-crm": "cd examples/crm && yarn -s start",
+        "build-crm": "cd examples/crm && yarn -s build"
     },
     "jest": {
+        "globalSetup": "./test-global-setup.js",
         "setupFilesAfterEnv": [
             "./test-setup.js"
         ],

@@ -40,6 +40,44 @@ describe('useGetMany', () => {
         ]);
     });
 
+    it('should not call the dataProvider with a GET_MANY on mount if enabled is false', async () => {
+        const dataProvider = {
+            getMany: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
+            ),
+        };
+        const { dispatch, rerender } = renderWithRedux(
+            <DataProviderContext.Provider value={dataProvider}>
+                <UseGetMany
+                    resource="posts"
+                    ids={[1]}
+                    options={{ enabled: false }}
+                />
+            </DataProviderContext.Provider>
+        );
+        await new Promise(resolve => setTimeout(resolve));
+        expect(dispatch).toBeCalledTimes(0);
+        expect(dataProvider.getMany).toBeCalledTimes(0);
+
+        rerender(
+            <DataProviderContext.Provider value={dataProvider}>
+                <UseGetMany
+                    resource="posts"
+                    ids={[1]}
+                    options={{ enabled: true }}
+                />
+            </DataProviderContext.Provider>
+        );
+        await new Promise(resolve => setTimeout(resolve));
+        expect(dispatch).toBeCalledTimes(5);
+        expect(dispatch.mock.calls[0][0].type).toBe('RA/CRUD_GET_MANY');
+        expect(dataProvider.getMany).toBeCalledTimes(1);
+        expect(dataProvider.getMany.mock.calls[0]).toEqual([
+            'posts',
+            { ids: [1] },
+        ]);
+    });
+
     it('should aggregate multiple queries into a single call', async () => {
         const dataProvider = {
             getMany: jest.fn(() =>
@@ -179,6 +217,7 @@ describe('useGetMany', () => {
             loading: true,
             loaded: true,
             error: null,
+            refetch: expect.any(Function),
         });
     });
 
@@ -211,15 +250,18 @@ describe('useGetMany', () => {
             }
         );
         await waitFor(() => {
-            expect(hookValue.mock.calls.pop()[0]).toEqual({
-                data: [
-                    { id: 1, title: 'foo' },
-                    { id: 2, title: 'bar' },
-                ],
-                loading: false,
-                loaded: true,
-                error: null,
-            });
+            if (hookValue.mock.calls.length > 0) {
+                expect(hookValue.mock.calls.pop()[0]).toEqual({
+                    data: [
+                        { id: 1, title: 'foo' },
+                        { id: 2, title: 'bar' },
+                    ],
+                    loading: false,
+                    loaded: true,
+                    error: null,
+                    refetch: expect.any(Function),
+                });
+            }
         });
     });
 
@@ -272,6 +314,7 @@ describe('useGetMany', () => {
             loading: true,
             loaded: false,
             error: null,
+            refetch: expect.any(Function),
         });
     });
 

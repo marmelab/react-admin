@@ -81,6 +81,107 @@ describe('Query Reducer', () => {
             expect(updatedState.page).toEqual(1);
         });
     });
+    describe('SHOW_FILTER action', () => {
+        it('should add the filter to the displayed filters and set the filter value', () => {
+            const updatedState = queryReducer(
+                {
+                    filter: { bar: 1 },
+                    displayedFilters: { bar: true },
+                },
+                {
+                    type: 'SHOW_FILTER',
+                    payload: { filterName: 'foo', defaultValue: 'bar' },
+                }
+            );
+            expect(updatedState.filter).toEqual({ bar: 1, foo: 'bar' });
+            expect(updatedState.displayedFilters).toEqual({
+                bar: true,
+                foo: true,
+            });
+        });
+
+        it('should work with false default value', () => {
+            const updatedState = queryReducer(
+                { filter: {}, displayedFilters: {} },
+                {
+                    type: 'SHOW_FILTER',
+                    payload: { filterName: 'foo', defaultValue: false },
+                }
+            );
+            expect(updatedState.filter).toEqual({ foo: false });
+            expect(updatedState.displayedFilters).toEqual({
+                foo: true,
+            });
+        });
+
+        it('should work without default value', () => {
+            const updatedState = queryReducer(
+                {
+                    filter: { bar: 1 },
+                    displayedFilters: { bar: true },
+                },
+                {
+                    type: 'SHOW_FILTER',
+                    payload: { filterName: 'foo' },
+                }
+            );
+            expect(updatedState.filter).toEqual({ bar: 1 });
+            expect(updatedState.displayedFilters).toEqual({
+                bar: true,
+                foo: true,
+            });
+        });
+
+        it('should not change an already shown filter', () => {
+            const updatedState = queryReducer(
+                {
+                    filter: { foo: 1 },
+                    displayedFilters: { foo: true },
+                },
+                {
+                    type: 'SHOW_FILTER',
+                    payload: { filterName: 'foo', defaultValue: 'bar' },
+                }
+            );
+            expect(updatedState.filter).toEqual({ foo: 1 });
+            expect(updatedState.displayedFilters).toEqual({ foo: true });
+        });
+    });
+    describe('HIDE_FILTER action', () => {
+        it('should remove the filter from the displayed filters and reset the filter value', () => {
+            const updatedState = queryReducer(
+                {
+                    filter: { foo: 2, bar: 1 },
+                    displayedFilters: { foo: true, bar: true },
+                },
+                {
+                    type: 'HIDE_FILTER',
+                    payload: 'bar',
+                }
+            );
+            expect(updatedState.filter).toEqual({ foo: 2 });
+            expect(updatedState.displayedFilters).toEqual({
+                foo: true,
+            });
+        });
+
+        it('should do nothing if the filter is already hidden', () => {
+            const updatedState = queryReducer(
+                {
+                    filter: { foo: 2 },
+                    displayedFilters: { foo: true },
+                },
+                {
+                    type: 'HIDE_FILTER',
+                    payload: 'bar',
+                }
+            );
+            expect(updatedState.filter).toEqual({ foo: 2 });
+            expect(updatedState.displayedFilters).toEqual({
+                foo: true,
+            });
+        });
+    });
     describe('SET_SORT action', () => {
         it('should set SORT_ASC order by default when sort value is new', () => {
             const updatedState = queryReducer(

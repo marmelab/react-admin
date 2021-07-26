@@ -90,6 +90,7 @@ const ArrayInput: FC<ArrayInputProps> = ({
                 source={source}
                 resource={resource}
                 className={className}
+                margin={margin}
             >
                 <LinearProgress />
             </Labeled>
@@ -147,7 +148,7 @@ ArrayInput.propTypes = {
     className: PropTypes.string,
     defaultValue: PropTypes.any,
     isRequired: PropTypes.bool,
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     helperText: PropTypes.string,
     resource: PropTypes.string,
     source: PropTypes.string,

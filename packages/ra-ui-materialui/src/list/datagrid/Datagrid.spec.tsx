@@ -47,6 +47,26 @@ describe('<Datagrid />', () => {
         expect(contextValue.onSelect).toHaveBeenCalledTimes(0);
     });
 
+    it('should display the correct empty component', () => {
+        const Empty = () => <div>No records to show</div>;
+
+        const emptyData = {
+            ...contextValue,
+            data: [],
+            ids: [],
+        };
+
+        const { queryByText } = renderWithRedux(
+            <ListContextProvider value={emptyData}>
+                <Datagrid empty={<Empty />} hasBulkActions>
+                    <TitleField />
+                </Datagrid>
+            </ListContextProvider>
+        );
+
+        expect(queryByText('No records to show')).toBeTruthy();
+    });
+
     describe('selecting items with the shift key', () => {
         it('should call onSelect with the correct ids when the last selection is after the first', () => {
             const Test = ({ selectedIds = [] }) => (

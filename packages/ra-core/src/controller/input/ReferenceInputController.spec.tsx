@@ -170,6 +170,7 @@ describe('<ReferenceInputController />', () => {
                     'possibleValues.showFilter',
                 ])
             ).toEqual({
+                refetch: expect.any(Function),
                 possibleValues: {
                     basePath: '/comments',
                     currentSort: {
@@ -192,6 +193,7 @@ describe('<ReferenceInputController />', () => {
                     loading: true,
                     page: 1,
                     perPage: 25,
+                    refetch: expect.any(Function),
                     resource: 'comments',
                     selectedIds: [],
                     total: NaN,
@@ -203,6 +205,7 @@ describe('<ReferenceInputController />', () => {
                     error: null,
                     loaded: true,
                     loading: true,
+                    refetch: expect.any(Function),
                 },
                 dataStatus: {
                     error: null,

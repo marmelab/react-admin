@@ -46,7 +46,7 @@ export const ProductList = (props) => (
 
 For some components, you may want to override not only the root component style, but also the style of components inside the root. In this case, the `className` property isn't enough. You can take advantage of the `classes` property to customize the classes that the component uses internally.
 
-Here is an example using the `classes` property of the `Filter` and `List` components:
+Here is an example using the `classes` property of the `<Datagrid>` component:
 
 {% raw %}
 ```jsx
@@ -55,76 +55,39 @@ import {
     BooleanField,
     Datagrid,
     DateField,
-    DateInput,
     EditButton,
-    Filter,
     List,
-    NullableBooleanInput,
     NumberField,
-    TextInput,
+    TextField,
+    ShowButton,
 } from 'react-admin';
 import Icon from '@material-ui/icons/Person';
 import { makeStyles } from '@material-ui/core/styles';
 
 export const VisitorIcon = Icon;
 
-// The Filter component supports the `form` and `button` CSS classes. Here we override the `form` class
-const useFilterStyles = makeStyles({
-    form: {
+// The `Datagrid` component uses makeStyles, and supports overriding styles through the `classes` property 
+const useStyles = makeStyles({
+    table: {
         backgroundColor: 'Lavender',
+    },
+    headerCell: {
+        backgroundColor: 'MistyRose',
     },
 });
 
-const VisitorFilter = props => {
-    const classes = useFilterStyles();
+export const PostList = props => {
+    const classes = useStyles();
     return (
-        <Filter classes={classes} {...props}>
-            <TextInput
-                className={classes.searchInput}
-                label="pos.search"
-                source="q"
-                alwaysOn
-            />
-            <DateInput source="last_seen_gte" />
-            <NullableBooleanInput source="has_ordered" />
-            <NullableBooleanInput source="has_newsletter" defaultValue />
-        </Filter>
-    );
-};
-
-// The `List` component supports the `root`, `header`, `actions` and `noResults` CSS classes. Here we override the `header` and `actions` classes
-const useListStyles = makeStyles({
-    actions: {
-        backgroundColor: 'Lavender',
-    },
-    header: {
-        backgroundColor: 'Lavender',
-    },
-});
-
-export const VisitorList = props => {
-    const classes = useListStyles();
-    return (
-        <List
-            classes={classes}
-            {...props}
-            filters={<VisitorFilter />}
-            sort={{ field: 'last_seen', order: 'DESC' }}
-            perPage={25}
-        >
+        <List {...props}>
             <Datagrid classes={classes} {...props}>
-                <DateField source="last_seen" type="date" />
-                <NumberField
-                    source="nb_commands"
-                    label="resources.customers.fields.commands"
-                />
-                <NumberField
-                    source="total_spent"
-                    options={{ style: 'currency', currency: 'USD' }}
-                />
-                <DateField source="latest_purchase" showTime />
-                <BooleanField source="has_newsletter" label="News." />
+                <TextField source="id" />
+                <TextField source="title" />
+                <DateField source="published_at" sortByOrder="DESC"/>
+                <BooleanField source="commentable" sortable={false} />
+                <NumberField source="views" sortByOrder="DESC" />
                 <EditButton />
+                <ShowButton />
             </Datagrid>
         </List>
     )
@@ -136,7 +99,7 @@ This example results in:
 
 ![Visitor List with customized CSS classes](./img/list_with_customized_css.png)
 
-Take a look at a component documentation and source code to know which classes are available for styling. For instance, you can have a look at the [Datagrid CSS documentation](./List.md#the-datagrid-component).
+Take a look at a component documentation and source code to know which classes are available for styling. For instance, you can have a look at the [Datagrid CSS documentation](./List.md#datagrid-css-api).
 
 If you need more control over the HTML code, you can also create your own [Field](./Fields.md#writing-your-own-field-component) and [Input](./Inputs.md#writing-your-own-input-component) components.
 
@@ -740,9 +703,22 @@ const App = () => (
 
 ## Replacing The AppBar
 
-For more drastic changes of the top component, you will probably want to create an `<AppBar>` from scratch instead of just passing children to react-admin's `<AppBar>`.
+By default, React-admin uses [Material-ui's `<AppBar>` component](https://material-ui.com/api/app-bar/) together with a custom container that internally uses a [Slide](https://material-ui.com/api/slide) to hide the `AppBar` on scroll. Here is an example of how to change this container with any component:
 
-By default, React-admin uses [Material-ui's `<AppBar>` component](https://material-ui.com/api/app-bar/) together with [react-headroom](https://github.com/KyleAMathews/react-headroom) to hide the `AppBar` on scroll. Here is an example top bar rebuilt from scratch to remove the "headroom" effect:
+```jsx
+// in src/MyAppBar.js
+import * as React from 'react';
+import { Fragment } from 'react';
+import { AppBar } from 'react-admin';
+
+const MyAppBar = props => (
+    <AppBar {...props} container={Fragment} />
+);
+
+export default MyAppBar;
+```
+
+For more drastic changes of the top component, you will probably want to create an `<AppBar>` from scratch instead of just passing children to react-admin's `<AppBar>`. Here is an example top bar rebuilt from scratch:
 
 ```jsx
 // in src/MyAppBar.js
@@ -794,9 +770,56 @@ Check [the `ra-preferences` documentation](https://marmelab.com/ra-enterprise/mo
 
 ## Using a Custom Menu
 
-By default, React-admin uses the list of `<Resource>` components passed as children of `<Admin>` to build a menu to each resource with a `list` component.
+By default, React-admin uses the list of `<Resource>` components passed as children of `<Admin>` to build a menu to each resource with a `list` component. If you want to reorder, add or remove menu items, for instance to link to non-resources pages, you have to provide a custom `<Menu>` component to your `Layout`.
 
-If you want to add or remove menu items, for instance to link to non-resources pages, you can create your own menu component:
+### Custom Menu Example
+
+You can create a custom menu component using the `<DashboardMenuItem>` and `<MenuItemLink>` components:
+
+```jsx
+// in src/Menu.js
+import * as React from 'react';
+import { DashboardMenuItem, MenuItemLink } from 'react-admin';
+import BookIcon from '@material-ui/icons/Book';
+import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
+import PeopleIcon from '@material-ui/icons/People';
+import LabelIcon from '@material-ui/icons/Label';
+
+export const Menu = () => (
+    <div>
+        <DashboardMenuItem />
+        <MenuItemLink to="/posts" primaryText="Posts" leftIcon={<BookIcon />}/>
+        <MenuItemLink to="/comments" primaryText="Comments" leftIcon={<ChatBubbleIcon />}/>
+        <MenuItemLink to="/users" primaryText="Users" leftIcon={<PeopleIcon />}/>
+        <MenuItemLink to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />}/>
+    </div>
+);
+```
+
+To use this custom menu component, pass it to a custom Layout, as explained above:
+
+```jsx
+// in src/Layout.js
+import { Layout } from 'react-admin';
+import { Menu } from './Menu';
+
+export const Layout = (props) => <Layout {...props} menu={Menu} />;
+```
+
+Then, use this layout in the `<Admin>` `layout` prop:
+
+```jsx
+// in src/App.js
+import { Layout }  from './Layout';
+
+const App = () => (
+    <Admin layout={Layout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        // ...
+    </Admin>
+);
+```
+
+**Tip**: You can generate the menu items for each of the resources by reading the Resource configurations from the Redux store: 
 
 ```jsx
 // in src/Menu.js
@@ -808,13 +831,11 @@ import { DashboardMenuItem, MenuItemLink, getResources } from 'react-admin';
 import DefaultIcon from '@material-ui/icons/ViewList';
 import LabelIcon from '@material-ui/icons/Label';
 
-const Menu = ({ onMenuClick, logout }) => {
-    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
-    const open = useSelector(state => state.admin.ui.sidebarOpen);
+export const Menu = () => {
     const resources = useSelector(getResources);
     return (
         <div>
-            <DashboardMenuItem onClick={onMenuClick} sidebarIsOpen={open} />
+            <DashboardMenuItem />
             {resources.map(resource => (
                 <MenuItemLink
                     key={resource.name}
@@ -830,71 +851,90 @@ const Menu = ({ onMenuClick, logout }) => {
                     sidebarIsOpen={open}
                 />
             ))}
-            <MenuItemLink
-                to="/custom-route"
-                primaryText="Miscellaneous"
-                leftIcon={<LabelIcon />}
-                onClick={onMenuClick}
-                sidebarIsOpen={open}
-            />
-            {isXSmall && logout}
+            {/* add your custom menus here */}
         </div>
     );
 };
-
-export default Menu;
 ```
-
-**Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views.
-
-**Tip**: Note that we include the `logout` item only on small devices. Indeed, the `logout` button is already displayed in the AppBar on larger devices.
-
-**Tip**: The `primaryText` prop accepts a React node. You can pass a custom element in it. For example:
-
-```jsx
-    import Badge from '@material-ui/core/Badge';
-
-    <MenuItemLink to="/custom-route" primaryText={
-        <Badge badgeContent={4} color="primary">
-            Notifications
-        </Badge>
-    } onClick={onMenuClick} />
-```
-
-To use this custom menu component, pass it to a custom Layout, as explained above:
-
-```jsx
-// in src/MyLayout.js
-import { Layout } from 'react-admin';
-import MyMenu from './MyMenu';
-
-const MyLayout = (props) => <Layout {...props} menu={MyMenu} />;
-
-export default MyLayout;
-```
-
-Then, use this layout in the `<Admin>` `layout` prop:
-
-```jsx
-// in src/App.js
-import MyLayout from './MyLayout';
-
-const App = () => (
-    <Admin layout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
-        // ...
-    </Admin>
-);
-```
-
-**Tip**: If you use authentication, don't forget to render the `logout` prop in your custom menu component. Also, the `onMenuClick` function passed as prop is used to close the sidebar on mobile.
-
-The `MenuItemLink` component make use of the React Router [NavLink](https://reacttraining.com/react-router/web/api/NavLink) component, hence allowing to customize its style when it targets the current page.
 
 **Tip**: If you need a multi-level menu, or a Mega Menu opening panels with custom content, check out [the `ra-navigation`<img class="icon" src="./img/premium.svg" /> module](https://marmelab.com/ra-enterprise/modules/ra-navigation) (part of the [Enterprise Edition](https://marmelab.com/ra-enterprise))
 
 ![multi-level menu](https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-item.gif)
 
 ![MegaMenu and Breadcrumb](https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.gif)
+
+### `<MenuItemLink>`
+
+The `<MenuItemLink>` component displays a menu item with a label and an icon - or only the icon with a tooltip when the sidebar is minimized. It also handles the automatic closing of the menu on tap on mobile.
+
+The `primaryText` prop accepts a string or a React node. You can use it e.g. to display a badge on top of the menu item:
+
+```jsx
+import Badge from '@material-ui/core/Badge';
+
+<MenuItemLink to="/custom-route" primaryText={
+    <Badge badgeContent={4} color="primary">
+        Notifications
+    </Badge>
+} />
+```
+
+The `letfIcon` prop allows to set the menu left icon.
+
+Additional props are passed down to [the underling material-ui `<MenuItem>` component](https://material-ui.com/api/menu-item/#menuitem-api).
+
+**Tip**: The `<MenuItemLink>` component makes use of the React Router [NavLink](https://reacttraining.com/react-router/web/api/NavLink) component, hence allowing to customize the active menu style. For instance, here is how to use a custom theme to show a left border for the active menu:
+
+```jsx
+export const theme = {
+    palette: {
+        // ...
+    },
+    overrides: {
+        RaMenuItemLink: {
+            active: {
+                borderLeft: '3px solid #4f3cc9',
+            },
+            root: {
+                borderLeft: '3px solid #fff', // invisible menu when not active, to avoid scrolling the text when selecting the menu
+            },
+        },
+    },
+};
+```
+
+### Menu To A Filtered List
+
+As the filter values are taken from the URL, you can link to a pre-filtered list by setting the `filter` query parameter.
+
+For instance, to include a menu to a list of published posts:
+
+{% raw %}
+```jsx
+<MenuItemLink
+    to={{
+        pathname: '/posts',
+        search: `filter=${JSON.stringify({ is_published: true })}`,
+    }}
+    primaryText="Posts"
+    leftIcon={<BookIcon />}
+/>
+```
+{% endraw %}
+
+### Menu To A List Without Filters
+
+By default, a click on `<MenuItemLink >` for a list page opens the list with the same filters as they were applied the last time the user saw them. This is usually the expected behavior, but your users may prefer that clicking on a menu item resets the list filters.
+
+Just use an empty `filter` query parameter to force empty filters:
+
+```jsx
+<MenuItemLink
+    to="/posts?filter=%7B%7D" // %7B%7D is JSON.stringify({})
+    primaryText="Posts"
+    leftIcon={<BookIcon />}
+/>
+```
 
 ## Using a Custom Login Page
 

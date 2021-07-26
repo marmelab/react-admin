@@ -7,8 +7,6 @@ import {
     DatagridProps,
     DateField,
     DateInput,
-    Filter,
-    FilterProps,
     Identifier,
     List,
     ListContextProvider,
@@ -33,24 +31,22 @@ import AddressField from '../visitors/AddressField';
 import MobileGrid from './MobileGrid';
 import { Customer } from '../types';
 
-const OrderFilter: FC<Omit<FilterProps, 'children'>> = props => (
-    <Filter {...props}>
-        <SearchInput source="q" alwaysOn />
-        <ReferenceInput source="customer_id" reference="customers">
-            <AutocompleteInput
-                optionText={(choice: Customer) =>
-                    choice.id // the empty choice is { id: '' }
-                        ? `${choice.first_name} ${choice.last_name}`
-                        : ''
-                }
-            />
-        </ReferenceInput>
-        <DateInput source="date_gte" />
-        <DateInput source="date_lte" />
-        <TextInput source="total_gte" />
-        <NullableBooleanInput source="returned" />
-    </Filter>
-);
+const orderFilters = [
+    <SearchInput source="q" alwaysOn />,
+    <ReferenceInput source="customer_id" reference="customers">
+        <AutocompleteInput
+            optionText={(choice: Customer) =>
+                choice.id // the empty choice is { id: '' }
+                    ? `${choice.first_name} ${choice.last_name}`
+                    : ''
+            }
+        />
+    </ReferenceInput>,
+    <DateInput source="date_gte" />,
+    <DateInput source="date_lte" />,
+    <TextInput source="total_gte" />,
+    <NullableBooleanInput source="returned" />,
+];
 
 const useDatagridStyles = makeStyles({
     total: { fontWeight: 'bold' },
@@ -269,7 +265,7 @@ const OrderList: FC<ListProps> = props => (
         filterDefaultValues={{ status: 'ordered' }}
         sort={{ field: 'date', order: 'DESC' }}
         perPage={25}
-        filters={<OrderFilter />}
+        filters={orderFilters}
     >
         <TabbedDatagrid />
     </List>

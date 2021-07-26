@@ -257,7 +257,7 @@ export const PostList = (props) => (
 
 ### `<FilterButton>`
 
-This button is an internal component used by react-admin in [the `<Filter>` button/form combo](./List.md#the-filter-buttonform-combo).
+This button is an internal component used by react-admin in [the Filter button/form combo](./List.md#the-filter-buttonform-combo).
 
 ![List Filters](./img/list_filter.gif)
 
@@ -344,6 +344,71 @@ To override the style of all instances of `<Button>` using the [material-ui styl
 To override the style of all instances of `<SkipNavigationButton>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaSkipNavigationButton` key.
 
 ### `<MenuItemLink>`
+
+The `<MenuItemLink>` component displays a menu item with a label and an icon - or only the icon with a tooltip when the sidebar is minimized. It also handles the automatic closing of the menu on tap on mobile.
+
+![custom menu icons](./img/custom-menu.gif)
+
+| Prop          | Required | Type                 | Default | Description                              |
+| ------------- | -------- | -------------------- | ------- | ---------------------------------------- |
+| `to`          | Required | `string | location`  | -       | The menu item's target. It is passed to a React Router [NavLink](https://reacttraining.com/react-router/web/api/NavLink) component. |
+| `primaryText` | Required | `string | ReactNode` | -       | The menu content, displayed when the menu isn't minimized. |
+| `leftIcon`    | Optional | `ReactNode`          | -       | The menu icon |
+
+Additional props are passed down to [the underling material-ui `<MenuItem>` component](https://material-ui.com/api/menu-item/#menuitem-api).
+
+You can create a custom menu component using the `<DashboardMenuItem>` and `<MenuItemLink>` components:
+
+```jsx
+// in src/Menu.js
+import * as React from 'react';
+import { DashboardMenuItem, MenuItemLink } from 'react-admin';
+import BookIcon from '@material-ui/icons/Book';
+import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
+import PeopleIcon from '@material-ui/icons/People';
+import LabelIcon from '@material-ui/icons/Label';
+
+export const Menu = () => (
+    <div>
+        <DashboardMenuItem />
+        <MenuItemLink to="/posts" primaryText="Posts" leftIcon={<BookIcon />}/>
+        <MenuItemLink to="/comments" primaryText="Comments" leftIcon={<ChatBubbleIcon />}/>
+        <MenuItemLink to="/users" primaryText="Users" leftIcon={<PeopleIcon />}/>
+        <MenuItemLink to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />}/>
+    </div>
+);
+```
+
+To use this custom menu component, pass it to a custom Layout:
+
+```jsx
+// in src/Layout.js
+import { Layout } from 'react-admin';
+import { Menu } from './Menu';
+
+export const Layout = (props) => <Layout {...props} menu={Menu} />;
+```
+
+Then, use this layout in the `<Admin>` `layout` prop:
+
+```jsx
+// in src/App.js
+import { Layout }  from './Layout';
+
+const App = () => (
+    <Admin layout={Layout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        // ...
+    </Admin>
+);
+```
+
+See [The theming documentation](./Theming.md#menuitemlink) for more details.
+
+**Tip**: If you need a multi-level menu, or a Mega Menu opening panels with custom content, check out [the `ra-navigation`<img class="icon" src="./img/premium.svg" /> module](https://marmelab.com/ra-enterprise/modules/ra-navigation) (part of the [Enterprise Edition](https://marmelab.com/ra-enterprise))
+
+![multi-level menu](https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-item.gif)
+
+![MegaMenu and Breadcrumb](https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.gif)
 
 #### CSS API
 

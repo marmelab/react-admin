@@ -432,12 +432,10 @@ import * as React from "react";
 import { Route } from 'react-router-dom';
 import Foo from './Foo';
 import Bar from './Bar';
-import Baz from './Baz';
 
 export default [
     <Route exact path="/foo" component={Foo} />,
     <Route exact path="/bar" component={Bar} />,
-    <Route exact path="/baz" component={Baz} noLayout />,
 ];
 ```
 
@@ -460,12 +458,6 @@ export default App;
 ```
 
 Now, when a user browses to `/foo` or `/bar`, the components you defined will appear in the main part of the screen.
-When a user browses to `/baz`, the component will appear outside of the defined Layout, leaving you the freedom
-to design the screen the way you want.
-
-**Tip**: It's up to you to create a [custom menu](#menu) entry, or custom buttons, to lead to your custom pages.
-
-**Tip**: Your custom pages take precedence over react-admin's own routes. That means that `customRoutes` lets you override any route you want! If you want to add routes *after* all the react-admin routes, use the [`catchAll` prop](#catchall) instead.
 
 **Tip**: To look like other react-admin pages, your custom pages should have the following structure:
 
@@ -487,6 +479,30 @@ const Foo = () => (
 
 export default Foo;
 ```
+
+**Tip**: It's up to you to create a [custom menu](#menu) entry, or custom buttons, to lead to your custom pages.
+
+Your custom pages take precedence over react-admin's own routes. That means that `customRoutes` lets you override any route you want! If you want to add routes *after* all the react-admin routes, use the [`catchAll` prop](#catchall) instead.
+
+If you want a custom route to render without the layout (without the menu and the appBar), e.g. for registration screens, then use the `<RouteWithoutLayout>` component from `react-admin` instead of `react-router-dom`'s `<Route>`:
+
+```jsx
+// in src/customRoutes.js
+import * as React from "react";
+import { Route } from 'react-router-dom';
+import { RouteWithoutLayout } from 'react-admin';
+import Foo from './Foo';
+import Register from './Register';
+
+export default [
+    <Route exact path="/foo" component={Foo} />,
+    <RouteWithoutLayout exact path="/register" component={Register} />,
+];
+```
+
+When a user browses to `/register`, the `<Register>` component will appear outside of the defined Layout, leaving you the freedom to design the screen the way you want.
+
+**Tip**: In previous versions of react-admin, you had to write `<Route noLayout>` instead of `<RouteWithoutLayout>`. The former still works in Js projects but TypeScript won't compile it.
 
 **Tip**: Custom routes can be [a `<Redirect>` route](https://reacttraining.com/react-router/web/api/Redirect), too.
 

@@ -1,15 +1,14 @@
-import { fireEvent, waitFor, getByText } from '@testing-library/react';
-import * as React from 'react';
+import { ThemeProvider } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { fireEvent, getByText, waitFor } from '@testing-library/react';
 import expect from 'expect';
 import { SaveContextProvider, SideEffectContextProvider } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
-import { ThemeProvider } from '@material-ui/core';
-import { createMuiTheme } from '@material-ui/core/styles';
-
-import SimpleFormIterator from './SimpleFormIterator';
-import TextInput from '../input/TextInput';
+import * as React from 'react';
 import { ArrayInput } from '../input';
+import TextInput from '../input/TextInput';
 import SimpleForm from './SimpleForm';
+import SimpleFormIterator from './SimpleFormIterator';
 
 const theme = createMuiTheme();
 
@@ -499,8 +498,36 @@ describe('<SimpleFormIterator />', () => {
         expect(getByText('Custom Remove Button')).not.toBeNull();
     });
 
+    it('should display custom row label', () => {
+        const { getByText } = renderWithRedux(
+            <ThemeProvider theme={theme}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffectValue}>
+                        <SimpleForm
+                            record={{
+                                id: 'whatever',
+                                emails: [{ email: 'foo' }, { email: 'bar' }],
+                            }}
+                        >
+                            <ArrayInput source="emails">
+                                <SimpleFormIterator
+                                    getItemLabel={index => `3.${index}`}
+                                >
+                                    <TextInput source="email" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
+        );
+
+        expect(getByText('3.0')).toBeDefined();
+        expect(getByText('3.1')).toBeDefined();
+    });
+
     it('should call the onClick method when the custom add button is clicked', async () => {
-        const onClick = jest.fn();
+        const onClick = jest.fn().mockImplementation(e => e.preventDefault());
         const { getByText } = renderWithRedux(
             <ThemeProvider theme={theme}>
                 <SaveContextProvider value={saveContextValue}>
@@ -527,7 +554,7 @@ describe('<SimpleFormIterator />', () => {
     });
 
     it('should call the onClick method when the custom remove button is clicked', async () => {
-        const onClick = jest.fn();
+        const onClick = jest.fn().mockImplementation(e => e.preventDefault());
         const { getByText } = renderWithRedux(
             <ThemeProvider theme={theme}>
                 <SaveContextProvider value={saveContextValue}>
