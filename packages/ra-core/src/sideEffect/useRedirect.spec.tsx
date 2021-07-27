@@ -47,4 +47,18 @@ describe('useRedirect', () => {
             state: { _scrollToTop: true, bar: 'baz' },
         });
     });
+    it('should support absolute URLs', () => {
+        const oldLocation = window.location;
+        delete window.location;
+        // @ts-ignore
+        window.location = { href: '' };
+        const history = createMemoryHistory();
+        renderWithRedux(
+            <Router history={history}>
+                <Redirect redirectTo="https://google.com" />
+            </Router>
+        );
+        expect(window.location.href).toBe('https://google.com');
+        window.location = oldLocation;
+    });
 });
