@@ -1017,11 +1017,14 @@ export const UserEdit = ({ permissions, ...props }) =>
 What about the `List` view, the `Datagrid`, `SimpleList`? It works there, too. And in the next example, the `permissions` prop is passed down to a custom `filters` selector.
 
 ```jsx
+import * as React from 'react';
+import { List, Datagrid, ShowButton, TextField, TextInput }  from 'react-admin';
+
 const getUserFilters = (permissions) => ([
     <TextInput label="user.list.search" source="q" alwaysOn />,
     <TextInput source="name" />,
     permissions === 'admin' ? <TextInput source="role" /> : null,
-].filter(filter => filter !== null)));
+].filter(filter => filter !== null));
 
 export const UserList = ({ permissions, ...props }) =>
     <List {...props} filters={getUserFilters(permissions)}>
@@ -1041,7 +1044,7 @@ React-admin injects the permissions into the component provided as a [`dashboard
 
 ```jsx
 // in src/Dashboard.js
-import * as React from "react";
+import * as React from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { Title } from 'react-admin';
