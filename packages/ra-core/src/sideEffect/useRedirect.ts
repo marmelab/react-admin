@@ -57,10 +57,22 @@ const useRedirect = () => {
                 return;
             }
 
-            history.push({
-                ...parsePath(resolveRedirectTo(redirectTo, basePath, id, data)),
-                state: { _scrollToTop: true, ...state },
-            });
+            if (
+                typeof redirectTo === 'string' &&
+                redirectTo.startsWith('http') &&
+                window
+            ) {
+                // redirection to an absolute url
+                // history doesn't handle that case, so we handle it by hand
+                window.location.href = redirectTo;
+            } else {
+                history.push({
+                    ...parsePath(
+                        resolveRedirectTo(redirectTo, basePath, id, data)
+                    ),
+                    state: { _scrollToTop: true, ...state },
+                });
+            }
         },
         [dispatch, history]
     );
