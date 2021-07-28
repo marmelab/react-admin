@@ -91,6 +91,11 @@ const TextInput: FunctionComponent<TextInputProps> = props => {
     );
 };
 
+/*
+ * The left top border is weird when variant  property is outlined.
+ * Following styles fix it temporarily.
+ * > https://github.com/marmelab/react-admin/issues/6468
+ */
 const useStyles = makeStyles<Theme, TextInputProps>(
     {
         root: {
