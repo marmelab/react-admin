@@ -44,9 +44,7 @@ const useStyles = makeStyles(
     { name: 'RaNotification' }
 );
 
-const Notification: React.FunctionComponent<
-    Props & Omit<SnackbarProps, 'open'>
-> = props => {
+const Notification = (props: Props & Omit<SnackbarProps, 'open'>) => {
     const {
         classes: classesOverride,
         type,

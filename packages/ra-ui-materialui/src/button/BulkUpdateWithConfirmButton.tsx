@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, Fragment, useState, ReactElement } from 'react';
+import { Fragment, useState, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ActionUpdate from '@material-ui/icons/Update';
 import { fade } from '@material-ui/core/styles/colorManipulator';
@@ -38,7 +38,9 @@ const useStyles = makeStyles(
 
 const defaultIcon = <ActionUpdate />;
 
-const BulkUpdateWithConfirmButton: FC<BulkUpdateWithConfirmButtonProps> = props => {
+const BulkUpdateWithConfirmButton = (
+    props: BulkUpdateWithConfirmButtonProps
+) => {
     const notify = useNotify();
     const refresh = useRefresh();
     const translate = useTranslate();

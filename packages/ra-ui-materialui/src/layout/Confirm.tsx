@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, useCallback, MouseEventHandler } from 'react';
+import { useCallback, MouseEventHandler } from 'react';
 import PropTypes, { ReactComponentLike } from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -53,7 +53,7 @@ const useStyles = makeStyles(
  *     onClose={() => { // do something }}
  * />
  */
-const Confirm: FC<ConfirmProps> = props => {
+const Confirm = (props: ConfirmProps) => {
     const {
         isOpen,
         loading,

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import { Children, ReactNode, cloneElement, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -54,7 +53,7 @@ const useStyles = makeStyles(
     { name: 'RaBulkActionsToolbar' }
 );
 
-const BulkActionsToolbar: FC<BulkActionsToolbarProps> = props => {
+const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
     const {
         classes: classesOverride,
         label = 'ra.action.bulk_actions',

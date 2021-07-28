@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cloneElement, useMemo, useContext, FC, ReactElement } from 'react';
+import { cloneElement, useMemo, useContext, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     sanitizeListRestProps,
@@ -45,7 +45,7 @@ import FilterButton from './filter/FilterButton';
  *         </List>
  *     );
  */
-const ListActions: FC<ListActionsProps> = props => {
+const ListActions = (props: ListActionsProps) => {
     const { className, exporter, filters: filtersProp, ...rest } = props;
     const {
         currentSort,

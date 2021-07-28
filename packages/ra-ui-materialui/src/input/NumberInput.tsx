@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import TextField, { TextFieldProps } from '@material-ui/core/TextField';
 import { useInput, FieldTitle, InputProps } from 'ra-core';
@@ -25,26 +24,27 @@ const convertStringToNumber = value => {
  *
  * The object passed as `options` props is passed to the material-ui <TextField> component
  */
-const NumberInput: FunctionComponent<NumberInputProps> = ({
-    format,
-    helperText,
-    label,
-    margin = 'dense',
-    onBlur,
-    onFocus,
-    onChange,
-    options,
-    parse = convertStringToNumber,
-    resource,
-    source,
-    step,
-    min,
-    max,
-    validate,
-    variant = 'filled',
-    inputProps: overrideInputProps,
-    ...rest
-}) => {
+const NumberInput = (props: NumberInputProps) => {
+    const {
+        format,
+        helperText,
+        label,
+        margin = 'dense',
+        onBlur,
+        onFocus,
+        onChange,
+        options,
+        parse = convertStringToNumber,
+        resource,
+        source,
+        step,
+        min,
+        max,
+        validate,
+        variant = 'filled',
+        inputProps: overrideInputProps,
+        ...rest
+    } = props;
     const {
         id,
         input,

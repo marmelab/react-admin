@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ReactElement, SyntheticEvent } from 'react';
+import { ReactElement, SyntheticEvent } from 'react';
 import PropTypes from 'prop-types';
 import {
     Record,
@@ -49,24 +49,20 @@ import DeleteWithConfirmButton from './DeleteWithConfirmButton';
  *     return <Edit actions={<EditActions />} {...props} />;
  * };
  */
-const DeleteButton: FC<DeleteButtonProps> = ({
-    undoable,
-    mutationMode,
-    record,
-    ...props
-}) => {
+const DeleteButton = (props: DeleteButtonProps) => {
+    const { undoable, mutationMode, record, ...rest } = props;
     const mode = getMutationMode(mutationMode, undoable);
     if (!record || record.id == null) {
         return null;
     }
 
     return mode === 'undoable' ? (
-        <DeleteWithUndoButton record={record} {...props} />
+        <DeleteWithUndoButton record={record} {...rest} />
     ) : (
         <DeleteWithConfirmButton
             mutationMode={mode}
             record={record}
-            {...props}
+            {...rest}
         />
     );
 };

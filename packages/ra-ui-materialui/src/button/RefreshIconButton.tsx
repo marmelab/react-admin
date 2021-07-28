@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useCallback, FC, ReactElement } from 'react';
+import { useCallback, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -7,13 +7,14 @@ import IconButton, { IconButtonProps } from '@material-ui/core/IconButton';
 import NavigationRefresh from '@material-ui/icons/Refresh';
 import { refreshView, useTranslate } from 'ra-core';
 
-const RefreshIconButton: FC<RefreshIconButtonProps> = ({
-    label = 'ra.action.refresh',
-    icon = defaultIcon,
-    onClick,
-    className,
-    ...rest
-}) => {
+const RefreshIconButton = (props: RefreshIconButtonProps) => {
+    const {
+        label = 'ra.action.refresh',
+        icon = defaultIcon,
+        onClick,
+        className,
+        ...rest
+    } = props;
     const dispatch = useDispatch();
     const translate = useTranslate();
     const handleClick = useCallback(

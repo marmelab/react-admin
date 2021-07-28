@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Link as RRLink, LinkProps as RRLinkProps } from 'react-router-dom';
@@ -23,7 +22,7 @@ export interface LinkProps extends RRLinkProps {
     className?: string;
 }
 
-const Link: FC<LinkProps> = props => {
+const Link = (props: LinkProps) => {
     const {
         to,
         children,

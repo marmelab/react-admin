@@ -1,5 +1,4 @@
 import React, {
-    FunctionComponent,
     Children,
     cloneElement,
     isValidElement,
@@ -50,9 +49,7 @@ export interface FileInputOptions extends DropzoneOptions {
     onRemove?: Function;
 }
 
-const FileInput: FunctionComponent<
-    FileInputProps & InputProps<FileInputOptions>
-> = props => {
+const FileInput = (props: FileInputProps & InputProps<FileInputOptions>) => {
     const {
         accept,
         children,

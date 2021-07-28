@@ -69,7 +69,7 @@ import { ClassesOverride } from '../types';
  * In previous versions of React-Admin, the prop `linkType` was used. It is now deprecated and replaced with `link`. However
  * backward-compatibility is still kept
  */
-const ReferenceField: FC<ReferenceFieldProps> = props => {
+const ReferenceField = (props: ReferenceFieldProps) => {
     const { source, emptyText, ...rest } = props;
     const record = useRecordContext(props);
     const isReferenceDeclared = useSelector<ReduxState, boolean>(

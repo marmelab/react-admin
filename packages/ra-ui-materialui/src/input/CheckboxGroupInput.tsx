@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useCallback, FunctionComponent } from 'react';
+import { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -80,7 +80,7 @@ import { ClassesOverride } from '../types';
  *
  * The object passed as `options` props is passed to the material-ui <Checkbox> components
  */
-const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = props => {
+const CheckboxGroupInput = (props: CheckboxGroupInputProps) => {
     const {
         choices = [],
         className,

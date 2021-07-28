@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {
-    FC,
     cloneElement,
     Children,
     useEffect,
@@ -118,7 +117,7 @@ const getDataAndIds = (
  *     );
  *     TagsField.defaultProps = { addLabel: true };
  */
-export const ArrayField: FC<ArrayFieldProps> = memo<ArrayFieldProps>(props => {
+const ArrayField = (props: ArrayFieldProps) => {
     const {
         addLabel,
         basePath,
@@ -179,7 +178,7 @@ export const ArrayField: FC<ArrayFieldProps> = memo<ArrayFieldProps>(props => {
             })}
         </ListContextProvider>
     );
-});
+};
 
 ArrayField.defaultProps = {
     addLabel: true,
@@ -202,4 +201,4 @@ interface State {
 
 ArrayField.displayName = 'ArrayField';
 
-export default ArrayField;
+export default memo<ArrayFieldProps>(ArrayField);

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ReactElement, SyntheticEvent, ReactNode } from 'react';
+import { ReactElement, SyntheticEvent, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import {
     Button as MuiButton,
@@ -28,7 +28,7 @@ import { LocationDescriptor } from 'history';
  * </Button>
  *
  */
-const Button: FC<ButtonProps> = props => {
+const Button = (props: ButtonProps) => {
     const {
         alignIcon = 'left',
         children,

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import SearchIcon from '@material-ui/icons/Search';
 import { InputAdornment } from '@material-ui/core';
@@ -18,7 +17,7 @@ const useStyles = makeStyles(
     { name: 'RaSearchInput' }
 );
 
-const SearchInput: FunctionComponent<SearchInputProps> = props => {
+const SearchInput = (props: SearchInputProps) => {
     const { classes: classesOverride, ...rest } = props;
     const translate = useTranslate();
     const classes = useStyles(props);
