@@ -1,7 +1,6 @@
 import React, {
     Fragment,
     ReactEventHandler,
-    FC,
     ReactElement,
     SyntheticEvent,
 } from 'react';
@@ -25,7 +24,7 @@ import {
 import Confirm from '../layout/Confirm';
 import Button, { ButtonProps } from './Button';
 
-const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
+const DeleteWithConfirmButton = (props: DeleteWithConfirmButtonProps) => {
     const {
         basePath,
         classes: classesOverride,
@@ -140,7 +139,6 @@ interface Props {
     pristine?: boolean;
     saving?: boolean;
     submitOnEnter?: boolean;
-    undoable?: boolean;
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
 }

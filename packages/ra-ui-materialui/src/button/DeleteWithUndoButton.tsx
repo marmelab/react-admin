@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ReactElement, ReactEventHandler, SyntheticEvent } from 'react';
+import { ReactElement, ReactEventHandler, SyntheticEvent } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
@@ -16,7 +16,7 @@ import {
 
 import Button, { ButtonProps } from './Button';
 
-const DeleteWithUndoButton: FC<DeleteWithUndoButtonProps> = props => {
+const DeleteWithUndoButton = (props: DeleteWithUndoButtonProps) => {
     const {
         label = 'ra.action.delete',
         classes: classesOverride,
@@ -93,7 +93,6 @@ interface Props {
     pristine?: boolean;
     saving?: boolean;
     submitOnEnter?: boolean;
-    undoable?: boolean;
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
 }
