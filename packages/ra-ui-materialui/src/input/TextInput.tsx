@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useInput, FieldTitle, InputProps } from 'ra-core';
 import { TextFieldProps } from '@material-ui/core/TextField';
 import { Theme } from '@material-ui/core';
-import { makeStyles, Styles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles';
 
 import ResettableTextField from './ResettableTextField';
 import InputHelperText from './InputHelperText';
@@ -27,19 +27,6 @@ export type TextInputProps = InputProps<TextFieldProps> &
  *
  * The object passed as `options` props is passed to the <ResettableTextField> component
  */
-
-const textInputStyles: Styles<Theme, TextInputProps> = {
-    root: {
-        '& .MuiOutlinedInput-notchedOutline': {
-            '& legend': {
-                width: ({ label }) =>
-                    label === false || label === '' ? '0.01px' : 'auto',
-            },
-        },
-    },
-};
-
-const useStyles = makeStyles(textInputStyles, { name: 'RaTextInput' });
 
 const TextInput: FunctionComponent<TextInputProps> = props => {
     const {
@@ -103,6 +90,21 @@ const TextInput: FunctionComponent<TextInputProps> = props => {
         </div>
     );
 };
+
+const useStyles = makeStyles<Theme, TextInputProps>(
+    {
+        root: {
+            '& .MuiOutlinedInput-notchedOutline': {
+                '& legend': {
+                    width: ({ label }) =>
+                        label === false || label === '' ? '0.01px' : 'auto',
+                },
+            },
+        },
+    },
+
+    { name: 'RaTextInput' }
+);
 
 TextInput.propTypes = {
     className: PropTypes.string,
