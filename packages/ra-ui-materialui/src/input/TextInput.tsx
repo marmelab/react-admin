@@ -3,6 +3,8 @@ import { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import { useInput, FieldTitle, InputProps } from 'ra-core';
 import { TextFieldProps } from '@material-ui/core/TextField';
+import { Theme } from '@material-ui/core';
+import { makeStyles, Styles } from '@material-ui/styles';
 
 import ResettableTextField from './ResettableTextField';
 import InputHelperText from './InputHelperText';
@@ -25,20 +27,37 @@ export type TextInputProps = InputProps<TextFieldProps> &
  *
  * The object passed as `options` props is passed to the <ResettableTextField> component
  */
-const TextInput: FunctionComponent<TextInputProps> = ({
-    label,
-    format,
-    helperText,
-    onBlur,
-    onFocus,
-    onChange,
-    options,
-    parse,
-    resource,
-    source,
-    validate,
-    ...rest
-}) => {
+
+const textInputStyles: Styles<Theme, TextInputProps> = {
+    root: {
+        '& .MuiOutlinedInput-notchedOutline': {
+            '& legend': {
+                width: ({ label }) =>
+                    label === false || label === '' ? '0.01px' : 'auto',
+            },
+        },
+    },
+};
+
+const useStyles = makeStyles(textInputStyles, { name: 'RaTextInput' });
+
+const TextInput: FunctionComponent<TextInputProps> = props => {
+    const {
+        label,
+        format,
+        helperText,
+        onBlur,
+        onFocus,
+        onChange,
+        options,
+        parse,
+        resource,
+        source,
+        validate,
+        ...rest
+    } = props;
+    const classes = useStyles(props);
+
     const {
         id,
         input,
@@ -58,30 +77,30 @@ const TextInput: FunctionComponent<TextInputProps> = ({
     });
 
     return (
-        <ResettableTextField
-            id={id}
-            {...input}
-            label={
-                label ? (
+        <div className={classes.root}>
+            <ResettableTextField
+                id={id}
+                {...input}
+                label={
                     <FieldTitle
                         label={label}
                         source={source}
                         resource={resource}
                         isRequired={isRequired}
                     />
-                ) : null
-            }
-            error={!!(touched && (error || submitError))}
-            helperText={
-                <InputHelperText
-                    touched={touched}
-                    error={error || submitError}
-                    helperText={helperText}
-                />
-            }
-            {...options}
-            {...sanitizeInputRestProps(rest)}
-        />
+                }
+                error={!!(touched && (error || submitError))}
+                helperText={
+                    <InputHelperText
+                        touched={touched}
+                        error={error || submitError}
+                        helperText={helperText}
+                    />
+                }
+                {...options}
+                {...sanitizeInputRestProps(rest)}
+            />
+        </div>
     );
 };
 
