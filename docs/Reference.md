@@ -189,14 +189,13 @@ title: "Reference"
 * [`useQuery`](./Actions.md#usequery-hook)
 * [`useQueryWithStore`](./Actions.md#usequerywithstore-hook)
 * [`useRedirect`](./Actions.md#useredirect)
-* [`useRefresh`](./Actions.md#userefresh)
-* [`useResourceAppLocation`](https://marmelab.com/ra-enterprise/modules/ra-navigation#useresourceapplocation-access-current-resource-app-location)<img class="icon" src="./img/premium.svg" />
 * `useReference`
 * `useReferenceArrayFieldController`
 * `useReferenceArrayInputController`
 * `useReferenceInputController`
 * `useReferenceManyFieldController`
-* [`useRefresh`](./Actions.md#handling-side-effects-in-usedataprovider)
+* [`useRefresh`](./Actions.md#userefresh)
+* [`useResourceAppLocation`](https://marmelab.com/ra-enterprise/modules/ra-navigation#useresourceapplocation-access-current-resource-app-location)<img class="icon" src="./img/premium.svg" />
 * [`useSearch`](https://marmelab.com/ra-enterprise/modules/ra-search#the-usesearch-hook)<img class="icon" src="./img/premium.svg" />
 * [`useSetLocale`](./Translation.md#usesetlocale-changing-locale-at-runtime)
 * [`useShowController`](./Show.md#useshowcontroller)
