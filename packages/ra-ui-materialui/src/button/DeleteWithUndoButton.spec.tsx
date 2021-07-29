@@ -7,7 +7,7 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Toolbar, SimpleForm } from '../form';
 import { Edit } from '../detail';
 import { TextInput } from '../input';
-import DeleteWithUndoButton from './DeleteWithUndoButton';
+import { DeleteWithUndoButton } from './DeleteWithUndoButton';
 
 const theme = createMuiTheme();
 

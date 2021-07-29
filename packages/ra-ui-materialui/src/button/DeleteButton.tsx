@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ReactElement, SyntheticEvent } from 'react';
+import { ReactElement, SyntheticEvent } from 'react';
 import PropTypes from 'prop-types';
 import {
     Record,
@@ -9,8 +9,8 @@ import {
 } from 'ra-core';
 
 import { ButtonProps } from './Button';
-import DeleteWithUndoButton from './DeleteWithUndoButton';
-import DeleteWithConfirmButton from './DeleteWithConfirmButton';
+import { DeleteWithUndoButton } from './DeleteWithUndoButton';
+import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
 
 /**
  * Button used to delete a single record. Added by default by the <Toolbar> of edit and show views.
@@ -49,12 +49,12 @@ import DeleteWithConfirmButton from './DeleteWithConfirmButton';
  *     return <Edit actions={<EditActions />} {...props} />;
  * };
  */
-const DeleteButton: FC<DeleteButtonProps> = ({
+export const DeleteButton = ({
     undoable,
     mutationMode,
     record,
     ...props
-}) => {
+}: DeleteButtonProps) => {
     const mode = getMutationMode(mutationMode, undoable);
     if (!record || record.id == null) {
         return null;
@@ -100,6 +100,7 @@ export type DeleteButtonProps = Props & ButtonProps;
 DeleteButton.propTypes = {
     basePath: PropTypes.string,
     label: PropTypes.string,
+    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     record: PropTypes.any,
     // @ts-ignore
     redirect: PropTypes.oneOfType([
@@ -111,5 +112,3 @@ DeleteButton.propTypes = {
     undoable: PropTypes.bool,
     icon: PropTypes.element,
 };
-
-export default DeleteButton;

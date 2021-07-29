@@ -16,7 +16,7 @@ import {
 
 import Button, { ButtonProps } from './Button';
 
-const DeleteWithUndoButton = (props: DeleteWithUndoButtonProps) => {
+export const DeleteWithUndoButton = (props: DeleteWithUndoButtonProps) => {
     const {
         label = 'ra.action.delete',
         classes: classesOverride,
@@ -115,5 +115,3 @@ DeleteWithUndoButton.propTypes = {
     resource: PropTypes.string,
     icon: PropTypes.element,
 };
-
-export default DeleteWithUndoButton;
