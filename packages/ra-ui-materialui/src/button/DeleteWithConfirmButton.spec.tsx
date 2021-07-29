@@ -4,10 +4,11 @@ import expect from 'expect';
 import { DataProvider, DataProviderContext } from 'ra-core';
 import { renderWithRedux, TestContext } from 'ra-test';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import DeleteWithConfirmButton from './DeleteWithConfirmButton';
+import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
 import { Toolbar, SimpleForm } from '../form';
 import { Edit } from '../detail';
 import { TextInput } from '../input';
+import { Notification } from '../layout';
 
 const theme = createMuiTheme();
 
@@ -111,6 +112,52 @@ describe('<DeleteWithConfirmButton />', () => {
                 previousData: { id: 123, title: 'lorem' },
             });
         });
+    });
+
+    it('should allows to undo the deletion after confirmation if undoable is true', async () => {
+        const dataProvider = ({
+            getOne: () =>
+                Promise.resolve({
+                    data: { id: 123, title: 'lorem' },
+                }),
+            delete: jest.fn().mockResolvedValueOnce({ data: { id: 123 } }),
+        } as unknown) as DataProvider;
+        const EditToolbar = props => (
+            <Toolbar {...props}>
+                <DeleteWithConfirmButton undoable />
+            </Toolbar>
+        );
+        const {
+            queryByDisplayValue,
+            queryByText,
+            getByLabelText,
+            getByText,
+        } = renderWithRedux(
+            <ThemeProvider theme={theme}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <>
+                        <Edit {...defaultEditProps}>
+                            <SimpleForm toolbar={<EditToolbar />}>
+                                <TextInput source="title" />
+                            </SimpleForm>
+                        </Edit>
+                        <Notification />
+                    </>
+                </DataProviderContext.Provider>
+            </ThemeProvider>,
+            { admin: { resources: { posts: { data: {} } } } }
+        );
+        // waitFor for the dataProvider.getOne() return
+        await waitFor(() => {
+            expect(queryByDisplayValue('lorem')).not.toBeNull();
+        });
+        fireEvent.click(getByLabelText('ra.action.delete'));
+        fireEvent.click(getByText('ra.action.confirm'));
+
+        await waitFor(() => {
+            expect(queryByText('ra.notification.deleted')).not.toBeNull();
+        });
+        expect(queryByText('ra.action.undo')).not.toBeNull();
     });
 
     it('should allow to override the onSuccess side effects', async () => {
