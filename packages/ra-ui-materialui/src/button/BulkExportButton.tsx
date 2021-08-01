@@ -115,7 +115,7 @@ BulkExportButton.propTypes = {
     exporter: PropTypes.func,
     label: PropTypes.string,
     resource: PropTypes.string,
-    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
+    selectedIds: PropTypes.arrayOf(PropTypes.any),
     icon: PropTypes.element,
 };
 
