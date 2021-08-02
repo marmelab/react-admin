@@ -28,6 +28,7 @@ export const TranslatableInputsTabs = (
                 onChange={handleChange}
                 indicatorColor="primary"
                 textColor="primary"
+                className={classes.tabs}
                 {...tabsProps}
             >
                 {locales.map(locale => (
@@ -56,6 +57,9 @@ const useStyles = makeStyles(
             borderTopLeftRadius: theme.shape.borderRadius,
             borderTopRightRadius: theme.shape.borderRadius,
             border: `1px solid ${theme.palette.divider}`,
+        },
+        tabs: {
+            minHeight: theme.spacing(3),
         },
     }),
     { name: 'RaTranslatableInputsTabs' }

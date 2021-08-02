@@ -90,7 +90,10 @@ const useStyles = makeStyles(
     theme => ({
         root: {
             flexGrow: 1,
-            padding: theme.spacing(2),
+            paddingLeft: theme.spacing(2),
+            paddingRight: theme.spacing(2),
+            paddingTop: theme.spacing(1),
+            paddingBottom: theme.spacing(1),
             borderRadius: 0,
             borderBottomLeftRadius: theme.shape.borderRadius,
             borderBottomRightRadius: theme.shape.borderRadius,
