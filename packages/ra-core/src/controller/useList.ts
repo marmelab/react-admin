@@ -29,8 +29,8 @@ import { ListControllerProps } from '.';
  *
  * const MyComponent = () => {
  *     const listContext = useList({
- *         initialData: data,
- *         initialIds: ids,
+ *         data,
+ *         ids,
  *         basePath: '/resource';
  *         resource: 'resource';
  *     });

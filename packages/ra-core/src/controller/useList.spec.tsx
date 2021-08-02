@@ -1,16 +1,23 @@
 import * as React from 'react';
+import { ReactNode } from 'react';
 import expect from 'expect';
 
 import { useList, UseListOptions, UseListValue } from './useList';
-import { render, waitFor } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
+import ListContextProvider from './ListContextProvider';
+import useListContext from './useListContext';
 
 const UseList = ({
+    children,
     callback,
     ...props
-}: UseListOptions & { callback: (value: UseListValue) => void }) => {
+}: UseListOptions & {
+    children?: ReactNode;
+    callback: (value: UseListValue) => void;
+}) => {
     const value = useList(props);
     callback(value);
-    return null;
+    return <ListContextProvider value={value}>{children}</ListContextProvider>;
 };
 
 describe('<useList />', () => {
@@ -96,7 +103,17 @@ describe('<useList />', () => {
         ];
         const ids = [1, 2];
 
-        render(
+        const SortButton = () => {
+            const listContext = useListContext();
+
+            return (
+                <button onClick={() => listContext.setSort('title', 'ASC')}>
+                    Sort by title ASC
+                </button>
+            );
+        };
+
+        const { getByText } = render(
             <UseList
                 data={data}
                 ids={ids}
@@ -104,7 +121,9 @@ describe('<useList />', () => {
                 loading
                 sort={{ field: 'title', order: 'DESC' }}
                 callback={callback}
-            />
+            >
+                <SortButton />
+            </UseList>
         );
 
         await waitFor(() => {
@@ -118,6 +137,23 @@ describe('<useList />', () => {
                         1: { id: 1, title: 'hello' },
                     },
                     ids: [2, 1],
+                    error: undefined,
+                })
+            );
+        });
+
+        fireEvent.click(getByText('Sort by title ASC'));
+        await waitFor(() => {
+            expect(callback).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    currentSort: { field: 'title', order: 'ASC' },
+                    loaded: true,
+                    loading: true,
+                    data: {
+                        1: { id: 1, title: 'hello' },
+                        2: { id: 2, title: 'world' },
+                    },
+                    ids: [1, 2],
                     error: undefined,
                 })
             );
