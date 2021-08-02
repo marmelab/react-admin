@@ -11,7 +11,7 @@ If you want to see what react-admin is capable of, or if you want to learn from 
 
 The admin of a fictional poster shop, allowing to manage sales, products, customers and reviews. Built by the core team.
 
-[![react-admin-demo](https://marmelab.com/react-admin/img/react-admin-demo-still.png)](https://vimeo.com/268958716)
+[![react-admin-demo](https://marmelab.com/react-admin/img/react-admin-demo-still.png)](https://vimeo.com/474999017)
 
 * Demo: [https://marmelab.com/react-admin-demo/](https://marmelab.com/react-admin-demo/)
 * Source code: [https://github.com/marmelab/react-admin/tree/master/examples/demo](https://github.com/marmelab/react-admin/tree/master/examples/demo)

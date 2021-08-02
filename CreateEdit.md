@@ -1494,7 +1494,9 @@ The form can be validated by the server after its submission. In order to displa
 
 {% raw %}
 ```jsx
-import { useMutation } from 'react-admin';
+import * as React from 'react';
+import { useCallback } from 'react';
+import { Create, SimpleForm, TextInput, useMutation } from 'react-admin';
 
 export const UserCreate = (props) => {
     const [mutate] = useMutation();
@@ -1516,7 +1518,7 @@ export const UserCreate = (props) => {
     );
 
     return (
-        <Create undoable={false} {...props}>
+        <Create {...props}>
             <SimpleForm save={save}>
                 <TextInput label="First Name" source="firstName" />
                 <TextInput label="Age" source="age" />
@@ -2033,6 +2035,7 @@ const defaultSubscription = {
     pristine: true,
     valid: true,
     invalid: true,
+    validating: true,
 };
 ```
 {% endraw %}

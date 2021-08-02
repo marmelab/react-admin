@@ -1491,7 +1491,7 @@ const MyShowLayout = () => (
     <div>
         <Labeled resource="users" source="name">
             <TextField source="name" />
-        </Label>
+        </Labeled>
     </div>
 );
 ```

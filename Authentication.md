@@ -485,6 +485,66 @@ const MyPage = () => {
 }
 ```
 
+## Role-Based Access Control (RBAC)
+
+React-admin Enterprise Edition contains [the ra-rbac module](https://marmelab.com/ra-rbac)<img class="icon" src="./img/premium.svg" />, which adds fine-grained permissions to your admin.
+
+<video controls="controls" style="max-width: 100%">
+    <source src="./img/ra-rbac.mp4" type="video/mp4" />
+</video>
+
+You can define permissions for pages, fields, buttons, etc. in the `authProvider`. This means this RBAC system can use any data source you want (even an ActiveDirectory).
+
+For instance, the above demo uses the following set of permissions:
+
+```jsx
+const roles = {
+    accountant: [
+        { action: ['list', 'show'], resource: 'products' },
+        { action: 'read', resource: 'products.*' },
+        { type: 'deny', action: 'read', resource: 'products.description' },
+        { action: 'list', resource: 'categories' },
+        { action: 'read', resource: 'categories.*' },
+        { action: ['list', 'show'], resource: 'customers' },
+        { action: 'read', resource: 'customers.*' },
+        { action: '*', resource: 'invoices' },
+    ],
+    contentEditor: [
+        {
+            action: ['list', 'create', 'edit', 'delete', 'export'],
+            resource: 'products',
+        },
+        { action: 'read', resource: 'products.*' },
+        { type: 'deny', action: 'read', resource: 'products.stock' },
+        { type: 'deny', action: 'read', resource: 'products.sales' },
+        { action: 'write', resource: 'products.*' },
+        { type: 'deny', action: 'write', resource: 'products.stock' },
+        { type: 'deny', action: 'write', resource: 'products.sales' },
+        { action: 'list', resource: 'categories' },
+        { action: ['list', 'edit'], resource: 'customers' },
+        { action: ['list', 'edit'], resource: 'reviews' },
+    ],
+    stockManager: [
+        { action: ['list', 'edit', 'export'], resource: 'products' },
+        { action: 'read', resource: 'products.*' },
+        {
+            type: 'deny',
+            action: 'read',
+            resource: 'products.description',
+        },
+        { action: 'write', resource: 'products.stock' },
+        { action: 'write', resource: 'products.sales' },
+        { action: 'list', resource: 'categories' },
+    ],
+    administrator: [{ action: '*', resource: '*' }],
+};
+```
+
+Ra-rbac lets you add fine-grained permissions (almost) without touching your application code (you don't need to add `if` blocks everywhere).
+
+Check [the module documentation](https://marmelab.com/ra-enterprise/modules/ra-editable-datagrid) to learn more. 
+
+
 ## Building Your Own Auth Provider
 
 Here is the interface react-admin expect `authProvider` objects to implement.
@@ -1017,11 +1077,14 @@ export const UserEdit = ({ permissions, ...props }) =>
 What about the `List` view, the `Datagrid`, `SimpleList`? It works there, too. And in the next example, the `permissions` prop is passed down to a custom `filters` selector.
 
 ```jsx
+import * as React from 'react';
+import { List, Datagrid, ShowButton, TextField, TextInput }  from 'react-admin';
+
 const getUserFilters = (permissions) => ([
     <TextInput label="user.list.search" source="q" alwaysOn />,
     <TextInput source="name" />,
     permissions === 'admin' ? <TextInput source="role" /> : null,
-].filter(filter => filter !== null)));
+].filter(filter => filter !== null));
 
 export const UserList = ({ permissions, ...props }) =>
     <List {...props} filters={getUserFilters(permissions)}>
@@ -1041,7 +1104,7 @@ React-admin injects the permissions into the component provided as a [`dashboard
 
 ```jsx
 // in src/Dashboard.js
-import * as React from "react";
+import * as React from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { Title } from 'react-admin';
