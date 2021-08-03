@@ -1,0 +1,30 @@
+{
+    "name": "ra-template",
+    "version": "1.0.0",
+    "keywords": [
+        "react",
+        "create-react-app",
+        "react-admin",
+        "template"
+    ],
+    "description": "The base template for a React Admin App.",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/marmelab/react-admin.git",
+        "directory": "packages/ra-template"
+    },
+    "authors": [
+        "Gildas Garcia"
+    ],
+    "license": "MIT",
+    "engines": {
+        "node": ">=10"
+    },
+    "bugs": {
+        "url": "https://github.com/marmelab/react-admin/issues"
+    },
+    "files": [
+        "template",
+        "template.json"
+    ]
+}
