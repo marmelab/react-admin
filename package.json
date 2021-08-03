@@ -33,7 +33,8 @@
             "/node_modules/",
             "/lib/",
             "/esm/",
-            "/examples/simple/"
+            "/examples/simple/",
+            "/packages/ra-template/"
         ],
         "transformIgnorePatterns": [
             "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|ts|tsx)$"
