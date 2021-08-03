@@ -494,7 +494,10 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                         ...getSuggestions(filterValue),
                         ...(onCreate || create ? [getCreateItem()] : []),
                     ];
-
+                    const {
+                        classes: inputPropsClasses,
+                        ...inputPropsWithoutClasses
+                    } = inputProps || {};
                     return (
                         <div className={classes.container}>
                             <TextField
@@ -552,7 +555,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                                 className={className}
                                 size={size as any}
                                 color={color as any}
-                                {...inputProps}
+                                {...inputPropsWithoutClasses}
                                 {...options}
                             />
                             <AutocompleteSuggestionList
