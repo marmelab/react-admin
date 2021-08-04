@@ -171,6 +171,7 @@ title: "Reference"
 * [`useHasLock`](https://marmelab.com/ra-enterprise/modules/ra-realtime#locks-on-content)<img class="icon" src="./img/premium.svg" />
 * [`useHasLocks`](https://marmelab.com/ra-enterprise/modules/ra-realtime#locks-on-content)<img class="icon" src="./img/premium.svg" />
 * [`useInput`](./Inputs.md#the-useinput-hook)
+* [`useList`](./List.md#uselist)
 * [`useListContext`](./List.md#uselistcontext)
 * [`useListController`](./List.md#uselistcontroller)
 * `useListParams`
