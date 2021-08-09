@@ -62,12 +62,15 @@ const TextInput: FunctionComponent<TextInputProps> = ({
             id={id}
             {...input}
             label={
-                <FieldTitle
-                    label={label}
-                    source={source}
-                    resource={resource}
-                    isRequired={isRequired}
-                />
+                label !== '' &&
+                label !== false && (
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                )
             }
             error={!!(touched && (error || submitError))}
             helperText={
