@@ -1621,7 +1621,7 @@ import { Link } from 'react-router-dom';
 
 const AuthorField = () => {
     const post = useRecordContext(props);
-    const { data, loaded } = useGetOne('users',  post.user_id);
+    const { data, loaded } = useGetOne('users', post.user_id);
     const userShowPage = linkToRecord('/users', post.user_id, 'show');
 
     return loaded ? <Link to={userShowPage}>{data.username}</Link> : null;
