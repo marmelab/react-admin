@@ -1054,7 +1054,7 @@ export const UserCreate = ({ permissions, ...props }) =>
 ```
 {% endraw %}
 
-This also works inside an `Edition` view with a `TabbedForm`, and you can even hide a `FormTab` completely:
+This also works inside an `Edit` view with a `TabbedForm`, and you can even hide a `FormTab` completely:
 
 {% raw %}
 ```jsx
