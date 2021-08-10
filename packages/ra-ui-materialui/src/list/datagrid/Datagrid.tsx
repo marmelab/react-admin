@@ -127,12 +127,14 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
 
     const {
         basePath,
+        currentSort,
         data,
         ids,
         loaded,
         onSelect,
         onToggleItem,
         selectedIds,
+        setSort,
         total,
     } = useListContext(props);
     const version = useVersion();
@@ -229,10 +231,16 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                         children,
                         classes,
                         className,
+                        currentSort,
+                        data,
                         hasExpand: !!expand,
                         hasBulkActions,
+                        ids,
                         isRowSelectable,
+                        onSelect,
                         resource,
+                        selectedIds,
+                        setSort,
                     },
                     children
                 )}
