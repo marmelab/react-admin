@@ -1,12 +1,13 @@
 import * as React from 'react';
 import {
-    isValidElement,
-    Children,
     cloneElement,
+    createElement,
+    isValidElement,
     useCallback,
     useRef,
     useEffect,
     FC,
+    ComponentType,
     ReactElement,
     useMemo,
 } from 'react';
@@ -20,19 +21,12 @@ import {
     RecordMap,
     SortPayload,
 } from 'ra-core';
-import {
-    Checkbox,
-    Table,
-    TableProps,
-    TableCell,
-    TableHead,
-    TableRow,
-} from '@material-ui/core';
+import { Table, TableProps } from '@material-ui/core';
 import classnames from 'classnames';
 import union from 'lodash/union';
 import difference from 'lodash/difference';
 
-import DatagridHeaderCell from './DatagridHeaderCell';
+import { DatagridHeader } from './DatagridHeader';
 import DatagridLoading from './DatagridLoading';
 import DatagridBody, { PureDatagridBody } from './DatagridBody';
 import useDatagridStyles from './useDatagridStyles';
@@ -113,7 +107,8 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     const classes = useDatagridStyles(props);
     const {
         optimized = false,
-        body = optimized ? <PureDatagridBody /> : <DatagridBody />,
+        body = optimized ? PureDatagridBody : DatagridBody,
+        header = DatagridHeader,
         children,
         classes: classesOverride,
         className,
@@ -132,14 +127,12 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
 
     const {
         basePath,
-        currentSort,
         data,
         ids,
         loaded,
         onSelect,
         onToggleItem,
         selectedIds,
-        setSort,
         total,
     } = useListContext(props);
     const version = useVersion();
@@ -147,42 +140,6 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     const contextValue = useMemo(() => ({ isRowExpandable }), [
         isRowExpandable,
     ]);
-
-    const updateSortCallback = useCallback(
-        event => {
-            event.stopPropagation();
-            const newField = event.currentTarget.dataset.field;
-            const newOrder =
-                currentSort.field === newField
-                    ? currentSort.order === 'ASC'
-                        ? 'DESC'
-                        : 'ASC'
-                    : event.currentTarget.dataset.order;
-
-            setSort(newField, newOrder);
-        },
-        [currentSort.field, currentSort.order, setSort]
-    );
-
-    const updateSort = setSort ? updateSortCallback : null;
-
-    const handleSelectAll = useCallback(
-        event => {
-            if (event.target.checked) {
-                const all = ids.concat(
-                    selectedIds.filter(id => !ids.includes(id))
-                );
-                onSelect(
-                    isRowSelectable
-                        ? all.filter(id => isRowSelectable(data[id]))
-                        : all
-                );
-            } else {
-                onSelect([]);
-            }
-        },
-        [data, ids, onSelect, isRowSelectable, selectedIds]
-    );
 
     const lastSelected = useRef(null);
 
@@ -253,10 +210,6 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         return null;
     }
 
-    const all = isRowSelectable
-        ? ids.filter(id => isRowSelectable(data[id]))
-        : ids;
-
     /**
      * After the initial load, if the data for the list isn't empty,
      * and even if the data is refreshing (e.g. after a filter change),
@@ -270,58 +223,19 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                 size={size}
                 {...sanitizeListRestProps(rest)}
             >
-                <TableHead className={classes.thead}>
-                    <TableRow
-                        className={classnames(classes.row, classes.headerRow)}
-                    >
-                        {expand && (
-                            <TableCell
-                                padding="none"
-                                className={classnames(
-                                    classes.headerCell,
-                                    classes.expandHeader
-                                )}
-                            />
-                        )}
-                        {hasBulkActions && selectedIds && (
-                            <TableCell
-                                padding="checkbox"
-                                className={classes.headerCell}
-                            >
-                                <Checkbox
-                                    className="select-all"
-                                    color="primary"
-                                    checked={
-                                        selectedIds.length > 0 &&
-                                        all.length > 0 &&
-                                        all.every(id =>
-                                            selectedIds.includes(id)
-                                        )
-                                    }
-                                    onChange={handleSelectAll}
-                                />
-                            </TableCell>
-                        )}
-                        {Children.map(children, (field, index) =>
-                            isValidElement(field) ? (
-                                <DatagridHeaderCell
-                                    className={classes.headerCell}
-                                    currentSort={currentSort}
-                                    field={field}
-                                    isSorting={
-                                        currentSort.field ===
-                                        ((field.props as any).sortBy ||
-                                            (field.props as any).source)
-                                    }
-                                    key={(field.props as any).source || index}
-                                    resource={resource}
-                                    updateSort={updateSort}
-                                />
-                            ) : null
-                        )}
-                    </TableRow>
-                </TableHead>
-                {cloneElement(
+                {createOrCloneElement(
+                    header,
+                    {
+                        children,
+                        classes,
+                        className,
+                        hasExpand: !!expand,
+                        hasBulkActions,
+                        isRowSelectable,
+                    },
+                    children
+                )}
+                {createOrCloneElement(
                     body,
                     {
                         basePath,
@@ -347,9 +261,15 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     );
 });
 
+const createOrCloneElement = (element, props, children) =>
+    isValidElement(element)
+        ? cloneElement(element, props, children)
+        : createElement(element, props, children);
+
 Datagrid.propTypes = {
     basePath: PropTypes.string,
-    body: PropTypes.element,
+    // @ts-ignore
+    body: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     children: PropTypes.node.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
@@ -362,6 +282,8 @@ Datagrid.propTypes = {
     // @ts-ignore
     expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     hasBulkActions: PropTypes.bool,
+    // @ts-ignore
+    header: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     hover: PropTypes.bool,
     ids: PropTypes.arrayOf(PropTypes.any),
     loading: PropTypes.bool,
@@ -380,7 +302,7 @@ Datagrid.propTypes = {
 
 export interface DatagridProps<RecordType extends Record = Record>
     extends Omit<TableProps, 'size' | 'classes' | 'onSelect'> {
-    body?: ReactElement;
+    body?: ReactElement | ComponentType;
     classes?: ClassesOverride<typeof useDatagridStyles>;
     className?: string;
     expand?:
@@ -392,6 +314,7 @@ export interface DatagridProps<RecordType extends Record = Record>
               resource: string;
           }>;
     hasBulkActions?: boolean;
+    header?: ReactElement | ComponentType;
     hover?: boolean;
     empty?: ReactElement;
     isRowSelectable?: (record: Record) => boolean;
