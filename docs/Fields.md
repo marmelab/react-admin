@@ -1611,19 +1611,20 @@ const UserShow = props => (
 
 And now you can use a regular Field component, and the label displays correctly in the Show view.
 
-### Linking to other records
+### Linking To Other Records
 
-Your custom Field component might need to display a link to another record. React Admin provides a `linkToRecord(basePath, id[, linkType])` method for this purpose.
+A custom Field component might need to display a link to another record. React Admin provides a `linkToRecord(basePath, id[, linkType])` method for this purpose.
 
 ```js
-import { linkToRecord, useRecordContext } from 'react-admin';
+import { linkToRecord, useRecordContext, useGetOne } from 'react-admin';
 import { Link } from 'react-router-dom';
 
-const MyCustomField = () => {
+const AuthorField = () => {
     const post = useRecordContext(props);
-    const linkToUser = linkToRecord('/users', post.user_id, 'show');
+    const { data, loaded } = useGetOne('users',  post.user_id);
+    const userShowPage = linkToRecord('/users', post.user_id, 'show');
 
-    return <Link to={linkToUser}>{seller.username}</Link>;
+    return loaded ? <Link to={userShowPage}>{data.username}</Link> : null;
 };
 ```
 
