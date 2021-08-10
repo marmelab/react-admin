@@ -232,6 +232,7 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                         hasExpand: !!expand,
                         hasBulkActions,
                         isRowSelectable,
+                        resource,
                     },
                     children
                 )}
