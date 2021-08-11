@@ -3,7 +3,6 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { parse, stringify } from 'query-string';
 import lodashDebounce from 'lodash/debounce';
 import pickBy from 'lodash/pickBy';
-import isEqual from 'lodash/isEqual';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import queryReducer, {
