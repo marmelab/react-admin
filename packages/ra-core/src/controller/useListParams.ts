@@ -3,6 +3,7 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { parse, stringify } from 'query-string';
 import lodashDebounce from 'lodash/debounce';
 import pickBy from 'lodash/pickBy';
+import isEqual from 'lodash/isEqual';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import queryReducer, {
@@ -153,7 +154,7 @@ const useListParams = ({
         requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );
 
-    // On mount, if the location includes params (for example from a link like
+    // if the location includes params (for example from a link like
     // the categories products on the demo), we need to persist them in the
     // redux state as well so that we don't lose them after a redirection back
     // to the list
@@ -161,7 +162,7 @@ const useListParams = ({
         if (Object.keys(queryFromLocation).length > 0) {
             dispatch(changeListParams(resource, query));
         }
-    }, []); // eslint-disable-line
+    }, [location.search]); // eslint-disable-line
 
     const changeParams = useCallback(action => {
         if (!tempParams.current) {
@@ -180,7 +181,7 @@ const useListParams = ({
                         })}`,
                         state: { _scrollToTop: action.type === SET_PAGE },
                     });
-                    dispatch(changeListParams(resource, tempParams.current));
+                    // the useEffect above will apply the changes to the params in the redux state
                 } else {
                     setLocalParams(tempParams.current);
                 }
