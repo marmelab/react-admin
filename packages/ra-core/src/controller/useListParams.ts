@@ -161,7 +161,7 @@ const useListParams = ({
         if (Object.keys(queryFromLocation).length > 0) {
             dispatch(changeListParams(resource, query));
         }
-    }, []); // eslint-disable-line
+    }, [location.search]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const changeParams = useCallback(action => {
         if (!tempParams.current) {
