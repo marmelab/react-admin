@@ -200,6 +200,7 @@ describe('<useList />', () => {
                     page: 2,
                     perPage: 5,
                     error: undefined,
+                    total: 7,
                 })
             );
         });

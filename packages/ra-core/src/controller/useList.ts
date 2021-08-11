@@ -241,7 +241,7 @@ export const useList = (props: UseListOptions): UseListValue => {
         setPerPage,
         setSort,
         showFilter,
-        total: finalItems.ids.length,
+        total: ids.length,
     };
 };
 
