@@ -73,9 +73,11 @@ export const useList = (props: UseListOptions): UseListValue => {
     const [finalItems, setFinalItems] = useSafeSetState<{
         data: RecordMap;
         ids: Identifier[];
+        total: number;
     }>(() => ({
         data: indexById(data),
         ids,
+        total: 0,
     }));
 
     // pagination logic
@@ -174,6 +176,9 @@ export const useList = (props: UseListOptions): UseListValue => {
                 return result;
             })
         );
+
+        const filteredLength = tempData.length;
+
         // 2. sort
         if (sort.field) {
             tempData = tempData.sort((a, b) => {
@@ -192,10 +197,10 @@ export const useList = (props: UseListOptions): UseListValue => {
         const finalIds = tempData
             .filter(data => typeof data !== 'undefined')
             .map(data => data.id);
-
         setFinalItems({
             data: finalData,
             ids: finalIds,
+            total: filteredLength,
         });
     }, [
         data,
@@ -241,7 +246,7 @@ export const useList = (props: UseListOptions): UseListValue => {
         setPerPage,
         setSort,
         showFilter,
-        total: ids.length,
+        total: finalItems.total,
     };
 };
 
