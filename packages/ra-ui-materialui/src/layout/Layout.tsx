@@ -79,7 +79,7 @@ class LayoutWithoutTheme extends Component<
     LayoutWithoutThemeProps,
     LayoutState
 > {
-    state = { hasError: false, errorMessage: null, errorInfo: null };
+    state: LayoutState = { hasError: false, error: null, errorInfo: null };
 
     constructor(props) {
         super(props);
@@ -95,8 +95,8 @@ class LayoutWithoutTheme extends Component<
         });
     }
 
-    componentDidCatch(errorMessage, errorInfo) {
-        this.setState({ hasError: true, errorMessage, errorInfo });
+    componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+        this.setState({ hasError: true, error, errorInfo });
     }
 
     render() {
@@ -105,7 +105,7 @@ class LayoutWithoutTheme extends Component<
             children,
             classes,
             className,
-            error,
+            error: ErrorComponent,
             dashboard,
             logout,
             menu,
@@ -120,7 +120,7 @@ class LayoutWithoutTheme extends Component<
             staticContext,
             ...props
         } = this.props;
-        const { hasError, errorMessage, errorInfo } = this.state;
+        const { hasError, error, errorInfo } = this.state;
         return (
             <>
                 <div
@@ -138,13 +138,15 @@ class LayoutWithoutTheme extends Component<
                                 }),
                             })}
                             <div id="main-content" className={classes.content}>
-                                {hasError
-                                    ? createElement(error, {
-                                          error: errorMessage,
-                                          errorInfo,
-                                          title,
-                                      })
-                                    : children}
+                                {hasError ? (
+                                    <ErrorComponent
+                                        error={error}
+                                        errorInfo={errorInfo}
+                                        title={title}
+                                    />
+                                ) : (
+                                    children
+                                )}
                             </div>
                         </main>
                     </div>
@@ -186,8 +188,8 @@ export interface LayoutProps
     classes?: any;
     className?: string;
     error?: ComponentType<{
-        error?: string;
-        errorInfo?: React.ErrorInfo;
+        error?: Error;
+        errorInfo?: ErrorInfo;
         title?: string | ReactElement<any>;
     }>;
     menu?: ComponentType<MenuProps>;
@@ -198,8 +200,8 @@ export interface LayoutProps
 
 export interface LayoutState {
     hasError: boolean;
-    errorMessage: string;
-    errorInfo: ErrorInfo;
+    error?: Error;
+    errorInfo?: ErrorInfo;
 }
 
 interface LayoutWithoutThemeProps
