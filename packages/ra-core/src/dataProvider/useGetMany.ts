@@ -219,6 +219,16 @@ const callQueries = debounce(() => {
                 }
             });
             return;
+        } else {
+            // for every query if the ids are not all set to null set loading to true and loaded to false.
+            queries.forEach(({ ids, setState }) => {
+                if (ids.findIndex(v => v != null && v !== '') !== -1)
+                    setState(prevState => ({
+                        ...prevState,
+                        loading: true,
+                        loaded: false,
+                    }));
+            });
         }
         dataProvider
             .getMany(resource, { ids: accumulatedIds }, DataProviderOptions)
