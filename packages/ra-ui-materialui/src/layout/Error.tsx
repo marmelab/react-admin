@@ -146,7 +146,7 @@ const Error = (props: ErrorProps): JSX.Element => {
 Error.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
-    error: PropTypes.oneOfType([PropTypes.object, PropTypes.string]).isRequired,
+    error: PropTypes.object.isRequired,
     errorInfo: PropTypes.object,
     title: TitlePropType,
 };
@@ -154,7 +154,7 @@ Error.propTypes = {
 export interface ErrorProps extends HtmlHTMLAttributes<HTMLDivElement> {
     classes?: ClassesOverride<typeof useStyles>;
     className?: string;
-    error: any;
+    error: Error;
     errorInfo?: ErrorInfo;
     title?: string;
 }
