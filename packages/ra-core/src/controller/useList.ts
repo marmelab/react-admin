@@ -77,7 +77,7 @@ export const useList = (props: UseListOptions): UseListValue => {
     }>(() => ({
         data: indexById(data),
         ids,
-        total: 0,
+        total: ids.length,
     }));
 
     // pagination logic
