@@ -64,10 +64,7 @@ const BooleanField = (props: BooleanFieldProps) => {
                         </span>
                     ) : (
                         <span>
-                            <FalseIcon
-                                data-testid="false"
-                                fontSize="small"
-                            />
+                            <FalseIcon data-testid="false" fontSize="small" />
                         </span>
                     )}
                 </Tooltip>
