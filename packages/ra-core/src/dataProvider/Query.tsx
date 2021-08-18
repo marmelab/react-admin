@@ -1,3 +1,4 @@
+import { FunctionComponent } from 'react';
 import { useQuery } from './useQuery';
 
 interface ChildrenFuncParams {
@@ -65,7 +66,7 @@ interface Props {
  *     </Query>
  * );
  */
-const Query = ({
+const Query: FunctionComponent<Props> = ({
     children,
     type,
     resource,
@@ -73,13 +74,12 @@ const Query = ({
     // Provides an undefined onSuccess just so the key `onSuccess` is defined
     // This is used to detect options in useDataProvider
     options = { onSuccess: undefined },
-}: Props) => {
+}) =>
     children(
         useQuery(
             { type, resource, payload },
             { ...options, withDeclarativeSideEffectsSupport: true }
         )
     );
-};
 
 export default Query;
