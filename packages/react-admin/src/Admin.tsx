@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FunctionComponent } from 'react';
 import { AdminProps } from 'ra-core';
 
 import AdminContext from './AdminContext';
@@ -84,30 +83,32 @@ import { useEffect, useState } from 'react';
  *     );
  * };
  */
-const Admin: FunctionComponent<AdminProps> = ({
-    appLayout,
-    authProvider,
-    catchAll,
-    children,
-    customReducers,
-    customRoutes = [],
-    customSagas,
-    dashboard,
-    dataProvider,
-    disableTelemetry,
-    history,
-    i18nProvider,
-    initialState,
-    layout,
-    loading,
-    locale,
-    loginPage,
-    logoutButton,
-    menu, // deprecated, use a custom layout instead
-    ready,
-    theme,
-    title = 'React Admin',
-}) => {
+const Admin = (props: AdminProps) => {
+    const {
+        appLayout,
+        authProvider,
+        catchAll,
+        children,
+        customReducers,
+        customRoutes = [],
+        customSagas,
+        dashboard,
+        dataProvider,
+        disableTelemetry,
+        history,
+        i18nProvider,
+        initialState,
+        layout,
+        loading,
+        locale,
+        loginPage,
+        logoutButton,
+        menu, // deprecated, use a custom layout instead
+        ready,
+        theme,
+        title = 'React Admin',
+    } = props;
+
     if (appLayout && process.env.NODE_ENV !== 'production') {
         console.warn(
             'You are using deprecated prop "appLayout", it was replaced by "layout", see https://github.com/marmelab/react-admin/issues/2918'
