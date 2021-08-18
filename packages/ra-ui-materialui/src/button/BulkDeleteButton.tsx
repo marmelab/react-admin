@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import PropTypes from 'prop-types';
 import BulkDeleteWithConfirmButton, {
     BulkDeleteWithConfirmButtonProps,
@@ -31,12 +30,15 @@ import BulkDeleteWithUndoButton, {
  *     </List>
  * );
  */
-const BulkDeleteButton: FC<BulkDeleteButtonProps> = ({ undoable, ...props }) =>
-    undoable ? (
-        <BulkDeleteWithUndoButton {...props} />
+const BulkDeleteButton = (props: BulkDeleteButtonProps) => {
+    const { undoable, ...rest } = props;
+
+    return undoable ? (
+        <BulkDeleteWithUndoButton {...rest} />
     ) : (
-        <BulkDeleteWithConfirmButton {...props} />
+        <BulkDeleteWithConfirmButton {...rest} />
     );
+};
 
 interface Props {
     undoable?: boolean;

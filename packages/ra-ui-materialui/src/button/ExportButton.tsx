@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useCallback, FunctionComponent } from 'react';
+import { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import DownloadIcon from '@material-ui/icons/GetApp';
 import {
@@ -14,7 +14,7 @@ import {
 } from 'ra-core';
 import Button, { ButtonProps } from './Button';
 
-const ExportButton: FunctionComponent<ExportButtonProps> = props => {
+const ExportButton = (props: ExportButtonProps) => {
     const {
         maxResults = 1000,
         onClick,
