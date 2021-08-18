@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FunctionComponent } from 'react';
 import {
     ValidationErrorMessage,
     ValidationErrorMessageWithArgs,
@@ -10,7 +9,8 @@ interface Props {
     error: ValidationErrorMessage;
 }
 
-const ValidationError: FunctionComponent<Props> = ({ error }) => {
+const ValidationError = (props: Props) => {
+    const { error } = props;
     const translate = useTranslate();
     if ((error as ValidationErrorMessageWithArgs).message) {
         const { message, args } = error as ValidationErrorMessageWithArgs;

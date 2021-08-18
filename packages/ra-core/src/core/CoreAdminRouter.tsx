@@ -5,7 +5,6 @@ import React, {
     createElement,
     ComponentType,
     ReactElement,
-    FunctionComponent,
 } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
@@ -36,7 +35,7 @@ export interface AdminRouterProps extends CoreLayoutProps {
 
 type State = ResourceElement[];
 
-const CoreAdminRouter: FunctionComponent<AdminRouterProps> = props => {
+const CoreAdminRouter = (props: AdminRouterProps) => {
     const getPermissions = useGetPermissions();
     const doLogout = useLogout();
     const { authenticated } = useAuthState();
