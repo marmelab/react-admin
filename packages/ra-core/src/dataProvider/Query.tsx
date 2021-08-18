@@ -72,7 +72,7 @@ const Query = ({
     payload,
     // Provides an undefined onSuccess just so the key `onSuccess` is defined
     // This is used to detect options in useDataProvider
-    options = {onSuccess: undefined},
+    options = { onSuccess: undefined },
 }: Props) => {
     children(
         useQuery(
@@ -80,6 +80,6 @@ const Query = ({
             { ...options, withDeclarativeSideEffectsSupport: true }
         )
     );
-}
+};
 
 export default Query;
