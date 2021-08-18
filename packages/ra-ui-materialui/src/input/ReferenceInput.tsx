@@ -1,8 +1,4 @@
-import React, {
-    Children,
-    cloneElement,
-    ReactElement,
-} from 'react';
+import React, { Children, cloneElement, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     useInput,
