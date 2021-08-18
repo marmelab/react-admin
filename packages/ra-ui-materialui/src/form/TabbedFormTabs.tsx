@@ -3,21 +3,21 @@ import {
     Children,
     cloneElement,
     isValidElement,
-    FC,
     ReactElement,
 } from 'react';
 import PropTypes from 'prop-types';
 import Tabs, { TabsProps } from '@material-ui/core/Tabs';
 import { useLocation } from 'react-router-dom';
 
-const TabbedFormTabs: FC<TabbedFormTabsProps> = ({
-    children,
-    classes,
-    url,
-    syncWithLocation,
-    value,
-    ...rest
-}) => {
+const TabbedFormTabs = (props: TabbedFormTabsProps) => {
+    const {
+        children,
+        classes,
+        url,
+        syncWithLocation,
+        value,
+        ...rest
+    } = props;
     const location = useLocation();
 
     const validTabPaths = Children.map(children, (tab, index) => {
