@@ -50,12 +50,7 @@ import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
  * };
  */
 export const DeleteButton = (props: DeleteButtonProps) => {
-    const {
-        undoable,
-        mutationMode,
-        record,
-        ...rest
-    } = props;
+    const { undoable, mutationMode, record, ...rest } = props;
     const mode = getMutationMode(mutationMode, undoable);
     if (!record || record.id == null) {
         return null;
