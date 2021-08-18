@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AnchorHTMLAttributes, memo } from 'react';
+import { FC, AnchorHTMLAttributes, memo } from 'react';
 import get from 'lodash/get';
 import Typography from '@material-ui/core/Typography';
 import { Link } from '@material-ui/core';
@@ -11,7 +11,7 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
 
-const EmailField = (props: EmailFieldProps) => {
+const EmailField: FC<EmailFieldProps> = memo<EmailFieldProps>(props => {
     const { className, source, emptyText, ...rest } = props;
     const record = useRecordContext(props);
     const value = get(record, source);
@@ -39,7 +39,7 @@ const EmailField = (props: EmailFieldProps) => {
             {value}
         </Link>
     );
-};
+});
 
 EmailField.defaultProps = {
     addLabel: true,
@@ -52,4 +52,4 @@ export interface EmailFieldProps
         InjectedFieldProps,
         AnchorHTMLAttributes<HTMLAnchorElement> {}
 
-export default memo<EmailFieldProps>(EmailField);
+export default EmailField;

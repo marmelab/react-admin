@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { FC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import { makeStyles } from '@material-ui/core/styles';
@@ -22,7 +23,7 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  *     <a href="doc.pdf" title="Presentation">Presentation</a>
  * </div>
  */
-const FileField = (props: FileFieldProps) => {
+const FileField: FC<FileFieldProps> = props => {
     const {
         className,
         classes: classesOverride,

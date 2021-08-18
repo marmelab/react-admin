@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { FC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import { makeStyles } from '@material-ui/core/styles';
@@ -29,7 +30,7 @@ export interface ImageFieldProps extends PublicFieldProps, InjectedFieldProps {
     classes?: object;
 }
 
-const ImageField = (props: ImageFieldProps) => {
+const ImageField: FC<ImageFieldProps> = props => {
     const {
         className,
         classes: classesOverride,
