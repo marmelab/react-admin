@@ -47,10 +47,7 @@ const times = (nbChildren: number, fn: (key: number) => any) =>
     Array.from({ length: nbChildren }, (_, key) => fn(key));
 
 const LoadingGridList = (props: GridProps & { nbItems?: number }) => {
-    const {
-        width,
-        nbItems = 20,
-    }  = props;
+    const { width, nbItems = 20 } = props;
     const classes = useStyles();
     return (
         <MuiGridList

@@ -1,9 +1,4 @@
-import React, {
-    useState,
-    useEffect,
-    useCallback,
-    CSSProperties,
-} from 'react';
+import React, { useState, useEffect, useCallback, CSSProperties } from 'react';
 import { useVersion, useDataProvider } from 'react-admin';
 import { useMediaQuery, Theme } from '@material-ui/core';
 import { subDays } from 'date-fns';

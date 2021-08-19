@@ -47,7 +47,7 @@ interface Props extends EditProps {
     onCancel: () => void;
 }
 
-const ReviewEdit = ({ onCancel, ...props } : Props) => {
+const ReviewEdit = ({ onCancel, ...props }: Props) => {
     const classes = useStyles();
     const controllerProps = useEditController<Review>(props);
     const translate = useTranslate();

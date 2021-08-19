@@ -24,10 +24,7 @@ interface OwnProps {
     size?: 'large' | 'small';
 }
 
-const StarRatingField = ({
-    record,
-    size = 'large',
-}: FieldProps & OwnProps) => {
+const StarRatingField = ({ record, size = 'large' }: FieldProps & OwnProps) => {
     const classes = useStyles();
     return record ? (
         <span className={classes.root}>

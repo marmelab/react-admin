@@ -39,14 +39,7 @@ interface Props {
 }
 
 const SubMenu = (props: Props) => {
-    const {
-        handleToggle,
-        isOpen,
-        name,
-        icon,
-        children,
-        dense,
-    } = props;
+    const { handleToggle, isOpen, name, icon, children, dense } = props;
     const translate = useTranslate();
     const classes = useStyles();
     const sidebarIsOpen = useSelector<ReduxState, boolean>(
