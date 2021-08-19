@@ -1,14 +1,13 @@
 import * as React from 'react';
-import { FC } from 'react';
 import { ReferenceField, ReferenceFieldProps } from 'react-admin';
 
 import FullNameField from './FullNameField';
 
-const CustomerReferenceField: FC<
-    Omit<ReferenceFieldProps, 'reference' | 'children' | 'source'> & {
+const CustomerReferenceField = (
+    props: Omit<ReferenceFieldProps, 'reference' | 'children' | 'source'> & {
         source?: string;
     }
-> = props => (
+) => (
     <ReferenceField source="customer_id" reference="customers" {...props}>
         <FullNameField />
     </ReferenceField>

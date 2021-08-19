@@ -2,7 +2,6 @@ import React, {
     useState,
     useEffect,
     useCallback,
-    FC,
     CSSProperties,
 } from 'react';
 import { useVersion, useDataProvider } from 'react-admin';
@@ -51,7 +50,7 @@ const styles = {
 const Spacer = () => <span style={{ width: '1em' }} />;
 const VerticalSpacer = () => <span style={{ height: '1em' }} />;
 
-const Dashboard: FC = () => {
+const Dashboard = () => {
     const [state, setState] = useState<State>({});
     const version = useVersion();
     const dataProvider = useDataProvider();
@@ -73,9 +72,9 @@ const Dashboard: FC = () => {
             }
         );
         const aggregations = recentOrders
-            .filter(order => order.status !== 'cancelled')
+            .filter((order: Order) => order.status !== 'cancelled')
             .reduce(
-                (stats: OrderStats, order) => {
+                (stats: OrderStats, order: Order) => {
                     if (order.status !== 'cancelled') {
                         stats.revenue += order.total;
                         stats.nbNewOrders++;
@@ -138,7 +137,7 @@ const Dashboard: FC = () => {
         const { data: customers } = await dataProvider.getMany<Customer>(
             'customers',
             {
-                ids: pendingReviews.map(review => review.customer_id),
+                ids: pendingReviews.map((review: Review) => review.customer_id),
             }
         );
         setState(state => ({

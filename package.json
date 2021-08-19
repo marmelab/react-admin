@@ -12,6 +12,7 @@
         "doc": "cd docs && jekyll server . --watch",
         "lint": "eslint --ext .js,.ts,.tsx \"./packages/**/src/**/*.{js,ts,tsx}\" \"./examples/**/src/**/*.{js,ts,tsx}\" \"./cypress/**/*.{js,ts,tsx}\"",
         "prettier": "prettier --config ./.prettierrc.js --write --list-different \"packages/*/src/**/*.{js,json,ts,tsx,css,md}\" \"examples/*/src/**/*.{js,ts,json,tsx,css,md}\" \"cypress/**/*.{js,ts,json,tsx,css,md}\"",
+        "prettier custom": "prettier --config ./.prettierrc.js --write --list-different \"examples/demo/src/visitors/CustomerReferenceField.tsx\"",
         "run-simple": "cd examples/simple && yarn -s start",
         "run-no-code": "cd examples/no-code && yarn dev",
         "run-tutorial": "cd examples/tutorial && yarn -s start",

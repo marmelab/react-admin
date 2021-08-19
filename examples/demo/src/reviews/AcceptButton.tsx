@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import ThumbUp from '@material-ui/icons/ThumbUp';
@@ -9,7 +8,7 @@ import { Review } from './../types';
 /**
  * This custom button demonstrate using useUpdate to update data
  */
-const AcceptButton: FC<{ record: Review }> = ({ record }) => {
+const AcceptButton = ({ record }: { record: Review }) => {
     const translate = useTranslate();
     const notify = useNotify();
     const redirectTo = useRedirect();

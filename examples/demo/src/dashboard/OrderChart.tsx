@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import { Card, CardHeader, CardContent } from '@material-ui/core';
 import {
     ResponsiveContainer,
@@ -42,7 +41,8 @@ const getRevenuePerDay = (orders: Order[]): TotalByDay[] => {
     }));
 };
 
-const OrderChart: FC<{ orders?: Order[] }> = ({ orders }) => {
+const OrderChart = (props: { orders?: Order[] }) => {
+    const { orders } = props;
     const translate = useTranslate();
     if (!orders) return null;
 

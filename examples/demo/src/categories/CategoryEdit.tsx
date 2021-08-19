@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import {
     Datagrid,
     Edit,
@@ -17,7 +16,8 @@ import ThumbnailField from '../products/ThumbnailField';
 import ProductRefField from '../products/ProductRefField';
 import { Category } from '../types';
 
-const CategoryTitle: FC<FieldProps<Category>> = ({ record }) => {
+const CategoryTitle = (props: FieldProps<Category>) => {
+    const { record } = props;
     const translate = useTranslate();
     return record ? (
         <span>
@@ -27,7 +27,7 @@ const CategoryTitle: FC<FieldProps<Category>> = ({ record }) => {
     ) : null;
 };
 
-const CategoryEdit: FC<EditProps> = props => (
+const CategoryEdit = (props: EditProps) => (
     <Edit title={<CategoryTitle />} {...props}>
         <SimpleForm>
             <TextInput source="name" />

@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
     title: {},
 }));
 
-const CardWithIcon: FC<Props> = props => {
+const CardWithIcon = (props: Props) => {
     const { icon, title, subtitle, to, children } = props;
     const classes = useStyles(props);
     return (

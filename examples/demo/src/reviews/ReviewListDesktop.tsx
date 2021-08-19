@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import {
     Identifier,
     Datagrid,
@@ -38,10 +37,10 @@ export interface ReviewListDesktopProps extends DatagridProps {
     selectedRow?: Identifier;
 }
 
-const ReviewListDesktop: FC<ReviewListDesktopProps> = ({
+const ReviewListDesktop = ({
     selectedRow,
     ...props
-}) => {
+}: ReviewListDesktopProps) => {
     const classes = useListStyles();
     return (
         <Datagrid
