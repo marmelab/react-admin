@@ -62,6 +62,7 @@ export const DeleteButton = (props: DeleteButtonProps) => {
         <DeleteWithConfirmButton
             mutationMode={mode}
             record={record}
+            undoable={undoable}
             {...rest}
         />
     );
