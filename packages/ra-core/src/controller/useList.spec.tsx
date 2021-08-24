@@ -51,6 +51,7 @@ describe('<useList />', () => {
                 },
                 ids: [2],
                 error: undefined,
+                total: 1,
             })
         );
     });
@@ -90,6 +91,7 @@ describe('<useList />', () => {
                     },
                     ids: [1, 3, 4],
                     error: undefined,
+                    total: 3,
                 })
             );
         });
@@ -138,6 +140,7 @@ describe('<useList />', () => {
                     },
                     ids: [2, 1],
                     error: undefined,
+                    total: 2,
                 })
             );
         });
@@ -155,6 +158,7 @@ describe('<useList />', () => {
                     },
                     ids: [1, 2],
                     error: undefined,
+                    total: 2,
                 })
             );
         });
@@ -200,6 +204,7 @@ describe('<useList />', () => {
                     page: 2,
                     perPage: 5,
                     error: undefined,
+                    total: 7,
                 })
             );
         });
