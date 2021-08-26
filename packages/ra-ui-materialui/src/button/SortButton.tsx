@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ReactElement, memo } from 'react';
+import { ReactElement, memo } from 'react';
 import {
     Button,
     Menu,
@@ -43,11 +43,8 @@ import {
  *     </TopToolbar>
  * );
  */
-const SortButton: FC<SortButtonProps> = ({
-    fields,
-    label = 'ra.sort.sort_by',
-    icon = defaultIcon,
-}) => {
+const SortButton = (props: SortButtonProps) => {
+    const { fields, label = 'ra.sort.sort_by', icon = defaultIcon } = props;
     const { resource, currentSort, setSort } = useListSortContext();
     const translate = useTranslate();
     const isXSmall = useMediaQuery((theme: Theme) =>

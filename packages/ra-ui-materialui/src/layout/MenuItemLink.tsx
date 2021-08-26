@@ -2,7 +2,6 @@ import React, {
     forwardRef,
     cloneElement,
     useCallback,
-    FC,
     ReactElement,
     ReactNode,
 } from 'react';
@@ -89,7 +88,7 @@ const useStyles = makeStyles(
  *     </Admin>
  * );
  */
-const MenuItemLink: FC<MenuItemLinkProps> = forwardRef((props, ref) => {
+const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
     const {
         classes: classesOverride,
         className,

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FunctionComponent, isValidElement, cloneElement } from 'react';
+import { isValidElement, cloneElement } from 'react';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import { MenuItem } from '@material-ui/core';
@@ -37,9 +37,10 @@ export interface AutocompleteSuggestionItemProps {
     getSuggestionText: (suggestion: any) => string;
 }
 
-const AutocompleteSuggestionItem: FunctionComponent<
-    AutocompleteSuggestionItemProps & MenuItemProps<'li', { button?: true }>
-> = props => {
+const AutocompleteSuggestionItem = (
+    props: AutocompleteSuggestionItemProps &
+        MenuItemProps<'li', { button?: true }>
+) => {
     const {
         createValue,
         suggestion,

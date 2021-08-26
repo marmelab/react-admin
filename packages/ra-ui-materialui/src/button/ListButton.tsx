@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ReactElement } from 'react';
+import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ActionList from '@material-ui/icons/List';
 import { Link } from 'react-router-dom';
@@ -33,12 +33,13 @@ import Button, { ButtonProps } from './Button';
  *     </Edit>
  * );
  */
-const ListButton: FC<ListButtonProps> = ({
-    basePath = '',
-    icon = defaultIcon,
-    label = 'ra.action.list',
-    ...rest
-}) => {
+const ListButton = (props: ListButtonProps) => {
+    const {
+        basePath = '',
+        icon = defaultIcon,
+        label = 'ra.action.list',
+        ...rest
+    } = props;
     const resource = useResourceContext();
     return (
         <Button
