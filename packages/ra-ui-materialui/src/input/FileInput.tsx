@@ -44,7 +44,7 @@ export interface FileInputProps {
     maxSize?: number;
     minSize?: number;
     multiple?: boolean;
-    placeholder?: string | ReactNode;
+    placeholder?: ReactNode;
 }
 
 export interface FileInputOptions extends DropzoneOptions {
