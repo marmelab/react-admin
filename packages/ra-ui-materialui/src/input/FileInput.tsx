@@ -43,6 +43,7 @@ export interface FileInputProps {
     maxSize?: number;
     minSize?: number;
     multiple?: boolean;
+    placeholder?: string | ReactElement;
 }
 
 export interface FileInputOptions extends DropzoneOptions {
