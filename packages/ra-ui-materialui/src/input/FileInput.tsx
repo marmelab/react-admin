@@ -2,6 +2,7 @@ import React, {
     Children,
     cloneElement,
     isValidElement,
+    ReactElement,
     ReactNode,
 } from 'react';
 import PropTypes from 'prop-types';
@@ -85,7 +86,9 @@ const FileInput = (props: FileInputProps & InputProps<FileInputOptions>) => {
             return file;
         }
 
-        const { source, title } = Children.only(children).props;
+        const { source, title } = (Children.only(children) as ReactElement<
+          any
+        >).props;
 
         const preview = URL.createObjectURL(file);
         const transformedFile = {
@@ -159,7 +162,7 @@ const FileInput = (props: FileInputProps & InputProps<FileInputOptions>) => {
 
     const childrenElement =
         children && isValidElement(Children.only(children))
-            ? Children.only(children)
+            ? (Children.only(children) as ReactElement<any>)
             : undefined;
 
     const { getRootProps, getInputProps } = useDropzone({
@@ -219,7 +222,7 @@ const FileInput = (props: FileInputProps & InputProps<FileInputOptions>) => {
                                 onRemove={onRemove(file)}
                                 className={classes.removeButton}
                             >
-                                {cloneElement(childrenElement, {
+                                {cloneElement(childrenElement as ReactElement, {
                                     record: file,
                                     className: classes.preview,
                                 })}
