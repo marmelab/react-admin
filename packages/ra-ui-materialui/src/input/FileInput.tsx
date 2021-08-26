@@ -2,7 +2,7 @@ import React, {
     Children,
     cloneElement,
     isValidElement,
-    ReactElement,
+    ReactNode,
 } from 'react';
 import PropTypes from 'prop-types';
 import { shallowEqual } from 'react-redux';
@@ -37,13 +37,13 @@ const useStyles = makeStyles(
 
 export interface FileInputProps {
     accept?: string;
-    children?: ReactElement;
+    children?: ReactNode;
     labelMultiple?: string;
     labelSingle?: string;
     maxSize?: number;
     minSize?: number;
     multiple?: boolean;
-    placeholder?: string | ReactElement;
+    placeholder?: string | ReactNode;
 }
 
 export interface FileInputOptions extends DropzoneOptions {
@@ -85,9 +85,7 @@ const FileInput = (props: FileInputProps & InputProps<FileInputOptions>) => {
             return file;
         }
 
-        const { source, title } = (Children.only(children) as ReactElement<
-            any
-        >).props;
+        const { source, title } = Children.only(children).props;
 
         const preview = URL.createObjectURL(file);
         const transformedFile = {
@@ -161,7 +159,7 @@ const FileInput = (props: FileInputProps & InputProps<FileInputOptions>) => {
 
     const childrenElement =
         children && isValidElement(Children.only(children))
-            ? (Children.only(children) as ReactElement<any>)
+            ? Children.only(children)
             : undefined;
 
     const { getRootProps, getInputProps } = useDropzone({
