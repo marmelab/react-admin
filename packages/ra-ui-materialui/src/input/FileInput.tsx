@@ -87,7 +87,7 @@ const FileInput = (props: FileInputProps & InputProps<FileInputOptions>) => {
         }
 
         const { source, title } = (Children.only(children) as ReactElement<
-          any
+            any
         >).props;
 
         const preview = URL.createObjectURL(file);
