@@ -37,6 +37,7 @@ const useStyles = makeStyles(
 
 export interface FileInputProps {
     accept?: string;
+    children?: ReactElement;
     labelMultiple?: string;
     labelSingle?: string;
     maxSize?: number;
