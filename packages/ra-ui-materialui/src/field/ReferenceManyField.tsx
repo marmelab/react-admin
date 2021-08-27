@@ -173,10 +173,7 @@ export const ReferenceManyFieldView = (props: ReferenceManyFieldViewProps) => {
 };
 
 export interface ReferenceManyFieldViewProps
-    extends Omit<
-            ReferenceManyFieldProps,
-            'resource' | 'page' | 'perPage'
-        >,
+    extends Omit<ReferenceManyFieldProps, 'resource' | 'page' | 'perPage'>,
         ListControllerProps {
     children: ReactElement;
 }
