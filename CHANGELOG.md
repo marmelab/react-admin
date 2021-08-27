@@ -1,5 +1,15 @@
 # Changelog
 
+## v3.17.3
+
+* Fix `<BooleanInput initialValue>` overrides existing value from record ([6533](https://github.com/marmelab/react-admin/6533)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<ArrayField>` forbids empty component in child `<Datagrid>` ([6524](https://github.com/marmelab/react-admin/6524)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `useList` pagination total ([6500](https://github.com/marmelab/react-admin/6500)) ([yksflip](https://github.com/yksflip))
+* [Doc] Add link to auth tutorials for Auth0, AzureAD, and Loopback ([6535](https://github.com/marmelab/react-admin/6535)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix typo in readme file ([6527](https://github.com/marmelab/react-admin/6527)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix `emptyText` prop description in Fields documenation ([6525](https://github.com/marmelab/react-admin/6525)) ([fzaninotto](https://github.com/fzaninotto))
+* [RFR] Remove FC usage from ra-ui-materialui components ([6514](https://github.com/marmelab/react-admin/6514)) ([WiXSL](https://github.com/WiXSL))
+
 ## v3.17.2
 
 * Fix filter set via URL isn't persistent if set on the list page ([6504](https://github.com/marmelab/react-admin/pull/6504)) ([fzaninotto](https://github.com/fzaninotto))
