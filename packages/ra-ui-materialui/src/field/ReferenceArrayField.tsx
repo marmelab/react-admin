@@ -92,17 +92,17 @@ const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
 
     if (React.Children.count(children) !== 1) {
         throw new Error(
-          '<ReferenceArrayField> only accepts a single child (like <Datagrid>)'
+            '<ReferenceArrayField> only accepts a single child (like <Datagrid>)'
         );
     }
 
     const isReferenceDeclared = useSelector<ReduxState, boolean>(
-      state => typeof state.admin.resources[props.reference] !== 'undefined'
+        state => typeof state.admin.resources[props.reference] !== 'undefined'
     );
 
     if (!isReferenceDeclared) {
         throw new Error(
-          `You must declare a <Resource name="${props.reference}"> in order to use a <ReferenceArrayField reference="${props.reference}">`
+            `You must declare a <Resource name="${props.reference}"> in order to use a <ReferenceArrayField reference="${props.reference}">`
         );
     }
 
@@ -118,11 +118,11 @@ const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
         source,
     });
     return (
-      <ResourceContextProvider value={reference}>
-          <ListContextProvider value={controllerProps}>
-              <PureReferenceArrayFieldView {...props} {...controllerProps} />
-          </ListContextProvider>
-      </ResourceContextProvider>
+        <ResourceContextProvider value={reference}>
+            <ListContextProvider value={controllerProps}>
+                <PureReferenceArrayFieldView {...props} {...controllerProps} />
+            </ListContextProvider>
+        </ResourceContextProvider>
     );
 };
 
@@ -147,8 +147,8 @@ ReferenceArrayField.defaultProps = {
 };
 
 export interface ReferenceArrayFieldProps
-  extends PublicFieldProps,
-    InjectedFieldProps {
+    extends PublicFieldProps,
+        InjectedFieldProps {
     children: ReactElement;
     classes?: ClassesOverride<typeof useStyles>;
     filter?: FilterPayload;
@@ -161,18 +161,18 @@ export interface ReferenceArrayFieldProps
 }
 
 const useStyles = makeStyles(
-  theme => ({
-      progress: { marginTop: theme.spacing(2) },
-  }),
-  { name: 'RaReferenceArrayField' }
+    theme => ({
+        progress: { marginTop: theme.spacing(2) },
+    }),
+    { name: 'RaReferenceArrayField' }
 );
 
 export interface ReferenceArrayFieldViewProps
-  extends Omit<
-    ReferenceArrayFieldProps,
-    'basePath' | 'resource' | 'page' | 'perPage'
-    >,
-    ListControllerProps {
+    extends Omit<
+            ReferenceArrayFieldProps,
+            'basePath' | 'resource' | 'page' | 'perPage'
+        >,
+        ListControllerProps {
     classes?: ClassesOverride<typeof useStyles>;
 }
 
@@ -193,16 +193,16 @@ export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props =
     }
 
     return (
-      <>
-          {cloneElement(Children.only(children), {
-              ...sanitizeFieldRestProps(rest),
-              className,
-              resource,
-          })}{' '}
-          {pagination &&
-          props.total !== undefined &&
-          cloneElement(pagination, sanitizeFieldRestProps(rest))}
-      </>
+        <>
+            {cloneElement(Children.only(children), {
+                ...sanitizeFieldRestProps(rest),
+                className,
+                resource,
+            })}{' '}
+            {pagination &&
+                props.total !== undefined &&
+                cloneElement(pagination, sanitizeFieldRestProps(rest))}
+        </>
     );
 };
 

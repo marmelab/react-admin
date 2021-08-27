@@ -78,17 +78,17 @@ export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
 
     if (React.Children.count(children) !== 1) {
         throw new Error(
-          '<ReferenceManyField> only accepts a single child (like <Datagrid>)'
+            '<ReferenceManyField> only accepts a single child (like <Datagrid>)'
         );
     }
 
     const isReferenceDeclared = useSelector<ReduxState, boolean>(
-      state => typeof state.admin.resources[props.reference] !== 'undefined'
+        state => typeof state.admin.resources[props.reference] !== 'undefined'
     );
 
     if (!isReferenceDeclared) {
         throw new Error(
-          `You must declare a <Resource name="${props.reference}"> in order to use a <ReferenceManyField reference="${props.reference}">`
+            `You must declare a <Resource name="${props.reference}"> in order to use a <ReferenceManyField reference="${props.reference}">`
         );
     }
 
@@ -106,17 +106,17 @@ export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
     });
 
     return (
-      <ResourceContextProvider value={reference}>
-          <ListContextProvider value={controllerProps}>
-              <ReferenceManyFieldView {...props} {...controllerProps} />
-          </ListContextProvider>
-      </ResourceContextProvider>
+        <ResourceContextProvider value={reference}>
+            <ListContextProvider value={controllerProps}>
+                <ReferenceManyFieldView {...props} {...controllerProps} />
+            </ListContextProvider>
+        </ResourceContextProvider>
     );
 };
 
 export interface ReferenceManyFieldProps
-  extends PublicFieldProps,
-    InjectedFieldProps {
+    extends PublicFieldProps,
+        InjectedFieldProps {
     children: ReactElement;
     filter?: FilterPayload;
     page?: number;
@@ -159,25 +159,25 @@ ReferenceManyField.defaultProps = {
 export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = props => {
     const { basePath, children, pagination, reference, ...rest } = props;
     return (
-      <>
-          {cloneElement(Children.only(children), {
-              ...sanitizeFieldRestProps(rest),
-              basePath,
-              resource: reference,
-          })}
-          {pagination &&
-          props.total !== undefined &&
-          cloneElement(pagination)}
-      </>
+        <>
+            {cloneElement(Children.only(children), {
+                ...sanitizeFieldRestProps(rest),
+                basePath,
+                resource: reference,
+            })}
+            {pagination &&
+                props.total !== undefined &&
+                cloneElement(pagination)}
+        </>
     );
 };
 
 export interface ReferenceManyFieldViewProps
-  extends Omit<
-    ReferenceManyFieldProps,
-    'basePath' | 'resource' | 'page' | 'perPage'
-    >,
-    ListControllerProps {
+    extends Omit<
+            ReferenceManyFieldProps,
+            'basePath' | 'resource' | 'page' | 'perPage'
+        >,
+        ListControllerProps {
     children: ReactElement;
 }
 
