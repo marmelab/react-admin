@@ -18,17 +18,13 @@ describe('<ArrayField />', () => {
     );
 
     it('should not fail for empty records', () => {
-        const { queryByText } = render(
+        render(
             <TestContext>
                 <ArrayField source="arr" resource="posts" record={{ id: 123 }}>
                     <DummyIterator />
                 </ArrayField>
             </TestContext>
         );
-
-        // Test the datagrid know about the fields
-        expect(queryByText('resources.posts.fields.id')).not.toBeNull();
-        expect(queryByText('resources.posts.fields.foo')).not.toBeNull();
     });
 
     it('should render the underlying iterator component', () => {
@@ -60,5 +56,25 @@ describe('<ArrayField />', () => {
 
         expect(queryByText('baz')).not.toBeNull();
         expect(queryByText('456')).not.toBeNull();
+    });
+
+    it('should render the alternative empty component', () => {
+        const { queryByText } = render(
+            <TestContext>
+                <ArrayField
+                    source="arr"
+                    resource="posts"
+                    record={{
+                        id: 123,
+                        arr: [],
+                    }}
+                >
+                    <Datagrid empty={<div>No posts</div>}>
+                        <NumberField source="id" />
+                    </Datagrid>
+                </ArrayField>
+            </TestContext>
+        );
+        expect(queryByText('No posts')).not.toBeNull();
     });
 });
