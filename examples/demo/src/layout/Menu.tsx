@@ -155,6 +155,7 @@ const Menu = ({ dense = false }: MenuProps) => {
 const useStyles = makeStyles(theme => ({
     root: {
         marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(1),
         transition: theme.transitions.create('width', {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,

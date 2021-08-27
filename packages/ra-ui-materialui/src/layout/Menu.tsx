@@ -22,6 +22,7 @@ const useStyles = makeStyles(
             flexDirection: 'column',
             justifyContent: 'flex-start',
             marginTop: '0.5em',
+            marginBottom: '1em',
             [theme.breakpoints.only('xs')]: {
                 marginTop: 0,
             },
