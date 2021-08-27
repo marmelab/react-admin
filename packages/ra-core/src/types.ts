@@ -202,7 +202,7 @@ export interface CreateResult<RecordType = Record> {
 
 export interface DeleteParams {
     id: Identifier;
-    previousData: Record;
+    previousData?: Record;
 }
 export interface DeleteResult<RecordType = Record> {
     data?: RecordType;
