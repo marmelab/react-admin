@@ -1,4 +1,4 @@
-import React, { FC, cloneElement, Children, ReactElement } from 'react';
+import React, { cloneElement, Children, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     FilterPayload,
@@ -61,7 +61,7 @@ import sanitizeFieldRestProps from './sanitizeFieldRestProps';
  *    ...
  * </ReferenceManyField>
  */
-export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
+export const ReferenceManyField = (props: ReferenceManyFieldProps) => {
     const {
         basePath,
         children,
@@ -156,7 +156,7 @@ ReferenceManyField.defaultProps = {
     addLabel: true,
 };
 
-export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = props => {
+export const ReferenceManyFieldView = (props: ReferenceManyFieldViewProps) => {
     const { basePath, children, pagination, reference, ...rest } = props;
     return (
         <>
@@ -175,7 +175,7 @@ export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = props => 
 export interface ReferenceManyFieldViewProps
     extends Omit<
             ReferenceManyFieldProps,
-            'basePath' | 'resource' | 'page' | 'perPage'
+            'resource' | 'page' | 'perPage'
         >,
         ListControllerProps {
     children: ReactElement;

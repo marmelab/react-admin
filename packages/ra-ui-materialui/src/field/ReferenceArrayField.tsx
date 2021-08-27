@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Children, cloneElement, FC, memo, ReactElement } from 'react';
+import { Children, cloneElement, memo, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux';
@@ -76,7 +76,7 @@ import { LinearProgress } from '../layout';
  *    ...
  * </ReferenceArrayField>
  */
-const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
+const ReferenceArrayField = (props: ReferenceArrayFieldProps) => {
     const {
         basePath,
         children,
@@ -170,13 +170,13 @@ const useStyles = makeStyles(
 export interface ReferenceArrayFieldViewProps
     extends Omit<
             ReferenceArrayFieldProps,
-            'basePath' | 'resource' | 'page' | 'perPage'
+            'basePath' | 'page' | 'perPage'
         >,
         ListControllerProps {
     classes?: ClassesOverride<typeof useStyles>;
 }
 
-export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props => {
+export const ReferenceArrayFieldView = (props: ReferenceArrayFieldViewProps) => {
     const {
         children,
         pagination,

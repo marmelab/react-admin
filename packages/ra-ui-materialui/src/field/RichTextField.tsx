@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, memo } from 'react';
+import { memo } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
@@ -11,30 +11,28 @@ import { InjectedFieldProps, PublicFieldProps, fieldPropTypes } from './types';
 export const removeTags = (input: string) =>
     input ? input.replace(/<[^>]+>/gm, '') : '';
 
-const RichTextField: FC<RichTextFieldProps> = memo<RichTextFieldProps>(
-    props => {
-        const { className, emptyText, source, stripTags, ...rest } = props;
-        const record = useRecordContext(props);
-        const value = get(record, source);
+const RichTextField = (props: RichTextFieldProps) => {
+    const { className, emptyText, source, stripTags, ...rest } = props;
+    const record = useRecordContext(props);
+    const value = get(record, source);
 
-        return (
-            <Typography
-                className={className}
-                variant="body2"
-                component="span"
-                {...sanitizeFieldRestProps(rest)}
-            >
-                {value == null && emptyText ? (
-                    emptyText
-                ) : stripTags ? (
-                    removeTags(value)
-                ) : (
-                    <span dangerouslySetInnerHTML={{ __html: value }} />
-                )}
-            </Typography>
-        );
-    }
-);
+    return (
+        <Typography
+            className={className}
+            variant="body2"
+            component="span"
+            {...sanitizeFieldRestProps(rest)}
+        >
+            {value == null && emptyText ? (
+                emptyText
+            ) : stripTags ? (
+                removeTags(value)
+            ) : (
+                <span dangerouslySetInnerHTML={{ __html: value }} />
+            )}
+        </Typography>
+    );
+};
 
 RichTextField.defaultProps = {
     addLabel: true,
@@ -57,4 +55,4 @@ export interface RichTextFieldProps
 
 RichTextField.displayName = 'RichTextField';
 
-export default RichTextField;
+export default memo<RichTextFieldProps>(RichTextField);
