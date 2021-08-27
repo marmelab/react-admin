@@ -58,7 +58,13 @@ It's very common that your auth logic is so specific that you'll need to write y
 - **[AWS Cognito](https://docs.aws.amazon.com/cognito/latest/developerguide/setting-up-the-javascript-sdk.html)**: [thedistance/ra-cognito](https://github.com/thedistance/ra-cognito)
 - **[Firebase Auth (Google, Facebook, Github etc)](https://firebase.google.com/docs/auth/web/firebaseui)**: [benwinding/react-admin-firebase](https://github.com/benwinding/react-admin-firebase#auth-provider)
 
-If you have released a reusable `authProvider` for a standard auth backend, please open a PR to add it to this list!
+Beyond ready-to-use providers, you may find help in these third-party tutorials about integrating more authentication backends:
+
+* **[Auth0](https://auth0.com/docs/libraries/auth0-single-page-app-sdk)**: [spintech-software/react-admin-auth0-example](https://github.com/spintech-software/react-admin-auth0-example)
+* **[Azure Active Directory](https://github.com/AzureAD/microsoft-authentication-library-for-js/tree/dev/lib/msal-browser)**: [victorp13/react-admin-msal](https://github.com/victorp13/react-admin-msal)
+* **[Loopback](https://loopback.io/doc/en/lb4/Authentication-overview.html)**: [appsmith dev.to tutorial](https://dev.to/appsmith/building-an-admin-dashboard-with-react-admin-86i#adding-authentication-to-reactadmin)
+
+If you have released a reusable `authProvider`, or a tutorial for another auth backend, please open a PR to add it to this list!
 
 ## Authentication
 
