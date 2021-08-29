@@ -153,7 +153,7 @@ export const ArrayField: FC<ArrayFieldProps> = memo<ArrayFieldProps>(props => {
                 filterValues: null,
                 hasCreate: null,
                 hideFilter: null,
-                loaded: null,
+                loaded: true,
                 onSelect: null,
                 onToggleItem: null,
                 onUnselectItems: null,

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ReactElement } from 'react';
+import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ActionDelete from '@material-ui/icons/Delete';
 import { fade } from '@material-ui/core/styles/colorManipulator';
@@ -33,7 +33,7 @@ const useStyles = makeStyles(
     { name: 'RaBulkDeleteWithUndoButton' }
 );
 
-const BulkDeleteWithUndoButton: FC<BulkDeleteWithUndoButtonProps> = props => {
+const BulkDeleteWithUndoButton = (props: BulkDeleteWithUndoButtonProps) => {
     const {
         basePath,
         classes: classesOverride,

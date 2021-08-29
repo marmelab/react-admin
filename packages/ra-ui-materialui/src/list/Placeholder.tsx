@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
@@ -18,7 +17,7 @@ interface Props {
     classes?: Record<'root', string>;
 }
 
-const Placeholder: FC<Props> = props => {
+const Placeholder = (props: Props) => {
     const classes = useStyles(props);
     return (
         <span className={classnames(classes.root, props.className)}>

@@ -1,4 +1,4 @@
-import React, { cloneElement, FC, ReactElement, SyntheticEvent } from 'react';
+import React, { cloneElement, ReactElement, SyntheticEvent } from 'react';
 import PropTypes from 'prop-types';
 import Button, { ButtonProps } from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -58,7 +58,7 @@ import { FormRenderProps } from 'react-final-form';
  *     return <SaveButton {...props} onSuccess={onSuccess} />;
  * }
  */
-const SaveButton: FC<SaveButtonProps> = props => {
+const SaveButton = (props: SaveButtonProps) => {
     const {
         className,
         classes: classesOverride,
