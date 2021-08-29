@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import List, { ListProps } from '@material-ui/core/List';
@@ -36,7 +35,7 @@ interface Props {
     nbFakeLines?: number;
 }
 
-const SimpleListLoading: FC<Props & ListProps> = props => {
+const SimpleListLoading = (props: Props & ListProps) => {
     const {
         classes: classesOverride,
         className,

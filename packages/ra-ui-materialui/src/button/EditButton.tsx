@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ReactElement, useMemo } from 'react';
+import { ReactElement, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import ContentCreate from '@material-ui/icons/Create';
 import { ButtonProps as MuiButtonProps } from '@material-ui/core/Button';
@@ -18,14 +18,15 @@ import Button, { ButtonProps } from './Button';
  *     <EditButton basePath="/comments" label="Edit comment" record={record} />
  * );
  */
-const EditButton: FC<EditButtonProps> = ({
-    basePath = '',
-    icon = defaultIcon,
-    label = 'ra.action.edit',
-    record,
-    scrollToTop = true,
-    ...rest
-}) => {
+const EditButton = (props: EditButtonProps) => {
+    const {
+        basePath = '',
+        icon = defaultIcon,
+        label = 'ra.action.edit',
+        record,
+        scrollToTop = true,
+        ...rest
+    } = props;
     const resource = useResourceContext();
     return (
         <Button

@@ -352,7 +352,7 @@ The `<MenuItemLink>` component displays a menu item with a label and an icon - o
 | Prop          | Required | Type                 | Default | Description                              |
 | ------------- | -------- | -------------------- | ------- | ---------------------------------------- |
 | `to`          | Required | `string | location`  | -       | The menu item's target. It is passed to a React Router [NavLink](https://reacttraining.com/react-router/web/api/NavLink) component. |
-| `primaryText` | Required | `string | ReactNode` | -       | The menu content, displayed when the menu isn't minimized. |
+| `primaryText` | Required | `ReactNode`          | -       | The menu content, displayed when the menu isn't minimized. |
 | `leftIcon`    | Optional | `ReactNode`          | -       | The menu icon |
 
 Additional props are passed down to [the underling material-ui `<MenuItem>` component](https://material-ui.com/api/menu-item/#menuitem-api).

@@ -2,7 +2,6 @@ import * as React from 'react';
 import {
     Children,
     isValidElement,
-    FC,
     ReactElement,
     ReactNode,
     HtmlHTMLAttributes,
@@ -89,7 +88,7 @@ import { TabbedFormView, useTabbedFormViewStyles } from './TabbedFormView';
  *
  * @param {Props} props
  */
-export const TabbedForm: FC<TabbedFormProps> = props => (
+export const TabbedForm = (props: TabbedFormProps) => (
     <FormWithRedirect
         {...props}
         render={formProps => <TabbedFormView {...formProps} />}

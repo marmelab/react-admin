@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, memo, ReactElement } from 'react';
+import { memo, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import Queue from '@material-ui/icons/Queue';
 import { Link } from 'react-router-dom';
@@ -8,14 +8,16 @@ import { Record, useResourceContext } from 'ra-core';
 
 import Button, { ButtonProps } from './Button';
 
-export const CloneButton: FC<CloneButtonProps> = ({
-    basePath = '',
-    label = 'ra.action.clone',
-    scrollToTop = true,
-    record,
-    icon = defaultIcon,
-    ...rest
-}) => {
+export const CloneButton = (props: CloneButtonProps) => {
+    const {
+        basePath = '',
+        label = 'ra.action.clone',
+        scrollToTop = true,
+        record,
+        icon = defaultIcon,
+        ...rest
+    } = props;
+
     const resource = useResourceContext();
     const pathname = basePath ? `${basePath}/create` : `/${resource}/create`;
     return (

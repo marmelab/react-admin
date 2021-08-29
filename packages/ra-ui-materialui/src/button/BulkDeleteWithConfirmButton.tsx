@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, Fragment, useState, ReactElement } from 'react';
+import { Fragment, useState, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ActionDelete from '@material-ui/icons/Delete';
 import { fade } from '@material-ui/core/styles/colorManipulator';
@@ -37,7 +37,9 @@ const useStyles = makeStyles(
 
 const defaultIcon = <ActionDelete />;
 
-const BulkDeleteWithConfirmButton: FC<BulkDeleteWithConfirmButtonProps> = props => {
+const BulkDeleteWithConfirmButton = (
+    props: BulkDeleteWithConfirmButtonProps
+) => {
     const {
         basePath,
         classes: classesOverride,

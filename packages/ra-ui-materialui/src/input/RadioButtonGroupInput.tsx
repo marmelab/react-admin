@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import {
     FormControl,
@@ -88,7 +87,7 @@ const useStyles = makeStyles(
  *
  * The object passed as `options` props is passed to the material-ui <RadioButtonGroup> component
  */
-const RadioButtonGroupInput: FunctionComponent<RadioButtonGroupInputProps> = props => {
+const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
     const {
         choices = [],
         classes: classesOverride,

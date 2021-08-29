@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ReactNode, ReactElement } from 'react';
+import { ReactNode, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     Avatar,
@@ -238,14 +238,15 @@ const useLinkOrNotStyles = makeStyles(
     { name: 'RaLinkOrNot' }
 );
 
-const LinkOrNot: FC<LinkOrNotProps> = ({
-    classes: classesOverride,
-    linkType,
-    basePath,
-    id,
-    children,
-    record,
-}) => {
+const LinkOrNot = (props: LinkOrNotProps) => {
+    const {
+        classes: classesOverride,
+        linkType,
+        basePath,
+        id,
+        children,
+        record,
+    } = props;
     const classes = useLinkOrNotStyles({ classes: classesOverride });
     const link =
         typeof linkType === 'function' ? linkType(record, id) : linkType;

@@ -18,7 +18,7 @@ import { Styles } from '@material-ui/styles';
 /**
  * An override of the default Material-UI TextField which is resettable
  */
-function ResettableTextField(props: ResettableTextFieldProps) {
+const ResettableTextField = (props: ResettableTextFieldProps) => {
     const {
         classes: classesOverride,
         clearAlwaysVisible,
@@ -170,7 +170,7 @@ function ResettableTextField(props: ResettableTextFieldProps) {
             onBlur={handleBlur}
         />
     );
-}
+};
 
 export const resettableStyles: Styles<Theme, ResettableTextFieldProps> = {
     clearIcon: {

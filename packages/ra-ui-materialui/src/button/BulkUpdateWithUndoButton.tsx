@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ReactElement } from 'react';
+import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ActionUpdate from '@material-ui/icons/Update';
 import { fade } from '@material-ui/core/styles/colorManipulator';
@@ -33,7 +33,7 @@ const useStyles = makeStyles(
     { name: 'RaBulkUpdateWithUndoButton' }
 );
 
-const BulkUpdateWithUndoButton: FC<BulkUpdateWithUndoButtonProps> = props => {
+const BulkUpdateWithUndoButton = (props: BulkUpdateWithUndoButtonProps) => {
     const { selectedIds } = useListContext(props);
     const classes = useStyles(props);
     const notify = useNotify();

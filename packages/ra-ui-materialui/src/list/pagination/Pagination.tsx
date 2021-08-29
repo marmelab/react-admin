@@ -20,7 +20,7 @@ import DefaultPaginationLimit from './PaginationLimit';
 
 const emptyArray = [];
 
-const Pagination: FC<PaginationProps> = props => {
+const Pagination = (props: PaginationProps) => {
     const { rowsPerPageOptions, actions, limit, ...rest } = props;
     const {
         loading,
@@ -129,4 +129,4 @@ export interface PaginationProps extends TablePaginationBaseProps {
     limit?: ReactElement;
 }
 
-export default React.memo(Pagination);
+export default React.memo<PaginationProps>(Pagination);

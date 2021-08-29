@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { FormGroupContextProvider, Record } from 'ra-core';
 
@@ -8,24 +8,25 @@ import { FormTabHeader } from './FormTabHeader';
 
 const hiddenStyle = { display: 'none' };
 
-export const FormTab: FC<FormTabProps> = ({
-    basePath,
-    className,
-    classes,
-    contentClassName,
-    children,
-    hidden,
-    icon,
-    intent,
-    label,
-    margin,
-    path,
-    record,
-    resource,
-    variant,
-    value,
-    ...rest
-}) => {
+export const FormTab = (props: FormTabProps) => {
+    const {
+        basePath,
+        className,
+        classes,
+        contentClassName,
+        children,
+        hidden,
+        icon,
+        intent,
+        label,
+        margin,
+        path,
+        record,
+        resource,
+        variant,
+        value,
+        ...rest
+    } = props;
     const renderHeader = () => (
         <FormTabHeader
             label={label}

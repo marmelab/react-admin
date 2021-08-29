@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { sanitizeListRestProps, useListContext } from 'ra-core';
@@ -42,7 +42,7 @@ export interface FilterProps {
  * );
  *
  */
-const Filter: FC<FilterProps> = props => {
+const Filter = (props: FilterProps) => {
     const classes = useStyles(props);
     const {
         resource,
