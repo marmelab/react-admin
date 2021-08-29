@@ -25,11 +25,14 @@
         "watch": "tsc --outDir esm --module es2015 --watch"
     },
     "dependencies": {
-        "query-string": "^5.1.1",
-        "ra-core": "^3.17.2"
+        "query-string": "^5.1.1"
     },
     "devDependencies": {
+        "ra-core": "^3.17.2",
         "cross-env": "^5.2.0",
         "rimraf": "^2.6.3"
+    },
+    "peerDependencies": {
+        "ra-core": "^3.17.2"
     }
 }
