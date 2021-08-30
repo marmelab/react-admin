@@ -6,7 +6,7 @@ import {
     ReferenceInputValue,
 } from './useReferenceInputController';
 
-interface Props {
+export interface ReferenceInputControllerProps {
     allowEmpty?: boolean;
     basePath: string;
     children: (params: ReferenceInputValue) => ReactNode;
@@ -28,9 +28,9 @@ interface Props {
  *
  * @see useReferenceInputController
  */
-export const ReferenceInputController = (props: Props) => {
+export const ReferenceInputController = (props: ReferenceInputControllerProps) => {
     const { children, ...rest } = props;
     return children(useReferenceInputController(rest)) as ReactElement;
 };
 
-export default ReferenceInputController as ComponentType<Props>;
+export default ReferenceInputController as ComponentType<ReferenceInputControllerProps>;

@@ -10,7 +10,7 @@ interface ChildrenParams extends UseReferenceProps {
     resourceLinkPath: string | false;
 }
 
-interface Props {
+export interface ReferenceFieldControllerProps {
     basePath: string;
     children: (params: ChildrenParams) => ReactNode;
     record?: Record;
@@ -49,16 +49,17 @@ interface Props {
  *     <TextField source="name" />
  * </ReferenceField>
  */
-export const ReferenceFieldController = ({
-    children,
-    record,
-    source,
-    ...props
-}: Props) => {
+export const ReferenceFieldController = (props: ReferenceFieldControllerProps) => {
+    const {
+        children,
+        record,
+        source,
+        ...rest
+    } = props;
     const id = get(record, source);
     return children({
-        ...useReference({ ...props, id }),
-        resourceLinkPath: getResourceLinkPath({ ...props, record, source }),
+        ...useReference({ ...rest, id }),
+        resourceLinkPath: getResourceLinkPath({ ...rest, record, source }),
     }) as ReactElement<any>;
 };
 

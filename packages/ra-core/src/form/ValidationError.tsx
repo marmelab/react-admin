@@ -5,11 +5,11 @@ import {
 } from './validate';
 import { useTranslate } from '../i18n';
 
-interface Props {
+export interface ValidationErrorProps {
     error: ValidationErrorMessage;
 }
 
-const ValidationError = (props: Props) => {
+const ValidationError = (props: ValidationErrorProps) => {
     const { error } = props;
     const translate = useTranslate();
     if ((error as ValidationErrorMessageWithArgs).message) {

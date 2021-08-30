@@ -12,7 +12,7 @@ import FormWithRedirect, {
     HandleSubmitWithRedirect,
 } from './FormWithRedirect';
 import useInput, { InputProps, UseInputValue } from './useInput';
-import ValidationError from './ValidationError';
+import ValidationError, { ValidationErrorProps } from './ValidationError';
 import useInitializeFormWithRecord from './useInitializeFormWithRecord';
 import sanitizeEmptyValues from './sanitizeEmptyValues';
 import useChoices, {
@@ -54,6 +54,7 @@ export {
     useInitializeFormWithRecord,
     useSuggestions,
     ValidationError,
+    ValidationErrorProps,
     useWarnWhenUnsavedChanges,
     useResetSubmitErrors,
 };

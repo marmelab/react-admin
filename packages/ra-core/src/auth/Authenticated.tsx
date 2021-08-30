@@ -2,7 +2,7 @@ import { cloneElement, ReactElement } from 'react';
 
 import useAuthenticated from './useAuthenticated';
 
-interface Props {
+export interface AuthenticatedProps {
     children: ReactElement<any>;
     authParams?: object;
     location?: object; // kept for backwards compatibility, unused
@@ -36,7 +36,7 @@ interface Props {
  *         </Admin>
  *     );
  */
-const Authenticated = (props: Props) => {
+const Authenticated = (props: AuthenticatedProps) => {
     const {
         authParams,
         children,
