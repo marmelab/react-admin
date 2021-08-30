@@ -67,9 +67,9 @@ const Dashboard = () => {
             }
         );
         const aggregations = recentOrders
-            .filter((order: Order) => order.status !== 'cancelled')
+            .filter(order => order.status !== 'cancelled')
             .reduce(
-                (stats: OrderStats, order: Order) => {
+                (stats: OrderStats, order) => {
                     if (order.status !== 'cancelled') {
                         stats.revenue += order.total;
                         stats.nbNewOrders++;
@@ -132,7 +132,7 @@ const Dashboard = () => {
         const { data: customers } = await dataProvider.getMany<Customer>(
             'customers',
             {
-                ids: pendingReviews.map((review: Review) => review.customer_id),
+                ids: pendingReviews.map(review => review.customer_id),
             }
         );
         setState(state => ({
