@@ -1229,7 +1229,7 @@ import {
 } from 'react-admin';
 +import { FilterWithSave } from '@react-admin/ra-preferences';
 
-const SongFilter: FC = props => (
+const SongFilter = props => (
 -   <Filter {...props}>
 +   <FilterWithSave {...props}>
         <SelectInput
@@ -1251,7 +1251,7 @@ const SongFilter: FC = props => (
 +   </FilterWithSave>
 );
 
-const SongList: FC<Props> = props => (
+const SongList = props => (
     <List {...props} filters={<SongFilter />}>
         <Datagrid rowClick="edit">
             <TextField source="title" />
@@ -1274,7 +1274,7 @@ import { Card, CardContent } from '@material-ui/core';
 
 +import { SavedQueriesList } from '@react-admin/ra-preferences';
 
-const SongFilterSidebar: FC = () => (
+const SongFilterSidebar = () => (
     <Card>
         <CardContent>
 +           <SavedQueriesList />
@@ -1288,7 +1288,7 @@ const SongFilterSidebar: FC = () => (
     </Card>
 );
 
-const SongList: FC<Props> = props => (
+const SongList = props => (
     <List {...props} aside={<SongFilterSidebar />}>
         <Datagrid>
             ...
@@ -2744,7 +2744,7 @@ const EventList = props => (
 The `ra-calendar` module also offers a full replacement for the `<List>` component, complete with show and edit views for events, called `<CompleteCalendar>`:
 
 ```jsx
-import React, { FC } from 'react';
+import React from 'react';
 import {
     Admin,
     Resource,
