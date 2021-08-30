@@ -22,7 +22,9 @@ export interface ReferenceArrayFieldControllerProps {
  *
  * @see useReferenceArrayFieldController
  */
-const ReferenceArrayFieldController = (props: ReferenceArrayFieldControllerProps) => {
+const ReferenceArrayFieldController = (
+    props: ReferenceArrayFieldControllerProps
+) => {
     const { children, ...rest } = props;
     const controllerProps = useReferenceArrayFieldController({
         sort: {

@@ -49,13 +49,10 @@ export interface ReferenceFieldControllerProps {
  *     <TextField source="name" />
  * </ReferenceField>
  */
-export const ReferenceFieldController = (props: ReferenceFieldControllerProps) => {
-    const {
-        children,
-        record,
-        source,
-        ...rest
-    } = props;
+export const ReferenceFieldController = (
+    props: ReferenceFieldControllerProps
+) => {
+    const { children, record, source, ...rest } = props;
     const id = get(record, source);
     return children({
         ...useReference({ ...rest, id }),

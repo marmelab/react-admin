@@ -1,6 +1,8 @@
 import translate from './translate';
 import { TranslationContext } from './TranslationContext';
-import TranslationProvider, { TranslationProviderProps } from './TranslationProvider';
+import TranslationProvider, {
+    TranslationProviderProps,
+} from './TranslationProvider';
 import TestTranslationProvider from './TestTranslationProvider';
 import useLocale from './useLocale';
 import useSetLocale from './useSetLocale';

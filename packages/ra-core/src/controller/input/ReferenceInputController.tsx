@@ -28,9 +28,13 @@ export interface ReferenceInputControllerProps {
  *
  * @see useReferenceInputController
  */
-export const ReferenceInputController = (props: ReferenceInputControllerProps) => {
+export const ReferenceInputController = (
+    props: ReferenceInputControllerProps
+) => {
     const { children, ...rest } = props;
     return children(useReferenceInputController(rest)) as ReactElement;
 };
 
-export default ReferenceInputController as ComponentType<ReferenceInputControllerProps>;
+export default ReferenceInputController as ComponentType<
+    ReferenceInputControllerProps
+>;

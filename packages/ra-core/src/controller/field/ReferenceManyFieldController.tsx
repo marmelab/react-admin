@@ -24,7 +24,9 @@ export interface ReferenceManyFieldControllerProps {
  *
  * @see useReferenceManyFieldController
  */
-export const ReferenceManyFieldController = (props: ReferenceManyFieldControllerProps) => {
+export const ReferenceManyFieldController = (
+    props: ReferenceManyFieldControllerProps
+) => {
     const { children, page = 1, perPage = 25, ...rest } = props;
     const controllerProps = useReferenceManyFieldController({
         page,
