@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
@@ -16,7 +15,7 @@ const useStyles = makeStyles({
     },
 });
 
-const LinkToRelatedCustomers: FC<{ segment: string }> = ({ segment }) => {
+const LinkToRelatedCustomers = ({ segment }: { segment: string }) => {
     const translate = useTranslate();
     const classes = useStyles();
     return (

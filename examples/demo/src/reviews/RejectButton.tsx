@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import ThumbDown from '@material-ui/icons/ThumbDown';
@@ -9,7 +8,7 @@ import { Review } from '../types';
 /**
  * This custom button demonstrate using a custom action to update data
  */
-const RejectButton: FC<{ record: Review }> = ({ record }) => {
+const RejectButton = ({ record }: { record: Review }) => {
     const translate = useTranslate();
     const notify = useNotify();
     const redirectTo = useRedirect();

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import Card from '@material-ui/core/Card';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -18,7 +17,7 @@ const useStyles = makeStyles({
     },
 });
 
-const Segments: FC = () => {
+const Segments = () => {
     const translate = useTranslate();
     const classes = useStyles();
     return (

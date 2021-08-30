@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import {
     BooleanInput,
     DateField,
@@ -32,7 +31,7 @@ interface OrderTitleProps {
     record?: Order;
 }
 
-const OrderTitle: FC<OrderTitleProps> = ({ record }) => {
+const OrderTitle = ({ record }: OrderTitleProps) => {
     const translate = useTranslate();
     return record ? (
         <span>
@@ -228,7 +227,7 @@ const OrderForm = (props: any) => {
         />
     );
 };
-const OrderEdit: FC<EditProps> = props => {
+const OrderEdit = (props: EditProps) => {
     const classes = useEditStyles();
     return (
         <Edit

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import {
     Datagrid,
     DateField,
@@ -31,7 +30,7 @@ interface ProductTitleProps {
     record?: Product;
 }
 
-const ProductTitle: FC<ProductTitleProps> = ({ record }) =>
+const ProductTitle = ({ record }: ProductTitleProps) =>
     record ? <span>Poster #{record.reference}</span> : null;
 
 const useStyles = makeStyles({
@@ -48,7 +47,7 @@ const useStyles = makeStyles({
     },
 });
 
-const ProductEdit: FC<EditProps> = props => {
+const ProductEdit = (props: EditProps) => {
     const classes = useStyles();
     return (
         <Edit {...props} title={<ProductTitle />}>
