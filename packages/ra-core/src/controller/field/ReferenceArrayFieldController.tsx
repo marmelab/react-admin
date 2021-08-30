@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactElement } from 'react';
+import { ReactElement } from 'react';
 
 import useReferenceArrayFieldController from './useReferenceArrayFieldController';
 import { ListControllerProps } from '../useListController';
@@ -22,7 +22,7 @@ interface Props {
  *
  * @see useReferenceArrayFieldController
  */
-const ReferenceArrayFieldController: FunctionComponent<Props> = props => {
+const ReferenceArrayFieldController = (props: Props) => {
     const { children, ...rest } = props;
     const controllerProps = useReferenceArrayFieldController({
         sort: {
