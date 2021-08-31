@@ -11,11 +11,6 @@
         </style>
         <script>
             const modernBrowser = 'fetch' in window && 'assign' in Object;
-            console.log({
-                modernBrowser,
-                fetch: window.fetch,
-                assign: Object.assign,
-            });
             if (!modernBrowser) {
                 const scriptElement = document.createElement('script');
                 scriptElement.async = false;
