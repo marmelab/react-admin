@@ -22,12 +22,14 @@ const useStyles = makeStyles(
             flexDirection: 'column',
             justifyContent: 'flex-start',
             marginTop: '0.5em',
+            marginBottom: '1em',
             [theme.breakpoints.only('xs')]: {
                 marginTop: 0,
             },
-            [theme.breakpoints.up('md')]: {
-                marginTop: '1.5em',
-            },
+            transition: theme.transitions.create('width', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+            }),
         },
         open: {
             width: lodashGet(theme, 'menu.width', MENU_WIDTH),

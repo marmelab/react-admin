@@ -29,7 +29,10 @@ const Sidebar = (props: SidebarProps) => {
     );
     useLocale(); // force redraw on locale change
     const toggleSidebar = () => dispatch(setSidebarVisibility(!open));
-    const { drawerPaper, ...classes } = useStyles({ ...props, open });
+    const { drawerPaper, fixed, ...classes } = useStyles({
+        ...props,
+        open,
+    });
 
     return isXSmall ? (
         <Drawer
@@ -55,7 +58,7 @@ const Sidebar = (props: SidebarProps) => {
             classes={classes}
             {...rest}
         >
-            {children}
+            <div className={fixed}>{children}</div>
         </Drawer>
     ) : (
         <Drawer
@@ -68,7 +71,7 @@ const Sidebar = (props: SidebarProps) => {
             classes={classes}
             {...rest}
         >
-            {children}
+            <div className={fixed}>{children}</div>
         </Drawer>
     );
 };
@@ -79,7 +82,9 @@ Sidebar.propTypes = {
 
 const useStyles = makeStyles(
     theme => ({
-        root: {},
+        root: {
+            height: 'calc(100vh - 3em)',
+        },
         docked: {},
         paper: {},
         paperAnchorLeft: {},
@@ -91,10 +96,19 @@ const useStyles = makeStyles(
         paperAnchorDockedRight: {},
         paperAnchorDockedBottom: {},
         modal: {},
+        fixed: {
+            position: 'fixed',
+            height: 'calc(100vh - 3em)',
+            overflowX: 'hidden',
+            // hide scrollbar
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+            '&::-webkit-scrollbar': {
+                display: 'none',
+            },
+        },
         drawerPaper: {
             position: 'relative',
-            height: '100%',
-            overflowX: 'hidden',
             width: (props: { open?: boolean }) =>
                 props.open
                     ? lodashGet(theme, 'sidebar.width', DRAWER_WIDTH)
