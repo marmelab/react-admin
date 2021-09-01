@@ -626,4 +626,50 @@ describe('<SimpleFormIterator />', () => {
         fireEvent.click(getByText('Custom Remove Button'));
         expect(onClick).toHaveBeenCalled();
     });
+
+    it('should display the custom add button', () => {
+        const { getByText } = renderWithRedux(
+            <SaveContextProvider value={saveContextValue}>
+                <SideEffectContextProvider value={sideEffectValue}>
+                    <SimpleForm>
+                        <ArrayInput source="emails">
+                            <SimpleFormIterator
+                                addButton={<button>Custom Add Button</button>}
+                            >
+                                <TextInput source="email" />
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </SimpleForm>
+                </SideEffectContextProvider>
+            </SaveContextProvider>
+        );
+
+        expect(getByText('Custom Add Button')).not.toBeNull();
+    });
+
+    it('should display the custom remove button', () => {
+        const { getByText } = renderWithRedux(
+            <ThemeProvider theme={theme}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffectValue}>
+                        <SimpleForm
+                            record={{ id: 'whatever', emails: [{ email: '' }] }}
+                        >
+                            <ArrayInput source="emails">
+                                <SimpleFormIterator
+                                    removeButton={
+                                        <button>Custom Remove Button</button>
+                                    }
+                                >
+                                    <TextInput source="email" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
+        );
+
+        expect(getByText('Custom Remove Button')).not.toBeNull();
+    });
 });
