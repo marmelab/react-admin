@@ -107,8 +107,8 @@ Instead of wrapping the component under test with the `TestContext` by yourself 
 It will return the same output as the `render` method from `@testing-library/react` but will add the `dispatch` and `reduxStore` helpers.
 
 ```jsx
-import { defaultStore } from 'ra-test'
-...
+import { defaultStore } from 'ra-test';
+//...
 const { dispatch, reduxStore, ...testUtils } = renderWithRedux(
     <MyCustomEditView />, 
     initialState, 

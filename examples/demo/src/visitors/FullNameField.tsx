@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, memo } from 'react';
+import { memo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { FieldProps } from 'react-admin';
@@ -23,7 +23,8 @@ interface Props extends FieldProps<Customer> {
     size?: string;
 }
 
-const FullNameField: FC<Props> = ({ record, size }) => {
+const FullNameField = (props: Props) => {
+    const { record, size } = props;
     const classes = useStyles();
     return record ? (
         <div className={classes.root}>

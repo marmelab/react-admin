@@ -3,6 +3,7 @@ import { FC, createElement } from 'react';
 import { Card, Box, Typography, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
+import { ReactNode } from 'react';
 
 import cartouche from './cartouche.png';
 import cartoucheDark from './cartoucheDark.png';
@@ -12,6 +13,7 @@ interface Props {
     to: string;
     title?: string;
     subtitle?: string | number;
+    children?: ReactNode;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -41,7 +43,7 @@ const useStyles = makeStyles(theme => ({
     title: {},
 }));
 
-const CardWithIcon: FC<Props> = props => {
+const CardWithIcon = (props: Props) => {
     const { icon, title, subtitle, to, children } = props;
     const classes = useStyles(props);
     return (

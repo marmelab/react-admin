@@ -1,9 +1,4 @@
-import React, {
-    useCallback,
-    useMemo,
-    Children,
-    FunctionComponent,
-} from 'react';
+import React, { useCallback, useMemo, Children, ReactNode } from 'react';
 
 import { useSafeSetState } from '../util/hooks';
 import { TranslationContext } from './TranslationContext';
@@ -12,6 +7,7 @@ import { I18nProvider } from '../types';
 interface Props {
     locale?: string;
     i18nProvider: I18nProvider;
+    children: ReactNode;
 }
 
 interface State {
@@ -31,7 +27,7 @@ interface State {
  *         </Provider>
  *     );
  */
-const TranslationProvider: FunctionComponent<Props> = props => {
+const TranslationProvider = (props: Props) => {
     const { i18nProvider, children } = props;
 
     const [state, setState] = useSafeSetState<State>({

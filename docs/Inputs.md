@@ -115,21 +115,13 @@ Refer to [Material UI Switch documentation](https://material-ui.com/api/switch) 
 
 `<NullableBooleanInput />` renders as a dropdown list, allowing choosing between `true`, `false`, and `null` values.
 
-#### CSS API
-
-| Rule name  | Description                                                   |
-| ---------- | ------------------------------------------------------------- |
-| `input`    | Applied to the underlying Material UI's `TextField` component |
-
-To override the style of all instances of `<NullableBooleanInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaNullableBooleanInput` key.
-
 ```jsx
 import { NullableBooleanInput } from 'react-admin';
 
 <NullableBooleanInput label="Commentable" source="commentable" />
 ```
 
-![NullableBooleanInput](./img/nullable-boolean-input.png)
+![NullableBooleanInput](./img/nullable-boolean-input.gif)
 
 The labels of the options can be customized for the entire application by overriding the translation.
 
@@ -163,9 +155,21 @@ import { NullableBooleanInput } from 'react-admin';
 
 `<BooleanInput>` and `<NullableBooleanInput>` also accept the [common input props](./Inputs.md#common-input-props).
 
+#### CSS API
+
+| Rule name  | Description                                                   |
+| ---------- | ------------------------------------------------------------- |
+| `input`    | Applied to the underlying Material UI's `TextField` component |
+
+To override the style of all instances of `<NullableBooleanInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaNullableBooleanInput` key.
+
 ### `<DateInput>`
 
-Ideal for editing dates, `<DateInput>` renders an HTML `<input type="date">` element, that most browsers display as a standard [Date Picker](https://material-ui.com/components/pickers/#date-pickers). That means the appearance of `<DateInput>` depends on the browser, and falls back to a text input on Safari. The date formatting in this input depends on the user's locale.
+Ideal for editing dates, `<DateInput>` renders an HTML `<input type="date">` element, that most browsers display as a standard [Date Picker](https://material-ui.com/components/pickers/#date-pickers). 
+
+![DateInput](./img/date-input.gif)
+
+The appearance of `<DateInput>` depends on the browser, and falls back to a text input on Safari. The date formatting in this input depends on the user's locale.
 
 ```jsx
 import { DateInput } from 'react-admin';
@@ -173,15 +177,17 @@ import { DateInput } from 'react-admin';
 <DateInput source="published_at" />
 ```
 
-![DateInput](./img/date-input.gif)
-
 `<DateInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
 **Tip**: For a material-ui styled `<DateInput>` component, check out [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs).
 
+![Material-ui style DateInput](https://github.com/vascofg/react-admin-date-inputs/raw/master/date-time-picker.gif)
+
 ### `<DateTimeInput>`
 
 An input for editing dates with time. `<DateTimeInput>` renders a standard browser [Date and Time Picker](https://material-ui.com/components/pickers/#date-amp-time-pickers), so the appearance depends on the browser (and falls back to a text input on safari).
+
+![DateTimeInput](./img/date-time-input.gif)
 
 ```jsx
 import { DateTimeInput } from 'react-admin';
@@ -215,17 +221,6 @@ import { DateTimeInput } from 'react-admin';
 
 `<ImageInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
-#### CSS API
-
-| Rule name       | Description                                          |
-| --------------- | ---------------------------------------------------- |
-| `root`          | Styles pass to the underlying `FileInput` component  |
-| `dropZone`      | Styles pass to the underlying `FileInput` component  |
-| `preview`       | Styles pass to the underlying `FileInput` component  |
-| `removeButton`  | Styles pass to the underlying `FileInput` component  |
-
-To override the style of all instances of `<ImageInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaImageInput` key.
-
 #### Usage
 
 Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and `maxSize` props. `accept` must be a valid [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) according to [input element specification](https://www.w3.org/wiki/HTML/Elements/input/file) or a valid file extension. If `multiple` is set to false and additional files are dropped, all files besides the first will be rejected. Any file which does not have a size in the [`minSize`, `maxSize`] range, will be rejected as well.
@@ -254,6 +249,17 @@ If the default Dropzone label doesn't fit with your need, you can pass a `placeh
 
 Note that the image upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.md#extending-a-data-provider-example-of-file-upload) for base64 encoding data by extending the REST Client.
 
+#### CSS API
+
+| Rule name       | Description                                          |
+| --------------- | ---------------------------------------------------- |
+| `root`          | Styles pass to the underlying `FileInput` component  |
+| `dropZone`      | Styles pass to the underlying `FileInput` component  |
+| `preview`       | Styles pass to the underlying `FileInput` component  |
+| `removeButton`  | Styles pass to the underlying `FileInput` component  |
+
+To override the style of all instances of `<ImageInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaImageInput` key.
+
 ### `<FileInput>`
 
 `<FileInput>` allows uploading files using [react-dropzone](https://github.com/okonet/react-dropzone).
@@ -271,21 +277,10 @@ Note that the image upload returns a [File](https://developer.mozilla.org/en/doc
 | `multiple`      | Optional | `boolean`            | `false`                         | Set to true if the input should accept a list of files, false if it should only accept one file                                                                                                                                                                                                                                                        |
 | `labelSingle`   | Optional | `string`             | 'ra.input.file. upload_single'  | Invite displayed in the drop zone if the input accepts one file                                                                                                                                                                                                                                                                                        |
 | `labelMultiple` | Optional | `string`             | 'ra.input.file. upload_several' | Invite displayed in the drop zone if the input accepts several files                                                                                                                                                                                                                                                                                   |
-| `placeholder`   | Optional | `string | ReactNode` | -                               | Invite displayed in the drop zone, overrides `labelSingle` and `labelMultiple`                                                                                                                                                                                                                                                                         |
+| `placeholder`   | Optional | `ReactNode`          | -                               | Invite displayed in the drop zone, overrides `labelSingle` and `labelMultiple`                                                                                                                                                                                                                                                                         |
 | `options`       | Optional | `Object`             | `{}`                            | Additional options passed to react-dropzone's `useDropzone()` hook. See [the react-dropzone source](https://github.com/react-dropzone/react-dropzone/blob/master/src/index.js)  for details .                                                                                                                                                          |
 
 `<FileInput>` also accepts the [common input props](./Inputs.md#common-input-props).
-
-#### CSS API
-
-| Rule name       | Description                                                                       |
-| --------------- | --------------------------------------------------------------------------------- |
-| `root`          | Applied to the underlying `Labeled` component                                     |
-| `dropZone`      | Applied to the main container of the component                                    |
-| `preview`       | Applied to each children                                                          |
-| `removeButton`  | Applied to each of the Material UI's `IconButton` component used as remove button |
-
-To override the style of all instances of `<FileInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaFileInput` key.
 
 #### Usage
 
@@ -315,9 +310,22 @@ If the default Dropzone label doesn't fit with your need, you can pass a `placeh
 
 Note that the file upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.md#extending-a-data-provider-example-of-file-upload) for base64 encoding data by extending the REST Client.
 
+#### CSS API
+
+| Rule name       | Description                                                                       |
+| --------------- | --------------------------------------------------------------------------------- |
+| `root`          | Applied to the underlying `Labeled` component                                     |
+| `dropZone`      | Applied to the main container of the component                                    |
+| `preview`       | Applied to each children                                                          |
+| `removeButton`  | Applied to each of the Material UI's `IconButton` component used as remove button |
+
+To override the style of all instances of `<FileInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaFileInput` key.
+
 ### `<MarkdownInput>`
 
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component allows to edit and preview Markdown data, based on [the Toast UI editor](https://nhn.github.io/tui.editor/latest/ToastUIEditor).
+
+![MarkdownInput](./img/markdown-input.gif)
 
 ```jsx
 import { Edit, SimpleForm, TextInput } from 'react-admin';
@@ -337,7 +345,11 @@ Check [the `ra-markdown` documentation](https://marmelab.com/ra-enterprise/modul
 
 ### `<NumberInput>`
 
-`<NumberInput>` translates to an HTML `<input type="number">`. It is necessary for numeric values because of a [known React bug](https://github.com/facebook/react/issues/1425), which prevents using the more generic [`<TextInput>`](#textinput) in that case.
+`<NumberInput>` translates to an HTML `<input type="number">`. 
+
+![NumberInput](./img/number-input.gif)
+
+It is necessary for numeric values because of a [known React bug](https://github.com/facebook/react/issues/1425), which prevents using the more generic [`<TextInput>`](#textinput) in that case.
 
 ```jsx
 import { NumberInput } from 'react-admin';
@@ -396,6 +408,8 @@ import { PasswordInput } from 'react-admin';
 `<RichTextInput>` is the ideal component if you want to allow your users to edit some HTML contents. It
 is powered by [Quill](https://quilljs.com/).
 
+![RichTextInput](./img/rich-text-input.gif)
+
 **Note**: Due to its size, `<RichTextInput>` is not bundled by default with react-admin. You must install it first, using npm:
 
 ```sh
@@ -409,8 +423,6 @@ import RichTextInput from 'ra-input-rich-text';
 
 <RichTextInput source="body" />
 ```
-
-![RichTextInput](./img/rich-text-input.png)
 
 You can customize the rich text editor toolbar using the `toolbar` attribute, as described on the [Quill official toolbar documentation](https://quilljs.com/docs/modules/toolbar/).
 
@@ -475,18 +487,19 @@ import { Edit, SimpleForm, TextInput } from 'react-admin';
 
 `<TextInput>` is the most common input. It is used for texts, emails, URL or passwords. In translates to an HTML `<input>` tag.
 
+![TextInput](./img/text-input.gif)
+
 ```jsx
 import { TextInput } from 'react-admin';
 
 <TextInput source="title" />
 ```
 
-![TextInput](./img/text-input.png)
-
 #### Properties
 
 | Prop         | Required | Type      | Default | Description                                                          |
 | ------------ | -------- | --------- | ------- | -------------------------------------------------------------------- |
+| `multiline`  | Optional | `boolean` | `false` | If `true`, the input height expands as the text wraps over several lines |
 | `resettable` | Optional | `boolean` | `false` | If `true`, display a button to reset the changes in this input value |
 | `type`       | Optional | `string`  | `text`  | Type attribute passed to the `<input>` element                       |
 
@@ -500,13 +513,13 @@ You can choose a specific input type using the `type` attribute, for instance `t
 <TextInput label="Email Address" source="email" type="email" />
 ```
 
-You can make the `TextInput` expandable using the `multiline` prop for multiline text values. It renders as an auto expandable textarea.
+You can make the `<TextInput>` expandable using the `multiline` prop for multiline text values. It renders as an auto expandable textarea.
 
 ```jsx
 <TextInput multiline source="body" />
 ```
 
-You can make the `TextInput` component resettable using the `resettable` prop. This will add a reset button which will be displayed only when the field has a value and is focused.
+You can make the `<TextInput>` component resettable using the `resettable` prop. This will add a reset button which will be displayed only when the field has a value and is focused.
 
 ```jsx
 import { TextInput } from 'react-admin';
@@ -514,7 +527,7 @@ import { TextInput } from 'react-admin';
 <TextInput source="title" resettable />
 ```
 
-![resettable TextInput](./img/resettable-text-input.png)
+![resettable TextInput](./img/resettable-text-input.gif)
 
 **Warning**: Do not use `type="number"`, or you'll receive a string as value (this is a [known React bug](https://github.com/facebook/react/issues/1425)). Instead, use [`<NumberInput>`](#numberinput).
 
@@ -524,6 +537,9 @@ import { TextInput } from 'react-admin';
 
 To let users choose a value in a list using a dropdown with autocompletion, use `<AutocompleteInput>`.
 It renders using [downshift](https://github.com/downshift-js/downshift) and a `fuzzySearch` filter.
+
+![AutocompleteInput](./img/autocomplete-input.gif)
+
 Set the `choices` attribute to determine the options list (with `id`, `name` tuples).
 
 ```jsx
@@ -559,15 +575,6 @@ import { AutocompleteInput } from 'react-admin';
 | `suggestionLimit`         | Optional | `number`       | `null`       | Limits the numbers of suggestions that are shown in the dropdown list |
 
 `<AutocompleteInput>` also accepts the [common input props](./Inputs.md#common-input-props).
-
-#### CSS API
-
-| Rule name              | Description                          |
-| ---------------------- | ------------------------------------ |
-| `container`            | Applied to the root element          |
-| `suggestionsContainer` | Applied to the suggestions container |
-
-To override the style of all instances of `<AutocompleteInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaAutocompleteInput` key.
 
 #### Usage
 
@@ -786,9 +793,23 @@ const CreateCategory = () => {
 ```
 {% endraw %}
 
+#### CSS API
+
+| Rule name              | Description                          |
+| ---------------------- | ------------------------------------ |
+| `container`            | Applied to the root element          |
+| `suggestionsContainer` | Applied to the suggestions container |
+
+To override the style of all instances of `<AutocompleteInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaAutocompleteInput` key.
+
+
 ### `<RadioButtonGroupInput>`
 
-If you want to let the user choose a value among a list of possible values that are always shown (instead of hiding them behind a dropdown list, as in [`<SelectInput>`](#selectinput)), `<RadioButtonGroupInput>` is the right component. Set the `choices` attribute to determine the options (with `id`, `name` tuples):
+If you want to let the user choose a value among a list of possible values that are always shown (instead of hiding them behind a dropdown list, as in [`<SelectInput>`](#selectinput)), `<RadioButtonGroupInput>` is the right component. 
+
+![RadioButtonGroupInput](./img/radio-button-group-input.gif)
+
+Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
 ```jsx
 import { RadioButtonGroupInput } from 'react-admin';
@@ -799,8 +820,6 @@ import { RadioButtonGroupInput } from 'react-admin';
     { id: 'photography', name: 'Photography' },
 ]} />
 ```
-
-![RadioButtonGroupInput](./img/radio-button-group-input.png)
 
 #### Properties
 
@@ -814,14 +833,6 @@ import { RadioButtonGroupInput } from 'react-admin';
 | `translateChoice` | Optional | `boolean`                  | `true`  | Whether the choices should be translated                                                                                               |
 
 `<RadioButtonGroupInput>` also accepts the [common input props](./Inputs.md#common-input-props).
-
-#### CSS API
-
-| Rule name  | Description                                                   |
-| ---------- | ------------------------------------------------------------- |
-| `label`    | Applied to the underlying Material UI's `FormLabel` component |
-
-To override the style of all instances of `<RadioButtonGroupInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaRadioButtonGroupInput` key.
 
 #### Usage
 
@@ -894,9 +905,22 @@ import { RadioButtonGroupInput, ReferenceInput } from 'react-admin';
 </ReferenceInput>
 ```
 
+#### CSS API
+
+| Rule name  | Description                                                   |
+| ---------- | ------------------------------------------------------------- |
+| `label`    | Applied to the underlying Material UI's `FormLabel` component |
+
+To override the style of all instances of `<RadioButtonGroupInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaRadioButtonGroupInput` key.
+
+
 ### `<SelectInput>`
 
-To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material ui's `<Select>`](https://material-ui.com/api/select). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
+To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material ui's `<Select>`](https://material-ui.com/api/select). 
+
+![SelectInput](./img/select-input.gif)
+
+Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
 ```jsx
 import { SelectInput } from 'react-admin';
@@ -907,8 +931,6 @@ import { SelectInput } from 'react-admin';
     { id: 'photography', name: 'Photography' },
 ]} />
 ```
-
-![SelectInput](./img/select-input.gif)
 
 #### Properties
 
@@ -927,14 +949,6 @@ import { SelectInput } from 'react-admin';
 | `translateChoice` | Optional | `boolean`                  | `true`  | Whether the choices should be translated                                                                                               |
 
 `<SelectInput>` also accepts the [common input props](./Inputs.md#common-input-props).
-
-#### CSS API
-
-| Rule name       | Description                                               |
-| --------------- | --------------------------------------------------------- |
-| `input`         | Applied to the underlying `ResettableTextField` component |
-
-To override the style of all instances of `<SelectInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaSelectInput` key.
 
 #### Usage
 
@@ -1165,42 +1179,52 @@ const CreateCategory = () => {
 ```
 {% endraw %}
 
+#### CSS API
+
+| Rule name       | Description                                               |
+| --------------- | --------------------------------------------------------- |
+| `input`         | Applied to the underlying `ResettableTextField` component |
+
+To override the style of all instances of `<SelectInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaSelectInput` key.
+
 ## Array Inputs
 
 ### `<ArrayInput>`
 
 To edit arrays of data embedded inside a record, `<ArrayInput>` creates a list of sub-forms.
 
+![ArrayInput](./img/array-input.gif)
+
 ```jsx
 import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admin';
 
-<ArrayInput source="backlinks">
+<ArrayInput source="authors">
     <SimpleFormIterator>
-        <DateInput source="date" />
-        <TextInput source="url" />
+        <DateInput source="user" />
+        <TextInput source="role" />
     </SimpleFormIterator>
 </ArrayInput>
 ```
 
-![ArrayInput](./img/array-input.png)
-
- `<ArrayInput>` allows editing of embedded arrays, like the `backlinks` field in the following `post` record:
+`<ArrayInput>` allows editing of embedded arrays, like the `authors` field in the following `post` record:
 
 ```json
 {
   "id": 123,
-  "backlinks": [
+  "authors": [
         {
-            "date": "2012-08-10T00:00:00.000Z",
-            "url": "http://example.com/foo/bar.html",
+            "user_id": 123,
+            "role": "head_writer",
         },
         {
-            "date": "2012-08-14T00:00:00.000Z",
-            "url": "https://blog.johndoe.com/2012/08/12/foobar.html",
+            "user_id": 456,
+            "url": "co_writer",
         }
    ]
 }
 ```
+
+#### Usage
 
 `<ArrayInput>` expects a single child, which must be a *form iterator* component. A form iterator is a component accepting a `fields` object as passed by [react-final-form-array](https://github.com/final-form/react-final-form-arrays#fieldarrayrenderprops), and defining a layout for an array of fields. For instance, the `<SimpleFormIterator>` component displays an array of react-admin Inputs in an unordered list (`<ul>`), one sub-form by list item (`<li>`). It also provides controls for adding and removing a sub-record (a backlink in this example).
 
@@ -1230,7 +1254,7 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admi
 </ArrayInput>
 ```
 
-Furthermore, if you want to customize the label displayed for each item, you can pass a function to `SimpleFormIterator` via the `getItemLabel` prop.
+Furthermore, if you want to customize the label displayed for each item, you can pass a function to `<SimpleFormIterator>` via the `getItemLabel` prop.
 
 ```jsx
 import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admin';
@@ -1243,7 +1267,7 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admi
 </ArrayInput>
 ```
 
-**Note**: `SimpleFormIterator` only accepts `Input` components as children. If you want to use some `Fields` instead, you have to use a `<FormDataConsumer>` to get the correct source, as follows:
+**Note**: `<SimpleFormIterator>` only accepts `Input` components as children. If you want to use some `Fields` instead, you have to use a `<FormDataConsumer>` to get the correct source, as follows:
 
 ```jsx
 import { ArrayInput, SimpleFormIterator, DateInput, TextInput, FormDataConsumer } from 'react-admin';
@@ -1267,12 +1291,15 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput, FormDataConsumer 
 
 `<ArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props) (except `format` and `parse`). 
 
-**Important**: Note that asynchronous validators are not supported on the `ArrayInput` component due to a limitation of [react-final-form-arrays](https://github.com/final-form/react-final-form-arrays).
+**Important**: Note that asynchronous validators are not supported on the `<ArrayInput>` component due to a limitation of [react-final-form-arrays](https://github.com/final-form/react-final-form-arrays).
 
 ### `<AutocompleteArrayInput>`
 
 To let users choose multiple values in a list using a dropdown with autocompletion, use `<AutocompleteArrayInput>`.
 It renders using [downshift](https://github.com/downshift-js/downshift) and a `fuzzySearch` filter.
+
+![AutocommpleteArrayInput](./img/autocomplete-array-input.gif)
+
 Set the `choices` attribute to determine the options list (with `id`, `name` tuples).
 
 ```jsx
@@ -1306,21 +1333,6 @@ import { AutocompleteArrayInput } from 'react-admin';
 | `suggestionLimit`         | Optional | `number`                   | `null`       | Limits the numbers of suggestions that are shown in the dropdown list                                                                                                                                                                                                                                |
 
 `<AutocompleteArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
-
-#### CSS API
-
-| Rule name               | Description                                                                                                                 |
-| ----------------------  | --------------------------------------------------------------------------------------------------------------------------- |
-| `container`             | Applied to the container of the underlying Material UI's `TextField` component input                                        |
-| `suggestionsContainer`  | Applied to the suggestions container |
-| `chip`                  | Applied to each Material UI's `Chip` component used as selected item                                                        |
-| `chipContainerFilled`   | Applied to each container of each Material UI's `Chip` component used as selected item when `variant` prop is `filled`      |
-| `chipContainerOutlined` | Applied to each container of each `Chip` component used as selected item when `variant` prop is `outlined`                  |
-| `inputRoot`             | Styles pass as the `root` class of the underlying Material UI's `TextField` component input                                 |
-| `inputRootFilled`       | Styles pass as the `root` class of the underlying Material UI's `TextField` component input when `variant` prop is `filled` |
-| `inputInput`            | Styles pass as the `input` class of the underlying Material UI's `TextField` component input                                |
-
-To override the style of all instances of `<AutocompleteArrayInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaAutocompleteArrayInput` key.
 
 #### Usage
 
@@ -1518,9 +1530,28 @@ const CreateTag = () => {
 ```
 {% endraw %}
 
+#### CSS API
+
+| Rule name               | Description                                                                                                                 |
+| ----------------------  | --------------------------------------------------------------------------------------------------------------------------- |
+| `container`             | Applied to the container of the underlying Material UI's `TextField` component input                                        |
+| `suggestionsContainer`  | Applied to the suggestions container |
+| `chip`                  | Applied to each Material UI's `Chip` component used as selected item                                                        |
+| `chipContainerFilled`   | Applied to each container of each Material UI's `Chip` component used as selected item when `variant` prop is `filled`      |
+| `chipContainerOutlined` | Applied to each container of each `Chip` component used as selected item when `variant` prop is `outlined`                  |
+| `inputRoot`             | Styles pass as the `root` class of the underlying Material UI's `TextField` component input                                 |
+| `inputRootFilled`       | Styles pass as the `root` class of the underlying Material UI's `TextField` component input when `variant` prop is `filled` |
+| `inputInput`            | Styles pass as the `input` class of the underlying Material UI's `TextField` component input                                |
+
+To override the style of all instances of `<AutocompleteArrayInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaAutocompleteArrayInput` key.
+
 ### `<CheckboxGroupInput>`
 
-If you want to let the user choose multiple values among a list of possible values by showing them all, `<CheckboxGroupInput>` is the right component. Set the `choices` attribute to determine the options (with `id`, `name` tuples):
+If you want to let the user choose multiple values among a list of possible values by showing them all, `<CheckboxGroupInput>` is the right component. 
+
+![CheckboxGroupInput](./img/checkbox-group-input.png)
+
+Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
 ```jsx
 import { CheckboxGroupInput } from 'react-admin';
@@ -1531,8 +1562,6 @@ import { CheckboxGroupInput } from 'react-admin';
     { id: 'photography', name: 'Photography' },
 ]} />
 ```
-
-![CheckboxGroupInput](./img/checkbox-group-input.png)
 
 #### Properties
 
@@ -1546,15 +1575,6 @@ import { CheckboxGroupInput } from 'react-admin';
 Refer to [Material UI Checkbox documentation](https://material-ui.com/api/checkbox/) for more details.
 
 `<CheckboxGroupInput>` also accepts the [common input props](./Inputs.md#common-input-props).
-
-#### CSS API
-
-| Rule name  | Description                                                   |
-| ---------- | ------------------------------------------------------------- |
-| `root`     | Applied to the root element                                   |
-| `label`    | Applied to the underlying Material UI's `FormLabel` component |
-
-To override the style of all instances of `<CheckboxGroupInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaCheckboxGroupInput` key.
 
 #### Usage
 
@@ -1619,6 +1639,15 @@ import { FavoriteBorder, Favorite } from '@material-ui/icons';
 ```
 {% endraw %}
 
+#### CSS API
+
+| Rule name  | Description                                                   |
+| ---------- | ------------------------------------------------------------- |
+| `root`     | Applied to the root element                                   |
+| `label`    | Applied to the underlying Material UI's `FormLabel` component |
+
+To override the style of all instances of `<CheckboxGroupInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaCheckboxGroupInput` key.
+
 ### `<DualListInput>`
 
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component allows to edit array values, one-to-many or many-to-many relationships by moving items from one list to another. It's a good alternative to `<SelectInput>` for a small number of choices.
@@ -1638,8 +1667,9 @@ Check [the `ra-relationships` documentation](https://marmelab.com/ra-enterprise/
 
 ### `<SelectArrayInput>`
 
-To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [Material ui's `<Select>`](https://material-ui.com/api/select). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
+To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [Material ui's `<Select>`](https://material-ui.com/api/select). 
 
+![SelectArrayInput](./img/select-array-input.gif)
 
 #### Properties
 
@@ -1659,17 +1689,9 @@ To let users choose several values in a list using a dropdown, use `<SelectArray
 
 `<SelectArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
-#### CSS API
-
-| Rule name  | Description                                                                        |
-| ---------- | ---------------------------------------------------------------------------------- |
-| `root`     | Applied to the root element                                                        |
-| `chip`     | Applied to each Material UI's `Chip` component used as selected item               |
-| `chips`    | Applied to the container of Material UI's `Chip` components used as selected items |
-
-To override the style of all instances of `<SelectArrayInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaSelectArrayInput` key.
-
 #### Usage
+
+Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
 ```jsx
 import { SelectArrayInput } from 'react-admin';
@@ -1682,8 +1704,6 @@ import { SelectArrayInput } from 'react-admin';
     { id: 'sport', name: 'Sport' },
 ]} />
 ```
-
-![SelectArrayInput](./img/select-array-input.gif)
 
 You can also customize the properties to use for the option name and value,
 thanks to the `optionText` and `optionValue` attributes.
@@ -1901,6 +1921,17 @@ const CreateTag = () => {
 };
 ```
 {% endraw %}
+
+#### CSS API
+
+| Rule name  | Description                                                                        |
+| ---------- | ---------------------------------------------------------------------------------- |
+| `root`     | Applied to the root element                                                        |
+| `chip`     | Applied to each Material UI's `Chip` component used as selected item               |
+| `chips`    | Applied to the container of Material UI's `Chip` components used as selected items |
+
+To override the style of all instances of `<SelectArrayInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaSelectArrayInput` key.
+
 
 ## Reference Inputs 
 
@@ -2222,7 +2253,11 @@ Check [the `ra-relationships` documentation](https://marmelab.com/ra-enterprise/
 
 ## Translatable Inputs
 
-You may have inputs which are translated in multiple languages and want users to edit translations for each language separately. To display them, you can use the `<TranslatableInputs>` component, which expects the translatable values to have the following structure:
+You may have inputs which are translated in multiple languages and want users to edit translations for each language separately. To display them, you can use the `<TranslatableInputs>` component.
+
+![TranslatableInputs](./img/translatable-input.gif)
+
+It expects the translatable values to have the following structure:
 
 ```js
 {
@@ -2753,5 +2788,7 @@ You can find components for react-admin in third-party repositories.
 - [vascofg/react-admin-color-input](https://github.com/vascofg/react-admin-color-input): a color input using [React Color](https://casesandberg.github.io/react-color/), a collection of color pickers.
 - [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs): a collection of Date Inputs, based on [material-ui-pickers](https://material-ui-pickers.firebaseapp.com/)
 - [MrHertal/react-admin-json-view](https://github.com/MrHertal/react-admin-json-view): JSON field and input for react-admin.
+- [@bb-tech/ra-components](https://github.com/bigbasket/ra-components): `JsonInput` which allows only valid JSON as input, `JsonField` to view JSON properly on show card and `TrimField` to trim the fields while showing in `Datagrid` in `List` component.
+- [@react-page/react-admin](https://react-page.github.io/docs/#/integration-react-admin): ReactPage is a rich content editor and can comes with a ready-to-use React-admin input component. [check out the demo](https://react-page.github.io/examples/reactadmin)
 
 - **DEPRECATED V3** [LoicMahieu/aor-tinymce-input](https://github.com/LoicMahieu/aor-tinymce-input): a TinyMCE component, useful for editing HTML

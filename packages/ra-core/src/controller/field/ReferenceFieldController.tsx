@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode, ReactElement } from 'react';
+import { ReactNode, ReactElement } from 'react';
 import get from 'lodash/get';
 
 import { Record } from '../../types';
@@ -49,12 +49,12 @@ interface Props {
  *     <TextField source="name" />
  * </ReferenceField>
  */
-export const ReferenceFieldController: FunctionComponent<Props> = ({
+export const ReferenceFieldController = ({
     children,
     record,
     source,
     ...props
-}) => {
+}: Props) => {
     const id = get(record, source);
     return children({
         ...useReference({ ...props, id }),

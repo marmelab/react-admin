@@ -644,9 +644,9 @@ const NotifyButton = () => {
 The callback takes 5 arguments:
  - the message to display
  - the level of the notification (`info`, `success` or `warning` - the default is `info`)
- - an `options` object to pass to the `translate` function (because notificatoin messages are translated if your admin has an `i18nProvider`). It is useful for inserting variables into the translation.
+ - an `options` object to pass to the `translate` function (because notification messages are translated if your admin has an `i18nProvider`). It is useful for inserting variables into the translation.
  - an `undoable` boolean. Set it to `true` if the notification should contain an "undo" button
- - a `duration` number. Set it to `0` if the notification should not be dismissable.
+ - a `duration` number. Set it to `0` if the notification should not be dismissible.
 
 Here are more examples of `useNotify` calls: 
 

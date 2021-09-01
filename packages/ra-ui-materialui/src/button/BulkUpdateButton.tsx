@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import PropTypes from 'prop-types';
 import BulkUpdateWithConfirmButton, {
     BulkUpdateWithConfirmButtonProps,
@@ -32,15 +31,15 @@ import { MutationMode } from 'ra-core';
  *     </List>
  * );
  */
-const BulkUpdateButton: FC<BulkUpdateButtonProps> = ({
-    mutationMode,
-    ...props
-}) =>
-    mutationMode === 'undoable' ? (
-        <BulkUpdateWithUndoButton {...props} />
+const BulkUpdateButton = (props: BulkUpdateButtonProps) => {
+    const { mutationMode, ...rest } = props;
+
+    return mutationMode === 'undoable' ? (
+        <BulkUpdateWithUndoButton {...rest} />
     ) : (
-        <BulkUpdateWithConfirmButton mutationMode={mutationMode} {...props} />
+        <BulkUpdateWithConfirmButton mutationMode={mutationMode} {...rest} />
     );
+};
 
 interface Props {
     mutationMode?: MutationMode;

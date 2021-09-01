@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FunctionComponent, ReactElement, memo } from 'react';
+import { ReactElement, memo } from 'react';
 
 import useTranslate from '../i18n/useTranslate';
 import getFieldLabelTranslationArgs from './getFieldLabelTranslationArgs';
@@ -11,12 +11,8 @@ interface Props {
     label?: string | ReactElement | false;
 }
 
-export const FieldTitle: FunctionComponent<Props> = ({
-    resource,
-    source,
-    label,
-    isRequired,
-}) => {
+export const FieldTitle = (props: Props) => {
+    const { resource, source, label, isRequired } = props;
     const translate = useTranslate();
 
     if (label === false || label === '') {

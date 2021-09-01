@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ReactElement, memo, useMemo } from 'react';
+import { ReactElement, memo, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Fab, useMediaQuery, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -23,7 +23,7 @@ import Button, { ButtonProps, sanitizeButtonRestProps } from './Button';
  *     <CreateButton basePath="/comments" label="Create comment" />
  * );
  */
-const CreateButton: FC<CreateButtonProps> = props => {
+const CreateButton = (props: CreateButtonProps) => {
     const {
         basePath = '',
         className,

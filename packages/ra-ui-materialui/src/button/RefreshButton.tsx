@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ReactElement, MouseEvent, useCallback } from 'react';
+import { ReactElement, MouseEvent, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import NavigationRefresh from '@material-ui/icons/Refresh';
@@ -7,12 +7,13 @@ import { refreshView } from 'ra-core';
 
 import Button, { ButtonProps } from './Button';
 
-const RefreshButton: FC<RefreshButtonProps> = ({
-    label = 'ra.action.refresh',
-    icon = defaultIcon,
-    onClick,
-    ...rest
-}) => {
+const RefreshButton = (props: RefreshButtonProps) => {
+    const {
+        label = 'ra.action.refresh',
+        icon = defaultIcon,
+        onClick,
+        ...rest
+    } = props;
     const dispatch = useDispatch();
     const handleClick = useCallback(
         event => {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FunctionComponent, ComponentType, useContext, useState } from 'react';
+import { ComponentType, useContext, useState } from 'react';
 import { Provider, ReactReduxContext } from 'react-redux';
 import { History } from 'history';
 import { createHashHistory } from 'history';
@@ -40,16 +40,17 @@ export interface AdminContextProps {
     theme?: object;
 }
 
-const CoreAdminContext: FunctionComponent<AdminContextProps> = ({
-    authProvider,
-    dataProvider,
-    i18nProvider,
-    children,
-    history,
-    customReducers,
-    customSagas,
-    initialState,
-}) => {
+const CoreAdminContext = (props: AdminContextProps) => {
+    const {
+        authProvider,
+        dataProvider,
+        i18nProvider,
+        children,
+        history,
+        customReducers,
+        customSagas,
+        initialState,
+    } = props;
     const reduxIsAlreadyInitialized = !!useContext(ReactReduxContext);
 
     if (!dataProvider) {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, Fragment, useCallback, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import {
     AutocompleteInput,
     BooleanField,
@@ -87,7 +87,7 @@ const useGetTotals = (filterValues: any) => {
     };
 };
 
-const TabbedDatagrid: FC<TabbedDatagridProps> = props => {
+const TabbedDatagrid = (props: TabbedDatagridProps) => {
     const listContext = useListContext();
     const { ids, filterValues, setFilters, displayedFilters } = listContext;
     const classes = useDatagridStyles();
@@ -259,7 +259,7 @@ const TabbedDatagrid: FC<TabbedDatagridProps> = props => {
     );
 };
 
-const OrderList: FC<ListProps> = props => (
+const OrderList = (props: ListProps) => (
     <List
         {...props}
         filterDefaultValues={{ status: 'ordered' }}

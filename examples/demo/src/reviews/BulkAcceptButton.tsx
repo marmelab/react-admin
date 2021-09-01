@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import PropTypes from 'prop-types';
 import ThumbUp from '@material-ui/icons/ThumbUp';
 
@@ -16,9 +15,8 @@ import {
 
 const noSelection: Identifier[] = [];
 
-const BulkAcceptButton: FC<BulkActionProps> = ({
-    selectedIds = noSelection,
-}) => {
+const BulkAcceptButton = (props: BulkActionProps) => {
+    const { selectedIds = noSelection } = props;
     const notify = useNotify();
     const refresh = useRefresh();
     const unselectAll = useUnselectAll('reviews');

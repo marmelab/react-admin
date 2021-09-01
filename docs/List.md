@@ -321,7 +321,7 @@ const ResetViewsButton = (props) => (
         {...props}
         label="Reset Views"
         data={views}
-        icon={VisibilityOff}
+        icon={<VisibilityOff/>}
     />
 );
 
@@ -458,7 +458,7 @@ export default CustomResetViewsButton;
 
 **Tip**: `<Confirm>` leverages material-ui's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
 
-**Tip**: `<Confirm>` text props such as `title` and `content` are translatable. You can pass translation keys in these props. Note: `content` is only translateable when value is `string`, otherwise it renders the content as a `ReactNode`.
+**Tip**: `<Confirm>` text props such as `title` and `content` are translatable. You can pass translation keys in these props. Note: `content` is only translatable when value is `string`, otherwise it renders the content as a `ReactNode`.
 
 **Tip**: You can customize the text of the two `<Confirm>` component buttons using the `cancel` and `confirm` props which accept translation keys. You can customize the icons by setting the `ConfirmIcon` and `CancelIcon` props, which accept a SvgIcon type.
 
@@ -1309,7 +1309,7 @@ For instance, by default, the filter button/form combo doesn't provide a submit 
 
 In that case, the solution is to process the filter when users click on a submit button, rather than when they type values in form inputs. React-admin doesn't provide any component for that, but it's a good opportunity to illustrate the internals of the filter functionality. We'll actually provide an alternative implementation to the Filter button/form combo.
 
-To create a custom filter UI, we'll have to override the default List Actions component, which will contain both a Filter Button and a Filetr Form, interacting with the List filters via the ListContext.
+To create a custom filter UI, we'll have to override the default List Actions component, which will contain both a Filter Button and a Filter Form, interacting with the List filters via the ListContext.
 
 #### Filter Callbacks
 
@@ -2007,6 +2007,38 @@ As you can see, the controller part of the List view is handled by a hook called
 
 **Tip**: If your custom List view doesn't use a `ListContextProvider`, you can't use `<Datagrid>`, `<SimpleList>`, `<Pagination>`, etc. All these components rely on the `ListContext`.
 
+## `useList`
+
+The `useList` hook allows to apply the list features such as filtering, sorting and paginating on an array of records you already have.
+
+Thanks to it, you can display your data inside a [`<Datagrid>`](#the-datagrid-component), a [`<SimpleList>`](#the-simplelist-component) or an [`<EditableDatagrid>`](#the-editabledatagrid-component). For example:
+
+```jsx
+const data = [
+    { id: 1, name: 'Arnold' },
+    { id: 2, name: 'Sylvester' },
+    { id: 3, name: 'Jean-Claude' },
+]
+const ids = [1, 2, 3];
+
+const MyComponent = () => {
+    const listContext = useList({
+        data,
+        ids,
+        basePath: '/resource';
+        resource: 'resource';
+    });
+    return (
+        <ListContextProvider value={listContext}>
+            <Datagrid>
+                <TextField source="id" />
+                <TextField source="name" />
+            </Datagrid>
+        </ListContextProvider>
+    );
+};
+```
+
 ## The `<Datagrid>` component
 
 ![The `<Datagrid>` component](./img/tutorial_post_list_less_columns.png)
@@ -2341,7 +2373,8 @@ export default withStyles(styles)(PostList);
 
 It's possible that a Datagrid will have no records to display. If the Datagrid's parent component handles the loading state, the Datagrid will return `null` and render nothing.
 Passing through a component to the `empty` prop will cause the Datagrid to render the `empty` component instead of `null`.
-### CSS API
+
+### Datagrid CSS API
 
 The `Datagrid` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
 
@@ -2859,7 +2892,8 @@ const getUserFilters = (permissions) => ([
     <TextInput label="user.list.search" source="q" alwaysOn />,
     <TextInput source="name" />,
     permissions === 'admin' ? <TextInput source="role" /> : null,
-].filter(filter => filter !== null)));
+    ].filter(filter => filter !== null)
+);
 
 export const UserList = ({ permissions, ...props }) => {
     const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
@@ -2898,14 +2932,15 @@ You can use the `<Datagrid>` component with [custom queries](./Actions.md#useque
 
 {% raw %}
 ```jsx
-import keyBy from 'lodash/keyBy'
+import keyBy from 'lodash/keyBy';
+import { Fragment } from 'react';
 import {
     useQuery,
     Datagrid,
     TextField,
     Pagination,
     Loading,
-} from 'react-admin'
+} from 'react-admin';
 
 const CustomList = () => {
     const [page, setPage] = useState(1);
@@ -2928,22 +2963,24 @@ const CustomList = () => {
         return <p>ERROR: {error}</p>
     }
     return (
-        <Datagrid 
-            data={keyBy(data, 'id')}
-            ids={data.map(({ id }) => id)}
-            currentSort={sort}
-            setSort={(field, order) => setSort({ field, order })}
-        >
-            <TextField source="id" />
-            <TextField source="title" />
-        </Datagrid>
-        <Pagination
-            page={page}
-            setPage={setPage}
-            perPage={perPage}
-            setPerPage={setPerPage}
-            total={total}
-        />
+        <Fragment>
+            <Datagrid 
+                data={keyBy(data, 'id')}
+                ids={data.map(({ id }) => id)}
+                currentSort={sort}
+                setSort={(field, order) => setSort({ field, order })}
+            >
+                <TextField source="id" />
+                <TextField source="title" />
+            </Datagrid>
+            <Pagination
+                page={page}
+                setPage={setPage}
+                perPage={perPage}
+                setPerPage={setPerPage}
+                total={total}
+            />
+        </Fragment>
     );
 }
 ```

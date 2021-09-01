@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { makeStyles } from '@material-ui/core/styles';
@@ -17,7 +16,8 @@ const useStyles = makeStyles({
     },
 });
 
-const Poster: FC<FieldProps<Product>> = ({ record }) => {
+const Poster = (props: FieldProps<Product>) => {
+    const { record } = props;
     const classes = useStyles();
 
     if (!record) return null;

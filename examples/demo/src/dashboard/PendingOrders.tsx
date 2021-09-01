@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import List from '@material-ui/core/List';
@@ -28,7 +27,8 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const PendingOrders: FC<Props> = ({ orders = [], customers = {} }) => {
+const PendingOrders = (props: Props) => {
+    const { orders = [], customers = {} } = props;
     const classes = useStyles();
     const translate = useTranslate();
     return (

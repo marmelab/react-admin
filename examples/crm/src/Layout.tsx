@@ -10,7 +10,11 @@ import { Notification, Error } from 'react-admin';
 import Header from './Header';
 
 class Layout extends Component<LayoutProps, LayoutState> {
-    state = { hasError: false, errorMessage: undefined, errorInfo: undefined };
+    state: LayoutState = {
+        hasError: false,
+        errorMessage: undefined,
+        errorInfo: undefined,
+    };
 
     constructor(props: any) {
         super(props);
@@ -29,7 +33,7 @@ class Layout extends Component<LayoutProps, LayoutState> {
     componentDidCatch(error: Error, errorInfo: ErrorInfo) {
         this.setState({
             hasError: true,
-            errorMessage: error.message,
+            errorMessage: error,
             errorInfo,
         });
     }
@@ -46,7 +50,7 @@ class Layout extends Component<LayoutProps, LayoutState> {
                     <main id="main-content">
                         {hasError ? (
                             <Error
-                                error={(errorMessage as unknown) as string} // FIXME
+                                error={errorMessage as Error}
                                 errorInfo={errorInfo}
                                 title={title as string}
                             />
@@ -73,7 +77,7 @@ export interface LayoutProps
 
 export interface LayoutState {
     hasError: boolean;
-    errorMessage?: string;
+    errorMessage?: Error;
     errorInfo?: ErrorInfo;
 }
 

@@ -41,6 +41,7 @@ See the [Auth Provider](./Authentication.md#available-providers) page. Here is a
 
 ## Authorization Management
 
+- **[Role-Based Access Control (RBAC)](https://marmelab.com/ra-enterprise/modules/ra-rbac)**: This module published by Marmelab lets you manage fine-grained permissions
 - **[Access Control List (ACL) for Resources](https://github.com/marmelab/ra-auth-acl)**: [marmelab/ra-auth-acl](https://github.com/marmelab/ra-auth-acl)
 - **[Access Control List (ACL) utilities and components](https://github.com/andrico1234/ra-acl)**: Easily manage role-based permissions with hooks and ready-to-use components
 

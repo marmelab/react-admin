@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import PropTypes from 'prop-types';
 import {
     NumberField,
@@ -47,7 +46,7 @@ interface AsideProps {
     basePath?: string;
 }
 
-const Aside: FC<AsideProps> = ({ record, basePath }) => {
+const Aside = ({ record, basePath }: AsideProps) => {
     const classes = useAsideStyles();
     return (
         <div className={classes.root}>
@@ -74,7 +73,7 @@ const useEventStyles = makeStyles({
     },
 });
 
-const EventList: FC<EventListProps> = ({ record, basePath }) => {
+const EventList = ({ record, basePath }: EventListProps) => {
     const translate = useTranslate();
     const classes = useEventStyles();
     const locale = useLocale();
@@ -285,7 +284,7 @@ interface OrderProps {
     basePath?: string;
 }
 
-const Order: FC<OrderProps> = ({ record, basePath }) => {
+const Order = ({ record, basePath }: OrderProps) => {
     const translate = useTranslate();
     return record ? (
         <>
@@ -337,7 +336,7 @@ const useReviewStyles = makeStyles({
     },
 });
 
-const Review: FC<ReviewProps> = ({ record, basePath }) => {
+const Review = ({ record, basePath }: ReviewProps) => {
     const classes = useReviewStyles();
     const translate = useTranslate();
     return record ? (

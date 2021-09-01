@@ -1,6 +1,5 @@
 // in src/comments.js
 import * as React from 'react';
-import { FC } from 'react';
 import { Card, CardHeader, CardContent } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -45,7 +44,8 @@ interface MobileGridProps {
     basePath?: string;
 }
 
-const MobileGrid: FC<MobileGridProps> = ({ ids, data, basePath }) => {
+const MobileGrid = (props: MobileGridProps) => {
+    const { ids, data, basePath } = props;
     const translate = useTranslate();
     const classes = useListStyles();
 

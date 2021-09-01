@@ -99,7 +99,7 @@ This example results in:
 
 ![Visitor List with customized CSS classes](./img/list_with_customized_css.png)
 
-Take a look at a component documentation and source code to know which classes are available for styling. For instance, you can have a look at the [Datagrid CSS documentation](./List.md##css-api-1).
+Take a look at a component documentation and source code to know which classes are available for styling. For instance, you can have a look at the [Datagrid CSS documentation](./List.md#datagrid-css-api).
 
 If you need more control over the HTML code, you can also create your own [Field](./Fields.md#writing-your-own-field-component) and [Input](./Inputs.md#writing-your-own-input-component) components.
 

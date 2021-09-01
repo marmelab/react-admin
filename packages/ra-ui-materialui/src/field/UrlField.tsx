@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { FC, AnchorHTMLAttributes, memo } from 'react';
+import { AnchorHTMLAttributes, memo } from 'react';
 import get from 'lodash/get';
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { Typography, Link } from '@material-ui/core';
 import { useRecordContext } from 'ra-core';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
-const UrlField: FC<UrlFieldProps> = memo<UrlFieldProps>(props => {
+const UrlField = (props: UrlFieldProps) => {
     const { className, emptyText, source, ...rest } = props;
     const record = useRecordContext(props);
     const value = get(record, source);
@@ -33,7 +33,7 @@ const UrlField: FC<UrlFieldProps> = memo<UrlFieldProps>(props => {
             {value}
         </Link>
     );
-});
+};
 
 UrlField.defaultProps = {
     addLabel: true,
@@ -47,4 +47,4 @@ export interface UrlFieldProps
         InjectedFieldProps,
         AnchorHTMLAttributes<HTMLAnchorElement> {}
 
-export default UrlField;
+export default memo<UrlFieldProps>(UrlField);

@@ -3,7 +3,6 @@ import {
     cloneElement,
     Children,
     HtmlHTMLAttributes,
-    FC,
     ComponentType,
 } from 'react';
 import PropTypes from 'prop-types';
@@ -78,7 +77,7 @@ const handleClick = () => {};
  *     </SingleFieldList>
  * </ReferenceManyField>
  */
-const SingleFieldList: FC<SingleFieldListProps> = props => {
+const SingleFieldList = (props: SingleFieldListProps) => {
     const {
         classes: classesOverride,
         className,

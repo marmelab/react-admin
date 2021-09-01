@@ -229,7 +229,7 @@ export const getSuggestionsFactory = ({
     if (allowCreate) {
         const filterIsSelectedItem =
             // If the selectedItem is an array (for example AutocompleteArrayInput)
-            // we should't try to match
+            // we shouldn't try to match
             !!selectedItem && !Array.isArray(selectedItem)
                 ? matchSuggestion(filter, selectedItem, true)
                 : false;

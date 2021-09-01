@@ -1,4 +1,4 @@
-import { ReactElement, FunctionComponent } from 'react';
+import { ReactElement } from 'react';
 
 import { Record, SortPayload } from '../../types';
 import useReferenceManyFieldController from './useReferenceManyFieldController';
@@ -24,7 +24,7 @@ interface Props {
  *
  * @see useReferenceManyFieldController
  */
-export const ReferenceManyFieldController: FunctionComponent<Props> = props => {
+export const ReferenceManyFieldController = (props: Props) => {
     const { children, page = 1, perPage = 25, ...rest } = props;
     const controllerProps = useReferenceManyFieldController({
         page,

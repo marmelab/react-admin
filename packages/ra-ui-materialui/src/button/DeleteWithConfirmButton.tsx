@@ -1,7 +1,6 @@
 import React, {
     Fragment,
     ReactEventHandler,
-    FC,
     ReactElement,
     SyntheticEvent,
 } from 'react';
@@ -12,20 +11,23 @@ import ActionDelete from '@material-ui/icons/Delete';
 import classnames from 'classnames';
 import inflection from 'inflection';
 import {
-    useTranslate,
+    getMutationMode,
     MutationMode,
+    OnSuccess,
+    OnFailure,
     Record,
     RedirectionSideEffect,
     useDeleteWithConfirmController,
-    OnSuccess,
-    OnFailure,
     useResourceContext,
+    useTranslate,
 } from 'ra-core';
 
 import Confirm from '../layout/Confirm';
 import Button, { ButtonProps } from './Button';
 
-const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
+export const DeleteWithConfirmButton = (
+    props: DeleteWithConfirmButtonProps
+) => {
     const {
         basePath,
         classes: classesOverride,
@@ -40,11 +42,14 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
         redirect = 'list',
         onSuccess,
         onFailure,
+        undoable,
         ...rest
     } = props;
     const translate = useTranslate();
     const classes = useStyles(props);
     const resource = useResourceContext(props);
+    const mode = getMutationMode(mutationMode, undoable);
+
     const {
         open,
         loading,
@@ -55,7 +60,7 @@ const DeleteWithConfirmButton: FC<DeleteWithConfirmButtonProps> = props => {
         record,
         redirect,
         basePath,
-        mutationMode,
+        mutationMode: mutationMode || mode,
         onClick,
         onSuccess,
         onFailure,
@@ -140,9 +145,10 @@ interface Props {
     pristine?: boolean;
     saving?: boolean;
     submitOnEnter?: boolean;
-    undoable?: boolean;
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
+    /** @deprecated use mutationMode: undoable instead */
+    undoable?: boolean;
 }
 
 export type DeleteWithConfirmButtonProps = Props & ButtonProps;
@@ -154,6 +160,8 @@ DeleteWithConfirmButton.propTypes = {
     confirmTitle: PropTypes.string,
     confirmContent: PropTypes.string,
     label: PropTypes.string,
+    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
+    undoable: PropTypes.bool,
     record: PropTypes.any,
     redirect: PropTypes.oneOfType([
         PropTypes.string,
@@ -163,5 +171,3 @@ DeleteWithConfirmButton.propTypes = {
     resource: PropTypes.string,
     icon: PropTypes.element,
 };
-
-export default DeleteWithConfirmButton;

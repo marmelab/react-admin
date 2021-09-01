@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, ReactNode, FunctionComponent } from 'react';
+import { useEffect, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import RemoveCircle from '@material-ui/icons/RemoveCircle';
@@ -24,7 +24,7 @@ interface Props {
     file: any;
 }
 
-const FileInputPreview: FunctionComponent<Props> = props => {
+const FileInputPreview = (props: Props) => {
     const {
         children,
         classes: classesOverride,

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import {
     useEditController,
     EditContextProvider,
@@ -48,7 +47,7 @@ interface Props extends EditProps {
     onCancel: () => void;
 }
 
-const ReviewEdit: FC<Props> = ({ onCancel, ...props }) => {
+const ReviewEdit = ({ onCancel, ...props }: Props) => {
     const classes = useStyles();
     const controllerProps = useEditController<Review>(props);
     const translate = useTranslate();
