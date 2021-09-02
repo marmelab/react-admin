@@ -2499,6 +2499,34 @@ export const PostList = (props) => (
 
 For each record, `<SimpleList>` executes the `primaryText`, `secondaryText`, `linkType`, `rowStyle`, `leftAvatar`, `leftIcon`, `rightAvatar`, and `rightIcon` props functions, and creates a `<ListItem>` with the result.
 
+The `primaryText`, `secondaryText` and `tertiaryText` functions can return a React element. This means you can use any react-admin fields, including reference fields:
+
+```jsx
+// in src/posts.js
+import * as React from "react";
+import { List, SimpleList } from 'react-admin';
+
+const postRowStyle = (record, index) => ({
+    backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
+});
+
+export const PostList = (props) => (
+    <List {...props}>
+        <SimpleList
+            primaryText={<TextField source="title" />}
+            secondaryText={record => `${record.views} views`}
+            tertiaryText={
+                <ReferenceField reference="categories" source="category_id">
+                    <TextField source="name" />
+                </ReferenceField>
+            }
+            linkType={record => record.canEdit ? "edit" : "show"}
+            rowStyle={postRowStyle}
+        />
+    </List>
+);
+```
+
 **Tip**: To use a `<SimpleList>` on small screens and a `<Datagrid>` on larger screens, use material-ui's `useMediaQuery` hook:
 
 ```jsx
