@@ -42,7 +42,8 @@ export const TranslatableFieldsTabContent = (
             {Children.map(children, field =>
                 field && isValidElement<any>(field) ? (
                     <div key={field.props.source}>
-                        {field.props.addLabel ? (
+                        {field.props.addLabel ??
+                        (field.props.label || field.props.source) ? (
                             <Labeled
                                 record={record}
                                 resource={resource}

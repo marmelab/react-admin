@@ -96,7 +96,8 @@ export const Tab = ({
                             field.props.className
                         )}
                     >
-                        {field.props.addLabel ? (
+                        {field.props.addLabel ??
+                        (field.props.label || field.props.source) ? (
                             <Labeled
                                 label={field.props.label}
                                 source={field.props.source}

@@ -74,7 +74,8 @@ const SimpleShowLayout = ({
                         field.props.className
                     )}
                 >
-                    {field.props.addLabel ? (
+                    {field.props.addLabel ??
+                    (field.props.label || field.props.source) ? (
                         <Labeled
                             record={record}
                             resource={resource}

@@ -40,7 +40,8 @@ const FormInput = <RecordType extends Record | Omit<Record, 'id'> = Record>(
                 input.props.formClassName
             )}
         >
-            {input.props.addLabel ? (
+            {input.props.addLabel ??
+            (input.props.label || input.props.source) ? (
                 <Labeled
                     id={id || input.props.source}
                     {...inputProps}
