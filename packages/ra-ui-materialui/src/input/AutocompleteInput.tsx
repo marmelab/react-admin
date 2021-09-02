@@ -258,6 +258,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         handleChange,
         filter: filterValue,
         onCreate,
+        optionText,
     });
 
     const handleFilterChange = useCallback(

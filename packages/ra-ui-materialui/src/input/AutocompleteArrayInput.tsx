@@ -287,6 +287,7 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
         handleChange,
         filter: filterValue,
         onCreate,
+        optionText,
     });
 
     const handleDelete = useCallback(
