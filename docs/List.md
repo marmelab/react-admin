@@ -2499,7 +2499,7 @@ export const PostList = (props) => (
 
 For each record, `<SimpleList>` executes the `primaryText`, `secondaryText`, `linkType`, `rowStyle`, `leftAvatar`, `leftIcon`, `rightAvatar`, and `rightIcon` props functions, and creates a `<ListItem>` with the result.
 
-The `primaryText`, `secondaryText` and `tertiaryText` functions can return a React element. This means you can use any react-admin fields, including reference fields:
+The `primaryText`, `secondaryText` and `tertiaryText` functions can return a React element. This means you can use any react-admin field, including reference fields:
 
 ```jsx
 // in src/posts.js
