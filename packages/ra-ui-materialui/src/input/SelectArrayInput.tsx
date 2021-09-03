@@ -165,6 +165,7 @@ const SelectArrayInput = (props: SelectArrayInputProps) => {
         createValue,
         handleChange,
         onCreate,
+        optionText,
     });
 
     const createItem = getCreateItem();
@@ -275,7 +276,7 @@ const SelectArrayInput = (props: SelectArrayInputProps) => {
 };
 
 export interface SelectArrayInputProps
-    extends Omit<ChoicesProps, 'choices'>,
+    extends Omit<ChoicesProps, 'choices' | 'optionText'>,
         Omit<SupportCreateSuggestionOptions, 'handleChange'>,
         Omit<InputProps<SelectProps>, 'source'>,
         Omit<
