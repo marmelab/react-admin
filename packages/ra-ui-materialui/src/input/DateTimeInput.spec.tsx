@@ -8,7 +8,7 @@ import format from 'date-fns/format';
 
 import DateTimeInput from './DateTimeInput';
 import ArrayInput from './ArrayInput';
-import SimpleFormIterator from '../form/SimpleFormIterator';
+import { SimpleFormIterator } from '../form/SimpleFormIterator';
 import { FormApi } from 'final-form';
 
 describe('<DateTimeInput />', () => {
