@@ -27,15 +27,16 @@ const useStyles = makeStyles(
 
 const BooleanField = (props: BooleanFieldProps) => {
     const {
+        addLabel = true,
         className,
         classes: classesOverride,
         emptyText,
         source,
         valueLabelTrue,
         valueLabelFalse,
-        TrueIcon,
-        FalseIcon,
-        looseValue,
+        TrueIcon = DoneIcon,
+        FalseIcon = ClearIcon,
+        looseValue = false,
         ...rest
     } = props;
     const record = useRecordContext(props);
@@ -82,13 +83,6 @@ const BooleanField = (props: BooleanFieldProps) => {
             {emptyText}
         </Typography>
     );
-};
-
-BooleanField.defaultProps = {
-    addLabel: true,
-    TrueIcon: DoneIcon,
-    FalseIcon: ClearIcon,
-    looseValue: false,
 };
 
 BooleanField.propTypes = {
