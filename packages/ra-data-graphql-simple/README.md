@@ -27,36 +27,30 @@ The `ra-data-graphql-simple` package exposes a single function, which is a const
 
 ```jsx
 // in App.js
-import * as React from 'react';
+import React from 'react';
 import { Component } from 'react';
 import buildGraphQLProvider from 'ra-data-graphql-simple';
 import { Admin, Resource } from 'react-admin';
 
 import { PostCreate, PostEdit, PostList } from './posts';
 
-class App extends Component {
-    constructor() {
-        super();
-        this.state = { dataProvider: null };
-    }
-    componentDidMount() {
-        buildGraphQLProvider({ clientOptions: { uri: 'http://localhost:4000' }})
-            .then(dataProvider => this.setState({ dataProvider }));
+const App = function () {
+
+    const [dataProvider, setDataProvider] = React.setState(null);
+    React.useEffect(() => {
+        buildGraphQLProvider({ clientOptions: { uri: 'http://localhost:4000' } })
+            .then(graphQlDataProvider => setDataProvider(() => graphQlDataProvider));
+    }, []);
+
+    if (!dataProvider) {
+        return <div>Loading < /div>;
     }
 
-    render() {
-        const { dataProvider } = this.state;
-
-        if (!dataProvider) {
-            return <div>Loading</div>;
-        }
-
-        return (
-            <Admin dataProvider={dataProvider}>
-                <Resource name="Post" list={PostList} edit={PostEdit} create={PostCreate} />
-            </Admin>
-        );
-    }
+    return (
+        <Admin dataProvider= { dataProvider } >
+            <Resource name="Post" list = { PostList } edit = { PostEdit } create = { PostCreate } />
+        </Admin>
+    );
 }
 
 export default App;
