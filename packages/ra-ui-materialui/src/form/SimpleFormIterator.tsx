@@ -12,9 +12,9 @@ import * as React from 'react';
 import {
     Children,
     cloneElement,
-    FC,
     isValidElement,
     ReactElement,
+    ReactNode,
     useRef,
 } from 'react';
 import { FieldArrayRenderProps } from 'react-final-form-arrays';
@@ -95,7 +95,7 @@ const DefaultRemoveButton = props => {
     );
 };
 
-const SimpleFormIterator: FC<SimpleFormIteratorProps> = props => {
+const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     const {
         addButton = <DefaultAddButton />,
         removeButton = <DefaultRemoveButton />,
@@ -322,6 +322,7 @@ export interface SimpleFormIteratorProps
     extends Partial<Omit<FieldArrayRenderProps<any, HTMLElement>, 'meta'>> {
     addButton?: ReactElement;
     basePath?: string;
+    children: ReactNode;
     classes?: ClassesOverride<typeof useStyles>;
     className?: string;
     defaultValue?: any;
