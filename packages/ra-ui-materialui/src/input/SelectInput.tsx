@@ -199,6 +199,7 @@ export const SelectInput = (props: SelectInputProps) => {
         createValue,
         handleChange,
         onCreate,
+        optionText,
     });
     if (loading) {
         return (

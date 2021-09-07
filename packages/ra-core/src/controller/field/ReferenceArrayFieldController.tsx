@@ -4,7 +4,7 @@ import useReferenceArrayFieldController from './useReferenceArrayFieldController
 import { ListControllerProps } from '../useListController';
 import { Record, SortPayload } from '../../types';
 
-interface Props {
+export interface ReferenceArrayFieldControllerProps {
     basePath?: string;
     filter?: any;
     page?: number;
@@ -22,7 +22,9 @@ interface Props {
  *
  * @see useReferenceArrayFieldController
  */
-const ReferenceArrayFieldController = (props: Props) => {
+const ReferenceArrayFieldController = (
+    props: ReferenceArrayFieldControllerProps
+) => {
     const { children, ...rest } = props;
     const controllerProps = useReferenceArrayFieldController({
         sort: {

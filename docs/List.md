@@ -1229,7 +1229,7 @@ import {
 } from 'react-admin';
 +import { FilterWithSave } from '@react-admin/ra-preferences';
 
-const SongFilter: FC = props => (
+const SongFilter = props => (
 -   <Filter {...props}>
 +   <FilterWithSave {...props}>
         <SelectInput
@@ -1251,7 +1251,7 @@ const SongFilter: FC = props => (
 +   </FilterWithSave>
 );
 
-const SongList: FC<Props> = props => (
+const SongList = props => (
     <List {...props} filters={<SongFilter />}>
         <Datagrid rowClick="edit">
             <TextField source="title" />
@@ -1274,7 +1274,7 @@ import { Card, CardContent } from '@material-ui/core';
 
 +import { SavedQueriesList } from '@react-admin/ra-preferences';
 
-const SongFilterSidebar: FC = () => (
+const SongFilterSidebar = () => (
     <Card>
         <CardContent>
 +           <SavedQueriesList />
@@ -1288,7 +1288,7 @@ const SongFilterSidebar: FC = () => (
     </Card>
 );
 
-const SongList: FC<Props> = props => (
+const SongList = props => (
     <List {...props} aside={<SongFilterSidebar />}>
         <Datagrid>
             ...
@@ -2533,6 +2533,34 @@ export const PostList = (props) => (
 
 For each record, `<SimpleList>` executes the `primaryText`, `secondaryText`, `linkType`, `rowStyle`, `leftAvatar`, `leftIcon`, `rightAvatar`, and `rightIcon` props functions, and creates a `<ListItem>` with the result.
 
+The `primaryText`, `secondaryText` and `tertiaryText` functions can return a React element. This means you can use any react-admin field, including reference fields:
+
+```jsx
+// in src/posts.js
+import * as React from "react";
+import { List, SimpleList } from 'react-admin';
+
+const postRowStyle = (record, index) => ({
+    backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
+});
+
+export const PostList = (props) => (
+    <List {...props}>
+        <SimpleList
+            primaryText={<TextField source="title" />}
+            secondaryText={record => `${record.views} views`}
+            tertiaryText={
+                <ReferenceField reference="categories" source="category_id">
+                    <TextField source="name" />
+                </ReferenceField>
+            }
+            linkType={record => record.canEdit ? "edit" : "show"}
+            rowStyle={postRowStyle}
+        />
+    </List>
+);
+```
+
 **Tip**: To use a `<SimpleList>` on small screens and a `<Datagrid>` on larger screens, use material-ui's `useMediaQuery` hook:
 
 ```jsx
@@ -2778,7 +2806,7 @@ const EventList = props => (
 The `ra-calendar` module also offers a full replacement for the `<List>` component, complete with show and edit views for events, called `<CompleteCalendar>`:
 
 ```jsx
-import React, { FC } from 'react';
+import React from 'react';
 import {
     Admin,
     Resource,

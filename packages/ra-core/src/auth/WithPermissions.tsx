@@ -13,7 +13,7 @@ type WithPermissionsChildren = (
     params: WithPermissionsChildrenParams
 ) => ReactElement;
 
-interface Props {
+export interface WithPermissionsProps {
     authParams?: object;
     children?: WithPermissionsChildren;
     component?: ComponentType<any>;
@@ -59,7 +59,7 @@ const isEmptyChildren = children => Children.count(children) === 0;
  *         </Admin>
  *     );
  */
-const WithPermissions = (props: Props) => {
+const WithPermissions = (props: WithPermissionsProps) => {
     const {
         authParams,
         children,
@@ -91,4 +91,4 @@ const WithPermissions = (props: Props) => {
     }
 };
 
-export default WithPermissions as ComponentType<Props>;
+export default WithPermissions as ComponentType<WithPermissionsProps>;
