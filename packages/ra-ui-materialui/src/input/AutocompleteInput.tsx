@@ -22,6 +22,7 @@ import {
     useInput,
     FieldTitle,
     ChoicesInputProps,
+    UseChoicesOptions,
     mergeRefs,
     useSuggestions,
     useTranslate,
@@ -641,7 +642,8 @@ interface Options {
 
 export interface AutocompleteInputProps
     extends ChoicesInputProps<TextFieldProps>,
-        Omit<SupportCreateSuggestionOptions, 'handleChange'>,
+        UseChoicesOptions,
+        Omit<SupportCreateSuggestionOptions, 'handleChange' | 'optionText'>,
         Omit<DownshiftProps<any>, 'onChange'> {
     clearAlwaysVisible?: boolean;
     resettable?: boolean;

@@ -7,7 +7,7 @@ import {
     useContext,
     useState,
 } from 'react';
-import { Identifier, useTranslate } from 'ra-core';
+import { Identifier, OptionText, useTranslate } from 'ra-core';
 import set from 'lodash/set';
 
 /**
@@ -40,6 +40,12 @@ export const useSupportCreateSuggestion = (
     } = options;
     const translate = useTranslate();
     const [renderOnCreate, setRenderOnCreate] = useState(false);
+
+    if (typeof optionText !== 'string') {
+        throw new Error(
+            'Choice creation is only supported when optionText is a string'
+        );
+    }
 
     const context = {
         filter,
@@ -105,7 +111,7 @@ export interface SupportCreateSuggestionOptions {
     filter?: string;
     handleChange: (value: any, newChoice: any) => void;
     onCreate?: OnCreateHandler;
-    optionText?: string;
+    optionText?: OptionText;
 }
 
 export interface UseSupportCreateValue {

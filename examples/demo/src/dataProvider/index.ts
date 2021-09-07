@@ -54,7 +54,8 @@ const getDataProvider = async (
 const defaultDataProvider: DataProvider = {
     // @ts-ignore
     create: () => Promise.resolve({ data: { id: 0 } }),
-    delete: () => Promise.resolve({}),
+    // @ts-ignore
+    delete: () => Promise.resolve({ data: {} }),
     deleteMany: () => Promise.resolve({}),
     getList: () => Promise.resolve({ data: [], total: 0 }),
     getMany: () => Promise.resolve({ data: [] }),
