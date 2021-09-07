@@ -205,7 +205,7 @@ export interface DeleteParams {
     previousData: Record;
 }
 export interface DeleteResult<RecordType = Record> {
-    data?: RecordType;
+    data: RecordType;
 }
 
 export interface DeleteManyParams {
