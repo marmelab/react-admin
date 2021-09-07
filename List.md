@@ -1229,7 +1229,7 @@ import {
 } from 'react-admin';
 +import { FilterWithSave } from '@react-admin/ra-preferences';
 
-const SongFilter: FC = props => (
+const SongFilter = props => (
 -   <Filter {...props}>
 +   <FilterWithSave {...props}>
         <SelectInput
@@ -1251,7 +1251,7 @@ const SongFilter: FC = props => (
 +   </FilterWithSave>
 );
 
-const SongList: FC<Props> = props => (
+const SongList = props => (
     <List {...props} filters={<SongFilter />}>
         <Datagrid rowClick="edit">
             <TextField source="title" />
@@ -1274,7 +1274,7 @@ import { Card, CardContent } from '@material-ui/core';
 
 +import { SavedQueriesList } from '@react-admin/ra-preferences';
 
-const SongFilterSidebar: FC = () => (
+const SongFilterSidebar = () => (
     <Card>
         <CardContent>
 +           <SavedQueriesList />
@@ -1288,7 +1288,7 @@ const SongFilterSidebar: FC = () => (
     </Card>
 );
 
-const SongList: FC<Props> = props => (
+const SongList = props => (
     <List {...props} aside={<SongFilterSidebar />}>
         <Datagrid>
             ...
@@ -2048,6 +2048,7 @@ The `Datagrid` component renders a list of records as a table. It is usually use
 Here are all the props accepted by the component:
 
 * [`body`](#body-element)
+* [`header`](#header-element)
 * [`rowStyle`](#row-style-function)
 * [`rowClick`](#rowclick)
 * [`expand`](#expand)
@@ -2132,6 +2133,39 @@ const PostList = props => (
 
 export default PostList;
 ```
+
+### Header Element
+
+By default, `<Datagrid>` renders its header using `<DatagridHeader>`, an internal react-admin component. You can pass a custom component as the `header` prop to override that default. This can be useful e.g. to add a second header row, or to create headers spanning multiple columns.
+
+For instance, here is a simple datagrid header that displays column names with no sort and no "select all" button:
+
+```jsx
+import { TableHead, TableRow, TableCell } from '@material-ui/core';
+
+const DatagridHeader = ({ children }) => (
+    <TableHead>
+        <TableRow>
+            <TableCell></TableCell> {/* empty cell to account for the select row checkbox in the body */}
+            {Children.map(children, child => (
+                <TableCell key={child.props.source}>
+                    {child.props.source}
+                </TableCell>
+            ))}
+        </TableRow>
+    </TableHead>
+);
+
+const PostList = props => (
+    <List {...props}>
+        <Datagrid header={<DatagridHeader />}>
+            {/* ... */}
+        </Datagrid>
+    </List>
+);
+```
+
+**Tip**: To handle sorting in your custom Datagrid header component, check out the [Building a custom sort control](#building-a-custom-sort-control) section.
 
 ### Row Style Function
 
@@ -2499,6 +2533,34 @@ export const PostList = (props) => (
 
 For each record, `<SimpleList>` executes the `primaryText`, `secondaryText`, `linkType`, `rowStyle`, `leftAvatar`, `leftIcon`, `rightAvatar`, and `rightIcon` props functions, and creates a `<ListItem>` with the result.
 
+The `primaryText`, `secondaryText` and `tertiaryText` functions can return a React element. This means you can use any react-admin field, including reference fields:
+
+```jsx
+// in src/posts.js
+import * as React from "react";
+import { List, SimpleList } from 'react-admin';
+
+const postRowStyle = (record, index) => ({
+    backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
+});
+
+export const PostList = (props) => (
+    <List {...props}>
+        <SimpleList
+            primaryText={<TextField source="title" />}
+            secondaryText={record => `${record.views} views`}
+            tertiaryText={
+                <ReferenceField reference="categories" source="category_id">
+                    <TextField source="name" />
+                </ReferenceField>
+            }
+            linkType={record => record.canEdit ? "edit" : "show"}
+            rowStyle={postRowStyle}
+        />
+    </List>
+);
+```
+
 **Tip**: To use a `<SimpleList>` on small screens and a `<Datagrid>` on larger screens, use material-ui's `useMediaQuery` hook:
 
 ```jsx
@@ -2744,7 +2806,7 @@ const EventList = props => (
 The `ra-calendar` module also offers a full replacement for the `<List>` component, complete with show and edit views for events, called `<CompleteCalendar>`:
 
 ```jsx
-import React, { FC } from 'react';
+import React from 'react';
 import {
     Admin,
     Resource,
