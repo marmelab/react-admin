@@ -6,7 +6,12 @@ import createAdminStore from './createAdminStore';
 import RoutesWithLayout, { RoutesWithLayoutProps } from './RoutesWithLayout';
 import Resource from './Resource';
 
-export type { AdminContextProps, AdminRouterProps, AdminUIProps };
+export type {
+    AdminContextProps,
+    AdminRouterProps,
+    AdminUIProps,
+    RoutesWithLayoutProps,
+};
 
 export {
     CoreAdmin,
@@ -15,6 +20,5 @@ export {
     CoreAdminUI,
     createAdminStore,
     RoutesWithLayout,
-    RoutesWithLayoutProps,
     Resource,
 };

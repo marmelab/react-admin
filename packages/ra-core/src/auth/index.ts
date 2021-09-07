@@ -34,7 +34,7 @@ export {
     useLogoutIfAccessDenied,
     // components
     Authenticated,
-    AuthenticatedProps,
     WithPermissions,
-    WithPermissionsProps,
 };
+
+export type { AuthenticatedProps, WithPermissionsProps };

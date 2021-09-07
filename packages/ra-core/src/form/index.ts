@@ -41,6 +41,7 @@ export type {
     OptionTextElement,
     OptionText,
     UseChoicesOptions,
+    ValidationErrorProps,
 };
 
 export {
@@ -54,7 +55,6 @@ export {
     useInitializeFormWithRecord,
     useSuggestions,
     ValidationError,
-    ValidationErrorProps,
     useWarnWhenUnsavedChanges,
     useResetSubmitErrors,
 };

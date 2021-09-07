@@ -16,12 +16,14 @@ export {
     withTranslate, // deprecated
     TranslationContext,
     TranslationProvider,
-    TranslationProviderProps,
     TestTranslationProvider,
     useLocale,
     useSetLocale,
     useTranslate,
 };
+
+export type { TranslationProviderProps };
+
 export const DEFAULT_LOCALE = 'en';
 
 export * from './TranslationUtils';

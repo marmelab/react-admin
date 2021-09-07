@@ -20,5 +20,6 @@ export {
     getStatusForArrayInput,
     ReferenceArrayInputController,
     ReferenceInputController,
-    ReferenceInputControllerProps,
 };
+
+export type { ReferenceInputControllerProps };

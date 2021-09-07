@@ -18,7 +18,6 @@ export * from './mergeRefs';
 export {
     escapePath,
     FieldTitle,
-    FieldTitleProps,
     getFetchedAt,
     getFieldLabelTranslationArgs,
     ComponentPropType,
@@ -33,3 +32,5 @@ export {
     useTimeout,
     getMutationMode,
 };
+
+export type { FieldTitleProps };
