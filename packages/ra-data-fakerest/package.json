@@ -1,6 +1,6 @@
 {
     "name": "ra-data-fakerest",
-    "version": "3.13.5",
+    "version": "3.18.0",
     "description": "JSON Server data provider for react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",
@@ -40,8 +40,8 @@
         "fakerest": "^3.0.0"
     },
     "devDependencies": {
-        "ra-core": "^3.17.2",
         "cross-env": "^5.2.0",
+        "ra-core": "^3.18.0",
         "rimraf": "^2.6.3"
     },
     "peerDependencies": {

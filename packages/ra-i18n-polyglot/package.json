@@ -1,6 +1,6 @@
 {
     "name": "ra-i18n-polyglot",
-    "version": "3.17.3",
+    "version": "3.18.0",
     "description": "Polyglot i18n provider for react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",
@@ -26,7 +26,7 @@
     },
     "dependencies": {
         "node-polyglot": "^2.2.2",
-        "ra-core": "^3.17.3"
+        "ra-core": "^3.18.0"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
