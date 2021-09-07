@@ -41,12 +41,6 @@ export const useSupportCreateSuggestion = (
     const translate = useTranslate();
     const [renderOnCreate, setRenderOnCreate] = useState(false);
 
-    if (typeof optionText !== 'string') {
-        throw new Error(
-            'Choice creation is only supported when optionText is a string'
-        );
-    }
-
     const context = {
         filter,
         onCancel: () => setRenderOnCreate(false),
@@ -58,6 +52,11 @@ export const useSupportCreateSuggestion = (
 
     return {
         getCreateItem: () => {
+            if (typeof optionText !== 'string') {
+                throw new Error(
+                    'Choice creation is only supported when optionText is a string'
+                );
+            }
             return set(
                 {
                     id: createValue,
