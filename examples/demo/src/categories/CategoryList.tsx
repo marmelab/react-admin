@@ -30,7 +30,7 @@ const useStyles = makeStyles({
     },
 });
 
-const CategoryGrid = props => {
+const CategoryGrid = (props: any) => {
     const classes = useStyles(props);
     const { data, ids } = useListContext<Category>();
     return ids ? (
