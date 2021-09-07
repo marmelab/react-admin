@@ -219,7 +219,17 @@ export const SelectInput = (props: SelectInputProps) => {
         );
     }
 
-    const createItem = getCreateItem();
+    const renderCreateItem = () => {
+        if (onCreate || create) {
+            const createItem = getCreateItem();
+            return (
+                <MenuItem value={createItem.id} key={createItem.id}>
+                    {createItem.name}
+                </MenuItem>
+            );
+        }
+        return null;
+    };
 
     return (
         <>
@@ -272,11 +282,7 @@ export const SelectInput = (props: SelectInputProps) => {
                         {renderMenuItemOption(choice)}
                     </MenuItem>
                 ))}
-                {onCreate || create ? (
-                    <MenuItem value={createItem.id} key={createItem.id}>
-                        {createItem.name}
-                    </MenuItem>
-                ) : null}
+                {renderCreateItem()}
             </ResettableTextField>
             {createElement}
         </>
