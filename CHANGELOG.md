@@ -1,5 +1,44 @@
 # Changelog
 
+## v3.18.0
+
+### 🎨 UI Changes
+
+* `<Sidebar>`: Make it fixed when users scroll vertically ([6534](https://github.com/marmelab/react-admin/pull/6534)) ([fzaninotto](https://github.com/fzaninotto))
+* `<TranslatableInputs>`: Reduce language tabs margin to allow more languages to be used ([6484](https://github.com/marmelab/react-admin/pull/6484)) ([fzaninotto](https://github.com/fzaninotto))
+
+### 🚀 New Features
+
+* `<SimpleFormIterator>`: Add support for reordering items ([6433](https://github.com/marmelab/react-admin/pull/6433)) ([djhi](https://github.com/djhi))
+* `<SimpleList>`: Add `RecordContext` to allow usage of Field components in `primaryText`, `secondaryText`, and `tertiaryText`  ([6552](https://github.com/marmelab/react-admin/pull/6552)) ([djhi](https://github.com/djhi))
+* `<Datagrid>`: Add `header` prop to override the header row ([6496](https://github.com/marmelab/react-admin/pull/6496)) ([fzaninotto](https://github.com/fzaninotto))
+* `useRedirect`: Add support for absolute URLs to facilitate third-party authentication providers (OAuth, OpenID Connect) ([6469](https://github.com/marmelab/react-admin/pull/6469)) ([fzaninotto](https://github.com/fzaninotto))
+
+### 🐛 Bug Fixes
+
+* Fix quick create suggestion label when using custom `optionText` ([6551](https://github.com/marmelab/react-admin/pull/6551)) ([djhi](https://github.com/djhi))
+* Fix `devDependencies` of individual packages ([6540](https://github.com/marmelab/react-admin/pull/6540)) ([quentingarcia](https://github.com/quentingarcia))
+
+### 🟦 Types
+
+* Export many internal `ra-core` prop types for easier override ([6543](https://github.com/marmelab/react-admin/pull/6543)) ([WiXSL](https://github.com/WiXSL))
+* Fix `dataProvider.delete` response type marks `data` as optional ([6548](https://github.com/marmelab/react-admin/pull/6548)) ([WiXSL](https://github.com/WiXSL))
+* Remove `FC` usage from `<SimpleFormIterator>` and Docs ([6546](https://github.com/marmelab/react-admin/pull/6546)) ([WiXSL](https://github.com/WiXSL))
+* Remove `FC` usage from `<AdminContext>` ([6545](https://github.com/marmelab/react-admin/pull/6545)) ([WiXSL](https://github.com/WiXSL))
+* Remove `FC` usage from `<Field>` components ([6538](https://github.com/marmelab/react-admin/pull/6538)) ([WiXSL](https://github.com/WiXSL))
+* Remove `FC` usage from examples ([6519](https://github.com/marmelab/react-admin/pull/6519)) ([WiXSL](https://github.com/WiXSL))
+* Remove `FC` usage from `ra-core` components ([6515](https://github.com/marmelab/react-admin/pull/6515)) ([WiXSL](https://github.com/WiXSL))
+
+### 📚 Docs
+
+* Fix Changelog URLs ([6537](https://github.com/marmelab/react-admin/pull/6537)) ([WiXSL](https://github.com/WiXSL))
+
+### ✨ Demos
+
+* Fix implicit `any` type prevents TypeScript compilation of e-commerce demo ([6556](https://github.com/marmelab/react-admin/pull/6556)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix simple demo on IE11 ([6544](https://github.com/marmelab/react-admin/pull/6544)) ([djhi](https://github.com/djhi))
+* Fix demo on IE11 ([6542](https://github.com/marmelab/react-admin/pull/6542)) ([djhi](https://github.com/djhi))
+
 ## v3.17.3
 
 * Fix `<BooleanInput initialValue>` overrides existing value from record ([6533](https://github.com/marmelab/react-admin/pull/6533)) ([fzaninotto](https://github.com/fzaninotto))
