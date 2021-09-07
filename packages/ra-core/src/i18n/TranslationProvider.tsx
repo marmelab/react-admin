@@ -4,7 +4,7 @@ import { useSafeSetState } from '../util/hooks';
 import { TranslationContext } from './TranslationContext';
 import { I18nProvider } from '../types';
 
-interface Props {
+export interface TranslationProviderProps {
     locale?: string;
     i18nProvider: I18nProvider;
     children: ReactNode;
@@ -27,7 +27,7 @@ interface State {
  *         </Provider>
  *     );
  */
-const TranslationProvider = (props: Props) => {
+const TranslationProvider = (props: TranslationProviderProps) => {
     const { i18nProvider, children } = props;
 
     const [state, setState] = useSafeSetState<State>({

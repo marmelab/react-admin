@@ -1,11 +1,11 @@
-import Authenticated from './Authenticated';
+import Authenticated, { AuthenticatedProps } from './Authenticated';
 import AuthContext from './AuthContext';
 import useAuthProvider from './useAuthProvider';
 import useAuthState from './useAuthState';
 import usePermissions from './usePermissions';
 import usePermissionsOptimized from './usePermissionsOptimized';
 import useAuthenticated from './useAuthenticated';
-import WithPermissions from './WithPermissions';
+import WithPermissions, { WithPermissionsProps } from './WithPermissions';
 import useLogin from './useLogin';
 import useLogout from './useLogout';
 import useCheckAuth from './useCheckAuth';
@@ -34,5 +34,7 @@ export {
     useLogoutIfAccessDenied,
     // components
     Authenticated,
+    AuthenticatedProps,
     WithPermissions,
+    WithPermissionsProps,
 };

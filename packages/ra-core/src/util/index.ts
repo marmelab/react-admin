@@ -1,5 +1,5 @@
 import escapePath from './escapePath';
-import FieldTitle from './FieldTitle';
+import FieldTitle, { FieldTitleProps } from './FieldTitle';
 import getFetchedAt from './getFetchedAt';
 import getFieldLabelTranslationArgs from './getFieldLabelTranslationArgs';
 import ComponentPropType from './ComponentPropType';
@@ -18,6 +18,7 @@ export * from './mergeRefs';
 export {
     escapePath,
     FieldTitle,
+    FieldTitleProps,
     getFetchedAt,
     getFieldLabelTranslationArgs,
     ComponentPropType,

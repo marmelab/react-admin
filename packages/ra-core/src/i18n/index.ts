@@ -1,6 +1,8 @@
 import translate from './translate';
 import { TranslationContext } from './TranslationContext';
-import TranslationProvider from './TranslationProvider';
+import TranslationProvider, {
+    TranslationProviderProps,
+} from './TranslationProvider';
 import TestTranslationProvider from './TestTranslationProvider';
 import useLocale from './useLocale';
 import useSetLocale from './useSetLocale';
@@ -14,6 +16,7 @@ export {
     withTranslate, // deprecated
     TranslationContext,
     TranslationProvider,
+    TranslationProviderProps,
     TestTranslationProvider,
     useLocale,
     useSetLocale,
