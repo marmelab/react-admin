@@ -26,6 +26,8 @@ export * from './DeleteButton';
 export * from './DeleteWithConfirmButton';
 export * from './DeleteWithUndoButton';
 
+export * from './IconButtonWithTooltip';
+
 export type {
     BulkDeleteButtonProps,
     BulkDeleteWithConfirmButtonProps,

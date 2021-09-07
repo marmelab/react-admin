@@ -4,6 +4,7 @@ import {
     TranslatableContextProvider,
     useTranslatable,
     UseTranslatableOptions,
+    InputProps,
 } from 'ra-core';
 import { TranslatableInputsTabs } from './TranslatableInputsTabs';
 import { TranslatableInputsTabContent } from './TranslatableInputsTabContent';
@@ -69,6 +70,8 @@ export const TranslatableInputs = (props: TranslatableProps): ReactElement => {
         groupKey = '',
         selector = <TranslatableInputsTabs groupKey={groupKey} />,
         children,
+        variant,
+        margin,
     } = props;
     const context = useTranslatable({ defaultLocale, locales });
     const classes = useStyles(props);
@@ -82,6 +85,8 @@ export const TranslatableInputs = (props: TranslatableProps): ReactElement => {
                         key={locale}
                         locale={locale}
                         groupKey={groupKey}
+                        variant={variant}
+                        margin={margin}
                     >
                         {children}
                     </TranslatableInputsTabContent>
@@ -91,7 +96,7 @@ export const TranslatableInputs = (props: TranslatableProps): ReactElement => {
     );
 };
 
-export interface TranslatableProps extends UseTranslatableOptions {
+export interface TranslatableProps extends UseTranslatableOptions, InputProps {
     selector?: ReactElement;
     children: ReactNode;
     groupKey?: string;

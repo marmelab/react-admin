@@ -2048,6 +2048,7 @@ The `Datagrid` component renders a list of records as a table. It is usually use
 Here are all the props accepted by the component:
 
 * [`body`](#body-element)
+* [`header`](#header-element)
 * [`rowStyle`](#row-style-function)
 * [`rowClick`](#rowclick)
 * [`expand`](#expand)
@@ -2132,6 +2133,39 @@ const PostList = props => (
 
 export default PostList;
 ```
+
+### Header Element
+
+By default, `<Datagrid>` renders its header using `<DatagridHeader>`, an internal react-admin component. You can pass a custom component as the `header` prop to override that default. This can be useful e.g. to add a second header row, or to create headers spanning multiple columns.
+
+For instance, here is a simple datagrid header that displays column names with no sort and no "select all" button:
+
+```jsx
+import { TableHead, TableRow, TableCell } from '@material-ui/core';
+
+const DatagridHeader = ({ children }) => (
+    <TableHead>
+        <TableRow>
+            <TableCell></TableCell> {/* empty cell to account for the select row checkbox in the body */}
+            {Children.map(children, child => (
+                <TableCell key={child.props.source}>
+                    {child.props.source}
+                </TableCell>
+            ))}
+        </TableRow>
+    </TableHead>
+);
+
+const PostList = props => (
+    <List {...props}>
+        <Datagrid header={<DatagridHeader />}>
+            {/* ... */}
+        </Datagrid>
+    </List>
+);
+```
+
+**Tip**: To handle sorting in your custom Datagrid header component, check out the [Building a custom sort control](#building-a-custom-sort-control) section.
 
 ### Row Style Function
 
