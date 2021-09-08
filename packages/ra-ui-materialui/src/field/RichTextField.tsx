@@ -9,31 +9,31 @@ import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { InjectedFieldProps, PublicFieldProps, fieldPropTypes } from './types';
 
 export const removeTags = (input: string) =>
-  input ? input.replace(/<[^>]+>/gm, '') : '';
+    input ? input.replace(/<[^>]+>/gm, '') : '';
 
 const RichTextField: FC<RichTextFieldProps> = memo<RichTextFieldProps>(
-  props => {
-      const { className, emptyText, source, stripTags, ...rest } = props;
-      const record = useRecordContext(props);
-      const value = get(record, source);
+    props => {
+        const { className, emptyText, source, stripTags, ...rest } = props;
+        const record = useRecordContext(props);
+        const value = get(record, source);
 
-      return (
-        <Typography
-          className={className}
-          variant="body2"
-          component="span"
-          {...sanitizeFieldRestProps(rest)}
-        >
-            {value == null && emptyText ? (
-              emptyText
-            ) : stripTags ? (
-              removeTags(value)
-            ) : (
-              <span dangerouslySetInnerHTML={{ __html: value }} />
-            )}
-        </Typography>
-      );
-  }
+        return (
+            <Typography
+                className={className}
+                variant="body2"
+                component="span"
+                {...sanitizeFieldRestProps(rest)}
+            >
+                {value == null && emptyText ? (
+                    emptyText
+                ) : stripTags ? (
+                    removeTags(value)
+                ) : (
+                    <span dangerouslySetInnerHTML={{ __html: value }} />
+                )}
+            </Typography>
+        );
+    }
 );
 
 RichTextField.defaultProps = {
