@@ -25,18 +25,17 @@ const useStyles = makeStyles(
     }
 );
 
-const BooleanField = (props: BooleanFieldProps) => {
+const BooleanField = memo<BooleanFieldProps>((props: BooleanFieldProps) => {
     const {
-        addLabel = true,
         className,
         classes: classesOverride,
         emptyText,
         source,
         valueLabelTrue,
         valueLabelFalse,
-        TrueIcon = DoneIcon,
-        FalseIcon = ClearIcon,
-        looseValue = false,
+        TrueIcon,
+        FalseIcon,
+        looseValue,
         ...rest
     } = props;
     const record = useRecordContext(props);
@@ -83,8 +82,17 @@ const BooleanField = (props: BooleanFieldProps) => {
             {emptyText}
         </Typography>
     );
+});
+
+// @ts-ignore
+BooleanField.defaultProps = {
+    addLabel: true,
+    TrueIcon: DoneIcon,
+    FalseIcon: ClearIcon,
+    looseValue: false,
 };
 
+// @ts-ignore
 BooleanField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
@@ -107,4 +115,4 @@ export interface BooleanFieldProps
     looseValue?: boolean;
 }
 
-export default memo<BooleanFieldProps>(BooleanField);
+export default BooleanField;
