@@ -1,5 +1,11 @@
 # Changelog
 
+## v3.18.1
+
+* Fix `BooleanField` doesn't show label when used in a Show view ([6553](https://github.com/marmelab/react-admin/pull/6553)) ([WiXSL](https://github.com/WiXSL))
+* Fix Field components don't show labels when used in a Show view ([6564](https://github.com/marmelab/react-admin/pull/6564)) ([WiXSL](https://github.com/WiXSL))
+* Fix "Something went wrong" issue when using `<SelectArrayInput>` & `<SelectInput>` ([6558](https://github.com/marmelab/react-admin/pull/6558)) ([djhi](https://github.com/djhi))
+
 ## v3.18.0
 
 ### 🎨 UI Changes
