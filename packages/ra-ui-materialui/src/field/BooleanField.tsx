@@ -25,7 +25,7 @@ const useStyles = makeStyles(
     }
 );
 
-const BooleanField = (props: BooleanFieldProps) => {
+const BooleanField = memo<BooleanFieldProps>((props: BooleanFieldProps) => {
     const {
         className,
         classes: classesOverride,
@@ -82,8 +82,9 @@ const BooleanField = (props: BooleanFieldProps) => {
             {emptyText}
         </Typography>
     );
-};
+});
 
+// @ts-ignore
 BooleanField.defaultProps = {
     addLabel: true,
     TrueIcon: DoneIcon,
@@ -91,6 +92,7 @@ BooleanField.defaultProps = {
     looseValue: false,
 };
 
+// @ts-ignore
 BooleanField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
@@ -113,4 +115,4 @@ export interface BooleanFieldProps
     looseValue?: boolean;
 }
 
-export default memo<BooleanFieldProps>(BooleanField);
+export default BooleanField;
