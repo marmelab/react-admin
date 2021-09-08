@@ -42,49 +42,45 @@ const hasNumberFormat = !!(
  * // renders the record { id: 1234, price: 25.99 } as
  * <span>25,99 $US</span>
  */
-export const NumberField = memo<NumberFieldProps>(
-    (props: NumberFieldProps) => {
-        const {
-            className,
-            emptyText,
-            source,
-            locales,
-            options,
-            textAlign,
-            ...rest
-        } = props;
-        const record = useRecordContext(props);
-        if (!record) {
-            return null;
-        }
-        const value = get(record, source);
-        if (value == null) {
-            return emptyText ? (
-                <Typography
-                    component="span"
-                    variant="body2"
-                    className={className}
-                    {...sanitizeFieldRestProps(rest)}
-                >
-                    {emptyText}
-                </Typography>
-            ) : null;
-        }
-
-        return (
+export const NumberField = memo<NumberFieldProps>((props: NumberFieldProps) => {
+    const {
+        className,
+        emptyText,
+        source,
+        locales,
+        options,
+        textAlign,
+        ...rest
+    } = props;
+    const record = useRecordContext(props);
+    if (!record) {
+        return null;
+    }
+    const value = get(record, source);
+    if (value == null) {
+        return emptyText ? (
             <Typography
-                variant="body2"
                 component="span"
+                variant="body2"
                 className={className}
                 {...sanitizeFieldRestProps(rest)}
             >
-                {hasNumberFormat
-                    ? value.toLocaleString(locales, options)
-                    : value}
+                {emptyText}
             </Typography>
-        );
+        ) : null;
     }
-);
+
+    return (
+        <Typography
+            variant="body2"
+            component="span"
+            className={className}
+            {...sanitizeFieldRestProps(rest)}
+        >
+            {hasNumberFormat ? value.toLocaleString(locales, options) : value}
+        </Typography>
+    );
+});
 
 // what? TypeScript loses the displayName if we don't set it explicitly
 NumberField.displayName = 'NumberField';
