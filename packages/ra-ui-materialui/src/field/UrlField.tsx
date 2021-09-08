@@ -6,7 +6,7 @@ import { Typography, Link } from '@material-ui/core';
 import { useRecordContext } from 'ra-core';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
-const UrlField = (props: UrlFieldProps) => {
+const UrlField = memo<UrlFieldProps>((props: UrlFieldProps) => {
     const { className, emptyText, source, ...rest } = props;
     const record = useRecordContext(props);
     const value = get(record, source);
@@ -33,12 +33,13 @@ const UrlField = (props: UrlFieldProps) => {
             {value}
         </Link>
     );
-};
+});
 
+// @ts-ignore
 UrlField.defaultProps = {
     addLabel: true,
 };
-
+// @ts-ignore
 UrlField.propTypes = fieldPropTypes;
 UrlField.displayName = 'UrlField';
 
@@ -47,4 +48,4 @@ export interface UrlFieldProps
         InjectedFieldProps,
         AnchorHTMLAttributes<HTMLAnchorElement> {}
 
-export default memo<UrlFieldProps>(UrlField);
+export default UrlField;

@@ -42,7 +42,7 @@ const toLocaleStringSupportsLocales = (() => {
  * // renders the record { id: 1234, new Date('2012-11-07') } as
  * <span>mercredi 7 novembre 2012</span>
  */
-export const DateField = (props: DateFieldProps) => {
+export const DateField = memo<DateFieldProps>((props: DateFieldProps) => {
     const {
         className,
         emptyText,
@@ -89,12 +89,13 @@ export const DateField = (props: DateFieldProps) => {
             {dateString}
         </Typography>
     );
-};
+});
 
+// @ts-ignore
 DateField.defaultProps = {
     addLabel: true,
 };
-
+// @ts-ignore
 DateField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
@@ -116,4 +117,4 @@ export interface DateFieldProps
     showTime?: boolean;
 }
 
-export default memo<DateFieldProps>(DateField);
+export default DateField;

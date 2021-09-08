@@ -117,7 +117,7 @@ const getDataAndIds = (
  *     );
  *     TagsField.defaultProps = { addLabel: true };
  */
-export const ArrayField = (props: ArrayFieldProps) => {
+export const ArrayField = memo<ArrayFieldProps>((props: ArrayFieldProps) => {
     const {
         addLabel,
         basePath,
@@ -178,12 +178,13 @@ export const ArrayField = (props: ArrayFieldProps) => {
             })}
         </ListContextProvider>
     );
-};
+});
 
+// @ts-ignore
 ArrayField.defaultProps = {
     addLabel: true,
 };
-
+// @ts-ignore
 ArrayField.propTypes = {
     ...fieldPropTypes,
     fieldKey: PropTypes.string,
@@ -201,4 +202,4 @@ interface State {
 
 ArrayField.displayName = 'ArrayField';
 
-export default memo<ArrayFieldProps>(ArrayField);
+export default ArrayField;

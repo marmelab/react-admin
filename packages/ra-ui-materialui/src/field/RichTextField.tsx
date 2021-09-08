@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, memo } from 'react';
+import { memo } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
@@ -11,8 +11,8 @@ import { InjectedFieldProps, PublicFieldProps, fieldPropTypes } from './types';
 export const removeTags = (input: string) =>
     input ? input.replace(/<[^>]+>/gm, '') : '';
 
-const RichTextField: FC<RichTextFieldProps> = memo<RichTextFieldProps>(
-    props => {
+const RichTextField = memo<RichTextFieldProps>(
+  (props: RichTextFieldProps) => {
         const { className, emptyText, source, stripTags, ...rest } = props;
         const record = useRecordContext(props);
         const value = get(record, source);
@@ -36,11 +36,12 @@ const RichTextField: FC<RichTextFieldProps> = memo<RichTextFieldProps>(
     }
 );
 
+// @ts-ignore
 RichTextField.defaultProps = {
     addLabel: true,
     stripTags: false,
 };
-
+// @ts-ignore
 RichTextField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,

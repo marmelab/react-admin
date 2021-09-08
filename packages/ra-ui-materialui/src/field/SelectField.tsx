@@ -67,7 +67,7 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  *
  * **Tip**: <ReferenceField> sets `translateChoice` to false by default.
  */
-export const SelectField = (props: SelectFieldProps) => {
+export const SelectField = memo<SelectFieldProps>((props: SelectFieldProps) => {
     const {
         className,
         emptyText,
@@ -113,18 +113,19 @@ export const SelectField = (props: SelectFieldProps) => {
             {choiceText}
         </Typography>
     );
-};
+});
 
+// @ts-ignore
 SelectField.defaultProps = {
     optionText: 'name',
     optionValue: 'id',
     translateChoice: true,
 };
-
+// @ts-ignore
 SelectField.defaultProps = {
     addLabel: true,
 };
-
+// @ts-ignore
 SelectField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
@@ -147,4 +148,4 @@ export interface SelectFieldProps
 
 SelectField.displayName = 'SelectField';
 
-export default memo<SelectFieldProps>(SelectField);
+export default SelectField;
