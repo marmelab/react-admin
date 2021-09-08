@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { memo } from 'react';
+import { FC, memo } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
@@ -9,37 +9,38 @@ import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { InjectedFieldProps, PublicFieldProps, fieldPropTypes } from './types';
 
 export const removeTags = (input: string) =>
-    input ? input.replace(/<[^>]+>/gm, '') : '';
+  input ? input.replace(/<[^>]+>/gm, '') : '';
 
-const RichTextField = memo<RichTextFieldProps>((props: RichTextFieldProps) => {
-    const { className, emptyText, source, stripTags, ...rest } = props;
-    const record = useRecordContext(props);
-    const value = get(record, source);
+const RichTextField: FC<RichTextFieldProps> = memo<RichTextFieldProps>(
+  props => {
+      const { className, emptyText, source, stripTags, ...rest } = props;
+      const record = useRecordContext(props);
+      const value = get(record, source);
 
-    return (
+      return (
         <Typography
-            className={className}
-            variant="body2"
-            component="span"
-            {...sanitizeFieldRestProps(rest)}
+          className={className}
+          variant="body2"
+          component="span"
+          {...sanitizeFieldRestProps(rest)}
         >
             {value == null && emptyText ? (
-                emptyText
+              emptyText
             ) : stripTags ? (
-                removeTags(value)
+              removeTags(value)
             ) : (
-                <span dangerouslySetInnerHTML={{ __html: value }} />
+              <span dangerouslySetInnerHTML={{ __html: value }} />
             )}
         </Typography>
-    );
-});
+      );
+  }
+);
 
-// @ts-ignore
 RichTextField.defaultProps = {
     addLabel: true,
     stripTags: false,
 };
-// @ts-ignore
+
 RichTextField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
