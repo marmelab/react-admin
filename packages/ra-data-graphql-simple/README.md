@@ -34,7 +34,7 @@ import { Admin, Resource } from 'react-admin';
 
 import { PostCreate, PostEdit, PostList } from './posts';
 
-const App = function () {
+const App = () => {
 
     const [dataProvider, setDataProvider] = React.setState(null);
     React.useEffect(() => {
