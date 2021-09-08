@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, memo, ElementType } from 'react';
+import { memo, ElementType } from 'react';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 import { useRecordContext } from 'ra-core';
@@ -7,7 +7,7 @@ import { useRecordContext } from 'ra-core';
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
-const TextField: FC<TextFieldProps> = memo<TextFieldProps>(props => {
+const TextField = memo<TextFieldProps>((props: TextFieldProps) => {
     const { className, source, emptyText, ...rest } = props;
     const record = useRecordContext(props);
     const value = get(record, source);
@@ -28,11 +28,11 @@ const TextField: FC<TextFieldProps> = memo<TextFieldProps>(props => {
 
 // what? TypeScript loses the displayName if we don't set it explicitly
 TextField.displayName = 'TextField';
-
+// @ts-ignore
 TextField.defaultProps = {
     addLabel: true,
 };
-
+// @ts-ignore
 TextField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,

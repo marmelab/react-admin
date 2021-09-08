@@ -11,7 +11,7 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
 
-const EmailField = (props: EmailFieldProps) => {
+const EmailField = memo<EmailFieldProps>((props: EmailFieldProps) => {
     const { className, source, emptyText, ...rest } = props;
     const record = useRecordContext(props);
     const value = get(record, source);
@@ -39,12 +39,12 @@ const EmailField = (props: EmailFieldProps) => {
             {value}
         </Link>
     );
-};
-
+});
+// @ts-ignore
 EmailField.defaultProps = {
     addLabel: true,
 };
-
+// @ts-ignore
 EmailField.propTypes = fieldPropTypes;
 
 export interface EmailFieldProps
@@ -52,4 +52,4 @@ export interface EmailFieldProps
         InjectedFieldProps,
         AnchorHTMLAttributes<HTMLAnchorElement> {}
 
-export default memo<EmailFieldProps>(EmailField);
+export default EmailField;

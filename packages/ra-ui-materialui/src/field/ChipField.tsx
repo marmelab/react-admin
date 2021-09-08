@@ -17,7 +17,7 @@ const useStyles = makeStyles(
     { name: 'RaChipField' }
 );
 
-export const ChipField = (props: ChipFieldProps) => {
+export const ChipField = memo<ChipFieldProps>((props: ChipFieldProps) => {
     const {
         className,
         classes: classesOverride,
@@ -49,13 +49,15 @@ export const ChipField = (props: ChipFieldProps) => {
             {...sanitizeFieldRestProps(rest)}
         />
     );
-};
+});
 
+// @ts-ignore
 ChipField.defaultProps = {
     addLabel: true,
 };
-
+// @ts-ignore
 ChipField.propTypes = {
+    // @ts-ignore
     ...ChipField.propTypes,
     ...fieldPropTypes,
 };
@@ -65,4 +67,4 @@ export interface ChipFieldProps
         InjectedFieldProps,
         Omit<ChipProps, 'label'> {}
 
-export default memo<ChipFieldProps>(ChipField);
+export default ChipField;
