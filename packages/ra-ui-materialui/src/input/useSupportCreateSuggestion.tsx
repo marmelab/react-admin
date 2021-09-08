@@ -53,9 +53,16 @@ export const useSupportCreateSuggestion = (
     return {
         getCreateItem: () => {
             if (typeof optionText !== 'string') {
-                throw new Error(
-                    'Choice creation is only supported when optionText is a string'
-                );
+                return {
+                    id: createValue,
+                    name:
+                        filter && createItemLabel
+                            ? translate(createItemLabel, {
+                                  item: filter,
+                                  _: createItemLabel,
+                              })
+                            : translate(createLabel, { _: createLabel }),
+                };
             }
             return set(
                 {

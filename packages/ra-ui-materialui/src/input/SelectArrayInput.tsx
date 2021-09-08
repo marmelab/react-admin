@@ -168,7 +168,7 @@ const SelectArrayInput = (props: SelectArrayInputProps) => {
         optionText,
     });
 
-    const createItem = getCreateItem();
+    const createItem = create || onCreate ? getCreateItem() : null;
     const finalChoices =
         create || onCreate ? [...choices, createItem] : choices;
 
@@ -184,7 +184,7 @@ const SelectArrayInput = (props: SelectArrayInputProps) => {
                     value={getChoiceValue(choice)}
                     disabled={getDisableValue(choice)}
                 >
-                    {choice?.id === createItem.id
+                    {!!createItem && choice?.id === createItem.id
                         ? createItem.name
                         : renderMenuItemOption(choice)}
                 </MenuItem>
