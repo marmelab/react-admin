@@ -34,9 +34,15 @@ const EmailField = memo<EmailFieldProps>((props: EmailFieldProps) => {
             className={className}
             href={`mailto:${value}`}
             onClick={stopPropagation}
-            {...sanitizeFieldRestProps(rest)}
         >
-            {value}
+            <Typography
+                component="span"
+                variant="body2"
+                className={className}
+                {...sanitizeFieldRestProps(rest)}
+            >
+                {value}
+            </Typography>
         </Link>
     );
 });
