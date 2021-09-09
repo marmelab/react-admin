@@ -34,6 +34,7 @@ const EmailField = memo<EmailFieldProps>((props: EmailFieldProps) => {
             className={className}
             href={`mailto:${value}`}
             onClick={stopPropagation}
+            variant="body2"
             {...sanitizeFieldRestProps(rest)}
         >
             {value}
