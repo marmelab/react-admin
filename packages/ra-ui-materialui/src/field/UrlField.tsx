@@ -28,6 +28,7 @@ const UrlField = memo<UrlFieldProps>((props: UrlFieldProps) => {
         <Link
             className={className}
             href={value}
+            variant="body2"
             {...sanitizeFieldRestProps(rest)}
         >
             {value}
