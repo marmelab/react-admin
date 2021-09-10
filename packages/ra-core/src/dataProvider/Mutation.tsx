@@ -8,7 +8,7 @@ interface ChildrenFuncParams {
     loaded: boolean;
 }
 
-interface Props {
+export interface MutationProps {
     children: (
         mutate: (
             event?: any,
@@ -59,7 +59,7 @@ const Mutation = ({
     // Provides an undefined onSuccess just so the key `onSuccess` is defined
     // This is used to detect options in useDataProvider
     options = { onSuccess: undefined },
-}: Props) =>
+}: MutationProps) =>
     children(
         ...useMutation(
             { type, resource, payload },

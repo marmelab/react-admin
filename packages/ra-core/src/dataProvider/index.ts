@@ -2,7 +2,7 @@ import convertLegacyDataProvider from './convertLegacyDataProvider';
 import DataProviderContext from './DataProviderContext';
 import HttpError from './HttpError';
 import * as fetchUtils from './fetch';
-import Mutation from './Mutation';
+import Mutation, { MutationProps } from './Mutation';
 import Query, { QueryProps } from './Query';
 import cacheDataProviderProxy from './cacheDataProviderProxy';
 import undoableEventEmitter from './undoableEventEmitter';
@@ -35,6 +35,7 @@ export {
     fetchUtils,
     HttpError,
     Mutation,
+    MutationProps,
     Query,
     undoableEventEmitter,
     useDataProvider,
