@@ -1,10 +1,5 @@
 import debounce from 'lodash/debounce';
-import React, {
-    useRef,
-    useEffect,
-    useCallback,
-    ComponentProps,
-} from 'react';
+import React, { useRef, useEffect, useCallback, ComponentProps } from 'react';
 import Quill, { QuillOptionsStatic } from 'quill';
 import { useInput, FieldTitle } from 'ra-core';
 import { InputHelperText } from 'ra-ui-materialui';
