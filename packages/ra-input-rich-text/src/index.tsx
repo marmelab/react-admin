@@ -3,7 +3,6 @@ import React, {
     useRef,
     useEffect,
     useCallback,
-    FunctionComponent,
     ComponentProps,
 } from 'react';
 import Quill, { QuillOptionsStatic } from 'quill';
@@ -45,7 +44,7 @@ interface Props {
     [key: string]: any;
 }
 
-const RichTextInput: FunctionComponent<Props> = props => {
+const RichTextInput = (props: Props) => {
     const {
         options = {}, // Quill editor options
         toolbar = true,
