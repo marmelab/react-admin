@@ -1298,7 +1298,7 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput, FormDataConsumer 
 To let users choose multiple values in a list using a dropdown with autocompletion, use `<AutocompleteArrayInput>`.
 It renders using [downshift](https://github.com/downshift-js/downshift) and a `fuzzySearch` filter.
 
-![AutocommpleteArrayInput](./img/autocomplete-array-input.gif)
+![AutocompleteArrayInput](./img/autocomplete-array-input.gif)
 
 Set the `choices` attribute to determine the options list (with `id`, `name` tuples).
 
