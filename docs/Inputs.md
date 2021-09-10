@@ -1305,7 +1305,7 @@ Set the `choices` attribute to determine the options list (with `id`, `name` tup
 ```jsx
 import { AutocompleteArrayInput } from 'react-admin';
 
-<AutocompleteArrayInput source="category" choices={[
+<AutocompleteArrayInput source="tags" choices={[
     { id: 'programming', name: 'Programming' },
     { id: 'lifestyle', name: 'Lifestyle' },
     { id: 'photography', name: 'Photography' },
@@ -1335,6 +1335,48 @@ import { AutocompleteArrayInput } from 'react-admin';
 `<AutocompleteArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
 #### Usage
+
+`<AutocompleteArrayInput>` is designed to for fields containing an array of scalar values, e.g.:
+
+```json
+{
+  "id": 123,
+  "tags": ["lifestyle", "photography"]
+}
+```
+
+When working with a field that contains an array of *objects*, use `parse` and `format` to turn the value into an array of scalar values. 
+
+So for instance, for editing the `tags` field of records looking like the following:
+
+```json
+{
+  "id": 123,
+  "tags": [
+      { "id": "lifestyle" },
+      { "id": "photography" }
+   ] 
+}
+```
+
+You should use the following syntax:
+
+```jsx
+import { AutocompleteArrayInput } from 'react-admin';
+
+<AutocompleteArrayInput 
+    source="tags"
+    parse={value =>
+        value && value.map(v => ({ id: v }))
+    }
+    format={value => value && value.map(v => v.id)}
+    choices={[
+        { id: 'programming', name: 'Programming' },
+        { id: 'lifestyle', name: 'Lifestyle' },
+        { id: 'photography', name: 'Photography' },
+    ]}
+/>
+```
 
 You can customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
 
