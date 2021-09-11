@@ -2,7 +2,7 @@ export const SHOW_NOTIFICATION = 'RA/SHOW_NOTIFICATION';
 
 export type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
-interface NotificationOptions {
+export interface NotificationOptions {
     // The duration in milliseconds the notification is shown
     autoHideDuration?: number;
     // Arguments used to translate the message
