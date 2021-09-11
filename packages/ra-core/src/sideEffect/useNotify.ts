@@ -26,7 +26,7 @@ const useNotify = () => {
     return useCallback(
         (
             message: string,
-            type:
+            type?:
                 | NotificationType
                 | (NotificationOptions & { type: NotificationType }),
             messageArgs: any = {},
