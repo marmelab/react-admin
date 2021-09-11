@@ -36,7 +36,7 @@ const useNotify = () => {
         ) => {
             if (typeof type === 'string') {
                 dispatch(
-                    showNotification(message, type, {
+                    showNotification(message, type || 'info', {
                         messageArgs,
                         undoable,
                         autoHideDuration,
