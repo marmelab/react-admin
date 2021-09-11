@@ -26,7 +26,9 @@ const useNotify = () => {
     return useCallback(
         (
             message: string,
-            type: NotificationType | (NotificationOptions & { type: NotificationType }),
+            type:
+                | NotificationType
+                | (NotificationOptions & { type: NotificationType }),
             messageArgs: any = {},
             undoable: boolean = false,
             autoHideDuration?: number,
