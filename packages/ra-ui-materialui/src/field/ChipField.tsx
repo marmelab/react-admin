@@ -61,6 +61,8 @@ ChipField.propTypes = {
     ...fieldPropTypes,
 };
 
+ChipField.displayName = 'ChipField';
+
 export interface ChipFieldProps
     extends PublicFieldProps,
         InjectedFieldProps,
