@@ -641,22 +641,34 @@ const NotifyButton = () => {
 };
 ```
 
-The callback takes 5 arguments:
- - the message to display
- - the level of the notification (`info`, `success` or `warning` - the default is `info`)
- - an `options` object to pass to the `translate` function (because notification messages are translated if your admin has an `i18nProvider`). It is useful for inserting variables into the translation.
- - an `undoable` boolean. Set it to `true` if the notification should contain an "undo" button
- - a `duration` number. Set it to `0` if the notification should not be dismissible.
+The callback takes 6 arguments:
+- The message to display
+- The level of the notification (`info`, `success` or `warning` - the default is `info`)
+- An `options` object to pass to the `translate` function (because notification messages are translated if your admin has an `i18nProvider`). It is useful for inserting variables into the translation.
+- An `undoable` boolean. Set it to `true` if the notification should contain an "undo" button
+- A `duration` number. Set it to `0` if the notification should not be dismissible.
+- A `multiLine` boolean. Set it to `true` if the notification message should be shown in more than one line.
 
 Here are more examples of `useNotify` calls: 
 
-```jsx
+```js
 // notify a warning
 notify(`This is a warning`, 'warning');
 // pass translation arguments
 notify('item.created', 'info', { resource: 'post' });
 // send an undoable notification
 notify('Element updated', 'info', undefined, true);
+```
+
+**Tip**: The callback also allows a signature with only 2 arguments, the message to display and an object with the rest of the arguments
+
+```js
+// notify an undoable success message, with translation arguments
+notify('Element deleted', {
+    type: 'success',
+    undoable: true,
+    messageArgs: { resource: 'post' }
+});
 ```
 
 **Tip**: When using `useNotify` as a side effect for an `undoable` Edit form, you MUST set the fourth argument to `true`, otherwise the "undo" button will not appear, and the actual update will never occur.
@@ -669,7 +681,7 @@ const PostEdit = props => {
     const notify = useNotify();
 
     const onSuccess = () => {
-        notify(`Changes saved`, undefined, undefined, true);
+        notify('Changes saved`', { undoable: true });
     };
 
     return (
@@ -841,7 +853,7 @@ const ApproveButton = ({ record }) => {
 +           onSuccess: () => {
                 redirect('/comments');
 -               notify('Comment approved');
-+               notify('Comment approved', 'info', {}, true);
++               notify('Comment approved', { undoable: true });
             },
             onFailure: (error) => notify(`Error: ${error.message}`, 'warning'),
         }
@@ -870,7 +882,7 @@ const ApproveButton = ({ record }) => {
             mutationMode: 'undoable',
             onSuccess: () => {
                 redirect('/comments');
-                notify('Comment approved', 'info', {}, true);
+                notify('Comment approved', { undoable: true });
             },
             onFailure: (error) => notify(`Error: ${error.message}`, 'warning'),
         }
@@ -905,7 +917,7 @@ const ApproveButton = ({ record }) => {
             mutationMode: 'undoable',
             onSuccess: ({ data }) => {
                 redirect('/comments');
-                notify('Comment approved', 'info', {}, true);
+                notify('Comment approved', { undoable: true });
             },
             onFailure: (error) => notify(`Error: ${error.message}`, 'warning'),
         }
@@ -987,7 +999,7 @@ const ApproveButton = ({ record }) => {
     const options = {
         mutationMode: 'undoable',
         onSuccess: ({ data }) => {
-            notify('Comment approved', 'info', {}, true);
+            notify('Comment approved', { undoable: true });
             redirect('/comments');
         },
         onFailure: (error) => notify(`Error: ${error.message}`, 'warning'),
