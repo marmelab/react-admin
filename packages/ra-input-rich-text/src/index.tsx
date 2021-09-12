@@ -16,7 +16,7 @@ import styles from './styles';
 
 const useStyles = makeStyles(styles, { name: 'RaRichTextInput' });
 
-interface Props {
+export interface RichTextInputProps {
     label?: string | false;
     options?: QuillOptionsStatic;
     source: string;
@@ -39,7 +39,7 @@ interface Props {
     [key: string]: any;
 }
 
-const RichTextInput = (props: Props) => {
+const RichTextInput = (props: RichTextInputProps) => {
     const {
         options = {}, // Quill editor options
         toolbar = true,
