@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { memo } from 'react';
+import { memo, FC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import { ChoicesProps, useChoices, useRecordContext } from 'ra-core';
@@ -67,7 +67,7 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  *
  * **Tip**: <ReferenceField> sets `translateChoice` to false by default.
  */
-export const SelectField = memo<SelectFieldProps>((props: SelectFieldProps) => {
+export const SelectField: FC<SelectFieldProps> = memo(props => {
     const {
         className,
         emptyText,
@@ -115,17 +115,16 @@ export const SelectField = memo<SelectFieldProps>((props: SelectFieldProps) => {
     );
 });
 
-// @ts-ignore
 SelectField.defaultProps = {
     optionText: 'name',
     optionValue: 'id',
     translateChoice: true,
 };
-// @ts-ignore
+
 SelectField.defaultProps = {
     addLabel: true,
 };
-// @ts-ignore
+
 SelectField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,

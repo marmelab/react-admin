@@ -5,6 +5,7 @@ import {
     useEffect,
     useState,
     memo,
+    FC,
     ReactElement,
 } from 'react';
 import get from 'lodash/get';
@@ -117,7 +118,7 @@ const getDataAndIds = (
  *     );
  *     TagsField.defaultProps = { addLabel: true };
  */
-export const ArrayField = memo<ArrayFieldProps>((props: ArrayFieldProps) => {
+export const ArrayField: FC<ArrayFieldProps> = memo(props => {
     const {
         addLabel,
         basePath,
@@ -180,11 +181,10 @@ export const ArrayField = memo<ArrayFieldProps>((props: ArrayFieldProps) => {
     );
 });
 
-// @ts-ignore
 ArrayField.defaultProps = {
     addLabel: true,
 };
-// @ts-ignore
+
 ArrayField.propTypes = {
     ...fieldPropTypes,
     fieldKey: PropTypes.string,

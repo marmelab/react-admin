@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { memo } from 'react';
+import { memo, FC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
@@ -42,7 +42,7 @@ const toLocaleStringSupportsLocales = (() => {
  * // renders the record { id: 1234, new Date('2012-11-07') } as
  * <span>mercredi 7 novembre 2012</span>
  */
-export const DateField = memo<DateFieldProps>((props: DateFieldProps) => {
+export const DateField: FC<DateFieldProps> = props => {
     const {
         className,
         emptyText,
@@ -89,13 +89,12 @@ export const DateField = memo<DateFieldProps>((props: DateFieldProps) => {
             {dateString}
         </Typography>
     );
-});
+};
 
-// @ts-ignore
 DateField.defaultProps = {
     addLabel: true,
 };
-// @ts-ignore
+
 DateField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
