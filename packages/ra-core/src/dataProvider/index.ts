@@ -26,7 +26,7 @@ import useIsAutomaticRefreshEnabled from './useIsAutomaticRefreshEnabled';
 export * from './useQueryWithStore';
 export * from './useQuery';
 
-export type { QueryProps, UseMutationValue, UseGetOneHookValue };
+export type { QueryProps, UseMutationValue, UseGetOneHookValue, MutationProps };
 
 export {
     cacheDataProviderProxy,
@@ -35,7 +35,6 @@ export {
     fetchUtils,
     HttpError,
     Mutation,
-    MutationProps,
     Query,
     undoableEventEmitter,
     useDataProvider,
