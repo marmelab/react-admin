@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { memo } from 'react';
+import { memo, FC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
@@ -42,7 +42,7 @@ const hasNumberFormat = !!(
  * // renders the record { id: 1234, price: 25.99 } as
  * <span>25,99 $US</span>
  */
-export const NumberField = memo<NumberFieldProps>((props: NumberFieldProps) => {
+export const NumberField: FC<NumberFieldProps> = memo(props => {
     const {
         className,
         emptyText,
@@ -85,12 +85,10 @@ export const NumberField = memo<NumberFieldProps>((props: NumberFieldProps) => {
 // what? TypeScript loses the displayName if we don't set it explicitly
 NumberField.displayName = 'NumberField';
 
-// @ts-ignore
 NumberField.defaultProps = {
     addLabel: true,
     textAlign: 'right',
 };
-// @ts-ignore
 NumberField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,

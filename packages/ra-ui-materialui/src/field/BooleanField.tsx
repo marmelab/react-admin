@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { memo } from 'react';
+import { memo, FC } from 'react';
 import { SvgIconComponent } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
@@ -25,7 +25,7 @@ const useStyles = makeStyles(
     }
 );
 
-const BooleanField = memo<BooleanFieldProps>((props: BooleanFieldProps) => {
+const BooleanField: FC<BooleanFieldProps> = memo(props => {
     const {
         className,
         classes: classesOverride,
@@ -84,7 +84,6 @@ const BooleanField = memo<BooleanFieldProps>((props: BooleanFieldProps) => {
     );
 });
 
-// @ts-ignore
 BooleanField.defaultProps = {
     addLabel: true,
     TrueIcon: DoneIcon,
@@ -92,7 +91,6 @@ BooleanField.defaultProps = {
     looseValue: false,
 };
 
-// @ts-ignore
 BooleanField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
