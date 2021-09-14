@@ -42,7 +42,7 @@ const toLocaleStringSupportsLocales = (() => {
  * // renders the record { id: 1234, new Date('2012-11-07') } as
  * <span>mercredi 7 novembre 2012</span>
  */
-export const DateField: FC<DateFieldProps> = props => {
+export const DateField: FC<DateFieldProps> = memo(props => {
     const {
         className,
         emptyText,
@@ -89,7 +89,7 @@ export const DateField: FC<DateFieldProps> = props => {
             {dateString}
         </Typography>
     );
-};
+});
 
 DateField.defaultProps = {
     addLabel: true,
