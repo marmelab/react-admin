@@ -92,7 +92,7 @@ const Notification = (props: Props & Omit<SnackbarProps, 'open'>) => {
                 autoHideDuration
             }
             disableWindowBlurListener={notification && notification.undoable}
-            onExited={handleExited}
+            TransitionProps={{ onExited: handleExited }}
             onClose={handleRequestClose}
             ContentProps={{
                 className: classnames(
