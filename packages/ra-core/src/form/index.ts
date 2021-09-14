@@ -25,6 +25,7 @@ import useChoices, {
 import useSuggestions from './useSuggestions';
 import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
 import useResetSubmitErrors from './useResetSubmitErrors';
+import submitErrorsMutators from './submitErrorsMutators';
 
 export type {
     ChoicesProps,
@@ -50,13 +51,14 @@ export {
     FormField,
     FormWithRedirect,
     sanitizeEmptyValues,
+    submitErrorsMutators,
     useChoices,
     useInput,
     useInitializeFormWithRecord,
     useSuggestions,
-    ValidationError,
     useWarnWhenUnsavedChanges,
     useResetSubmitErrors,
+    ValidationError,
 };
 export { isRequired } from './FormField';
 export * from './validate';
