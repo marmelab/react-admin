@@ -3,7 +3,7 @@ import * as React from 'react';
 import expect from 'expect';
 import { TestContext } from 'ra-test';
 import { ThemeProvider } from '@material-ui/core';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 import CreateButton from './CreateButton';
 
 const invalidButtonDomProps = {
@@ -25,7 +25,7 @@ describe('<CreateButton />', () => {
     it('should render a button with no DOM errors', () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-        const theme = createMuiTheme({
+        const theme = createTheme({
             props: {
                 MuiWithWidth: {
                     initialWidth: 'sm',

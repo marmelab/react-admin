@@ -9,14 +9,14 @@ import {
 } from 'ra-core';
 import { renderWithRedux, TestContext } from 'ra-test';
 import { ThemeProvider } from '@material-ui/core';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
 import SaveButton from './SaveButton';
 import { Toolbar, SimpleForm } from '../form';
 import { Edit } from '../detail';
 import { TextInput } from '../input';
 
-const theme = createMuiTheme();
+const theme = createTheme();
 
 const invalidButtonDomProps = {
     basePath: '',

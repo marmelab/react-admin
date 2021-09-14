@@ -1,5 +1,5 @@
 import {
-    createMuiTheme as createLegacyModeTheme,
+    createTheme as createLegacyModeTheme,
     unstable_createMuiStrictModeTheme as createStrictModeTheme,
 } from '@material-ui/core/styles';
 
