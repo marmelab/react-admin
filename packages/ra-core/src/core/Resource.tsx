@@ -33,7 +33,9 @@ const ResourceRegister = (props: ResourceProps) => {
                 icon,
             })
         );
-        return () => dispatch(unregisterResource(name));
+        return () => {
+            dispatch(unregisterResource(name));
+        };
     }, [dispatch, name, create, edit, icon, list, show, options]);
     return null;
 };
