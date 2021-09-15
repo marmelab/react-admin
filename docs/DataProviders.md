@@ -65,6 +65,7 @@ The react-admin project includes 5 Data Providers:
 * [Simple GraphQL](https://graphql.org/): [marmelab/ra-data-graphql-simple](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-graphql-simple). A GraphQL provider built with Apollo and tailored to target a simple GraphQL implementation.
 * Local JSON: [marmelab/ra-data-fakerest](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-fakerest). Based on a local object, it doesn't even use HTTP. Use it for testing purposes.
 * Local Storage: [marmelab/ra-data-localstorage](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-localstorage). User editions are persisted across refreshes and between sessions. This allows local-first apps, and can be useful in tests.
+- **[Supabase](https://supabase.io/)**: [marmelab/ra-supabase](https://github.com/marmelab/ra-supabase).
 
 Developers from the react-admin community have open-sourced Data Providers for many more backends:
 
