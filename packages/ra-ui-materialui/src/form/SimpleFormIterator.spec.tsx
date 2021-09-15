@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@material-ui/core';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 import { fireEvent, getByText, waitFor } from '@testing-library/react';
 import expect from 'expect';
 import { SaveContextProvider, SideEffectContextProvider } from 'ra-core';
@@ -10,7 +10,7 @@ import TextInput from '../input/TextInput';
 import SimpleForm from './SimpleForm';
 import { SimpleFormIterator } from './SimpleFormIterator';
 
-const theme = createMuiTheme();
+const theme = createTheme();
 
 describe('<SimpleFormIterator />', () => {
     // bypass confirm leave form with unsaved changes

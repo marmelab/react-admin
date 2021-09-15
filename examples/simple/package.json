@@ -8,7 +8,7 @@
         "serve": "vite preview"
     },
     "dependencies": {
-        "@material-ui/core": "^4.11.2",
+        "@material-ui/core": "^4.12.1",
         "@material-ui/icons": "^4.11.2",
         "ra-data-fakerest": "^3.9.3",
         "ra-i18n-polyglot": "^3.12.4",

@@ -2,12 +2,12 @@ import * as React from 'react';
 import expect from 'expect';
 import { render, fireEvent } from '@testing-library/react';
 import { ThemeProvider } from '@material-ui/styles';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
 import FilterButton from './FilterButton';
 import TextInput from '../../input/TextInput';
 
-const theme = createMuiTheme();
+const theme = createTheme();
 
 describe('<FilterButton />', () => {
     const defaultProps = {

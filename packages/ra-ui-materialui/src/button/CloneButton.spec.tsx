@@ -1,6 +1,6 @@
 import expect from 'expect';
 import { ThemeProvider } from '@material-ui/core';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 import { render } from '@testing-library/react';
 import * as React from 'react';
 import { createMemoryHistory } from 'history';
@@ -9,7 +9,7 @@ import { Router } from 'react-router-dom';
 import { CloneButton } from './CloneButton';
 import { TestContext } from 'ra-test';
 
-const theme = createMuiTheme();
+const theme = createTheme();
 
 const invalidButtonDomProps = {
     basePath: '/posts',

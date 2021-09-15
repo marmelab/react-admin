@@ -2,13 +2,13 @@ import * as React from 'react';
 import expect from 'expect';
 import { render } from '@testing-library/react';
 import { ThemeProvider } from '@material-ui/styles';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 import { ListPaginationContext } from 'ra-core';
 
 import Pagination from './Pagination';
 import DeviceTestWrapper from '../../layout/DeviceTestWrapper';
 
-const theme = createMuiTheme();
+const theme = createTheme();
 
 describe('<Pagination />', () => {
     const defaultProps = {

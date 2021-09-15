@@ -85,7 +85,7 @@ const Pagination = (props: PaginationProps) => {
                 count={total}
                 rowsPerPage={perPage}
                 page={page - 1}
-                onChangePage={handlePageChange}
+                onPageChange={handlePageChange}
                 rowsPerPageOptions={emptyArray}
                 component="span"
                 labelDisplayedRows={labelDisplayedRows}
@@ -99,8 +99,8 @@ const Pagination = (props: PaginationProps) => {
             count={total}
             rowsPerPage={perPage}
             page={page - 1}
-            onChangePage={handlePageChange}
-            onChangeRowsPerPage={handlePerPageChange}
+            onPageChange={handlePageChange}
+            onRowsPerPageChange={handlePerPageChange}
             ActionsComponent={actions}
             component="span"
             labelRowsPerPage={translate('ra.navigation.page_rows_per_page')}

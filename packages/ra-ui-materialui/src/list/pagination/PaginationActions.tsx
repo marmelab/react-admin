@@ -22,7 +22,7 @@ const useStyles = makeStyles(
 );
 
 const PaginationActions = props => {
-    const { page, rowsPerPage, count, onChangePage, color, size } = props;
+    const { page, rowsPerPage, count, onPageChange, color, size } = props;
     const classes = useStyles(props);
     const translate = useTranslate();
     const theme = useTheme();
@@ -71,14 +71,14 @@ const PaginationActions = props => {
         if (page === 0) {
             throw new Error(translate('ra.navigation.page_out_from_begin'));
         }
-        onChangePage(event, page - 1);
+        onPageChange(event, page - 1);
     };
 
     const nextPage = event => {
         if (page > getNbPages() - 1) {
             throw new Error(translate('ra.navigation.page_out_from_end'));
         }
-        onChangePage(event, page + 1);
+        onPageChange(event, page + 1);
     };
 
     const gotoPage = event => {
@@ -90,7 +90,7 @@ const PaginationActions = props => {
                 })
             );
         }
-        onChangePage(event, page);
+        onPageChange(event, page);
     };
 
     const renderPageNums = () => {
@@ -172,7 +172,7 @@ PaginationActions.propTypes = {
     count: PropTypes.number.isRequired,
     classes: PropTypes.object,
     nextIconButtonProps: PropTypes.object,
-    onChangePage: PropTypes.func.isRequired,
+    onPageChange: PropTypes.func.isRequired,
     page: PropTypes.number.isRequired,
     rowsPerPage: PropTypes.number.isRequired,
     color: PropTypes.oneOf(['primary', 'secondary']),
