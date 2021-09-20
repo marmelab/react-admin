@@ -42,7 +42,7 @@ const computeNbColumns = (expand, children, hasBulkActions) =>
 
 const defaultClasses = { expandIconCell: '', checkbox: '', rowCell: '' };
 
-const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
+const DatagridRow = React.forwardRef((props: DatagridRowProps, ref) => {
     const {
         basePath,
         children,
