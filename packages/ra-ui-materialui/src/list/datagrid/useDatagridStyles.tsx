@@ -45,6 +45,7 @@ const useDatagridStyles = makeStyles(
         expanded: {
             transform: 'rotate(0deg)',
         },
+        expandedPanel: {},
     }),
     { name: 'RaDatagrid' }
 );
