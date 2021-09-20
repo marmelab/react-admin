@@ -2394,6 +2394,7 @@ The `Datagrid` component accepts the usual `className` prop but you can override
 | `expandIconCell` | Applied to each expandable cell                               |
 | `expandIcon`     | Applied to each expand icon                                   |
 | `expanded`       | Applied to each expanded icon                                 |
+| `expandedPanel`  | Applied to each expandable panel                              |
 | `checkbox`       | Applied to each checkbox cell                                 |
 
 You can customize the `<Datagrid>` styles by passing a `classes` object as prop, through `useStyles()`. Here is an example:
