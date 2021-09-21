@@ -18,9 +18,13 @@ export const FETCH_ERROR = 'RA/FETCH_ERROR';
 
 export interface FetchErrorAction {
     readonly type: typeof FETCH_ERROR;
+    readonly error: any;
 }
 
-export const fetchError = (): FetchErrorAction => ({ type: FETCH_ERROR });
+export const fetchError = (error: any): FetchErrorAction => ({
+    type: FETCH_ERROR,
+    error,
+});
 
 export const FETCH_CANCEL = 'RA/FETCH_CANCEL';
 
