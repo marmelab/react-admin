@@ -1298,14 +1298,14 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput, FormDataConsumer 
 To let users choose multiple values in a list using a dropdown with autocompletion, use `<AutocompleteArrayInput>`.
 It renders using [downshift](https://github.com/downshift-js/downshift) and a `fuzzySearch` filter.
 
-![AutocommpleteArrayInput](./img/autocomplete-array-input.gif)
+![AutocompleteArrayInput](./img/autocomplete-array-input.gif)
 
 Set the `choices` attribute to determine the options list (with `id`, `name` tuples).
 
 ```jsx
 import { AutocompleteArrayInput } from 'react-admin';
 
-<AutocompleteArrayInput source="category" choices={[
+<AutocompleteArrayInput source="tags" choices={[
     { id: 'programming', name: 'Programming' },
     { id: 'lifestyle', name: 'Lifestyle' },
     { id: 'photography', name: 'Photography' },
@@ -1335,6 +1335,48 @@ import { AutocompleteArrayInput } from 'react-admin';
 `<AutocompleteArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
 #### Usage
+
+`<AutocompleteArrayInput>` is designed to for fields containing an array of scalar values, e.g.:
+
+```json
+{
+  "id": 123,
+  "tags": ["lifestyle", "photography"]
+}
+```
+
+When working with a field that contains an array of *objects*, use `parse` and `format` to turn the value into an array of scalar values. 
+
+So for instance, for editing the `tags` field of records looking like the following:
+
+```json
+{
+  "id": 123,
+  "tags": [
+      { "id": "lifestyle" },
+      { "id": "photography" }
+   ] 
+}
+```
+
+You should use the following syntax:
+
+```jsx
+import { AutocompleteArrayInput } from 'react-admin';
+
+<AutocompleteArrayInput 
+    source="tags"
+    parse={value =>
+        value && value.map(v => ({ id: v }))
+    }
+    format={value => value && value.map(v => v.id)}
+    choices={[
+        { id: 'programming', name: 'Programming' },
+        { id: 'lifestyle', name: 'Lifestyle' },
+        { id: 'photography', name: 'Photography' },
+    ]}
+/>
+```
 
 You can customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
 
@@ -2785,6 +2827,7 @@ const PersonEdit = props => (
 
 You can find components for react-admin in third-party repositories.
 
+- [marmelab/ra-richtext-tiptap](https://github.com/marmelab/ra-richtext-tiptap): a rich text input based on [Tiptap](https://www.tiptap.dev/)
 - [vascofg/react-admin-color-input](https://github.com/vascofg/react-admin-color-input): a color input using [React Color](https://casesandberg.github.io/react-color/), a collection of color pickers.
 - [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs): a collection of Date Inputs, based on [material-ui-pickers](https://material-ui-pickers.firebaseapp.com/)
 - [MrHertal/react-admin-json-view](https://github.com/MrHertal/react-admin-json-view): JSON field and input for react-admin.
