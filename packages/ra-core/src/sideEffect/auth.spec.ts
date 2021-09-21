@@ -238,7 +238,14 @@ describe('Auth saga', () => {
             await runSaga(
                 {
                     dispatch,
-                    getState: () => ({ router: { location: '/posts' } }),
+                    getState: () => ({
+                        router: {
+                            location: {
+                                pathname: '/posts',
+                                search: '?_sort=date',
+                            },
+                        },
+                    }),
                 },
                 handleFetchError(authProvider),
                 action
@@ -249,7 +256,10 @@ describe('Auth saga', () => {
                 expect(dispatch).toHaveBeenCalledWith(
                     push({
                         pathname: '/custom',
-                        state: { nextPathname: '/posts' },
+                        state: {
+                            nextPathname: '/posts',
+                            nextSearch: '?_sort=date',
+                        },
                     })
                 );
                 expect(dispatch).toHaveBeenCalledWith(hideNotification());

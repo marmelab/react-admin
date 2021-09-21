@@ -43,7 +43,8 @@ const nextPathnameSelector = state => {
     return locationState && locationState.nextPathname;
 };
 
-const currentPathnameSelector = state => state.router.location;
+const currentPathnameSelector = state => state.router.location.pathname;
+const currentSearchSelector = state => state.router.location.search;
 
 const getErrorMessage = (error, defaultMessage) =>
     typeof error === 'string'
@@ -118,11 +119,12 @@ export const handleFetchError = (authProvider: AuthProvider) =>
             yield call([authProvider, 'checkError'], error);
         } catch (e) {
             const nextPathname = yield select(currentPathnameSelector);
+            const nextSearch = yield select(currentSearchSelector);
             const redirectTo = yield call([authProvider, 'logout'], undefined);
             yield put(
                 push({
                     pathname: redirectTo || '/login',
-                    state: { nextPathname },
+                    state: { nextPathname, nextSearch },
                 })
             );
             // Clear the state before showing a notification as it would be dismissed immediately otherwise
