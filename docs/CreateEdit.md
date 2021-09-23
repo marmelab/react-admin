@@ -799,6 +799,7 @@ Here are all the props you can set on the `<SimpleForm>` component:
 * [`toolbar`](#toolbar)
 * [`variant`](#variant)
 * [`margin`](#margin)
+* [`component`](#simpleform-component)
 * [`warnWhenUnsavedChanges`](#warning-about-unsaved-changes)
 * [`sanitizeEmptyValues`](#setting-empty-values-to-null)
 
@@ -1797,6 +1798,27 @@ By default, react-admin input components use the Material Design "dense" margin.
 export const PostEdit = (props) => (
     <Edit {...props}>
         <SimpleForm margin="normal">
+            ...
+        </SimpleForm>
+    </Edit>
+);
+```
+
+### SimpleForm component
+
+By default, the `SimpleForm` view renders the main form's children inside a `CardContentInner`, an internal `react-admin` component which returns a material-ui `<CardContent>` element.
+
+To customize that, you can override the main container by passing a `component` prop :
+
+```jsx
+const MyChildrenContainerComponent = props => (
+    <div>{props.children}</div>
+);
+
+// Use a custom component as root container of the form's children 
+const PostEdit = props => (
+    <Edit {...props}>
+        <SimpleForm component={MyChildrenContainerComponent}>
             ...
         </SimpleForm>
     </Edit>
