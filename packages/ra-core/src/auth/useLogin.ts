@@ -34,8 +34,15 @@ const useLogin = (): Login => {
     const locationState = location.state as any;
     const history = useHistory();
     const dispatch = useDispatch();
-    const nextPathName = locationState && locationState.nextPathname;
-    const nextSearch = locationState && locationState.nextSearch;
+    const nextPathname =
+        locationState && typeof locationState.nextPathname === 'string'
+            ? locationState.nextPathname
+            : '';
+    const nextSearch =
+        locationState && typeof locationState.nextSearch === 'string'
+            ? locationState.nextSearch
+            : '';
+    const nextUrl = `${nextPathname}${nextSearch}`;
 
     const login = useCallback(
         (params: any = {}, pathName) =>
@@ -43,12 +50,11 @@ const useLogin = (): Login => {
                 dispatch(resetNotification());
                 const redirectUrl = pathName
                     ? pathName
-                    : nextPathName + nextSearch ||
-                      defaultAuthParams.afterLoginUrl;
+                    : nextUrl || defaultAuthParams.afterLoginUrl;
                 history.push(redirectUrl);
                 return ret;
             }),
-        [authProvider, history, nextPathName, nextSearch, dispatch]
+        [authProvider, history, nextUrl, dispatch]
     );
 
     const loginWithoutProvider = useCallback(
