@@ -9,11 +9,11 @@ import {
 } from 'ra-core';
 import { useFieldArray } from 'react-final-form-arrays';
 import { InputLabel, FormControl, FormHelperText } from '@material-ui/core';
-import InputHelperText from './InputHelperText';
 
-import sanitizeInputRestProps from './sanitizeInputRestProps';
-import Labeled from './Labeled';
-import { LinearProgress } from '../layout';
+import InputHelperText from '../InputHelperText';
+import sanitizeInputRestProps from '../sanitizeInputRestProps';
+import Labeled from '../Labeled';
+import { LinearProgress } from '../../layout';
 
 /**
  * To edit arrays of data embedded inside a record, <ArrayInput> creates a list of sub-forms.
@@ -56,7 +56,7 @@ import { LinearProgress } from '../layout';
  *
  * @see https://github.com/final-form/react-final-form-arrays
  */
-const ArrayInput: FC<ArrayInputProps> = ({
+export const ArrayInput: FC<ArrayInputProps> = ({
     className,
     defaultValue,
     label,
@@ -176,4 +176,3 @@ export interface ArrayInputProps extends InputProps {
     children: ReactElement;
     disabled?: boolean;
 }
-export default ArrayInput;

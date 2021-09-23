@@ -7,8 +7,7 @@ import { renderWithRedux } from 'ra-test';
 import format from 'date-fns/format';
 
 import DateTimeInput from './DateTimeInput';
-import ArrayInput from './ArrayInput';
-import { SimpleFormIterator } from '../form/SimpleFormIterator';
+import { ArrayInput, SimpleFormIterator } from './ArrayInput';
 import { FormApi } from 'final-form';
 
 describe('<DateTimeInput />', () => {

@@ -1,13 +1,13 @@
+import * as React from 'react';
 import { ThemeProvider } from '@material-ui/core';
 import { createTheme } from '@material-ui/core/styles';
 import { fireEvent, getByText, waitFor } from '@testing-library/react';
 import expect from 'expect';
 import { SaveContextProvider, SideEffectContextProvider } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
-import * as React from 'react';
-import { ArrayInput } from '../input';
-import TextInput from '../input/TextInput';
-import SimpleForm from './SimpleForm';
+import SimpleForm from '../../form/SimpleForm';
+import { ArrayInput } from './ArrayInput';
+import TextInput from '../TextInput';
 import { SimpleFormIterator } from './SimpleFormIterator';
 
 const theme = createTheme();

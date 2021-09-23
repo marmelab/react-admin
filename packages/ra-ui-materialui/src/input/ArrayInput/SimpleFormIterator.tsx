@@ -22,9 +22,9 @@ import { Record, useTranslate, ValidationError } from 'ra-core';
 import { FieldArrayRenderProps } from 'react-final-form-arrays';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
-import { ClassesOverride } from '../types';
-import { IconButtonWithTooltip } from '../button';
-import FormInput from './FormInput';
+import { ClassesOverride } from '../../types';
+import { IconButtonWithTooltip } from '../../button';
+import FormInput from '../../form/FormInput';
 
 export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     const {

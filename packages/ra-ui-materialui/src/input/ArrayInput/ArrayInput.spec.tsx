@@ -3,10 +3,10 @@ import { fireEvent, render, waitFor } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 
-import ArrayInput from './ArrayInput';
-import NumberInput from './NumberInput';
-import TextInput from './TextInput';
-import { SimpleFormIterator } from '../form/SimpleFormIterator';
+import { ArrayInput } from './ArrayInput';
+import NumberInput from '../NumberInput';
+import TextInput from '../TextInput';
+import { SimpleFormIterator } from './SimpleFormIterator';
 import { minLength, required } from 'ra-core';
 
 describe('<ArrayInput />', () => {
