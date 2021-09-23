@@ -1,36 +1,45 @@
 import * as React from 'react';
 import {
-    Children,
     cloneElement,
     MouseEvent,
     MouseEventHandler,
-    isValidElement,
     ReactElement,
     ReactNode,
     useRef,
 } from 'react';
-import { Button, FormHelperText, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { FormHelperText } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
 import CloseIcon from '@material-ui/icons/RemoveCircleOutline';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import classNames from 'classnames';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
-import { Record, useTranslate, ValidationError } from 'ra-core';
+import { Record, ValidationError } from 'ra-core';
 import { FieldArrayRenderProps } from 'react-final-form-arrays';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { CSSTransitionProps } from 'react-transition-group/CSSTransition';
 
 import { ClassesOverride } from '../../types';
-import { IconButtonWithTooltip } from '../../button';
-import FormInput from '../../form/FormInput';
+import { Button } from '../../button';
 import { useArrayInput } from './useArrayInput';
+import { useSimpleFormIteratorStyles } from './useSimpleFormIteratorStyles';
+import {
+    DisableRemoveFunction,
+    SimpleFormIteratorItem,
+} from './SimpleFormIteratorItem';
+import { ReOrderButtons as DefaultReOrderButtons } from './ReOrderButtons';
 
 export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     const {
-        addButton = <DefaultAddButton />,
-        removeButton = <DefaultRemoveButton />,
+        addButton = (
+            <Button label="ra.action.add">
+                <AddIcon />
+            </Button>
+        ),
+        removeButton = (
+            <Button label="ra.action.remove">
+                <CloseIcon />
+            </Button>
+        ),
         reOrderButtons = <DefaultReOrderButtons />,
         basePath,
         children,
@@ -48,10 +57,10 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         defaultValue,
         getItemLabel = DefaultLabelFn,
     } = props;
-    const classes = useStyles(props);
-    const nodeRef = useRef(null);
+    const classes = useSimpleFormIteratorStyles(props);
     const { fields, meta } = useArrayInput(props);
     const { error, submitFailed } = meta;
+    const nodeRef = useRef(null);
 
     // We need a unique id for each field for a proper enter/exit animation
     // so we keep an internal map between the field position and an auto-increment id
@@ -71,28 +80,14 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         nextId.current > 0 ? Array.from(Array(nextId.current).keys()) : []
     );
 
-    const removeField = (index: number) => () => {
+    const handleRemoveField = (index: number) => {
         ids.current.splice(index, 1);
-        fields?.remove(index);
-    };
-
-    // Returns a boolean to indicate whether to disable the remove button for certain fields.
-    // If disableRemove is a function, then call the function with the current record to
-    // determining if the button should be disabled. Otherwise, use a boolean property that
-    // enables or disables the button for all of the fields.
-    const disableRemoveField = (
-        record: Record,
-        disableRemove: boolean | DisableRemoveFunction
-    ) => {
-        if (typeof disableRemove === 'boolean') {
-            return disableRemove;
-        }
-        return disableRemove && disableRemove(record);
+        fields.remove(index);
     };
 
     const addField = () => {
         ids.current.push(nextId.current++);
-        fields?.push(undefined);
+        fields.push(undefined);
     };
 
     // add field and call the onClick event of the button passed as addButton prop
@@ -105,25 +100,15 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         }
     };
 
-    // remove field and call the onClick event of the button passed as removeButton prop
-    const handleRemoveButtonClick = (
-        originalOnClickHandler: MouseEventHandler,
-        index: number
-    ) => (event: MouseEvent) => {
-        removeField(index)();
-        if (originalOnClickHandler) {
-            originalOnClickHandler(event);
-        }
-    };
-
     const handleReorder = (origin: number, destination: number) => {
         const item = ids.current[origin];
         ids.current[origin] = ids.current[destination];
         ids.current[destination] = item;
-        fields?.move(origin, destination);
+        fields.move(origin, destination);
     };
 
     const records = get(record, source);
+
     return fields ? (
         <ul className={classNames(classes.root, className)}>
             {submitFailed && typeof error !== 'object' && error && (
@@ -140,95 +125,29 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                         classNames="fade"
                         {...TransitionProps}
                     >
-                        <li className={classes.line}>
-                            <div>
-                                <div className={classes.indexContainer}>
-                                    <Typography
-                                        variant="body1"
-                                        className={classes.index}
-                                    >
-                                        {getItemLabel(index)}
-                                    </Typography>
-                                    {!disabled &&
-                                        !disableReordering &&
-                                        cloneElement(reOrderButtons, {
-                                            index,
-                                            max: fields.length,
-                                            onReorder: handleReorder,
-                                            className: classNames(
-                                                'button-reorder',
-                                                `button-reorder-${source}-${index}`
-                                            ),
-                                        })}
-                                </div>
-                            </div>
-                            <section className={classes.form}>
-                                {Children.map(
-                                    children,
-                                    (input: ReactElement, index2) => {
-                                        if (!isValidElement<any>(input)) {
-                                            return null;
-                                        }
-                                        const {
-                                            source,
-                                            ...inputProps
-                                        } = input.props;
-                                        return (
-                                            <FormInput
-                                                basePath={
-                                                    input.props.basePath ||
-                                                    basePath
-                                                }
-                                                input={cloneElement(input, {
-                                                    source: source
-                                                        ? `${member}.${source}`
-                                                        : member,
-                                                    index: source
-                                                        ? undefined
-                                                        : index2,
-                                                    label:
-                                                        typeof input.props
-                                                            .label ===
-                                                        'undefined'
-                                                            ? source
-                                                                ? `resources.${resource}.fields.${source}`
-                                                                : undefined
-                                                            : input.props.label,
-                                                    disabled,
-                                                    ...inputProps,
-                                                })}
-                                                record={
-                                                    (records &&
-                                                        records[index]) ||
-                                                    {}
-                                                }
-                                                resource={resource}
-                                                variant={variant}
-                                                margin={margin}
-                                            />
-                                        );
-                                    }
-                                )}
-                            </section>
-                            {!disabled &&
-                                !disableRemoveField(
-                                    (records && records[index]) || {},
-                                    disableRemove
-                                ) && (
-                                    <span className={classes.action}>
-                                        {cloneElement(removeButton, {
-                                            onClick: handleRemoveButtonClick(
-                                                removeButton.props.onClick,
-                                                index
-                                            ),
-                                            className: classNames(
-                                                'button-remove',
-                                                `button-remove-${source}-${index}`
-                                            ),
-                                        })}
-                                    </span>
-                                )}
-                        </li>
+                        <SimpleFormIteratorItem
+                            basePath={basePath}
+                            classes={classes}
+                            disabled={disabled}
+                            disableRemove={disableRemove}
+                            disableReordering={disableReordering}
+                            fields={fields}
+                            getItemLabel={getItemLabel}
+                            index={index}
+                            margin={margin}
+                            member={member}
+                            meta={meta}
+                            onRemoveField={handleRemoveField}
+                            onReorder={handleReorder}
+                            record={(records && records[index]) || {}}
+                            removeButton={removeButton}
+                            reOrderButtons={reOrderButtons}
+                            resource={resource}
+                            source={source}
+                            variant={variant}
+                        >
+                            {children}
+                        </SimpleFormIteratorItem>
                     </CSSTransition>
                 ))}
             </TransitionGroup>
@@ -277,14 +196,12 @@ SimpleFormIterator.propTypes = {
     TransitionProps: PropTypes.shape({}),
 };
 
-type DisableRemoveFunction = (record: Record) => boolean;
-
 export interface SimpleFormIteratorProps
     extends Partial<Omit<FieldArrayRenderProps<any, HTMLElement>, 'meta'>> {
     addButton?: ReactElement;
     basePath?: string;
     children?: ReactNode;
-    classes?: ClassesOverride<typeof useStyles>;
+    classes?: ClassesOverride<typeof useSimpleFormIteratorStyles>;
     className?: string;
     defaultValue?: any;
     disabled?: boolean;
@@ -303,115 +220,8 @@ export interface SimpleFormIteratorProps
     reOrderButtons?: ReactElement;
     resource?: string;
     source?: string;
-    TransitionProps?: any;
+    TransitionProps?: CSSTransitionProps;
     variant?: 'standard' | 'outlined' | 'filled';
 }
 
-const useStyles = makeStyles(
-    theme => ({
-        root: {
-            padding: 0,
-            marginBottom: 0,
-            '& > li:last-child': {
-                borderBottom: 'none',
-            },
-        },
-        line: {
-            display: 'flex',
-            listStyleType: 'none',
-            borderBottom: `solid 1px ${theme.palette.divider}`,
-            [theme.breakpoints.down('xs')]: { display: 'block' },
-            '&.fade-enter': {
-                opacity: 0.01,
-                transform: 'translateX(100vw)',
-            },
-            '&.fade-enter-active': {
-                opacity: 1,
-                transform: 'translateX(0)',
-                transition: 'all 500ms ease-in',
-            },
-            '&.fade-exit': {
-                opacity: 1,
-                transform: 'translateX(0)',
-            },
-            '&.fade-exit-active': {
-                opacity: 0.01,
-                transform: 'translateX(100vw)',
-                transition: 'all 500ms ease-in',
-            },
-        },
-        index: {
-            [theme.breakpoints.down('sm')]: { display: 'none' },
-            marginRight: theme.spacing(1),
-        },
-        indexContainer: {
-            display: 'flex',
-            paddingTop: '1em',
-            marginRight: theme.spacing(1),
-            alignItems: 'center',
-        },
-        form: { flex: 2 },
-        action: {
-            paddingTop: '0.5em',
-        },
-        leftIcon: {
-            marginRight: theme.spacing(1),
-        },
-    }),
-    { name: 'RaSimpleFormIterator' }
-);
-
-const DefaultAddButton = props => {
-    const classes = useStyles(props);
-    const translate = useTranslate();
-    return (
-        <Button size="small" {...props}>
-            <AddIcon className={classes.leftIcon} />
-            {translate('ra.action.add')}
-        </Button>
-    );
-};
-
 const DefaultLabelFn = index => index + 1;
-
-const DefaultRemoveButton = props => {
-    const classes = useStyles(props);
-    const translate = useTranslate();
-    return (
-        <Button size="small" {...props}>
-            <CloseIcon className={classes.leftIcon} />
-            {translate('ra.action.remove')}
-        </Button>
-    );
-};
-
-const DefaultReOrderButtons = ({
-    className,
-    index,
-    max,
-    onReorder,
-}: {
-    className?: string;
-    index?: number;
-    max?: number;
-    onReorder?: (origin: number, destination: number) => void;
-}) => (
-    <div className={className}>
-        <IconButtonWithTooltip
-            label="ra.action.move_up"
-            size="small"
-            onClick={() => onReorder(index, index - 1)}
-            disabled={index <= 0}
-        >
-            <ArrowUpwardIcon />
-        </IconButtonWithTooltip>
-        <IconButtonWithTooltip
-            label="ra.action.move_down"
-            size="small"
-            onClick={() => onReorder(index, index + 1)}
-            disabled={max == null || index >= max - 1}
-        >
-            <ArrowDownwardIcon />
-        </IconButtonWithTooltip>
-    </div>
-);
