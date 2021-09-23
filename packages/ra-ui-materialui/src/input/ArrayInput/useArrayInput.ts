@@ -16,7 +16,7 @@ export const useArrayInput = (
             fields: props?.fields,
             meta: props?.meta,
         }),
-        [props.fields, props.meta]
+        [props]
     );
 
     if (props?.fields && props?.meta) {
