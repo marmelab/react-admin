@@ -1806,7 +1806,7 @@ export const PostEdit = (props) => (
 
 ### SimpleForm component
 
-By default, the `SimpleForm` view renders the main form's children inside a material-ui `<CardContent>` element.
+By default, the `SimpleForm` view renders the main form's children inside a `CardContentInner`, an internal `react-admin` component which returns material-ui `<CardContent>` element.
 
 To customize that, you can override the main container by passing a `component` prop :
 
