@@ -87,6 +87,7 @@ const useLogout = (): Logout => {
                 pathname: defaultAuthParams.loginUrl,
                 state: {
                     nextPathname: history.location && history.location.pathname,
+                    nextSearch: history.location && history.location.search,
                 },
             });
             dispatch(clearState());
