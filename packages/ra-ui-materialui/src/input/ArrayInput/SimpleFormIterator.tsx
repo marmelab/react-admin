@@ -25,6 +25,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { ClassesOverride } from '../../types';
 import { IconButtonWithTooltip } from '../../button';
 import FormInput from '../../form/FormInput';
+import { useArrayInput } from './useArrayInput';
 
 export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     const {
@@ -34,8 +35,6 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         basePath,
         children,
         className,
-        fields,
-        meta: { error, submitFailed },
         record,
         resource,
         source,
@@ -51,6 +50,8 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     } = props;
     const classes = useStyles(props);
     const nodeRef = useRef(null);
+    const { fields, meta } = useArrayInput(props);
+    const { error, submitFailed } = meta;
 
     // We need a unique id for each field for a proper enter/exit animation
     // so we keep an internal map between the field position and an auto-increment id

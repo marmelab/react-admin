@@ -10,10 +10,11 @@ import {
 import { useFieldArray } from 'react-final-form-arrays';
 import { InputLabel, FormControl, FormHelperText } from '@material-ui/core';
 
+import { LinearProgress } from '../../layout';
 import InputHelperText from '../InputHelperText';
 import sanitizeInputRestProps from '../sanitizeInputRestProps';
 import Labeled from '../Labeled';
-import { LinearProgress } from '../../layout';
+import { ArrayInputContext } from './ArrayInputContext';
 
 /**
  * To edit arrays of data embedded inside a record, <ArrayInput> creates a list of sub-forms.
@@ -120,15 +121,17 @@ export const ArrayInput: FC<ArrayInputProps> = ({
                     isRequired={isRequired(validate)}
                 />
             </InputLabel>
-            {cloneElement(Children.only(children), {
-                ...fieldProps,
-                record,
-                resource,
-                source,
-                variant,
-                margin,
-                disabled,
-            })}
+            <ArrayInputContext.Provider value={fieldProps}>
+                {cloneElement(Children.only(children), {
+                    ...fieldProps,
+                    record,
+                    resource,
+                    source,
+                    variant,
+                    margin,
+                    disabled,
+                })}
+            </ArrayInputContext.Provider>
             {!!((touched || dirty) && arrayInputError) || helperText ? (
                 <FormHelperText error={(touched || dirty) && !!arrayInputError}>
                     <InputHelperText
