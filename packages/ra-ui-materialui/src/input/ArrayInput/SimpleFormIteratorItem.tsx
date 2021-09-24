@@ -7,6 +7,7 @@ import {
     isValidElement,
     ReactElement,
     ReactNode,
+    useMemo,
 } from 'react';
 import { Typography } from '@material-ui/core';
 import classNames from 'classnames';
@@ -15,7 +16,12 @@ import { Record } from 'ra-core';
 import { ClassesOverride } from '../../types';
 import FormInput from '../../form/FormInput';
 import { useSimpleFormIteratorStyles } from './useSimpleFormIteratorStyles';
+import { useSimpleFormIterator } from './useSimpleFormIterator';
 import { ArrayInputContextValue } from './ArrayInputContext';
+import {
+    SimpleFormIteratorItemContext,
+    SimpleFormIteratorItemContextValue,
+} from './SimpleFormIteratorItemContext';
 
 export const SimpleFormIteratorItem = (props: SimpleFormIteratorItemProps) => {
     const {
@@ -25,13 +31,10 @@ export const SimpleFormIteratorItem = (props: SimpleFormIteratorItemProps) => {
         disabled,
         disableReordering,
         disableRemove,
-        fields,
         getItemLabel,
         index,
         margin,
         member,
-        onRemoveField,
-        onReorder,
         record,
         removeButton,
         reOrderButtons,
@@ -40,6 +43,7 @@ export const SimpleFormIteratorItem = (props: SimpleFormIteratorItemProps) => {
         variant,
     } = props;
 
+    const { total, reOrder, remove } = useSimpleFormIterator();
     // Returns a boolean to indicate whether to disable the remove button for certain fields.
     // If disableRemove is a function, then call the function with the current record to
     // determining if the button should be disabled. Otherwise, use a boolean property that
@@ -56,76 +60,90 @@ export const SimpleFormIteratorItem = (props: SimpleFormIteratorItemProps) => {
         originalOnClickHandler: MouseEventHandler,
         index: number
     ) => (event: MouseEvent) => {
-        onRemoveField(index);
+        remove(index);
         if (originalOnClickHandler) {
             originalOnClickHandler(event);
         }
     };
 
+    const context = useMemo<SimpleFormIteratorItemContextValue>(
+        () => ({
+            index,
+            total,
+            reOrder: newIndex => reOrder(index, newIndex),
+            remove: () => remove(index),
+        }),
+        [index, total, reOrder, remove]
+    );
+
     return (
-        <li className={classes.line}>
-            <div>
-                <div className={classes.indexContainer}>
-                    <Typography variant="body1" className={classes.index}>
-                        {getItemLabel(index)}
-                    </Typography>
-                    {!disabled &&
-                        !disableReordering &&
-                        cloneElement(reOrderButtons, {
-                            index,
-                            max: fields.length,
-                            onReorder,
+        <SimpleFormIteratorItemContext.Provider value={context}>
+            <li className={classes.line}>
+                <div>
+                    <div className={classes.indexContainer}>
+                        <Typography variant="body1" className={classes.index}>
+                            {getItemLabel(index)}
+                        </Typography>
+                        {!disabled &&
+                            !disableReordering &&
+                            cloneElement(reOrderButtons, {
+                                index,
+                                max: total,
+                                reOrder,
+                                className: classNames(
+                                    'button-reorder',
+                                    `button-reorder-${source}-${index}`
+                                ),
+                            })}
+                    </div>
+                </div>
+                <section className={classes.form}>
+                    {Children.map(children, (input: ReactElement, index2) => {
+                        if (!isValidElement<any>(input)) {
+                            return null;
+                        }
+                        const { source, ...inputProps } = input.props;
+                        return (
+                            <FormInput
+                                basePath={input.props.basePath || basePath}
+                                input={cloneElement(input, {
+                                    source: source
+                                        ? `${member}.${source}`
+                                        : member,
+                                    index: source ? undefined : index2,
+                                    label:
+                                        typeof input.props.label === 'undefined'
+                                            ? source
+                                                ? `resources.${resource}.fields.${source}`
+                                                : undefined
+                                            : input.props.label,
+                                    disabled,
+                                    ...inputProps,
+                                })}
+                                record={record}
+                                resource={resource}
+                                variant={variant}
+                                margin={margin}
+                            />
+                        );
+                    })}
+                </section>
+                {!disabled && !disableRemoveField(record) && (
+                    <span className={classes.action}>
+                        {cloneElement(removeButton, {
+                            onClick: handleRemoveButtonClick(
+                                removeButton.props.onClick,
+                                index
+                            ),
                             className: classNames(
-                                'button-reorder',
-                                `button-reorder-${source}-${index}`
+                                'button-remove',
+                                `button-remove-${source}-${index}`
                             ),
                         })}
-                </div>
-            </div>
-            <section className={classes.form}>
-                {Children.map(children, (input: ReactElement, index2) => {
-                    if (!isValidElement<any>(input)) {
-                        return null;
-                    }
-                    const { source, ...inputProps } = input.props;
-                    return (
-                        <FormInput
-                            basePath={input.props.basePath || basePath}
-                            input={cloneElement(input, {
-                                source: source ? `${member}.${source}` : member,
-                                index: source ? undefined : index2,
-                                label:
-                                    typeof input.props.label === 'undefined'
-                                        ? source
-                                            ? `resources.${resource}.fields.${source}`
-                                            : undefined
-                                        : input.props.label,
-                                disabled,
-                                ...inputProps,
-                            })}
-                            record={record}
-                            resource={resource}
-                            variant={variant}
-                            margin={margin}
-                        />
-                    );
-                })}
-            </section>
-            {!disabled && !disableRemoveField(record) && (
-                <span className={classes.action}>
-                    {cloneElement(removeButton, {
-                        onClick: handleRemoveButtonClick(
-                            removeButton.props.onClick,
-                            index
-                        ),
-                        className: classNames(
-                            'button-remove',
-                            `button-remove-${source}-${index}`
-                        ),
-                    })}
-                </span>
-            )}
-        </li>
+                    </span>
+                )}
+            </li>
+        </SimpleFormIteratorItemContext.Provider>
     );
 };
 

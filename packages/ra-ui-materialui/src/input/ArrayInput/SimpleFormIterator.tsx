@@ -5,11 +5,11 @@ import {
     MouseEventHandler,
     ReactElement,
     ReactNode,
+    useCallback,
+    useMemo,
     useRef,
 } from 'react';
 import { FormHelperText } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/AddCircleOutline';
-import CloseIcon from '@material-ui/icons/RemoveCircleOutline';
 import classNames from 'classnames';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
@@ -19,27 +19,21 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { CSSTransitionProps } from 'react-transition-group/CSSTransition';
 
 import { ClassesOverride } from '../../types';
-import { Button } from '../../button';
 import { useArrayInput } from './useArrayInput';
 import { useSimpleFormIteratorStyles } from './useSimpleFormIteratorStyles';
+import { SimpleFormIteratorContext } from './SimpleFormIteratorContext';
 import {
     DisableRemoveFunction,
     SimpleFormIteratorItem,
 } from './SimpleFormIteratorItem';
+import { AddItemButton as DefaultAddItemButton } from './AddItemButton';
+import { RemoveItemButton as DefaultRemoveItemButton } from './RemoveItemButton';
 import { ReOrderButtons as DefaultReOrderButtons } from './ReOrderButtons';
 
 export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     const {
-        addButton = (
-            <Button label="ra.action.add">
-                <AddIcon />
-            </Button>
-        ),
-        removeButton = (
-            <Button label="ra.action.remove">
-                <CloseIcon />
-            </Button>
-        ),
+        addButton = <DefaultAddItemButton />,
+        removeButton = <DefaultRemoveItemButton />,
         reOrderButtons = <DefaultReOrderButtons />,
         basePath,
         children,
@@ -80,15 +74,21 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         nextId.current > 0 ? Array.from(Array(nextId.current).keys()) : []
     );
 
-    const handleRemoveField = (index: number) => {
-        ids.current.splice(index, 1);
-        fields.remove(index);
-    };
+    const removeField = useCallback(
+        (index: number) => {
+            ids.current.splice(index, 1);
+            fields.remove(index);
+        },
+        [fields]
+    );
 
-    const addField = () => {
-        ids.current.push(nextId.current++);
-        fields.push(undefined);
-    };
+    const addField = useCallback(
+        (item: any = undefined) => {
+            ids.current.push(nextId.current++);
+            fields.push(item);
+        },
+        [fields]
+    );
 
     // add field and call the onClick event of the button passed as addButton prop
     const handleAddButtonClick = (
@@ -100,73 +100,87 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         }
     };
 
-    const handleReorder = (origin: number, destination: number) => {
-        const item = ids.current[origin];
-        ids.current[origin] = ids.current[destination];
-        ids.current[destination] = item;
-        fields.move(origin, destination);
-    };
+    const handleReorder = useCallback(
+        (origin: number, destination: number) => {
+            const item = ids.current[origin];
+            ids.current[origin] = ids.current[destination];
+            ids.current[destination] = item;
+            fields.move(origin, destination);
+        },
+        [fields]
+    );
 
     const records = get(record, source);
 
+    const context = useMemo(
+        () => ({
+            total: fields.length,
+            add: addField,
+            remove: removeField,
+            reOrder: handleReorder,
+        }),
+        [fields.length, addField, removeField, handleReorder]
+    );
     return fields ? (
-        <ul className={classNames(classes.root, className)}>
-            {submitFailed && typeof error !== 'object' && error && (
-                <FormHelperText error>
-                    <ValidationError error={error as string} />
-                </FormHelperText>
-            )}
-            <TransitionGroup component={null}>
-                {fields.map((member, index) => (
-                    <CSSTransition
-                        nodeRef={nodeRef}
-                        key={ids.current[index]}
-                        timeout={500}
-                        classNames="fade"
-                        {...TransitionProps}
-                    >
-                        <SimpleFormIteratorItem
-                            basePath={basePath}
-                            classes={classes}
-                            disabled={disabled}
-                            disableRemove={disableRemove}
-                            disableReordering={disableReordering}
-                            fields={fields}
-                            getItemLabel={getItemLabel}
-                            index={index}
-                            margin={margin}
-                            member={member}
-                            meta={meta}
-                            onRemoveField={handleRemoveField}
-                            onReorder={handleReorder}
-                            record={(records && records[index]) || {}}
-                            removeButton={removeButton}
-                            reOrderButtons={reOrderButtons}
-                            resource={resource}
-                            source={source}
-                            variant={variant}
+        <SimpleFormIteratorContext.Provider value={context}>
+            <ul className={classNames(classes.root, className)}>
+                {submitFailed && typeof error !== 'object' && error && (
+                    <FormHelperText error>
+                        <ValidationError error={error as string} />
+                    </FormHelperText>
+                )}
+                <TransitionGroup component={null}>
+                    {fields.map((member, index) => (
+                        <CSSTransition
+                            nodeRef={nodeRef}
+                            key={ids.current[index]}
+                            timeout={500}
+                            classNames="fade"
+                            {...TransitionProps}
                         >
-                            {children}
-                        </SimpleFormIteratorItem>
-                    </CSSTransition>
-                ))}
-            </TransitionGroup>
-            {!disabled && !disableAdd && (
-                <li className={classes.line}>
-                    <span className={classes.action}>
-                        {cloneElement(addButton, {
-                            onClick: handleAddButtonClick(
-                                addButton.props.onClick
-                            ),
-                            className: classNames(
-                                'button-add',
-                                `button-add-${source}`
-                            ),
-                        })}
-                    </span>
-                </li>
-            )}
-        </ul>
+                            <SimpleFormIteratorItem
+                                basePath={basePath}
+                                classes={classes}
+                                disabled={disabled}
+                                disableRemove={disableRemove}
+                                disableReordering={disableReordering}
+                                fields={fields}
+                                getItemLabel={getItemLabel}
+                                index={index}
+                                margin={margin}
+                                member={member}
+                                meta={meta}
+                                onRemoveField={removeField}
+                                onReorder={handleReorder}
+                                record={(records && records[index]) || {}}
+                                removeButton={removeButton}
+                                reOrderButtons={reOrderButtons}
+                                resource={resource}
+                                source={source}
+                                variant={variant}
+                            >
+                                {children}
+                            </SimpleFormIteratorItem>
+                        </CSSTransition>
+                    ))}
+                </TransitionGroup>
+                {!disabled && !disableAdd && (
+                    <li className={classes.line}>
+                        <span className={classes.action}>
+                            {cloneElement(addButton, {
+                                onClick: handleAddButtonClick(
+                                    addButton.props.onClick
+                                ),
+                                className: classNames(
+                                    'button-add',
+                                    `button-add-${source}`
+                                ),
+                            })}
+                        </span>
+                    </li>
+                )}
+            </ul>
+        </SimpleFormIteratorContext.Provider>
     ) : null;
 };
 
