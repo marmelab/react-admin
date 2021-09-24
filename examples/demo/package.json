@@ -10,7 +10,7 @@
         "data-generator-retail": "^3.9.0",
         "fakerest": "^3.0.0",
         "fetch-mock": "~6.3.0",
-        "json-graphql-server": "~2.1.3",
+        "json-graphql-server": "~2.3.0",
         "proxy-polyfill": "^0.3.0",
         "ra-data-fakerest": "^3.9.0",
         "ra-data-graphql-simple": "^3.9.0",
