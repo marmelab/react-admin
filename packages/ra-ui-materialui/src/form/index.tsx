@@ -6,7 +6,6 @@ import getFormInitialValues from './getFormInitialValues';
 import { SimpleFormView, SimpleFormViewProps } from './SimpleFormView';
 import { TabbedFormView, TabbedFormViewProps } from './TabbedFormView';
 
-export * from './SimpleFormIterator';
 export * from './TabbedForm';
 export * from './FormTab';
 export * from './FormTabHeader';

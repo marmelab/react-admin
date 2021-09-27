@@ -2,12 +2,16 @@ import * as React from 'react';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
+import { ThemeProvider } from '@material-ui/core';
+import { createTheme } from '@material-ui/core/styles';
 
-import ArrayInput from './ArrayInput';
-import NumberInput from './NumberInput';
-import TextInput from './TextInput';
-import { SimpleFormIterator } from '../form/SimpleFormIterator';
+import { ArrayInput } from './ArrayInput';
+import NumberInput from '../NumberInput';
+import TextInput from '../TextInput';
+import { SimpleFormIterator } from './SimpleFormIterator';
 import { minLength, required } from 'ra-core';
+
+const theme = createTheme();
 
 describe('<ArrayInput />', () => {
     const onSubmit = jest.fn();
@@ -61,33 +65,37 @@ describe('<ArrayInput />', () => {
 
     it('should not create any section subform when the value is undefined', () => {
         const { baseElement } = render(
-            <FinalForm
-                render={() => (
-                    <form>
-                        <ArrayInput source="foo">
-                            <SimpleFormIterator />
-                        </ArrayInput>
-                    </form>
-                )}
-            />
+            <ThemeProvider theme={theme}>
+                <FinalForm
+                    render={() => (
+                        <form>
+                            <ArrayInput source="foo">
+                                <SimpleFormIterator />
+                            </ArrayInput>
+                        </form>
+                    )}
+                />
+            </ThemeProvider>
         );
         expect(baseElement.querySelectorAll('section')).toHaveLength(0);
     });
 
     it('should create one section subform per value in the array', () => {
         const { baseElement } = render(
-            <FinalForm
-                initialValues={{
-                    foo: [{}, {}, {}],
-                }}
-                render={() => (
-                    <form>
-                        <ArrayInput source="foo">
-                            <SimpleFormIterator />
-                        </ArrayInput>
-                    </form>
-                )}
-            />
+            <ThemeProvider theme={theme}>
+                <FinalForm
+                    initialValues={{
+                        foo: [{}, {}, {}],
+                    }}
+                    render={() => (
+                        <form>
+                            <ArrayInput source="foo">
+                                <SimpleFormIterator />
+                            </ArrayInput>
+                        </form>
+                    )}
+                />
+            </ThemeProvider>
         );
         expect(baseElement.querySelectorAll('section')).toHaveLength(3);
     });
@@ -100,19 +108,21 @@ describe('<ArrayInput />', () => {
             ],
         };
         const { queryAllByLabelText } = render(
-            <FinalForm
-                initialValues={initialValues}
-                render={() => (
-                    <form>
-                        <ArrayInput resource="bar" source="arr">
-                            <SimpleFormIterator>
-                                <NumberInput source="id" />
-                                <TextInput source="foo" />
-                            </SimpleFormIterator>
-                        </ArrayInput>
-                    </form>
-                )}
-            />
+            <ThemeProvider theme={theme}>
+                <FinalForm
+                    initialValues={initialValues}
+                    render={() => (
+                        <form>
+                            <ArrayInput resource="bar" source="arr">
+                                <SimpleFormIterator>
+                                    <NumberInput source="id" />
+                                    <TextInput source="foo" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </form>
+                    )}
+                />
+            </ThemeProvider>
         );
         expect(queryAllByLabelText('resources.bar.fields.id')).toHaveLength(2);
         expect(
@@ -130,28 +140,30 @@ describe('<ArrayInput />', () => {
 
     it('should apply validation to both itself and its inner inputs', async () => {
         const { getByText, getAllByLabelText, queryByText } = render(
-            <FinalForm
-                render={() => (
-                    <form>
-                        <ArrayInput
-                            resource="bar"
-                            source="arr"
-                            validate={[minLength(2, 'array_min_length')]}
-                        >
-                            <SimpleFormIterator>
-                                <TextInput
-                                    source="id"
-                                    validate={[required('id_required')]}
-                                />
-                                <TextInput
-                                    source="foo"
-                                    validate={[required('foo_required')]}
-                                />
-                            </SimpleFormIterator>
-                        </ArrayInput>
-                    </form>
-                )}
-            />
+            <ThemeProvider theme={theme}>
+                <FinalForm
+                    render={() => (
+                        <form>
+                            <ArrayInput
+                                resource="bar"
+                                source="arr"
+                                validate={[minLength(2, 'array_min_length')]}
+                            >
+                                <SimpleFormIterator>
+                                    <TextInput
+                                        source="id"
+                                        validate={[required('id_required')]}
+                                    />
+                                    <TextInput
+                                        source="foo"
+                                        validate={[required('foo_required')]}
+                                    />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </form>
+                    )}
+                />
+            </ThemeProvider>
         );
 
         fireEvent.click(getByText('ra.action.add'));
