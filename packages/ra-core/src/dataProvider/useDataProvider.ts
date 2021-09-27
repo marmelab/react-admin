@@ -4,7 +4,7 @@ import { useDispatch, useSelector, useStore } from 'react-redux';
 
 import DataProviderContext from './DataProviderContext';
 import defaultDataProvider from './defaultDataProvider';
-import { ReduxState, DataProviderProxy } from '../types';
+import { ReduxState, DataProvider, DataProviderProxy } from '../types';
 import useLogoutIfAccessDenied from '../auth/useLogoutIfAccessDenied';
 import { getDataProviderCallArguments } from './getDataProviderCallArguments';
 import {
@@ -103,9 +103,13 @@ import {
  * // - CRUD_GET_ONE_SUCCESS
  * // - FETCH_END
  */
-const useDataProvider = (): DataProviderProxy => {
+const useDataProvider = <
+    TDataProvider extends DataProvider = DataProvider
+>(): DataProviderProxy<TDataProvider> => {
     const dispatch = useDispatch() as Dispatch;
-    const dataProvider = useContext(DataProviderContext) || defaultDataProvider;
+    const dataProvider = ((useContext(DataProviderContext) ||
+        defaultDataProvider) as unknown) as TDataProvider;
+
     // optimistic mode can be triggered by a previous optimistic or undoable query
     const isOptimistic = useSelector(
         (state: ReduxState) => state.admin.ui.optimistic
@@ -113,7 +117,7 @@ const useDataProvider = (): DataProviderProxy => {
     const store = useStore<ReduxState>();
     const logoutIfAccessDenied = useLogoutIfAccessDenied();
 
-    const dataProviderProxy = useMemo(() => {
+    const dataProviderProxy = useMemo<DataProviderProxy<TDataProvider>>(() => {
         return new Proxy(dataProvider, {
             get: (target, name) => {
                 if (typeof name === 'symbol') {
