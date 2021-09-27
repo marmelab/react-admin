@@ -131,7 +131,8 @@ const SimpleList = <RecordType extends Record = Record>(
                                 record={data[id]}
                             >
                                 <ListItem
-                                    button={!!linkType as any}
+                                    // Ensure we don't have li items inside our own LI at L126
+                                    component="div"
                                     style={
                                         rowStyle
                                             ? rowStyle(data[id], rowIndex)
@@ -285,6 +286,10 @@ const LinkOrNot = (props: LinkOrNotProps) => {
             to={`${linkToRecord(basePath, id)}/show`}
             className={classes.link}
         >
+            {children}
+        </Link>
+    ) : link !== false ? (
+        <Link to={link} className={classes.link}>
             {children}
         </Link>
     ) : (
