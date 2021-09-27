@@ -740,6 +740,12 @@ export default MyAppBar;
 
 Take note that this uses *material-ui's `<AppBar>`* instead of *react-admin's `<AppBar>`*. To use this custom `AppBar` component, pass it as prop to a custom `Layout`, as explained in the previous section.
 
+To make it easier to customize, we export some of the components and hooks used by the `<AppBar>`:
+
+- `<LoadingIndicator>`: A `CircularProgress` bound to the dataProvider activity.
+- `<SidebarToggleButton>`: An `IconButton` used to toggle the `<Sidebar>`.
+- `useToggleSidebar`: A hook that returns the sidebar open state and a function to toggle it. Used internally by `<SidebarToggleButton>`.
+
 ## Adding Dark Mode Support
 
 The `<ToggleThemeButton>` component is part of `ra-preferences`, an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> module. It lets users switch from light to dark mode, and persists that choice in local storage so that users only have to do it once.
