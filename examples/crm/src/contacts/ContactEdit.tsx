@@ -84,7 +84,7 @@ const ContactEditContent = () => {
                             </CardContent>
                             <Toolbar
                                 {...omit(formProps, [
-                                    // FIXME Not super user firendly way to remove warnings
+                                    // FIXME Not super user friendly way to remove warnings
                                     'dirtyFields',
                                     'dirtyFieldsSinceLastSubmit',
                                     'dirtySinceLastSubmit',

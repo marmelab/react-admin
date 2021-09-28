@@ -18,7 +18,7 @@ you're free to use any graphql **server**.
 
 ## How does it work?
 
-In a nutshell, `ra-data-graphql` runs an *introspection query* on your GraphQL API and passes it to your adaptator, along with the *type of query* that is being made (`CREATE`, `UPDATE`, `GET_ONE`, `GET_LIST` etc..) and the *name of the resource* that is being queried.
+In a nutshell, `ra-data-graphql` runs an *introspection query* on your GraphQL API and passes it to your adaptator, along with the *type of query* that is being made (`CREATE`, `UPDATE`, `GET_ONE`, `GET_LIST` etc.) and the *name of the resource* that is being queried.
 
 It is then the job of ***your*** GraphQL adaptator to craft the GraphQL query that will match your backend conventions, and to provide a function that will parse the response of that query in a way that react-admin can understand.
 
@@ -223,7 +223,7 @@ buildGraphQLProvider({ buildQuery });
 
 ## When I create or edit a resource, the list or edit page does not refresh its data
 
-`react-admin` maintain its own cache of resources data but, by default, so does the Apollo client. For every queries, we inject a default [`fetchPolicy`](http://dev.apollodata.com/react/api-queries.html#graphql-config-options-fetchPolicy) set to `network-only` so that the Apollo client always refetch the data when requested.
+`react-admin` maintain its own cache of resources data but, by default, so does the Apollo client. For every query, we inject a default [`fetchPolicy`](http://dev.apollodata.com/react/api-queries.html#graphql-config-options-fetchPolicy) set to `network-only` so that the Apollo client always refetch the data when requested.
 
 Do not override this `fetchPolicy`.
 
