@@ -36,7 +36,7 @@ import { PostCreate, PostEdit, PostList } from './posts';
 
 const App = () => {
 
-    const [dataProvider, setDataProvider] = React.setState(null);
+    const [dataProvider, setDataProvider] = React.useState(null);
     React.useEffect(() => {
         buildGraphQLProvider({ clientOptions: { uri: 'http://localhost:4000' } })
             .then(graphQlDataProvider => setDataProvider(() => graphQlDataProvider));
