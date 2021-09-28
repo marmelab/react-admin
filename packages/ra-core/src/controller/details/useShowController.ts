@@ -15,6 +15,7 @@ export interface ShowProps {
     hasList?: boolean;
     id?: Identifier;
     resource?: string;
+    onFailure?: (e: any) => void;
     [key: string]: any;
 }
 
@@ -34,6 +35,7 @@ export interface ShowControllerProps<RecordType extends Record = Record> {
     record?: RecordType;
     refetch: Refetch;
     version: number;
+    error?: any;
 }
 
 /**
@@ -64,18 +66,18 @@ export const useShowController = <RecordType extends Record = Record>(
     const redirect = useRedirect();
     const refresh = useRefresh();
     const version = useVersion();
-    const { data: record, loading, loaded, refetch } = useGetOne<RecordType>(
-        resource,
-        id,
-        {
-            action: CRUD_GET_ONE,
-            onFailure: () => {
+    const { data: record, loading, loaded, refetch, error } = useGetOne<
+        RecordType
+    >(resource, id, {
+        action: CRUD_GET_ONE,
+        onFailure:
+            props.onFailure ??
+            (() => {
                 notify('ra.notification.item_doesnt_exist', 'warning');
                 redirect('list', basePath);
                 refresh();
-            },
-        }
-    );
+            }),
+    });
 
     const getResourceLabel = useGetResourceLabel();
     const defaultTitle = translate('ra.page.show', {
@@ -97,5 +99,6 @@ export const useShowController = <RecordType extends Record = Record>(
         hasList,
         hasShow,
         version,
+        error,
     };
 };
