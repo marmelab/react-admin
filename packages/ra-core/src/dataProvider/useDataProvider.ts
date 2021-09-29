@@ -120,7 +120,7 @@ const useDataProvider = <
     const dataProviderProxy = useMemo<DataProviderProxy<TDataProvider>>(() => {
         return new Proxy(dataProvider, {
             get: (target, name) => {
-                if (typeof name === 'symbol') {
+                if (typeof name === 'symbol' || name === 'then') {
                     return;
                 }
                 return (...args) => {
