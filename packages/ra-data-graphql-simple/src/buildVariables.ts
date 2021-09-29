@@ -1,5 +1,11 @@
 /* eslint-disable default-case */
 import {
+    IntrospectionType,
+    IntrospectionInputObjectType,
+    IntrospectionNonNullTypeRef,
+    IntrospectionNamedTypeRef,
+} from 'graphql';
+import {
     GET_LIST,
     GET_ONE,
     GET_MANY,
@@ -8,11 +14,12 @@ import {
     UPDATE,
     DELETE,
 } from 'ra-core';
+import { IntrospectionResult } from 'ra-data-graphql';
 
 import getFinalType from './getFinalType';
 import isList from './isList';
 
-const sanitizeValue = (type, value) => {
+const sanitizeValue = (type: IntrospectionType, value: any) => {
     if (type.name === 'Int') {
         return parseInt(value, 10);
     }
@@ -24,9 +31,14 @@ const sanitizeValue = (type, value) => {
     return value;
 };
 
-const castType = (value, type) => {
+const castType = (
+    value: unknown,
+    type: IntrospectionType | IntrospectionNonNullTypeRef
+) => {
     const realType = type.kind === 'NON_NULL' ? type.ofType : type;
-    switch (`${realType.kind}:${realType.name}`) {
+    switch (
+        `${realType.kind}:${(realType as IntrospectionNamedTypeRef).name}`
+    ) {
         case 'SCALAR:Int':
             return Number(value);
 
@@ -41,7 +53,11 @@ const castType = (value, type) => {
     }
 };
 
-const prepareParams = (params, queryType, introspectionResults) => {
+const prepareParams = (
+    params,
+    queryType,
+    introspectionResults: IntrospectionResult
+) => {
     const result = {};
 
     if (!params) {
@@ -77,17 +93,17 @@ const prepareParams = (params, queryType, introspectionResults) => {
             arg &&
             arg.type.kind === 'INPUT_OBJECT'
         ) {
-            const args = introspectionResults.types.find(
+            const args = (introspectionResults.types.find(
                 item =>
                     item.kind === arg.type.kind && item.name === arg.type.name
-            ).inputFields;
+            ) as IntrospectionInputObjectType).inputFields;
             result[key] = prepareParams(param, { args }, introspectionResults);
             return;
         }
 
         if (
             param instanceof Object &&
-            !param instanceof Date &&
+            !(param instanceof Date) &&
             !Array.isArray(param)
         ) {
             result[key] = prepareParams(param, queryType, introspectionResults);
@@ -105,12 +121,18 @@ const prepareParams = (params, queryType, introspectionResults) => {
     return result;
 };
 
-const buildGetListVariables = introspectionResults => (
+const buildGetListVariables = (introspectionResults: IntrospectionResult) => (
     resource,
-    aorFetchType,
+    raFetchMethod,
     params
 ) => {
-    let variables = { filter: {} };
+    let variables: Partial<{
+        filter: { [key: string]: any };
+        page: number;
+        perPage: number;
+        sortField: string;
+        sortOrder: string;
+    }> = { filter: {} };
     if (params.filter) {
         variables.filter = Object.keys(params.filter).reduce((acc, key) => {
             if (key === 'ids') {
@@ -121,7 +143,7 @@ const buildGetListVariables = introspectionResults => (
                 const type = introspectionResults.types.find(
                     t => t.name === `${resource.type.name}Filter`
                 );
-                const filterSome = type?.inputFields?.find(
+                const filterSome = (type as IntrospectionInputObjectType)?.inputFields?.find(
                     t => t.name === `${key}_some`
                 );
 
@@ -144,7 +166,7 @@ const buildGetListVariables = introspectionResults => (
                     const type = introspectionResults.types.find(
                         t => t.name === `${resource.type.name}Filter`
                     );
-                    const filterSome = type?.inputFields?.find(
+                    const filterSome = (type as IntrospectionInputObjectType)?.inputFields?.find(
                         t => t.name === `${parts[0]}_some`
                     );
 
@@ -245,9 +267,9 @@ const buildCreateUpdateVariables = (
         };
     }, {});
 
-export default introspectionResults => (
+export default (introspectionResults: IntrospectionResult) => (
     resource,
-    aorFetchType,
+    raFetchMethod,
     params,
     queryType
 ) => {
@@ -257,13 +279,12 @@ export default introspectionResults => (
         introspectionResults
     );
 
-    switch (aorFetchType) {
+    switch (raFetchMethod) {
         case GET_LIST: {
             return buildGetListVariables(introspectionResults)(
                 resource,
-                aorFetchType,
-                preparedParams,
-                queryType
+                raFetchMethod,
+                preparedParams
             );
         }
         case GET_MANY:
@@ -273,9 +294,8 @@ export default introspectionResults => (
         case GET_MANY_REFERENCE: {
             let variables = buildGetListVariables(introspectionResults)(
                 resource,
-                aorFetchType,
-                preparedParams,
-                queryType
+                raFetchMethod,
+                preparedParams
             );
 
             variables.filter = {
@@ -294,7 +314,7 @@ export default introspectionResults => (
         case UPDATE: {
             return buildCreateUpdateVariables(
                 resource,
-                aorFetchType,
+                raFetchMethod,
                 preparedParams,
                 queryType
             );

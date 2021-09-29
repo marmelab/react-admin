@@ -41,13 +41,17 @@ const sanitizeResource = data => {
     return result;
 };
 
-export default introspectionResults => aorFetchType => response => {
+export default introspectionResults => (
+    raFetchMethod,
+    resource,
+    queryType
+) => response => {
     const data = response.data;
 
     if (
-        aorFetchType === GET_LIST ||
-        aorFetchType === GET_MANY ||
-        aorFetchType === GET_MANY_REFERENCE
+        raFetchMethod === GET_LIST ||
+        raFetchMethod === GET_MANY ||
+        raFetchMethod === GET_MANY_REFERENCE
     ) {
         return {
             data: response.data.items.map(sanitizeResource),

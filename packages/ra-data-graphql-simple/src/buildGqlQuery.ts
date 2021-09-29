@@ -1,13 +1,19 @@
 import { GET_LIST, GET_MANY, GET_MANY_REFERENCE, DELETE } from 'ra-core';
-import { QUERY_TYPES } from 'ra-data-graphql';
-import { TypeKind } from 'graphql';
+import { QUERY_TYPES, IntrospectionResult } from 'ra-data-graphql';
+import {
+    TypeKind,
+    IntrospectionObjectType,
+    IntrospectionUnionType,
+} from 'graphql';
 import * as gqlTypes from 'graphql-ast-types-browser';
 
 import getFinalType from './getFinalType';
 import isList from './isList';
 import isRequired from './isRequired';
 
-export const buildFragments = introspectionResults => possibleTypes =>
+export const buildFragments = (
+    introspectionResults: IntrospectionResult
+) => possibleTypes =>
     possibleTypes.reduce((acc, possibleType) => {
         const type = getFinalType(possibleType);
 
@@ -19,14 +25,19 @@ export const buildFragments = introspectionResults => possibleTypes =>
             ...acc,
             gqlTypes.inlineFragment(
                 gqlTypes.selectionSet(
-                    buildFields(introspectionResults)(linkedType.fields)
+                    buildFields(introspectionResults)(
+                        (linkedType as IntrospectionObjectType).fields
+                    )
                 ),
                 gqlTypes.namedType(gqlTypes.name(type.name))
             ),
         ];
     }, []);
 
-export const buildFields = (introspectionResults, path = []) => fields =>
+export const buildFields = (
+    introspectionResults: IntrospectionResult,
+    path = []
+) => fields =>
     fields.reduce((acc, field) => {
         const type = getFinalType(field.type);
 
@@ -69,12 +80,13 @@ export const buildFields = (introspectionResults, path = []) => fields =>
                     null,
                     gqlTypes.selectionSet([
                         ...buildFragments(introspectionResults)(
-                            linkedType.possibleTypes || []
+                            (linkedType as IntrospectionUnionType)
+                                .possibleTypes || []
                         ),
                         ...buildFields(introspectionResults, [
                             ...path,
                             linkedType.name,
-                        ])(linkedType.fields),
+                        ])((linkedType as IntrospectionObjectType).fields),
                     ])
                 ),
             ];
@@ -158,9 +170,9 @@ export const buildApolloArgs = (query, variables) => {
     return args;
 };
 
-export default introspectionResults => (
-    resource,
-    aorFetchType,
+export default (introspectionResults: IntrospectionResult) => (
+    resource: any,
+    raFetchMethod: string,
     queryType,
     variables
 ) => {
@@ -170,9 +182,9 @@ export default introspectionResults => (
     const metaArgs = buildArgs(queryType, metaVariables);
     const fields = buildFields(introspectionResults)(resource.type.fields);
     if (
-        aorFetchType === GET_LIST ||
-        aorFetchType === GET_MANY ||
-        aorFetchType === GET_MANY_REFERENCE
+        raFetchMethod === GET_LIST ||
+        raFetchMethod === GET_MANY ||
+        raFetchMethod === GET_MANY_REFERENCE
     ) {
         return gqlTypes.document([
             gqlTypes.operationDefinition(
@@ -201,7 +213,7 @@ export default introspectionResults => (
         ]);
     }
 
-    if (aorFetchType === DELETE) {
+    if (raFetchMethod === DELETE) {
         return gqlTypes.document([
             gqlTypes.operationDefinition(
                 'mutation',
@@ -222,7 +234,7 @@ export default introspectionResults => (
 
     return gqlTypes.document([
         gqlTypes.operationDefinition(
-            QUERY_TYPES.includes(aorFetchType) ? 'query' : 'mutation',
+            QUERY_TYPES.includes(raFetchMethod) ? 'query' : 'mutation',
             gqlTypes.selectionSet([
                 gqlTypes.field(
                     gqlTypes.name(queryType.name),

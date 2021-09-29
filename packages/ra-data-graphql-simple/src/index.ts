@@ -1,6 +1,6 @@
 import merge from 'lodash/merge';
-import buildDataProvider from 'ra-data-graphql';
-import { DELETE, DELETE_MANY, UPDATE, UPDATE_MANY } from 'ra-core';
+import buildDataProvider, { Options } from 'ra-data-graphql';
+import { DataProvider, Identifier } from 'ra-core';
 
 import defaultBuildQuery from './buildQuery';
 const defaultOptions = {
@@ -9,55 +9,54 @@ const defaultOptions = {
 
 export const buildQuery = defaultBuildQuery;
 
-export default options => {
+export default (options: Options): Promise<DataProvider> => {
     return buildDataProvider(merge({}, defaultOptions, options)).then(
         defaultDataProvider => {
-            return (fetchType, resource, params) => {
+            return {
+                ...defaultDataProvider,
                 // This provider does not support multiple deletions so instead we send multiple DELETE requests
                 // This can be optimized using the apollo-link-batch-http link
-                if (fetchType === DELETE_MANY) {
+                deleteMany: (resource, params) => {
                     const { ids, ...otherParams } = params;
                     return Promise.all(
                         ids.map(id =>
-                            defaultDataProvider(DELETE, resource, {
+                            defaultDataProvider.delete(resource, {
                                 id,
+                                previousData: null,
                                 ...otherParams,
                             })
                         )
                     ).then(results => {
-                        const data = results.reduce(
+                        const data = results.reduce<Identifier[]>(
                             (acc, { data }) => [...acc, data.id],
                             []
                         );
 
                         return { data };
                     });
-                }
+                },
                 // This provider does not support multiple deletions so instead we send multiple UPDATE requests
                 // This can be optimized using the apollo-link-batch-http link
-                if (fetchType === UPDATE_MANY) {
+                updateMany: (resource, params) => {
                     const { ids, data, ...otherParams } = params;
                     return Promise.all(
                         ids.map(id =>
-                            defaultDataProvider(UPDATE, resource, {
-                                data: {
-                                    id,
-                                    ...data,
-                                },
+                            defaultDataProvider.update(resource, {
+                                id,
+                                data: data,
+                                previousData: null,
                                 ...otherParams,
                             })
                         )
                     ).then(results => {
-                        const data = results.reduce(
+                        const data = results.reduce<Identifier[]>(
                             (acc, { data }) => [...acc, data.id],
                             []
                         );
 
                         return { data };
                     });
-                }
-
-                return defaultDataProvider(fetchType, resource, params);
+                },
             };
         }
     );
