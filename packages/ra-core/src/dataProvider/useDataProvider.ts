@@ -104,8 +104,11 @@ import {
  * // - FETCH_END
  */
 const useDataProvider = <
-    TDataProvider extends DataProvider = DataProvider
->(): DataProviderProxy<TDataProvider> => {
+    TDataProvider extends DataProvider = DataProvider,
+    TDataProviderProxy extends DataProviderProxy<
+        TDataProvider
+    > = DataProviderProxy<TDataProvider>
+>(): TDataProviderProxy => {
     const dispatch = useDispatch() as Dispatch;
     const dataProvider = ((useContext(DataProviderContext) ||
         defaultDataProvider) as unknown) as TDataProvider;
@@ -117,7 +120,7 @@ const useDataProvider = <
     const store = useStore<ReduxState>();
     const logoutIfAccessDenied = useLogoutIfAccessDenied();
 
-    const dataProviderProxy = useMemo<DataProviderProxy<TDataProvider>>(() => {
+    const dataProviderProxy = useMemo(() => {
         return new Proxy(dataProvider, {
             get: (target, name) => {
                 if (typeof name === 'symbol') {
@@ -217,7 +220,7 @@ const useDataProvider = <
         });
     }, [dataProvider, dispatch, isOptimistic, logoutIfAccessDenied, store]);
 
-    return dataProviderProxy;
+    return (dataProviderProxy as unknown) as TDataProviderProxy;
 };
 
 // get a Promise that resolves after a delay in milliseconds
