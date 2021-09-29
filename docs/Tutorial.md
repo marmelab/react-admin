@@ -850,7 +850,7 @@ For instance, let's imagine you have to use the `my.api.url` REST API, which exp
 
 | Action              | Expected API request                                                                    |
 | ------------------- | --------------------------------------------------------------------------------------- |
-| Get list            | `GET http://my.api.url/posts?sort=["title","ASC"]&range=[0, 24]&filter={"title":"bar"}` |
+| Get list            | `GET http://my.api.url/posts?sort=title&order=ASC&page=1&perPage=50&filter={"title":"bar"}` |
 | Get one record      | `GET http://my.api.url/posts/123`                                                       |
 | Get several records | `GET http://my.api.url/posts?filter={"id":[123,456,789]}`                               |
 | Get related records | `GET http://my.api.url/posts?filter={"author_id":345}`                                  |
