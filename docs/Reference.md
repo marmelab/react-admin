@@ -41,6 +41,7 @@ title: "Reference"
 * [`<DatagridRow>`](./List.md#body-element)
 * `<DatagridCell>`
 * `<DatagridHeaderCell>`
+* [`<DatagridHeader>`](./List.md#header-element)
 * [`<DateField>`](./Fields.md#datefield)
 * [`<DateInput>`](./Inputs.md#dateinput)
 * [`<DateTimeInput>`](./Inputs.md#datetimeinput)
