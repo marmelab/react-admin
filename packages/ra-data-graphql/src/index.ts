@@ -16,6 +16,7 @@ import {
 import {
     ApolloClient,
     ApolloClientOptions,
+    ApolloQueryResult,
     MutationOptions,
     WatchQueryOptions,
     QueryOptions,
@@ -31,9 +32,10 @@ import {
 import {
     introspectSchema,
     IntrospectionOptions,
-    IntrospectionResult as InnerIntrospectionResult,
+    IntrospectionResult,
 } from './introspection';
 
+export * from './introspection';
 export const QUERY_TYPES = INNER_QUERY_TYPES;
 export const MUTATION_TYPES = INNER_MUTATION_TYPES;
 export const ALL_TYPES = INNER_ALL_TYPES;
@@ -79,10 +81,8 @@ const getOptions = (
 };
 
 export type BuildQueryResult = QueryOptions<OperationVariables, any> & {
-    parseResponse: (response) => void;
+    parseResponse: (response: ApolloQueryResult<any>) => any;
 };
-
-export type IntrospectionResult = InnerIntrospectionResult;
 
 export type BuildQuery = (
     name: string,
@@ -90,7 +90,7 @@ export type BuildQuery = (
     params: any
 ) => BuildQueryResult;
 type BuildQueryFactory = (
-    introspectionResults: InnerIntrospectionResult
+    introspectionResults: IntrospectionResult
 ) => BuildQuery;
 
 export type GetQueryOptions = (

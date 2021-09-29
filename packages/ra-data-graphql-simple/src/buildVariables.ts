@@ -1,9 +1,10 @@
 /* eslint-disable default-case */
 import {
-    IntrospectionType,
+    IntrospectionField,
     IntrospectionInputObjectType,
-    IntrospectionNonNullTypeRef,
     IntrospectionNamedTypeRef,
+    IntrospectionNonNullTypeRef,
+    IntrospectionType,
 } from 'graphql';
 import {
     GET_LIST,
@@ -14,10 +15,65 @@ import {
     UPDATE,
     DELETE,
 } from 'ra-core';
-import { IntrospectionResult } from 'ra-data-graphql';
+import { IntrospectionResult, IntrospectedResource } from 'ra-data-graphql';
 
 import getFinalType from './getFinalType';
 import isList from './isList';
+
+export default (introspectionResults: IntrospectionResult) => (
+    resource: IntrospectedResource,
+    raFetchMethod: string,
+    params: any,
+    queryType: IntrospectionField
+) => {
+    const preparedParams = prepareParams(
+        params,
+        queryType,
+        introspectionResults
+    );
+
+    switch (raFetchMethod) {
+        case GET_LIST: {
+            return buildGetListVariables(introspectionResults)(
+                resource,
+                raFetchMethod,
+                preparedParams
+            );
+        }
+        case GET_MANY:
+            return {
+                filter: { ids: preparedParams.ids },
+            };
+        case GET_MANY_REFERENCE: {
+            let variables = buildGetListVariables(introspectionResults)(
+                resource,
+                raFetchMethod,
+                preparedParams
+            );
+
+            variables.filter = {
+                ...variables.filter,
+                [preparedParams.target]: preparedParams.id,
+            };
+
+            return variables;
+        }
+        case GET_ONE:
+        case DELETE:
+            return {
+                id: preparedParams.id,
+            };
+        case CREATE:
+        case UPDATE: {
+            return buildCreateUpdateVariables(
+                resource,
+                raFetchMethod,
+                preparedParams,
+                queryType
+            );
+        }
+    }
+};
 
 const sanitizeValue = (type: IntrospectionType, value: any) => {
     if (type.name === 'Int') {
@@ -32,7 +88,7 @@ const sanitizeValue = (type: IntrospectionType, value: any) => {
 };
 
 const castType = (
-    value: unknown,
+    value: any,
     type: IntrospectionType | IntrospectionNonNullTypeRef
 ) => {
     const realType = type.kind === 'NON_NULL' ? type.ofType : type;
@@ -54,8 +110,8 @@ const castType = (
 };
 
 const prepareParams = (
-    params,
-    queryType,
+    params: any,
+    queryType: Partial<IntrospectionField>,
     introspectionResults: IntrospectionResult
 ) => {
     const result = {};
@@ -122,9 +178,9 @@ const prepareParams = (
 };
 
 const buildGetListVariables = (introspectionResults: IntrospectionResult) => (
-    resource,
-    raFetchMethod,
-    params
+    resource: IntrospectedResource,
+    raFetchMethod: string,
+    params: any
 ) => {
     let variables: Partial<{
         filter: { [key: string]: any };
@@ -233,10 +289,10 @@ const buildGetListVariables = (introspectionResults: IntrospectionResult) => (
 };
 
 const buildCreateUpdateVariables = (
-    resource,
-    aorFetchType,
-    params,
-    queryType
+    resource: IntrospectedResource,
+    raFetchMethod,
+    params: any,
+    queryType: IntrospectionField
 ) =>
     Object.keys(params.data).reduce((acc, key) => {
         if (Array.isArray(params.data[key])) {
@@ -266,58 +322,3 @@ const buildCreateUpdateVariables = (
             [key]: params.data[key],
         };
     }, {});
-
-export default (introspectionResults: IntrospectionResult) => (
-    resource,
-    raFetchMethod,
-    params,
-    queryType
-) => {
-    const preparedParams = prepareParams(
-        params,
-        queryType,
-        introspectionResults
-    );
-
-    switch (raFetchMethod) {
-        case GET_LIST: {
-            return buildGetListVariables(introspectionResults)(
-                resource,
-                raFetchMethod,
-                preparedParams
-            );
-        }
-        case GET_MANY:
-            return {
-                filter: { ids: preparedParams.ids },
-            };
-        case GET_MANY_REFERENCE: {
-            let variables = buildGetListVariables(introspectionResults)(
-                resource,
-                raFetchMethod,
-                preparedParams
-            );
-
-            variables.filter = {
-                ...variables.filter,
-                [preparedParams.target]: preparedParams.id,
-            };
-
-            return variables;
-        }
-        case GET_ONE:
-        case DELETE:
-            return {
-                id: preparedParams.id,
-            };
-        case CREATE:
-        case UPDATE: {
-            return buildCreateUpdateVariables(
-                resource,
-                raFetchMethod,
-                preparedParams,
-                queryType
-            );
-        }
-    }
-};
