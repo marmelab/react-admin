@@ -31,6 +31,8 @@ const englishMessages: TranslationMessages = {
             open_menu: 'Open menu',
             close_menu: 'Close menu',
             update: 'Update',
+            move_up: 'Move up',
+            move_down: 'Move down',
         },
         boolean: {
             true: 'Yes',
@@ -138,6 +140,7 @@ const englishMessages: TranslationMessages = {
                 'Cannot load the translations for the specified language',
             canceled: 'Action cancelled',
             logged_out: 'Your session has ended, please reconnect.',
+            not_authorized: "You're not authorized to access this resource.",
         },
         validation: {
             required: 'Required',

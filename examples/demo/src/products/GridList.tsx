@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import MuiGridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
@@ -47,10 +46,8 @@ const getColsForWidth = (width: Breakpoint) => {
 const times = (nbChildren: number, fn: (key: number) => any) =>
     Array.from({ length: nbChildren }, (_, key) => fn(key));
 
-const LoadingGridList: FC<GridProps & { nbItems?: number }> = ({
-    width,
-    nbItems = 20,
-}) => {
+const LoadingGridList = (props: GridProps & { nbItems?: number }) => {
+    const { width, nbItems = 20 } = props;
     const classes = useStyles();
     return (
         <MuiGridList
@@ -68,7 +65,8 @@ const LoadingGridList: FC<GridProps & { nbItems?: number }> = ({
     );
 };
 
-const LoadedGridList: FC<GridProps> = ({ width }) => {
+const LoadedGridList = (props: GridProps) => {
+    const { width } = props;
     const { ids, data, basePath } = useListContext();
     const classes = useStyles();
 
@@ -113,9 +111,10 @@ const LoadedGridList: FC<GridProps> = ({ width }) => {
     );
 };
 
-interface GridProps extends DatagridProps, WithWidth {}
+interface GridProps extends Omit<DatagridProps, 'width'>, WithWidth {}
 
-const GridList: FC<WithWidth> = ({ width }) => {
+const GridList = (props: WithWidth) => {
+    const { width } = props;
     const { loaded } = useListContext();
     return loaded ? (
         <LoadedGridList width={width} />

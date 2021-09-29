@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import {
     List,
     ListProps,
@@ -30,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const InvoiceList: FC<ListProps> = props => {
+const InvoiceList = (props: ListProps) => {
     const classes = useStyles();
     return (
         <List

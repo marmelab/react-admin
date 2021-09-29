@@ -1,9 +1,4 @@
-import {
-    ReactNode,
-    ComponentType,
-    FunctionComponent,
-    ReactElement,
-} from 'react';
+import { ReactNode, ComponentType, ReactElement } from 'react';
 
 import { SortPayload, Record } from '../../types';
 import {
@@ -11,7 +6,7 @@ import {
     ReferenceInputValue,
 } from './useReferenceInputController';
 
-interface Props {
+export interface ReferenceInputControllerProps {
     allowEmpty?: boolean;
     basePath: string;
     children: (params: ReferenceInputValue) => ReactNode;
@@ -33,11 +28,13 @@ interface Props {
  *
  * @see useReferenceInputController
  */
-export const ReferenceInputController: FunctionComponent<Props> = ({
-    children,
-    ...props
-}) => {
-    return children(useReferenceInputController(props)) as ReactElement;
+export const ReferenceInputController = (
+    props: ReferenceInputControllerProps
+) => {
+    const { children, ...rest } = props;
+    return children(useReferenceInputController(rest)) as ReactElement;
 };
 
-export default ReferenceInputController as ComponentType<Props>;
+export default ReferenceInputController as ComponentType<
+    ReferenceInputControllerProps
+>;

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import classnames from 'classnames';
 import { Table, TableBody, TableCell, TableRow } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -13,7 +12,8 @@ const useStyles = makeStyles({
     boldCell: { fontWeight: 'bold' },
 });
 
-const Totals: FC<FieldProps<Order>> = ({ record }: { record?: Order }) => {
+const Totals = (props: FieldProps<Order>) => {
+    const { record } = props;
     const classes = useStyles();
     const translate = useTranslate();
 

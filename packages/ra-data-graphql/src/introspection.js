@@ -1,5 +1,5 @@
 import { getIntrospectionQuery } from 'graphql';
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 import { GET_LIST, GET_ONE } from 'ra-core';
 
 import { ALL_TYPES } from './constants';

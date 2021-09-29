@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FunctionComponent, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 
@@ -10,15 +10,16 @@ import { ResourceContextProvider } from './ResourceContextProvider';
 
 const defaultOptions = {};
 
-const ResourceRegister: FunctionComponent<ResourceProps> = ({
-    name,
-    list,
-    create,
-    edit,
-    show,
-    icon,
-    options = defaultOptions,
-}) => {
+const ResourceRegister = (props: ResourceProps) => {
+    const {
+        name,
+        list,
+        create,
+        edit,
+        show,
+        icon,
+        options = defaultOptions,
+    } = props;
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(
@@ -32,20 +33,23 @@ const ResourceRegister: FunctionComponent<ResourceProps> = ({
                 icon,
             })
         );
-        return () => dispatch(unregisterResource(name));
+        return () => {
+            dispatch(unregisterResource(name));
+        };
     }, [dispatch, name, create, edit, icon, list, show, options]);
     return null;
 };
 
-const ResourceRoutes: FunctionComponent<ResourceProps> = ({
-    name,
-    match,
-    list,
-    create,
-    edit,
-    show,
-    options = defaultOptions,
-}) => {
+const ResourceRoutes = (props: ResourceProps) => {
+    const {
+        name,
+        match,
+        list,
+        create,
+        edit,
+        show,
+        options = defaultOptions,
+    } = props;
     const isRegistered = useSelector(
         (state: ReduxState) => !!state.admin.resources[name]
     );
@@ -141,14 +145,13 @@ const ResourceRoutes: FunctionComponent<ResourceProps> = ({
     }, [basePath, name, create, edit, list, show, options, isRegistered]); // eslint-disable-line react-hooks/exhaustive-deps
 };
 
-const Resource: FunctionComponent<ResourceProps> = ({
-    intent = 'route',
-    ...props
-}) =>
-    intent === 'registration' ? (
-        <ResourceRegister {...props} />
+const Resource = (props: ResourceProps) => {
+    const { intent = 'route', ...rest } = props;
+    return intent === 'registration' ? (
+        <ResourceRegister {...rest} />
     ) : (
-        <ResourceRoutes {...props} />
+        <ResourceRoutes {...rest} />
     );
+};
 
 export default Resource;

@@ -32,6 +32,8 @@ const frenchMessages: TranslationMessages = {
             open_menu: 'Ouvrir le menu',
             close_menu: 'Fermer le menu',
             update: 'Modifier',
+            move_up: 'Déplacer vers le haut',
+            move_down: 'Déplacer vers le bas',
         },
         boolean: {
             true: 'Oui',
@@ -143,6 +145,8 @@ const frenchMessages: TranslationMessages = {
                 'Erreur de chargement des traductions pour la langue sélectionnée',
             canceled: 'Action annulée',
             logged_out: 'Votre session a pris fin, veuillez vous reconnecter.',
+            not_authorized:
+                "Vous n'êtes pas autorisé(e) à accéder à cette ressource.",
         },
         validation: {
             required: 'Ce champ est requis',

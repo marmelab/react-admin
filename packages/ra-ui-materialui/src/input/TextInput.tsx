@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import { useInput, FieldTitle, InputProps } from 'ra-core';
 import { TextFieldProps } from '@material-ui/core/TextField';
@@ -25,20 +24,21 @@ export type TextInputProps = InputProps<TextFieldProps> &
  *
  * The object passed as `options` props is passed to the <ResettableTextField> component
  */
-const TextInput: FunctionComponent<TextInputProps> = ({
-    label,
-    format,
-    helperText,
-    onBlur,
-    onFocus,
-    onChange,
-    options,
-    parse,
-    resource,
-    source,
-    validate,
-    ...rest
-}) => {
+const TextInput = (props: TextInputProps) => {
+    const {
+        label,
+        format,
+        helperText,
+        onBlur,
+        onFocus,
+        onChange,
+        options,
+        parse,
+        resource,
+        source,
+        validate,
+        ...rest
+    } = props;
     const {
         id,
         input,
@@ -62,12 +62,15 @@ const TextInput: FunctionComponent<TextInputProps> = ({
             id={id}
             {...input}
             label={
-                <FieldTitle
-                    label={label}
-                    source={source}
-                    resource={resource}
-                    isRequired={isRequired}
-                />
+                label !== '' &&
+                label !== false && (
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                )
             }
             error={!!(touched && (error || submitError))}
             helperText={

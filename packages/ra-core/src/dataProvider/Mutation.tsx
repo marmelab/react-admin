@@ -1,5 +1,3 @@
-import { FunctionComponent } from 'react';
-
 import useMutation from './useMutation';
 
 interface ChildrenFuncParams {
@@ -10,7 +8,7 @@ interface ChildrenFuncParams {
     loaded: boolean;
 }
 
-interface Props {
+export interface MutationProps {
     children: (
         mutate: (
             event?: any,
@@ -53,7 +51,7 @@ interface Props {
  *     </Mutation>
  * );
  */
-const Mutation: FunctionComponent<Props> = ({
+const Mutation = ({
     children,
     type,
     resource,
@@ -61,7 +59,7 @@ const Mutation: FunctionComponent<Props> = ({
     // Provides an undefined onSuccess just so the key `onSuccess` is defined
     // This is used to detect options in useDataProvider
     options = { onSuccess: undefined },
-}) =>
+}: MutationProps) =>
     children(
         ...useMutation(
             { type, resource, payload },

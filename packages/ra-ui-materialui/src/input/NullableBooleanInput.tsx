@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import TextField, { TextFieldProps } from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -36,7 +35,7 @@ export type NullableBooleanInputProps = InputProps<TextFieldProps> &
         trueLabel?: string;
     };
 
-const NullableBooleanInput: FunctionComponent<NullableBooleanInputProps> = props => {
+const NullableBooleanInput = (props: NullableBooleanInputProps) => {
     const {
         className,
         classes: classesOverride,

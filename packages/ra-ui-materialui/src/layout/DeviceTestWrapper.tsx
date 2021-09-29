@@ -1,7 +1,7 @@
 import * as React from 'react';
 import mediaQuery from 'css-mediaquery';
 import { ThemeProvider } from '@material-ui/styles';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
 /**
  * Test utility to simulate a device form factor for server-side mediaQueries
@@ -18,7 +18,7 @@ const DeviceTestWrapper = ({
     width = 'md',
     children,
 }: DeviceTestWrapperProps): JSX.Element => {
-    const theme = createMuiTheme();
+    const theme = createTheme();
 
     // Use https://github.com/ericf/css-mediaquery as polyfill.
     const ssrMatchMedia = query => ({

@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import useAuthProvider from './useAuthProvider';
 import useLogout from './useLogout';
 import { useNotify } from '../sideEffect';
+import { useHistory } from 'react-router';
 
 let timer;
 
@@ -41,12 +42,15 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
     const authProvider = useAuthProvider();
     const logout = useLogout();
     const notify = useNotify();
+    const history = useHistory();
     const logoutIfAccessDenied = useCallback(
         (error?: any, disableNotification?: boolean) =>
             authProvider
                 .checkError(error)
                 .then(() => false)
                 .catch(async e => {
+                    const logoutUser = e?.logoutUser ?? true;
+
                     //manual debounce
                     if (timer) {
                         // side effects already triggered in this tick, exit
@@ -66,7 +70,17 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                         authProvider
                             .checkAuth({})
                             .then(() => {
-                                notify('ra.notification.logged_out', 'warning');
+                                if (logoutUser) {
+                                    notify(
+                                        'ra.notification.logged_out',
+                                        'warning'
+                                    );
+                                } else {
+                                    notify(
+                                        'ra.notification.not_authorized',
+                                        'warning'
+                                    );
+                                }
                             })
                             .catch(() => {});
                     }
@@ -76,11 +90,16 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                             : error && error.redirectTo
                             ? error.redirectTo
                             : undefined;
-                    logout({}, redirectTo);
+
+                    if (logoutUser) {
+                        logout({}, redirectTo);
+                    } else {
+                        history.push(redirectTo);
+                    }
 
                     return true;
                 }),
-        [authProvider, logout, notify]
+        [authProvider, logout, notify, history]
     );
     return authProvider
         ? logoutIfAccessDenied

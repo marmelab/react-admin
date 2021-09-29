@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Fragment, useCallback, FC } from 'react';
+import { Fragment, useCallback } from 'react';
 import classnames from 'classnames';
 import {
     BulkDeleteButton,
@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const ReviewList: FC<ListProps> = props => {
+const ReviewList = (props: ListProps) => {
     const classes = useStyles();
     const isXSmall = useMediaQuery<Theme>(theme =>
         theme.breakpoints.down('xs')

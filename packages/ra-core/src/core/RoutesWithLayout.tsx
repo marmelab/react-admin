@@ -1,9 +1,4 @@
-import React, {
-    Children,
-    cloneElement,
-    createElement,
-    FunctionComponent,
-} from 'react';
+import React, { Children, cloneElement, createElement } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import WithPermissions from '../auth/WithPermissions';
@@ -15,7 +10,7 @@ import {
     DashboardComponent,
 } from '../types';
 
-interface Props {
+export interface RoutesWithLayoutProps {
     catchAll: CatchAllComponent;
     children: AdminChildren;
     customRoutes?: CustomRoutes;
@@ -25,13 +20,8 @@ interface Props {
 
 const defaultAuthParams = { route: 'dashboard' };
 
-const RoutesWithLayout: FunctionComponent<Props> = ({
-    catchAll,
-    children,
-    customRoutes,
-    dashboard,
-    title,
-}) => {
+const RoutesWithLayout = (props: RoutesWithLayoutProps) => {
+    const { catchAll, children, customRoutes, dashboard, title } = props;
     const childrenAsArray = React.Children.toArray(children);
     const firstChild: React.ReactElement<any> | null =
         childrenAsArray.length > 0

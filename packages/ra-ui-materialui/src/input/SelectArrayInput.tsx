@@ -165,9 +165,10 @@ const SelectArrayInput = (props: SelectArrayInputProps) => {
         createValue,
         handleChange,
         onCreate,
+        optionText,
     });
 
-    const createItem = getCreateItem();
+    const createItem = create || onCreate ? getCreateItem() : null;
     const finalChoices =
         create || onCreate ? [...choices, createItem] : choices;
 
@@ -183,7 +184,7 @@ const SelectArrayInput = (props: SelectArrayInputProps) => {
                     value={getChoiceValue(choice)}
                     disabled={getDisableValue(choice)}
                 >
-                    {choice?.id === createItem.id
+                    {!!createItem && choice?.id === createItem.id
                         ? createItem.name
                         : renderMenuItemOption(choice)}
                 </MenuItem>
@@ -256,8 +257,8 @@ const SelectArrayInput = (props: SelectArrayInputProps) => {
                     {...input}
                     onChange={handleChangeWithCreateSupport}
                     value={input.value || []}
-                    {...options}
                     labelWidth={labelWidth}
+                    {...options}
                 >
                     {finalChoices.map(renderMenuItem)}
                 </Select>
@@ -275,7 +276,7 @@ const SelectArrayInput = (props: SelectArrayInputProps) => {
 };
 
 export interface SelectArrayInputProps
-    extends Omit<ChoicesProps, 'choices'>,
+    extends Omit<ChoicesProps, 'choices' | 'optionText'>,
         Omit<SupportCreateSuggestionOptions, 'handleChange'>,
         Omit<InputProps<SelectProps>, 'source'>,
         Omit<

@@ -2,10 +2,13 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    entry: './src/index.tsx',
+    entry: {
+        polyfills: './src/polyfills.ts',
+        index: './src/index.tsx',
+    },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js',
+        filename: '[name].bundle.js',
     },
     devtool: 'cheap-module-source-map',
     resolve: {
@@ -33,6 +36,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: './index-webpack.html',
+            inject: false,
         }),
     ],
     devServer: {

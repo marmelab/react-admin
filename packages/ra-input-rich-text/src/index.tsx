@@ -1,11 +1,5 @@
 import debounce from 'lodash/debounce';
-import React, {
-    useRef,
-    useEffect,
-    useCallback,
-    FunctionComponent,
-    ComponentProps,
-} from 'react';
+import React, { useRef, useEffect, useCallback, ComponentProps } from 'react';
 import Quill, { QuillOptionsStatic } from 'quill';
 import { useInput, FieldTitle } from 'ra-core';
 import { InputHelperText } from 'ra-ui-materialui';
@@ -22,7 +16,7 @@ import styles from './styles';
 
 const useStyles = makeStyles(styles, { name: 'RaRichTextInput' });
 
-interface Props {
+export interface RichTextInputProps {
     label?: string | false;
     options?: QuillOptionsStatic;
     source: string;
@@ -45,7 +39,7 @@ interface Props {
     [key: string]: any;
 }
 
-const RichTextInput: FunctionComponent<Props> = props => {
+const RichTextInput = (props: RichTextInputProps) => {
     const {
         options = {}, // Quill editor options
         toolbar = true,

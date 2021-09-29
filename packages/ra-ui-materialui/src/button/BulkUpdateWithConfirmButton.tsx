@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { FC, Fragment, useState, ReactElement } from 'react';
+import { Fragment, useState, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ActionUpdate from '@material-ui/icons/Update';
-import { fade } from '@material-ui/core/styles/colorManipulator';
+import { alpha } from '@material-ui/core/styles/colorManipulator';
 import inflection from 'inflection';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -25,7 +25,7 @@ const useStyles = makeStyles(
         updateButton: {
             color: theme.palette.error.main,
             '&:hover': {
-                backgroundColor: fade(theme.palette.error.main, 0.12),
+                backgroundColor: alpha(theme.palette.error.main, 0.12),
                 // Reset on mouse devices
                 '@media (hover: none)': {
                     backgroundColor: 'transparent',
@@ -38,7 +38,9 @@ const useStyles = makeStyles(
 
 const defaultIcon = <ActionUpdate />;
 
-const BulkUpdateWithConfirmButton: FC<BulkUpdateWithConfirmButtonProps> = props => {
+const BulkUpdateWithConfirmButton = (
+    props: BulkUpdateWithConfirmButtonProps
+) => {
     const notify = useNotify();
     const refresh = useRefresh();
     const translate = useTranslate();

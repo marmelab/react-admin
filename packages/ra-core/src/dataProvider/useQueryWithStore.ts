@@ -6,7 +6,7 @@ import useDataProvider from './useDataProvider';
 import useVersion from '../controller/useVersion';
 import getFetchType from './getFetchType';
 import { useSafeSetState } from '../util/hooks';
-import { ReduxState, OnSuccess, OnFailure } from '../types';
+import { ReduxState, OnSuccess, OnFailure, DataProvider } from '../types';
 
 export interface DataProviderQuery {
     type: string;
@@ -111,7 +111,10 @@ const defaultIsDataLoaded = (data: any): boolean => data !== undefined;
  *     return <div>User {data.username}</div>;
  * };
  */
-export const useQueryWithStore = <State extends ReduxState = ReduxState>(
+export const useQueryWithStore = <
+    State extends ReduxState = ReduxState,
+    TDataProvider extends DataProvider = DataProvider
+>(
     query: DataProviderQuery,
     options: QueryOptions = { action: 'CUSTOM_QUERY' },
     dataSelector: (state: State) => any = defaultDataSelector(query),
@@ -189,7 +192,7 @@ export const useQueryWithStore = <State extends ReduxState = ReduxState>(
         options.enabled,
     ]);
 
-    const dataProvider = useDataProvider();
+    const dataProvider = useDataProvider<TDataProvider>();
     useEffect(() => {
         // When several identical queries are issued during the same tick,
         // we only pass one query to the dataProvider.
@@ -201,6 +204,7 @@ export const useQueryWithStore = <State extends ReduxState = ReduxState>(
             queriesThisTick[requestSignature] = new Promise<PartialQueryState>(
                 resolve => {
                     dataProvider[type](resource, payload, options)
+                        // @ts-ignore
                         .then(() => {
                             // We don't care about the dataProvider response here, because
                             // it was already passed to SUCCESS reducers by the dataProvider

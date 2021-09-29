@@ -1,4 +1,3 @@
-import ArrayInput, { ArrayInputProps } from './ArrayInput';
 import AutocompleteArrayInput, {
     AutocompleteArrayInputProps,
 } from './AutocompleteArrayInput';
@@ -32,6 +31,7 @@ import SearchInput, { SearchInputProps } from './SearchInput';
 import SelectArrayInput, { SelectArrayInputProps } from './SelectArrayInput';
 import TextInput, { TextInputProps } from './TextInput';
 import sanitizeInputRestProps from './sanitizeInputRestProps';
+export * from './ArrayInput';
 export * from './AutocompleteInput';
 export * from './SelectInput';
 export * from './useSupportCreateSuggestion';
@@ -41,7 +41,6 @@ export * from './TranslatableInputsTabs';
 export * from './TranslatableInputsTab';
 
 export {
-    ArrayInput,
     AutocompleteArrayInput,
     BooleanInput,
     CheckboxGroupInput,
@@ -66,7 +65,6 @@ export {
 };
 
 export type {
-    ArrayInputProps,
     AutocompleteArrayInputProps,
     CheckboxGroupInputProps,
     DateInputProps,

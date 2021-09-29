@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import {
     Table,
     TableBody,
@@ -16,7 +15,8 @@ const useStyles = makeStyles({
     rightAlignedCell: { textAlign: 'right' },
 });
 
-const Basket: FC<FieldProps<Order>> = ({ record }) => {
+const Basket = (props: FieldProps<Order>) => {
+    const { record } = props;
     const classes = useStyles();
     const translate = useTranslate();
 

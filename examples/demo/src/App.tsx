@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { useEffect } from 'react';
-import { Admin, Resource, DataProvider } from 'react-admin';
+import { Admin, Resource } from 'react-admin';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import authProvider from './authProvider';
@@ -16,6 +15,7 @@ import products from './products';
 import invoices from './invoices';
 import categories from './categories';
 import reviews from './reviews';
+import dataProviderFactory from './dataProvider';
 
 const i18nProvider = polyglotI18nProvider(locale => {
     if (locale === 'fr') {
@@ -26,18 +26,13 @@ const i18nProvider = polyglotI18nProvider(locale => {
     return englishMessages;
 }, 'en');
 
-interface AppProps {
-    onUnmount: () => void;
-    dataProvider: DataProvider;
-}
-
-const App = ({ onUnmount, dataProvider }: AppProps) => {
-    useEffect(() => onUnmount, [onUnmount]);
-
+const App = () => {
     return (
         <Admin
             title=""
-            dataProvider={dataProvider}
+            dataProvider={dataProviderFactory(
+                process.env.REACT_APP_DATA_PROVIDER || ''
+            )}
             customReducers={{ theme: themeReducer }}
             customRoutes={customRoutes}
             authProvider={authProvider}

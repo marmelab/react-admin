@@ -3,11 +3,13 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import LabelIcon from '@material-ui/icons/Label';
 import { makeStyles } from '@material-ui/core/styles';
+import classnames from 'classnames';
 import {
     useTranslate,
     DashboardMenuItem,
     MenuItemLink,
     MenuProps,
+    ReduxState,
 } from 'react-admin';
 
 import visitors from '../visitors';
@@ -28,6 +30,7 @@ const Menu = ({ dense = false }: MenuProps) => {
         menuCustomers: true,
     });
     const translate = useTranslate();
+    const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
     useSelector((state: AppState) => state.theme); // force rerender on theme change
     const classes = useStyles();
 
@@ -36,7 +39,12 @@ const Menu = ({ dense = false }: MenuProps) => {
     };
 
     return (
-        <div className={classes.root}>
+        <div
+            className={classnames(classes.root, {
+                [classes.open]: open,
+                [classes.closed]: !open,
+            })}
+        >
             {' '}
             <DashboardMenuItem />
             <SubMenu
@@ -47,7 +55,10 @@ const Menu = ({ dense = false }: MenuProps) => {
                 dense={dense}
             >
                 <MenuItemLink
-                    to={`/commands`}
+                    to={{
+                        pathname: '/commands',
+                        state: { _scrollToTop: true },
+                    }}
                     primaryText={translate(`resources.commands.name`, {
                         smart_count: 2,
                     })}
@@ -55,7 +66,10 @@ const Menu = ({ dense = false }: MenuProps) => {
                     dense={dense}
                 />
                 <MenuItemLink
-                    to={`/invoices`}
+                    to={{
+                        pathname: '/invoices',
+                        state: { _scrollToTop: true },
+                    }}
                     primaryText={translate(`resources.invoices.name`, {
                         smart_count: 2,
                     })}
@@ -71,7 +85,10 @@ const Menu = ({ dense = false }: MenuProps) => {
                 dense={dense}
             >
                 <MenuItemLink
-                    to={`/products`}
+                    to={{
+                        pathname: '/products',
+                        state: { _scrollToTop: true },
+                    }}
                     primaryText={translate(`resources.products.name`, {
                         smart_count: 2,
                     })}
@@ -79,7 +96,10 @@ const Menu = ({ dense = false }: MenuProps) => {
                     dense={dense}
                 />
                 <MenuItemLink
-                    to={`/categories`}
+                    to={{
+                        pathname: '/categories',
+                        state: { _scrollToTop: true },
+                    }}
                     primaryText={translate(`resources.categories.name`, {
                         smart_count: 2,
                     })}
@@ -95,7 +115,10 @@ const Menu = ({ dense = false }: MenuProps) => {
                 dense={dense}
             >
                 <MenuItemLink
-                    to={`/customers`}
+                    to={{
+                        pathname: '/customers',
+                        state: { _scrollToTop: true },
+                    }}
                     primaryText={translate(`resources.customers.name`, {
                         smart_count: 2,
                     })}
@@ -103,7 +126,10 @@ const Menu = ({ dense = false }: MenuProps) => {
                     dense={dense}
                 />
                 <MenuItemLink
-                    to={`/segments`}
+                    to={{
+                        pathname: '/segments',
+                        state: { _scrollToTop: true },
+                    }}
                     primaryText={translate(`resources.segments.name`, {
                         smart_count: 2,
                     })}
@@ -112,7 +138,10 @@ const Menu = ({ dense = false }: MenuProps) => {
                 />
             </SubMenu>
             <MenuItemLink
-                to={`/reviews`}
+                to={{
+                    pathname: '/reviews',
+                    state: { _scrollToTop: true },
+                }}
                 primaryText={translate(`resources.reviews.name`, {
                     smart_count: 2,
                 })}
@@ -126,6 +155,17 @@ const Menu = ({ dense = false }: MenuProps) => {
 const useStyles = makeStyles(theme => ({
     root: {
         marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(1),
+        transition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+    },
+    open: {
+        width: 200,
+    },
+    closed: {
+        width: 55,
     },
 }));
 

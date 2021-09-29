@@ -449,7 +449,7 @@ const IncreaseLikeButton = ({ record }) => {
         update('likes', record.id, diff, record)
     }
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={loading} onClick={handleClick}>Like</div>;
+    return <button disabled={loading} onClick={handleClick}>Like</button>;
 };
 
 // or set params when calling the hook
@@ -459,7 +459,7 @@ const IncreaseLikeButton = ({ record }) => {
     const diff = { likes: record.likes + 1 };
     const [update, { loading, error }] = useUpdate('likes', record.id, diff, record);
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={loading} onClick={update}>Like</div>;
+    return <button disabled={loading} onClick={update}>Like</button>;
 };
 ```
 
@@ -520,7 +520,7 @@ const DeleteButton = ({ record }) => {
         deleteOne('likes', record.id, record)
     }
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={loading} onClick={handleClick}>Delete</div>;
+    return <button disabled={loading} onClick={handleClick}>Delete</button>;
 };
 
 // set params when calling the hook
@@ -529,7 +529,7 @@ import { useDelete } from 'react-admin';
 const DeleteButton = ({ record }) => {
     const [deleteOne, { loading, error }] = useDelete('likes', record.id, record);
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={loading} onClick={deleteOne}>Delete</div>;
+    return <button disabled={loading} onClick={deleteOne}>Delete</button>;
 };
 ```
 
@@ -620,10 +620,152 @@ const ApproveButton = ({ record }) => {
 
 Fetching data is called a *side effect*, since it calls the outside world, and is asynchronous. Usual actions may have other side effects, like showing a notification, or redirecting the user to another page. React-admin provides the following hooks to handle most common side effects:
 
-- `useNotify`: Return a function to display a notification. The arguments should be a message (it can be a translation key), a level (either `info`, `success` or `warning`), an `options` object to pass to the `translate` function (in the case of the default i18n provider, using Polyglot.js, it will be the interpolation options used for passing variables), a boolean to set to `true` if the notification should contain an "undo" button and a number corresponding to the notification duration.
-- `useRedirect`: Return a function to redirect the user to another page. The arguments should be the path to redirect the user to, and the current `basePath`.
-- `useRefresh`: Return a function to force a rerender of the current view (equivalent to pressing the Refresh button).
-- `useUnselectAll`: Return a function to unselect all lines in the current `Datagrid`. Pass the name of the resource as argument.
+- [`useNotify`](#usenotify): Return a function to display a notification. 
+- [`useRedirect`](#useredirect): Return a function to redirect the user to another page. 
+- [`useRefresh`](#userefresh): Return a function to force a rerender of the current view (equivalent to pressing the Refresh button).
+- [`useUnselectAll`](#useunselectall): Return a function to unselect all lines in the current `Datagrid`. 
+
+### `useNotify`
+
+This hook returns a function that displays a notification in the bottom of the page.
+
+```jsx
+import { useNotify } from 'react-admin';
+
+const NotifyButton = () => {
+    const notify = useNotify();
+    const handleClick = () => {
+        notify(`Comment approved`, 'success');
+    }
+    return <button onClick={handleClick}>Notify</button>;
+};
+```
+
+The callback takes 5 arguments:
+ - the message to display
+ - the level of the notification (`info`, `success` or `warning` - the default is `info`)
+ - an `options` object to pass to the `translate` function (because notification messages are translated if your admin has an `i18nProvider`). It is useful for inserting variables into the translation.
+ - an `undoable` boolean. Set it to `true` if the notification should contain an "undo" button
+ - a `duration` number. Set it to `0` if the notification should not be dismissible.
+
+Here are more examples of `useNotify` calls: 
+
+```jsx
+// notify a warning
+notify(`This is a warning`, 'warning');
+// pass translation arguments
+notify('item.created', 'info', { resource: 'post' });
+// send an undoable notification
+notify('Element updated', 'info', undefined, true);
+```
+
+**Tip**: When using `useNotify` as a side effect for an `undoable` Edit form, you MUST set the fourth argument to `true`, otherwise the "undo" button will not appear, and the actual update will never occur.
+
+```jsx
+import * as React from 'react';
+import { useNotify, Edit, SimpleForm } from 'react-admin';
+
+const PostEdit = props => {
+    const notify = useNotify();
+
+    const onSuccess = () => {
+        notify(`Changes saved`, undefined, undefined, true);
+    };
+
+    return (
+        <Edit undoable onSuccess={onSuccess} {...props}>
+            <SimpleForm>
+                ...
+            </SimpleForm>
+        </Edit>
+    );
+}
+```
+
+### `useRedirect`
+
+This hook returns a function that redirects the user to another page.
+
+```jsx
+import { useRedirect } from 'react-admin';
+
+const DashboardButton = () => {
+    const redirect = useRedirect();
+    const handleClick = () => {
+        redirect('/dashboard');
+    }
+    return <button onClick={handleClick}>Dashboard</button>;
+};
+```
+
+The callback takes 3 arguments:
+ - the page to redirect the user to ('list', 'create', 'edit', 'show', or a custom path)
+ - the current `basePath`
+ - the `id` of the record to redirect to (if any)
+
+Here are more examples of `useRedirect` calls: 
+
+```jsx
+// redirect to the post list page
+redirect('list', '/posts');
+// redirect to the edit page of a post:
+redirect('edit', '/posts', 1);
+// redirect to the post creation page:
+redirect('create', '/posts');
+```
+
+Note that `useRedirect` doesn't allow to redirect to pages outside the current React app. For that, you should use `document.location`.
+
+### `useRefresh`
+
+This hook returns a function that forces a rerender of the current view.
+
+```jsx
+import { useRefresh } from 'react-admin';
+
+const RefreshButton = () => {
+    const refresh = useRefresh();
+    const handleClick = () => {
+        refresh();
+    }
+    return <button onClick={handleClick}>Refresh</button>;
+};
+```
+
+To make this work, react-admin stores a `version` number in its state. The `useDataProvider()` hook uses this `version` in its effect dependencies. Also, page components use the `version` as `key`. The `refresh` callback increases the `version`, which forces a re-execution all queries based on the `useDataProvider()` hook, and a rerender of all components using the `version` as key.
+
+This means that you can make any component inside a react-admin app refreshable by using the right key:
+
+```jsx
+import * as React from 'react';
+import { useVersion } from 'react-admin';
+
+const MyComponent = () => {
+    const version = useVersion();
+    return <div key={version}>
+        ...
+    </div>;
+};
+```
+
+The callback takes 1 argument:
+ - `hard`: when set to true, the callback empties the cache, too
+
+### `useUnselectAll`
+
+This hook returns a function that unselects all lines in the current `Datagrid`. Pass the name of the resource as argument.
+
+```jsx
+import { useUnselectAll } from 'react-admin';
+
+const UnselectAllButton = () => {
+    const unselectAll = useUnselectAll();
+    const handleClick = () => {
+        unselectAll('posts');
+    }
+    return <button onClick={handleClick}>Unselect all</button>;
+};
+```
 
 ## Handling Side Effects In Other Hooks
 

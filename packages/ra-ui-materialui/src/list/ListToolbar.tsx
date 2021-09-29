@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ReactElement, Children } from 'react';
+import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { Toolbar, ToolbarProps } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -35,7 +35,7 @@ const useStyles = makeStyles(
     { name: 'RaListToolbar' }
 );
 
-const ListToolbar: FC<ListToolbarProps> = props => {
+const ListToolbar = (props: ListToolbarProps) => {
     const { classes: classesOverride, filters, actions, ...rest } = props;
     const classes = useStyles(props);
 

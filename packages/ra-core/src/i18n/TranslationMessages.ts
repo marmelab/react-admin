@@ -34,6 +34,9 @@ export interface TranslationMessages extends StringMap {
             close: string;
             open_menu: string;
             close_menu: string;
+            update: string;
+            move_up: string;
+            move_down: string;
         };
         boolean: {
             [key: string]: StringMap | string;
@@ -84,6 +87,8 @@ export interface TranslationMessages extends StringMap {
             are_you_sure: string;
             bulk_delete_content: string;
             bulk_delete_title: string;
+            bulk_update_content: string;
+            bulk_update_title: string;
             delete_content: string;
             delete_title: string;
             details: string;
@@ -135,6 +140,7 @@ export interface TranslationMessages extends StringMap {
             i18n_error: string;
             canceled: string;
             logged_out: string;
+            not_authorized: string;
         };
         validation: {
             [key: string]: StringMap | string;

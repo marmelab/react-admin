@@ -1,10 +1,10 @@
-import { ReactElement, FunctionComponent } from 'react';
+import { ReactElement } from 'react';
 
 import { Record, SortPayload } from '../../types';
 import useReferenceManyFieldController from './useReferenceManyFieldController';
 import { ListControllerProps } from '../useListController';
 
-interface Props {
+export interface ReferenceManyFieldControllerProps {
     basePath: string;
     children: (params: ListControllerProps) => ReactElement<any>;
     filter?: any;
@@ -24,7 +24,9 @@ interface Props {
  *
  * @see useReferenceManyFieldController
  */
-export const ReferenceManyFieldController: FunctionComponent<Props> = props => {
+export const ReferenceManyFieldController = (
+    props: ReferenceManyFieldControllerProps
+) => {
     const { children, page = 1, perPage = 25, ...rest } = props;
     const controllerProps = useReferenceManyFieldController({
         page,

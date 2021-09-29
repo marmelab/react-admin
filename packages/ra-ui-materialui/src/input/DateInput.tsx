@@ -43,6 +43,28 @@ const getStringFromDate = (value: string | Date) => {
     return convertDateToString(new Date(value));
 };
 
+/**
+ * Form input to edit a Date string value in the "YYYY-MM-DD" format (e.g. '2021-06-23').
+ *
+ * Renders a date picker (the exact UI depends on the browser).
+ *
+ * @example
+ * import { Edit, SimpleForm, DateInput } from 'react-admin';
+ *
+ * const PostEdit = (props) => (
+ *     <Edit {...props}>
+ *         <SimpleForm>
+ *             <DateInput source="published_at" />
+ *         </SimpleForm>
+ *     </Edit>
+ * );
+ *
+ * @example
+ * // If the initial value is a Date object, DateInput converts it to a string
+ * // but you must pass a custom parse method to convert the form value
+ * // (which is always a date string) back to a Date object.
+ * <DateInput source="published_at" parse={val => new Date(val)} />
+ */
 const DateInput = ({
     defaultValue,
     format = getStringFromDate,
@@ -62,18 +84,11 @@ const DateInput = ({
     variant = 'filled',
     ...rest
 }: DateInputProps) => {
-    const sanitizedDefaultValue = defaultValue
-        ? format(new Date(defaultValue))
-        : undefined;
-    const sanitizedInitialValue = initialValue
-        ? format(new Date(initialValue))
-        : undefined;
-
     const { id, input, isRequired, meta } = useInput({
-        defaultValue: sanitizedDefaultValue,
+        defaultValue,
         format,
         formatOnBlur: true,
-        initialValue: sanitizedInitialValue,
+        initialValue,
         name,
         onBlur,
         onChange,

@@ -321,7 +321,7 @@ const ResetViewsButton = (props) => (
         {...props}
         label="Reset Views"
         data={views}
-        icon={VisibilityOff}
+        icon={<VisibilityOff/>}
     />
 );
 
@@ -458,7 +458,7 @@ export default CustomResetViewsButton;
 
 **Tip**: `<Confirm>` leverages material-ui's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
 
-**Tip**: `<Confirm>` text props such as `title` and `content` are translatable. You can pass translation keys in these props. Note: `content` is only translateable when value is `string`, otherwise it renders the content as a `ReactNode`.
+**Tip**: `<Confirm>` text props such as `title` and `content` are translatable. You can pass translation keys in these props. Note: `content` is only translatable when value is `string`, otherwise it renders the content as a `ReactNode`.
 
 **Tip**: You can customize the text of the two `<Confirm>` component buttons using the `cancel` and `confirm` props which accept translation keys. You can customize the icons by setting the `ConfirmIcon` and `CancelIcon` props, which accept a SvgIcon type.
 
@@ -781,25 +781,27 @@ The default value for the `component` prop is `Card`.
 
 ### Synchronize With URL
 
-When a List based component (eg: `PostList`) is passed to the `list` prop of a `<Resource>`, it will automatically synchronize its parameters with the browser URL (using react-router location). However, when used anywhere outside a `<Resource>`, it won't synchronize, which can be useful when you have multiple lists on a single page for example.
+When a `<List>` based component (eg: `<PostList>`) is passed as a `<Resource list>`, react-admin synchronizes its parameters (sort, pagination, filters) with the query string in the URL (using `react-router` location). It does so by setting the `<List syncWithLocation>` prop by default.
 
-In order to enable the synchronization with the URL, you can set the `syncWithLocation` prop. For example, adding a `List` to an `Edit` page:
+When you use a `<List>` component anywhere else than as `<Resource list>`, `syncWithLocation` isn't enabled, and so `<List>` doesn't synchronize its parameters with the URL - the `<List>` parameters are kept in a local state, independent for each `<List>` instance. This allows to have multiple lists on a single page. The drawback is that a hit on the "back" button doesn't restore the previous list parameters.
+
+You may, however, wish to enable `syncWithLocation` on a `<List>` component that is not a `<Resource list>`. For instance, you may want to display a `<List>` of Posts in a Dashboard, and allow users to use the "back" button to undo a sort, pagination, or filter change on that list. In such cases, set the `syncWithLocation` prop to `true`:
 
 {% raw %}
 ```jsx
-const TagsEdit = (props) => (
-    <>
-        <Edit {...props}>
-            // ...
-        </Edit>
+const Dashboard = () => (
+    <div>
+        // ...
         <ResourceContextProvider value="posts">
-            <List syncWithLocation basePath="/posts" filter={{ tags: [id]}}>
-                <Datagrid>
-                    <TextField source="title" />
-                </Datagrid>
+            <List syncWithLocation basePath="/posts" >
+                <SimpleList
+                    primaryText={record => record.title}
+                    secondaryText={record => `${record.views} views`}
+                    tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+                />
             </List>
         </ResourceContextProvider>
-    </>
+    </div>
 )
 ```
 {% endraw %}
@@ -1227,7 +1229,7 @@ import {
 } from 'react-admin';
 +import { FilterWithSave } from '@react-admin/ra-preferences';
 
-const SongFilter: FC = props => (
+const SongFilter = props => (
 -   <Filter {...props}>
 +   <FilterWithSave {...props}>
         <SelectInput
@@ -1249,7 +1251,7 @@ const SongFilter: FC = props => (
 +   </FilterWithSave>
 );
 
-const SongList: FC<Props> = props => (
+const SongList = props => (
     <List {...props} filters={<SongFilter />}>
         <Datagrid rowClick="edit">
             <TextField source="title" />
@@ -1272,7 +1274,7 @@ import { Card, CardContent } from '@material-ui/core';
 
 +import { SavedQueriesList } from '@react-admin/ra-preferences';
 
-const SongFilterSidebar: FC = () => (
+const SongFilterSidebar = () => (
     <Card>
         <CardContent>
 +           <SavedQueriesList />
@@ -1286,7 +1288,7 @@ const SongFilterSidebar: FC = () => (
     </Card>
 );
 
-const SongList: FC<Props> = props => (
+const SongList = props => (
     <List {...props} aside={<SongFilterSidebar />}>
         <Datagrid>
             ...
@@ -1307,7 +1309,7 @@ For instance, by default, the filter button/form combo doesn't provide a submit 
 
 In that case, the solution is to process the filter when users click on a submit button, rather than when they type values in form inputs. React-admin doesn't provide any component for that, but it's a good opportunity to illustrate the internals of the filter functionality. We'll actually provide an alternative implementation to the Filter button/form combo.
 
-To create a custom filter UI, we'll have to override the default List Actions component, which will contain both a Filter Button and a Filetr Form, interacting with the List filters via the ListContext.
+To create a custom filter UI, we'll have to override the default List Actions component, which will contain both a Filter Button and a Filter Form, interacting with the List filters via the ListContext.
 
 #### Filter Callbacks
 
@@ -1885,31 +1887,32 @@ import {
     ListToolbar,
     BulkActionsToolbar,
     Pagination,
+    Title,
     useListContext,
 } from 'react-admin';
 import Card from '@material-ui/core/Card';
 
 const PostList = props => (
-    <MyList {...props}>
+    <MyList {...props} title="Post List">
         <Datagrid>
             ...
         </Datagrid>
     </MyList>
 );
 
-const MyList = ({children, ...props}) => (
+const MyList = ({children, actions, bulkActionButtons, filters, title, ...props}) => (
     <ListBase {...props}>
-        <h1>{props.title}</h1>
+        <Title title={title}/>
         <ListToolbar
-            filters={props.filters}
-            actions={props.actions}
+            filters={filters}
+            actions={actions}
         />
         <Card>
             <BulkActionsToolbar>
-                {props.bulkActionButtons}
+                {bulkActionButtons}
             </BulkActionsToolbar>
             {cloneElement(children, {
-                hasBulkActions: props.bulkActionButtons !== false,
+                hasBulkActions: bulkActionButtons !== false,
             })}
             <Pagination />
         </Card>
@@ -2004,6 +2007,38 @@ As you can see, the controller part of the List view is handled by a hook called
 
 **Tip**: If your custom List view doesn't use a `ListContextProvider`, you can't use `<Datagrid>`, `<SimpleList>`, `<Pagination>`, etc. All these components rely on the `ListContext`.
 
+## `useList`
+
+The `useList` hook allows to apply the list features such as filtering, sorting and paginating on an array of records you already have.
+
+Thanks to it, you can display your data inside a [`<Datagrid>`](#the-datagrid-component), a [`<SimpleList>`](#the-simplelist-component) or an [`<EditableDatagrid>`](#the-editabledatagrid-component). For example:
+
+```jsx
+const data = [
+    { id: 1, name: 'Arnold' },
+    { id: 2, name: 'Sylvester' },
+    { id: 3, name: 'Jean-Claude' },
+]
+const ids = [1, 2, 3];
+
+const MyComponent = () => {
+    const listContext = useList({
+        data,
+        ids,
+        basePath: '/resource';
+        resource: 'resource';
+    });
+    return (
+        <ListContextProvider value={listContext}>
+            <Datagrid>
+                <TextField source="id" />
+                <TextField source="name" />
+            </Datagrid>
+        </ListContextProvider>
+    );
+};
+```
+
 ## The `<Datagrid>` component
 
 ![The `<Datagrid>` component](./img/tutorial_post_list_less_columns.png)
@@ -2013,6 +2048,7 @@ The `Datagrid` component renders a list of records as a table. It is usually use
 Here are all the props accepted by the component:
 
 * [`body`](#body-element)
+* [`header`](#header-element)
 * [`rowStyle`](#row-style-function)
 * [`rowClick`](#rowclick)
 * [`expand`](#expand)
@@ -2097,6 +2133,39 @@ const PostList = props => (
 
 export default PostList;
 ```
+
+### Header Element
+
+By default, `<Datagrid>` renders its header using `<DatagridHeader>`, an internal react-admin component. You can pass a custom component as the `header` prop to override that default. This can be useful e.g. to add a second header row, or to create headers spanning multiple columns.
+
+For instance, here is a simple datagrid header that displays column names with no sort and no "select all" button:
+
+```jsx
+import { TableHead, TableRow, TableCell } from '@material-ui/core';
+
+const DatagridHeader = ({ children }) => (
+    <TableHead>
+        <TableRow>
+            <TableCell></TableCell> {/* empty cell to account for the select row checkbox in the body */}
+            {Children.map(children, child => (
+                <TableCell key={child.props.source}>
+                    {child.props.source}
+                </TableCell>
+            ))}
+        </TableRow>
+    </TableHead>
+);
+
+const PostList = props => (
+    <List {...props}>
+        <Datagrid header={<DatagridHeader />}>
+            {/* ... */}
+        </Datagrid>
+    </List>
+);
+```
+
+**Tip**: To handle sorting in your custom Datagrid header component, check out the [Building a custom sort control](#building-a-custom-sort-control) section.
 
 ### Row Style Function
 
@@ -2304,7 +2373,8 @@ export default withStyles(styles)(PostList);
 
 It's possible that a Datagrid will have no records to display. If the Datagrid's parent component handles the loading state, the Datagrid will return `null` and render nothing.
 Passing through a component to the `empty` prop will cause the Datagrid to render the `empty` component instead of `null`.
-### CSS API
+
+### Datagrid CSS API
 
 The `Datagrid` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
 
@@ -2462,6 +2532,34 @@ export const PostList = (props) => (
 ```
 
 For each record, `<SimpleList>` executes the `primaryText`, `secondaryText`, `linkType`, `rowStyle`, `leftAvatar`, `leftIcon`, `rightAvatar`, and `rightIcon` props functions, and creates a `<ListItem>` with the result.
+
+The `primaryText`, `secondaryText` and `tertiaryText` functions can return a React element. This means you can use any react-admin field, including reference fields:
+
+```jsx
+// in src/posts.js
+import * as React from "react";
+import { List, SimpleList } from 'react-admin';
+
+const postRowStyle = (record, index) => ({
+    backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
+});
+
+export const PostList = (props) => (
+    <List {...props}>
+        <SimpleList
+            primaryText={<TextField source="title" />}
+            secondaryText={record => `${record.views} views`}
+            tertiaryText={
+                <ReferenceField reference="categories" source="category_id">
+                    <TextField source="name" />
+                </ReferenceField>
+            }
+            linkType={record => record.canEdit ? "edit" : "show"}
+            rowStyle={postRowStyle}
+        />
+    </List>
+);
+```
 
 **Tip**: To use a `<SimpleList>` on small screens and a `<Datagrid>` on larger screens, use material-ui's `useMediaQuery` hook:
 
@@ -2708,7 +2806,7 @@ const EventList = props => (
 The `ra-calendar` module also offers a full replacement for the `<List>` component, complete with show and edit views for events, called `<CompleteCalendar>`:
 
 ```jsx
-import React, { FC } from 'react';
+import React from 'react';
 import {
     Admin,
     Resource,
@@ -2822,7 +2920,8 @@ const getUserFilters = (permissions) => ([
     <TextInput label="user.list.search" source="q" alwaysOn />,
     <TextInput source="name" />,
     permissions === 'admin' ? <TextInput source="role" /> : null,
-].filter(filter => filter !== null)));
+    ].filter(filter => filter !== null)
+);
 
 export const UserList = ({ permissions, ...props }) => {
     const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
@@ -2861,14 +2960,15 @@ You can use the `<Datagrid>` component with [custom queries](./Actions.md#useque
 
 {% raw %}
 ```jsx
-import keyBy from 'lodash/keyBy'
+import keyBy from 'lodash/keyBy';
+import { Fragment } from 'react';
 import {
     useQuery,
     Datagrid,
     TextField,
     Pagination,
     Loading,
-} from 'react-admin'
+} from 'react-admin';
 
 const CustomList = () => {
     const [page, setPage] = useState(1);
@@ -2891,22 +2991,24 @@ const CustomList = () => {
         return <p>ERROR: {error}</p>
     }
     return (
-        <Datagrid 
-            data={keyBy(data, 'id')}
-            ids={data.map(({ id }) => id)}
-            currentSort={sort}
-            setSort={(field, order) => setSort({ field, order })}
-        >
-            <TextField source="id" />
-            <TextField source="title" />
-        </Datagrid>
-        <Pagination
-            page={page}
-            setPage={setPage}
-            perPage={perPage}
-            setPerPage={setPerPage}
-            total={total}
-        />
+        <Fragment>
+            <Datagrid 
+                data={keyBy(data, 'id')}
+                ids={data.map(({ id }) => id)}
+                currentSort={sort}
+                setSort={(field, order) => setSort({ field, order })}
+            >
+                <TextField source="id" />
+                <TextField source="title" />
+            </Datagrid>
+            <Pagination
+                page={page}
+                setPage={setPage}
+                perPage={perPage}
+                setPerPage={setPerPage}
+                total={total}
+            />
+        </Fragment>
     );
 }
 ```

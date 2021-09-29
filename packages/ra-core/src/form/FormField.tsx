@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Field, FieldProps, FieldRenderProps } from 'react-final-form';
 import { Validator, composeValidators } from './validate';
@@ -25,12 +24,8 @@ interface Props
     validate?: Validator | Validator[];
 }
 
-const FormField: FunctionComponent<Props> = ({
-    id,
-    input,
-    validate,
-    ...props
-}) => {
+const FormField = (props: Props) => {
+    const { id, input, validate, ...rest } = props;
     if (process.env.NODE_ENV !== 'production') {
         console.log('FormField is deprecated, use the useInput hook instead.');
     }
@@ -39,15 +34,15 @@ const FormField: FunctionComponent<Props> = ({
         ? composeValidators(validate)
         : validate;
 
-    const finalId = id || props.source;
+    const finalId = id || rest.source;
 
     return input ? ( // An ancestor is already decorated by Field
-        React.createElement(props.component, { input, id: finalId, ...props })
+        React.createElement(rest.component, { input, id: finalId, ...rest })
     ) : (
         <Field
-            {...props}
+            {...rest}
             id={finalId}
-            name={props.source}
+            name={rest.source}
             isRequired={isRequired(validate)}
             validate={sanitizedValidate}
         />

@@ -29,8 +29,8 @@ import { ListControllerProps } from '.';
  *
  * const MyComponent = () => {
  *     const listContext = useList({
- *         initialData: data,
- *         initialIds: ids,
+ *         data,
+ *         ids,
  *         basePath: '/resource';
  *         resource: 'resource';
  *     });
@@ -49,7 +49,7 @@ import { ListControllerProps } from '.';
  * @param {Identifier[]} props.ids An array of the record identifiers
  * @param {Boolean} props.loaded: A boolean indicating whether the data has been loaded at least once
  * @param {Boolean} props.loading: A boolean indicating whether the data is being loaded
- * @param {Error | String} props.error: Optional. The error if any occured while loading the data
+ * @param {Error | String} props.error: Optional. The error if any occurred while loading the data
  * @param {Object} props.filter: Optional. An object containing the filters applied on the data
  * @param {Number} props.page: Optional. The initial page index
  * @param {Number} props.perPage: Optional. The initial page size
@@ -73,9 +73,11 @@ export const useList = (props: UseListOptions): UseListValue => {
     const [finalItems, setFinalItems] = useSafeSetState<{
         data: RecordMap;
         ids: Identifier[];
+        total: number;
     }>(() => ({
         data: indexById(data),
         ids,
+        total: ids.length,
     }));
 
     // pagination logic
@@ -174,6 +176,9 @@ export const useList = (props: UseListOptions): UseListValue => {
                 return result;
             })
         );
+
+        const filteredLength = tempData.length;
+
         // 2. sort
         if (sort.field) {
             tempData = tempData.sort((a, b) => {
@@ -192,10 +197,10 @@ export const useList = (props: UseListOptions): UseListValue => {
         const finalIds = tempData
             .filter(data => typeof data !== 'undefined')
             .map(data => data.id);
-
         setFinalItems({
             data: finalData,
             ids: finalIds,
+            total: filteredLength,
         });
     }, [
         data,
@@ -241,7 +246,7 @@ export const useList = (props: UseListOptions): UseListValue => {
         setPerPage,
         setSort,
         showFilter,
-        total: finalItems.ids.length,
+        total: finalItems.total,
     };
 };
 

@@ -45,6 +45,22 @@
 
     <body>
         <header>
+            <div id="banner" style="background-color: #4b3165; padding: 3px;text-align:center;color: white;display:none">
+                We're hiring! 
+                <a href="https://marmelab.com/en/jobs/developer" style="color:white;text-decoration:underline">Join the react-admin team today</a> 
+                and get paid to work on the library you love. Remote friendly.
+                <span style="position:absolute;right:10px"><a href="javascript:hideBanner()" style="color:white;">X</a></span>
+            </div>
+            <script>
+                function hideBanner() {
+                    document.getElementById('banner').style.display = 'none';
+                    window.localStorage.setItem('hideBannerDate', Date.now());
+                }
+                const hideBannerDate = parseInt(window.localStorage.getItem('hideBannerDate'), 10);
+                if (!hideBannerDate || (Date.now() - hideBannerDate) > 14 * 24 * 60 * 60 * 1000) { // two weeks
+                    document.getElementById('banner').style.display = 'block';
+                }
+            </script>
             <nav>
                 <a href="#" data-target="slide-out" class="sidenav-trigger"
                     ><i class="material-icons">menu</i></a

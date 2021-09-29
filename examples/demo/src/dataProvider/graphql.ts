@@ -1,4 +1,4 @@
-import { ApolloQueryResult } from 'apollo-client';
+import { ApolloQueryResult } from '@apollo/client';
 import buildApolloClient, {
     buildQuery as buildQueryFactory,
 } from 'ra-data-graphql-simple';
@@ -55,7 +55,9 @@ const customBuildQuery = (
         if (type === DELETE) {
             return {
                 query: gql`mutation remove${resource}($id: ID!) {
-                    remove${resource}(id: $id)
+                    remove${resource}(id: $id) {
+                        id
+                    }
                 }`,
                 variables: { id: params.id },
                 parseResponse: ({ data }: ApolloQueryResult<any>) => {
@@ -72,8 +74,8 @@ const customBuildQuery = (
     };
 };
 
-export default () => {
-    return buildApolloClient({
+export default async () => {
+    const dataProvider = await buildApolloClient({
         clientOptions: {
             uri: 'http://localhost:4000/graphql',
         },
@@ -84,12 +86,9 @@ export default () => {
             },
         },
         buildQuery: customBuildQuery,
-    }).then(
-        (dataProvider: LegacyDataProvider) => (
-            ...rest: Parameters<LegacyDataProvider>
-        ) => {
-            const [type, resource, params] = rest;
-            return dataProvider(type, getGqlResource(resource), params);
-        }
-    );
+    });
+
+    return (type: string, resource: string, params: any) => {
+        return dataProvider(type, getGqlResource(resource), params);
+    };
 };

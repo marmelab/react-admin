@@ -55,6 +55,25 @@ const configureQuill = quill => quill.getModule('toolbar').addHandler('bold', fu
 <RichTextInput source="text" configureQuill={configureQuill}/>
 ```
 
+**Tip**: When used inside a material-ui `<Card>` (e.g in the default `<Edit>` view), `<RichTextInput>` displays link tooltip as cut off when the user wants to add a hyperlink to a word located on the left side of the input. This is due to an incompatibility between material-ui's `<Card>` component and Quill's positioning algorithm for the link tooltip. 
+
+To fix this problem, you should override the default card style, as follows:
+
+```diff
+import { Edit, SimpleForm, TextInput } from 'react-admin';
++import { withStyles } from '@material-ui/core/styles';
+
+-const PostEdit = props => (
++const PostEdit = withStyles({ card: { overflow: 'initial' } })(props => (
+   <Edit {...props}>
+       <SimpleForm>
+            // ...
+       </SimpleForm>
+   </Edit>
+-);
++));
+```
+
 ## License
 
 This library is licensed under the MIT License, and sponsored by [marmelab](https://marmelab.com).

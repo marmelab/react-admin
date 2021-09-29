@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, Fragment, ReactElement } from 'react';
+import { Fragment, ReactElement, ReactNode } from 'react';
 import { useSelector } from 'react-redux';
 import {
     List,
@@ -17,14 +17,14 @@ const useStyles = makeStyles(theme => ({
     icon: { minWidth: theme.spacing(5) },
     sidebarIsOpen: {
         '& a': {
-            paddingLeft: theme.spacing(4),
             transition: 'padding-left 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
+            paddingLeft: theme.spacing(4),
         },
     },
     sidebarIsClosed: {
         '& a': {
-            paddingLeft: theme.spacing(2),
             transition: 'padding-left 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
+            paddingLeft: theme.spacing(2),
         },
     },
 }));
@@ -35,16 +35,11 @@ interface Props {
     icon: ReactElement;
     isOpen: boolean;
     name: string;
+    children: ReactNode;
 }
 
-const SubMenu: FC<Props> = ({
-    handleToggle,
-    isOpen,
-    name,
-    icon,
-    children,
-    dense,
-}) => {
+const SubMenu = (props: Props) => {
+    const { handleToggle, isOpen, name, icon, children, dense } = props;
     const translate = useTranslate();
     const classes = useStyles();
     const sidebarIsOpen = useSelector<ReduxState, boolean>(

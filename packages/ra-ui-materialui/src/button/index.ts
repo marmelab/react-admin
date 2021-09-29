@@ -12,13 +12,6 @@ import BulkExportButton, { BulkExportButtonProps } from './BulkExportButton';
 import Button, { ButtonProps } from './Button';
 import CloneButton, { CloneButtonProps } from './CloneButton';
 import CreateButton, { CreateButtonProps } from './CreateButton';
-import DeleteButton, { DeleteButtonProps } from './DeleteButton';
-import DeleteWithConfirmButton, {
-    DeleteWithConfirmButtonProps,
-} from './DeleteWithConfirmButton';
-import DeleteWithUndoButton, {
-    DeleteWithUndoButtonProps,
-} from './DeleteWithUndoButton';
 import EditButton, { EditButtonProps } from './EditButton';
 import ExportButton, { ExportButtonProps } from './ExportButton';
 import ListButton, { ListButtonProps } from './ListButton';
@@ -29,6 +22,12 @@ import SortButton, { SortButtonProps } from './SortButton';
 import RefreshButton, { RefreshButtonProps } from './RefreshButton';
 import RefreshIconButton, { RefreshIconButtonProps } from './RefreshIconButton';
 
+export * from './DeleteButton';
+export * from './DeleteWithConfirmButton';
+export * from './DeleteWithUndoButton';
+
+export * from './IconButtonWithTooltip';
+
 export type {
     BulkDeleteButtonProps,
     BulkDeleteWithConfirmButtonProps,
@@ -37,9 +36,6 @@ export type {
     ButtonProps,
     CloneButtonProps,
     CreateButtonProps,
-    DeleteButtonProps,
-    DeleteWithConfirmButtonProps,
-    DeleteWithUndoButtonProps,
     BulkUpdateButtonProps,
     EditButtonProps,
     ExportButtonProps,
@@ -62,9 +58,6 @@ export {
     Button,
     CloneButton,
     CreateButton,
-    DeleteButton,
-    DeleteWithConfirmButton,
-    DeleteWithUndoButton,
     EditButton,
     ExportButton,
     ListButton,

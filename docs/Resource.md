@@ -123,13 +123,16 @@ const App = () => (
 
 ## Resource Context
 
-`<Resource>` also creates a `RecordContext`, that gives access to the current resource name to all descendents of the main page components (`list`, `create`, `edit`, `show`). 
+`<Resource>` also creates a `ResourceContext`, that gives access to the current resource name to all descendents of the main page components (`list`, `create`, `edit`, `show`). 
 
 to read the current resource name, use the `useResourceContext()` hook.
 
 For instance, the following component displays the name of the current resource:
 
 ```jsx
+import * as React from 'react';
+import { Datagrid, DateField, TextField, List, useResourceContext } from 'react-admin';
+
 const ResourceName = () => {
     const { resource } = useResourceContext();
     return <>{resource}</>;
@@ -143,7 +146,7 @@ const PostList = (props) => (
                 <TextField source="title" />
                 <DateField source="published_at" />
             </Datagrid>
-        <>
+        </>
     </List>
 )
 ```

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, memo, useMemo, ReactElement } from 'react';
+import { memo, useMemo, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ImageEye from '@material-ui/icons/RemoveRedEye';
 import { Link } from 'react-router-dom';
@@ -17,14 +17,15 @@ import Button, { ButtonProps } from './Button';
  *     <ShowButton basePath="/comments" label="Show comment" record={record} />
  * );
  */
-const ShowButton: FC<ShowButtonProps> = ({
-    basePath = '',
-    icon = defaultIcon,
-    label = 'ra.action.show',
-    record,
-    scrollToTop = true,
-    ...rest
-}) => {
+const ShowButton = (props: ShowButtonProps) => {
+    const {
+        basePath = '',
+        icon = defaultIcon,
+        label = 'ra.action.show',
+        record,
+        scrollToTop = true,
+        ...rest
+    } = props;
     const resource = useResourceContext();
     return (
         <Button

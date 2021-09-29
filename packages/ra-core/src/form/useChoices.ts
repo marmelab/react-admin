@@ -8,7 +8,7 @@ import { InputProps } from '.';
 export type OptionTextElement = ReactElement<{
     record: Record;
 }>;
-export type OptionTextFunc = (choice: object) => string | OptionTextElement;
+export type OptionTextFunc = (choice: any) => string | OptionTextElement;
 export type OptionText = OptionTextElement | OptionTextFunc | string;
 
 export interface ChoicesInputProps<T = any>

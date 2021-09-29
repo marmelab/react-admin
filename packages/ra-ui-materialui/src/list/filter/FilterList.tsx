@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC } from 'react';
+import { ReactNode } from 'react';
 import { Box, Typography, List } from '@material-ui/core';
 import { useTranslate } from 'ra-core';
 
@@ -40,11 +40,12 @@ import { useTranslate } from 'ra-core';
  *     </Card>
  * );
  */
-const FilterList: FC<{ label: string; icon: React.ReactNode }> = ({
-    label,
-    icon,
-    children,
+const FilterList = (props: {
+    label: string;
+    icon: ReactNode;
+    children: ReactNode;
 }) => {
+    const { label, icon, children } = props;
     const translate = useTranslate();
     return (
         <>

@@ -7,10 +7,10 @@ import { createContext } from 'react';
  *
  * @example
  *
- * import { useResource, useTranslate } from 'ra-core';
+ * import { useResourceContext, useTranslate } from 'ra-core';
  *
  * const MyCustomEditTitle = props => {
- *     const name = useResource(props);
+ *     const name = useResourceContext(props);
  *
  *     return (
  *         <h1>{translate(`${name}.name`)}</h1>

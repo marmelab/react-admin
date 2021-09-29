@@ -7,7 +7,8 @@ import {
     useContext,
     useState,
 } from 'react';
-import { Identifier, useTranslate } from 'ra-core';
+import { Identifier, OptionText, useTranslate } from 'ra-core';
+import set from 'lodash/set';
 
 /**
  * This hook provides support for suggestion creation in inputs which have choices.
@@ -32,6 +33,7 @@ export const useSupportCreateSuggestion = (
         createLabel = 'ra.action.create',
         createItemLabel = 'ra.action.create_item',
         createValue = '@@ra-create',
+        optionText = 'name',
         filter,
         handleChange,
         onCreate,
@@ -50,16 +52,30 @@ export const useSupportCreateSuggestion = (
 
     return {
         getCreateItem: () => {
-            return {
-                id: createValue,
-                name:
-                    filter && createItemLabel
-                        ? translate(createItemLabel, {
-                              item: filter,
-                              _: createItemLabel,
-                          })
-                        : translate(createLabel, { _: createLabel }),
-            };
+            if (typeof optionText !== 'string') {
+                return {
+                    id: createValue,
+                    name:
+                        filter && createItemLabel
+                            ? translate(createItemLabel, {
+                                  item: filter,
+                                  _: createItemLabel,
+                              })
+                            : translate(createLabel, { _: createLabel }),
+                };
+            }
+            return set(
+                {
+                    id: createValue,
+                },
+                optionText,
+                filter && createItemLabel
+                    ? translate(createItemLabel, {
+                          item: filter,
+                          _: createItemLabel,
+                      })
+                    : translate(createLabel, { _: createLabel })
+            );
         },
         handleChange: async eventOrValue => {
             const value = eventOrValue.target?.value || eventOrValue;
@@ -101,10 +117,11 @@ export interface SupportCreateSuggestionOptions {
     filter?: string;
     handleChange: (value: any, newChoice: any) => void;
     onCreate?: OnCreateHandler;
+    optionText?: OptionText;
 }
 
 export interface UseSupportCreateValue {
-    getCreateItem: () => { id: Identifier; name: string };
+    getCreateItem: () => { id: Identifier; [key: string]: any };
     handleChange: (eventOrValue: ChangeEvent | any) => Promise<void>;
     createElement: ReactElement | null;
 }
