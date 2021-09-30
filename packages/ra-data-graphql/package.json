@@ -4,6 +4,7 @@
     "description": "A GraphQL data provider for react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",
+    "types": "esm/index.d.ts",
     "sideEffects": false,
     "repository": {
         "type": "git",

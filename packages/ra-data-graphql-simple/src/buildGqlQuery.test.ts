@@ -67,7 +67,7 @@ describe('getArgType', () => {
 
 describe('buildArgs', () => {
     it('returns an empty array when query does not have any arguments', () => {
-        expect(buildArgs({ args: [] })).toEqual([]);
+        expect(buildArgs({ args: [] }, {})).toEqual([]);
     });
 
     it('returns an array of args correctly filtered when query has arguments', () => {
@@ -84,7 +84,7 @@ describe('buildArgs', () => {
 
 describe('buildApolloArgs', () => {
     it('returns an empty array when query does not have any arguments', () => {
-        expect(print(buildApolloArgs({ args: [] }))).toEqual([]);
+        expect(print(buildApolloArgs({ args: [] }, {}))).toEqual([]);
     });
 
     it('returns an array of args correctly filtered when query has arguments', () => {
