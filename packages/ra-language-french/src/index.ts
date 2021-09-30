@@ -22,6 +22,8 @@ const frenchMessages: TranslationMessages = {
             remove_filter: 'Supprimer ce filtre',
             remove: 'Supprimer',
             save: 'Enregistrer',
+            select_all: 'Tout sélectionner',
+            select_row: 'Sélectionner cette ligne',
             search: 'Rechercher',
             show: 'Afficher',
             sort: 'Trier',

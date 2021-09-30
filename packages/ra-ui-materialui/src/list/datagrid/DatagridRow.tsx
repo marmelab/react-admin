@@ -18,12 +18,13 @@ import {
     Checkbox,
 } from '@material-ui/core';
 import {
-    linkToRecord,
-    useExpanded,
     Identifier,
+    linkToRecord,
     Record,
-    useResourceContext,
     RecordContextProvider,
+    useExpanded,
+    useResourceContext,
+    useTranslate,
 } from 'ra-core';
 import { shallowEqual } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -62,6 +63,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
     } = props;
 
     const context = useDatagridContext();
+    const translate = useTranslate();
     const expandable =
         (!context ||
             !context.isRowExpandable ||
@@ -174,6 +176,9 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                     <TableCell padding="checkbox">
                         {selectable && (
                             <Checkbox
+                                aria-label={translate('ra.action.select_row', {
+                                    _: 'Select this row',
+                                })}
                                 color="primary"
                                 className={`select-item ${classes.checkbox}`}
                                 checked={selected}
