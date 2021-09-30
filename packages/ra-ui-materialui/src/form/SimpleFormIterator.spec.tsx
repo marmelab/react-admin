@@ -516,6 +516,10 @@ describe('<SimpleFormIterator />', () => {
     });
 
     it('should not display the default reorder element if a custom reorder element is passed', () => {
+        const CustomReOrderButtons = props => (
+            <button>Custom reorder Button</button>
+        );
+
         const { getByText, queryAllByLabelText } = renderWithRedux(
             <ThemeProvider theme={theme}>
                 <SaveContextProvider value={saveContextValue}>
@@ -525,9 +529,7 @@ describe('<SimpleFormIterator />', () => {
                         >
                             <ArrayInput source="emails">
                                 <SimpleFormIterator
-                                    reOrderButtons={
-                                        <button>Custom reorder Button</button>
-                                    }
+                                    reOrderButtons={<CustomReOrderButtons />}
                                 >
                                     <TextInput source="email" />
                                 </SimpleFormIterator>
