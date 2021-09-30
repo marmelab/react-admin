@@ -1,6 +1,6 @@
 {
     "name": "ra-no-code",
-    "version": "3.18.2",
+    "version": "3.18.3",
     "description": "",
     "files": [
         "*.md",
@@ -33,7 +33,7 @@
         "@types/react-router-dom": "^5.1.0",
         "cross-env": "^5.2.0",
         "history": "^4.7.2",
-        "ra-test": "^3.18.2",
+        "ra-test": "^3.18.3",
         "react": "^17.0.0",
         "react-dom": "^17.0.0",
         "react-router": "^5.1.0",
@@ -51,7 +51,7 @@
         "lodash": "~4.17.5",
         "papaparse": "^5.3.0",
         "prop-types": "^15.6.1",
-        "ra-data-local-storage": "^3.18.2",
-        "react-admin": "^3.18.2"
+        "ra-data-local-storage": "^3.18.3",
+        "react-admin": "^3.18.3"
     }
 }
