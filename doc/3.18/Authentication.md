@@ -743,7 +743,7 @@ const MyPage = () => {
 
 ### `useLogout()` Hook
 
-Just like `useLogin()`, `useLogout()` returns a callback that you can use to call `authProvider.logout()``. Use it to build a custom Logout button, like the following: 
+Just like `useLogin()`, `useLogout()` returns a callback that you can use to call `authProvider.logout()`. Use it to build a custom Logout button, like the following: 
 
 ```jsx
 // in src/MyLogoutButton.js

@@ -152,9 +152,9 @@ Here is how this Data Provider maps react-admin calls to API calls:
 | ------------------ | --------------------------------------------------------------------------------------- |
 | `getList`          | `GET http://my.api.url/posts?sort=["title","ASC"]&range=[0, 24]&filter={"title":"bar"}` |
 | `getOne`           | `GET http://my.api.url/posts/123`                                                       |
-| `getMany`          | `GET http://my.api.url/posts?filter={"id":[123,456,789]}`                               |
+| `getMany`          | `GET http://my.api.url/posts?filter={"ids":[123,456,789]}`                              |
 | `getManyReference` | `GET http://my.api.url/posts?filter={"author_id":345}`                                  |
-| `create`           | `POST http://my.api.url/posts`                                                      |
+| `create`           | `POST http://my.api.url/posts`                                                          |
 | `update`           | `PUT http://my.api.url/posts/123`                                                       |
 | `updateMany`       | Multiple calls to `PUT http://my.api.url/posts/123`                                     |
 | `delete`           | `DELETE http://my.api.url/posts/123`                                                    |
@@ -565,7 +565,7 @@ Content-Type: application/json
 ### getMany
 
 ```
-GET http://path.to.my.api/posts?filter={"id":[123,124,125]}
+GET http://path.to.my.api/posts?filter={"ids":[123,124,125]}
 
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -676,7 +676,7 @@ export default {
 
     getMany: (resource, params) => {
         const query = {
-            filter: JSON.stringify({ id: params.ids }),
+            filter: JSON.stringify({ ids: params.ids }),
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
         return httpClient(url).then(({ json }) => ({ data: json }));

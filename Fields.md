@@ -665,12 +665,12 @@ Ideal for embedded arrays of objects, e.g. `tags` and `backlinks` in the followi
 
 ```js
 {
-  id: 123,
-  tags: [
+    id: 123,
+    tags: [
         { name: 'foo' },
         { name: 'bar' }
-  ],
-  backlinks: [
+    ],
+    backlinks: [
         {
             uuid: '34fdf393-f449-4b04-a423-38ad02ae159e',
             date: '2012-08-10T00:00:00.000Z',
@@ -681,7 +681,7 @@ Ideal for embedded arrays of objects, e.g. `tags` and `backlinks` in the followi
             date: '2012-08-14T00:00:00.000Z',
             url: 'https://blog.johndoe.com/2012/08/12/foobar.html',
         }
-   ]
+    ]
 }
 ```
 
