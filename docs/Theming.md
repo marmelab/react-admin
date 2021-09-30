@@ -785,7 +785,7 @@ import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import PeopleIcon from '@material-ui/icons/People';
 import LabelIcon from '@material-ui/icons/Label';
 
-export const Menu = () => (
+export const Menu = (props) => (
     <Menu {...props}>
         <DashboardMenuItem />
         <MenuItemLink to="/posts" primaryText="Posts" leftIcon={<BookIcon />}/>
