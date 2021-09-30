@@ -42,19 +42,45 @@ const useStyles = makeStyles(
 );
 
 const Menu = (props: MenuProps) => {
+    const resources = useSelector(getResources, shallowEqual) as Array<any>;
+    const getResourceLabel = useGetResourceLabel();
     const {
+        hasDashboard,
+        dense,
+        children = (
+            <>
+                {hasDashboard && <DashboardMenuItem dense={dense} />}
+                {resources
+                    .filter(r => r.hasList)
+                    .map(resource => (
+                        <MenuItemLink
+                            key={resource.name}
+                            to={{
+                                pathname: `/${resource.name}`,
+                                state: { _scrollToTop: true },
+                            }}
+                            primaryText={getResourceLabel(resource.name, 2)}
+                            leftIcon={
+                                resource.icon ? (
+                                    <resource.icon />
+                                ) : (
+                                    <DefaultIcon />
+                                )
+                            }
+                            dense={dense}
+                        />
+                    ))}
+            </>
+        ),
         classes: classesOverride,
         className,
-        dense,
-        hasDashboard,
         onMenuClick,
         logout,
         ...rest
     } = props;
     const classes = useStyles(props);
     const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
-    const resources = useSelector(getResources, shallowEqual) as Array<any>;
-    const getResourceLabel = useGetResourceLabel();
+
     return (
         <div
             className={classnames(
@@ -67,28 +93,13 @@ const Menu = (props: MenuProps) => {
             )}
             {...rest}
         >
-            {hasDashboard && <DashboardMenuItem dense={dense} />}
-            {resources
-                .filter(r => r.hasList)
-                .map(resource => (
-                    <MenuItemLink
-                        key={resource.name}
-                        to={{
-                            pathname: `/${resource.name}`,
-                            state: { _scrollToTop: true },
-                        }}
-                        primaryText={getResourceLabel(resource.name, 2)}
-                        leftIcon={
-                            resource.icon ? <resource.icon /> : <DefaultIcon />
-                        }
-                        dense={dense}
-                    />
-                ))}
+            {children}
         </div>
     );
 };
 
 export interface MenuProps {
+    children?: ReactNode;
     classes?: object;
     className?: string;
     dense?: boolean;
