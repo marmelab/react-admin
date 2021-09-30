@@ -1,5 +1,20 @@
 # Changelog
 
+## v3.18.3
+
+- Fix custom menus do not shrink when sidebar is closed (#6635) ([djhi](https://github.com/djhi))
+- Fix undoable bulk actions failure by refreshing the view (#6616) ([WiXSL](https://github.com/WiXSL))
+- Fix datagrid usage inside reference array input (#6589) ([djhi](https://github.com/djhi))
+- Fix tests console errors and warnings (#6578) ([WiXSL](https://github.com/WiXSL))
+- [TypeScript] Fix DataProvider and RouteWithoutLayout some types (#6634) ([djhi](https://github.com/djhi))
+- [TypeScript] Fix TranslatableInputs props interface (#6633) ([djhi](https://github.com/djhi))
+- [Doc] Add DatagridHeader to reference section (#6631) ([WiXSL](https://github.com/WiXSL))
+- [Doc] Fix typos in several examples (#6623) ([WiXSL](https://github.com/WiXSL))
+- [Doc] Add SimpleForm component prop description and example (#6611) ([WiXSL](https://github.com/WiXSL))
+- [Doc] Fix scrollable TabbedForm usage description (#6608) ([WiXSL](https://github.com/WiXSL))
+- [Doc] Fixed naming of getMany ids params (#6604) ([davidhenley](https://github.com/davidhenley))
+- [Doc] Updated README of ra-data-graphql-simple for function components (#6555) ([Panzki](https://github.com/Panzki))
+
 ## v3.18.2
 
 * Fix `displayName` prop in Field components ([6569](https://github.com/marmelab/react-admin/pull/6569)) ([WiXSL](https://github.com/WiXSL))
