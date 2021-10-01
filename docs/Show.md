@@ -148,7 +148,7 @@ const PostShow = props => (
 ```
 {% endraw %}
 
-You can use the `useRecordContext` hook to display non-editable details about the current record in the aside component:
+You can use the `useRecordContext` hook to display non-editable details about the current record in the aside component: 
 
 {% raw %}
 ```jsx
@@ -184,7 +184,7 @@ const PostShow = props => (
     </Show>
 );
 
-// use a custom component as root component
+// use a custom component as root component 
 const PostShow = props => (
     <Show component={MyComponent} {...props}>
         ...
@@ -224,7 +224,7 @@ React-admin provides guessers for the `List` view (`ListGuesser`), the `Edit` vi
 The `<Show>` component takes care of two things:
 
 1. (the "controller") Fetching data based on the URL and transforming it
-2. (the "view") Rendering the page title, the actions, the content and aside areas
+2. (the "view") Rendering the page title, the actions, the content and aside areas 
 
 In some cases, you may want to customize the view entirely (i.e. keep the code for step 1, and provide your own code for step 2). For these cases, react-admin provides a hook called `useShowController()`, which contains just the controller part of the `<Show>` component.
 
@@ -243,8 +243,8 @@ const MyShow = props => {
         resource, // the resource name, deduced from the location. e.g. 'posts'
         version, // integer used by the refresh feature
         error,  // error returned by dataProvider (not accessible by default )
-                // This property is not accessible by default:due to redirect to basePath
-                // In order to access error, override props.onFailure
+                // This property is not accessible by default due to redirect to basePath
+                // In order to access error, override props.onFailure to prevent default redirect
     } = useShowController({ ...props, onFailure: () => {} });
     return (
         <div>
@@ -271,7 +271,7 @@ const PostShow = props => (
 
 This custom Show view has no action buttons or aside component - it's up to you to add them in pure React.
 
-**Tip**: You don't have to clone the child element. If you can't reuse an existing form component like `<SimpleShowLayout>`, feel free to write the form code inside your custom `MyShow` component.
+**Tip**: You don't have to clone the child element. If you can't reuse an existing form component like `<SimpleShowLayout>`, feel free to write the form code inside your custom `MyShow` component. 
 
 **Tip**: When data provider returns an error, users are notified and redirected to component's base URL; to override this behavior, provide `onFailure` property to `useShowController`.
 
@@ -415,7 +415,7 @@ You can find components for react-admin in third-party repositories.
 
 ## Displaying Fields depending on the user permissions
 
-You might want to display some fields only to users with specific permissions.
+You might want to display some fields only to users with specific permissions. 
 
 Before rendering the `Show` component, react-admin calls the `authProvider.getPermissions()` method, and passes the result to the component as the `permissions` prop. It's up to your `authProvider` to return whatever you need to check roles and permissions inside your component.
 
