@@ -99,6 +99,7 @@ const useStyles = makeStyles(
         fixed: {
             position: 'fixed',
             height: 'calc(100vh - 3em)',
+            width: 'inherit',
             overflowX: 'hidden',
             // hide scrollbar
             scrollbarWidth: 'none',
