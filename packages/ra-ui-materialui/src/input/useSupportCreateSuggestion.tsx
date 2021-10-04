@@ -37,6 +37,7 @@ export const useSupportCreateSuggestion = (
         filter,
         handleChange,
         onCreate,
+        onCreateNewItem,
     } = options;
     const translate = useTranslate();
     const [renderOnCreate, setRenderOnCreate] = useState(false);
@@ -47,6 +48,10 @@ export const useSupportCreateSuggestion = (
         onCreate: item => {
             setRenderOnCreate(false);
             handleChange(undefined, item);
+
+            if (onCreateNewItem) {
+                onCreateNewItem(item);
+            }
         },
     };
 
@@ -117,6 +122,7 @@ export interface SupportCreateSuggestionOptions {
     filter?: string;
     handleChange: (value: any, newChoice: any) => void;
     onCreate?: OnCreateHandler;
+    onCreateNewItem?: (value: any) => void;
     optionText?: OptionText;
 }
 

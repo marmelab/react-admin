@@ -221,6 +221,16 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         [input.value, getSuggestionFromValue]
     );
 
+    const doesQueryMatchSuggestion = useMemo(() => {
+        if (typeof optionText !== 'string') {
+            return false;
+        }
+
+        return choices.some(choice => get(choice, optionText) === filterValue);
+    }, [choices, optionText, filterValue]);
+
+    const shouldAllowCreate = !doesQueryMatchSuggestion;
+
     const { getChoiceText, getChoiceValue, getSuggestions } = useSuggestions({
         allowEmpty,
         choices,
@@ -247,6 +257,10 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         [filterValue, getChoiceValue, input]
     );
 
+    const onCreateNewItem = () => {
+        inputEl.current.blur();
+    };
+
     const {
         getCreateItem,
         handleChange: handleChangeWithCreateSupport,
@@ -257,6 +271,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         createItemLabel,
         createValue,
         handleChange,
+        onCreateNewItem,
         filter: filterValue,
         onCreate,
         optionText,
@@ -494,7 +509,9 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                     });
                     const suggestions = [
                         ...getSuggestions(filterValue),
-                        ...(onCreate || create ? [getCreateItem()] : []),
+                        ...((onCreate || create) && shouldAllowCreate
+                            ? [getCreateItem()]
+                            : []),
                     ];
 
                     return (
