@@ -3,14 +3,14 @@ import * as React from 'react';
 import expect from 'expect';
 import { DataProvider, DataProviderContext } from 'ra-core';
 import { renderWithRedux, TestContext } from 'ra-test';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
 import { Toolbar, SimpleForm } from '../form';
 import { Edit } from '../detail';
 import { TextInput } from '../input';
 import { Notification } from '../layout';
 
-const theme = createMuiTheme();
+const theme = createTheme();
 
 const invalidButtonDomProps = {
     basePath: '',

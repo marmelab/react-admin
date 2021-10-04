@@ -9,16 +9,16 @@ import {
 import buildVariables from './buildVariables';
 
 describe('buildVariables', () => {
+    const introspectionResult = {
+        types: [
+            {
+                name: 'PostFilter',
+                inputFields: [{ name: 'tags_some' }],
+            },
+        ],
+    };
     describe('GET_LIST', () => {
         it('returns correct variables', () => {
-            const introspectionResult = {
-                types: [
-                    {
-                        name: 'PostFilter',
-                        inputFields: [{ name: 'tags_some' }],
-                    },
-                ],
-            };
             const params = {
                 filter: {
                     ids: ['foo1', 'foo2'],
@@ -66,7 +66,7 @@ describe('buildVariables', () => {
             };
 
             expect(
-                buildVariables()(
+                buildVariables(introspectionResult)(
                     { type: { name: 'Post' } },
                     CREATE,
                     params,
@@ -94,7 +94,7 @@ describe('buildVariables', () => {
             };
 
             expect(
-                buildVariables()(
+                buildVariables(introspectionResult)(
                     { type: { name: 'Post' } },
                     UPDATE,
                     params,
@@ -115,7 +115,7 @@ describe('buildVariables', () => {
             };
 
             expect(
-                buildVariables()(
+                buildVariables(introspectionResult)(
                     { type: { name: 'Post' } },
                     GET_MANY,
                     params,
@@ -137,7 +137,7 @@ describe('buildVariables', () => {
             };
 
             expect(
-                buildVariables()(
+                buildVariables(introspectionResult)(
                     { type: { name: 'Post' } },
                     GET_MANY_REFERENCE,
                     params,
@@ -158,9 +158,8 @@ describe('buildVariables', () => {
             const params = {
                 id: 'post1',
             };
-
             expect(
-                buildVariables()(
+                buildVariables(introspectionResult)(
                     { type: { name: 'Post', inputFields: [] } },
                     DELETE,
                     params,

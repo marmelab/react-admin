@@ -8,6 +8,7 @@ import {
     ListItem,
     ListItemAvatar,
     ListItemIcon,
+    ListItemProps,
     ListItemSecondaryAction,
     ListItemText,
 } from '@material-ui/core';
@@ -129,76 +130,69 @@ const SimpleList = <RecordType extends Record = Record>(
                                 basePath={basePath}
                                 id={id}
                                 record={data[id]}
+                                style={
+                                    rowStyle
+                                        ? rowStyle(data[id], rowIndex)
+                                        : undefined
+                                }
                             >
-                                <ListItem
-                                    button={!!linkType as any}
-                                    style={
-                                        rowStyle
-                                            ? rowStyle(data[id], rowIndex)
-                                            : undefined
-                                    }
-                                >
-                                    {leftIcon && (
-                                        <ListItemIcon>
-                                            {leftIcon(data[id], id)}
-                                        </ListItemIcon>
-                                    )}
-                                    {leftAvatar && (
-                                        <ListItemAvatar>
-                                            {renderAvatar(id, leftAvatar)}
-                                        </ListItemAvatar>
-                                    )}
-                                    <ListItemText
-                                        primary={
-                                            <div>
-                                                {isValidElement(primaryText)
-                                                    ? primaryText
-                                                    : primaryText(data[id], id)}
+                                {leftIcon && (
+                                    <ListItemIcon>
+                                        {leftIcon(data[id], id)}
+                                    </ListItemIcon>
+                                )}
+                                {leftAvatar && (
+                                    <ListItemAvatar>
+                                        {renderAvatar(id, leftAvatar)}
+                                    </ListItemAvatar>
+                                )}
+                                <ListItemText
+                                    primary={
+                                        <div>
+                                            {isValidElement(primaryText)
+                                                ? primaryText
+                                                : primaryText(data[id], id)}
 
-                                                {!!tertiaryText &&
-                                                    (isValidElement(
-                                                        tertiaryText
-                                                    ) ? (
-                                                        tertiaryText
-                                                    ) : (
-                                                        <span
-                                                            className={
-                                                                classes.tertiary
-                                                            }
-                                                        >
-                                                            {tertiaryText(
-                                                                data[id],
-                                                                id
-                                                            )}
-                                                        </span>
-                                                    ))}
-                                            </div>
-                                        }
-                                        secondary={
-                                            !!secondaryText &&
-                                            (isValidElement(secondaryText)
-                                                ? secondaryText
-                                                : secondaryText(data[id], id))
-                                        }
-                                    />
-                                    {(rightAvatar || rightIcon) && (
-                                        <ListItemSecondaryAction>
-                                            {rightAvatar && (
-                                                <Avatar>
-                                                    {renderAvatar(
-                                                        id,
-                                                        rightAvatar
-                                                    )}
-                                                </Avatar>
-                                            )}
-                                            {rightIcon && (
-                                                <ListItemIcon>
-                                                    {rightIcon(data[id], id)}
-                                                </ListItemIcon>
-                                            )}
-                                        </ListItemSecondaryAction>
-                                    )}
-                                </ListItem>
+                                            {!!tertiaryText &&
+                                                (isValidElement(
+                                                    tertiaryText
+                                                ) ? (
+                                                    tertiaryText
+                                                ) : (
+                                                    <span
+                                                        className={
+                                                            classes.tertiary
+                                                        }
+                                                    >
+                                                        {tertiaryText(
+                                                            data[id],
+                                                            id
+                                                        )}
+                                                    </span>
+                                                ))}
+                                        </div>
+                                    }
+                                    secondary={
+                                        !!secondaryText &&
+                                        (isValidElement(secondaryText)
+                                            ? secondaryText
+                                            : secondaryText(data[id], id))
+                                    }
+                                />
+                                {(rightAvatar || rightIcon) && (
+                                    <ListItemSecondaryAction>
+                                        {rightAvatar && (
+                                            <Avatar>
+                                                {renderAvatar(id, rightAvatar)}
+                                            </Avatar>
+                                        )}
+                                        {rightIcon && (
+                                            <ListItemIcon>
+                                                {rightIcon(data[id], id)}
+                                            </ListItemIcon>
+                                        )}
+                                    </ListItemSecondaryAction>
+                                )}
                             </LinkOrNot>
                         </li>
                     </RecordContextProvider>
@@ -255,15 +249,14 @@ export interface SimpleListProps<RecordType extends Record = Record>
 
 const useLinkOrNotStyles = makeStyles(
     {
-        link: {
-            textDecoration: 'none',
-            color: 'inherit',
-        },
+        link: {},
     },
     { name: 'RaLinkOrNot' }
 );
 
-const LinkOrNot = (props: LinkOrNotProps) => {
+const LinkOrNot = (
+    props: LinkOrNotProps & Omit<ListItemProps, 'button' | 'component' | 'id'>
+) => {
     const {
         classes: classesOverride,
         linkType,
@@ -271,24 +264,53 @@ const LinkOrNot = (props: LinkOrNotProps) => {
         id,
         children,
         record,
+        ...rest
     } = props;
     const classes = useLinkOrNotStyles({ classes: classesOverride });
     const link =
         typeof linkType === 'function' ? linkType(record, id) : linkType;
 
     return link === 'edit' || link === true ? (
-        <Link to={linkToRecord(basePath, id)} className={classes.link}>
-            {children}
-        </Link>
-    ) : link === 'show' ? (
-        <Link
-            to={`${linkToRecord(basePath, id)}/show`}
+        <ListItem
+            button
+            // @ts-ignore
+            component={Link}
+            to={linkToRecord(basePath, id)}
             className={classes.link}
+            {...rest}
         >
             {children}
-        </Link>
+        </ListItem>
+    ) : link === 'show' ? (
+        <ListItem
+            button
+            // @ts-ignore
+            component={Link}
+            to={`${linkToRecord(basePath, id)}/show`}
+            className={classes.link}
+            {...rest}
+        >
+            {children}
+        </ListItem>
+    ) : link !== false ? (
+        <ListItem
+            button
+            // @ts-ignore
+            component={Link}
+            to={link}
+            className={classes.link}
+            {...rest}
+        >
+            {children}
+        </ListItem>
     ) : (
-        <span>{children}</span>
+        <ListItem
+            // @ts-ignore
+            component="div"
+            {...rest}
+        >
+            {children}
+        </ListItem>
     );
 };
 

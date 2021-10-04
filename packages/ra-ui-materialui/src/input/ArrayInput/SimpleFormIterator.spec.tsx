@@ -1,16 +1,16 @@
+import * as React from 'react';
 import { ThemeProvider } from '@material-ui/core';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 import { fireEvent, getByText, waitFor } from '@testing-library/react';
 import expect from 'expect';
 import { SaveContextProvider, SideEffectContextProvider } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
-import * as React from 'react';
-import { ArrayInput } from '../input';
-import TextInput from '../input/TextInput';
-import SimpleForm from './SimpleForm';
+import SimpleForm from '../../form/SimpleForm';
+import { ArrayInput } from './ArrayInput';
+import TextInput from '../TextInput';
 import { SimpleFormIterator } from './SimpleFormIterator';
 
-const theme = createMuiTheme();
+const theme = createTheme();
 
 describe('<SimpleFormIterator />', () => {
     // bypass confirm leave form with unsaved changes
@@ -123,17 +123,19 @@ describe('<SimpleFormIterator />', () => {
 
     it('should display an add item button at least', () => {
         const { getByText } = renderWithRedux(
-            <SaveContextProvider value={saveContextValue}>
-                <SideEffectContextProvider value={sideEffectValue}>
-                    <SimpleForm>
-                        <ArrayInput source="emails">
-                            <SimpleFormIterator>
-                                <TextInput source="email" />
-                            </SimpleFormIterator>
-                        </ArrayInput>
-                    </SimpleForm>
-                </SideEffectContextProvider>
-            </SaveContextProvider>
+            <ThemeProvider theme={theme}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffectValue}>
+                        <SimpleForm>
+                            <ArrayInput source="emails">
+                                <SimpleFormIterator>
+                                    <TextInput source="email" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
         );
 
         expect(getByText('ra.action.add')).not.toBeNull();
@@ -231,17 +233,19 @@ describe('<SimpleFormIterator />', () => {
             queryAllByLabelText,
             queryAllByText,
         } = renderWithRedux(
-            <SaveContextProvider value={saveContextValue}>
-                <SideEffectContextProvider value={sideEffectValue}>
-                    <SimpleForm>
-                        <ArrayInput source="emails">
-                            <SimpleFormIterator>
-                                <TextInput source="email" />
-                            </SimpleFormIterator>
-                        </ArrayInput>
-                    </SimpleForm>
-                </SideEffectContextProvider>
-            </SaveContextProvider>
+            <ThemeProvider theme={theme}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffectValue}>
+                        <SimpleForm>
+                            <ArrayInput source="emails">
+                                <SimpleFormIterator>
+                                    <TextInput source="email" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
         );
 
         const addItemElement = getByText('ra.action.add').closest('button');
@@ -283,17 +287,22 @@ describe('<SimpleFormIterator />', () => {
             queryAllByLabelText,
             queryAllByText,
         } = renderWithRedux(
-            <SaveContextProvider value={saveContextValue}>
-                <SideEffectContextProvider value={sideEffectValue}>
-                    <SimpleForm>
-                        <ArrayInput source="emails">
-                            <SimpleFormIterator>
-                                <TextInput source="email" label="CustomLabel" />
-                            </SimpleFormIterator>
-                        </ArrayInput>
-                    </SimpleForm>
-                </SideEffectContextProvider>
-            </SaveContextProvider>
+            <ThemeProvider theme={theme}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffectValue}>
+                        <SimpleForm>
+                            <ArrayInput source="emails">
+                                <SimpleFormIterator>
+                                    <TextInput
+                                        source="email"
+                                        label="CustomLabel"
+                                    />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
         );
 
         const addItemElement = getByText('ra.action.add').closest('button');
@@ -322,21 +331,23 @@ describe('<SimpleFormIterator />', () => {
             queryAllByLabelText,
             queryAllByText,
         } = renderWithRedux(
-            <SaveContextProvider value={saveContextValue}>
-                <SideEffectContextProvider value={sideEffectValue}>
-                    <SimpleForm>
-                        <ArrayInput source="emails">
-                            <SimpleFormIterator>
-                                <TextInput
-                                    source="email"
-                                    label="CustomLabel"
-                                    defaultValue={5}
-                                />
-                            </SimpleFormIterator>
-                        </ArrayInput>
-                    </SimpleForm>
-                </SideEffectContextProvider>
-            </SaveContextProvider>
+            <ThemeProvider theme={theme}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffectValue}>
+                        <SimpleForm>
+                            <ArrayInput source="emails">
+                                <SimpleFormIterator>
+                                    <TextInput
+                                        source="email"
+                                        label="CustomLabel"
+                                        defaultValue={5}
+                                    />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
         );
 
         const addItemElement = getByText('ra.action.add').closest('button');
@@ -469,19 +480,23 @@ describe('<SimpleFormIterator />', () => {
 
     it('should not display the default add button if a custom add button is passed', () => {
         const { getByText, queryAllByText } = renderWithRedux(
-            <SaveContextProvider value={saveContextValue}>
-                <SideEffectContextProvider value={sideEffectValue}>
-                    <SimpleForm>
-                        <ArrayInput source="emails">
-                            <SimpleFormIterator
-                                addButton={<button>Custom Add Button</button>}
-                            >
-                                <TextInput source="email" />
-                            </SimpleFormIterator>
-                        </ArrayInput>
-                    </SimpleForm>
-                </SideEffectContextProvider>
-            </SaveContextProvider>
+            <ThemeProvider theme={theme}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffectValue}>
+                        <SimpleForm>
+                            <ArrayInput source="emails">
+                                <SimpleFormIterator
+                                    addButton={
+                                        <button>Custom Add Button</button>
+                                    }
+                                >
+                                    <TextInput source="email" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
         );
 
         expect(queryAllByText('ra.action.add').length).toBe(0);
@@ -631,19 +646,23 @@ describe('<SimpleFormIterator />', () => {
 
     it('should display the custom add button', () => {
         const { getByText } = renderWithRedux(
-            <SaveContextProvider value={saveContextValue}>
-                <SideEffectContextProvider value={sideEffectValue}>
-                    <SimpleForm>
-                        <ArrayInput source="emails">
-                            <SimpleFormIterator
-                                addButton={<button>Custom Add Button</button>}
-                            >
-                                <TextInput source="email" />
-                            </SimpleFormIterator>
-                        </ArrayInput>
-                    </SimpleForm>
-                </SideEffectContextProvider>
-            </SaveContextProvider>
+            <ThemeProvider theme={theme}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffectValue}>
+                        <SimpleForm>
+                            <ArrayInput source="emails">
+                                <SimpleFormIterator
+                                    addButton={
+                                        <button>Custom Add Button</button>
+                                    }
+                                >
+                                    <TextInput source="email" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
         );
 
         expect(getByText('Custom Add Button')).not.toBeNull();

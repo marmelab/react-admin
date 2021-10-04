@@ -1,8 +1,4 @@
-import {
-    convertLegacyDataProvider,
-    DataProvider,
-    LegacyDataProvider,
-} from 'react-admin';
+import { DataProvider } from 'react-admin';
 import fakeServerFactory from '../fakeServer';
 
 export default (type: string) => {
@@ -20,12 +16,6 @@ export default (type: string) => {
         get(_, name) {
             return (resource: string, params: any) => {
                 return dataProviderPromise.then(dataProvider => {
-                    // We have to convert the dataProvider here otherwise the proxy would try to intercept the promise resolution
-                    if (typeof dataProvider === 'function') {
-                        return convertLegacyDataProvider(dataProvider)[
-                            name.toString()
-                        ](resource, params);
-                    }
                     return dataProvider[name.toString()](resource, params);
                 });
             };
@@ -35,9 +25,7 @@ export default (type: string) => {
     return dataProviderWithGeneratedData;
 };
 
-const getDataProvider = async (
-    type: string
-): Promise<DataProvider | LegacyDataProvider> => {
+const getDataProvider = async (type: string): Promise<DataProvider> => {
     await fakeServerFactory(process.env.REACT_APP_DATA_PROVIDER || '');
     /**
      * This demo can work with either a fake REST server, or a fake GraphQL server.

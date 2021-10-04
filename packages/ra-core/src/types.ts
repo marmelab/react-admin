@@ -226,7 +226,30 @@ export type DataProviderResult<RecordType extends Record = Record> =
     | UpdateResult<RecordType>
     | UpdateManyResult;
 
-export type DataProviderProxy = {
+// This generic function type extracts the parameters of the function passed as its DataProviderMethod generic parameter.
+// It returns another function with the same parameters plus an optional options parameter used by the useDataProvider hook to specify side effects.
+// The returned function has the same result type as the original
+type DataProviderProxyMethod<
+    TDataProviderMethod
+> = TDataProviderMethod extends (...a: any[]) => infer Result
+    ? (
+          // This strange spread usage is required for two reasons
+          // 1. It keeps the named parameters of the original function
+          // 2. It allows to add an optional options parameter as the LAST parameter
+          ...a: [
+              ...Args: Parameters<TDataProviderMethod>,
+              options?: UseDataProviderOptions
+          ]
+      ) => Result
+    : never;
+
+export type DataProviderProxy<
+    TDataProvider extends DataProvider = DataProvider
+> = {
+    [MethodKey in keyof TDataProvider]: DataProviderProxyMethod<
+        TDataProvider[MethodKey]
+    >;
+} & {
     getList: <RecordType extends Record = Record>(
         resource: string,
         params: GetListParams,
@@ -257,31 +280,15 @@ export type DataProviderProxy = {
         options?: UseDataProviderOptions
     ) => Promise<UpdateResult<RecordType>>;
 
-    updateMany: (
-        resource: string,
-        params: UpdateManyParams,
-        options?: UseDataProviderOptions
-    ) => Promise<UpdateManyResult>;
-
     create: <RecordType extends Record = Record>(
         resource: string,
-        params: CreateParams,
-        options?: UseDataProviderOptions
+        params: CreateParams
     ) => Promise<CreateResult<RecordType>>;
 
     delete: <RecordType extends Record = Record>(
         resource: string,
-        params: DeleteParams,
-        options?: UseDataProviderOptions
+        params: DeleteParams
     ) => Promise<DeleteResult<RecordType>>;
-
-    deleteMany: (
-        resource: string,
-        params: DeleteManyParams,
-        options?: UseDataProviderOptions
-    ) => Promise<DeleteManyResult>;
-
-    [key: string]: any;
 };
 
 export type MutationMode = 'pessimistic' | 'optimistic' | 'undoable';
@@ -501,7 +508,7 @@ export type Exporter = (
         field: string,
         resource: string
     ) => Promise<any>,
-    dataProvider: DataProvider,
+    dataProvider: DataProviderProxy,
     resource?: string
 ) => void | Promise<void>;
 

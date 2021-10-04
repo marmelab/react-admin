@@ -4,6 +4,7 @@
     "description": "A GraphQL data provider for react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",
+    "types": "esm/index.d.ts",
     "sideEffects": false,
     "repository": {
         "type": "git",
@@ -32,19 +33,17 @@
         "watch": "tsc --outDir esm --module es2015 --watch"
     },
     "dependencies": {
-        "apollo-client": "^2.6.3",
-        "apollo-client-preset": "^1.0.8",
-        "graphql-tag": "^2.10.1",
+        "@apollo/client": "^3.3.19",
         "lodash": "~4.17.5",
         "pluralize": "~7.0.0"
     },
     "peerDependencies": {
-        "graphql": "^14.1.1",
+        "graphql": "^15.6.0",
         "ra-core": "^3.9.0"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
-        "graphql": "^14.1.1",
+        "graphql": "^15.6.0",
         "rimraf": "^2.6.3"
     }
 }

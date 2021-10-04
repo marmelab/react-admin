@@ -3,6 +3,8 @@
 A GraphQL data provider for [react-admin](https://github.com/marmelab/react-admin/)
 built with [Apollo](https://www.apollodata.com/) and tailored to target a simple GraphQL implementation.
 
+**This is an example implementation to show how to build a graphql adapter using `ra-data-graphql`.**
+
 - [Installation](#installation)
 - [Usage](#installation)
 - [Options](#options)

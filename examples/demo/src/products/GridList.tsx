@@ -111,7 +111,7 @@ const LoadedGridList = (props: GridProps) => {
     );
 };
 
-interface GridProps extends DatagridProps, WithWidth {}
+interface GridProps extends Omit<DatagridProps, 'width'>, WithWidth {}
 
 const GridList = (props: WithWidth) => {
     const { width } = props;
