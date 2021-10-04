@@ -77,7 +77,7 @@ Once an admin has an `authProvider`, react-admin enables a new page on the `/log
 
 ![Default Login Form](./img/login-form.png)
 
-Upon submission, this form calls the `authProvider.login({ login, password })` method. React-admin expects this method to return a resolved Promise if the credentials are correct, and a rejected Promise if they're not. 
+Upon submission, this form calls the `authProvider.login({ username, password })` method. React-admin expects this method to return a resolved Promise if the credentials are correct, and a rejected Promise if they're not. 
 
 For instance, to query an authentication route via HTTPS and store the credentials (a token) in local storage, configure the `authProvider` as follows:
 
