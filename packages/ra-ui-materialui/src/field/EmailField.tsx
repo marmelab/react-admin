@@ -47,6 +47,7 @@ EmailField.defaultProps = {
 };
 
 EmailField.propTypes = fieldPropTypes;
+EmailField.displayName = 'EmailField';
 
 export interface EmailFieldProps
     extends PublicFieldProps,

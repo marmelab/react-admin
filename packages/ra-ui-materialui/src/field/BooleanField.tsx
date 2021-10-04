@@ -102,6 +102,8 @@ BooleanField.propTypes = {
     looseValue: PropTypes.bool,
 };
 
+BooleanField.displayName = 'BooleanField';
+
 export interface BooleanFieldProps
     extends PublicFieldProps,
         InjectedFieldProps,

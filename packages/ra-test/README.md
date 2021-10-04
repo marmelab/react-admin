@@ -142,7 +142,7 @@ Here is an example with Jest and TestingLibrary, which is testing the [`UserShow
 // UserShow.spec.js
 import * as React from "react";
 import { render } from '@testing-library/react';
-import { Tab, TextField } from 'react-admin';
+import { Tab, TextField, DataProviderContext } from 'react-admin';
 
 import UserShow from './UserShow';
 
@@ -155,21 +155,23 @@ describe('UserShow', () => {
             expect(tabs.length).toEqual(1);
         });
 
-        it('should show the user identity in the first tab', () => {
+        it('should show the user identity in the first tab', async () => {
             const dataProvider = {
-                getOne: jest.fn().resolve({
+                getOne: () => Promise.resolve({
                     id: 1,
                     name: 'Leila'
                 })
             }
             const testUtils = render(
-                <TestContext>
-                    <UserShow permissions="user" id="1" />
-                </TestContext>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <TestContext>
+                        <UserShow permissions="user" id="1" />
+                    </TestContext>
+                </DataProviderContext.Provider>
             );
 
-            expect(testUtils.queryByDisplayValue('1')).not.toBeNull();
-            expect(testUtils.queryByDisplayValue('Leila')).not.toBeNull();
+            expect(await testUtils.findByDisplayValue('1')).not.toBeNull();
+            expect(await testUtils.findByDisplayValue('Leila')).not.toBeNull();
         });
     });
 
@@ -181,39 +183,43 @@ describe('UserShow', () => {
             expect(tabs.length).toEqual(2);
         });
 
-        it('should show the user identity in the first tab', () => {
+        it('should show the user identity in the first tab', async () => {
             const dataProvider = {
-                getOne: jest.fn().resolve({
+                getOne: () => Promise.resolve({
                     id: 1,
                     name: 'Leila'
                 })
             }
             const testUtils = render(
-                <TestContext>
-                    <UserShow permissions="user" id="1" />
-                </TestContext>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <TestContext>
+                        <UserShow permissions="user" id="1" />
+                    </TestContext>
+                </DataProviderContext.Provider>
             );
 
-            expect(testUtils.queryByDisplayValue('1')).not.toBeNull();
-            expect(testUtils.queryByDisplayValue('Leila')).not.toBeNull();
+            expect(await testUtils.findByDisplayValue('1')).not.toBeNull();
+            expect(await testUtils.findByDisplayValue('Leila')).not.toBeNull();
         });
 
-        it('should show the user role in the second tab', () => {
+        it('should show the user role in the second tab', async () => {
             const dataProvider = {
-                getOne: jest.fn().resolve({
+                getOne: () => Promise.resolve({
                     id: 1,
                     name: 'Leila',
                     role: 'admin'
                 })
             }
             const testUtils = render(
-                <TestContext>
-                    <UserShow permissions="user" id="1" />
-                </TestContext>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <TestContext>
+                        <UserShow permissions="user" id="1" />
+                    </TestContext>
+                </DataProviderContext.Provider>
             );
 
             fireEvent.click(testUtils.getByText('Security'));
-            expect(testUtils.queryByDisplayValue('admin')).not.toBeNull();
+            expect(await testUtils.findByDisplayValue('admin')).not.toBeNull();
         });
     });
 });

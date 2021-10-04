@@ -223,7 +223,7 @@ buildGraphQLProvider({ buildQuery });
 
 ## When I create or edit a resource, the list or edit page does not refresh its data
 
-`react-admin` maintain its own cache of resources data but, by default, so does the Apollo client. For every queries, we inject a default [`fetchPolicy`](http://dev.apollodata.com/react/api-queries.html#graphql-config-options-fetchPolicy) set to `network-only` so that the Apollo client always refetch the data when requested.
+`react-admin` maintain its own cache of resources data but, by default, so does the Apollo client. For every query, we inject a default [`fetchPolicy`](http://dev.apollodata.com/react/api-queries.html#graphql-config-options-fetchPolicy) set to `network-only` so that the Apollo client always refetch the data when requested.
 
 Do not override this `fetchPolicy`.
 

@@ -2539,11 +2539,6 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@giraphql/core@^2.15.3":
-  version "2.15.3"
-  resolved "https://registry.yarnpkg.com/@giraphql/core/-/core-2.15.3.tgz#4a3d68b4539a68d798d11dfe68fccd45f505e8fd"
-  integrity sha512-Cz7jT3sZmAh9oAZ5eW+ZWapZzcmtAlQS1mFy0DE/ujWblpdtPvPr5hEQIip9rbrDxKVyKzgKWx0ZVNfaXGfhPA==
-
 "@graphql-tools/merge@^8.1.0":
   version "8.1.2"
   resolved "https://registry.yarnpkg.com/@graphql-tools/merge/-/merge-8.1.2.tgz#50f5763927c51de764d09c5bfd20261671976e24"

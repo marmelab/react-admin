@@ -60,7 +60,7 @@ const BulkDeleteWithUndoButton = (props: BulkDeleteWithUndoButtonProps) => {
             unselectAll(resource);
             refresh();
         },
-        onFailure: error =>
+        onFailure: error => {
             notify(
                 typeof error === 'string'
                     ? error
@@ -74,7 +74,9 @@ const BulkDeleteWithUndoButton = (props: BulkDeleteWithUndoButtonProps) => {
                             ? error.message
                             : undefined,
                 }
-            ),
+            );
+            refresh();
+        },
         undoable: true,
     });
 

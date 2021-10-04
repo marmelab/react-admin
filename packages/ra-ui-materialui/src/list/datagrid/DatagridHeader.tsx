@@ -8,6 +8,7 @@ import {
     Record,
     RecordMap,
     SortPayload,
+    useTranslate,
 } from 'ra-core';
 import { Checkbox, TableCell, TableHead, TableRow } from '@material-ui/core';
 import classnames from 'classnames';
@@ -31,6 +32,7 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
         isRowSelectable,
     } = props;
     const resource = useResourceContext(props);
+    const translate = useTranslate();
     const {
         currentSort,
         data,
@@ -98,6 +100,9 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
                         className={classes.headerCell}
                     >
                         <Checkbox
+                            aria-label={translate('ra.action.select_all', {
+                                _: 'Select all',
+                            })}
                             className="select-all"
                             color="primary"
                             checked={

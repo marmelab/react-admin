@@ -2025,8 +2025,8 @@ const MyComponent = () => {
     const listContext = useList({
         data,
         ids,
-        basePath: '/resource';
-        resource: 'resource';
+        basePath: '/resource',
+        resource: 'resource',
     });
     return (
         <ListContextProvider value={listContext}>

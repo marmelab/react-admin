@@ -137,6 +137,7 @@ describe('<DateTimeInput />', () => {
 
     it('should call `input.onChange` method when changed', () => {
         let formApi;
+        const publishedAt = new Date('Wed Oct 05 2011 16:48:00 GMT+0200');
         const { getByLabelText } = render(
             <Form
                 onSubmit={jest.fn()}
@@ -148,10 +149,10 @@ describe('<DateTimeInput />', () => {
         );
         const input = getByLabelText('resources.posts.fields.publishedAt');
         fireEvent.change(input, {
-            target: { value: '2010-01-04T10:20' },
+            target: { value: format(publishedAt, 'YYYY-MM-DDTHH:mm') },
         });
         expect(formApi.getState().values.publishedAt).toEqual(
-            new Date('2010-01-04T09:20:00.000Z')
+            new Date('2011-10-05T14:48:00.000Z')
         );
     });
 

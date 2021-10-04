@@ -58,7 +58,7 @@ const BulkUpdateWithUndoButton = (props: BulkUpdateWithUndoButtonProps) => {
             unselectAll(resource);
             refresh();
         },
-        onFailure = error =>
+        onFailure = error => {
             notify(
                 typeof error === 'string'
                     ? error
@@ -72,7 +72,9 @@ const BulkUpdateWithUndoButton = (props: BulkUpdateWithUndoButtonProps) => {
                             ? error.message
                             : undefined,
                 }
-            ),
+            );
+            refresh();
+        },
         ...rest
     } = props;
 
