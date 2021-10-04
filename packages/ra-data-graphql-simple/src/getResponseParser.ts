@@ -30,36 +30,39 @@ const sanitizeResource = (data: any) => {
             return acc;
         }
 
-        const dataKey = data[key];
+        const dataForKey = data[key];
 
-        if (dataKey === null || dataKey === undefined) {
+        if (dataForKey === null || dataForKey === undefined) {
             return acc;
         }
 
-        if (Array.isArray(dataKey)) {
-            if (typeof dataKey[0] === 'object' && dataKey[0] !== null) {
+        if (Array.isArray(dataForKey)) {
+            if (typeof dataForKey[0] === 'object' && dataForKey[0] !== null) {
                 return {
                     ...acc,
-                    [key]: dataKey.map(sanitizeResource),
-                    [`${key}Ids`]: dataKey.map(d => d.id),
+                    [key]: dataForKey.map(sanitizeResource),
+                    [`${key}Ids`]: dataForKey.map(d => d.id),
                 };
             } else {
-                return { ...acc, [key]: dataKey };
+                return { ...acc, [key]: dataForKey };
             }
         }
 
-        if (typeof dataKey === 'object' && dataKey !== null) {
+        if (typeof dataForKey === 'object' && dataForKey !== null) {
             return {
                 ...acc,
-                ...(dataKey &&
-                    dataKey.id && {
-                        [`${key}.id`]: dataKey.id,
+                ...(dataForKey &&
+                    dataForKey.id && {
+                        [`${key}.id`]: dataForKey.id,
                     }),
-                [key]: sanitizeResource(dataKey),
+                // We should only sanitize gql types, not objects
+                [key]: dataForKey.__typename
+                    ? sanitizeResource(dataForKey)
+                    : dataForKey,
             };
         }
 
-        return { ...acc, [key]: dataKey };
+        return { ...acc, [key]: dataForKey };
     }, {});
 
     return result;
