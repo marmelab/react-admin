@@ -59,7 +59,7 @@ export const DealListContent = () => {
     const [deals, setDeals] = useState<DealsByColumn>(
         loaded ? getDealsByColumn(ids, data) : initialDeals
     );
-    // we use the raw dataProvider to avoid too many updates to the Redux store after updates (which would create jank)
+    // we use the raw dataProvider to avoid too many updates to the Redux store after updates (which would create junk)
     const dataProvider = useContext(DataProviderContext);
 
     // FIXME: use refetch when available
@@ -109,7 +109,7 @@ export const DealListContent = () => {
             // update local state
             // remove source deal from column
             column.splice(source.index, 1);
-            // readd source deal at destination
+            // read source deal at destination
             column.splice(destination.index, 0, Number(draggableId));
             setDeals({
                 ...deals,

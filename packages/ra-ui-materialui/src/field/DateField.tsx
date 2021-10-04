@@ -107,6 +107,8 @@ DateField.propTypes = {
     showTime: PropTypes.bool,
 };
 
+DateField.displayName = 'DateField';
+
 export interface DateFieldProps
     extends PublicFieldProps,
         InjectedFieldProps,

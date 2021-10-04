@@ -799,6 +799,7 @@ Here are all the props you can set on the `<SimpleForm>` component:
 * [`toolbar`](#toolbar)
 * [`variant`](#variant)
 * [`margin`](#margin)
+* [`component`](#simpleform-component)
 * [`warnWhenUnsavedChanges`](#warning-about-unsaved-changes)
 * [`sanitizeEmptyValues`](#setting-empty-values-to-null)
 
@@ -1009,7 +1010,7 @@ const PostEdit = props => (
 
 By default `<TabbedForm>` uses `<TabbedFormTabs>`, an internal react-admin component, to renders tabs. You can pass a custom component as the `tabs` prop to override the default component. Besides, props from `<TabbedFormTabs>` are passed to material-ui's `<Tabs>` component inside `<TabbedFormTabs>`.
 
-The following example shows how to make use of scrollable `<Tabs>`. Pass the `scrollable` prop to `<TabbedFormTabs>` and pass that as the `tabs` prop to `<TabbedForm>`.
+The following example shows how to make use of scrollable `<Tabs>`. Pass `variant="scrollable"` and `scrollButtons="auto"` props to `<TabbedFormTabs>` and use it in the `tabs` prop from `<TabbedForm>`.
 
 ```jsx
 import * as React from "react";
@@ -1021,7 +1022,7 @@ import {
 
 export const PostEdit = (props) => (
     <Edit {...props}>
-        <TabbedForm tabs={<TabbedFormTabs scrollButtons="auto" />}>
+        <TabbedForm tabs={<TabbedFormTabs variant="scrollable" scrollButtons="auto" />}>
             ...
         </TabbedForm>
     </Edit>
@@ -1797,6 +1798,27 @@ By default, react-admin input components use the Material Design "dense" margin.
 export const PostEdit = (props) => (
     <Edit {...props}>
         <SimpleForm margin="normal">
+            ...
+        </SimpleForm>
+    </Edit>
+);
+```
+
+### SimpleForm component
+
+By default, the `SimpleForm` view renders the main form's children inside a `CardContentInner`, an internal `react-admin` component which returns a material-ui `<CardContent>` element.
+
+To customize that, you can override the main container by passing a `component` prop :
+
+```jsx
+const MyChildrenContainerComponent = props => (
+    <div>{props.children}</div>
+);
+
+// Use a custom component as root container of the form's children 
+const PostEdit = props => (
+    <Edit {...props}>
+        <SimpleForm component={MyChildrenContainerComponent}>
             ...
         </SimpleForm>
     </Edit>

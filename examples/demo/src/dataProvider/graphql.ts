@@ -2,7 +2,8 @@ import { ApolloQueryResult } from '@apollo/client';
 import buildApolloClient, {
     buildQuery as buildQueryFactory,
 } from 'ra-data-graphql-simple';
-import { DELETE, LegacyDataProvider } from 'react-admin';
+import { BuildQuery } from 'ra-data-graphql';
+import { DataProvider, DELETE } from 'react-admin';
 import gql from 'graphql-tag';
 import {
     IntrospectionField,
@@ -48,7 +49,7 @@ interface IntrospectionResults {
 
 const customBuildQuery = (
     introspectionResults: IntrospectionResults
-): LegacyDataProvider => {
+): BuildQuery => {
     const buildQuery = buildQueryFactory(introspectionResults);
 
     return (type, resource, params) => {
@@ -88,7 +89,26 @@ export default async () => {
         buildQuery: customBuildQuery,
     });
 
-    return (type: string, resource: string, params: any) => {
-        return dataProvider(type, getGqlResource(resource), params);
-    };
+    return new Proxy<DataProvider>(defaultDataProvider, {
+        get: (target, name) => {
+            if (typeof name === 'symbol' || name === 'then') {
+                return;
+            }
+            return async (resource: string, params: any) => {
+                return dataProvider[name](getGqlResource(resource), params);
+            };
+        },
+    });
+};
+// Only used to initialize proxy
+const defaultDataProvider: DataProvider = {
+    create: () => Promise.reject({ data: null }), // avoids adding a context in tests
+    delete: () => Promise.reject({ data: null }), // avoids adding a context in tests
+    deleteMany: () => Promise.resolve({ data: [] }), // avoids adding a context in tests
+    getList: () => Promise.resolve({ data: [], total: 0 }), // avoids adding a context in tests
+    getMany: () => Promise.resolve({ data: [] }), // avoids adding a context in tests
+    getManyReference: () => Promise.resolve({ data: [], total: 0 }), // avoids adding a context in tests
+    getOne: () => Promise.reject({ data: null }), // avoids adding a context in tests
+    update: () => Promise.reject({ data: null }), // avoids adding a context in tests
+    updateMany: () => Promise.resolve({ data: [] }), // avoids adding a context in tests
 };

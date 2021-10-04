@@ -155,7 +155,7 @@ describe('<DateInput />', () => {
         fireEvent.change(input, {
             target: { value: '' },
         });
-        // uncommenting this line mak sthe test fail, cf https://github.com/marmelab/react-admin/issues/6573
+        // Uncommenting this line makes the test fail, cf https://github.com/marmelab/react-admin/issues/6573
         // fireEvent.blur(input);
         expect(formApi.getState().values.publishedAt).toBeNull();
     });

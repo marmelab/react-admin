@@ -21,7 +21,7 @@ export interface Record {
     [key: string]: any;
 }
 
-export interface RecordMap<RecordType = Record> {
+export interface RecordMap<RecordType extends Record = Record> {
     // Accept strings and numbers as identifiers
     [id: string]: RecordType;
     [id: number]: RecordType;
@@ -138,7 +138,7 @@ export interface GetListParams {
     sort: SortPayload;
     filter: any;
 }
-export interface GetListResult<RecordType = Record> {
+export interface GetListResult<RecordType extends Record = Record> {
     data: RecordType[];
     total: number;
     validUntil?: ValidUntil;
@@ -147,7 +147,7 @@ export interface GetListResult<RecordType = Record> {
 export interface GetOneParams {
     id: Identifier;
 }
-export interface GetOneResult<RecordType = Record> {
+export interface GetOneResult<RecordType extends Record = Record> {
     data: RecordType;
     validUntil?: ValidUntil;
 }
@@ -155,7 +155,7 @@ export interface GetOneResult<RecordType = Record> {
 export interface GetManyParams {
     ids: Identifier[];
 }
-export interface GetManyResult<RecordType = Record> {
+export interface GetManyResult<RecordType extends Record = Record> {
     data: RecordType[];
     validUntil?: ValidUntil;
 }
@@ -167,7 +167,7 @@ export interface GetManyReferenceParams {
     sort: SortPayload;
     filter: any;
 }
-export interface GetManyReferenceResult<RecordType = Record> {
+export interface GetManyReferenceResult<RecordType extends Record = Record> {
     data: RecordType[];
     total: number;
     validUntil?: ValidUntil;
@@ -178,7 +178,7 @@ export interface UpdateParams<T = any> {
     data: T;
     previousData: Record;
 }
-export interface UpdateResult<RecordType = Record> {
+export interface UpdateResult<RecordType extends Record = Record> {
     data: RecordType;
     validUntil?: ValidUntil;
 }
@@ -195,7 +195,7 @@ export interface UpdateManyResult {
 export interface CreateParams<T = any> {
     data: T;
 }
-export interface CreateResult<RecordType = Record> {
+export interface CreateResult<RecordType extends Record = Record> {
     data: RecordType;
     validUntil?: ValidUntil;
 }
@@ -204,7 +204,7 @@ export interface DeleteParams {
     id: Identifier;
     previousData: Record;
 }
-export interface DeleteResult<RecordType = Record> {
+export interface DeleteResult<RecordType extends Record = Record> {
     data: RecordType;
 }
 
@@ -215,7 +215,7 @@ export interface DeleteManyResult {
     data?: Identifier[];
 }
 
-export type DataProviderResult<RecordType = Record> =
+export type DataProviderResult<RecordType extends Record = Record> =
     | CreateResult<RecordType>
     | DeleteResult<RecordType>
     | DeleteManyResult

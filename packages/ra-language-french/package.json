@@ -1,6 +1,6 @@
 {
     "name": "ra-language-french",
-    "version": "3.18.0",
+    "version": "3.18.3",
     "description": "French messages for react-admin, the frontend framework for building admin applications on top of REST/GraphQL services",
     "repository": {
         "type": "git",
@@ -16,7 +16,7 @@
         "watch": "tsc --outDir esm --module es2015 --watch"
     },
     "dependencies": {
-        "ra-core": "^3.18.0"
+        "ra-core": "^3.18.3"
     },
     "keywords": [
         "react",
