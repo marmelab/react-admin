@@ -3,6 +3,7 @@ import get from 'lodash/get';
 import pluralize from 'pluralize';
 import {
     DataProvider,
+    HttpError,
     GET_LIST,
     GET_ONE,
     GET_MANY,
@@ -16,11 +17,14 @@ import {
 import {
     ApolloClient,
     ApolloClientOptions,
+    ApolloError,
     ApolloQueryResult,
     MutationOptions,
     WatchQueryOptions,
     QueryOptions,
     OperationVariables,
+    ServerError,
+    ServerParseError,
 } from '@apollo/client';
 
 import buildApolloClient from './buildApolloClient';
@@ -163,40 +167,21 @@ export default async (options: Options): Promise<DataProvider> => {
                     `${resource}.${raFetchMethod}`
                 );
 
-                try {
-                    const { parseResponse, ...query } = overriddenBuildQuery
-                        ? {
-                              ...buildQuery(raFetchMethod, resource, params),
-                              ...overriddenBuildQuery(params),
-                          }
-                        : buildQuery(raFetchMethod, resource, params);
+                const { parseResponse, ...query } = overriddenBuildQuery
+                    ? {
+                          ...buildQuery(raFetchMethod, resource, params),
+                          ...overriddenBuildQuery(params),
+                      }
+                    : buildQuery(raFetchMethod, resource, params);
 
-                    const operation = getQueryOperation(query.query);
+                const operation = getQueryOperation(query.query);
 
-                    if (operation === 'query') {
-                        const apolloQuery = {
-                            ...query,
-                            fetchPolicy: 'network-only',
-                            ...getOptions(
-                                otherOptions.query,
-                                raFetchMethod,
-                                resource
-                            ),
-                        };
-
-                        return (
-                            client
-                                // @ts-ignore
-                                .query(apolloQuery)
-                                .then(response => parseResponse(response))
-                        );
-                    }
-
+                if (operation === 'query') {
                     const apolloQuery = {
-                        mutation: query.query,
-                        variables: query.variables,
+                        ...query,
+                        fetchPolicy: 'network-only',
                         ...getOptions(
-                            otherOptions.mutation,
+                            otherOptions.query,
                             raFetchMethod,
                             resource
                         ),
@@ -205,17 +190,46 @@ export default async (options: Options): Promise<DataProvider> => {
                     return (
                         client
                             // @ts-ignore
-                            .mutate(apolloQuery)
-                            .then(parseResponse)
+                            .query(apolloQuery)
+                            .then(response => parseResponse(response))
+                            .catch(handleError)
                     );
-                } catch (e) {
-                    return Promise.reject(e);
                 }
+
+                const apolloQuery = {
+                    mutation: query.query,
+                    variables: query.variables,
+                    ...getOptions(
+                        otherOptions.mutation,
+                        raFetchMethod,
+                        resource
+                    ),
+                };
+
+                return (
+                    client
+                        // @ts-ignore
+                        .mutate(apolloQuery)
+                        .then(parseResponse)
+                        .catch(handleError)
+                );
             };
         },
     });
 
     return raDataProvider;
+};
+
+const handleError = (error: ApolloError) => {
+    console.error({ error });
+    if (error?.networkError as ServerError) {
+        throw new HttpError(
+            (error?.networkError as ServerError)?.message,
+            (error?.networkError as ServerError)?.statusCode
+        );
+    }
+
+    throw new HttpError(error.message, 200);
 };
 
 const getQueryOperation = query => {
