@@ -10,8 +10,8 @@ import React, {
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Card, Avatar, Theme } from '@mui/material';
-import { adaptV4Theme } from '@mui/material/styles';
-import { makeStyles, ThemeProvider } from '@mui/styles';
+import { adaptV4Theme, ThemeProvider } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import { StyledEngineProvider } from '@mui/material/styles';
 import LockIcon from '@mui/icons-material/Lock';
 import { StaticContext } from 'react-router';
@@ -89,8 +89,21 @@ const useStyles = makeStyles(
  *     );
  */
 const Login: React.FunctionComponent<LoginProps> = props => {
-    const {
+    const { theme, ...rest } = props;
+    const muiTheme = useMemo(() => createMuiTheme(adaptV4Theme(theme)), [
         theme,
+    ]);
+    return (
+        <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={muiTheme}>
+                <LoginContainer {...rest} />
+            </ThemeProvider>
+        </StyledEngineProvider>
+    );
+};
+
+const LoginContainer = props => {
+    const {
         title,
         classes: classesOverride,
         className,
@@ -102,9 +115,6 @@ const Login: React.FunctionComponent<LoginProps> = props => {
     } = props;
     const containerRef = useRef<HTMLDivElement>();
     const classes = useStyles(props);
-    const muiTheme = useMemo(() => createMuiTheme(adaptV4Theme(theme)), [
-        theme,
-    ]);
     let backgroundImageLoaded = false;
     const checkAuth = useCheckAuth();
     const history = useHistory();
@@ -140,27 +150,22 @@ const Login: React.FunctionComponent<LoginProps> = props => {
             lazyLoadBackgroundImage();
         }
     });
-
     return (
-        <StyledEngineProvider injectFirst>
-            <ThemeProvider theme={muiTheme}>
-                <div
-                    className={classnames(classes.main, className)}
-                    {...rest}
-                    ref={containerRef}
-                >
-                    <Card className={classes.card}>
-                        <div className={classes.avatar}>
-                            <Avatar className={classes.icon}>
-                                <LockIcon />
-                            </Avatar>
-                        </div>
-                        {children}
-                    </Card>
-                    {notification ? createElement(notification) : null}
+        <div
+            className={classnames(classes.main, className)}
+            {...rest}
+            ref={containerRef}
+        >
+            <Card className={classes.card}>
+                <div className={classes.avatar}>
+                    <Avatar className={classes.icon}>
+                        <LockIcon />
+                    </Avatar>
                 </div>
-            </ThemeProvider>
-        </StyledEngineProvider>
+                {children}
+            </Card>
+            {notification ? createElement(notification) : null}
+        </div>
     );
 };
 
