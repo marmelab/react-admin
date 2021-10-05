@@ -9,9 +9,8 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Card, Avatar, Theme } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { makeStyles } from '@mui/styles';
+import { Card, Avatar } from '@mui/material';
+import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
 import { StyledEngineProvider } from '@mui/material/styles';
 import LockIcon from '@mui/icons-material/Lock';
 import { StaticContext } from 'react-router';
@@ -34,35 +33,40 @@ export interface LoginProps
     title?: TitleComponent;
 }
 
-const useStyles = makeStyles(
-    (theme: Theme) => ({
-        main: {
-            display: 'flex',
-            flexDirection: 'column',
-            minHeight: '100vh',
-            height: '1px',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-            backgroundImage:
-                'radial-gradient(circle at 50% 14em, #313264 0%, #00023b 60%, #00023b 100%)',
-        },
-        card: {
-            minWidth: 300,
-            marginTop: '6em',
-        },
-        avatar: {
-            margin: '1em',
-            display: 'flex',
-            justifyContent: 'center',
-        },
-        icon: {
-            backgroundColor: theme.palette.secondary[500],
-        },
-    }),
-    { name: 'RaLogin' }
-);
+const PREFIX = 'RaLogin';
+const classes = {
+    main: `${PREFIX}-main`,
+    card: `${PREFIX}-card`,
+    avatar: `${PREFIX}-avatar`,
+    icon: `${PREFIX}-icon`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`&.${classes.main}`]: {
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+        height: '1px',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        backgroundImage:
+            'radial-gradient(circle at 50% 14em, #313264 0%, #00023b 60%, #00023b 100%)',
+    },
+    [`& .${classes.card}`]: {
+        minWidth: 300,
+        marginTop: '6em',
+    },
+    [`& .${classes.avatar}`]: {
+        margin: '1em',
+        display: 'flex',
+        justifyContent: 'center',
+    },
+    [`& .${classes.icon}`]: {
+        backgroundColor: theme.palette.secondary[500],
+    },
+}));
 
 /**
  * A standalone login page, to serve as authentication gate to the admin
@@ -106,7 +110,6 @@ const LoginContainer = props => {
         ...rest
     } = props;
     const containerRef = useRef<HTMLDivElement>();
-    const classes = useStyles(props);
     let backgroundImageLoaded = false;
     const checkAuth = useCheckAuth();
     const history = useHistory();
@@ -143,7 +146,7 @@ const LoginContainer = props => {
         }
     });
     return (
-        <div
+        <Root
             className={classnames(classes.main, className)}
             {...rest}
             ref={containerRef}
@@ -157,7 +160,7 @@ const LoginContainer = props => {
                 {children}
             </Card>
             {notification ? createElement(notification) : null}
-        </div>
+        </Root>
     );
 };
 
