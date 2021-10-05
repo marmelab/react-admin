@@ -151,7 +151,9 @@ const SaveButton = (props: SaveButtonProps) => {
             variant={variant}
             type={type}
             onClick={handleClick}
-            color={saving ? 'default' : 'primary'}
+            // TODO: find a way to display the loading state (LoadingButton from mui Lab?)
+            // This is because the "default" color does not exist anymore
+            color="primary"
             aria-label={displayedLabel}
             disabled={disabled}
             {...sanitizeButtonRestProps(rest)}
