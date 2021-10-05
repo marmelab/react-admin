@@ -4,7 +4,7 @@ import {
     RouteComponentProps,
     match as Match,
 } from 'react-router-dom';
-import { ThemeOptions } from '@material-ui/core';
+import { ThemeOptions } from '@mui/material';
 import { StaticContext } from 'react-router';
 import { Location, History, LocationState } from 'history';
 

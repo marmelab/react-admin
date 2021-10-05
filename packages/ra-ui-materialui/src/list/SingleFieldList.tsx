@@ -7,8 +7,8 @@ import {
 } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import { makeStyles } from '@material-ui/core/styles';
+import LinearProgress from '@mui/material/LinearProgress';
+import { makeStyles } from '@mui/material/styles';
 import {
     linkToRecord,
     sanitizeListRestProps,

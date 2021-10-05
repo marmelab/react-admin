@@ -1,14 +1,9 @@
 import * as React from 'react';
 import { MouseEvent, ReactElement, useState } from 'react';
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from '@mui/icons-material/Add';
 import { ImportResourceDialog } from './ImportResourceDialog';
-import { makeStyles } from '@material-ui/core/styles';
-import {
-    ListItemIcon,
-    MenuItem,
-    MenuItemProps,
-    Tooltip,
-} from '@material-ui/core';
+import { makeStyles } from '@mui/material/styles';
+import { ListItemIcon, MenuItem, MenuItemProps, Tooltip } from '@mui/material';
 
 export const NewResourceMenuItem = (
     props: MenuItemProps<'li', { button?: true } & { sidebarIsOpen: boolean }>

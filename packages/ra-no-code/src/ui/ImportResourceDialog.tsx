@@ -9,7 +9,7 @@ import {
     DialogTitle,
     RootRef,
     TextField,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useDropzone } from 'react-dropzone';
 
 import { useNotify, useRefresh } from 'ra-core';

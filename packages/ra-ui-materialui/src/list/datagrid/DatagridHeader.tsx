@@ -10,7 +10,7 @@ import {
     SortPayload,
     useTranslate,
 } from 'ra-core';
-import { Checkbox, TableCell, TableHead, TableRow } from '@material-ui/core';
+import { Checkbox, TableCell, TableHead, TableRow } from '@mui/material';
 import classnames from 'classnames';
 
 import DatagridHeaderCell from './DatagridHeaderCell';

@@ -1,9 +1,9 @@
 import React, { Component, ErrorInfo, HtmlHTMLAttributes } from 'react';
 import PropTypes from 'prop-types';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { createMuiTheme } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
-import { CssBaseline, Container } from '@material-ui/core';
+import { createMuiTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/styles';
+import { CssBaseline, Container } from '@mui/material';
 import { CoreLayoutProps } from 'react-admin';
 
 import { Notification, Error } from 'react-admin';

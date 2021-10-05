@@ -9,14 +9,8 @@ import {
     useRedirect,
     Identifier,
 } from 'react-admin';
-import {
-    Box,
-    Dialog,
-    DialogContent,
-    Typography,
-    Divider,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Box, Dialog, DialogContent, Typography, Divider } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
 import { format } from 'date-fns';
 
 import { CompanyAvatar } from '../companies/CompanyAvatar';

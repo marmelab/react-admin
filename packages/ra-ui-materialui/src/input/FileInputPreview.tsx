@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { useEffect, ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import RemoveCircle from '@material-ui/icons/RemoveCircle';
-import IconButton from '@material-ui/core/IconButton';
+import { makeStyles } from '@mui/material/styles';
+import RemoveCircle from '@mui/icons-material/RemoveCircle';
+import IconButton from '@mui/material/IconButton';
 import { useTranslate } from 'ra-core';
 
 const useStyles = makeStyles(

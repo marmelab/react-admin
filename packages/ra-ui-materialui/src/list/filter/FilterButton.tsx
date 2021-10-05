@@ -8,9 +8,9 @@ import {
     useContext,
 } from 'react';
 import PropTypes from 'prop-types';
-import Menu from '@material-ui/core/Menu';
-import { makeStyles } from '@material-ui/core/styles';
-import ContentFilter from '@material-ui/icons/FilterList';
+import Menu from '@mui/material/Menu';
+import { makeStyles } from '@mui/material/styles';
+import ContentFilter from '@mui/icons-material/FilterList';
 import classnames from 'classnames';
 import lodashGet from 'lodash/get';
 import { useListContext, useResourceContext } from 'ra-core';

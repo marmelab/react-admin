@@ -1,6 +1,6 @@
 import * as React from 'react';
-import Icon from '@material-ui/icons/Stars';
-import { makeStyles } from '@material-ui/core/styles';
+import Icon from '@mui/icons-material/Stars';
+import { makeStyles } from '@mui/material/styles';
 
 import { FieldProps } from 'react-admin';
 

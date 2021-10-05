@@ -21,9 +21,9 @@ import {
     useGetList,
     useListContext,
 } from 'react-admin';
-import { useMediaQuery, Divider, Tabs, Tab, Theme } from '@material-ui/core';
+import { useMediaQuery, Divider, Tabs, Tab, Theme } from '@mui/material';
 
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 
 import NbItemsField from './NbItemsField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';

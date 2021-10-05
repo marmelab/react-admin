@@ -2,8 +2,8 @@ import * as React from 'react';
 import { ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import CardContent from '@material-ui/core/CardContent';
-import { makeStyles } from '@material-ui/core/styles';
+import CardContent from '@mui/material/CardContent';
+import { makeStyles } from '@mui/material/styles';
 
 import { ClassesOverride } from '../types';
 

@@ -1,7 +1,7 @@
 import {
     createTheme as createLegacyModeTheme,
     unstable_createMuiStrictModeTheme as createStrictModeTheme,
-} from '@material-ui/core/styles';
+} from '@mui/material/styles';
 
 /**
  * Alternative to MUI's createMuiTheme that doesn't log findDomNode warnings in StrictMode

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
-import HotTub from '@material-ui/icons/HotTub';
-import History from '@material-ui/icons/History';
+import Button from '@mui/material/Button';
+import { makeStyles } from '@mui/material/styles';
+import HotTub from '@mui/icons-material/HotTub';
+import History from '@mui/icons-material/History';
 import classnames from 'classnames';
 
 import { useAuthenticated, useTranslate } from 'ra-core';

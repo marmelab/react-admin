@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FC, createElement } from 'react';
-import { Card, Box, Typography, Divider } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Card, Box, Typography, Divider } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 import { ReactNode } from 'react';
 

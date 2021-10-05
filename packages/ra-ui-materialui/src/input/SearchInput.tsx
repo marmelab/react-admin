@@ -1,9 +1,9 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import SearchIcon from '@material-ui/icons/Search';
-import { InputAdornment } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { TextFieldProps } from '@material-ui/core/TextField';
+import SearchIcon from '@mui/icons-material/Search';
+import { InputAdornment } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
+import { TextFieldProps } from '@mui/material/TextField';
 import { useTranslate, InputProps } from 'ra-core';
 
 import TextInput from './TextInput';

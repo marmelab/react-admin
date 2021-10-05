@@ -21,7 +21,7 @@ import {
     RecordMap,
     SortPayload,
 } from 'ra-core';
-import { Table, TableProps } from '@material-ui/core';
+import { Table, TableProps } from '@mui/material';
 import classnames from 'classnames';
 import union from 'lodash/union';
 import difference from 'lodash/difference';

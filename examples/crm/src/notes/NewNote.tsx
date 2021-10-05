@@ -10,8 +10,8 @@ import {
     Identifier,
     useResourceContext,
 } from 'react-admin';
-import { TextField as TextInput, Button } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { TextField as TextInput, Button } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
 
 import { StatusSelector } from './StatusSelector';
 

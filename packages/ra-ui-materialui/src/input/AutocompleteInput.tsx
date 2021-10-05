@@ -14,10 +14,10 @@ import {
     InputAdornment,
     IconButton,
     InputProps,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import ClearIcon from '@material-ui/icons/Clear';
-import { TextFieldProps } from '@material-ui/core/TextField';
+} from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
+import ClearIcon from '@mui/icons-material/Clear';
+import { TextFieldProps } from '@mui/material/TextField';
 import {
     useInput,
     FieldTitle,

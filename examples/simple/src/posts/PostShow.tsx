@@ -24,7 +24,7 @@ import {
     Record,
 } from 'react-admin';
 import { Link } from 'react-router-dom';
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import PostTitle from './PostTitle';
 
 const CreateRelatedComment = ({ record }: { record?: Record }) => (

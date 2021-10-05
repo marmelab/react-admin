@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { memo, FC, ElementType } from 'react';
 import get from 'lodash/get';
-import Typography, { TypographyProps } from '@material-ui/core/Typography';
+import Typography, { TypographyProps } from '@mui/material/Typography';
 import { useRecordContext } from 'ra-core';
 
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';

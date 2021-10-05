@@ -1,5 +1,5 @@
-import { ThemeOptions } from '@material-ui/core';
-import { Overrides } from '@material-ui/core/styles/overrides';
+import { ThemeOptions } from '@mui/material';
+import { Overrides } from '@mui/material/styles/overrides';
 
 export default {
     palette: {

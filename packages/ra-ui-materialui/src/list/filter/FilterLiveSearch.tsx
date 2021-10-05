@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ChangeEvent, memo, useMemo } from 'react';
-import { InputAdornment } from '@material-ui/core';
-import SearchIcon from '@material-ui/icons/Search';
+import { InputAdornment } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 import { Form } from 'react-final-form';
 import { useTranslate, useListFilterContext } from 'ra-core';
 

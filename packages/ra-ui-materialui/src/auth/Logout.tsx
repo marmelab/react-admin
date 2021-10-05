@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { useCallback, FunctionComponent, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { ListItemIcon, MenuItem, useMediaQuery } from '@material-ui/core';
-import { MenuItemProps } from '@material-ui/core/MenuItem';
-import { Theme, makeStyles } from '@material-ui/core/styles';
+import { ListItemIcon, MenuItem, useMediaQuery } from '@mui/material';
+import { MenuItemProps } from '@mui/material/MenuItem';
+import { Theme, makeStyles } from '@mui/material/styles';
 
-import ExitIcon from '@material-ui/icons/PowerSettingsNew';
+import ExitIcon from '@mui/icons-material/PowerSettingsNew';
 import classnames from 'classnames';
 import { useTranslate, useLogout } from 'ra-core';
 

@@ -13,15 +13,8 @@ import {
     useTranslate,
 } from 'react-admin';
 import { Link as RouterLink } from 'react-router-dom';
-import {
-    Card,
-    CardContent,
-    Box,
-    Grid,
-    Typography,
-    Link,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Card, CardContent, Box, Grid, Typography, Link } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
 
 import { Order, Customer } from '../types';
 import Basket from './Basket';

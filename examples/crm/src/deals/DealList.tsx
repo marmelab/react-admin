@@ -11,7 +11,7 @@ import {
     useGetIdentity,
 } from 'react-admin';
 import { Route } from 'react-router';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 
 import { DealListContent } from './DealListContent';
 import { DealCreate } from './DealCreate';

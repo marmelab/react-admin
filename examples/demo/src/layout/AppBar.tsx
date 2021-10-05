@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { forwardRef } from 'react';
 import { AppBar, UserMenu, MenuItemLink, useTranslate } from 'react-admin';
-import Typography from '@material-ui/core/Typography';
-import SettingsIcon from '@material-ui/icons/Settings';
-import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@mui/material/Typography';
+import SettingsIcon from '@mui/icons-material/Settings';
+import { makeStyles } from '@mui/material/styles';
 
 import Logo from './Logo';
 

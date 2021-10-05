@@ -22,10 +22,10 @@ import {
     Step,
     StepLabel,
     StepContent,
-} from '@material-ui/core';
+} from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import { makeStyles } from '@material-ui/core/styles';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { makeStyles } from '@mui/material/styles';
 
 import order from '../orders';
 import review from '../reviews';

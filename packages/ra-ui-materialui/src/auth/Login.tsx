@@ -9,10 +9,10 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Card, Avatar, Theme } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
-import LockIcon from '@material-ui/icons/Lock';
+import { Card, Avatar, Theme } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/styles';
+import LockIcon from '@mui/icons-material/Lock';
 import { StaticContext } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import { useCheckAuth, TitleComponent } from 'ra-core';

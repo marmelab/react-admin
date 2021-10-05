@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { Toolbar, ToolbarProps } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Toolbar, ToolbarProps } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
 import { Exporter } from 'ra-core';
 
 import { ClassesOverride } from '../types';

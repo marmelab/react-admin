@@ -1,9 +1,9 @@
 import React, { forwardRef } from 'react';
 import { MenuItemLink, MenuItemLinkProps } from 'react-admin';
-import { IconButton } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import SettingsIcon from '@material-ui/icons/Settings';
-import DefaultIcon from '@material-ui/icons/ViewList';
+import { IconButton } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
+import SettingsIcon from '@mui/icons-material/Settings';
+import DefaultIcon from '@mui/icons-material/ViewList';
 import { NavLink, NavLinkProps } from 'react-router-dom';
 import { ResourceConfiguration } from '../ResourceConfiguration';
 

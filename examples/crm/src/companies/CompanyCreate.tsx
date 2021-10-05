@@ -8,9 +8,9 @@ import {
     SelectInput,
     required,
 } from 'react-admin';
-import { Box, CardContent, Divider, Avatar } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import BusinessIcon from '@material-ui/icons/Business';
+import { Box, CardContent, Divider, Avatar } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
+import BusinessIcon from '@mui/icons-material/Business';
 import clsx from 'clsx';
 
 import { sectors } from './sectors';

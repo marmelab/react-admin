@@ -18,10 +18,10 @@ import {
     TextField,
     MenuItem,
     Menu,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import ControlPointIcon from '@material-ui/icons/ControlPoint';
-import EditIcon from '@material-ui/icons/Edit';
+} from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
+import ControlPointIcon from '@mui/icons-material/ControlPoint';
+import EditIcon from '@mui/icons-material/Edit';
 
 import { colors } from '../tags/colors';
 import { Contact } from '../types';

@@ -8,18 +8,19 @@ import {
     ReactNode,
 } from 'react';
 import PropTypes from 'prop-types';
-import MuiToolbar, {
+import {
+    Toolbar as MuiToolbar,
     ToolbarProps as MuiToolbarProps,
-} from '@material-ui/core/Toolbar';
-import withWidth from '@material-ui/core/withWidth';
-import { makeStyles } from '@material-ui/core/styles';
+    useMediaQuery,
+    Theme,
+} from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
 import classnames from 'classnames';
 import { Record, RedirectionSideEffect, MutationMode } from 'ra-core';
 import { FormRenderProps } from 'react-final-form';
 
 import { SaveButton, DeleteButton } from '../button';
 import { ClassesOverride } from '../types';
-import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
 
 const useStyles = makeStyles(
     theme => ({
@@ -116,10 +117,10 @@ const Toolbar: FC<ToolbarProps> = props => {
         undoable,
         mutationMode,
         validating,
-        width,
         ...rest
     } = props;
     const classes = useStyles(props);
+    const isXs = useMediaQuery<Theme>(theme => theme.breakpoints.down('xs'));
 
     // Use form pristine and validating to enable or disable the save button
     // if alwaysEnableSaveButton is undefined
@@ -134,8 +135,8 @@ const Toolbar: FC<ToolbarProps> = props => {
                 className={classnames(
                     classes.toolbar,
                     {
-                        [classes.mobileToolbar]: width === 'xs',
-                        [classes.desktopToolbar]: width !== 'xs',
+                        [classes.mobileToolbar]: isXs,
+                        [classes.desktopToolbar]: !isXs,
                     },
                     className
                 )}
@@ -230,7 +231,6 @@ export interface ToolbarProps<RecordType extends Record = Record>
     /** @deprecated use mutationMode: undoable instead */
     undoable?: boolean;
     validating?: boolean;
-    width?: Breakpoint;
 }
 
 Toolbar.propTypes = {
@@ -253,11 +253,10 @@ Toolbar.propTypes = {
     submitOnEnter: PropTypes.bool,
     undoable: PropTypes.bool,
     validating: PropTypes.bool,
-    width: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
 };
 
 Toolbar.defaultProps = {
     submitOnEnter: true,
 };
 
-export default withWidth({ initialWidth: 'xs' })(Toolbar);
+export default Toolbar;

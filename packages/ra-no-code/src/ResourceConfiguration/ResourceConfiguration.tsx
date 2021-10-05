@@ -9,9 +9,9 @@ import {
     Divider,
     IconButton,
     Tabs,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+} from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {
     FormWithRedirect,
     RecordContextProvider,

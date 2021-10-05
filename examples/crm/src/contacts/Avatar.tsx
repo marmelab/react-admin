@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Avatar as MuiAvatar } from '@material-ui/core';
+import { Avatar as MuiAvatar } from '@mui/material';
 
 import { Contact } from '../types';
 

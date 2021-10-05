@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { Table, TableBody, TableCell, TableRow } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Table, TableBody, TableCell, TableRow } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
 import { FieldProps, useTranslate } from 'react-admin';
 
 import { Order } from '../types';

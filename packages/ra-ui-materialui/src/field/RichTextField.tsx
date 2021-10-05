@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FC, memo } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import Typography, { TypographyProps } from '@material-ui/core/Typography';
+import Typography, { TypographyProps } from '@mui/material/Typography';
 import { useRecordContext } from 'ra-core';
 
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';

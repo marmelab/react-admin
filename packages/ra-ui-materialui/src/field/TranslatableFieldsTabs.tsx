@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import { makeStyles } from '@material-ui/core/styles';
-import Tabs, { TabsProps } from '@material-ui/core/Tabs';
+import AppBar from '@mui/material/AppBar';
+import { makeStyles } from '@mui/material/styles';
+import Tabs, { TabsProps } from '@mui/material/Tabs';
 import { useTranslatableContext } from 'ra-core';
 import { TranslatableFieldsTab } from './TranslatableFieldsTab';
 import { AppBarProps } from '../layout';

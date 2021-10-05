@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { IconButton, Tooltip } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
+import { IconButton, Tooltip } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
+import MenuIcon from '@mui/icons-material/Menu';
 import { useTranslate } from 'ra-core';
 import { ClassesOverride } from '../types';
 import { useToggleSidebar } from './useToggleSidebar';

@@ -39,16 +39,16 @@ export default defineConfig({
             ),
         },
         {
-            find: /^@material-ui\/icons\/(.*)/,
-            replacement: '@material-ui/icons/esm/$1',
+            find: /^@mui\/icons-material\/(.*)/,
+            replacement: '@mui/icons-material/esm/$1',
         },
         {
-            find: /^@material-ui\/core\/(.+)/,
-            replacement: '@material-ui/core/es/$1',
+            find: /^@mui\/material\/(.+)/,
+            replacement: '@mui/material/es/$1',
         },
         {
-            find: /^@material-ui\/core$/,
-            replacement: '@material-ui/core/es',
+            find: /^@mui\/material$/,
+            replacement: '@mui/material/es',
         },
     ],
 });

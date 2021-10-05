@@ -11,10 +11,10 @@ import {
     CardActions,
     CircularProgress,
     TextField,
-} from '@material-ui/core';
-import { createMuiTheme, makeStyles } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
-import LockIcon from '@material-ui/icons/Lock';
+} from '@mui/material';
+import { createMuiTheme, makeStyles } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/styles';
+import LockIcon from '@mui/icons-material/Lock';
 import { Notification, useTranslate, useLogin, useNotify } from 'react-admin';
 
 import { lightTheme } from './themes';

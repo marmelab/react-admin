@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useListContext } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 
 import { Note } from './Note';
 import { NewNote } from './NewNote';

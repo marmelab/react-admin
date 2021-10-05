@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import lodashGet from 'lodash/get';
 // @ts-ignore
-import { useMediaQuery, Theme } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { useMediaQuery, Theme } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
 import classnames from 'classnames';
 import { ReduxState } from 'ra-core';
 

@@ -6,8 +6,8 @@ import {
     CardActions,
     CircularProgress,
     TextField,
-} from '@material-ui/core';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+} from '@mui/material';
+import { makeStyles, Theme } from '@mui/material/styles';
 import { useTranslate, useLogin, useNotify, useSafeSetState } from 'ra-core';
 
 interface Props {

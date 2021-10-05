@@ -5,9 +5,9 @@ import {
     ListItem,
     ListItemText,
     ListItemSecondaryAction,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import CancelIcon from '@material-ui/icons/CancelOutlined';
+} from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
+import CancelIcon from '@mui/icons-material/CancelOutlined';
 import { useTranslate, useListFilterContext } from 'ra-core';
 import { shallowEqual } from 'react-redux';
 import matches from 'lodash/matches';
@@ -35,8 +35,8 @@ const useStyles = makeStyles(theme => ({
  * @example
  *
  * import * as React from 'react';
- * import { Card, CardContent } from '@material-ui/core';
- * import MailIcon from '@material-ui/icons/MailOutline';
+ * import { Card, CardContent } from '@mui/material';
+ * import MailIcon from '@mui/icons-material/MailOutline';
  * import { FilterList, FilterListItem } from 'react-admin';
  *
  * const FilterSidebar = () => (
@@ -69,8 +69,8 @@ const useStyles = makeStyles(theme => ({
  *     startOfMonth,
  *     subMonths,
  * } from 'date-fns';
- * import { Card, CardContent } from '@material-ui/core';
- * import AccessTimeIcon from '@material-ui/icons/AccessTime';
+ * import { Card, CardContent } from '@mui/material';
+ * import AccessTimeIcon from '@mui/icons-material/AccessTime';
  * import { FilterList, FilterListItem } from 'react-admin';
  *
  * const FilterSidebar = () => (

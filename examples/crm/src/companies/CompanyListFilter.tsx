@@ -6,10 +6,10 @@ import {
     FilterListItem,
     useGetIdentity,
 } from 'react-admin';
-import { Box } from '@material-ui/core';
-import BusinessIcon from '@material-ui/icons/Business';
-import LocalShippingIcon from '@material-ui/icons/LocalShipping';
-import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
+import { Box } from '@mui/material';
+import BusinessIcon from '@mui/icons-material/Business';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 
 import { sizes } from './sizes';
 import { sectors } from './sectors';

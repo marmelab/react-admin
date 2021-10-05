@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { Card as MuiCard, CardContent } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import MonetizationOnIcon from '@material-ui/icons/MonetizationOnOutlined';
-import MailIcon from '@material-ui/icons/MailOutline';
-import LocalOfferIcon from '@material-ui/icons/LocalOfferOutlined';
+import { Card as MuiCard, CardContent } from '@mui/material';
+import { withStyles } from '@mui/material/styles';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOnOutlined';
+import MailIcon from '@mui/icons-material/MailOutline';
+import LocalOfferIcon from '@mui/icons-material/LocalOfferOutlined';
 import { FilterList, FilterListItem, FilterLiveSearch } from 'react-admin';
 import {
     endOfYesterday,

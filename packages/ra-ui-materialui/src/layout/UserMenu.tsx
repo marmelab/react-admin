@@ -9,9 +9,9 @@ import {
     Button,
     Avatar,
     PopoverOrigin,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+} from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 
 import { ClassesOverride } from '../types';
 

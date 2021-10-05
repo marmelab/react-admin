@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { memo, FC } from 'react';
-import { SvgIconComponent } from '@material-ui/icons';
+import { SvgIconComponent } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import classnames from 'classnames';
-import DoneIcon from '@material-ui/icons/Done';
-import ClearIcon from '@material-ui/icons/Clear';
-import { Tooltip, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { TypographyProps } from '@material-ui/core/Typography';
+import DoneIcon from '@mui/icons-material/Done';
+import ClearIcon from '@mui/icons-material/Clear';
+import { Tooltip, Typography } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
+import { TypographyProps } from '@mui/material/Typography';
 import { useTranslate, useRecordContext } from 'ra-core';
 
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';

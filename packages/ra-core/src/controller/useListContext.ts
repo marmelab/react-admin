@@ -67,9 +67,9 @@ import { Record } from '../types';
  * @example // custom pagination
  *
  * import { useListContext } from 'react-admin';
- * import { Button, Toolbar } from '@material-ui/core';
- * import ChevronLeft from '@material-ui/icons/ChevronLeft';
- * import ChevronRight from '@material-ui/icons/ChevronRight';
+ * import { Button, Toolbar } from '@mui/material';
+ * import ChevronLeft from '@mui/icons-material/ChevronLeft';
+ * import ChevronRight from '@mui/icons-material/ChevronRight';
  *
  * const PrevNextPagination = () => {
  *     const { page, perPage, total, setPage } = useListContext();

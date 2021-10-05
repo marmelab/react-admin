@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ElementType, memo } from 'react';
-import IconButton, { IconButtonProps } from '@material-ui/core/IconButton';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import classNames from 'classnames';
 import { useTranslate } from 'ra-core';
 

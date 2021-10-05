@@ -2,8 +2,8 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles, useTheme } from '@mui/material/styles';
+import CircularProgress from '@mui/material/CircularProgress';
 import { ReduxState, useRefreshWhenVisible } from 'ra-core';
 
 import RefreshIconButton from '../button/RefreshIconButton';

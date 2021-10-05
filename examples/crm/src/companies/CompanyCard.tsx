@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Paper, Typography, Link as MuiLink } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import ContactsIcon from '@material-ui/icons/AccountCircle';
-import DealIcon from '@material-ui/icons/MonetizationOn';
+import { Paper, Typography, Link as MuiLink } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
+import ContactsIcon from '@mui/icons-material/AccountCircle';
+import DealIcon from '@mui/icons-material/MonetizationOn';
 import { linkToRecord, SelectField } from 'react-admin';
 import { Link } from 'react-router-dom';
 

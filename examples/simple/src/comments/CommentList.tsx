@@ -1,7 +1,7 @@
 import * as React from 'react';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
-import PersonIcon from '@material-ui/icons/Person';
+import ChevronLeft from '@mui/icons-material/ChevronLeft';
+import ChevronRight from '@mui/icons-material/ChevronRight';
+import PersonIcon from '@mui/icons-material/Person';
 import {
     Avatar,
     Button,
@@ -13,8 +13,8 @@ import {
     Toolbar,
     Typography,
     useMediaQuery,
-} from '@material-ui/core';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+} from '@mui/material';
+import { makeStyles, Theme } from '@mui/material/styles';
 import jsonExport from 'jsonexport/dist';
 import {
     ListBase,

@@ -3,7 +3,7 @@ import { Admin, Resource, ListGuesser, defaultTheme } from 'react-admin';
 import {
     unstable_createMuiStrictModeTheme,
     createMuiTheme,
-} from '@material-ui/core/styles';
+} from '@mui/material/styles';
 
 import { dataProvider } from './dataProvider';
 import { authProvider } from './authProvider';

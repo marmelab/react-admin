@@ -7,7 +7,7 @@ import {
     ReactNode,
 } from 'react';
 import { useTranslatableContext, Record } from 'ra-core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 import { ClassesOverride } from '../types';
 import { Labeled } from '../input';
 

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { memo, FC } from 'react';
 import get from 'lodash/get';
-import Chip, { ChipProps } from '@material-ui/core/Chip';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Chip, { ChipProps } from '@mui/material/Chip';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from '@mui/material/styles';
 import classnames from 'classnames';
 import { useRecordContext } from 'ra-core';
 

@@ -2,12 +2,12 @@ import * as React from 'react';
 import { useCallback, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl, { FormControlProps } from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import { makeStyles } from '@material-ui/core/styles';
-import { CheckboxProps } from '@material-ui/core/Checkbox';
+import FormLabel from '@mui/material/FormLabel';
+import FormControl, { FormControlProps } from '@mui/material/FormControl';
+import FormGroup from '@mui/material/FormGroup';
+import FormHelperText from '@mui/material/FormHelperText';
+import { makeStyles } from '@mui/material/styles';
+import { CheckboxProps } from '@mui/material/Checkbox';
 import { FieldTitle, useInput, ChoicesInputProps, warning } from 'ra-core';
 
 import sanitizeInputRestProps from './sanitizeInputRestProps';

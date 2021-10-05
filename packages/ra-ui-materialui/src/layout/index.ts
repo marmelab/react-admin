@@ -15,7 +15,6 @@ import Menu, { MenuProps } from './Menu';
 import MenuItemLink, { MenuItemLinkProps } from './MenuItemLink';
 import NotFound from './NotFound';
 import Notification from './Notification';
-import Responsive, { ResponsiveProps } from './Responsive';
 import Sidebar, { SidebarProps } from './Sidebar';
 import Title, { TitleProps, TitlePropType } from './Title';
 import TitleForRecord from './TitleForRecord';
@@ -41,7 +40,6 @@ export {
     MenuItemLink,
     NotFound,
     Notification,
-    Responsive,
     Sidebar,
     Title,
     TitleForRecord,
@@ -61,7 +59,6 @@ export type {
     LinearProgressProps,
     MenuItemLinkProps,
     MenuProps,
-    ResponsiveProps,
     SidebarProps,
     TitleProps,
     UserMenuProps,

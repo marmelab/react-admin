@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { Fragment, useState, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import ActionDelete from '@material-ui/icons/Delete';
-import { alpha } from '@material-ui/core/styles/colorManipulator';
+import ActionDelete from '@mui/icons-material/Delete';
 import inflection from 'inflection';
-import { makeStyles } from '@material-ui/core/styles';
+import { alpha, makeStyles } from '@mui/material/styles';
 import {
     useTranslate,
     useDeleteMany,

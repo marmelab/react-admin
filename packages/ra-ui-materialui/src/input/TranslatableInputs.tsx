@@ -7,7 +7,7 @@ import {
 } from 'ra-core';
 import { TranslatableInputsTabs } from './TranslatableInputsTabs';
 import { TranslatableInputsTabContent } from './TranslatableInputsTabContent';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 
 /**
  * Provides a way to edit multiple languages for any input passed as children.

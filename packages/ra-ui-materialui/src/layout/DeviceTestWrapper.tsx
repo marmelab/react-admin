@@ -1,7 +1,7 @@
 import * as React from 'react';
 import mediaQuery from 'css-mediaquery';
-import { ThemeProvider } from '@material-ui/styles';
-import { createTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@mui/styles';
+import { createTheme } from '@mui/material/styles';
 
 /**
  * Test utility to simulate a device form factor for server-side mediaQueries

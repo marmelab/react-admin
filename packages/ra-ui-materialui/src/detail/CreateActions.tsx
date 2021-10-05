@@ -13,7 +13,7 @@ import { useCreateContext, useResourceDefinition } from 'ra-core';
  * use it in the `actions` prop to pass a custom component.
  *
  * @example
- *     import Button from '@material-ui/core/Button';
+ *     import Button from '@mui/material/Button';
  *     import { TopToolbar, Create, ListButton } from 'react-admin';
  *
  *     const PostCreateActions = ({ basePath }) => (

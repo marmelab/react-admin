@@ -2,9 +2,9 @@ import * as React from 'react';
 import { memo } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { TableCell, TableSortLabel, Tooltip } from '@material-ui/core';
-import { TableCellProps } from '@material-ui/core/TableCell';
-import { makeStyles } from '@material-ui/core/styles';
+import { TableCell, TableSortLabel, Tooltip } from '@mui/material';
+import { TableCellProps } from '@mui/material/TableCell';
+import { makeStyles } from '@mui/material/styles';
 import {
     FieldTitle,
     useTranslate,

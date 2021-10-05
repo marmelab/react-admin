@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { TextField, MenuItem } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { TextField, MenuItem } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
 import clsx from 'clsx';
 
 import { Status } from '../misc/Status';

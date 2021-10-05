@@ -39,7 +39,7 @@ import {
     DialogActions,
     DialogContent,
     TextField as MuiTextField,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import PostTitle from './PostTitle';
 import TagReferenceInput from './TagReferenceInput';

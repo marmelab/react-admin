@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { cloneElement, memo, FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { TableBody, TableBodyProps } from '@material-ui/core';
+import { TableBody, TableBodyProps } from '@mui/material';
 import classnames from 'classnames';
 import { shallowEqual } from 'react-redux';
 import { Identifier, Record, RecordMap } from 'ra-core';

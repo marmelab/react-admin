@@ -7,7 +7,7 @@ import {
     Toolbar,
     useMediaQuery,
     Theme,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
     useTranslate,
     useListPaginationContext,

@@ -9,7 +9,7 @@ import {
     useMemo,
     useRef,
 } from 'react';
-import { FormHelperText } from '@material-ui/core';
+import { FormHelperText } from '@mui/material';
 import classNames from 'classnames';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';

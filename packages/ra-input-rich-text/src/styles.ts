@@ -1,4 +1,4 @@
-import { Theme, StyleRules } from '@material-ui/core/styles';
+import { Theme, StyleRules } from '@mui/material/styles';
 
 import QuillSnowStylesheet from './QuillSnowStylesheet';
 
