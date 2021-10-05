@@ -9,14 +9,27 @@ import {
     useState,
 } from 'react';
 import PropTypes from 'prop-types';
-import Divider from '@mui/material/Divider';
+import { styled } from '@mui/material/styles';
+import { Divider } from '@mui/material';
 import { Route } from 'react-router-dom';
-import { makeStyles } from '@mui/styles';
 import { useRouteMatch } from 'react-router-dom';
 import { escapePath, Record } from 'ra-core';
 
 import { TabbedShowLayoutTabs, getTabFullPath } from './TabbedShowLayoutTabs';
-import { ClassesOverride } from '../types';
+
+const PREFIX = 'RaTabbedShowLayout';
+
+const classes = {
+    content: `${PREFIX}-content`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`& .${classes.content}`]: {
+        paddingTop: theme.spacing(1),
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2),
+    },
+}));
 
 const sanitizeRestProps = ({
     children,
@@ -31,17 +44,6 @@ const sanitizeRestProps = ({
     tabs,
     ...rest
 }: any) => rest;
-
-const useStyles = makeStyles(
-    theme => ({
-        content: {
-            paddingTop: theme.spacing(1),
-            paddingLeft: theme.spacing(2),
-            paddingRight: theme.spacing(2),
-        },
-    }),
-    { name: 'RaTabbedShowLayout' }
-);
 
 /**
  * Tabbed Layout for a Show view, showing fields grouped in tabs.
@@ -86,7 +88,6 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
     const {
         basePath,
         children,
-        classes: classesOverride,
         className,
         record,
         resource,
@@ -97,7 +98,7 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
         ...rest
     } = props;
     const match = useRouteMatch();
-    const classes = useStyles(props);
+
     const nonNullChildren = Children.toArray(children).filter(
         child => child !== null
     );
@@ -110,7 +111,7 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
     };
 
     return (
-        <div className={className} key={version} {...sanitizeRestProps(rest)}>
+        <Root className={className} key={version} {...sanitizeRestProps(rest)}>
             {cloneElement(
                 tabs,
                 {
@@ -151,14 +152,14 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
                     ) : null
                 )}
             </div>
-        </div>
+        </Root>
     );
 };
 
 export interface TabbedShowLayoutProps {
     basePath?: string;
     className?: string;
-    classes?: ClassesOverride<typeof useStyles>;
+
     children: ReactNode;
     record?: Record;
     resource?: string;

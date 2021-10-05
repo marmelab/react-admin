@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { Children, cloneElement, ReactElement } from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import { makeStyles } from '@mui/styles';
+import { Card, CardContent } from '@mui/material';
 import classnames from 'classnames';
 import {
     EditControllerProps,
@@ -15,12 +14,33 @@ import { EditActions as DefaultActions } from './EditActions';
 import TitleForRecord from '../layout/TitleForRecord';
 import { EditProps } from '../types';
 
+const PREFIX = 'RaEdit';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    main: `${PREFIX}-main`,
+    noActions: `${PREFIX}-noActions`,
+    card: `${PREFIX}-card`,
+};
+
+const Root = styled('div')({
+    [`&.${classes.root}`]: {},
+    [`& .${classes.main}`]: {
+        display: 'flex',
+    },
+    [`& .${classes.noActions}`]: {
+        marginTop: '1em',
+    },
+    [`& .${classes.card}`]: {
+        flex: '1 1 auto',
+    },
+});
+
 export const EditView = (props: EditViewProps) => {
     const {
         actions,
         aside,
         children,
-        classes: classesOverride,
         className,
         component: Content,
         title,
@@ -28,8 +48,6 @@ export const EditView = (props: EditViewProps) => {
         mutationMode,
         ...rest
     } = props;
-
-    const classes = useStyles(props);
 
     const {
         basePath,
@@ -54,7 +72,7 @@ export const EditView = (props: EditViewProps) => {
         return null;
     }
     return (
-        <div
+        <Root
             className={classnames('edit-page', classes.root, className)}
             {...sanitizeRestProps(rest)}
         >
@@ -114,7 +132,7 @@ export const EditView = (props: EditViewProps) => {
                         saving,
                     })}
             </div>
-        </div>
+        </Root>
     );
 };
 
@@ -129,7 +147,6 @@ EditView.propTypes = {
     aside: PropTypes.element,
     basePath: PropTypes.string,
     children: PropTypes.element,
-    classes: PropTypes.object,
     className: PropTypes.string,
     component: ComponentPropType,
     defaultTitle: PropTypes.any,
@@ -151,25 +168,8 @@ EditView.propTypes = {
 };
 
 EditView.defaultProps = {
-    classes: {},
     component: Card,
 };
-
-const useStyles = makeStyles(
-    {
-        root: {},
-        main: {
-            display: 'flex',
-        },
-        noActions: {
-            marginTop: '1em',
-        },
-        card: {
-            flex: '1 1 auto',
-        },
-    },
-    { name: 'RaEdit' }
-);
 
 const sanitizeRestProps = ({
     basePath = null,

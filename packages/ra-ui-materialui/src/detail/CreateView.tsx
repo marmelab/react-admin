@@ -1,26 +1,50 @@
 import * as React from 'react';
 import { Children, cloneElement, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { CreateControllerProps, useCreateContext } from 'ra-core';
 import { Card } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import { styled } from '@mui/material/styles';
+import { CreateControllerProps, useCreateContext } from 'ra-core';
 import classnames from 'classnames';
 import { CreateProps } from '../types';
 import { TitleForRecord } from '../layout';
+
+const PREFIX = 'RaCreate';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    main: `${PREFIX}-main`,
+    noActions: `${PREFIX}-noActions`,
+    card: `${PREFIX}-card`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`&.${classes.root}`]: {},
+
+    [`& .${classes.main}`]: {
+        display: 'flex',
+    },
+
+    [`& .${classes.noActions}`]: {
+        [theme.breakpoints.up('sm')]: {
+            marginTop: '1em',
+        },
+    },
+
+    [`& .${classes.card}`]: {
+        flex: '1 1 auto',
+    },
+}));
 
 export const CreateView = (props: CreateViewProps) => {
     const {
         actions,
         aside,
         children,
-        classes: classesOverride,
         className,
         component: Content,
         title,
         ...rest
     } = props;
-
-    const classes = useStyles(props);
 
     const {
         basePath,
@@ -35,7 +59,7 @@ export const CreateView = (props: CreateViewProps) => {
     } = useCreateContext(props);
 
     return (
-        <div
+        <Root
             className={classnames('create-page', classes.root, className)}
             {...sanitizeRestProps(rest)}
         >
@@ -87,7 +111,7 @@ export const CreateView = (props: CreateViewProps) => {
                         version,
                     })}
             </div>
-        </div>
+        </Root>
     );
 };
 
@@ -102,7 +126,6 @@ CreateView.propTypes = {
     aside: PropTypes.element,
     basePath: PropTypes.string,
     children: PropTypes.element,
-    classes: PropTypes.object,
     className: PropTypes.string,
     defaultTitle: PropTypes.any,
     hasList: PropTypes.bool,
@@ -120,27 +143,8 @@ CreateView.propTypes = {
 };
 
 CreateView.defaultProps = {
-    classes: {},
     component: Card,
 };
-
-const useStyles = makeStyles(
-    theme => ({
-        root: {},
-        main: {
-            display: 'flex',
-        },
-        noActions: {
-            [theme.breakpoints.up('sm')]: {
-                marginTop: '1em',
-            },
-        },
-        card: {
-            flex: '1 1 auto',
-        },
-    }),
-    { name: 'RaCreate' }
-);
 
 const sanitizeRestProps = ({
     basePath = null,
