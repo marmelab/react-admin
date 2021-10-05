@@ -1,4 +1,4 @@
-interface StringMap {
+export interface StringMap {
     [key: string]: StringMap | string | undefined;
 }
 
