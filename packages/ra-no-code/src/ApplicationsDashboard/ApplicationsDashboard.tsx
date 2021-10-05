@@ -11,14 +11,12 @@ import {
     Typography,
 } from '@mui/material';
 import {
-    createMuiTheme,
-    makeStyles,
+    createTheme,
     ThemeProvider,
     Theme,
     StyledEngineProvider,
-    unstable_createMuiStrictModeTheme,
-    adaptV4Theme,
 } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import {
     defaultTheme as RaDefaultTheme,
     RaThemeOptions,
@@ -36,10 +34,7 @@ declare module '@mui/styles/defaultTheme' {
     interface DefaultTheme extends Theme {}
 }
 
-const defaultTheme =
-    process.env.NODE_ENV !== 'production'
-        ? unstable_createMuiStrictModeTheme(RaDefaultTheme)
-        : createMuiTheme(adaptV4Theme(RaDefaultTheme));
+const defaultTheme = createTheme(RaDefaultTheme);
 
 export const ApplicationsDashboard = ({
     onApplicationSelected,
@@ -49,7 +44,7 @@ export const ApplicationsDashboard = ({
     theme: RaThemeOptions;
 }) => (
     <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={createMuiTheme(adaptV4Theme(theme))}>
+        <ThemeProvider theme={createTheme(theme)}>
             <Applications onApplicationSelected={onApplicationSelected} />
         </ThemeProvider>
     </StyledEngineProvider>

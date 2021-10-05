@@ -10,7 +10,7 @@ import React, {
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Card, Avatar, Theme } from '@mui/material';
-import { adaptV4Theme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import { StyledEngineProvider } from '@mui/material/styles';
 import LockIcon from '@mui/icons-material/Lock';
@@ -19,14 +19,8 @@ import { useHistory } from 'react-router-dom';
 import { useCheckAuth, TitleComponent } from 'ra-core';
 
 import defaultTheme from '../defaultTheme';
-import { createMuiTheme } from '../layout';
 import DefaultNotification from '../layout/Notification';
 import DefaultLoginForm from './LoginForm';
-
-declare module '@mui/styles/defaultTheme' {
-    // eslint-disable-next-line @typescript-eslint/no-empty-interface
-    interface DefaultTheme extends Theme {}
-}
 
 export interface LoginProps
     extends Omit<HtmlHTMLAttributes<HTMLDivElement>, 'title'> {
@@ -90,9 +84,7 @@ const useStyles = makeStyles(
  */
 const Login: React.FunctionComponent<LoginProps> = props => {
     const { theme, ...rest } = props;
-    const muiTheme = useMemo(() => createMuiTheme(adaptV4Theme(theme)), [
-        theme,
-    ]);
+    const muiTheme = useMemo(() => createTheme(theme), [theme]);
     return (
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={muiTheme}>
