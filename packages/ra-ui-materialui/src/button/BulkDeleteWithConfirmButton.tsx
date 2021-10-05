@@ -3,8 +3,7 @@ import { Fragment, useState, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ActionDelete from '@mui/icons-material/Delete';
 import inflection from 'inflection';
-import { alpha } from '@mui/material/styles';
-import { makeStyles } from '@mui/styles';
+import { alpha, styled } from '@mui/material/styles';
 import {
     useTranslate,
     useDeleteMany,
@@ -19,21 +18,24 @@ import Confirm from '../layout/Confirm';
 import Button, { ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
 
-const useStyles = makeStyles(
-    theme => ({
-        deleteButton: {
-            color: theme.palette.error.main,
-            '&:hover': {
-                backgroundColor: alpha(theme.palette.error.main, 0.12),
-                // Reset on mouse devices
-                '@media (hover: none)': {
-                    backgroundColor: 'transparent',
-                },
+const PREFIX = 'RaBulkDeleteWithConfirmButton';
+
+const classes = {
+    deleteButton: `${PREFIX}-deleteButton`,
+};
+
+const StyledButton = styled(Button)(({ theme }) => ({
+    [`&.${classes.deleteButton}`]: {
+        color: theme.palette.error.main,
+        '&:hover': {
+            backgroundColor: alpha(theme.palette.error.main, 0.12),
+            // Reset on mouse devices
+            '@media (hover: none)': {
+                backgroundColor: 'transparent',
             },
         },
-    }),
-    { name: 'RaBulkDeleteWithConfirmButton' }
-);
+    },
+}));
 
 const defaultIcon = <ActionDelete />;
 
@@ -52,7 +54,6 @@ const BulkDeleteWithConfirmButton = (
         ...rest
     } = props;
     const [isOpen, setOpen] = useState(false);
-    const classes = useStyles(props);
     const notify = useNotify();
     const unselectAll = useUnselectAll();
     const refresh = useRefresh();
@@ -105,14 +106,14 @@ const BulkDeleteWithConfirmButton = (
 
     return (
         <Fragment>
-            <Button
+            <StyledButton
                 onClick={handleClick}
                 label={label}
                 className={classes.deleteButton}
                 {...sanitizeRestProps(rest)}
             >
                 {icon}
-            </Button>
+            </StyledButton>
             <Confirm
                 isOpen={isOpen}
                 loading={loading}

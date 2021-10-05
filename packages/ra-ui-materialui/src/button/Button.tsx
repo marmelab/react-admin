@@ -3,17 +3,50 @@ import { ReactElement, SyntheticEvent, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import {
     Button as MuiButton,
+    ButtonProps as MuiButtonProps,
     Tooltip,
     IconButton,
     useMediaQuery,
     PropTypes as MuiPropTypes,
     Theme,
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
-import { ButtonProps as MuiButtonProps } from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
 import classnames from 'classnames';
 import { Record, RedirectionSideEffect, useTranslate } from 'ra-core';
 import { LocationDescriptor } from 'history';
+
+const PREFIX = 'RaButton';
+
+const classes = {
+    button: `${PREFIX}-button`,
+    label: `${PREFIX}-label`,
+    labelRightIcon: `${PREFIX}-labelRightIcon`,
+    smallIcon: `${PREFIX}-smallIcon`,
+    mediumIcon: `${PREFIX}-mediumIcon`,
+    largeIcon: `${PREFIX}-largeIcon`,
+};
+
+const StyledButton = styled(MuiButton)({
+    [`& .${classes.button}`]: {
+        display: 'inline-flex',
+        alignItems: 'center',
+    },
+    [`& .${classes.label}`]: {
+        paddingLeft: '0.5em',
+    },
+    [`& .${classes.labelRightIcon}`]: {
+        paddingRight: '0.5em',
+    },
+    [`& .${classes.smallIcon}`]: {
+        fontSize: 20,
+    },
+    [`& .${classes.mediumIcon}`]: {
+        fontSize: 22,
+    },
+    [`& .${classes.largeIcon}`]: {
+        fontSize: 24,
+    },
+});
 
 /**
  * A generic Button with side icon. Only the icon is displayed on small screens.
@@ -34,14 +67,14 @@ const Button = (props: ButtonProps) => {
         children,
         classes: classesOverride,
         className,
-        color,
         disabled,
         label,
-        size,
+        color = 'primary',
+        size = 'small',
         ...rest
     } = props;
     const translate = useTranslate();
-    const classes = useStyles(props);
+
     const isXSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('sm')
     );
@@ -72,7 +105,7 @@ const Button = (props: ButtonProps) => {
             </IconButton>
         )
     ) : (
-        <MuiButton
+        <StyledButton
             className={classnames(classes.button, className)}
             color={color}
             size={size}
@@ -100,34 +133,9 @@ const Button = (props: ButtonProps) => {
                 React.cloneElement(children, {
                     className: classes[`${size}Icon`],
                 })}
-        </MuiButton>
+        </StyledButton>
     );
 };
-
-const useStyles = makeStyles(
-    {
-        button: {
-            display: 'inline-flex',
-            alignItems: 'center',
-        },
-        label: {
-            paddingLeft: '0.5em',
-        },
-        labelRightIcon: {
-            paddingRight: '0.5em',
-        },
-        smallIcon: {
-            fontSize: 20,
-        },
-        mediumIcon: {
-            fontSize: 22,
-        },
-        largeIcon: {
-            fontSize: 24,
-        },
-    },
-    { name: 'RaButton' }
-);
 
 interface Props {
     alignIcon?: 'left' | 'right';
@@ -185,11 +193,6 @@ Button.propTypes = {
     disabled: PropTypes.bool,
     label: PropTypes.string,
     size: PropTypes.oneOf(['small', 'medium', 'large']),
-};
-
-Button.defaultProps = {
-    color: 'primary',
-    size: 'small',
 };
 
 export default Button;
