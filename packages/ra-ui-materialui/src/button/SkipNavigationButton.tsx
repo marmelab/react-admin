@@ -1,6 +1,5 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import { makeStyles } from '@mui/styles';
 import Button from './Button';
 import { useTranslate } from 'ra-core';
 import classnames from 'classnames';
@@ -12,7 +11,7 @@ const classes = {
 };
 
 const StyledButton = styled(Button)(({ theme }) => ({
-    [`& .${classes.skipToContentButton}`]: {
+    [`&.${classes.skipToContentButton}`]: {
         position: 'fixed',
         padding: theme.spacing(1),
         backgroundColor: theme.palette.background.default,
@@ -62,7 +61,7 @@ const SkipNavigationButton = () => {
     const translate = useTranslate();
 
     return (
-        <Button
+        <StyledButton
             onClick={skipToContent}
             className={classnames(
                 classes.skipToContentButton,
