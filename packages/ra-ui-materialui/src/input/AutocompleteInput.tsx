@@ -222,12 +222,31 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
     );
 
     const doesQueryMatchSuggestion = useMemo(() => {
-        if (typeof optionText !== 'string') {
-            return false;
+        if (isValidElement(optionText)) {
+            return choices.some(choice => matchSuggestion(filterValue, choice));
         }
 
-        return choices.some(choice => get(choice, optionText) === filterValue);
-    }, [choices, optionText, filterValue]);
+        const isFunction = typeof optionText === 'function';
+
+        if (isFunction) {
+            const hasOption = choices.some(choice => {
+                const text = optionText(choice) as string;
+
+                return get(choice, text) === filterValue;
+            });
+
+            const selectedItemText = optionText(selectedItem);
+
+            return hasOption || selectedItemText === filterValue;
+        }
+
+        const selectedItemText = get(selectedItem, optionText);
+        const hasOption = choices.some(choice => {
+            return get(choice, optionText) === filterValue;
+        });
+
+        return selectedItemText === filterValue || hasOption;
+    }, [choices, optionText, filterValue, matchSuggestion, selectedItem]);
 
     const shouldAllowCreate = !doesQueryMatchSuggestion;
 

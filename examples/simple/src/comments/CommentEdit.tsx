@@ -152,7 +152,11 @@ const CommentEdit = props => {
                                     matchSuggestion={(
                                         filterValue,
                                         suggestion
-                                    ) => true}
+                                    ) => {
+                                        const title = `${suggestion.title} - ${suggestion.id}`;
+
+                                        return filterValue === title;
+                                    }}
                                     optionText={<OptionRenderer />}
                                     inputText={inputText}
                                     options={{
