@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 
 import FileInput, { FileInputProps, FileInputOptions } from './FileInput';
 import { InputProps } from 'ra-core';

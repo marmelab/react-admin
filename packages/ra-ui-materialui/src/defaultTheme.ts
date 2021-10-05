@@ -1,5 +1,4 @@
 import { DeprecatedThemeOptions } from '@mui/material';
-import { Overrides } from '@mui/material/styles/overrides';
 
 export default {
     palette: {
@@ -57,16 +56,9 @@ export default {
     },
 };
 
-// Temporary solution until we specify our components in it like MUI does
-// See https://github.com/mui-org/material-ui/blob/master/packages/material-ui/src/styles/overrides.d.ts#L103
-export interface RaThemeOverrides extends Overrides {
-    [key: string]: any;
-}
-
 export interface RaThemeOptions extends DeprecatedThemeOptions {
     sidebar?: {
         width?: number;
         closedWidth?: number;
     };
-    overrides?: RaThemeOverrides;
 }

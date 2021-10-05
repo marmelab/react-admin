@@ -1,7 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { warning } from 'ra-core';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import classnames from 'classnames';
 
 const useStyles = makeStyles(

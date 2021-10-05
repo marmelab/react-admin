@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { TableCell, TableSortLabel, Tooltip } from '@mui/material';
 import { TableCellProps } from '@mui/material/TableCell';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import {
     FieldTitle,
     useTranslate,

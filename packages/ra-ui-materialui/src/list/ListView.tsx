@@ -3,7 +3,7 @@ import { Children, cloneElement, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@mui/material/Card';
 import classnames from 'classnames';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import {
     ComponentPropType,
     defaultExporter,

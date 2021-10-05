@@ -2,7 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import IconButton from '@mui/material/IconButton';
 import ActionHide from '@mui/icons-material/HighlightOff';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import classnames from 'classnames';
 import { useResourceContext, useTranslate } from 'ra-core';
 

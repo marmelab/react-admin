@@ -143,7 +143,7 @@ export interface SelectFieldProps
     extends ChoicesProps,
         PublicFieldProps,
         InjectedFieldProps,
-        TypographyProps {}
+        Omit<TypographyProps, 'textAlign'> {}
 
 SelectField.displayName = 'SelectField';
 

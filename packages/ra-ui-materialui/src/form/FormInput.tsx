@@ -2,7 +2,7 @@ import * as React from 'react';
 import { HtmlHTMLAttributes, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import { Record } from 'ra-core';
 
 import Labeled from '../input/Labeled';

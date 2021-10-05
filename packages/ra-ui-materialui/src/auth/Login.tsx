@@ -10,8 +10,8 @@ import React, {
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Card, Avatar, Theme } from '@mui/material';
-import { makeStyles, adaptV4Theme } from '@mui/material/styles';
-import { ThemeProvider } from '@mui/styles';
+import { adaptV4Theme } from '@mui/material/styles';
+import { makeStyles, ThemeProvider } from '@mui/styles';
 import { StyledEngineProvider } from '@mui/material/styles';
 import LockIcon from '@mui/icons-material/Lock';
 import { StaticContext } from 'react-router';

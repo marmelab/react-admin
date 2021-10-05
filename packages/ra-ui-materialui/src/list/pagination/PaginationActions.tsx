@@ -1,7 +1,8 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
-import { makeStyles, useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import ChevronLeft from '@mui/icons-material/ChevronLeft';
 import ChevronRight from '@mui/icons-material/ChevronRight';
 import { useTranslate } from 'ra-core';
@@ -105,7 +106,8 @@ const PaginationActions = props => {
                     className={classnames('page-number', classes.button, {
                         [classes.currentPageButton]: pageNum === page + 1,
                     })}
-                    color={pageNum === page + 1 ? 'default' : color}
+                    color={color}
+                    variant={pageNum === page + 1 ? 'outlined' : 'text'}
                     key={pageNum}
                     data-page={pageNum - 1}
                     onClick={gotoPage}

@@ -15,7 +15,7 @@ import {
     IconButton,
     InputProps,
 } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import ClearIcon from '@mui/icons-material/Clear';
 import { TextFieldProps } from '@mui/material/TextField';
 import {

@@ -9,7 +9,7 @@ import {
     useMediaQuery,
     Theme,
 } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import { ComponentPropType } from 'ra-core';
 
 import { SidebarToggleButton } from './SidebarToggleButton';

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import { useChoices } from 'ra-core';
 
 const useStyles = makeStyles(

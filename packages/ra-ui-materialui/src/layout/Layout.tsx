@@ -14,14 +14,14 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import {
-    withStyles,
     createStyles,
     adaptV4Theme,
+    ThemeProvider,
     StyledEngineProvider,
     Theme,
 } from '@mui/material/styles';
-import { ThemeProvider } from '@mui/styles';
 import { DeprecatedThemeOptions } from '@mui/material';
+import { withStyles } from '@mui/styles';
 import { ComponentPropType, CoreLayoutProps } from 'ra-core';
 import compose from 'lodash/flowRight';
 

@@ -7,10 +7,10 @@ import {
     IconButton,
     useMediaQuery,
     PropTypes as MuiPropTypes,
+    Theme,
 } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import { ButtonProps as MuiButtonProps } from '@mui/material/Button';
-import { Theme } from '@mui/material';
 import classnames from 'classnames';
 import { Record, RedirectionSideEffect, useTranslate } from 'ra-core';
 import { LocationDescriptor } from 'history';

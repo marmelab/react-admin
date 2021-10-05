@@ -103,7 +103,7 @@ NumberField.propTypes = {
 export interface NumberFieldProps
     extends PublicFieldProps,
         InjectedFieldProps,
-        TypographyProps {
+        Omit<TypographyProps, 'textAlign'> {
     locales?: string | string[];
     options?: object;
 }

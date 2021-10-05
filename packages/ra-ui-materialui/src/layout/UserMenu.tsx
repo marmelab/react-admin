@@ -10,7 +10,7 @@ import {
     Avatar,
     PopoverOrigin,
 } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 
 import { ClassesOverride } from '../types';
@@ -102,9 +102,6 @@ const UserMenu = (props: UserMenuProps) => {
                 anchorEl={anchorEl}
                 anchorOrigin={AnchorOrigin}
                 transformOrigin={TransformOrigin}
-                // Make sure the menu is display under the button and not over the appbar
-                // See https://material-ui.com/components/menus/#customized-menus
-                getContentAnchorEl={null}
                 open={open}
                 onClose={handleClose}
             >

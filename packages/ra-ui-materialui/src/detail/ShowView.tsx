@@ -2,7 +2,7 @@ import * as React from 'react';
 import { cloneElement, Children, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@mui/material/Card';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import classnames from 'classnames';
 import {
     ShowControllerProps,

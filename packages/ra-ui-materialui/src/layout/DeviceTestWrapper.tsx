@@ -32,7 +32,7 @@ const DeviceTestWrapper = ({
             // For the sake of this demo, we are using a fixed value.
             // In production, you can look into client-hint https://caniuse.com/#search=client%20hint
             // or user-agent resolution.
-            width: theme.breakpoints.width(width),
+            width: theme.breakpoints.values[width],
         }),
     });
 

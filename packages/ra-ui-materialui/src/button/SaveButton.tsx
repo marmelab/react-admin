@@ -2,7 +2,7 @@ import React, { cloneElement, ReactElement, SyntheticEvent } from 'react';
 import PropTypes from 'prop-types';
 import Button, { ButtonProps } from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import ContentSave from '@mui/icons-material/Save';
 import classnames from 'classnames';
 import {

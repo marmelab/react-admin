@@ -14,7 +14,7 @@ import {
     useMediaQuery,
     Theme,
 } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import classnames from 'classnames';
 import { Record, RedirectionSideEffect, MutationMode } from 'ra-core';
 import { FormRenderProps } from 'react-final-form';

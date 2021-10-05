@@ -3,7 +3,7 @@ import { isValidElement, cloneElement } from 'react';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import { MenuItem } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import { MenuItemProps } from '@mui/material/MenuItem';
 import classnames from 'classnames';
 

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { shallowEqual, useSelector } from 'react-redux';
 import lodashGet from 'lodash/get';
 // @ts-ignore
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import DefaultIcon from '@mui/icons-material/ViewList';
 import classnames from 'classnames';
 import { useGetResourceLabel, getResources, ReduxState } from 'ra-core';

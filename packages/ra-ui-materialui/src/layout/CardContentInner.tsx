@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import CardContent from '@mui/material/CardContent';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 
 import { ClassesOverride } from '../types';
 

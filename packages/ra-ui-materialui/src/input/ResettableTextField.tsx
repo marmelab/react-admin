@@ -9,7 +9,7 @@ import {
     TextFieldProps,
     Theme,
 } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import ClearIcon from '@mui/icons-material/Clear';
 import { InputProps, useTranslate } from 'ra-core';
 import { ClassesOverride } from '../types';

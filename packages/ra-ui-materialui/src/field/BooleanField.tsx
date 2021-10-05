@@ -6,9 +6,8 @@ import get from 'lodash/get';
 import classnames from 'classnames';
 import DoneIcon from '@mui/icons-material/Done';
 import ClearIcon from '@mui/icons-material/Clear';
-import { Tooltip, Typography } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
-import { TypographyProps } from '@mui/material/Typography';
+import { Tooltip, Typography, TypographyProps } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { useTranslate, useRecordContext } from 'ra-core';
 
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
@@ -107,7 +106,7 @@ BooleanField.displayName = 'BooleanField';
 export interface BooleanFieldProps
     extends PublicFieldProps,
         InjectedFieldProps,
-        TypographyProps {
+        Omit<TypographyProps, 'textAlign'> {
     valueLabelTrue?: string;
     valueLabelFalse?: string;
     TrueIcon?: SvgIconComponent;
