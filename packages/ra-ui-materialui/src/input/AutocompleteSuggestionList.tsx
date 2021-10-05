@@ -27,6 +27,7 @@ interface Props {
     suggestionsContainerProps?: any;
 }
 
+const PopperModifiers = [];
 const AutocompleteSuggestionList = (props: Props) => {
     const {
         children,
@@ -43,7 +44,7 @@ const AutocompleteSuggestionList = (props: Props) => {
             open={isOpen}
             anchorEl={inputEl}
             className={classnames(classes.suggestionsContainer, className)}
-            modifiers={{}}
+            modifiers={PopperModifiers}
             {...suggestionsContainerProps}
         >
             <div {...(isOpen ? menuProps : {})}>
