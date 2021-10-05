@@ -8,8 +8,8 @@
         "serve": "vite preview"
     },
     "dependencies": {
-        "@material-ui/core": "^4.12.1",
-        "@material-ui/icons": "^4.11.2",
+        "@mui/material": "^5.0.2",
+        "@mui/icons-material": "^5.0.1",
         "ra-data-fakerest": "^3.9.3",
         "ra-i18n-polyglot": "^3.12.4",
         "ra-input-rich-text": "^3.12.0",

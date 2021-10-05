@@ -3,7 +3,7 @@
     "version": "3.0.0",
     "private": true,
     "dependencies": {
-        "@material-ui/core": "^4.12.1",
+        "@mui/material": "^5.0.2",
         "ra-data-json-server": "^3.9.0",
         "react": "^17.0.0",
         "react-admin": "^3.9.0",
