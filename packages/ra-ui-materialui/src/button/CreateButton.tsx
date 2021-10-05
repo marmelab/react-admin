@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { ReactElement, memo, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { Fab, useMediaQuery, Theme } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import ContentAdd from '@material-ui/icons/Add';
+import { Fab, useMediaQuery, Theme } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
+import ContentAdd from '@mui/icons-material/Add';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { useTranslate, useResourceContext } from 'ra-core';

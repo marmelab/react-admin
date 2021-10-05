@@ -5,9 +5,8 @@ import React, {
     SyntheticEvent,
 } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import { alpha } from '@material-ui/core/styles/colorManipulator';
-import ActionDelete from '@material-ui/icons/Delete';
+import { alpha, makeStyles } from '@mui/material/styles';
+import ActionDelete from '@mui/icons-material/Delete';
 import classnames from 'classnames';
 import inflection from 'inflection';
 import {

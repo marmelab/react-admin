@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import { AppBar, Tabs, TabsProps } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { AppBar, Tabs, TabsProps } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
 import { useTranslatableContext } from 'ra-core';
 import { TranslatableInputsTab } from './TranslatableInputsTab';
 import { AppBarProps } from '../layout';

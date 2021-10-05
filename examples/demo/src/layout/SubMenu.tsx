@@ -8,9 +8,9 @@ import {
     Typography,
     Collapse,
     Tooltip,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import ExpandMore from '@material-ui/icons/ExpandMore';
+} from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 import { useTranslate, ReduxState } from 'react-admin';
 
 const useStyles = makeStyles(theme => ({

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useListContext } from 'react-admin';
-import { Link } from '@material-ui/core';
+import { Link } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 
 const useStyles = makeStyles({
     ul: {

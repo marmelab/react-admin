@@ -5,10 +5,10 @@ import {
     CardContent,
     CardActions,
     Button,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import HomeIcon from '@material-ui/icons/Home';
-import CodeIcon from '@material-ui/icons/Code';
+} from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
+import HomeIcon from '@mui/icons-material/Home';
+import CodeIcon from '@mui/icons-material/Code';
 
 const useStyles = makeStyles(theme => ({
     root: {

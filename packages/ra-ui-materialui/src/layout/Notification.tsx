@@ -2,9 +2,9 @@ import * as React from 'react';
 import { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import Snackbar, { SnackbarProps } from '@material-ui/core/Snackbar';
-import Button from '@material-ui/core/Button';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import Snackbar, { SnackbarProps } from '@mui/material/Snackbar';
+import Button from '@mui/material/Button';
+import { makeStyles, Theme } from '@mui/material/styles';
 import classnames from 'classnames';
 
 import {

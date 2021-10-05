@@ -1,5 +1,5 @@
 import * as React from 'react';
-import AddIcon from '@material-ui/icons/AddCircleOutline';
+import AddIcon from '@mui/icons-material/AddCircleOutline';
 import { useSimpleFormIterator } from './useSimpleFormIterator';
 
 import { Button, ButtonProps } from '../../button';

@@ -8,9 +8,9 @@ import {
     DateField,
     EditProps,
 } from 'react-admin';
-import { IconButton, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import CloseIcon from '@material-ui/icons/Close';
+import { IconButton, Typography } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
+import CloseIcon from '@mui/icons-material/Close';
 
 import ProductReferenceField from '../products/ProductReferenceField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';

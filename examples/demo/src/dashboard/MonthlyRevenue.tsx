@@ -1,5 +1,5 @@
 import * as React from 'react';
-import DollarIcon from '@material-ui/icons/AttachMoney';
+import DollarIcon from '@mui/icons-material/AttachMoney';
 import { useTranslate } from 'react-admin';
 
 import CardWithIcon from './CardWithIcon';

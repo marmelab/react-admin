@@ -1,9 +1,9 @@
 import * as React from 'react';
-import MuiGridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
-import { makeStyles } from '@material-ui/core/styles';
-import withWidth, { WithWidth } from '@material-ui/core/withWidth';
+import MuiGridList from '@mui/material/GridList';
+import GridListTile from '@mui/material/GridListTile';
+import GridListTileBar from '@mui/material/GridListTileBar';
+import { makeStyles } from '@mui/material/styles';
+import withWidth, { WithWidth } from '@mui/material/withWidth';
 import {
     linkToRecord,
     NumberField,
@@ -12,7 +12,7 @@ import {
     Identifier,
 } from 'react-admin';
 import { Link } from 'react-router-dom';
-import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
+import { Breakpoint } from '@mui/material/styles/createBreakpoints';
 
 const useStyles = makeStyles(theme => ({
     gridList: {

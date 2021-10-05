@@ -9,8 +9,8 @@ import {
     useRecordContext,
     required,
 } from 'react-admin';
-import { Box, CardContent, Divider } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Box, CardContent, Divider } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
 import clsx from 'clsx';
 
 import { CompanyAside } from './CompanyAside';

@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import ActionDelete from '@material-ui/icons/Delete';
-import { alpha } from '@material-ui/core/styles/colorManipulator';
-import { makeStyles } from '@material-ui/core/styles';
+import ActionDelete from '@mui/icons-material/Delete';
+import { alpha, makeStyles } from '@mui/material/styles';
 import {
     useDeleteMany,
     useRefresh,

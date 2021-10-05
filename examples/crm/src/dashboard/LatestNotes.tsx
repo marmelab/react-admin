@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Card, CardContent, Typography, Box } from '@material-ui/core';
-import NoteIcon from '@material-ui/icons/Note';
-import { makeStyles } from '@material-ui/core/styles';
+import { Card, CardContent, Typography, Box } from '@mui/material';
+import NoteIcon from '@mui/icons-material/Note';
+import { makeStyles } from '@mui/material/styles';
 import {
     useGetList,
     useGetIdentity,

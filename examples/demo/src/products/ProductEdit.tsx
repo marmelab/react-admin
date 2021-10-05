@@ -16,8 +16,8 @@ import {
     TextField,
     TextInput,
 } from 'react-admin';
-import { InputAdornment } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { InputAdornment } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
 import RichTextInput from 'ra-input-rich-text';
 
 import CustomerReferenceField from '../visitors/CustomerReferenceField';

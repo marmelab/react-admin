@@ -1,4 +1,4 @@
-import VisitorIcon from '@material-ui/icons/People';
+import VisitorIcon from '@mui/icons-material/People';
 
 import VisitorList from './VisitorList';
 import VisitorCreate from './VisitorCreate';

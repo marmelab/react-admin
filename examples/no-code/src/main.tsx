@@ -5,7 +5,7 @@ import { defaultTheme } from 'react-admin';
 import {
     unstable_createMuiStrictModeTheme,
     createMuiTheme,
-} from '@material-ui/core/styles';
+} from '@mui/material/styles';
 
 // FIXME MUI bug https://github.com/mui-org/material-ui/issues/13394
 const theme =

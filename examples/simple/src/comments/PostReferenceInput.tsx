@@ -2,14 +2,14 @@ import * as React from 'react';
 import { Fragment, useState, useCallback } from 'react';
 import { FormSpy, useForm } from 'react-final-form';
 
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 import {
     Button,
     Dialog,
     DialogTitle,
     DialogContent,
     DialogActions,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import { ReferenceInput, SelectInput, useTranslate } from 'react-admin'; // eslint-disable-line import/no-unresolved
 

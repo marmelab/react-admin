@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Tab } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Tab } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
 import { getFieldLabelTranslationArgs, useTranslate } from 'ra-core';
 
 export const FieldConfigurationTab = ({ field, resource, ...props }) => {

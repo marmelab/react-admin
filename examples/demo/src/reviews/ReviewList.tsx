@@ -8,8 +8,8 @@ import {
     BulkActionProps,
 } from 'react-admin';
 import { Route, RouteChildrenProps, useHistory } from 'react-router-dom';
-import { Drawer, useMediaQuery, Theme } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Drawer, useMediaQuery, Theme } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
 
 import BulkAcceptButton from './BulkAcceptButton';
 import BulkRejectButton from './BulkRejectButton';

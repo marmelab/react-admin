@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReferenceField, useRedirect } from 'react-admin';
-import { Card, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Card, Typography } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
 import { Draggable } from 'react-beautiful-dnd';
 
 import { LogoField } from '../companies/LogoField';

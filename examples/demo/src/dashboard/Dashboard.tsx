@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, CSSProperties } from 'react';
 import { useVersion, useDataProvider } from 'react-admin';
-import { useMediaQuery, Theme } from '@material-ui/core';
+import { useMediaQuery, Theme } from '@mui/material';
 import { subDays } from 'date-fns';
 
 import Welcome from './Welcome';

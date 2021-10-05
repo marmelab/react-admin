@@ -9,7 +9,7 @@ import {
     NumberField,
     DateInput,
 } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 
 import FullNameField from '../visitors/FullNameField';
 import AddressField from '../visitors/AddressField';

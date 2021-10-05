@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Children, cloneElement, isValidElement, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import Tabs, { TabsProps } from '@material-ui/core/Tabs';
+import Tabs, { TabsProps } from '@mui/material/Tabs';
 import { useLocation } from 'react-router-dom';
 
 const TabbedFormTabs = (props: TabbedFormTabsProps) => {

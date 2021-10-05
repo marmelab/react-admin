@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import TableCell, { TableCellProps } from '@material-ui/core/TableCell';
+import TableCell, { TableCellProps } from '@mui/material/TableCell';
 import classnames from 'classnames';
 import { Record } from 'ra-core';
 

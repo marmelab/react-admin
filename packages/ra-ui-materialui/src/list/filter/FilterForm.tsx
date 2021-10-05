@@ -11,7 +11,7 @@ import { useListContext, useResourceContext } from 'ra-core';
 import { Form, FormRenderProps, FormSpy } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 import classnames from 'classnames';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 import lodashSet from 'lodash/set';
 import lodashGet from 'lodash/get';
 

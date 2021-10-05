@@ -8,12 +8,12 @@ import {
     TextField as MuiTextField,
     TextFieldProps,
     Theme,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import ClearIcon from '@material-ui/icons/Clear';
+} from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
+import ClearIcon from '@mui/icons-material/Clear';
 import { InputProps, useTranslate } from 'ra-core';
 import { ClassesOverride } from '../types';
-import { Styles } from '@material-ui/styles';
+import { Styles } from '@mui/styles';
 
 /**
  * An override of the default Material-UI TextField which is resettable

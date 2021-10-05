@@ -9,7 +9,7 @@ import {
     ReactNode,
     useMemo,
 } from 'react';
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 import classNames from 'classnames';
 import { Record } from 'ra-core';
 

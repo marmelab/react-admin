@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ReactElement, MouseEvent, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import NavigationRefresh from '@material-ui/icons/Refresh';
+import NavigationRefresh from '@mui/icons-material/Refresh';
 import { refreshView } from 'ra-core';
 
 import Button, { ButtonProps } from './Button';

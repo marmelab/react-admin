@@ -8,8 +8,8 @@ import {
     FormHelperText,
     FormControl,
     Chip,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+} from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
 import classnames from 'classnames';
 import {
     FieldTitle,
@@ -19,8 +19,8 @@ import {
     useChoices,
 } from 'ra-core';
 import InputHelperText from './InputHelperText';
-import { SelectProps } from '@material-ui/core/Select';
-import { FormControlProps } from '@material-ui/core/FormControl';
+import { SelectProps } from '@mui/material/Select';
+import { FormControlProps } from '@mui/material/FormControl';
 import Labeled from './Labeled';
 import { LinearProgress } from '../layout';
 import {

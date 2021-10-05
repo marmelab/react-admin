@@ -8,7 +8,7 @@ import {
     Pagination,
     useGetIdentity,
 } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 
 import { GridList } from './GridList';
 import { CompanyListFilter } from './CompanyListFilter';

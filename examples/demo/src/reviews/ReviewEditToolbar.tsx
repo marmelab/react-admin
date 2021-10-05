@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Fragment } from 'react';
-import MuiToolbar from '@material-ui/core/Toolbar';
-import { makeStyles } from '@material-ui/core/styles';
+import MuiToolbar from '@mui/material/Toolbar';
+import { makeStyles } from '@mui/material/styles';
 
 import { SaveButton, DeleteButton, ToolbarProps } from 'react-admin';
 import AcceptButton from './AcceptButton';

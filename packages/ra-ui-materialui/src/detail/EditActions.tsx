@@ -13,7 +13,7 @@ import TopToolbar from '../layout/TopToolbar';
  * use it in the `actions` prop to pass a custom component.
  *
  * @example
- *     import Button from '@material-ui/core/Button';
+ *     import Button from '@mui/material/Button';
  *     import { TopToolbar, ShowButton, Edit } from 'react-admin';
  *
  *     const PostEditActions = ({ basePath, record, resource }) => (

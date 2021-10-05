@@ -1,7 +1,7 @@
 import * as React from 'react';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import { makeStyles } from '@material-ui/core/styles';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import { makeStyles } from '@mui/material/styles';
 import { FieldProps } from 'react-admin';
 import { Product } from '../types';
 

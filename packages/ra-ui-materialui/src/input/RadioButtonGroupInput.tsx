@@ -5,10 +5,10 @@ import {
     FormHelperText,
     FormLabel,
     RadioGroup,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { RadioGroupProps } from '@material-ui/core/RadioGroup';
-import { FormControlProps } from '@material-ui/core/FormControl';
+} from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
+import { RadioGroupProps } from '@mui/material/RadioGroup';
+import { FormControlProps } from '@mui/material/FormControl';
 import get from 'lodash/get';
 import { useInput, FieldTitle, ChoicesInputProps, warning } from 'ra-core';
 

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import inflection from 'inflection';
-import { Card, CardContent } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import LocalOfferIcon from '@material-ui/icons/LocalOfferOutlined';
-import BarChartIcon from '@material-ui/icons/BarChart';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import { Card, CardContent } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
+import LocalOfferIcon from '@mui/icons-material/LocalOfferOutlined';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import {
     FilterList,
     FilterListItem,

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { memo } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 
 import { FieldProps } from 'react-admin';
 import AvatarField from './AvatarField';

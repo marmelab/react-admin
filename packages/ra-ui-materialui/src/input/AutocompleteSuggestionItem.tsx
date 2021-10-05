@@ -2,9 +2,9 @@ import * as React from 'react';
 import { isValidElement, cloneElement } from 'react';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
-import { MenuItem } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { MenuItemProps } from '@material-ui/core/MenuItem';
+import { MenuItem } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
+import { MenuItemProps } from '@mui/material/MenuItem';
 import classnames from 'classnames';
 
 const useStyles = makeStyles(

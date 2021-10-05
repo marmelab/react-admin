@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { useCallback, MouseEventHandler } from 'react';
 import PropTypes, { ReactComponentLike } from 'prop-types';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
-import { alpha } from '@material-ui/core/styles/colorManipulator';
-import ActionCheck from '@material-ui/icons/CheckCircle';
-import AlertError from '@material-ui/icons/ErrorOutline';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+import { makeStyles } from '@mui/material/styles';
+import { alpha } from '@mui/material/styles';
+import ActionCheck from '@mui/icons-material/CheckCircle';
+import AlertError from '@mui/icons-material/ErrorOutline';
 import classnames from 'classnames';
 import { useTranslate } from 'ra-core';
 

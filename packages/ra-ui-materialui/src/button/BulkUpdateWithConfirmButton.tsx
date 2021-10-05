@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { Fragment, useState, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import ActionUpdate from '@material-ui/icons/Update';
-import { alpha } from '@material-ui/core/styles/colorManipulator';
+import ActionUpdate from '@mui/icons-material/Update';
 import inflection from 'inflection';
-import { makeStyles } from '@material-ui/core/styles';
+import { alpha, makeStyles } from '@mui/material/styles';
 import {
     useTranslate,
     useUpdateMany,

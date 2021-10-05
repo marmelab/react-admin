@@ -8,11 +8,11 @@ import {
     AccordionDetails,
     AccordionSummary,
     Typography,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import ErrorIcon from '@material-ui/icons/Report';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import History from '@material-ui/icons/History';
+} from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
+import ErrorIcon from '@mui/icons-material/Report';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import History from '@mui/icons-material/History';
 import { useTranslate } from 'ra-core';
 
 import Title, { TitlePropType } from './Title';

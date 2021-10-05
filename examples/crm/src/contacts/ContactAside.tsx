@@ -10,7 +10,7 @@ import {
     ReferenceField,
     FunctionField,
 } from 'react-admin';
-import { Box, Typography, Divider, List, ListItem } from '@material-ui/core';
+import { Box, Typography, Divider, List, ListItem } from '@mui/material';
 import { TagsListEdit } from './TagsListEdit';
 
 import { Sale } from '../types';

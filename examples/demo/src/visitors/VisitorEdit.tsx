@@ -13,7 +13,7 @@ import {
     email,
     FieldProps,
 } from 'react-admin';
-import { Box, Card, CardContent, Typography } from '@material-ui/core';
+import { Box, Card, CardContent, Typography } from '@mui/material';
 
 import Aside from './Aside';
 import FullNameField from './FullNameField';

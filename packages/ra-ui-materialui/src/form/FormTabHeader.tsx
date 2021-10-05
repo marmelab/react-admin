@@ -2,7 +2,7 @@ import * as React from 'react';
 import { isValidElement, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
-import MuiTab from '@material-ui/core/Tab';
+import MuiTab from '@mui/material/Tab';
 import classnames from 'classnames';
 import { useTranslate, useFormGroup } from 'ra-core';
 import { useTabbedFormViewStyles } from './TabbedFormView';

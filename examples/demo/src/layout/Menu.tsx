@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import LabelIcon from '@material-ui/icons/Label';
-import { makeStyles } from '@material-ui/core/styles';
+import LabelIcon from '@mui/icons-material/Label';
+import { makeStyles } from '@mui/material/styles';
 import classnames from 'classnames';
 import {
     useTranslate,

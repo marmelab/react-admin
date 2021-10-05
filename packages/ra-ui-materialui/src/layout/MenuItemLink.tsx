@@ -19,8 +19,8 @@ import {
     TooltipProps,
     useMediaQuery,
     Theme,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+} from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
 
 const NavLinkRef = forwardRef<HTMLAnchorElement, NavLinkProps>((props, ref) => (
     <NavLink innerRef={ref} {...props} />
@@ -56,10 +56,10 @@ const useStyles = makeStyles(
  * // in src/Menu.js
  * import * as React from 'react';
  * import { DashboardMenuItem, MenuItemLink } from 'react-admin';
- * import BookIcon from '@material-ui/icons/Book';
- * import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
- * import PeopleIcon from '@material-ui/icons/People';
- * import LabelIcon from '@material-ui/icons/Label';
+ * import BookIcon from '@mui/icons-material/Book';
+ * import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+ * import PeopleIcon from '@mui/icons-material/People';
+ * import LabelIcon from '@mui/icons-material/Label';
  *
  * export const Menu = () => (
  *     <div>

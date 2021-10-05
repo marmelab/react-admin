@@ -8,9 +8,9 @@ import {
     IconButton,
     useMediaQuery,
     Theme,
-} from '@material-ui/core';
-import SortIcon from '@material-ui/icons/Sort';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+} from '@mui/material';
+import SortIcon from '@mui/icons-material/Sort';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { shallowEqual } from 'react-redux';
 import {
     useListSortContext,

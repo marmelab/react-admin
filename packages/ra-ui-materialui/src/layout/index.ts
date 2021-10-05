@@ -2,7 +2,7 @@ import AppBar, { AppBarProps } from './AppBar';
 import CardActions from './CardActions';
 import CardContentInner from './CardContentInner';
 import Confirm, { ConfirmProps } from './Confirm';
-import DashboardMenuItem, { DashboardMenuItemProps } from './DashboardMenuItem';
+import { DashboardMenuItem, DashboardMenuItemProps } from './DashboardMenuItem';
 import DeviceTestWrapper, { DeviceTestWrapperProps } from './DeviceTestWrapper';
 import Error, { ErrorProps } from './Error';
 import HideOnScroll, { HideOnScrollProps } from './HideOnScroll';
@@ -15,7 +15,6 @@ import Menu, { MenuProps } from './Menu';
 import MenuItemLink, { MenuItemLinkProps } from './MenuItemLink';
 import NotFound from './NotFound';
 import Notification, { NotificationProps } from './Notification';
-import Responsive, { ResponsiveProps } from './Responsive';
 import Sidebar, { SidebarProps } from './Sidebar';
 import Title, { TitleProps, TitlePropType } from './Title';
 import TitleForRecord from './TitleForRecord';
@@ -41,7 +40,6 @@ export {
     MenuItemLink,
     NotFound,
     Notification,
-    Responsive,
     Sidebar,
     Title,
     TitleForRecord,
@@ -62,7 +60,6 @@ export type {
     MenuItemLinkProps,
     MenuProps,
     NotificationProps,
-    ResponsiveProps,
     SidebarProps,
     TitleProps,
     UserMenuProps,

@@ -2,8 +2,8 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Link as RRLink, LinkProps as RRLinkProps } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import { ClassNameMap } from '@material-ui/styles';
+import { makeStyles } from '@mui/material/styles';
+import { ClassNameMap } from '@mui/styles';
 
 const useStyles = makeStyles(
     theme => ({

@@ -11,9 +11,9 @@ import {
     email,
 } from 'react-admin';
 import { AnyObject } from 'react-final-form';
-import { Typography, Box } from '@material-ui/core';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import { Styles } from '@material-ui/styles/withStyles';
+import { Typography, Box } from '@mui/material';
+import { makeStyles, Theme } from '@mui/material/styles';
+import { Styles } from '@mui/styles/withStyles';
 
 export const styles: Styles<Theme, any> = {
     first_name: { display: 'inline-block' },

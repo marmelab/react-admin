@@ -11,8 +11,8 @@ import {
     useRedirect,
     useDataProvider,
 } from 'react-admin';
-import { Dialog } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Dialog } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
 
 import { stageChoices } from './stages';
 import { typeChoices } from './types';

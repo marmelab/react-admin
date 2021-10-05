@@ -13,9 +13,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { withStyles, createStyles } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
-import { ThemeOptions } from '@material-ui/core';
+import { withStyles, createStyles } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/styles';
+import { ThemeOptions } from '@mui/material';
 import { ComponentPropType, CoreLayoutProps } from 'ra-core';
 import compose from 'lodash/flowRight';
 

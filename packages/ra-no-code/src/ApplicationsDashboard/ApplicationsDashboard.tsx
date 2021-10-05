@@ -9,18 +9,18 @@ import {
     ListItemAvatar,
     ListItemText,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
     createMuiTheme,
     makeStyles,
     ThemeProvider,
     unstable_createMuiStrictModeTheme,
-} from '@material-ui/core/styles';
+} from '@mui/material/styles';
 import {
     defaultTheme as RaDefaultTheme,
     RaThemeOptions,
 } from 'ra-ui-materialui';
-import FolderIcon from '@material-ui/icons/Folder';
+import FolderIcon from '@mui/icons-material/Folder';
 import { Application } from './types';
 import { NewApplicationForm } from './NewApplicationForm';
 import {

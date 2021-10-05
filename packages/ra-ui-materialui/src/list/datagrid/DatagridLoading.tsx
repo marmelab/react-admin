@@ -9,8 +9,8 @@ import {
     TableBody,
     IconButton,
     Checkbox,
-} from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import classnames from 'classnames';
 import { useTimeout, Identifier, Record } from 'ra-core';
 

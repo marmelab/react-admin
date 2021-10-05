@@ -24,8 +24,8 @@ import {
     Tabs,
     Tab,
     Divider,
-} from '@material-ui/core';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
+} from '@mui/material';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { Link as RouterLink } from 'react-router-dom';
 import { formatDistance } from 'date-fns';
 

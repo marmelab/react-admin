@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Progress, {
     LinearProgressProps as ProgressProps,
-} from '@material-ui/core/LinearProgress';
+} from '@mui/material/LinearProgress';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 import classnames from 'classnames';
 import { useTimeout } from 'ra-core';
 
