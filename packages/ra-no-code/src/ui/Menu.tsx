@@ -30,7 +30,7 @@ export const Menu = (props: MenuProps) => {
 
     const classes = useStyles(props);
     const isXSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('xs')
+        theme.breakpoints.down('sm')
     );
     const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
     const [resources] = useResourcesConfiguration();

@@ -14,12 +14,12 @@ export default (theme: Theme): StyleRules<string, any> => ({
                 fontFamily: 'Roboto, sans-serif',
                 padding: '6px 12px',
                 backgroundColor:
-                    theme.palette.type === 'dark'
+                    theme.palette.mode === 'dark'
                         ? 'rgba(255, 255, 255, 0.04)'
                         : 'rgba(0, 0, 0, 0.04)',
                 '&:hover::before': {
                     backgroundColor:
-                        theme.palette.type === 'dark'
+                        theme.palette.mode === 'dark'
                             ? 'rgba(255, 255, 255, 1)'
                             : 'rgba(0, 0, 0, 1)',
                     height: 2,
@@ -35,7 +35,7 @@ export default (theme: Theme): StyleRules<string, any> => ({
                     transition:
                         'background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
                     backgroundColor:
-                        theme.palette.type === 'dark'
+                        theme.palette.mode === 'dark'
                             ? 'rgba(255, 255, 255, 0.7)'
                             : 'rgba(0, 0, 0, 0.5)',
                 },

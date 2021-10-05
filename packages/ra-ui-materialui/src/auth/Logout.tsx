@@ -42,7 +42,7 @@ const LogoutWithRef: FunctionComponent<
     } = props;
     const classes = useStyles(props);
     const isXSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('xs')
+        theme.breakpoints.down('sm')
     );
     const translate = useTranslate();
     const logout = useLogout();

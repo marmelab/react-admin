@@ -1,12 +1,17 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render } from '@testing-library/react';
-import { ThemeProvider } from '@material-ui/styles';
-import { createTheme } from '@material-ui/core/styles';
+import { ThemeProvider, Theme, StyledEngineProvider } from '@mui/styles';
+import { createTheme } from '@mui/material/styles';
 import { ListPaginationContext } from 'ra-core';
 
 import Pagination from './Pagination';
 import DeviceTestWrapper from '../../layout/DeviceTestWrapper';
+
+declare module '@mui/styles/defaultTheme' {
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    interface DefaultTheme extends Theme {}
+}
 
 const theme = createTheme();
 
@@ -23,26 +28,30 @@ describe('<Pagination />', () => {
     describe('no results mention', () => {
         it('should display a pagination limit when there is no result', () => {
             const { queryByText } = render(
-                <ThemeProvider theme={theme}>
-                    <ListPaginationContext.Provider
-                        value={{ ...defaultProps, total: 0 }}
-                    >
-                        <Pagination />
-                    </ListPaginationContext.Provider>
-                </ThemeProvider>
+                <StyledEngineProvider injectFirst>
+                    <ThemeProvider theme={theme}>
+                        <ListPaginationContext.Provider
+                            value={{ ...defaultProps, total: 0 }}
+                        >
+                            <Pagination />
+                        </ListPaginationContext.Provider>
+                    </ThemeProvider>
+                </StyledEngineProvider>
             );
             expect(queryByText('ra.navigation.no_results')).not.toBeNull();
         });
 
         it('should not display a pagination limit when there are results', () => {
             const { queryByText } = render(
-                <ThemeProvider theme={theme}>
-                    <ListPaginationContext.Provider
-                        value={{ ...defaultProps, total: 1 }}
-                    >
-                        <Pagination />
-                    </ListPaginationContext.Provider>
-                </ThemeProvider>
+                <StyledEngineProvider injectFirst>
+                    <ThemeProvider theme={theme}>
+                        <ListPaginationContext.Provider
+                            value={{ ...defaultProps, total: 1 }}
+                        >
+                            <Pagination />
+                        </ListPaginationContext.Provider>
+                    </ThemeProvider>
+                </StyledEngineProvider>
             );
             expect(queryByText('ra.navigation.no_results')).toBeNull();
         });
@@ -51,19 +60,21 @@ describe('<Pagination />', () => {
             jest.spyOn(console, 'error').mockImplementationOnce(() => {});
             const setPage = jest.fn().mockReturnValue(null);
             const { queryByText } = render(
-                <ThemeProvider theme={theme}>
-                    <ListPaginationContext.Provider
-                        value={{
-                            ...defaultProps,
-                            total: 10,
-                            page: 2, // Query the page 2 but there is only 1 page
-                            perPage: 10,
-                            setPage,
-                        }}
-                    >
-                        <Pagination />
-                    </ListPaginationContext.Provider>
-                </ThemeProvider>
+                <StyledEngineProvider injectFirst>
+                    <ThemeProvider theme={theme}>
+                        <ListPaginationContext.Provider
+                            value={{
+                                ...defaultProps,
+                                total: 10,
+                                page: 2, // Query the page 2 but there is only 1 page
+                                perPage: 10,
+                                setPage,
+                            }}
+                        >
+                            <Pagination />
+                        </ListPaginationContext.Provider>
+                    </ThemeProvider>
+                </StyledEngineProvider>
             );
             // mui TablePagination displays no more a warning in that case
             // Then useEffect fallbacks on a valid page
@@ -74,19 +85,21 @@ describe('<Pagination />', () => {
             jest.spyOn(console, 'error').mockImplementationOnce(() => {});
             const setPage = jest.fn().mockReturnValue(null);
             const { queryByText } = render(
-                <ThemeProvider theme={theme}>
-                    <ListPaginationContext.Provider
-                        value={{
-                            ...defaultProps,
-                            total: 10,
-                            page: -2, // Query the page -2 😱
-                            perPage: 10,
-                            setPage,
-                        }}
-                    >
-                        <Pagination />
-                    </ListPaginationContext.Provider>
-                </ThemeProvider>
+                <StyledEngineProvider injectFirst>
+                    <ThemeProvider theme={theme}>
+                        <ListPaginationContext.Provider
+                            value={{
+                                ...defaultProps,
+                                total: 10,
+                                page: -2, // Query the page -2 😱
+                                perPage: 10,
+                                setPage,
+                            }}
+                        >
+                            <Pagination />
+                        </ListPaginationContext.Provider>
+                    </ThemeProvider>
+                </StyledEngineProvider>
             );
             // mui TablePagination displays no more a warning in that case
             // Then useEffect fallbacks on a valid page
@@ -97,69 +110,77 @@ describe('<Pagination />', () => {
     describe('Pagination buttons', () => {
         it('should display a next button when there are more results', () => {
             const { queryByText } = render(
-                <ThemeProvider theme={theme}>
-                    <ListPaginationContext.Provider
-                        value={{
-                            ...defaultProps,
-                            perPage: 1,
-                            total: 2,
-                            page: 1,
-                        }}
-                    >
-                        <Pagination rowsPerPageOptions={[1]} />
-                    </ListPaginationContext.Provider>
-                </ThemeProvider>
+                <StyledEngineProvider injectFirst>
+                    <ThemeProvider theme={theme}>
+                        <ListPaginationContext.Provider
+                            value={{
+                                ...defaultProps,
+                                perPage: 1,
+                                total: 2,
+                                page: 1,
+                            }}
+                        >
+                            <Pagination rowsPerPageOptions={[1]} />
+                        </ListPaginationContext.Provider>
+                    </ThemeProvider>
+                </StyledEngineProvider>
             );
             expect(queryByText('ra.navigation.next')).not.toBeNull();
         });
         it('should not display a next button when there are no more results', () => {
             const { queryByText } = render(
-                <ThemeProvider theme={theme}>
-                    <ListPaginationContext.Provider
-                        value={{
-                            ...defaultProps,
-                            perPage: 1,
-                            total: 2,
-                            page: 2,
-                        }}
-                    >
-                        <Pagination rowsPerPageOptions={[1]} />
-                    </ListPaginationContext.Provider>
-                </ThemeProvider>
+                <StyledEngineProvider injectFirst>
+                    <ThemeProvider theme={theme}>
+                        <ListPaginationContext.Provider
+                            value={{
+                                ...defaultProps,
+                                perPage: 1,
+                                total: 2,
+                                page: 2,
+                            }}
+                        >
+                            <Pagination rowsPerPageOptions={[1]} />
+                        </ListPaginationContext.Provider>
+                    </ThemeProvider>
+                </StyledEngineProvider>
             );
             expect(queryByText('ra.navigation.next')).toBeNull();
         });
         it('should display a prev button when there are previous results', () => {
             const { queryByText } = render(
-                <ThemeProvider theme={theme}>
-                    <ListPaginationContext.Provider
-                        value={{
-                            ...defaultProps,
-                            perPage: 1,
-                            total: 2,
-                            page: 2,
-                        }}
-                    >
-                        <Pagination rowsPerPageOptions={[1]} />
-                    </ListPaginationContext.Provider>
-                </ThemeProvider>
+                <StyledEngineProvider injectFirst>
+                    <ThemeProvider theme={theme}>
+                        <ListPaginationContext.Provider
+                            value={{
+                                ...defaultProps,
+                                perPage: 1,
+                                total: 2,
+                                page: 2,
+                            }}
+                        >
+                            <Pagination rowsPerPageOptions={[1]} />
+                        </ListPaginationContext.Provider>
+                    </ThemeProvider>
+                </StyledEngineProvider>
             );
             expect(queryByText('ra.navigation.prev')).not.toBeNull();
         });
         it('should not display a prev button when there are no previous results', () => {
             const { queryByText } = render(
-                <ThemeProvider theme={theme}>
-                    <ListPaginationContext.Provider
-                        value={{
-                            ...defaultProps,
-                            perPage: 1,
-                            total: 2,
-                            page: 1,
-                        }}
-                    >
-                        <Pagination rowsPerPageOptions={[1]} />
-                    </ListPaginationContext.Provider>
-                </ThemeProvider>
+                <StyledEngineProvider injectFirst>
+                    <ThemeProvider theme={theme}>
+                        <ListPaginationContext.Provider
+                            value={{
+                                ...defaultProps,
+                                perPage: 1,
+                                total: 2,
+                                page: 1,
+                            }}
+                        >
+                            <Pagination rowsPerPageOptions={[1]} />
+                        </ListPaginationContext.Provider>
+                    </ThemeProvider>
+                </StyledEngineProvider>
             );
             expect(queryByText('ra.navigation.prev')).toBeNull();
         });

@@ -17,10 +17,10 @@ const useStyles = makeStyles(
                 paddingLeft: 0,
                 paddingRight: 0,
             },
-            [theme.breakpoints.down('sm')]: {
+            [theme.breakpoints.down('md')]: {
                 paddingRight: theme.spacing(2),
             },
-            [theme.breakpoints.down('xs')]: {
+            [theme.breakpoints.down('sm')]: {
                 padding: theme.spacing(1),
                 backgroundColor: theme.palette.background.paper,
             },

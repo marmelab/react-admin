@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Fragment, useState, useCallback } from 'react';
 import { FormSpy, useForm } from 'react-final-form';
 
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import {
     Button,
     Dialog,

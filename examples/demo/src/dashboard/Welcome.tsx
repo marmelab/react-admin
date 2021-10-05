@@ -10,7 +10,7 @@ import publishArticleImage from './welcome_illustration.svg';
 const useStyles = makeStyles(theme => ({
     root: {
         background:
-            theme.palette.type === 'dark'
+            theme.palette.mode === 'dark'
                 ? '#535353'
                 : `linear-gradient(to right, #8975fb 0%, #746be7 35%), linear-gradient(to bottom, #8975fb 0%, #6f4ceb 50%), #6f4ceb`,
 
@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
         marginLeft: 'auto',
     },
     actions: {
-        [theme.breakpoints.down('md')]: {
+        [theme.breakpoints.down('lg')]: {
             padding: 0,
             flexWrap: 'wrap',
             '& a': {

@@ -37,7 +37,7 @@ const CreateButton = (props: CreateButtonProps) => {
     const classes = useStyles(props);
     const translate = useTranslate();
     const isSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('sm')
+        theme.breakpoints.down('md')
     );
     const resource = useResourceContext();
     const location = useMemo(

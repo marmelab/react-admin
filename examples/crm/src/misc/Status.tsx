@@ -17,7 +17,7 @@ export const Status = ({ status }: { status: string }) => (
         width={10}
         height={10}
         display="inline-block"
-        borderRadius={5}
+        borderRadius="5px"
         bgcolor={getColorFromStatus(status)}
         component="span"
     />

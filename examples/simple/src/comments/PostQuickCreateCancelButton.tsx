@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Button } from '@mui/material';
 import IconCancel from '@mui/icons-material/Cancel';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 
 import { useTranslate } from 'react-admin';
 

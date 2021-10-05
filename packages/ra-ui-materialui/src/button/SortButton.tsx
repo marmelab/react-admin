@@ -48,7 +48,7 @@ const SortButton = (props: SortButtonProps) => {
     const { resource, currentSort, setSort } = useListSortContext();
     const translate = useTranslate();
     const isXSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('xs')
+        theme.breakpoints.down('sm')
     );
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -91,6 +91,7 @@ const SortButton = (props: SortButtonProps) => {
                         aria-label={buttonLabel}
                         color="primary"
                         onClick={handleClick}
+                        size="large"
                     >
                         {icon}
                     </IconButton>

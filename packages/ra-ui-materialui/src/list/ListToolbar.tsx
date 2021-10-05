@@ -18,7 +18,7 @@ const useStyles = makeStyles(
             [theme.breakpoints.up('xs')]: {
                 paddingLeft: 0,
             },
-            [theme.breakpoints.down('xs')]: {
+            [theme.breakpoints.down('sm')]: {
                 paddingLeft: theme.spacing(2),
                 backgroundColor: theme.palette.background.paper,
             },
@@ -26,7 +26,7 @@ const useStyles = makeStyles(
         actions: {
             paddingTop: theme.spacing(3),
             minHeight: theme.spacing(5),
-            [theme.breakpoints.down('xs')]: {
+            [theme.breakpoints.down('sm')]: {
                 padding: theme.spacing(1),
                 backgroundColor: theme.palette.background.paper,
             },

@@ -37,6 +37,7 @@ const FilterFormInput = props => {
                     onClick={handleHide}
                     data-key={filterElement.props.source}
                     title={translate('ra.action.remove_filter')}
+                    size="large"
                 >
                     <ActionHide />
                 </IconButton>

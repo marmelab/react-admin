@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import {
     CREATE,
     SaveButton,

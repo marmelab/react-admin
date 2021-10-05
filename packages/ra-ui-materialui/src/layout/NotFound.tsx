@@ -18,7 +18,7 @@ const useStyles = makeStyles(
             [theme.breakpoints.up('md')]: {
                 height: '100%',
             },
-            [theme.breakpoints.down('sm')]: {
+            [theme.breakpoints.down('md')]: {
                 height: '100vh',
                 marginTop: '-3em',
             },

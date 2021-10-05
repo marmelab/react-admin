@@ -53,6 +53,7 @@ const FileInputPreview = (props: Props) => {
                 onClick={onRemove}
                 aria-label={translate('ra.action.delete')}
                 title={translate('ra.action.delete')}
+                size="large"
             >
                 <RemoveCircle className={classes.removeIcon} />
             </IconButton>

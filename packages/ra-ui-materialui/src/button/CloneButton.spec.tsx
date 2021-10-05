@@ -1,6 +1,6 @@
 import expect from 'expect';
-import { ThemeProvider } from '@material-ui/core';
-import { createTheme } from '@material-ui/core/styles';
+import { ThemeProvider, Theme, StyledEngineProvider } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
 import { render } from '@testing-library/react';
 import * as React from 'react';
 import { createMemoryHistory } from 'history';
@@ -8,6 +8,11 @@ import { Router } from 'react-router-dom';
 
 import { CloneButton } from './CloneButton';
 import { TestContext } from 'ra-test';
+
+declare module '@mui/styles/defaultTheme' {
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    interface DefaultTheme extends Theme {}
+}
 
 const theme = createTheme();
 
@@ -31,12 +36,14 @@ describe('<CloneButton />', () => {
         const history = createMemoryHistory();
         const { getByRole } = render(
             <Router history={history}>
-                <ThemeProvider theme={theme}>
-                    <CloneButton
-                        record={{ id: 123, foo: 'bar' }}
-                        basePath="/posts"
-                    />
-                </ThemeProvider>
+                <StyledEngineProvider injectFirst>
+                    <ThemeProvider theme={theme}>
+                        <CloneButton
+                            record={{ id: 123, foo: 'bar' }}
+                            basePath="/posts"
+                        />
+                    </ThemeProvider>
+                </StyledEngineProvider>
             </Router>
         );
 
@@ -51,9 +58,11 @@ describe('<CloneButton />', () => {
 
         const { getByRole } = render(
             <TestContext>
-                <ThemeProvider theme={theme}>
-                    <CloneButton {...invalidButtonDomProps} />
-                </ThemeProvider>
+                <StyledEngineProvider injectFirst>
+                    <ThemeProvider theme={theme}>
+                        <CloneButton {...invalidButtonDomProps} />
+                    </ThemeProvider>
+                </StyledEngineProvider>
             </TestContext>
         );
 

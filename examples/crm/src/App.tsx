@@ -3,6 +3,7 @@ import { Admin, Resource, ListGuesser, defaultTheme } from 'react-admin';
 import {
     unstable_createMuiStrictModeTheme,
     createMuiTheme,
+    adaptV4Theme,
 } from '@mui/material/styles';
 
 import { dataProvider } from './dataProvider';
@@ -17,7 +18,7 @@ import { Dashboard } from './dashboard/Dashboard';
 const theme =
     process.env.NODE_ENV !== 'production'
         ? unstable_createMuiStrictModeTheme(defaultTheme)
-        : createMuiTheme(defaultTheme);
+        : createMuiTheme(adaptV4Theme(defaultTheme));
 
 const App = () => (
     <Admin

@@ -43,7 +43,7 @@ const Button = (props: ButtonProps) => {
     const translate = useTranslate();
     const classes = useStyles(props);
     const isXSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('xs')
+        theme.breakpoints.down('sm')
     );
     const restProps = sanitizeButtonRestProps(rest);
 
@@ -55,6 +55,7 @@ const Button = (props: ButtonProps) => {
                     className={className}
                     color={color}
                     {...restProps}
+                    size="large"
                 >
                     {children}
                 </IconButton>
@@ -65,6 +66,7 @@ const Button = (props: ButtonProps) => {
                 color={color}
                 disabled={disabled}
                 {...restProps}
+                size="large"
             >
                 {children}
             </IconButton>

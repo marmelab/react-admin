@@ -15,7 +15,7 @@ import {
     Toolbar,
     TopToolbar,
 } from 'react-admin';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 
 import UserTitle from './UserTitle';
 import Aside from './Aside';

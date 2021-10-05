@@ -5,12 +5,17 @@ import { Form } from 'react-final-form';
 import { required, FormWithRedirect } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
 import format from 'date-fns/format';
-import { ThemeProvider } from '@material-ui/core';
-import { createTheme } from '@material-ui/core/styles';
+import { ThemeProvider, Theme, StyledEngineProvider } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
 
 import DateTimeInput from './DateTimeInput';
 import { ArrayInput, SimpleFormIterator } from './ArrayInput';
 import { FormApi } from 'final-form';
+
+declare module '@mui/styles/defaultTheme' {
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    interface DefaultTheme extends Theme {}
+}
 
 const theme = createTheme();
 
@@ -59,24 +64,26 @@ describe('<DateTimeInput />', () => {
         ];
         let formApi: FormApi;
         const { getByDisplayValue } = renderWithRedux(
-            <ThemeProvider theme={theme}>
-                <FormWithRedirect
-                    onSubmit={jest.fn}
-                    render={({ form }) => {
-                        formApi = form;
-                        return (
-                            <ArrayInput
-                                defaultValue={backlinksDefaultValue}
-                                source="backlinks"
-                            >
-                                <SimpleFormIterator>
-                                    <DateTimeInput source="date" />
-                                </SimpleFormIterator>
-                            </ArrayInput>
-                        );
-                    }}
-                />
-            </ThemeProvider>
+            <StyledEngineProvider injectFirst>
+                <ThemeProvider theme={theme}>
+                    <FormWithRedirect
+                        onSubmit={jest.fn}
+                        render={({ form }) => {
+                            formApi = form;
+                            return (
+                                <ArrayInput
+                                    defaultValue={backlinksDefaultValue}
+                                    source="backlinks"
+                                >
+                                    <SimpleFormIterator>
+                                        <DateTimeInput source="date" />
+                                    </SimpleFormIterator>
+                                </ArrayInput>
+                            );
+                        }}
+                    />
+                </ThemeProvider>
+            </StyledEngineProvider>
         );
 
         expect(getByDisplayValue(format(date, 'YYYY-MM-DDTHH:mm')));

@@ -87,7 +87,7 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
                     </DialogContent>
                 ) : (
                     <>
-                        <RootRef rootRef={ref}>
+                        <>
                             <DialogContent {...rootProps}>
                                 <input
                                     aria-label="CSV File"
@@ -102,7 +102,7 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
                                     a local file.
                                 </DialogContentText>
                             </DialogContent>
-                        </RootRef>
+                        </>
                         {!!file && (
                             <DialogContent>
                                 <TextField

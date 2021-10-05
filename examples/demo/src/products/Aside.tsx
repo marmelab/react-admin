@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
             marginRight: '1em',
             overflow: 'initial',
         },
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down('md')]: {
             display: 'none',
         },
     },

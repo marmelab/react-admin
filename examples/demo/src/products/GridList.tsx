@@ -1,7 +1,7 @@
 import * as React from 'react';
-import MuiGridList from '@mui/material/GridList';
-import GridListTile from '@mui/material/GridListTile';
-import GridListTileBar from '@mui/material/GridListTileBar';
+import MuiGridList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import ImageListItemBar from '@mui/material/ImageListItemBar';
 import { makeStyles } from '@mui/material/styles';
 import withWidth, { WithWidth } from '@mui/material/withWidth';
 import {
@@ -57,9 +57,9 @@ const LoadingGridList = (props: GridProps & { nbItems?: number }) => {
         >
             {' '}
             {times(nbItems, key => (
-                <GridListTile key={key}>
+                <ImageListItem key={key}>
                     <div className={classes.placeholder} />
-                </GridListTile>
+                </ImageListItem>
             ))}
         </MuiGridList>
     );
@@ -79,14 +79,14 @@ const LoadedGridList = (props: GridProps) => {
             className={classes.gridList}
         >
             {ids.map((id: Identifier) => (
-                <GridListTile
+                <ImageListItem
                     // @ts-ignore
                     component={Link}
                     key={id}
                     to={linkToRecord(basePath, data[id].id)}
                 >
                     <img src={data[id].thumbnail} alt="" />
-                    <GridListTileBar
+                    <ImageListItemBar
                         className={classes.tileBar}
                         title={data[id].reference}
                         subtitle={
@@ -105,7 +105,7 @@ const LoadedGridList = (props: GridProps) => {
                             </span>
                         }
                     />
-                </GridListTile>
+                </ImageListItem>
             ))}
         </MuiGridList>
     );
@@ -113,7 +113,7 @@ const LoadedGridList = (props: GridProps) => {
 
 interface GridProps extends Omit<DatagridProps, 'width'>, WithWidth {}
 
-const GridList = (props: WithWidth) => {
+const ImageList = (props: WithWidth) => {
     const { width } = props;
     const { loaded } = useListContext();
     return loaded ? (
@@ -123,4 +123,4 @@ const GridList = (props: WithWidth) => {
     );
 };
 
-export default withWidth()(GridList);
+export default withWidth()(ImageList);

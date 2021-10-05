@@ -6,7 +6,7 @@ import TextInput from './TextInput';
 import { FormWithRedirect, required, useTranslatableContext } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
 import { TranslatableInputsTab } from './TranslatableInputsTab';
-import { Tabs } from '@material-ui/core';
+import { Tabs } from '@mui/material';
 
 const record = {
     id: 123,

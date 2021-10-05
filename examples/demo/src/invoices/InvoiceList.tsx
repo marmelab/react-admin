@@ -23,7 +23,7 @@ const listFilters = [
 const useStyles = makeStyles(theme => ({
     hiddenOnSmallScreens: {
         display: 'table-cell',
-        [theme.breakpoints.down('md')]: {
+        [theme.breakpoints.down('lg')]: {
             display: 'none',
         },
     },

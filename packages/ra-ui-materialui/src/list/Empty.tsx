@@ -62,10 +62,10 @@ const useStyles = makeStyles(
     theme => ({
         message: {
             textAlign: 'center',
-            opacity: theme.palette.type === 'light' ? 0.5 : 0.8,
+            opacity: theme.palette.mode === 'light' ? 0.5 : 0.8,
             margin: '0 1em',
             color:
-                theme.palette.type === 'light'
+                theme.palette.mode === 'light'
                     ? 'inherit'
                     : theme.palette.text.primary,
         },

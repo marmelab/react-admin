@@ -50,10 +50,10 @@ const Dashboard = () => {
     const version = useVersion();
     const dataProvider = useDataProvider();
     const isXSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('xs')
+        theme.breakpoints.down('sm')
     );
     const isSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('md')
+        theme.breakpoints.down('lg')
     );
 
     const fetchOrders = useCallback(async () => {

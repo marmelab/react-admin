@@ -23,7 +23,7 @@ const Card = withStyles(theme => ({
             width: '15em',
             marginRight: '1em',
         },
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down('md')]: {
             display: 'none',
         },
     },

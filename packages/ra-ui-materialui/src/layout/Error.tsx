@@ -25,7 +25,7 @@ const useStyles = makeStyles(
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            [theme.breakpoints.down('sm')]: {
+            [theme.breakpoints.down('md')]: {
                 padding: '1em',
             },
             fontFamily: 'Roboto, sans-serif',

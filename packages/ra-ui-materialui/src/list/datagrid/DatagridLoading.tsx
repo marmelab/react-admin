@@ -77,6 +77,7 @@ const DatagridLoading = ({
                                     className={classes.expandIcon}
                                     component="div"
                                     aria-hidden="true"
+                                    size="large"
                                 >
                                     <ExpandMoreIcon />
                                 </IconButton>

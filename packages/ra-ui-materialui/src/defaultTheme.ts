@@ -1,4 +1,4 @@
-import { ThemeOptions } from '@mui/material';
+import { DeprecatedThemeOptions } from '@mui/material';
 import { Overrides } from '@mui/material/styles/overrides';
 
 export default {
@@ -63,7 +63,7 @@ export interface RaThemeOverrides extends Overrides {
     [key: string]: any;
 }
 
-export interface RaThemeOptions extends ThemeOptions {
+export interface RaThemeOptions extends DeprecatedThemeOptions {
     sidebar?: {
         width?: number;
         closedWidth?: number;

@@ -10,8 +10,8 @@ import { useTimeout } from 'ra-core';
 const useStyles = makeStyles(
     theme => ({
         root: {
-            margin: `${theme.spacing(1)}px 0`,
-            width: `${theme.spacing(20)}px`,
+            margin: `${theme.spacing(1)} 0`,
+            width: theme.spacing(20),
         },
     }),
     { name: 'RaLinearProgress' }

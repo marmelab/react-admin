@@ -101,7 +101,7 @@ const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
     } = props;
     const classes = useStyles(props);
     const dispatch = useDispatch();
-    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
+    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
     const handleMenuTap = useCallback(
         e => {
