@@ -28,6 +28,7 @@ export interface ReferenceArrayInputProps extends InputProps {
     label?: string;
     reference: string;
     resource?: string;
+    enableGetChoices?: (filters: any) => boolean;
     [key: string]: any;
 }
 

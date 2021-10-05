@@ -2073,6 +2073,21 @@ You can tweak how this component fetches the possible values using the `perPage`
 ```
 {% endraw %}
 
+**Tip**: `<ReferenceArrayInput>` can also used with an `<AutocompleteArrayInput>` to allow filtering the choices. By default, it will fetch the choices on mount, but you can prevent this by using the `enableGetChoices`. This prop should be a function that receives the `filterValues` as parameter and return a boolean. In order to also hide the choices when `enableGetChoices` returns `false`, you should use `shouldRenderSuggestions` on the `<AutocompleteArrayInput>`:
+
+```jsx
+<ReferenceArrayInput
+  label="Tags"
+  reference="tags"
+  source="tags"
+  enableGetChoices={({ q }) => (q ? q.length >= 2 : false)}
+>
+  <AutocompleteArrayInput
+    shouldRenderSuggestions={(value: string) => value.length >= 2}
+  />
+</ReferenceArrayInput>
+```
+
 In addition to the `ReferenceArrayInputContext`, `<ReferenceArrayInput>` also sets up a `ListContext` providing access to the records from the reference resource in a similar fashion to that of the `<List>` component. This `ListContext` value is accessible with the [`useListContext`](./List.md#uselistcontext) hook.
 
 `<ReferenceArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
@@ -2134,6 +2149,8 @@ import { ReferenceInput, SelectInput } from 'react-admin';
 | `perPage`       | Optional | `number`                                    | 25                                    | Number of suggestions to show                                                                                         |
 | `reference`     | Required | `string`                                    | ''                                    | Name of the reference resource, e.g. 'posts'.                                                                         |
 | `sort`          | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`      | How to order the list of suggestions                                                                                  |
+| `enableGetChoices`     | Optional | `({q: string}) => boolean`                  | `() => true`                          | Function taking the `filterValues` and returning a boolean to enable the `getList` call.                              |
+
 
 `<ReferenceInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
@@ -2221,6 +2238,16 @@ The child component receives the following props from `<ReferenceInput>`:
 - `setFilter`: function to call to update the filter of the request for possible values
 - `setPagination`: : function to call to update the pagination of the request for possible values
 - `setSort`: function to call to update the sorting of the request for possible values
+
+**Tip** You can make the `getList()` call lazy by using the `enableGetChoices` prop. This prop should be a function that receives the `filterValues` as parameter and return a boolean. This can be useful when using an `AutocompleteInput` on a resource with a lot of data. The following example only starts fetching the options when the query has at least 2 characters:
+```jsx
+<ReferenceInput
+     source="post_id"
+     reference="posts"
+     enableGetChoices={({ q }) => q.length >= 2}>
+    <AutocompleteInput optionText="title" />
+</ReferenceInput>
+```
 
 **Tip**: Why does `<ReferenceInput>` use the `dataProvider.getMany()` method with a single value `[id]` instead of `dataProvider.getOne()` to fetch the record for the current value? Because when there are many `<ReferenceInput>` for the same resource in a form (for instance when inside an `<ArrayInput>`), react-admin *aggregates* the calls to `dataProvider.getMany()` into a single one with `[id1, id2, ...]`. This speeds up the UI and avoids hitting the API too much.
 

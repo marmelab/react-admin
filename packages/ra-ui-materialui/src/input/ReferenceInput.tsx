@@ -162,6 +162,7 @@ export interface ReferenceInputProps extends InputProps {
     // @deprecated
     referenceSource?: (resource: string, source: string) => string;
     resource?: string;
+    enableGetChoices?: (filters: any) => boolean;
     [key: string]: any;
 }
 
