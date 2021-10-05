@@ -210,7 +210,10 @@ export const getSuggestionsFactory = ({
             suggestions = choices;
         }
     } else {
-        suggestions = choices.filter(choice => matchSuggestion(filter, choice));
+        suggestions = choices.filter(
+            choice => !matchSuggestion(filter, choice)
+        );
+
         if (!allowDuplicates) {
             suggestions = removeAlreadySelectedSuggestions(
                 suggestions,
