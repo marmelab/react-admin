@@ -156,7 +156,9 @@ const CommentEdit = props => {
                                     optionText={<OptionRenderer />}
                                     inputText={inputText}
                                     options={{
-                                        fullWidth: true,
+                                        InputProps: {
+                                            fullWidth: true,
+                                        },
                                     }}
                                 />
                             </ReferenceInput>

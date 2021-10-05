@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { crudGetList } from 'react-admin';
+import { crudGetList, ReduxState } from 'react-admin';
 
 const CustomRouteNoLayout = () => {
     const dispatch = useDispatch();
 
     const loaded = useSelector(
-        state =>
+        (state: ReduxState) =>
             state.admin.resources.posts &&
             state.admin.resources.posts.list.total > 0
     );
 
-    const total = useSelector(state =>
+    const total = useSelector((state: ReduxState) =>
         state.admin.resources.posts ? state.admin.resources.posts.list.total : 0
     );
 
@@ -21,7 +21,8 @@ const CustomRouteNoLayout = () => {
             crudGetList(
                 'posts',
                 { page: 0, perPage: 10 },
-                { field: 'id', order: 'ASC' }
+                { field: 'id', order: 'ASC' },
+                {}
             )
         );
     }, [dispatch]);

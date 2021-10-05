@@ -34,11 +34,11 @@ export default {
             );
             return Promise.resolve();
         }
-        localStorage.setItem('not_authenticated', true);
+        localStorage.setItem('not_authenticated', 'true');
         return Promise.reject();
     },
     logout: () => {
-        localStorage.setItem('not_authenticated', true);
+        localStorage.setItem('not_authenticated', 'true');
         localStorage.removeItem('role');
         localStorage.removeItem('login');
         localStorage.removeItem('user');

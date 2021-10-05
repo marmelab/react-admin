@@ -5,6 +5,7 @@ import {
     CloneButton,
     DeleteWithConfirmButton,
     Edit,
+    EditActionsProps,
     FormTab,
     required,
     SaveButton,
@@ -42,7 +43,7 @@ const UserEditToolbar = props => {
     );
 };
 
-const EditActions = ({ basePath, data, hasShow }) => (
+const EditActions = ({ basePath, data, hasShow }: EditActionsProps) => (
     <TopToolbar>
         <CloneButton
             className="button-clone"
