@@ -52,7 +52,7 @@ FunctionField.propTypes = {
 export interface FunctionFieldProps<RecordType extends Record = Record>
     extends PublicFieldProps,
         InjectedFieldProps<RecordType>,
-        TypographyProps {
+        Omit<TypographyProps, 'textAlign'> {
     render: (record?: RecordType, source?: string) => any;
 }
 

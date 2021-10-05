@@ -1,7 +1,7 @@
 import React from 'react';
 import Tab, { TabProps } from '@mui/material/Tab';
 import { useFormGroup, useTranslate } from 'ra-core';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import { ClassesOverride } from '../types';
 import { capitalize } from 'inflection';
 

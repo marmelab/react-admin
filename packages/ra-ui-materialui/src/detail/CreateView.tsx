@@ -3,7 +3,7 @@ import { Children, cloneElement, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { CreateControllerProps, useCreateContext } from 'ra-core';
 import { Card } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import classnames from 'classnames';
 import { CreateProps } from '../types';
 import { TitleForRecord } from '../layout';

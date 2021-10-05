@@ -8,7 +8,7 @@ import {
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import LinearProgress from '@mui/material/LinearProgress';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import {
     linkToRecord,
     sanitizeListRestProps,

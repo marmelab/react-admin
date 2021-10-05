@@ -12,7 +12,7 @@ import {
     ListItemSecondaryAction,
     ListItemText,
 } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
 import {
     linkToRecord,
@@ -272,7 +272,6 @@ const LinkOrNot = (
 
     return link === 'edit' || link === true ? (
         <ListItem
-            button
             // @ts-ignore
             component={Link}
             to={linkToRecord(basePath, id)}
@@ -283,7 +282,6 @@ const LinkOrNot = (
         </ListItem>
     ) : link === 'show' ? (
         <ListItem
-            button
             // @ts-ignore
             component={Link}
             to={`${linkToRecord(basePath, id)}/show`}
@@ -294,7 +292,6 @@ const LinkOrNot = (
         </ListItem>
     ) : link !== false ? (
         <ListItem
-            button
             // @ts-ignore
             component={Link}
             to={link}

@@ -51,7 +51,7 @@ RichTextField.propTypes = {
 export interface RichTextFieldProps
     extends PublicFieldProps,
         InjectedFieldProps,
-        TypographyProps {
+        Omit<TypographyProps, 'textAlign'> {
     stripTags?: boolean;
 }
 

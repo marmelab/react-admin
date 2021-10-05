@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import Button from './Button';
 import { useTranslate } from 'ra-core';
 import classnames from 'classnames';

@@ -3,7 +3,7 @@ import { memo, FC } from 'react';
 import get from 'lodash/get';
 import Chip, { ChipProps } from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import classnames from 'classnames';
 import { useRecordContext } from 'ra-core';
 

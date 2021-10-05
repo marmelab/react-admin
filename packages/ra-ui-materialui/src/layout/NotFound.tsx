@@ -1,7 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import HotTub from '@mui/icons-material/HotTub';
 import History from '@mui/icons-material/History';
 import classnames from 'classnames';

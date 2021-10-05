@@ -11,7 +11,7 @@ import {
 import PropTypes from 'prop-types';
 import Divider from '@mui/material/Divider';
 import { Route } from 'react-router-dom';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import { useRouteMatch } from 'react-router-dom';
 import { escapePath, Record } from 'ra-core';
 

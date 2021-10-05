@@ -6,7 +6,7 @@ import {
     ListItemText,
     ListItemSecondaryAction,
 } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import CancelIcon from '@mui/icons-material/CancelOutlined';
 import { useTranslate, useListFilterContext } from 'ra-core';
 import { shallowEqual } from 'react-redux';

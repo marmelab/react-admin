@@ -42,7 +42,7 @@ TextField.propTypes = {
 export interface TextFieldProps
     extends PublicFieldProps,
         InjectedFieldProps,
-        TypographyProps {
+        Omit<TypographyProps, 'textAlign'> {
     // TypographyProps do not expose the component props, see https://github.com/mui-org/material-ui/issues/19512
     component?: ElementType<any>;
 }

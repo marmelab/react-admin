@@ -8,7 +8,7 @@ import React, {
 import PropTypes from 'prop-types';
 import { shallowEqual } from 'react-redux';
 import { useDropzone, DropzoneOptions } from 'react-dropzone';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import FormHelperText from '@mui/material/FormHelperText';
 import classnames from 'classnames';
 import { useInput, useTranslate, InputProps } from 'ra-core';

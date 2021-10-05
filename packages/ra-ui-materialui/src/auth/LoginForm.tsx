@@ -7,7 +7,8 @@ import {
     CircularProgress,
     TextField,
 } from '@mui/material';
-import { makeStyles, Theme } from '@mui/material/styles';
+import { Theme } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import { useTranslate, useLogin, useNotify, useSafeSetState } from 'ra-core';
 
 interface Props {

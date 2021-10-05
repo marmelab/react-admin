@@ -6,7 +6,7 @@ import FormLabel from '@mui/material/FormLabel';
 import FormControl, { FormControlProps } from '@mui/material/FormControl';
 import FormGroup from '@mui/material/FormGroup';
 import FormHelperText from '@mui/material/FormHelperText';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import { CheckboxProps } from '@mui/material/Checkbox';
 import { FieldTitle, useInput, ChoicesInputProps, warning } from 'ra-core';
 

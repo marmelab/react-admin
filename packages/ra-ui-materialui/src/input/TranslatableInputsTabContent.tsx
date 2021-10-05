@@ -12,7 +12,7 @@ import {
     useRecordContext,
     useTranslatableContext,
 } from 'ra-core';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import { ClassesOverride } from '../types';
 import { FormInput } from '../form';
 import { useResourceContext } from 'ra-core';

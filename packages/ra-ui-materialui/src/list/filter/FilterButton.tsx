@@ -9,7 +9,7 @@ import {
 } from 'react';
 import PropTypes from 'prop-types';
 import Menu from '@mui/material/Menu';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import ContentFilter from '@mui/icons-material/FilterList';
 import classnames from 'classnames';
 import lodashGet from 'lodash/get';

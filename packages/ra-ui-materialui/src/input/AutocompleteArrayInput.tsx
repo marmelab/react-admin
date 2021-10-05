@@ -9,7 +9,7 @@ import Downshift, { DownshiftProps } from 'downshift';
 import classNames from 'classnames';
 import get from 'lodash/get';
 import { TextField, Chip, InputProps } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import { TextFieldProps } from '@mui/material/TextField';
 import {
     useInput,

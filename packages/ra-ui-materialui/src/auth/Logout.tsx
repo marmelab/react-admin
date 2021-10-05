@@ -3,7 +3,8 @@ import { useCallback, FunctionComponent, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { ListItemIcon, MenuItem, useMediaQuery } from '@mui/material';
 import { MenuItemProps } from '@mui/material/MenuItem';
-import { Theme, makeStyles } from '@mui/material/styles';
+import { Theme } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 
 import ExitIcon from '@mui/icons-material/PowerSettingsNew';
 import classnames from 'classnames';

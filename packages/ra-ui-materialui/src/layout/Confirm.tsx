@@ -7,7 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import { alpha } from '@mui/material/styles';
 import ActionCheck from '@mui/icons-material/CheckCircle';
 import AlertError from '@mui/icons-material/ErrorOutline';

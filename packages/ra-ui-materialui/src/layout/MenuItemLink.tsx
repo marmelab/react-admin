@@ -20,7 +20,7 @@ import {
     useMediaQuery,
     Theme,
 } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 
 const NavLinkRef = forwardRef<HTMLAnchorElement, NavLinkProps>((props, ref) => (
     <NavLink innerRef={ref} {...props} />

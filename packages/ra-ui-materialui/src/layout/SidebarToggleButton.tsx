@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IconButton, Tooltip } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useTranslate } from 'ra-core';
 import { ClassesOverride } from '../types';
