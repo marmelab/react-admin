@@ -127,7 +127,7 @@ export const PostShow = (props) => (
 
 ![Aside component](./img/aside.png)
 
-You may want to display additional information on the side of the resource detail. Use the `aside` prop for that, passing the component of your choice:
+You may want to display additional information on the side of the resource detail. Use the `aside` prop for that, passing the element of your choice:
 
 {% raw %}
 ```jsx
@@ -141,27 +141,30 @@ const Aside = () => (
 );
 
 const PostShow = props => (
-    <Show aside={Aside} {...props}>
+    <Show aside={<Aside />} {...props}>
         ...
     </Show>
 );
 ```
 {% endraw %}
 
-The `aside` component receives the same props as the `Show` child component: `basePath`, `record`, `resource`, and `version`. That means you can display secondary details of the current record in the aside component:
+You can use the `useRecordContext` hook to display non-editable details about the current record in the aside component: 
 
 {% raw %}
 ```jsx
-const Aside = ({ record }) => (
-    <div style={{ width: 200, margin: '1em' }}>
-        <Typography variant="h6">Post details</Typography>
-        {record && (
-            <Typography variant="body2">
-                Creation date: {record.createdAt}
-            </Typography>
-        )}
-    </div>
-);
+const Aside = () => {
+    const record = useRecordContext();
+    return (
+        <div style={{ width: 200, margin: '1em' }}>
+            <Typography variant="h6">Post details</Typography>
+            {record && (
+                <Typography variant="body2">
+                    Creation date: {record.createdAt}
+                </Typography>
+            )}
+        </div>
+    );
+}
 ```
 {% endraw %}
 
@@ -377,7 +380,7 @@ export const PostShow = (props) => (
 
 By default, `<TabbedShowLayout>` renders its tabs using `<TabbedShowLayoutTabs>`, an internal react-admin component. You can pass a custom component as the `tabs` prop to override that default. Also, props passed to `<TabbedShowLayoutTabs>` are passed to the material-ui's `<Tabs>` component inside `<TabbedShowLayoutTabs>`. That means you can create a custom `tabs` component without copying several components from the react-admin source.
 
-For instance, to make use of scrollable `<Tabs>`, you can pass a `variant="scrollable"` prop to `<TabbedShowLayoutTabs>` and use it in the `tabs` prop from `<TabbedShowLayout>` as follows:
+For instance, to make use of scrollable `<Tabs>`, you can pass `variant="scrollable"` and `scrollButtons="auto"` props to `<TabbedShowLayoutTabs>` and use it in the `tabs` prop from `<TabbedShowLayout>` as follows:
 
 ```jsx
 import {
@@ -388,7 +391,7 @@ import {
 
 const ScrollableTabbedShowLayout = props => (
     <Show {...props}>
-        <TabbedShowLayout tabs={<TabbedShowLayoutTabs variant="scrollable" {...props} />}>
+        <TabbedShowLayout tabs={<TabbedShowLayoutTabs variant="scrollable" scrollButtons="auto" {...props} />}>
             ...
         </TabbedShowLayout>
     </Show>

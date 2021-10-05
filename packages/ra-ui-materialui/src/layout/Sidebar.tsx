@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Children, cloneElement, ReactElement } from 'react';
+import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Drawer, DrawerProps, useMediaQuery, Theme } from '@material-ui/core';
@@ -28,9 +28,11 @@ const Sidebar = (props: SidebarProps) => {
         state => state.admin.ui.sidebarOpen
     );
     useLocale(); // force redraw on locale change
-    const handleClose = () => dispatch(setSidebarVisibility(false));
     const toggleSidebar = () => dispatch(setSidebarVisibility(!open));
-    const { drawerPaper, ...classes } = useStyles({ ...props, open });
+    const { drawerPaper, fixed, ...classes } = useStyles({
+        ...props,
+        open,
+    });
 
     return isXSmall ? (
         <Drawer
@@ -43,9 +45,7 @@ const Sidebar = (props: SidebarProps) => {
             classes={classes}
             {...rest}
         >
-            {cloneElement(Children.only(children), {
-                onMenuClick: handleClose,
-            })}
+            {children}
         </Drawer>
     ) : isSmall ? (
         <Drawer
@@ -58,9 +58,7 @@ const Sidebar = (props: SidebarProps) => {
             classes={classes}
             {...rest}
         >
-            {cloneElement(Children.only(children), {
-                onMenuClick: handleClose,
-            })}
+            <div className={fixed}>{children}</div>
         </Drawer>
     ) : (
         <Drawer
@@ -73,9 +71,7 @@ const Sidebar = (props: SidebarProps) => {
             classes={classes}
             {...rest}
         >
-            {cloneElement(Children.only(children), {
-                onMenuClick: defaultOnMenuClick,
-            })}
+            <div className={fixed}>{children}</div>
         </Drawer>
     );
 };
@@ -84,11 +80,11 @@ Sidebar.propTypes = {
     children: PropTypes.node.isRequired,
 };
 
-const defaultOnMenuClick = () => null;
-
 const useStyles = makeStyles(
     theme => ({
-        root: {},
+        root: {
+            height: 'calc(100vh - 3em)',
+        },
         docked: {},
         paper: {},
         paperAnchorLeft: {},
@@ -100,10 +96,19 @@ const useStyles = makeStyles(
         paperAnchorDockedRight: {},
         paperAnchorDockedBottom: {},
         modal: {},
+        fixed: {
+            position: 'fixed',
+            height: 'calc(100vh - 3em)',
+            overflowX: 'hidden',
+            // hide scrollbar
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+            '&::-webkit-scrollbar': {
+                display: 'none',
+            },
+        },
         drawerPaper: {
             position: 'relative',
-            height: '100%',
-            overflowX: 'hidden',
             width: (props: { open?: boolean }) =>
                 props.open
                     ? lodashGet(theme, 'sidebar.width', DRAWER_WIDTH)

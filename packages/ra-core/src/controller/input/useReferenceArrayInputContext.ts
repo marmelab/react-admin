@@ -1,5 +1,5 @@
 import { useContext, useMemo } from 'react';
-import merge from 'lodash/merge';
+import defaults from 'lodash/defaults';
 import {
     ReferenceArrayInputContext,
     ReferenceArrayInputContextValue,
@@ -17,12 +17,12 @@ export const useReferenceArrayInputContext = <
     // Props take precedence over the context
     return useMemo(
         () =>
-            merge(
+            defaults(
                 {},
-                context,
                 props != null
                     ? extractReferenceArrayInputContextProps(props)
-                    : {}
+                    : {},
+                context
             ),
         [context, props]
     );

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, memo } from 'react';
+import { memo, FC } from 'react';
 import { SvgIconComponent } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
@@ -25,73 +25,70 @@ const useStyles = makeStyles(
     }
 );
 
-export const BooleanField: FC<BooleanFieldProps> = memo<BooleanFieldProps>(
-    props => {
-        const {
-            className,
-            classes: classesOverride,
-            emptyText,
-            source,
-            valueLabelTrue,
-            valueLabelFalse,
-            TrueIcon,
-            FalseIcon,
-            ...rest
-        } = props;
-        const record = useRecordContext(props);
-        const translate = useTranslate();
-        const classes = useStyles(props);
-        const value = get(record, source);
-        let ariaLabel = value ? valueLabelTrue : valueLabelFalse;
+const BooleanField: FC<BooleanFieldProps> = memo(props => {
+    const {
+        className,
+        classes: classesOverride,
+        emptyText,
+        source,
+        valueLabelTrue,
+        valueLabelFalse,
+        TrueIcon,
+        FalseIcon,
+        looseValue,
+        ...rest
+    } = props;
+    const record = useRecordContext(props);
+    const translate = useTranslate();
+    const classes = useStyles(props);
+    const value = get(record, source);
+    const isTruthyValue = value === true || (looseValue && value);
+    let ariaLabel = value ? valueLabelTrue : valueLabelFalse;
 
-        if (!ariaLabel) {
-            ariaLabel =
-                value === false ? 'ra.boolean.false' : 'ra.boolean.true';
-        }
+    if (!ariaLabel) {
+        ariaLabel = isTruthyValue ? 'ra.boolean.true' : 'ra.boolean.false';
+    }
 
-        if (value === false || value === true) {
-            return (
-                <Typography
-                    component="span"
-                    variant="body2"
-                    className={classnames(classes.root, className)}
-                    {...sanitizeFieldRestProps(rest)}
-                >
-                    <Tooltip title={translate(ariaLabel, { _: ariaLabel })}>
-                        {value === true ? (
-                            <span>
-                                <TrueIcon data-testid="true" fontSize="small" />
-                            </span>
-                        ) : (
-                            <span>
-                                <FalseIcon
-                                    data-testid="false"
-                                    fontSize="small"
-                                />
-                            </span>
-                        )}
-                    </Tooltip>
-                </Typography>
-            );
-        }
-
+    if (looseValue || value === false || value === true) {
         return (
             <Typography
                 component="span"
                 variant="body2"
-                className={className}
+                className={classnames(classes.root, className)}
                 {...sanitizeFieldRestProps(rest)}
             >
-                {emptyText}
+                <Tooltip title={translate(ariaLabel, { _: ariaLabel })}>
+                    {isTruthyValue ? (
+                        <span>
+                            <TrueIcon data-testid="true" fontSize="small" />
+                        </span>
+                    ) : (
+                        <span>
+                            <FalseIcon data-testid="false" fontSize="small" />
+                        </span>
+                    )}
+                </Tooltip>
             </Typography>
         );
     }
-);
+
+    return (
+        <Typography
+            component="span"
+            variant="body2"
+            className={className}
+            {...sanitizeFieldRestProps(rest)}
+        >
+            {emptyText}
+        </Typography>
+    );
+});
 
 BooleanField.defaultProps = {
     addLabel: true,
     TrueIcon: DoneIcon,
     FalseIcon: ClearIcon,
+    looseValue: false,
 };
 
 BooleanField.propTypes = {
@@ -102,7 +99,10 @@ BooleanField.propTypes = {
     valueLabelTrue: PropTypes.string,
     TrueIcon: PropTypes.elementType,
     FalseIcon: PropTypes.elementType,
+    looseValue: PropTypes.bool,
 };
+
+BooleanField.displayName = 'BooleanField';
 
 export interface BooleanFieldProps
     extends PublicFieldProps,
@@ -112,6 +112,7 @@ export interface BooleanFieldProps
     valueLabelFalse?: string;
     TrueIcon?: SvgIconComponent;
     FalseIcon?: SvgIconComponent;
+    looseValue?: boolean;
 }
 
 export default BooleanField;

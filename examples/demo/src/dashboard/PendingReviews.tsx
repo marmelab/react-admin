@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import {
     Avatar,
     Box,
@@ -24,7 +23,7 @@ interface Props {
     nb?: number;
 }
 
-const PendingReviews: FC<Props> = ({ reviews = [], customers = {}, nb }) => {
+const PendingReviews = ({ reviews = [], customers = {}, nb }: Props) => {
     const classes = useStyles();
     const translate = useTranslate();
     return (

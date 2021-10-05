@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { FC } from 'react';
 import { FieldProps } from 'react-admin';
 import { Customer } from '../types';
 
-const AddressField: FC<FieldProps<Customer>> = ({ record }) =>
+const AddressField = ({ record }: FieldProps<Customer>) =>
     record ? (
         <span>
             {record.address}, {record.city}, {record.stateAbbr} {record.zipcode}

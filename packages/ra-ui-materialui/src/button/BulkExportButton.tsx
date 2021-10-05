@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useCallback, FunctionComponent } from 'react';
+import { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import DownloadIcon from '@material-ui/icons/GetApp';
 import {
@@ -36,7 +36,7 @@ import Button, { ButtonProps } from './Button';
  *     </List>
  * );
  */
-const BulkExportButton: FunctionComponent<BulkExportButtonProps> = props => {
+const BulkExportButton = (props: BulkExportButtonProps) => {
     const {
         onClick,
         label = 'ra.action.export',
@@ -115,7 +115,7 @@ BulkExportButton.propTypes = {
     exporter: PropTypes.func,
     label: PropTypes.string,
     resource: PropTypes.string,
-    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
+    selectedIds: PropTypes.arrayOf(PropTypes.any),
     icon: PropTypes.element,
 };
 

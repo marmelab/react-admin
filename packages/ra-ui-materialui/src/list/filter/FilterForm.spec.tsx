@@ -2,10 +2,11 @@ import expect from 'expect';
 import { fireEvent } from '@testing-library/react';
 import * as React from 'react';
 import { renderWithRedux } from 'ra-test';
+import { minLength } from 'ra-core';
 
 import FilterForm, { mergeInitialValuesWithDefaultValues } from './FilterForm';
 import TextInput from '../../input/TextInput';
-import SelectInput from '../../input/SelectInput';
+import { SelectInput } from '../../input/SelectInput';
 
 describe('<FilterForm />', () => {
     const defaultProps = {
@@ -36,6 +37,57 @@ describe('<FilterForm />', () => {
         );
         expect(queryAllByLabelText('Title')).toHaveLength(1);
         expect(queryAllByLabelText('Name')).toHaveLength(1);
+    });
+
+    it('should change the filter when the user updates an input', () => {
+        const filters = [<TextInput source="title" label="Title" />];
+        const displayedFilters = {
+            title: true,
+        };
+        const setFilters = jest.fn();
+
+        const { queryByLabelText } = renderWithRedux(
+            <FilterForm
+                {...defaultProps}
+                filters={filters}
+                displayedFilters={displayedFilters}
+                setFilters={setFilters}
+            />
+        );
+        fireEvent.change(queryByLabelText('Title'), {
+            target: { value: 'foo' },
+        });
+        expect(setFilters).toHaveBeenCalledWith(
+            { title: 'foo' },
+            { title: true }
+        );
+    });
+
+    it('should not change the filter when the user updates an input with an invalid value', () => {
+        const filters = [
+            <TextInput
+                source="title"
+                label="Title"
+                validate={[minLength(5)]}
+            />,
+        ];
+        const displayedFilters = {
+            title: true,
+        };
+        const setFilters = jest.fn();
+
+        const { queryByLabelText } = renderWithRedux(
+            <FilterForm
+                {...defaultProps}
+                filters={filters}
+                displayedFilters={displayedFilters}
+                setFilters={setFilters}
+            />
+        );
+        fireEvent.change(queryByLabelText('Title'), {
+            target: { value: 'foo' },
+        });
+        expect(setFilters).not.toHaveBeenCalled();
     });
 
     describe('allowEmpty', () => {
@@ -162,7 +214,7 @@ describe('<FilterForm />', () => {
             ];
 
             expect(
-                mergeInitialValuesWithDefaultValues({ initialValues, filters })
+                mergeInitialValuesWithDefaultValues(initialValues, filters)
             ).toEqual({
                 title: 'initial title',
                 url: 'default url',

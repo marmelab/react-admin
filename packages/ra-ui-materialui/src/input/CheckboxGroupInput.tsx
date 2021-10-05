@@ -163,6 +163,7 @@ const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = props => 
                 resource={resource}
                 className={className}
                 isRequired={isRequired}
+                margin={margin}
             >
                 <LinearProgress />
             </Labeled>
@@ -212,6 +213,7 @@ const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = props => 
 };
 
 const sanitizeRestProps = ({
+    refetch,
     setFilter,
     setPagination,
     setSort,
@@ -236,7 +238,7 @@ const useStyles = makeStyles(
 CheckboxGroupInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
     className: PropTypes.string,
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     source: PropTypes.string,
     options: PropTypes.object,
     optionText: PropTypes.oneOfType([

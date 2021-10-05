@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { FC, Fragment, useState, ReactElement } from 'react';
+import { Fragment, useState, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ActionDelete from '@material-ui/icons/Delete';
-import { fade } from '@material-ui/core/styles/colorManipulator';
+import { alpha } from '@material-ui/core/styles/colorManipulator';
 import inflection from 'inflection';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -24,7 +24,7 @@ const useStyles = makeStyles(
         deleteButton: {
             color: theme.palette.error.main,
             '&:hover': {
-                backgroundColor: fade(theme.palette.error.main, 0.12),
+                backgroundColor: alpha(theme.palette.error.main, 0.12),
                 // Reset on mouse devices
                 '@media (hover: none)': {
                     backgroundColor: 'transparent',
@@ -37,7 +37,9 @@ const useStyles = makeStyles(
 
 const defaultIcon = <ActionDelete />;
 
-const BulkDeleteWithConfirmButton: FC<BulkDeleteWithConfirmButtonProps> = props => {
+const BulkDeleteWithConfirmButton = (
+    props: BulkDeleteWithConfirmButtonProps
+) => {
     const {
         basePath,
         classes: classesOverride,
@@ -165,7 +167,7 @@ BulkDeleteWithConfirmButton.propTypes = {
     confirmContent: PropTypes.string,
     label: PropTypes.string,
     resource: PropTypes.string,
-    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
+    selectedIds: PropTypes.arrayOf(PropTypes.any),
     icon: PropTypes.element,
 };
 

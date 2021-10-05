@@ -9,14 +9,14 @@ import {
 } from 'ra-core';
 import { renderWithRedux, TestContext } from 'ra-test';
 import { ThemeProvider } from '@material-ui/core';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
 import SaveButton from './SaveButton';
 import { Toolbar, SimpleForm } from '../form';
 import { Edit } from '../detail';
 import { TextInput } from '../input';
 
-const theme = createMuiTheme();
+const theme = createTheme();
 
 const invalidButtonDomProps = {
     basePath: '',
@@ -56,7 +56,9 @@ describe('<SaveButton />', () => {
             <TestContext>
                 <ThemeProvider theme={theme}>
                     <SaveContextProvider value={saveContextValue}>
-                        <SaveButton {...invalidButtonDomProps} />
+                        <FormContextProvider value={formContextValue}>
+                            <SaveButton {...invalidButtonDomProps} />
+                        </FormContextProvider>
                     </SaveContextProvider>
                 </ThemeProvider>
             </TestContext>
@@ -75,7 +77,9 @@ describe('<SaveButton />', () => {
             <TestContext>
                 <ThemeProvider theme={theme}>
                     <SaveContextProvider value={saveContextValue}>
-                        <SaveButton disabled={true} />
+                        <FormContextProvider value={formContextValue}>
+                            <SaveButton disabled={true} />
+                        </FormContextProvider>
                     </SaveContextProvider>
                 </ThemeProvider>
             </TestContext>
@@ -87,7 +91,9 @@ describe('<SaveButton />', () => {
         const { getByLabelText } = render(
             <TestContext>
                 <SaveContextProvider value={saveContextValue}>
-                    <SaveButton submitOnEnter />
+                    <FormContextProvider value={formContextValue}>
+                        <SaveButton submitOnEnter />
+                    </FormContextProvider>
                 </SaveContextProvider>
             </TestContext>
         );
@@ -100,7 +106,9 @@ describe('<SaveButton />', () => {
         const { getByLabelText } = render(
             <TestContext>
                 <SaveContextProvider value={saveContextValue}>
-                    <SaveButton submitOnEnter={false} />
+                    <FormContextProvider value={formContextValue}>
+                        <SaveButton submitOnEnter={false} />
+                    </FormContextProvider>
                 </SaveContextProvider>
             </TestContext>
         );
@@ -135,7 +143,12 @@ describe('<SaveButton />', () => {
         const { getByLabelText } = render(
             <TestContext>
                 <SaveContextProvider value={saveContextValue}>
-                    <SaveButton handleSubmitWithRedirect={onSubmit} saving />
+                    <FormContextProvider value={formContextValue}>
+                        <SaveButton
+                            handleSubmitWithRedirect={onSubmit}
+                            saving
+                        />
+                    </FormContextProvider>
                 </SaveContextProvider>
             </TestContext>
         );
@@ -154,10 +167,12 @@ describe('<SaveButton />', () => {
                     dispatchSpy = jest.spyOn(store, 'dispatch');
                     return (
                         <SaveContextProvider value={saveContextValue}>
-                            <SaveButton
-                                handleSubmitWithRedirect={onSubmit}
-                                invalid
-                            />
+                            <FormContextProvider value={formContextValue}>
+                                <SaveButton
+                                    handleSubmitWithRedirect={onSubmit}
+                                    invalid
+                                />
+                            </FormContextProvider>
                         </SaveContextProvider>
                     );
                 }}
@@ -335,6 +350,56 @@ describe('<SaveButton />', () => {
                 data: { id: 123, title: 'ipsum', transformed: true },
                 previousData: { id: 123, title: 'lorem' },
             });
+        });
+    });
+
+    it('should disable <SaveButton/> if an input is being validated asynchronously', async () => {
+        const dataProvider = ({
+            getOne: () =>
+                Promise.resolve({
+                    data: { id: 123, title: 'lorem' },
+                }),
+        } as unknown) as DataProvider;
+
+        const validateAsync = async (value, allValues) => {
+            await new Promise(resolve => setTimeout(resolve, 400));
+
+            if (value === 'ipsum') {
+                return 'Already used!';
+            }
+            return undefined;
+        };
+
+        const { queryByDisplayValue, getByLabelText } = renderWithRedux(
+            <DataProviderContext.Provider value={dataProvider}>
+                <ThemeProvider theme={theme}>
+                    <Edit {...defaultEditProps}>
+                        <SimpleForm>
+                            <TextInput
+                                source="title"
+                                validate={validateAsync}
+                            />
+                        </SimpleForm>
+                    </Edit>
+                </ThemeProvider>
+            </DataProviderContext.Provider>,
+            { admin: { resources: { posts: { data: {} } } } }
+        );
+        // waitFor for the dataProvider.getOne() return
+        await waitFor(() => {
+            expect(queryByDisplayValue('lorem')).toBeDefined();
+        });
+
+        // change one input to enable the SaveButton (which is disabled when the form is pristine)
+        fireEvent.change(getByLabelText('resources.posts.fields.title'), {
+            target: { value: 'ipsum' },
+        });
+
+        expect(getByLabelText('ra.action.save')['disabled']).toEqual(true);
+
+        // The SaveButton should be enabled again after validation
+        await waitFor(() => {
+            expect(getByLabelText('ra.action.save')['disabled']).toEqual(false);
         });
     });
 });

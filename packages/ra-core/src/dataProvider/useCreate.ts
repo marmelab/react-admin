@@ -10,7 +10,7 @@ import useMutation, { MutationOptions, Mutation } from './useMutation';
  * - initial: [create, { loading: false, loaded: false }]
  * - start:   [create, { loading: true, loaded: false }]
  * - success: [create, { data: [data from response], loading: false, loaded: true }]
- * - error:   [create, { error: [error from response], loading: false, loaded: true }]
+ * - error:   [create, { error: [error from response], loading: false, loaded: false }]
  *
  * @param resource The resource name, e.g. 'posts'
  * @param data The data to initialize the new record with, e.g. { title: 'hello, world' }

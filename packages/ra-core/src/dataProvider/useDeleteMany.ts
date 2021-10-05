@@ -11,7 +11,7 @@ import useMutation, { MutationOptions, Mutation } from './useMutation';
  * - initial: [deleteMany, { loading: false, loaded: false }]
  * - start:   [deleteMany, { loading: true, loaded: false }]
  * - success: [deleteMany, { data: [data from response], loading: false, loaded: true }]
- * - error:   [deleteMany, { error: [error from response], loading: false, loaded: true }]
+ * - error:   [deleteMany, { error: [error from response], loading: false, loaded: false }]
  *
  * @param resource The resource name, e.g. 'posts'
  * @param ids The resource identifiers, e.g. [123, 456]
@@ -24,7 +24,7 @@ import useMutation, { MutationOptions, Mutation } from './useMutation';
  *  - with the same syntax as useMutation: deleteMany({ resource, payload: { ids } }, options)
  *  - with no parameter (if they were already passed to useDeleteMany()): deleteMany()
  *
- * @example // set params when calling the dleteMany callback
+ * @example // set params when calling the deleteMany callback
  *
  * import { useDeleteMany } from 'react-admin';
  *

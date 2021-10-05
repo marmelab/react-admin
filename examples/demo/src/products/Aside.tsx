@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import inflection from 'inflection';
 import { Card, CardContent } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -28,7 +27,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const Aside: FC = () => {
+const Aside = () => {
     const { data, ids } = useGetList<Category>(
         'categories',
         { page: 1, perPage: 100 },

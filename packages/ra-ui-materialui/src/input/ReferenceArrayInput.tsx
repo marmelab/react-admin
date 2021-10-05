@@ -156,7 +156,6 @@ const ReferenceArrayInput = ({
     );
 
     const translate = useTranslate();
-
     return (
         <ResourceContextProvider value={props.reference}>
             <ReferenceArrayInputContextProvider value={controllerProps}>

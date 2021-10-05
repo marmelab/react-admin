@@ -6,7 +6,7 @@ import useDataProvider from './useDataProvider';
 import useVersion from '../controller/useVersion';
 import getFetchType from './getFetchType';
 import { useSafeSetState } from '../util/hooks';
-import { ReduxState, OnSuccess, OnFailure } from '../types';
+import { ReduxState, OnSuccess, OnFailure, DataProvider } from '../types';
 
 export interface DataProviderQuery {
     type: string;
@@ -14,13 +14,15 @@ export interface DataProviderQuery {
     payload: object;
 }
 
+export type Refetch = () => void;
+
 export interface UseQueryWithStoreValue {
     data?: any;
     total?: number;
     error?: any;
     loading: boolean;
     loaded: boolean;
-    refetch: () => void;
+    refetch: Refetch;
 }
 
 export interface QueryOptions {
@@ -68,9 +70,9 @@ const defaultIsDataLoaded = (data: any): boolean => data !== undefined;
  *
  * The return value updates according to the request state:
  *
- * - start: { loading: true, loaded: false }
- * - success: { data: [data from response], total: [total from response], loading: false, loaded: true }
- * - error: { error: [error from response], loading: false, loaded: true }
+ * - start: { loading: true, loaded: false, refetch }
+ * - success: { data: [data from response], total: [total from response], loading: false, loaded: true, refetch }
+ * - error: { error: [error from response], loading: false, loaded: false, refetch }
  *
  * This hook will return the cached result when called a second time
  * with the same parameters, until the response arrives.
@@ -88,7 +90,7 @@ const defaultIsDataLoaded = (data: any): boolean => data !== undefined;
  * @param {Function} totalSelector Redux selector to get the total (optional, only for LIST queries)
  * @param {Function} isDataLoaded
  *
- * @returns The current request state. Destructure as { data, total, error, loading, loaded }.
+ * @returns The current request state. Destructure as { data, total, error, loading, loaded, refetch }.
  *
  * @example
  *
@@ -109,7 +111,10 @@ const defaultIsDataLoaded = (data: any): boolean => data !== undefined;
  *     return <div>User {data.username}</div>;
  * };
  */
-export const useQueryWithStore = <State extends ReduxState = ReduxState>(
+export const useQueryWithStore = <
+    State extends ReduxState = ReduxState,
+    TDataProvider extends DataProvider = DataProvider
+>(
     query: DataProviderQuery,
     options: QueryOptions = { action: 'CUSTOM_QUERY' },
     dataSelector: (state: State) => any = defaultDataSelector(query),
@@ -142,8 +147,8 @@ export const useQueryWithStore = <State extends ReduxState = ReduxState>(
         data,
         total,
         error: null,
-        loading: true,
-        loaded: isDataLoaded(data),
+        loading: options?.enabled === false ? false : true,
+        loaded: options?.enabled === false ? false : isDataLoaded(data),
         refetch,
     });
 
@@ -155,8 +160,8 @@ export const useQueryWithStore = <State extends ReduxState = ReduxState>(
                 data,
                 total,
                 error: null,
-                loading: true,
-                loaded: isDataLoaded(data),
+                loading: options?.enabled === false ? false : true,
+                loaded: options?.enabled === false ? false : isDataLoaded(data),
                 refetch,
             });
         } else if (!isEqual(state.data, data) || state.total !== total) {
@@ -184,9 +189,10 @@ export const useQueryWithStore = <State extends ReduxState = ReduxState>(
         total,
         isDataLoaded,
         refetch,
+        options.enabled,
     ]);
 
-    const dataProvider = useDataProvider();
+    const dataProvider = useDataProvider<TDataProvider>();
     useEffect(() => {
         // When several identical queries are issued during the same tick,
         // we only pass one query to the dataProvider.
@@ -198,6 +204,7 @@ export const useQueryWithStore = <State extends ReduxState = ReduxState>(
             queriesThisTick[requestSignature] = new Promise<PartialQueryState>(
                 resolve => {
                     dataProvider[type](resource, payload, options)
+                        // @ts-ignore
                         .then(() => {
                             // We don't care about the dataProvider response here, because
                             // it was already passed to SUCCESS reducers by the dataProvider
@@ -214,7 +221,8 @@ export const useQueryWithStore = <State extends ReduxState = ReduxState>(
                             resolve({
                                 error: null,
                                 loading: false,
-                                loaded: true,
+                                loaded:
+                                    options?.enabled === false ? false : true,
                             });
                         })
                         .catch(error => {

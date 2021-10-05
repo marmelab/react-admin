@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import TextField, { TextFieldProps } from '@material-ui/core/TextField';
 import { useInput, FieldTitle, InputProps } from 'ra-core';
@@ -14,7 +13,7 @@ import InputHelperText from './InputHelperText';
  * @returns {String} A standardized date (yyyy-MM-dd), to be passed to an <input type="date" />
  */
 const convertDateToString = (value: Date) => {
-    if (!(value instanceof Date) || isNaN(value.getDate())) return;
+    if (!(value instanceof Date) || isNaN(value.getDate())) return '';
     const pad = '00';
     const yyyy = value.getFullYear().toString();
     const MM = (value.getMonth() + 1).toString();
@@ -44,9 +43,34 @@ const getStringFromDate = (value: string | Date) => {
     return convertDateToString(new Date(value));
 };
 
-const DateInput: FunctionComponent<DateInputProps> = ({
+/**
+ * Form input to edit a Date string value in the "YYYY-MM-DD" format (e.g. '2021-06-23').
+ *
+ * Renders a date picker (the exact UI depends on the browser).
+ *
+ * @example
+ * import { Edit, SimpleForm, DateInput } from 'react-admin';
+ *
+ * const PostEdit = (props) => (
+ *     <Edit {...props}>
+ *         <SimpleForm>
+ *             <DateInput source="published_at" />
+ *         </SimpleForm>
+ *     </Edit>
+ * );
+ *
+ * @example
+ * // If the initial value is a Date object, DateInput converts it to a string
+ * // but you must pass a custom parse method to convert the form value
+ * // (which is always a date string) back to a Date object.
+ * <DateInput source="published_at" parse={val => new Date(val)} />
+ */
+const DateInput = ({
+    defaultValue,
     format = getStringFromDate,
+    initialValue,
     label,
+    name,
     options,
     source,
     resource,
@@ -59,14 +83,13 @@ const DateInput: FunctionComponent<DateInputProps> = ({
     validate,
     variant = 'filled',
     ...rest
-}) => {
-    const {
-        id,
-        input,
-        isRequired,
-        meta: { error, submitError, touched },
-    } = useInput({
+}: DateInputProps) => {
+    const { id, input, isRequired, meta } = useInput({
+        defaultValue,
         format,
+        formatOnBlur: true,
+        initialValue,
+        name,
         onBlur,
         onChange,
         onFocus,
@@ -77,10 +100,15 @@ const DateInput: FunctionComponent<DateInputProps> = ({
         ...rest,
     });
 
+    const { error, submitError, touched } = meta;
+
     return (
         <TextField
             id={id}
             {...input}
+            // Workaround https://github.com/final-form/react-final-form/issues/529
+            // & https://github.com/final-form/react-final-form/issues/431
+            value={format(input.value) || ''}
             variant={variant}
             margin={margin}
             type="date"
@@ -108,7 +136,7 @@ const DateInput: FunctionComponent<DateInputProps> = ({
 };
 
 DateInput.propTypes = {
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,

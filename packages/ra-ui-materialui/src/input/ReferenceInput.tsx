@@ -1,9 +1,4 @@
-import React, {
-    Children,
-    cloneElement,
-    FunctionComponent,
-    ReactElement,
-} from 'react';
+import React, { Children, cloneElement, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     useInput,
@@ -98,15 +93,16 @@ import ReferenceError from './ReferenceError';
  *     <AutocompleteInput optionText="title" />
  * </ReferenceInput>
  */
-const ReferenceInput: FunctionComponent<ReferenceInputProps> = ({
-    format,
-    onBlur,
-    onChange,
-    onFocus,
-    parse,
-    validate,
-    ...props
-}) => {
+const ReferenceInput = (props: ReferenceInputProps) => {
+    const {
+        format,
+        onBlur,
+        onChange,
+        onFocus,
+        parse,
+        validate,
+        ...rest
+    } = props;
     const inputProps = useInput({
         format,
         onBlur,
@@ -114,13 +110,13 @@ const ReferenceInput: FunctionComponent<ReferenceInputProps> = ({
         onFocus,
         parse,
         validate,
-        ...props,
+        ...rest,
     });
     return (
         <ReferenceInputView
             {...inputProps}
-            {...props}
-            {...useReferenceInputController({ ...props, ...inputProps })}
+            {...rest}
+            {...useReferenceInputController({ ...rest, ...inputProps })}
         />
     );
 };
@@ -189,30 +185,31 @@ export interface ReferenceInputViewProps
         ReferenceInputProps,
         Omit<UseInputValue, 'id'> {}
 
-export const ReferenceInputView: FunctionComponent<ReferenceInputViewProps> = ({
-    allowEmpty,
-    basePath,
-    children,
-    choices,
-    classes,
-    className,
-    error,
-    helperText,
-    id,
-    input,
-    isRequired,
-    label,
-    meta,
-    possibleValues,
-    resource,
-    reference,
-    setFilter,
-    setPagination,
-    setSort,
-    source,
-    warning,
-    ...rest
-}) => {
+export const ReferenceInputView = (props: ReferenceInputViewProps) => {
+    const {
+        allowEmpty,
+        basePath,
+        children,
+        choices,
+        classes,
+        className,
+        error,
+        helperText,
+        id,
+        input,
+        isRequired,
+        label,
+        meta,
+        possibleValues,
+        resource,
+        reference,
+        setFilter,
+        setPagination,
+        setSort,
+        source,
+        warning,
+        ...rest
+    } = props;
     if (Children.count(children) !== 1) {
         throw new Error('<ReferenceInput> only accepts a single child');
     }

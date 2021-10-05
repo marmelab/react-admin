@@ -5,7 +5,7 @@ import { ListControllerProps } from './useListController';
  * Context to store the result of the useListController() hook.
  *
  * Use the useListContext() hook to read the context. That's what many
- * List components do in react-admin (e.g. <Datagrid>, <Filter>, <Pagination>).
+ * List components do in react-admin (e.g. <Datagrid>, <FilterForm>, <Pagination>).
  *
  * @typedef {Object} ListControllerProps
  * @prop {Object}   data an id-based dictionary of the list data, e.g. { 123: { id: 123, title: 'hello world' }, 456: { ... } }
@@ -31,6 +31,7 @@ import { ListControllerProps } from './useListController';
  * @prop {string}   basePath deduced from the location, useful for action buttons
  * @prop {string}   defaultTitle the translated title based on the resource, e.g. 'Posts'
  * @prop {string}   resource the resource name, deduced from the location. e.g. 'posts'
+ * @prop {Function} refetch a function for triggering a refetch of the list data
  *
  * @typedef Props
  * @prop {ListControllerProps} value
@@ -70,6 +71,7 @@ const ListContext = createContext<ListControllerProps>({
     onUnselectItems: null,
     page: null,
     perPage: null,
+    refetch: null,
     resource: null,
     selectedIds: null,
     setFilters: null,

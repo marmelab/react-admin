@@ -1,14 +1,15 @@
 import * as React from 'react';
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import SettingsIcon from '@material-ui/icons/Settings';
 import LabelIcon from '@material-ui/icons/Label';
-import { useMediaQuery, Theme, Box } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import classnames from 'classnames';
 import {
     useTranslate,
     DashboardMenuItem,
     MenuItemLink,
     MenuProps,
+    ReduxState,
 } from 'react-admin';
 
 import visitors from '../visitors';
@@ -22,137 +23,150 @@ import { AppState } from '../types';
 
 type MenuName = 'menuCatalog' | 'menuSales' | 'menuCustomers';
 
-const Menu: FC<MenuProps> = ({ onMenuClick, logout, dense = false }) => {
+const Menu = ({ dense = false }: MenuProps) => {
     const [state, setState] = useState({
         menuCatalog: true,
         menuSales: true,
         menuCustomers: true,
     });
     const translate = useTranslate();
-    const isXSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('xs')
-    );
-    const open = useSelector((state: AppState) => state.admin.ui.sidebarOpen);
+    const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
     useSelector((state: AppState) => state.theme); // force rerender on theme change
+    const classes = useStyles();
 
     const handleToggle = (menu: MenuName) => {
         setState(state => ({ ...state, [menu]: !state[menu] }));
     };
 
     return (
-        <Box mt={1}>
+        <div
+            className={classnames(classes.root, {
+                [classes.open]: open,
+                [classes.closed]: !open,
+            })}
+        >
             {' '}
-            <DashboardMenuItem onClick={onMenuClick} sidebarIsOpen={open} />
+            <DashboardMenuItem />
             <SubMenu
                 handleToggle={() => handleToggle('menuSales')}
                 isOpen={state.menuSales}
-                sidebarIsOpen={open}
                 name="pos.menu.sales"
                 icon={<orders.icon />}
                 dense={dense}
             >
                 <MenuItemLink
-                    to={`/commands`}
+                    to={{
+                        pathname: '/commands',
+                        state: { _scrollToTop: true },
+                    }}
                     primaryText={translate(`resources.commands.name`, {
                         smart_count: 2,
                     })}
                     leftIcon={<orders.icon />}
-                    onClick={onMenuClick}
-                    sidebarIsOpen={open}
                     dense={dense}
                 />
                 <MenuItemLink
-                    to={`/invoices`}
+                    to={{
+                        pathname: '/invoices',
+                        state: { _scrollToTop: true },
+                    }}
                     primaryText={translate(`resources.invoices.name`, {
                         smart_count: 2,
                     })}
                     leftIcon={<invoices.icon />}
-                    onClick={onMenuClick}
-                    sidebarIsOpen={open}
                     dense={dense}
                 />
             </SubMenu>
             <SubMenu
                 handleToggle={() => handleToggle('menuCatalog')}
                 isOpen={state.menuCatalog}
-                sidebarIsOpen={open}
                 name="pos.menu.catalog"
                 icon={<products.icon />}
                 dense={dense}
             >
                 <MenuItemLink
-                    to={`/products`}
+                    to={{
+                        pathname: '/products',
+                        state: { _scrollToTop: true },
+                    }}
                     primaryText={translate(`resources.products.name`, {
                         smart_count: 2,
                     })}
                     leftIcon={<products.icon />}
-                    onClick={onMenuClick}
-                    sidebarIsOpen={open}
                     dense={dense}
                 />
                 <MenuItemLink
-                    to={`/categories`}
+                    to={{
+                        pathname: '/categories',
+                        state: { _scrollToTop: true },
+                    }}
                     primaryText={translate(`resources.categories.name`, {
                         smart_count: 2,
                     })}
                     leftIcon={<categories.icon />}
-                    onClick={onMenuClick}
-                    sidebarIsOpen={open}
                     dense={dense}
                 />
             </SubMenu>
             <SubMenu
                 handleToggle={() => handleToggle('menuCustomers')}
                 isOpen={state.menuCustomers}
-                sidebarIsOpen={open}
                 name="pos.menu.customers"
                 icon={<visitors.icon />}
                 dense={dense}
             >
                 <MenuItemLink
-                    to={`/customers`}
+                    to={{
+                        pathname: '/customers',
+                        state: { _scrollToTop: true },
+                    }}
                     primaryText={translate(`resources.customers.name`, {
                         smart_count: 2,
                     })}
                     leftIcon={<visitors.icon />}
-                    onClick={onMenuClick}
-                    sidebarIsOpen={open}
                     dense={dense}
                 />
                 <MenuItemLink
-                    to={`/segments`}
+                    to={{
+                        pathname: '/segments',
+                        state: { _scrollToTop: true },
+                    }}
                     primaryText={translate(`resources.segments.name`, {
                         smart_count: 2,
                     })}
                     leftIcon={<LabelIcon />}
-                    onClick={onMenuClick}
-                    sidebarIsOpen={open}
                     dense={dense}
                 />
             </SubMenu>
             <MenuItemLink
-                to={`/reviews`}
+                to={{
+                    pathname: '/reviews',
+                    state: { _scrollToTop: true },
+                }}
                 primaryText={translate(`resources.reviews.name`, {
                     smart_count: 2,
                 })}
                 leftIcon={<reviews.icon />}
-                onClick={onMenuClick}
-                sidebarIsOpen={open}
                 dense={dense}
             />
-            {isXSmall && (
-                <MenuItemLink
-                    to="/configuration"
-                    primaryText={translate('pos.configuration')}
-                    leftIcon={<SettingsIcon />}
-                    onClick={onMenuClick}
-                    sidebarIsOpen={open}
-                    dense={dense}
-                />
-            )}
-            {isXSmall && logout}
-        </Box>
+        </div>
     );
 };
+
+const useStyles = makeStyles(theme => ({
+    root: {
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(1),
+        transition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+    },
+    open: {
+        width: 200,
+    },
+    closed: {
+        width: 55,
+    },
+}));
 
 export default Menu;

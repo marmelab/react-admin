@@ -30,4 +30,21 @@ describe('Authentication', () => {
         ListPage.navigate();
         cy.url().then(url => expect(url).to.contain('/#/posts'));
     });
+
+    it('should redirect to initial url keeping query string', () => {
+        let urlBeforeLogout;
+
+        ListPage.navigate();
+        ListPage.addCommentableFilter();
+        cy.url().then(url => {
+            urlBeforeLogout = url;
+        });
+        ListPage.setAsNonLogged();
+        cy.reload();
+        LoginPage.login('login', 'password');
+        cy.url().then(urlAfterLogin => {
+            expect(urlAfterLogin).to.contain(urlBeforeLogout);
+        });
+        ListPage.commentableFilter().should('exist');
+    });
 });

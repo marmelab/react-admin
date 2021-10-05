@@ -6,6 +6,7 @@ import get from 'lodash/get';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import ErrorIcon from '@material-ui/icons/Error';
+import { useSelector } from 'react-redux';
 import {
     useReference,
     UseReferenceProps,
@@ -15,6 +16,7 @@ import {
     RecordContextProvider,
     Record,
     useRecordContext,
+    ReduxState,
 } from 'ra-core';
 
 import LinearProgress from '../layout/LinearProgress';
@@ -70,6 +72,16 @@ import { ClassesOverride } from '../types';
 const ReferenceField: FC<ReferenceFieldProps> = props => {
     const { source, emptyText, ...rest } = props;
     const record = useRecordContext(props);
+    const isReferenceDeclared = useSelector<ReduxState, boolean>(
+        state => typeof state.admin.resources[props.reference] !== 'undefined'
+    );
+
+    if (!isReferenceDeclared) {
+        throw new Error(
+            `You must declare a <Resource name="${props.reference}"> in order to use a <ReferenceField reference="${props.reference}">`
+        );
+    }
+
     return get(record, source) == null ? (
         emptyText ? (
             <Typography component="span" variant="body2">
@@ -188,6 +200,7 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
         record,
         reference,
         referenceRecord,
+        refetch,
         resource,
         resourceLinkPath,
         source,
@@ -196,9 +209,6 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
     } = props;
     const classes = useStyles(props);
 
-    if (!loaded) {
-        return <LinearProgress />;
-    }
     if (error) {
         return (
             /* eslint-disable jsx-a11y/role-supports-aria-props */
@@ -210,6 +220,9 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
             />
             /* eslint-enable */
         );
+    }
+    if (!loaded) {
+        return <LinearProgress />;
     }
     if (!referenceRecord) {
         return null;
@@ -229,6 +242,7 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
                             classes.link // force color override for Typography components
                         ),
                         record: referenceRecord,
+                        refetch,
                         resource: reference,
                         basePath,
                         translateChoice,

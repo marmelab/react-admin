@@ -1,8 +1,5 @@
 import FormInput, { FormInputProps } from './FormInput';
 import SimpleForm, { SimpleFormProps } from './SimpleForm';
-import SimpleFormIterator, {
-    SimpleFormIteratorProps,
-} from './SimpleFormIterator';
 import TabbedFormTabs, { TabbedFormTabsProps } from './TabbedFormTabs';
 import Toolbar, { ToolbarProps } from './Toolbar';
 import getFormInitialValues from './getFormInitialValues';
@@ -16,7 +13,6 @@ export * from './FormTabHeader';
 export type {
     FormInputProps,
     SimpleFormProps,
-    SimpleFormIteratorProps,
     TabbedFormTabsProps,
     SimpleFormViewProps,
     TabbedFormViewProps,
@@ -27,7 +23,6 @@ export {
     FormInput,
     SimpleForm,
     SimpleFormView,
-    SimpleFormIterator,
     TabbedFormTabs,
     TabbedFormView,
     Toolbar,

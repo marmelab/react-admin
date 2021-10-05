@@ -131,7 +131,8 @@ describe('<ReferenceField />', () => {
                     >
                         <TextField source="title" />
                     </ReferenceField>
-                </DataProviderContext.Provider>
+                </DataProviderContext.Provider>,
+                { admin: { resources: { posts: { data: {} } } } }
             );
             await new Promise(resolve => setTimeout(resolve, 10));
             expect(queryByRole('progressbar')).toBeNull();
@@ -156,7 +157,8 @@ describe('<ReferenceField />', () => {
                     >
                         <TextField source="title" />
                     </ReferenceField>
-                </DataProviderContext.Provider>
+                </DataProviderContext.Provider>,
+                { admin: { resources: { posts: { data: {} } } } }
             );
             await new Promise(resolve => setTimeout(resolve, 10));
             expect(queryByRole('progressbar')).toBeNull();
@@ -176,7 +178,8 @@ describe('<ReferenceField />', () => {
                 emptyText="EMPTY"
             >
                 <TextField source="title" />
-            </ReferenceField>
+            </ReferenceField>,
+            { admin: { resources: { posts: { data: {} } } } }
         );
         expect(getByText('EMPTY')).not.toBeNull();
     });
@@ -260,7 +263,8 @@ describe('<ReferenceField />', () => {
                         <TextField source="title" />
                     </ReferenceField>
                 </MemoryRouter>
-            </DataProviderContext.Provider>
+            </DataProviderContext.Provider>,
+            { admin: { resources: { posts: { data: {} } } } }
         );
         await waitFor(() => {
             const action = dispatch.mock.calls[0][0];
@@ -274,7 +278,7 @@ describe('<ReferenceField />', () => {
         const dataProvider = {
             getMany: jest.fn(() => Promise.reject('boo')),
         };
-        const { getByRole } = renderWithRedux(
+        const { queryByRole } = renderWithRedux(
             // @ts-ignore-line
             <DataProviderContext.Provider value={dataProvider}>
                 <ReferenceField
@@ -286,12 +290,70 @@ describe('<ReferenceField />', () => {
                 >
                     <TextField source="title" />
                 </ReferenceField>
-            </DataProviderContext.Provider>
+            </DataProviderContext.Provider>,
+            { admin: { resources: { posts: { data: {} } } } }
         );
         await waitFor(() => {
-            const ErrorIcon = getByRole('presentation', { hidden: true });
-            expect(ErrorIcon).toBeDefined();
+            const ErrorIcon = queryByRole('presentation', { hidden: true });
+            expect(ErrorIcon).not.toBeNull();
             expect(ErrorIcon.getAttribute('aria-errormessage')).toBe('boo');
+        });
+    });
+
+    it('should throw an error if used without a Resource for the reference', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        class ErrorBoundary extends React.Component<
+            {
+                onError?: (
+                    error: Error,
+                    info: { componentStack: string }
+                ) => void;
+            },
+            { error: Error | null }
+        > {
+            constructor(props) {
+                super(props);
+                this.state = { error: null };
+            }
+
+            static getDerivedStateFromError(error) {
+                // Update state so the next render will show the fallback UI.
+                return { error };
+            }
+
+            componentDidCatch(error, errorInfo) {
+                // You can also log the error to an error reporting service
+                this.props.onError(error, errorInfo);
+            }
+
+            render() {
+                if (this.state.error) {
+                    // You can render any custom fallback UI
+                    return <h1>Something went wrong.</h1>;
+                }
+
+                return this.props.children;
+            }
+        }
+        const onError = jest.fn();
+        renderWithRedux(
+            <ErrorBoundary onError={onError}>
+                <ReferenceField
+                    record={{ id: 123 }}
+                    resource="comments"
+                    source="postId"
+                    reference="posts"
+                    basePath="/comments"
+                >
+                    <TextField source="title" />
+                </ReferenceField>
+            </ErrorBoundary>,
+            { admin: { resources: { comments: { data: {} } } } }
+        );
+        await waitFor(() => {
+            expect(onError.mock.calls[0][0].message).toBe(
+                'You must declare a <Resource name="posts"> in order to use a <ReferenceField reference="posts">'
+            );
         });
     });
 

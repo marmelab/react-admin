@@ -16,25 +16,17 @@ import {
     SelectInput,
     SimpleForm,
     TextInput,
-    Filter,
 } from 'react-admin';
 
-const PostFilter = props => (
-    <Filter {...props}>
-        <TextInput label="Search" source="q" alwaysOn />
-        <ReferenceInput
-            label="User"
-            source="userId"
-            reference="users"
-            allowEmpty
-        >
-            <SelectInput optionText="name" />
-        </ReferenceInput>
-    </Filter>
-);
+const postFilters = [
+    <TextInput source="q" label="Search" alwaysOn />,
+    <ReferenceInput source="userId" label="User" reference="users" allowEmpty>
+        <SelectInput optionText="name" />
+    </ReferenceInput>,
+];
 
 export const PostList = props => (
-    <List {...props} filters={<PostFilter />}>
+    <List {...props} filters={postFilters}>
         <Datagrid>
             <TextField source="id" />
             <ReferenceField label="User" source="userId" reference="users">

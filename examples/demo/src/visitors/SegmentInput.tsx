@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import { useTranslate, SelectInput, InputProps } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -13,7 +12,7 @@ interface Props extends Omit<InputProps, 'source'> {
     source?: string;
 }
 
-const SegmentInput: FC<Props> = props => {
+const SegmentInput = (props: Props) => {
     const translate = useTranslate();
     const classes = useStyles();
     return (

@@ -72,6 +72,41 @@ describe('<BooleanInput />', () => {
         expect(input.checked).toBe(false);
     });
 
+    it('should be checked if the value is undefined and initialValue is true', () => {
+        const { getByLabelText } = render(
+            <Form
+                onSubmit={jest.fn}
+                render={() => (
+                    <BooleanInput {...defaultProps} initialValue={true} />
+                )}
+            />
+        );
+
+        const input = getByLabelText(
+            'resources.posts.fields.isPublished'
+        ) as HTMLInputElement;
+
+        expect(input.checked).toBe(true);
+    });
+
+    it('should be checked if the value is true and initialValue is false', () => {
+        const { getByLabelText } = render(
+            <Form
+                onSubmit={jest.fn}
+                initialValues={{ isPublished: true }}
+                render={() => (
+                    <BooleanInput {...defaultProps} initialValue={false} />
+                )}
+            />
+        );
+
+        const input = getByLabelText(
+            'resources.posts.fields.isPublished'
+        ) as HTMLInputElement;
+
+        expect(input.checked).toBe(true);
+    });
+
     it('should update on click', async () => {
         const { getByLabelText } = render(
             <Form

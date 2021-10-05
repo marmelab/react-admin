@@ -1,9 +1,9 @@
 import React, {
-    FunctionComponent,
     Children,
     cloneElement,
     isValidElement,
     ReactElement,
+    ReactNode,
 } from 'react';
 import PropTypes from 'prop-types';
 import { shallowEqual } from 'react-redux';
@@ -38,11 +38,13 @@ const useStyles = makeStyles(
 
 export interface FileInputProps {
     accept?: string;
+    children?: ReactNode;
     labelMultiple?: string;
     labelSingle?: string;
     maxSize?: number;
     minSize?: number;
     multiple?: boolean;
+    placeholder?: ReactNode;
 }
 
 export interface FileInputOptions extends DropzoneOptions {
@@ -50,9 +52,7 @@ export interface FileInputOptions extends DropzoneOptions {
     onRemove?: Function;
 }
 
-const FileInput: FunctionComponent<
-    FileInputProps & InputProps<FileInputOptions>
-> = props => {
+const FileInput = (props: FileInputProps & InputProps<FileInputOptions>) => {
     const {
         accept,
         children,
@@ -222,7 +222,7 @@ const FileInput: FunctionComponent<
                                 onRemove={onRemove(file)}
                                 className={classes.removeButton}
                             >
-                                {cloneElement(childrenElement, {
+                                {cloneElement(childrenElement as ReactElement, {
                                     record: file,
                                     className: classes.preview,
                                 })}

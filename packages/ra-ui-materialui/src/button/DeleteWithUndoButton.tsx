@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { FC, ReactElement, ReactEventHandler, SyntheticEvent } from 'react';
+import { ReactElement, ReactEventHandler, SyntheticEvent } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { fade } from '@material-ui/core/styles/colorManipulator';
+import { alpha } from '@material-ui/core/styles/colorManipulator';
 import ActionDelete from '@material-ui/icons/Delete';
 import classnames from 'classnames';
 import {
@@ -16,7 +16,7 @@ import {
 
 import Button, { ButtonProps } from './Button';
 
-const DeleteWithUndoButton: FC<DeleteWithUndoButtonProps> = props => {
+export const DeleteWithUndoButton = (props: DeleteWithUndoButtonProps) => {
     const {
         label = 'ra.action.delete',
         classes: classesOverride,
@@ -65,7 +65,7 @@ const useStyles = makeStyles(
         deleteButton: {
             color: theme.palette.error.main,
             '&:hover': {
-                backgroundColor: fade(theme.palette.error.main, 0.12),
+                backgroundColor: alpha(theme.palette.error.main, 0.12),
                 // Reset on mouse devices
                 '@media (hover: none)': {
                     backgroundColor: 'transparent',
@@ -93,7 +93,6 @@ interface Props {
     pristine?: boolean;
     saving?: boolean;
     submitOnEnter?: boolean;
-    undoable?: boolean;
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
 }
@@ -116,5 +115,3 @@ DeleteWithUndoButton.propTypes = {
     resource: PropTypes.string,
     icon: PropTypes.element,
 };
-
-export default DeleteWithUndoButton;

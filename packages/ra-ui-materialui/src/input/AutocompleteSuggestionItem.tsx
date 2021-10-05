@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FunctionComponent, isValidElement, cloneElement } from 'react';
+import { isValidElement, cloneElement } from 'react';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import { MenuItem } from '@material-ui/core';
@@ -26,7 +26,8 @@ const useStyles = makeStyles(
     { name: 'RaAutocompleteSuggestionItem' }
 );
 
-interface Props {
+export interface AutocompleteSuggestionItemProps {
+    createValue?: any;
     suggestion: any;
     index: number;
     highlightedIndex: number;
@@ -36,10 +37,12 @@ interface Props {
     getSuggestionText: (suggestion: any) => string;
 }
 
-const AutocompleteSuggestionItem: FunctionComponent<
-    Props & MenuItemProps<'li', { button?: true }>
-> = props => {
+const AutocompleteSuggestionItem = (
+    props: AutocompleteSuggestionItemProps &
+        MenuItemProps<'li', { button?: true }>
+) => {
     const {
+        createValue,
         suggestion,
         index,
         highlightedIndex,
@@ -51,7 +54,10 @@ const AutocompleteSuggestionItem: FunctionComponent<
     } = props;
     const classes = useStyles(props);
     const isHighlighted = highlightedIndex === index;
-    const suggestionText = getSuggestionText(suggestion);
+    const suggestionText =
+        'id' in suggestion && suggestion.id === createValue
+            ? suggestion.name
+            : getSuggestionText(suggestion);
     let matches;
     let parts;
 

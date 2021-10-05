@@ -30,7 +30,7 @@ import { useCreateContext, useResourceDefinition } from 'ra-core';
  *         </Create>
  *     );
  */
-const CreateActions = ({ className, ...rest }: CreateActionsProps) => {
+export const CreateActions = ({ className, ...rest }: CreateActionsProps) => {
     const { basePath } = useCreateContext(rest);
     const { hasList } = useResourceDefinition(rest);
     return (
@@ -48,18 +48,22 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-interface CreateActionsProps {
+export interface CreateActionsProps {
     basePath?: string;
     className?: string;
-    hasShow?: boolean;
+    hasCreate?: boolean;
+    hasEdit?: boolean;
     hasList?: boolean;
+    hasShow?: boolean;
     resource?: string;
 }
 
 CreateActions.propTypes = {
     basePath: PropTypes.string,
     className: PropTypes.string,
+    hasCreate: PropTypes.bool,
+    hasEdit: PropTypes.bool,
+    hasShow: PropTypes.bool,
     hasList: PropTypes.bool,
+    resource: PropTypes.string,
 };
-
-export default CreateActions;

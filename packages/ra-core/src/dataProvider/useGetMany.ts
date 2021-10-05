@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -12,6 +12,8 @@ import { Identifier, Record, ReduxState, DataProviderProxy } from '../types';
 import { useSafeSetState } from '../util/hooks';
 import useDataProvider from './useDataProvider';
 import { useEffect } from 'react';
+import { useVersion } from '../controller';
+import { Refetch } from './useQueryWithStore';
 
 type Callback = (args?: any) => void;
 type SetState = (args: any) => void;
@@ -34,6 +36,7 @@ interface UseGetManyResult {
     error?: any;
     loading: boolean;
     loaded: boolean;
+    refetch: Refetch;
 }
 let queriesToCall: QueriesToCall = {};
 let dataProvider: DataProviderProxy;
@@ -46,9 +49,9 @@ const DataProviderOptions = { action: CRUD_GET_MANY };
  *
  * The return value updates according to the request state:
  *
- * - start: { loading: true, loaded: false }
- * - success: { data: [data from response], loading: false, loaded: true }
- * - error: { error: [error from response], loading: false, loaded: true }
+ * - start: { loading: true, loaded: false, refetch }
+ * - success: { data: [data from response], loading: false, loaded: true, refetch }
+ * - error: { error: [error from response], loading: false, loaded: false, refetch }
  *
  * This hook will return the cached result when called a second time
  * with the same parameters, until the response arrives.
@@ -69,7 +72,7 @@ const DataProviderOptions = { action: CRUD_GET_MANY };
  * @param {Function} options.onSuccess Side effect function to be executed upon success, e.g. { onSuccess: { refresh: true } }
  * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) }
  *
- * @returns The current request state. Destructure as { data, error, loading, loaded }.
+ * @returns The current request state. Destructure as { data, error, loading, loaded, refetch }.
  *
  * @example
  *
@@ -91,7 +94,7 @@ const DataProviderOptions = { action: CRUD_GET_MANY };
 const useGetMany = (
     resource: string,
     ids: Identifier[],
-    options: UseGetManyOptions = {}
+    options: UseGetManyOptions = { enabled: true }
 ): UseGetManyResult => {
     // we can't use useQueryWithStore here because we're aggregating queries first
     // therefore part of the useQueryWithStore logic will have to be repeated below
@@ -99,48 +102,73 @@ const useGetMany = (
     const data = useSelector((state: ReduxState) =>
         selectMany(state, resource, ids)
     );
+    const version = useVersion(); // used to allow force reload
+    // used to force a refetch without relying on version
+    // which might trigger other queries as well
+    const [innerVersion, setInnerVersion] = useSafeSetState(0);
+
+    const refetch = useCallback(() => {
+        setInnerVersion(prevInnerVersion => prevInnerVersion + 1);
+    }, [setInnerVersion]);
+
     const [state, setState] = useSafeSetState({
         data,
         error: null,
         loading: ids.length !== 0,
-        loaded:
-            ids.length === 0 ||
-            (data.length !== 0 && !data.includes(undefined)),
+        loaded: data.length !== 0 && !data.includes(undefined),
+        refetch,
     });
     if (!isEqual(state.data, data)) {
         setState({
             ...state,
             data,
-            loaded: true,
         });
     }
     dataProvider = useDataProvider(); // not the best way to pass the dataProvider to a function outside the hook, but I couldn't find a better one
-    useEffect(() => {
-        if (!queriesToCall[resource]) {
-            queriesToCall[resource] = [];
-        }
-        /**
-         * queriesToCall stores the queries to call under the following shape:
-         *
-         * {
-         *   'posts': [
-         *     { ids: [1, 2], setState }
-         *     { ids: [2, 3], setState, onSuccess }
-         *     { ids: [4, 5], setState }
-         *   ],
-         *   'comments': [
-         *     { ids: [345], setState, onFailure }
-         *   ]
-         * }
-         */
-        queriesToCall[resource] = queriesToCall[resource].concat({
-            ids,
-            setState,
-            onSuccess: options && options.onSuccess,
-            onFailure: options && options.onFailure,
-        });
-        callQueries(); // debounced by lodash
-    }, [JSON.stringify({ resource, ids, options }), dataProvider]); // eslint-disable-line react-hooks/exhaustive-deps
+    useEffect(
+        () => {
+            if (options.enabled === false) {
+                return;
+            }
+
+            if (!queriesToCall[resource]) {
+                queriesToCall[resource] = [];
+            }
+            /**
+             * queriesToCall stores the queries to call under the following shape:
+             *
+             * {
+             *   'posts': [
+             *     { ids: [1, 2], setState }
+             *     { ids: [2, 3], setState, onSuccess }
+             *     { ids: [4, 5], setState }
+             *   ],
+             *   'comments': [
+             *     { ids: [345], setState, onFailure }
+             *   ]
+             * }
+             */
+            queriesToCall[resource] = queriesToCall[resource].concat({
+                ids,
+                setState,
+                onSuccess: options && options.onSuccess,
+                onFailure: options && options.onFailure,
+            });
+            callQueries(); // debounced by lodash
+        },
+        /* eslint-disable react-hooks/exhaustive-deps */
+        [
+            JSON.stringify({
+                resource,
+                ids,
+                options,
+                version,
+                innerVersion,
+            }),
+            dataProvider,
+        ]
+        /* eslint-enable react-hooks/exhaustive-deps */
+    );
 
     return state;
 };

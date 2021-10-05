@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import {
     DateInput,
     Edit,
@@ -22,7 +21,7 @@ import SegmentsInput from './SegmentsInput';
 import { validatePasswords } from './VisitorCreate';
 import { Customer } from '../types';
 
-const VisitorEdit: FC<EditProps> = props => {
+const VisitorEdit = (props: EditProps) => {
     return (
         <Edit
             title={<VisitorTitle />}
@@ -35,7 +34,7 @@ const VisitorEdit: FC<EditProps> = props => {
     );
 };
 
-const VisitorTitle: FC<FieldProps<Customer>> = ({ record }) =>
+const VisitorTitle = ({ record }: FieldProps<Customer>) =>
     record ? <FullNameField record={record} size="32" /> : null;
 
 const VisitorForm = (props: any) => {

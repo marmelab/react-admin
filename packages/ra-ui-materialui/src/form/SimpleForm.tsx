@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ReactElement, ReactNode, HtmlHTMLAttributes } from 'react';
+import { ReactElement, ReactNode, HtmlHTMLAttributes } from 'react';
 import PropTypes from 'prop-types';
 import { FormWithRedirect, FormWithRedirectProps, MutationMode } from 'ra-core';
 import { SimpleFormView } from './SimpleFormView';
@@ -39,7 +39,7 @@ import { SimpleFormView } from './SimpleFormView';
  *
  * @param {Props} props
  */
-const SimpleForm: FC<SimpleFormProps> = props => (
+const SimpleForm = (props: SimpleFormProps) => (
     <FormWithRedirect
         {...props}
         render={formProps => <SimpleFormView {...formProps} />}

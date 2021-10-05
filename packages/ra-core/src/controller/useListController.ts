@@ -7,6 +7,7 @@ import useRecordSelection from './useRecordSelection';
 import useTranslate from '../i18n/useTranslate';
 import useNotify from '../sideEffect/useNotify';
 import { useGetMainList } from '../dataProvider/useGetMainList';
+import { Refetch } from '../dataProvider/useQueryWithStore';
 import { SORT_ASC } from '../reducer/admin/resource/list/queryReducer';
 import { CRUD_GET_LIST } from '../actions';
 import defaultExporter from '../export/defaultExporter';
@@ -23,7 +24,7 @@ import { useResourceContext, useGetResourceLabel } from '../core';
 export interface ListProps {
     // the props you can change
     filter?: FilterPayload;
-    filters?: ReactElement<any>;
+    filters?: ReactElement | ReactElement[];
     filterDefaultValues?: object;
     perPage?: number;
     sort?: SortPayload;
@@ -69,6 +70,7 @@ export interface ListControllerProps<RecordType extends Record = Record> {
     onUnselectItems: () => void;
     page: number;
     perPage: number;
+    refetch: Refetch;
     resource: string;
     selectedIds: Identifier[];
     setFilters: (
@@ -147,9 +149,15 @@ const useListController = <RecordType extends Record = Record>(
      * We want the list of ids to be always available for optimistic rendering,
      * and therefore we need a custom action (CRUD_GET_LIST) that will be used.
      */
-    const { ids, data, total, error, loading, loaded } = useGetMainList<
-        RecordType
-    >(
+    const {
+        ids,
+        data,
+        total,
+        error,
+        loading,
+        loaded,
+        refetch,
+    } = useGetMainList<RecordType>(
         resource,
         {
             page: query.page,
@@ -226,6 +234,7 @@ const useListController = <RecordType extends Record = Record>(
         onUnselectItems: selectionModifiers.clearSelection,
         page: query.page,
         perPage: query.perPage,
+        refetch,
         resource,
         selectedIds,
         setFilters: queryModifiers.setFilters,
@@ -256,6 +265,7 @@ export const injectedProps = [
     'onUnselectItems',
     'page',
     'perPage',
+    'refetch',
     'refresh',
     'resource',
     'selectedIds',

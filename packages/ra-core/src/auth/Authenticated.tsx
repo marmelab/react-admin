@@ -1,8 +1,8 @@
-import { cloneElement, ReactElement, FunctionComponent } from 'react';
+import { cloneElement, ReactElement } from 'react';
 
 import useAuthenticated from './useAuthenticated';
 
-interface Props {
+export interface AuthenticatedProps {
     children: ReactElement<any>;
     authParams?: object;
     location?: object; // kept for backwards compatibility, unused
@@ -36,12 +36,13 @@ interface Props {
  *         </Admin>
  *     );
  */
-const Authenticated: FunctionComponent<Props> = ({
-    authParams,
-    children,
-    location, // kept for backwards compatibility, unused
-    ...rest
-}) => {
+const Authenticated = (props: AuthenticatedProps) => {
+    const {
+        authParams,
+        children,
+        location, // kept for backwards compatibility, unused
+        ...rest
+    } = props;
     useAuthenticated(authParams);
     // render the child even though the useAuthenticated() call isn't finished (optimistic rendering)
     // the above hook will log out if the authProvider doesn't validate that the user is authenticated

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import {
     Create,
     FormTab,
@@ -26,7 +25,7 @@ export const styles = {
 
 const useStyles = makeStyles(styles);
 
-const ProductCreate: FC<CreateProps> = props => {
+const ProductCreate = (props: CreateProps) => {
     const classes = useStyles();
     return (
         <Create {...props}>

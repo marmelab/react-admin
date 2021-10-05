@@ -3,10 +3,10 @@ import * as React from 'react';
 import expect from 'expect';
 import { TestContext } from 'ra-test';
 import { ThemeProvider } from '@material-ui/core';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 import Button from './Button';
 
-const theme = createMuiTheme();
+const theme = createTheme();
 
 const invalidButtonDomProps = {
     basePath: '',

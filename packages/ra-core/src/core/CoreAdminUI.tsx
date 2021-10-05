@@ -1,11 +1,5 @@
 import * as React from 'react';
-import {
-    createElement,
-    FunctionComponent,
-    ComponentType,
-    useMemo,
-    useEffect,
-} from 'react';
+import { createElement, ComponentType, useMemo, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import CoreAdminRouter from './CoreAdminRouter';
@@ -24,9 +18,7 @@ import {
 
 export type ChildrenFunction = () => ComponentType[];
 
-const DefaultLayout: FunctionComponent<CoreLayoutProps> = ({ children }) => (
-    <>{children}</>
-);
+const DefaultLayout = ({ children }: CoreLayoutProps) => <>{children}</>;
 
 export interface AdminUIProps {
     catchAll?: CatchAllComponent;
@@ -47,21 +39,23 @@ export interface AdminUIProps {
 // for BC
 export type CoreAdminUIProps = AdminUIProps;
 
-const CoreAdminUI: FunctionComponent<AdminUIProps> = ({
-    catchAll = Noop,
-    children,
-    customRoutes = [],
-    dashboard,
-    disableTelemetry = false,
-    layout = DefaultLayout,
-    loading = Noop,
-    loginPage = false,
-    logout,
-    menu, // deprecated, use a custom layout instead
-    ready = Ready,
-    theme,
-    title = 'React Admin',
-}) => {
+const CoreAdminUI = (props: AdminUIProps) => {
+    const {
+        catchAll = Noop,
+        children,
+        customRoutes = [],
+        dashboard,
+        disableTelemetry = false,
+        layout = DefaultLayout,
+        loading = Noop,
+        loginPage = false,
+        logout,
+        menu, // deprecated, use a custom layout instead
+        ready = Ready,
+        theme,
+        title = 'React Admin',
+    } = props;
+
     const logoutElement = useMemo(() => logout && createElement(logout), [
         logout,
     ]);

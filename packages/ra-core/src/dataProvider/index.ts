@@ -2,8 +2,8 @@ import convertLegacyDataProvider from './convertLegacyDataProvider';
 import DataProviderContext from './DataProviderContext';
 import HttpError from './HttpError';
 import * as fetchUtils from './fetch';
-import Mutation from './Mutation';
-import Query from './Query';
+import Mutation, { MutationProps } from './Mutation';
+import Query, { QueryProps } from './Query';
 import cacheDataProviderProxy from './cacheDataProviderProxy';
 import undoableEventEmitter from './undoableEventEmitter';
 import useDataProvider from './useDataProvider';
@@ -26,7 +26,7 @@ import useIsAutomaticRefreshEnabled from './useIsAutomaticRefreshEnabled';
 export * from './useQueryWithStore';
 export * from './useQuery';
 
-export type { UseMutationValue, UseGetOneHookValue };
+export type { QueryProps, UseMutationValue, UseGetOneHookValue, MutationProps };
 
 export {
     cacheDataProviderProxy,

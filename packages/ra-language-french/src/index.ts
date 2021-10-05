@@ -13,6 +13,7 @@ const frenchMessages: TranslationMessages = {
             clone: 'Dupliquer',
             confirm: 'Confirmer',
             create: 'Créer',
+            create_item: 'Créer %{item}',
             delete: 'Supprimer',
             edit: 'Éditer',
             export: 'Exporter',
@@ -21,6 +22,8 @@ const frenchMessages: TranslationMessages = {
             remove_filter: 'Supprimer ce filtre',
             remove: 'Supprimer',
             save: 'Enregistrer',
+            select_all: 'Tout sélectionner',
+            select_row: 'Sélectionner cette ligne',
             search: 'Rechercher',
             show: 'Afficher',
             sort: 'Trier',
@@ -30,6 +33,9 @@ const frenchMessages: TranslationMessages = {
             close: 'Fermer',
             open_menu: 'Ouvrir le menu',
             close_menu: 'Fermer le menu',
+            update: 'Modifier',
+            move_up: 'Déplacer vers le haut',
+            move_down: 'Déplacer vers le bas',
         },
         boolean: {
             true: 'Oui',
@@ -80,6 +86,10 @@ const frenchMessages: TranslationMessages = {
                 'Êtes-vous sûr(e) de vouloir supprimer cet élément ? |||| Êtes-vous sûr(e) de vouloir supprimer ces %{smart_count} éléments ?',
             bulk_delete_title:
                 'Supprimer %{name} |||| Supprimer %{smart_count} %{name}',
+            bulk_update_content:
+                'Êtes-vous sûr(e) de vouloir modifier cet élément ? |||| Êtes-vous sûr(e) de vouloir modifier ces %{smart_count} éléments ?',
+            bulk_update_title:
+                'Modifier %{name} |||| Modifier %{smart_count} %{name}',
             delete_content:
                 'Êtes-vous sûr(e) de vouloir supprimer cet élément ?',
             delete_title: 'Supprimer %{name} #%{id}',
@@ -137,6 +147,8 @@ const frenchMessages: TranslationMessages = {
                 'Erreur de chargement des traductions pour la langue sélectionnée',
             canceled: 'Action annulée',
             logged_out: 'Votre session a pris fin, veuillez vous reconnecter.',
+            not_authorized:
+                "Vous n'êtes pas autorisé(e) à accéder à cette ressource.",
         },
         validation: {
             required: 'Ce champ est requis',

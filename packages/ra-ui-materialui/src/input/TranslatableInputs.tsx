@@ -62,13 +62,17 @@ import { makeStyles } from '@material-ui/core/styles';
  * * @param {string[]} props.locales An array of the possible locales. For example: `['en', 'fr'].
  * * @param {ReactElement} props.selector The element responsible for selecting a locale. Defaults to Material UI tabs.
  */
-export const TranslatableInputs = (props: TranslatableProps): ReactElement => {
+export const TranslatableInputs = (
+    props: TranslatableInputsProps
+): ReactElement => {
     const {
         defaultLocale,
         locales,
         groupKey = '',
         selector = <TranslatableInputsTabs groupKey={groupKey} />,
         children,
+        variant,
+        margin,
     } = props;
     const context = useTranslatable({ defaultLocale, locales });
     const classes = useStyles(props);
@@ -82,6 +86,8 @@ export const TranslatableInputs = (props: TranslatableProps): ReactElement => {
                         key={locale}
                         locale={locale}
                         groupKey={groupKey}
+                        variant={variant}
+                        margin={margin}
                     >
                         {children}
                     </TranslatableInputsTabContent>
@@ -91,10 +97,12 @@ export const TranslatableInputs = (props: TranslatableProps): ReactElement => {
     );
 };
 
-export interface TranslatableProps extends UseTranslatableOptions {
+export interface TranslatableInputsProps extends UseTranslatableOptions {
     selector?: ReactElement;
     children: ReactNode;
     groupKey?: string;
+    margin?: 'none' | 'normal' | 'dense';
+    variant?: 'standard' | 'outlined' | 'filled';
 }
 
 const useStyles = makeStyles(

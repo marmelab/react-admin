@@ -124,7 +124,7 @@ export const addOneRecord = (
         [newRecord.id]: isEqual(newRecord, oldRecords[newRecord.id])
             ? oldRecords[newRecord.id] // do not change the record to avoid a redraw
             : newRecord,
-    };
+    } as RecordSetWithDate;
 
     return Object.defineProperty(newRecordsById, 'fetchedAt', {
         value: { ...oldRecords.fetchedAt, [newRecord.id]: date },

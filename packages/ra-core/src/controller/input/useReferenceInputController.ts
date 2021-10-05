@@ -17,6 +17,7 @@ import { useSortState } from '..';
 import useFilterState from '../useFilterState';
 import useSelectionState from '../useSelectionState';
 import { useResourceContext } from '../../core';
+import { Refetch } from '../../dataProvider';
 
 const defaultReferenceSource = (resource: string, source: string) =>
     `${resource}@${source}`;
@@ -122,6 +123,7 @@ export const useReferenceInputController = (
         loaded: possibleValuesLoaded,
         loading: possibleValuesLoading,
         error: possibleValuesError,
+        refetch: refetchGetList,
     } = useGetList(reference, pagination, sort, filterValues, {
         action: 'CUSTOM_QUERY',
         enabled: enableGetChoices ? enableGetChoices(filterValues) : true,
@@ -130,6 +132,7 @@ export const useReferenceInputController = (
     // fetch current value
     const {
         referenceRecord,
+        refetch: refetchReference,
         error: referenceError,
         loading: referenceLoading,
         loaded: referenceLoaded,
@@ -160,6 +163,11 @@ export const useReferenceInputController = (
         translate,
     });
 
+    const refetch = useCallback(() => {
+        refetchGetList();
+        refetchReference();
+    }, [refetchGetList, refetchReference]);
+
     return {
         // should match the ListContext shape
         possibleValues: {
@@ -186,6 +194,7 @@ export const useReferenceInputController = (
             onSelect,
             onToggleItem,
             onUnselectItems,
+            refetch,
             resource,
         },
         referenceRecord: {
@@ -193,6 +202,7 @@ export const useReferenceInputController = (
             loaded: referenceLoaded,
             loading: referenceLoading,
             error: referenceError,
+            refetch: refetchReference,
         },
         dataStatus: {
             error: dataStatus.error,
@@ -206,6 +216,7 @@ export const useReferenceInputController = (
         loading: possibleValuesLoading || referenceLoading,
         loaded: possibleValuesLoaded && referenceLoaded,
         filter: filterValues,
+        refetch,
         setFilter,
         pagination,
         setPagination,
@@ -225,6 +236,7 @@ export interface ReferenceInputValue {
         loaded: boolean;
         loading: boolean;
         error?: any;
+        refetch: Refetch;
     };
     dataStatus: {
         error?: any;
@@ -242,6 +254,7 @@ export interface ReferenceInputValue {
     setSort: (sort: SortPayload) => void;
     sort: SortPayload;
     warning?: string;
+    refetch: Refetch;
 }
 
 interface Option {

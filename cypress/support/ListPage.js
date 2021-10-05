@@ -4,6 +4,7 @@ export default url => ({
         appLoader: '.app-loader',
         displayedRecords: '.displayed-records',
         filter: name => `.filter-field[data-source='${name}'] input`,
+        filterButton: name => `.filter-field[data-source='${name}']`,
         filterMenuItems: `.new-filter-item`,
         menuItems: `[role=menuitem]`,
         filterMenuItem: source => `.new-filter-item[data-key="${source}"]`,
@@ -63,6 +64,15 @@ export default url => ({
         return cy.get(this.elements.pageNumber(n)).click({ force: true });
     },
 
+    addCommentableFilter() {
+        this.openFilters();
+        cy.get(this.elements.filterMenuItem('commentable')).click();
+    },
+
+    commentableFilter() {
+        return cy.get(this.elements.filterButton('commentable'));
+    },
+
     setFilterValue(name, value, clearPreviousValue = true) {
         cy.get(this.elements.filter(name));
         if (clearPreviousValue) {
@@ -86,6 +96,12 @@ export default url => ({
     logout() {
         cy.get(this.elements.userMenu).click();
         cy.get(this.elements.logout).click();
+    },
+
+    setAsNonLogged() {
+        cy.window().then(win => {
+            win.localStorage.setItem('not_authenticated', true);
+        });
     },
 
     toggleSelectAll() {

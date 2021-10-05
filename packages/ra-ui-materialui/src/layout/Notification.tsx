@@ -34,16 +34,17 @@ const useStyles = makeStyles(
             backgroundColor: theme.palette.error.light,
             color: theme.palette.error.contrastText,
         },
-        undo: {
-            color: theme.palette.primary.light,
-        },
+        undo: (props: Props & Omit<SnackbarProps, 'open'>) => ({
+            color:
+                props.type === 'success'
+                    ? theme.palette.success.contrastText
+                    : theme.palette.primary.light,
+        }),
     }),
     { name: 'RaNotification' }
 );
 
-const Notification: React.FunctionComponent<
-    Props & Omit<SnackbarProps, 'open'>
-> = props => {
+const Notification = (props: Props & Omit<SnackbarProps, 'open'>) => {
     const {
         classes: classesOverride,
         type,
@@ -91,7 +92,7 @@ const Notification: React.FunctionComponent<
                 autoHideDuration
             }
             disableWindowBlurListener={notification && notification.undoable}
-            onExited={handleExited}
+            TransitionProps={{ onExited: handleExited }}
             onClose={handleRequestClose}
             ContentProps={{
                 className: classnames(

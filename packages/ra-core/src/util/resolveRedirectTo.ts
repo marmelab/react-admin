@@ -12,7 +12,7 @@ export default (redirectTo, basePath: string, id?, data?) => {
         case 'edit':
             return linkToRecord(basePath, id);
         case 'show':
-            return `${linkToRecord(basePath, id)}/show`;
+            return linkToRecord(basePath, id, 'show');
         default:
             return redirectTo;
     }

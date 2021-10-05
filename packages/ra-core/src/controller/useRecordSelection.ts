@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useMemo } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { setListSelectedIds, toggleListItem } from '../actions/listActions';
 import { Identifier, ReduxState } from '../types';
@@ -30,23 +30,20 @@ const useRecordSelection = (
                 : defaultRecords,
         shallowEqual
     );
-    const selectionModifiers = {
-        select: useCallback(
-            (newIds: Identifier[]) => {
+    const selectionModifiers = useMemo(
+        () => ({
+            select: (newIds: Identifier[]) => {
                 dispatch(setListSelectedIds(resource, newIds));
             },
-            [resource] // eslint-disable-line react-hooks/exhaustive-deps
-        ),
-        toggle: useCallback(
-            (id: Identifier) => {
+            toggle: (id: Identifier) => {
                 dispatch(toggleListItem(resource, id));
             },
-            [resource] // eslint-disable-line react-hooks/exhaustive-deps
-        ),
-        clearSelection: useCallback(() => {
-            dispatch(setListSelectedIds(resource, []));
-        }, [resource]), // eslint-disable-line react-hooks/exhaustive-deps
-    };
+            clearSelection: () => {
+                dispatch(setListSelectedIds(resource, []));
+            },
+        }),
+        [dispatch, resource]
+    );
 
     return [selectedIds, selectionModifiers];
 };

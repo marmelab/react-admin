@@ -8,6 +8,9 @@ export const darkTheme = {
         },
         type: 'dark' as 'dark', // Switching the dark mode on is a single property value change.
     },
+    sidebar: {
+        width: 200,
+    },
     overrides: {
         MuiAppBar: {
             colorSecondary: {
@@ -62,6 +65,9 @@ export const lightTheme = {
     },
     shape: {
         borderRadius: 10,
+    },
+    sidebar: {
+        width: 200,
     },
     overrides: {
         RaMenuItemLink: {

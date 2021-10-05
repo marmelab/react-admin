@@ -10,7 +10,7 @@ import {
     useShowContext,
 } from 'ra-core';
 
-import DefaultActions from './ShowActions';
+import { ShowActions as DefaultActions } from './ShowActions';
 import TitleForRecord from '../layout/TitleForRecord';
 import { ShowProps } from '../types';
 
@@ -153,6 +153,7 @@ const sanitizeRestProps = ({
     location = null,
     match = null,
     options = null,
+    refetch = null,
     permissions = null,
     ...rest
 }) => rest;

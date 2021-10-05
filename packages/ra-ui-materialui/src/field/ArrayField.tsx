@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {
-    FC,
     cloneElement,
     Children,
     useEffect,
     useState,
     memo,
+    FC,
     ReactElement,
 } from 'react';
 import get from 'lodash/get';
@@ -118,7 +118,7 @@ const getDataAndIds = (
  *     );
  *     TagsField.defaultProps = { addLabel: true };
  */
-export const ArrayField: FC<ArrayFieldProps> = memo<ArrayFieldProps>(props => {
+export const ArrayField: FC<ArrayFieldProps> = memo(props => {
     const {
         addLabel,
         basePath,
@@ -153,7 +153,7 @@ export const ArrayField: FC<ArrayFieldProps> = memo<ArrayFieldProps>(props => {
                 filterValues: null,
                 hasCreate: null,
                 hideFilter: null,
-                loaded: null,
+                loaded: true,
                 onSelect: null,
                 onToggleItem: null,
                 onUnselectItems: null,
@@ -173,7 +173,7 @@ export const ArrayField: FC<ArrayFieldProps> = memo<ArrayFieldProps>(props => {
                 data,
                 loading: false,
                 basePath,
-                currentSort: {},
+                currentSort: { field: null, order: null },
                 resource,
                 ...rest,
             })}
@@ -199,5 +199,7 @@ interface State {
     data: object;
     ids: Identifier[];
 }
+
+ArrayField.displayName = 'ArrayField';
 
 export default ArrayField;
