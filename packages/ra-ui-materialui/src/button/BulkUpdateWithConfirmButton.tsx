@@ -3,8 +3,7 @@ import { Fragment, useState, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ActionUpdate from '@mui/icons-material/Update';
 import inflection from 'inflection';
-import { alpha } from '@mui/material/styles';
-import { makeStyles } from '@mui/styles';
+import { alpha, styled } from '@mui/material/styles';
 import {
     useTranslate,
     useUpdateMany,
@@ -20,21 +19,24 @@ import Confirm from '../layout/Confirm';
 import Button, { ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
 
-const useStyles = makeStyles(
-    theme => ({
-        updateButton: {
-            color: theme.palette.error.main,
-            '&:hover': {
-                backgroundColor: alpha(theme.palette.error.main, 0.12),
-                // Reset on mouse devices
-                '@media (hover: none)': {
-                    backgroundColor: 'transparent',
-                },
+const PREFIX = 'RaBulkUpdateWithConfirmButton';
+
+const classes = {
+    updateButton: `${PREFIX}-updateButton`,
+};
+
+const StyledButton = styled(Button)(({ theme }) => ({
+    [`&.${classes.updateButton}`]: {
+        color: theme.palette.error.main,
+        '&:hover': {
+            backgroundColor: alpha(theme.palette.error.main, 0.12),
+            // Reset on mouse devices
+            '@media (hover: none)': {
+                backgroundColor: 'transparent',
             },
         },
-    }),
-    { name: 'RaBulkUpdateWithConfirmButton' }
-);
+    },
+}));
 
 const defaultIcon = <ActionUpdate />;
 
@@ -46,7 +48,6 @@ const BulkUpdateWithConfirmButton = (
     const translate = useTranslate();
     const unselectAll = useUnselectAll();
     const resource = useResourceContext(props);
-    const classes = useStyles(props);
     const [isOpen, setOpen] = useState(false);
 
     const {
@@ -118,14 +119,14 @@ const BulkUpdateWithConfirmButton = (
 
     return (
         <Fragment>
-            <Button
+            <StyledButton
                 onClick={handleClick}
                 label={label}
                 className={classes.updateButton}
                 {...sanitizeRestProps(rest)}
             >
                 {icon}
-            </Button>
+            </StyledButton>
             <Confirm
                 isOpen={isOpen}
                 loading={loading}

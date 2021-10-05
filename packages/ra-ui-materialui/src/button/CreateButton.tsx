@@ -1,14 +1,33 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { ReactElement, memo, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Fab, useMediaQuery, Theme } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import ContentAdd from '@mui/icons-material/Add';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { useTranslate, useResourceContext } from 'ra-core';
 
 import Button, { ButtonProps, sanitizeButtonRestProps } from './Button';
+
+const PREFIX = 'RaCreateButton';
+
+const classes = {
+    floating: `${PREFIX}-floating`,
+};
+
+const StyledFab = styled(Fab)(({ theme }) => ({
+    [`&.${classes.floating}`]: {
+        color: theme.palette.getContrastText(theme.palette.primary.main),
+        margin: 0,
+        top: 'auto',
+        right: 20,
+        bottom: 60,
+        left: 'auto',
+        position: 'fixed',
+        zIndex: 1000,
+    },
+}));
 
 /**
  * Opens the Create view of a given resource
@@ -34,7 +53,7 @@ const CreateButton = (props: CreateButtonProps) => {
         variant,
         ...rest
     } = props;
-    const classes = useStyles(props);
+
     const translate = useTranslate();
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('md')
@@ -48,7 +67,7 @@ const CreateButton = (props: CreateButtonProps) => {
         [basePath, resource, scrollToTop]
     );
     return isSmall ? (
-        <Fab
+        <StyledFab
             component={Link}
             color="primary"
             className={classnames(classes.floating, className)}
@@ -57,7 +76,7 @@ const CreateButton = (props: CreateButtonProps) => {
             {...sanitizeButtonRestProps(rest)}
         >
             {icon}
-        </Fab>
+        </StyledFab>
     ) : (
         <Button
             component={Link}
@@ -73,22 +92,6 @@ const CreateButton = (props: CreateButtonProps) => {
 };
 
 const defaultIcon = <ContentAdd />;
-
-const useStyles = makeStyles(
-    theme => ({
-        floating: {
-            color: theme.palette.getContrastText(theme.palette.primary.main),
-            margin: 0,
-            top: 'auto',
-            right: 20,
-            bottom: 60,
-            left: 'auto',
-            position: 'fixed',
-            zIndex: 1000,
-        },
-    }),
-    { name: 'RaCreateButton' }
-);
 
 interface Props {
     basePath?: string;
