@@ -4,7 +4,7 @@ import {
     RouteComponentProps,
     match as Match,
 } from 'react-router-dom';
-import { ThemeOptions } from '@mui/material';
+import { DeprecatedThemeOptions } from '@mui/material';
 import { StaticContext } from 'react-router';
 import { Location, History, LocationState } from 'history';
 
@@ -416,13 +416,13 @@ export interface CoreLayoutProps {
         logout?: ReactNode;
         hasDashboard?: boolean;
     }>;
-    theme?: ThemeOptions;
+    theme?: DeprecatedThemeOptions;
     title?: TitleComponent;
 }
 
 export type LayoutComponent = ComponentType<CoreLayoutProps>;
 export type LoadingComponent = ComponentType<{
-    theme?: ThemeOptions;
+    theme?: DeprecatedThemeOptions;
     loadingPrimary?: string;
     loadingSecondary?: string;
 }>;
@@ -497,7 +497,7 @@ export interface AdminProps {
     logoutButton?: ComponentType;
     menu?: ComponentType;
     ready?: ComponentType;
-    theme?: ThemeOptions;
+    theme?: DeprecatedThemeOptions;
     title?: TitleComponent;
 }
 

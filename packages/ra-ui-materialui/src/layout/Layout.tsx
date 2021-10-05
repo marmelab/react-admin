@@ -13,9 +13,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { withStyles, createStyles } from '@mui/material/styles';
+import {
+    withStyles,
+    createStyles,
+    adaptV4Theme,
+    StyledEngineProvider,
+    Theme,
+} from '@mui/material/styles';
 import { ThemeProvider } from '@mui/styles';
-import { ThemeOptions } from '@mui/material';
+import { DeprecatedThemeOptions } from '@mui/material';
 import { ComponentPropType, CoreLayoutProps } from 'ra-core';
 import compose from 'lodash/flowRight';
 
@@ -27,6 +33,11 @@ import DefaultError from './Error';
 import defaultTheme from '../defaultTheme';
 import SkipNavigationButton from '../button/SkipNavigationButton';
 import { createMuiTheme } from './createMuiTheme';
+
+declare module '@mui/styles/defaultTheme' {
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    interface DefaultTheme extends Theme {}
+}
 
 const styles = theme =>
     createStyles({
@@ -50,7 +61,7 @@ const styles = theme =>
             [theme.breakpoints.up('xs')]: {
                 marginTop: theme.spacing(6),
             },
-            [theme.breakpoints.down('xs')]: {
+            [theme.breakpoints.down('sm')]: {
                 marginTop: theme.spacing(7),
             },
         },
@@ -69,7 +80,7 @@ const styles = theme =>
             [theme.breakpoints.up('xs')]: {
                 paddingLeft: 5,
             },
-            [theme.breakpoints.down('sm')]: {
+            [theme.breakpoints.down('md')]: {
                 padding: 0,
             },
         },
@@ -195,7 +206,7 @@ export interface LayoutProps
     menu?: ComponentType<MenuProps>;
     notification?: ComponentType;
     sidebar?: ComponentType<{ children: JSX.Element }>;
-    theme?: ThemeOptions;
+    theme?: DeprecatedThemeOptions;
 }
 
 export interface LayoutState {
@@ -228,19 +239,23 @@ const Layout = ({
     ...props
 }: LayoutProps): JSX.Element => {
     const themeProp = useRef(themeOverride);
-    const [theme, setTheme] = useState(() => createMuiTheme(themeOverride));
+    const [theme, setTheme] = useState(() =>
+        createMuiTheme(adaptV4Theme(themeOverride))
+    );
 
     useEffect(() => {
         if (themeProp.current !== themeOverride) {
             themeProp.current = themeOverride;
-            setTheme(createMuiTheme(themeOverride));
+            setTheme(createMuiTheme(adaptV4Theme(themeOverride)));
         }
     }, [themeOverride, themeProp, theme, setTheme]);
 
     return (
-        <ThemeProvider theme={theme}>
-            <EnhancedLayout {...props} />
-        </ThemeProvider>
+        <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={theme}>
+                <EnhancedLayout {...props} />
+            </ThemeProvider>
+        </StyledEngineProvider>
     );
 };
 

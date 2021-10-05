@@ -10,7 +10,7 @@ import {
 } from 'react-admin';
 import { makeStyles } from '@mui/material/styles';
 
-import { GridList } from './GridList';
+import { ImageList } from './ImageList';
 import { CompanyListFilter } from './CompanyListFilter';
 
 export const CompanyList = (props: ListProps) => {
@@ -26,7 +26,7 @@ export const CompanyList = (props: ListProps) => {
             sort={{ field: 'name', order: 'ASC' }}
             component="div"
         >
-            <GridList />
+            <ImageList />
         </List>
     ) : null;
 };

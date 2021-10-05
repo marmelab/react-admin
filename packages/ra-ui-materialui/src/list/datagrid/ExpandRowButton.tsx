@@ -26,6 +26,7 @@ const ExpandRowButton = ({
             aria-hidden="true"
             component="div"
             {...props}
+            size="large"
         >
             <ExpandMoreIcon />
         </IconButton>

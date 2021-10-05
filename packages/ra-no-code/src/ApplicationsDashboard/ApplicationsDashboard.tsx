@@ -14,7 +14,10 @@ import {
     createMuiTheme,
     makeStyles,
     ThemeProvider,
+    Theme,
+    StyledEngineProvider,
     unstable_createMuiStrictModeTheme,
+    adaptV4Theme,
 } from '@mui/material/styles';
 import {
     defaultTheme as RaDefaultTheme,
@@ -28,10 +31,15 @@ import {
     storeApplicationsInStorage,
 } from './applicationStorage';
 
+declare module '@mui/styles/defaultTheme' {
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    interface DefaultTheme extends Theme {}
+}
+
 const defaultTheme =
     process.env.NODE_ENV !== 'production'
         ? unstable_createMuiStrictModeTheme(RaDefaultTheme)
-        : createMuiTheme(RaDefaultTheme);
+        : createMuiTheme(adaptV4Theme(RaDefaultTheme));
 
 export const ApplicationsDashboard = ({
     onApplicationSelected,
@@ -40,9 +48,11 @@ export const ApplicationsDashboard = ({
     onApplicationSelected: any;
     theme: RaThemeOptions;
 }) => (
-    <ThemeProvider theme={createMuiTheme(theme)}>
-        <Applications onApplicationSelected={onApplicationSelected} />
-    </ThemeProvider>
+    <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={createMuiTheme(adaptV4Theme(theme))}>
+            <Applications onApplicationSelected={onApplicationSelected} />
+        </ThemeProvider>
+    </StyledEngineProvider>
 );
 
 const Applications = ({ onApplicationSelected }) => {

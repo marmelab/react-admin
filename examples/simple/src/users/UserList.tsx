@@ -43,7 +43,7 @@ const UserList = ({ permissions, ...props }) => (
         aside={<Aside />}
         bulkActionButtons={<UserBulkActionButtons />}
     >
-        {useMediaQuery((theme: Theme) => theme.breakpoints.down('sm')) ? (
+        {useMediaQuery((theme: Theme) => theme.breakpoints.down('md')) ? (
             <SimpleList
                 primaryText={record => record.name}
                 secondaryText={record =>

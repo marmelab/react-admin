@@ -14,7 +14,8 @@ import {
     Typography,
     useMediaQuery,
 } from '@mui/material';
-import { makeStyles, Theme } from '@mui/material/styles';
+import { Theme } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import jsonExport from 'jsonexport/dist';
 import {
     ListBase,
@@ -206,7 +207,7 @@ const CommentList = props => (
 );
 
 const ListView = () => {
-    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
+    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     const { defaultTitle } = useListContext();
     return (
         <>

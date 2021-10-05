@@ -33,6 +33,7 @@ export const ResourceMenuItem = (
                     pathname: `/configure/${resource.name}`,
                 }}
                 className={classes.settings}
+                size="large"
             >
                 <SettingsIcon />
             </IconButton>

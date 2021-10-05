@@ -14,7 +14,7 @@ const useStyles = makeStyles(
             [theme.breakpoints.up('md')]: {
                 height: '100%',
             },
-            [theme.breakpoints.down('lg')]: {
+            [theme.breakpoints.down('xl')]: {
                 height: '100vh',
                 marginTop: '-3em',
             },

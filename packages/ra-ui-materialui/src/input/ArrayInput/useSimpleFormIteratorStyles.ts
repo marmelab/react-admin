@@ -13,7 +13,7 @@ export const useSimpleFormIteratorStyles = makeStyles(
             display: 'flex',
             listStyleType: 'none',
             borderBottom: `solid 1px ${theme.palette.divider}`,
-            [theme.breakpoints.down('xs')]: { display: 'block' },
+            [theme.breakpoints.down('sm')]: { display: 'block' },
             '&.fade-enter': {
                 opacity: 0.01,
                 transform: 'translateX(100vw)',
@@ -34,7 +34,7 @@ export const useSimpleFormIteratorStyles = makeStyles(
             },
         },
         index: {
-            [theme.breakpoints.down('sm')]: { display: 'none' },
+            [theme.breakpoints.down('md')]: { display: 'none' },
             marginRight: theme.spacing(1),
         },
         indexContainer: {

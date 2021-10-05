@@ -2,7 +2,6 @@ import * as React from 'react';
 import expect from 'expect';
 import { fireEvent, waitFor, act } from '@testing-library/react';
 import lolex from 'lolex';
-import TextField from '@material-ui/core/TextField/TextField';
 
 import { DataProviderContext } from '../dataProvider';
 import ListController from './ListController';
@@ -112,10 +111,9 @@ describe('useListController', () => {
     describe('setFilters', () => {
         let clock;
         let fakeComponent = ({ setFilters, filterValues }) => (
-            <TextField
-                inputProps={{
-                    'aria-label': 'search',
-                }}
+            <input
+                aria-label="search"
+                type="text"
                 value={filterValues.q || ''}
                 onChange={event => {
                     setFilters({ q: event.target.value });

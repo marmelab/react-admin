@@ -94,6 +94,7 @@ const ResettableTextField = (props: ResettableTextFieldProps) => {
                             title={translate('ra.action.clear_input_value')}
                             disableRipple
                             disabled={true}
+                            size="large"
                         >
                             <ClearIcon
                                 className={classNames(
@@ -138,6 +139,7 @@ const ResettableTextField = (props: ResettableTextFieldProps) => {
                         onClick={handleClickClearButton}
                         onMouseDown={handleMouseDownClearButton}
                         disabled={disabled}
+                        size="large"
                     >
                         <ClearIcon
                             className={classNames(clearIcon, {

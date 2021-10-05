@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
 const ReviewList = (props: ListProps) => {
     const classes = useStyles();
     const isXSmall = useMediaQuery<Theme>(theme =>
-        theme.breakpoints.down('xs')
+        theme.breakpoints.down('sm')
     );
     const history = useHistory();
 

@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     nb_commands: { color: 'purple' },
     hiddenOnSmallScreens: {
         display: 'table-cell',
-        [theme.breakpoints.down('md')]: {
+        [theme.breakpoints.down('lg')]: {
             display: 'none',
         },
     },
@@ -42,9 +42,9 @@ const useStyles = makeStyles(theme => ({
 const VisitorList = (props: ListProps): ReactElement => {
     const classes = useStyles();
     const isXsmall = useMediaQuery<Theme>(theme =>
-        theme.breakpoints.down('xs')
+        theme.breakpoints.down('sm')
     );
-    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
+    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     return (
         <List
             {...props}

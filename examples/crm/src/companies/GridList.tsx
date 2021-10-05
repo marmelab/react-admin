@@ -51,7 +51,7 @@ const LoadedGridList = () => {
     );
 };
 
-export const GridList = () => {
+export const ImageList = () => {
     const { loaded } = useListContext();
     return loaded ? <LoadedGridList /> : <LoadingGridList />;
 };

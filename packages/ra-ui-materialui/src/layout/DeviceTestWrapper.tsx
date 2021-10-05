@@ -1,7 +1,12 @@
 import * as React from 'react';
 import mediaQuery from 'css-mediaquery';
 import { ThemeProvider } from '@mui/styles';
-import { createTheme } from '@mui/material/styles';
+import { createTheme, StyledEngineProvider, Theme } from '@mui/material/styles';
+
+declare module '@mui/styles/defaultTheme' {
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    interface DefaultTheme extends Theme {}
+}
 
 /**
  * Test utility to simulate a device form factor for server-side mediaQueries
@@ -32,11 +37,16 @@ const DeviceTestWrapper = ({
     });
 
     return (
-        <ThemeProvider
-            theme={{ ...theme, props: { MuiUseMediaQuery: { ssrMatchMedia } } }}
-        >
-            {children}
-        </ThemeProvider>
+        <StyledEngineProvider injectFirst>
+            <ThemeProvider
+                theme={{
+                    ...theme,
+                    props: { MuiUseMediaQuery: { ssrMatchMedia } },
+                }}
+            >
+                {children}
+            </ThemeProvider>
+        </StyledEngineProvider>
     );
 };
 

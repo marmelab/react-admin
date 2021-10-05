@@ -14,7 +14,7 @@ import {
     DialogActions,
     TextField as MuiTextField,
 } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles({
     button: {

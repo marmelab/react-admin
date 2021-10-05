@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Typography } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -8,7 +8,7 @@ const useStyles = makeStyles(theme => ({
             width: 200,
             margin: '1em',
         },
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down('md')]: {
             width: 0,
             overflowX: 'hidden',
             margin: 0,

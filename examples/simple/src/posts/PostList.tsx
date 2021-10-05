@@ -2,7 +2,8 @@ import * as React from 'react';
 import { Children, Fragment, cloneElement, memo } from 'react';
 import BookIcon from '@mui/icons-material/Book';
 import { Chip, useMediaQuery } from '@mui/material';
-import { makeStyles, Theme } from '@mui/material/styles';
+import { Theme } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import lodashGet from 'lodash/get';
 import jsonExport from 'jsonexport/dist';
 import {
@@ -68,7 +69,7 @@ const useStyles = makeStyles(theme => ({
         whiteSpace: 'nowrap',
     },
     hiddenOnSmallScreens: {
-        [theme.breakpoints.down('md')]: {
+        [theme.breakpoints.down('lg')]: {
             display: 'none',
         },
     },
@@ -115,7 +116,7 @@ const PostPanel = ({ id, record, resource }) => (
 
 const PostList = props => {
     const classes = useStyles();
-    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
+    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     return (
         <List
             {...props}

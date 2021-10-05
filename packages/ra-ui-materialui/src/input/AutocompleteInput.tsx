@@ -437,6 +437,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                             title={label}
                             disableRipple
                             disabled={true}
+                            size="large"
                         >
                             <ClearIcon
                                 className={classNames(
@@ -474,6 +475,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                         onClick={handleClickClearButton(openMenu)}
                         onMouseDown={handleMouseDownClearButton}
                         disabled={disabled}
+                        size="large"
                     >
                         <ClearIcon
                             className={classNames(classes.clearIcon, {

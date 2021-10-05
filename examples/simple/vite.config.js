@@ -7,19 +7,24 @@ import path from 'path';
  */
 export default {
     plugins: [reactRefresh()],
-    alias: [
-        {
-            find: /^react-admin$/,
-            replacement: path.resolve(
-                __dirname,
-                '../../packages/react-admin/src'
-            ),
-        },
-        {
-            find: /^ra-(.*)$/,
-            replacement: path.resolve(__dirname, '../../packages/ra-$1/src'),
-        },
-    ],
+    resolve: {
+        alias: [
+            {
+                find: /^react-admin$/,
+                replacement: path.resolve(
+                    __dirname,
+                    '../../packages/react-admin/src'
+                ),
+            },
+            {
+                find: /^ra-(.*)$/,
+                replacement: path.resolve(
+                    __dirname,
+                    '../../packages/ra-$1/src'
+                ),
+            },
+        ],
+    },
     server: {
         port: 8080,
     },

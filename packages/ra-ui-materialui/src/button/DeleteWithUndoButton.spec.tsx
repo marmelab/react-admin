@@ -3,11 +3,21 @@ import * as React from 'react';
 import expect from 'expect';
 import { DataProvider, DataProviderContext } from 'ra-core';
 import { renderWithRedux, TestContext } from 'ra-test';
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import {
+    createTheme,
+    ThemeProvider,
+    Theme,
+    StyledEngineProvider,
+} from '@mui/material/styles';
 import { Toolbar, SimpleForm } from '../form';
 import { Edit } from '../detail';
 import { TextInput } from '../input';
 import { DeleteWithUndoButton } from './DeleteWithUndoButton';
+
+declare module '@mui/styles/defaultTheme' {
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    interface DefaultTheme extends Theme {}
+}
 
 const theme = createTheme();
 
@@ -47,9 +57,11 @@ describe('<DeleteWithUndoButton />', () => {
                     },
                 }}
             >
-                <ThemeProvider theme={theme}>
-                    <DeleteWithUndoButton {...invalidButtonDomProps} />
-                </ThemeProvider>
+                <StyledEngineProvider injectFirst>
+                    <ThemeProvider theme={theme}>
+                        <DeleteWithUndoButton {...invalidButtonDomProps} />
+                    </ThemeProvider>
+                </StyledEngineProvider>
             </TestContext>
         );
 
@@ -85,15 +97,17 @@ describe('<DeleteWithUndoButton />', () => {
             </Toolbar>
         );
         const { queryByDisplayValue, getByLabelText } = renderWithRedux(
-            <ThemeProvider theme={theme}>
-                <DataProviderContext.Provider value={dataProvider}>
-                    <Edit {...defaultEditProps}>
-                        <SimpleForm toolbar={<EditToolbar />}>
-                            <TextInput source="title" />
-                        </SimpleForm>
-                    </Edit>
-                </DataProviderContext.Provider>
-            </ThemeProvider>,
+            <StyledEngineProvider injectFirst>
+                <ThemeProvider theme={theme}>
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <Edit {...defaultEditProps}>
+                            <SimpleForm toolbar={<EditToolbar />}>
+                                <TextInput source="title" />
+                            </SimpleForm>
+                        </Edit>
+                    </DataProviderContext.Provider>
+                </ThemeProvider>
+            </StyledEngineProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
         // waitFor for the dataProvider.getOne() return

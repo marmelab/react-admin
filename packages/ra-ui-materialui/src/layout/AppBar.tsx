@@ -74,7 +74,7 @@ const AppBar = (props: AppBarProps): JSX.Element => {
         menuButtonIconOpen: classes.menuButtonIconOpen,
     };
     const isXSmall = useMediaQuery<Theme>(theme =>
-        theme.breakpoints.down('xs')
+        theme.breakpoints.down('sm')
     );
 
     return (

@@ -21,9 +21,9 @@ const Sidebar = (props: SidebarProps) => {
     } = props;
     const dispatch = useDispatch();
     const isXSmall = useMediaQuery<Theme>(theme =>
-        theme.breakpoints.down('xs')
+        theme.breakpoints.down('sm')
     );
-    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
+    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     const open = useSelector<ReduxState, boolean>(
         state => state.admin.ui.sidebarOpen
     );

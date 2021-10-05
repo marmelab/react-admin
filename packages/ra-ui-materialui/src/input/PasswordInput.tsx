@@ -34,6 +34,7 @@ const PasswordInput = (props: PasswordInputProps) => {
                                     : 'ra.input.password.toggle_hidden'
                             )}
                             onClick={handleClick}
+                            size="large"
                         >
                             {visible ? <Visibility /> : <VisibilityOff />}
                         </IconButton>

@@ -32,6 +32,7 @@ export const SidebarToggleButton = (props: SidebarToggleButtonProps) => {
                 color="inherit"
                 onClick={() => toggleSidebar()}
                 className={className}
+                size="large"
             >
                 <MenuIcon
                     classes={{

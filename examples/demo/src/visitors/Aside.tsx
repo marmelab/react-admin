@@ -35,7 +35,7 @@ import { Order as OrderRecord, Review as ReviewRecord } from '../types';
 const useAsideStyles = makeStyles(theme => ({
     root: {
         width: 400,
-        [theme.breakpoints.down('md')]: {
+        [theme.breakpoints.down('lg')]: {
             display: 'none',
         },
     },

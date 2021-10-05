@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.up('xs')]: {
             width: 400,
         },
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             width: '100vw',
             marginTop: -30,
         },
@@ -60,7 +60,7 @@ const ReviewEdit = ({ onCancel, ...props }: Props) => {
                 <Typography variant="h6">
                     {translate('resources.reviews.detail')}
                 </Typography>
-                <IconButton onClick={onCancel}>
+                <IconButton onClick={onCancel} size="large">
                     <CloseIcon />
                 </IconButton>
             </div>

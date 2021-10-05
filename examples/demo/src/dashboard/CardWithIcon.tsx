@@ -31,13 +31,13 @@ const useStyles = makeStyles(theme => ({
         overflow: 'inherit',
         padding: 16,
         background: `url(${
-            theme.palette.type === 'dark' ? cartoucheDark : cartouche
+            theme.palette.mode === 'dark' ? cartoucheDark : cartouche
         }) no-repeat`,
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         '& .icon': {
-            color: theme.palette.type === 'dark' ? 'inherit' : '#dc2440',
+            color: theme.palette.mode === 'dark' ? 'inherit' : '#dc2440',
         },
     }),
     title: {},

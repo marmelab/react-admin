@@ -14,7 +14,7 @@ const useStyles = makeStyles(
         value: {
             fontFamily: theme.typography.fontFamily,
             color: 'currentColor',
-            padding: `${theme.spacing(1)}px 0 ${theme.spacing(1) / 2}px`,
+            padding: `calc(${theme.spacing(1)} 0 ${theme.spacing(1)} / 2)`,
             border: 0,
             boxSizing: 'content-box',
             verticalAlign: 'middle',

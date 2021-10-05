@@ -572,7 +572,7 @@ const useStyles = makeStyles(
             flexWrap: 'wrap',
             '& $chip': {
                 backgroundColor:
-                    theme.palette.type === 'light'
+                    theme.palette.mode === 'light'
                         ? 'rgba(0, 0, 0, 0.09)'
                         : 'rgba(255, 255, 255, 0.09)',
             },

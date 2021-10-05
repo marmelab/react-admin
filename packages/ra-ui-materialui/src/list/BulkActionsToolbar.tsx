@@ -17,12 +17,12 @@ const useStyles = makeStyles(
         toolbar: {
             zIndex: 3,
             color:
-                theme.palette.type === 'light'
+                theme.palette.mode === 'light'
                     ? theme.palette.primary.main
                     : theme.palette.text.primary,
             justifyContent: 'space-between',
             backgroundColor:
-                theme.palette.type === 'light'
+                theme.palette.mode === 'light'
                     ? alpha(theme.palette.primary.light, 0.85)
                     : theme.palette.primary.dark,
             minHeight: theme.spacing(8),

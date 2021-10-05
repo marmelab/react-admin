@@ -90,6 +90,7 @@ const UserMenu = (props: UserMenuProps) => {
                         aria-haspopup={true}
                         color="inherit"
                         onClick={handleMenu}
+                        size="large"
                     >
                         {icon}
                     </IconButton>

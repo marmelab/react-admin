@@ -26,7 +26,7 @@ const useStyles = makeStyles(
     theme => ({
         toolbar: {
             backgroundColor:
-                theme.palette.type === 'light'
+                theme.palette.mode === 'light'
                     ? theme.palette.grey[100]
                     : theme.palette.grey[900],
         },
@@ -50,7 +50,7 @@ const useStyles = makeStyles(
             justifyContent: 'space-between',
         },
         spacer: {
-            [theme.breakpoints.down('xs')]: {
+            [theme.breakpoints.down('sm')]: {
                 height: '5em',
             },
         },
@@ -120,7 +120,7 @@ const Toolbar: FC<ToolbarProps> = props => {
         ...rest
     } = props;
     const classes = useStyles(props);
-    const isXs = useMediaQuery<Theme>(theme => theme.breakpoints.down('xs'));
+    const isXs = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
 
     // Use form pristine and validating to enable or disable the save button
     // if alwaysEnableSaveButton is undefined

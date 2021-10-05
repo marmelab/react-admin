@@ -83,7 +83,10 @@ export const ResourceConfigurationPage = ({
                                 }
                                 action={
                                     // TODO: Add a menu with resource related actions (delete, etc.)
-                                    <IconButton aria-label="settings">
+                                    <IconButton
+                                        aria-label="settings"
+                                        size="large"
+                                    >
                                         <MoreVertIcon />
                                     </IconButton>
                                 }

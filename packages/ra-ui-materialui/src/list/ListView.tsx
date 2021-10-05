@@ -175,7 +175,7 @@ const useStyles = makeStyles(
             transition: theme.transitions.create('margin-top'),
             position: 'relative',
             flex: '1 1 auto',
-            [theme.breakpoints.down('xs')]: {
+            [theme.breakpoints.down('sm')]: {
                 boxShadow: 'none',
             },
             overflow: 'inherit',
