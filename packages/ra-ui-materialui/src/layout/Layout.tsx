@@ -13,15 +13,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import {
-    createStyles,
-    adaptV4Theme,
-    ThemeProvider,
-    StyledEngineProvider,
-    Theme,
-} from '@mui/material/styles';
+import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
 import { DeprecatedThemeOptions } from '@mui/material';
-import { withStyles } from '@mui/styles';
 import { ComponentPropType, CoreLayoutProps } from 'ra-core';
 import compose from 'lodash/flowRight';
 
@@ -32,59 +25,58 @@ import DefaultNotification from './Notification';
 import DefaultError from './Error';
 import defaultTheme from '../defaultTheme';
 import SkipNavigationButton from '../button/SkipNavigationButton';
-import { createMuiTheme } from './createMuiTheme';
 
-declare module '@mui/styles/defaultTheme' {
-    // eslint-disable-next-line @typescript-eslint/no-empty-interface
-    interface DefaultTheme extends Theme {}
-}
+const PREFIX = 'RaLayout';
+const classes = {
+    root: `${PREFIX}-root`,
+    appFrame: `${PREFIX}-appFrame`,
+    contentWithSidebar: `${PREFIX}-contentWithSidebar`,
+    content: `${PREFIX}-content`,
+};
 
-const styles = theme =>
-    createStyles({
-        root: {
-            display: 'flex',
-            flexDirection: 'column',
-            zIndex: 1,
-            minHeight: '100vh',
-            backgroundColor: theme.palette.background.default,
-            position: 'relative',
-            minWidth: 'fit-content',
-            width: '100%',
-            color: theme.palette.getContrastText(
-                theme.palette.background.default
-            ),
+const StyledLayout = styled('div')(({ theme }) => ({
+    [`&.${classes.root}`]: {
+        display: 'flex',
+        flexDirection: 'column',
+        zIndex: 1,
+        minHeight: '100vh',
+        backgroundColor: theme.palette.background.default,
+        position: 'relative',
+        minWidth: 'fit-content',
+        width: '100%',
+        color: theme.palette.getContrastText(theme.palette.background.default),
+    },
+    [`& .${classes.appFrame}`]: {
+        display: 'flex',
+        flexDirection: 'column',
+        flexGrow: 1,
+        [theme.breakpoints.up('xs')]: {
+            marginTop: theme.spacing(6),
         },
-        appFrame: {
-            display: 'flex',
-            flexDirection: 'column',
-            flexGrow: 1,
-            [theme.breakpoints.up('xs')]: {
-                marginTop: theme.spacing(6),
-            },
-            [theme.breakpoints.down('sm')]: {
-                marginTop: theme.spacing(7),
-            },
+        [theme.breakpoints.down('sm')]: {
+            marginTop: theme.spacing(7),
         },
-        contentWithSidebar: {
-            display: 'flex',
-            flexGrow: 1,
+    },
+    [`& .${classes.contentWithSidebar}`]: {
+        display: 'flex',
+        flexGrow: 1,
+    },
+    [`& .${classes.content}`]: {
+        display: 'flex',
+        flexDirection: 'column',
+        flexGrow: 1,
+        flexBasis: 0,
+        padding: theme.spacing(3),
+        paddingTop: theme.spacing(1),
+        paddingLeft: 0,
+        [theme.breakpoints.up('xs')]: {
+            paddingLeft: 5,
         },
-        content: {
-            display: 'flex',
-            flexDirection: 'column',
-            flexGrow: 1,
-            flexBasis: 0,
-            padding: theme.spacing(3),
-            paddingTop: theme.spacing(1),
-            paddingLeft: 0,
-            [theme.breakpoints.up('xs')]: {
-                paddingLeft: 5,
-            },
-            [theme.breakpoints.down('md')]: {
-                padding: 0,
-            },
+        [theme.breakpoints.down('md')]: {
+            padding: 0,
         },
-    });
+    },
+}));
 
 class LayoutWithoutTheme extends Component<
     LayoutWithoutThemeProps,
@@ -111,60 +103,7 @@ class LayoutWithoutTheme extends Component<
     }
 
     render() {
-        const {
-            appBar,
-            children,
-            classes,
-            className,
-            error: ErrorComponent,
-            dashboard,
-            logout,
-            menu,
-            notification,
-            open,
-            sidebar,
-            title,
-            // sanitize react-router props
-            match,
-            location,
-            history,
-            staticContext,
-            ...props
-        } = this.props;
-        const { hasError, error, errorInfo } = this.state;
-        return (
-            <>
-                <div
-                    className={classnames('layout', classes.root, className)}
-                    {...props}
-                >
-                    <SkipNavigationButton />
-                    <div className={classes.appFrame}>
-                        {createElement(appBar, { title, open, logout })}
-                        <main className={classes.contentWithSidebar}>
-                            {createElement(sidebar, {
-                                children: createElement(menu, {
-                                    logout,
-                                    hasDashboard: !!dashboard,
-                                }),
-                            })}
-                            <div id="main-content" className={classes.content}>
-                                {hasError ? (
-                                    <ErrorComponent
-                                        error={error}
-                                        errorInfo={errorInfo}
-                                        title={title}
-                                    />
-                                ) : (
-                                    children
-                                )}
-                            </div>
-                        </main>
-                    </div>
-                </div>
-                {createElement(notification)}
-            </>
-        );
+        return <LayoutContainer {...this.props} {...this.state} />;
     }
 
     static propTypes = {
@@ -191,6 +130,65 @@ class LayoutWithoutTheme extends Component<
         sidebar: DefaultSidebar,
     };
 }
+
+const LayoutContainer = props => {
+    const {
+        appBar,
+        children,
+        className,
+        error: ErrorComponent,
+        dashboard,
+        error,
+        errorInfo,
+        hasError,
+        logout,
+        menu,
+        notification,
+        open,
+        sidebar,
+        title,
+        // sanitize react-router props
+        match,
+        location,
+        history,
+        staticContext,
+        ...rest
+    } = props;
+
+    return (
+        <>
+            <StyledLayout
+                className={classnames('layout', classes.root, className)}
+                {...rest}
+            >
+                <SkipNavigationButton />
+                <div className={classes.appFrame}>
+                    {createElement(appBar, { title, open, logout })}
+                    <main className={classes.contentWithSidebar}>
+                        {createElement(sidebar, {
+                            children: createElement(menu, {
+                                logout,
+                                hasDashboard: !!dashboard,
+                            }),
+                        })}
+                        <div id="main-content" className={classes.content}>
+                            {hasError ? (
+                                <ErrorComponent
+                                    error={error}
+                                    errorInfo={errorInfo}
+                                    title={title}
+                                />
+                            ) : (
+                                children
+                            )}
+                        </div>
+                    </main>
+                </div>
+            </StyledLayout>
+            {createElement(notification)}
+        </>
+    );
+};
 
 export interface LayoutProps
     extends CoreLayoutProps,
@@ -230,8 +228,7 @@ const EnhancedLayout = compose(
         mapStateToProps,
         {} // Avoid connect passing dispatch in props
     ),
-    withRouter,
-    withStyles(styles, { name: 'RaLayout' })
+    withRouter
 )(LayoutWithoutTheme);
 
 const Layout = ({
@@ -239,23 +236,19 @@ const Layout = ({
     ...props
 }: LayoutProps): JSX.Element => {
     const themeProp = useRef(themeOverride);
-    const [theme, setTheme] = useState(() =>
-        createMuiTheme(adaptV4Theme(themeOverride))
-    );
+    const [theme, setTheme] = useState(() => createTheme(themeOverride));
 
     useEffect(() => {
         if (themeProp.current !== themeOverride) {
             themeProp.current = themeOverride;
-            setTheme(createMuiTheme(adaptV4Theme(themeOverride)));
+            setTheme(createTheme(themeOverride));
         }
     }, [themeOverride, themeProp, theme, setTheme]);
 
     return (
-        <StyledEngineProvider injectFirst>
-            <ThemeProvider theme={theme}>
-                <EnhancedLayout {...props} />
-            </ThemeProvider>
-        </StyledEngineProvider>
+        <ThemeProvider theme={theme}>
+            <EnhancedLayout {...props} />
+        </ThemeProvider>
     );
 };
 

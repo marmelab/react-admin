@@ -1,8 +1,12 @@
 import React, { Component, ErrorInfo, HtmlHTMLAttributes } from 'react';
 import PropTypes from 'prop-types';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { createMuiTheme, adaptV4Theme } from '@mui/material/styles';
-import { ThemeProvider, Theme, StyledEngineProvider } from '@mui/styles';
+import {
+    createTheme,
+    Theme,
+    ThemeProvider,
+    StyledEngineProvider,
+} from '@mui/material/styles';
 import { CssBaseline, Container } from '@mui/material';
 import { CoreLayoutProps } from 'react-admin';
 
@@ -49,7 +53,7 @@ class Layout extends Component<LayoutProps, LayoutState> {
         return (
             <StyledEngineProvider injectFirst>
                 // @ts-ignore
-                <ThemeProvider theme={createMuiTheme(adaptV4Theme(theme))}>
+                <ThemeProvider theme={createTheme(theme)}>
                     <CssBaseline />
                     <Header />
                     <Container>

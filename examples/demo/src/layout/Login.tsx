@@ -12,17 +12,16 @@ import {
     CircularProgress,
     TextField,
 } from '@mui/material';
-import { createMuiTheme, makeStyles, adaptV4Theme } from '@mui/material/styles';
-import { ThemeProvider, Theme, StyledEngineProvider } from '@mui/styles';
+import {
+    createTheme,
+    ThemeProvider,
+    StyledEngineProvider,
+} from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import LockIcon from '@mui/icons-material/Lock';
 import { Notification, useTranslate, useLogin, useNotify } from 'react-admin';
 
 import { lightTheme } from './themes';
-
-declare module '@mui/styles/defaultTheme' {
-    // eslint-disable-next-line @typescript-eslint/no-empty-interface
-    interface DefaultTheme extends Theme {}
-}
 
 const useStyles = makeStyles(theme => ({
     main: {
@@ -203,7 +202,7 @@ Login.propTypes = {
 // the right theme
 const LoginWithTheme = (props: any) => (
     <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={createMuiTheme(adaptV4Theme(lightTheme))}>
+        <ThemeProvider theme={createTheme(lightTheme)}>
             <Login {...props} />
         </ThemeProvider>
     </StyledEngineProvider>

@@ -1,13 +1,8 @@
 import * as React from 'react';
-import {
-    adaptV4Theme,
-    Theme,
-    StyledEngineProvider,
-} from '@mui/material/styles';
+import { createTheme, Theme, StyledEngineProvider } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import { ThemeProvider } from '@mui/styles';
 
-import { createMuiTheme } from './createMuiTheme';
 import Loading from './Loading';
 
 declare module '@mui/styles/defaultTheme' {
@@ -32,7 +27,7 @@ LoadingPage.propTypes = {
 };
 
 LoadingPage.defaultProps = {
-    theme: createMuiTheme(adaptV4Theme({})),
+    theme: createTheme({}),
     loadingPrimary: 'ra.page.loading',
     loadingSecondary: 'ra.message.loading',
 };
