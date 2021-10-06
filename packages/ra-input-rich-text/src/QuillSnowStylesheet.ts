@@ -1,4 +1,4 @@
-import { StyleRules } from '@mui/material/styles';
+import { StyleRules } from '@mui/styles';
 
 // converted from vendor (node_modules/quill/dist/quill.snow.css) using the jss cli
 export default {

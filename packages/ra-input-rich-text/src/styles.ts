@@ -1,8 +1,9 @@
-import { Theme, StyleRules } from '@mui/material/styles';
+import { Theme } from '@mui/material/styles';
+import { StyleRules } from '@mui/styles';
 
 import QuillSnowStylesheet from './QuillSnowStylesheet';
 
-export default (theme: Theme): StyleRules<string, any> => ({
+export default (theme: Theme): StyleRules<any> => ({
     label: {
         position: 'relative',
     },

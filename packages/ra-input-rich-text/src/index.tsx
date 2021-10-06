@@ -3,13 +3,8 @@ import React, { useRef, useEffect, useCallback, ComponentProps } from 'react';
 import Quill, { QuillOptionsStatic } from 'quill';
 import { useInput, FieldTitle } from 'ra-core';
 import { InputHelperText } from 'ra-ui-materialui';
-import {
-    FormHelperText,
-    FormControl,
-    InputLabel,
-    PropTypes as MuiPropTypes,
-} from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
+import { FormHelperText, FormControl, InputLabel } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import PropTypes from 'prop-types';
 
 import styles from './styles';
@@ -35,7 +30,7 @@ export interface RichTextInputProps {
     record?: Record<any, any>;
     resource?: string;
     variant?: string;
-    margin?: MuiPropTypes.Margin;
+    margin?: 'normal' | 'none' | 'dense';
     [key: string]: any;
 }
 
