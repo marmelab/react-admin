@@ -8,11 +8,13 @@ import {
     SideEffectContextProvider,
 } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { fireEvent, isInaccessible } from '@testing-library/react';
 
+import defaultTheme from '../defaultTheme';
 import { TabbedForm } from './TabbedForm';
 import { FormTab } from './FormTab';
 import TextInput from '../input/TextInput';
-import { fireEvent, isInaccessible } from '@testing-library/react';
 
 describe('<TabbedForm />', () => {
     const saveContextValue = {
@@ -25,14 +27,16 @@ describe('<TabbedForm />', () => {
     it('should display the tabs', () => {
         const { queryAllByRole } = renderWithRedux(
             <MemoryRouter initialEntries={['/']}>
-                <SaveContextProvider value={saveContextValue}>
-                    <SideEffectContextProvider value={sideEffectValue}>
-                        <TabbedForm>
-                            <FormTab label="tab1" />
-                            <FormTab label="tab2" />
-                        </TabbedForm>
-                    </SideEffectContextProvider>
-                </SaveContextProvider>
+                <ThemeProvider theme={createTheme(defaultTheme)}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <SideEffectContextProvider value={sideEffectValue}>
+                            <TabbedForm>
+                                <FormTab label="tab1" />
+                                <FormTab label="tab2" />
+                            </TabbedForm>
+                        </SideEffectContextProvider>
+                    </SaveContextProvider>
+                </ThemeProvider>
             </MemoryRouter>
         );
 
@@ -47,14 +51,19 @@ describe('<TabbedForm />', () => {
 
         const { queryByText, rerender } = renderWithRedux(
             <MemoryRouter initialEntries={['/']}>
-                <SaveContextProvider value={saveContextValue}>
-                    <SideEffectContextProvider value={sideEffectValue}>
-                        <TabbedForm submitOnEnter={false} toolbar={<Toolbar />}>
-                            <FormTab label="tab1" />
-                            <FormTab label="tab2" />
-                        </TabbedForm>
-                    </SideEffectContextProvider>
-                </SaveContextProvider>
+                <ThemeProvider theme={createTheme(defaultTheme)}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <SideEffectContextProvider value={sideEffectValue}>
+                            <TabbedForm
+                                submitOnEnter={false}
+                                toolbar={<Toolbar />}
+                            >
+                                <FormTab label="tab1" />
+                                <FormTab label="tab2" />
+                            </TabbedForm>
+                        </SideEffectContextProvider>
+                    </SaveContextProvider>
+                </ThemeProvider>
             </MemoryRouter>
         );
 
@@ -62,14 +71,16 @@ describe('<TabbedForm />', () => {
 
         rerender(
             <MemoryRouter initialEntries={['/']}>
-                <SaveContextProvider value={saveContextValue}>
-                    <SideEffectContextProvider value={sideEffectValue}>
-                        <TabbedForm submitOnEnter toolbar={<Toolbar />}>
-                            <FormTab label="tab1" />
-                            <FormTab label="tab2" />
-                        </TabbedForm>
-                    </SideEffectContextProvider>
-                </SaveContextProvider>
+                <ThemeProvider theme={createTheme(defaultTheme)}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <SideEffectContextProvider value={sideEffectValue}>
+                            <TabbedForm submitOnEnter toolbar={<Toolbar />}>
+                                <FormTab label="tab1" />
+                                <FormTab label="tab2" />
+                            </TabbedForm>
+                        </SideEffectContextProvider>
+                    </SaveContextProvider>
+                </ThemeProvider>
             </MemoryRouter>
         );
 
@@ -79,22 +90,27 @@ describe('<TabbedForm />', () => {
     it('should set the style of an inactive Tab button with errors', async () => {
         const { getAllByRole, getByLabelText } = renderWithRedux(
             <MemoryRouter initialEntries={['/posts/1']} initialIndex={0}>
-                <SaveContextProvider value={saveContextValue}>
-                    <TabbedForm
-                        classes={{ errorTabButton: 'error' }}
-                        resource="posts"
-                    >
-                        <FormTab label="tab1">
-                            <TextInput source="title" validate={required()} />
-                        </FormTab>
-                        <FormTab label="tab2">
-                            <TextInput
-                                source="description"
-                                validate={minLength(10)}
-                            />
-                        </FormTab>
-                    </TabbedForm>
-                </SaveContextProvider>
+                <ThemeProvider theme={createTheme(defaultTheme)}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <TabbedForm
+                            classes={{ errorTabButton: 'error' }}
+                            resource="posts"
+                        >
+                            <FormTab label="tab1">
+                                <TextInput
+                                    source="title"
+                                    validate={required()}
+                                />
+                            </FormTab>
+                            <FormTab label="tab2">
+                                <TextInput
+                                    source="description"
+                                    validate={minLength(10)}
+                                />
+                            </FormTab>
+                        </TabbedForm>
+                    </SaveContextProvider>
+                </ThemeProvider>
             </MemoryRouter>
         );
 
@@ -111,22 +127,27 @@ describe('<TabbedForm />', () => {
     it('should set the style of an active Tab button with errors', () => {
         const { getAllByRole, getByLabelText } = renderWithRedux(
             <MemoryRouter initialEntries={['/posts/1']} initialIndex={0}>
-                <SaveContextProvider value={saveContextValue}>
-                    <TabbedForm
-                        classes={{ errorTabButton: 'error' }}
-                        resource="posts"
-                    >
-                        <FormTab label="tab1">
-                            <TextInput source="title" validate={required()} />
-                        </FormTab>
-                        <FormTab label="tab2">
-                            <TextInput
-                                source="description"
-                                validate={required()}
-                            />
-                        </FormTab>
-                    </TabbedForm>
-                </SaveContextProvider>
+                <ThemeProvider theme={createTheme(defaultTheme)}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <TabbedForm
+                            classes={{ errorTabButton: 'error' }}
+                            resource="posts"
+                        >
+                            <FormTab label="tab1">
+                                <TextInput
+                                    source="title"
+                                    validate={required()}
+                                />
+                            </FormTab>
+                            <FormTab label="tab2">
+                                <TextInput
+                                    source="description"
+                                    validate={required()}
+                                />
+                            </FormTab>
+                        </TabbedForm>
+                    </SaveContextProvider>
+                </ThemeProvider>
             </MemoryRouter>
         );
 
@@ -141,22 +162,27 @@ describe('<TabbedForm />', () => {
     it('should set the style of any Tab button with errors on submit', () => {
         const { getAllByRole, getByLabelText } = renderWithRedux(
             <MemoryRouter initialEntries={['/posts/1']} initialIndex={0}>
-                <SaveContextProvider value={saveContextValue}>
-                    <TabbedForm
-                        classes={{ errorTabButton: 'error' }}
-                        resource="posts"
-                    >
-                        <FormTab label="tab1">
-                            <TextInput source="title" validate={required()} />
-                        </FormTab>
-                        <FormTab label="tab2">
-                            <TextInput
-                                source="description"
-                                validate={minLength(10)}
-                            />
-                        </FormTab>
-                    </TabbedForm>
-                </SaveContextProvider>
+                <ThemeProvider theme={createTheme(defaultTheme)}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <TabbedForm
+                            classes={{ errorTabButton: 'error' }}
+                            resource="posts"
+                        >
+                            <FormTab label="tab1">
+                                <TextInput
+                                    source="title"
+                                    validate={required()}
+                                />
+                            </FormTab>
+                            <FormTab label="tab2">
+                                <TextInput
+                                    source="description"
+                                    validate={minLength(10)}
+                                />
+                            </FormTab>
+                        </TabbedForm>
+                    </SaveContextProvider>
+                </ThemeProvider>
             </MemoryRouter>
         );
 
@@ -175,22 +201,27 @@ describe('<TabbedForm />', () => {
 
         const { getAllByRole, getByLabelText } = renderWithRedux(
             <Router history={history}>
-                <SaveContextProvider value={saveContextValue}>
-                    <TabbedForm
-                        classes={{ errorTabButton: 'error' }}
-                        resource="posts"
-                    >
-                        <FormTab label="tab1">
-                            <TextInput source="title" validate={required()} />
-                        </FormTab>
-                        <FormTab label="tab2">
-                            <TextInput
-                                source="description"
-                                validate={minLength(10)}
-                            />
-                        </FormTab>
-                    </TabbedForm>
-                </SaveContextProvider>
+                <ThemeProvider theme={createTheme(defaultTheme)}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <TabbedForm
+                            classes={{ errorTabButton: 'error' }}
+                            resource="posts"
+                        >
+                            <FormTab label="tab1">
+                                <TextInput
+                                    source="title"
+                                    validate={required()}
+                                />
+                            </FormTab>
+                            <FormTab label="tab2">
+                                <TextInput
+                                    source="description"
+                                    validate={minLength(10)}
+                                />
+                            </FormTab>
+                        </TabbedForm>
+                    </SaveContextProvider>
+                </ThemeProvider>
             </Router>
         );
 
@@ -216,23 +247,28 @@ describe('<TabbedForm />', () => {
 
         const { getAllByRole, getByLabelText } = renderWithRedux(
             <Router history={history}>
-                <SaveContextProvider value={saveContextValue}>
-                    <TabbedForm
-                        classes={{ errorTabButton: 'error' }}
-                        resource="posts"
-                        syncWithLocation={false}
-                    >
-                        <FormTab label="tab1">
-                            <TextInput source="title" validate={required()} />
-                        </FormTab>
-                        <FormTab label="tab2">
-                            <TextInput
-                                source="description"
-                                validate={minLength(10)}
-                            />
-                        </FormTab>
-                    </TabbedForm>
-                </SaveContextProvider>
+                <ThemeProvider theme={createTheme(defaultTheme)}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <TabbedForm
+                            classes={{ errorTabButton: 'error' }}
+                            resource="posts"
+                            syncWithLocation={false}
+                        >
+                            <FormTab label="tab1">
+                                <TextInput
+                                    source="title"
+                                    validate={required()}
+                                />
+                            </FormTab>
+                            <FormTab label="tab2">
+                                <TextInput
+                                    source="description"
+                                    validate={minLength(10)}
+                                />
+                            </FormTab>
+                        </TabbedForm>
+                    </SaveContextProvider>
+                </ThemeProvider>
             </Router>
         );
 

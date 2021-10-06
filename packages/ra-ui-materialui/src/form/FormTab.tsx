@@ -12,7 +12,6 @@ export const FormTab = (props: FormTabProps) => {
     const {
         basePath,
         className,
-        classes,
         contentClassName,
         children,
         hidden,
@@ -33,7 +32,6 @@ export const FormTab = (props: FormTabProps) => {
             value={value}
             icon={icon}
             className={className}
-            classes={classes}
             {...rest}
         />
     );

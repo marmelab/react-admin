@@ -1,12 +1,21 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { HtmlHTMLAttributes, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { makeStyles } from '@mui/styles';
 import { Record } from 'ra-core';
 
 import Labeled from '../input/Labeled';
-import { ClassesOverride } from '../types';
+
+const PREFIX = 'RaFormInput';
+
+const classes = {
+    input: `${PREFIX}-input`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`& .${classes.input}`]: { width: theme.spacing(32) },
+}));
 
 const sanitizeRestProps = ({
     basePath,
@@ -17,23 +26,16 @@ const sanitizeRestProps = ({
     record?: unknown;
 }) => rest;
 
-const useStyles = makeStyles(
-    theme => ({
-        input: { width: theme.spacing(32) },
-    }),
-    { name: 'RaFormInput' }
-);
-
 const FormInput = <RecordType extends Record | Omit<Record, 'id'> = Record>(
     props: FormInputProps<RecordType>
 ) => {
-    const { input, classes: classesOverride, ...rest } = props;
-    const classes = useStyles(props);
+    const { input, ...rest } = props;
+
     const { id, className, ...inputProps } = input
         ? input.props
         : { id: undefined, className: undefined };
     return input ? (
-        <div
+        <Root
             className={classnames(
                 'ra-input',
                 `ra-input-${input.props.source}`,
@@ -71,7 +73,7 @@ const FormInput = <RecordType extends Record | Omit<Record, 'id'> = Record>(
                     ...inputProps,
                 })
             )}
-        </div>
+        </Root>
     ) : null;
 };
 
@@ -85,7 +87,6 @@ export interface FormInputProps<
     RecordType extends Record | Omit<Record, 'id'> = Record
 > extends HtmlHTMLAttributes<HTMLDivElement> {
     basePath: string;
-    classes?: ClassesOverride<typeof useStyles>;
     input: ReactElement<{
         label?: string;
         source?: string;
