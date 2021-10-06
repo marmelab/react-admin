@@ -14,34 +14,16 @@ require('mutationobserver-shim');
  *
  * @see https://github.com/FezVrasta/popper.js/issues/478
  */
-jest.mock('popper.js', () => {
-    class Popper {
-        constructor() {
-            return {
-                destroy: () => {},
-                scheduleUpdate: () => {},
-                update: () => {},
-            };
-        }
-    }
-    Popper.placements = [
-        'auto',
-        'auto-end',
-        'auto-start',
-        'bottom',
-        'bottom-end',
-        'bottom-start',
-        'left',
-        'left-end',
-        'left-start',
-        'right',
-        'right-end',
-        'right-start',
-        'top',
-        'top-end',
-        'top-start',
-    ];
-    return Popper;
+jest.mock('@popperjs/core', () => {
+    const PopperJS = jest.requireActual('@popperjs/core');
+    return {
+        placements: PopperJS.placements,
+        destroy: () => {},
+        scheduleUpdate: () => {},
+        render: function (this) {
+            return this.$options._renderChildren;
+        },
+    };
 });
 
 // Ignore warnings about act()
