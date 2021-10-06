@@ -1,10 +1,32 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { Tab } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
 import { getFieldLabelTranslationArgs, useTranslate } from 'ra-core';
 
+const PREFIX = 'FieldConfigurationTab';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    selected: `${PREFIX}-selected`,
+};
+
+const StyledTab = styled(Tab)(({ theme }) => ({
+    [`&.MuiTab-root`]: {
+        paddingTop: theme.spacing(1),
+        paddingBottom: theme.spacing(1),
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2),
+        textTransform: 'none',
+        minHeight: 0,
+        fontWeight: 'normal',
+    },
+
+    [`& .Mui-selected`]: {
+        fontWeight: 'bold',
+    },
+}));
+
 export const FieldConfigurationTab = ({ field, resource, ...props }) => {
-    const classes = useStyles();
     const translate = useTranslate();
     const labelArgs = getFieldLabelTranslationArgs({
         source: field.props.source,
@@ -13,7 +35,7 @@ export const FieldConfigurationTab = ({ field, resource, ...props }) => {
     });
 
     return (
-        <Tab
+        <StyledTab
             {...props}
             key={field.props.source}
             label={translate(...labelArgs)}
@@ -23,18 +45,3 @@ export const FieldConfigurationTab = ({ field, resource, ...props }) => {
         />
     );
 };
-
-const useStyles = makeStyles(theme => ({
-    root: {
-        paddingTop: theme.spacing(1),
-        paddingBottom: theme.spacing(1),
-        paddingLeft: theme.spacing(2),
-        paddingRight: theme.spacing(2),
-        textTransform: 'none',
-        minHeight: 0,
-        fontWeight: 'normal',
-    },
-    selected: {
-        fontWeight: 'bold',
-    },
-}));

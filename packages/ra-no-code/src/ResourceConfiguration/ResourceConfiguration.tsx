@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
 import {
     Avatar,
@@ -10,7 +11,6 @@ import {
     IconButton,
     Tabs,
 } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {
     FormWithRedirect,
@@ -26,6 +26,43 @@ import { useResourceConfiguration } from './useResourceConfiguration';
 import { FieldConfigurationFormSection } from './FieldConfigurationFormSection';
 import { FieldConfigurationTab } from './FieldConfigurationTab';
 
+const PREFIX = 'ResourceConfigurationPage';
+
+const classes = {
+    fields: `${PREFIX}-fields`,
+    fieldList: `${PREFIX}-fieldList`,
+    fieldTitle: `${PREFIX}-fieldTitle`,
+    fieldPanel: `${PREFIX}-fieldPanel`,
+    actions: `${PREFIX}-actions`,
+};
+
+const StyledCard = styled(Card)(({ theme }) => ({
+    [`& .${classes.fields}`]: {
+        display: 'flex',
+    },
+
+    [`& .${classes.fieldList}`]: {
+        backgroundColor: theme.palette.background.default,
+    },
+
+    [`& .${classes.fieldTitle}`]: {
+        paddingTop: theme.spacing(1),
+        paddingBottom: theme.spacing(1),
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2),
+        textTransform: 'none',
+        minHeight: 0,
+    },
+
+    [`& .${classes.fieldPanel}`]: {
+        flexGrow: 1,
+    },
+
+    [`& .${classes.actions}`]: {
+        backgroundColor: theme.palette.background.default,
+    },
+}));
+
 export const ResourceConfigurationPage = ({
     resource,
 }: {
@@ -33,7 +70,6 @@ export const ResourceConfigurationPage = ({
 }) => {
     const [resourceConfiguration, actions] = useResourceConfiguration(resource);
     const [activeField, setActiveField] = useState<FieldConfiguration>();
-    const classes = useStyles();
 
     const save = (values: ResourceConfiguration) => {
         actions.update(values);
@@ -68,7 +104,7 @@ export const ResourceConfigurationPage = ({
                     save={save}
                     initialValues={resourceConfiguration}
                     render={({ handleSubmitWithRedirect }) => (
-                        <Card>
+                        <StyledCard>
                             <CardHeader
                                 avatar={
                                     <Avatar>
@@ -157,33 +193,10 @@ export const ResourceConfigurationPage = ({
                                     }
                                 />
                             </CardActions>
-                        </Card>
+                        </StyledCard>
                     )}
                 />
             </SaveContextProvider>
         </RecordContextProvider>
     );
 };
-
-const useStyles = makeStyles(theme => ({
-    fields: {
-        display: 'flex',
-    },
-    fieldList: {
-        backgroundColor: theme.palette.background.default,
-    },
-    fieldTitle: {
-        paddingTop: theme.spacing(1),
-        paddingBottom: theme.spacing(1),
-        paddingLeft: theme.spacing(2),
-        paddingRight: theme.spacing(2),
-        textTransform: 'none',
-        minHeight: 0,
-    },
-    fieldPanel: {
-        flexGrow: 1,
-    },
-    actions: {
-        backgroundColor: theme.palette.background.default,
-    },
-}));

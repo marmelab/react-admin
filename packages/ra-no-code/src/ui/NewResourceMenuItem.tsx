@@ -1,9 +1,29 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { MouseEvent, ReactElement, useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import { ImportResourceDialog } from './ImportResourceDialog';
-import { makeStyles } from '@mui/material/styles';
 import { ListItemIcon, MenuItem, MenuItemProps, Tooltip } from '@mui/material';
+
+const PREFIX = 'RaMenuItemLink';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    active: `${PREFIX}-active`,
+    icon: `${PREFIX}-icon`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`& .${classes.root}`]: {
+        color: theme.palette.text.secondary,
+    },
+
+    [`& .${classes.active}`]: {
+        color: theme.palette.text.primary,
+    },
+
+    [`& .${classes.icon}`]: { minWidth: theme.spacing(5) },
+}));
 
 export const NewResourceMenuItem = (
     props: MenuItemProps<'li', { button?: true } & { sidebarIsOpen: boolean }>
@@ -12,7 +32,6 @@ export const NewResourceMenuItem = (
     const [showImportResourceDialog, setShowImportResourceDialog] = useState(
         false
     );
-    const classes = useStyles(props);
 
     const handleClick = (
         event: MouseEvent<HTMLAnchorElement> & MouseEvent<HTMLLIElement>
@@ -30,8 +49,6 @@ export const NewResourceMenuItem = (
     const renderMenuItem = (): ReactElement => (
         <MenuItem
             className={classes.root}
-            // @ts-ignore
-            component="button"
             tabIndex={0}
             {...rest}
             onClick={handleClick}
@@ -44,7 +61,7 @@ export const NewResourceMenuItem = (
     );
 
     return (
-        <>
+        <Root>
             {sidebarIsOpen ? (
                 renderMenuItem()
             ) : (
@@ -56,19 +73,6 @@ export const NewResourceMenuItem = (
                 open={showImportResourceDialog}
                 onClose={handleCloseImportNewResourceDialog}
             />
-        </>
+        </Root>
     );
 };
-
-const useStyles = makeStyles(
-    theme => ({
-        root: {
-            color: theme.palette.text.secondary,
-        },
-        active: {
-            color: theme.palette.text.primary,
-        },
-        icon: { minWidth: theme.spacing(5) },
-    }),
-    { name: 'RaMenuItemLink' }
-);

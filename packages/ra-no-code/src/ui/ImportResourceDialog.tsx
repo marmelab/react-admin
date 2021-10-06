@@ -7,7 +7,6 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    RootRef,
     TextField,
 } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
