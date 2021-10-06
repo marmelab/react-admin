@@ -18,8 +18,7 @@ import {
 } from 'ra-core';
 import get from 'lodash/get';
 
-import { ClassesOverride } from '../types';
-import { TabbedFormView, useTabbedFormViewStyles } from './TabbedFormView';
+import { TabbedFormView } from './TabbedFormView';
 
 /**
  * Form layout where inputs are divided by tab, one input per line.
@@ -123,7 +122,6 @@ export interface TabbedFormProps
     basePath?: string;
     children: ReactNode;
     className?: string;
-    classes?: ClassesOverride<typeof useTabbedFormViewStyles>;
     initialValues?: any;
     margin?: 'none' | 'normal' | 'dense';
     mutationMode?: MutationMode;
