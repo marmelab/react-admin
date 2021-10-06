@@ -1,24 +1,14 @@
-import { render, waitFor, fireEvent } from '@testing-library/react';
 import * as React from 'react';
+import { render, waitFor, fireEvent } from '@testing-library/react';
 import expect from 'expect';
 import { DataProvider, DataProviderContext } from 'ra-core';
 import { renderWithRedux, TestContext } from 'ra-test';
-import {
-    createTheme,
-    ThemeProvider,
-    Theme,
-    StyledEngineProvider,
-} from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
 import { Toolbar, SimpleForm } from '../form';
 import { Edit } from '../detail';
 import { TextInput } from '../input';
 import { Notification } from '../layout';
-
-declare module '@mui/styles/defaultTheme' {
-    // eslint-disable-next-line @typescript-eslint/no-empty-interface
-    interface DefaultTheme extends Theme {}
-}
 
 const theme = createTheme();
 
@@ -58,11 +48,9 @@ describe('<DeleteWithConfirmButton />', () => {
                     },
                 }}
             >
-                <StyledEngineProvider injectFirst>
-                    <ThemeProvider theme={theme}>
-                        <DeleteWithConfirmButton {...invalidButtonDomProps} />
-                    </ThemeProvider>
-                </StyledEngineProvider>
+                <ThemeProvider theme={theme}>
+                    <DeleteWithConfirmButton {...invalidButtonDomProps} />
+                </ThemeProvider>
             </TestContext>
         );
 
@@ -101,17 +89,15 @@ describe('<DeleteWithConfirmButton />', () => {
             getByLabelText,
             getByText,
         } = renderWithRedux(
-            <StyledEngineProvider injectFirst>
-                <ThemeProvider theme={theme}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <Edit {...defaultEditProps}>
-                            <SimpleForm toolbar={<EditToolbar />}>
-                                <TextInput source="title" />
-                            </SimpleForm>
-                        </Edit>
-                    </DataProviderContext.Provider>
-                </ThemeProvider>
-            </StyledEngineProvider>,
+            <ThemeProvider theme={theme}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <Edit {...defaultEditProps}>
+                        <SimpleForm toolbar={<EditToolbar />}>
+                            <TextInput source="title" />
+                        </SimpleForm>
+                    </Edit>
+                </DataProviderContext.Provider>
+            </ThemeProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
         // waitFor for the dataProvider.getOne() return
@@ -147,20 +133,18 @@ describe('<DeleteWithConfirmButton />', () => {
             getByLabelText,
             getByText,
         } = renderWithRedux(
-            <StyledEngineProvider injectFirst>
-                <ThemeProvider theme={theme}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <>
-                            <Edit {...defaultEditProps}>
-                                <SimpleForm toolbar={<EditToolbar />}>
-                                    <TextInput source="title" />
-                                </SimpleForm>
-                            </Edit>
-                            <Notification />
-                        </>
-                    </DataProviderContext.Provider>
-                </ThemeProvider>
-            </StyledEngineProvider>,
+            <ThemeProvider theme={theme}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <>
+                        <Edit {...defaultEditProps}>
+                            <SimpleForm toolbar={<EditToolbar />}>
+                                <TextInput source="title" />
+                            </SimpleForm>
+                        </Edit>
+                        <Notification />
+                    </>
+                </DataProviderContext.Provider>
+            </ThemeProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
         // waitFor for the dataProvider.getOne() return
@@ -195,17 +179,15 @@ describe('<DeleteWithConfirmButton />', () => {
             getByLabelText,
             getByText,
         } = renderWithRedux(
-            <StyledEngineProvider injectFirst>
-                <ThemeProvider theme={theme}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <Edit {...defaultEditProps}>
-                            <SimpleForm toolbar={<EditToolbar />}>
-                                <TextInput source="title" />
-                            </SimpleForm>
-                        </Edit>
-                    </DataProviderContext.Provider>
-                </ThemeProvider>
-            </StyledEngineProvider>,
+            <ThemeProvider theme={theme}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <Edit {...defaultEditProps}>
+                        <SimpleForm toolbar={<EditToolbar />}>
+                            <TextInput source="title" />
+                        </SimpleForm>
+                    </Edit>
+                </DataProviderContext.Provider>
+            </ThemeProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
         // waitFor for the dataProvider.getOne() return
@@ -242,17 +224,15 @@ describe('<DeleteWithConfirmButton />', () => {
             getByLabelText,
             getByText,
         } = renderWithRedux(
-            <StyledEngineProvider injectFirst>
-                <ThemeProvider theme={theme}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <Edit {...defaultEditProps}>
-                            <SimpleForm toolbar={<EditToolbar />}>
-                                <TextInput source="title" />
-                            </SimpleForm>
-                        </Edit>
-                    </DataProviderContext.Provider>
-                </ThemeProvider>
-            </StyledEngineProvider>,
+            <ThemeProvider theme={theme}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <Edit {...defaultEditProps}>
+                        <SimpleForm toolbar={<EditToolbar />}>
+                            <TextInput source="title" />
+                        </SimpleForm>
+                    </Edit>
+                </DataProviderContext.Provider>
+            </ThemeProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
         // waitFor for the dataProvider.getOne() return

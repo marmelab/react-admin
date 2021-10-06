@@ -8,18 +8,12 @@ import {
     FormContextProvider,
 } from 'ra-core';
 import { renderWithRedux, TestContext } from 'ra-test';
-import { ThemeProvider, Theme, StyledEngineProvider } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import SaveButton from './SaveButton';
 import { Toolbar, SimpleForm } from '../form';
 import { Edit } from '../detail';
 import { TextInput } from '../input';
-
-declare module '@mui/styles/defaultTheme' {
-    // eslint-disable-next-line @typescript-eslint/no-empty-interface
-    interface DefaultTheme extends Theme {}
-}
 
 const theme = createTheme();
 
@@ -59,15 +53,13 @@ describe('<SaveButton />', () => {
 
         const { getByLabelText } = render(
             <TestContext>
-                <StyledEngineProvider injectFirst>
-                    <ThemeProvider theme={theme}>
-                        <SaveContextProvider value={saveContextValue}>
-                            <FormContextProvider value={formContextValue}>
-                                <SaveButton {...invalidButtonDomProps} />
-                            </FormContextProvider>
-                        </SaveContextProvider>
-                    </ThemeProvider>
-                </StyledEngineProvider>
+                <ThemeProvider theme={theme}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <FormContextProvider value={formContextValue}>
+                            <SaveButton {...invalidButtonDomProps} />
+                        </FormContextProvider>
+                    </SaveContextProvider>
+                </ThemeProvider>
             </TestContext>
         );
 
@@ -82,15 +74,13 @@ describe('<SaveButton />', () => {
     it('should render a disabled button', () => {
         const { getByLabelText } = render(
             <TestContext>
-                <StyledEngineProvider injectFirst>
-                    <ThemeProvider theme={theme}>
-                        <SaveContextProvider value={saveContextValue}>
-                            <FormContextProvider value={formContextValue}>
-                                <SaveButton disabled={true} />
-                            </FormContextProvider>
-                        </SaveContextProvider>
-                    </ThemeProvider>
-                </StyledEngineProvider>
+                <ThemeProvider theme={theme}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <FormContextProvider value={formContextValue}>
+                            <SaveButton disabled={true} />
+                        </FormContextProvider>
+                    </SaveContextProvider>
+                </ThemeProvider>
             </TestContext>
         );
         expect(getByLabelText('ra.action.save')['disabled']).toEqual(true);
@@ -381,18 +371,16 @@ describe('<SaveButton />', () => {
 
         const { queryByDisplayValue, getByLabelText } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <StyledEngineProvider injectFirst>
-                    <ThemeProvider theme={theme}>
-                        <Edit {...defaultEditProps}>
-                            <SimpleForm>
-                                <TextInput
-                                    source="title"
-                                    validate={validateAsync}
-                                />
-                            </SimpleForm>
-                        </Edit>
-                    </ThemeProvider>
-                </StyledEngineProvider>
+                <ThemeProvider theme={theme}>
+                    <Edit {...defaultEditProps}>
+                        <SimpleForm>
+                            <TextInput
+                                source="title"
+                                validate={validateAsync}
+                            />
+                        </SimpleForm>
+                    </Edit>
+                </ThemeProvider>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
