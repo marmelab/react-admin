@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { memo, FC } from 'react';
 import { SvgIconComponent } from '@mui/icons-material';
 import PropTypes from 'prop-types';
@@ -7,22 +8,22 @@ import classnames from 'classnames';
 import DoneIcon from '@mui/icons-material/Done';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Tooltip, Typography, TypographyProps } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import { useTranslate, useRecordContext } from 'ra-core';
 
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 
-const useStyles = makeStyles(
-    {
-        root: {
-            display: 'flex',
-        },
+const PREFIX = 'RaBooleanField';
+
+const classes = {
+    root: `${PREFIX}-root`,
+};
+
+const StyledTypography = styled(Typography)({
+    [`&.${classes.root}`]: {
+        display: 'flex',
     },
-    {
-        name: 'RaBooleanField',
-    }
-);
+});
 
 const BooleanField: FC<BooleanFieldProps> = memo(props => {
     const {
@@ -39,7 +40,7 @@ const BooleanField: FC<BooleanFieldProps> = memo(props => {
     } = props;
     const record = useRecordContext(props);
     const translate = useTranslate();
-    const classes = useStyles(props);
+
     const value = get(record, source);
     const isTruthyValue = value === true || (looseValue && value);
     let ariaLabel = value ? valueLabelTrue : valueLabelFalse;
@@ -50,7 +51,7 @@ const BooleanField: FC<BooleanFieldProps> = memo(props => {
 
     if (looseValue || value === false || value === true) {
         return (
-            <Typography
+            <StyledTypography
                 component="span"
                 variant="body2"
                 className={classnames(classes.root, className)}
@@ -67,7 +68,7 @@ const BooleanField: FC<BooleanFieldProps> = memo(props => {
                         </span>
                     )}
                 </Tooltip>
-            </Typography>
+            </StyledTypography>
         );
     }
 

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     Children,
     cloneElement,
@@ -7,9 +8,25 @@ import {
     ReactNode,
 } from 'react';
 import { useTranslatableContext, Record } from 'ra-core';
-import { makeStyles } from '@mui/styles';
-import { ClassesOverride } from '../types';
 import { Labeled } from '../input';
+
+const PREFIX = 'RaTranslatableFieldsTabContent';
+
+const classes = {
+    root: `${PREFIX}-root`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`&.${classes.root}`]: {
+        flexGrow: 1,
+        padding: theme.spacing(2),
+        borderRadius: 0,
+        borderBottomLeftRadius: theme.shape.borderRadius,
+        borderBottomRightRadius: theme.shape.borderRadius,
+        border: `1px solid ${theme.palette.divider}`,
+        borderTop: 0,
+    },
+}));
 
 /**
  * Default container for a group of translatable fields inside a TranslatableFields components.
@@ -28,10 +45,9 @@ export const TranslatableFieldsTabContent = (
         ...other
     } = props;
     const { selectedLocale, getLabel, getSource } = useTranslatableContext();
-    const classes = useStyles(props);
 
     return (
-        <div
+        <Root
             role="tabpanel"
             hidden={selectedLocale !== locale}
             id={`translatable-content-${groupKey}${locale}`}
@@ -72,32 +88,16 @@ export const TranslatableFieldsTabContent = (
                     </div>
                 ) : null
             )}
-        </div>
+        </Root>
     );
 };
 
 export type TranslatableFieldsTabContentProps = {
     basePath: string;
     children: ReactNode;
-    classes?: ClassesOverride<typeof useStyles>;
     formGroupKeyPrefix?: string;
     groupKey: string;
     locale: string;
     record: Record;
     resource: string;
 };
-
-const useStyles = makeStyles(
-    theme => ({
-        root: {
-            flexGrow: 1,
-            padding: theme.spacing(2),
-            borderRadius: 0,
-            borderBottomLeftRadius: theme.shape.borderRadius,
-            borderBottomRightRadius: theme.shape.borderRadius,
-            border: `1px solid ${theme.palette.divider}`,
-            borderTop: 0,
-        },
-    }),
-    { name: 'RaTranslatableFieldsTabContent' }
-);
