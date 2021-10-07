@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     cloneElement,
     Children,
@@ -8,7 +9,6 @@ import {
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import LinearProgress from '@mui/material/LinearProgress';
-import { makeStyles } from '@mui/styles';
 import {
     linkToRecord,
     sanitizeListRestProps,
@@ -22,20 +22,24 @@ import {
 } from 'ra-core';
 
 import Link from '../Link';
-import { ClassesOverride } from '../types';
 
-const useStyles = makeStyles(
-    theme => ({
-        root: {
-            display: 'flex',
-            flexWrap: 'wrap',
-            marginTop: -theme.spacing(1),
-            marginBottom: -theme.spacing(1),
-        },
-        link: {},
-    }),
-    { name: 'RaSingleFieldList' }
-);
+const PREFIX = 'RaSingleFieldList';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    link: `${PREFIX}-link`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`& .${classes.root}`]: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        marginTop: -theme.spacing(1),
+        marginBottom: -theme.spacing(1),
+    },
+
+    [`& .${classes.link}`]: {},
+}));
 
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
@@ -79,17 +83,15 @@ const handleClick = () => {};
  */
 const SingleFieldList = (props: SingleFieldListProps) => {
     const {
-        classes: classesOverride,
         className,
         children,
         linkType = 'edit',
-        component = 'div',
+        component = Root,
         ...rest
     } = props;
     const { ids, data, loaded, basePath } = useListContext(props);
     const resource = useResourceContext(props);
 
-    const classes = useStyles(props);
     const Component = component;
 
     if (loaded === false) {
@@ -158,7 +160,7 @@ SingleFieldList.propTypes = {
 export interface SingleFieldListProps<RecordType extends Record = Record>
     extends HtmlHTMLAttributes<HTMLDivElement> {
     className?: string;
-    classes?: ClassesOverride<typeof useStyles>;
+
     component?: string | ComponentType<any>;
     linkType?: string | false;
     children: React.ReactElement;

@@ -1,28 +1,29 @@
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { styled } from '@mui/material/styles';
 import classnames from 'classnames';
 
-const useStyles = makeStyles(
-    theme => ({
-        root: {
-            backgroundColor: theme.palette.grey[300],
-            display: 'flex',
-        },
-    }),
-    { name: 'RaPlaceholder' }
-);
+const PREFIX = 'RaPlaceholder';
+
+const classes = {
+    root: `${PREFIX}-root`,
+};
+
+const Root = styled('span')(({ theme }) => ({
+    [`&.${classes.root}`]: {
+        backgroundColor: theme.palette.grey[300],
+        display: 'flex',
+    },
+}));
 
 interface Props {
     className?: string;
-    classes?: Record<'root', string>;
 }
 
 const Placeholder = (props: Props) => {
-    const classes = useStyles(props);
     return (
-        <span className={classnames(classes.root, props.className)}>
+        <Root className={classnames(classes.root, props.className)}>
             &nbsp;
-        </span>
+        </Root>
     );
 };
 

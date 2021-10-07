@@ -1,9 +1,9 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { Children, cloneElement, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@mui/material/Card';
 import classnames from 'classnames';
-import { makeStyles } from '@mui/styles';
 import {
     ComponentPropType,
     defaultExporter,
@@ -22,6 +22,50 @@ import DefaultActions from './ListActions';
 import { Empty } from './Empty';
 import { ListProps } from '../types';
 
+const PREFIX = 'RaList';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    main: `${PREFIX}-main`,
+    content: `${PREFIX}-content`,
+    bulkActionsDisplayed: `${PREFIX}-bulkActionsDisplayed`,
+    actions: `${PREFIX}-actions`,
+    noResults: `${PREFIX}-noResults`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`&.${classes.root}`]: {},
+
+    [`& .${classes.main}`]: {
+        display: 'flex',
+    },
+
+    [`& .${classes.content}`]: {
+        marginTop: 0,
+        transition: theme.transitions.create('margin-top'),
+        position: 'relative',
+        flex: '1 1 auto',
+        [theme.breakpoints.down('sm')]: {
+            boxShadow: 'none',
+        },
+        overflow: 'inherit',
+    },
+
+    [`& .${classes.bulkActionsDisplayed}`]: {
+        marginTop: -theme.spacing(8),
+        transition: theme.transitions.create('margin-top'),
+    },
+
+    [`& .${classes.actions}`]: {
+        zIndex: 2,
+        display: 'flex',
+        justifyContent: 'flex-end',
+        flexWrap: 'wrap',
+    },
+
+    [`& .${classes.noResults}`]: { padding: 20 },
+}));
+
 export const ListView = (props: ListViewProps) => {
     const {
         actions,
@@ -31,7 +75,6 @@ export const ListView = (props: ListViewProps) => {
         pagination,
         children,
         className,
-        classes: classesOverride,
         component: Content,
         exporter = defaultExporter,
         title,
@@ -40,7 +83,7 @@ export const ListView = (props: ListViewProps) => {
     } = props;
     const controllerProps = getListControllerProps(props); // deprecated, to be removed in v4
     const listContext = useListContext(props);
-    const classes = useStyles(props);
+
     const {
         defaultTitle,
         total,
@@ -90,7 +133,7 @@ export const ListView = (props: ListViewProps) => {
         loaded && !loading && total === 0 && !Object.keys(filterValues).length;
 
     return (
-        <div
+        <Root
             className={classnames('list-page', classes.root, className)}
             {...sanitizeRestProps(rest)}
         >
@@ -98,7 +141,7 @@ export const ListView = (props: ListViewProps) => {
             {shouldRenderEmptyPage && empty !== false
                 ? cloneElement(empty, listContext)
                 : renderList()}
-        </div>
+        </Root>
     );
 };
 
@@ -111,7 +154,6 @@ ListView.propTypes = {
     bulkActionButtons: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     children: PropTypes.element,
     className: PropTypes.string,
-    classes: PropTypes.object,
     component: ComponentPropType,
     // @ts-ignore-line
     currentSort: PropTypes.shape({
@@ -157,43 +199,11 @@ const DefaultBulkActionButtons = props => <BulkDeleteButton {...props} />;
 
 ListView.defaultProps = {
     actions: <DefaultActions />,
-    classes: {},
     component: Card,
     bulkActionButtons: <DefaultBulkActionButtons />,
     pagination: <DefaultPagination />,
     empty: <Empty />,
 };
-
-const useStyles = makeStyles(
-    theme => ({
-        root: {},
-        main: {
-            display: 'flex',
-        },
-        content: {
-            marginTop: 0,
-            transition: theme.transitions.create('margin-top'),
-            position: 'relative',
-            flex: '1 1 auto',
-            [theme.breakpoints.down('sm')]: {
-                boxShadow: 'none',
-            },
-            overflow: 'inherit',
-        },
-        bulkActionsDisplayed: {
-            marginTop: -theme.spacing(8),
-            transition: theme.transitions.create('margin-top'),
-        },
-        actions: {
-            zIndex: 2,
-            display: 'flex',
-            justifyContent: 'flex-end',
-            flexWrap: 'wrap',
-        },
-        noResults: { padding: 20 },
-    }),
-    { name: 'RaList' }
-);
 
 export interface ListViewProps
     extends Omit<ListProps, 'basePath' | 'hasCreate' | 'perPage' | 'resource'>,

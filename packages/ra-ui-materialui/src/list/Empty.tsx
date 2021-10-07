@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { Typography } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import Inbox from '@mui/icons-material/Inbox';
 import {
     useTranslate,
@@ -9,13 +9,42 @@ import {
     useGetResourceLabel,
 } from 'ra-core';
 
-import { ClassesOverride } from '../types';
 import { CreateButton } from '../button';
+
+const PREFIX = 'RaEmpty';
+
+const classes = {
+    message: `${PREFIX}-message`,
+    icon: `${PREFIX}-icon`,
+    toolbar: `${PREFIX}-toolbar`,
+};
+
+const Root = styled('span')(({ theme }) => ({
+    [`& .${classes.message}`]: {
+        textAlign: 'center',
+        opacity: theme.palette.mode === 'light' ? 0.5 : 0.8,
+        margin: '0 1em',
+        color:
+            theme.palette.mode === 'light'
+                ? 'inherit'
+                : theme.palette.text.primary,
+    },
+
+    [`& .${classes.icon}`]: {
+        width: '9em',
+        height: '9em',
+    },
+
+    [`& .${classes.toolbar}`]: {
+        textAlign: 'center',
+        marginTop: '2em',
+    },
+}));
 
 export const Empty = (props: EmptyProps) => {
     const { basePath, hasCreate } = useListContext(props);
     const resource = useResourceContext(props);
-    const classes = useStyles(props);
+
     const translate = useTranslate();
 
     const getResourceLabel = useGetResourceLabel();
@@ -28,7 +57,7 @@ export const Empty = (props: EmptyProps) => {
     const inviteMessage = translate('ra.page.invite');
 
     return (
-        <>
+        <Root>
             <div className={classes.message}>
                 <Inbox className={classes.icon} />
                 <Typography variant="h4" paragraph>
@@ -49,34 +78,10 @@ export const Empty = (props: EmptyProps) => {
                     <CreateButton variant="contained" basePath={basePath} />
                 </div>
             )}
-        </>
+        </Root>
     );
 };
 
 export interface EmptyProps {
-    classes?: ClassesOverride<typeof useStyles>;
     resource?: string;
 }
-
-const useStyles = makeStyles(
-    theme => ({
-        message: {
-            textAlign: 'center',
-            opacity: theme.palette.mode === 'light' ? 0.5 : 0.8,
-            margin: '0 1em',
-            color:
-                theme.palette.mode === 'light'
-                    ? 'inherit'
-                    : theme.palette.text.primary,
-        },
-        icon: {
-            width: '9em',
-            height: '9em',
-        },
-        toolbar: {
-            textAlign: 'center',
-            marginTop: '2em',
-        },
-    }),
-    { name: 'RaEmpty' }
-);
