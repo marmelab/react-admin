@@ -1,30 +1,37 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
-import { makeStyles } from '@mui/styles';
 import ChevronLeft from '@mui/icons-material/ChevronLeft';
 import ChevronRight from '@mui/icons-material/ChevronRight';
 import { useTranslate } from 'ra-core';
 import classnames from 'classnames';
 
-const useStyles = makeStyles(
-    theme => ({
-        actions: {
-            flexShrink: 0,
-            color: theme.palette.text.secondary,
-            marginLeft: 20,
-        },
-        button: {},
-        currentPageButton: {},
-        hellip: { padding: '1.2em' },
-    }),
-    { name: 'RaPaginationActions' }
-);
+const PREFIX = 'RaPaginationActions';
+
+const classes = {
+    actions: `${PREFIX}-actions`,
+    button: `${PREFIX}-button`,
+    currentPageButton: `${PREFIX}-currentPageButton`,
+    hellip: `${PREFIX}-hellip`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`&.${classes.actions}`]: {
+        flexShrink: 0,
+        color: theme.palette.text.secondary,
+        marginLeft: 20,
+    },
+
+    [`& .${classes.button}`]: {},
+    [`& .${classes.currentPageButton}`]: {},
+    [`& .${classes.hellip}`]: { padding: '1.2em' },
+}));
 
 const PaginationActions = props => {
     const { page, rowsPerPage, count, onPageChange, color, size } = props;
-    const classes = useStyles(props);
+
     const translate = useTranslate();
     const theme = useTheme();
     /**
@@ -121,11 +128,11 @@ const PaginationActions = props => {
     const nbPages = getNbPages();
 
     if (nbPages === 1) {
-        return <div className={classes.actions} />;
+        return <Root className={classes.actions} />;
     }
 
     return (
-        <div className={classes.actions}>
+        <Root className={classes.actions}>
             {page > 0 && (
                 <Button
                     color={color}
@@ -159,7 +166,7 @@ const PaginationActions = props => {
                     )}
                 </Button>
             )}
-        </div>
+        </Root>
     );
 };
 
@@ -172,7 +179,6 @@ const PaginationActions = props => {
 PaginationActions.propTypes = {
     backIconButtonProps: PropTypes.object,
     count: PropTypes.number.isRequired,
-    classes: PropTypes.object,
     nextIconButtonProps: PropTypes.object,
     onPageChange: PropTypes.func.isRequired,
     page: PropTypes.number.isRequired,
