@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { Children, cloneElement, isValidElement, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslate, useGetIdentity } from 'ra-core';
@@ -10,26 +11,30 @@ import {
     Avatar,
     PopoverOrigin,
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 
-import { ClassesOverride } from '../types';
+const PREFIX = 'RaUserMenu';
+
+const classes = {
+    user: `${PREFIX}-user`,
+    userButton: `${PREFIX}-userButton`,
+    avatar: `${PREFIX}-avatar`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`&.${classes.user}`]: {},
+
+    [`& .${classes.userButton}`]: {
+        textTransform: 'none',
+    },
+
+    [`& .${classes.avatar}`]: {
+        width: theme.spacing(4),
+        height: theme.spacing(4),
+    },
+}));
 
 const defaultIcon = <AccountCircle />;
-
-const useStyles = makeStyles(
-    theme => ({
-        user: {},
-        userButton: {
-            textTransform: 'none',
-        },
-        avatar: {
-            width: theme.spacing(4),
-            height: theme.spacing(4),
-        },
-    }),
-    { name: 'RaUserMenu' }
-);
 
 const AnchorOrigin: PopoverOrigin = {
     vertical: 'bottom',
@@ -45,7 +50,6 @@ const UserMenu = (props: UserMenuProps) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const translate = useTranslate();
     const { loaded, identity } = useGetIdentity();
-    const classes = useStyles(props);
 
     const {
         children,
@@ -61,7 +65,7 @@ const UserMenu = (props: UserMenuProps) => {
     const handleClose = () => setAnchorEl(null);
 
     return (
-        <div className={classes.user}>
+        <Root className={classes.user}>
             {loaded && identity?.fullName ? (
                 <Button
                     aria-label={label && translate(label, { _: label })}
@@ -114,7 +118,7 @@ const UserMenu = (props: UserMenuProps) => {
                 )}
                 {logout}
             </Menu>
-        </div>
+        </Root>
     );
 };
 
@@ -128,7 +132,7 @@ UserMenu.propTypes = {
 
 export interface UserMenuProps {
     children?: React.ReactNode;
-    classes?: ClassesOverride<typeof useStyles>;
+
     label?: string;
     logout?: React.ReactNode;
     icon?: React.ReactNode;

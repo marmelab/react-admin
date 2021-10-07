@@ -1,11 +1,9 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import Snackbar, { SnackbarProps } from '@mui/material/Snackbar';
-import Button from '@mui/material/Button';
-import { Theme } from '@mui/material/styles';
-import { makeStyles } from '@mui/styles';
+import { Button, Snackbar, SnackbarProps } from '@mui/material';
 import classnames from 'classnames';
 
 import {
@@ -17,40 +15,55 @@ import {
     useTranslate,
 } from 'ra-core';
 
-export interface NotificationProps extends Omit<SnackbarProps, 'open'> {
+const PREFIX = 'RaNotification';
+
+const classes = {
+    success: `${PREFIX}-success`,
+    error: `${PREFIX}-error`,
+    warning: `${PREFIX}-warning`,
+    undo: `${PREFIX}-undo`,
+    multiline: `${PREFIX}-multiline`,
+};
+
+const StyledButton = styled(Button)(({ theme }) => ({
+    [`& .${classes.success}`]: {
+        backgroundColor: theme.palette.success.main,
+        color: theme.palette.success.contrastText,
+    },
+
+    [`& .${classes.error}`]: {
+        backgroundColor: theme.palette.error.dark,
+        color: theme.palette.error.contrastText,
+    },
+
+    [`& .${classes.warning}`]: {
+        backgroundColor: theme.palette.error.light,
+        color: theme.palette.error.contrastText,
+    },
+
+    [`& .${classes.undo}`]: (
+        props: NotificationProps & Omit<SnackbarProps, 'open'>
+    ) => ({
+        color:
+            props.type === 'success'
+                ? theme.palette.success.contrastText
+                : theme.palette.primary.light,
+    }),
+
+    [`& .${classes.multiline}`]: {
+        whiteSpace: 'pre-wrap',
+    },
+}));
+
+export interface NotificationProps {
     type?: string;
     autoHideDuration?: number;
     multiLine?: boolean;
 }
 
-const useStyles = makeStyles(
-    (theme: Theme) => ({
-        success: {
-            backgroundColor: theme.palette.success.main,
-            color: theme.palette.success.contrastText,
-        },
-        error: {
-            backgroundColor: theme.palette.error.dark,
-            color: theme.palette.error.contrastText,
-        },
-        warning: {
-            backgroundColor: theme.palette.error.light,
-            color: theme.palette.error.contrastText,
-        },
-        undo: (props: NotificationProps) => ({
-            color:
-                props.type === 'success'
-                    ? theme.palette.success.contrastText
-                    : theme.palette.primary.light,
-        }),
-        multiLine: {
-            whiteSpace: 'pre-wrap',
-        },
-    }),
-    { name: 'RaNotification' }
-);
-
-const Notification = (props: NotificationProps) => {
+const Notification = (
+    props: NotificationProps & Omit<SnackbarProps, 'open'>
+) => {
     const {
         classes: classesOverride,
         type,
@@ -63,7 +76,6 @@ const Notification = (props: NotificationProps) => {
     const notification = useSelector(getNotification);
     const dispatch = useDispatch();
     const translate = useTranslate();
-    const styles = useStyles(props);
 
     useEffect(() => {
         setOpen(!!notification);
@@ -103,21 +115,21 @@ const Notification = (props: NotificationProps) => {
             onClose={handleRequestClose}
             ContentProps={{
                 className: classnames(
-                    styles[(notification && notification.type) || type],
+                    classes[(notification && notification.type) || type],
                     className,
-                    { [styles['multiLine']]: multiLine }
+                    { [classes.multiline]: multiLine }
                 ),
             }}
             action={
                 notification && notification.undoable ? (
-                    <Button
+                    <StyledButton
                         color="primary"
-                        className={styles.undo}
+                        className={classes.undo}
                         size="small"
                         onClick={handleUndo}
                     >
-                        {translate('ra.action.undo')}
-                    </Button>
+                        <>{translate('ra.action.undo')}</>
+                    </StyledButton>
                 ) : null
             }
             {...rest}

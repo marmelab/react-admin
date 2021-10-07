@@ -1,20 +1,44 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { IconButton, Tooltip } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useTranslate } from 'ra-core';
-import { ClassesOverride } from '../types';
 import { useToggleSidebar } from './useToggleSidebar';
+
+const PREFIX = 'RaSidebarToggleButton';
+
+const classes = {
+    menuButtonIconClosed: `${PREFIX}-menuButtonIconClosed`,
+    menuButtonIconOpen: `${PREFIX}-menuButtonIconOpen`,
+};
+
+const StyledIconButton = styled(IconButton)(({ theme }) => ({
+    [`& .${classes.menuButtonIconClosed}`]: {
+        transition: theme.transitions.create(['transform'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        transform: 'rotate(0deg)',
+    },
+
+    [`& .${classes.menuButtonIconOpen}`]: {
+        transition: theme.transitions.create(['transform'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        transform: 'rotate(180deg)',
+    },
+}));
 
 /**
  * A button that toggles the sidebar. Used by default in the <AppBar>.
  * @param props The component props
  * @param {String} props.className An optional class name to apply to the button
- * @param {ClassesOverride<typeof useStyles>} props.classes An object containing styles.
+
  */
 export const SidebarToggleButton = (props: SidebarToggleButtonProps) => {
     const translate = useTranslate();
-    const classes = useStyles(props);
+
     const { className } = props;
     const [open, toggleSidebar] = useToggleSidebar();
 
@@ -28,7 +52,7 @@ export const SidebarToggleButton = (props: SidebarToggleButtonProps) => {
             )}
             enterDelay={500}
         >
-            <IconButton
+            <StyledIconButton
                 color="inherit"
                 onClick={() => toggleSidebar()}
                 className={className}
@@ -41,32 +65,11 @@ export const SidebarToggleButton = (props: SidebarToggleButtonProps) => {
                             : classes.menuButtonIconClosed,
                     }}
                 />
-            </IconButton>
+            </StyledIconButton>
         </Tooltip>
     );
 };
 
-const useStyles = makeStyles(
-    theme => ({
-        menuButtonIconClosed: {
-            transition: theme.transitions.create(['transform'], {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-            }),
-            transform: 'rotate(0deg)',
-        },
-        menuButtonIconOpen: {
-            transition: theme.transitions.create(['transform'], {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-            }),
-            transform: 'rotate(180deg)',
-        },
-    }),
-    { name: 'RaSidebarToggleButton' }
-);
-
 export type SidebarToggleButtonProps = {
     className?: string;
-    classes?: ClassesOverride<typeof useStyles>;
 };
