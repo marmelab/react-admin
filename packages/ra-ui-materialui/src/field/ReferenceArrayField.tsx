@@ -187,10 +187,6 @@ export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props =
 
     const { loaded } = useListContext(props);
 
-    if (!loaded) {
-        return;
-    }
-
     return (
         <Root>
             {!loaded ? (
