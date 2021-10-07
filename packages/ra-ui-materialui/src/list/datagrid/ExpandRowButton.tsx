@@ -2,11 +2,9 @@ import * as React from 'react';
 import { ElementType, memo } from 'react';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import classNames from 'classnames';
 import { useTranslate } from 'ra-core';
 
 const ExpandRowButton = ({
-    classes,
     expanded,
     expandContentId,
     ...props
@@ -19,9 +17,6 @@ const ExpandRowButton = ({
             )}
             aria-expanded={expanded}
             aria-controls={expandContentId}
-            className={classNames(classes.expandIcon, {
-                [classes.expanded]: expanded,
-            })}
             tabIndex={-1}
             aria-hidden="true"
             component="div"
@@ -34,7 +29,6 @@ const ExpandRowButton = ({
 };
 
 export interface ExpandRowButtonProps extends IconButtonProps {
-    classes?: any;
     component?: ElementType;
     expanded: boolean;
     expandContentId?: string;

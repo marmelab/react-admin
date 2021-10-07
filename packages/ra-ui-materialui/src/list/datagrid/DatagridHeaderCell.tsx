@@ -1,10 +1,10 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { memo } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { TableCell, TableSortLabel, Tooltip } from '@mui/material';
 import { TableCellProps } from '@mui/material/TableCell';
-import { makeStyles } from '@mui/styles';
 import {
     FieldTitle,
     useTranslate,
@@ -12,29 +12,26 @@ import {
     useResourceContext,
 } from 'ra-core';
 
-import { ClassesOverride } from '../../types';
+const PREFIX = 'RaDatagridHeaderCell';
 
-// remove the sort icons when not active
-const useStyles = makeStyles(
-    {
-        icon: {
-            display: 'none',
-        },
-        active: {
-            '& $icon': {
-                display: 'inline',
-            },
-        },
+const classes = {
+    icon: `${PREFIX}-icon`,
+};
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`& .MuiSvgIcon-root`]: {
+        display: 'none',
     },
-    { name: 'RaDatagridHeaderCell' }
-);
+    [`& .Mui-active .MuiSvgIcon-root`]: {
+        display: 'inline',
+    },
+}));
 
 export const DatagridHeaderCell = (
     props: DatagridHeaderCellProps
 ): JSX.Element => {
     const {
         className,
-        classes: classesOverride,
         field,
         currentSort,
         updateSort,
@@ -42,11 +39,11 @@ export const DatagridHeaderCell = (
         ...rest
     } = props;
     const resource = useResourceContext(props);
-    const classes = useStyles(props);
+
     const translate = useTranslate();
 
     return (
-        <TableCell
+        <StyledTableCell
             className={classnames(className, field.props.headerClassName)}
             align={field.props.textAlign}
             variant="head"
@@ -90,13 +87,12 @@ export const DatagridHeaderCell = (
                     resource={resource}
                 />
             )}
-        </TableCell>
+        </StyledTableCell>
     );
 };
 
 DatagridHeaderCell.propTypes = {
     className: PropTypes.string,
-    classes: PropTypes.object,
     field: PropTypes.element,
     currentSort: PropTypes.shape({
         sort: PropTypes.string,
@@ -110,7 +106,6 @@ DatagridHeaderCell.propTypes = {
 export interface DatagridHeaderCellProps
     extends Omit<TableCellProps, 'classes'> {
     className?: string;
-    classes?: ClassesOverride<typeof useStyles>;
     field?: JSX.Element;
     isSorting?: boolean;
     resource: string;

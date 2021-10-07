@@ -21,7 +21,7 @@ import {
     RecordMap,
     SortPayload,
 } from 'ra-core';
-import { Table, TableProps } from '@mui/material';
+import { TableProps } from '@mui/material';
 import classnames from 'classnames';
 import union from 'lodash/union';
 import difference from 'lodash/difference';
@@ -29,10 +29,9 @@ import difference from 'lodash/difference';
 import { DatagridHeader } from './DatagridHeader';
 import DatagridLoading from './DatagridLoading';
 import DatagridBody, { PureDatagridBody } from './DatagridBody';
-import useDatagridStyles from './useDatagridStyles';
-import { ClassesOverride } from '../../types';
 import { RowClickFunction } from './DatagridRow';
 import DatagridContextProvider from './DatagridContextProvider';
+import { DatagridClasses, StyledTable } from './useDatagridStyles';
 
 /**
  * The Datagrid component renders a list of records as a table.
@@ -104,13 +103,11 @@ import DatagridContextProvider from './DatagridContextProvider';
  * }
  */
 const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
-    const classes = useDatagridStyles(props);
     const {
         optimized = false,
         body = optimized ? PureDatagridBody : DatagridBody,
         header = DatagridHeader,
         children,
-        classes: classesOverride,
         className,
         empty,
         expand,
@@ -189,7 +186,6 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     if (loaded === false) {
         return (
             <DatagridLoading
-                classes={classes}
                 className={className}
                 expand={expand}
                 hasBulkActions={hasBulkActions}
@@ -219,9 +215,9 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
      */
     return (
         <DatagridContextProvider value={contextValue}>
-            <Table
+            <StyledTable
                 ref={ref}
-                className={classnames(classes.table, className)}
+                className={classnames(DatagridClasses.table, className)}
                 size={size}
                 {...sanitizeListRestProps(rest)}
             >
@@ -229,8 +225,6 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                     header,
                     {
                         children,
-                        classes,
-                        className,
                         currentSort,
                         data,
                         hasExpand: !!expand,
@@ -248,8 +242,6 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                     body,
                     {
                         basePath,
-                        className: classes.tbody,
-                        classes,
                         expand,
                         rowClick,
                         data,
@@ -265,7 +257,7 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                     },
                     children
                 )}
-            </Table>
+            </StyledTable>
         </DatagridContextProvider>
     );
 });
@@ -280,7 +272,6 @@ Datagrid.propTypes = {
     // @ts-ignore
     body: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     children: PropTypes.node.isRequired,
-    classes: PropTypes.object,
     className: PropTypes.string,
     currentSort: PropTypes.exact({
         field: PropTypes.string,
@@ -312,7 +303,6 @@ Datagrid.propTypes = {
 export interface DatagridProps<RecordType extends Record = Record>
     extends Omit<TableProps, 'size' | 'classes' | 'onSelect'> {
     body?: ReactElement | ComponentType;
-    classes?: ClassesOverride<typeof useDatagridStyles>;
     className?: string;
     expand?:
         | ReactElement
