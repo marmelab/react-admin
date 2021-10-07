@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { isValidElement, ReactNode, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -7,12 +8,12 @@ import {
     ListProps,
     ListItem,
     ListItemAvatar,
+    ListItemButton,
     ListItemIcon,
     ListItemProps,
     ListItemSecondaryAction,
     ListItemText,
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
 import {
     linkToRecord,
@@ -25,14 +26,16 @@ import {
 } from 'ra-core';
 
 import SimpleListLoading from './SimpleListLoading';
-import { ClassesOverride } from '../types';
 
-const useStyles = makeStyles(
-    {
-        tertiary: { float: 'right', opacity: 0.541176 },
-    },
-    { name: 'RaSimpleList' }
-);
+const PREFIX = 'RaSimpleList';
+
+const classes = {
+    tertiary: `${PREFIX}-tertiary`,
+};
+
+const Root = styled(List)({
+    [`& .${classes.tertiary}`]: { float: 'right', opacity: 0.541176 },
+});
 
 /**
  * The <SimpleList> component renders a list of records as a material-ui <List>.
@@ -73,7 +76,6 @@ const SimpleList = <RecordType extends Record = Record>(
 ) => {
     const {
         className,
-        classes: classesOverride,
         hasBulkActions,
         leftAvatar,
         leftIcon,
@@ -89,12 +91,10 @@ const SimpleList = <RecordType extends Record = Record>(
     const { basePath, data, ids, loaded, total } = useListContext<RecordType>(
         props
     );
-    const classes = useStyles(props);
 
     if (loaded === false) {
         return (
             <SimpleListLoading
-                classes={classes}
                 className={className}
                 hasLeftAvatarOrIcon={!!leftIcon || !!leftAvatar}
                 hasRightAvatarOrIcon={!!rightIcon || !!rightAvatar}
@@ -119,92 +119,82 @@ const SimpleList = <RecordType extends Record = Record>(
         }
     };
 
-    return (
-        total > 0 && (
-            <List className={className} {...sanitizeListRestProps(rest)}>
-                {ids.map((id, rowIndex) => (
-                    <RecordContextProvider key={id} value={data[id]}>
-                        <li>
-                            <LinkOrNot
-                                linkType={linkType}
-                                basePath={basePath}
-                                id={id}
-                                record={data[id]}
-                                style={
-                                    rowStyle
-                                        ? rowStyle(data[id], rowIndex)
-                                        : undefined
-                                }
-                            >
-                                {leftIcon && (
-                                    <ListItemIcon>
-                                        {leftIcon(data[id], id)}
-                                    </ListItemIcon>
-                                )}
-                                {leftAvatar && (
-                                    <ListItemAvatar>
-                                        {renderAvatar(id, leftAvatar)}
-                                    </ListItemAvatar>
-                                )}
-                                <ListItemText
-                                    primary={
-                                        <div>
-                                            {isValidElement(primaryText)
-                                                ? primaryText
-                                                : primaryText(data[id], id)}
+    return total > 0 ? (
+        <Root className={className} {...sanitizeListRestProps(rest)}>
+            {ids.map((id, rowIndex) => (
+                <RecordContextProvider key={id} value={data[id]}>
+                    <ListItem>
+                        <LinkOrNot
+                            linkType={linkType}
+                            basePath={basePath}
+                            id={id}
+                            record={data[id]}
+                            style={
+                                rowStyle
+                                    ? rowStyle(data[id], rowIndex)
+                                    : undefined
+                            }
+                        >
+                            {leftIcon && (
+                                <ListItemIcon>
+                                    {leftIcon(data[id], id)}
+                                </ListItemIcon>
+                            )}
+                            {leftAvatar && (
+                                <ListItemAvatar>
+                                    {renderAvatar(id, leftAvatar)}
+                                </ListItemAvatar>
+                            )}
+                            <ListItemText
+                                primary={
+                                    <div>
+                                        {isValidElement(primaryText)
+                                            ? primaryText
+                                            : primaryText(data[id], id)}
 
-                                            {!!tertiaryText &&
-                                                (isValidElement(
-                                                    tertiaryText
-                                                ) ? (
-                                                    tertiaryText
-                                                ) : (
-                                                    <span
-                                                        className={
-                                                            classes.tertiary
-                                                        }
-                                                    >
-                                                        {tertiaryText(
-                                                            data[id],
-                                                            id
-                                                        )}
-                                                    </span>
-                                                ))}
-                                        </div>
-                                    }
-                                    secondary={
-                                        !!secondaryText &&
-                                        (isValidElement(secondaryText)
-                                            ? secondaryText
-                                            : secondaryText(data[id], id))
-                                    }
-                                />
-                                {(rightAvatar || rightIcon) && (
-                                    <ListItemSecondaryAction>
-                                        {rightAvatar && (
-                                            <Avatar>
-                                                {renderAvatar(id, rightAvatar)}
-                                            </Avatar>
-                                        )}
-                                        {rightIcon && (
-                                            <ListItemIcon>
-                                                {rightIcon(data[id], id)}
-                                            </ListItemIcon>
-                                        )}
-                                    </ListItemSecondaryAction>
-                                )}
-                            </LinkOrNot>
-                        </li>
-                    </RecordContextProvider>
-                ))}
-            </List>
-        )
-    );
+                                        {!!tertiaryText &&
+                                            (isValidElement(tertiaryText) ? (
+                                                tertiaryText
+                                            ) : (
+                                                <span
+                                                    className={classes.tertiary}
+                                                >
+                                                    {tertiaryText(data[id], id)}
+                                                </span>
+                                            ))}
+                                    </div>
+                                }
+                                secondary={
+                                    !!secondaryText &&
+                                    (isValidElement(secondaryText)
+                                        ? secondaryText
+                                        : secondaryText(data[id], id))
+                                }
+                            />
+                            {(rightAvatar || rightIcon) && (
+                                <ListItemSecondaryAction>
+                                    {rightAvatar && (
+                                        <Avatar>
+                                            {renderAvatar(id, rightAvatar)}
+                                        </Avatar>
+                                    )}
+                                    {rightIcon && (
+                                        <ListItemIcon>
+                                            {rightIcon(data[id], id)}
+                                        </ListItemIcon>
+                                    )}
+                                </ListItemSecondaryAction>
+                            )}
+                        </LinkOrNot>
+                    </ListItem>
+                </RecordContextProvider>
+            ))}
+        </Root>
+    ) : null;
 };
 
 SimpleList.propTypes = {
     className: PropTypes.string,
-    classes: PropTypes.object,
     leftAvatar: PropTypes.func,
     leftIcon: PropTypes.func,
     linkType: PropTypes.oneOfType([
@@ -228,7 +218,6 @@ export type FunctionToElement<RecordType extends Record = Record> = (
 export interface SimpleListProps<RecordType extends Record = Record>
     extends Omit<ListProps, 'classes'> {
     className?: string;
-    classes?: ClassesOverride<typeof useStyles>;
     hasBulkActions?: boolean;
     leftAvatar?: FunctionToElement<RecordType>;
     leftIcon?: FunctionToElement<RecordType>;
@@ -247,13 +236,6 @@ export interface SimpleListProps<RecordType extends Record = Record>
     total?: number;
 }
 
-const useLinkOrNotStyles = makeStyles(
-    {
-        link: {},
-    },
-    { name: 'RaLinkOrNot' }
-);
-
 const LinkOrNot = (
     props: LinkOrNotProps & Omit<ListItemProps, 'button' | 'component' | 'id'>
 ) => {
@@ -266,55 +248,46 @@ const LinkOrNot = (
         record,
         ...rest
     } = props;
-    const classes = useLinkOrNotStyles({ classes: classesOverride });
     const link =
         typeof linkType === 'function' ? linkType(record, id) : linkType;
 
     return link === 'edit' || link === true ? (
-        <ListItem
-            // @ts-ignore
+        // @ts-ignore
+        <ListItemButton
             component={Link}
             to={linkToRecord(basePath, id)}
-            className={classes.link}
             {...rest}
         >
             {children}
-        </ListItem>
+        </ListItemButton>
     ) : link === 'show' ? (
-        <ListItem
-            // @ts-ignore
+        // @ts-ignore
+        <ListItemButton
             component={Link}
             to={`${linkToRecord(basePath, id)}/show`}
-            className={classes.link}
             {...rest}
         >
             {children}
-        </ListItem>
+        </ListItemButton>
     ) : link !== false ? (
-        <ListItem
-            // @ts-ignore
-            component={Link}
-            to={link}
-            className={classes.link}
-            {...rest}
-        >
+        // @ts-ignore
+        <ListItemButton component={Link} to={link} {...rest}>
             {children}
-        </ListItem>
+        </ListItemButton>
     ) : (
-        <ListItem
+        <ListItemText
             // @ts-ignore
             component="div"
             {...rest}
         >
             {children}
-        </ListItem>
+        </ListItemText>
     );
 };
 
 export type FunctionLinkType = (record: Record, id: Identifier) => string;
 
 export interface LinkOrNotProps {
-    classes?: ClassesOverride<typeof useLinkOrNotStyles>;
     linkType?: string | FunctionLinkType | boolean;
     basePath: string;
     id: Identifier;
