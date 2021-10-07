@@ -227,6 +227,24 @@ describe('<SimpleFormIterator />', () => {
         expect(queryAllByText('ra.action.remove').length).toBe(0);
     });
 
+    it('should not display clone button if disableClone is truthy', () => {
+        const { queryAllByText } = renderWithRedux(
+            <SaveContextProvider value={saveContextValue}>
+                <SideEffectContextProvider value={sideEffectValue}>
+                    <SimpleForm>
+                        <ArrayInput source="emails">
+                            <SimpleFormIterator disableClone>
+                                <TextInput source="email" />
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </SimpleForm>
+                </SideEffectContextProvider>
+            </SaveContextProvider>
+        );
+
+        expect(queryAllByText('ra.action.clone').length).toBe(0);
+    });
+
     it('should add children row on add button click', async () => {
         const {
             getByText,
@@ -279,6 +297,53 @@ describe('<SimpleFormIterator />', () => {
         ).toEqual([{ email: '' }, { email: '' }]);
 
         expect(queryAllByText('ra.action.remove').length).toBe(2);
+    });
+
+    it('should clone selected child last on clone button click', async () => {
+        const {
+            getByText,
+            queryAllByLabelText,
+            queryAllByText,
+        } = renderWithRedux(
+            <ThemeProvider theme={theme}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffectValue}>
+                        <SimpleForm
+                            record={{
+                                id: 'whatever',
+                                emails: [{ email: '' }, { email: '' }],
+                            }}
+                        >
+                            <ArrayInput source="emails">
+                                <SimpleFormIterator>
+                                    <TextInput source="email" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
+        );
+        const emails = [{ email: 'foo@bar.com' }, { email: 'bar@foo.com' }];
+
+        const cloneItemElement = getByText('ra.action.clone').closest('button');
+
+        fireEvent.click(cloneItemElement);
+        await waitFor(() => {
+            const inputElements = queryAllByLabelText('CustomLabel');
+
+            expect(inputElements.length).toBe(1);
+        });
+
+        const inputElements = queryAllByLabelText(
+            'CustomLabel'
+        ) as HTMLInputElement[];
+
+        expect(inputElements.map(inputElement => inputElement.value)).toEqual([
+            '5',
+        ]);
+
+        expect(queryAllByText('ra.action.clone').length).toBe(2);
     });
 
     it('should add correct children on add button click without source', async () => {
@@ -528,6 +593,33 @@ describe('<SimpleFormIterator />', () => {
 
         expect(queryAllByText('ra.action.remove').length).toBe(0);
         expect(getByText('Custom Remove Button')).not.toBeNull();
+    });
+
+    it('should not display the default clone button if a custom clone button is passed', () => {
+        const { getByText, queryAllByText } = renderWithRedux(
+            <ThemeProvider theme={theme}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffectValue}>
+                        <SimpleForm
+                            record={{ id: 'whatever', emails: [{ email: '' }] }}
+                        >
+                            <ArrayInput source="emails">
+                                <SimpleFormIterator
+                                    cloneButton={
+                                        <button>Custom Clone Button</button>
+                                    }
+                                >
+                                    <TextInput source="email" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
+        );
+
+        expect(queryAllByText('ra.action.clone').length).toBe(0);
+        expect(getByText('Custom Clone Button')).not.toBeNull();
     });
 
     it('should not display the default reorder element if a custom reorder element is passed', () => {

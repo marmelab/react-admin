@@ -1241,13 +1241,13 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admi
 </ArrayInput>
 ```
 
-You can also use `addButton` and `removeButton` props to pass your custom add and remove buttons to `SimpleFormIterator`.
+You can also use `addButton`, `removeButton` and `cloneButton` props to pass your custom add, remove and clone buttons to `SimpleFormIterator`.
 
 ```jsx
 import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admin';
 
 <ArrayInput source="backlinks">
-    <SimpleFormIterator addButton={<CustomAddButton />} removeButton={<CustomRemoveButton />}>
+    <SimpleFormIterator addButton={<CustomAddButton />} removeButton={<CustomRemoveButton />} cloneButton={<CustomCloneButton />}>
         <DateInput source="date" />
         <TextInput source="url" />
     </SimpleFormIterator>
@@ -1273,7 +1273,7 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admi
 import { ArrayInput, SimpleFormIterator, DateInput, TextInput, FormDataConsumer } from 'react-admin';
 
 <ArrayInput source="backlinks">
-    <SimpleFormIterator disableRemove >
+    <SimpleFormIterator disableRemove disableClone>
         <DateInput source="date" />
         <FormDataConsumer>
             {({ getSource, scopedFormData }) => {

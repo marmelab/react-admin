@@ -27,12 +27,14 @@ import {
     SimpleFormIteratorItem,
 } from './SimpleFormIteratorItem';
 import { AddItemButton as DefaultAddItemButton } from './AddItemButton';
+import { CloneItemButton as DefaultCloneItemButton } from './CloneItemButton';
 import { RemoveItemButton as DefaultRemoveItemButton } from './RemoveItemButton';
 import { ReOrderButtons as DefaultReOrderButtons } from './ReOrderButtons';
 
 export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     const {
         addButton = <DefaultAddItemButton />,
+        cloneButton = <DefaultCloneItemButton />,
         removeButton = <DefaultRemoveItemButton />,
         reOrderButtons = <DefaultReOrderButtons />,
         basePath,
@@ -43,6 +45,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         source,
         disabled,
         disableAdd,
+        disableClone,
         disableRemove,
         disableReordering,
         variant,
@@ -90,6 +93,14 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         [fields]
     );
 
+    const cloneField = useCallback(
+        (index: number) => {
+            ids.current.push(nextId.current++);
+            fields.push(fields.value[index]);
+        },
+        [fields]
+    );
+
     // add field and call the onClick event of the button passed as addButton prop
     const handleAddButtonClick = (
         originalOnClickHandler: MouseEventHandler
@@ -116,10 +127,11 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         () => ({
             total: fields.length,
             add: addField,
+            clone: cloneField,
             remove: removeField,
             reOrder: handleReorder,
         }),
-        [fields.length, addField, removeField, handleReorder]
+        [fields.length, addField, removeField, cloneField, handleReorder]
     );
     return fields ? (
         <SimpleFormIteratorContext.Provider value={context}>
@@ -141,7 +153,9 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                             <SimpleFormIteratorItem
                                 basePath={basePath}
                                 classes={classes}
+                                cloneButton={cloneButton}
                                 disabled={disabled}
+                                disableClone={disableClone}
                                 disableRemove={disableRemove}
                                 disableReordering={disableReordering}
                                 fields={fields}
@@ -150,6 +164,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                                 margin={margin}
                                 member={member}
                                 meta={meta}
+                                onCloneField={cloneField}
                                 onRemoveField={removeField}
                                 onReorder={handleReorder}
                                 record={(records && records[index]) || {}}
@@ -186,12 +201,14 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
 
 SimpleFormIterator.defaultProps = {
     disableAdd: false,
+    disableClone: false,
     disableRemove: false,
 };
 
 SimpleFormIterator.propTypes = {
     defaultValue: PropTypes.any,
     addButton: PropTypes.element,
+    cloneButton: PropTypes.element,
     removeButton: PropTypes.element,
     basePath: PropTypes.string,
     children: PropTypes.node,
@@ -206,6 +223,7 @@ SimpleFormIterator.propTypes = {
     resource: PropTypes.string,
     translate: PropTypes.func,
     disableAdd: PropTypes.bool,
+    disableClone: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     disableRemove: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     TransitionProps: PropTypes.shape({}),
 };
@@ -217,9 +235,11 @@ export interface SimpleFormIteratorProps
     children?: ReactNode;
     classes?: ClassesOverride<typeof useSimpleFormIteratorStyles>;
     className?: string;
+    cloneButton?: ReactElement;
     defaultValue?: any;
     disabled?: boolean;
     disableAdd?: boolean;
+    disableClone?: boolean | DisableRemoveFunction;
     disableRemove?: boolean | DisableRemoveFunction;
     disableReordering?: boolean;
     getItemLabel?: (index: number) => string;

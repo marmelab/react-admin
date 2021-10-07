@@ -28,7 +28,9 @@ export const SimpleFormIteratorItem = (props: SimpleFormIteratorItemProps) => {
         basePath,
         children,
         classes,
+        cloneButton,
         disabled,
+        disableClone,
         disableReordering,
         disableRemove,
         getItemLabel,
@@ -43,7 +45,7 @@ export const SimpleFormIteratorItem = (props: SimpleFormIteratorItemProps) => {
         variant,
     } = props;
 
-    const { total, reOrder, remove } = useSimpleFormIterator();
+    const { total, reOrder, remove, clone } = useSimpleFormIterator();
     // Returns a boolean to indicate whether to disable the remove button for certain fields.
     // If disableRemove is a function, then call the function with the current record to
     // determining if the button should be disabled. Otherwise, use a boolean property that
@@ -53,6 +55,17 @@ export const SimpleFormIteratorItem = (props: SimpleFormIteratorItemProps) => {
             return disableRemove;
         }
         return disableRemove && disableRemove(record);
+    };
+
+    // Returns a boolean to indicate whether to disable the remove button for certain fields.
+    // If disableRemove is a function, then call the function with the current record to
+    // determining if the button should be disabled. Otherwise, use a boolean property that
+    // enables or disables the button for all of the fields.
+    const disableCloneField = (record: Record) => {
+        if (typeof disableClone === 'boolean') {
+            return disableClone;
+        }
+        return disableClone && disableClone(record);
     };
 
     // remove field and call the onClick event of the button passed as removeButton prop
@@ -66,10 +79,22 @@ export const SimpleFormIteratorItem = (props: SimpleFormIteratorItemProps) => {
         }
     };
 
+    // remove field and call the onClick event of the button passed as removeButton prop
+    const handleCloneButtonClick = (
+        originalOnClickHandler: MouseEventHandler,
+        index: number
+    ) => (event: MouseEvent) => {
+        clone(index);
+        if (originalOnClickHandler) {
+            originalOnClickHandler(event);
+        }
+    };
+
     const context = useMemo<SimpleFormIteratorItemContextValue>(
         () => ({
             index,
             total,
+            clone: () => clone(index),
             reOrder: newIndex => reOrder(index, newIndex),
             remove: () => remove(index),
         }),
@@ -142,24 +167,42 @@ export const SimpleFormIteratorItem = (props: SimpleFormIteratorItemProps) => {
                         })}
                     </span>
                 )}
+                {!disabled && !disableCloneField(record) && (
+                    <span className={classes.action}>
+                        {cloneElement(cloneButton, {
+                            onClick: handleCloneButtonClick(
+                                cloneButton.props.onClick,
+                                index
+                            ),
+                            className: classNames(
+                                'button-remove',
+                                `button-remove-${source}-${index}`
+                            ),
+                        })}
+                    </span>
+                )}
             </li>
         </SimpleFormIteratorItemContext.Provider>
     );
 };
 
 export type DisableRemoveFunction = (record: Record) => boolean;
+export type DisableCloneFunction = (record: Record) => boolean;
 
 export type SimpleFormIteratorItemProps = ArrayInputContextValue & {
     basePath: string;
     children?: ReactNode;
+    cloneButton?: ReactElement;
     classes?: ClassesOverride<typeof useSimpleFormIteratorStyles>;
     disabled?: boolean;
+    disableClone?: boolean | DisableCloneFunction;
     disableRemove?: boolean | DisableRemoveFunction;
     disableReordering?: boolean;
     getItemLabel?: (index: number) => string;
     index: number;
     margin?: 'none' | 'normal' | 'dense';
     member: string;
+    onCloneField: (index: number) => void;
     onRemoveField: (index: number) => void;
     onReorder: (origin: number, destination: number) => void;
     record: Record;

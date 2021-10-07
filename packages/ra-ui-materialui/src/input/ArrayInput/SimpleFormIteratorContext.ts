@@ -13,6 +13,7 @@ export const SimpleFormIteratorContext = createContext<
 export type SimpleFormIteratorContextValue = {
     total: number;
     add: () => void;
+    clone: (index: number) => void;
     remove: (index: number) => void;
     reOrder: (index: number, newIndex: number) => void;
 };
