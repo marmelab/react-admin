@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
-import { makeStyles } from '@mui/styles';
 import HotTub from '@mui/icons-material/HotTub';
 import History from '@mui/icons-material/History';
 import classnames from 'classnames';
@@ -9,49 +9,58 @@ import classnames from 'classnames';
 import { useAuthenticated, useTranslate } from 'ra-core';
 import Title from './Title';
 
-const useStyles = makeStyles(
-    theme => ({
-        container: {
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            [theme.breakpoints.up('md')]: {
-                height: '100%',
-            },
-            [theme.breakpoints.down('md')]: {
-                height: '100vh',
-                marginTop: '-3em',
-            },
+const PREFIX = 'RaNotFound';
+
+const classes = {
+    container: `${PREFIX}-container`,
+    icon: `${PREFIX}-icon`,
+    message: `${PREFIX}-message`,
+    toolbar: `${PREFIX}-toolbar`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`&.${classes.container}`]: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        [theme.breakpoints.up('md')]: {
+            height: '100%',
         },
-        icon: {
-            width: '9em',
-            height: '9em',
+        [theme.breakpoints.down('md')]: {
+            height: '100vh',
+            marginTop: '-3em',
         },
-        message: {
-            textAlign: 'center',
-            fontFamily: 'Roboto, sans-serif',
-            opacity: 0.5,
-            margin: '0 1em',
-        },
-        toolbar: {
-            textAlign: 'center',
-            marginTop: '2em',
-        },
-    }),
-    { name: 'RaNotFound' }
-);
+    },
+
+    [`& .${classes.icon}`]: {
+        width: '9em',
+        height: '9em',
+    },
+
+    [`& .${classes.message}`]: {
+        textAlign: 'center',
+        fontFamily: 'Roboto, sans-serif',
+        opacity: 0.5,
+        margin: '0 1em',
+    },
+
+    [`& .${classes.toolbar}`]: {
+        textAlign: 'center',
+        marginTop: '2em',
+    },
+}));
 
 function goBack() {
     window.history.go(-1);
 }
 
 const NotFound = props => {
-    const { className, classes: classesOverride, title, ...rest } = props;
-    const classes = useStyles(props);
+    const { className, title, ...rest } = props;
+
     const translate = useTranslate();
     useAuthenticated();
     return (
-        <div
+        <Root
             className={classnames(classes.container, className)}
             {...sanitizeRestProps(rest)}
         >
@@ -70,7 +79,7 @@ const NotFound = props => {
                     {translate('ra.action.back')}
                 </Button>
             </div>
-        </div>
+        </Root>
     );
 };
 
@@ -84,7 +93,6 @@ const sanitizeRestProps = ({
 
 NotFound.propTypes = {
     className: PropTypes.string,
-    classes: PropTypes.object,
     title: PropTypes.string,
     location: PropTypes.object,
 };

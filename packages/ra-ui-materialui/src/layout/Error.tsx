@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { Fragment, HtmlHTMLAttributes, ErrorInfo } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -9,74 +10,83 @@ import {
     AccordionSummary,
     Typography,
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import ErrorIcon from '@mui/icons-material/Report';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import History from '@mui/icons-material/History';
 import { useTranslate } from 'ra-core';
 
 import Title, { TitlePropType } from './Title';
-import { ClassesOverride } from '../types';
 
-const useStyles = makeStyles(
-    theme => ({
-        container: {
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            [theme.breakpoints.down('md')]: {
-                padding: '1em',
-            },
-            fontFamily: 'Roboto, sans-serif',
-            opacity: 0.5,
+const PREFIX = 'RaError';
+
+const classes = {
+    container: `${PREFIX}-container`,
+    title: `${PREFIX}-title`,
+    icon: `${PREFIX}-icon`,
+    panel: `${PREFIX}-panel`,
+    panelDetails: `${PREFIX}-panelDetails`,
+    toolbar: `${PREFIX}-toolbar`,
+    advice: `${PREFIX}-advice`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`&.${classes.container}`]: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        [theme.breakpoints.down('md')]: {
+            padding: '1em',
         },
-        title: {
-            display: 'flex',
-            alignItems: 'center',
-        },
-        icon: {
-            width: '2em',
-            height: '2em',
-            marginRight: '0.5em',
-        },
-        panel: {
-            marginTop: '1em',
-            maxWidth: '60em',
-        },
-        panelDetails: {
-            whiteSpace: 'pre-wrap',
-        },
-        toolbar: {
-            marginTop: '2em',
-        },
-        advice: {
-            marginTop: '2em',
-        },
-    }),
-    { name: 'RaError' }
-);
+        fontFamily: 'Roboto, sans-serif',
+        opacity: 0.5,
+    },
+
+    [`& .${classes.title}`]: {
+        display: 'flex',
+        alignItems: 'center',
+    },
+
+    [`& .${classes.icon}`]: {
+        width: '2em',
+        height: '2em',
+        marginRight: '0.5em',
+    },
+
+    [`& .${classes.panel}`]: {
+        marginTop: '1em',
+        maxWidth: '60em',
+    },
+
+    [`& .${classes.panelDetails}`]: {
+        whiteSpace: 'pre-wrap',
+    },
+
+    [`& .${classes.toolbar}`]: {
+        marginTop: '2em',
+    },
+
+    [`& .${classes.advice}`]: {
+        marginTop: '2em',
+    },
+}));
 
 function goBack() {
     window.history.go(-1);
 }
 
 const Error = (props: ErrorProps): JSX.Element => {
-    const {
-        error,
-        errorInfo,
-        classes: classesOverride,
-        className,
-        title,
-        ...rest
-    } = props;
-    const classes = useStyles(props);
+    const { error, errorInfo, className, title, ...rest } = props;
+
     const translate = useTranslate();
 
     return (
         <Fragment>
             {title && <Title defaultTitle={title} />}
-            <div className={classnames(classes.container, className)} {...rest}>
+            <Root
+                className={classnames(classes.container, className)}
+                {...rest}
+            >
                 <h1 className={classes.title} role="alert">
                     <ErrorIcon className={classes.icon} />
                     {translate('ra.page.error')}
@@ -138,13 +148,12 @@ const Error = (props: ErrorProps): JSX.Element => {
                         {translate('ra.action.back')}
                     </Button>
                 </div>
-            </div>
+            </Root>
         </Fragment>
     );
 };
 
 Error.propTypes = {
-    classes: PropTypes.object,
     className: PropTypes.string,
     error: PropTypes.object.isRequired,
     errorInfo: PropTypes.object,
@@ -152,7 +161,6 @@ Error.propTypes = {
 };
 
 export interface ErrorProps extends HtmlHTMLAttributes<HTMLDivElement> {
-    classes?: ClassesOverride<typeof useStyles>;
     className?: string;
     error: Error;
     errorInfo?: ErrorInfo;

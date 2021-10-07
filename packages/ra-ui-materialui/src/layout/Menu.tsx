@@ -1,10 +1,9 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { shallowEqual, useSelector } from 'react-redux';
 import lodashGet from 'lodash/get';
-// @ts-ignore
-import { makeStyles } from '@mui/styles';
 import DefaultIcon from '@mui/icons-material/ViewList';
 import classnames from 'classnames';
 import { useGetResourceLabel, getResources, ReduxState } from 'ra-core';
@@ -12,34 +11,41 @@ import { useGetResourceLabel, getResources, ReduxState } from 'ra-core';
 import DashboardMenuItem from './DashboardMenuItem';
 import MenuItemLink from './MenuItemLink';
 
+const PREFIX = 'RaMenu';
+
+const classes = {
+    main: `${PREFIX}-main`,
+    open: `${PREFIX}-open`,
+    closed: `${PREFIX}-closed`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`&.${classes.main}`]: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        marginTop: '0.5em',
+        marginBottom: '1em',
+        [theme.breakpoints.only('xs')]: {
+            marginTop: 0,
+        },
+        transition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+    },
+
+    [`&.${classes.open}`]: {
+        width: lodashGet(theme, 'menu.width', MENU_WIDTH),
+    },
+
+    [`&.${classes.closed}`]: {
+        width: lodashGet(theme, 'menu.closedWidth', CLOSED_MENU_WIDTH),
+    },
+}));
+
 export const MENU_WIDTH = 240;
 export const CLOSED_MENU_WIDTH = 55;
-
-const useStyles = makeStyles(
-    theme => ({
-        main: {
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-start',
-            marginTop: '0.5em',
-            marginBottom: '1em',
-            [theme.breakpoints.only('xs')]: {
-                marginTop: 0,
-            },
-            transition: theme.transitions.create('width', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-            }),
-        },
-        open: {
-            width: lodashGet(theme, 'menu.width', MENU_WIDTH),
-        },
-        closed: {
-            width: lodashGet(theme, 'menu.closedWidth', CLOSED_MENU_WIDTH),
-        },
-    }),
-    { name: 'RaMenu' }
-);
 
 const Menu = (props: MenuProps) => {
     const resources = useSelector(getResources, shallowEqual) as Array<any>;
@@ -72,17 +78,16 @@ const Menu = (props: MenuProps) => {
                     ))}
             </>
         ),
-        classes: classesOverride,
         className,
         onMenuClick,
         logout,
         ...rest
     } = props;
-    const classes = useStyles(props);
+
     const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
 
     return (
-        <div
+        <Root
             className={classnames(
                 classes.main,
                 {
@@ -94,13 +99,12 @@ const Menu = (props: MenuProps) => {
             {...rest}
         >
             {children}
-        </div>
+        </Root>
     );
 };
 
 export interface MenuProps {
     children?: ReactNode;
-    classes?: object;
     className?: string;
     dense?: boolean;
     hasDashboard?: boolean;
@@ -115,7 +119,6 @@ export interface MenuProps {
 }
 
 Menu.propTypes = {
-    classes: PropTypes.object,
     className: PropTypes.string,
     dense: PropTypes.bool,
     hasDashboard: PropTypes.bool,

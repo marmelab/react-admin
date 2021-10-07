@@ -1,11 +1,9 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import Snackbar, { SnackbarProps } from '@mui/material/Snackbar';
-import Button from '@mui/material/Button';
-import { Theme } from '@mui/material/styles';
-import { makeStyles } from '@mui/styles';
+import { Button, Snackbar, SnackbarProps } from '@mui/material';
 import classnames from 'classnames';
 
 import {
@@ -17,33 +15,42 @@ import {
     useTranslate,
 } from 'ra-core';
 
+const PREFIX = 'RaNotification';
+
+const classes = {
+    success: `${PREFIX}-success`,
+    error: `${PREFIX}-error`,
+    warning: `${PREFIX}-warning`,
+    undo: `${PREFIX}-undo`,
+};
+
+const StyledButton = styled(Button)(({ theme }) => ({
+    [`& .${classes.success}`]: {
+        backgroundColor: theme.palette.success.main,
+        color: theme.palette.success.contrastText,
+    },
+
+    [`& .${classes.error}`]: {
+        backgroundColor: theme.palette.error.dark,
+        color: theme.palette.error.contrastText,
+    },
+
+    [`& .${classes.warning}`]: {
+        backgroundColor: theme.palette.error.light,
+        color: theme.palette.error.contrastText,
+    },
+
+    [`& .${classes.undo}`]: (props: Props & Omit<SnackbarProps, 'open'>) => ({
+        color:
+            props.type === 'success'
+                ? theme.palette.success.contrastText
+                : theme.palette.primary.light,
+    }),
+}));
+
 interface Props {
     type?: string;
 }
-
-const useStyles = makeStyles(
-    (theme: Theme) => ({
-        success: {
-            backgroundColor: theme.palette.success.main,
-            color: theme.palette.success.contrastText,
-        },
-        error: {
-            backgroundColor: theme.palette.error.dark,
-            color: theme.palette.error.contrastText,
-        },
-        warning: {
-            backgroundColor: theme.palette.error.light,
-            color: theme.palette.error.contrastText,
-        },
-        undo: (props: Props & Omit<SnackbarProps, 'open'>) => ({
-            color:
-                props.type === 'success'
-                    ? theme.palette.success.contrastText
-                    : theme.palette.primary.light,
-        }),
-    }),
-    { name: 'RaNotification' }
-);
 
 const Notification = (props: Props & Omit<SnackbarProps, 'open'>) => {
     const {
@@ -57,7 +64,6 @@ const Notification = (props: Props & Omit<SnackbarProps, 'open'>) => {
     const notification = useSelector(getNotification);
     const dispatch = useDispatch();
     const translate = useTranslate();
-    const styles = useStyles(props);
 
     useEffect(() => {
         setOpen(!!notification);
@@ -97,20 +103,20 @@ const Notification = (props: Props & Omit<SnackbarProps, 'open'>) => {
             onClose={handleRequestClose}
             ContentProps={{
                 className: classnames(
-                    styles[(notification && notification.type) || type],
+                    classes[(notification && notification.type) || type],
                     className
                 ),
             }}
             action={
                 notification && notification.undoable ? (
-                    <Button
+                    <StyledButton
                         color="primary"
-                        className={styles.undo}
+                        className={classes.undo}
                         size="small"
                         onClick={handleUndo}
                     >
-                        {translate('ra.action.undo')}
-                    </Button>
+                        <>{translate('ra.action.undo')}</>
+                    </StyledButton>
                 ) : null
             }
             {...rest}

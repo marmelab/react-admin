@@ -5,6 +5,7 @@ import React, {
     ReactElement,
     ReactNode,
 } from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,24 +21,30 @@ import {
     useMediaQuery,
     Theme,
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+
+const PREFIX = 'RaMenuItemLink';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    active: `${PREFIX}-active`,
+    icon: `${PREFIX}-icon`,
+};
+
+const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
+    [`&.${classes.root}`]: {
+        color: theme.palette.text.secondary,
+    },
+
+    [`& .${classes.active}`]: {
+        color: theme.palette.text.primary,
+    },
+
+    [`& .${classes.icon}`]: { minWidth: theme.spacing(5) },
+}));
 
 const NavLinkRef = forwardRef<HTMLAnchorElement, NavLinkProps>((props, ref) => (
     <NavLink innerRef={ref} {...props} />
 ));
-
-const useStyles = makeStyles(
-    theme => ({
-        root: {
-            color: theme.palette.text.secondary,
-        },
-        active: {
-            color: theme.palette.text.primary,
-        },
-        icon: { minWidth: theme.spacing(5) },
-    }),
-    { name: 'RaMenuItemLink' }
-);
 
 /**
  * Displays a menu item with a label and an icon - or only the icon with a tooltip when the sidebar is minimized.
@@ -90,7 +97,6 @@ const useStyles = makeStyles(
  */
 const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
     const {
-        classes: classesOverride,
         className,
         primaryText,
         leftIcon,
@@ -99,7 +105,7 @@ const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
         tooltipProps,
         ...rest
     } = props;
-    const classes = useStyles(props);
+
     const dispatch = useDispatch();
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
@@ -115,10 +121,11 @@ const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
 
     const renderMenuItem = () => {
         return (
-            <MenuItem
+            <StyledMenuItem
                 className={classnames(classes.root, className)}
                 activeClassName={classes.active}
                 component={NavLinkRef}
+                // @ts-ignore
                 ref={ref}
                 tabIndex={0}
                 {...rest}
@@ -132,7 +139,7 @@ const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
                     </ListItemIcon>
                 )}
                 {primaryText}
-            </MenuItem>
+            </StyledMenuItem>
         );
     };
 
