@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { ThemeProvider } from '@material-ui/core';
 import { createTheme } from '@material-ui/core/styles';
-import { fireEvent, getByText, waitFor } from '@testing-library/react';
+import {
+    fireEvent,
+    getByText as getByTextProps,
+    waitFor,
+} from '@testing-library/react';
 import expect from 'expect';
 import { SaveContextProvider, SideEffectContextProvider } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
@@ -227,24 +231,6 @@ describe('<SimpleFormIterator />', () => {
         expect(queryAllByText('ra.action.remove').length).toBe(0);
     });
 
-    it('should not display clone button if disableClone is truthy', () => {
-        const { queryAllByText } = renderWithRedux(
-            <SaveContextProvider value={saveContextValue}>
-                <SideEffectContextProvider value={sideEffectValue}>
-                    <SimpleForm>
-                        <ArrayInput source="emails">
-                            <SimpleFormIterator disableClone>
-                                <TextInput source="email" />
-                            </SimpleFormIterator>
-                        </ArrayInput>
-                    </SimpleForm>
-                </SideEffectContextProvider>
-            </SaveContextProvider>
-        );
-
-        expect(queryAllByText('ra.action.clone').length).toBe(0);
-    });
-
     it('should add children row on add button click', async () => {
         const {
             getByText,
@@ -299,21 +285,19 @@ describe('<SimpleFormIterator />', () => {
         expect(queryAllByText('ra.action.remove').length).toBe(2);
     });
 
-    it('should clone selected child last on clone button click', async () => {
+    it('should clone children row on clone button click', async () => {
+        const emails = [{ email: 'foo@bar.com' }, { email: 'bar@foo.com' }];
+
         const {
             getByText,
+            getAllByText,
             queryAllByLabelText,
             queryAllByText,
         } = renderWithRedux(
             <ThemeProvider theme={theme}>
                 <SaveContextProvider value={saveContextValue}>
                     <SideEffectContextProvider value={sideEffectValue}>
-                        <SimpleForm
-                            record={{
-                                id: 'whatever',
-                                emails: [{ email: '' }, { email: '' }],
-                            }}
-                        >
+                        <SimpleForm>
                             <ArrayInput source="emails">
                                 <SimpleFormIterator>
                                     <TextInput source="email" />
@@ -324,26 +308,28 @@ describe('<SimpleFormIterator />', () => {
                 </SaveContextProvider>
             </ThemeProvider>
         );
-        const emails = [{ email: 'foo@bar.com' }, { email: 'bar@foo.com' }];
 
-        const cloneItemElement = getByText('ra.action.clone').closest('button');
+        const addItemElement = getByText('ra.action.add').closest('button');
 
-        fireEvent.click(cloneItemElement);
+        fireEvent.click(addItemElement);
         await waitFor(() => {
-            const inputElements = queryAllByLabelText('CustomLabel');
+            const inputElements = queryAllByLabelText(
+                'resources.undefined.fields.email'
+            );
 
             expect(inputElements.length).toBe(1);
         });
-
         const inputElements = queryAllByLabelText(
-            'CustomLabel'
-        ) as HTMLInputElement[];
+            'resources.undefined.fields.email'
+        );
+        const cloneFirstButton = getByTextProps(
+            inputElements[0].closest('li'),
+            'ra.action.clone'
+        ).closest('button');
 
-        expect(inputElements.map(inputElement => inputElement.value)).toEqual([
-            '5',
-        ]);
+        fireEvent.click(cloneFirstButton);
 
-        expect(queryAllByText('ra.action.clone').length).toBe(2);
+        expect(queryAllByText('ra.action.remove').length).toBe(2);
     });
 
     it('should add correct children on add button click without source', async () => {
@@ -464,7 +450,7 @@ describe('<SimpleFormIterator />', () => {
             }))
         ).toEqual(emails);
 
-        const removeFirstButton = getByText(
+        const removeFirstButton = getByTextProps(
             inputElements[0].closest('li'),
             'ra.action.remove'
         ).closest('button');
