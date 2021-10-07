@@ -1,33 +1,39 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import IconButton from '@mui/material/IconButton';
 import ActionHide from '@mui/icons-material/HighlightOff';
-import { makeStyles } from '@mui/styles';
 import classnames from 'classnames';
 import { useResourceContext, useTranslate } from 'ra-core';
 
-const emptyRecord = {};
+const PREFIX = 'RaFilterFormInput';
 
-const useStyles = makeStyles(
-    theme => ({
-        body: {
-            display: 'flex',
-            alignItems: 'flex-end',
-            pointerEvents: 'auto',
-        },
-        spacer: { width: theme.spacing(2) },
-        hideButton: {},
-    }),
-    { name: 'RaFilterFormInput' }
-);
+const classes = {
+    body: `${PREFIX}-body`,
+    spacer: `${PREFIX}-spacer`,
+    hideButton: `${PREFIX}-hideButton`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`&.${classes.body}`]: {
+        display: 'flex',
+        alignItems: 'flex-end',
+        pointerEvents: 'auto',
+    },
+
+    [`& .${classes.spacer}`]: { width: theme.spacing(2) },
+    [`& .${classes.hideButton}`]: {},
+}));
+
+const emptyRecord = {};
 
 const FilterFormInput = props => {
     const { filterElement, handleHide, variant, margin } = props;
     const resource = useResourceContext(props);
     const translate = useTranslate();
-    const classes = useStyles(props);
+
     return (
-        <div
+        <Root
             data-source={filterElement.props.source}
             className={classnames('filter-field', classes.body)}
         >
@@ -56,14 +62,13 @@ const FilterFormInput = props => {
                 defaultValue: undefined,
             })}
             <div className={classes.spacer}>&nbsp;</div>
-        </div>
+        </Root>
     );
 };
 
 FilterFormInput.propTypes = {
     filterElement: PropTypes.node,
     handleHide: PropTypes.func,
-    classes: PropTypes.object,
     resource: PropTypes.string,
     margin: PropTypes.string,
     variant: PropTypes.string,

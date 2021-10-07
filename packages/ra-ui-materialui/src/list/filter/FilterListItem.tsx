@@ -1,23 +1,32 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { memo, isValidElement, ReactElement } from 'react';
 import {
     IconButton,
     ListItem,
+    ListItemButton,
     ListItemText,
     ListItemSecondaryAction,
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import CancelIcon from '@mui/icons-material/CancelOutlined';
 import { useTranslate, useListFilterContext } from 'ra-core';
 import { shallowEqual } from 'react-redux';
 import matches from 'lodash/matches';
 import pickBy from 'lodash/pickBy';
 
-const useStyles = makeStyles(theme => ({
-    listItem: {
+const PREFIX = 'FilterListItem';
+
+const classes = {
+    listItem: `${PREFIX}-listItem`,
+    listItemText: `${PREFIX}-listItemText`,
+};
+
+const StyledListItem = styled(ListItem)(({ theme }) => ({
+    [`&.${classes.listItem}`]: {
         paddingLeft: '2em',
     },
-    listItemText: {
+
+    [`& .${classes.listItemText}`]: {
         margin: 0,
     },
 }));
@@ -151,7 +160,6 @@ const FilterListItem = (props: {
     const { label, value } = props;
     const { filterValues, setFilters } = useListFilterContext();
     const translate = useTranslate();
-    const classes = useStyles(props);
 
     const isSelected = matches(
         pickBy(value, val => typeof val !== 'undefined')
@@ -177,29 +185,30 @@ const FilterListItem = (props: {
     const toggleFilter = () => (isSelected ? removeFilter() : addFilter());
 
     return (
-        <ListItem
-            button
+        <StyledListItem
             onClick={toggleFilter}
             selected={isSelected}
             className={classes.listItem}
         >
-            <ListItemText
-                primary={
-                    isValidElement(label)
-                        ? label
-                        : translate(label, { _: label })
-                }
-                className={classes.listItemText}
-                data-selected={isSelected ? 'true' : 'false'}
-            />
-            {isSelected && (
-                <ListItemSecondaryAction>
-                    <IconButton size="small" onClick={toggleFilter}>
-                        <CancelIcon />
-                    </IconButton>
-                </ListItemSecondaryAction>
-            )}
-        </ListItem>
+            <ListItemButton>
+                <ListItemText
+                    primary={
+                        isValidElement(label)
+                            ? label
+                            : translate(label, { _: label })
+                    }
+                    className={classes.listItemText}
+                    data-selected={isSelected ? 'true' : 'false'}
+                />
+                {isSelected && (
+                    <ListItemSecondaryAction>
+                        <IconButton size="small" onClick={toggleFilter}>
+                            <CancelIcon />
+                        </IconButton>
+                    </ListItemSecondaryAction>
+                )}
+            </ListItemButton>
+        </StyledListItem>
     );
 };
 
