@@ -210,9 +210,15 @@ export const getSuggestionsFactory = ({
             suggestions = choices;
         }
     } else {
-        suggestions = choices.filter(
-            choice => !matchSuggestion(filter, choice)
-        );
+        if (Array.isArray(selectedItem)) {
+            suggestions = choices.filter(choice =>
+                matchSuggestion(filter, choice)
+            );
+        } else {
+            suggestions = choices.filter(
+                choice => !matchSuggestion(filter, choice)
+            );
+        }
 
         if (!allowDuplicates) {
             suggestions = removeAlreadySelectedSuggestions(
