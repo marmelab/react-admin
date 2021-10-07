@@ -14,7 +14,6 @@ import DatagridRow, {
     RowClickFunction,
 } from './DatagridRow';
 import ExpandRowButton, { ExpandRowButtonProps } from './ExpandRowButton';
-import useDatagridStyles from './useDatagridStyles';
 
 export * from './DatagridHeader';
 
@@ -28,7 +27,6 @@ export {
     ExpandRowButton,
     PureDatagridBody,
     PureDatagridRow,
-    useDatagridStyles,
 };
 
 export type {
