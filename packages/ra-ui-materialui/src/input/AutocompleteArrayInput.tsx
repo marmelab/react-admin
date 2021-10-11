@@ -437,6 +437,7 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
                     getItemProps,
                     getLabelProps,
                     getMenuProps,
+                    getRootProps,
                     isOpen,
                     inputValue: suggestionFilter,
                     highlightedIndex,
@@ -465,7 +466,7 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
                         ...(onCreate || create ? [getCreateItem()] : []),
                     ];
                     return (
-                        <Root className={classes.container}>
+                        <Root className={classes.container} {...getRootProps()}>
                             <TextField
                                 id={id}
                                 fullWidth={fullWidth}

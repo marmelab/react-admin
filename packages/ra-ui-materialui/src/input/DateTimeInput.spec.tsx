@@ -5,7 +5,7 @@ import { Form } from 'react-final-form';
 import { required, FormWithRedirect } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
 import format from 'date-fns/format';
-import { ThemeProvider, Theme, StyledEngineProvider } from '@mui/material';
+import { ThemeProvider, Theme } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 
 import DateTimeInput from './DateTimeInput';
@@ -64,26 +64,24 @@ describe('<DateTimeInput />', () => {
         ];
         let formApi: FormApi;
         const { getByDisplayValue } = renderWithRedux(
-            <StyledEngineProvider injectFirst>
-                <ThemeProvider theme={theme}>
-                    <FormWithRedirect
-                        onSubmit={jest.fn}
-                        render={({ form }) => {
-                            formApi = form;
-                            return (
-                                <ArrayInput
-                                    defaultValue={backlinksDefaultValue}
-                                    source="backlinks"
-                                >
-                                    <SimpleFormIterator>
-                                        <DateTimeInput source="date" />
-                                    </SimpleFormIterator>
-                                </ArrayInput>
-                            );
-                        }}
-                    />
-                </ThemeProvider>
-            </StyledEngineProvider>
+            <ThemeProvider theme={theme}>
+                <FormWithRedirect
+                    onSubmit={jest.fn}
+                    render={({ form }) => {
+                        formApi = form;
+                        return (
+                            <ArrayInput
+                                defaultValue={backlinksDefaultValue}
+                                source="backlinks"
+                            >
+                                <SimpleFormIterator>
+                                    <DateTimeInput source="date" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        );
+                    }}
+                />
+            </ThemeProvider>
         );
 
         expect(getByDisplayValue(format(date, 'YYYY-MM-DDTHH:mm')));

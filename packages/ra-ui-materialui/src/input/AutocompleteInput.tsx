@@ -519,6 +519,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                     getItemProps,
                     getLabelProps,
                     getMenuProps,
+                    getRootProps,
                     isOpen,
                     highlightedIndex,
                     openMenu,
@@ -546,7 +547,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                     ];
 
                     return (
-                        <Root className={classes.container}>
+                        <Root className={classes.container} {...getRootProps()}>
                             <TextField
                                 id={id}
                                 name={input.name}

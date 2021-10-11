@@ -249,7 +249,7 @@ export const SelectInput = (props: SelectInputProps) => {
                         />
                     )
                 }
-                className={`${classes.input} ${className}`}
+                className={className}
                 clearAlwaysVisible
                 error={!!(touched && (error || submitError))}
                 helperText={

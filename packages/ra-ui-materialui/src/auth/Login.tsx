@@ -11,7 +11,6 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Card, Avatar } from '@mui/material';
 import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
-import { StyledEngineProvider } from '@mui/material/styles';
 import LockIcon from '@mui/icons-material/Lock';
 import { StaticContext } from 'react-router';
 import { useHistory } from 'react-router-dom';
@@ -90,11 +89,9 @@ const Login: React.FunctionComponent<LoginProps> = props => {
     const { theme, ...rest } = props;
     const muiTheme = useMemo(() => createTheme(theme), [theme]);
     return (
-        <StyledEngineProvider injectFirst>
-            <ThemeProvider theme={muiTheme}>
-                <LoginContainer {...rest} />
-            </ThemeProvider>
-        </StyledEngineProvider>
+        <ThemeProvider theme={muiTheme}>
+            <LoginContainer {...rest} />
+        </ThemeProvider>
     );
 };
 

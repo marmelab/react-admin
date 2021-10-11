@@ -3,8 +3,7 @@ import expect from 'expect';
 import { waitFor, fireEvent } from '@testing-library/react';
 import { DataProviderContext, ResourceContextProvider } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
-import { ThemeProvider, Theme, StyledEngineProvider } from '@mui/styles';
-import { createTheme, adaptV4Theme } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { MemoryRouter } from 'react-router-dom';
 
 import defaultTheme from '../defaultTheme';
@@ -12,12 +11,7 @@ import List from './List';
 import { Filter } from './filter';
 import { TextInput } from '../input';
 
-declare module '@mui/styles/defaultTheme' {
-    // eslint-disable-next-line @typescript-eslint/no-empty-interface
-    interface DefaultTheme extends Theme {}
-}
-
-const theme = createTheme(adaptV4Theme(defaultTheme));
+const theme = createTheme(defaultTheme);
 
 describe('<List />', () => {
     const defaultProps = {
@@ -53,13 +47,11 @@ describe('<List />', () => {
         const Datagrid = () => <div>datagrid</div>;
 
         const { container } = renderWithRedux(
-            <StyledEngineProvider injectFirst>
-                <ThemeProvider theme={theme}>
-                    <List {...defaultProps}>
-                        <Datagrid />
-                    </List>
-                </ThemeProvider>
-            </StyledEngineProvider>,
+            <ThemeProvider theme={theme}>
+                <List {...defaultProps}>
+                    <Datagrid />
+                </List>
+            </ThemeProvider>,
             defaultStateForList
         );
         expect(container.querySelectorAll('.list-page')).toHaveLength(1);
@@ -70,19 +62,17 @@ describe('<List />', () => {
         const Pagination = () => <div>pagination</div>;
         const Datagrid = () => <div>datagrid</div>;
         const { queryAllByText, queryAllByLabelText } = renderWithRedux(
-            <StyledEngineProvider injectFirst>
-                <ThemeProvider theme={theme}>
-                    <MemoryRouter initialEntries={['/']}>
-                        <List
-                            filters={<Filters />}
-                            pagination={<Pagination />}
-                            {...defaultProps}
-                        >
-                            <Datagrid />
-                        </List>
-                    </MemoryRouter>
-                </ThemeProvider>
-            </StyledEngineProvider>,
+            <ThemeProvider theme={theme}>
+                <MemoryRouter initialEntries={['/']}>
+                    <List
+                        filters={<Filters />}
+                        pagination={<Pagination />}
+                        {...defaultProps}
+                    >
+                        <Datagrid />
+                    </List>
+                </MemoryRouter>
+            </ThemeProvider>,
             defaultStateForList
         );
         expect(queryAllByText('filters')).toHaveLength(2);
@@ -95,13 +85,11 @@ describe('<List />', () => {
         const Dummy = () => <div />;
         const Aside = () => <div id="aside">Hello</div>;
         const { queryAllByText } = renderWithRedux(
-            <StyledEngineProvider injectFirst>
-                <ThemeProvider theme={theme}>
-                    <List {...defaultProps} aside={<Aside />}>
-                        <Dummy />
-                    </List>
-                </ThemeProvider>
-            </StyledEngineProvider>,
+            <ThemeProvider theme={theme}>
+                <List {...defaultProps} aside={<Aside />}>
+                    <Dummy />
+                </List>
+            </ThemeProvider>,
             defaultStateForList
         );
         expect(queryAllByText('Hello')).toHaveLength(1);
@@ -113,15 +101,13 @@ describe('<List />', () => {
             getList: jest.fn(() => Promise.resolve({ data: [], total: 0 })),
         } as any;
         const { queryAllByText } = renderWithRedux(
-            <StyledEngineProvider injectFirst>
-                <ThemeProvider theme={theme}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <List {...defaultProps}>
-                            <Dummy />
-                        </List>
-                    </DataProviderContext.Provider>
-                </ThemeProvider>
-            </StyledEngineProvider>,
+            <ThemeProvider theme={theme}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <List {...defaultProps}>
+                        <Dummy />
+                    </List>
+                </DataProviderContext.Provider>
+            </ThemeProvider>,
             defaultStateForList
         );
         await waitFor(() => {
@@ -135,15 +121,13 @@ describe('<List />', () => {
             getList: jest.fn(() => Promise.resolve({ data: [], total: 0 })),
         } as any;
         const { queryAllByText } = renderWithRedux(
-            <StyledEngineProvider injectFirst>
-                <ThemeProvider theme={theme}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <List {...defaultProps} empty={false}>
-                            <Dummy />
-                        </List>
-                    </DataProviderContext.Provider>
-                </ThemeProvider>
-            </StyledEngineProvider>,
+            <ThemeProvider theme={theme}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <List {...defaultProps} empty={false}>
+                        <Dummy />
+                    </List>
+                </DataProviderContext.Provider>
+            </ThemeProvider>,
             defaultStateForList
         );
         await waitFor(() => {
@@ -157,15 +141,13 @@ describe('<List />', () => {
             getList: jest.fn(() => Promise.resolve({ data: [], total: 0 })),
         } as any;
         const { queryAllByText } = renderWithRedux(
-            <StyledEngineProvider injectFirst>
-                <ThemeProvider theme={theme}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <List {...defaultProps} filter={{ foo: 'bar' }}>
-                            <Dummy />
-                        </List>
-                    </DataProviderContext.Provider>
-                </ThemeProvider>
-            </StyledEngineProvider>,
+            <ThemeProvider theme={theme}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <List {...defaultProps} filter={{ foo: 'bar' }}>
+                        <Dummy />
+                    </List>
+                </DataProviderContext.Provider>
+            </ThemeProvider>,
             defaultStateForList
         );
         await waitFor(() => {
@@ -187,15 +169,13 @@ describe('<List />', () => {
             ),
         } as any;
         const { getByText, queryAllByLabelText } = renderWithRedux(
-            <StyledEngineProvider injectFirst>
-                <ThemeProvider theme={theme}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <List filters={<DummyFilters />} {...defaultProps}>
-                            <Dummy />
-                        </List>
-                    </DataProviderContext.Provider>
-                </ThemeProvider>
-            </StyledEngineProvider>,
+            <ThemeProvider theme={theme}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <List filters={<DummyFilters />} {...defaultProps}>
+                        <Dummy />
+                    </List>
+                </DataProviderContext.Provider>
+            </ThemeProvider>,
             defaultStateForList
         );
         await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
@@ -225,15 +205,13 @@ describe('<List />', () => {
         const { getByText, queryAllByLabelText } = renderWithRedux(
             // As FilterForm doesn't receive rest parameters, it must grab the resource from the context
             <ResourceContextProvider value="posts">
-                <StyledEngineProvider injectFirst>
-                    <ThemeProvider theme={theme}>
-                        <DataProviderContext.Provider value={dataProvider}>
-                            <List filters={dummyFilters} {...defaultProps}>
-                                <Dummy />
-                            </List>
-                        </DataProviderContext.Provider>
-                    </ThemeProvider>
-                </StyledEngineProvider>
+                <ThemeProvider theme={theme}>
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <List filters={dummyFilters} {...defaultProps}>
+                            <Dummy />
+                        </List>
+                    </DataProviderContext.Provider>
+                </ThemeProvider>
             </ResourceContextProvider>,
             defaultStateForList
         );

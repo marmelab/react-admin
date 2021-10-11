@@ -1,7 +1,7 @@
 import * as React from 'react';
 import mediaQuery from 'css-mediaquery';
 import { ThemeProvider } from '@mui/styles';
-import { createTheme, StyledEngineProvider, Theme } from '@mui/material/styles';
+import { createTheme, Theme } from '@mui/material/styles';
 
 declare module '@mui/styles/defaultTheme' {
     // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -37,16 +37,14 @@ const DeviceTestWrapper = ({
     });
 
     return (
-        <StyledEngineProvider injectFirst>
-            <ThemeProvider
-                theme={{
-                    ...theme,
-                    props: { MuiUseMediaQuery: { ssrMatchMedia } },
-                }}
-            >
-                {children}
-            </ThemeProvider>
-        </StyledEngineProvider>
+        <ThemeProvider
+            theme={{
+                ...theme,
+                props: { MuiUseMediaQuery: { ssrMatchMedia } },
+            }}
+        >
+            {children}
+        </ThemeProvider>
     );
 };
 

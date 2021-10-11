@@ -1,16 +1,10 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, fireEvent } from '@testing-library/react';
-import { ThemeProvider, Theme, StyledEngineProvider } from '@mui/styles';
-import { createTheme } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import FilterButton from './FilterButton';
 import TextInput from '../../input/TextInput';
-
-declare module '@mui/styles/defaultTheme' {
-    // eslint-disable-next-line @typescript-eslint/no-empty-interface
-    interface DefaultTheme extends Theme {}
-}
 
 const theme = createTheme();
 
@@ -42,14 +36,12 @@ describe('<FilterButton />', () => {
                 <TextInput source="Returned" label="Returned" />
             );
             const { getByLabelText, queryByText } = render(
-                <StyledEngineProvider injectFirst>
-                    <ThemeProvider theme={theme}>
-                        <FilterButton
-                            {...defaultProps}
-                            filters={defaultProps.filters.concat(hiddenFilter)}
-                        />
-                    </ThemeProvider>
-                </StyledEngineProvider>
+                <ThemeProvider theme={theme}>
+                    <FilterButton
+                        {...defaultProps}
+                        filters={defaultProps.filters.concat(hiddenFilter)}
+                    />
+                </ThemeProvider>
             );
 
             fireEvent.click(getByLabelText('ra.action.add_filter'));

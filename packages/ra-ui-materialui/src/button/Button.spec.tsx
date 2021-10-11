@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import * as React from 'react';
 import expect from 'expect';
 import { TestContext } from 'ra-test';
-import { ThemeProvider, Theme, StyledEngineProvider } from '@mui/material';
+import { ThemeProvider, Theme } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import Button from './Button';
 
@@ -34,11 +34,9 @@ describe('<Button />', () => {
 
         const { getByLabelText } = render(
             <TestContext>
-                <StyledEngineProvider injectFirst>
-                    <ThemeProvider theme={theme}>
-                        <Button label="button" {...invalidButtonDomProps} />
-                    </ThemeProvider>
-                </StyledEngineProvider>
+                <ThemeProvider theme={theme}>
+                    <Button label="button" {...invalidButtonDomProps} />
+                </ThemeProvider>
             </TestContext>
         );
 
