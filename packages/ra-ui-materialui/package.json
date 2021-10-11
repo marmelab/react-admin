@@ -28,7 +28,6 @@
     "devDependencies": {
         "@mui/material": "^5.0.2",
         "@mui/icons-material": "^5.0.1",
-        "@mui/styles": "^5.0.1",
         "@testing-library/react": "^11.2.3",
         "@types/query-string": "5.1.0",
         "cross-env": "^5.2.0",
@@ -52,7 +51,6 @@
     "peerDependencies": {
         "@mui/material": "^5.0.2",
         "@mui/icons-material": "^5.0.1",
-        "@mui/styles": "^5.0.1",
         "final-form": "^4.20.2",
         "final-form-arrays": "^3.0.2",
         "ra-core": "^3.14.0",

@@ -2,14 +2,9 @@ import { render } from '@testing-library/react';
 import * as React from 'react';
 import expect from 'expect';
 import { TestContext } from 'ra-test';
-import { ThemeProvider, Theme } from '@mui/material';
+import { ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import Button from './Button';
-
-declare module '@mui/styles/defaultTheme' {
-    // eslint-disable-next-line @typescript-eslint/no-empty-interface
-    interface DefaultTheme extends Theme {}
-}
 
 const theme = createTheme();
 

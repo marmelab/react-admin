@@ -1,8 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render } from '@testing-library/react';
-import { ThemeProvider } from '@mui/styles';
-import { createTheme } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ListPaginationContext } from 'ra-core';
 
 import Pagination from './Pagination';

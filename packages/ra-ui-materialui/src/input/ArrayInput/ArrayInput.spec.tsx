@@ -2,19 +2,13 @@ import * as React from 'react';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
-import { ThemeProvider, Theme } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material';
 
 import { ArrayInput } from './ArrayInput';
 import NumberInput from '../NumberInput';
 import TextInput from '../TextInput';
 import { SimpleFormIterator } from './SimpleFormIterator';
 import { minLength, required } from 'ra-core';
-
-declare module '@mui/styles/defaultTheme' {
-    // eslint-disable-next-line @typescript-eslint/no-empty-interface
-    interface DefaultTheme extends Theme {}
-}
 
 const theme = createTheme();
 
