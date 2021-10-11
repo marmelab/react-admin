@@ -12,11 +12,7 @@ import {
     CircularProgress,
     TextField,
 } from '@mui/material';
-import {
-    createTheme,
-    ThemeProvider,
-    StyledEngineProvider,
-} from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import LockIcon from '@mui/icons-material/Lock';
 import { Notification, useTranslate, useLogin, useNotify } from 'react-admin';
@@ -201,11 +197,9 @@ Login.propTypes = {
 // Because otherwise the useStyles() hook used in Login won't get
 // the right theme
 const LoginWithTheme = (props: any) => (
-    <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={createTheme(lightTheme)}>
-            <Login {...props} />
-        </ThemeProvider>
-    </StyledEngineProvider>
+    <ThemeProvider theme={createTheme(lightTheme)}>
+        <Login {...props} />
+    </ThemeProvider>
 );
 
 export default LoginWithTheme;
