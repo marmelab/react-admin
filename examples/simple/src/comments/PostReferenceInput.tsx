@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { Fragment, useState, useCallback } from 'react';
 import { FormSpy, useForm } from 'react-final-form';
 
@@ -16,8 +17,15 @@ import { ReferenceInput, SelectInput, useTranslate } from 'react-admin'; // esli
 import PostQuickCreate from './PostQuickCreate';
 import PostPreview from './PostPreview';
 
-const useStyles = makeStyles({
-    button: {
+const PREFIX = 'PostReferenceInput';
+
+const classes = {
+    button: `${PREFIX}-button`,
+};
+
+// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
+const Root = styled('div')({
+    [`& .${classes.button}`]: {
         margin: '10px 24px',
         position: 'relative',
     },
@@ -25,7 +33,7 @@ const useStyles = makeStyles({
 
 const PostReferenceInput = props => {
     const translate = useTranslate();
-    const classes = useStyles();
+
     const { change } = useForm();
 
     const [showCreateDialog, setShowCreateDialog] = useState(false);
@@ -68,7 +76,7 @@ const PostReferenceInput = props => {
     );
 
     return (
-        <Fragment>
+        <Root>
             <ReferenceInput key={version} {...props} defaultValue={newPostId}>
                 <SelectInput optionText="title" />
             </ReferenceInput>
@@ -138,7 +146,7 @@ const PostReferenceInput = props => {
                     />
                 </DialogContent>
             </Dialog>
-        </Fragment>
+        </Root>
     );
 };
 

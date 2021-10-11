@@ -1,4 +1,3 @@
-/* eslint react/jsx-key: off */
 import * as React from 'react';
 import { Record, useTranslate } from 'react-admin';
 

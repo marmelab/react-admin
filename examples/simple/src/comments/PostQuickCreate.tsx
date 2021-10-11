@@ -1,8 +1,8 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { makeStyles } from '@mui/styles';
 import {
     CREATE,
     SaveButton,
@@ -15,6 +15,16 @@ import {
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 import CancelButton from './PostQuickCreateCancelButton';
+
+const PREFIX = 'PostQuickCreate';
+
+const classes = {
+    form: `${PREFIX}-form`,
+};
+
+const StyledSimpleForm = styled(SimpleForm)({
+    [`& .${classes.form}`]: { padding: 0 },
+});
 
 // We need a custom toolbar to add our custom buttons
 // The CancelButton allows to close the modal without submitting anything
@@ -30,12 +40,7 @@ PostQuickCreateToolbar.propTypes = {
     onCancel: PropTypes.func.isRequired,
 };
 
-const useStyles = makeStyles({
-    form: { padding: 0 },
-});
-
 const PostQuickCreate = ({ onCancel, onSave, ...props }) => {
-    const classes = useStyles();
     const dispatch = useDispatch();
     const submitting = useSelector<ReduxState, boolean>(
         state => state.admin.loading > 0
@@ -64,7 +69,7 @@ const PostQuickCreate = ({ onCancel, onSave, ...props }) => {
     );
 
     return (
-        <SimpleForm
+        <StyledSimpleForm
             save={handleSave}
             saving={submitting}
             redirect={false}
@@ -84,7 +89,7 @@ const PostQuickCreate = ({ onCancel, onSave, ...props }) => {
                 fullWidth={true}
                 multiline={true}
             />
-        </SimpleForm>
+        </StyledSimpleForm>
     );
 };
 

@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { Children, Fragment, cloneElement, memo } from 'react';
 import BookIcon from '@mui/icons-material/Book';
-import { Chip, useMediaQuery } from '@mui/material';
-import { Theme } from '@mui/material/styles';
-import { makeStyles } from '@mui/styles';
+import { Box, Chip, useMediaQuery } from '@mui/material';
+import { Theme, styled } from '@mui/material/styles';
 import lodashGet from 'lodash/get';
 import jsonExport from 'jsonexport/dist';
 import {
@@ -30,15 +29,9 @@ import {
 import ResetViewsButton from './ResetViewsButton';
 export const PostIcon = BookIcon;
 
-const useQuickFilterStyles = makeStyles(theme => ({
-    chip: {
-        marginBottom: theme.spacing(1),
-    },
-}));
 const QuickFilter = ({ label, source, defaultValue }) => {
     const translate = useTranslate();
-    const classes = useQuickFilterStyles();
-    return <Chip className={classes.chip} label={translate(label)} />;
+    return <Chip sx={{ marginBottom: 1 }} label={translate(label)} />;
 };
 
 const postFilter = [
@@ -61,19 +54,19 @@ const exporter = posts => {
     jsonExport(data, (err, csv) => downloadCSV(csv, 'posts'));
 };
 
-const useStyles = makeStyles(theme => ({
-    title: {
+const useStyles = styled(Datagrid)(({ theme }) => ({
+    '& .title': {
         maxWidth: '20em',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
     },
-    hiddenOnSmallScreens: {
+    '& .hiddenOnSmallScreens': {
         [theme.breakpoints.down('lg')]: {
             display: 'none',
         },
     },
-    publishedAt: { fontStyle: 'italic' },
+    '& .publishedAt': { fontStyle: 'italic' },
 }));
 
 const PostListBulkActions = memo(({ children, ...props }) => (
@@ -84,21 +77,19 @@ const PostListBulkActions = memo(({ children, ...props }) => (
     </Fragment>
 ));
 
-const usePostListActionToolbarStyles = makeStyles({
-    toolbar: {
-        alignItems: 'center',
-        display: 'flex',
-        marginTop: -1,
-        marginBottom: -1,
-    },
-});
-
 const PostListActionToolbar = ({ children, ...props }) => {
-    const classes = usePostListActionToolbarStyles();
     return (
-        <div className={classes.toolbar}>
+        // @ts-ignore
+        <Box
+            sx={{
+                alignItems: 'center',
+                display: 'flex',
+                marginTop: -1,
+                marginBotton: -1,
+            }}
+        >
             {Children.map(children, button => cloneElement(button, props))}
-        </div>
+        </Box>
     );
 };
 
@@ -115,7 +106,6 @@ const PostPanel = ({ id, record, resource }) => (
 );
 
 const PostList = props => {
-    const classes = useStyles();
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     return (
         <List
@@ -136,11 +126,11 @@ const PostList = props => {
             ) : (
                 <Datagrid rowClick={rowClick} expand={PostPanel} optimized>
                     <TextField source="id" />
-                    <TextField source="title" cellClassName={classes.title} />
+                    <TextField source="title" cellClassName="title" />
                     <DateField
                         source="published_at"
                         sortByOrder="DESC"
-                        cellClassName={classes.publishedAt}
+                        cellClassName="publishedAt"
                     />
 
                     <BooleanField
@@ -155,8 +145,8 @@ const PostList = props => {
                         source="tags"
                         sortBy="tags.name"
                         sort={tagSort}
-                        cellClassName={classes.hiddenOnSmallScreens}
-                        headerClassName={classes.hiddenOnSmallScreens}
+                        cellClassName="hiddenOnSmallScreens"
+                        headerClassName="hiddenOnSmallScreens"
                     >
                         <SingleFieldList>
                             <ChipField source="name.en" size="small" />
