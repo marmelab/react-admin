@@ -3,43 +3,23 @@ import React, { useRef, useEffect, useCallback, ComponentProps } from 'react';
 import Quill, { QuillOptionsStatic } from 'quill';
 import { useInput, FieldTitle } from 'ra-core';
 import { InputHelperText } from 'ra-ui-materialui';
-import { FormHelperText, FormControl, InputLabel } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import {
+    FormHelperText,
+    FormControl,
+    InputLabel,
+    styled,
+    GlobalStyles,
+} from '@mui/material';
 import PropTypes from 'prop-types';
 
-import styles from './styles';
-
-const useStyles = makeStyles(styles, { name: 'RaRichTextInput' });
-
-export interface RichTextInputProps {
-    label?: string | false;
-    options?: QuillOptionsStatic;
-    source: string;
-    toolbar?:
-        | boolean
-        | string[]
-        | Array<any>[]
-        | string
-        | {
-              container: string | string[] | Array<any>[];
-              handlers?: Record<string, Function>;
-          };
-    fullWidth?: boolean;
-    configureQuill?: (instance: Quill) => void;
-    helperText?: ComponentProps<typeof InputHelperText>['helperText'];
-    record?: Record<any, any>;
-    resource?: string;
-    variant?: string;
-    margin?: 'normal' | 'none' | 'dense';
-    [key: string]: any;
-}
+import { RaRichTextClasses, RaRichTextStyles } from './styles';
+import QuillSnowStylesheet from './QuillSnowStylesheet';
 
 const RichTextInput = (props: RichTextInputProps) => {
     const {
         options = {}, // Quill editor options
         toolbar = true,
         fullWidth = true,
-        classes: classesOverride,
         configureQuill,
         helperText,
         label,
@@ -49,7 +29,6 @@ const RichTextInput = (props: RichTextInputProps) => {
         margin = 'dense',
         ...rest
     } = props;
-    const classes = useStyles(props);
     const quillInstance = useRef<Quill>();
     const divRef = useRef<HTMLDivElement>();
     const editor = useRef<HTMLElement>();
@@ -120,13 +99,15 @@ const RichTextInput = (props: RichTextInputProps) => {
     }, [value]);
 
     return (
-        <FormControl
+        <StyledFormControl
             error={!!(touched && error)}
             fullWidth={fullWidth}
-            className="ra-rich-text-input"
+            className={`ra-rich-text-input ${RaRichTextClasses.root}`}
             margin={margin}
         >
-            <InputLabel shrink htmlFor={id} className={classes.label}>
+            {/* @ts-ignore */}
+            <GlobalStyles styles={QuillSnowStylesheet} />
+            <InputLabel shrink htmlFor={id} className={RaRichTextClasses.label}>
                 <FieldTitle
                     label={label}
                     source={source}
@@ -145,9 +126,32 @@ const RichTextInput = (props: RichTextInputProps) => {
                     touched={touched}
                 />
             </FormHelperText>
-        </FormControl>
+        </StyledFormControl>
     );
 };
+
+export interface RichTextInputProps {
+    label?: string | false;
+    options?: QuillOptionsStatic;
+    source: string;
+    toolbar?:
+        | boolean
+        | string[]
+        | Array<any>[]
+        | string
+        | {
+              container: string | string[] | Array<any>[];
+              handlers?: Record<string, Function>;
+          };
+    fullWidth?: boolean;
+    configureQuill?: (instance: Quill) => void;
+    helperText?: ComponentProps<typeof InputHelperText>['helperText'];
+    record?: Record<any, any>;
+    resource?: string;
+    variant?: string;
+    margin?: 'normal' | 'none' | 'dense';
+    [key: string]: any;
+}
 
 RichTextInput.propTypes = {
     // @ts-ignore
@@ -157,5 +161,7 @@ RichTextInput.propTypes = {
     fullWidth: PropTypes.bool,
     configureQuill: PropTypes.func,
 };
+
+const StyledFormControl = styled(FormControl)(RaRichTextStyles);
 
 export default RichTextInput;
