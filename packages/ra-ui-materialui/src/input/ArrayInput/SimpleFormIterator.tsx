@@ -9,7 +9,7 @@ import {
     useMemo,
     useRef,
 } from 'react';
-import { FormHelperText } from '@mui/material';
+import { FormHelperText, styled } from '@mui/material';
 import classNames from 'classnames';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
@@ -18,9 +18,11 @@ import { FieldArrayRenderProps } from 'react-final-form-arrays';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { CSSTransitionProps } from 'react-transition-group/CSSTransition';
 
-import { ClassesOverride } from '../../types';
 import { useArrayInput } from './useArrayInput';
-import { useSimpleFormIteratorStyles } from './useSimpleFormIteratorStyles';
+import {
+    SimpleFormIteratorClasses,
+    SimpleFormIteratorPrefix,
+} from './useSimpleFormIteratorStyles';
 import { SimpleFormIteratorContext } from './SimpleFormIteratorContext';
 import {
     DisableRemoveFunction,
@@ -51,7 +53,6 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         defaultValue,
         getItemLabel = DefaultLabelFn,
     } = props;
-    const classes = useSimpleFormIteratorStyles(props);
     const { fields, meta } = useArrayInput(props);
     const { error, submitFailed } = meta;
     const nodeRef = useRef(null);
@@ -123,7 +124,12 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     );
     return fields ? (
         <SimpleFormIteratorContext.Provider value={context}>
-            <ul className={classNames(classes.root, className)}>
+            <Root
+                className={classNames(
+                    SimpleFormIteratorClasses.root,
+                    className
+                )}
+            >
                 {submitFailed && typeof error !== 'object' && error && (
                     <FormHelperText error>
                         <ValidationError error={error as string} />
@@ -140,7 +146,6 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                         >
                             <SimpleFormIteratorItem
                                 basePath={basePath}
-                                classes={classes}
                                 disabled={disabled}
                                 disableRemove={disableRemove}
                                 disableReordering={disableReordering}
@@ -165,8 +170,8 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                     ))}
                 </TransitionGroup>
                 {!disabled && !disableAdd && (
-                    <li className={classes.line}>
-                        <span className={classes.action}>
+                    <li className={SimpleFormIteratorClasses.line}>
+                        <span className={SimpleFormIteratorClasses.action}>
                             {cloneElement(addButton, {
                                 onClick: handleAddButtonClick(
                                     addButton.props.onClick
@@ -179,7 +184,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                         </span>
                     </li>
                 )}
-            </ul>
+            </Root>
         </SimpleFormIteratorContext.Provider>
     ) : null;
 };
@@ -195,7 +200,6 @@ SimpleFormIterator.propTypes = {
     removeButton: PropTypes.element,
     basePath: PropTypes.string,
     children: PropTypes.node,
-    classes: PropTypes.object,
     className: PropTypes.string,
     // @ts-ignore
     fields: PropTypes.object,
@@ -215,7 +219,6 @@ export interface SimpleFormIteratorProps
     addButton?: ReactElement;
     basePath?: string;
     children?: ReactNode;
-    classes?: ClassesOverride<typeof useSimpleFormIteratorStyles>;
     className?: string;
     defaultValue?: any;
     disabled?: boolean;
@@ -237,5 +240,58 @@ export interface SimpleFormIteratorProps
     TransitionProps?: CSSTransitionProps;
     variant?: 'standard' | 'outlined' | 'filled';
 }
+
+const Root = styled('ul')(({ theme }) => ({
+    [`${SimpleFormIteratorPrefix} .${SimpleFormIteratorClasses.root}`]: {
+        padding: 0,
+        marginBottom: 0,
+        '& > li:last-child': {
+            borderBottom: 'none',
+        },
+    },
+    [`${SimpleFormIteratorPrefix} .${SimpleFormIteratorClasses.line}`]: {
+        display: 'flex',
+        listStyleType: 'none',
+        borderBottom: `solid 1px ${theme.palette.divider}`,
+        [theme.breakpoints.down('sm')]: { display: 'block' },
+        '&.fade-enter': {
+            opacity: 0.01,
+            transform: 'translateX(100vw)',
+        },
+        '&.fade-enter-active': {
+            opacity: 1,
+            transform: 'translateX(0)',
+            transition: 'all 500ms ease-in',
+        },
+        '&.fade-exit': {
+            opacity: 1,
+            transform: 'translateX(0)',
+        },
+        '&.fade-exit-active': {
+            opacity: 0.01,
+            transform: 'translateX(100vw)',
+            transition: 'all 500ms ease-in',
+        },
+    },
+    [`${SimpleFormIteratorPrefix} .${SimpleFormIteratorClasses.index}`]: {
+        [theme.breakpoints.down('md')]: { display: 'none' },
+        marginRight: theme.spacing(1),
+    },
+    [`${SimpleFormIteratorPrefix} .${SimpleFormIteratorClasses.indexContainer}`]: {
+        display: 'flex',
+        paddingTop: '1em',
+        marginRight: theme.spacing(1),
+        alignItems: 'center',
+    },
+    [`${SimpleFormIteratorPrefix} .${SimpleFormIteratorClasses.form}`]: {
+        flex: 2,
+    },
+    [`${SimpleFormIteratorPrefix} .${SimpleFormIteratorClasses.action}`]: {
+        paddingTop: '0.5em',
+    },
+    [`${SimpleFormIteratorPrefix} .${SimpleFormIteratorClasses.leftIcon}`]: {
+        marginRight: theme.spacing(1),
+    },
+}));
 
 const DefaultLabelFn = index => index + 1;

@@ -5,17 +5,11 @@ import { Form } from 'react-final-form';
 import { required, FormWithRedirect } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
 import format from 'date-fns/format';
-import { ThemeProvider, Theme } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material';
 
 import DateTimeInput from './DateTimeInput';
 import { ArrayInput, SimpleFormIterator } from './ArrayInput';
 import { FormApi } from 'final-form';
-
-declare module '@mui/styles/defaultTheme' {
-    // eslint-disable-next-line @typescript-eslint/no-empty-interface
-    interface DefaultTheme extends Theme {}
-}
 
 const theme = createTheme();
 
