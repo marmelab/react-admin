@@ -3,7 +3,13 @@ import { styled } from '@mui/material/styles';
 import { MouseEvent, ReactElement, useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import { ImportResourceDialog } from './ImportResourceDialog';
-import { ListItemIcon, MenuItem, MenuItemProps, Tooltip } from '@mui/material';
+import {
+    ListItemIcon,
+    ListItemText,
+    MenuItem,
+    MenuItemProps,
+    Tooltip,
+} from '@mui/material';
 
 const PREFIX = 'RaMenuItemLink';
 
@@ -56,7 +62,7 @@ export const NewResourceMenuItem = (
             <ListItemIcon className={classes.icon}>
                 <AddIcon titleAccess={primaryText} />
             </ListItemIcon>
-            {primaryText}
+            <ListItemText>{primaryText}</ListItemText>
         </MenuItem>
     );
 
