@@ -12,8 +12,8 @@ const classes = {
     icon: `${PREFIX}-icon`,
 };
 
-const StyledLayout = styled(Layout)(({ theme }) => ({
-    [`& .${classes.menuItem}`]: {
+const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
+    [`&.${classes.menuItem}`]: {
         color: theme.palette.text.secondary,
     },
 
@@ -26,7 +26,7 @@ const SwitchLanguage = forwardRef<HTMLLIElement, MenuItemProps>(
         const setLocale = useSetLocale();
 
         return (
-            <MenuItem
+            <StyledMenuItem
                 ref={ref}
                 className={classes.menuItem}
                 onClick={event => {
@@ -38,7 +38,7 @@ const SwitchLanguage = forwardRef<HTMLLIElement, MenuItemProps>(
                     <Language />
                 </ListItemIcon>
                 Switch Language
-            </MenuItem>
+            </StyledMenuItem>
         );
     }
 );
@@ -51,4 +51,4 @@ const MyUserMenu = props => (
 
 const MyAppBar = memo(props => <AppBar {...props} userMenu={<MyUserMenu />} />);
 
-export default props => <StyledLayout {...props} appBar={MyAppBar} />;
+export default props => <Layout {...props} appBar={MyAppBar} />;
