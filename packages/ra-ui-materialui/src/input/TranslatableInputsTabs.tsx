@@ -1,10 +1,31 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { ReactElement } from 'react';
 import { AppBar, Tabs, TabsProps } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import { useTranslatableContext } from 'ra-core';
 import { TranslatableInputsTab } from './TranslatableInputsTab';
 import { AppBarProps } from '../layout';
+
+const PREFIX = 'RaTranslatableInputsTabs';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    tabs: `${PREFIX}-tabs`,
+};
+
+const StyledAppBar = styled(AppBar)(({ theme }) => ({
+    [`&.${classes.root}`]: {
+        boxShadow: 'none',
+        borderRadius: 0,
+        borderTopLeftRadius: theme.shape.borderRadius,
+        borderTopRightRadius: theme.shape.borderRadius,
+        border: `1px solid ${theme.palette.divider}`,
+    },
+
+    [`& .${classes.tabs}`]: {
+        minHeight: theme.spacing(3),
+    },
+}));
 
 /**
  * Default locale selector for the TranslatableInputs component. Generates a tab for each specified locale.
@@ -15,14 +36,17 @@ export const TranslatableInputsTabs = (
 ): ReactElement => {
     const { groupKey, TabsProps: tabsProps } = props;
     const { locales, selectLocale, selectedLocale } = useTranslatableContext();
-    const classes = useStyles(props);
 
     const handleChange = (event, newLocale): void => {
         selectLocale(newLocale);
     };
 
     return (
-        <AppBar color="default" position="static" className={classes.root}>
+        <StyledAppBar
+            color="default"
+            position="static"
+            className={classes.root}
+        >
             <Tabs
                 value={selectedLocale}
                 onChange={handleChange}
@@ -40,7 +64,7 @@ export const TranslatableInputsTabs = (
                     />
                 ))}
             </Tabs>
-        </AppBar>
+        </StyledAppBar>
     );
 };
 
@@ -48,19 +72,3 @@ export interface TranslatableInputsTabsProps {
     groupKey?: string;
     TabsProps?: TabsProps;
 }
-
-const useStyles = makeStyles(
-    theme => ({
-        root: {
-            boxShadow: 'none',
-            borderRadius: 0,
-            borderTopLeftRadius: theme.shape.borderRadius,
-            borderTopRightRadius: theme.shape.borderRadius,
-            border: `1px solid ${theme.palette.divider}`,
-        },
-        tabs: {
-            minHeight: theme.spacing(3),
-        },
-    }),
-    { name: 'RaTranslatableInputsTabs' }
-);

@@ -1,20 +1,25 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { useEffect, ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@mui/styles';
 import RemoveCircle from '@mui/icons-material/RemoveCircle';
 import IconButton from '@mui/material/IconButton';
 import { useTranslate } from 'ra-core';
 
-const useStyles = makeStyles(
-    theme => ({
-        removeButton: {},
-        removeIcon: {
-            color: theme.palette.error.main,
-        },
-    }),
-    { name: 'RaFileInputPreview' }
-);
+const PREFIX = 'RaFileInputPreview';
+
+const classes = {
+    removeButton: `${PREFIX}-removeButton`,
+    removeIcon: `${PREFIX}-removeIcon`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`& .${classes.removeButton}`]: {},
+
+    [`& .${classes.removeIcon}`]: {
+        color: theme.palette.error.main,
+    },
+}));
 
 interface Props {
     children: ReactNode;
@@ -33,7 +38,7 @@ const FileInputPreview = (props: Props) => {
         file,
         ...rest
     } = props;
-    const classes = useStyles(props);
+
     const translate = useTranslate();
 
     useEffect(() => {
@@ -47,7 +52,7 @@ const FileInputPreview = (props: Props) => {
     }, [file]);
 
     return (
-        <div className={className} {...rest}>
+        <Root className={className} {...rest}>
             <IconButton
                 className={classes.removeButton}
                 onClick={onRemove}
@@ -58,7 +63,7 @@ const FileInputPreview = (props: Props) => {
                 <RemoveCircle className={classes.removeIcon} />
             </IconButton>
             {children}
-        </div>
+        </Root>
     );
 };
 
