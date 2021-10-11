@@ -23,6 +23,10 @@ export default {
                     '../../packages/ra-$1/src'
                 ),
             },
+            {
+                find: /^@mui\/icons-material\/(.*)/,
+                replacement: '@mui/icons-material/esm/$1',
+            },
         ],
     },
     server: {
