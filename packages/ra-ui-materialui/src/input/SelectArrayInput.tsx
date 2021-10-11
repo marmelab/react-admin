@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { useCallback, useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -9,7 +10,6 @@ import {
     FormControl,
     Chip,
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import classnames from 'classnames';
 import {
     FieldTitle,
@@ -27,6 +27,27 @@ import {
     SupportCreateSuggestionOptions,
     useSupportCreateSuggestion,
 } from './useSupportCreateSuggestion';
+
+const PREFIX = 'RaSelectArrayInput';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    chips: `${PREFIX}-chips`,
+    chip: `${PREFIX}-chip`,
+};
+
+const StyledFormControl = styled(FormControl)(({ theme }) => ({
+    [`&.${classes.root}`]: {},
+
+    [`& .${classes.chips}`]: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+
+    [`& .${classes.chip}`]: {
+        margin: theme.spacing(1 / 4),
+    },
+}));
 
 /**
  * An Input component for a select box allowing multiple selections, using an array of objects for the options
@@ -83,7 +104,6 @@ import {
 const SelectArrayInput = (props: SelectArrayInputProps) => {
     const {
         choices = [],
-        classes: classesOverride,
         className,
         create,
         createLabel,
@@ -111,7 +131,6 @@ const SelectArrayInput = (props: SelectArrayInputProps) => {
         ...rest
     } = props;
 
-    const classes = useStyles(props);
     const inputLabel = useRef(null);
     const [labelWidth, setLabelWidth] = useState(0);
 
@@ -210,7 +229,7 @@ const SelectArrayInput = (props: SelectArrayInputProps) => {
 
     return (
         <>
-            <FormControl
+            <StyledFormControl
                 margin={margin}
                 className={classnames(classes.root, className)}
                 error={touched && !!(error || submitError)}
@@ -269,7 +288,7 @@ const SelectArrayInput = (props: SelectArrayInputProps) => {
                         helperText={helperText}
                     />
                 </FormHelperText>
-            </FormControl>
+            </StyledFormControl>
             {createElement}
         </>
     );
@@ -289,7 +308,6 @@ export interface SelectArrayInputProps
 
 SelectArrayInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
-    classes: PropTypes.object,
     className: PropTypes.string,
     children: PropTypes.node,
     label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
@@ -356,19 +374,5 @@ const sanitizeRestProps = ({
     validation,
     ...rest
 }: any) => rest;
-
-const useStyles = makeStyles(
-    theme => ({
-        root: {},
-        chips: {
-            display: 'flex',
-            flexWrap: 'wrap',
-        },
-        chip: {
-            margin: theme.spacing(1 / 4),
-        },
-    }),
-    { name: 'RaSelectArrayInput' }
-);
 
 export default SelectArrayInput;

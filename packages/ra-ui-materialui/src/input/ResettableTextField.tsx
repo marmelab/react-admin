@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -7,20 +8,47 @@ import {
     IconButton,
     TextField as MuiTextField,
     TextFieldProps,
-    Theme,
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import ClearIcon from '@mui/icons-material/Clear';
 import { InputProps, useTranslate } from 'ra-core';
-import { ClassesOverride } from '../types';
-import { Styles } from '@mui/styles';
+
+const PREFIX = 'RaResettableTextField';
+
+const classes = {
+    clearIcon: `${PREFIX}-clearIcon`,
+    visibleClearIcon: `${PREFIX}-visibleClearIcon`,
+    clearButton: `${PREFIX}-clearButton`,
+    selectAdornment: `${PREFIX}-selectAdornment`,
+    inputAdornedEnd: `${PREFIX}-inputAdornedEnd`,
+};
+
+const StyledTextField = styled(MuiTextField)({
+    [`& .${classes.clearIcon}`]: {
+        height: 16,
+        width: 0,
+    },
+    [`& .${classes.visibleClearIcon}`]: {
+        width: 16,
+    },
+    [`& .${classes.clearButton}`]: {
+        height: 24,
+        width: 24,
+        padding: 0,
+    },
+    [`& .${classes.selectAdornment}`]: {
+        position: 'absolute',
+        right: 24,
+    },
+    [`& .${classes.inputAdornedEnd}`]: {
+        paddingRight: 0,
+    },
+});
 
 /**
  * An override of the default Material-UI TextField which is resettable
  */
 const ResettableTextField = (props: ResettableTextFieldProps) => {
     const {
-        classes: classesOverride,
         clearAlwaysVisible,
         InputProps,
         value,
@@ -30,7 +58,7 @@ const ResettableTextField = (props: ResettableTextFieldProps) => {
         margin = 'dense',
         ...rest
     } = props;
-    const classes = useStyles(props);
+
     const translate = useTranslate();
 
     const { onChange, onFocus, onBlur } = props;
@@ -153,7 +181,7 @@ const ResettableTextField = (props: ResettableTextFieldProps) => {
     };
 
     return (
-        <MuiTextField
+        <StyledTextField
             classes={restClasses}
             value={value}
             InputProps={{
@@ -174,38 +202,13 @@ const ResettableTextField = (props: ResettableTextFieldProps) => {
     );
 };
 
-export const resettableStyles: Styles<Theme, ResettableTextFieldProps> = {
-    clearIcon: {
-        height: 16,
-        width: 0,
-    },
-    visibleClearIcon: {
-        width: 16,
-    },
-    clearButton: {
-        height: 24,
-        width: 24,
-        padding: 0,
-    },
-    selectAdornment: {
-        position: 'absolute',
-        right: 24,
-    },
-    inputAdornedEnd: {
-        paddingRight: 0,
-    },
-};
-
-const useStyles = makeStyles(resettableStyles, {
-    name: 'RaResettableTextField',
-});
+export {};
 
 const handleMouseDownClearButton = event => {
     event.preventDefault();
 };
 
 ResettableTextField.propTypes = {
-    classes: PropTypes.object,
     clearAlwaysVisible: PropTypes.bool,
     disabled: PropTypes.bool,
     InputProps: PropTypes.object,
@@ -217,7 +220,6 @@ ResettableTextField.propTypes = {
 };
 
 interface Props {
-    classes?: ClassesOverride<typeof useStyles>;
     clearAlwaysVisible?: boolean;
     resettable?: boolean;
 }

@@ -6,6 +6,7 @@ import React, {
     useMemo,
     isValidElement,
 } from 'react';
+import { styled } from '@mui/material/styles';
 import Downshift, { DownshiftProps } from 'downshift';
 import get from 'lodash/get';
 import classNames from 'classnames';
@@ -15,7 +16,6 @@ import {
     IconButton,
     InputProps,
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import ClearIcon from '@mui/icons-material/Clear';
 import { TextFieldProps } from '@mui/material/TextField';
 import {
@@ -37,6 +37,53 @@ import {
     SupportCreateSuggestionOptions,
     useSupportCreateSuggestion,
 } from './useSupportCreateSuggestion';
+
+const PREFIX = 'RaAutocompleteInput';
+
+const classes = {
+    container: `${PREFIX}-container`,
+    clearIcon: `${PREFIX}-clearIcon`,
+    visibleClearIcon: `${PREFIX}-visibleClearIcon`,
+    clearButton: `${PREFIX}-clearButton`,
+    selectAdornment: `${PREFIX}-selectAdornment`,
+    inputAdornedEnd: `${PREFIX}-inputAdornedEnd`,
+    suggestionsContainer: `${PREFIX}-suggestionsContainer`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`&.${classes.container}`]: {
+        flexGrow: 1,
+        position: 'relative',
+    },
+
+    [`& .${classes.clearIcon}`]: {
+        height: 16,
+        width: 0,
+    },
+
+    [`& .${classes.visibleClearIcon}`]: {
+        width: 16,
+    },
+
+    [`& .${classes.clearButton}`]: {
+        height: 24,
+        width: 24,
+        padding: 0,
+    },
+
+    [`& .${classes.selectAdornment}`]: {
+        position: 'absolute',
+        right: 24,
+    },
+
+    [`& .${classes.inputAdornedEnd}`]: {
+        paddingRight: 0,
+    },
+
+    [`& .${classes.suggestionsContainer}`]: {
+        zIndex: theme.zIndex.modal,
+    },
+}));
 
 /**
  * An Input component for an autocomplete field, using an array of objects for the options
@@ -184,7 +231,6 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         `If you're not wrapping the AutocompleteInput inside a ReferenceInput, you must provide the choices prop`
     );
 
-    const classes = useStyles(props);
     let inputEl = useRef<HTMLInputElement>();
     let anchorEl = useRef<any>();
     const translate = useTranslate();
@@ -500,7 +546,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                     ];
 
                     return (
-                        <div className={classes.container}>
+                        <Root className={classes.container}>
                             <TextField
                                 id={id}
                                 name={input.name}
@@ -591,7 +637,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                                     />
                                 ))}
                             </AutocompleteSuggestionList>
-                        </div>
+                        </Root>
                     );
                 }}
             </Downshift>
@@ -603,38 +649,6 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
 const handleMouseDownClearButton = event => {
     event.preventDefault();
 };
-
-const useStyles = makeStyles(
-    theme => ({
-        container: {
-            flexGrow: 1,
-            position: 'relative',
-        },
-        clearIcon: {
-            height: 16,
-            width: 0,
-        },
-        visibleClearIcon: {
-            width: 16,
-        },
-        clearButton: {
-            height: 24,
-            width: 24,
-            padding: 0,
-        },
-        selectAdornment: {
-            position: 'absolute',
-            right: 24,
-        },
-        inputAdornedEnd: {
-            paddingRight: 0,
-        },
-        suggestionsContainer: {
-            zIndex: theme.zIndex.modal,
-        },
-    }),
-    { name: 'RaAutocompleteInput' }
-);
 
 interface Options {
     InputProps?: InputProps;

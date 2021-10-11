@@ -5,10 +5,10 @@ import React, {
     ReactElement,
     ReactNode,
 } from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import { shallowEqual } from 'react-redux';
 import { useDropzone, DropzoneOptions } from 'react-dropzone';
-import { makeStyles } from '@mui/styles';
 import FormHelperText from '@mui/material/FormHelperText';
 import classnames from 'classnames';
 import { useInput, useTranslate, InputProps } from 'ra-core';
@@ -18,23 +18,28 @@ import FileInputPreview from './FileInputPreview';
 import sanitizeInputRestProps from './sanitizeInputRestProps';
 import InputHelperText from './InputHelperText';
 
-const useStyles = makeStyles(
-    theme => ({
-        dropZone: {
-            background: theme.palette.background.default,
-            cursor: 'pointer',
-            padding: theme.spacing(1),
-            textAlign: 'center',
-            color: theme.palette.getContrastText(
-                theme.palette.background.default
-            ),
-        },
-        preview: {},
-        removeButton: {},
-        root: { width: '100%' },
-    }),
-    { name: 'RaFileInput' }
-);
+const PREFIX = 'RaFileInput';
+
+const classes = {
+    dropZone: `${PREFIX}-dropZone`,
+    preview: `${PREFIX}-preview`,
+    removeButton: `${PREFIX}-removeButton`,
+    root: `${PREFIX}-root`,
+};
+
+const StyledLabeled = styled(Labeled)(({ theme }) => ({
+    [`& .${classes.dropZone}`]: {
+        background: theme.palette.background.default,
+        cursor: 'pointer',
+        padding: theme.spacing(1),
+        textAlign: 'center',
+        color: theme.palette.getContrastText(theme.palette.background.default),
+    },
+
+    [`& .${classes.preview}`]: {},
+    [`& .${classes.removeButton}`]: {},
+    [`&.${classes.root}`]: { width: '100%' },
+}));
 
 export interface FileInputProps {
     accept?: string;
@@ -57,7 +62,6 @@ const FileInput = (props: FileInputProps & InputProps<FileInputOptions>) => {
         accept,
         children,
         className,
-        classes: classesOverride,
         format,
         helperText,
         label,
@@ -78,7 +82,6 @@ const FileInput = (props: FileInputProps & InputProps<FileInputOptions>) => {
         ...rest
     } = props;
     const translate = useTranslate();
-    const classes = useStyles(props);
 
     // turn a browser dropped file structure into expected structure
     const transformFile = file => {
@@ -175,7 +178,7 @@ const FileInput = (props: FileInputProps & InputProps<FileInputOptions>) => {
     });
 
     return (
-        <Labeled
+        <StyledLabeled
             id={id}
             label={label}
             className={classnames(classes.root, className)}
@@ -231,14 +234,13 @@ const FileInput = (props: FileInputProps & InputProps<FileInputOptions>) => {
                     </div>
                 )}
             </>
-        </Labeled>
+        </StyledLabeled>
     );
 };
 
 FileInput.propTypes = {
     accept: PropTypes.string,
     children: PropTypes.element,
-    classes: PropTypes.object,
     className: PropTypes.string,
     id: PropTypes.string,
     isRequired: PropTypes.bool,

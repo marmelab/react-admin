@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import {
     FormControl,
@@ -6,7 +7,6 @@ import {
     FormLabel,
     RadioGroup,
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import { RadioGroupProps } from '@mui/material/RadioGroup';
 import { FormControlProps } from '@mui/material/FormControl';
 import get from 'lodash/get';
@@ -18,17 +18,18 @@ import RadioButtonGroupInputItem from './RadioButtonGroupInputItem';
 import Labeled from './Labeled';
 import { LinearProgress } from '../layout';
 
-const useStyles = makeStyles(
-    theme => ({
-        label: {
-            transform: 'translate(0, 5px) scale(0.75)',
-            transformOrigin: `top ${
-                theme.direction === 'ltr' ? 'left' : 'right'
-            }`,
-        },
-    }),
-    { name: 'RaRadioButtonGroupInput' }
-);
+const PREFIX = 'RaRadioButtonGroupInput';
+
+const classes = {
+    label: `${PREFIX}-label`,
+};
+
+const StyledFormControl = styled(FormControl)(({ theme }) => ({
+    [`& .${classes.label}`]: {
+        transform: 'translate(0, 5px) scale(0.75)',
+        transformOrigin: `top ${theme.direction === 'ltr' ? 'left' : 'right'}`,
+    },
+}));
 
 /**
  * An Input component for a radio button group, using an array of objects for the options
@@ -90,7 +91,6 @@ const useStyles = makeStyles(
 const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
     const {
         choices = [],
-        classes: classesOverride,
         format,
         helperText,
         label,
@@ -111,7 +111,6 @@ const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         validate,
         ...rest
     } = props;
-    const classes = useStyles(props);
 
     warning(
         source === undefined,
@@ -155,7 +154,7 @@ const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         );
     }
     return (
-        <FormControl
+        <StyledFormControl
             component="fieldset"
             margin={margin}
             error={touched && !!(error || submitError)}
@@ -190,7 +189,7 @@ const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
                     helperText={helperText}
                 />
             </FormHelperText>
-        </FormControl>
+        </StyledFormControl>
     );
 };
 
