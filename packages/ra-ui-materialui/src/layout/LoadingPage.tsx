@@ -11,11 +11,9 @@ declare module '@mui/styles/defaultTheme' {
 }
 
 const LoadingPage = ({ theme, ...props }) => (
-    <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={theme}>
-            <Loading {...props} />
-        </ThemeProvider>
-    </StyledEngineProvider>
+    <ThemeProvider theme={theme}>
+        <Loading {...props} />
+    </ThemeProvider>
 );
 
 LoadingPage.propTypes = {

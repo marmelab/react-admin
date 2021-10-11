@@ -11,11 +11,7 @@ import {
     ListItemText,
     Typography,
 } from '@mui/material';
-import {
-    createTheme,
-    ThemeProvider,
-    StyledEngineProvider,
-} from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {
     defaultTheme as RaDefaultTheme,
     RaThemeOptions,
@@ -72,11 +68,9 @@ export const ApplicationsDashboard = ({
     onApplicationSelected: any;
     theme: RaThemeOptions;
 }) => (
-    <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={createTheme(theme)}>
-            <Applications onApplicationSelected={onApplicationSelected} />
-        </ThemeProvider>
-    </StyledEngineProvider>
+    <ThemeProvider theme={createTheme(theme)}>
+        <Applications onApplicationSelected={onApplicationSelected} />
+    </ThemeProvider>
 );
 
 const Applications = ({ onApplicationSelected }) => {

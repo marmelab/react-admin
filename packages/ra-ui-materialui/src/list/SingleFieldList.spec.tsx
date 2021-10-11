@@ -3,9 +3,12 @@ import { render } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import { ListContext } from 'ra-core';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import SingleFieldList from './SingleFieldList';
 import ChipField from '../field/ChipField';
+
+const theme = createTheme();
 
 const renderWithRouter = children => {
     const history = createMemoryHistory();
@@ -19,21 +22,23 @@ const renderWithRouter = children => {
 describe('<SingleFieldList />', () => {
     it('should render a link to the Edit page of the related record by default', () => {
         const { queryAllByRole } = renderWithRouter(
-            <ListContext.Provider
-                value={{
-                    ids: [1, 2],
-                    data: {
-                        1: { id: 1, title: 'foo' },
-                        2: { id: 2, title: 'bar' },
-                    },
-                    resource: 'posts',
-                    basePath: '/posts',
-                }}
-            >
-                <SingleFieldList>
-                    <ChipField source="title" />
-                </SingleFieldList>
-            </ListContext.Provider>
+            <ThemeProvider theme={theme}>
+                <ListContext.Provider
+                    value={{
+                        ids: [1, 2],
+                        data: {
+                            1: { id: 1, title: 'foo' },
+                            2: { id: 2, title: 'bar' },
+                        },
+                        resource: 'posts',
+                        basePath: '/posts',
+                    }}
+                >
+                    <SingleFieldList>
+                        <ChipField source="title" />
+                    </SingleFieldList>
+                </ListContext.Provider>
+            </ThemeProvider>
         );
         const linkElements = queryAllByRole('link');
         expect(linkElements).toHaveLength(2);
@@ -45,21 +50,23 @@ describe('<SingleFieldList />', () => {
 
     it('should render a link to the Edit page of the related record when the resource contains slashes', () => {
         const { queryAllByRole } = renderWithRouter(
-            <ListContext.Provider
-                value={{
-                    ids: [1, 2],
-                    data: {
-                        1: { id: 1, title: 'foo' },
-                        2: { id: 2, title: 'bar' },
-                    },
-                    resource: 'posts/foo',
-                    basePath: '/posts/foo',
-                }}
-            >
-                <SingleFieldList>
-                    <ChipField source="title" />
-                </SingleFieldList>
-            </ListContext.Provider>
+            <ThemeProvider theme={theme}>
+                <ListContext.Provider
+                    value={{
+                        ids: [1, 2],
+                        data: {
+                            1: { id: 1, title: 'foo' },
+                            2: { id: 2, title: 'bar' },
+                        },
+                        resource: 'posts/foo',
+                        basePath: '/posts/foo',
+                    }}
+                >
+                    <SingleFieldList>
+                        <ChipField source="title" />
+                    </SingleFieldList>
+                </ListContext.Provider>
+            </ThemeProvider>
         );
         const linkElements = queryAllByRole('link');
         expect(linkElements).toHaveLength(2);
@@ -72,21 +79,23 @@ describe('<SingleFieldList />', () => {
     ['edit', 'show'].forEach(action => {
         it(`should render a link to the Edit page of the related record when the resource is named ${action}`, () => {
             const { queryAllByRole } = renderWithRouter(
-                <ListContext.Provider
-                    value={{
-                        ids: [1, 2],
-                        data: {
-                            1: { id: 1, title: 'foo' },
-                            2: { id: 2, title: 'bar' },
-                        },
-                        resource: action,
-                        basePath: `/${action}`,
-                    }}
-                >
-                    <SingleFieldList>
-                        <ChipField source="title" />
-                    </SingleFieldList>
-                </ListContext.Provider>
+                <ThemeProvider theme={theme}>
+                    <ListContext.Provider
+                        value={{
+                            ids: [1, 2],
+                            data: {
+                                1: { id: 1, title: 'foo' },
+                                2: { id: 2, title: 'bar' },
+                            },
+                            resource: action,
+                            basePath: `/${action}`,
+                        }}
+                    >
+                        <SingleFieldList>
+                            <ChipField source="title" />
+                        </SingleFieldList>
+                    </ListContext.Provider>
+                </ThemeProvider>
             );
             const linkElements = queryAllByRole('link');
             expect(linkElements).toHaveLength(2);
@@ -98,21 +107,23 @@ describe('<SingleFieldList />', () => {
 
     it('should render a link to the Show page of the related record when the linkType is show', () => {
         const { queryAllByRole } = renderWithRouter(
-            <ListContext.Provider
-                value={{
-                    ids: [1, 2],
-                    data: {
-                        1: { id: 1, title: 'foo' },
-                        2: { id: 2, title: 'bar' },
-                    },
-                    resource: 'prefix/bar',
-                    basePath: '/prefix/bar',
-                }}
-            >
-                <SingleFieldList linkType="show">
-                    <ChipField source="title" />
-                </SingleFieldList>
-            </ListContext.Provider>
+            <ThemeProvider theme={theme}>
+                <ListContext.Provider
+                    value={{
+                        ids: [1, 2],
+                        data: {
+                            1: { id: 1, title: 'foo' },
+                            2: { id: 2, title: 'bar' },
+                        },
+                        resource: 'prefix/bar',
+                        basePath: '/prefix/bar',
+                    }}
+                >
+                    <SingleFieldList linkType="show">
+                        <ChipField source="title" />
+                    </SingleFieldList>
+                </ListContext.Provider>
+            </ThemeProvider>
         );
 
         const linkElements = queryAllByRole('link');
@@ -126,21 +137,23 @@ describe('<SingleFieldList />', () => {
     ['edit', 'show'].forEach(action => {
         it(`should render a link to the Edit page of the related record when the resource is named ${action} and linkType is show`, () => {
             const { queryAllByRole } = renderWithRouter(
-                <ListContext.Provider
-                    value={{
-                        ids: [1, 2],
-                        data: {
-                            1: { id: 1, title: 'foo' },
-                            2: { id: 2, title: 'bar' },
-                        },
-                        resource: action,
-                        basePath: `/${action}`,
-                    }}
-                >
-                    <SingleFieldList linkType="show">
-                        <ChipField source="title" />
-                    </SingleFieldList>
-                </ListContext.Provider>
+                <ThemeProvider theme={theme}>
+                    <ListContext.Provider
+                        value={{
+                            ids: [1, 2],
+                            data: {
+                                1: { id: 1, title: 'foo' },
+                                2: { id: 2, title: 'bar' },
+                            },
+                            resource: action,
+                            basePath: `/${action}`,
+                        }}
+                    >
+                        <SingleFieldList linkType="show">
+                            <ChipField source="title" />
+                        </SingleFieldList>
+                    </ListContext.Provider>
+                </ThemeProvider>
             );
             const linkElements = queryAllByRole('link');
             expect(linkElements).toHaveLength(2);
@@ -152,21 +165,23 @@ describe('<SingleFieldList />', () => {
 
     it('should render no link when the linkType is false', () => {
         const { queryAllByRole, queryByText } = renderWithRouter(
-            <ListContext.Provider
-                value={{
-                    ids: [1, 2],
-                    data: {
-                        1: { id: 1, title: 'foo' },
-                        2: { id: 2, title: 'bar' },
-                    },
-                    resource: 'bar',
-                    basePath: '/bar',
-                }}
-            >
-                <SingleFieldList linkType={false}>
-                    <ChipField source="title" />
-                </SingleFieldList>
-            </ListContext.Provider>
+            <ThemeProvider theme={theme}>
+                <ListContext.Provider
+                    value={{
+                        ids: [1, 2],
+                        data: {
+                            1: { id: 1, title: 'foo' },
+                            2: { id: 2, title: 'bar' },
+                        },
+                        resource: 'bar',
+                        basePath: '/bar',
+                    }}
+                >
+                    <SingleFieldList linkType={false}>
+                        <ChipField source="title" />
+                    </SingleFieldList>
+                </ListContext.Provider>
+            </ThemeProvider>
         );
 
         const linkElements = queryAllByRole('link');

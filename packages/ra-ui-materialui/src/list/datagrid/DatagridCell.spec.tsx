@@ -28,7 +28,7 @@ describe('<DatagridCell />', () => {
         const { getByRole } = renderWithTable(
             <DatagridCell field={<Field />} />
         );
-        expect(getByRole('cell').className).toEqual('MuiTableCell-root');
+        expect(getByRole('cell').className).toContain('MuiTableCell-root');
     });
 
     it('should pass the Datagrid basePath by default', () => {
