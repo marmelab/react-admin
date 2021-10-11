@@ -1,5 +1,6 @@
 /* eslint react/jsx-key: off */
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import {
     CloneButton,
@@ -15,13 +16,25 @@ import {
     Toolbar,
     TopToolbar,
 } from 'react-admin';
-import { makeStyles } from '@mui/styles';
 
 import UserTitle from './UserTitle';
 import Aside from './Aside';
 
-const useToolbarStyles = makeStyles({
-    toolbar: {
+const PREFIX = 'UserEdit';
+
+const classes = {
+    toolbar: `${PREFIX}-toolbar`,
+};
+
+const StyledEdit = styled(Edit)({
+    [`& .${classes.toolbar}`]: {
+        display: 'flex',
+        justifyContent: 'space-between',
+    },
+});
+
+const StyledToolbar = styled(Toolbar)({
+    [`& .RaToolbar-toolbar`]: {
         display: 'flex',
         justifyContent: 'space-between',
     },
@@ -33,16 +46,23 @@ const useToolbarStyles = makeStyles({
  * Save with undo, but delete with confirm
  */
 const UserEditToolbar = props => {
-    const classes = useToolbarStyles();
     return (
-        <Toolbar {...props} classes={classes}>
+        <StyledToolbar {...props}>
             <SaveButton />
             <DeleteWithConfirmButton />
-        </Toolbar>
+        </StyledToolbar>
     );
 };
 
-const EditActions = ({ basePath, data, hasShow }) => (
+const EditActions = ({
+    basePath,
+    data,
+    hasShow,
+}: {
+    basePath?: string;
+    data?: any;
+    hasShow?: boolean;
+}) => (
     <TopToolbar>
         <CloneButton
             className="button-clone"
@@ -53,7 +73,14 @@ const EditActions = ({ basePath, data, hasShow }) => (
     </TopToolbar>
 );
 
-const UserEditForm = ({ permissions, save, ...props }) => {
+const UserEditForm = ({
+    permissions,
+    save,
+    ...props
+}: {
+    permissions?: any;
+    save?: any;
+}) => {
     const newSave = values =>
         new Promise((resolve, reject) => {
             if (values.name === 'test') {
@@ -101,14 +128,14 @@ const UserEditForm = ({ permissions, save, ...props }) => {
 };
 const UserEdit = ({ permissions, ...props }) => {
     return (
-        <Edit
+        <StyledEdit
             title={<UserTitle />}
             aside={<Aside />}
             actions={<EditActions />}
             {...props}
         >
             <UserEditForm permissions={permissions} />
-        </Edit>
+        </StyledEdit>
     );
 };
 

@@ -655,6 +655,7 @@ interface Options {
     InputProps?: InputProps;
     labelProps?: any;
     suggestionsContainerProps?: any;
+    fullWidth?: boolean;
 }
 
 export interface AutocompleteInputProps

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     Card,
     Typography,
@@ -8,7 +9,6 @@ import {
     DialogActions,
     Button,
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import {
     AutocompleteInput,
     DateInput,
@@ -26,6 +26,23 @@ import {
     useCreate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
+const PREFIX = 'CommentEdit';
+
+const classes = {
+    actions: `${PREFIX}-actions`,
+    card: `${PREFIX}-card`,
+};
+
+const Root = styled('div')({
+    [`& .${classes.actions}`]: {
+        float: 'right',
+    },
+    [`& .${classes.card}`]: {
+        marginTop: '1em',
+        maxWidth: '30em',
+    },
+});
+
 const LinkToRelatedPost = ({ record }: { record?: Record }) => (
     <Link to={`/posts/${record?.post_id}`}>
         <Typography variant="caption" color="inherit" align="right">
@@ -33,16 +50,6 @@ const LinkToRelatedPost = ({ record }: { record?: Record }) => (
         </Typography>
     </Link>
 );
-
-const useEditStyles = makeStyles({
-    actions: {
-        float: 'right',
-    },
-    card: {
-        marginTop: '1em',
-        maxWidth: '30em',
-    },
-});
 
 const OptionRenderer = ({ record }: { record?: Record }) => {
     return record.id === '@@ra-create' ? (
@@ -104,7 +111,6 @@ const CreatePost = () => {
 };
 
 const CommentEdit = props => {
-    const classes = useEditStyles();
     const controllerProps = useEditController(props);
     const {
         resource,
@@ -117,7 +123,7 @@ const CommentEdit = props => {
 
     return (
         <EditContextProvider value={controllerProps}>
-            <div className="edit-page">
+            <Root className="edit-page">
                 <Title defaultTitle={`Comment #${record ? record.id : ''}`} />
                 <div className={classes.actions}>
                     <EditActions
@@ -177,7 +183,7 @@ const CommentEdit = props => {
                         </SimpleForm>
                     )}
                 </Card>
-            </div>
+            </Root>
         </EditContextProvider>
     );
 };
