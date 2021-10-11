@@ -51,7 +51,6 @@ export const CLOSED_MENU_WIDTH = 55;
 
 export const Menu = (props: MenuProps) => {
     const {
-        classes: classesOverride,
         className,
         dense,
         hasDashboard,
@@ -116,7 +115,6 @@ export interface MenuProps {
 }
 
 Menu.propTypes = {
-    classes: PropTypes.object,
     className: PropTypes.string,
     dense: PropTypes.bool,
     hasDashboard: PropTypes.bool,
