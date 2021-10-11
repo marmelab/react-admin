@@ -92,7 +92,6 @@ describe('<TranslatableInputs />', () => {
                             key={locale}
                             value={locale}
                             locale={locale}
-                            classes={{ error: 'error' }}
                         />
                     ))}
                 </Tabs>
@@ -143,7 +142,9 @@ describe('<TranslatableInputs />', () => {
         fireEvent.click(getByText('ra.locales.en'));
         const tabs = getAllByRole('tab');
         expect(tabs[1].getAttribute('id')).toEqual('translatable-header-fr');
-        expect(tabs[1].classList.contains('error')).toEqual(true);
+        expect(
+            tabs[1].classList.contains('RaTranslatableInputsTab-error')
+        ).toEqual(true);
     });
 
     it('should allow to update any input for any locale', () => {

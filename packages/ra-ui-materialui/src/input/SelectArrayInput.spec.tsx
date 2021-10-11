@@ -190,7 +190,7 @@ describe('<SelectArrayInput />', () => {
         const select = getByRole('button');
         fireEvent.mouseDown(select);
         const option1 = getByText('Angular');
-        expect(option1.getAttribute('aria-disabled')).toEqual('false');
+        expect(option1.getAttribute('aria-disabled')).toBeNull();
 
         const option2 = getByText('React');
         expect(option2.getAttribute('aria-disabled')).toEqual('true');

@@ -23,7 +23,6 @@ describe('<SelectInput />', () => {
     it('should use the input parameter value as the initial input value', () => {
         const { container } = render(
             <ThemeProvider theme={theme}>
-                <SelectInput {...defaultProps} input={{ value: 'ang' }} />
                 <Form
                     initialValues={{ language: 'ang' }}
                     onSubmit={jest.fn()}
@@ -76,7 +75,7 @@ describe('<SelectInput />', () => {
         const select = getByRole('button');
         fireEvent.mouseDown(select);
         const option1 = getByText('Angular');
-        expect(option1.getAttribute('aria-disabled')).toEqual('false');
+        expect(option1.getAttribute('aria-disabled')).toBeNull();
 
         const option2 = getByText('React');
         expect(option2.getAttribute('aria-disabled')).toEqual('true');

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { useCallback, useRef, useState, useEffect } from 'react';
+import { useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import {
     Select,
@@ -132,14 +132,6 @@ const SelectArrayInput = (props: SelectArrayInputProps) => {
     } = props;
 
     const inputLabel = useRef(null);
-    const [labelWidth, setLabelWidth] = useState(0);
-
-    useEffect(() => {
-        // Will be null while loading and we don't need this fix in that case
-        if (inputLabel.current) {
-            setLabelWidth(inputLabel.current.offsetWidth);
-        }
-    }, []);
 
     const { getChoiceText, getChoiceValue, getDisableValue } = useChoices({
         optionText,
@@ -276,7 +268,6 @@ const SelectArrayInput = (props: SelectArrayInputProps) => {
                     {...input}
                     onChange={handleChangeWithCreateSupport}
                     value={input.value || []}
-                    labelWidth={labelWidth}
                     {...options}
                 >
                     {finalChoices.map(renderMenuItem)}

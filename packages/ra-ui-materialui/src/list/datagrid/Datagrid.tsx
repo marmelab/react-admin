@@ -219,7 +219,7 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                 ref={ref}
                 className={classnames(DatagridClasses.table, className)}
                 size={size}
-                {...sanitizeListRestProps(rest)}
+                {...sanitizeRestProps(rest)}
             >
                 {createOrCloneElement(
                     header,
@@ -334,6 +334,20 @@ export interface DatagridProps<RecordType extends Record = Record>
     selectedIds?: Identifier[];
     total?: number;
 }
+
+export const injectedProps = [
+    'allowEmpty',
+    'isRequired',
+    'setFilter',
+    'setPagination',
+    'limitChoicesToValue',
+    'translateChoice',
+];
+
+const sanitizeRestProps = props =>
+    Object.keys(sanitizeListRestProps(props))
+        .filter(propName => !injectedProps.includes(propName))
+        .reduce((acc, key) => ({ ...acc, [key]: props[key] }), {});
 
 Datagrid.displayName = 'Datagrid';
 
