@@ -1,17 +1,12 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render } from '@testing-library/react';
-import { ThemeProvider, Theme, StyledEngineProvider } from '@mui/styles';
+import { ThemeProvider } from '@mui/styles';
 import { createTheme } from '@mui/material/styles';
 import { ListPaginationContext } from 'ra-core';
 
 import Pagination from './Pagination';
 import DeviceTestWrapper from '../../layout/DeviceTestWrapper';
-
-declare module '@mui/styles/defaultTheme' {
-    // eslint-disable-next-line @typescript-eslint/no-empty-interface
-    interface DefaultTheme extends Theme {}
-}
 
 const theme = createTheme();
 

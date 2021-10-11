@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import { styled, Theme } from '@mui/material/styles';
 import { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
@@ -24,35 +24,39 @@ const classes = {
     undo: `${PREFIX}-undo`,
 };
 
-const StyledButton = styled(Button)(({ theme }) => ({
-    [`& .${classes.success}`]: {
-        backgroundColor: theme.palette.success.main,
-        color: theme.palette.success.contrastText,
-    },
+const StyledButton = styled(Button)(
+    ({ theme, type }: NotificationProps & { theme?: Theme }) => ({
+        [`& .${classes.success}`]: {
+            backgroundColor: theme.palette.success.main,
+            color: theme.palette.success.contrastText,
+        },
 
-    [`& .${classes.error}`]: {
-        backgroundColor: theme.palette.error.dark,
-        color: theme.palette.error.contrastText,
-    },
+        [`& .${classes.error}`]: {
+            backgroundColor: theme.palette.error.dark,
+            color: theme.palette.error.contrastText,
+        },
 
-    [`& .${classes.warning}`]: {
-        backgroundColor: theme.palette.error.light,
-        color: theme.palette.error.contrastText,
-    },
+        [`& .${classes.warning}`]: {
+            backgroundColor: theme.palette.error.light,
+            color: theme.palette.error.contrastText,
+        },
 
-    [`& .${classes.undo}`]: (props: Props & Omit<SnackbarProps, 'open'>) => ({
-        color:
-            props.type === 'success'
-                ? theme.palette.success.contrastText
-                : theme.palette.primary.light,
-    }),
-}));
+        [`& .${classes.undo}`]: {
+            color:
+                type === 'success'
+                    ? theme.palette.success.contrastText
+                    : theme.palette.primary.light,
+        },
+    })
+);
 
-interface Props {
+export interface NotificationProps {
     type?: string;
 }
 
-const Notification = (props: Props & Omit<SnackbarProps, 'open'>) => {
+const Notification = (
+    props: NotificationProps & Omit<SnackbarProps, 'open'>
+) => {
     const {
         classes: classesOverride,
         type,

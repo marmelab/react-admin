@@ -15,7 +15,7 @@ const Root = styled(CardContent)(({ theme }) => ({
     [`&.${classes.root}`]: {
         paddingTop: 0,
         paddingBottom: 0,
-        '&:first-child': {
+        '&:first-of-type': {
             paddingTop: 16,
         },
         '&:last-child': {

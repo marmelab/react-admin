@@ -22,7 +22,7 @@ const classes = {
     inputAdornedEnd: `${PREFIX}-inputAdornedEnd`,
 };
 
-const StyledTextField = styled(MuiTextField)({
+export const ResettableTextFieldStyles = {
     [`& .${classes.clearIcon}`]: {
         height: 16,
         width: 0,
@@ -42,7 +42,9 @@ const StyledTextField = styled(MuiTextField)({
     [`& .${classes.inputAdornedEnd}`]: {
         paddingRight: 0,
     },
-});
+};
+
+const StyledTextField = styled(MuiTextField)(ResettableTextFieldStyles);
 
 /**
  * An override of the default Material-UI TextField which is resettable

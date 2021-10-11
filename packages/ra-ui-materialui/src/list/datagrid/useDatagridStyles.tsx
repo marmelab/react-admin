@@ -32,7 +32,7 @@ export const StyledTable = styled(Table)(({ theme }) => ({
         top: 0,
         zIndex: 2,
         backgroundColor: theme.palette.background.paper,
-        '&:first-child': {
+        '&:first-of-type': {
             borderTopLeftRadius: theme.shape.borderRadius,
         },
         '&:last-child': {

@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import Tab, { TabProps } from '@mui/material/Tab';
 import { useFormGroup, useTranslate } from 'ra-core';
 import { capitalize } from 'inflection';
+import classnames from 'classnames';
 
 const PREFIX = 'RaTranslatableInputsTab';
 
@@ -39,9 +40,9 @@ export const TranslatableInputsTab = (
             label={translate(`ra.locales.${locale}`, {
                 _: capitalize(locale),
             })}
-            className={`${classes.root} ${
-                invalid && touched ? classes.error : ''
-            }`}
+            className={classnames(classes.root, {
+                [classes.error]: invalid && touched,
+            })}
             {...rest}
         />
     );

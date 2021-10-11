@@ -197,7 +197,7 @@ export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props =
                         ...sanitizeFieldRestProps(rest),
                         className,
                         resource,
-                    })}{' '}
+                    })}
                     {pagination &&
                         props.total !== undefined &&
                         cloneElement(pagination, sanitizeFieldRestProps(rest))}

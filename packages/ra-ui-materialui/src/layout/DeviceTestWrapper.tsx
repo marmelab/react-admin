@@ -1,12 +1,6 @@
 import * as React from 'react';
 import mediaQuery from 'css-mediaquery';
-import { ThemeProvider } from '@mui/styles';
-import { createTheme, Theme } from '@mui/material/styles';
-
-declare module '@mui/styles/defaultTheme' {
-    // eslint-disable-next-line @typescript-eslint/no-empty-interface
-    interface DefaultTheme extends Theme {}
-}
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 /**
  * Test utility to simulate a device form factor for server-side mediaQueries
@@ -24,7 +18,6 @@ const DeviceTestWrapper = ({
     children,
 }: DeviceTestWrapperProps): JSX.Element => {
     const theme = createTheme();
-
     // Use https://github.com/ericf/css-mediaquery as polyfill.
     const ssrMatchMedia = query => ({
         matches: mediaQuery.match(query, {
@@ -40,7 +33,14 @@ const DeviceTestWrapper = ({
         <ThemeProvider
             theme={{
                 ...theme,
-                props: { MuiUseMediaQuery: { ssrMatchMedia } },
+                components: {
+                    MuiUseMediaQuery: {
+                        defaultProps: {
+                            ssrMatchMedia,
+                            matchMedia: ssrMatchMedia,
+                        },
+                    },
+                },
             }}
         >
             {children}
