@@ -1,38 +1,46 @@
 import * as React from 'react';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
-import { makeStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemText from '@mui/material/ListItemText';
+import Avatar from '@mui/material/Avatar';
 import { Link } from 'react-router-dom';
 import { useTranslate } from 'react-admin';
 import { Customer, Order } from '../types';
+
+const PREFIX = 'PendingOrders';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    cost: `${PREFIX}-cost`,
+};
+
+const StyledCard = styled(Card)(({ theme }) => ({
+    [`&.${classes.root}`]: {
+        flex: 1,
+    },
+
+    [`& .${classes.cost}`]: {
+        marginRight: '1em',
+        color: theme.palette.text.primary,
+    },
+}));
 
 interface Props {
     orders?: Order[];
     customers?: { [key: string]: Customer };
 }
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        flex: 1,
-    },
-    cost: {
-        marginRight: '1em',
-        color: theme.palette.text.primary,
-    },
-}));
-
 const PendingOrders = (props: Props) => {
     const { orders = [], customers = {} } = props;
-    const classes = useStyles();
+
     const translate = useTranslate();
     return (
-        <Card className={classes.root}>
+        <StyledCard className={classes.root}>
             <CardHeader title={translate('pos.dashboard.pending_orders')} />
             <List dense={true}>
                 {orders.map(record => (
@@ -79,7 +87,7 @@ const PendingOrders = (props: Props) => {
                     </ListItem>
                 ))}
             </List>
-        </Card>
+        </StyledCard>
     );
 };
 

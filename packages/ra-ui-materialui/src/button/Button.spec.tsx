@@ -2,8 +2,8 @@ import { render } from '@testing-library/react';
 import * as React from 'react';
 import expect from 'expect';
 import { TestContext } from 'ra-test';
-import { ThemeProvider } from '@material-ui/core';
-import { createTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
 import Button from './Button';
 
 const theme = createTheme();

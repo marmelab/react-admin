@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     List,
     ListProps,
@@ -9,30 +10,34 @@ import {
     NumberField,
     DateInput,
 } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
 
 import FullNameField from '../visitors/FullNameField';
 import AddressField from '../visitors/AddressField';
 import InvoiceShow from './InvoiceShow';
+
+const PREFIX = 'InvoiceList';
+
+const classes = {
+    hiddenOnSmallScreens: `${PREFIX}-hiddenOnSmallScreens`,
+};
+
+const StyledList = styled(List)(({ theme }) => ({
+    [`& .${classes.hiddenOnSmallScreens}`]: {
+        display: 'table-cell',
+        [theme.breakpoints.down('lg')]: {
+            display: 'none',
+        },
+    },
+}));
 
 const listFilters = [
     <DateInput source="date_gte" alwaysOn />,
     <DateInput source="date_lte" alwaysOn />,
 ];
 
-const useStyles = makeStyles(theme => ({
-    hiddenOnSmallScreens: {
-        display: 'table-cell',
-        [theme.breakpoints.down('md')]: {
-            display: 'none',
-        },
-    },
-}));
-
 const InvoiceList = (props: ListProps) => {
-    const classes = useStyles();
     return (
-        <List
+        <StyledList
             {...props}
             filters={listFilters}
             perPage={25}
@@ -62,7 +67,7 @@ const InvoiceList = (props: ListProps) => {
                 <NumberField source="taxes" />
                 <NumberField source="total" />
             </Datagrid>
-        </List>
+        </StyledList>
     );
 };
 

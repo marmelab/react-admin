@@ -6,6 +6,7 @@ import React, {
     useMemo,
     isValidElement,
 } from 'react';
+import { styled } from '@mui/material/styles';
 import Downshift, { DownshiftProps } from 'downshift';
 import get from 'lodash/get';
 import classNames from 'classnames';
@@ -14,10 +15,9 @@ import {
     InputAdornment,
     IconButton,
     InputProps,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import ClearIcon from '@material-ui/icons/Clear';
-import { TextFieldProps } from '@material-ui/core/TextField';
+} from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
+import { TextFieldProps } from '@mui/material/TextField';
 import {
     useInput,
     FieldTitle,
@@ -37,6 +37,53 @@ import {
     SupportCreateSuggestionOptions,
     useSupportCreateSuggestion,
 } from './useSupportCreateSuggestion';
+
+const PREFIX = 'RaAutocompleteInput';
+
+const classes = {
+    container: `${PREFIX}-container`,
+    clearIcon: `${PREFIX}-clearIcon`,
+    visibleClearIcon: `${PREFIX}-visibleClearIcon`,
+    clearButton: `${PREFIX}-clearButton`,
+    selectAdornment: `${PREFIX}-selectAdornment`,
+    inputAdornedEnd: `${PREFIX}-inputAdornedEnd`,
+    suggestionsContainer: `${PREFIX}-suggestionsContainer`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`&.${classes.container}`]: {
+        flexGrow: 1,
+        position: 'relative',
+    },
+
+    [`& .${classes.clearIcon}`]: {
+        height: 16,
+        width: 0,
+    },
+
+    [`& .${classes.visibleClearIcon}`]: {
+        width: 16,
+    },
+
+    [`& .${classes.clearButton}`]: {
+        height: 24,
+        width: 24,
+        padding: 0,
+    },
+
+    [`& .${classes.selectAdornment}`]: {
+        position: 'absolute',
+        right: 24,
+    },
+
+    [`& .${classes.inputAdornedEnd}`]: {
+        paddingRight: 0,
+    },
+
+    [`& .${classes.suggestionsContainer}`]: {
+        zIndex: theme.zIndex.modal,
+    },
+}));
 
 /**
  * An Input component for an autocomplete field, using an array of objects for the options
@@ -184,7 +231,6 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         `If you're not wrapping the AutocompleteInput inside a ReferenceInput, you must provide the choices prop`
     );
 
-    const classes = useStyles(props);
     let inputEl = useRef<HTMLInputElement>();
     let anchorEl = useRef<any>();
     const translate = useTranslate();
@@ -406,6 +452,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                             title={label}
                             disableRipple
                             disabled={true}
+                            size="large"
                         >
                             <ClearIcon
                                 className={classNames(
@@ -443,6 +490,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                         onClick={handleClickClearButton(openMenu)}
                         onMouseDown={handleMouseDownClearButton}
                         disabled={disabled}
+                        size="large"
                     >
                         <ClearIcon
                             className={classNames(classes.clearIcon, {
@@ -471,6 +519,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                     getItemProps,
                     getLabelProps,
                     getMenuProps,
+                    getRootProps,
                     isOpen,
                     highlightedIndex,
                     openMenu,
@@ -498,7 +547,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                     ];
 
                     return (
-                        <div className={classes.container}>
+                        <Root className={classes.container} {...getRootProps()}>
                             <TextField
                                 id={id}
                                 name={input.name}
@@ -589,7 +638,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                                     />
                                 ))}
                             </AutocompleteSuggestionList>
-                        </div>
+                        </Root>
                     );
                 }}
             </Downshift>
@@ -602,42 +651,11 @@ const handleMouseDownClearButton = event => {
     event.preventDefault();
 };
 
-const useStyles = makeStyles(
-    theme => ({
-        container: {
-            flexGrow: 1,
-            position: 'relative',
-        },
-        clearIcon: {
-            height: 16,
-            width: 0,
-        },
-        visibleClearIcon: {
-            width: 16,
-        },
-        clearButton: {
-            height: 24,
-            width: 24,
-            padding: 0,
-        },
-        selectAdornment: {
-            position: 'absolute',
-            right: 24,
-        },
-        inputAdornedEnd: {
-            paddingRight: 0,
-        },
-        suggestionsContainer: {
-            zIndex: theme.zIndex.modal,
-        },
-    }),
-    { name: 'RaAutocompleteInput' }
-);
-
 interface Options {
     InputProps?: InputProps;
     labelProps?: any;
     suggestionsContainerProps?: any;
+    fullWidth?: boolean;
 }
 
 export interface AutocompleteInputProps

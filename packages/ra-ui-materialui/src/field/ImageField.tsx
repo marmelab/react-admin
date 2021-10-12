@@ -1,27 +1,31 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import classnames from 'classnames';
 import { useRecordContext } from 'ra-core';
 
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
-const useStyles = makeStyles(
-    {
-        list: {
-            display: 'flex',
-            listStyleType: 'none',
-        },
-        image: {
-            margin: '0.5rem',
-            maxHeight: '10rem',
-        },
+const PREFIX = 'RaImageField';
+
+const classes = {
+    list: `${PREFIX}-list`,
+    image: `${PREFIX}-image`,
+};
+
+const List = styled('ul')({
+    [`&.${classes.list}`]: {
+        display: 'flex',
+        listStyleType: 'none',
     },
-    { name: 'RaImageField' }
-);
+    [`& .${classes.image}`]: {
+        margin: '0.5rem',
+        maxHeight: '10rem',
+    },
+});
 
 export interface ImageFieldProps extends PublicFieldProps, InjectedFieldProps {
     src?: string;
@@ -41,7 +45,7 @@ const ImageField = (props: ImageFieldProps) => {
     } = props;
     const record = useRecordContext(props);
     const sourceValue = get(record, source);
-    const classes = useStyles(props);
+
     if (!sourceValue) {
         return emptyText ? (
             <Typography
@@ -59,7 +63,7 @@ const ImageField = (props: ImageFieldProps) => {
 
     if (Array.isArray(sourceValue)) {
         return (
-            <ul
+            <List
                 className={classnames(classes.list, className)}
                 {...sanitizeFieldRestProps(rest)}
             >
@@ -78,7 +82,7 @@ const ImageField = (props: ImageFieldProps) => {
                         </li>
                     );
                 })}
-            </ul>
+            </List>
         );
     }
 

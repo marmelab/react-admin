@@ -8,7 +8,7 @@ import {
     InputProps,
 } from 'ra-core';
 import { useFieldArray } from 'react-final-form-arrays';
-import { InputLabel, FormControl, FormHelperText } from '@material-ui/core';
+import { InputLabel, FormControl, FormHelperText } from '@mui/material';
 
 import { LinearProgress } from '../../layout';
 import InputHelperText from '../InputHelperText';

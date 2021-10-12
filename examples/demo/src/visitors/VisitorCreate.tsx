@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     Create,
     CreateProps,
@@ -11,28 +12,43 @@ import {
     email,
 } from 'react-admin';
 import { AnyObject } from 'react-final-form';
-import { Typography, Box } from '@material-ui/core';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import { Styles } from '@material-ui/styles/withStyles';
+import { Typography, Box } from '@mui/material';
 
-export const styles: Styles<Theme, any> = {
-    first_name: { display: 'inline-block' },
-    last_name: { display: 'inline-block', marginLeft: 32 },
-    email: { width: 544 },
-    address: { maxWidth: 544 },
-    zipcode: { display: 'inline-block' },
-    city: { display: 'inline-block', marginLeft: 32 },
-    comment: {
+const PREFIX = 'VisitorCreate';
+
+const classes = {
+    first_name: `${PREFIX}-first_name`,
+    last_name: `${PREFIX}-last_name`,
+    email: `${PREFIX}-email`,
+    address: `${PREFIX}-address`,
+    zipcode: `${PREFIX}-zipcode`,
+    city: `${PREFIX}-city`,
+    comment: `${PREFIX}-comment`,
+    password: `${PREFIX}-password`,
+    confirm_password: `${PREFIX}-confirm_password`,
+};
+
+const StyledSimpleForm = styled(SimpleForm)({
+    [`& .${classes.first_name}`]: { display: 'inline-block' },
+    [`& .${classes.last_name}`]: { display: 'inline-block', marginLeft: 32 },
+    [`& .${classes.email}`]: { width: 544 },
+    [`& .${classes.address}`]: { maxWidth: 544 },
+    [`& .${classes.zipcode}`]: { display: 'inline-block' },
+    [`& .${classes.city}`]: { display: 'inline-block', marginLeft: 32 },
+    [`& .${classes.comment}`]: {
         maxWidth: '20em',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
     },
-    password: { display: 'inline-block' },
-    confirm_password: { display: 'inline-block', marginLeft: 32 },
-};
+    [`& .${classes.password}`]: { display: 'inline-block' },
+    [`& .${classes.confirm_password}`]: {
+        display: 'inline-block',
+        marginLeft: 32,
+    },
+});
 
-const useStyles = makeStyles(styles);
+export {};
 
 export const validatePasswords = ({
     password,
@@ -49,66 +65,59 @@ export const validatePasswords = ({
     return errors;
 };
 
-const VisitorCreate = (props: CreateProps) => {
-    const classes = useStyles(props);
-
-    return (
-        <Create {...props}>
-            <SimpleForm validate={validatePasswords}>
-                <SectionTitle label="resources.customers.fieldGroups.identity" />
-                <TextInput
-                    autoFocus
-                    source="first_name"
-                    formClassName={classes.first_name}
-                    validate={requiredValidate}
-                />
-                <TextInput
-                    source="last_name"
-                    formClassName={classes.last_name}
-                    validate={requiredValidate}
-                />
-                <TextInput
-                    type="email"
-                    source="email"
-                    validation={{ email: true }}
-                    fullWidth
-                    formClassName={classes.email}
-                    validate={[required(), email()]}
-                />
-                <DateInput source="birthday" />
-                <Separator />
-                <SectionTitle label="resources.customers.fieldGroups.address" />
-                <TextInput
-                    source="address"
-                    formClassName={classes.address}
-                    multiline
-                    fullWidth
-                    helperText={false}
-                />
-                <TextInput
-                    source="zipcode"
-                    formClassName={classes.zipcode}
-                    helperText={false}
-                />
-                <TextInput
-                    source="city"
-                    formClassName={classes.city}
-                    helperText={false}
-                />
-                <Separator />
-                <SectionTitle label="resources.customers.fieldGroups.password" />
-                <PasswordInput
-                    source="password"
-                    formClassName={classes.password}
-                />
-                <PasswordInput
-                    source="confirm_password"
-                    formClassName={classes.confirm_password}
-                />
-            </SimpleForm>
-        </Create>
-    );
-};
+const VisitorCreate = (props: CreateProps) => (
+    <Create {...props}>
+        <StyledSimpleForm validate={validatePasswords}>
+            <SectionTitle label="resources.customers.fieldGroups.identity" />
+            <TextInput
+                autoFocus
+                source="first_name"
+                formClassName={classes.first_name}
+                validate={requiredValidate}
+            />
+            <TextInput
+                source="last_name"
+                formClassName={classes.last_name}
+                validate={requiredValidate}
+            />
+            <TextInput
+                type="email"
+                source="email"
+                validation={{ email: true }}
+                fullWidth
+                formClassName={classes.email}
+                validate={[required(), email()]}
+            />
+            <DateInput source="birthday" />
+            <Separator />
+            <SectionTitle label="resources.customers.fieldGroups.address" />
+            <TextInput
+                source="address"
+                formClassName={classes.address}
+                multiline
+                fullWidth
+                helperText={false}
+            />
+            <TextInput
+                source="zipcode"
+                formClassName={classes.zipcode}
+                helperText={false}
+            />
+            <TextInput
+                source="city"
+                formClassName={classes.city}
+                helperText={false}
+            />
+            <Separator />
+            <SectionTitle label="resources.customers.fieldGroups.password" />
+            <PasswordInput source="password" formClassName={classes.password} />
+            <PasswordInput
+                source="confirm_password"
+                formClassName={classes.confirm_password}
+            />
+        </StyledSimpleForm>
+    </Create>
+);
 
 const requiredValidate = [required()];
 

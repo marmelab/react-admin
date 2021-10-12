@@ -1,29 +1,34 @@
 import * as React from 'react';
+import { styled, Theme } from '@mui/material/styles';
 import { useCallback, FunctionComponent, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { ListItemIcon, MenuItem, useMediaQuery } from '@material-ui/core';
-import { MenuItemProps } from '@material-ui/core/MenuItem';
-import { Theme, makeStyles } from '@material-ui/core/styles';
+import { ListItemIcon, MenuItem, useMediaQuery } from '@mui/material';
+import { MenuItemProps } from '@mui/material/MenuItem';
 
-import ExitIcon from '@material-ui/icons/PowerSettingsNew';
+import ExitIcon from '@mui/icons-material/PowerSettingsNew';
 import classnames from 'classnames';
 import { useTranslate, useLogout } from 'ra-core';
+
+const PREFIX = 'RaLogout';
+
+const classes = {
+    menuItem: `${PREFIX}-menuItem`,
+    icon: `${PREFIX}-icon`,
+};
+
+const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
+    [`&.${classes.menuItem}`]: {
+        color: theme.palette.text.secondary,
+    },
+
+    [`& .${classes.icon}`]: { minWidth: theme.spacing(5) },
+}));
 
 interface Props {
     className?: string;
     redirectTo?: string;
     icon?: ReactElement;
 }
-
-const useStyles = makeStyles(
-    (theme: Theme) => ({
-        menuItem: {
-            color: theme.palette.text.secondary,
-        },
-        icon: { minWidth: theme.spacing(5) },
-    }),
-    { name: 'RaLogout' }
-);
 
 /**
  * Logout button component, to be passed to the Admin component
@@ -40,9 +45,9 @@ const LogoutWithRef: FunctionComponent<
         icon,
         ...rest
     } = props;
-    const classes = useStyles(props);
+
     const isXSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('xs')
+        theme.breakpoints.down('sm')
     );
     const translate = useTranslate();
     const logout = useLogout();
@@ -52,10 +57,11 @@ const LogoutWithRef: FunctionComponent<
         logout,
     ]);
     return (
-        <MenuItem
+        <StyledMenuItem
             className={classnames('logout', classes.menuItem, className)}
             onClick={handleClick}
             ref={ref}
+            // @ts-ignore
             component={isXSmall ? 'span' : 'li'}
             {...rest}
         >
@@ -63,7 +69,7 @@ const LogoutWithRef: FunctionComponent<
                 {icon ? icon : <ExitIcon />}
             </ListItemIcon>
             {translate('ra.auth.logout')}
-        </MenuItem>
+        </StyledMenuItem>
     );
 });
 

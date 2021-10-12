@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { useState, FormEvent, ChangeEvent } from 'react';
 import {
     TextField,
@@ -16,37 +17,55 @@ import {
     IconButton,
     FilledInput,
     Button,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import EditIcon from '@material-ui/icons/Edit';
-import TrashIcon from '@material-ui/icons/Delete';
+} from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import TrashIcon from '@mui/icons-material/Delete';
 
 import { Status } from '../misc/Status';
 
-const useStyles = makeStyles(theme => ({
-    root: {
+const PREFIX = 'Note';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    metadata: `${PREFIX}-metadata`,
+    textarea: `${PREFIX}-textarea`,
+    buttons: `${PREFIX}-buttons`,
+    cancel: `${PREFIX}-cancel`,
+    content: `${PREFIX}-content`,
+    text: `${PREFIX}-text`,
+    paragraph: `${PREFIX}-paragraph`,
+    toolbar: `${PREFIX}-toolbar`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`&.${classes.root}`]: {
         marginBottom: theme.spacing(2),
     },
-    metadata: {
+
+    [`& .${classes.metadata}`]: {
         marginBottom: theme.spacing(1),
         color: theme.palette.text.secondary,
     },
-    textarea: {
+
+    [`& .${classes.textarea}`]: {
         paddingTop: 16,
         paddingLeft: 14,
         paddingRight: 60,
         paddingBottom: 14,
         lineHeight: 1.3,
     },
-    buttons: {
+
+    [`& .${classes.buttons}`]: {
         display: 'flex',
         justifyContent: 'flex-end',
         marginTop: theme.spacing(1),
     },
-    cancel: {
+
+    [`& .${classes.cancel}`]: {
         marginRight: theme.spacing(1),
     },
-    content: {
+
+    [`& .${classes.content}`]: {
         backgroundColor: '#edf3f0',
         padding: '0 1em',
         borderRadius: 10,
@@ -54,16 +73,19 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'stretch',
         marginBottom: theme.spacing(1),
     },
-    text: {
+
+    [`& .${classes.text}`]: {
         flex: 1,
     },
-    paragraph: {
+
+    [`& .${classes.paragraph}`]: {
         fontFamily: theme.typography.fontFamily,
         fontSize: theme.typography.body1.fontSize,
         lineHeight: 1.3,
         marginBottom: theme.spacing(2.4),
     },
-    toolbar: {
+
+    [`& .${classes.toolbar}`]: {
         marginLeft: theme.spacing(2),
         visibility: 'hidden',
         display: 'flex',
@@ -89,7 +111,7 @@ export const Note = ({
     const resource = useResourceContext();
     const record = useRecordContext();
     const notify = useNotify();
-    const classes = useStyles();
+
     const [update, { loading }] = useUpdate();
 
     const [handleDelete] = useDelete(resource, note.id, note, {
@@ -131,7 +153,7 @@ export const Note = ({
     };
 
     return (
-        <div
+        <Root
             className={classes.root}
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
@@ -221,6 +243,6 @@ export const Note = ({
                     </div>
                 </div>
             )}
-        </div>
+        </Root>
     );
 };

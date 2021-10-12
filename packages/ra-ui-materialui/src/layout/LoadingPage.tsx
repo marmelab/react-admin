@@ -1,8 +1,7 @@
 import * as React from 'react';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import { ThemeProvider } from '@material-ui/styles';
 
-import { createMuiTheme } from './createMuiTheme';
 import Loading from './Loading';
 
 const LoadingPage = ({ theme, ...props }) => (
@@ -20,7 +19,7 @@ LoadingPage.propTypes = {
 };
 
 LoadingPage.defaultProps = {
-    theme: createMuiTheme({}),
+    theme: createTheme({}),
     loadingPrimary: 'ra.page.loading',
     loadingSecondary: 'ra.message.loading',
 };

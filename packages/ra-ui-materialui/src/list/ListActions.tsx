@@ -10,7 +10,7 @@ import {
     useResourceContext,
     useResourceDefinition,
 } from 'ra-core';
-import { ToolbarProps } from '@material-ui/core';
+import { ToolbarProps } from '@mui/material';
 
 import TopToolbar from '../layout/TopToolbar';
 import { CreateButton, ExportButton } from '../button';
@@ -26,7 +26,7 @@ import FilterButton from './filter/FilterButton';
  *
  * @example
  *     import { cloneElement } from 'react';
- *     import Button from '@material-ui/core/Button';
+ *     import Button from '@mui/material/Button';
  *     import { TopToolbar, List, CreateButton, ExportButton } from 'react-admin';
  *
  *     const PostListActions = ({ basePath, filters }) => (

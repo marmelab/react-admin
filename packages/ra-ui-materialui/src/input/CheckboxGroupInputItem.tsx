@@ -1,17 +1,20 @@
 import * as React from 'react';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import { makeStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 import { useChoices } from 'ra-core';
 
-const useStyles = makeStyles(
-    {
-        checkbox: {
-            height: 32,
-        },
+const PREFIX = 'RaCheckboxGroupInputItem';
+
+const classes = {
+    checkbox: `${PREFIX}-checkbox`,
+};
+
+const StyledFormControlLabel = styled(FormControlLabel)({
+    [`& .${classes.checkbox}`]: {
+        height: 32,
     },
-    { name: 'RaCheckboxGroupInputItem' }
-);
+});
 
 const CheckboxGroupInputItem = props => {
     const {
@@ -26,7 +29,7 @@ const CheckboxGroupInputItem = props => {
         value,
         ...rest
     } = props;
-    const classes = useStyles(props);
+
     const { getChoiceText, getChoiceValue } = useChoices({
         optionText,
         optionValue,
@@ -36,7 +39,7 @@ const CheckboxGroupInputItem = props => {
     const choiceName = getChoiceText(choice);
 
     return (
-        <FormControlLabel
+        <StyledFormControlLabel
             htmlFor={`${id}_${getChoiceValue(choice)}`}
             key={getChoiceValue(choice)}
             onChange={onChange}

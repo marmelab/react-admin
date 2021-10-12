@@ -34,9 +34,10 @@
         "react-dom": "^16.9.0 || ^17.0.0"
     },
     "dependencies": {
-        "@material-ui/core": "^4.12.1",
-        "@material-ui/icons": "^4.11.2",
-        "@material-ui/styles": "^4.11.2",
+        "@emotion/react": "^11.4.1",
+        "@emotion/styled": "^11.3.0",
+        "@mui/material": "^5.0.2",
+        "@mui/icons-material": "^5.0.1",
         "connected-react-router": "^6.5.2",
         "final-form": "^4.20.2",
         "final-form-arrays": "^3.0.2",

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { EditButton, List, ListProps, useListContext } from 'react-admin';
 import inflection from 'inflection';
 import {
@@ -8,33 +9,40 @@ import {
     CardContent,
     CardActions,
     Typography,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+} from '@mui/material';
 
 import LinkToRelatedProducts from './LinkToRelatedProducts';
 import { Category } from '../types';
 
-const useStyles = makeStyles({
-    root: {
+const PREFIX = 'CategoryList';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    media: `${PREFIX}-media`,
+    title: `${PREFIX}-title`,
+    actionSpacer: `${PREFIX}-actionSpacer`,
+};
+
+const StyledGrid = styled(Grid)({
+    [`&.${classes.root}`]: {
         marginTop: '1em',
     },
-    media: {
+    [`& .${classes.media}`]: {
         height: 140,
     },
-    title: {
+    [`& .${classes.title}`]: {
         paddingBottom: '0.5em',
     },
-    actionSpacer: {
+    [`& .${classes.actionSpacer}`]: {
         display: 'flex',
         justifyContent: 'space-around',
     },
 });
 
 const CategoryGrid = (props: any) => {
-    const classes = useStyles(props);
     const { data, ids } = useListContext<Category>();
     return ids ? (
-        <Grid container spacing={2} className={classes.root}>
+        <StyledGrid container spacing={2} className={classes.root}>
             {ids.map(id => (
                 <Grid key={id} xs={12} sm={6} md={4} lg={3} xl={2} item>
                     <Card>
@@ -63,7 +71,7 @@ const CategoryGrid = (props: any) => {
                     </Card>
                 </Grid>
             ))}
-        </Grid>
+        </StyledGrid>
     ) : null;
 };
 

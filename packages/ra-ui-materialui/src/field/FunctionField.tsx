@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useMemo } from 'react';
 import { Record, useRecordContext } from 'ra-core';
 import PropTypes from 'prop-types';
-import Typography, { TypographyProps } from '@material-ui/core/Typography';
+import Typography, { TypographyProps } from '@mui/material/Typography';
 
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
@@ -52,7 +52,7 @@ FunctionField.propTypes = {
 export interface FunctionFieldProps<RecordType extends Record = Record>
     extends PublicFieldProps,
         InjectedFieldProps<RecordType>,
-        TypographyProps {
+        Omit<TypographyProps, 'textAlign'> {
     render: (record?: RecordType, source?: string) => any;
 }
 

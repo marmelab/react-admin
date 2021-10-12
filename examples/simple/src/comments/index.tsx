@@ -1,4 +1,4 @@
-import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import CommentCreate from './CommentCreate';
 import CommentEdit from './CommentEdit';
 import CommentList from './CommentList';

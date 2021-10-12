@@ -1,20 +1,23 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import TextField, { TextFieldProps } from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
-import { makeStyles } from '@material-ui/core/styles';
+import TextField, { TextFieldProps } from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
 import classnames from 'classnames';
 import { useInput, useTranslate, FieldTitle, InputProps } from 'ra-core';
 
 import sanitizeInputRestProps from './sanitizeInputRestProps';
 import InputHelperText from './InputHelperText';
 
-const useStyles = makeStyles(
-    theme => ({
-        input: { width: theme.spacing(16) },
-    }),
-    { name: 'RaNullableBooleanInput' }
-);
+const PREFIX = 'RaNullableBooleanInput';
+
+const classes = {
+    input: `${PREFIX}-input`,
+};
+
+const StyledTextField = styled(TextField)(({ theme }) => ({
+    [`&.${classes.input}`]: { width: theme.spacing(16) },
+}));
 
 const getBooleanFromString = (value: string): boolean | null => {
     if (value === 'true') return true;
@@ -38,7 +41,6 @@ export type NullableBooleanInputProps = InputProps<TextFieldProps> &
 const NullableBooleanInput = (props: NullableBooleanInputProps) => {
     const {
         className,
-        classes: classesOverride,
         format = getStringFromBoolean,
         helperText,
         label,
@@ -57,7 +59,7 @@ const NullableBooleanInput = (props: NullableBooleanInputProps) => {
         trueLabel = 'ra.boolean.true',
         ...rest
     } = props;
-    const classes = useStyles(props);
+
     const translate = useTranslate();
 
     const {
@@ -78,7 +80,7 @@ const NullableBooleanInput = (props: NullableBooleanInputProps) => {
     });
 
     return (
-        <TextField
+        <StyledTextField
             id={id}
             {...input}
             select
@@ -107,7 +109,7 @@ const NullableBooleanInput = (props: NullableBooleanInputProps) => {
             <MenuItem value="">{translate(nullLabel)}</MenuItem>
             <MenuItem value="false">{translate(falseLabel)}</MenuItem>
             <MenuItem value="true">{translate(trueLabel)}</MenuItem>
-        </TextField>
+        </StyledTextField>
     );
 };
 

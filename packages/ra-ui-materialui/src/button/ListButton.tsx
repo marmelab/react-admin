@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import ActionList from '@material-ui/icons/List';
+import ActionList from '@mui/icons-material/List';
 import { Link } from 'react-router-dom';
 import { useResourceContext } from 'ra-core';
 

@@ -1,8 +1,8 @@
 import * as React from 'react';
 
 import { IconButtonWithTooltip } from '../../button';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useSimpleFormIteratorItem } from './useSimpleFormIteratorItem';
 
 export const ReOrderButtons = ({ className }: { className?: string }) => {

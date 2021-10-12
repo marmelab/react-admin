@@ -7,7 +7,7 @@ import {
     Toolbar,
     useMediaQuery,
     Theme,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
     useTranslate,
     useListPaginationContext,
@@ -32,7 +32,7 @@ const Pagination = (props: PaginationProps) => {
     } = useListPaginationContext(props);
     const translate = useTranslate();
     const isSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('sm')
+        theme.breakpoints.down('md')
     );
 
     const totalPages = useMemo(() => {

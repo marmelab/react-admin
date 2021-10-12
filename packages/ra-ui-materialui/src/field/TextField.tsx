@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { memo, FC, ElementType } from 'react';
 import get from 'lodash/get';
-import Typography, { TypographyProps } from '@material-ui/core/Typography';
+import Typography, { TypographyProps } from '@mui/material/Typography';
 import { useRecordContext } from 'ra-core';
 
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
@@ -42,7 +42,7 @@ TextField.propTypes = {
 export interface TextFieldProps
     extends PublicFieldProps,
         InjectedFieldProps,
-        TypographyProps {
+        Omit<TypographyProps, 'textAlign'> {
     // TypographyProps do not expose the component props, see https://github.com/mui-org/material-ui/issues/19512
     component?: ElementType<any>;
 }

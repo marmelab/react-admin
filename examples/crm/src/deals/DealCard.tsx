@@ -1,27 +1,36 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { ReferenceField, useRedirect } from 'react-admin';
-import { Card, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Card, Typography } from '@mui/material';
 import { Draggable } from 'react-beautiful-dnd';
 
 import { LogoField } from '../companies/LogoField';
 import { Deal } from '../types';
 
-const useStyles = makeStyles(theme => ({
-    root: {
+const PREFIX = 'DealCard';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    cardContent: `${PREFIX}-cardContent`,
+    cardText: `${PREFIX}-cardText`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`&.${classes.root}`]: {
         marginBottom: theme.spacing(1),
     },
-    cardContent: {
+
+    [`& .${classes.cardContent}`]: {
         padding: theme.spacing(1),
         display: 'flex',
     },
-    cardText: {
+
+    [`& .${classes.cardText}`]: {
         marginLeft: theme.spacing(1),
     },
 }));
 
 export const DealCard = ({ deal, index }: { deal: Deal; index: number }) => {
-    const classes = useStyles();
     const redirect = useRedirect();
     if (!deal) return null;
 
@@ -31,7 +40,7 @@ export const DealCard = ({ deal, index }: { deal: Deal; index: number }) => {
     return (
         <Draggable draggableId={String(deal.id)} index={index}>
             {(provided, snapshot) => (
-                <div
+                <Root
                     className={classes.root}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
@@ -77,7 +86,7 @@ export const DealCard = ({ deal, index }: { deal: Deal; index: number }) => {
                             </div>
                         </div>
                     </Card>
-                </div>
+                </Root>
             )}
         </Draggable>
     );

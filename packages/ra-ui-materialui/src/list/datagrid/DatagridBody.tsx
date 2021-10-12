@@ -1,20 +1,19 @@
 import * as React from 'react';
 import { cloneElement, memo, FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { TableBody, TableBodyProps } from '@material-ui/core';
+import { TableBody, TableBodyProps } from '@mui/material';
 import classnames from 'classnames';
 import { shallowEqual } from 'react-redux';
 import { Identifier, Record, RecordMap } from 'ra-core';
 
+import { DatagridClasses } from './useDatagridStyles';
 import DatagridRow, { PureDatagridRow, RowClickFunction } from './DatagridRow';
-import useDatagridStyles from './useDatagridStyles';
 
 const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
     (
         {
             basePath,
             children,
-            classes,
             className,
             data,
             expand,
@@ -34,7 +33,11 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
     ) => (
         <TableBody
             ref={ref}
-            className={classnames('datagrid-body', className)}
+            className={classnames(
+                'datagrid-body',
+                className,
+                DatagridClasses.tbody
+            )}
             {...rest}
         >
             {ids.map((id, rowIndex) =>
@@ -42,11 +45,10 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
                     row,
                     {
                         basePath,
-                        classes,
-                        className: classnames(classes.row, {
-                            [classes.rowEven]: rowIndex % 2 === 0,
-                            [classes.rowOdd]: rowIndex % 2 !== 0,
-                            [classes.clickableRow]: rowClick,
+                        className: classnames(DatagridClasses.row, {
+                            [DatagridClasses.rowEven]: rowIndex % 2 === 0,
+                            [DatagridClasses.rowOdd]: rowIndex % 2 !== 0,
+                            [DatagridClasses.clickableRow]: rowClick,
                         }),
                         expand,
                         hasBulkActions: hasBulkActions && !!selectedIds,
@@ -71,7 +73,6 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
 
 DatagridBody.propTypes = {
     basePath: PropTypes.string,
-    classes: PropTypes.any,
     className: PropTypes.string,
     children: PropTypes.node,
     // @ts-ignore
@@ -100,7 +101,6 @@ DatagridBody.defaultProps = {
 
 export interface DatagridBodyProps extends Omit<TableBodyProps, 'classes'> {
     basePath?: string;
-    classes?: ReturnType<typeof useDatagridStyles>;
     className?: string;
     data?: RecordMap;
     expand?:

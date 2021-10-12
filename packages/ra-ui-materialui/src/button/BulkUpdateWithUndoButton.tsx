@@ -1,9 +1,9 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import ActionUpdate from '@material-ui/icons/Update';
-import { alpha } from '@material-ui/core/styles/colorManipulator';
-import { makeStyles } from '@material-ui/core/styles';
+import ActionUpdate from '@mui/icons-material/Update';
+import { alpha } from '@mui/material/styles';
 import {
     useUpdateMany,
     useRefresh,
@@ -17,25 +17,28 @@ import {
 import Button, { ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
 
-const useStyles = makeStyles(
-    theme => ({
-        updateButton: {
-            color: theme.palette.error.main,
-            '&:hover': {
-                backgroundColor: alpha(theme.palette.error.main, 0.12),
-                // Reset on mouse devices
-                '@media (hover: none)': {
-                    backgroundColor: 'transparent',
-                },
+const PREFIX = 'RaBulkUpdateWithUndoButton';
+
+const classes = {
+    updateButton: `${PREFIX}-updateButton`,
+};
+
+const StyledButton = styled(Button)(({ theme }) => ({
+    [`&.${classes.updateButton}`]: {
+        color: theme.palette.error.main,
+        '&:hover': {
+            backgroundColor: alpha(theme.palette.error.main, 0.12),
+            // Reset on mouse devices
+            '@media (hover: none)': {
+                backgroundColor: 'transparent',
             },
         },
-    }),
-    { name: 'RaBulkUpdateWithUndoButton' }
-);
+    },
+}));
 
 const BulkUpdateWithUndoButton = (props: BulkUpdateWithUndoButtonProps) => {
     const { selectedIds } = useListContext(props);
-    const classes = useStyles(props);
+
     const notify = useNotify();
     const unselectAll = useUnselectAll();
     const refresh = useRefresh();
@@ -45,8 +48,8 @@ const BulkUpdateWithUndoButton = (props: BulkUpdateWithUndoButtonProps) => {
         basePath,
         classes: classesOverride,
         data,
-        icon,
-        label,
+        label = 'ra.action.update',
+        icon = defaultIcon,
         onClick,
         onSuccess = () => {
             notify(
@@ -98,7 +101,7 @@ const BulkUpdateWithUndoButton = (props: BulkUpdateWithUndoButtonProps) => {
     };
 
     return (
-        <Button
+        <StyledButton
             onClick={handleClick}
             label={label}
             className={classes.updateButton}
@@ -106,9 +109,11 @@ const BulkUpdateWithUndoButton = (props: BulkUpdateWithUndoButtonProps) => {
             {...sanitizeRestProps(rest)}
         >
             {icon}
-        </Button>
+        </StyledButton>
     );
 };
+
+const defaultIcon = <ActionUpdate />;
 
 const sanitizeRestProps = ({
     basePath,
@@ -138,11 +143,6 @@ BulkUpdateWithUndoButton.propTypes = {
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     icon: PropTypes.element,
     data: PropTypes.any.isRequired,
-};
-
-BulkUpdateWithUndoButton.defaultProps = {
-    label: 'ra.action.update',
-    icon: <ActionUpdate />,
 };
 
 export default BulkUpdateWithUndoButton;

@@ -1,5 +1,5 @@
 import React from 'react';
-import Tab, { TabProps } from '@material-ui/core/Tab';
+import Tab, { TabProps } from '@mui/material/Tab';
 import { useTranslate } from 'ra-core';
 import { capitalize } from 'inflection';
 

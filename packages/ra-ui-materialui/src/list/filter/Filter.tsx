@@ -1,24 +1,20 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
 import { sanitizeListRestProps, useListContext } from 'ra-core';
 
 import FilterForm from './FilterForm';
 import FilterButton from './FilterButton';
-import { ClassesOverride } from '../../types';
 
-const useStyles = makeStyles(
-    {
-        button: {},
-        form: {},
-    },
-    { name: 'RaFilter' }
-);
+const PREFIX = 'RaFilter';
+
+const classes = {
+    button: `${PREFIX}-button`,
+    form: `${PREFIX}-form`,
+};
 
 export interface FilterProps {
     children: ReactNode;
-    classes?: ClassesOverride<typeof useStyles>;
     context?: 'form' | 'button';
     variant?: string;
 }
@@ -43,7 +39,6 @@ export interface FilterProps {
  *
  */
 const Filter = (props: FilterProps) => {
-    const classes = useStyles(props);
     const {
         resource,
         showFilter,
@@ -53,13 +48,7 @@ const Filter = (props: FilterProps) => {
         filterValues,
     } = useListContext(props);
     const renderButton = () => {
-        const {
-            classes: classesOverride,
-            context,
-            children,
-            variant,
-            ...rest
-        } = props;
+        const { context, children, variant, ...rest } = props;
 
         return (
             <FilterButton
@@ -75,7 +64,7 @@ const Filter = (props: FilterProps) => {
     };
 
     const renderForm = () => {
-        const { classes: classesOverride, context, children, ...rest } = props;
+        const { context, children, ...rest } = props;
 
         return (
             <FilterForm

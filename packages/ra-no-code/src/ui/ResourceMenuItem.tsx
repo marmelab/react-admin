@@ -1,11 +1,33 @@
 import React, { forwardRef } from 'react';
+import { styled } from '@mui/material/styles';
 import { MenuItemLink, MenuItemLinkProps } from 'react-admin';
-import { IconButton } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import SettingsIcon from '@material-ui/icons/Settings';
-import DefaultIcon from '@material-ui/icons/ViewList';
+import { IconButton } from '@mui/material';
+import SettingsIcon from '@mui/icons-material/Settings';
+import DefaultIcon from '@mui/icons-material/ViewList';
 import { NavLink, NavLinkProps } from 'react-router-dom';
 import { ResourceConfiguration } from '../ResourceConfiguration';
+
+const PREFIX = 'ResourceMenuItem';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    resource: `${PREFIX}-resource`,
+    settings: `${PREFIX}-settings`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`&.${classes.root}`]: {
+        display: 'flex',
+    },
+
+    [`& .${classes.resource}`]: {
+        flexGrow: 1,
+    },
+
+    [`& .${classes.settings}`]: {
+        marginLeft: 'auto',
+    },
+}));
 
 export const ResourceMenuItem = (
     props: Omit<MenuItemLinkProps, 'to' | 'resource'> & {
@@ -13,9 +35,9 @@ export const ResourceMenuItem = (
     }
 ) => {
     const { resource, ...rest } = props;
-    const classes = useStyles(props);
+
     return (
-        <div className={classes.root}>
+        <Root className={classes.root}>
             <MenuItemLink
                 key={resource.name}
                 className={classes.resource}
@@ -33,25 +55,14 @@ export const ResourceMenuItem = (
                     pathname: `/configure/${resource.name}`,
                 }}
                 className={classes.settings}
+                size="large"
             >
                 <SettingsIcon />
             </IconButton>
-        </div>
+        </Root>
     );
 };
 
 const NavLinkRef = forwardRef<HTMLAnchorElement, NavLinkProps>((props, ref) => (
     <NavLink innerRef={ref} {...props} />
 ));
-
-const useStyles = makeStyles(theme => ({
-    root: {
-        display: 'flex',
-    },
-    resource: {
-        flexGrow: 1,
-    },
-    settings: {
-        marginLeft: 'auto',
-    },
-}));

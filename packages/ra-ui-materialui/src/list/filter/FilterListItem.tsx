@@ -1,23 +1,32 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { memo, isValidElement, ReactElement } from 'react';
 import {
     IconButton,
     ListItem,
+    ListItemButton,
     ListItemText,
     ListItemSecondaryAction,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import CancelIcon from '@material-ui/icons/CancelOutlined';
+} from '@mui/material';
+import CancelIcon from '@mui/icons-material/CancelOutlined';
 import { useTranslate, useListFilterContext } from 'ra-core';
 import { shallowEqual } from 'react-redux';
 import matches from 'lodash/matches';
 import pickBy from 'lodash/pickBy';
 
-const useStyles = makeStyles(theme => ({
-    listItem: {
+const PREFIX = 'FilterListItem';
+
+const classes = {
+    listItem: `${PREFIX}-listItem`,
+    listItemText: `${PREFIX}-listItemText`,
+};
+
+const StyledListItem = styled(ListItem)(({ theme }) => ({
+    [`&.${classes.listItem}`]: {
         paddingLeft: '2em',
     },
-    listItemText: {
+
+    [`& .${classes.listItemText}`]: {
         margin: 0,
     },
 }));
@@ -35,8 +44,8 @@ const useStyles = makeStyles(theme => ({
  * @example
  *
  * import * as React from 'react';
- * import { Card, CardContent } from '@material-ui/core';
- * import MailIcon from '@material-ui/icons/MailOutline';
+ * import { Card, CardContent } from '@mui/material';
+ * import MailIcon from '@mui/icons-material/MailOutline';
  * import { FilterList, FilterListItem } from 'react-admin';
  *
  * const FilterSidebar = () => (
@@ -69,8 +78,8 @@ const useStyles = makeStyles(theme => ({
  *     startOfMonth,
  *     subMonths,
  * } from 'date-fns';
- * import { Card, CardContent } from '@material-ui/core';
- * import AccessTimeIcon from '@material-ui/icons/AccessTime';
+ * import { Card, CardContent } from '@mui/material';
+ * import AccessTimeIcon from '@mui/icons-material/AccessTime';
  * import { FilterList, FilterListItem } from 'react-admin';
  *
  * const FilterSidebar = () => (
@@ -151,7 +160,6 @@ const FilterListItem = (props: {
     const { label, value } = props;
     const { filterValues, setFilters } = useListFilterContext();
     const translate = useTranslate();
-    const classes = useStyles(props);
 
     const isSelected = matches(
         pickBy(value, val => typeof val !== 'undefined')
@@ -177,29 +185,30 @@ const FilterListItem = (props: {
     const toggleFilter = () => (isSelected ? removeFilter() : addFilter());
 
     return (
-        <ListItem
-            button
+        <StyledListItem
             onClick={toggleFilter}
             selected={isSelected}
             className={classes.listItem}
         >
-            <ListItemText
-                primary={
-                    isValidElement(label)
-                        ? label
-                        : translate(label, { _: label })
-                }
-                className={classes.listItemText}
-                data-selected={isSelected ? 'true' : 'false'}
-            />
-            {isSelected && (
-                <ListItemSecondaryAction>
-                    <IconButton size="small" onClick={toggleFilter}>
-                        <CancelIcon />
-                    </IconButton>
-                </ListItemSecondaryAction>
-            )}
-        </ListItem>
+            <ListItemButton>
+                <ListItemText
+                    primary={
+                        isValidElement(label)
+                            ? label
+                            : translate(label, { _: label })
+                    }
+                    className={classes.listItemText}
+                    data-selected={isSelected ? 'true' : 'false'}
+                />
+                {isSelected && (
+                    <ListItemSecondaryAction>
+                        <IconButton size="small" onClick={toggleFilter}>
+                            <CancelIcon />
+                        </IconButton>
+                    </ListItemSecondaryAction>
+                )}
+            </ListItemButton>
+        </StyledListItem>
     );
 };
 

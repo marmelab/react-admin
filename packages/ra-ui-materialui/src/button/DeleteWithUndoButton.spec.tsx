@@ -1,9 +1,9 @@
-import { render, waitFor, fireEvent } from '@testing-library/react';
 import * as React from 'react';
+import { render, waitFor, fireEvent } from '@testing-library/react';
 import expect from 'expect';
 import { DataProvider, DataProviderContext } from 'ra-core';
 import { renderWithRedux, TestContext } from 'ra-test';
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Toolbar, SimpleForm } from '../form';
 import { Edit } from '../detail';
 import { TextInput } from '../input';

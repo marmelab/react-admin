@@ -26,9 +26,8 @@
         "watch": "tsc --outDir esm --module es2015 --watch"
     },
     "devDependencies": {
-        "@material-ui/core": "^4.12.1",
-        "@material-ui/icons": "^4.11.2",
-        "@material-ui/styles": "^4.11.4",
+        "@mui/material": "^5.0.2",
+        "@mui/icons-material": "^5.0.1",
         "@testing-library/react": "^11.2.3",
         "@types/query-string": "5.1.0",
         "cross-env": "^5.2.0",
@@ -50,9 +49,8 @@
         "rimraf": "^2.6.3"
     },
     "peerDependencies": {
-        "@material-ui/core": "^4.12.1",
-        "@material-ui/icons": "^4.11.2",
-        "@material-ui/styles": "^4.11.4",
+        "@mui/material": "^5.0.2",
+        "@mui/icons-material": "^5.0.1",
         "final-form": "^4.20.2",
         "final-form-arrays": "^3.0.2",
         "ra-core": "^3.14.0",

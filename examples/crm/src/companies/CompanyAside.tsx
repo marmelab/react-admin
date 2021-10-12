@@ -7,7 +7,7 @@ import {
     EditButton,
     ShowButton,
 } from 'react-admin';
-import { Box, Typography, Divider, Link } from '@material-ui/core';
+import { Box, Typography, Divider, Link } from '@mui/material';
 
 import { Company, Sale } from '../types';
 

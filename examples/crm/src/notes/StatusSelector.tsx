@@ -1,20 +1,25 @@
 import * as React from 'react';
-import { TextField, MenuItem } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
+import { TextField, MenuItem } from '@mui/material';
 import clsx from 'clsx';
 
 import { Status } from '../misc/Status';
 
-const useStyles = makeStyles({
-    root: {
+const PREFIX = 'StatusSelector';
+
+const classes = {
+    root: `${PREFIX}-root`,
+};
+
+const StyledTextField = styled(TextField)({
+    [`&.${classes.root}`]: {
         width: 150,
     },
 });
 
 export const StatusSelector = ({ status, setStatus, className = '' }: any) => {
-    const classes = useStyles();
     return (
-        <TextField
+        <StyledTextField
             select
             value={status}
             onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
@@ -38,6 +43,6 @@ export const StatusSelector = ({ status, setStatus, className = '' }: any) => {
             <MenuItem value="in-contract">
                 In Contract <Status status="in-contract" />
             </MenuItem>
-        </TextField>
+        </StyledTextField>
     );
 };

@@ -4,10 +4,10 @@ import React, {
     ReactElement,
     SyntheticEvent,
 } from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import { alpha } from '@material-ui/core/styles/colorManipulator';
-import ActionDelete from '@material-ui/icons/Delete';
+import { alpha } from '@mui/material/styles';
+import ActionDelete from '@mui/icons-material/Delete';
 import classnames from 'classnames';
 import inflection from 'inflection';
 import {
@@ -24,6 +24,25 @@ import {
 
 import Confirm from '../layout/Confirm';
 import Button, { ButtonProps } from './Button';
+
+const PREFIX = 'RaDeleteWithConfirmButton';
+
+const classes = {
+    deleteButton: `${PREFIX}-deleteButton`,
+};
+
+const StyledButton = styled(Button)(({ theme }) => ({
+    [`&.${classes.deleteButton}`]: {
+        color: theme.palette.error.main,
+        '&:hover': {
+            backgroundColor: alpha(theme.palette.error.main, 0.12),
+            // Reset on mouse devices
+            '@media (hover: none)': {
+                backgroundColor: 'transparent',
+            },
+        },
+    },
+}));
 
 export const DeleteWithConfirmButton = (
     props: DeleteWithConfirmButtonProps
@@ -46,7 +65,7 @@ export const DeleteWithConfirmButton = (
         ...rest
     } = props;
     const translate = useTranslate();
-    const classes = useStyles(props);
+
     const resource = useResourceContext(props);
     const mode = getMutationMode(mutationMode, undoable);
 
@@ -69,7 +88,7 @@ export const DeleteWithConfirmButton = (
 
     return (
         <Fragment>
-            <Button
+            <StyledButton
                 onClick={handleDialogOpen}
                 label={label}
                 className={classnames(
@@ -81,7 +100,7 @@ export const DeleteWithConfirmButton = (
                 {...rest}
             >
                 {icon}
-            </Button>
+            </StyledButton>
             <Confirm
                 isOpen={open}
                 loading={loading}
@@ -108,22 +127,6 @@ export const DeleteWithConfirmButton = (
 };
 
 const defaultIcon = <ActionDelete />;
-
-const useStyles = makeStyles(
-    theme => ({
-        deleteButton: {
-            color: theme.palette.error.main,
-            '&:hover': {
-                backgroundColor: alpha(theme.palette.error.main, 0.12),
-                // Reset on mouse devices
-                '@media (hover: none)': {
-                    backgroundColor: 'transparent',
-                },
-            },
-        },
-    }),
-    { name: 'RaDeleteWithConfirmButton' }
-);
 
 interface Props {
     basePath?: string;

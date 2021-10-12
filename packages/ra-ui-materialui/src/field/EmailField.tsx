@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { AnchorHTMLAttributes, memo, FC } from 'react';
 import get from 'lodash/get';
-import Typography from '@material-ui/core/Typography';
-import { Link } from '@material-ui/core';
+import Typography from '@mui/material/Typography';
+import { Link } from '@mui/material';
 import { useRecordContext } from 'ra-core';
 
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';

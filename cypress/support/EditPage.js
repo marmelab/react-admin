@@ -11,7 +11,7 @@ export default url => ({
                 return `.ra-input-${name} label`;
             }
             if (type === 'reference-array-input') {
-                return `.ra-input div[role=combobox]`;
+                return `.ra-input div[role=combobox] input`;
             }
             return `.edit-page [name='${name}']`;
         },
@@ -22,7 +22,7 @@ export default url => ({
         cloneButton: '.button-clone',
         tab: index => `.form-tab:nth-of-type(${index})`,
         title: '#react-admin-title',
-        userMenu: 'button[title="Profile"]',
+        userMenu: 'button[aria-label="Profile"]',
         logout: '.logout',
     },
 

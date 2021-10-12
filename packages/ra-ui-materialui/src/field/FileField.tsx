@@ -1,13 +1,27 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import classnames from 'classnames';
 import { useRecordContext } from 'ra-core';
 
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+
+const PREFIX = 'RaFileField';
+
+const classes = {
+    root: `${PREFIX}-root`,
+};
+
+const Root = styled('div')({
+    [`&.${classes.root}`]: { display: 'inline-block' },
+});
+
+const StyledList = styled('ul')({
+    [`&.${classes.root}`]: { display: 'inline-block' },
+});
 
 /**
  * Render a link to a file based on a path contained in a record field
@@ -38,7 +52,6 @@ const FileField = (props: FileFieldProps) => {
     } = props;
     const record = useRecordContext(props);
     const sourceValue = get(record, source);
-    const classes = useStyles(props);
 
     if (!sourceValue) {
         return emptyText ? (
@@ -51,7 +64,7 @@ const FileField = (props: FileFieldProps) => {
                 {emptyText}
             </Typography>
         ) : (
-            <div
+            <Root
                 className={classnames(classes.root, className)}
                 {...sanitizeFieldRestProps(rest)}
             />
@@ -60,7 +73,7 @@ const FileField = (props: FileFieldProps) => {
 
     if (Array.isArray(sourceValue)) {
         return (
-            <ul
+            <StyledList
                 className={classnames(classes.root, className)}
                 {...sanitizeFieldRestProps(rest)}
             >
@@ -83,14 +96,14 @@ const FileField = (props: FileFieldProps) => {
                         </li>
                     );
                 })}
-            </ul>
+            </StyledList>
         );
     }
 
     const titleValue = get(record, title) || title;
 
     return (
-        <div
+        <Root
             className={classnames(classes.root, className)}
             {...sanitizeFieldRestProps(rest)}
         >
@@ -104,20 +117,13 @@ const FileField = (props: FileFieldProps) => {
             >
                 {titleValue}
             </a>
-        </div>
+        </Root>
     );
 };
 
 FileField.defaultProps = {
     addLabel: true,
 };
-
-const useStyles = makeStyles(
-    {
-        root: { display: 'inline-block' },
-    },
-    { name: 'RaFileField' }
-);
 
 export interface FileFieldProps extends PublicFieldProps, InjectedFieldProps {
     src?: string;

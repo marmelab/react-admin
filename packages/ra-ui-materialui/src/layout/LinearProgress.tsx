@@ -1,21 +1,24 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import Progress, {
     LinearProgressProps as ProgressProps,
-} from '@material-ui/core/LinearProgress';
+} from '@mui/material/LinearProgress';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import { useTimeout } from 'ra-core';
 
-const useStyles = makeStyles(
-    theme => ({
-        root: {
-            margin: `${theme.spacing(1)}px 0`,
-            width: `${theme.spacing(20)}px`,
-        },
-    }),
-    { name: 'RaLinearProgress' }
-);
+const PREFIX = 'RaLinearProgress';
+
+const classes = {
+    root: `${PREFIX}-root`,
+};
+
+const StyledProgress = styled(Progress)(({ theme }) => ({
+    [`&.${classes.root}`]: {
+        margin: `${theme.spacing(1)} 0`,
+        width: theme.spacing(20),
+    },
+}));
 
 /**
  * Progress bar formatted to replace an input or a field in a form layout
@@ -33,17 +36,19 @@ const useStyles = makeStyles(
  * @param {Props} props
  */
 const LinearProgress = ({ timeout = 1000, ...props }: LinearProgressProps) => {
-    const { classes: classesOverride, className, ...rest } = props;
-    const classes = useStyles(props);
+    const { className, ...rest } = props;
+
     const oneSecondHasPassed = useTimeout(timeout);
 
     return oneSecondHasPassed ? (
-        <Progress className={classnames(classes.root, className)} {...rest} />
+        <StyledProgress
+            className={classnames(classes.root, className)}
+            {...rest}
+        />
     ) : null;
 };
 
 LinearProgress.propTypes = {
-    classes: PropTypes.object,
     className: PropTypes.string,
     timeout: PropTypes.number,
 };

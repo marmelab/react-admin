@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { useCallback, useRef, useState, useEffect } from 'react';
+import { styled } from '@mui/material/styles';
+import { useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import {
     Select,
@@ -8,8 +9,7 @@ import {
     FormHelperText,
     FormControl,
     Chip,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+} from '@mui/material';
 import classnames from 'classnames';
 import {
     FieldTitle,
@@ -19,14 +19,35 @@ import {
     useChoices,
 } from 'ra-core';
 import InputHelperText from './InputHelperText';
-import { SelectProps } from '@material-ui/core/Select';
-import { FormControlProps } from '@material-ui/core/FormControl';
+import { SelectProps } from '@mui/material/Select';
+import { FormControlProps } from '@mui/material/FormControl';
 import Labeled from './Labeled';
 import { LinearProgress } from '../layout';
 import {
     SupportCreateSuggestionOptions,
     useSupportCreateSuggestion,
 } from './useSupportCreateSuggestion';
+
+const PREFIX = 'RaSelectArrayInput';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    chips: `${PREFIX}-chips`,
+    chip: `${PREFIX}-chip`,
+};
+
+const StyledFormControl = styled(FormControl)(({ theme }) => ({
+    [`&.${classes.root}`]: {},
+
+    [`& .${classes.chips}`]: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+
+    [`& .${classes.chip}`]: {
+        margin: theme.spacing(1 / 4),
+    },
+}));
 
 /**
  * An Input component for a select box allowing multiple selections, using an array of objects for the options
@@ -83,7 +104,6 @@ import {
 const SelectArrayInput = (props: SelectArrayInputProps) => {
     const {
         choices = [],
-        classes: classesOverride,
         className,
         create,
         createLabel,
@@ -111,16 +131,7 @@ const SelectArrayInput = (props: SelectArrayInputProps) => {
         ...rest
     } = props;
 
-    const classes = useStyles(props);
     const inputLabel = useRef(null);
-    const [labelWidth, setLabelWidth] = useState(0);
-
-    useEffect(() => {
-        // Will be null while loading and we don't need this fix in that case
-        if (inputLabel.current) {
-            setLabelWidth(inputLabel.current.offsetWidth);
-        }
-    }, []);
 
     const { getChoiceText, getChoiceValue, getDisableValue } = useChoices({
         optionText,
@@ -210,7 +221,7 @@ const SelectArrayInput = (props: SelectArrayInputProps) => {
 
     return (
         <>
-            <FormControl
+            <StyledFormControl
                 margin={margin}
                 className={classnames(classes.root, className)}
                 error={touched && !!(error || submitError)}
@@ -257,7 +268,6 @@ const SelectArrayInput = (props: SelectArrayInputProps) => {
                     {...input}
                     onChange={handleChangeWithCreateSupport}
                     value={input.value || []}
-                    labelWidth={labelWidth}
                     {...options}
                 >
                     {finalChoices.map(renderMenuItem)}
@@ -269,7 +279,7 @@ const SelectArrayInput = (props: SelectArrayInputProps) => {
                         helperText={helperText}
                     />
                 </FormHelperText>
-            </FormControl>
+            </StyledFormControl>
             {createElement}
         </>
     );
@@ -289,7 +299,6 @@ export interface SelectArrayInputProps
 
 SelectArrayInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
-    classes: PropTypes.object,
     className: PropTypes.string,
     children: PropTypes.node,
     label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
@@ -356,19 +365,5 @@ const sanitizeRestProps = ({
     validation,
     ...rest
 }: any) => rest;
-
-const useStyles = makeStyles(
-    theme => ({
-        root: {},
-        chips: {
-            display: 'flex',
-            flexWrap: 'wrap',
-        },
-        chip: {
-            margin: theme.spacing(1 / 4),
-        },
-    }),
-    { name: 'RaSelectArrayInput' }
-);
 
 export default SelectArrayInput;

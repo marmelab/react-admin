@@ -1,7 +1,8 @@
 import * as React from 'react';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
-import PersonIcon from '@material-ui/icons/Person';
+import { styled } from '@mui/material/styles';
+import ChevronLeft from '@mui/icons-material/ChevronLeft';
+import ChevronRight from '@mui/icons-material/ChevronRight';
+import PersonIcon from '@mui/icons-material/Person';
 import {
     Avatar,
     Button,
@@ -13,8 +14,8 @@ import {
     Toolbar,
     Typography,
     useMediaQuery,
-} from '@material-ui/core';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+    Theme,
+} from '@mui/material';
 import jsonExport from 'jsonexport/dist';
 import {
     ListBase,
@@ -35,6 +36,40 @@ import {
     useListContext,
     useTranslate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
+
+const PREFIX = 'CommentList';
+
+const classes = {
+    card: `${PREFIX}-card`,
+    cardContent: `${PREFIX}-cardContent`,
+    cardLink: `${PREFIX}-cardLink`,
+    cardLinkLink: `${PREFIX}-cardLinkLink`,
+    cardActions: `${PREFIX}-cardActions`,
+};
+
+// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
+const Root = styled(Grid)(({ theme }) => ({
+    [`& .${classes.card}`]: {
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+    },
+
+    [`& .${classes.cardContent}`]: theme.typography.body1,
+
+    [`& .${classes.cardLink}`]: {
+        ...theme.typography.body1,
+        flexGrow: 1,
+    },
+
+    [`& .${classes.cardLinkLink}`]: {
+        display: 'inline',
+    },
+
+    [`& .${classes.cardActions}`]: {
+        justifyContent: 'flex-end',
+    },
+}));
 
 const commentFilters = [
     <SearchInput source="q" alwaysOn />,
@@ -105,32 +140,12 @@ const CommentPagination = () => {
     );
 };
 
-const useListStyles = makeStyles(theme => ({
-    card: {
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-    },
-    cardContent: theme.typography.body1,
-    cardLink: {
-        ...theme.typography.body1,
-        flexGrow: 1,
-    },
-    cardLinkLink: {
-        display: 'inline',
-    },
-    cardActions: {
-        justifyContent: 'flex-end',
-    },
-}));
-
 const CommentGrid = () => {
     const { ids, data } = useListContext();
     const translate = useTranslate();
-    const classes = useListStyles();
 
     return (
-        <Grid spacing={2} container>
+        <Root spacing={2} container>
             {ids.map(id => (
                 <Grid item key={id} sm={12} md={6} lg={4}>
                     <Card className={classes.card}>
@@ -179,7 +194,7 @@ const CommentGrid = () => {
                     </Card>
                 </Grid>
             ))}
-        </Grid>
+        </Root>
     );
 };
 
@@ -206,15 +221,15 @@ const CommentList = props => (
 );
 
 const ListView = () => {
-    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
+    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     const { defaultTitle } = useListContext();
     return (
-        <>
+        <Root>
             <Title defaultTitle={defaultTitle} />
             <ListToolbar filters={commentFilters} actions={<ListActions />} />
             {isSmall ? <CommentMobileList /> : <CommentGrid />}
             <CommentPagination />
-        </>
+        </Root>
     );
 };
 

@@ -9,16 +9,14 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Card, Avatar, Theme } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
-import LockIcon from '@material-ui/icons/Lock';
+import { Card, Avatar } from '@mui/material';
+import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
+import LockIcon from '@mui/icons-material/Lock';
 import { StaticContext } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import { useCheckAuth, TitleComponent } from 'ra-core';
 
 import defaultTheme from '../defaultTheme';
-import { createMuiTheme } from '../layout';
 import DefaultNotification from '../layout/Notification';
 import DefaultLoginForm from './LoginForm';
 
@@ -34,35 +32,40 @@ export interface LoginProps
     title?: TitleComponent;
 }
 
-const useStyles = makeStyles(
-    (theme: Theme) => ({
-        main: {
-            display: 'flex',
-            flexDirection: 'column',
-            minHeight: '100vh',
-            height: '1px',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-            backgroundImage:
-                'radial-gradient(circle at 50% 14em, #313264 0%, #00023b 60%, #00023b 100%)',
-        },
-        card: {
-            minWidth: 300,
-            marginTop: '6em',
-        },
-        avatar: {
-            margin: '1em',
-            display: 'flex',
-            justifyContent: 'center',
-        },
-        icon: {
-            backgroundColor: theme.palette.secondary[500],
-        },
-    }),
-    { name: 'RaLogin' }
-);
+const PREFIX = 'RaLogin';
+const classes = {
+    main: `${PREFIX}-main`,
+    card: `${PREFIX}-card`,
+    avatar: `${PREFIX}-avatar`,
+    icon: `${PREFIX}-icon`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`&.${classes.main}`]: {
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+        height: '1px',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        backgroundImage:
+            'radial-gradient(circle at 50% 14em, #313264 0%, #00023b 60%, #00023b 100%)',
+    },
+    [`& .${classes.card}`]: {
+        minWidth: 300,
+        marginTop: '6em',
+    },
+    [`& .${classes.avatar}`]: {
+        margin: '1em',
+        display: 'flex',
+        justifyContent: 'center',
+    },
+    [`& .${classes.icon}`]: {
+        backgroundColor: theme.palette.secondary[500],
+    },
+}));
 
 /**
  * A standalone login page, to serve as authentication gate to the admin
@@ -83,8 +86,17 @@ const useStyles = makeStyles(
  *     );
  */
 const Login: React.FunctionComponent<LoginProps> = props => {
+    const { theme, ...rest } = props;
+    const muiTheme = useMemo(() => createTheme(theme), [theme]);
+    return (
+        <ThemeProvider theme={muiTheme}>
+            <LoginContainer {...rest} />
+        </ThemeProvider>
+    );
+};
+
+const LoginContainer = props => {
     const {
-        theme,
         title,
         classes: classesOverride,
         className,
@@ -95,8 +107,6 @@ const Login: React.FunctionComponent<LoginProps> = props => {
         ...rest
     } = props;
     const containerRef = useRef<HTMLDivElement>();
-    const classes = useStyles(props);
-    const muiTheme = useMemo(() => createMuiTheme(theme), [theme]);
     let backgroundImageLoaded = false;
     const checkAuth = useCheckAuth();
     const history = useHistory();
@@ -132,25 +142,22 @@ const Login: React.FunctionComponent<LoginProps> = props => {
             lazyLoadBackgroundImage();
         }
     });
-
     return (
-        <ThemeProvider theme={muiTheme}>
-            <div
-                className={classnames(classes.main, className)}
-                {...rest}
-                ref={containerRef}
-            >
-                <Card className={classes.card}>
-                    <div className={classes.avatar}>
-                        <Avatar className={classes.icon}>
-                            <LockIcon />
-                        </Avatar>
-                    </div>
-                    {children}
-                </Card>
-                {notification ? createElement(notification) : null}
-            </div>
-        </ThemeProvider>
+        <Root
+            className={classnames(classes.main, className)}
+            {...rest}
+            ref={containerRef}
+        >
+            <Card className={classes.card}>
+                <div className={classes.avatar}>
+                    <Avatar className={classes.icon}>
+                        <LockIcon />
+                    </Avatar>
+                </div>
+                {children}
+            </Card>
+            {notification ? createElement(notification) : null}
+        </Root>
     );
 };
 

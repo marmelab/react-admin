@@ -1,11 +1,11 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { Children, cloneElement, FC, memo, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import get from 'lodash/get';
-import { makeStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
-import ErrorIcon from '@material-ui/icons/Error';
+import { Typography } from '@mui/material';
+import ErrorIcon from '@mui/icons-material/Error';
 import { useSelector } from 'react-redux';
 import {
     useReference,
@@ -23,7 +23,18 @@ import LinearProgress from '../layout/LinearProgress';
 import Link from '../Link';
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
-import { ClassesOverride } from '../types';
+
+const PREFIX = 'RaReferenceField';
+
+const classes = {
+    link: `${PREFIX}-link`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`& .${classes.link}`]: {
+        color: theme.palette.primary.main,
+    },
+}));
 
 /**
  * Fetch reference record, and delegate rendering to child component.
@@ -97,7 +108,6 @@ ReferenceField.propTypes = {
     addLabel: PropTypes.bool,
     basePath: PropTypes.string,
     children: PropTypes.element.isRequired,
-    classes: PropTypes.any,
     className: PropTypes.string,
     cellClassName: PropTypes.string,
     headerClassName: PropTypes.string,
@@ -123,7 +133,6 @@ ReferenceField.propTypes = {
 
 ReferenceField.defaultProps = {
     addLabel: true,
-    classes: {},
     link: 'edit',
 };
 
@@ -131,7 +140,6 @@ export interface ReferenceFieldProps<RecordType extends Record = Record>
     extends PublicFieldProps,
         InjectedFieldProps<RecordType> {
     children: ReactElement;
-    classes?: ClassesOverride<typeof useStyles>;
     reference: string;
     resource?: string;
     source: string;
@@ -176,15 +184,6 @@ export const NonEmptyReferenceField: FC<Omit<
     );
 };
 
-const useStyles = makeStyles(
-    theme => ({
-        link: {
-            color: theme.palette.primary.main,
-        },
-    }),
-    { name: 'RaReferenceField' }
-);
-
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
 
@@ -193,7 +192,6 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
         basePath,
         children,
         className,
-        classes: classesOverride,
         error,
         loaded,
         loading,
@@ -207,7 +205,6 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
         translateChoice = false,
         ...rest
     } = props;
-    const classes = useStyles(props);
 
     if (error) {
         return (
@@ -230,26 +227,28 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
 
     if (resourceLinkPath) {
         return (
-            <RecordContextProvider value={referenceRecord}>
-                <Link
-                    to={resourceLinkPath as string}
-                    className={className}
-                    onClick={stopPropagation}
-                >
-                    {cloneElement(Children.only(children), {
-                        className: classnames(
-                            children.props.className,
-                            classes.link // force color override for Typography components
-                        ),
-                        record: referenceRecord,
-                        refetch,
-                        resource: reference,
-                        basePath,
-                        translateChoice,
-                        ...sanitizeFieldRestProps(rest),
-                    })}
-                </Link>
-            </RecordContextProvider>
+            <Root>
+                <RecordContextProvider value={referenceRecord}>
+                    <Link
+                        to={resourceLinkPath as string}
+                        className={className}
+                        onClick={stopPropagation}
+                    >
+                        {cloneElement(Children.only(children), {
+                            className: classnames(
+                                children.props.className,
+                                classes.link // force color override for Typography components
+                            ),
+                            record: referenceRecord,
+                            refetch,
+                            resource: reference,
+                            basePath,
+                            translateChoice,
+                            ...sanitizeFieldRestProps(rest),
+                        })}
+                    </Link>
+                </RecordContextProvider>
+            </Root>
         );
     }
 
@@ -270,7 +269,6 @@ ReferenceFieldView.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.element,
     className: PropTypes.string,
-    classes: PropTypes.any,
     loading: PropTypes.bool,
     record: PropTypes.any,
     reference: PropTypes.string,
@@ -288,7 +286,6 @@ export interface ReferenceFieldViewProps
     extends PublicFieldProps,
         InjectedFieldProps,
         UseReferenceProps {
-    classes?: ClassesOverride<typeof useStyles>;
     reference: string;
     resource?: string;
     translateChoice?: Function | boolean;

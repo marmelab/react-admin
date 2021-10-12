@@ -1,21 +1,25 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { ReactNode } from 'react';
 import classnames from 'classnames';
-import { Paper, Popper } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Paper, Popper } from '@mui/material';
 
-const useStyles = makeStyles(
-    {
-        suggestionsContainer: {
-            zIndex: 2,
-        },
-        suggestionsPaper: {
-            maxHeight: '50vh',
-            overflowY: 'auto',
-        },
+const PREFIX = 'RaAutocompleteSuggestionList';
+
+const classes = {
+    suggestionsContainer: `${PREFIX}-suggestionsContainer`,
+    suggestionsPaper: `${PREFIX}-suggestionsPaper`,
+};
+
+const StyledPopper = styled(Popper)({
+    [`&.${classes.suggestionsContainer}`]: {
+        zIndex: 2,
     },
-    { name: 'RaAutocompleteSuggestionList' }
-);
+    [`& .${classes.suggestionsPaper}`]: {
+        maxHeight: '50vh',
+        overflowY: 'auto',
+    },
+});
 
 interface Props {
     children: ReactNode;
@@ -27,6 +31,7 @@ interface Props {
     suggestionsContainerProps?: any;
 }
 
+const PopperModifiers = [];
 const AutocompleteSuggestionList = (props: Props) => {
     const {
         children,
@@ -36,14 +41,13 @@ const AutocompleteSuggestionList = (props: Props) => {
         inputEl,
         suggestionsContainerProps,
     } = props;
-    const classes = useStyles(props);
 
     return (
-        <Popper
+        <StyledPopper
             open={isOpen}
             anchorEl={inputEl}
             className={classnames(classes.suggestionsContainer, className)}
-            modifiers={{}}
+            modifiers={PopperModifiers}
             {...suggestionsContainerProps}
         >
             <div {...(isOpen ? menuProps : {})}>
@@ -58,7 +62,7 @@ const AutocompleteSuggestionList = (props: Props) => {
                     {children}
                 </Paper>
             </div>
-        </Popper>
+        </StyledPopper>
     );
 };
 

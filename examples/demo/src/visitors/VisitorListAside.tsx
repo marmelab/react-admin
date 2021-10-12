@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { Card as MuiCard, CardContent } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import MonetizationOnIcon from '@material-ui/icons/MonetizationOnOutlined';
-import MailIcon from '@material-ui/icons/MailOutline';
-import LocalOfferIcon from '@material-ui/icons/LocalOfferOutlined';
+import { styled } from '@mui/material/styles';
+import { Card, CardContent } from '@mui/material';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOnOutlined';
+import MailIcon from '@mui/icons-material/MailOutline';
+import LocalOfferIcon from '@mui/icons-material/LocalOfferOutlined';
 import { FilterList, FilterListItem, FilterLiveSearch } from 'react-admin';
 import {
     endOfYesterday,
@@ -16,21 +16,27 @@ import {
 
 import segments from '../segments/data';
 
-const Card = withStyles(theme => ({
-    root: {
+const PREFIX = 'Aside';
+
+const classes = {
+    root: `${PREFIX}-root`,
+};
+
+const StyledCard = styled(Card)(({ theme }) => ({
+    [`& .${classes.root}`]: {
         [theme.breakpoints.up('sm')]: {
             order: -1,
             width: '15em',
             marginRight: '1em',
         },
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down('md')]: {
             display: 'none',
         },
     },
-}))(MuiCard);
+}));
 
 const Aside = () => (
-    <Card>
+    <StyledCard>
         <CardContent>
             <FilterLiveSearch />
 
@@ -138,7 +144,7 @@ const Aside = () => (
                 ))}
             </FilterList>
         </CardContent>
-    </Card>
+    </StyledCard>
 );
 
 export default Aside;

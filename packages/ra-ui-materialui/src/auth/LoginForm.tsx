@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import { Field, Form } from 'react-final-form';
 import {
@@ -6,9 +7,35 @@ import {
     CardActions,
     CircularProgress,
     TextField,
-} from '@material-ui/core';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+} from '@mui/material';
 import { useTranslate, useLogin, useNotify, useSafeSetState } from 'ra-core';
+
+const PREFIX = 'RaLoginForm';
+
+const classes = {
+    form: `${PREFIX}-form`,
+    input: `${PREFIX}-input`,
+    button: `${PREFIX}-button`,
+    icon: `${PREFIX}-icon`,
+};
+
+const Root = styled('form')(({ theme }) => ({
+    [`& .${classes.form}`]: {
+        padding: '0 1em 1em 1em',
+    },
+
+    [`& .${classes.input}`]: {
+        marginTop: '1em',
+    },
+
+    [`& .${classes.button}`]: {
+        width: '100%',
+    },
+
+    [`& .${classes.icon}`]: {
+        marginRight: theme.spacing(1),
+    },
+}));
 
 interface Props {
     redirectTo?: string;
@@ -18,24 +45,6 @@ interface FormData {
     username: string;
     password: string;
 }
-
-const useStyles = makeStyles(
-    (theme: Theme) => ({
-        form: {
-            padding: '0 1em 1em 1em',
-        },
-        input: {
-            marginTop: '1em',
-        },
-        button: {
-            width: '100%',
-        },
-        icon: {
-            marginRight: theme.spacing(1),
-        },
-    }),
-    { name: 'RaLoginForm' }
-);
 
 const Input = ({
     meta: { touched, error }, // eslint-disable-line react/prop-types
@@ -57,7 +66,6 @@ const LoginForm = (props: Props) => {
     const login = useLogin();
     const translate = useTranslate();
     const notify = useNotify();
-    const classes = useStyles(props);
 
     const validate = (values: FormData) => {
         const errors = { username: undefined, password: undefined };
@@ -103,7 +111,7 @@ const LoginForm = (props: Props) => {
             onSubmit={submit}
             validate={validate}
             render={({ handleSubmit }) => (
-                <form onSubmit={handleSubmit} noValidate>
+                <Root onSubmit={handleSubmit} noValidate>
                     <div className={classes.form}>
                         <div className={classes.input}>
                             <Field
@@ -145,7 +153,7 @@ const LoginForm = (props: Props) => {
                             {translate('ra.auth.sign_in')}
                         </Button>
                     </CardActions>
-                </form>
+                </Root>
             )}
         />
     );

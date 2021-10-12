@@ -1,30 +1,40 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { isValidElement, cloneElement } from 'react';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
-import { MenuItem } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { MenuItemProps } from '@material-ui/core/MenuItem';
+import { MenuItem } from '@mui/material';
+import { MenuItemProps } from '@mui/material/MenuItem';
 import classnames from 'classnames';
 
-const useStyles = makeStyles(
-    theme => ({
-        root: {
-            fontWeight: 400,
-        },
-        selected: {
-            fontWeight: 500,
-        },
-        suggestion: {
-            display: 'block',
-            fontFamily: theme.typography.fontFamily,
-            minHeight: 24,
-        },
-        suggestionText: { fontWeight: 300 },
-        highlightedSuggestionText: { fontWeight: 500 },
-    }),
-    { name: 'RaAutocompleteSuggestionItem' }
-);
+const PREFIX = 'RaAutocompleteSuggestionItem';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    selected: `${PREFIX}-selected`,
+    suggestion: `${PREFIX}-suggestion`,
+    suggestionText: `${PREFIX}-suggestionText`,
+    highlightedSuggestionText: `${PREFIX}-highlightedSuggestionText`,
+};
+
+const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
+    [`&.${classes.root}`]: {
+        fontWeight: 400,
+    },
+
+    [`&.${classes.selected}`]: {
+        fontWeight: 500,
+    },
+
+    [`& .${classes.suggestion}`]: {
+        display: 'block',
+        fontFamily: theme.typography.fontFamily,
+        minHeight: 24,
+    },
+
+    [`& .${classes.suggestionText}`]: { fontWeight: 300 },
+    [`& .${classes.highlightedSuggestionText}`]: { fontWeight: 500 },
+}));
 
 export interface AutocompleteSuggestionItemProps {
     createValue?: any;
@@ -52,7 +62,7 @@ const AutocompleteSuggestionItem = (
         getSuggestionText,
         ...rest
     } = props;
-    const classes = useStyles(props);
+
     const isHighlighted = highlightedIndex === index;
     const suggestionText =
         'id' in suggestion && suggestion.id === createValue
@@ -67,7 +77,7 @@ const AutocompleteSuggestionItem = (
     }
 
     return (
-        <MenuItem
+        <StyledMenuItem
             key={suggestionText}
             selected={isHighlighted}
             className={classnames(classes.root, {
@@ -98,7 +108,7 @@ const AutocompleteSuggestionItem = (
                     })}
                 </div>
             )}
-        </MenuItem>
+        </StyledMenuItem>
     );
 };
 

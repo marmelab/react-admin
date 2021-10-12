@@ -6,7 +6,7 @@ export default (url, initialField = 'title') => ({
         snackbar: 'div[role="alertdialog"]',
         tabs: `.show-tab`,
         tab: index => `.show-tab:nth-of-type(${index})`,
-        userMenu: 'button[title="Profile"]',
+        userMenu: 'button[aria-label="Profile"]',
         logout: '.logout',
     },
 

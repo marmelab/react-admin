@@ -2,7 +2,8 @@ import * as React from 'react';
 import expect from 'expect';
 import { fireEvent, waitFor, act } from '@testing-library/react';
 import lolex from 'lolex';
-import TextField from '@material-ui/core/TextField/TextField';
+// TODO: we shouldn't import mui components in ra-core
+import { TextField } from '@mui/material';
 
 import { DataProviderContext } from '../dataProvider';
 import ListController from './ListController';
@@ -112,10 +113,12 @@ describe('useListController', () => {
     describe('setFilters', () => {
         let clock;
         let fakeComponent = ({ setFilters, filterValues }) => (
+            // TODO: we shouldn't import mui components in ra-core
             <TextField
                 inputProps={{
                     'aria-label': 'search',
                 }}
+                type="text"
                 value={filterValues.q || ''}
                 onChange={event => {
                     setFilters({ q: event.target.value });

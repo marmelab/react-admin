@@ -10,7 +10,7 @@ import { useFormContext } from './useFormContext';
  *
  * @example
  * import { Edit, SimpleForm, TextInput, FormGroupContextProvider, useFormGroup } from 'react-admin';
- * import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@material-ui/core';
+ * import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
  *
  * const PostEdit = (props) => (
  *     <Edit {...props}>

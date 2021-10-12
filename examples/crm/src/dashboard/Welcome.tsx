@@ -1,24 +1,32 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     Typography,
     Card,
     CardContent,
     CardActions,
     Button,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import HomeIcon from '@material-ui/icons/Home';
-import CodeIcon from '@material-ui/icons/Code';
+} from '@mui/material';
+import HomeIcon from '@mui/icons-material/Home';
+import CodeIcon from '@mui/icons-material/Code';
 
-const useStyles = makeStyles(theme => ({
-    root: {
+const PREFIX = 'Welcome';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    actions: `${PREFIX}-actions`,
+};
+
+const StyledCard = styled(Card)(({ theme }) => ({
+    [`&.${classes.root}`]: {
         background: `#c5dedd`,
         color: 'rgba(0, 0, 0, 0.87)',
         padding: '1em',
         marginBottom: '1em',
         marginTop: '2em',
     },
-    actions: {
+
+    [`& .${classes.actions}`]: {
         padding: theme.spacing(2),
         marginTop: -theme.spacing(2),
         marginBottom: -theme.spacing(1),
@@ -32,9 +40,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const Welcome = () => {
-    const classes = useStyles();
     return (
-        <Card className={classes.root}>
+        <StyledCard className={classes.root}>
             <CardContent>
                 <Typography variant="h5" gutterBottom>
                     CRM demo
@@ -68,6 +75,6 @@ export const Welcome = () => {
                     Source for this demo
                 </Button>
             </CardActions>
-        </Card>
+        </StyledCard>
     );
 };

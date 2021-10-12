@@ -1,46 +1,37 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import { makeStyles } from '@material-ui/core/styles';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
 import { FieldTitle } from 'ra-core';
 
-const useStyles = makeStyles(
-    theme => ({
-        label: {
-            position: 'relative',
-        },
-        value: {
-            fontFamily: theme.typography.fontFamily,
-            color: 'currentColor',
-            padding: `${theme.spacing(1)}px 0 ${theme.spacing(1) / 2}px`,
-            border: 0,
-            boxSizing: 'content-box',
-            verticalAlign: 'middle',
-            background: 'none',
-            margin: 0, // Reset for Safari
-            display: 'block',
-            width: '100%',
-        },
-    }),
-    { name: 'RaLabeled' }
-);
+const PREFIX = 'RaLabeled';
 
-export interface LabeledProps {
-    children: ReactElement;
-    className?: string;
-    classes?: object;
-    fullWidth?: boolean;
-    id?: string;
-    input?: any;
-    isRequired?: boolean;
-    label?: string | ReactElement;
-    meta?: any;
-    resource?: string;
-    source?: string;
-    [key: string]: any;
-}
+const classes = {
+    label: `${PREFIX}-label`,
+    value: `${PREFIX}-value`,
+};
+
+const StyledFormControl = styled(FormControl)(({ theme }) => ({
+    [`& .${classes.label}`]: {
+        position: 'relative',
+    },
+
+    [`& .${classes.value}`]: {
+        fontFamily: theme.typography.fontFamily,
+        color: 'currentColor',
+        padding: `calc(${theme.spacing(1)} 0 ${theme.spacing(1)} / 2)`,
+        border: 0,
+        boxSizing: 'content-box',
+        verticalAlign: 'middle',
+        background: 'none',
+        margin: 0, // Reset for Safari
+        display: 'block',
+        width: '100%',
+    },
+}));
+
 /**
  * Use any component as read-only Input, labeled just like other Inputs.
  *
@@ -60,7 +51,6 @@ const Labeled = (props: LabeledProps) => {
     const {
         children,
         className,
-        classes: classesOverride,
         fullWidth,
         id,
         input,
@@ -72,7 +62,7 @@ const Labeled = (props: LabeledProps) => {
         source,
         ...rest
     } = props;
-    const classes = useStyles(props);
+
     if (!label && !source) {
         // @ts-ignore
         const name = children && children.type && children.type.name;
@@ -84,7 +74,7 @@ const Labeled = (props: LabeledProps) => {
     const restProps = fullWidth ? { ...rest, fullWidth } : rest;
 
     return (
-        <FormControl
+        <StyledFormControl
             className={className}
             fullWidth={fullWidth}
             error={meta && meta.touched && !!(meta.error || meta.submitError)}
@@ -107,7 +97,7 @@ const Labeled = (props: LabeledProps) => {
                       })
                     : children}
             </div>
-        </FormControl>
+        </StyledFormControl>
     );
 };
 
@@ -115,7 +105,6 @@ Labeled.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.element,
     className: PropTypes.string,
-    classes: PropTypes.object,
     fullWidth: PropTypes.bool,
     id: PropTypes.string,
     input: PropTypes.object,
@@ -128,5 +117,19 @@ Labeled.propTypes = {
     source: PropTypes.string,
     labelStyle: PropTypes.object,
 };
+
+export interface LabeledProps {
+    children: ReactElement;
+    className?: string;
+    fullWidth?: boolean;
+    id?: string;
+    input?: any;
+    isRequired?: boolean;
+    label?: string | ReactElement;
+    meta?: any;
+    resource?: string;
+    source?: string;
+    [key: string]: any;
+}
 
 export default Labeled;

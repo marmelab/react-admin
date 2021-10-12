@@ -2,7 +2,7 @@ import * as React from 'react';
 import { memo, FC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import Typography, { TypographyProps } from '@material-ui/core/Typography';
+import { Typography, TypographyProps } from '@mui/material';
 import { useRecordContext } from 'ra-core';
 
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
@@ -112,7 +112,7 @@ DateField.displayName = 'DateField';
 export interface DateFieldProps
     extends PublicFieldProps,
         InjectedFieldProps,
-        TypographyProps {
+        Omit<TypographyProps, 'textAlign'> {
     locales?: string | string[];
     options?: object;
     showTime?: boolean;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { memo, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import Queue from '@material-ui/icons/Queue';
+import Queue from '@mui/icons-material/Queue';
 import { Link } from 'react-router-dom';
 import { stringify } from 'query-string';
 import { Record, useResourceContext } from 'ra-core';

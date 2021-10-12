@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom';
  *
  * @example // usage in buttons
  * import { Link } from 'react-router-dom';
- * import { Button } from '@material-ui/core';
+ * import { Button } from '@mui/material';
  *
  * const FooButton = () => (
  *     <Button

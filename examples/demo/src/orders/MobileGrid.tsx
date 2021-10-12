@@ -1,7 +1,7 @@
 // in src/comments.js
 import * as React from 'react';
-import { Card, CardHeader, CardContent } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
+import { Card, CardHeader, CardContent } from '@mui/material';
 import {
     DateField,
     EditButton,
@@ -16,21 +16,33 @@ import {
 
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 
-const useListStyles = makeStyles(theme => ({
-    card: {
+const PREFIX = 'MobileGrid';
+
+const classes = {
+    card: `${PREFIX}-card`,
+    cardTitleContent: `${PREFIX}-cardTitleContent`,
+    cardContent: `${PREFIX}-cardContent`,
+    cardContentRow: `${PREFIX}-cardContentRow`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`& .${classes.card}`]: {
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
         margin: '0.5rem 0',
     },
-    cardTitleContent: {
+
+    [`& .${classes.cardTitleContent}`]: {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
     },
-    cardContent: theme.typography.body1,
-    cardContentRow: {
+
+    [`& .${classes.cardContent}`]: theme.typography.body1,
+
+    [`& .${classes.cardContentRow}`]: {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
@@ -47,14 +59,13 @@ interface MobileGridProps {
 const MobileGrid = (props: MobileGridProps) => {
     const { ids, data, basePath } = props;
     const translate = useTranslate();
-    const classes = useListStyles();
 
     if (!ids || !data || !basePath) {
         return null;
     }
 
     return (
-        <div style={{ margin: '1em' }}>
+        <Root style={{ margin: '1em' }}>
             {ids.map(id => (
                 <Card key={id} className={classes.card}>
                     <CardHeader
@@ -116,7 +127,7 @@ const MobileGrid = (props: MobileGridProps) => {
                     </CardContent>
                 </Card>
             ))}
-        </div>
+        </Root>
     );
 };
 

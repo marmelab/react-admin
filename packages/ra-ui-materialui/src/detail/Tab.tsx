@@ -2,7 +2,7 @@ import * as React from 'react';
 import { isValidElement, ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
-import MuiTab, { TabProps as MuiTabProps } from '@material-ui/core/Tab';
+import { Tab as MuiTab, TabProps as MuiTabProps } from '@mui/material';
 import { useTranslate, Record } from 'ra-core';
 import classnames from 'classnames';
 
@@ -20,8 +20,8 @@ import Labeled from '../input/Labeled';
  * @example
  *     // in src/posts.js
  *     import * as React from "react";
- *     import FavoriteIcon from '@material-ui/icons/Favorite';
- *     import PersonPinIcon from '@material-ui/icons/PersonPin';
+ *     import FavoriteIcon from '@mui/icons-material/Favorite';
+ *     import PersonPinIcon from '@mui/icons-material/PersonPin';
  *     import { Show, TabbedShowLayout, Tab, TextField } from 'react-admin';
  *
  *     export const PostShow = (props) => (
@@ -135,7 +135,7 @@ Tab.propTypes = {
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
-export interface TabProps extends MuiTabProps {
+export interface TabProps extends Omit<MuiTabProps, 'children'> {
     basePath?: string;
     children: ReactNode;
     contentClassName?: string;

@@ -1,8 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, fireEvent } from '@testing-library/react';
-import { ThemeProvider } from '@material-ui/styles';
-import { createTheme } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import FilterButton from './FilterButton';
 import TextInput from '../../input/TextInput';

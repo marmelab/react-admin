@@ -1,8 +1,20 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { ReferenceArrayField, SingleFieldList, ChipField } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
 
 import { Contact } from '../types';
+
+const PREFIX = 'TagsList';
+
+const classes = {
+    root: `${PREFIX}-root`,
+};
+
+const StyledReferenceArrayField = styled(ReferenceArrayField)({
+    [`&.${classes.root}`]: {
+        display: 'inline-block',
+    },
+});
 
 const ColoredChipField = ({ record, ...props }: any) =>
     record ? (
@@ -14,17 +26,10 @@ const ColoredChipField = ({ record, ...props }: any) =>
         />
     ) : null;
 
-const useStyles = makeStyles({
-    root: {
-        display: 'inline-block',
-    },
-});
-
 export const TagsList = ({ record }: { record: Contact }) => {
-    const classes = useStyles();
     if (!record) return null;
     return (
-        <ReferenceArrayField
+        <StyledReferenceArrayField
             record={record}
             basePath="/contacts"
             resource="contacts"
@@ -39,6 +44,6 @@ export const TagsList = ({ record }: { record: Contact }) => {
                     size="small"
                 />
             </SingleFieldList>
-        </ReferenceArrayField>
+        </StyledReferenceArrayField>
     );
 };

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { ReactElement, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import ContentCreate from '@material-ui/icons/Create';
-import { ButtonProps as MuiButtonProps } from '@material-ui/core/Button';
+import ContentCreate from '@mui/icons-material/Create';
+import { ButtonProps as MuiButtonProps } from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import { linkToRecord, Record, useResourceContext } from 'ra-core';
 

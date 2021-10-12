@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -7,20 +8,49 @@ import {
     IconButton,
     TextField as MuiTextField,
     TextFieldProps,
-    Theme,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import ClearIcon from '@material-ui/icons/Clear';
+} from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
 import { InputProps, useTranslate } from 'ra-core';
-import { ClassesOverride } from '../types';
-import { Styles } from '@material-ui/styles';
+
+const PREFIX = 'RaResettableTextField';
+
+const classes = {
+    clearIcon: `${PREFIX}-clearIcon`,
+    visibleClearIcon: `${PREFIX}-visibleClearIcon`,
+    clearButton: `${PREFIX}-clearButton`,
+    selectAdornment: `${PREFIX}-selectAdornment`,
+    inputAdornedEnd: `${PREFIX}-inputAdornedEnd`,
+};
+
+export const ResettableTextFieldStyles = {
+    [`& .${classes.clearIcon}`]: {
+        height: 16,
+        width: 0,
+    },
+    [`& .${classes.visibleClearIcon}`]: {
+        width: 16,
+    },
+    [`& .${classes.clearButton}`]: {
+        height: 24,
+        width: 24,
+        padding: 0,
+    },
+    [`& .${classes.selectAdornment}`]: {
+        position: 'absolute',
+        right: 24,
+    },
+    [`& .${classes.inputAdornedEnd}`]: {
+        paddingRight: 0,
+    },
+};
+
+const StyledTextField = styled(MuiTextField)(ResettableTextFieldStyles);
 
 /**
  * An override of the default Material-UI TextField which is resettable
  */
 const ResettableTextField = (props: ResettableTextFieldProps) => {
     const {
-        classes: classesOverride,
         clearAlwaysVisible,
         InputProps,
         value,
@@ -30,7 +60,7 @@ const ResettableTextField = (props: ResettableTextFieldProps) => {
         margin = 'dense',
         ...rest
     } = props;
-    const classes = useStyles(props);
+
     const translate = useTranslate();
 
     const { onChange, onFocus, onBlur } = props;
@@ -94,6 +124,7 @@ const ResettableTextField = (props: ResettableTextFieldProps) => {
                             title={translate('ra.action.clear_input_value')}
                             disableRipple
                             disabled={true}
+                            size="large"
                         >
                             <ClearIcon
                                 className={classNames(
@@ -138,6 +169,7 @@ const ResettableTextField = (props: ResettableTextFieldProps) => {
                         onClick={handleClickClearButton}
                         onMouseDown={handleMouseDownClearButton}
                         disabled={disabled}
+                        size="large"
                     >
                         <ClearIcon
                             className={classNames(clearIcon, {
@@ -151,7 +183,7 @@ const ResettableTextField = (props: ResettableTextFieldProps) => {
     };
 
     return (
-        <MuiTextField
+        <StyledTextField
             classes={restClasses}
             value={value}
             InputProps={{
@@ -172,38 +204,13 @@ const ResettableTextField = (props: ResettableTextFieldProps) => {
     );
 };
 
-export const resettableStyles: Styles<Theme, ResettableTextFieldProps> = {
-    clearIcon: {
-        height: 16,
-        width: 0,
-    },
-    visibleClearIcon: {
-        width: 16,
-    },
-    clearButton: {
-        height: 24,
-        width: 24,
-        padding: 0,
-    },
-    selectAdornment: {
-        position: 'absolute',
-        right: 24,
-    },
-    inputAdornedEnd: {
-        paddingRight: 0,
-    },
-};
-
-const useStyles = makeStyles(resettableStyles, {
-    name: 'RaResettableTextField',
-});
+export {};
 
 const handleMouseDownClearButton = event => {
     event.preventDefault();
 };
 
 ResettableTextField.propTypes = {
-    classes: PropTypes.object,
     clearAlwaysVisible: PropTypes.bool,
     disabled: PropTypes.bool,
     InputProps: PropTypes.object,
@@ -215,7 +222,6 @@ ResettableTextField.propTypes = {
 };
 
 interface Props {
-    classes?: ClassesOverride<typeof useStyles>;
     clearAlwaysVisible?: boolean;
     resettable?: boolean;
 }

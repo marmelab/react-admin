@@ -1,27 +1,34 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { useSelector, useDispatch } from 'react-redux';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Button from '@mui/material/Button';
 import { useTranslate, useLocale, useSetLocale, Title } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
 import { changeTheme } from './actions';
 import { AppState } from '../types';
 
-const useStyles = makeStyles({
-    label: { width: '10em', display: 'inline-block' },
-    button: { margin: '1em' },
+const PREFIX = 'Configuration';
+
+const classes = {
+    label: `${PREFIX}-label`,
+    button: `${PREFIX}-button`,
+};
+
+const StyledCard = styled(Card)({
+    [`& .${classes.label}`]: { width: '10em', display: 'inline-block' },
+    [`& .${classes.button}`]: { margin: '1em' },
 });
 
 const Configuration = () => {
     const translate = useTranslate();
     const locale = useLocale();
     const setLocale = useSetLocale();
-    const classes = useStyles();
+
     const theme = useSelector((state: AppState) => state.theme);
     const dispatch = useDispatch();
     return (
-        <Card>
+        <StyledCard>
             <Title title={translate('pos.configuration')} />
             <CardContent>
                 <div className={classes.label}>
@@ -30,7 +37,7 @@ const Configuration = () => {
                 <Button
                     variant="contained"
                     className={classes.button}
-                    color={theme === 'light' ? 'primary' : 'default'}
+                    color={theme === 'light' ? 'primary' : 'secondary'}
                     onClick={() => dispatch(changeTheme('light'))}
                 >
                     {translate('pos.theme.light')}
@@ -38,7 +45,7 @@ const Configuration = () => {
                 <Button
                     variant="contained"
                     className={classes.button}
-                    color={theme === 'dark' ? 'primary' : 'default'}
+                    color={theme === 'dark' ? 'primary' : 'secondary'}
                     onClick={() => dispatch(changeTheme('dark'))}
                 >
                     {translate('pos.theme.dark')}
@@ -49,7 +56,7 @@ const Configuration = () => {
                 <Button
                     variant="contained"
                     className={classes.button}
-                    color={locale === 'en' ? 'primary' : 'default'}
+                    color={locale === 'en' ? 'primary' : 'secondary'}
                     onClick={() => setLocale('en')}
                 >
                     en
@@ -57,13 +64,13 @@ const Configuration = () => {
                 <Button
                     variant="contained"
                     className={classes.button}
-                    color={locale === 'fr' ? 'primary' : 'default'}
+                    color={locale === 'fr' ? 'primary' : 'secondary'}
                     onClick={() => setLocale('fr')}
                 >
                     fr
                 </Button>
             </CardContent>
-        </Card>
+        </StyledCard>
     );
 };
 

@@ -1,10 +1,16 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { useListFilterContext, useGetIdentity } from 'react-admin';
-import { Switch, FormControlLabel } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Switch, FormControlLabel } from '@mui/material';
 
-const useStyles = makeStyles(theme => ({
-    root: {
+const PREFIX = 'OnlyMineInput';
+
+const classes = {
+    root: `${PREFIX}-root`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`&.${classes.root}`]: {
         marginBottom: theme.spacing(1),
         marginLeft: theme.spacing(1),
     },
@@ -17,7 +23,7 @@ export const OnlyMineInput = ({ alwaysOn }: { alwaysOn: boolean }) => {
         setFilters,
     } = useListFilterContext();
     const { identity } = useGetIdentity();
-    const classes = useStyles();
+
     const handleChange = () => {
         const newFilterValues = { ...filterValues };
         if (typeof filterValues.sales_id !== 'undefined') {
@@ -28,7 +34,7 @@ export const OnlyMineInput = ({ alwaysOn }: { alwaysOn: boolean }) => {
         setFilters(newFilterValues, displayedFilters);
     };
     return (
-        <div className={classes.root}>
+        <Root className={classes.root}>
             <FormControlLabel
                 control={
                     <Switch
@@ -40,7 +46,7 @@ export const OnlyMineInput = ({ alwaysOn }: { alwaysOn: boolean }) => {
                 }
                 label="Only companies I manage"
             />
-        </div>
+        </Root>
     );
 };
 

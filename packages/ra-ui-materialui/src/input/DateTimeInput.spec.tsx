@@ -5,8 +5,7 @@ import { Form } from 'react-final-form';
 import { required, FormWithRedirect } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
 import format from 'date-fns/format';
-import { ThemeProvider } from '@material-ui/core';
-import { createTheme } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@mui/material';
 
 import DateTimeInput from './DateTimeInput';
 import { ArrayInput, SimpleFormIterator } from './ArrayInput';

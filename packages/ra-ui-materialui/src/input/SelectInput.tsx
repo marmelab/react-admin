@@ -2,9 +2,9 @@ import * as React from 'react';
 import { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import MenuItem from '@material-ui/core/MenuItem';
-import { TextFieldProps } from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
+import MenuItem from '@mui/material/MenuItem';
+import { TextFieldProps } from '@mui/material/TextField';
+import { styled } from '@mui/material/styles';
 import {
     useInput,
     FieldTitle,
@@ -14,7 +14,9 @@ import {
     warning,
 } from 'ra-core';
 
-import ResettableTextField, { resettableStyles } from './ResettableTextField';
+import ResettableTextField, {
+    ResettableTextFieldStyles,
+} from './ResettableTextField';
 import InputHelperText from './InputHelperText';
 import sanitizeInputRestProps from './sanitizeInputRestProps';
 import Labeled from './Labeled';
@@ -23,7 +25,6 @@ import {
     useSupportCreateSuggestion,
     SupportCreateSuggestionOptions,
 } from './useSupportCreateSuggestion';
-import { ClassesOverride } from '../types';
 
 /**
  * An Input component for a select box, using an array of objects for the options
@@ -132,7 +133,6 @@ export const SelectInput = (props: SelectInputProps) => {
         ...rest
     } = props;
     const translate = useTranslate();
-    const classes = useStyles(props);
 
     warning(
         source === undefined,
@@ -233,7 +233,7 @@ export const SelectInput = (props: SelectInputProps) => {
 
     return (
         <>
-            <ResettableTextField
+            <StyledResettableTextField
                 id={id}
                 {...input}
                 onChange={handleChangeWithCreateSupport}
@@ -249,7 +249,7 @@ export const SelectInput = (props: SelectInputProps) => {
                         />
                     )
                 }
-                className={`${classes.input} ${className}`}
+                className={className}
                 clearAlwaysVisible
                 error={!!(touched && (error || submitError))}
                 helperText={
@@ -283,7 +283,7 @@ export const SelectInput = (props: SelectInputProps) => {
                     </MenuItem>
                 ))}
                 {renderCreateItem()}
-            </ResettableTextField>
+            </StyledResettableTextField>
             {createElement}
         </>
     );
@@ -294,7 +294,6 @@ SelectInput.propTypes = {
     emptyText: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     emptyValue: PropTypes.any,
     choices: PropTypes.arrayOf(PropTypes.object),
-    classes: PropTypes.object,
     className: PropTypes.string,
     label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     options: PropTypes.object,
@@ -356,19 +355,19 @@ const sanitizeRestProps = ({
     ...rest
 }: any) => sanitizeInputRestProps(rest);
 
-const useStyles = makeStyles(
-    theme => ({
-        ...resettableStyles,
-        input: {
-            minWidth: theme.spacing(20),
-        },
-    }),
-    { name: 'RaSelectInput' }
-);
+const PREFIX = 'RaSelectInput';
 
-export interface SelectInputProps
-    extends ChoicesInputProps<TextFieldProps>,
-        Omit<SupportCreateSuggestionOptions, 'handleChange'>,
-        Omit<TextFieldProps, 'label' | 'helperText' | 'classes'> {
-    classes?: ClassesOverride<typeof useStyles>;
-}
+const classes = {
+    input: `${PREFIX}-inputEnd`,
+};
+
+const StyledResettableTextField = styled(ResettableTextField)(({ theme }) => ({
+    ...ResettableTextFieldStyles,
+    [classes.input]: {
+        minWidth: theme.spacing(20),
+    },
+}));
+
+export type SelectInputProps = ChoicesInputProps<TextFieldProps> &
+    Omit<SupportCreateSuggestionOptions, 'handleChange'> &
+    Omit<TextFieldProps, 'label' | 'helperText' | 'classes'>;

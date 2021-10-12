@@ -1,18 +1,26 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { memo } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 
 import { FieldProps } from 'react-admin';
 import AvatarField from './AvatarField';
 import { Customer } from '../types';
 
-const useStyles = makeStyles(theme => ({
-    root: {
+const PREFIX = 'FullNameField';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    avatar: `${PREFIX}-avatar`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`& .${classes.root}`]: {
         display: 'flex',
         flexWrap: 'nowrap',
         alignItems: 'center',
     },
-    avatar: {
+
+    [`& .${classes.avatar}`]: {
         marginRight: theme.spacing(1),
         marginTop: -theme.spacing(0.5),
         marginBottom: -theme.spacing(0.5),
@@ -25,16 +33,16 @@ interface Props extends FieldProps<Customer> {
 
 const FullNameField = (props: Props) => {
     const { record, size } = props;
-    const classes = useStyles();
+
     return record ? (
-        <div className={classes.root}>
+        <Root className={classes.root}>
             <AvatarField
                 className={classes.avatar}
                 record={record}
                 size={size}
             />
             {record.first_name} {record.last_name}
-        </div>
+        </Root>
     ) : null;
 };
 

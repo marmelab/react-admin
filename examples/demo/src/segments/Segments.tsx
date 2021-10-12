@@ -1,27 +1,33 @@
 import * as React from 'react';
-import Card from '@material-ui/core/Card';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import { makeStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
+import Card from '@mui/material/Card';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 import { useTranslate, Title } from 'react-admin';
 
 import LinkToRelatedCustomers from './LinkToRelatedCustomers';
 import segments from './data';
 
-const useStyles = makeStyles({
-    root: {
+const PREFIX = 'Segments';
+
+const classes = {
+    root: `${PREFIX}-root`,
+};
+
+const StyledCard = styled(Card)({
+    [`&.${classes.root}`]: {
         marginTop: 16,
     },
 });
 
 const Segments = () => {
     const translate = useTranslate();
-    const classes = useStyles();
+
     return (
-        <Card className={classes.root}>
+        <StyledCard className={classes.root}>
             <Title
                 title={translate('resources.segments.name', { smart_count: 2 })}
             />
@@ -45,7 +51,7 @@ const Segments = () => {
                     ))}
                 </TableBody>
             </Table>
-        </Card>
+        </StyledCard>
     );
 };
 

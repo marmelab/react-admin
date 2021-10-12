@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import TextField, { TextFieldProps } from '@material-ui/core/TextField';
+import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { useInput, FieldTitle, InputProps } from 'ra-core';
 
 import sanitizeInputRestProps from './sanitizeInputRestProps';

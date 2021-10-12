@@ -7,9 +7,8 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    RootRef,
     TextField,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useDropzone } from 'react-dropzone';
 
 import { useNotify, useRefresh } from 'ra-core';
@@ -87,7 +86,7 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
                     </DialogContent>
                 ) : (
                     <>
-                        <RootRef rootRef={ref}>
+                        <>
                             <DialogContent {...rootProps}>
                                 <input
                                     aria-label="CSV File"
@@ -102,7 +101,7 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
                                     a local file.
                                 </DialogContentText>
                             </DialogContent>
-                        </RootRef>
+                        </>
                         {!!file && (
                             <DialogContent>
                                 <TextField

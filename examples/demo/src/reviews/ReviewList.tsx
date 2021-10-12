@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { Fragment, useCallback } from 'react';
 import classnames from 'classnames';
 import {
@@ -8,8 +9,7 @@ import {
     BulkActionProps,
 } from 'react-admin';
 import { Route, RouteChildrenProps, useHistory } from 'react-router-dom';
-import { Drawer, useMediaQuery, Theme } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Drawer, useMediaQuery, Theme } from '@mui/material';
 
 import BulkAcceptButton from './BulkAcceptButton';
 import BulkRejectButton from './BulkRejectButton';
@@ -17,6 +17,37 @@ import ReviewListMobile from './ReviewListMobile';
 import ReviewListDesktop from './ReviewListDesktop';
 import reviewFilters from './reviewFilters';
 import ReviewEdit from './ReviewEdit';
+
+const PREFIX = 'ReviewList';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    list: `${PREFIX}-list`,
+    listWithDrawer: `${PREFIX}-listWithDrawer`,
+    drawerPaper: `${PREFIX}-drawerPaper`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`&.${classes.root}`]: {
+        display: 'flex',
+    },
+
+    [`& .${classes.list}`]: {
+        flexGrow: 1,
+        transition: theme.transitions.create(['all'], {
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+        marginRight: 0,
+    },
+
+    [`& .${classes.listWithDrawer}`]: {
+        marginRight: 400,
+    },
+
+    [`& .${classes.drawerPaper}`]: {
+        zIndex: 100,
+    },
+}));
 
 const ReviewsBulkActionButtons = (props: BulkActionProps) => (
     <Fragment>
@@ -26,29 +57,9 @@ const ReviewsBulkActionButtons = (props: BulkActionProps) => (
     </Fragment>
 );
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        display: 'flex',
-    },
-    list: {
-        flexGrow: 1,
-        transition: theme.transitions.create(['all'], {
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        marginRight: 0,
-    },
-    listWithDrawer: {
-        marginRight: 400,
-    },
-    drawerPaper: {
-        zIndex: 100,
-    },
-}));
-
 const ReviewList = (props: ListProps) => {
-    const classes = useStyles();
     const isXSmall = useMediaQuery<Theme>(theme =>
-        theme.breakpoints.down('xs')
+        theme.breakpoints.down('sm')
     );
     const history = useHistory();
 
@@ -57,7 +68,7 @@ const ReviewList = (props: ListProps) => {
     }, [history]);
 
     return (
-        <div className={classes.root}>
+        <Root className={classes.root}>
             <Route path="/reviews/:id">
                 {({ match }: RouteChildrenProps<{ id: string }>) => {
                     const isMatch = !!(
@@ -116,7 +127,7 @@ const ReviewList = (props: ListProps) => {
                     );
                 }}
             </Route>
-        </div>
+        </Root>
     );
 };
 

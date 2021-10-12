@@ -3,8 +3,7 @@ import expect from 'expect';
 import { waitFor, fireEvent } from '@testing-library/react';
 import { DataProviderContext, ResourceContextProvider } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
-import { ThemeProvider } from '@material-ui/styles';
-import { createTheme } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { MemoryRouter } from 'react-router-dom';
 
 import defaultTheme from '../defaultTheme';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { MouseEvent } from 'react';
-import { IconButton, IconButtonProps, Tooltip } from '@material-ui/core';
+import { IconButton, IconButtonProps, Tooltip } from '@mui/material';
 import { useTranslate } from 'ra-core';
 
 /**
@@ -41,6 +41,7 @@ export const IconButtonWithTooltip = ({
                 aria-label={translatedLabel}
                 onClick={handleClick}
                 {...props}
+                size="large"
             />
         </Tooltip>
     );

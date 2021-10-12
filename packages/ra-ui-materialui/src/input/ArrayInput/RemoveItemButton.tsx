@@ -1,5 +1,5 @@
 import * as React from 'react';
-import CloseIcon from '@material-ui/icons/RemoveCircleOutline';
+import CloseIcon from '@mui/icons-material/RemoveCircleOutline';
 
 import { Button, ButtonProps } from '../../button';
 import { useSimpleFormIteratorItem } from './useSimpleFormIteratorItem';

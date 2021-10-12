@@ -1,9 +1,9 @@
 import React, { cloneElement, ReactElement, SyntheticEvent } from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import Button, { ButtonProps } from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { makeStyles } from '@material-ui/core/styles';
-import ContentSave from '@material-ui/icons/Save';
+import Button, { ButtonProps } from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import ContentSave from '@mui/icons-material/Save';
 import classnames from 'classnames';
 import {
     useTranslate,
@@ -20,6 +20,28 @@ import {
 
 import { sanitizeButtonRestProps } from './Button';
 import { FormRenderProps } from 'react-final-form';
+
+const PREFIX = 'RaSaveButton';
+
+const classes = {
+    button: `${PREFIX}-button`,
+    leftIcon: `${PREFIX}-leftIcon`,
+    icon: `${PREFIX}-icon`,
+};
+
+const StyledButton = styled(Button)(({ theme }) => ({
+    [`&.${classes.button}`]: {
+        position: 'relative',
+    },
+
+    [`& .${classes.leftIcon}`]: {
+        marginRight: theme.spacing(1),
+    },
+
+    [`& .${classes.icon}`]: {
+        fontSize: 18,
+    },
+}));
 
 /**
  * Submit button for resource forms (Edit and Create).
@@ -61,7 +83,6 @@ import { FormRenderProps } from 'react-final-form';
 const SaveButton = (props: SaveButtonProps) => {
     const {
         className,
-        classes: classesOverride,
         invalid,
         label = 'ra.action.save',
         disabled,
@@ -78,7 +99,7 @@ const SaveButton = (props: SaveButtonProps) => {
         transform,
         ...rest
     } = props;
-    const classes = useStyles(props);
+
     const notify = useNotify();
     const translate = useTranslate();
     const formContext = useFormContext();
@@ -146,12 +167,14 @@ const SaveButton = (props: SaveButtonProps) => {
     const type = submitOnEnter ? 'submit' : 'button';
     const displayedLabel = label && translate(label, { _: label });
     return (
-        <Button
+        <StyledButton
             className={classnames(classes.button, className)}
             variant={variant}
             type={type}
             onClick={handleClick}
-            color={saving ? 'default' : 'primary'}
+            // TODO: find a way to display the loading state (LoadingButton from mui Lab?)
+            // This is because the "default" color does not exist anymore
+            color="primary"
             aria-label={displayedLabel}
             disabled={disabled}
             {...sanitizeButtonRestProps(rest)}
@@ -168,26 +191,11 @@ const SaveButton = (props: SaveButtonProps) => {
                 })
             )}
             {displayedLabel}
-        </Button>
+        </StyledButton>
     );
 };
 
 const defaultIcon = <ContentSave />;
-
-const useStyles = makeStyles(
-    theme => ({
-        button: {
-            position: 'relative',
-        },
-        leftIcon: {
-            marginRight: theme.spacing(1),
-        },
-        icon: {
-            fontSize: 18,
-        },
-    }),
-    { name: 'RaSaveButton' }
-);
 
 interface Props {
     classes?: object;

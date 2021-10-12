@@ -1,16 +1,16 @@
 import * as React from 'react';
-import { ThemeProvider } from '@material-ui/core';
-import { createTheme } from '@material-ui/core/styles';
 import { fireEvent, getByText, waitFor } from '@testing-library/react';
 import expect from 'expect';
 import { SaveContextProvider, SideEffectContextProvider } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 import SimpleForm from '../../form/SimpleForm';
 import { ArrayInput } from './ArrayInput';
 import TextInput from '../TextInput';
 import { SimpleFormIterator } from './SimpleFormIterator';
 
-const theme = createTheme();
+const theme = createTheme({});
 
 describe('<SimpleFormIterator />', () => {
     // bypass confirm leave form with unsaved changes
@@ -143,17 +143,19 @@ describe('<SimpleFormIterator />', () => {
 
     it('should not display add button if disableAdd is truthy', () => {
         const { queryAllByText } = renderWithRedux(
-            <SaveContextProvider value={saveContextValue}>
-                <SideEffectContextProvider value={sideEffectValue}>
-                    <SimpleForm>
-                        <ArrayInput source="emails">
-                            <SimpleFormIterator disableAdd>
-                                <TextInput source="email" />
-                            </SimpleFormIterator>
-                        </ArrayInput>
-                    </SimpleForm>
-                </SideEffectContextProvider>
-            </SaveContextProvider>
+            <ThemeProvider theme={theme}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffectValue}>
+                        <SimpleForm>
+                            <ArrayInput source="emails">
+                                <SimpleFormIterator disableAdd>
+                                    <TextInput source="email" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
         );
 
         expect(queryAllByText('ra.action.add').length).toBe(0);
@@ -161,17 +163,19 @@ describe('<SimpleFormIterator />', () => {
 
     it('should not display add button if disabled is truthy', () => {
         const { queryAllByText } = renderWithRedux(
-            <SaveContextProvider value={saveContextValue}>
-                <SideEffectContextProvider value={sideEffectValue}>
-                    <SimpleForm>
-                        <ArrayInput source="emails" disabled>
-                            <SimpleFormIterator>
-                                <TextInput source="email" />
-                            </SimpleFormIterator>
-                        </ArrayInput>
-                    </SimpleForm>
-                </SideEffectContextProvider>
-            </SaveContextProvider>
+            <ThemeProvider theme={theme}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffectValue}>
+                        <SimpleForm>
+                            <ArrayInput source="emails" disabled>
+                                <SimpleFormIterator>
+                                    <TextInput source="email" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
         );
 
         expect(queryAllByText('ra.action.add').length).toBe(0);
@@ -509,7 +513,10 @@ describe('<SimpleFormIterator />', () => {
                 <SaveContextProvider value={saveContextValue}>
                     <SideEffectContextProvider value={sideEffectValue}>
                         <SimpleForm
-                            record={{ id: 'whatever', emails: [{ email: '' }] }}
+                            record={{
+                                id: 'whatever',
+                                emails: [{ email: '' }],
+                            }}
                         >
                             <ArrayInput source="emails">
                                 <SimpleFormIterator
@@ -540,7 +547,10 @@ describe('<SimpleFormIterator />', () => {
                 <SaveContextProvider value={saveContextValue}>
                     <SideEffectContextProvider value={sideEffectValue}>
                         <SimpleForm
-                            record={{ id: 'whatever', emails: [{ email: '' }] }}
+                            record={{
+                                id: 'whatever',
+                                emails: [{ email: '' }],
+                            }}
                         >
                             <ArrayInput source="emails">
                                 <SimpleFormIterator
@@ -622,7 +632,10 @@ describe('<SimpleFormIterator />', () => {
                 <SaveContextProvider value={saveContextValue}>
                     <SideEffectContextProvider value={sideEffectValue}>
                         <SimpleForm
-                            record={{ id: 'whatever', emails: [{ email: '' }] }}
+                            record={{
+                                id: 'whatever',
+                                emails: [{ email: '' }],
+                            }}
                         >
                             <ArrayInput source="emails">
                                 <SimpleFormIterator
@@ -674,7 +687,10 @@ describe('<SimpleFormIterator />', () => {
                 <SaveContextProvider value={saveContextValue}>
                     <SideEffectContextProvider value={sideEffectValue}>
                         <SimpleForm
-                            record={{ id: 'whatever', emails: [{ email: '' }] }}
+                            record={{
+                                id: 'whatever',
+                                emails: [{ email: '' }],
+                            }}
                         >
                             <ArrayInput source="emails">
                                 <SimpleFormIterator

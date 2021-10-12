@@ -1,9 +1,8 @@
 import React, { Component, ErrorInfo, HtmlHTMLAttributes } from 'react';
 import PropTypes from 'prop-types';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { createMuiTheme } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
-import { CssBaseline, Container } from '@material-ui/core';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { CssBaseline, Container } from '@mui/material';
 import { CoreLayoutProps } from 'react-admin';
 
 import { Notification, Error } from 'react-admin';
@@ -42,8 +41,7 @@ class Layout extends Component<LayoutProps, LayoutState> {
         const { theme, title, children } = this.props;
         const { hasError, errorMessage, errorInfo } = this.state;
         return (
-            // @ts-ignore
-            <ThemeProvider theme={createMuiTheme(theme)}>
+            <ThemeProvider theme={createTheme(theme)}>
                 <CssBaseline />
                 <Header />
                 <Container>

@@ -1,10 +1,9 @@
 import * as React from 'react';
+import { styled, Theme } from '@mui/material/styles';
 import { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import Snackbar, { SnackbarProps } from '@material-ui/core/Snackbar';
-import Button from '@material-ui/core/Button';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Button, Snackbar, SnackbarProps } from '@mui/material';
 import classnames from 'classnames';
 
 import {
@@ -16,35 +15,48 @@ import {
     useTranslate,
 } from 'ra-core';
 
-interface Props {
-    type?: string;
-}
+const PREFIX = 'RaNotification';
 
-const useStyles = makeStyles(
-    (theme: Theme) => ({
-        success: {
+const classes = {
+    success: `${PREFIX}-success`,
+    error: `${PREFIX}-error`,
+    warning: `${PREFIX}-warning`,
+    undo: `${PREFIX}-undo`,
+};
+
+const StyledButton = styled(Button)(
+    ({ theme, type }: NotificationProps & { theme?: Theme }) => ({
+        [`& .${classes.success}`]: {
             backgroundColor: theme.palette.success.main,
             color: theme.palette.success.contrastText,
         },
-        error: {
+
+        [`& .${classes.error}`]: {
             backgroundColor: theme.palette.error.dark,
             color: theme.palette.error.contrastText,
         },
-        warning: {
+
+        [`& .${classes.warning}`]: {
             backgroundColor: theme.palette.error.light,
             color: theme.palette.error.contrastText,
         },
-        undo: (props: Props & Omit<SnackbarProps, 'open'>) => ({
+
+        [`& .${classes.undo}`]: {
             color:
-                props.type === 'success'
+                type === 'success'
                     ? theme.palette.success.contrastText
                     : theme.palette.primary.light,
-        }),
-    }),
-    { name: 'RaNotification' }
+        },
+    })
 );
 
-const Notification = (props: Props & Omit<SnackbarProps, 'open'>) => {
+export interface NotificationProps {
+    type?: string;
+}
+
+const Notification = (
+    props: NotificationProps & Omit<SnackbarProps, 'open'>
+) => {
     const {
         classes: classesOverride,
         type,
@@ -56,7 +68,6 @@ const Notification = (props: Props & Omit<SnackbarProps, 'open'>) => {
     const notification = useSelector(getNotification);
     const dispatch = useDispatch();
     const translate = useTranslate();
-    const styles = useStyles(props);
 
     useEffect(() => {
         setOpen(!!notification);
@@ -96,20 +107,20 @@ const Notification = (props: Props & Omit<SnackbarProps, 'open'>) => {
             onClose={handleRequestClose}
             ContentProps={{
                 className: classnames(
-                    styles[(notification && notification.type) || type],
+                    classes[(notification && notification.type) || type],
                     className
                 ),
             }}
             action={
                 notification && notification.undoable ? (
-                    <Button
+                    <StyledButton
                         color="primary"
-                        className={styles.undo}
+                        className={classes.undo}
                         size="small"
                         onClick={handleUndo}
                     >
-                        {translate('ra.action.undo')}
-                    </Button>
+                        <>{translate('ra.action.undo')}</>
+                    </StyledButton>
                 ) : null
             }
             {...rest}

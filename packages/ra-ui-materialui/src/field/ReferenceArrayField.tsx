@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { Children, cloneElement, FC, memo, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux';
 import {
     ListContextProvider,
@@ -16,9 +16,18 @@ import {
 } from 'ra-core';
 
 import { fieldPropTypes, PublicFieldProps, InjectedFieldProps } from './types';
-import { ClassesOverride } from '../types';
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { LinearProgress } from '../layout';
+
+const PREFIX = 'RaReferenceArrayField';
+
+const classes = {
+    progress: `${PREFIX}-progress`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`& .${classes.progress}`]: { marginTop: theme.spacing(2) },
+}));
 
 /**
  * A container component that fetches records from another resource specified
@@ -130,7 +139,6 @@ ReferenceArrayField.propTypes = {
     ...fieldPropTypes,
     addLabel: PropTypes.bool,
     basePath: PropTypes.string,
-    classes: PropTypes.object,
     className: PropTypes.string,
     children: PropTypes.element.isRequired,
     label: PropTypes.string,
@@ -150,7 +158,7 @@ export interface ReferenceArrayFieldProps
     extends PublicFieldProps,
         InjectedFieldProps {
     children: ReactElement;
-    classes?: ClassesOverride<typeof useStyles>;
+
     filter?: FilterPayload;
     page?: number;
     pagination?: ReactElement;
@@ -160,21 +168,12 @@ export interface ReferenceArrayFieldProps
     sort?: SortPayload;
 }
 
-const useStyles = makeStyles(
-    theme => ({
-        progress: { marginTop: theme.spacing(2) },
-    }),
-    { name: 'RaReferenceArrayField' }
-);
-
 export interface ReferenceArrayFieldViewProps
     extends Omit<
             ReferenceArrayFieldProps,
             'basePath' | 'resource' | 'page' | 'perPage'
         >,
-        ListControllerProps {
-    classes?: ClassesOverride<typeof useStyles>;
-}
+        ListControllerProps {}
 
 export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props => {
     const {
@@ -185,30 +184,31 @@ export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props =
         reference,
         ...rest
     } = props;
-    const classes = useStyles(props);
+
     const { loaded } = useListContext(props);
 
-    if (!loaded) {
-        return <LinearProgress className={classes.progress} />;
-    }
-
     return (
-        <>
-            {cloneElement(Children.only(children), {
-                ...sanitizeFieldRestProps(rest),
-                className,
-                resource,
-            })}{' '}
-            {pagination &&
-                props.total !== undefined &&
-                cloneElement(pagination, sanitizeFieldRestProps(rest))}
-        </>
+        <Root>
+            {!loaded ? (
+                <LinearProgress className={classes.progress} />
+            ) : (
+                <>
+                    {cloneElement(Children.only(children), {
+                        ...sanitizeFieldRestProps(rest),
+                        className,
+                        resource,
+                    })}
+                    {pagination &&
+                        props.total !== undefined &&
+                        cloneElement(pagination, sanitizeFieldRestProps(rest))}
+                </>
+            )}
+        </Root>
     );
 };
 
 ReferenceArrayFieldView.propTypes = {
     basePath: PropTypes.string,
-    classes: PropTypes.any,
     className: PropTypes.string,
     data: PropTypes.any,
     ids: PropTypes.array,

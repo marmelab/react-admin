@@ -1,7 +1,6 @@
 import * as React from 'react';
 import mediaQuery from 'css-mediaquery';
-import { ThemeProvider } from '@material-ui/styles';
-import { createTheme } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 /**
  * Test utility to simulate a device form factor for server-side mediaQueries
@@ -19,7 +18,6 @@ const DeviceTestWrapper = ({
     children,
 }: DeviceTestWrapperProps): JSX.Element => {
     const theme = createTheme();
-
     // Use https://github.com/ericf/css-mediaquery as polyfill.
     const ssrMatchMedia = query => ({
         matches: mediaQuery.match(query, {
@@ -27,13 +25,23 @@ const DeviceTestWrapper = ({
             // For the sake of this demo, we are using a fixed value.
             // In production, you can look into client-hint https://caniuse.com/#search=client%20hint
             // or user-agent resolution.
-            width: theme.breakpoints.width(width),
+            width: theme.breakpoints.values[width],
         }),
     });
 
     return (
         <ThemeProvider
-            theme={{ ...theme, props: { MuiUseMediaQuery: { ssrMatchMedia } } }}
+            theme={{
+                ...theme,
+                components: {
+                    MuiUseMediaQuery: {
+                        defaultProps: {
+                            ssrMatchMedia,
+                            matchMedia: ssrMatchMedia,
+                        },
+                    },
+                },
+            }}
         >
             {children}
         </ThemeProvider>

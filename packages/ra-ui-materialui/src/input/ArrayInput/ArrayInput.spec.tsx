@@ -2,8 +2,7 @@ import * as React from 'react';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
-import { ThemeProvider } from '@material-ui/core';
-import { createTheme } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@mui/material';
 
 import { ArrayInput } from './ArrayInput';
 import NumberInput from '../NumberInput';

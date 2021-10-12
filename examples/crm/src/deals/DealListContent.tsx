@@ -7,7 +7,7 @@ import {
     RecordMap,
     DataProviderContext,
 } from 'react-admin';
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
 import { DragDropContext, OnDragEndResponder } from 'react-beautiful-dnd';
 import isEqual from 'lodash/isEqual';
 

@@ -7,7 +7,7 @@ import {
     ReferenceManyField,
     useShowContext,
 } from 'react-admin';
-import { Box, Card, CardContent, Typography } from '@material-ui/core';
+import { Box, Card, CardContent, Typography } from '@mui/material';
 
 import { Avatar } from './Avatar';
 import { ContactAside } from './ContactAside';

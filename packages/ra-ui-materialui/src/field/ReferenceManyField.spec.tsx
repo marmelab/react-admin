@@ -4,12 +4,15 @@ import { render, waitFor } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import { renderWithRedux } from 'ra-test';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import ReferenceManyField, {
     ReferenceManyFieldView,
 } from './ReferenceManyField';
 import TextField from './TextField';
 import SingleFieldList from '../list/SingleFieldList';
+
+const theme = createTheme();
 
 describe('<ReferenceManyField />', () => {
     const defaultProps = {
@@ -30,15 +33,17 @@ describe('<ReferenceManyField />', () => {
         const history = createMemoryHistory();
         const { queryAllByRole } = render(
             <Router history={history}>
-                <ReferenceManyFieldView
-                    {...defaultProps}
-                    data={data}
-                    ids={[1, 2]}
-                >
-                    <SingleFieldList>
-                        <TextField source="title" />
-                    </SingleFieldList>
-                </ReferenceManyFieldView>
+                <ThemeProvider theme={theme}>
+                    <ReferenceManyFieldView
+                        {...defaultProps}
+                        data={data}
+                        ids={[1, 2]}
+                    >
+                        <SingleFieldList>
+                            <TextField source="title" />
+                        </SingleFieldList>
+                    </ReferenceManyFieldView>
+                </ThemeProvider>
             </Router>
         );
         expect(queryAllByRole('progressbar')).toHaveLength(0);
@@ -52,11 +57,13 @@ describe('<ReferenceManyField />', () => {
 
     it('should render nothing when there are no related records', () => {
         const { queryAllByRole } = render(
-            <ReferenceManyFieldView {...defaultProps} data={{}} ids={[]}>
-                <SingleFieldList>
-                    <TextField source="title" />
-                </SingleFieldList>
-            </ReferenceManyFieldView>
+            <ThemeProvider theme={theme}>
+                <ReferenceManyFieldView {...defaultProps} data={{}} ids={[]}>
+                    <SingleFieldList>
+                        <TextField source="title" />
+                    </SingleFieldList>
+                </ReferenceManyFieldView>
+            </ThemeProvider>
         );
         expect(queryAllByRole('progressbar')).toHaveLength(0);
         expect(queryAllByRole('link')).toHaveLength(0);
@@ -70,15 +77,17 @@ describe('<ReferenceManyField />', () => {
         const history = createMemoryHistory();
         const { queryAllByRole } = render(
             <Router history={history}>
-                <ReferenceManyFieldView
-                    {...defaultProps}
-                    data={data}
-                    ids={['abc-1', 'abc-2']}
-                >
-                    <SingleFieldList>
-                        <TextField source="title" />
-                    </SingleFieldList>
-                </ReferenceManyFieldView>
+                <ThemeProvider theme={theme}>
+                    <ReferenceManyFieldView
+                        {...defaultProps}
+                        data={data}
+                        ids={['abc-1', 'abc-2']}
+                    >
+                        <SingleFieldList>
+                            <TextField source="title" />
+                        </SingleFieldList>
+                    </ReferenceManyFieldView>
+                </ThemeProvider>
             </Router>
         );
         expect(queryAllByRole('progressbar')).toHaveLength(0);
@@ -98,15 +107,17 @@ describe('<ReferenceManyField />', () => {
         const history = createMemoryHistory();
         const { queryAllByRole } = render(
             <Router history={history}>
-                <ReferenceManyFieldView
-                    {...defaultProps}
-                    data={data}
-                    ids={[1, 2]}
-                >
-                    <SingleFieldList>
-                        <TextField source="title" />
-                    </SingleFieldList>
-                </ReferenceManyFieldView>
+                <ThemeProvider theme={theme}>
+                    <ReferenceManyFieldView
+                        {...defaultProps}
+                        data={data}
+                        ids={[1, 2]}
+                    >
+                        <SingleFieldList>
+                            <TextField source="title" />
+                        </SingleFieldList>
+                    </ReferenceManyFieldView>
+                </ThemeProvider>
             </Router>
         );
         expect(queryAllByRole('progressbar')).toHaveLength(0);
@@ -156,17 +167,19 @@ describe('<ReferenceManyField />', () => {
         const onError = jest.fn();
         renderWithRedux(
             <ErrorBoundary onError={onError}>
-                <ReferenceManyField
-                    record={{ id: 123 }}
-                    resource="comments"
-                    target="postId"
-                    reference="posts"
-                    basePath="/comments"
-                >
-                    <SingleFieldList>
-                        <TextField source="title" />
-                    </SingleFieldList>
-                </ReferenceManyField>
+                <ThemeProvider theme={theme}>
+                    <ReferenceManyField
+                        record={{ id: 123 }}
+                        resource="comments"
+                        target="postId"
+                        reference="posts"
+                        basePath="/comments"
+                    >
+                        <SingleFieldList>
+                            <TextField source="title" />
+                        </SingleFieldList>
+                    </ReferenceManyField>
+                </ThemeProvider>
             </ErrorBoundary>,
             { admin: { resources: { comments: { data: {} } } } }
         );

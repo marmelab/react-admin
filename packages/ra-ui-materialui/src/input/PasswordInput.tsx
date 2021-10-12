@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { useTranslate } from 'ra-core';
-import { InputAdornment, IconButton } from '@material-ui/core';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import { InputAdornment, IconButton } from '@mui/material';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import TextInput, { TextInputProps } from './TextInput';
 
@@ -34,6 +34,7 @@ const PasswordInput = (props: PasswordInputProps) => {
                                     : 'ra.input.password.toggle_hidden'
                             )}
                             onClick={handleClick}
+                            size="large"
                         >
                             {visible ? <Visibility /> : <VisibilityOff />}
                         </IconButton>

@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Box, Chip, useMediaQuery, Theme } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Box, Chip, useMediaQuery, Theme } from '@mui/material';
 import {
     CreateButton,
     ExportButton,
@@ -22,19 +21,24 @@ import {
     useTranslate,
 } from 'react-admin';
 
-import GridList from './GridList';
+import ImageList from './GridList';
 import Aside from './Aside';
 
-const useQuickFilterStyles = makeStyles(theme => ({
-    root: {
-        marginBottom: theme.spacing(1),
-    },
-}));
+const PREFIX = 'ProductList';
+
+const classes = {
+    root: `${PREFIX}-root`,
+};
 
 const QuickFilter = ({ label }: InputProps) => {
     const translate = useTranslate();
-    const classes = useQuickFilterStyles();
-    return <Chip className={classes.root} label={translate(label)} />;
+    return (
+        <Chip
+            sx={{ marginBottom: 1 }}
+            className={classes.root}
+            label={translate(label)}
+        />
+    );
 };
 
 export const productFilters = [
@@ -67,7 +71,7 @@ const ListActions = ({ isSmall }: any) => (
 );
 
 const ProductList = (props: ListProps) => {
-    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
+    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     return (
         <ListBase
             perPage={20}
@@ -95,7 +99,7 @@ const ProductListView = ({ isSmall }: { isSmall: boolean }) => {
             <Box display="flex">
                 <Aside />
                 <Box width={isSmall ? 'auto' : 'calc(100% - 16em)'}>
-                    <GridList />
+                    <ImageList />
                     <Pagination rowsPerPageOptions={[10, 20, 40]} />
                 </Box>
             </Box>

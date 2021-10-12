@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     useState,
     useCallback,
@@ -8,32 +9,28 @@ import {
     useContext,
 } from 'react';
 import PropTypes from 'prop-types';
-import Menu from '@material-ui/core/Menu';
-import { makeStyles } from '@material-ui/core/styles';
-import ContentFilter from '@material-ui/icons/FilterList';
+import Menu from '@mui/material/Menu';
+import ContentFilter from '@mui/icons-material/FilterList';
 import classnames from 'classnames';
 import lodashGet from 'lodash/get';
 import { useListContext, useResourceContext } from 'ra-core';
 
 import { FilterButtonMenuItem } from './FilterButtonMenuItem';
 import Button from '../../button/Button';
-import { ClassesOverride } from '../../types';
 import { FilterContext } from '../FilterContext';
 
-const useStyles = makeStyles(
-    {
-        root: { display: 'inline-block' },
-    },
-    { name: 'RaFilterButton' }
-);
+const PREFIX = 'RaFilterButton';
+
+const classes = {
+    root: `${PREFIX}-root`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`&.${classes.root}`]: { display: 'inline-block' },
+}));
 
 const FilterButton = (props: FilterButtonProps): JSX.Element => {
-    const {
-        filters: filtersProp,
-        classes: classesOverride,
-        className,
-        ...rest
-    } = props;
+    const { filters: filtersProp, className, ...rest } = props;
     const filters = useContext(FilterContext) || filtersProp;
     const resource = useResourceContext(props);
     const { displayedFilters = {}, filterValues, showFilter } = useListContext(
@@ -41,7 +38,6 @@ const FilterButton = (props: FilterButtonProps): JSX.Element => {
     );
     const [open, setOpen] = useState(false);
     const anchorEl = useRef();
-    const classes = useStyles(props);
 
     const hiddenFilters = filters.filter(
         (filterElement: JSX.Element) =>
@@ -75,7 +71,7 @@ const FilterButton = (props: FilterButtonProps): JSX.Element => {
 
     if (hiddenFilters.length === 0) return null;
     return (
-        <div
+        <Root
             className={classnames(classes.root, className)}
             {...sanitizeRestProps(rest)}
         >
@@ -100,7 +96,7 @@ const FilterButton = (props: FilterButtonProps): JSX.Element => {
                     />
                 ))}
             </Menu>
-        </div>
+        </Root>
     );
 };
 
@@ -117,12 +113,10 @@ FilterButton.propTypes = {
     displayedFilters: PropTypes.object,
     filterValues: PropTypes.object,
     showFilter: PropTypes.func,
-    classes: PropTypes.object,
     className: PropTypes.string,
 };
 
 export interface FilterButtonProps extends HtmlHTMLAttributes<HTMLDivElement> {
-    classes?: ClassesOverride<typeof useStyles>;
     className?: string;
     resource?: string;
     filterValues?: any;

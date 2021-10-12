@@ -29,7 +29,7 @@ export default url => ({
         selectAll: '.select-all',
         selectedItem: '.select-item input:checked',
         selectItem: '.select-item input',
-        userMenu: 'button[title="Profile"]',
+        userMenu: 'button[aria-label="Profile"]',
         title: '#react-admin-title',
         headroomUnfixed: '.headroom--unfixed',
         headroomUnpinned: '.headroom--unpinned',

@@ -9,13 +9,12 @@ import {
     ReactNode,
     useMemo,
 } from 'react';
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 import classNames from 'classnames';
 import { Record } from 'ra-core';
 
-import { ClassesOverride } from '../../types';
 import FormInput from '../../form/FormInput';
-import { useSimpleFormIteratorStyles } from './useSimpleFormIteratorStyles';
+import { SimpleFormIteratorClasses } from './useSimpleFormIteratorStyles';
 import { useSimpleFormIterator } from './useSimpleFormIterator';
 import { ArrayInputContextValue } from './ArrayInputContext';
 import {
@@ -27,7 +26,6 @@ export const SimpleFormIteratorItem = (props: SimpleFormIteratorItemProps) => {
     const {
         basePath,
         children,
-        classes,
         disabled,
         disableReordering,
         disableRemove,
@@ -78,10 +76,13 @@ export const SimpleFormIteratorItem = (props: SimpleFormIteratorItemProps) => {
 
     return (
         <SimpleFormIteratorItemContext.Provider value={context}>
-            <li className={classes.line}>
+            <li className={SimpleFormIteratorClasses.line}>
                 <div>
-                    <div className={classes.indexContainer}>
-                        <Typography variant="body1" className={classes.index}>
+                    <div className={SimpleFormIteratorClasses.indexContainer}>
+                        <Typography
+                            variant="body1"
+                            className={SimpleFormIteratorClasses.index}
+                        >
                             {getItemLabel(index)}
                         </Typography>
                         {!disabled &&
@@ -97,7 +98,7 @@ export const SimpleFormIteratorItem = (props: SimpleFormIteratorItemProps) => {
                             })}
                     </div>
                 </div>
-                <section className={classes.form}>
+                <section className={SimpleFormIteratorClasses.form}>
                     {Children.map(children, (input: ReactElement, index2) => {
                         if (!isValidElement<any>(input)) {
                             return null;
@@ -129,7 +130,7 @@ export const SimpleFormIteratorItem = (props: SimpleFormIteratorItemProps) => {
                     })}
                 </section>
                 {!disabled && !disableRemoveField(record) && (
-                    <span className={classes.action}>
+                    <span className={SimpleFormIteratorClasses.action}>
                         {cloneElement(removeButton, {
                             onClick: handleRemoveButtonClick(
                                 removeButton.props.onClick,
@@ -152,7 +153,6 @@ export type DisableRemoveFunction = (record: Record) => boolean;
 export type SimpleFormIteratorItemProps = ArrayInputContextValue & {
     basePath: string;
     children?: ReactNode;
-    classes?: ClassesOverride<typeof useSimpleFormIteratorStyles>;
     disabled?: boolean;
     disableRemove?: boolean | DisableRemoveFunction;
     disableReordering?: boolean;
