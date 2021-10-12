@@ -155,7 +155,7 @@ const CommentEdit = props => {
                                     ) => {
                                         const title = `${suggestion.title} - ${suggestion.id}`;
 
-                                        return filterValue === title;
+                                        return title.includes(filterValue);
                                     }}
                                     optionText={<OptionRenderer />}
                                     inputText={inputText}

@@ -133,6 +133,7 @@ describe('Edit Page', () => {
     it('should allow to select an item from the AutocompleteInput without showing the choices again after', () => {
         EditCommentPage.navigate();
         cy.get(EditCommentPage.elements.input('post_id'))
+            .type('{selectall}')
             .clear()
             .type('Sed quo');
         cy.get('[role="tooltip"]').within(() => {
