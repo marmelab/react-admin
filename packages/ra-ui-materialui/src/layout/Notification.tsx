@@ -15,10 +15,6 @@ import {
     useTranslate,
 } from 'ra-core';
 
-interface Props {
-    type?: string;
-    multiLine?: boolean;
-}
 const PREFIX = 'RaNotification';
 
 const classes = {
@@ -59,6 +55,7 @@ const StyledButton = styled(Button)(
 
 export interface NotificationProps {
     type?: string;
+    multiLine?: boolean;
 }
 
 const Notification = (
