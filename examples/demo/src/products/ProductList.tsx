@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Box, Chip, useMediaQuery, Theme } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
 import {
     CreateButton,
     ExportButton,
@@ -22,19 +21,24 @@ import {
     useTranslate,
 } from 'react-admin';
 
-import ImageList from './ImageList';
+import ImageList from './GridList';
 import Aside from './Aside';
 
-const useQuickFilterStyles = makeStyles(theme => ({
-    root: {
-        marginBottom: theme.spacing(1),
-    },
-}));
+const PREFIX = 'ProductList';
+
+const classes = {
+    root: `${PREFIX}-root`,
+};
 
 const QuickFilter = ({ label }: InputProps) => {
     const translate = useTranslate();
-    const classes = useQuickFilterStyles();
-    return <Chip className={classes.root} label={translate(label)} />;
+    return (
+        <Chip
+            sx={{ marginBottom: 1 }}
+            className={classes.root}
+            label={translate(label)}
+        />
+    );
 };
 
 export const productFilters = [

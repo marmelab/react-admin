@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
-import { makeStyles } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 import { useTranslate, FieldProps } from 'react-admin';
 import { stringify } from 'query-string';
@@ -8,9 +8,16 @@ import { stringify } from 'query-string';
 import products from '../products';
 import { Category } from '../types';
 
-const useStyles = makeStyles({
-    icon: { paddingRight: '0.5em' },
-    link: {
+const PREFIX = 'LinkToRelatedProducts';
+
+const classes = {
+    icon: `${PREFIX}-icon`,
+    link: `${PREFIX}-link`,
+};
+
+const StyledButton = styled(Button)({
+    [`& .${classes.icon}`]: { paddingRight: '0.5em' },
+    [`&.${classes.link}`]: {
         display: 'inline-flex',
         alignItems: 'center',
     },
@@ -19,11 +26,12 @@ const useStyles = makeStyles({
 const LinkToRelatedProducts = (props: FieldProps<Category>) => {
     const { record } = props;
     const translate = useTranslate();
-    const classes = useStyles();
+
     return record ? (
-        <Button
+        <StyledButton
             size="small"
             color="primary"
+            // @ts-ignore
             component={Link}
             to={{
                 pathname: '/products',
@@ -35,7 +43,7 @@ const LinkToRelatedProducts = (props: FieldProps<Category>) => {
         >
             <products.icon className={classes.icon} />
             {translate('resources.categories.fields.products')}
-        </Button>
+        </StyledButton>
     ) : null;
 };
 

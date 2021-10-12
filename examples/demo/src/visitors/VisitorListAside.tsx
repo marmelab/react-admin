@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Card as MuiCard, CardContent } from '@mui/material';
-import { withStyles } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
+import { Card, CardContent } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOnOutlined';
 import MailIcon from '@mui/icons-material/MailOutline';
@@ -16,8 +16,14 @@ import {
 
 import segments from '../segments/data';
 
-const Card = withStyles(theme => ({
-    root: {
+const PREFIX = 'Aside';
+
+const classes = {
+    root: `${PREFIX}-root`,
+};
+
+const StyledCard = styled(Card)(({ theme }) => ({
+    [`& .${classes.root}`]: {
         [theme.breakpoints.up('sm')]: {
             order: -1,
             width: '15em',
@@ -27,10 +33,10 @@ const Card = withStyles(theme => ({
             display: 'none',
         },
     },
-}))(MuiCard);
+}));
 
 const Aside = () => (
-    <Card>
+    <StyledCard>
         <CardContent>
             <FilterLiveSearch />
 
@@ -138,7 +144,7 @@ const Aside = () => (
                 ))}
             </FilterList>
         </CardContent>
-    </Card>
+    </StyledCard>
 );
 
 export default Aside;

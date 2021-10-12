@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     Table,
     TableBody,
@@ -6,18 +7,23 @@ import {
     TableHead,
     TableRow,
 } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
 import { Link, FieldProps, useTranslate, useQueryWithStore } from 'react-admin';
 
 import { AppState, Order, Product } from '../types';
 
-const useStyles = makeStyles({
-    rightAlignedCell: { textAlign: 'right' },
+const PREFIX = 'Basket';
+
+const classes = {
+    rightAlignedCell: `${PREFIX}-rightAlignedCell`,
+};
+
+const StyledTable = styled(Table)({
+    [`& .${classes.rightAlignedCell}`]: { textAlign: 'right' },
 });
 
 const Basket = (props: FieldProps<Order>) => {
     const { record } = props;
-    const classes = useStyles();
+
     const translate = useTranslate();
 
     const { loaded, data: products } = useQueryWithStore<AppState>(
@@ -52,7 +58,7 @@ const Basket = (props: FieldProps<Order>) => {
     if (!loaded || !record) return null;
 
     return (
-        <Table>
+        <StyledTable>
             <TableHead>
                 <TableRow>
                     <TableCell>
@@ -107,7 +113,7 @@ const Basket = (props: FieldProps<Order>) => {
                         )
                 )}
             </TableBody>
-        </Table>
+        </StyledTable>
     );
 };
 

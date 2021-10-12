@@ -1,11 +1,11 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
-import { makeStyles } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 import {
     linkToRecord,
@@ -19,25 +19,32 @@ import {
 import AvatarField from '../visitors/AvatarField';
 import { Review, Customer } from './../types';
 
-const useStyles = makeStyles({
-    root: {
+const PREFIX = 'ReviewListMobile';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    link: `${PREFIX}-link`,
+    inline: `${PREFIX}-inline`,
+};
+
+const StyledList = styled(List)({
+    [`&.${classes.root}`]: {
         width: '100vw',
     },
-    link: {
+    [`& .${classes.link}`]: {
         textDecoration: 'none',
         color: 'inherit',
     },
-    inline: {
+    [`& .${classes.inline}`]: {
         display: 'inline',
     },
 });
 
 const ReviewListMobile = () => {
-    const classes = useStyles();
     const { basePath, data, ids, loaded, total } = useListContext<Review>();
 
     return loaded || Number(total) > 0 ? (
-        <List className={classes.root}>
+        <StyledList className={classes.root}>
             {(ids as Exclude<typeof ids, undefined>).map(id => {
                 const item = (data as Exclude<typeof data, undefined>)[id];
                 if (!item) return null;
@@ -109,7 +116,7 @@ const ReviewListMobile = () => {
                     </Link>
                 );
             })}
-        </List>
+        </StyledList>
     ) : null;
 };
 

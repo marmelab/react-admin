@@ -1,9 +1,9 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import { makeStyles } from '@mui/material/styles';
 import {
     useShowController,
     ReferenceField,
@@ -13,6 +13,20 @@ import {
 
 import Basket from '../orders/Basket';
 import { Customer, Invoice } from '../types';
+
+const PREFIX = 'InvoiceShow';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    spacer: `${PREFIX}-spacer`,
+    invoices: `${PREFIX}-invoices`,
+};
+
+const StyledCard = styled(Card)({
+    [`&.${classes.root}`]: { width: 600, margin: 'auto' },
+    [`& .${classes.spacer}`]: { height: 20 },
+    [`& .${classes.invoices}`]: { margin: '10px 0' },
+});
 
 const CustomerField = ({ record }: FieldProps<Customer>) =>
     record ? (
@@ -27,11 +41,10 @@ const CustomerField = ({ record }: FieldProps<Customer>) =>
 
 const InvoiceShow = (props: any) => {
     const { record } = useShowController<Invoice>(props);
-    const classes = useStyles();
 
     if (!record) return null;
     return (
-        <Card className={classes.root}>
+        <StyledCard className={classes.root}>
             <CardContent>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
@@ -104,14 +117,8 @@ const InvoiceShow = (props: any) => {
                     </ReferenceField>
                 </div>
             </CardContent>
-        </Card>
+        </StyledCard>
     );
 };
 
 export default InvoiceShow;
-
-const useStyles = makeStyles({
-    root: { width: 600, margin: 'auto' },
-    spacer: { height: 20 },
-    invoices: { margin: '10px 0' },
-});

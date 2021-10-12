@@ -1,23 +1,23 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { FC, createElement } from 'react';
 import { Card, Box, Typography, Divider } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 import { ReactNode } from 'react';
 
 import cartouche from './cartouche.png';
 import cartoucheDark from './cartoucheDark.png';
 
-interface Props {
-    icon: FC<any>;
-    to: string;
-    title?: string;
-    subtitle?: string | number;
-    children?: ReactNode;
-}
+const PREFIX = 'CardWithIcon';
 
-const useStyles = makeStyles(theme => ({
-    card: {
+const classes = {
+    card: `${PREFIX}-card`,
+    main: `${PREFIX}-main`,
+    title: `${PREFIX}-title`,
+};
+
+const StyledCard = styled(Card)(({ theme }) => ({
+    [`&.${classes.card}`]: {
         minHeight: 52,
         display: 'flex',
         flexDirection: 'column',
@@ -27,7 +27,8 @@ const useStyles = makeStyles(theme => ({
             color: 'inherit',
         },
     },
-    main: (props: Props) => ({
+
+    [`& .${classes.main}`]: (props: Props) => ({
         overflow: 'inherit',
         padding: 16,
         background: `url(${
@@ -40,14 +41,24 @@ const useStyles = makeStyles(theme => ({
             color: theme.palette.mode === 'dark' ? 'inherit' : '#dc2440',
         },
     }),
-    title: {},
+
+    [`& .${classes.title}`]: {},
 }));
+
+interface Props {
+    icon: FC<any>;
+    to: string;
+    title?: string;
+    subtitle?: string | number;
+    children?: ReactNode;
+}
 
 const CardWithIcon = (props: Props) => {
     const { icon, title, subtitle, to, children } = props;
-    const classes = useStyles(props);
+
     return (
-        <Card className={classes.card}>
+        // @ts-ignore
+        <StyledCard className={classes.card}>
             <Link to={to}>
                 <div className={classes.main}>
                     <Box width="3em" className="icon">
@@ -68,7 +79,7 @@ const CardWithIcon = (props: Props) => {
             </Link>
             {children && <Divider />}
             {children}
-        </Card>
+        </StyledCard>
     );
 };
 

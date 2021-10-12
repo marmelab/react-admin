@@ -1,15 +1,21 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { Fragment } from 'react';
 import MuiToolbar from '@mui/material/Toolbar';
-import { makeStyles } from '@mui/material/styles';
 
 import { SaveButton, DeleteButton, ToolbarProps } from 'react-admin';
 import AcceptButton from './AcceptButton';
 import RejectButton from './RejectButton';
 import { Review } from '../types';
 
-const useStyles = makeStyles(theme => ({
-    root: {
+const PREFIX = 'ReviewEditToolbar';
+
+const classes = {
+    root: `${PREFIX}-root`,
+};
+
+const StyledMuiToolbar = styled(MuiToolbar)(({ theme }) => ({
+    [`&.${classes.root}`]: {
         backgroundColor: theme.palette.background.paper,
         display: 'flex',
         justifyContent: 'space-between',
@@ -25,11 +31,10 @@ const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
         resource,
         saving,
     } = props;
-    const classes = useStyles();
 
     if (!record) return null;
     return (
-        <MuiToolbar className={classes.root}>
+        <StyledMuiToolbar className={classes.root}>
             {record.status === 'pending' ? (
                 <Fragment>
                     <AcceptButton record={record} />
@@ -51,7 +56,7 @@ const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
                     />
                 </Fragment>
             )}
-        </MuiToolbar>
+        </StyledMuiToolbar>
     );
 };
 
