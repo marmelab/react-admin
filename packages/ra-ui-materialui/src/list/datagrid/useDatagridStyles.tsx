@@ -21,13 +21,13 @@ export const DatagridClasses = {
 };
 
 export const StyledTable = styled(Table)(({ theme }) => ({
-    [`${PREFIX}.${DatagridClasses.table}`]: {
+    [`&.${DatagridClasses.table}`]: {
         tableLayout: 'auto',
     },
-    [`${PREFIX} .${DatagridClasses.thead}`]: {},
-    [`${PREFIX} .${DatagridClasses.tbody}`]: {},
-    [`${PREFIX} .${DatagridClasses.headerRow}`]: {},
-    [`${PREFIX} .${DatagridClasses.headerCell}`]: {
+    [`& .${DatagridClasses.thead}`]: {},
+    [`& .${DatagridClasses.tbody}`]: {},
+    [`& .${DatagridClasses.headerRow}`]: {},
+    [`& .${DatagridClasses.headerCell}`]: {
         position: 'sticky',
         top: 0,
         zIndex: 2,
@@ -39,29 +39,29 @@ export const StyledTable = styled(Table)(({ theme }) => ({
             borderTopRightRadius: theme.shape.borderRadius,
         },
     },
-    [`${PREFIX} .${DatagridClasses.checkbox}`]: {},
-    [`${PREFIX} .${DatagridClasses.row}`]: {},
-    [`${PREFIX} .${DatagridClasses.clickableRow}`]: {
+    [`& .${DatagridClasses.checkbox}`]: {},
+    [`& .${DatagridClasses.row}`]: {},
+    [`& .${DatagridClasses.clickableRow}`]: {
         cursor: 'pointer',
     },
-    [`${PREFIX} .${DatagridClasses.rowEven}`]: {},
-    [`${PREFIX} .${DatagridClasses.rowOdd}`]: {},
-    [`${PREFIX} .${DatagridClasses.rowCell}`]: {},
-    [`${PREFIX} .${DatagridClasses.expandHeader}`]: {
+    [`& .${DatagridClasses.rowEven}`]: {},
+    [`& .${DatagridClasses.rowOdd}`]: {},
+    [`& .${DatagridClasses.rowCell}`]: {},
+    [`& .${DatagridClasses.expandHeader}`]: {
         padding: 0,
         width: theme.spacing(6),
     },
-    [`${PREFIX} .${DatagridClasses.expandIconCell}`]: {
+    [`& .${DatagridClasses.expandIconCell}`]: {
         width: theme.spacing(6),
     },
-    [`${PREFIX} .${DatagridClasses.expandIcon}`]: {
+    [`& .${DatagridClasses.expandIcon}`]: {
         padding: theme.spacing(1),
         transform: 'rotate(-90deg)',
         transition: theme.transitions.create('transform', {
             duration: theme.transitions.duration.shortest,
         }),
     },
-    [`${PREFIX} .${DatagridClasses.expandIcon}.${DatagridClasses.expanded}`]: {
+    [`& .${DatagridClasses.expandIcon}.${DatagridClasses.expanded}`]: {
         transform: 'rotate(0deg)',
     },
 }));
