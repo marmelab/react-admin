@@ -1,26 +1,32 @@
 import React from 'react';
-import { makeStyles } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import { Tabs, Tab, Toolbar, AppBar, Box, Typography } from '@mui/material';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { UserMenu, Logout, LoadingIndicator } from 'react-admin';
 
-const useStyles = makeStyles({
-    root: {
+const PREFIX = 'Header';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    logo: `${PREFIX}-logo`,
+};
+
+const Root = styled('nav')({
+    [`&.${classes.root}`]: {
         flexGrow: 1,
     },
-    logo: {
+    [`& .${classes.logo}`]: {
         width: 50,
         height: 43.54,
     },
 });
 
 const Header = () => {
-    const classes = useStyles();
     const match = useRouteMatch(['/contacts', '/companies', '/deals']);
     const currentPath = match?.path ?? '/';
 
     return (
-        <nav className={classes.root}>
+        <Root className={classes.root}>
             <AppBar position="static" color="primary">
                 <Toolbar variant="dense">
                     <Box flex={1} display="flex" justifyContent="space-between">
@@ -74,7 +80,7 @@ const Header = () => {
                     </Box>
                 </Toolbar>
             </AppBar>
-        </nav>
+        </Root>
     );
 };
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { useState } from 'react';
 import { Paper, Typography, Link as MuiLink } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
 import ContactsIcon from '@mui/icons-material/AccountCircle';
 import DealIcon from '@mui/icons-material/MonetizationOn';
 import { linkToRecord, SelectField } from 'react-admin';
@@ -11,8 +11,19 @@ import { sectors } from './sectors';
 import { CompanyAvatar } from './CompanyAvatar';
 import { Company } from '../types';
 
-const useStyles = makeStyles(theme => ({
-    paper: {
+const PREFIX = 'CompanyCard';
+
+const classes = {
+    paper: `${PREFIX}-paper`,
+    identity: `${PREFIX}-identity`,
+    name: `${PREFIX}-name`,
+    stats: `${PREFIX}-stats`,
+    singleStat: `${PREFIX}-singleStat`,
+    statIcon: `${PREFIX}-statIcon`,
+};
+
+const StyledMuiLink = styled(MuiLink)(({ theme }) => ({
+    [`& .${classes.paper}`]: {
         height: 200,
         width: 193.5,
         display: 'flex',
@@ -20,34 +31,39 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'space-between',
         padding: '1em',
     },
-    identity: {
+
+    [`& .${classes.identity}`]: {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
     },
-    name: {
+
+    [`& .${classes.name}`]: {
         textAlign: 'center',
         marginTop: theme.spacing(1),
     },
-    stats: {
+
+    [`& .${classes.stats}`]: {
         display: 'flex',
         justifyContent: 'space-around',
         width: '100%',
     },
-    singleStat: {
+
+    [`& .${classes.singleStat}`]: {
         display: 'flex',
         alignItems: 'center',
     },
-    statIcon: {
+
+    [`& .${classes.statIcon}`]: {
         marginRight: theme.spacing(1),
     },
 }));
 
 export const CompanyCard = ({ record }: { record: Company }) => {
-    const classes = useStyles();
     const [elevation, setElevation] = useState(1);
     return (
-        <MuiLink
+        <StyledMuiLink
+            // @ts-ignore
             component={Link}
             to={linkToRecord('/companies', record.id, 'show')}
             underline="none"
@@ -108,6 +124,6 @@ export const CompanyCard = ({ record }: { record: Company }) => {
                     </div>
                 </div>
             </Paper>
-        </MuiLink>
+        </StyledMuiLink>
     );
 };

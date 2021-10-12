@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     ShowBase,
     TextField,
@@ -10,7 +11,6 @@ import {
     Identifier,
 } from 'react-admin';
 import { Box, Dialog, DialogContent, Typography, Divider } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
 import { format } from 'date-fns';
 
 import { CompanyAvatar } from '../companies/CompanyAvatar';
@@ -18,8 +18,14 @@ import { NotesIterator } from '../notes';
 import { ContactList } from './ContactList';
 import { stageNames } from './stages';
 
-const useStyles = makeStyles({
-    dialog: {
+const PREFIX = 'DealShow';
+
+const classes = {
+    dialog: `${PREFIX}-dialog`,
+};
+
+const Root = styled('div')({
+    [`& .${classes.dialog}`]: {
         position: 'absolute',
         top: 50,
     },
@@ -27,7 +33,6 @@ const useStyles = makeStyles({
 
 export const DealShow = ({ open, id }: { open: boolean; id: Identifier }) => {
     const redirect = useRedirect();
-    const classes = useStyles();
 
     const handleClose = () => {
         redirect('/deals');
@@ -54,7 +59,7 @@ const DealShowContent = () => {
     const record = useRecordContext();
     if (!record) return null;
     return (
-        <>
+        <Root>
             <Box display="flex">
                 <Box
                     width={100}
@@ -168,6 +173,6 @@ const DealShowContent = () => {
                     </Box>
                 </Box>
             </Box>
-        </>
+        </Root>
     );
 };

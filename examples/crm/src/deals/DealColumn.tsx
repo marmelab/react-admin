@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { Typography } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
 import { Droppable } from 'react-beautiful-dnd';
 import { Identifier, RecordMap } from 'react-admin';
 
@@ -8,8 +8,15 @@ import { DealCard } from './DealCard';
 import { stageNames } from './stages';
 import { Deal } from '../types';
 
-const useStyles = makeStyles({
-    root: {
+const PREFIX = 'DealColumn';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    droppable: `${PREFIX}-droppable`,
+};
+
+const Root = styled('div')({
+    [`&.${classes.root}`]: {
         flex: 1,
         paddingTop: 8,
         paddingBottom: 16,
@@ -23,7 +30,7 @@ const useStyles = makeStyles({
             borderTopRightRadius: 5,
         },
     },
-    droppable: {
+    [`& .${classes.droppable}`]: {
         display: 'flex',
         flexDirection: 'column',
         borderRadius: 5,
@@ -43,9 +50,8 @@ export const DealColumn = ({
     dealIds: Identifier[];
     data: RecordMap<Deal>;
 }) => {
-    const classes = useStyles();
     return (
-        <div className={classes.root}>
+        <Root className={classes.root}>
             <Typography align="center" variant="subtitle1">
                 {/* @ts-ignore */}
                 {stageNames[stage]}
@@ -67,6 +73,6 @@ export const DealColumn = ({
                     </div>
                 )}
             </Droppable>
-        </div>
+        </Root>
     );
 };

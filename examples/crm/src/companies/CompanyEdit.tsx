@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     Edit,
     EditProps,
@@ -10,7 +11,6 @@ import {
     required,
 } from 'react-admin';
 import { Box, CardContent, Divider } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
 import clsx from 'clsx';
 
 import { CompanyAside } from './CompanyAside';
@@ -18,8 +18,14 @@ import { LogoField } from './LogoField';
 import { sectors } from './sectors';
 import { sizes } from './sizes';
 
-const useStyles = makeStyles({
-    inline: {
+const PREFIX = 'CompanyEdit';
+
+const classes = {
+    inline: `${PREFIX}-inline`,
+};
+
+const StyledEdit = styled(Edit)({
+    [`& .${classes.inline}`]: {
         display: 'inline-block',
         marginLeft: '1em',
         '&.first-child': {
@@ -29,9 +35,12 @@ const useStyles = makeStyles({
 });
 
 export const CompanyEdit = (props: EditProps) => {
-    const classes = useStyles();
     return (
-        <Edit {...props} aside={<CompanyAside link="show" />} actions={false}>
+        <StyledEdit
+            {...props}
+            aside={<CompanyAside link="show" />}
+            actions={false}
+        >
             <SimpleForm component={CustomLayout} redirect="show">
                 <TextInput source="name" validate={required()} fullWidth />
                 <SelectInput
@@ -76,7 +85,7 @@ export const CompanyEdit = (props: EditProps) => {
                     />
                 </ReferenceInput>
             </SimpleForm>
-        </Edit>
+        </StyledEdit>
     );
 };
 

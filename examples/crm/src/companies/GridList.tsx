@@ -1,44 +1,39 @@
 import * as React from 'react';
 import { Box, Paper } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
 import { useListContext, Identifier } from 'react-admin';
 
 import { CompanyCard } from './CompanyCard';
 import { Company } from '../types';
 
-const useStyles = makeStyles(theme => ({
-    gridList: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        width: 1008,
-        gap: '10px',
-    },
-    paper: {
-        height: 200,
-        width: 194,
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: theme.palette.grey[200],
-    },
-}));
+const PREFIX = 'ImageList';
+
+const classes = {
+    gridList: `${PREFIX}-gridList`,
+    paper: `${PREFIX}-paper`,
+};
 
 const times = (nbChildren: number, fn: (key: number) => any) =>
     Array.from({ length: nbChildren }, (_, key) => fn(key));
 
-const LoadingGridList = () => {
-    const classes = useStyles();
-    return (
-        <Box className={classes.gridList}>
-            {times(15, key => (
-                <Paper className={classes.paper} key={key} />
-            ))}
-        </Box>
-    );
-};
+const LoadingGridList = () => (
+    <Box display="flex" flexWrap="wrap" width={1008} gap={10}>
+        {times(15, key => (
+            <Paper
+                sx={{
+                    height: 200,
+                    width: 194,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    backgroundColor: 'grey[200]',
+                }}
+                key={key}
+            />
+        ))}
+    </Box>
+);
 
 const LoadedGridList = () => {
     const { ids, data } = useListContext<Company>();
-    const classes = useStyles();
 
     if (!ids || !data) return null;
 

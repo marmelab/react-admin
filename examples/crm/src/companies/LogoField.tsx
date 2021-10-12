@@ -1,8 +1,14 @@
 import * as React from 'react';
-import { makeStyles } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 
-const useStyles = makeStyles({
-    image: {
+const PREFIX = 'LogoField';
+
+const classes = {
+    image: `${PREFIX}-image`,
+};
+
+const StyledImage = styled('img')({
+    [`&.${classes.image}`]: {
         objectFit: 'contain',
     },
 });
@@ -21,10 +27,9 @@ export const LogoField = ({
     source?: string;
     size?: 'small' | 'medium';
 }) => {
-    const classes = useStyles();
     if (!record) return null;
     return (
-        <img
+        <StyledImage
             src={process.env.PUBLIC_URL + record.logo}
             alt={record.name}
             title={record.name}

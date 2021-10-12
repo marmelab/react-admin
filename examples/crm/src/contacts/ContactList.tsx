@@ -1,5 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     List as RaList,
     ListProps,
@@ -24,7 +25,6 @@ import {
     Checkbox,
     Typography,
 } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 import { formatDistance } from 'date-fns';
 
@@ -33,6 +33,18 @@ import { Status } from '../misc/Status';
 import { TagsList } from './TagsList';
 import { ContactListFilter } from './ContactListFilter';
 import { Contact } from '../types';
+
+const PREFIX = 'ContactList';
+
+const classes = {
+    createButton: `${PREFIX}-createButton`,
+};
+
+const StyledTopToolbar = styled(TopToolbar)(({ theme }) => ({
+    [`& .${classes.createButton}`]: {
+        marginLeft: theme.spacing(2),
+    },
+}));
 
 const ContactListContent = () => {
     const { data, ids, loaded, onToggleItem, selectedIds } = useListContext<
@@ -106,26 +118,18 @@ const ContactListContent = () => {
     );
 };
 
-const useActionStyles = makeStyles(theme => ({
-    createButton: {
-        marginLeft: theme.spacing(2),
-    },
-}));
-const ContactListActions = () => {
-    const classes = useActionStyles();
-    return (
-        <TopToolbar>
-            <SortButton fields={['last_name', 'first_name', 'last_seen']} />
-            <ExportButton />
-            <CreateButton
-                basePath="/contacts"
-                variant="contained"
-                label="New Contact"
-                className={classes.createButton}
-            />
-        </TopToolbar>
-    );
-};
+const ContactListActions = () => (
+    <StyledTopToolbar>
+        <SortButton fields={['last_name', 'first_name', 'last_seen']} />
+        <ExportButton />
+        <CreateButton
+            basePath="/contacts"
+            variant="contained"
+            label="New Contact"
+            className={classes.createButton}
+        />
+    </StyledTopToolbar>
+);
 
 export const ContactList = (props: ListProps) => {
     const { identity } = useGetIdentity();
