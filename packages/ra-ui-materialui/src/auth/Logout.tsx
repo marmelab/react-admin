@@ -9,34 +9,13 @@ import ExitIcon from '@mui/icons-material/PowerSettingsNew';
 import classnames from 'classnames';
 import { useTranslate, useLogout } from 'ra-core';
 
-const PREFIX = 'RaLogout';
-
-const classes = {
-    menuItem: `${PREFIX}-menuItem`,
-    icon: `${PREFIX}-icon`,
-};
-
-const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
-    [`&.${classes.menuItem}`]: {
-        color: theme.palette.text.secondary,
-    },
-
-    [`& .${classes.icon}`]: { minWidth: theme.spacing(5) },
-}));
-
-interface Props {
-    className?: string;
-    redirectTo?: string;
-    icon?: ReactElement;
-}
-
 /**
  * Logout button component, to be passed to the Admin component
  *
  * Used for the Logout Menu item in the sidebar
  */
-const LogoutWithRef: FunctionComponent<
-    Props & MenuItemProps<'li', { button: true }> // HACK: https://github.com/mui-org/material-ui/issues/16245
+export const Logout: FunctionComponent<
+    LogoutProps & MenuItemProps<'li', { button: true }> // HACK: https://github.com/mui-org/material-ui/issues/16245
 > = React.forwardRef(function Logout(props, ref) {
     const {
         className,
@@ -58,14 +37,14 @@ const LogoutWithRef: FunctionComponent<
     ]);
     return (
         <StyledMenuItem
-            className={classnames('logout', classes.menuItem, className)}
+            className={classnames('logout', LogoutClasses.menuItem, className)}
             onClick={handleClick}
             ref={ref}
             // @ts-ignore
             component={isXSmall ? 'span' : 'li'}
             {...rest}
         >
-            <ListItemIcon className={classes.icon}>
+            <ListItemIcon className={LogoutClasses.icon}>
                 {icon ? icon : <ExitIcon />}
             </ListItemIcon>
             {translate('ra.auth.logout')}
@@ -73,10 +52,29 @@ const LogoutWithRef: FunctionComponent<
     );
 });
 
-LogoutWithRef.propTypes = {
+Logout.propTypes = {
     className: PropTypes.string,
     redirectTo: PropTypes.string,
     icon: PropTypes.element,
 };
 
-export default LogoutWithRef;
+const PREFIX = 'RaLogout';
+
+export const LogoutClasses = {
+    menuItem: `${PREFIX}-menuItem`,
+    icon: `${PREFIX}-icon`,
+};
+
+const StyledMenuItem = styled(MenuItem, { name: 'RaLogout' })(({ theme }) => ({
+    [`&.${LogoutClasses.menuItem}`]: {
+        color: theme.palette.text.secondary,
+    },
+
+    [`& .${LogoutClasses.icon}`]: { minWidth: theme.spacing(5) },
+}));
+
+export interface LogoutProps {
+    className?: string;
+    redirectTo?: string;
+    icon?: ReactElement;
+}

@@ -1,7 +1,9 @@
-import React, {
+import * as React from 'react';
+import {
     HtmlHTMLAttributes,
     ComponentType,
     createElement,
+    FunctionComponent,
     ReactNode,
     useRef,
     useEffect,
@@ -18,54 +20,7 @@ import { useCheckAuth, TitleComponent } from 'ra-core';
 
 import defaultTheme from '../defaultTheme';
 import DefaultNotification from '../layout/Notification';
-import DefaultLoginForm from './LoginForm';
-
-export interface LoginProps
-    extends Omit<HtmlHTMLAttributes<HTMLDivElement>, 'title'> {
-    backgroundImage?: string;
-    children?: ReactNode;
-    classes?: object;
-    className?: string;
-    notification?: ComponentType;
-    staticContext?: StaticContext;
-    theme?: object;
-    title?: TitleComponent;
-}
-
-const PREFIX = 'RaLogin';
-const classes = {
-    main: `${PREFIX}-main`,
-    card: `${PREFIX}-card`,
-    avatar: `${PREFIX}-avatar`,
-    icon: `${PREFIX}-icon`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`&.${classes.main}`]: {
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh',
-        height: '1px',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-        backgroundImage:
-            'radial-gradient(circle at 50% 14em, #313264 0%, #00023b 60%, #00023b 100%)',
-    },
-    [`& .${classes.card}`]: {
-        minWidth: 300,
-        marginTop: '6em',
-    },
-    [`& .${classes.avatar}`]: {
-        margin: '1em',
-        display: 'flex',
-        justifyContent: 'center',
-    },
-    [`& .${classes.icon}`]: {
-        backgroundColor: theme.palette.secondary[500],
-    },
-}));
+import { LoginForm as DefaultLoginForm } from './LoginForm';
 
 /**
  * A standalone login page, to serve as authentication gate to the admin
@@ -85,7 +40,7 @@ const Root = styled('div')(({ theme }) => ({
  *        </Admin>
  *     );
  */
-const Login: React.FunctionComponent<LoginProps> = props => {
+export const Login: FunctionComponent<LoginProps> = props => {
     const { theme, ...rest } = props;
     const muiTheme = useMemo(() => createTheme(theme), [theme]);
     return (
@@ -144,13 +99,13 @@ const LoginContainer = props => {
     });
     return (
         <Root
-            className={classnames(classes.main, className)}
+            className={classnames(LoginClasses.main, className)}
             {...rest}
             ref={containerRef}
         >
-            <Card className={classes.card}>
-                <div className={classes.avatar}>
-                    <Avatar className={classes.icon}>
+            <Card className={LoginClasses.card}>
+                <div className={LoginClasses.avatar}>
+                    <Avatar className={LoginClasses.icon}>
                         <LockIcon />
                     </Avatar>
                 </div>
@@ -160,6 +115,53 @@ const LoginContainer = props => {
         </Root>
     );
 };
+
+export interface LoginProps
+    extends Omit<HtmlHTMLAttributes<HTMLDivElement>, 'title'> {
+    backgroundImage?: string;
+    children?: ReactNode;
+    classes?: object;
+    className?: string;
+    notification?: ComponentType;
+    staticContext?: StaticContext;
+    theme?: object;
+    title?: TitleComponent;
+}
+
+const PREFIX = 'RaLogin';
+export const LoginClasses = {
+    main: `${PREFIX}-main`,
+    card: `${PREFIX}-card`,
+    avatar: `${PREFIX}-avatar`,
+    icon: `${PREFIX}-icon`,
+};
+
+const Root = styled('div', { name: 'RaLogin' })(({ theme }) => ({
+    [`&.${LoginClasses.main}`]: {
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+        height: '1px',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        backgroundImage:
+            'radial-gradient(circle at 50% 14em, #313264 0%, #00023b 60%, #00023b 100%)',
+    },
+    [`& .${LoginClasses.card}`]: {
+        minWidth: 300,
+        marginTop: '6em',
+    },
+    [`& .${LoginClasses.avatar}`]: {
+        margin: '1em',
+        display: 'flex',
+        justifyContent: 'center',
+    },
+    [`& .${LoginClasses.icon}`]: {
+        backgroundColor: theme.palette.secondary[500],
+    },
+}));
 
 Login.propTypes = {
     backgroundImage: PropTypes.string,
@@ -175,5 +177,3 @@ Login.defaultProps = {
     children: <DefaultLoginForm />,
     notification: DefaultNotification,
 };
-
-export default Login;
