@@ -10,9 +10,7 @@ describe('<PaginationActions />', () => {
                 page={0}
                 rowsPerPage={20}
                 count={15}
-                translate={x => x}
-                onChangePage={() => null}
-                classes={{}}
+                onPageChange={() => null}
             />
         );
         expect(queryAllByRole('button')).toHaveLength(0);
@@ -24,9 +22,7 @@ describe('<PaginationActions />', () => {
                 page={0}
                 rowsPerPage={5}
                 count={15}
-                translate={x => x}
-                onChangePage={() => null}
-                classes={{}}
+                onPageChange={() => null}
             />
         );
         // 1 2 3 next
@@ -39,9 +35,7 @@ describe('<PaginationActions />', () => {
                 page={7}
                 rowsPerPage={1}
                 count={15}
-                translate={x => x}
-                onChangePage={() => null}
-                classes={{}}
+                onPageChange={() => null}
             />
         );
         // prev 1 ... 7 8 9 ... 15 next
