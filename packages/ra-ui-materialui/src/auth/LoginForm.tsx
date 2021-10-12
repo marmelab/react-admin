@@ -10,57 +10,7 @@ import {
 } from '@mui/material';
 import { useTranslate, useLogin, useNotify, useSafeSetState } from 'ra-core';
 
-const PREFIX = 'RaLoginForm';
-
-const classes = {
-    form: `${PREFIX}-form`,
-    input: `${PREFIX}-input`,
-    button: `${PREFIX}-button`,
-    icon: `${PREFIX}-icon`,
-};
-
-const Root = styled('form')(({ theme }) => ({
-    [`& .${classes.form}`]: {
-        padding: '0 1em 1em 1em',
-    },
-
-    [`& .${classes.input}`]: {
-        marginTop: '1em',
-    },
-
-    [`& .${classes.button}`]: {
-        width: '100%',
-    },
-
-    [`& .${classes.icon}`]: {
-        marginRight: theme.spacing(1),
-    },
-}));
-
-interface Props {
-    redirectTo?: string;
-}
-
-interface FormData {
-    username: string;
-    password: string;
-}
-
-const Input = ({
-    meta: { touched, error }, // eslint-disable-line react/prop-types
-    input: inputProps, // eslint-disable-line react/prop-types
-    ...props
-}) => (
-    <TextField
-        error={!!(touched && error)}
-        helperText={touched && error}
-        {...inputProps}
-        {...props}
-        fullWidth
-    />
-);
-
-const LoginForm = (props: Props) => {
+export const LoginForm = (props: LoginFormProps) => {
     const { redirectTo } = props;
     const [loading, setLoading] = useSafeSetState(false);
     const login = useLogin();
@@ -112,8 +62,8 @@ const LoginForm = (props: Props) => {
             validate={validate}
             render={({ handleSubmit }) => (
                 <Root onSubmit={handleSubmit} noValidate>
-                    <div className={classes.form}>
-                        <div className={classes.input}>
+                    <div className={LoginFormClasses.form}>
+                        <div className={LoginFormClasses.input}>
                             <Field
                                 autoFocus
                                 id="username"
@@ -123,7 +73,7 @@ const LoginForm = (props: Props) => {
                                 disabled={loading}
                             />
                         </div>
-                        <div className={classes.input}>
+                        <div className={LoginFormClasses.input}>
                             <Field
                                 id="password"
                                 name="password"
@@ -141,11 +91,11 @@ const LoginForm = (props: Props) => {
                             type="submit"
                             color="primary"
                             disabled={loading}
-                            className={classes.button}
+                            className={LoginFormClasses.button}
                         >
                             {loading && (
                                 <CircularProgress
-                                    className={classes.icon}
+                                    className={LoginFormClasses.icon}
                                     size={18}
                                     thickness={2}
                                 />
@@ -159,8 +109,56 @@ const LoginForm = (props: Props) => {
     );
 };
 
+const PREFIX = 'RaLoginForm';
+
+export const LoginFormClasses = {
+    form: `${PREFIX}-form`,
+    input: `${PREFIX}-input`,
+    button: `${PREFIX}-button`,
+    icon: `${PREFIX}-icon`,
+};
+
+const Root = styled('form', { name: 'RaLoginForm' })(({ theme }) => ({
+    [`& .${LoginFormClasses.form}`]: {
+        padding: '0 1em 1em 1em',
+    },
+
+    [`& .${LoginFormClasses.input}`]: {
+        marginTop: '1em',
+    },
+
+    [`& .${LoginFormClasses.button}`]: {
+        width: '100%',
+    },
+
+    [`& .${LoginFormClasses.icon}`]: {
+        marginRight: theme.spacing(1),
+    },
+}));
+
+export interface LoginFormProps {
+    redirectTo?: string;
+}
+
+interface FormData {
+    username: string;
+    password: string;
+}
+
+const Input = ({
+    meta: { touched, error }, // eslint-disable-line react/prop-types
+    input: inputProps, // eslint-disable-line react/prop-types
+    ...props
+}) => (
+    <TextField
+        error={!!(touched && error)}
+        helperText={touched && error}
+        {...inputProps}
+        {...props}
+        fullWidth
+    />
+);
+
 LoginForm.propTypes = {
     redirectTo: PropTypes.string,
 };
-
-export default LoginForm;
