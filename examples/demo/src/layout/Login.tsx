@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Field, withTypes } from 'react-final-form';
@@ -13,14 +14,26 @@ import {
     TextField,
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { makeStyles } from '@mui/styles';
 import LockIcon from '@mui/icons-material/Lock';
 import { Notification, useTranslate, useLogin, useNotify } from 'react-admin';
 
 import { lightTheme } from './themes';
 
-const useStyles = makeStyles(theme => ({
-    main: {
+const PREFIX = 'LoginWithTheme';
+
+const classes = {
+    main: `${PREFIX}-main`,
+    card: `${PREFIX}-card`,
+    avatar: `${PREFIX}-avatar`,
+    icon: `${PREFIX}-icon`,
+    hint: `${PREFIX}-hint`,
+    form: `${PREFIX}-form`,
+    input: `${PREFIX}-input`,
+    actions: `${PREFIX}-actions`,
+};
+
+const StyledForm = styled('form')(({ theme }) => ({
+    [`& .${classes.main}`]: {
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh',
@@ -30,31 +43,38 @@ const useStyles = makeStyles(theme => ({
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
     },
-    card: {
+
+    [`& .${classes.card}`]: {
         minWidth: 300,
         marginTop: '6em',
     },
-    avatar: {
+
+    [`& .${classes.avatar}`]: {
         margin: '1em',
         display: 'flex',
         justifyContent: 'center',
     },
-    icon: {
+
+    [`& .${classes.icon}`]: {
         backgroundColor: theme.palette.secondary.main,
     },
-    hint: {
+
+    [`& .${classes.hint}`]: {
         marginTop: '1em',
         display: 'flex',
         justifyContent: 'center',
         color: theme.palette.grey[500],
     },
-    form: {
+
+    [`& .${classes.form}`]: {
         padding: '0 1em 1em 1em',
     },
-    input: {
+
+    [`& .${classes.input}`]: {
         marginTop: '1em',
     },
-    actions: {
+
+    [`& .${classes.actions}`]: {
         padding: '0 1em 1em 1em',
     },
 }));
@@ -83,7 +103,7 @@ const { Form } = withTypes<FormValues>();
 const Login = () => {
     const [loading, setLoading] = useState(false);
     const translate = useTranslate();
-    const classes = useStyles();
+
     const notify = useNotify();
     const login = useLogin();
     const location = useLocation<{ nextPathname: string } | null>();
@@ -129,7 +149,7 @@ const Login = () => {
             onSubmit={handleSubmit}
             validate={validate}
             render={({ handleSubmit }) => (
-                <form onSubmit={handleSubmit} noValidate>
+                <StyledForm onSubmit={handleSubmit} noValidate>
                     <div className={classes.main}>
                         <Card className={classes.card}>
                             <div className={classes.avatar}>
@@ -182,7 +202,7 @@ const Login = () => {
                         </Card>
                         <Notification />
                     </div>
-                </form>
+                </StyledForm>
             )}
         />
     );
@@ -194,7 +214,7 @@ Login.propTypes = {
 };
 
 // We need to put the ThemeProvider decoration in another component
-// Because otherwise the useStyles() hook used in Login won't get
+
 // the right theme
 const LoginWithTheme = (props: any) => (
     <ThemeProvider theme={createTheme(lightTheme)}>

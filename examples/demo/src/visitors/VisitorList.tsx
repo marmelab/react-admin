@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     BooleanField,
     Datagrid,
@@ -11,7 +12,6 @@ import {
     SearchInput,
 } from 'react-admin';
 import { useMediaQuery, Theme } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
 
 import SegmentsField from './SegmentsField';
 import SegmentInput from './SegmentInput';
@@ -21,6 +21,24 @@ import MobileGrid from './MobileGrid';
 import VisitorListAside from './VisitorListAside';
 import { ReactElement } from 'react';
 
+const PREFIX = 'VisitorList';
+
+const classes = {
+    nb_commands: `${PREFIX}-nb_commands`,
+    hiddenOnSmallScreens: `${PREFIX}-hiddenOnSmallScreens`,
+};
+
+const StyledList = styled(List)(({ theme }) => ({
+    [`& .${classes.nb_commands}`]: { color: 'purple' },
+
+    [`& .${classes.hiddenOnSmallScreens}`]: {
+        display: 'table-cell',
+        [theme.breakpoints.down('lg')]: {
+            display: 'none',
+        },
+    },
+}));
+
 const visitorFilters = [
     <SearchInput source="q" alwaysOn />,
     <DateInput source="last_seen_gte" />,
@@ -29,24 +47,13 @@ const visitorFilters = [
     <SegmentInput />,
 ];
 
-const useStyles = makeStyles(theme => ({
-    nb_commands: { color: 'purple' },
-    hiddenOnSmallScreens: {
-        display: 'table-cell',
-        [theme.breakpoints.down('lg')]: {
-            display: 'none',
-        },
-    },
-}));
-
 const VisitorList = (props: ListProps): ReactElement => {
-    const classes = useStyles();
     const isXsmall = useMediaQuery<Theme>(theme =>
         theme.breakpoints.down('sm')
     );
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     return (
-        <List
+        <StyledList
             {...props}
             filters={isSmall ? visitorFilters : undefined}
             sort={{ field: 'last_seen', order: 'DESC' }}
@@ -76,7 +83,7 @@ const VisitorList = (props: ListProps): ReactElement => {
                     />
                 </Datagrid>
             )}
-        </List>
+        </StyledList>
     );
 };
 

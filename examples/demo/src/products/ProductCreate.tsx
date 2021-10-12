@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     Create,
     FormTab,
@@ -11,24 +12,34 @@ import {
     CreateProps,
 } from 'react-admin';
 import { InputAdornment } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
 import RichTextInput from 'ra-input-rich-text';
 
-export const styles = {
-    price: { width: '7em' },
-    width: { width: '7em' },
-    height: { width: '7em' },
-    stock: { width: '7em' },
-    widthFormGroup: { display: 'inline-block' },
-    heightFormGroup: { display: 'inline-block', marginLeft: 32 },
+const PREFIX = 'ProductCreate';
+
+const classes = {
+    price: `${PREFIX}-price`,
+    width: `${PREFIX}-width`,
+    height: `${PREFIX}-height`,
+    stock: `${PREFIX}-stock`,
+    widthFormGroup: `${PREFIX}-widthFormGroup`,
+    heightFormGroup: `${PREFIX}-heightFormGroup`,
 };
 
-const useStyles = makeStyles(styles);
+const StyledCreate = styled(Create)({
+    [`& .${classes.price}`]: { width: '7em' },
+    [`& .${classes.width}`]: { width: '7em' },
+    [`& .${classes.height}`]: { width: '7em' },
+    [`& .${classes.stock}`]: { width: '7em' },
+    [`& .${classes.widthFormGroup}`]: { display: 'inline-block' },
+    [`& .${classes.heightFormGroup}`]: {
+        display: 'inline-block',
+        marginLeft: 32,
+    },
+});
 
 const ProductCreate = (props: CreateProps) => {
-    const classes = useStyles();
     return (
-        <Create {...props}>
+        <StyledCreate {...props}>
             <TabbedForm>
                 <FormTab label="resources.products.tabs.image">
                     <TextInput
@@ -103,7 +114,7 @@ const ProductCreate = (props: CreateProps) => {
                     <RichTextInput source="description" label="" />
                 </FormTab>
             </TabbedForm>
-        </Create>
+        </StyledCreate>
     );
 };
 

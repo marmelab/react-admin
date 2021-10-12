@@ -1,15 +1,22 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
-import { makeStyles } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 import { useTranslate } from 'react-admin';
 import { stringify } from 'query-string';
 
 import visitors from '../visitors';
 
-const useStyles = makeStyles({
-    icon: { paddingRight: '0.5em' },
-    link: {
+const PREFIX = 'LinkToRelatedCustomers';
+
+const classes = {
+    icon: `${PREFIX}-icon`,
+    link: `${PREFIX}-link`,
+};
+
+const StyledButton = styled(Button)({
+    [`& .${classes.icon}`]: { paddingRight: '0.5em' },
+    [`&.${classes.link}`]: {
         display: 'inline-flex',
         alignItems: 'center',
     },
@@ -17,11 +24,12 @@ const useStyles = makeStyles({
 
 const LinkToRelatedCustomers = ({ segment }: { segment: string }) => {
     const translate = useTranslate();
-    const classes = useStyles();
+
     return (
-        <Button
+        <StyledButton
             size="small"
             color="primary"
+            // @ts-ignore
             component={Link}
             to={{
                 pathname: '/customers',
@@ -33,7 +41,7 @@ const LinkToRelatedCustomers = ({ segment }: { segment: string }) => {
         >
             <visitors.icon className={classes.icon} />
             {translate('resources.segments.fields.customers')}
-        </Button>
+        </StyledButton>
     );
 };
 

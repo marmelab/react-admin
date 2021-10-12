@@ -1,14 +1,22 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { Box, Card, CardActions, Button, Typography } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import CodeIcon from '@mui/icons-material/Code';
-import { makeStyles } from '@mui/material/styles';
 import { useTranslate } from 'react-admin';
 
 import publishArticleImage from './welcome_illustration.svg';
 
-const useStyles = makeStyles(theme => ({
-    root: {
+const PREFIX = 'Welcome';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    media: `${PREFIX}-media`,
+    actions: `${PREFIX}-actions`,
+};
+
+const StyledCard = styled(Card)(({ theme }) => ({
+    [`&.${classes.root}`]: {
         background:
             theme.palette.mode === 'dark'
                 ? '#535353'
@@ -19,11 +27,13 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(2),
         marginBottom: '1em',
     },
-    media: {
+
+    [`& .${classes.media}`]: {
         background: `url(${publishArticleImage}) top right / cover`,
         marginLeft: 'auto',
     },
-    actions: {
+
+    [`& .${classes.actions}`]: {
         [theme.breakpoints.down('lg')]: {
             padding: 0,
             flexWrap: 'wrap',
@@ -38,9 +48,9 @@ const useStyles = makeStyles(theme => ({
 
 const Welcome = () => {
     const translate = useTranslate();
-    const classes = useStyles();
+
     return (
-        <Card className={classes.root}>
+        <StyledCard className={classes.root}>
             <Box display="flex">
                 <Box flex="1">
                     <Typography variant="h5" component="h2" gutterBottom>
@@ -77,7 +87,7 @@ const Welcome = () => {
                     overflow="hidden"
                 />
             </Box>
-        </Card>
+        </StyledCard>
     );
 };
 

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     Identifier,
     Datagrid,
@@ -6,26 +7,34 @@ import {
     TextField,
     DatagridProps,
 } from 'react-admin';
-import { makeStyles } from '@mui/material/styles';
 
 import ProductReferenceField from '../products/ProductReferenceField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from './StarRatingField';
 import rowStyle from './rowStyle';
 
-const useListStyles = makeStyles({
-    headerRow: {
+const PREFIX = 'ReviewListDesktop';
+
+const classes = {
+    headerRow: `${PREFIX}-headerRow`,
+    headerCell: `${PREFIX}-headerCell`,
+    rowCell: `${PREFIX}-rowCell`,
+    comment: `${PREFIX}-comment`,
+};
+
+const StyledDatagrid = styled(Datagrid)({
+    [`& .${classes.headerRow}`]: {
         borderLeftColor: 'transparent',
         borderLeftWidth: 5,
         borderLeftStyle: 'solid',
     },
-    headerCell: {
+    [`& .${classes.headerCell}`]: {
         padding: '6px 8px 6px 8px',
     },
-    rowCell: {
+    [`& .${classes.rowCell}`]: {
         padding: '6px 8px 6px 8px',
     },
-    comment: {
+    [`& .${classes.comment}`]: {
         maxWidth: '18em',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
@@ -41,9 +50,8 @@ const ReviewListDesktop = ({
     selectedRow,
     ...props
 }: ReviewListDesktopProps) => {
-    const classes = useListStyles();
     return (
-        <Datagrid
+        <StyledDatagrid
             rowClick="edit"
             // @ts-ignore
             rowStyle={rowStyle(selectedRow)}
@@ -61,7 +69,7 @@ const ReviewListDesktop = ({
             <StarRatingField size="small" />
             <TextField source="comment" cellClassName={classes.comment} />
             <TextField source="status" />
-        </Datagrid>
+        </StyledDatagrid>
     );
 };
 

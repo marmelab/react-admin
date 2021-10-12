@@ -1,9 +1,9 @@
 // in src/comments.js
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
-import { makeStyles } from '@mui/material/styles';
 import {
     DateField,
     EditButton,
@@ -17,21 +17,33 @@ import ColoredNumberField from './ColoredNumberField';
 import SegmentsField from './SegmentsField';
 import { Customer } from '../types';
 
-const useStyles = makeStyles(theme => ({
-    root: { margin: '1em' },
-    card: {
+const PREFIX = 'MobileGrid';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    card: `${PREFIX}-card`,
+    cardTitleContent: `${PREFIX}-cardTitleContent`,
+    cardContent: `${PREFIX}-cardContent`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`&.${classes.root}`]: { margin: '1em' },
+
+    [`& .${classes.card}`]: {
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
         margin: '0.5rem 0',
     },
-    cardTitleContent: {
+
+    [`& .${classes.cardTitleContent}`]: {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
     },
-    cardContent: {
+
+    [`& .${classes.cardContent}`]: {
         ...theme.typography.body1,
         display: 'flex',
         flexDirection: 'column',
@@ -46,14 +58,13 @@ interface Props {
 
 const MobileGrid = ({ ids, data, basePath }: Props) => {
     const translate = useTranslate();
-    const classes = useStyles();
 
     if (!ids || !data) {
         return null;
     }
 
     return (
-        <div className={classes.root}>
+        <Root className={classes.root}>
             {ids.map(id => (
                 <Card key={id} className={classes.card}>
                     <CardHeader
@@ -108,7 +119,7 @@ const MobileGrid = ({ ids, data, basePath }: Props) => {
                     )}
                 </Card>
             ))}
-        </div>
+        </Root>
     );
 };
 

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     useEditController,
     EditContextProvider,
@@ -9,7 +10,6 @@ import {
     EditProps,
 } from 'react-admin';
 import { IconButton, Typography } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 
 import ProductReferenceField from '../products/ProductReferenceField';
@@ -18,17 +18,28 @@ import StarRatingField from './StarRatingField';
 import ReviewEditToolbar from './ReviewEditToolbar';
 import { Review } from '../types';
 
-const useStyles = makeStyles(theme => ({
-    root: {
+const PREFIX = 'ReviewEdit';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    title: `${PREFIX}-title`,
+    form: `${PREFIX}-form`,
+    inlineField: `${PREFIX}-inlineField`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`&.${classes.root}`]: {
         paddingTop: 40,
     },
-    title: {
+
+    [`& .${classes.title}`]: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         margin: '1em',
     },
-    form: {
+
+    [`& .${classes.form}`]: {
         [theme.breakpoints.up('xs')]: {
             width: 400,
         },
@@ -37,7 +48,8 @@ const useStyles = makeStyles(theme => ({
             marginTop: -30,
         },
     },
-    inlineField: {
+
+    [`& .${classes.inlineField}`]: {
         display: 'inline-block',
         width: '50%',
     },
@@ -48,14 +60,13 @@ interface Props extends EditProps {
 }
 
 const ReviewEdit = ({ onCancel, ...props }: Props) => {
-    const classes = useStyles();
     const controllerProps = useEditController<Review>(props);
     const translate = useTranslate();
     if (!controllerProps.record) {
         return null;
     }
     return (
-        <div className={classes.root}>
+        <Root className={classes.root}>
             <div className={classes.title}>
                 <Typography variant="h6">
                     {translate('resources.reviews.detail')}
@@ -94,7 +105,7 @@ const ReviewEdit = ({ onCancel, ...props }: Props) => {
                     />
                 </SimpleForm>
             </EditContextProvider>
-        </div>
+        </Root>
     );
 };
 

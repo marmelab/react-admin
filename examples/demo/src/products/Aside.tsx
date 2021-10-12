@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import inflection from 'inflection';
 import { Card, CardContent } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
 import LocalOfferIcon from '@mui/icons-material/LocalOfferOutlined';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
@@ -14,8 +14,14 @@ import {
 
 import { Category } from '../types';
 
-const useStyles = makeStyles(theme => ({
-    root: {
+const PREFIX = 'Aside';
+
+const classes = {
+    root: `${PREFIX}-root`,
+};
+
+const StyledCard = styled(Card)(({ theme }) => ({
+    [`&.${classes.root}`]: {
         [theme.breakpoints.up('sm')]: {
             width: '15em',
             marginRight: '1em',
@@ -34,9 +40,9 @@ const Aside = () => {
         { field: 'name', order: 'ASC' },
         {}
     );
-    const classes = useStyles();
+
     return (
-        <Card className={classes.root}>
+        <StyledCard className={classes.root}>
             <CardContent>
                 <FilterLiveSearch />
 
@@ -131,7 +137,7 @@ const Aside = () => {
                         ))}
                 </FilterList>
             </CardContent>
-        </Card>
+        </StyledCard>
     );
 };
 

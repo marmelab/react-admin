@@ -1,8 +1,8 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import LabelIcon from '@mui/icons-material/Label';
-import { makeStyles } from '@mui/material/styles';
 import classnames from 'classnames';
 import {
     useTranslate,
@@ -21,6 +21,33 @@ import reviews from '../reviews';
 import SubMenu from './SubMenu';
 import { AppState } from '../types';
 
+const PREFIX = 'Menu';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    open: `${PREFIX}-open`,
+    closed: `${PREFIX}-closed`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`&.${classes.root}`]: {
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(1),
+        transition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+    },
+
+    [`&.${classes.open}`]: {
+        width: 200,
+    },
+
+    [`&.${classes.closed}`]: {
+        width: 55,
+    },
+}));
+
 type MenuName = 'menuCatalog' | 'menuSales' | 'menuCustomers';
 
 const Menu = ({ dense = false }: MenuProps) => {
@@ -32,14 +59,13 @@ const Menu = ({ dense = false }: MenuProps) => {
     const translate = useTranslate();
     const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
     useSelector((state: AppState) => state.theme); // force rerender on theme change
-    const classes = useStyles();
 
     const handleToggle = (menu: MenuName) => {
         setState(state => ({ ...state, [menu]: !state[menu] }));
     };
 
     return (
-        <div
+        <Root
             className={classnames(classes.root, {
                 [classes.open]: open,
                 [classes.closed]: !open,
@@ -148,25 +174,8 @@ const Menu = ({ dense = false }: MenuProps) => {
                 leftIcon={<reviews.icon />}
                 dense={dense}
             />
-        </div>
+        </Root>
     );
 };
-
-const useStyles = makeStyles(theme => ({
-    root: {
-        marginTop: theme.spacing(1),
-        marginBottom: theme.spacing(1),
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-    },
-    open: {
-        width: 200,
-    },
-    closed: {
-        width: 55,
-    },
-}));
 
 export default Menu;
