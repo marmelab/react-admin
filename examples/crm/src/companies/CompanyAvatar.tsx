@@ -1,24 +1,33 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { Avatar } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
 import clsx from 'clsx';
 
 import { Company } from '../types';
 
-const useStyles = makeStyles({
-    avatar: {
+const PREFIX = 'CompanyAvatar';
+
+const classes = {
+    avatar: `${PREFIX}-avatar`,
+    img: `${PREFIX}-img`,
+    small: `${PREFIX}-small`,
+    large: `${PREFIX}-large`,
+};
+
+const StyledAvatar = styled(Avatar)({
+    [`& .${classes.avatar}`]: {
         width: 60,
         height: 60,
         backgroundColor: 'aliceblue',
     },
-    img: {
+    [`& .${classes.img}`]: {
         objectFit: 'contain',
     },
-    small: {
+    [`& .${classes.small}`]: {
         width: 20,
         height: 20,
     },
-    large: {
+    [`& .${classes.large}`]: {
         width: 40,
         height: 40,
     },
@@ -31,14 +40,13 @@ export const CompanyAvatar = ({
     record?: Company;
     size?: 'small' | 'large';
 }) => {
-    const classes = useStyles();
     if (!record) return null;
     return (
-        <Avatar
+        <StyledAvatar
             src={process.env.PUBLIC_URL + record.logo}
             alt={record.name}
             className={classes.avatar}
-            imgProps={{ className: clsx(classes.img, classes[size]) }}
+            imgProps={{ className: clsx(classes.img, size) }}
         />
     );
 };

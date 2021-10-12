@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     CreateButton,
     ExportButton,
@@ -11,13 +12,24 @@ import {
     useGetIdentity,
 } from 'react-admin';
 import { Route } from 'react-router';
-import { makeStyles } from '@mui/material/styles';
 
 import { DealListContent } from './DealListContent';
 import { DealCreate } from './DealCreate';
 import { DealShow } from './DealShow';
 import { OnlyMineInput } from './OnlyMineInput';
 import { typeChoices } from './types';
+
+const PREFIX = 'DealList';
+
+const classes = {
+    createButton: `${PREFIX}-createButton`,
+};
+
+const StyledTopToolbar = styled(TopToolbar)(({ theme }) => ({
+    [`& .${classes.createButton}`]: {
+        marginLeft: theme.spacing(2),
+    },
+}));
 
 export const DealList = (props: ListProps) => {
     const { identity } = useGetIdentity();
@@ -55,15 +67,9 @@ const dealFilters = [
     <SelectInput source="type" choices={typeChoices} />,
 ];
 
-const useActionStyles = makeStyles(theme => ({
-    createButton: {
-        marginLeft: theme.spacing(2),
-    },
-}));
 const DealActions = () => {
-    const classes = useActionStyles();
     return (
-        <TopToolbar>
+        <StyledTopToolbar>
             <FilterButton />
             <ExportButton />
             <CreateButton
@@ -72,6 +78,6 @@ const DealActions = () => {
                 label="New Deal"
                 className={classes.createButton}
             />
-        </TopToolbar>
+        </StyledTopToolbar>
     );
 };

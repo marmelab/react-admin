@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { useState, FormEvent } from 'react';
 import {
     useGetMany,
@@ -19,7 +20,6 @@ import {
     MenuItem,
     Menu,
 } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import EditIcon from '@mui/icons-material/Edit';
 
@@ -212,8 +212,14 @@ export const TagsListEdit = ({ record }: { record: Contact }) => {
     );
 };
 
-const useStyles = makeStyles({
-    root: {
+const PREFIX = 'TagsListEdit';
+
+const classes = {
+    root: `${PREFIX}-root`,
+};
+
+const StyledRoundButton = styled('button')({
+    [`&.${classes.root}`]: {
         width: 30,
         height: 30,
         borderRadius: 15,
@@ -222,17 +228,14 @@ const useStyles = makeStyles({
     },
 });
 
-const RoundButton = ({ color, handleClick, selected }: any) => {
-    const classes = useStyles();
-    return (
-        <button
-            type="button"
-            className={classes.root}
-            style={{
-                backgroundColor: color,
-                border: selected ? '2px solid grey' : 'none',
-            }}
-            onClick={handleClick}
-        />
-    );
-};
+const RoundButton = ({ color, handleClick, selected }: any) => (
+    <StyledRoundButton
+        type="button"
+        className={classes.root}
+        style={{
+            backgroundColor: color,
+            border: selected ? '2px solid grey' : 'none',
+        }}
+        onClick={handleClick}
+    />
+);

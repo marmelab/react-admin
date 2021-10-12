@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { useState, FormEvent } from 'react';
 import {
     useRecordContext,
@@ -11,21 +12,30 @@ import {
     useResourceContext,
 } from 'react-admin';
 import { TextField as TextInput, Button } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
 
 import { StatusSelector } from './StatusSelector';
 
-const useStyles = makeStyles(theme => ({
-    root: {
+const PREFIX = 'NewNote';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    toolbar: `${PREFIX}-toolbar`,
+    small: `${PREFIX}-small`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`&.${classes.root}`]: {
         marginTop: theme.spacing(4),
         marginBottom: theme.spacing(1),
     },
-    toolbar: {
+
+    [`& .${classes.toolbar}`]: {
         display: 'flex',
         justifyContent: 'space-between',
         marginTop: theme.spacing(1),
     },
-    small: {
+
+    [`& .${classes.small}`]: {
         marginRight: '1em',
         '& .MuiFilledInput-input': {
             paddingTop: 10,
@@ -40,7 +50,6 @@ export const NewNote = ({
     showStatus?: boolean;
     reference: 'contacts' | 'deals';
 }) => {
-    const classes = useStyles();
     const record = useRecordContext();
     const resource = useResourceContext();
     const [text, setText] = useState('');
@@ -85,7 +94,7 @@ export const NewNote = ({
         return false;
     };
     return (
-        <div className={classes.root}>
+        <Root className={classes.root}>
             <form onSubmit={handleSubmit}>
                 <TextInput
                     label="Add a note"
@@ -137,7 +146,7 @@ export const NewNote = ({
                     </Button>
                 </div>
             </form>
-        </div>
+        </Root>
     );
 };
 
