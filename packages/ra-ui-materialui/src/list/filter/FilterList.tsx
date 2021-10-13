@@ -40,7 +40,7 @@ import { useTranslate } from 'ra-core';
  *     </Card>
  * );
  */
-const FilterList = (props: {
+export const FilterList = (props: {
     label: string;
     icon: ReactNode;
     children: ReactNode;
@@ -59,5 +59,3 @@ const FilterList = (props: {
         </>
     );
 };
-
-export default FilterList;

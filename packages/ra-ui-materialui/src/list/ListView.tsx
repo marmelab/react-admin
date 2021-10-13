@@ -14,57 +14,13 @@ import {
 } from 'ra-core';
 
 import { Title, TitlePropType } from '../layout/Title';
-import ListToolbar from './ListToolbar';
-import DefaultPagination from './pagination/Pagination';
+import { ListToolbar } from './ListToolbar';
+import { Pagination as DefaultPagination } from './pagination';
 import { BulkDeleteButton } from '../button';
-import BulkActionsToolbar from './BulkActionsToolbar';
-import DefaultActions from './ListActions';
+import { BulkActionsToolbar } from './BulkActionsToolbar';
+import { ListActions as DefaultActions } from './ListActions';
 import { Empty } from './Empty';
 import { ListProps } from '../types';
-
-const PREFIX = 'RaList';
-
-const classes = {
-    root: `${PREFIX}-root`,
-    main: `${PREFIX}-main`,
-    content: `${PREFIX}-content`,
-    bulkActionsDisplayed: `${PREFIX}-bulkActionsDisplayed`,
-    actions: `${PREFIX}-actions`,
-    noResults: `${PREFIX}-noResults`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`&.${classes.root}`]: {},
-
-    [`& .${classes.main}`]: {
-        display: 'flex',
-    },
-
-    [`& .${classes.content}`]: {
-        marginTop: 0,
-        transition: theme.transitions.create('margin-top'),
-        position: 'relative',
-        flex: '1 1 auto',
-        [theme.breakpoints.down('sm')]: {
-            boxShadow: 'none',
-        },
-        overflow: 'inherit',
-    },
-
-    [`& .${classes.bulkActionsDisplayed}`]: {
-        marginTop: -theme.spacing(8),
-        transition: theme.transitions.create('margin-top'),
-    },
-
-    [`& .${classes.actions}`]: {
-        zIndex: 2,
-        display: 'flex',
-        justifyContent: 'flex-end',
-        flexWrap: 'wrap',
-    },
-
-    [`& .${classes.noResults}`]: { padding: 20 },
-}));
 
 export const ListView = (props: ListViewProps) => {
     const {
@@ -104,10 +60,11 @@ export const ListView = (props: ListViewProps) => {
                     exporter={exporter} // deprecated, use ListContext instead, to be removed in v4
                 />
             )}
-            <div className={classes.main}>
+            <div className={ListClasses.main}>
                 <Content
-                    className={classnames(classes.content, {
-                        [classes.bulkActionsDisplayed]: selectedIds.length > 0,
+                    className={classnames(ListClasses.content, {
+                        [ListClasses.bulkActionsDisplayed]:
+                            selectedIds.length > 0,
                     })}
                     key={version}
                 >
@@ -134,7 +91,7 @@ export const ListView = (props: ListViewProps) => {
 
     return (
         <Root
-            className={classnames('list-page', classes.root, className)}
+            className={classnames('list-page', ListClasses.root, className)}
             {...sanitizeRestProps(rest)}
         >
             <Title title={title} defaultTitle={defaultTitle} />
@@ -269,4 +226,46 @@ const sanitizeRestProps: (
     ...rest
 }) => rest;
 
-export default ListView;
+const PREFIX = 'RaList';
+
+export const ListClasses = {
+    root: `${PREFIX}-root`,
+    main: `${PREFIX}-main`,
+    content: `${PREFIX}-content`,
+    bulkActionsDisplayed: `${PREFIX}-bulkActionsDisplayed`,
+    actions: `${PREFIX}-actions`,
+    noResults: `${PREFIX}-noResults`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`&.${ListClasses.root}`]: {},
+
+    [`& .${ListClasses.main}`]: {
+        display: 'flex',
+    },
+
+    [`& .${ListClasses.content}`]: {
+        marginTop: 0,
+        transition: theme.transitions.create('margin-top'),
+        position: 'relative',
+        flex: '1 1 auto',
+        [theme.breakpoints.down('sm')]: {
+            boxShadow: 'none',
+        },
+        overflow: 'inherit',
+    },
+
+    [`& .${ListClasses.bulkActionsDisplayed}`]: {
+        marginTop: -theme.spacing(8),
+        transition: theme.transitions.create('margin-top'),
+    },
+
+    [`& .${ListClasses.actions}`]: {
+        zIndex: 2,
+        display: 'flex',
+        justifyContent: 'flex-end',
+        flexWrap: 'wrap',
+    },
+
+    [`& .${ListClasses.noResults}`]: { padding: 20 },
+}));

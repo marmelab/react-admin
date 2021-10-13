@@ -4,7 +4,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { useTranslate } from 'ra-core';
 
-const PaginationLimit = () => {
+export const PaginationLimit = memo(() => {
     const translate = useTranslate();
     return (
         <CardContent>
@@ -13,6 +13,4 @@ const PaginationLimit = () => {
             </Typography>
         </CardContent>
     );
-};
-
-export default memo(PaginationLimit);
+});

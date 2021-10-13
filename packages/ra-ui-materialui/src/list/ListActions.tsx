@@ -15,7 +15,7 @@ import { ToolbarProps } from '@mui/material';
 import TopToolbar from '../layout/TopToolbar';
 import { CreateButton, ExportButton } from '../button';
 import { FilterContext } from './FilterContext';
-import FilterButton from './filter/FilterButton';
+import { FilterButton } from './filter';
 
 /**
  * Action Toolbar for the List view
@@ -45,7 +45,7 @@ import FilterButton from './filter/FilterButton';
  *         </List>
  *     );
  */
-const ListActions = (props: ListActionsProps) => {
+export const ListActions = (props: ListActionsProps) => {
     const { className, exporter, filters: filtersProp, ...rest } = props;
     const {
         currentSort,
@@ -123,5 +123,3 @@ export interface ListActionsProps extends ToolbarProps {
     showFilter?: (filterName: string, defaultValue: any) => void;
     total?: number;
 }
-
-export default ListActions;

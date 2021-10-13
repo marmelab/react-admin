@@ -11,7 +11,7 @@ import {
     ReferenceManyFieldView,
 } from './ReferenceManyField';
 import { TextField } from './TextField';
-import SingleFieldList from '../list/SingleFieldList';
+import { SingleFieldList } from '../list/SingleFieldList';
 
 const theme = createTheme();
 

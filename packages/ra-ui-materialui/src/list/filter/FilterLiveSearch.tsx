@@ -22,7 +22,7 @@ import { TextInput } from '../../input';
  *     </Card>
  * );
  */
-const FilterLiveSearch = (props: { source?: string }) => {
+export const FilterLiveSearch = memo((props: { source?: string }) => {
     const { source = 'q', ...rest } = props;
     const { filterValues, setFilters } = useListFilterContext();
     const translate = useTranslate();
@@ -66,6 +66,4 @@ const FilterLiveSearch = (props: { source?: string }) => {
             )}
         </Form>
     );
-};
-
-export default memo(FilterLiveSearch);
+});

@@ -11,7 +11,7 @@ import {
     ReferenceArrayFieldView,
 } from './ReferenceArrayField';
 import { TextField } from './TextField';
-import SingleFieldList from '../list/SingleFieldList';
+import { SingleFieldList } from '../list';
 
 const theme = createTheme({});
 

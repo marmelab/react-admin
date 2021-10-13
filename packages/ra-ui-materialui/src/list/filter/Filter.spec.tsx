@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import { ListContext } from 'ra-core';
 
 import { TextInput } from '../../input';
-import Filter from './Filter';
+import { Filter } from './Filter';
 
 describe('<Filter />', () => {
     describe('With form context', () => {

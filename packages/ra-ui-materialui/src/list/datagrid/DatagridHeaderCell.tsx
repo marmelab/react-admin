@@ -12,21 +12,6 @@ import {
     useResourceContext,
 } from 'ra-core';
 
-const PREFIX = 'RaDatagridHeaderCell';
-
-const classes = {
-    icon: `${PREFIX}-icon`,
-};
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`& .MuiSvgIcon-root`]: {
-        display: 'none',
-    },
-    [`& .Mui-active .MuiSvgIcon-root`]: {
-        display: 'inline',
-    },
-}));
-
 export const DatagridHeaderCell = (
     props: DatagridHeaderCellProps
 ): JSX.Element => {
@@ -71,7 +56,7 @@ export const DatagridHeaderCell = (
                         data-field={field.props.sortBy || field.props.source}
                         data-order={field.props.sortByOrder || 'ASC'}
                         onClick={updateSort}
-                        classes={classes}
+                        classes={DatagridHeaderCellClasses}
                     >
                         <FieldTitle
                             label={field.props.label}
@@ -122,3 +107,18 @@ export default memo(
         props.isSorting === nextProps.isSorting &&
         props.resource === nextProps.resource
 );
+
+const PREFIX = 'RaDatagridHeaderCell';
+
+export const DatagridHeaderCellClasses = {
+    icon: `${PREFIX}-icon`,
+};
+
+const StyledTableCell = styled(TableCell, { name: PREFIX })(({ theme }) => ({
+    [`& .MuiSvgIcon-root`]: {
+        display: 'none',
+    },
+    [`& .Mui-active .MuiSvgIcon-root`]: {
+        display: 'inline',
+    },
+}));
