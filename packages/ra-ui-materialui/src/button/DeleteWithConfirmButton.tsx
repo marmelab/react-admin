@@ -22,7 +22,7 @@ import {
     useTranslate,
 } from 'ra-core';
 
-import Confirm from '../layout/Confirm';
+import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
 
 export const DeleteWithConfirmButton = (

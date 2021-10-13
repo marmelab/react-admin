@@ -5,31 +5,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useTranslate } from 'ra-core';
 import { useToggleSidebar } from './useToggleSidebar';
 
-const PREFIX = 'RaSidebarToggleButton';
-
-const classes = {
-    menuButtonIconClosed: `${PREFIX}-menuButtonIconClosed`,
-    menuButtonIconOpen: `${PREFIX}-menuButtonIconOpen`,
-};
-
-const StyledIconButton = styled(IconButton)(({ theme }) => ({
-    [`& .${classes.menuButtonIconClosed}`]: {
-        transition: theme.transitions.create(['transform'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        transform: 'rotate(0deg)',
-    },
-
-    [`& .${classes.menuButtonIconOpen}`]: {
-        transition: theme.transitions.create(['transform'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        transform: 'rotate(180deg)',
-    },
-}));
-
 /**
  * A button that toggles the sidebar. Used by default in the <AppBar>.
  * @param props The component props
@@ -61,8 +36,8 @@ export const SidebarToggleButton = (props: SidebarToggleButtonProps) => {
                 <MenuIcon
                     classes={{
                         root: open
-                            ? classes.menuButtonIconOpen
-                            : classes.menuButtonIconClosed,
+                            ? SidebarToggleButtonClasses.menuButtonIconOpen
+                            : SidebarToggleButtonClasses.menuButtonIconClosed,
                     }}
                 />
             </StyledIconButton>
@@ -73,3 +48,28 @@ export const SidebarToggleButton = (props: SidebarToggleButtonProps) => {
 export type SidebarToggleButtonProps = {
     className?: string;
 };
+
+const PREFIX = 'RaSidebarToggleButton';
+
+export const SidebarToggleButtonClasses = {
+    menuButtonIconClosed: `${PREFIX}-menuButtonIconClosed`,
+    menuButtonIconOpen: `${PREFIX}-menuButtonIconOpen`,
+};
+
+const StyledIconButton = styled(IconButton, { name: PREFIX })(({ theme }) => ({
+    [`& .${SidebarToggleButtonClasses.menuButtonIconClosed}`]: {
+        transition: theme.transitions.create(['transform'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        transform: 'rotate(0deg)',
+    },
+
+    [`& .${SidebarToggleButtonClasses.menuButtonIconOpen}`]: {
+        transition: theme.transitions.create(['transform'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        transform: 'rotate(180deg)',
+    },
+}));

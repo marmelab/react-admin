@@ -13,40 +13,7 @@ import {
 } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 
-const PREFIX = 'RaUserMenu';
-
-const classes = {
-    user: `${PREFIX}-user`,
-    userButton: `${PREFIX}-userButton`,
-    avatar: `${PREFIX}-avatar`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`&.${classes.user}`]: {},
-
-    [`& .${classes.userButton}`]: {
-        textTransform: 'none',
-    },
-
-    [`& .${classes.avatar}`]: {
-        width: theme.spacing(4),
-        height: theme.spacing(4),
-    },
-}));
-
-const defaultIcon = <AccountCircle />;
-
-const AnchorOrigin: PopoverOrigin = {
-    vertical: 'bottom',
-    horizontal: 'right',
-};
-
-const TransformOrigin: PopoverOrigin = {
-    vertical: 'top',
-    horizontal: 'right',
-};
-
-const UserMenu = (props: UserMenuProps) => {
+export const UserMenu = (props: UserMenuProps) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const translate = useTranslate();
     const { loaded, identity } = useGetIdentity();
@@ -65,16 +32,16 @@ const UserMenu = (props: UserMenuProps) => {
     const handleClose = () => setAnchorEl(null);
 
     return (
-        <Root className={classes.user}>
+        <Root className={UserMenuClasses.user}>
             {loaded && identity?.fullName ? (
                 <Button
                     aria-label={label && translate(label, { _: label })}
-                    className={classes.userButton}
+                    className={UserMenuClasses.userButton}
                     color="inherit"
                     startIcon={
                         identity.avatar ? (
                             <Avatar
-                                className={classes.avatar}
+                                className={UserMenuClasses.avatar}
                                 src={identity.avatar}
                                 alt={identity.fullName}
                             />
@@ -138,4 +105,35 @@ export interface UserMenuProps {
     icon?: React.ReactNode;
 }
 
-export default UserMenu;
+const PREFIX = 'RaUserMenu';
+
+export const UserMenuClasses = {
+    user: `${PREFIX}-user`,
+    userButton: `${PREFIX}-userButton`,
+    avatar: `${PREFIX}-avatar`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`&.${UserMenuClasses.user}`]: {},
+
+    [`& .${UserMenuClasses.userButton}`]: {
+        textTransform: 'none',
+    },
+
+    [`& .${UserMenuClasses.avatar}`]: {
+        width: theme.spacing(4),
+        height: theme.spacing(4),
+    },
+}));
+
+const defaultIcon = <AccountCircle />;
+
+const AnchorOrigin: PopoverOrigin = {
+    vertical: 'bottom',
+    horizontal: 'right',
+};
+
+const TransformOrigin: PopoverOrigin = {
+    vertical: 'top',
+    horizontal: 'right',
+};

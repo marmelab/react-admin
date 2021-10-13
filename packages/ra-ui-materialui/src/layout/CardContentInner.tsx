@@ -5,28 +5,6 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import CardContent from '@mui/material/CardContent';
 
-const PREFIX = 'RaCardContentInner';
-
-const classes = {
-    root: `${PREFIX}-root`,
-};
-
-const Root = styled(CardContent)(({ theme }) => ({
-    [`&.${classes.root}`]: {
-        paddingTop: 0,
-        paddingBottom: 0,
-        '&:first-of-type': {
-            paddingTop: 16,
-        },
-        '&:last-child': {
-            paddingBottom: 16,
-            [theme.breakpoints.only('xs')]: {
-                paddingBottom: 70,
-            },
-        },
-    },
-}));
-
 /**
  * Overrides material-ui CardContent to allow inner content
  *
@@ -34,11 +12,13 @@ const Root = styled(CardContent)(({ theme }) => ({
  * padding double the spacing between each CardContent, leading to too much
  * wasted space. Use this component as a CardContent alternative.
  */
-const CardContentInner = (props: CardContentInnerProps): JSX.Element => {
+export const CardContentInner = (props: CardContentInnerProps): JSX.Element => {
     const { className, children } = props;
 
     return (
-        <Root className={classnames(classes.root, className)}>{children}</Root>
+        <Root className={classnames(CardContentInnerClasses.root, className)}>
+            {children}
+        </Root>
     );
 };
 
@@ -53,4 +33,24 @@ export interface CardContentInnerProps {
     children: ReactNode;
 }
 
-export default CardContentInner;
+const PREFIX = 'RaCardContentInner';
+
+export const CardContentInnerClasses = {
+    root: `${PREFIX}-root`,
+};
+
+const Root = styled(CardContent, { name: PREFIX })(({ theme }) => ({
+    [`&.${CardContentInnerClasses.root}`]: {
+        paddingTop: 0,
+        paddingBottom: 0,
+        '&:first-of-type': {
+            paddingTop: 16,
+        },
+        '&:last-child': {
+            paddingBottom: 16,
+            [theme.breakpoints.only('xs')]: {
+                paddingBottom: 70,
+            },
+        },
+    },
+}));

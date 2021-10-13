@@ -15,67 +15,9 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import History from '@mui/icons-material/History';
 import { useTranslate } from 'ra-core';
 
-import Title, { TitlePropType } from './Title';
+import { Title, TitlePropType } from './Title';
 
-const PREFIX = 'RaError';
-
-const classes = {
-    container: `${PREFIX}-container`,
-    title: `${PREFIX}-title`,
-    icon: `${PREFIX}-icon`,
-    panel: `${PREFIX}-panel`,
-    panelDetails: `${PREFIX}-panelDetails`,
-    toolbar: `${PREFIX}-toolbar`,
-    advice: `${PREFIX}-advice`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`&.${classes.container}`]: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        [theme.breakpoints.down('md')]: {
-            padding: '1em',
-        },
-        fontFamily: 'Roboto, sans-serif',
-        opacity: 0.5,
-    },
-
-    [`& .${classes.title}`]: {
-        display: 'flex',
-        alignItems: 'center',
-    },
-
-    [`& .${classes.icon}`]: {
-        width: '2em',
-        height: '2em',
-        marginRight: '0.5em',
-    },
-
-    [`& .${classes.panel}`]: {
-        marginTop: '1em',
-        maxWidth: '60em',
-    },
-
-    [`& .${classes.panelDetails}`]: {
-        whiteSpace: 'pre-wrap',
-    },
-
-    [`& .${classes.toolbar}`]: {
-        marginTop: '2em',
-    },
-
-    [`& .${classes.advice}`]: {
-        marginTop: '2em',
-    },
-}));
-
-function goBack() {
-    window.history.go(-1);
-}
-
-const Error = (props: ErrorProps): JSX.Element => {
+export const Error = (props: ErrorProps): JSX.Element => {
     const { error, errorInfo, className, title, ...rest } = props;
 
     const translate = useTranslate();
@@ -84,17 +26,17 @@ const Error = (props: ErrorProps): JSX.Element => {
         <Fragment>
             {title && <Title defaultTitle={title} />}
             <Root
-                className={classnames(classes.container, className)}
+                className={classnames(ErrorClasses.container, className)}
                 {...rest}
             >
-                <h1 className={classes.title} role="alert">
-                    <ErrorIcon className={classes.icon} />
+                <h1 className={ErrorClasses.title} role="alert">
+                    <ErrorIcon className={ErrorClasses.icon} />
                     {translate('ra.page.error')}
                 </h1>
                 <div>{translate('ra.message.error')}</div>
                 {process.env.NODE_ENV !== 'production' && (
                     <>
-                        <Accordion className={classes.panel}>
+                        <Accordion className={ErrorClasses.panel}>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                                 {translate(error.toString(), {
                                     _: error.toString(),
@@ -102,14 +44,14 @@ const Error = (props: ErrorProps): JSX.Element => {
                             </AccordionSummary>
                             {errorInfo && (
                                 <AccordionDetails
-                                    className={classes.panelDetails}
+                                    className={ErrorClasses.panelDetails}
                                 >
                                     {errorInfo.componentStack}
                                 </AccordionDetails>
                             )}
                         </Accordion>
 
-                        <div className={classes.advice}>
+                        <div className={ErrorClasses.advice}>
                             <Typography align="center">
                                 Need help with this error? Try the following:
                             </Typography>
@@ -139,7 +81,7 @@ const Error = (props: ErrorProps): JSX.Element => {
                         </div>
                     </>
                 )}
-                <div className={classes.toolbar}>
+                <div className={ErrorClasses.toolbar}>
                     <Button
                         variant="contained"
                         startIcon={<History />}
@@ -166,4 +108,61 @@ export interface ErrorProps extends HtmlHTMLAttributes<HTMLDivElement> {
     errorInfo?: ErrorInfo;
     title?: string;
 }
-export default Error;
+
+const PREFIX = 'RaError';
+
+export const ErrorClasses = {
+    container: `${PREFIX}-container`,
+    title: `${PREFIX}-title`,
+    icon: `${PREFIX}-icon`,
+    panel: `${PREFIX}-panel`,
+    panelDetails: `${PREFIX}-panelDetails`,
+    toolbar: `${PREFIX}-toolbar`,
+    advice: `${PREFIX}-advice`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`&.${ErrorClasses.container}`]: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        [theme.breakpoints.down('md')]: {
+            padding: '1em',
+        },
+        fontFamily: 'Roboto, sans-serif',
+        opacity: 0.5,
+    },
+
+    [`& .${ErrorClasses.title}`]: {
+        display: 'flex',
+        alignItems: 'center',
+    },
+
+    [`& .${ErrorClasses.icon}`]: {
+        width: '2em',
+        height: '2em',
+        marginRight: '0.5em',
+    },
+
+    [`& .${ErrorClasses.panel}`]: {
+        marginTop: '1em',
+        maxWidth: '60em',
+    },
+
+    [`& .${ErrorClasses.panelDetails}`]: {
+        whiteSpace: 'pre-wrap',
+    },
+
+    [`& .${ErrorClasses.toolbar}`]: {
+        marginTop: '2em',
+    },
+
+    [`& .${ErrorClasses.advice}`]: {
+        marginTop: '2em',
+    },
+}));
+
+function goBack() {
+    window.history.go(-1);
+}

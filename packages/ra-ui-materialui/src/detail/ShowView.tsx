@@ -11,7 +11,7 @@ import {
 } from 'ra-core';
 
 import { ShowActions as DefaultActions } from './ShowActions';
-import TitleForRecord from '../layout/TitleForRecord';
+import { TitleForRecord } from '../layout';
 import { ShowProps } from '../types';
 
 export const ShowView = (props: ShowViewProps) => {

@@ -7,9 +7,66 @@ import { Drawer, DrawerProps, useMediaQuery, Theme } from '@mui/material';
 import lodashGet from 'lodash/get';
 import { setSidebarVisibility, ReduxState, useLocale } from 'ra-core';
 
+export const Sidebar = (props: SidebarProps) => {
+    const { children, closedSize, size, ...rest } = props;
+    const dispatch = useDispatch();
+    const isXSmall = useMediaQuery<Theme>(theme =>
+        theme.breakpoints.down('sm')
+    );
+    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
+    const open = useSelector<ReduxState, boolean>(
+        state => state.admin.ui.sidebarOpen
+    );
+    useLocale(); // force redraw on locale change
+    const toggleSidebar = () => dispatch(setSidebarVisibility(!open));
+
+    return isXSmall ? (
+        <StyledDrawer
+            variant="temporary"
+            open={open}
+            onClose={toggleSidebar}
+            classes={SidebarClasses}
+            {...rest}
+        >
+            {children}
+        </StyledDrawer>
+    ) : isSmall ? (
+        <StyledDrawer
+            variant="permanent"
+            open={open}
+            onClose={toggleSidebar}
+            classes={SidebarClasses}
+            {...rest}
+        >
+            <div className={SidebarClasses.fixed}>{children}</div>
+        </StyledDrawer>
+    ) : (
+        <StyledDrawer
+            variant="permanent"
+            open={open}
+            onClose={toggleSidebar}
+            classes={SidebarClasses}
+            {...rest}
+        >
+            <div className={SidebarClasses.fixed}>{children}</div>
+        </StyledDrawer>
+    );
+};
+
+Sidebar.propTypes = {
+    children: PropTypes.node.isRequired,
+};
+
+export interface SidebarProps extends DrawerProps {
+    children: ReactElement;
+    closedSize?: number;
+
+    size?: number;
+}
+
 const PREFIX = 'RaSidebar';
 
-const classes = {
+export const SidebarClasses = {
     root: `${PREFIX}-root`,
     docked: `${PREFIX}-docked`,
     paper: `${PREFIX}-paper`,
@@ -25,24 +82,24 @@ const classes = {
     fixed: `${PREFIX}-fixed`,
 };
 
-const StyledDrawer = styled(Drawer)(({ open, theme }) => ({
-    [`&.${classes.root}`]: {
+const StyledDrawer = styled(Drawer, { name: PREFIX })(({ open, theme }) => ({
+    [`&.${SidebarClasses.root}`]: {
         height: 'calc(100vh - 3em)',
     },
 
-    [`& .${classes.docked}`]: {},
-    [`& .${classes.paper}`]: {},
-    [`& .${classes.paperAnchorLeft}`]: {},
-    [`& .${classes.paperAnchorRight}`]: {},
-    [`& .${classes.paperAnchorTop}`]: {},
-    [`& .${classes.paperAnchorBottom}`]: {},
-    [`& .${classes.paperAnchorDockedLeft}`]: {},
-    [`& .${classes.paperAnchorDockedTop}`]: {},
-    [`& .${classes.paperAnchorDockedRight}`]: {},
-    [`& .${classes.paperAnchorDockedBottom}`]: {},
-    [`& .${classes.modal}`]: {},
+    [`& .${SidebarClasses.docked}`]: {},
+    [`& .${SidebarClasses.paper}`]: {},
+    [`& .${SidebarClasses.paperAnchorLeft}`]: {},
+    [`& .${SidebarClasses.paperAnchorRight}`]: {},
+    [`& .${SidebarClasses.paperAnchorTop}`]: {},
+    [`& .${SidebarClasses.paperAnchorBottom}`]: {},
+    [`& .${SidebarClasses.paperAnchorDockedLeft}`]: {},
+    [`& .${SidebarClasses.paperAnchorDockedTop}`]: {},
+    [`& .${SidebarClasses.paperAnchorDockedRight}`]: {},
+    [`& .${SidebarClasses.paperAnchorDockedBottom}`]: {},
+    [`& .${SidebarClasses.modal}`]: {},
 
-    [`& .${classes.fixed}`]: {
+    [`& .${SidebarClasses.fixed}`]: {
         position: 'fixed',
         height: 'calc(100vh - 3em)',
         overflowX: 'hidden',
@@ -80,62 +137,3 @@ const StyledDrawer = styled(Drawer)(({ open, theme }) => ({
 
 export const DRAWER_WIDTH = 240;
 export const CLOSED_DRAWER_WIDTH = 55;
-
-const Sidebar = (props: SidebarProps) => {
-    const { children, closedSize, size, ...rest } = props;
-    const dispatch = useDispatch();
-    const isXSmall = useMediaQuery<Theme>(theme =>
-        theme.breakpoints.down('sm')
-    );
-    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
-    const open = useSelector<ReduxState, boolean>(
-        state => state.admin.ui.sidebarOpen
-    );
-    useLocale(); // force redraw on locale change
-    const toggleSidebar = () => dispatch(setSidebarVisibility(!open));
-
-    return isXSmall ? (
-        <StyledDrawer
-            variant="temporary"
-            open={open}
-            onClose={toggleSidebar}
-            classes={classes}
-            {...rest}
-        >
-            {children}
-        </StyledDrawer>
-    ) : isSmall ? (
-        <StyledDrawer
-            variant="permanent"
-            open={open}
-            onClose={toggleSidebar}
-            classes={classes}
-            {...rest}
-        >
-            <div className={classes.fixed}>{children}</div>
-        </StyledDrawer>
-    ) : (
-        <StyledDrawer
-            variant="permanent"
-            open={open}
-            onClose={toggleSidebar}
-            classes={classes}
-            {...rest}
-        >
-            <div className={classes.fixed}>{children}</div>
-        </StyledDrawer>
-    );
-};
-
-Sidebar.propTypes = {
-    children: PropTypes.node.isRequired,
-};
-
-export interface SidebarProps extends DrawerProps {
-    children: ReactElement;
-    closedSize?: number;
-
-    size?: number;
-}
-
-export default Sidebar;

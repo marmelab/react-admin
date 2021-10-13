@@ -13,7 +13,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
  *     <MyResponsiveComponent />
  * <DeviceTestWrapper>
  */
-const DeviceTestWrapper = ({
+export const DeviceTestWrapper = ({
     width = 'md',
     children,
 }: DeviceTestWrapperProps): JSX.Element => {
@@ -52,5 +52,3 @@ export interface DeviceTestWrapperProps {
     width: 'md' | 'xs' | 'sm' | 'lg' | 'xl';
     children: JSX.Element;
 }
-
-export default DeviceTestWrapper;
