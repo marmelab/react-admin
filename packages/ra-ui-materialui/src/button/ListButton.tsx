@@ -5,7 +5,7 @@ import ActionList from '@mui/icons-material/List';
 import { Link } from 'react-router-dom';
 import { useResourceContext } from 'ra-core';
 
-import Button, { ButtonProps } from './Button';
+import { Button, ButtonProps } from './Button';
 
 /**
  * Opens the List view of a given resource
@@ -33,7 +33,7 @@ import Button, { ButtonProps } from './Button';
  *     </Edit>
  * );
  */
-const ListButton = (props: ListButtonProps) => {
+export const ListButton = (props: ListButtonProps) => {
     const {
         basePath = '',
         icon = defaultIcon,
@@ -68,5 +68,3 @@ ListButton.propTypes = {
     icon: PropTypes.element,
     label: PropTypes.string,
 };
-
-export default ListButton;

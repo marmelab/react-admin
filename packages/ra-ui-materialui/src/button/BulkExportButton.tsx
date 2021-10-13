@@ -11,7 +11,7 @@ import {
     useListContext,
 } from 'ra-core';
 
-import Button, { ButtonProps } from './Button';
+import { Button, ButtonProps } from './Button';
 
 /**
  * Export the selected rows
@@ -36,7 +36,7 @@ import Button, { ButtonProps } from './Button';
  *     </List>
  * );
  */
-const BulkExportButton = (props: BulkExportButtonProps) => {
+export const BulkExportButton = (props: BulkExportButtonProps) => {
     const {
         onClick,
         label = 'ra.action.export',
@@ -118,5 +118,3 @@ BulkExportButton.propTypes = {
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     icon: PropTypes.element,
 };
-
-export default BulkExportButton;

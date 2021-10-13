@@ -16,7 +16,7 @@ import {
 import Title, { TitlePropType } from '../layout/Title';
 import ListToolbar from './ListToolbar';
 import DefaultPagination from './pagination/Pagination';
-import BulkDeleteButton from '../button/BulkDeleteButton';
+import { BulkDeleteButton } from '../button';
 import BulkActionsToolbar from './BulkActionsToolbar';
 import DefaultActions from './ListActions';
 import { Empty } from './Empty';

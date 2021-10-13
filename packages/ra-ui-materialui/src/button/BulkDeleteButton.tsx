@@ -1,9 +1,11 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import BulkDeleteWithConfirmButton, {
+import {
+    BulkDeleteWithConfirmButton,
     BulkDeleteWithConfirmButtonProps,
 } from './BulkDeleteWithConfirmButton';
-import BulkDeleteWithUndoButton, {
+import {
+    BulkDeleteWithUndoButton,
     BulkDeleteWithUndoButtonProps,
 } from './BulkDeleteWithUndoButton';
 
@@ -30,7 +32,7 @@ import BulkDeleteWithUndoButton, {
  *     </List>
  * );
  */
-const BulkDeleteButton = (props: BulkDeleteButtonProps) =>
+export const BulkDeleteButton = (props: BulkDeleteButtonProps) =>
     props.undoable ? (
         <BulkDeleteWithUndoButton {...props} />
     ) : (
@@ -56,5 +58,3 @@ BulkDeleteButton.propTypes = {
 BulkDeleteButton.defaultProps = {
     undoable: true,
 };
-
-export default BulkDeleteButton;

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { stringify } from 'query-string';
 import { Record, useResourceContext } from 'ra-core';
 
-import Button, { ButtonProps } from './Button';
+import { Button, ButtonProps } from './Button';
 
 export const CloneButton = (props: CloneButtonProps) => {
     const {

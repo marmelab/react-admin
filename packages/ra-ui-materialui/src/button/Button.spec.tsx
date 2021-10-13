@@ -4,7 +4,7 @@ import expect from 'expect';
 import { TestContext } from 'ra-test';
 import { ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
-import Button from './Button';
+import { Button } from './Button';
 
 const theme = createTheme();
 

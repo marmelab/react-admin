@@ -7,7 +7,7 @@ import { useTheme } from '@mui/material/styles';
 import CircularProgress from '@mui/material/CircularProgress';
 import { ReduxState, useRefreshWhenVisible } from 'ra-core';
 
-import RefreshIconButton from '../button/RefreshIconButton';
+import { RefreshIconButton } from '../button';
 
 const PREFIX = 'RaLoadingIndicator';
 

@@ -7,7 +7,7 @@ import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import NavigationRefresh from '@mui/icons-material/Refresh';
 import { refreshView, useTranslate } from 'ra-core';
 
-const RefreshIconButton = (props: RefreshIconButtonProps) => {
+export const RefreshIconButton = (props: RefreshIconButtonProps) => {
     const {
         label = 'ra.action.refresh',
         icon = defaultIcon,
@@ -60,5 +60,3 @@ RefreshIconButton.propTypes = {
     label: PropTypes.string,
     icon: PropTypes.element,
 };
-
-export default RefreshIconButton;
