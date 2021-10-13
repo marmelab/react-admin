@@ -3,7 +3,7 @@ import { Children, ReactElement, ReactNode } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { FormWithRedirectRenderProps, MutationMode, Record } from 'ra-core';
-import CardContentInner from '../layout/CardContentInner';
+import { CardContentInner } from '../layout';
 import { Toolbar } from './Toolbar';
 import { FormInput } from './FormInput';
 

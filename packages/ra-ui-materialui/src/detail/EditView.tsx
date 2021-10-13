@@ -11,7 +11,7 @@ import {
 } from 'ra-core';
 
 import { EditActions as DefaultActions } from './EditActions';
-import TitleForRecord from '../layout/TitleForRecord';
+import { TitleForRecord } from '../layout';
 import { EditProps } from '../types';
 
 export const EditView = (props: EditViewProps) => {

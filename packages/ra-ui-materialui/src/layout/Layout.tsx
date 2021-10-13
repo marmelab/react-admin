@@ -18,65 +18,13 @@ import { DeprecatedThemeOptions } from '@mui/material';
 import { ComponentPropType, CoreLayoutProps } from 'ra-core';
 import compose from 'lodash/flowRight';
 
-import DefaultAppBar, { AppBarProps } from './AppBar';
-import DefaultSidebar from './Sidebar';
-import DefaultMenu, { MenuProps } from './Menu';
-import DefaultNotification from './Notification';
-import DefaultError from './Error';
+import { AppBar as DefaultAppBar, AppBarProps } from './AppBar';
+import { Sidebar as DefaultSidebar } from './Sidebar';
+import { Menu as DefaultMenu, MenuProps } from './Menu';
+import { Notification as DefaultNotification } from './Notification';
+import { Error as DefaultError } from './Error';
 import defaultTheme from '../defaultTheme';
 import { SkipNavigationButton } from '../button';
-
-const PREFIX = 'RaLayout';
-const classes = {
-    root: `${PREFIX}-root`,
-    appFrame: `${PREFIX}-appFrame`,
-    contentWithSidebar: `${PREFIX}-contentWithSidebar`,
-    content: `${PREFIX}-content`,
-};
-
-const StyledLayout = styled('div')(({ theme }) => ({
-    [`&.${classes.root}`]: {
-        display: 'flex',
-        flexDirection: 'column',
-        zIndex: 1,
-        minHeight: '100vh',
-        backgroundColor: theme.palette.background.default,
-        position: 'relative',
-        minWidth: 'fit-content',
-        width: '100%',
-        color: theme.palette.getContrastText(theme.palette.background.default),
-    },
-    [`& .${classes.appFrame}`]: {
-        display: 'flex',
-        flexDirection: 'column',
-        flexGrow: 1,
-        [theme.breakpoints.up('xs')]: {
-            marginTop: theme.spacing(6),
-        },
-        [theme.breakpoints.down('sm')]: {
-            marginTop: theme.spacing(7),
-        },
-    },
-    [`& .${classes.contentWithSidebar}`]: {
-        display: 'flex',
-        flexGrow: 1,
-    },
-    [`& .${classes.content}`]: {
-        display: 'flex',
-        flexDirection: 'column',
-        flexGrow: 1,
-        flexBasis: 0,
-        padding: theme.spacing(3),
-        paddingTop: theme.spacing(1),
-        paddingLeft: 0,
-        [theme.breakpoints.up('xs')]: {
-            paddingLeft: 5,
-        },
-        [theme.breakpoints.down('md')]: {
-            padding: 0,
-        },
-    },
-}));
 
 class LayoutWithoutTheme extends Component<
     LayoutWithoutThemeProps,
@@ -158,20 +106,23 @@ const LayoutContainer = props => {
     return (
         <>
             <StyledLayout
-                className={classnames('layout', classes.root, className)}
+                className={classnames('layout', LayoutClasses.root, className)}
                 {...rest}
             >
                 <SkipNavigationButton />
-                <div className={classes.appFrame}>
+                <div className={LayoutClasses.appFrame}>
                     {createElement(appBar, { title, open, logout })}
-                    <main className={classes.contentWithSidebar}>
+                    <main className={LayoutClasses.contentWithSidebar}>
                         {createElement(sidebar, {
                             children: createElement(menu, {
                                 logout,
                                 hasDashboard: !!dashboard,
                             }),
                         })}
-                        <div id="main-content" className={classes.content}>
+                        <div
+                            id="main-content"
+                            className={LayoutClasses.content}
+                        >
                             {hasError ? (
                                 <ErrorComponent
                                     error={error}
@@ -231,7 +182,7 @@ const EnhancedLayout = compose(
     withRouter
 )(LayoutWithoutTheme);
 
-const Layout = ({
+export const Layout = ({
     theme: themeOverride,
     ...props
 }: LayoutProps): JSX.Element => {
@@ -260,4 +211,54 @@ Layout.defaultProps = {
     theme: defaultTheme,
 };
 
-export default Layout;
+const PREFIX = 'RaLayout';
+export const LayoutClasses = {
+    root: `${PREFIX}-root`,
+    appFrame: `${PREFIX}-appFrame`,
+    contentWithSidebar: `${PREFIX}-contentWithSidebar`,
+    content: `${PREFIX}-content`,
+};
+
+const StyledLayout = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`&.${LayoutClasses.root}`]: {
+        display: 'flex',
+        flexDirection: 'column',
+        zIndex: 1,
+        minHeight: '100vh',
+        backgroundColor: theme.palette.background.default,
+        position: 'relative',
+        minWidth: 'fit-content',
+        width: '100%',
+        color: theme.palette.getContrastText(theme.palette.background.default),
+    },
+    [`& .${LayoutClasses.appFrame}`]: {
+        display: 'flex',
+        flexDirection: 'column',
+        flexGrow: 1,
+        [theme.breakpoints.up('xs')]: {
+            marginTop: theme.spacing(6),
+        },
+        [theme.breakpoints.down('sm')]: {
+            marginTop: theme.spacing(7),
+        },
+    },
+    [`& .${LayoutClasses.contentWithSidebar}`]: {
+        display: 'flex',
+        flexGrow: 1,
+    },
+    [`& .${LayoutClasses.content}`]: {
+        display: 'flex',
+        flexDirection: 'column',
+        flexGrow: 1,
+        flexBasis: 0,
+        padding: theme.spacing(3),
+        paddingTop: theme.spacing(1),
+        paddingLeft: 0,
+        [theme.breakpoints.up('xs')]: {
+            paddingLeft: 5,
+        },
+        [theme.breakpoints.down('md')]: {
+            padding: 0,
+        },
+    },
+}));

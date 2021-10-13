@@ -14,35 +14,6 @@ import AlertError from '@mui/icons-material/ErrorOutline';
 import classnames from 'classnames';
 import { useTranslate } from 'ra-core';
 
-const PREFIX = 'RaConfirm';
-
-const classes = {
-    confirmPrimary: `${PREFIX}-confirmPrimary`,
-    confirmWarning: `${PREFIX}-confirmWarning`,
-    iconPaddingStyle: `${PREFIX}-iconPaddingStyle`,
-};
-
-const StyledDialog = styled(Dialog)(({ theme }) => ({
-    [`& .${classes.confirmPrimary}`]: {
-        color: theme.palette.primary.main,
-    },
-
-    [`& .${classes.confirmWarning}`]: {
-        color: theme.palette.error.main,
-        '&:hover': {
-            backgroundColor: alpha(theme.palette.error.main, 0.12),
-            // Reset on mouse devices
-            '@media (hover: none)': {
-                backgroundColor: 'transparent',
-            },
-        },
-    },
-
-    [`& .${classes.iconPaddingStyle}`]: {
-        paddingRight: '0.5em',
-    },
-}));
-
 /**
  * Confirmation dialog
  *
@@ -60,17 +31,17 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
  *     onClose={() => { // do something }}
  * />
  */
-const Confirm = (props: ConfirmProps) => {
+export const Confirm = (props: ConfirmProps) => {
     const {
-        isOpen,
+        isOpen = false,
         loading,
         title,
         content,
-        confirm,
-        cancel,
-        confirmColor,
-        ConfirmIcon,
-        CancelIcon,
+        cancel = 'ra.action.cancel',
+        confirm = 'ra.action.confirm',
+        confirmColor = 'primary',
+        ConfirmIcon = ActionCheck,
+        CancelIcon = AlertError,
         onClose,
         onConfirm,
         translateOptions = {},
@@ -114,19 +85,21 @@ const Confirm = (props: ConfirmProps) => {
             </DialogContent>
             <DialogActions>
                 <Button disabled={loading} onClick={onClose}>
-                    <CancelIcon className={classes.iconPaddingStyle} />
+                    <CancelIcon className={ConfirmClasses.iconPaddingStyle} />
                     {translate(cancel, { _: cancel })}
                 </Button>
                 <Button
                     disabled={loading}
                     onClick={handleConfirm}
                     className={classnames('ra-confirm', {
-                        [classes.confirmWarning]: confirmColor === 'warning',
-                        [classes.confirmPrimary]: confirmColor === 'primary',
+                        [ConfirmClasses.confirmWarning]:
+                            confirmColor === 'warning',
+                        [ConfirmClasses.confirmPrimary]:
+                            confirmColor === 'primary',
                     })}
                     autoFocus
                 >
-                    <ConfirmIcon className={classes.iconPaddingStyle} />
+                    <ConfirmIcon className={ConfirmClasses.iconPaddingStyle} />
                     {translate(confirm, { _: confirm })}
                 </Button>
             </DialogActions>
@@ -163,13 +136,31 @@ Confirm.propTypes = {
     title: PropTypes.string.isRequired,
 };
 
-Confirm.defaultProps = {
-    cancel: 'ra.action.cancel',
-    confirm: 'ra.action.confirm',
-    confirmColor: 'primary',
-    ConfirmIcon: ActionCheck,
-    CancelIcon: AlertError,
-    isOpen: false,
+const PREFIX = 'RaConfirm';
+
+export const ConfirmClasses = {
+    confirmPrimary: `${PREFIX}-confirmPrimary`,
+    confirmWarning: `${PREFIX}-confirmWarning`,
+    iconPaddingStyle: `${PREFIX}-iconPaddingStyle`,
 };
 
-export default Confirm;
+const StyledDialog = styled(Dialog, { name: PREFIX })(({ theme }) => ({
+    [`& .${ConfirmClasses.confirmPrimary}`]: {
+        color: theme.palette.primary.main,
+    },
+
+    [`& .${ConfirmClasses.confirmWarning}`]: {
+        color: theme.palette.error.main,
+        '&:hover': {
+            backgroundColor: alpha(theme.palette.error.main, 0.12),
+            // Reset on mouse devices
+            '@media (hover: none)': {
+                backgroundColor: 'transparent',
+            },
+        },
+    },
+
+    [`& .${ConfirmClasses.iconPaddingStyle}`]: {
+        paddingRight: '0.5em',
+    },
+}));

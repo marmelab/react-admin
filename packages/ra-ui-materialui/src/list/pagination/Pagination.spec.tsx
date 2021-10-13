@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ListPaginationContext } from 'ra-core';
 
 import Pagination from './Pagination';
-import DeviceTestWrapper from '../../layout/DeviceTestWrapper';
+import { DeviceTestWrapper } from '../../layout';
 
 const theme = createTheme();
 

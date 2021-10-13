@@ -4,24 +4,7 @@ import PropTypes from 'prop-types';
 import { warning } from 'ra-core';
 import classnames from 'classnames';
 
-const PREFIX = 'RaCardActions';
-
-const classes = {
-    cardActions: `${PREFIX}-cardActions`,
-};
-
-const Root = styled('div')({
-    [`&.${classes.cardActions}`]: {
-        zIndex: 2,
-        display: 'flex',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-end',
-        flexWrap: 'wrap',
-        padding: 0,
-    },
-});
-
-const CardActions = props => {
+export const CardActions = props => {
     const { className, children, ...rest } = props;
     warning(
         true,
@@ -29,7 +12,10 @@ const CardActions = props => {
     );
 
     return (
-        <Root className={classnames(classes.cardActions, className)} {...rest}>
+        <Root
+            className={classnames(CardActionsClasses.cardActions, className)}
+            {...rest}
+        >
             {children}
         </Root>
     );
@@ -40,4 +26,19 @@ CardActions.propTypes = {
     className: PropTypes.string,
 };
 
-export default CardActions;
+const PREFIX = 'RaCardActions';
+
+export const CardActionsClasses = {
+    cardActions: `${PREFIX}-cardActions`,
+};
+
+const Root = styled('div', { name: PREFIX })({
+    [`&.${CardActionsClasses.cardActions}`]: {
+        zIndex: 2,
+        display: 'flex',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-end',
+        flexWrap: 'wrap',
+        padding: 0,
+    },
+});

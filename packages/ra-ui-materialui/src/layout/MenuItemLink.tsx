@@ -22,30 +22,6 @@ import {
     Theme,
 } from '@mui/material';
 
-const PREFIX = 'RaMenuItemLink';
-
-const classes = {
-    root: `${PREFIX}-root`,
-    active: `${PREFIX}-active`,
-    icon: `${PREFIX}-icon`,
-};
-
-const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
-    [`&.${classes.root}`]: {
-        color: theme.palette.text.secondary,
-    },
-
-    [`& .${classes.active}`]: {
-        color: theme.palette.text.primary,
-    },
-
-    [`& .${classes.icon}`]: { minWidth: theme.spacing(5) },
-}));
-
-const NavLinkRef = forwardRef<HTMLAnchorElement, NavLinkProps>((props, ref) => (
-    <NavLink innerRef={ref} {...props} />
-));
-
 /**
  * Displays a menu item with a label and an icon - or only the icon with a tooltip when the sidebar is minimized.
  * It also handles the automatic closing of the menu on tap on mobile.
@@ -95,7 +71,7 @@ const NavLinkRef = forwardRef<HTMLAnchorElement, NavLinkProps>((props, ref) => (
  *     </Admin>
  * );
  */
-const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
+export const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
     const {
         className,
         primaryText,
@@ -122,8 +98,8 @@ const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
     const renderMenuItem = () => {
         return (
             <StyledMenuItem
-                className={classnames(classes.root, className)}
-                activeClassName={classes.active}
+                className={classnames(MenuItemLinkClasses.root, className)}
+                activeClassName={MenuItemLinkClasses.active}
                 component={NavLinkRef}
                 // @ts-ignore
                 ref={ref}
@@ -132,7 +108,7 @@ const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
                 onClick={handleMenuTap}
             >
                 {leftIcon && (
-                    <ListItemIcon className={classes.icon}>
+                    <ListItemIcon className={MenuItemLinkClasses.icon}>
                         {cloneElement(leftIcon, {
                             titleAccess: primaryText,
                         })}
@@ -168,7 +144,6 @@ export type MenuItemLinkProps = Props &
     MenuItemProps<'li', { button?: true }>; // HACK: https://github.com/mui-org/material-ui/issues/16245
 
 MenuItemLink.propTypes = {
-    classes: PropTypes.object,
     className: PropTypes.string,
     leftIcon: PropTypes.element,
     onClick: PropTypes.func,
@@ -178,4 +153,26 @@ MenuItemLink.propTypes = {
     sidebarIsOpen: PropTypes.bool,
 };
 
-export default MenuItemLink;
+const PREFIX = 'RaMenuItemLink';
+
+export const MenuItemLinkClasses = {
+    root: `${PREFIX}-root`,
+    active: `${PREFIX}-active`,
+    icon: `${PREFIX}-icon`,
+};
+
+const StyledMenuItem = styled(MenuItem, { name: PREFIX })(({ theme }) => ({
+    [`&.${MenuItemLinkClasses.root}`]: {
+        color: theme.palette.text.secondary,
+    },
+
+    [`& .${MenuItemLinkClasses.active}`]: {
+        color: theme.palette.text.primary,
+    },
+
+    [`& .${MenuItemLinkClasses.icon}`]: { minWidth: theme.spacing(5) },
+}));
+
+const NavLinkRef = forwardRef<HTMLAnchorElement, NavLinkProps>((props, ref) => (
+    <NavLink innerRef={ref} {...props} />
+));
