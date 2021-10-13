@@ -5,6 +5,7 @@ import {
     NotificationType,
     NotificationOptions,
 } from '../actions/notificationActions';
+import warning from '../util/warning';
 
 /**
  * Hook for Notification Side Effect
@@ -34,6 +35,10 @@ const useNotify = () => {
             autoHideDuration?: number
         ) => {
             if (typeof type === 'string') {
+                warning(
+                    true,
+                    'This way of calling useNotify callback is deprecated. Please use the new syntax passing notify("[Your message]", { ...restOfArguments })'
+                );
                 dispatch(
                     showNotification(message, type || 'info', {
                         messageArgs,
