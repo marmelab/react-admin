@@ -118,12 +118,11 @@ Here's how to migrate the *Altering the Form Values before Submitting* example f
 import * as React from 'react';
 import { useCallback } from 'react';
 import { useForm } from 'react-final-form';
-import { SaveButton, Toolbar, useCreate, useRedirect, useNotify } from 'react-admin';
+import { SaveButton, Toolbar, useCreate, useRedirect } from 'react-admin';
 
 const SaveWithNoteButton = ({ handleSubmit, handleSubmitWithRedirect, ...props }) => {
     const [create] = useCreate('posts');
     const redirectTo = useRedirect();
-    const notify = useNotify();
     const { basePath, redirect } = props;
 
     const form = useForm();
@@ -171,9 +170,7 @@ const SaveWithNoteButton = props => {
                 },
                 {
                     onSuccess: ({ data: newRecord }) => {
-                        notify('ra.notification.created', 'info', {
-                            smart_count: 1,
-                        });
+                        notify('ra.notification.created', { messageArgs: { smart_count: 1 } });
                         redirectTo(redirect, basePath, newRecord.id, newRecord);
                     },
                 }

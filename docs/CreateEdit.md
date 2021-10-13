@@ -401,7 +401,7 @@ const PostEdit = props => {
     const redirect = useRedirect();
 
     const onSuccess = () => {
-        notify(`Changes saved`)
+        notify(`Changes saved`);
         redirect('/posts');
         refresh();
     };
@@ -423,13 +423,16 @@ The default `onSuccess` function is:
 ```jsx
 // for the <Create> component:
 () => {
-    notify('ra.notification.created', 'info', { smart_count: 1 });
+    notify('ra.notification.created', { messageArgs: { smart_count: 1 } });
     redirect('edit', basePath, data.id, data);
 }
 
 // for the <Edit> component: 
 () => {
-    notify('ra.notification.updated', 'info', { smart_count: 1 }, mutationMode === 'undoable');
+    notify('ra.notification.created', {
+        messageArgs: { smart_count: 1 },
+        undoable: mutationMode === 'undoable'
+    });
     redirect('list', basePath, data.id, data);
 }
 ```
@@ -448,7 +451,7 @@ const PostEdit = props => {
     const redirect = useRedirect();
 
   const onSuccess = ({ data }) => {
-        notify(`Changes to post "${data.title}" saved`)
+        notify(`Changes to post "${data.title}" saved`);
         redirect('/posts');
         refresh();
     };
@@ -483,7 +486,7 @@ const PostEdit = props => {
     const redirect = useRedirect();
 
     const onFailure = (error) => {
-        notify(`Could not edit post: ${error.message}`)
+        notify(`Could not edit post: ${error.message}`);
         redirect('/posts');
         refresh();
     };
@@ -2226,7 +2229,7 @@ const PostEdit = props => {
         if (error.code == 123) {
             notify('Could not save changes: concurrent edition in progress', 'warning');
         } else {
-            notify('ra.notification.http_error', 'warning')
+            notify('ra.notification.http_error', 'warning');
         }
         redirect('list', props.basePath);
     }

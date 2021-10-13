@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import {
     showNotification,
     NotificationType,
+    NotificationOptions,
 } from '../actions/notificationActions';
 
 /**
@@ -25,20 +26,27 @@ const useNotify = () => {
     return useCallback(
         (
             message: string,
-            type: NotificationType = 'info',
+            type?:
+                | NotificationType
+                | (NotificationOptions & { type: NotificationType }),
             messageArgs: any = {},
             undoable: boolean = false,
             autoHideDuration?: number,
             multiLine?: boolean
         ) => {
-            dispatch(
-                showNotification(message, type, {
-                    messageArgs,
-                    undoable,
-                    autoHideDuration,
-                    multiLine,
-                })
-            );
+            if (typeof type === 'string') {
+                dispatch(
+                    showNotification(message, type || 'info', {
+                        messageArgs,
+                        undoable,
+                        autoHideDuration,
+                        multiLine,
+                    })
+                );
+            } else {
+                const { type: messageType, ...options } = type;
+                dispatch(showNotification(message, messageType, options));
+            }
         },
         [dispatch]
     );

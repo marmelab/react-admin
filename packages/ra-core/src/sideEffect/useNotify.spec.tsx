@@ -8,13 +8,12 @@ const Notification = ({
     message,
     undoable = false,
     autoHideDuration = 4000,
-    multiLine = true,
+    multiLine = false,
     shortSignature = false,
 }) => {
     const notify = useNotify();
     useEffect(() => {
         if (shortSignature) {
-            // @ts-ignore
             notify(message, {
                 type,
                 undoable,
@@ -43,6 +42,19 @@ describe('useNotify', () => {
                 type="info"
                 message={`One Line\nTwo Lines\nThree Lines`}
                 multiLine
+            />
+        );
+
+        expect(dispatch).toHaveBeenCalledTimes(1);
+    });
+
+    it('should show a notification message of type "warning"', () => {
+        const { dispatch } = renderWithRedux(
+            <Notification
+                type="warning"
+                message="Notification message"
+                autoHideDuration={4000}
+                shortSignature
             />
         );
 
