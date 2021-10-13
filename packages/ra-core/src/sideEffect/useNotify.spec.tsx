@@ -18,16 +18,15 @@ const Notification = ({
                 type,
                 undoable,
                 autoHideDuration,
-                multiLine,
             });
         } else {
-            notify(message, type, {}, undoable, autoHideDuration, multiLine);
+            notify(message, type, {}, undoable, autoHideDuration);
         }
     }, [
         message,
         undoable,
         autoHideDuration,
-        multiLine,
+        shortSignature,
         shortSignature,
         type,
         notify,
