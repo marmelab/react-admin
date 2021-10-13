@@ -611,7 +611,7 @@ const ApproveButton = ({ record }) => {
         })
         .catch(error => {
             // failure side effects go here 
-            notify(`Comment approval error: ${error.message}`, 'warning');
+            notify(`Comment approval error: ${error.message}`, { type: 'warning' });
         });
     
     return <Button label="Approve" onClick={approve} disabled={loading} />;
@@ -635,7 +635,7 @@ import { useNotify } from 'react-admin';
 const NotifyButton = () => {
     const notify = useNotify();
     const handleClick = () => {
-        notify(`Comment approved`, 'success');
+        notify(`Comment approved`, { type: 'success' });
     }
     return <button onClick={handleClick}>Notify</button>;
 };
@@ -803,7 +803,7 @@ const ApproveButton = ({ record }) => {
                 redirect('/comments');
                 notify('Comment approved');
             },
-            onFailure: (error) => notify(`Comment approval error: ${error.message}`, 'warning'),
+            onFailure: (error) => notify(`Comment approval error: ${error.message}`, { type: 'warning' }),
         }
     );
     return <Button label="Approve" onClick={approve} disabled={loading} />;
@@ -855,7 +855,7 @@ const ApproveButton = ({ record }) => {
 -               notify('Comment approved');
 +               notify('Comment approved', { undoable: true });
             },
-            onFailure: (error) => notify(`Error: ${error.message}`, 'warning'),
+            onFailure: (error) => notify(`Error: ${error.message}`, { type: 'warning' }),
         }
     );
     return <Button label="Approve" onClick={approve} disabled={loading} />;
@@ -884,7 +884,7 @@ const ApproveButton = ({ record }) => {
                 redirect('/comments');
                 notify('Comment approved', { undoable: true });
             },
-            onFailure: (error) => notify(`Error: ${error.message}`, 'warning'),
+            onFailure: (error) => notify(`Error: ${error.message}`, { type: 'warning' }),
         }
     );
     return <Button label="Approve" onClick={approve} disabled={loading} />;
@@ -919,7 +919,7 @@ const ApproveButton = ({ record }) => {
                 redirect('/comments');
                 notify('Comment approved', { undoable: true });
             },
-            onFailure: (error) => notify(`Error: ${error.message}`, 'warning'),
+            onFailure: (error) => notify(`Error: ${error.message}`, { type: 'warning' }),
         }
     );
     return <Button label="Approve" onClick={approve} disabled={loading} />;
@@ -1002,7 +1002,7 @@ const ApproveButton = ({ record }) => {
             notify('Comment approved', { undoable: true });
             redirect('/comments');
         },
-        onFailure: (error) => notify(`Error: ${error.message}`, 'warning'),
+        onFailure: (error) => notify(`Error: ${error.message}`, { type: 'warning' }),
     };
     return (
         <Mutation
@@ -1092,7 +1092,7 @@ const ApproveButton = ({ record }) => {
                 redirect('/comments');
             })
             .catch((e) => {
-                notify('Error: comment not approved', 'warning')
+                notify('Error: comment not approved', { type: 'warning' })
             })
             .finally(() => {
                 setLoading(false);

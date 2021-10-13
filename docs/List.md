@@ -379,7 +379,7 @@ const CustomResetViewsButton = ({ selectedIds }) => {
                 notify('Posts updated');
                 unselectAll('posts');
             },
-            onFailure: error => notify('Error: posts not updated', 'warning'),
+            onFailure: error => notify('Error: posts not updated', { type: 'warning' }),
         }
     );
 
@@ -427,7 +427,7 @@ const CustomResetViewsButton = ({ selectedIds }) => {
                 notify('Posts updated');
                 unselectAll('posts');
             },
-            onFailure: error => notify('Error: posts not updated', 'warning'),
+            onFailure: error => notify('Error: posts not updated', { type: 'warning' }),
         }
     );
     const handleClick = () => setOpen(true);
@@ -492,7 +492,7 @@ const CustomResetViewsButton = ({ selectedIds }) => {
 +               notify('Posts updated', { undoable: true }); // the last argument forces the display of 'undo' in the notification
                 unselectAll('posts');
             },
-            onFailure: error => notify('Error: posts not updated', 'warning'),
+            onFailure: error => notify('Error: posts not updated', { type: 'warning' }),
 +           mutationMode: 'undoable'
         }
     );
