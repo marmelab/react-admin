@@ -15,7 +15,7 @@ import {
 } from '../input';
 import { InferredElement, InferredTypeMap, InputProps } from 'ra-core';
 
-const editFieldTypes: InferredTypeMap = {
+export const editFieldTypes: InferredTypeMap = {
     form: {
         component: SimpleForm,
         representation: (
@@ -107,5 +107,3 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             `<TextInput source="${props.source}" />`,
     },
 };
-
-export default editFieldTypes;
