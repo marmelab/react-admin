@@ -92,5 +92,3 @@ Create.propTypes = {
     onFailure: PropTypes.func,
     transform: PropTypes.func,
 };
-
-export default Create;

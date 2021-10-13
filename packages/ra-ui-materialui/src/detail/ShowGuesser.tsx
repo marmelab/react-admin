@@ -10,8 +10,9 @@ import {
     useShowContext,
 } from 'ra-core';
 
+import { ShowProps } from '../types';
 import { ShowView } from './ShowView';
-import showFieldTypes from './showFieldTypes';
+import { showFieldTypes } from './showFieldTypes';
 
 const ShowViewGuesser = props => {
     const resource = useResourceContext(props);
@@ -51,7 +52,7 @@ ${inferredChild.getRepresentation()}
 
 ShowViewGuesser.propTypes = ShowView.propTypes;
 
-const ShowGuesser = props => {
+export const ShowGuesser = (props: ShowProps) => {
     const controllerProps = useShowController(props);
     return (
         <ShowContextProvider value={controllerProps}>

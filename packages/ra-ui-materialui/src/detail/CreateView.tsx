@@ -8,40 +8,13 @@ import classnames from 'classnames';
 import { CreateProps } from '../types';
 import { TitleForRecord } from '../layout';
 
-const PREFIX = 'RaCreate';
-
-const classes = {
-    root: `${PREFIX}-root`,
-    main: `${PREFIX}-main`,
-    noActions: `${PREFIX}-noActions`,
-    card: `${PREFIX}-card`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`&.${classes.root}`]: {},
-
-    [`& .${classes.main}`]: {
-        display: 'flex',
-    },
-
-    [`& .${classes.noActions}`]: {
-        [theme.breakpoints.up('sm')]: {
-            marginTop: '1em',
-        },
-    },
-
-    [`& .${classes.card}`]: {
-        flex: '1 1 auto',
-    },
-}));
-
 export const CreateView = (props: CreateViewProps) => {
     const {
         actions,
         aside,
         children,
         className,
-        component: Content,
+        component: Content = Card,
         title,
         ...rest
     } = props;
@@ -60,7 +33,7 @@ export const CreateView = (props: CreateViewProps) => {
 
     return (
         <Root
-            className={classnames('create-page', classes.root, className)}
+            className={classnames('create-page', CreateClasses.root, className)}
             {...sanitizeRestProps(rest)}
         >
             <TitleForRecord
@@ -77,11 +50,11 @@ export const CreateView = (props: CreateViewProps) => {
                     ...actions.props,
                 })}
             <div
-                className={classnames(classes.main, {
-                    [classes.noActions]: !actions,
+                className={classnames(CreateClasses.main, {
+                    [CreateClasses.noActions]: !actions,
                 })}
             >
-                <Content className={classes.card}>
+                <Content className={CreateClasses.card}>
                     {cloneElement(Children.only(children), {
                         basePath,
                         record,
@@ -142,10 +115,6 @@ CreateView.propTypes = {
     setTransform: PropTypes.func,
 };
 
-CreateView.defaultProps = {
-    component: Card,
-};
-
 const sanitizeRestProps = ({
     basePath = null,
     defaultTitle = null,
@@ -173,3 +142,30 @@ const sanitizeRestProps = ({
     transformRef = null,
     ...rest
 }) => rest;
+
+const PREFIX = 'RaCreate';
+
+export const CreateClasses = {
+    root: `${PREFIX}-root`,
+    main: `${PREFIX}-main`,
+    noActions: `${PREFIX}-noActions`,
+    card: `${PREFIX}-card`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`&.${CreateClasses.root}`]: {},
+
+    [`& .${CreateClasses.main}`]: {
+        display: 'flex',
+    },
+
+    [`& .${CreateClasses.noActions}`]: {
+        [theme.breakpoints.up('sm')]: {
+            marginTop: '1em',
+        },
+    },
+
+    [`& .${CreateClasses.card}`]: {
+        flex: '1 1 auto',
+    },
+}));

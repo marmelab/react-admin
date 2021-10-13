@@ -7,18 +7,6 @@ import { Record } from 'ra-core';
 import CardContentInner from '../layout/CardContentInner';
 import Labeled from '../input/Labeled';
 
-const sanitizeRestProps = ({
-    children,
-    className,
-    record,
-    resource,
-    basePath,
-    version,
-    initialValues,
-    translate,
-    ...rest
-}: any) => rest;
-
 /**
  * Simple Layout for a Show view, showing fields in one column.
  *
@@ -51,7 +39,7 @@ const sanitizeRestProps = ({
  *     );
  *     export default App;
  */
-const SimpleShowLayout = ({
+export const SimpleShowLayout = ({
     basePath,
     className,
     children,
@@ -119,4 +107,14 @@ SimpleShowLayout.propTypes = {
     version: PropTypes.number,
 };
 
-export default SimpleShowLayout;
+const sanitizeRestProps = ({
+    children,
+    className,
+    record,
+    resource,
+    basePath,
+    version,
+    initialValues,
+    translate,
+    ...rest
+}: any) => rest;
