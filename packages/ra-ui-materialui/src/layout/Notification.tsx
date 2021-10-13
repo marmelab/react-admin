@@ -22,7 +22,16 @@ const classes = {
     error: `${PREFIX}-error`,
     warning: `${PREFIX}-warning`,
     undo: `${PREFIX}-undo`,
+    multiLine: `${PREFIX}-multiline`,
 };
+
+const StyledSnackbar = styled(Snackbar)(
+    ({ theme, multiLine }: NotificationProps & { theme?: Theme }) => ({
+        [`& .${classes.multiLine}`]: {
+            whiteSpace: multiLine ? 'pre-wrap' : '',
+        },
+    })
+);
 
 const StyledButton = styled(Button)(
     ({ theme, type }: NotificationProps & { theme?: Theme }) => ({
@@ -46,9 +55,6 @@ const StyledButton = styled(Button)(
                 type === 'success'
                     ? theme.palette.success.contrastText
                     : theme.palette.primary.light,
-        },
-        multiLine: {
-            whiteSpace: 'pre-wrap',
         },
     })
 );
@@ -96,7 +102,7 @@ const Notification = (
     }, [dispatch]);
 
     return (
-        <Snackbar
+        <StyledSnackbar
             open={open}
             message={
                 notification &&
@@ -113,7 +119,7 @@ const Notification = (
             ContentProps={{
                 className: classnames(
                     classes[(notification && notification.type) || type],
-                    { [styles['multiLine']]: multiLine },
+                    classes.multiLine,
                     className
                 ),
             }}
