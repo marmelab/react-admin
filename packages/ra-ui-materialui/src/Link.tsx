@@ -6,12 +6,12 @@ import { styled } from '@mui/material';
 
 const PREFIX = 'RaLink';
 
-const classes = {
+export const LinkClasses = {
     link: `${PREFIX}-link`,
 };
 
 const StyledLink = styled(RRLink)(({ theme }) => ({
-    [`& .${classes.link}`]: {
+    [`& .${LinkClasses.link}`]: {
         textDecoration: 'none',
         color: theme.palette.primary.main,
     },
@@ -21,13 +21,13 @@ export interface LinkProps extends RRLinkProps {
     className?: string;
 }
 
-const Link = (props: LinkProps) => {
+export const Link = (props: LinkProps) => {
     const { to, children, className, ...rest } = props;
 
     return (
         <StyledLink
             to={to}
-            className={classNames(classes.link, className)}
+            className={classNames(LinkClasses.link, className)}
             {...rest}
         >
             {children}
@@ -40,5 +40,3 @@ Link.propTypes = {
     children: PropTypes.node,
     to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 };
-
-export default Link;
