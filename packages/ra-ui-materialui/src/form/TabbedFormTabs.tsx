@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import Tabs, { TabsProps } from '@mui/material/Tabs';
 import { useLocation } from 'react-router-dom';
 
-const TabbedFormTabs = (props: TabbedFormTabsProps) => {
+export const TabbedFormTabs = (props: TabbedFormTabsProps) => {
     const { children, classes, url, syncWithLocation, value, ...rest } = props;
     const location = useLocation();
 
     const validTabPaths = Children.map(children, (tab, index) => {
         if (!isValidElement(tab)) return undefined;
-        return getTabFullPath(tab, index, url);
+        return getTabbedFormTabFullPath(tab, index, url);
     });
 
     // This ensures we don't get warnings from material-ui Tabs component when
@@ -37,7 +37,7 @@ const TabbedFormTabs = (props: TabbedFormTabsProps) => {
                 // TabbedShowLayout hierarchy (ex: '/posts/create', '/posts/12', , '/posts/12/show')
                 // and the tab path.
                 // This will be used as the Tab's value
-                const tabPath = getTabFullPath(tab, index, url);
+                const tabPath = getTabbedFormTabFullPath(tab, index, url);
 
                 return cloneElement(tab, {
                     intent: 'header',
@@ -57,7 +57,7 @@ TabbedFormTabs.propTypes = {
     tabsWithErrors: PropTypes.arrayOf(PropTypes.string),
 };
 
-export const getTabFullPath = (
+export const getTabbedFormTabFullPath = (
     tab: ReactElement,
     index: number,
     baseUrl: string
@@ -72,5 +72,3 @@ export interface TabbedFormTabsProps extends TabsProps {
     tabsWithErrors?: string[];
     syncWithLocation?: boolean;
 }
-
-export default TabbedFormTabs;

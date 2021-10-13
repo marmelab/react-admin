@@ -3,10 +3,8 @@ import { ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { FormGroupContextProvider, Record } from 'ra-core';
 
-import FormInput from './FormInput';
+import { FormInput } from './FormInput';
 import { FormTabHeader } from './FormTabHeader';
-
-const hiddenStyle = { display: 'none' };
 
 export const FormTab = (props: FormTabProps) => {
     const {
@@ -90,7 +88,6 @@ FormTab.propTypes = {
 export interface FormTabProps {
     basePath?: string;
     className?: string;
-    classes?: object;
     children?: ReactNode;
     contentClassName?: string;
     hidden?: boolean;
@@ -107,3 +104,5 @@ export interface FormTabProps {
 }
 
 FormTab.displayName = 'FormTab';
+
+const hiddenStyle = { display: 'none' };

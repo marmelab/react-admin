@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Children, ReactElement, ReactNode } from 'react';
 import classnames from 'classnames';
-import FormInput from './FormInput';
 import PropTypes from 'prop-types';
 import { FormWithRedirectRenderProps, MutationMode, Record } from 'ra-core';
-import Toolbar from './Toolbar';
 import CardContentInner from '../layout/CardContentInner';
+import { Toolbar } from './Toolbar';
+import { FormInput } from './FormInput';
 
 export const SimpleFormView = ({
     basePath,
