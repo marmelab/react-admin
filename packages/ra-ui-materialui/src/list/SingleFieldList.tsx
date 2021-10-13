@@ -23,32 +23,6 @@ import {
 
 import Link from '../Link';
 
-const PREFIX = 'RaSingleFieldList';
-
-const classes = {
-    root: `${PREFIX}-root`,
-    link: `${PREFIX}-link`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`& .${classes.root}`]: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        marginTop: -theme.spacing(1),
-        marginBottom: -theme.spacing(1),
-    },
-
-    [`& .${classes.link}`]: {},
-}));
-
-// useful to prevent click bubbling in a datagrid with rowClick
-const stopPropagation = e => e.stopPropagation();
-
-// Our handleClick does nothing as we wrap the children inside a Link but it is
-// required by ChipField, which uses a Chip from material-ui.
-// The material-ui Chip requires an onClick handler to behave like a clickable element.
-const handleClick = () => {};
-
 /**
  * Iterator component to be used to display a list of entities, using a single field
  *
@@ -81,7 +55,7 @@ const handleClick = () => {};
  *     </SingleFieldList>
  * </ReferenceManyField>
  */
-const SingleFieldList = (props: SingleFieldListProps) => {
+export const SingleFieldList = (props: SingleFieldListProps) => {
     const {
         className,
         children,
@@ -100,7 +74,7 @@ const SingleFieldList = (props: SingleFieldListProps) => {
 
     return (
         <Component
-            className={classnames(classes.root, className)}
+            className={classnames(SingleFieldListClasses.root, className)}
             {...sanitizeListRestProps(rest)}
         >
             {ids.map(id => {
@@ -112,7 +86,7 @@ const SingleFieldList = (props: SingleFieldListProps) => {
                     return (
                         <RecordContextProvider value={data[id]} key={id}>
                             <Link
-                                className={classes.link}
+                                className={SingleFieldListClasses.link}
                                 key={id}
                                 to={resourceLinkPath}
                                 onClick={stopPropagation}
@@ -171,4 +145,28 @@ export interface SingleFieldListProps<RecordType extends Record = Record>
     loaded?: boolean;
 }
 
-export default SingleFieldList;
+const PREFIX = 'RaSingleFieldList';
+
+export const SingleFieldListClasses = {
+    root: `${PREFIX}-root`,
+    link: `${PREFIX}-link`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`& .${SingleFieldListClasses.root}`]: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        marginTop: -theme.spacing(1),
+        marginBottom: -theme.spacing(1),
+    },
+
+    [`& .${SingleFieldListClasses.link}`]: {},
+}));
+
+// useful to prevent click bubbling in a datagrid with rowClick
+const stopPropagation = e => e.stopPropagation();
+
+// Our handleClick does nothing as we wrap the children inside a Link but it is
+// required by ChipField, which uses a Chip from material-ui.
+// The material-ui Chip requires an onClick handler to behave like a clickable element.
+const handleClick = () => {};

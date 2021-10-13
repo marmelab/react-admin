@@ -25,17 +25,7 @@ import {
     RecordContextProvider,
 } from 'ra-core';
 
-import SimpleListLoading from './SimpleListLoading';
-
-const PREFIX = 'RaSimpleList';
-
-const classes = {
-    tertiary: `${PREFIX}-tertiary`,
-};
-
-const Root = styled(List)({
-    [`& .${classes.tertiary}`]: { float: 'right', opacity: 0.541176 },
-});
+import { SimpleListLoading } from './SimpleListLoading';
 
 /**
  * The <SimpleList> component renders a list of records as a material-ui <List>.
@@ -71,7 +61,7 @@ const Root = styled(List)({
  *     </List>
  * );
  */
-const SimpleList = <RecordType extends Record = Record>(
+export const SimpleList = <RecordType extends Record = Record>(
     props: SimpleListProps<RecordType>
 ) => {
     const {
@@ -157,7 +147,9 @@ const SimpleList = <RecordType extends Record = Record>(
                                                 tertiaryText
                                             ) : (
                                                 <span
-                                                    className={classes.tertiary}
+                                                    className={
+                                                        SimpleListClasses.tertiary
+                                                    }
                                                 >
                                                     {tertiaryText(data[id], id)}
                                                 </span>
@@ -295,4 +287,12 @@ export interface LinkOrNotProps {
     children: ReactNode;
 }
 
-export default SimpleList;
+const PREFIX = 'RaSimpleList';
+
+export const SimpleListClasses = {
+    tertiary: `${PREFIX}-tertiary`,
+};
+
+const Root = styled(List, { name: PREFIX })({
+    [`& .${SimpleListClasses.tertiary}`]: { float: 'right', opacity: 0.541176 },
+});

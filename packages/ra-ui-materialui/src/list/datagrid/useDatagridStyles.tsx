@@ -20,7 +20,7 @@ export const DatagridClasses = {
     expanded: `${PREFIX}-expanded`,
 };
 
-export const StyledTable = styled(Table)(({ theme }) => ({
+export const StyledTable = styled(Table, { name: PREFIX })(({ theme }) => ({
     [`&.${DatagridClasses.table}`]: {
         tableLayout: 'auto',
     },

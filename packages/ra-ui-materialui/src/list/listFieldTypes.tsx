@@ -1,6 +1,6 @@
 import * as React from 'react';
-import Datagrid from './datagrid/Datagrid';
-import SingleFieldList from './SingleFieldList';
+import { Datagrid } from './datagrid';
+import { SingleFieldList } from './SingleFieldList';
 import {
     ArrayField,
     BooleanField,
@@ -14,7 +14,7 @@ import {
     UrlField,
 } from '../field';
 
-export default {
+export const listFieldTypes = {
     table: {
         component: props => <Datagrid rowClick="edit" {...props} />, // eslint-disable-line react/display-name
         representation: (_, children) => `        <Datagrid rowClick="edit">

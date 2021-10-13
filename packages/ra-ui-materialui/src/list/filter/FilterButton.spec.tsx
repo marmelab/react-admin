@@ -3,7 +3,7 @@ import expect from 'expect';
 import { render, fireEvent } from '@testing-library/react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import FilterButton from './FilterButton';
+import { FilterButton } from './FilterButton';
 import { TextInput } from '../../input';
 
 const theme = createTheme();

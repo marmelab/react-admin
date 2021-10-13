@@ -15,31 +15,10 @@ import classnames from 'classnames';
 import lodashSet from 'lodash/set';
 import lodashGet from 'lodash/get';
 
-import FilterFormInput from './FilterFormInput';
+import { FilterFormInput } from './FilterFormInput';
 import { FilterContext } from '../FilterContext';
 
-const PREFIX = 'RaFilterForm';
-
-const classes = {
-    form: `${PREFIX}-form`,
-    clearFix: `${PREFIX}-clearFix`,
-};
-
-const StyledForm = styled('form')(({ theme }) => ({
-    [`&.${classes.form}`]: {
-        marginTop: -theme.spacing(2),
-        paddingTop: 0,
-        display: 'flex',
-        alignItems: 'flex-end',
-        flexWrap: 'wrap',
-        minHeight: theme.spacing(10),
-        pointerEvents: 'none',
-    },
-
-    [`& .${classes.clearFix}`]: { clear: 'right' },
-}));
-
-export const FilterForm = (props: FilterFormProps) => {
+export const FilterFormBase = (props: FilterFormProps) => {
     const {
         className,
         margin,
@@ -76,7 +55,7 @@ export const FilterForm = (props: FilterFormProps) => {
 
     return (
         <StyledForm
-            className={classnames(className, classes.form)}
+            className={classnames(className, FilterFormClasses.form)}
             {...sanitizeRestProps(rest)}
             onSubmit={handleSubmit}
         >
@@ -90,7 +69,7 @@ export const FilterForm = (props: FilterFormProps) => {
                     margin={filterElement.props.margin || margin}
                 />
             ))}
-            <div className={classes.clearFix} />
+            <div className={FilterFormClasses.clearFix} />
         </StyledForm>
     );
 };
@@ -100,7 +79,7 @@ const handleSubmit = event => {
     return false;
 };
 
-FilterForm.propTypes = {
+FilterFormBase.propTypes = {
     resource: PropTypes.string,
     filters: PropTypes.arrayOf(PropTypes.node).isRequired,
     displayedFilters: PropTypes.object,
@@ -179,7 +158,7 @@ export const mergeInitialValuesWithDefaultValues = (
     ...initialValues,
 });
 
-const EnhancedFilterForm = props => {
+export const FilterForm = props => {
     const {
         classes: classesOverride,
         filters: filtersProps,
@@ -213,7 +192,11 @@ const EnhancedFilterForm = props => {
                             setFilters(values, displayedFilters);
                         }}
                     />
-                    <FilterForm {...formProps} {...rest} filters={filters} />
+                    <FilterFormBase
+                        {...formProps}
+                        {...rest}
+                        filters={filters}
+                    />
                 </>
             )}
         />
@@ -225,4 +208,23 @@ const handleFinalFormSubmit = () => {};
 // Options to instruct the FormSpy that it should only listen to the values and pristine changes
 const FormSpySubscription = { values: true, pristine: true, invalid: true };
 
-export default EnhancedFilterForm;
+const PREFIX = 'RaFilterForm';
+
+export const FilterFormClasses = {
+    form: `${PREFIX}-form`,
+    clearFix: `${PREFIX}-clearFix`,
+};
+
+const StyledForm = styled('form', { name: PREFIX })(({ theme }) => ({
+    [`&.${FilterFormClasses.form}`]: {
+        marginTop: -theme.spacing(2),
+        paddingTop: 0,
+        display: 'flex',
+        alignItems: 'flex-end',
+        flexWrap: 'wrap',
+        minHeight: theme.spacing(10),
+        pointerEvents: 'none',
+    },
+
+    [`& .${FilterFormClasses.clearFix}`]: { clear: 'right' },
+}));

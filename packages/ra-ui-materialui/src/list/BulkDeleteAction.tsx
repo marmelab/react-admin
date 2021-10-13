@@ -6,7 +6,7 @@ import { crudDeleteMany, startUndoable, useResourceContext } from 'ra-core';
 /**
  *@deprecated use BulkDeleteButton instead
  */
-const BulkDeleteAction = props => {
+export const BulkDeleteAction = props => {
     const dispatch = useDispatch();
     const resource = useResourceContext(props);
 
@@ -45,5 +45,3 @@ BulkDeleteAction.defaultProps = {
     label: 'ra.action.delete',
     undoable: true,
 };
-
-export default BulkDeleteAction;

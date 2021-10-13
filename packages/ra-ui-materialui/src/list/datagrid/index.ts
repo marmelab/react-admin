@@ -5,6 +5,7 @@ import DatagridBody, {
 } from './DatagridBody';
 import DatagridCell, { DatagridCellProps } from './DatagridCell';
 import DatagridHeaderCell, {
+    DatagridHeaderCellClasses,
     DatagridHeaderCellProps,
 } from './DatagridHeaderCell';
 import DatagridLoading, { DatagridLoadingProps } from './DatagridLoading';
@@ -16,6 +17,7 @@ import DatagridRow, {
 import ExpandRowButton, { ExpandRowButtonProps } from './ExpandRowButton';
 
 export * from './DatagridHeader';
+export * from './useDatagridStyles';
 
 export {
     Datagrid,
@@ -23,6 +25,7 @@ export {
     DatagridBody,
     DatagridRow,
     DatagridHeaderCell,
+    DatagridHeaderCellClasses,
     DatagridCell,
     ExpandRowButton,
     PureDatagridBody,
