@@ -7,19 +7,7 @@ import { useTranslate, InputProps } from 'ra-core';
 
 import { TextInput } from './TextInput';
 
-const PREFIX = 'RaSearchInput';
-
-export const SearchInputClasses = {
-    input: `${PREFIX}-input`,
-};
-
-const StyledTextInput = styled(TextInput, { name: PREFIX })({
-    [`&.${SearchInputClasses.input}`]: {
-        marginTop: 32,
-    },
-});
-
-const SearchInput = (props: SearchInputProps) => {
+export const SearchInput = (props: SearchInputProps) => {
     const translate = useTranslate();
 
     if (props.label) {
@@ -50,4 +38,14 @@ const SearchInput = (props: SearchInputProps) => {
 export type SearchInputProps = InputProps<TextFieldProps> &
     Omit<TextFieldProps, 'label' | 'helperText'>;
 
-export default SearchInput;
+const PREFIX = 'RaSearchInput';
+
+export const SearchInputClasses = {
+    input: `${PREFIX}-input`,
+};
+
+const StyledTextInput = styled(TextInput, { name: PREFIX })({
+    [`&.${SearchInputClasses.input}`]: {
+        marginTop: 32,
+    },
+});
