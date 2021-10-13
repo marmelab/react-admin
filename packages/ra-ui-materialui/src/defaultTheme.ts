@@ -1,6 +1,6 @@
 import { ThemeOptions } from '@mui/material';
 
-export default {
+export const defaultTheme = {
     palette: {
         secondary: {
             light: '#6ec6ff',

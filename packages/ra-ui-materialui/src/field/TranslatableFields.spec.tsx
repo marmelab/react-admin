@@ -6,7 +6,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { TranslatableFields } from './TranslatableFields';
 import { TextField } from './TextField';
-import defaultTheme from '../defaultTheme';
+import { defaultTheme } from '../defaultTheme';
 
 const record = {
     id: 123,
