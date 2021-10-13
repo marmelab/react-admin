@@ -24,7 +24,14 @@ const Notification = ({
         } else {
             notify(message, type, {}, undoable, autoHideDuration, multiLine);
         }
-    }, [message, undoable, autoHideDuration, multiLine, notify]);
+    }, [
+        message,
+        undoable,
+        autoHideDuration,
+        multiLine,
+        shortSignature,
+        notify,
+    ]);
     return null;
 };
 
