@@ -19,26 +19,8 @@ import {
     MutationMode,
     Record,
 } from 'ra-core';
-import Toolbar from './Toolbar';
-import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
-
-const PREFIX = 'RaTabbedForm';
-
-export const TabbedFormClasses = {
-    errorTabButton: `${PREFIX}-errorTabButton`,
-    content: `${PREFIX}-content`,
-};
-
-const Root = styled('form')(({ theme }) => ({
-    [`&.${TabbedFormClasses.errorTabButton}`]: {
-        color: theme.palette.error.main,
-    },
-    [`&.${TabbedFormClasses.content}`]: {
-        paddingTop: theme.spacing(1),
-        paddingLeft: theme.spacing(2),
-        paddingRight: theme.spacing(2),
-    },
-}));
+import { Toolbar } from './Toolbar';
+import { TabbedFormTabs, getTabbedFormTabFullPath } from './TabbedFormTabs';
 
 export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
     const {
@@ -101,7 +83,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                     if (!tab) {
                         return;
                     }
-                    const tabPath = getTabFullPath(tab, index, url);
+                    const tabPath = getTabbedFormTabFullPath(tab, index, url);
                     return (
                         <Route exact path={escapePath(tabPath)}>
                             {routeProps =>
@@ -231,3 +213,21 @@ const sanitizeRestProps = ({
     __versions = null,
     ...props
 }) => props;
+
+const PREFIX = 'RaTabbedForm';
+
+export const TabbedFormClasses = {
+    errorTabButton: `${PREFIX}-errorTabButton`,
+    content: `${PREFIX}-content`,
+};
+
+const Root = styled('form', { name: PREFIX })(({ theme }) => ({
+    [`&.${TabbedFormClasses.errorTabButton}`]: {
+        color: theme.palette.error.main,
+    },
+    [`&.${TabbedFormClasses.content}`]: {
+        paddingTop: theme.spacing(1),
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2),
+    },
+}));

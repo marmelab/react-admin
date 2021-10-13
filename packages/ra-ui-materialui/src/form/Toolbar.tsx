@@ -14,50 +14,6 @@ import { FormRenderProps } from 'react-final-form';
 
 import { SaveButton, DeleteButton } from '../button';
 
-const PREFIX = 'RaToolbar';
-
-const classes = {
-    toolbar: `${PREFIX}-toolbar`,
-    desktopToolbar: `${PREFIX}-desktopToolbar`,
-    mobileToolbar: `${PREFIX}-mobileToolbar`,
-    defaultToolbar: `${PREFIX}-defaultToolbar`,
-    spacer: `${PREFIX}-spacer`,
-};
-
-const StyledToolbar = styled(MuiToolbar)(({ theme }) => ({
-    [`&.${classes.toolbar}`]: {
-        backgroundColor:
-            theme.palette.mode === 'light'
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-    },
-
-    [`&.${classes.desktopToolbar}`]: {
-        marginTop: theme.spacing(2),
-    },
-
-    [`&.${classes.mobileToolbar}`]: {
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        padding: '16px',
-        width: '100%',
-        boxSizing: 'border-box',
-        flexShrink: 0,
-        zIndex: 2,
-    },
-
-    [`&.${classes.defaultToolbar}`]: {
-        flex: 1,
-        display: 'flex',
-        justifyContent: 'space-between',
-    },
-}));
-
-const valueOrDefault = (value, defaultValue) =>
-    typeof value === 'undefined' ? defaultValue : value;
-
 /**
  * The Toolbar displayed at the bottom of forms.
  *
@@ -95,7 +51,7 @@ const valueOrDefault = (value, defaultValue) =>
  * @prop {string} width Apply to the mobile or desktop classes depending on its value. Pass `xs` to display the mobile version.
  *
  */
-const Toolbar: FC<ToolbarProps> = props => {
+export const Toolbar: FC<ToolbarProps> = props => {
     const {
         alwaysEnableSaveButton,
         basePath,
@@ -109,7 +65,7 @@ const Toolbar: FC<ToolbarProps> = props => {
         redirect,
         resource,
         saving,
-        submitOnEnter,
+        submitOnEnter = true,
         undoable,
         mutationMode,
         validating,
@@ -128,10 +84,10 @@ const Toolbar: FC<ToolbarProps> = props => {
     return (
         <StyledToolbar
             className={classnames(
-                classes.toolbar,
+                ToolbarClasses.toolbar,
                 {
-                    [classes.mobileToolbar]: isXs,
-                    [classes.desktopToolbar]: !isXs,
+                    [ToolbarClasses.mobileToolbar]: isXs,
+                    [ToolbarClasses.desktopToolbar]: !isXs,
                 },
                 className
             )}
@@ -139,7 +95,7 @@ const Toolbar: FC<ToolbarProps> = props => {
             {...rest}
         >
             {Children.count(children) === 0 ? (
-                <div className={classes.defaultToolbar}>
+                <div className={ToolbarClasses.defaultToolbar}>
                     <SaveButton
                         handleSubmitWithRedirect={
                             handleSubmitWithRedirect || handleSubmit
@@ -247,8 +203,46 @@ Toolbar.propTypes = {
     validating: PropTypes.bool,
 };
 
-Toolbar.defaultProps = {
-    submitOnEnter: true,
+const PREFIX = 'RaToolbar';
+
+export const ToolbarClasses = {
+    toolbar: `${PREFIX}-toolbar`,
+    desktopToolbar: `${PREFIX}-desktopToolbar`,
+    mobileToolbar: `${PREFIX}-mobileToolbar`,
+    defaultToolbar: `${PREFIX}-defaultToolbar`,
+    spacer: `${PREFIX}-spacer`,
 };
 
-export default Toolbar;
+const StyledToolbar = styled(MuiToolbar, { name: PREFIX })(({ theme }) => ({
+    [`&.${ToolbarClasses.toolbar}`]: {
+        backgroundColor:
+            theme.palette.mode === 'light'
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
+    },
+
+    [`&.${ToolbarClasses.desktopToolbar}`]: {
+        marginTop: theme.spacing(2),
+    },
+
+    [`&.${ToolbarClasses.mobileToolbar}`]: {
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        padding: '16px',
+        width: '100%',
+        boxSizing: 'border-box',
+        flexShrink: 0,
+        zIndex: 2,
+    },
+
+    [`&.${ToolbarClasses.defaultToolbar}`]: {
+        flex: 1,
+        display: 'flex',
+        justifyContent: 'space-between',
+    },
+}));
+
+const valueOrDefault = (value, defaultValue) =>
+    typeof value === 'undefined' ? defaultValue : value;

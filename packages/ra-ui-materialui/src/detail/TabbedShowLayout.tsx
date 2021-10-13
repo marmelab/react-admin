@@ -15,7 +15,10 @@ import { Route } from 'react-router-dom';
 import { useRouteMatch } from 'react-router-dom';
 import { escapePath, Record } from 'ra-core';
 
-import { TabbedShowLayoutTabs, getTabFullPath } from './TabbedShowLayoutTabs';
+import {
+    TabbedShowLayoutTabs,
+    getShowLayoutTabFullPath,
+} from './TabbedShowLayoutTabs';
 
 /**
  * Tabbed Layout for a Show view, showing fields grouped in tabs.
@@ -102,7 +105,11 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
                             <Route
                                 exact
                                 path={escapePath(
-                                    getTabFullPath(tab, index, match.url)
+                                    getShowLayoutTabFullPath(
+                                        tab,
+                                        index,
+                                        match.url
+                                    )
                                 )}
                                 render={() =>
                                     cloneElement(tab, {

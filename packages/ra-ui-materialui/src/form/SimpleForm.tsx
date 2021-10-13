@@ -39,7 +39,7 @@ import { SimpleFormView } from './SimpleFormView';
  *
  * @param {Props} props
  */
-const SimpleForm = (props: SimpleFormProps) => (
+export const SimpleForm = (props: SimpleFormProps) => (
     <FormWithRedirect
         {...props}
         render={formProps => <SimpleFormView {...formProps} />}
@@ -87,5 +87,3 @@ export interface SimpleFormProps
     undoable?: boolean;
     variant?: 'standard' | 'outlined' | 'filled';
 }
-
-export default SimpleForm;

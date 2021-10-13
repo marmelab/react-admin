@@ -5,7 +5,7 @@ import { SaveContextProvider, SideEffectContextProvider } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import SimpleForm from '../../form/SimpleForm';
+import { SimpleForm } from '../../form';
 import { ArrayInput } from './ArrayInput';
 import TextInput from '../TextInput';
 import { SimpleFormIterator } from './SimpleFormIterator';
