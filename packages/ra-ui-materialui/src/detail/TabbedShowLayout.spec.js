@@ -6,7 +6,7 @@ import { Router } from 'react-router-dom';
 
 import { TabbedShowLayout } from './TabbedShowLayout';
 import { Tab } from './Tab';
-import TextField from '../field/TextField';
+import { TextField } from '../field';
 
 describe('<TabbedShowLayout />', () => {
     const renderWithRouter = children => {

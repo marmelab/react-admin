@@ -3,7 +3,7 @@ import expect from 'expect';
 import { render } from '@testing-library/react';
 import { RecordContextProvider } from 'ra-core';
 
-import RichTextField, { removeTags } from './RichTextField';
+import { RichTextField, removeTags } from './RichTextField';
 
 describe('stripTags', () => {
     it('should strip HTML tags from input', () => {

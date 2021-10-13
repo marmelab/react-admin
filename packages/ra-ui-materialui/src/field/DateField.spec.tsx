@@ -3,7 +3,7 @@ import expect from 'expect';
 import { render } from '@testing-library/react';
 import { RecordContextProvider } from 'ra-core';
 
-import DateField from './DateField';
+import { DateField } from './DateField';
 
 describe('<DateField />', () => {
     it('should return null when the record is not set', () => {

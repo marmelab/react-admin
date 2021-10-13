@@ -3,7 +3,7 @@ import expect from 'expect';
 import { render, getNodeText } from '@testing-library/react';
 import { RecordContextProvider } from 'ra-core';
 
-import TextField from './TextField';
+import { TextField } from './TextField';
 
 describe('<TextField />', () => {
     it('should display record specific value as plain text', () => {

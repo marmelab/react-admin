@@ -5,14 +5,8 @@ import get from 'lodash/get';
 import Typography, { TypographyProps } from '@mui/material/Typography';
 import { useRecordContext } from 'ra-core';
 
-import sanitizeFieldRestProps from './sanitizeFieldRestProps';
+import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
-
-const hasNumberFormat = !!(
-    typeof Intl === 'object' &&
-    Intl &&
-    typeof Intl.NumberFormat === 'function'
-);
 
 /**
  * Display a numeric value as a locale string.
@@ -89,6 +83,7 @@ NumberField.defaultProps = {
     addLabel: true,
     textAlign: 'right',
 };
+
 NumberField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
@@ -108,4 +103,8 @@ export interface NumberFieldProps
     options?: object;
 }
 
-export default NumberField;
+const hasNumberFormat = !!(
+    typeof Intl === 'object' &&
+    Intl &&
+    typeof Intl.NumberFormat === 'function'
+);

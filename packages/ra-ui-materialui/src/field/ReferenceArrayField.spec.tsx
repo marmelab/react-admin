@@ -6,10 +6,11 @@ import { MemoryRouter } from 'react-router-dom';
 import { ListContextProvider, DataProviderContext } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import ReferenceArrayField, {
+import {
+    ReferenceArrayField,
     ReferenceArrayFieldView,
 } from './ReferenceArrayField';
-import TextField from './TextField';
+import { TextField } from './TextField';
 import SingleFieldList from '../list/SingleFieldList';
 
 const theme = createTheme({});

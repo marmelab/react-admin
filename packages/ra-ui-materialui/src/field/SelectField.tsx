@@ -5,7 +5,7 @@ import get from 'lodash/get';
 import { ChoicesProps, useChoices, useRecordContext } from 'ra-core';
 import { Typography, TypographyProps } from '@mui/material';
 
-import sanitizeFieldRestProps from './sanitizeFieldRestProps';
+import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 /**
@@ -146,5 +146,3 @@ export interface SelectFieldProps
         Omit<TypographyProps, 'textAlign'> {}
 
 SelectField.displayName = 'SelectField';
-
-export default SelectField;

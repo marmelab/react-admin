@@ -5,7 +5,7 @@ import { Router } from 'react-router-dom';
 import { ListContext } from 'ra-core';
 
 import SimpleList from './SimpleList';
-import TextField from '../field/TextField';
+import { TextField } from '../field';
 
 const renderWithRouter = children => {
     const history = createMemoryHistory();

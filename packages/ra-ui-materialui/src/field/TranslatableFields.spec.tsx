@@ -5,7 +5,7 @@ import { useTranslatableContext } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { TranslatableFields } from './TranslatableFields';
-import TextField from './TextField';
+import { TextField } from './TextField';
 import defaultTheme from '../defaultTheme';
 
 const record = {

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import BooleanField from './BooleanField';
+import { BooleanField } from './BooleanField';
 import { render } from '@testing-library/react';
 import { RecordContextProvider } from 'ra-core';
 
