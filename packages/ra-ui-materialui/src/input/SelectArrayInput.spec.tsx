@@ -4,7 +4,7 @@ import { render, fireEvent, waitFor } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import { TestTranslationProvider } from 'ra-core';
 
-import SelectArrayInput from './SelectArrayInput';
+import { SelectArrayInput } from './SelectArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 
 describe('<SelectArrayInput />', () => {

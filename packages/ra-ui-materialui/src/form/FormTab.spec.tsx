@@ -5,7 +5,7 @@ import { renderWithRedux } from 'ra-test';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { TabbedForm } from './TabbedForm';
 import { FormTab } from './FormTab';
-import TextInput from '../input/TextInput';
+import { TextInput } from '../input';
 import defaultTheme from '../defaultTheme';
 
 describe('<FormTab label="foo" />', () => {

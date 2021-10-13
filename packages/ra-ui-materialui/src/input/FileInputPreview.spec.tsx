@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 
-import FileInputPreview from './FileInputPreview';
+import { FileInputPreview } from './FileInputPreview';
 
 describe('<FileInputPreview />', () => {
     beforeAll(() => {

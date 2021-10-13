@@ -11,9 +11,9 @@ import { useFieldArray } from 'react-final-form-arrays';
 import { InputLabel, FormControl, FormHelperText } from '@mui/material';
 
 import { LinearProgress } from '../../layout';
-import InputHelperText from '../InputHelperText';
-import sanitizeInputRestProps from '../sanitizeInputRestProps';
-import Labeled from '../Labeled';
+import { InputHelperText } from '../InputHelperText';
+import { sanitizeInputRestProps } from '../sanitizeInputRestProps';
+import { Labeled } from '../Labeled';
 import { ArrayInputContext } from './ArrayInputContext';
 
 /**

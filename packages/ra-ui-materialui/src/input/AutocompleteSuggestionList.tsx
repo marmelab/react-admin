@@ -4,35 +4,9 @@ import { ReactNode } from 'react';
 import classnames from 'classnames';
 import { Paper, Popper } from '@mui/material';
 
-const PREFIX = 'RaAutocompleteSuggestionList';
-
-const classes = {
-    suggestionsContainer: `${PREFIX}-suggestionsContainer`,
-    suggestionsPaper: `${PREFIX}-suggestionsPaper`,
-};
-
-const StyledPopper = styled(Popper)({
-    [`&.${classes.suggestionsContainer}`]: {
-        zIndex: 2,
-    },
-    [`& .${classes.suggestionsPaper}`]: {
-        maxHeight: '50vh',
-        overflowY: 'auto',
-    },
-});
-
-interface Props {
-    children: ReactNode;
-    className?: string;
-    isOpen: boolean;
-    menuProps: any;
-    inputEl: HTMLElement;
-    classes?: any;
-    suggestionsContainerProps?: any;
-}
-
-const PopperModifiers = [];
-const AutocompleteSuggestionList = (props: Props) => {
+export const AutocompleteSuggestionList = (
+    props: AutocompleteSuggestionListProps
+) => {
     const {
         children,
         className,
@@ -46,7 +20,10 @@ const AutocompleteSuggestionList = (props: Props) => {
         <StyledPopper
             open={isOpen}
             anchorEl={inputEl}
-            className={classnames(classes.suggestionsContainer, className)}
+            className={classnames(
+                AutocompleteSuggestionListClasses.suggestionsContainer,
+                className
+            )}
             modifiers={PopperModifiers}
             {...suggestionsContainerProps}
         >
@@ -57,7 +34,9 @@ const AutocompleteSuggestionList = (props: Props) => {
                         marginTop: 8,
                         minWidth: inputEl ? inputEl.clientWidth : null,
                     }}
-                    className={classes.suggestionsPaper}
+                    className={
+                        AutocompleteSuggestionListClasses.suggestionsPaper
+                    }
                 >
                     {children}
                 </Paper>
@@ -66,4 +45,31 @@ const AutocompleteSuggestionList = (props: Props) => {
     );
 };
 
-export default AutocompleteSuggestionList;
+const PREFIX = 'RaAutocompleteSuggestionList';
+
+export const AutocompleteSuggestionListClasses = {
+    suggestionsContainer: `${PREFIX}-suggestionsContainer`,
+    suggestionsPaper: `${PREFIX}-suggestionsPaper`,
+};
+
+const StyledPopper = styled(Popper, { name: PREFIX })({
+    [`&.${AutocompleteSuggestionListClasses.suggestionsContainer}`]: {
+        zIndex: 2,
+    },
+    [`& .${AutocompleteSuggestionListClasses.suggestionsPaper}`]: {
+        maxHeight: '50vh',
+        overflowY: 'auto',
+    },
+});
+
+export interface AutocompleteSuggestionListProps {
+    children: ReactNode;
+    className?: string;
+    isOpen: boolean;
+    menuProps: any;
+    inputEl: HTMLElement;
+    classes?: any;
+    suggestionsContainerProps?: any;
+}
+
+const PopperModifiers = [];

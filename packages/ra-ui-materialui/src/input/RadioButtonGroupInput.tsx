@@ -12,24 +12,11 @@ import { FormControlProps } from '@mui/material/FormControl';
 import get from 'lodash/get';
 import { useInput, FieldTitle, ChoicesInputProps, warning } from 'ra-core';
 
-import sanitizeInputRestProps from './sanitizeInputRestProps';
-import InputHelperText from './InputHelperText';
-import RadioButtonGroupInputItem from './RadioButtonGroupInputItem';
-import Labeled from './Labeled';
+import { sanitizeInputRestProps } from './sanitizeInputRestProps';
+import { InputHelperText } from './InputHelperText';
+import { RadioButtonGroupInputItem } from './RadioButtonGroupInputItem';
+import { Labeled } from './Labeled';
 import { LinearProgress } from '../layout';
-
-const PREFIX = 'RaRadioButtonGroupInput';
-
-const classes = {
-    label: `${PREFIX}-label`,
-};
-
-const StyledFormControl = styled(FormControl)(({ theme }) => ({
-    [`& .${classes.label}`]: {
-        transform: 'translate(0, 5px) scale(0.75)',
-        transformOrigin: `top ${theme.direction === 'ltr' ? 'left' : 'right'}`,
-    },
-}));
 
 /**
  * An Input component for a radio button group, using an array of objects for the options
@@ -88,7 +75,7 @@ const StyledFormControl = styled(FormControl)(({ theme }) => ({
  *
  * The object passed as `options` props is passed to the material-ui <RadioButtonGroup> component
  */
-const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
+export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
     const {
         choices = [],
         format,
@@ -160,7 +147,10 @@ const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
             error={touched && !!(error || submitError)}
             {...sanitizeRestProps(rest)}
         >
-            <FormLabel component="legend" className={classes.label}>
+            <FormLabel
+                component="legend"
+                className={RadioButtonGroupInputClasses.label}
+            >
                 <FieldTitle
                     label={label}
                     source={source}
@@ -254,4 +244,19 @@ const sanitizeRestProps = ({
 export type RadioButtonGroupInputProps = ChoicesInputProps<RadioGroupProps> &
     FormControlProps;
 
-export default RadioButtonGroupInput;
+const PREFIX = 'RaRadioButtonGroupInput';
+
+export const RadioButtonGroupInputClasses = {
+    label: `${PREFIX}-label`,
+};
+
+const StyledFormControl = styled(FormControl, { name: PREFIX })(
+    ({ theme }) => ({
+        [`& .${RadioButtonGroupInputClasses.label}`]: {
+            transform: 'translate(0, 5px) scale(0.75)',
+            transformOrigin: `top ${
+                theme.direction === 'ltr' ? 'left' : 'right'
+            }`,
+        },
+    })
+);

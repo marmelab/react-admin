@@ -7,7 +7,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { SimpleForm } from '../../form';
 import { ArrayInput } from './ArrayInput';
-import TextInput from '../TextInput';
+import { TextInput } from '../TextInput';
 import { SimpleFormIterator } from './SimpleFormIterator';
 
 const theme = createTheme({});

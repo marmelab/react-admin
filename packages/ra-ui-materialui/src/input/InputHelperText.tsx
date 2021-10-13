@@ -1,13 +1,7 @@
 import * as React from 'react';
 import { useTranslate, ValidationError, ValidationErrorMessage } from 'ra-core';
 
-export interface InputHelperTextProps {
-    helperText?: string | boolean;
-    error?: ValidationErrorMessage;
-    touched: boolean;
-}
-
-const InputHelperText = (props: InputHelperTextProps) => {
+export const InputHelperText = (props: InputHelperTextProps) => {
     const { helperText, touched, error } = props;
     const translate = useTranslate();
 
@@ -28,4 +22,8 @@ const InputHelperText = (props: InputHelperTextProps) => {
 
 const defaultInnerHTML = { __html: '&#8203;' };
 
-export default InputHelperText;
+export interface InputHelperTextProps {
+    helperText?: string | boolean;
+    error?: ValidationErrorMessage;
+    touched: boolean;
+}

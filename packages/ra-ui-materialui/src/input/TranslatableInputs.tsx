@@ -9,20 +9,6 @@ import {
 import { TranslatableInputsTabs } from './TranslatableInputsTabs';
 import { TranslatableInputsTabContent } from './TranslatableInputsTabContent';
 
-const PREFIX = 'RaTranslatableInputs';
-
-const classes = {
-    root: `${PREFIX}-root`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`&.${classes.root}`]: {
-        flexGrow: 1,
-        marginTop: theme.spacing(1),
-        marginBottom: theme.spacing(0.5),
-    },
-}));
-
 /**
  * Provides a way to edit multiple languages for any input passed as children.
  * It expects the translatable values to have the following structure:
@@ -91,7 +77,7 @@ export const TranslatableInputs = (
     const context = useTranslatable({ defaultLocale, locales });
 
     return (
-        <Root className={classes.root}>
+        <Root className={TranslatableInputsClasses.root}>
             <TranslatableContextProvider value={context}>
                 {selector}
                 {locales.map(locale => (
@@ -117,3 +103,17 @@ export interface TranslatableInputsProps extends UseTranslatableOptions {
     margin?: 'none' | 'normal' | 'dense';
     variant?: 'standard' | 'outlined' | 'filled';
 }
+
+const PREFIX = 'RaTranslatableInputs';
+
+export const TranslatableInputsClasses = {
+    root: `${PREFIX}-root`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`&.${TranslatableInputsClasses.root}`]: {
+        flexGrow: 1,
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(0.5),
+    },
+}));
