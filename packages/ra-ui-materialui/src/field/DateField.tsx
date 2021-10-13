@@ -5,18 +5,8 @@ import get from 'lodash/get';
 import { Typography, TypographyProps } from '@mui/material';
 import { useRecordContext } from 'ra-core';
 
-import sanitizeFieldRestProps from './sanitizeFieldRestProps';
+import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
-
-const toLocaleStringSupportsLocales = (() => {
-    // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString
-    try {
-        new Date().toLocaleString('i');
-    } catch (error) {
-        return error instanceof RangeError;
-    }
-    return false;
-})();
 
 /**
  * Display a date value as a locale string.
@@ -118,4 +108,12 @@ export interface DateFieldProps
     showTime?: boolean;
 }
 
-export default DateField;
+const toLocaleStringSupportsLocales = (() => {
+    // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString
+    try {
+        new Date().toLocaleString('i');
+    } catch (error) {
+        return error instanceof RangeError;
+    }
+    return false;
+})();

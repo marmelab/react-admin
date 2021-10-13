@@ -6,8 +6,8 @@ import { DataProviderContext, RecordContextProvider } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { renderWithRedux } from 'ra-test';
 
-import ReferenceField, { ReferenceFieldView } from './ReferenceField';
-import TextField from './TextField';
+import { ReferenceField, ReferenceFieldView } from './ReferenceField';
+import { TextField } from './TextField';
 const theme = createTheme({});
 
 describe('<ReferenceField />', () => {

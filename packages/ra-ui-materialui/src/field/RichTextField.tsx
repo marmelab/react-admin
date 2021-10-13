@@ -5,15 +5,18 @@ import get from 'lodash/get';
 import Typography, { TypographyProps } from '@mui/material/Typography';
 import { useRecordContext } from 'ra-core';
 
-import sanitizeFieldRestProps from './sanitizeFieldRestProps';
+import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { InjectedFieldProps, PublicFieldProps, fieldPropTypes } from './types';
 
-export const removeTags = (input: string) =>
-    input ? input.replace(/<[^>]+>/gm, '') : '';
-
-const RichTextField: FC<RichTextFieldProps> = memo<RichTextFieldProps>(
+export const RichTextField: FC<RichTextFieldProps> = memo<RichTextFieldProps>(
     props => {
-        const { className, emptyText, source, stripTags, ...rest } = props;
+        const {
+            className,
+            emptyText,
+            source,
+            stripTags = false,
+            ...rest
+        } = props;
         const record = useRecordContext(props);
         const value = get(record, source);
 
@@ -38,7 +41,6 @@ const RichTextField: FC<RichTextFieldProps> = memo<RichTextFieldProps>(
 
 RichTextField.defaultProps = {
     addLabel: true,
-    stripTags: false,
 };
 
 RichTextField.propTypes = {
@@ -57,4 +59,5 @@ export interface RichTextFieldProps
 
 RichTextField.displayName = 'RichTextField';
 
-export default RichTextField;
+export const removeTags = (input: string) =>
+    input ? input.replace(/<[^>]+>/gm, '') : '';

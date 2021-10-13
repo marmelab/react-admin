@@ -3,7 +3,7 @@ import expect from 'expect';
 import { render } from '@testing-library/react';
 import { RecordContextProvider } from 'ra-core';
 
-import ImageField from './ImageField';
+import { ImageField } from './ImageField';
 
 const defaultProps = {
     classes: {},

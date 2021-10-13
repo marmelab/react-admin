@@ -13,7 +13,7 @@ import {
 import { useSelector } from 'react-redux';
 
 import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
-import sanitizeFieldRestProps from './sanitizeFieldRestProps';
+import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 
 /**
  * Render related records to the current one.
@@ -196,5 +196,3 @@ ReferenceManyFieldView.propTypes = {
     reference: PropTypes.string,
     setSort: PropTypes.func,
 };
-
-export default ReferenceManyField;

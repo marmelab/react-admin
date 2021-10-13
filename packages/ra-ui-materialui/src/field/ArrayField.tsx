@@ -14,37 +14,6 @@ import { Identifier, ListContextProvider, useRecordContext } from 'ra-core';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import PropTypes from 'prop-types';
 
-const initialState = {
-    data: {},
-    ids: [],
-};
-
-const getDataAndIds = (
-    record: object,
-    source: string,
-    fieldKey: string
-): State => {
-    const list = get(record, source);
-    if (!list) {
-        return initialState;
-    }
-    return fieldKey
-        ? {
-              data: list.reduce((prev, item) => {
-                  prev[item[fieldKey]] = item;
-                  return prev;
-              }, {}),
-              ids: list.map(item => item[fieldKey]),
-          }
-        : {
-              data: list.reduce((prev, item) => {
-                  prev[JSON.stringify(item)] = item;
-                  return prev;
-              }, {}),
-              ids: list.map(JSON.stringify),
-          };
-};
-
 /**
  * Display a collection
  *
@@ -202,4 +171,33 @@ interface State {
 
 ArrayField.displayName = 'ArrayField';
 
-export default ArrayField;
+const initialState = {
+    data: {},
+    ids: [],
+};
+
+const getDataAndIds = (
+    record: object,
+    source: string,
+    fieldKey: string
+): State => {
+    const list = get(record, source);
+    if (!list) {
+        return initialState;
+    }
+    return fieldKey
+        ? {
+              data: list.reduce((prev, item) => {
+                  prev[item[fieldKey]] = item;
+                  return prev;
+              }, {}),
+              ids: list.map(item => item[fieldKey]),
+          }
+        : {
+              data: list.reduce((prev, item) => {
+                  prev[JSON.stringify(item)] = item;
+                  return prev;
+              }, {}),
+              ids: list.map(JSON.stringify),
+          };
+};

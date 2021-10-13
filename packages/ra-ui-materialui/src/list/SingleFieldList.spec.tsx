@@ -6,7 +6,7 @@ import { ListContext } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import SingleFieldList from './SingleFieldList';
-import ChipField from '../field/ChipField';
+import { ChipField } from '../field';
 
 const theme = createTheme();
 

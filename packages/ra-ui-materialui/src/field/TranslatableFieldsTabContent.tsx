@@ -10,24 +10,6 @@ import {
 import { useTranslatableContext, Record } from 'ra-core';
 import { Labeled } from '../input';
 
-const PREFIX = 'RaTranslatableFieldsTabContent';
-
-const classes = {
-    root: `${PREFIX}-root`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`&.${classes.root}`]: {
-        flexGrow: 1,
-        padding: theme.spacing(2),
-        borderRadius: 0,
-        borderBottomLeftRadius: theme.shape.borderRadius,
-        borderBottomRightRadius: theme.shape.borderRadius,
-        border: `1px solid ${theme.palette.divider}`,
-        borderTop: 0,
-    },
-}));
-
 /**
  * Default container for a group of translatable fields inside a TranslatableFields components.
  * @see TranslatableFields
@@ -52,7 +34,7 @@ export const TranslatableFieldsTabContent = (
             hidden={selectedLocale !== locale}
             id={`translatable-content-${groupKey}${locale}`}
             aria-labelledby={`translatable-header-${groupKey}${locale}`}
-            className={classes.root}
+            className={TranslatableFieldsTabContentClasses.root}
             {...other}
         >
             {Children.map(children, field =>
@@ -101,3 +83,21 @@ export type TranslatableFieldsTabContentProps = {
     record: Record;
     resource: string;
 };
+
+const PREFIX = 'RaTranslatableFieldsTabContent';
+
+export const TranslatableFieldsTabContentClasses = {
+    root: `${PREFIX}-root`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`&.${TranslatableFieldsTabContentClasses.root}`]: {
+        flexGrow: 1,
+        padding: theme.spacing(2),
+        borderRadius: 0,
+        borderBottomLeftRadius: theme.shape.borderRadius,
+        borderBottomRightRadius: theme.shape.borderRadius,
+        border: `1px solid ${theme.palette.divider}`,
+        borderTop: 0,
+    },
+}));

@@ -16,18 +16,8 @@ import {
 } from 'ra-core';
 
 import { fieldPropTypes, PublicFieldProps, InjectedFieldProps } from './types';
-import sanitizeFieldRestProps from './sanitizeFieldRestProps';
+import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { LinearProgress } from '../layout';
-
-const PREFIX = 'RaReferenceArrayField';
-
-const classes = {
-    progress: `${PREFIX}-progress`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`& .${classes.progress}`]: { marginTop: theme.spacing(2) },
-}));
 
 /**
  * A container component that fetches records from another resource specified
@@ -85,7 +75,7 @@ const Root = styled('div')(({ theme }) => ({
  *    ...
  * </ReferenceArrayField>
  */
-const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
+export const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
     const {
         basePath,
         children,
@@ -190,7 +180,9 @@ export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props =
     return (
         <Root>
             {!loaded ? (
-                <LinearProgress className={classes.progress} />
+                <LinearProgress
+                    className={ReferenceArrayFieldClasses.progress}
+                />
             ) : (
                 <>
                     {cloneElement(Children.only(children), {
@@ -219,4 +211,14 @@ ReferenceArrayFieldView.propTypes = {
 
 const PureReferenceArrayFieldView = memo(ReferenceArrayFieldView);
 
-export default ReferenceArrayField;
+const PREFIX = 'RaReferenceArrayField';
+
+export const ReferenceArrayFieldClasses = {
+    progress: `${PREFIX}-progress`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`& .${ReferenceArrayFieldClasses.progress}`]: {
+        marginTop: theme.spacing(2),
+    },
+}));

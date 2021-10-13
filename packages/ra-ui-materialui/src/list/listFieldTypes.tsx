@@ -1,16 +1,18 @@
 import * as React from 'react';
 import Datagrid from './datagrid/Datagrid';
 import SingleFieldList from './SingleFieldList';
-import ArrayField from '../field/ArrayField';
-import BooleanField from '../field/BooleanField';
-import ChipField from '../field/ChipField';
-import DateField from '../field/DateField';
-import EmailField from '../field/EmailField';
-import NumberField from '../field/NumberField';
-import ReferenceField from '../field/ReferenceField';
-import ReferenceArrayField from '../field/ReferenceArrayField';
-import TextField from '../field/TextField';
-import UrlField from '../field/UrlField';
+import {
+    ArrayField,
+    BooleanField,
+    ChipField,
+    DateField,
+    EmailField,
+    NumberField,
+    ReferenceField,
+    ReferenceArrayField,
+    TextField,
+    UrlField,
+} from '../field';
 
 export default {
     table: {
