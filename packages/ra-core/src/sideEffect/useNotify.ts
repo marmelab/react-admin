@@ -31,8 +31,7 @@ const useNotify = () => {
                 | (NotificationOptions & { type: NotificationType }),
             messageArgs: any = {},
             undoable: boolean = false,
-            autoHideDuration?: number,
-            multiLine?: boolean
+            autoHideDuration?: number
         ) => {
             if (typeof type === 'string') {
                 dispatch(
@@ -40,7 +39,6 @@ const useNotify = () => {
                         messageArgs,
                         undoable,
                         autoHideDuration,
-                        multiLine,
                     })
                 );
             } else {
