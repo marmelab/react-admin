@@ -14,7 +14,7 @@ import classnames from 'classnames';
 import { useTimeout, Identifier, Record } from 'ra-core';
 
 import { DatagridClasses, StyledTable } from './useDatagridStyles';
-import Placeholder from '../Placeholder';
+import { Placeholder } from '../Placeholder';
 
 const times = (nbChildren, fn) =>
     Array.from({ length: nbChildren }, (_, key) => fn(key));

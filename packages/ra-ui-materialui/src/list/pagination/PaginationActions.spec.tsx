@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import PaginationActions from './PaginationActions';
+import { PaginationActions } from './PaginationActions';
 
 describe('<PaginationActions />', () => {
     it('should not render any actions when no pagination is necessary', () => {

@@ -8,46 +8,11 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import ListItemText from '@mui/material/ListItemText';
 
-import Placeholder from './Placeholder';
+import { Placeholder } from './Placeholder';
 import { useTimeout } from 'ra-core';
 
-const PREFIX = 'RaSimpleListLoading';
-
-const classes = {
-    primary: `${PREFIX}-primary`,
-    tertiary: `${PREFIX}-tertiary`,
-};
-
-const StyledList = styled(List)(({ theme }) => ({
-    [`& .${classes.primary}`]: {
-        width: '30vw',
-        display: 'inline-block',
-        marginBottom: theme.spacing(),
-    },
-
-    [`& .${classes.tertiary}`]: {
-        float: 'right',
-        opacity: 0.541176,
-        minWidth: '10vw',
-    },
-}));
-
-const times = (nbChildren, fn) =>
-    Array.from({ length: nbChildren }, (_, key) => fn(key));
-
-interface Props {
-    classes?: Record<'tertiary', string>;
-    className?: string;
-    hasLeftAvatarOrIcon?: boolean;
-    hasRightAvatarOrIcon?: boolean;
-    hasSecondaryText?: boolean;
-    hasTertiaryText?: boolean;
-    nbFakeLines?: number;
-}
-
-const SimpleListLoading = (props: Props & ListProps) => {
+export const SimpleListLoading = (props: Props & ListProps) => {
     const {
-        classes: classesOverride,
         className,
         hasLeftAvatarOrIcon,
         hasRightAvatarOrIcon,
@@ -71,9 +36,15 @@ const SimpleListLoading = (props: Props & ListProps) => {
                     <ListItemText
                         primary={
                             <div>
-                                <Placeholder className={classes.primary} />
+                                <Placeholder
+                                    className={SimpleListLoadingClasses.primary}
+                                />
                                 {hasTertiaryText && (
-                                    <span className={classes.tertiary}>
+                                    <span
+                                        className={
+                                            SimpleListLoadingClasses.tertiary
+                                        }
+                                    >
                                         <Placeholder />
                                     </span>
                                 )}
@@ -103,4 +74,35 @@ SimpleListLoading.propTypes = {
     nbFakeLines: PropTypes.number,
 };
 
-export default SimpleListLoading;
+const PREFIX = 'RaSimpleListLoading';
+
+export const SimpleListLoadingClasses = {
+    primary: `${PREFIX}-primary`,
+    tertiary: `${PREFIX}-tertiary`,
+};
+
+const StyledList = styled(List, { name: PREFIX })(({ theme }) => ({
+    [`& .${SimpleListLoadingClasses.primary}`]: {
+        width: '30vw',
+        display: 'inline-block',
+        marginBottom: theme.spacing(),
+    },
+
+    [`& .${SimpleListLoadingClasses.tertiary}`]: {
+        float: 'right',
+        opacity: 0.541176,
+        minWidth: '10vw',
+    },
+}));
+
+const times = (nbChildren, fn) =>
+    Array.from({ length: nbChildren }, (_, key) => fn(key));
+
+interface Props {
+    className?: string;
+    hasLeftAvatarOrIcon?: boolean;
+    hasRightAvatarOrIcon?: boolean;
+    hasSecondaryText?: boolean;
+    hasTertiaryText?: boolean;
+    nbFakeLines?: number;
+}

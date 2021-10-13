@@ -3,21 +3,8 @@ import { ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { sanitizeListRestProps, useListContext } from 'ra-core';
 
-import FilterForm from './FilterForm';
-import FilterButton from './FilterButton';
-
-const PREFIX = 'RaFilter';
-
-const classes = {
-    button: `${PREFIX}-button`,
-    form: `${PREFIX}-form`,
-};
-
-export interface FilterProps {
-    children: ReactNode;
-    context?: 'form' | 'button';
-    variant?: string;
-}
+import { FilterForm } from './FilterForm';
+import { FilterButton } from './FilterButton';
 
 /**
  * Filter button/form combo
@@ -38,7 +25,7 @@ export interface FilterProps {
  * );
  *
  */
-const Filter = (props: FilterProps) => {
+export const Filter = (props: FilterProps) => {
     const {
         resource,
         showFilter,
@@ -52,7 +39,7 @@ const Filter = (props: FilterProps) => {
 
         return (
             <FilterButton
-                className={classes.button}
+                className={FilterClasses.button}
                 resource={resource}
                 filters={React.Children.toArray(children)}
                 showFilter={showFilter}
@@ -68,7 +55,7 @@ const Filter = (props: FilterProps) => {
 
         return (
             <FilterForm
-                className={classes.form}
+                className={FilterClasses.form}
                 resource={resource}
                 filters={React.Children.toArray(children)}
                 hideFilter={hideFilter}
@@ -89,4 +76,15 @@ Filter.propTypes = {
     context: PropTypes.oneOf(['form', 'button']),
 };
 
-export default Filter;
+const PREFIX = 'RaFilter';
+
+export const FilterClasses = {
+    button: `${PREFIX}-button`,
+    form: `${PREFIX}-form`,
+};
+
+export interface FilterProps {
+    children: ReactNode;
+    context?: 'form' | 'button';
+    variant?: string;
+}

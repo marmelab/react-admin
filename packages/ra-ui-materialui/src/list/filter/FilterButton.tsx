@@ -19,17 +19,7 @@ import { FilterButtonMenuItem } from './FilterButtonMenuItem';
 import { Button } from '../../button';
 import { FilterContext } from '../FilterContext';
 
-const PREFIX = 'RaFilterButton';
-
-const classes = {
-    root: `${PREFIX}-root`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`&.${classes.root}`]: { display: 'inline-block' },
-}));
-
-const FilterButton = (props: FilterButtonProps): JSX.Element => {
+export const FilterButton = (props: FilterButtonProps): JSX.Element => {
     const { filters: filtersProp, className, ...rest } = props;
     const filters = useContext(FilterContext) || filtersProp;
     const resource = useResourceContext(props);
@@ -72,7 +62,7 @@ const FilterButton = (props: FilterButtonProps): JSX.Element => {
     if (hiddenFilters.length === 0) return null;
     return (
         <Root
-            className={classnames(classes.root, className)}
+            className={classnames(FilterButtonClasses.root, className)}
             {...sanitizeRestProps(rest)}
         >
             <Button
@@ -125,4 +115,12 @@ export interface FilterButtonProps extends HtmlHTMLAttributes<HTMLDivElement> {
     filters?: ReactNode[];
 }
 
-export default FilterButton;
+const PREFIX = 'RaFilterButton';
+
+export const FilterButtonClasses = {
+    root: `${PREFIX}-root`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`&.${FilterButtonClasses.root}`]: { display: 'inline-block' },
+}));

@@ -6,28 +6,7 @@ import ActionHide from '@mui/icons-material/HighlightOff';
 import classnames from 'classnames';
 import { useResourceContext, useTranslate } from 'ra-core';
 
-const PREFIX = 'RaFilterFormInput';
-
-const classes = {
-    body: `${PREFIX}-body`,
-    spacer: `${PREFIX}-spacer`,
-    hideButton: `${PREFIX}-hideButton`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`&.${classes.body}`]: {
-        display: 'flex',
-        alignItems: 'flex-end',
-        pointerEvents: 'auto',
-    },
-
-    [`& .${classes.spacer}`]: { width: theme.spacing(2) },
-    [`& .${classes.hideButton}`]: {},
-}));
-
-const emptyRecord = {};
-
-const FilterFormInput = props => {
+export const FilterFormInput = props => {
     const { filterElement, handleHide, variant, margin } = props;
     const resource = useResourceContext(props);
     const translate = useTranslate();
@@ -35,11 +14,14 @@ const FilterFormInput = props => {
     return (
         <Root
             data-source={filterElement.props.source}
-            className={classnames('filter-field', classes.body)}
+            className={classnames('filter-field', FilterFormInputClasses.body)}
         >
             {!filterElement.props.alwaysOn && (
                 <IconButton
-                    className={classnames('hide-filter', classes.hideButton)}
+                    className={classnames(
+                        'hide-filter',
+                        FilterFormInputClasses.hideButton
+                    )}
                     onClick={handleHide}
                     data-key={filterElement.props.source}
                     title={translate('ra.action.remove_filter')}
@@ -61,7 +43,7 @@ const FilterFormInput = props => {
                 // ignore defaultValue in Field because it was already set in Form (via mergedInitialValuesWithDefaultValues)
                 defaultValue: undefined,
             })}
-            <div className={classes.spacer}>&nbsp;</div>
+            <div className={FilterFormInputClasses.spacer}>&nbsp;</div>
         </Root>
     );
 };
@@ -74,4 +56,23 @@ FilterFormInput.propTypes = {
     variant: PropTypes.string,
 };
 
-export default FilterFormInput;
+const PREFIX = 'RaFilterFormInput';
+
+export const FilterFormInputClasses = {
+    body: `${PREFIX}-body`,
+    spacer: `${PREFIX}-spacer`,
+    hideButton: `${PREFIX}-hideButton`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`&.${FilterFormInputClasses.body}`]: {
+        display: 'flex',
+        alignItems: 'flex-end',
+        pointerEvents: 'auto',
+    },
+
+    [`& .${FilterFormInputClasses.spacer}`]: { width: theme.spacing(2) },
+    [`& .${FilterFormInputClasses.hideButton}`]: {},
+}));
+
+const emptyRecord = {};

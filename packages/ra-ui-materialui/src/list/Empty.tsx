@@ -11,36 +11,6 @@ import {
 
 import { CreateButton } from '../button';
 
-const PREFIX = 'RaEmpty';
-
-const classes = {
-    message: `${PREFIX}-message`,
-    icon: `${PREFIX}-icon`,
-    toolbar: `${PREFIX}-toolbar`,
-};
-
-const Root = styled('span')(({ theme }) => ({
-    [`& .${classes.message}`]: {
-        textAlign: 'center',
-        opacity: theme.palette.mode === 'light' ? 0.5 : 0.8,
-        margin: '0 1em',
-        color:
-            theme.palette.mode === 'light'
-                ? 'inherit'
-                : theme.palette.text.primary,
-    },
-
-    [`& .${classes.icon}`]: {
-        width: '9em',
-        height: '9em',
-    },
-
-    [`& .${classes.toolbar}`]: {
-        textAlign: 'center',
-        marginTop: '2em',
-    },
-}));
-
 export const Empty = (props: EmptyProps) => {
     const { basePath, hasCreate } = useListContext(props);
     const resource = useResourceContext(props);
@@ -58,8 +28,8 @@ export const Empty = (props: EmptyProps) => {
 
     return (
         <Root>
-            <div className={classes.message}>
-                <Inbox className={classes.icon} />
+            <div className={EmptyClasses.message}>
+                <Inbox className={EmptyClasses.icon} />
                 <Typography variant="h4" paragraph>
                     {translate(`resources.${resource}.empty`, {
                         _: emptyMessage,
@@ -74,7 +44,7 @@ export const Empty = (props: EmptyProps) => {
                 )}
             </div>
             {hasCreate && (
-                <div className={classes.toolbar}>
+                <div className={EmptyClasses.toolbar}>
                     <CreateButton variant="contained" basePath={basePath} />
                 </div>
             )}
@@ -85,3 +55,33 @@ export const Empty = (props: EmptyProps) => {
 export interface EmptyProps {
     resource?: string;
 }
+
+const PREFIX = 'RaEmpty';
+
+export const EmptyClasses = {
+    message: `${PREFIX}-message`,
+    icon: `${PREFIX}-icon`,
+    toolbar: `${PREFIX}-toolbar`,
+};
+
+const Root = styled('span', { name: PREFIX })(({ theme }) => ({
+    [`& .${EmptyClasses.message}`]: {
+        textAlign: 'center',
+        opacity: theme.palette.mode === 'light' ? 0.5 : 0.8,
+        margin: '0 1em',
+        color:
+            theme.palette.mode === 'light'
+                ? 'inherit'
+                : theme.palette.text.primary,
+    },
+
+    [`& .${EmptyClasses.icon}`]: {
+        width: '9em',
+        height: '9em',
+    },
+
+    [`& .${EmptyClasses.toolbar}`]: {
+        textAlign: 'center',
+        marginTop: '2em',
+    },
+}));

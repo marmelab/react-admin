@@ -9,7 +9,7 @@ import {
 
 import { TitlePropType } from '../layout/Title';
 
-import ListView from './ListView';
+import { ListView } from './ListView';
 import { ListProps } from '../types';
 
 /**
@@ -60,7 +60,9 @@ import { ListProps } from '../types';
  *     </List>
  * );
  */
-const List = (props: ListProps & { children: ReactElement }): ReactElement => {
+export const List = (
+    props: ListProps & { children: ReactElement }
+): ReactElement => {
     useCheckMinimumRequiredProps('List', ['children'], props);
     const controllerProps = useListController(props);
     return (
@@ -112,5 +114,3 @@ List.defaultProps = {
     filter: {},
     perPage: 10,
 };
-
-export default List;
