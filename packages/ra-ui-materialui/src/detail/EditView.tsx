@@ -14,35 +14,13 @@ import { EditActions as DefaultActions } from './EditActions';
 import TitleForRecord from '../layout/TitleForRecord';
 import { EditProps } from '../types';
 
-const PREFIX = 'RaEdit';
-
-const classes = {
-    root: `${PREFIX}-root`,
-    main: `${PREFIX}-main`,
-    noActions: `${PREFIX}-noActions`,
-    card: `${PREFIX}-card`,
-};
-
-const Root = styled('div')({
-    [`&.${classes.root}`]: {},
-    [`& .${classes.main}`]: {
-        display: 'flex',
-    },
-    [`& .${classes.noActions}`]: {
-        marginTop: '1em',
-    },
-    [`& .${classes.card}`]: {
-        flex: '1 1 auto',
-    },
-});
-
 export const EditView = (props: EditViewProps) => {
     const {
         actions,
         aside,
         children,
         className,
-        component: Content,
+        component: Content = Card,
         title,
         undoable,
         mutationMode,
@@ -73,7 +51,7 @@ export const EditView = (props: EditViewProps) => {
     }
     return (
         <Root
-            className={classnames('edit-page', classes.root, className)}
+            className={classnames('edit-page', EditClasses.root, className)}
             {...sanitizeRestProps(rest)}
         >
             <TitleForRecord
@@ -92,11 +70,11 @@ export const EditView = (props: EditViewProps) => {
                     ...finalActions.props,
                 })}
             <div
-                className={classnames(classes.main, {
-                    [classes.noActions]: !finalActions,
+                className={classnames(EditClasses.main, {
+                    [EditClasses.noActions]: !finalActions,
                 })}
             >
-                <Content className={classes.card}>
+                <Content className={EditClasses.card}>
                     {record ? (
                         cloneElement(Children.only(children), {
                             basePath,
@@ -167,10 +145,6 @@ EditView.propTypes = {
     undoable: PropTypes.bool,
 };
 
-EditView.defaultProps = {
-    component: Card,
-};
-
 const sanitizeRestProps = ({
     basePath = null,
     defaultTitle = null,
@@ -201,3 +175,25 @@ const sanitizeRestProps = ({
     transformRef = null,
     ...rest
 }) => rest;
+
+const PREFIX = 'RaEdit';
+
+export const EditClasses = {
+    root: `${PREFIX}-root`,
+    main: `${PREFIX}-main`,
+    noActions: `${PREFIX}-noActions`,
+    card: `${PREFIX}-card`,
+};
+
+const Root = styled('div', { name: PREFIX })({
+    [`&.${EditClasses.root}`]: {},
+    [`& .${EditClasses.main}`]: {
+        display: 'flex',
+    },
+    [`& .${EditClasses.noActions}`]: {
+        marginTop: '1em',
+    },
+    [`& .${EditClasses.card}`]: {
+        flex: '1 1 auto',
+    },
+});

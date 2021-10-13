@@ -14,35 +14,13 @@ import { ShowActions as DefaultActions } from './ShowActions';
 import TitleForRecord from '../layout/TitleForRecord';
 import { ShowProps } from '../types';
 
-const PREFIX = 'RaShow';
-
-const classes = {
-    root: `${PREFIX}-root`,
-    main: `${PREFIX}-main`,
-    noActions: `${PREFIX}-noActions`,
-    card: `${PREFIX}-card`,
-};
-
-const Root = styled('div')({
-    [`&.${classes.root}`]: {},
-    [`& .${classes.main}`]: {
-        display: 'flex',
-    },
-    [`& .${classes.noActions}`]: {
-        marginTop: '1em',
-    },
-    [`& .${classes.card}`]: {
-        flex: '1 1 auto',
-    },
-});
-
 export const ShowView = (props: ShowViewProps) => {
     const {
         actions,
         aside,
         children,
         className,
-        component: Content,
+        component: Content = Card,
         title,
         ...rest
     } = props;
@@ -69,7 +47,7 @@ export const ShowView = (props: ShowViewProps) => {
     }
     return (
         <Root
-            className={classnames('show-page', classes.root, className)}
+            className={classnames('show-page', ShowClasses.root, className)}
             {...sanitizeRestProps(rest)}
         >
             <TitleForRecord
@@ -88,11 +66,11 @@ export const ShowView = (props: ShowViewProps) => {
                     ...finalActions.props,
                 })}
             <div
-                className={classnames(classes.main, {
-                    [classes.noActions]: !finalActions,
+                className={classnames(ShowClasses.main, {
+                    [ShowClasses.noActions]: !finalActions,
                 })}
             >
-                <Content className={classes.card}>
+                <Content className={ShowClasses.card}>
                     {record &&
                         cloneElement(Children.only(children), {
                             resource,
@@ -136,10 +114,6 @@ ShowView.propTypes = {
     version: PropTypes.node,
 };
 
-ShowView.defaultProps = {
-    component: Card,
-};
-
 const sanitizeRestProps = ({
     basePath = null,
     defaultTitle = null,
@@ -158,3 +132,25 @@ const sanitizeRestProps = ({
     permissions = null,
     ...rest
 }) => rest;
+
+const PREFIX = 'RaShow';
+
+export const ShowClasses = {
+    root: `${PREFIX}-root`,
+    main: `${PREFIX}-main`,
+    noActions: `${PREFIX}-noActions`,
+    card: `${PREFIX}-card`,
+};
+
+const Root = styled('div', { name: PREFIX })({
+    [`&.${ShowClasses.root}`]: {},
+    [`& .${ShowClasses.main}`]: {
+        display: 'flex',
+    },
+    [`& .${ShowClasses.noActions}`]: {
+        marginTop: '1em',
+    },
+    [`& .${ShowClasses.card}`]: {
+        flex: '1 1 auto',
+    },
+});

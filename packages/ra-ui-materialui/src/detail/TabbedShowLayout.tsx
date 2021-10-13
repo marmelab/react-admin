@@ -17,34 +17,6 @@ import { escapePath, Record } from 'ra-core';
 
 import { TabbedShowLayoutTabs, getTabFullPath } from './TabbedShowLayoutTabs';
 
-const PREFIX = 'RaTabbedShowLayout';
-
-const classes = {
-    content: `${PREFIX}-content`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`& .${classes.content}`]: {
-        paddingTop: theme.spacing(1),
-        paddingLeft: theme.spacing(2),
-        paddingRight: theme.spacing(2),
-    },
-}));
-
-const sanitizeRestProps = ({
-    children,
-    className,
-    record,
-    resource,
-    basePath,
-    version,
-    initialValues,
-    staticContext,
-    translate,
-    tabs,
-    ...rest
-}: any) => rest;
-
 /**
  * Tabbed Layout for a Show view, showing fields grouped in tabs.
  *
@@ -92,7 +64,7 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
         record,
         resource,
         syncWithLocation = true,
-        tabs,
+        tabs = DefaultTabs,
         value,
         version,
         ...rest
@@ -123,7 +95,7 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
             )}
 
             <Divider />
-            <div className={classes.content}>
+            <div className={TabbedShowLayoutClasses.content}>
                 {Children.map(nonNullChildren, (tab, index) =>
                     tab && isValidElement(tab) ? (
                         syncWithLocation ? (
@@ -183,6 +155,32 @@ TabbedShowLayout.propTypes = {
     version: PropTypes.number,
 };
 
-TabbedShowLayout.defaultProps = {
-    tabs: <TabbedShowLayoutTabs />,
+const DefaultTabs = <TabbedShowLayoutTabs />;
+
+const PREFIX = 'RaTabbedShowLayout';
+
+export const TabbedShowLayoutClasses = {
+    content: `${PREFIX}-content`,
 };
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`& .${TabbedShowLayoutClasses.content}`]: {
+        paddingTop: theme.spacing(1),
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2),
+    },
+}));
+
+const sanitizeRestProps = ({
+    children,
+    className,
+    record,
+    resource,
+    basePath,
+    version,
+    initialValues,
+    staticContext,
+    translate,
+    tabs,
+    ...rest
+}: any) => rest;
