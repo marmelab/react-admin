@@ -7,27 +7,11 @@ import Typography from '@mui/material/Typography';
 import classnames from 'classnames';
 import { useRecordContext } from 'ra-core';
 
-import sanitizeFieldRestProps from './sanitizeFieldRestProps';
+import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
-const PREFIX = 'RaChipField';
-
-const classes = {
-    chip: `${PREFIX}-chip`,
-};
-
-const StyledChip = styled(Chip)({
-    [`&.${classes.chip}`]: { margin: 4, cursor: 'inherit' },
-});
-
 export const ChipField: FC<ChipFieldProps> = memo(props => {
-    const {
-        className,
-        classes: classesOverride,
-        source,
-        emptyText,
-        ...rest
-    } = props;
+    const { className, source, emptyText, ...rest } = props;
     const record = useRecordContext(props);
 
     const value = get(record, source);
@@ -47,7 +31,7 @@ export const ChipField: FC<ChipFieldProps> = memo(props => {
 
     return (
         <StyledChip
-            className={classnames(classes.chip, className)}
+            className={classnames(ChipFieldClasses.chip, className)}
             label={value}
             {...sanitizeFieldRestProps(rest)}
         />
@@ -71,4 +55,12 @@ export interface ChipFieldProps
         InjectedFieldProps,
         Omit<ChipProps, 'label'> {}
 
-export default ChipField;
+const PREFIX = 'RaChipField';
+
+const ChipFieldClasses = {
+    chip: `${PREFIX}-chip`,
+};
+
+const StyledChip = styled(Chip, { name: 'PREFIX' })({
+    [`&.${ChipFieldClasses.chip}`]: { margin: 4, cursor: 'inherit' },
+});

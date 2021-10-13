@@ -6,10 +6,11 @@ import { Router } from 'react-router-dom';
 import { renderWithRedux } from 'ra-test';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import ReferenceManyField, {
+import {
+    ReferenceManyField,
     ReferenceManyFieldView,
 } from './ReferenceManyField';
-import TextField from './TextField';
+import { TextField } from './TextField';
 import SingleFieldList from '../list/SingleFieldList';
 
 const theme = createTheme();

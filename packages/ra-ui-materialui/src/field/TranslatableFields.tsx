@@ -11,20 +11,6 @@ import {
 import { TranslatableFieldsTabs } from './TranslatableFieldsTabs';
 import { TranslatableFieldsTabContent } from './TranslatableFieldsTabContent';
 
-const PREFIX = 'RaTranslatableFields';
-
-const classes = {
-    root: `${PREFIX}-root`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`&.${classes.root}`]: {
-        flexGrow: 1,
-        marginTop: theme.spacing(1),
-        marginBottom: theme.spacing(0.5),
-    },
-}));
-
 /**
  * Provides a way to show multiple languages for any field passed as children.
  * It expects the translatable values to have the following structure:
@@ -95,7 +81,7 @@ export const TranslatableFields = (
     const context = useTranslatable({ defaultLocale, locales });
 
     return (
-        <Root className={classes.root}>
+        <Root className={TranslatableFieldsClasses.root}>
             <TranslatableContextProvider value={context}>
                 {selector}
                 {locales.map(locale => (
@@ -123,3 +109,17 @@ export interface TranslatableFieldsProps extends UseTranslatableOptions {
     selector?: ReactElement;
     groupKey?: string;
 }
+
+const PREFIX = 'RaTranslatableFields';
+
+export const TranslatableFieldsClasses = {
+    root: `${PREFIX}-root`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`&.${TranslatableFieldsClasses.root}`]: {
+        flexGrow: 1,
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(0.5),
+    },
+}));

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { render } from '@testing-library/react';
 
 import { SimpleShowLayout } from './SimpleShowLayout';
-import TextField from '../field/TextField';
+import { TextField } from '../field';
 
 describe('<SimpleShowLayout />', () => {
     it('should display children inputs of SimpleShowLayout', () => {

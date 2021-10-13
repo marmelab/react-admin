@@ -4,10 +4,10 @@ import get from 'lodash/get';
 import Typography, { TypographyProps } from '@mui/material/Typography';
 import { useRecordContext } from 'ra-core';
 
-import sanitizeFieldRestProps from './sanitizeFieldRestProps';
+import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
-const TextField: FC<TextFieldProps> = memo(props => {
+export const TextField: FC<TextFieldProps> = memo(props => {
     const { className, source, emptyText, ...rest } = props;
     const record = useRecordContext(props);
     const value = get(record, source);
@@ -46,5 +46,3 @@ export interface TextFieldProps
     // TypographyProps do not expose the component props, see https://github.com/mui-org/material-ui/issues/19512
     component?: ElementType<any>;
 }
-
-export default TextField;

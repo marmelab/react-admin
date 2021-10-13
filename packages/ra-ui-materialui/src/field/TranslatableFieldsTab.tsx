@@ -24,7 +24,7 @@ export const TranslatableFieldsTab = (
     );
 };
 
-interface TranslatableFieldsTabProps {
+export interface TranslatableFieldsTabProps {
     locale: string;
     groupKey?: string;
 }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { memo, FC } from 'react';
+import { memo, FunctionComponent } from 'react';
 import { SvgIconComponent } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
@@ -11,84 +11,73 @@ import { Tooltip, Typography, TypographyProps } from '@mui/material';
 import { useTranslate, useRecordContext } from 'ra-core';
 
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
-import sanitizeFieldRestProps from './sanitizeFieldRestProps';
+import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 
-const PREFIX = 'RaBooleanField';
+export const BooleanField: FunctionComponent<BooleanFieldProps> = memo(
+    props => {
+        const {
+            className,
+            emptyText,
+            source,
+            valueLabelTrue,
+            valueLabelFalse,
+            TrueIcon = DoneIcon,
+            FalseIcon = ClearIcon,
+            looseValue = false,
+            ...rest
+        } = props;
+        const record = useRecordContext(props);
+        const translate = useTranslate();
 
-const classes = {
-    root: `${PREFIX}-root`,
-};
+        const value = get(record, source);
+        const isTruthyValue = value === true || (looseValue && value);
+        let ariaLabel = value ? valueLabelTrue : valueLabelFalse;
 
-const StyledTypography = styled(Typography)({
-    [`&.${classes.root}`]: {
-        display: 'flex',
-    },
-});
+        if (!ariaLabel) {
+            ariaLabel = isTruthyValue ? 'ra.boolean.true' : 'ra.boolean.false';
+        }
 
-const BooleanField: FC<BooleanFieldProps> = memo(props => {
-    const {
-        className,
-        classes: classesOverride,
-        emptyText,
-        source,
-        valueLabelTrue,
-        valueLabelFalse,
-        TrueIcon,
-        FalseIcon,
-        looseValue,
-        ...rest
-    } = props;
-    const record = useRecordContext(props);
-    const translate = useTranslate();
+        if (looseValue || value === false || value === true) {
+            return (
+                <StyledTypography
+                    component="span"
+                    variant="body2"
+                    className={classnames(BooleanFieldClasses.root, className)}
+                    {...sanitizeFieldRestProps(rest)}
+                >
+                    <Tooltip title={translate(ariaLabel, { _: ariaLabel })}>
+                        {isTruthyValue ? (
+                            <span>
+                                <TrueIcon data-testid="true" fontSize="small" />
+                            </span>
+                        ) : (
+                            <span>
+                                <FalseIcon
+                                    data-testid="false"
+                                    fontSize="small"
+                                />
+                            </span>
+                        )}
+                    </Tooltip>
+                </StyledTypography>
+            );
+        }
 
-    const value = get(record, source);
-    const isTruthyValue = value === true || (looseValue && value);
-    let ariaLabel = value ? valueLabelTrue : valueLabelFalse;
-
-    if (!ariaLabel) {
-        ariaLabel = isTruthyValue ? 'ra.boolean.true' : 'ra.boolean.false';
-    }
-
-    if (looseValue || value === false || value === true) {
         return (
-            <StyledTypography
+            <Typography
                 component="span"
                 variant="body2"
-                className={classnames(classes.root, className)}
+                className={className}
                 {...sanitizeFieldRestProps(rest)}
             >
-                <Tooltip title={translate(ariaLabel, { _: ariaLabel })}>
-                    {isTruthyValue ? (
-                        <span>
-                            <TrueIcon data-testid="true" fontSize="small" />
-                        </span>
-                    ) : (
-                        <span>
-                            <FalseIcon data-testid="false" fontSize="small" />
-                        </span>
-                    )}
-                </Tooltip>
-            </StyledTypography>
+                {emptyText}
+            </Typography>
         );
     }
-
-    return (
-        <Typography
-            component="span"
-            variant="body2"
-            className={className}
-            {...sanitizeFieldRestProps(rest)}
-        >
-            {emptyText}
-        </Typography>
-    );
-});
+);
 
 BooleanField.defaultProps = {
     addLabel: true,
-    TrueIcon: DoneIcon,
-    FalseIcon: ClearIcon,
-    looseValue: false,
 };
 
 BooleanField.propTypes = {
@@ -115,4 +104,14 @@ export interface BooleanFieldProps
     looseValue?: boolean;
 }
 
-export default BooleanField;
+const PREFIX = 'RaBooleanField';
+
+const BooleanFieldClasses = {
+    root: `${PREFIX}-root`,
+};
+
+const StyledTypography = styled(Typography, { name: PREFIX })({
+    [`&.${BooleanFieldClasses.root}`]: {
+        display: 'flex',
+    },
+});

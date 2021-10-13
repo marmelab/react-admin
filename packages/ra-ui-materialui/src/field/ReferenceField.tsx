@@ -21,20 +21,8 @@ import {
 
 import LinearProgress from '../layout/LinearProgress';
 import Link from '../Link';
-import sanitizeFieldRestProps from './sanitizeFieldRestProps';
+import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
-
-const PREFIX = 'RaReferenceField';
-
-const classes = {
-    link: `${PREFIX}-link`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`& .${classes.link}`]: {
-        color: theme.palette.primary.main,
-    },
-}));
 
 /**
  * Fetch reference record, and delegate rendering to child component.
@@ -80,7 +68,7 @@ const Root = styled('div')(({ theme }) => ({
  * In previous versions of React-Admin, the prop `linkType` was used. It is now deprecated and replaced with `link`. However
  * backward-compatibility is still kept
  */
-const ReferenceField: FC<ReferenceFieldProps> = props => {
+export const ReferenceField: FC<ReferenceFieldProps> = props => {
     const { source, emptyText, ...rest } = props;
     const record = useRecordContext(props);
     const isReferenceDeclared = useSelector<ReduxState, boolean>(
@@ -237,7 +225,7 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
                         {cloneElement(Children.only(children), {
                             className: classnames(
                                 children.props.className,
-                                classes.link // force color override for Typography components
+                                ReferenceFieldClasses.link // force color override for Typography components
                             ),
                             record: referenceRecord,
                             refetch,
@@ -295,4 +283,14 @@ export interface ReferenceFieldViewProps
 
 const PureReferenceFieldView = memo(ReferenceFieldView);
 
-export default ReferenceField;
+const PREFIX = 'RaReferenceField';
+
+export const ReferenceFieldClasses = {
+    link: `${PREFIX}-link`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`& .${ReferenceFieldClasses.link}`]: {
+        color: theme.palette.primary.main,
+    },
+}));

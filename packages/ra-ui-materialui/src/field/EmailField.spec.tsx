@@ -3,7 +3,7 @@ import expect from 'expect';
 import { render } from '@testing-library/react';
 import { RecordContextProvider } from 'ra-core';
 
-import EmailField from './EmailField';
+import { EmailField } from './EmailField';
 
 const url = 'foo@bar.com';
 
