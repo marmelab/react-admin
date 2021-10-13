@@ -6,7 +6,7 @@ import { renderWithRedux } from 'ra-test';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { MemoryRouter } from 'react-router-dom';
 
-import defaultTheme from '../defaultTheme';
+import { defaultTheme } from '../defaultTheme';
 import { List } from './List';
 import { Filter } from './filter';
 import { TextInput } from '../input';

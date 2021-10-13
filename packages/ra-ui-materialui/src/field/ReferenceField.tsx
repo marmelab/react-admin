@@ -20,7 +20,7 @@ import {
 } from 'ra-core';
 
 import { LinearProgress } from '../layout';
-import Link from '../Link';
+import { Link } from '../Link';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
 

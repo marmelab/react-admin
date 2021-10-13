@@ -11,7 +11,7 @@ import { renderWithRedux } from 'ra-test';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { fireEvent, isInaccessible } from '@testing-library/react';
 
-import defaultTheme from '../defaultTheme';
+import { defaultTheme } from '../defaultTheme';
 import { TabbedForm } from './TabbedForm';
 import { FormTab } from './FormTab';
 import { TextInput } from '../input';

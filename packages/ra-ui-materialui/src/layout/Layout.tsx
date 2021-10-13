@@ -23,7 +23,7 @@ import { Sidebar as DefaultSidebar } from './Sidebar';
 import { Menu as DefaultMenu, MenuProps } from './Menu';
 import { Notification as DefaultNotification } from './Notification';
 import { Error as DefaultError } from './Error';
-import defaultTheme from '../defaultTheme';
+import { defaultTheme } from '../defaultTheme';
 import { SkipNavigationButton } from '../button';
 
 class LayoutWithoutTheme extends Component<
