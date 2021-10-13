@@ -5,23 +5,6 @@ import { useFormGroup, useTranslate } from 'ra-core';
 import { capitalize } from 'inflection';
 import classnames from 'classnames';
 
-const PREFIX = 'RaTranslatableInputsTab';
-
-const classes = {
-    root: `${PREFIX}-root`,
-    error: `${PREFIX}-error`,
-};
-
-const StyledTab = styled(Tab)(({ theme }) => ({
-    [`&.${classes.root}`]: {
-        fontSize: '0.8em',
-        minHeight: theme.spacing(3),
-        minWidth: theme.spacing(6),
-    },
-
-    [`& .${classes.error}`]: { color: theme.palette.error.main },
-}));
-
 /**
  * Single tab that selects a locale in a TranslatableInputs component.
  * @see TranslatableInputs
@@ -40,15 +23,34 @@ export const TranslatableInputsTab = (
             label={translate(`ra.locales.${locale}`, {
                 _: capitalize(locale),
             })}
-            className={classnames(classes.root, {
-                [classes.error]: invalid && touched,
+            className={classnames(TranslatableInputsTabClasses.root, {
+                [TranslatableInputsTabClasses.error]: invalid && touched,
             })}
             {...rest}
         />
     );
 };
 
-interface TranslatableInputsTabProps {
+export interface TranslatableInputsTabProps {
     groupKey?: string;
     locale: string;
 }
+
+const PREFIX = 'RaTranslatableInputsTab';
+
+export const TranslatableInputsTabClasses = {
+    root: `${PREFIX}-root`,
+    error: `${PREFIX}-error`,
+};
+
+const StyledTab = styled(Tab, { name: PREFIX })(({ theme }) => ({
+    [`&.${TranslatableInputsTabClasses.root}`]: {
+        fontSize: '0.8em',
+        minHeight: theme.spacing(3),
+        minWidth: theme.spacing(6),
+    },
+
+    [`& .${TranslatableInputsTabClasses.error}`]: {
+        color: theme.palette.error.main,
+    },
+}));

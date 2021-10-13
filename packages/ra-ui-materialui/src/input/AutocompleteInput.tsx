@@ -29,61 +29,14 @@ import {
     warning,
 } from 'ra-core';
 
-import InputHelperText from './InputHelperText';
-import AutocompleteSuggestionList from './AutocompleteSuggestionList';
-import AutocompleteSuggestionItem from './AutocompleteSuggestionItem';
+import { InputHelperText } from './InputHelperText';
+import { AutocompleteSuggestionList } from './AutocompleteSuggestionList';
+import { AutocompleteSuggestionItem } from './AutocompleteSuggestionItem';
 import { AutocompleteInputLoader } from './AutocompleteInputLoader';
 import {
     SupportCreateSuggestionOptions,
     useSupportCreateSuggestion,
 } from './useSupportCreateSuggestion';
-
-const PREFIX = 'RaAutocompleteInput';
-
-const classes = {
-    container: `${PREFIX}-container`,
-    clearIcon: `${PREFIX}-clearIcon`,
-    visibleClearIcon: `${PREFIX}-visibleClearIcon`,
-    clearButton: `${PREFIX}-clearButton`,
-    selectAdornment: `${PREFIX}-selectAdornment`,
-    inputAdornedEnd: `${PREFIX}-inputAdornedEnd`,
-    suggestionsContainer: `${PREFIX}-suggestionsContainer`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`&.${classes.container}`]: {
-        flexGrow: 1,
-        position: 'relative',
-    },
-
-    [`& .${classes.clearIcon}`]: {
-        height: 16,
-        width: 0,
-    },
-
-    [`& .${classes.visibleClearIcon}`]: {
-        width: 16,
-    },
-
-    [`& .${classes.clearButton}`]: {
-        height: 24,
-        width: 24,
-        padding: 0,
-    },
-
-    [`& .${classes.selectAdornment}`]: {
-        position: 'absolute',
-        right: 24,
-    },
-
-    [`& .${classes.inputAdornedEnd}`]: {
-        paddingRight: 0,
-    },
-
-    [`& .${classes.suggestionsContainer}`]: {
-        zIndex: theme.zIndex.modal,
-    },
-}));
 
 /**
  * An Input component for an autocomplete field, using an array of objects for the options
@@ -447,7 +400,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                 return (
                     <InputAdornment position="end">
                         <IconButton
-                            className={classes.clearButton}
+                            className={AutocompleteInputClasses.clearButton}
                             aria-label={label}
                             title={label}
                             disableRipple
@@ -456,8 +409,8 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                         >
                             <ClearIcon
                                 className={classNames(
-                                    classes.clearIcon,
-                                    classes.visibleClearIcon
+                                    AutocompleteInputClasses.clearIcon,
+                                    AutocompleteInputClasses.visibleClearIcon
                                 )}
                             />
                         </IconButton>
@@ -471,7 +424,11 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                     // show spacer
                     return (
                         <InputAdornment position="end">
-                            <span className={classes.clearButton}>&nbsp;</span>
+                            <span
+                                className={AutocompleteInputClasses.clearButton}
+                            >
+                                &nbsp;
+                            </span>
                             {loading && <AutocompleteInputLoader />}
                         </InputAdornment>
                     );
@@ -483,7 +440,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
             return (
                 <InputAdornment position="end">
                     <IconButton
-                        className={classes.clearButton}
+                        className={AutocompleteInputClasses.clearButton}
                         aria-label={label}
                         title={label}
                         disableRipple
@@ -493,10 +450,13 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                         size="large"
                     >
                         <ClearIcon
-                            className={classNames(classes.clearIcon, {
-                                [classes.visibleClearIcon]:
-                                    clearAlwaysVisible || filterValue,
-                            })}
+                            className={classNames(
+                                AutocompleteInputClasses.clearIcon,
+                                {
+                                    [AutocompleteInputClasses.visibleClearIcon]:
+                                        clearAlwaysVisible || filterValue,
+                                }
+                            )}
                         />
                     </IconButton>
                     {loading && <AutocompleteInputLoader />}
@@ -547,7 +507,10 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                     ];
 
                     return (
-                        <Root className={classes.container} {...getRootProps()}>
+                        <Root
+                            className={AutocompleteInputClasses.container}
+                            {...getRootProps()}
+                        >
                             <TextField
                                 id={id}
                                 name={input.name}
@@ -617,7 +580,9 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                                 suggestionsContainerProps={
                                     suggestionsContainerProps
                                 }
-                                className={classes.suggestionsContainer}
+                                className={
+                                    AutocompleteInputClasses.suggestionsContainer
+                                }
                             >
                                 {suggestions.map((suggestion, index) => (
                                     <AutocompleteSuggestionItem
@@ -669,3 +634,50 @@ export interface AutocompleteInputProps
     loading?: boolean;
     options?: Options;
 }
+
+const PREFIX = 'RaAutocompleteInput';
+
+export const AutocompleteInputClasses = {
+    container: `${PREFIX}-container`,
+    clearIcon: `${PREFIX}-clearIcon`,
+    visibleClearIcon: `${PREFIX}-visibleClearIcon`,
+    clearButton: `${PREFIX}-clearButton`,
+    selectAdornment: `${PREFIX}-selectAdornment`,
+    inputAdornedEnd: `${PREFIX}-inputAdornedEnd`,
+    suggestionsContainer: `${PREFIX}-suggestionsContainer`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`&.${AutocompleteInputClasses.container}`]: {
+        flexGrow: 1,
+        position: 'relative',
+    },
+
+    [`& .${AutocompleteInputClasses.clearIcon}`]: {
+        height: 16,
+        width: 0,
+    },
+
+    [`& .${AutocompleteInputClasses.visibleClearIcon}`]: {
+        width: 16,
+    },
+
+    [`& .${AutocompleteInputClasses.clearButton}`]: {
+        height: 24,
+        width: 24,
+        padding: 0,
+    },
+
+    [`& .${AutocompleteInputClasses.selectAdornment}`]: {
+        position: 'absolute',
+        right: 24,
+    },
+
+    [`& .${AutocompleteInputClasses.inputAdornedEnd}`]: {
+        paddingRight: 0,
+    },
+
+    [`& .${AutocompleteInputClasses.suggestionsContainer}`]: {
+        zIndex: theme.zIndex.modal,
+    },
+}));

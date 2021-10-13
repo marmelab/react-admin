@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Record } from 'ra-core';
 
-import Labeled from '../input/Labeled';
+import { Labeled } from '../input/Labeled';
 
 export const FormInput = <
     RecordType extends Record | Omit<Record, 'id'> = Record

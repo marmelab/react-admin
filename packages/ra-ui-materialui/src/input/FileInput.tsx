@@ -13,51 +13,14 @@ import FormHelperText from '@mui/material/FormHelperText';
 import classnames from 'classnames';
 import { useInput, useTranslate, InputProps } from 'ra-core';
 
-import Labeled from './Labeled';
-import FileInputPreview from './FileInputPreview';
-import sanitizeInputRestProps from './sanitizeInputRestProps';
-import InputHelperText from './InputHelperText';
+import { Labeled } from './Labeled';
+import { FileInputPreview } from './FileInputPreview';
+import { sanitizeInputRestProps } from './sanitizeInputRestProps';
+import { InputHelperText } from './InputHelperText';
 
-const PREFIX = 'RaFileInput';
-
-const classes = {
-    dropZone: `${PREFIX}-dropZone`,
-    preview: `${PREFIX}-preview`,
-    removeButton: `${PREFIX}-removeButton`,
-    root: `${PREFIX}-root`,
-};
-
-const StyledLabeled = styled(Labeled)(({ theme }) => ({
-    [`& .${classes.dropZone}`]: {
-        background: theme.palette.background.default,
-        cursor: 'pointer',
-        padding: theme.spacing(1),
-        textAlign: 'center',
-        color: theme.palette.getContrastText(theme.palette.background.default),
-    },
-
-    [`& .${classes.preview}`]: {},
-    [`& .${classes.removeButton}`]: {},
-    [`&.${classes.root}`]: { width: '100%' },
-}));
-
-export interface FileInputProps {
-    accept?: string;
-    children?: ReactNode;
-    labelMultiple?: string;
-    labelSingle?: string;
-    maxSize?: number;
-    minSize?: number;
-    multiple?: boolean;
-    placeholder?: ReactNode;
-}
-
-export interface FileInputOptions extends DropzoneOptions {
-    inputProps?: any;
-    onRemove?: Function;
-}
-
-const FileInput = (props: FileInputProps & InputProps<FileInputOptions>) => {
+export const FileInput = (
+    props: FileInputProps & InputProps<FileInputOptions>
+) => {
     const {
         accept,
         children,
@@ -181,7 +144,7 @@ const FileInput = (props: FileInputProps & InputProps<FileInputOptions>) => {
         <StyledLabeled
             id={id}
             label={label}
-            className={classnames(classes.root, className)}
+            className={classnames(FileInputClasses.root, className)}
             source={source}
             resource={resource}
             isRequired={isRequired}
@@ -191,7 +154,7 @@ const FileInput = (props: FileInputProps & InputProps<FileInputOptions>) => {
             <>
                 <div
                     data-testid="dropzone"
-                    className={classes.dropZone}
+                    className={FileInputClasses.dropZone}
                     {...getRootProps()}
                 >
                     <input
@@ -223,11 +186,11 @@ const FileInput = (props: FileInputProps & InputProps<FileInputOptions>) => {
                                 key={index}
                                 file={file}
                                 onRemove={onRemove(file)}
-                                className={classes.removeButton}
+                                className={FileInputClasses.removeButton}
                             >
                                 {cloneElement(childrenElement as ReactElement, {
                                     record: file,
-                                    className: classes.preview,
+                                    className: FileInputClasses.preview,
                                 })}
                             </FileInputPreview>
                         ))}
@@ -256,4 +219,41 @@ FileInput.propTypes = {
     placeholder: PropTypes.node,
 };
 
-export default FileInput;
+const PREFIX = 'RaFileInput';
+
+export const FileInputClasses = {
+    dropZone: `${PREFIX}-dropZone`,
+    preview: `${PREFIX}-preview`,
+    removeButton: `${PREFIX}-removeButton`,
+    root: `${PREFIX}-root`,
+};
+
+const StyledLabeled = styled(Labeled, { name: PREFIX })(({ theme }) => ({
+    [`& .${FileInputClasses.dropZone}`]: {
+        background: theme.palette.background.default,
+        cursor: 'pointer',
+        padding: theme.spacing(1),
+        textAlign: 'center',
+        color: theme.palette.getContrastText(theme.palette.background.default),
+    },
+
+    [`& .${FileInputClasses.preview}`]: {},
+    [`& .${FileInputClasses.removeButton}`]: {},
+    [`&.${FileInputClasses.root}`]: { width: '100%' },
+}));
+
+export interface FileInputProps {
+    accept?: string;
+    children?: ReactNode;
+    labelMultiple?: string;
+    labelSingle?: string;
+    maxSize?: number;
+    minSize?: number;
+    multiple?: boolean;
+    placeholder?: ReactNode;
+}
+
+export interface FileInputOptions extends DropzoneOptions {
+    inputProps?: any;
+    onRemove?: Function;
+}

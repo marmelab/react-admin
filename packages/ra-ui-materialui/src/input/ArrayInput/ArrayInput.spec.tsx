@@ -5,8 +5,8 @@ import arrayMutators from 'final-form-arrays';
 import { createTheme, ThemeProvider } from '@mui/material';
 
 import { ArrayInput } from './ArrayInput';
-import NumberInput from '../NumberInput';
-import TextInput from '../TextInput';
+import { NumberInput } from '../NumberInput';
+import { TextInput } from '../TextInput';
 import { SimpleFormIterator } from './SimpleFormIterator';
 import { minLength, required } from 'ra-core';
 

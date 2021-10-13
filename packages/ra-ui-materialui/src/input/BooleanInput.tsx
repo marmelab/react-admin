@@ -7,11 +7,11 @@ import FormGroup, { FormGroupProps } from '@mui/material/FormGroup';
 import Switch, { SwitchProps } from '@mui/material/Switch';
 import { FieldTitle, useInput, InputProps } from 'ra-core';
 
-import sanitizeInputRestProps from './sanitizeInputRestProps';
-import InputHelperText from './InputHelperText';
-import InputPropTypes from './InputPropTypes';
+import { sanitizeInputRestProps } from './sanitizeInputRestProps';
+import { InputHelperText } from './InputHelperText';
+import { InputPropTypes } from './InputPropTypes';
 
-const BooleanInput = (props: BooleanInputProps) => {
+export const BooleanInput = (props: BooleanInputProps) => {
     const {
         format,
         label,
@@ -99,5 +99,3 @@ BooleanInput.defaultProps = {
 
 export type BooleanInputProps = InputProps<SwitchProps> &
     Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'>;
-
-export default BooleanInput;

@@ -6,30 +6,7 @@ import RemoveCircle from '@mui/icons-material/RemoveCircle';
 import IconButton from '@mui/material/IconButton';
 import { useTranslate } from 'ra-core';
 
-const PREFIX = 'RaFileInputPreview';
-
-const classes = {
-    removeButton: `${PREFIX}-removeButton`,
-    removeIcon: `${PREFIX}-removeIcon`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`& .${classes.removeButton}`]: {},
-
-    [`& .${classes.removeIcon}`]: {
-        color: theme.palette.error.main,
-    },
-}));
-
-interface Props {
-    children: ReactNode;
-    className?: string;
-    classes?: object;
-    onRemove: () => void;
-    file: any;
-}
-
-const FileInputPreview = (props: Props) => {
+export const FileInputPreview = (props: FileInputPreviewProps) => {
     const {
         children,
         classes: classesOverride,
@@ -54,13 +31,13 @@ const FileInputPreview = (props: Props) => {
     return (
         <Root className={className} {...rest}>
             <IconButton
-                className={classes.removeButton}
+                className={FileInputPreviewClasses.removeButton}
                 onClick={onRemove}
                 aria-label={translate('ra.action.delete')}
                 title={translate('ra.action.delete')}
                 size="large"
             >
-                <RemoveCircle className={classes.removeIcon} />
+                <RemoveCircle className={FileInputPreviewClasses.removeIcon} />
             </IconButton>
             {children}
         </Root>
@@ -78,4 +55,25 @@ FileInputPreview.defaultProps = {
     file: undefined,
 };
 
-export default FileInputPreview;
+const PREFIX = 'RaFileInputPreview';
+
+const FileInputPreviewClasses = {
+    removeButton: `${PREFIX}-removeButton`,
+    removeIcon: `${PREFIX}-removeIcon`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`& .${FileInputPreviewClasses.removeButton}`]: {},
+
+    [`& .${FileInputPreviewClasses.removeIcon}`]: {
+        color: theme.palette.error.main,
+    },
+}));
+
+export interface FileInputPreviewProps {
+    children: ReactNode;
+    className?: string;
+    classes?: object;
+    onRemove: () => void;
+    file: any;
+}

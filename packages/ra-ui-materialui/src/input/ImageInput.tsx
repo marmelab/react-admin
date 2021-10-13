@@ -1,22 +1,35 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 
-import FileInput, { FileInputProps, FileInputOptions } from './FileInput';
+import { FileInput, FileInputProps, FileInputOptions } from './FileInput';
 import { InputProps } from 'ra-core';
+
+export const ImageInput = (props: ImageInputProps) => {
+    return (
+        <StyledFileInput
+            labelMultiple="ra.input.image.upload_several"
+            labelSingle="ra.input.image.upload_single"
+            classes={ImageInputClasses}
+            {...props}
+        />
+    );
+};
+
+export type ImageInputProps = FileInputProps & InputProps<FileInputOptions>;
 
 const PREFIX = 'RaImageInput';
 
-const classes = {
+export const ImageInputClasses = {
     root: `${PREFIX}-root`,
     dropZone: `${PREFIX}-dropZone`,
     preview: `${PREFIX}-preview`,
     removeButton: `${PREFIX}-removeButton`,
 };
 
-const StyledFileInput = styled(FileInput)(({ theme }) => ({
-    [`& .${classes.root}`]: { width: '100%' },
+const StyledFileInput = styled(FileInput, { name: PREFIX })(({ theme }) => ({
+    [`& .${ImageInputClasses.root}`]: { width: '100%' },
 
-    [`& .${classes.dropZone}`]: {
+    [`& .${ImageInputClasses.dropZone}`]: {
         background: theme.palette.background.default,
         cursor: 'pointer',
         padding: theme.spacing(1),
@@ -24,11 +37,11 @@ const StyledFileInput = styled(FileInput)(({ theme }) => ({
         color: theme.palette.getContrastText(theme.palette.background.default),
     },
 
-    [`& .${classes.preview}`]: {
+    [`& .${ImageInputClasses.preview}`]: {
         display: 'inline-block',
     },
 
-    [`& .${classes.removeButton}`]: {
+    [`& .${ImageInputClasses.removeButton}`]: {
         display: 'inline-block',
         position: 'relative',
         float: 'left',
@@ -44,18 +57,3 @@ const StyledFileInput = styled(FileInput)(({ theme }) => ({
         },
     },
 }));
-
-const ImageInput = (props: ImageInputProps) => {
-    return (
-        <StyledFileInput
-            labelMultiple="ra.input.image.upload_several"
-            labelSingle="ra.input.image.upload_single"
-            classes={classes}
-            {...props}
-        />
-    );
-};
-
-export type ImageInputProps = FileInputProps & InputProps<FileInputOptions>;
-
-export default ImageInput;

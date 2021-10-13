@@ -21,69 +21,14 @@ import {
 } from 'ra-core';
 import debounce from 'lodash/debounce';
 
-import InputHelperText from './InputHelperText';
-import AutocompleteSuggestionList from './AutocompleteSuggestionList';
-import AutocompleteSuggestionItem from './AutocompleteSuggestionItem';
+import { InputHelperText } from './InputHelperText';
+import { AutocompleteSuggestionList } from './AutocompleteSuggestionList';
+import { AutocompleteSuggestionItem } from './AutocompleteSuggestionItem';
 import { AutocompleteInputLoader } from './AutocompleteInputLoader';
 import {
     SupportCreateSuggestionOptions,
     useSupportCreateSuggestion,
 } from './useSupportCreateSuggestion';
-
-const PREFIX = 'RaAutocompleteArrayInput';
-
-const classes = {
-    container: `${PREFIX}-container`,
-    suggestionsContainer: `${PREFIX}-suggestionsContainer`,
-    chip: `${PREFIX}-chip`,
-    chipContainerFilled: `${PREFIX}-chipContainerFilled`,
-    chipContainerOutlined: `${PREFIX}-chipContainerOutlined`,
-    inputRoot: `${PREFIX}-inputRoot`,
-    inputRootFilled: `${PREFIX}-inputRootFilled`,
-    inputInput: `${PREFIX}-inputInput`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`&.${classes.container}`]: {
-        flexGrow: 1,
-        position: 'relative',
-    },
-
-    [`& .${classes.suggestionsContainer}`]: {
-        zIndex: theme.zIndex.modal,
-    },
-
-    [`& .${classes.chip}`]: {
-        margin: theme.spacing(0.5, 0.5, 0.5, 0),
-    },
-
-    [`& .${classes.chipContainerFilled}`]: {
-        margin: '27px 12px 10px 0',
-    },
-
-    [`& .${classes.chipContainerOutlined}`]: {
-        margin: '12px 12px 10px 0',
-    },
-
-    [`& .${classes.inputRoot}`]: {
-        flexWrap: 'wrap',
-    },
-
-    [`& .${classes.inputRootFilled}`]: {
-        flexWrap: 'wrap',
-        '& $chip': {
-            backgroundColor:
-                theme.palette.mode === 'light'
-                    ? 'rgba(0, 0, 0, 0.09)'
-                    : 'rgba(255, 255, 255, 0.09)',
-        },
-    },
-
-    [`& .${classes.inputInput}`]: {
-        width: 'auto',
-        flexGrow: 1,
-    },
-}));
 
 /**
  * An Input component for an autocomplete field, using an array of objects for the options
@@ -147,7 +92,7 @@ const Root = styled('div')(({ theme }) => ({
  * @example
  * <AutocompleteArrayInput source="author_id" options={{ color: 'secondary' }} />
  */
-const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
+export const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
     const {
         allowDuplicates,
         allowEmpty,
@@ -466,7 +411,10 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
                         ...(onCreate || create ? [getCreateItem()] : []),
                     ];
                     return (
-                        <Root className={classes.container} {...getRootProps()}>
+                        <Root
+                            className={AutocompleteArrayInputClasses.container}
+                            {...getRootProps()}
+                        >
                             <TextField
                                 id={id}
                                 fullWidth={fullWidth}
@@ -476,18 +424,22 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
                                         inputRef,
                                     ]),
                                     classes: {
-                                        root: classNames(classes.inputRoot, {
-                                            [classes.inputRootFilled]:
-                                                variant === 'filled',
-                                        }),
-                                        input: classes.inputInput,
+                                        root: classNames(
+                                            AutocompleteArrayInputClasses.inputRoot,
+                                            {
+                                                [AutocompleteArrayInputClasses.inputRootFilled]:
+                                                    variant === 'filled',
+                                            }
+                                        ),
+                                        input:
+                                            AutocompleteArrayInputClasses.inputInput,
                                     },
                                     startAdornment: (
                                         <div
                                             className={classNames({
-                                                [classes.chipContainerFilled]:
+                                                [AutocompleteArrayInputClasses.chipContainerFilled]:
                                                     variant === 'filled',
-                                                [classes.chipContainerOutlined]:
+                                                [AutocompleteArrayInputClasses.chipContainerOutlined]:
                                                     variant === 'outlined',
                                             })}
                                         >
@@ -499,7 +451,9 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
                                                         label={getChoiceText(
                                                             item
                                                         )}
-                                                        className={classes.chip}
+                                                        className={
+                                                            AutocompleteArrayInputClasses.chip
+                                                        }
                                                         onDelete={handleDelete(
                                                             item
                                                         )}
@@ -567,7 +521,9 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
                                 suggestionsContainerProps={
                                     suggestionsContainerProps
                                 }
-                                className={classes.suggestionsContainer}
+                                className={
+                                    AutocompleteArrayInputClasses.suggestionsContainer
+                                }
                             >
                                 {suggestions.map((suggestion, index) => (
                                     <AutocompleteSuggestionItem
@@ -615,4 +571,57 @@ export interface AutocompleteArrayInputProps
     options?: Options;
 }
 
-export default AutocompleteArrayInput;
+const PREFIX = 'RaAutocompleteArrayInput';
+
+export const AutocompleteArrayInputClasses = {
+    container: `${PREFIX}-container`,
+    suggestionsContainer: `${PREFIX}-suggestionsContainer`,
+    chip: `${PREFIX}-chip`,
+    chipContainerFilled: `${PREFIX}-chipContainerFilled`,
+    chipContainerOutlined: `${PREFIX}-chipContainerOutlined`,
+    inputRoot: `${PREFIX}-inputRoot`,
+    inputRootFilled: `${PREFIX}-inputRootFilled`,
+    inputInput: `${PREFIX}-inputInput`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`&.${AutocompleteArrayInputClasses.container}`]: {
+        flexGrow: 1,
+        position: 'relative',
+    },
+
+    [`& .${AutocompleteArrayInputClasses.suggestionsContainer}`]: {
+        zIndex: theme.zIndex.modal,
+    },
+
+    [`& .${AutocompleteArrayInputClasses.chip}`]: {
+        margin: theme.spacing(0.5, 0.5, 0.5, 0),
+    },
+
+    [`& .${AutocompleteArrayInputClasses.chipContainerFilled}`]: {
+        margin: '27px 12px 10px 0',
+    },
+
+    [`& .${AutocompleteArrayInputClasses.chipContainerOutlined}`]: {
+        margin: '12px 12px 10px 0',
+    },
+
+    [`& .${AutocompleteArrayInputClasses.inputRoot}`]: {
+        flexWrap: 'wrap',
+    },
+
+    [`& .${AutocompleteArrayInputClasses.inputRootFilled}`]: {
+        flexWrap: 'wrap',
+        '& $chip': {
+            backgroundColor:
+                theme.palette.mode === 'light'
+                    ? 'rgba(0, 0, 0, 0.09)'
+                    : 'rgba(255, 255, 255, 0.09)',
+        },
+    },
+
+    [`& .${AutocompleteArrayInputClasses.inputInput}`]: {
+        width: 'auto',
+        flexGrow: 1,
+    },
+}));

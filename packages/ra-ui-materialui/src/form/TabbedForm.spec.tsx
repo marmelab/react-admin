@@ -14,7 +14,7 @@ import { fireEvent, isInaccessible } from '@testing-library/react';
 import defaultTheme from '../defaultTheme';
 import { TabbedForm } from './TabbedForm';
 import { FormTab } from './FormTab';
-import TextInput from '../input/TextInput';
+import { TextInput } from '../input';
 
 describe('<TabbedForm />', () => {
     const saveContextValue = {

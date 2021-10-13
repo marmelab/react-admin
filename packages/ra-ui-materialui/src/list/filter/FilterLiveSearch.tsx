@@ -5,7 +5,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Form } from 'react-final-form';
 import { useTranslate, useListFilterContext } from 'ra-core';
 
-import TextInput from '../../input/TextInput';
+import { TextInput } from '../../input';
 
 /**
  * Form and search input for doing a full-text search filter.

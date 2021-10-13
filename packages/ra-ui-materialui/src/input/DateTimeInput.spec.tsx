@@ -7,7 +7,7 @@ import { renderWithRedux } from 'ra-test';
 import format from 'date-fns/format';
 import { createTheme, ThemeProvider } from '@mui/material';
 
-import DateTimeInput from './DateTimeInput';
+import { DateTimeInput } from './DateTimeInput';
 import { ArrayInput, SimpleFormIterator } from './ArrayInput';
 import { FormApi } from 'final-form';
 

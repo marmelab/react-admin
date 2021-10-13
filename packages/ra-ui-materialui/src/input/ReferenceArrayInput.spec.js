@@ -6,7 +6,8 @@ import { renderWithRedux } from 'ra-test';
 import addDays from 'date-fns/add_days';
 import { Datagrid } from '../list';
 import { TextField } from '../field';
-import ReferenceArrayInput, {
+import {
+    ReferenceArrayInput,
     ReferenceArrayInputView,
 } from './ReferenceArrayInput';
 

@@ -6,32 +6,6 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import { FieldTitle } from 'ra-core';
 
-const PREFIX = 'RaLabeled';
-
-const classes = {
-    label: `${PREFIX}-label`,
-    value: `${PREFIX}-value`,
-};
-
-const StyledFormControl = styled(FormControl)(({ theme }) => ({
-    [`& .${classes.label}`]: {
-        position: 'relative',
-    },
-
-    [`& .${classes.value}`]: {
-        fontFamily: theme.typography.fontFamily,
-        color: 'currentColor',
-        padding: `calc(${theme.spacing(1)} 0 ${theme.spacing(1)} / 2)`,
-        border: 0,
-        boxSizing: 'content-box',
-        verticalAlign: 'middle',
-        background: 'none',
-        margin: 0, // Reset for Safari
-        display: 'block',
-        width: '100%',
-    },
-}));
-
 /**
  * Use any component as read-only Input, labeled just like other Inputs.
  *
@@ -47,7 +21,7 @@ const StyledFormControl = styled(FormControl)(({ theme }) => ({
  *     <FooComponent source="title" />
  * </Labeled>
  */
-const Labeled = (props: LabeledProps) => {
+export const Labeled = (props: LabeledProps) => {
     const {
         children,
         className,
@@ -80,7 +54,7 @@ const Labeled = (props: LabeledProps) => {
             error={meta && meta.touched && !!(meta.error || meta.submitError)}
             margin={margin}
         >
-            <InputLabel htmlFor={id} shrink className={classes.label}>
+            <InputLabel htmlFor={id} shrink className={LabeledClasses.label}>
                 <FieldTitle
                     label={label}
                     source={source}
@@ -88,7 +62,7 @@ const Labeled = (props: LabeledProps) => {
                     isRequired={isRequired}
                 />
             </InputLabel>
-            <div className={classes.value}>
+            <div className={LabeledClasses.value}>
                 {children && typeof children.type !== 'string'
                     ? React.cloneElement(children, {
                           input,
@@ -132,4 +106,30 @@ export interface LabeledProps {
     [key: string]: any;
 }
 
-export default Labeled;
+const PREFIX = 'RaLabeled';
+
+export const LabeledClasses = {
+    label: `${PREFIX}-label`,
+    value: `${PREFIX}-value`,
+};
+
+const StyledFormControl = styled(FormControl, { name: PREFIX })(
+    ({ theme }) => ({
+        [`& .${LabeledClasses.label}`]: {
+            position: 'relative',
+        },
+
+        [`& .${LabeledClasses.value}`]: {
+            fontFamily: theme.typography.fontFamily,
+            color: 'currentColor',
+            padding: `calc(${theme.spacing(1)} 0 ${theme.spacing(1)} / 2)`,
+            border: 0,
+            boxSizing: 'content-box',
+            verticalAlign: 'middle',
+            background: 'none',
+            margin: 0, // Reset for Safari
+            display: 'block',
+            width: '100%',
+        },
+    })
+);

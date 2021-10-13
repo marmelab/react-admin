@@ -4,7 +4,7 @@ import { render, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import { TestTranslationProvider } from 'ra-core';
 
-import RadioButtonGroupInput from './RadioButtonGroupInput';
+import { RadioButtonGroupInput } from './RadioButtonGroupInput';
 
 describe('<RadioButtonGroupInput />', () => {
     const defaultProps = {

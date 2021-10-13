@@ -6,7 +6,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import defaultTheme from '../defaultTheme';
 import { SimpleForm } from './SimpleForm';
-import TextInput from '../input/TextInput';
+import { TextInput } from '../input';
 
 describe('<SimpleForm />', () => {
     const saveContextValue = {

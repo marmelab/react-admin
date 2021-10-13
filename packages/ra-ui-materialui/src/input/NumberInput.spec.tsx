@@ -3,7 +3,7 @@ import { render, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import { required } from 'ra-core/lib';
 
-import NumberInput from './NumberInput';
+import { NumberInput } from './NumberInput';
 
 describe('<NumberInput />', () => {
     const defaultProps = {

@@ -6,27 +6,6 @@ import { useTranslatableContext } from 'ra-core';
 import { TranslatableInputsTab } from './TranslatableInputsTab';
 import { AppBarProps } from '../layout';
 
-const PREFIX = 'RaTranslatableInputsTabs';
-
-const classes = {
-    root: `${PREFIX}-root`,
-    tabs: `${PREFIX}-tabs`,
-};
-
-const StyledAppBar = styled(AppBar)(({ theme }) => ({
-    [`&.${classes.root}`]: {
-        boxShadow: 'none',
-        borderRadius: 0,
-        borderTopLeftRadius: theme.shape.borderRadius,
-        borderTopRightRadius: theme.shape.borderRadius,
-        border: `1px solid ${theme.palette.divider}`,
-    },
-
-    [`& .${classes.tabs}`]: {
-        minHeight: theme.spacing(3),
-    },
-}));
-
 /**
  * Default locale selector for the TranslatableInputs component. Generates a tab for each specified locale.
  * @see TranslatableInputs
@@ -45,14 +24,14 @@ export const TranslatableInputsTabs = (
         <StyledAppBar
             color="default"
             position="static"
-            className={classes.root}
+            className={TranslatableInputsTabsClasses.root}
         >
             <Tabs
                 value={selectedLocale}
                 onChange={handleChange}
                 indicatorColor="primary"
                 textColor="primary"
-                className={classes.tabs}
+                className={TranslatableInputsTabsClasses.tabs}
                 {...tabsProps}
             >
                 {locales.map(locale => (
@@ -72,3 +51,24 @@ export interface TranslatableInputsTabsProps {
     groupKey?: string;
     TabsProps?: TabsProps;
 }
+
+const PREFIX = 'RaTranslatableInputsTabs';
+
+export const TranslatableInputsTabsClasses = {
+    root: `${PREFIX}-root`,
+    tabs: `${PREFIX}-tabs`,
+};
+
+const StyledAppBar = styled(AppBar, { name: PREFIX })(({ theme }) => ({
+    [`&.${TranslatableInputsTabsClasses.root}`]: {
+        boxShadow: 'none',
+        borderRadius: 0,
+        borderTopLeftRadius: theme.shape.borderRadius,
+        borderTopRightRadius: theme.shape.borderRadius,
+        border: `1px solid ${theme.palette.divider}`,
+    },
+
+    [`& .${TranslatableInputsTabsClasses.tabs}`]: {
+        minHeight: theme.spacing(3),
+    },
+}));
