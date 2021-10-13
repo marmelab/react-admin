@@ -21,28 +21,6 @@ import {
 import { sanitizeButtonRestProps } from './Button';
 import { FormRenderProps } from 'react-final-form';
 
-const PREFIX = 'RaSaveButton';
-
-const classes = {
-    button: `${PREFIX}-button`,
-    leftIcon: `${PREFIX}-leftIcon`,
-    icon: `${PREFIX}-icon`,
-};
-
-const StyledButton = styled(Button)(({ theme }) => ({
-    [`&.${classes.button}`]: {
-        position: 'relative',
-    },
-
-    [`& .${classes.leftIcon}`]: {
-        marginRight: theme.spacing(1),
-    },
-
-    [`& .${classes.icon}`]: {
-        fontSize: 18,
-    },
-}));
-
 /**
  * Submit button for resource forms (Edit and Create).
  *
@@ -80,7 +58,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
  *     return <SaveButton {...props} onSuccess={onSuccess} />;
  * }
  */
-const SaveButton = (props: SaveButtonProps) => {
+export const SaveButton = (props: SaveButtonProps) => {
     const {
         className,
         invalid,
@@ -168,7 +146,7 @@ const SaveButton = (props: SaveButtonProps) => {
     const displayedLabel = label && translate(label, { _: label });
     return (
         <StyledButton
-            className={classnames(classes.button, className)}
+            className={classnames(SaveButtonClasses.button, className)}
             variant={variant}
             type={type}
             onClick={handleClick}
@@ -183,11 +161,14 @@ const SaveButton = (props: SaveButtonProps) => {
                 <CircularProgress
                     size={18}
                     thickness={2}
-                    className={classes.leftIcon}
+                    className={SaveButtonClasses.leftIcon}
                 />
             ) : (
                 cloneElement(icon, {
-                    className: classnames(classes.leftIcon, classes.icon),
+                    className: classnames(
+                        SaveButtonClasses.leftIcon,
+                        SaveButtonClasses.icon
+                    ),
                 })
             )}
             {displayedLabel}
@@ -246,4 +227,24 @@ SaveButton.propTypes = {
     icon: PropTypes.element,
 };
 
-export default SaveButton;
+const PREFIX = 'RaSaveButton';
+
+export const SaveButtonClasses = {
+    button: `${PREFIX}-button`,
+    leftIcon: `${PREFIX}-leftIcon`,
+    icon: `${PREFIX}-icon`,
+};
+
+const StyledButton = styled(Button, { name: PREFIX })(({ theme }) => ({
+    [`&.${SaveButtonClasses.button}`]: {
+        position: 'relative',
+    },
+
+    [`& .${SaveButtonClasses.leftIcon}`]: {
+        marginRight: theme.spacing(1),
+    },
+
+    [`& .${SaveButtonClasses.icon}`]: {
+        fontSize: 18,
+    },
+}));

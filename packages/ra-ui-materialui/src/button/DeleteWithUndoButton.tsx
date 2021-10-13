@@ -14,31 +14,11 @@ import {
     useResourceContext,
 } from 'ra-core';
 
-import Button, { ButtonProps } from './Button';
-
-const PREFIX = 'RaDeleteWithUndoButton';
-
-const classes = {
-    deleteButton: `${PREFIX}-deleteButton`,
-};
-
-const StyledButton = styled(Button)(({ theme }) => ({
-    [`&.${classes.deleteButton}`]: {
-        color: theme.palette.error.main,
-        '&:hover': {
-            backgroundColor: alpha(theme.palette.error.main, 0.12),
-            // Reset on mouse devices
-            '@media (hover: none)': {
-                backgroundColor: 'transparent',
-            },
-        },
-    },
-}));
+import { Button, ButtonProps } from './Button';
 
 export const DeleteWithUndoButton = (props: DeleteWithUndoButtonProps) => {
     const {
         label = 'ra.action.delete',
-        classes: classesOverride,
         className,
         icon = defaultIcon,
         onClick,
@@ -68,7 +48,7 @@ export const DeleteWithUndoButton = (props: DeleteWithUndoButtonProps) => {
             label={label}
             className={classnames(
                 'ra-delete-button',
-                classes.deleteButton,
+                DeleteWithUndoButtonClasses.deleteButton,
                 className
             )}
             key="button"
@@ -81,7 +61,6 @@ export const DeleteWithUndoButton = (props: DeleteWithUndoButtonProps) => {
 
 interface Props {
     basePath?: string;
-    classes?: object;
     className?: string;
     icon?: ReactElement;
     label?: string;
@@ -106,7 +85,6 @@ export type DeleteWithUndoButtonProps = Props & ButtonProps;
 
 DeleteWithUndoButton.propTypes = {
     basePath: PropTypes.string,
-    classes: PropTypes.object,
     className: PropTypes.string,
     label: PropTypes.string,
     record: PropTypes.any,
@@ -118,3 +96,22 @@ DeleteWithUndoButton.propTypes = {
     resource: PropTypes.string,
     icon: PropTypes.element,
 };
+
+const PREFIX = 'RaDeleteWithUndoButton';
+
+const DeleteWithUndoButtonClasses = {
+    deleteButton: `${PREFIX}-deleteButton`,
+};
+
+const StyledButton = styled(Button, { name: PREFIX })(({ theme }) => ({
+    [`&.${DeleteWithUndoButtonClasses.deleteButton}`]: {
+        color: theme.palette.error.main,
+        '&:hover': {
+            backgroundColor: alpha(theme.palette.error.main, 0.12),
+            // Reset on mouse devices
+            '@media (hover: none)': {
+                backgroundColor: 'transparent',
+            },
+        },
+    },
+}));

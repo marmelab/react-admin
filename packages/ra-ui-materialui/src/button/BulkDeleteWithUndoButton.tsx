@@ -14,32 +14,14 @@ import {
     useListContext,
 } from 'ra-core';
 
-import Button, { ButtonProps } from './Button';
+import { Button, ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
 
-const PREFIX = 'RaBulkDeleteWithUndoButton';
-
-const classes = {
-    deleteButton: `${PREFIX}-deleteButton`,
-};
-
-const StyledButton = styled(Button)(({ theme }) => ({
-    [`&.${classes.deleteButton}`]: {
-        color: theme.palette.error.main,
-        '&:hover': {
-            backgroundColor: alpha(theme.palette.error.main, 0.12),
-            // Reset on mouse devices
-            '@media (hover: none)': {
-                backgroundColor: 'transparent',
-            },
-        },
-    },
-}));
-
-const BulkDeleteWithUndoButton = (props: BulkDeleteWithUndoButtonProps) => {
+export const BulkDeleteWithUndoButton = (
+    props: BulkDeleteWithUndoButtonProps
+) => {
     const {
         basePath,
-        classes: classesOverride,
         label = 'ra.action.delete',
         icon = defaultIcon,
         onClick,
@@ -94,7 +76,7 @@ const BulkDeleteWithUndoButton = (props: BulkDeleteWithUndoButtonProps) => {
         <StyledButton
             onClick={handleClick}
             label={label}
-            className={classes.deleteButton}
+            className={BulkDeleteWithUndoButtonClasses.deleteButton}
             disabled={loading}
             {...sanitizeRestProps(rest)}
         >
@@ -120,13 +102,29 @@ export interface BulkDeleteWithUndoButtonProps
     icon?: ReactElement;
 }
 
+const PREFIX = 'RaBulkDeleteWithUndoButton';
+
+export const BulkDeleteWithUndoButtonClasses = {
+    deleteButton: `${PREFIX}-deleteButton`,
+};
+
+const StyledButton = styled(Button, { name: PREFIX })(({ theme }) => ({
+    [`&.${BulkDeleteWithUndoButtonClasses.deleteButton}`]: {
+        color: theme.palette.error.main,
+        '&:hover': {
+            backgroundColor: alpha(theme.palette.error.main, 0.12),
+            // Reset on mouse devices
+            '@media (hover: none)': {
+                backgroundColor: 'transparent',
+            },
+        },
+    },
+}));
+
 BulkDeleteWithUndoButton.propTypes = {
     basePath: PropTypes.string,
-    classes: PropTypes.object,
     label: PropTypes.string,
     resource: PropTypes.string,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     icon: PropTypes.element,
 };
-
-export default BulkDeleteWithUndoButton;

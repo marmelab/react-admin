@@ -10,7 +10,7 @@ import {
 import { renderWithRedux, TestContext } from 'ra-test';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import SaveButton from './SaveButton';
+import { SaveButton } from './SaveButton';
 import { Toolbar, SimpleForm } from '../form';
 import { Edit } from '../detail';
 import { TextInput } from '../input';

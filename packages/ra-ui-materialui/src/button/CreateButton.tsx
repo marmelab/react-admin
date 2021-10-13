@@ -8,26 +8,7 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { useTranslate, useResourceContext } from 'ra-core';
 
-import Button, { ButtonProps, sanitizeButtonRestProps } from './Button';
-
-const PREFIX = 'RaCreateButton';
-
-const classes = {
-    floating: `${PREFIX}-floating`,
-};
-
-const StyledFab = styled(Fab)(({ theme }) => ({
-    [`&.${classes.floating}`]: {
-        color: theme.palette.getContrastText(theme.palette.primary.main),
-        margin: 0,
-        top: 'auto',
-        right: 20,
-        bottom: 60,
-        left: 'auto',
-        position: 'fixed',
-        zIndex: 1000,
-    },
-}));
+import { Button, ButtonProps, sanitizeButtonRestProps } from './Button';
 
 /**
  * Opens the Create view of a given resource
@@ -46,7 +27,6 @@ const CreateButton = (props: CreateButtonProps) => {
     const {
         basePath = '',
         className,
-        classes: classesOverride,
         icon = defaultIcon,
         label = 'ra.action.create',
         scrollToTop = true,
@@ -70,7 +50,7 @@ const CreateButton = (props: CreateButtonProps) => {
         <StyledFab
             component={Link}
             color="primary"
-            className={classnames(classes.floating, className)}
+            className={classnames(CreateButtonClasses.floating, className)}
             to={location}
             aria-label={label && translate(label)}
             {...sanitizeButtonRestProps(rest)}
@@ -103,11 +83,29 @@ export type CreateButtonProps = Props & ButtonProps;
 
 CreateButton.propTypes = {
     basePath: PropTypes.string,
-    classes: PropTypes.object,
     className: PropTypes.string,
     icon: PropTypes.element,
     label: PropTypes.string,
 };
+
+const PREFIX = 'RaCreateButton';
+
+export const CreateButtonClasses = {
+    floating: `${PREFIX}-floating`,
+};
+
+const StyledFab = styled(Fab, { name: PREFIX })(({ theme }) => ({
+    [`&.${CreateButtonClasses.floating}`]: {
+        color: theme.palette.getContrastText(theme.palette.primary.main),
+        margin: 0,
+        top: 'auto',
+        right: 20,
+        bottom: 60,
+        left: 'auto',
+        position: 'fixed',
+        zIndex: 1000,
+    },
+}));
 
 export default memo(CreateButton, (prevProps, nextProps) => {
     return (

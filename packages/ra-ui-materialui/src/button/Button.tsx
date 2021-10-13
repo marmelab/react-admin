@@ -15,39 +15,6 @@ import classnames from 'classnames';
 import { Record, RedirectionSideEffect, useTranslate } from 'ra-core';
 import { LocationDescriptor } from 'history';
 
-const PREFIX = 'RaButton';
-
-const classes = {
-    button: `${PREFIX}-button`,
-    label: `${PREFIX}-label`,
-    labelRightIcon: `${PREFIX}-labelRightIcon`,
-    smallIcon: `${PREFIX}-smallIcon`,
-    mediumIcon: `${PREFIX}-mediumIcon`,
-    largeIcon: `${PREFIX}-largeIcon`,
-};
-
-const StyledButton = styled(MuiButton)({
-    [`& .${classes.button}`]: {
-        display: 'inline-flex',
-        alignItems: 'center',
-    },
-    [`& .${classes.label}`]: {
-        paddingLeft: '0.5em',
-    },
-    [`& .${classes.labelRightIcon}`]: {
-        paddingRight: '0.5em',
-    },
-    [`& .${classes.smallIcon}`]: {
-        fontSize: 20,
-    },
-    [`& .${classes.mediumIcon}`]: {
-        fontSize: 22,
-    },
-    [`& .${classes.largeIcon}`]: {
-        fontSize: 24,
-    },
-});
-
 /**
  * A generic Button with side icon. Only the icon is displayed on small screens.
  *
@@ -61,11 +28,10 @@ const StyledButton = styled(MuiButton)({
  * </Button>
  *
  */
-const Button = (props: ButtonProps) => {
+export const Button = (props: ButtonProps) => {
     const {
         alignIcon = 'left',
         children,
-        classes: classesOverride,
         className,
         disabled,
         label,
@@ -106,7 +72,7 @@ const Button = (props: ButtonProps) => {
         )
     ) : (
         <StyledButton
-            className={classnames(classes.button, className)}
+            className={classnames(ButtonClasses.button, className)}
             color={color}
             size={size}
             aria-label={label ? translate(label, { _: label }) : undefined}
@@ -116,13 +82,13 @@ const Button = (props: ButtonProps) => {
             {alignIcon === 'left' &&
                 children &&
                 React.cloneElement(children, {
-                    className: classes[`${size}Icon`],
+                    className: ButtonClasses[`${size}Icon`],
                 })}
             {label && (
                 <span
                     className={classnames({
-                        [classes.label]: alignIcon === 'left',
-                        [classes.labelRightIcon]: alignIcon !== 'left',
+                        [ButtonClasses.label]: alignIcon === 'left',
+                        [ButtonClasses.labelRightIcon]: alignIcon !== 'left',
                     })}
                 >
                     {translate(label, { _: label })}
@@ -131,7 +97,7 @@ const Button = (props: ButtonProps) => {
             {alignIcon === 'right' &&
                 children &&
                 React.cloneElement(children, {
-                    className: classes[`${size}Icon`],
+                    className: ButtonClasses[`${size}Icon`],
                 })}
         </StyledButton>
     );
@@ -140,7 +106,6 @@ const Button = (props: ButtonProps) => {
 interface Props {
     alignIcon?: 'left' | 'right';
     children?: ReactElement;
-    classes?: object;
     className?: string;
     color?: MuiPropTypes.Color;
     component?: ReactNode;
@@ -187,7 +152,6 @@ export const sanitizeButtonRestProps = ({
 Button.propTypes = {
     alignIcon: PropTypes.oneOf(['left', 'right']),
     children: PropTypes.element,
-    classes: PropTypes.object,
     className: PropTypes.string,
     color: PropTypes.oneOf(['default', 'inherit', 'primary', 'secondary']),
     disabled: PropTypes.bool,
@@ -195,4 +159,35 @@ Button.propTypes = {
     size: PropTypes.oneOf(['small', 'medium', 'large']),
 };
 
-export default Button;
+const PREFIX = 'RaButton';
+
+export const ButtonClasses = {
+    button: `${PREFIX}-button`,
+    label: `${PREFIX}-label`,
+    labelRightIcon: `${PREFIX}-labelRightIcon`,
+    smallIcon: `${PREFIX}-smallIcon`,
+    mediumIcon: `${PREFIX}-mediumIcon`,
+    largeIcon: `${PREFIX}-largeIcon`,
+};
+
+const StyledButton = styled(MuiButton, { name: PREFIX })({
+    [`& .${ButtonClasses.button}`]: {
+        display: 'inline-flex',
+        alignItems: 'center',
+    },
+    [`& .${ButtonClasses.label}`]: {
+        paddingLeft: '0.5em',
+    },
+    [`& .${ButtonClasses.labelRightIcon}`]: {
+        paddingRight: '0.5em',
+    },
+    [`& .${ButtonClasses.smallIcon}`]: {
+        fontSize: 20,
+    },
+    [`& .${ButtonClasses.mediumIcon}`]: {
+        fontSize: 22,
+    },
+    [`& .${ButtonClasses.largeIcon}`]: {
+        fontSize: 24,
+    },
+});

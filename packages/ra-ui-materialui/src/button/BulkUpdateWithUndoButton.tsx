@@ -14,29 +14,12 @@ import {
     useListContext,
 } from 'ra-core';
 
-import Button, { ButtonProps } from './Button';
+import { Button, ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
 
-const PREFIX = 'RaBulkUpdateWithUndoButton';
-
-const classes = {
-    updateButton: `${PREFIX}-updateButton`,
-};
-
-const StyledButton = styled(Button)(({ theme }) => ({
-    [`&.${classes.updateButton}`]: {
-        color: theme.palette.error.main,
-        '&:hover': {
-            backgroundColor: alpha(theme.palette.error.main, 0.12),
-            // Reset on mouse devices
-            '@media (hover: none)': {
-                backgroundColor: 'transparent',
-            },
-        },
-    },
-}));
-
-const BulkUpdateWithUndoButton = (props: BulkUpdateWithUndoButtonProps) => {
+export const BulkUpdateWithUndoButton = (
+    props: BulkUpdateWithUndoButtonProps
+) => {
     const { selectedIds } = useListContext(props);
 
     const notify = useNotify();
@@ -104,7 +87,7 @@ const BulkUpdateWithUndoButton = (props: BulkUpdateWithUndoButtonProps) => {
         <StyledButton
             onClick={handleClick}
             label={label}
-            className={classes.updateButton}
+            className={BulkUpdateWithUndoButtonClasses.updateButton}
             disabled={loading}
             {...sanitizeRestProps(rest)}
         >
@@ -117,7 +100,6 @@ const defaultIcon = <ActionUpdate />;
 
 const sanitizeRestProps = ({
     basePath,
-    classes,
     filterValues,
     label,
     selectedIds,
@@ -145,4 +127,21 @@ BulkUpdateWithUndoButton.propTypes = {
     data: PropTypes.any.isRequired,
 };
 
-export default BulkUpdateWithUndoButton;
+const PREFIX = 'RaBulkUpdateWithUndoButton';
+
+export const BulkUpdateWithUndoButtonClasses = {
+    updateButton: `${PREFIX}-updateButton`,
+};
+
+const StyledButton = styled(Button, { name: PREFIX })(({ theme }) => ({
+    [`&.${BulkUpdateWithUndoButtonClasses.updateButton}`]: {
+        color: theme.palette.error.main,
+        '&:hover': {
+            backgroundColor: alpha(theme.palette.error.main, 0.12),
+            // Reset on mouse devices
+            '@media (hover: none)': {
+                backgroundColor: 'transparent',
+            },
+        },
+    },
+}));

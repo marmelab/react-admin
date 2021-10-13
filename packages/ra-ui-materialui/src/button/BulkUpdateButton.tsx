@@ -1,9 +1,11 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import BulkUpdateWithConfirmButton, {
+import {
+    BulkUpdateWithConfirmButton,
     BulkUpdateWithConfirmButtonProps,
 } from './BulkUpdateWithConfirmButton';
-import BulkUpdateWithUndoButton, {
+import {
+    BulkUpdateWithUndoButton,
     BulkUpdateWithUndoButtonProps,
 } from './BulkUpdateWithUndoButton';
 import { MutationMode } from 'ra-core';
@@ -31,7 +33,7 @@ import { MutationMode } from 'ra-core';
  *     </List>
  * );
  */
-const BulkUpdateButton = (props: BulkUpdateButtonProps) => {
+export const BulkUpdateButton = (props: BulkUpdateButtonProps) => {
     const { mutationMode, ...rest } = props;
 
     return mutationMode === 'undoable' ? (
@@ -61,5 +63,3 @@ BulkUpdateButton.defaultProps = {
     mutationMode: 'undoable',
     data: [],
 };
-
-export default BulkUpdateButton;

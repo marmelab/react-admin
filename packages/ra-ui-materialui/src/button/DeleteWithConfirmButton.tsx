@@ -23,33 +23,13 @@ import {
 } from 'ra-core';
 
 import Confirm from '../layout/Confirm';
-import Button, { ButtonProps } from './Button';
-
-const PREFIX = 'RaDeleteWithConfirmButton';
-
-const classes = {
-    deleteButton: `${PREFIX}-deleteButton`,
-};
-
-const StyledButton = styled(Button)(({ theme }) => ({
-    [`&.${classes.deleteButton}`]: {
-        color: theme.palette.error.main,
-        '&:hover': {
-            backgroundColor: alpha(theme.palette.error.main, 0.12),
-            // Reset on mouse devices
-            '@media (hover: none)': {
-                backgroundColor: 'transparent',
-            },
-        },
-    },
-}));
+import { Button, ButtonProps } from './Button';
 
 export const DeleteWithConfirmButton = (
     props: DeleteWithConfirmButtonProps
 ) => {
     const {
         basePath,
-        classes: classesOverride,
         className,
         confirmTitle = 'ra.message.delete_title',
         confirmContent = 'ra.message.delete_content',
@@ -93,7 +73,7 @@ export const DeleteWithConfirmButton = (
                 label={label}
                 className={classnames(
                     'ra-delete-button',
-                    classes.deleteButton,
+                    DeleteWithConfirmButtonClasses.deleteButton,
                     className
                 )}
                 key="button"
@@ -130,7 +110,6 @@ const defaultIcon = <ActionDelete />;
 
 interface Props {
     basePath?: string;
-    classes?: object;
     className?: string;
     confirmTitle?: string;
     confirmContent?: React.ReactNode;
@@ -158,7 +137,6 @@ export type DeleteWithConfirmButtonProps = Props & ButtonProps;
 
 DeleteWithConfirmButton.propTypes = {
     basePath: PropTypes.string,
-    classes: PropTypes.object,
     className: PropTypes.string,
     confirmTitle: PropTypes.string,
     confirmContent: PropTypes.string,
@@ -174,3 +152,22 @@ DeleteWithConfirmButton.propTypes = {
     resource: PropTypes.string,
     icon: PropTypes.element,
 };
+
+const PREFIX = 'RaDeleteWithConfirmButton';
+
+export const DeleteWithConfirmButtonClasses = {
+    deleteButton: `${PREFIX}-deleteButton`,
+};
+
+const StyledButton = styled(Button, { name: PREFIX })(({ theme }) => ({
+    [`&.${DeleteWithConfirmButtonClasses.deleteButton}`]: {
+        color: theme.palette.error.main,
+        '&:hover': {
+            backgroundColor: alpha(theme.palette.error.main, 0.12),
+            // Reset on mouse devices
+            '@media (hover: none)': {
+                backgroundColor: 'transparent',
+            },
+        },
+    },
+}));
