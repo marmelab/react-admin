@@ -30,6 +30,7 @@ const Notification = ({
         autoHideDuration,
         multiLine,
         shortSignature,
+        type,
         notify,
     ]);
     return null;
