@@ -13,7 +13,7 @@ import { Typography } from '@mui/material';
 import classNames from 'classnames';
 import { Record } from 'ra-core';
 
-import FormInput from '../../form/FormInput';
+import { FormInput } from '../../form/FormInput';
 import { SimpleFormIteratorClasses } from './useSimpleFormIteratorStyles';
 import { useSimpleFormIterator } from './useSimpleFormIterator';
 import { ArrayInputContextValue } from './ArrayInputContext';

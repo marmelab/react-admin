@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ReactNode, ReactElement } from 'react';
-import SimpleForm from '../form/SimpleForm';
+import { SimpleForm } from '../form';
 import {
     ArrayInput,
     BooleanInput,

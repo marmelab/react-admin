@@ -7,26 +7,9 @@ import { Record } from 'ra-core';
 
 import Labeled from '../input/Labeled';
 
-const PREFIX = 'RaFormInput';
-
-const classes = {
-    input: `${PREFIX}-input`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`& .${classes.input}`]: { width: theme.spacing(32) },
-}));
-
-const sanitizeRestProps = ({
-    basePath,
-    record,
-    ...rest
-}: {
-    basePath?: string;
-    record?: unknown;
-}) => rest;
-
-const FormInput = <RecordType extends Record | Omit<Record, 'id'> = Record>(
+export const FormInput = <
+    RecordType extends Record | Omit<Record, 'id'> = Record
+>(
     props: FormInputProps<RecordType>
 ) => {
     const { input, ...rest } = props;
@@ -51,7 +34,8 @@ const FormInput = <RecordType extends Record | Omit<Record, 'id'> = Record>(
                     {React.cloneElement(input, {
                         className: classnames(
                             {
-                                [classes.input]: !input.props.fullWidth,
+                                [FormInputClasses.input]: !input.props
+                                    .fullWidth,
                             },
                             className
                         ),
@@ -64,7 +48,7 @@ const FormInput = <RecordType extends Record | Omit<Record, 'id'> = Record>(
                 React.cloneElement(input, {
                     className: classnames(
                         {
-                            [classes.input]: !input.props.fullWidth,
+                            [FormInputClasses.input]: !input.props.fullWidth,
                         },
                         className
                     ),
@@ -78,7 +62,6 @@ const FormInput = <RecordType extends Record | Omit<Record, 'id'> = Record>(
 };
 
 FormInput.propTypes = {
-    classes: PropTypes.object,
     // @ts-ignore
     input: PropTypes.node,
 };
@@ -102,4 +85,21 @@ export interface FormInputProps<
 // What? TypeScript loses the displayName if we don't set it explicitly
 FormInput.displayName = 'FormInput';
 
-export default FormInput;
+const PREFIX = 'RaFormInput';
+
+export const FormInputClasses = {
+    input: `${PREFIX}-input`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`& .${FormInputClasses.input}`]: { width: theme.spacing(32) },
+}));
+
+const sanitizeRestProps = ({
+    basePath,
+    record,
+    ...rest
+}: {
+    basePath?: string;
+    record?: unknown;
+}) => rest;
