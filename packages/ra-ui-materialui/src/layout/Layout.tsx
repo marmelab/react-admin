@@ -24,7 +24,7 @@ import DefaultMenu, { MenuProps } from './Menu';
 import DefaultNotification from './Notification';
 import DefaultError from './Error';
 import defaultTheme from '../defaultTheme';
-import SkipNavigationButton from '../button/SkipNavigationButton';
+import { SkipNavigationButton } from '../button';
 
 const PREFIX = 'RaLayout';
 const classes = {

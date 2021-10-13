@@ -12,9 +12,9 @@ import {
     FilterPayload,
     useResourceContext,
 } from 'ra-core';
-import Button, { ButtonProps } from './Button';
+import { Button, ButtonProps } from './Button';
 
-const ExportButton = (props: ExportButtonProps) => {
+export const ExportButton = (props: ExportButtonProps) => {
     const {
         maxResults = 1000,
         onClick,
@@ -126,5 +126,3 @@ ExportButton.propTypes = {
     }),
     icon: PropTypes.element,
 };
-
-export default ExportButton;

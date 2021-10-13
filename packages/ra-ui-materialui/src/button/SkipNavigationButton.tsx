@@ -1,17 +1,33 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import Button from './Button';
+import { Button } from './Button';
 import { useTranslate } from 'ra-core';
 import classnames from 'classnames';
 
+export const SkipNavigationButton = () => {
+    const translate = useTranslate();
+
+    return (
+        <StyledButton
+            onClick={skipToContent}
+            className={classnames(
+                SkipToContentButtonClasses.skipToContentButton,
+                'skip-nav-button'
+            )}
+            label={translate('ra.navigation.skip_nav')}
+            variant="contained"
+        />
+    );
+};
+
 const PREFIX = 'RaSkipToContentButton';
 
-const classes = {
+export const SkipToContentButtonClasses = {
     skipToContentButton: `${PREFIX}-skipToContentButton`,
 };
 
 const StyledButton = styled(Button)(({ theme }) => ({
-    [`&.${classes.skipToContentButton}`]: {
+    [`&.${SkipToContentButtonClasses.skipToContentButton}`]: {
         position: 'fixed',
         padding: theme.spacing(1),
         backgroundColor: theme.palette.background.default,
@@ -56,21 +72,3 @@ const skipToContent = () => {
     element.blur();
     element.removeAttribute('tabIndex');
 };
-
-const SkipNavigationButton = () => {
-    const translate = useTranslate();
-
-    return (
-        <StyledButton
-            onClick={skipToContent}
-            className={classnames(
-                classes.skipToContentButton,
-                'skip-nav-button'
-            )}
-            label={translate('ra.navigation.skip_nav')}
-            variant="contained"
-        />
-    );
-};
-
-export default SkipNavigationButton;

@@ -15,40 +15,18 @@ import {
 } from 'ra-core';
 
 import Confirm from '../layout/Confirm';
-import Button, { ButtonProps } from './Button';
+import { Button, ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
 
-const PREFIX = 'RaBulkDeleteWithConfirmButton';
-
-const classes = {
-    deleteButton: `${PREFIX}-deleteButton`,
-};
-
-const StyledButton = styled(Button)(({ theme }) => ({
-    [`&.${classes.deleteButton}`]: {
-        color: theme.palette.error.main,
-        '&:hover': {
-            backgroundColor: alpha(theme.palette.error.main, 0.12),
-            // Reset on mouse devices
-            '@media (hover: none)': {
-                backgroundColor: 'transparent',
-            },
-        },
-    },
-}));
-
-const defaultIcon = <ActionDelete />;
-
-const BulkDeleteWithConfirmButton = (
+export const BulkDeleteWithConfirmButton = (
     props: BulkDeleteWithConfirmButtonProps
 ) => {
     const {
         basePath,
-        classes: classesOverride,
         confirmTitle = 'ra.message.bulk_delete_title',
         confirmContent = 'ra.message.bulk_delete_content',
         icon = defaultIcon,
-        label,
+        label = 'ra.action.delete',
         onClick,
         selectedIds,
         ...rest
@@ -109,7 +87,7 @@ const BulkDeleteWithConfirmButton = (
             <StyledButton
                 onClick={handleClick}
                 label={label}
-                className={classes.deleteButton}
+                className={BulkDeleteWithConfirmButtonClasses.deleteButton}
                 {...sanitizeRestProps(rest)}
             >
                 {icon}
@@ -161,9 +139,29 @@ export interface BulkDeleteWithConfirmButtonProps
     icon?: ReactElement;
 }
 
+const PREFIX = 'RaBulkDeleteWithConfirmButton';
+
+export const BulkDeleteWithConfirmButtonClasses = {
+    deleteButton: `${PREFIX}-deleteButton`,
+};
+
+const StyledButton = styled(Button, { name: PREFIX })(({ theme }) => ({
+    [`&.${BulkDeleteWithConfirmButtonClasses.deleteButton}`]: {
+        color: theme.palette.error.main,
+        '&:hover': {
+            backgroundColor: alpha(theme.palette.error.main, 0.12),
+            // Reset on mouse devices
+            '@media (hover: none)': {
+                backgroundColor: 'transparent',
+            },
+        },
+    },
+}));
+
+const defaultIcon = <ActionDelete />;
+
 BulkDeleteWithConfirmButton.propTypes = {
     basePath: PropTypes.string,
-    classes: PropTypes.object,
     confirmTitle: PropTypes.string,
     confirmContent: PropTypes.string,
     label: PropTypes.string,
@@ -171,9 +169,3 @@ BulkDeleteWithConfirmButton.propTypes = {
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     icon: PropTypes.element,
 };
-
-BulkDeleteWithConfirmButton.defaultProps = {
-    label: 'ra.action.delete',
-};
-
-export default BulkDeleteWithConfirmButton;

@@ -6,7 +6,7 @@ import { ButtonProps as MuiButtonProps } from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import { linkToRecord, Record, useResourceContext } from 'ra-core';
 
-import Button, { ButtonProps } from './Button';
+import { Button, ButtonProps } from './Button';
 
 /**
  * Opens the Edit view of a given record:
@@ -18,7 +18,7 @@ import Button, { ButtonProps } from './Button';
  *     <EditButton basePath="/comments" label="Edit comment" record={record} />
  * );
  */
-const EditButton = (props: EditButtonProps) => {
+export const EditButton = (props: EditButtonProps) => {
     const {
         basePath = '',
         icon = defaultIcon,
@@ -71,5 +71,3 @@ EditButton.propTypes = {
     record: PropTypes.any,
     scrollToTop: PropTypes.bool,
 };
-
-export default EditButton;

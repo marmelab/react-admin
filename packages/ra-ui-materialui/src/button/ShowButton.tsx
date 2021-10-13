@@ -5,7 +5,7 @@ import ImageEye from '@mui/icons-material/RemoveRedEye';
 import { Link } from 'react-router-dom';
 import { linkToRecord, Record, useResourceContext } from 'ra-core';
 
-import Button, { ButtonProps } from './Button';
+import { Button, ButtonProps } from './Button';
 
 /**
  * Opens the Show view of a given record

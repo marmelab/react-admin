@@ -16,31 +16,10 @@ import {
 } from 'ra-core';
 
 import Confirm from '../layout/Confirm';
-import Button, { ButtonProps } from './Button';
+import { Button, ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
 
-const PREFIX = 'RaBulkUpdateWithConfirmButton';
-
-const classes = {
-    updateButton: `${PREFIX}-updateButton`,
-};
-
-const StyledButton = styled(Button)(({ theme }) => ({
-    [`&.${classes.updateButton}`]: {
-        color: theme.palette.error.main,
-        '&:hover': {
-            backgroundColor: alpha(theme.palette.error.main, 0.12),
-            // Reset on mouse devices
-            '@media (hover: none)': {
-                backgroundColor: 'transparent',
-            },
-        },
-    },
-}));
-
-const defaultIcon = <ActionUpdate />;
-
-const BulkUpdateWithConfirmButton = (
+export const BulkUpdateWithConfirmButton = (
     props: BulkUpdateWithConfirmButtonProps
 ) => {
     const notify = useNotify();
@@ -52,13 +31,12 @@ const BulkUpdateWithConfirmButton = (
 
     const {
         basePath,
-        mutationMode,
-        classes: classesOverride,
         confirmTitle = 'ra.message.bulk_update_title',
         confirmContent = 'ra.message.bulk_update_content',
         data,
         icon = defaultIcon,
-        label,
+        label = 'ra.action.update',
+        mutationMode = 'pessimistic',
         onClick,
         selectedIds,
         onSuccess = () => {
@@ -122,7 +100,7 @@ const BulkUpdateWithConfirmButton = (
             <StyledButton
                 onClick={handleClick}
                 label={label}
-                className={classes.updateButton}
+                className={BulkUpdateWithConfirmButtonClasses.updateButton}
                 {...sanitizeRestProps(rest)}
             >
                 {icon}
@@ -157,7 +135,6 @@ const BulkUpdateWithConfirmButton = (
 
 const sanitizeRestProps = ({
     basePath,
-    classes,
     filterValues,
     label,
     onSuccess,
@@ -182,7 +159,6 @@ export interface BulkUpdateWithConfirmButtonProps
 
 BulkUpdateWithConfirmButton.propTypes = {
     basePath: PropTypes.string,
-    classes: PropTypes.object,
     confirmTitle: PropTypes.string,
     confirmContent: PropTypes.string,
     label: PropTypes.string,
@@ -193,9 +169,23 @@ BulkUpdateWithConfirmButton.propTypes = {
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
 };
 
-BulkUpdateWithConfirmButton.defaultProps = {
-    label: 'ra.action.update',
-    mutationMode: 'pessimistic',
+const PREFIX = 'RaBulkUpdateWithConfirmButton';
+
+export const BulkUpdateWithConfirmButtonClasses = {
+    updateButton: `${PREFIX}-updateButton`,
 };
 
-export default BulkUpdateWithConfirmButton;
+const StyledButton = styled(Button, { name: PREFIX })(({ theme }) => ({
+    [`&.${BulkUpdateWithConfirmButtonClasses.updateButton}`]: {
+        color: theme.palette.error.main,
+        '&:hover': {
+            backgroundColor: alpha(theme.palette.error.main, 0.12),
+            // Reset on mouse devices
+            '@media (hover: none)': {
+                backgroundColor: 'transparent',
+            },
+        },
+    },
+}));
+
+const defaultIcon = <ActionUpdate />;

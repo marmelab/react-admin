@@ -5,9 +5,9 @@ import { useDispatch } from 'react-redux';
 import NavigationRefresh from '@mui/icons-material/Refresh';
 import { refreshView } from 'ra-core';
 
-import Button, { ButtonProps } from './Button';
+import { Button, ButtonProps } from './Button';
 
-const RefreshButton = (props: RefreshButtonProps) => {
+export const RefreshButton = (props: RefreshButtonProps) => {
     const {
         label = 'ra.action.refresh',
         icon = defaultIcon,
@@ -48,5 +48,3 @@ RefreshButton.propTypes = {
     icon: PropTypes.element,
     onClick: PropTypes.func,
 };
-
-export default RefreshButton;

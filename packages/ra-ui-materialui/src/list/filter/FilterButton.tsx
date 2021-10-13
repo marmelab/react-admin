@@ -16,7 +16,7 @@ import lodashGet from 'lodash/get';
 import { useListContext, useResourceContext } from 'ra-core';
 
 import { FilterButtonMenuItem } from './FilterButtonMenuItem';
-import Button from '../../button/Button';
+import { Button } from '../../button';
 import { FilterContext } from '../FilterContext';
 
 const PREFIX = 'RaFilterButton';
