@@ -6,7 +6,7 @@ import { required, FormWithRedirect } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
 import format from 'date-fns/format';
 
-import DateInput from './DateInput';
+import { DateInput } from './DateInput';
 import { FormApi } from 'final-form';
 
 describe('<DateInput />', () => {

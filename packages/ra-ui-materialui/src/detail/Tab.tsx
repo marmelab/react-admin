@@ -6,7 +6,7 @@ import { Tab as MuiTab, TabProps as MuiTabProps } from '@mui/material';
 import { useTranslate, Record } from 'ra-core';
 import classnames from 'classnames';
 
-import Labeled from '../input/Labeled';
+import { Labeled } from '../input/Labeled';
 
 /**
  * Tab element for the SimpleShowLayout.

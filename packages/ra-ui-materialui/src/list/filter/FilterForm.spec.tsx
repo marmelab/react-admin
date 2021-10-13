@@ -6,8 +6,7 @@ import { minLength } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import FilterForm, { mergeInitialValuesWithDefaultValues } from './FilterForm';
-import TextInput from '../../input/TextInput';
-import { SelectInput } from '../../input/SelectInput';
+import { TextInput, SelectInput } from '../../input';
 
 const theme = createTheme({});
 

@@ -7,47 +7,7 @@ import { MenuItem } from '@mui/material';
 import { MenuItemProps } from '@mui/material/MenuItem';
 import classnames from 'classnames';
 
-const PREFIX = 'RaAutocompleteSuggestionItem';
-
-const classes = {
-    root: `${PREFIX}-root`,
-    selected: `${PREFIX}-selected`,
-    suggestion: `${PREFIX}-suggestion`,
-    suggestionText: `${PREFIX}-suggestionText`,
-    highlightedSuggestionText: `${PREFIX}-highlightedSuggestionText`,
-};
-
-const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
-    [`&.${classes.root}`]: {
-        fontWeight: 400,
-    },
-
-    [`&.${classes.selected}`]: {
-        fontWeight: 500,
-    },
-
-    [`& .${classes.suggestion}`]: {
-        display: 'block',
-        fontFamily: theme.typography.fontFamily,
-        minHeight: 24,
-    },
-
-    [`& .${classes.suggestionText}`]: { fontWeight: 300 },
-    [`& .${classes.highlightedSuggestionText}`]: { fontWeight: 500 },
-}));
-
-export interface AutocompleteSuggestionItemProps {
-    createValue?: any;
-    suggestion: any;
-    index: number;
-    highlightedIndex: number;
-    isSelected: boolean;
-    filterValue: string;
-    classes?: any;
-    getSuggestionText: (suggestion: any) => string;
-}
-
-const AutocompleteSuggestionItem = (
+export const AutocompleteSuggestionItem = (
     props: AutocompleteSuggestionItemProps &
         MenuItemProps<'li', { button?: true }>
 ) => {
@@ -80,27 +40,31 @@ const AutocompleteSuggestionItem = (
         <StyledMenuItem
             key={suggestionText}
             selected={isHighlighted}
-            className={classnames(classes.root, {
-                [classes.selected]: isSelected,
+            className={classnames(AutocompleteSuggestionItemClasses.root, {
+                [AutocompleteSuggestionItemClasses.selected]: isSelected,
             })}
             {...rest}
         >
             {isValidElement<{ filterValue }>(suggestionText) ? (
                 cloneElement<{ filterValue }>(suggestionText, { filterValue })
             ) : (
-                <div className={classes.suggestion}>
+                <div className={AutocompleteSuggestionItemClasses.suggestion}>
                     {parts.map((part, index) => {
                         return part.highlight ? (
                             <span
                                 key={index}
-                                className={classes.highlightedSuggestionText}
+                                className={
+                                    AutocompleteSuggestionItemClasses.highlightedSuggestionText
+                                }
                             >
                                 {part.text}
                             </span>
                         ) : (
                             <strong
                                 key={index}
-                                className={classes.suggestionText}
+                                className={
+                                    AutocompleteSuggestionItemClasses.suggestionText
+                                }
                             >
                                 {part.text}
                             </strong>
@@ -112,4 +76,46 @@ const AutocompleteSuggestionItem = (
     );
 };
 
-export default AutocompleteSuggestionItem;
+const PREFIX = 'RaAutocompleteSuggestionItem';
+
+const AutocompleteSuggestionItemClasses = {
+    root: `${PREFIX}-root`,
+    selected: `${PREFIX}-selected`,
+    suggestion: `${PREFIX}-suggestion`,
+    suggestionText: `${PREFIX}-suggestionText`,
+    highlightedSuggestionText: `${PREFIX}-highlightedSuggestionText`,
+};
+
+const StyledMenuItem = styled(MenuItem, { name: PREFIX })(({ theme }) => ({
+    [`&.${AutocompleteSuggestionItemClasses.root}`]: {
+        fontWeight: 400,
+    },
+
+    [`&.${AutocompleteSuggestionItemClasses.selected}`]: {
+        fontWeight: 500,
+    },
+
+    [`& .${AutocompleteSuggestionItemClasses.suggestion}`]: {
+        display: 'block',
+        fontFamily: theme.typography.fontFamily,
+        minHeight: 24,
+    },
+
+    [`& .${AutocompleteSuggestionItemClasses.suggestionText}`]: {
+        fontWeight: 300,
+    },
+    [`& .${AutocompleteSuggestionItemClasses.highlightedSuggestionText}`]: {
+        fontWeight: 500,
+    },
+}));
+
+export interface AutocompleteSuggestionItemProps {
+    createValue?: any;
+    suggestion: any;
+    index: number;
+    highlightedIndex: number;
+    isSelected: boolean;
+    filterValue: string;
+    classes?: any;
+    getSuggestionText: (suggestion: any) => string;
+}

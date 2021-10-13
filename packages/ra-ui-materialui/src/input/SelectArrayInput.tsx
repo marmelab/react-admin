@@ -18,36 +18,15 @@ import {
     ChoicesProps,
     useChoices,
 } from 'ra-core';
-import InputHelperText from './InputHelperText';
+import { InputHelperText } from './InputHelperText';
 import { SelectProps } from '@mui/material/Select';
 import { FormControlProps } from '@mui/material/FormControl';
-import Labeled from './Labeled';
+import { Labeled } from './Labeled';
 import { LinearProgress } from '../layout';
 import {
     SupportCreateSuggestionOptions,
     useSupportCreateSuggestion,
 } from './useSupportCreateSuggestion';
-
-const PREFIX = 'RaSelectArrayInput';
-
-const classes = {
-    root: `${PREFIX}-root`,
-    chips: `${PREFIX}-chips`,
-    chip: `${PREFIX}-chip`,
-};
-
-const StyledFormControl = styled(FormControl)(({ theme }) => ({
-    [`&.${classes.root}`]: {},
-
-    [`& .${classes.chips}`]: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
-
-    [`& .${classes.chip}`]: {
-        margin: theme.spacing(1 / 4),
-    },
-}));
 
 /**
  * An Input component for a select box allowing multiple selections, using an array of objects for the options
@@ -101,7 +80,7 @@ const StyledFormControl = styled(FormControl)(({ theme }) => ({
  *    { id: 'photography', name: 'myroot.tags.photography' },
  * ];
  */
-const SelectArrayInput = (props: SelectArrayInputProps) => {
+export const SelectArrayInput = (props: SelectArrayInputProps) => {
     const {
         choices = [],
         className,
@@ -223,7 +202,7 @@ const SelectArrayInput = (props: SelectArrayInputProps) => {
         <>
             <StyledFormControl
                 margin={margin}
-                className={classnames(classes.root, className)}
+                className={classnames(SelectArrayInputClasses.root, className)}
                 error={touched && !!(error || submitError)}
                 variant={variant}
                 {...sanitizeRestProps(rest)}
@@ -246,7 +225,7 @@ const SelectArrayInput = (props: SelectArrayInputProps) => {
                     multiple
                     error={!!(touched && (error || submitError))}
                     renderValue={(selected: any[]) => (
-                        <div className={classes.chips}>
+                        <div className={SelectArrayInputClasses.chips}>
                             {selected
                                 .map(item =>
                                     choices.find(
@@ -259,7 +238,7 @@ const SelectArrayInput = (props: SelectArrayInputProps) => {
                                     <Chip
                                         key={getChoiceValue(item)}
                                         label={renderMenuItemOption(item)}
-                                        className={classes.chip}
+                                        className={SelectArrayInputClasses.chip}
                                     />
                                 ))}
                         </div>
@@ -366,4 +345,25 @@ const sanitizeRestProps = ({
     ...rest
 }: any) => rest;
 
-export default SelectArrayInput;
+const PREFIX = 'RaSelectArrayInput';
+
+export const SelectArrayInputClasses = {
+    root: `${PREFIX}-root`,
+    chips: `${PREFIX}-chips`,
+    chip: `${PREFIX}-chip`,
+};
+
+const StyledFormControl = styled(FormControl, { name: PREFIX })(
+    ({ theme }) => ({
+        [`&.${SelectArrayInputClasses.root}`]: {},
+
+        [`& .${SelectArrayInputClasses.chips}`]: {
+            display: 'flex',
+            flexWrap: 'wrap',
+        },
+
+        [`& .${SelectArrayInputClasses.chip}`]: {
+            margin: theme.spacing(1 / 4),
+        },
+    })
+);

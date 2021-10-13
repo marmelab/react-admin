@@ -10,28 +10,12 @@ import FormHelperText from '@mui/material/FormHelperText';
 import { CheckboxProps } from '@mui/material/Checkbox';
 import { FieldTitle, useInput, ChoicesInputProps, warning } from 'ra-core';
 
-import sanitizeInputRestProps from './sanitizeInputRestProps';
-import CheckboxGroupInputItem from './CheckboxGroupInputItem';
-import InputHelperText from './InputHelperText';
+import { sanitizeInputRestProps } from './sanitizeInputRestProps';
+import { CheckboxGroupInputItem } from './CheckboxGroupInputItem';
+import { InputHelperText } from './InputHelperText';
 import classnames from 'classnames';
-import Labeled from './Labeled';
+import { Labeled } from './Labeled';
 import { LinearProgress } from '../layout';
-
-const PREFIX = 'RaCheckboxGroupInput';
-
-const classes = {
-    root: `${PREFIX}-root`,
-    label: `${PREFIX}-label`,
-};
-
-const StyledFormControl = styled(FormControl)(({ theme }) => ({
-    [`&.${classes.root}`]: {},
-
-    [`& .${classes.label}`]: {
-        transform: 'translate(0, 8px) scale(0.75)',
-        transformOrigin: `top ${theme.direction === 'ltr' ? 'left' : 'right'}`,
-    },
-}));
 
 /**
  * An Input component for a checkbox group, using an array of objects for the options
@@ -95,7 +79,7 @@ const StyledFormControl = styled(FormControl)(({ theme }) => ({
  *
  * The object passed as `options` props is passed to the material-ui <Checkbox> components
  */
-const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = props => {
+export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = props => {
     const {
         choices = [],
         className,
@@ -189,10 +173,13 @@ const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = props => 
             component="fieldset"
             margin={margin}
             error={touched && !!(error || submitError)}
-            className={classnames(classes.root, className)}
+            className={classnames(CheckboxGroupInputClasses.root, className)}
             {...sanitizeRestProps(rest)}
         >
-            <FormLabel component="legend" className={classes.label}>
+            <FormLabel
+                component="legend"
+                className={CheckboxGroupInputClasses.label}
+            >
                 <FieldTitle
                     label={label}
                     source={source}
@@ -266,4 +253,22 @@ export interface CheckboxGroupInputProps
     extends ChoicesInputProps<CheckboxProps>,
         FormControlProps {}
 
-export default CheckboxGroupInput;
+const PREFIX = 'RaCheckboxGroupInput';
+
+export const CheckboxGroupInputClasses = {
+    root: `${PREFIX}-root`,
+    label: `${PREFIX}-label`,
+};
+
+const StyledFormControl = styled(FormControl, { name: PREFIX })(
+    ({ theme }) => ({
+        [`&.${CheckboxGroupInputClasses.root}`]: {},
+
+        [`& .${CheckboxGroupInputClasses.label}`]: {
+            transform: 'translate(0, 8px) scale(0.75)',
+            transformOrigin: `top ${
+                theme.direction === 'ltr' ? 'left' : 'right'
+            }`,
+        },
+    })
+);

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
 
-import TextInput from './TextInput';
+import { TextInput } from './TextInput';
 import { required } from 'ra-core';
 
 describe('<TextInput />', () => {

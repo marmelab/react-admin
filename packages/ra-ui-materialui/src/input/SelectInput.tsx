@@ -14,12 +14,13 @@ import {
     warning,
 } from 'ra-core';
 
-import ResettableTextField, {
+import {
+    ResettableTextField,
     ResettableTextFieldStyles,
 } from './ResettableTextField';
-import InputHelperText from './InputHelperText';
-import sanitizeInputRestProps from './sanitizeInputRestProps';
-import Labeled from './Labeled';
+import { InputHelperText } from './InputHelperText';
+import { sanitizeInputRestProps } from './sanitizeInputRestProps';
+import { Labeled } from './Labeled';
 import { LinearProgress } from '../layout';
 import {
     useSupportCreateSuggestion,

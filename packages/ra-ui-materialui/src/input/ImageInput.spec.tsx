@@ -2,7 +2,7 @@ import * as React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
 
-import ImageInput from './ImageInput';
+import { ImageInput } from './ImageInput';
 import { ImageField } from '../field';
 
 describe('<ImageInput />', () => {

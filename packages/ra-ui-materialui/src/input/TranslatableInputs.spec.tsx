@@ -2,7 +2,7 @@ import * as React from 'react';
 import expect from 'expect';
 import { fireEvent } from '@testing-library/react';
 import { TranslatableInputs } from './TranslatableInputs';
-import TextInput from './TextInput';
+import { TextInput } from './TextInput';
 import { FormWithRedirect, required, useTranslatableContext } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
 import { TranslatableInputsTab } from './TranslatableInputsTab';

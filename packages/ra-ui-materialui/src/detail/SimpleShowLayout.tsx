@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { Record } from 'ra-core';
 
 import CardContentInner from '../layout/CardContentInner';
-import Labeled from '../input/Labeled';
+import { Labeled } from '../input';
 
 /**
  * Simple Layout for a Show view, showing fields in one column.

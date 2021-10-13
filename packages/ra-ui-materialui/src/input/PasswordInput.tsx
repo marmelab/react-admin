@@ -5,13 +5,9 @@ import { InputAdornment, IconButton } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-import TextInput, { TextInputProps } from './TextInput';
+import { TextInput, TextInputProps } from './TextInput';
 
-export interface PasswordInputProps extends TextInputProps {
-    initiallyVisible?: boolean;
-}
-
-const PasswordInput = (props: PasswordInputProps) => {
+export const PasswordInput = (props: PasswordInputProps) => {
     const { initiallyVisible = false, ...rest } = props;
     const [visible, setVisible] = useState(initiallyVisible);
     const translate = useTranslate();
@@ -45,4 +41,6 @@ const PasswordInput = (props: PasswordInputProps) => {
     );
 };
 
-export default PasswordInput;
+export interface PasswordInputProps extends TextInputProps {
+    initiallyVisible?: boolean;
+}

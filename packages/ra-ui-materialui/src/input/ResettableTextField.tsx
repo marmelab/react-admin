@@ -12,44 +12,10 @@ import {
 import ClearIcon from '@mui/icons-material/Clear';
 import { InputProps, useTranslate } from 'ra-core';
 
-const PREFIX = 'RaResettableTextField';
-
-const classes = {
-    clearIcon: `${PREFIX}-clearIcon`,
-    visibleClearIcon: `${PREFIX}-visibleClearIcon`,
-    clearButton: `${PREFIX}-clearButton`,
-    selectAdornment: `${PREFIX}-selectAdornment`,
-    inputAdornedEnd: `${PREFIX}-inputAdornedEnd`,
-};
-
-export const ResettableTextFieldStyles = {
-    [`& .${classes.clearIcon}`]: {
-        height: 16,
-        width: 0,
-    },
-    [`& .${classes.visibleClearIcon}`]: {
-        width: 16,
-    },
-    [`& .${classes.clearButton}`]: {
-        height: 24,
-        width: 24,
-        padding: 0,
-    },
-    [`& .${classes.selectAdornment}`]: {
-        position: 'absolute',
-        right: 24,
-    },
-    [`& .${classes.inputAdornedEnd}`]: {
-        paddingRight: 0,
-    },
-};
-
-const StyledTextField = styled(MuiTextField)(ResettableTextFieldStyles);
-
 /**
  * An override of the default Material-UI TextField which is resettable
  */
-const ResettableTextField = (props: ResettableTextFieldProps) => {
+export const ResettableTextField = (props: ResettableTextFieldProps) => {
     const {
         clearAlwaysVisible,
         InputProps,
@@ -93,7 +59,7 @@ const ResettableTextField = (props: ResettableTextFieldProps) => {
         selectAdornment,
         visibleClearIcon,
         ...restClasses
-    } = classes;
+    } = ResettableTextFieldClasses;
 
     const { endAdornment, ...InputPropsWithoutEndAdornment } = InputProps || {};
 
@@ -228,4 +194,38 @@ interface Props {
 
 export type ResettableTextFieldProps = InputProps<Props & TextFieldProps>;
 
-export default ResettableTextField;
+const PREFIX = 'RaResettableTextField';
+
+export const ResettableTextFieldClasses = {
+    clearIcon: `${PREFIX}-clearIcon`,
+    visibleClearIcon: `${PREFIX}-visibleClearIcon`,
+    clearButton: `${PREFIX}-clearButton`,
+    selectAdornment: `${PREFIX}-selectAdornment`,
+    inputAdornedEnd: `${PREFIX}-inputAdornedEnd`,
+};
+
+export const ResettableTextFieldStyles = {
+    [`& .${ResettableTextFieldClasses.clearIcon}`]: {
+        height: 16,
+        width: 0,
+    },
+    [`& .${ResettableTextFieldClasses.visibleClearIcon}`]: {
+        width: 16,
+    },
+    [`& .${ResettableTextFieldClasses.clearButton}`]: {
+        height: 24,
+        width: 24,
+        padding: 0,
+    },
+    [`& .${ResettableTextFieldClasses.selectAdornment}`]: {
+        position: 'absolute',
+        right: 24,
+    },
+    [`& .${ResettableTextFieldClasses.inputAdornedEnd}`]: {
+        paddingRight: 0,
+    },
+};
+
+const StyledTextField = styled(MuiTextField, { name: PREFIX })(
+    ResettableTextFieldStyles
+);

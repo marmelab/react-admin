@@ -5,21 +5,9 @@ import { InputAdornment } from '@mui/material';
 import { TextFieldProps } from '@mui/material/TextField';
 import { useTranslate, InputProps } from 'ra-core';
 
-import TextInput from './TextInput';
+import { TextInput } from './TextInput';
 
-const PREFIX = 'RaSearchInput';
-
-const classes = {
-    input: `${PREFIX}-input`,
-};
-
-const StyledTextInput = styled(TextInput)({
-    [`&.${classes.input}`]: {
-        marginTop: 32,
-    },
-});
-
-const SearchInput = (props: SearchInputProps) => {
+export const SearchInput = (props: SearchInputProps) => {
     const translate = useTranslate();
 
     if (props.label) {
@@ -41,7 +29,7 @@ const SearchInput = (props: SearchInputProps) => {
                     </InputAdornment>
                 ),
             }}
-            className={classes.input}
+            className={SearchInputClasses.input}
             {...props}
         />
     );
@@ -50,4 +38,14 @@ const SearchInput = (props: SearchInputProps) => {
 export type SearchInputProps = InputProps<TextFieldProps> &
     Omit<TextFieldProps, 'label' | 'helperText'>;
 
-export default SearchInput;
+const PREFIX = 'RaSearchInput';
+
+export const SearchInputClasses = {
+    input: `${PREFIX}-input`,
+};
+
+const StyledTextInput = styled(TextInput, { name: PREFIX })({
+    [`&.${SearchInputClasses.input}`]: {
+        marginTop: 32,
+    },
+});

@@ -4,19 +4,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { useChoices } from 'ra-core';
 
-const PREFIX = 'RaCheckboxGroupInputItem';
-
-const classes = {
-    checkbox: `${PREFIX}-checkbox`,
-};
-
-const StyledFormControlLabel = styled(FormControlLabel)({
-    [`& .${classes.checkbox}`]: {
-        height: 32,
-    },
-});
-
-const CheckboxGroupInputItem = props => {
+export const CheckboxGroupInputItem = props => {
     const {
         classes: classesOverride,
         id,
@@ -47,7 +35,7 @@ const CheckboxGroupInputItem = props => {
                 <Checkbox
                     id={`${id}_${getChoiceValue(choice)}`}
                     color="primary"
-                    className={classes.checkbox}
+                    className={CheckboxGroupInputItemClasses.checkbox}
                     checked={
                         value
                             ? value.find(v => v == getChoiceValue(choice)) !== // eslint-disable-line eqeqeq
@@ -64,4 +52,14 @@ const CheckboxGroupInputItem = props => {
     );
 };
 
-export default CheckboxGroupInputItem;
+const PREFIX = 'RaCheckboxGroupInputItem';
+
+export const CheckboxGroupInputItemClasses = {
+    checkbox: `${PREFIX}-checkbox`,
+};
+
+const StyledFormControlLabel = styled(FormControlLabel, { name: PREFIX })({
+    [`& .${CheckboxGroupInputItemClasses.checkbox}`]: {
+        height: 32,
+    },
+});
