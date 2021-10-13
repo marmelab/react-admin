@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import SimpleShowLayout from './SimpleShowLayout';
+import { SimpleShowLayout } from './SimpleShowLayout';
 import TextField from '../field/TextField';
 
 describe('<SimpleShowLayout />', () => {
