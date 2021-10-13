@@ -15,7 +15,7 @@ import {
     MutationMode,
 } from 'ra-core';
 
-import Confirm from '../layout/Confirm';
+import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
 

@@ -15,53 +15,14 @@ import {
     useTranslate,
 } from 'ra-core';
 
-const PREFIX = 'RaNotification';
-
-const classes = {
-    success: `${PREFIX}-success`,
-    error: `${PREFIX}-error`,
-    warning: `${PREFIX}-warning`,
-    undo: `${PREFIX}-undo`,
-};
-
-const StyledButton = styled(Button)(
-    ({ theme, type }: NotificationProps & { theme?: Theme }) => ({
-        [`& .${classes.success}`]: {
-            backgroundColor: theme.palette.success.main,
-            color: theme.palette.success.contrastText,
-        },
-
-        [`& .${classes.error}`]: {
-            backgroundColor: theme.palette.error.dark,
-            color: theme.palette.error.contrastText,
-        },
-
-        [`& .${classes.warning}`]: {
-            backgroundColor: theme.palette.error.light,
-            color: theme.palette.error.contrastText,
-        },
-
-        [`& .${classes.undo}`]: {
-            color:
-                type === 'success'
-                    ? theme.palette.success.contrastText
-                    : theme.palette.primary.light,
-        },
-    })
-);
-
-export interface NotificationProps {
-    type?: string;
-}
-
-const Notification = (
+export const Notification = (
     props: NotificationProps & Omit<SnackbarProps, 'open'>
 ) => {
     const {
         classes: classesOverride,
-        type,
+        type = 'info',
+        autoHideDuration = 4000,
         className,
-        autoHideDuration,
         ...rest
     } = props;
     const [open, setOpen] = useState(false);
@@ -107,7 +68,9 @@ const Notification = (
             onClose={handleRequestClose}
             ContentProps={{
                 className: classnames(
-                    classes[(notification && notification.type) || type],
+                    NotificationClasses[
+                        (notification && notification.type) || type
+                    ],
                     className
                 ),
             }}
@@ -115,7 +78,7 @@ const Notification = (
                 notification && notification.undoable ? (
                     <StyledButton
                         color="primary"
-                        className={classes.undo}
+                        className={NotificationClasses.undo}
                         size="small"
                         onClick={handleUndo}
                     >
@@ -132,9 +95,41 @@ Notification.propTypes = {
     type: PropTypes.string,
 };
 
-Notification.defaultProps = {
-    type: 'info',
-    autoHideDuration: 4000,
+const PREFIX = 'RaNotification';
+
+export const NotificationClasses = {
+    success: `${PREFIX}-success`,
+    error: `${PREFIX}-error`,
+    warning: `${PREFIX}-warning`,
+    undo: `${PREFIX}-undo`,
 };
 
-export default Notification;
+const StyledButton = styled(Button, { name: PREFIX })(
+    ({ theme, type }: NotificationProps & { theme?: Theme }) => ({
+        [`& .${NotificationClasses.success}`]: {
+            backgroundColor: theme.palette.success.main,
+            color: theme.palette.success.contrastText,
+        },
+
+        [`& .${NotificationClasses.error}`]: {
+            backgroundColor: theme.palette.error.dark,
+            color: theme.palette.error.contrastText,
+        },
+
+        [`& .${NotificationClasses.warning}`]: {
+            backgroundColor: theme.palette.error.light,
+            color: theme.palette.error.contrastText,
+        },
+
+        [`& .${NotificationClasses.undo}`]: {
+            color:
+                type === 'success'
+                    ? theme.palette.success.contrastText
+                    : theme.palette.primary.light,
+        },
+    })
+);
+
+export interface NotificationProps {
+    type?: string;
+}

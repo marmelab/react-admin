@@ -13,7 +13,7 @@ import {
     useVersion,
 } from 'ra-core';
 
-import Title, { TitlePropType } from '../layout/Title';
+import { Title, TitlePropType } from '../layout/Title';
 import ListToolbar from './ListToolbar';
 import DefaultPagination from './pagination/Pagination';
 import { BulkDeleteButton } from '../button';

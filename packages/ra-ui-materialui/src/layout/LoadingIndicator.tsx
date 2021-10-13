@@ -9,23 +9,7 @@ import { ReduxState, useRefreshWhenVisible } from 'ra-core';
 
 import { RefreshIconButton } from '../button';
 
-const PREFIX = 'RaLoadingIndicator';
-
-const classes = {
-    loader: `${PREFIX}-loader`,
-    loadedIcon: `${PREFIX}-loadedIcon`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`& .${classes.loader}`]: {
-        marginLeft: theme.spacing(2),
-        marginRight: theme.spacing(2),
-    },
-
-    [`& .${classes.loadedIcon}`]: {},
-}));
-
-const LoadingIndicator = (props: LoadingIndicatorProps) => {
+export const LoadingIndicator = (props: LoadingIndicatorProps) => {
     const { className, ...rest } = props;
     useRefreshWhenVisible();
     const loading = useSelector<ReduxState>(state => state.admin.loading > 0);
@@ -37,7 +21,7 @@ const LoadingIndicator = (props: LoadingIndicatorProps) => {
                 <CircularProgress
                     className={classNames(
                         'app-loader',
-                        classes.loader,
+                        LoadingIndicatorClasses.loader,
                         className
                     )}
                     color="inherit"
@@ -46,7 +30,9 @@ const LoadingIndicator = (props: LoadingIndicatorProps) => {
                     {...rest}
                 />
             ) : (
-                <RefreshIconButton className={classes.loadedIcon} />
+                <RefreshIconButton
+                    className={LoadingIndicatorClasses.loadedIcon}
+                />
             )}
         </Root>
     );
@@ -62,4 +48,18 @@ interface LoadingIndicatorProps {
     className?: string;
 }
 
-export default LoadingIndicator;
+const PREFIX = 'RaLoadingIndicator';
+
+export const LoadingIndicatorClasses = {
+    loader: `${PREFIX}-loader`,
+    loadedIcon: `${PREFIX}-loadedIcon`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`& .${LoadingIndicatorClasses.loader}`]: {
+        marginLeft: theme.spacing(2),
+        marginRight: theme.spacing(2),
+    },
+
+    [`& .${LoadingIndicatorClasses.loadedIcon}`]: {},
+}));

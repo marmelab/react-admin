@@ -19,7 +19,7 @@ import { useHistory } from 'react-router-dom';
 import { useCheckAuth, TitleComponent } from 'ra-core';
 
 import defaultTheme from '../defaultTheme';
-import DefaultNotification from '../layout/Notification';
+import { Notification as DefaultNotification } from '../layout';
 import { LoginForm as DefaultLoginForm } from './LoginForm';
 
 /**

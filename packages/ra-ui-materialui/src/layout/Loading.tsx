@@ -5,42 +5,7 @@ import classnames from 'classnames';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTranslate } from 'ra-core';
 
-const PREFIX = 'RaLoading';
-
-const classes = {
-    container: `${PREFIX}-container`,
-    icon: `${PREFIX}-icon`,
-    message: `${PREFIX}-message`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`&.${classes.container}`]: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        [theme.breakpoints.up('md')]: {
-            height: '100%',
-        },
-        [theme.breakpoints.down('xl')]: {
-            height: '100vh',
-            marginTop: '-3em',
-        },
-    },
-
-    [`& .${classes.icon}`]: {
-        width: '9em',
-        height: '9em',
-    },
-
-    [`& .${classes.message}`]: {
-        textAlign: 'center',
-        fontFamily: 'Roboto, sans-serif',
-        opacity: 0.5,
-        margin: '0 1em',
-    },
-}));
-
-const Loading = props => {
+export const Loading = props => {
     const {
         className,
         loadingPrimary = 'ra.page.loading',
@@ -49,9 +14,12 @@ const Loading = props => {
 
     const translate = useTranslate();
     return (
-        <Root className={classnames(classes.container, className)}>
-            <div className={classes.message}>
-                <CircularProgress className={classes.icon} color="primary" />
+        <Root className={classnames(LoadingClasses.container, className)}>
+            <div className={LoadingClasses.message}>
+                <CircularProgress
+                    className={LoadingClasses.icon}
+                    color="primary"
+                />
                 <h1>{translate(loadingPrimary)}</h1>
                 <div>{translate(loadingSecondary)}.</div>
             </div>
@@ -70,4 +38,37 @@ Loading.defaultProps = {
     loadingSecondary: 'ra.message.loading',
 };
 
-export default Loading;
+const PREFIX = 'RaLoading';
+
+export const LoadingClasses = {
+    container: `${PREFIX}-container`,
+    icon: `${PREFIX}-icon`,
+    message: `${PREFIX}-message`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`&.${LoadingClasses.container}`]: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        [theme.breakpoints.up('md')]: {
+            height: '100%',
+        },
+        [theme.breakpoints.down('xl')]: {
+            height: '100vh',
+            marginTop: '-3em',
+        },
+    },
+
+    [`& .${LoadingClasses.icon}`]: {
+        width: '9em',
+        height: '9em',
+    },
+
+    [`& .${LoadingClasses.message}`]: {
+        textAlign: 'center',
+        fontFamily: 'Roboto, sans-serif',
+        opacity: 0.5,
+        margin: '0 1em',
+    },
+}));
