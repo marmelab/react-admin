@@ -45,7 +45,7 @@ import { DeclarativeSideEffect } from './useDeclarativeSideEffects';
  * - mount:         [mutate, { loading: false, loaded: false }]
  * - mutate called: [mutate, { loading: true, loaded: false }]
  * - success:       [mutate, { data: [data from response], total: [total from response], loading: false, loaded: true }]
- * - error:         [mutate, { error: [error from response], loading: false, loaded: true }]
+ * - error:         [mutate, { error: [error from response], loading: false, loaded: false }]
  *
  * The mutate function accepts the following arguments
  * - {Object} query
@@ -142,7 +142,7 @@ const useMutation = (
     /* eslint-disable react-hooks/exhaustive-deps */
     const mutate = useCallback(
         (
-            callTimeQuery?: Mutation | Event,
+            callTimeQuery?: Partial<Mutation> | Event,
             callTimeOptions?: MutationOptions
         ): void | Promise<any> => {
             const finalDataProvider = hasDeclarativeSideEffectsSupport(
@@ -215,7 +215,7 @@ const useMutation = (
 export interface Mutation {
     type: string;
     resource?: string;
-    payload: object;
+    payload?: object;
 }
 
 export interface MutationOptions {
@@ -231,7 +231,7 @@ export interface MutationOptions {
 
 export type UseMutationValue = [
     (
-        query?: Partial<Mutation>,
+        query?: Partial<Mutation> | Event,
         options?: Partial<MutationOptions>
     ) => void | Promise<any>,
     {
@@ -278,10 +278,15 @@ export type UseMutationValue = [
  */
 const mergeDefinitionAndCallTimeParameters = (
     query?: Mutation,
-    callTimeQuery?: Mutation | Event,
+    callTimeQuery?: Partial<Mutation> | Event,
     options?: MutationOptions,
     callTimeOptions?: MutationOptions
-) => {
+): {
+    type: string;
+    resource: string;
+    payload?: object;
+    options: MutationOptions;
+} => {
     if (!query && (!callTimeQuery || callTimeQuery instanceof Event)) {
         throw new Error('Missing query either at definition or at call time');
     }
@@ -322,8 +327,7 @@ const hasDeclarativeSideEffectsSupport = (
     if (!options && !callTimeOptions) return false;
     if (callTimeOptions && callTimeOptions.withDeclarativeSideEffectsSupport)
         return true;
-    if (options && options.withDeclarativeSideEffectsSupport) return true;
-    return false;
+    return options && options.withDeclarativeSideEffectsSupport;
 };
 
 const sanitizeOptions = (args?: MutationOptions) => {

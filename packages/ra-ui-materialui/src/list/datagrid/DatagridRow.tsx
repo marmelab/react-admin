@@ -18,12 +18,13 @@ import {
     Checkbox,
 } from '@material-ui/core';
 import {
-    linkToRecord,
-    useExpanded,
     Identifier,
+    linkToRecord,
     Record,
-    useResourceContext,
     RecordContextProvider,
+    useExpanded,
+    useResourceContext,
+    useTranslate,
 } from 'ra-core';
 import { shallowEqual } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -62,6 +63,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
     } = props;
 
     const context = useDatagridContext();
+    const translate = useTranslate();
     const expandable =
         (!context ||
             !context.isRowExpandable ||
@@ -69,7 +71,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
         expand;
     const resource = useResourceContext(props);
     const [expanded, toggleExpanded] = useExpanded(resource, id);
-    const [nbColumns, setNbColumns] = useState(
+    const [nbColumns, setNbColumns] = useState(() =>
         computeNbColumns(expandable, children, hasBulkActions)
     );
     useEffect(() => {
@@ -110,14 +112,16 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
 
             const effect =
                 typeof rowClick === 'function'
-                    ? await rowClick(id, basePath, record)
+                    ? await rowClick(id, basePath || `/${resource}`, record)
                     : rowClick;
             switch (effect) {
                 case 'edit':
-                    history.push(linkToRecord(basePath, id));
+                    history.push(linkToRecord(basePath || `/${resource}`, id));
                     return;
                 case 'show':
-                    history.push(linkToRecord(basePath, id, 'show'));
+                    history.push(
+                        linkToRecord(basePath || `/${resource}`, id, 'show')
+                    );
                     return;
                 case 'expand':
                     handleToggleExpand(event);
@@ -137,6 +141,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
             handleToggleSelection,
             id,
             record,
+            resource,
             rowClick,
         ]
     );
@@ -171,6 +176,9 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                     <TableCell padding="checkbox">
                         {selectable && (
                             <Checkbox
+                                aria-label={translate('ra.action.select_row', {
+                                    _: 'Select this row',
+                                })}
                                 color="primary"
                                 className={`select-item ${classes.checkbox}`}
                                 checked={selected}
@@ -279,7 +287,7 @@ export type RowClickFunction = (
     id: Identifier,
     basePath: string,
     record: Record
-) => string;
+) => string | Promise<string>;
 
 const areEqual = (prevProps, nextProps) => {
     const { children: _1, expand: _2, ...prevPropsWithoutChildren } = prevProps;

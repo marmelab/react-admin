@@ -120,7 +120,7 @@ describe('useGetList', () => {
                 },
             }
         );
-        expect(hookValue.mock.calls[0][0]).toEqual({
+        expect(hookValue.mock.calls[0][0]).toMatchObject({
             data: { 1: { id: 1 }, 2: { id: 2 } },
             ids: [1, 2],
             total: 2,
@@ -167,7 +167,7 @@ describe('useGetList', () => {
             }
         );
         await waitFor(() => {
-            expect(hookValue.mock.calls.pop()[0]).toEqual({
+            expect(hookValue.mock.calls.pop()[0]).toMatchObject({
                 data: {
                     1: { id: 1, title: 'foo' },
                     2: { id: 2, title: 'bar' },
@@ -229,7 +229,7 @@ describe('useGetList', () => {
                 resources: { posts: { data: {}, cachedRequests: {} } },
             },
         });
-        expect(hookValue.mock.calls[0][0]).toEqual({
+        expect(hookValue.mock.calls[0][0]).toMatchObject({
             data: {},
             ids: [],
             total: undefined,

@@ -37,7 +37,7 @@ export default App;
 
 // in src/posts.js
 import * as React from "react";
-import { Create, Edit, SimpleForm, TextInput, DateInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton } from 'react-admin';
+import { Create, Edit, SimpleForm, TextInput, DateInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton, required } from 'react-admin';
 import RichTextInput from 'ra-input-rich-text';
 
 export const PostCreate = (props) => (
@@ -109,7 +109,7 @@ You can customize the `<Create>` and `<Edit>` components using the following pro
 
 ### CSS API
 
-The `<Create>` and `<Edit>` components accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
+The `<Create>` and `<Edit>` components accepts the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
 
 | Rule name   | Description                                                                                |
 | ----------- | ------------------------------------------------------------------------------------------ |
@@ -200,6 +200,8 @@ const PostEditActions = ({ basePath, data }) => (
 ```
 
 ### Aside component
+
+![Aside component](./img/aside.png)
 
 You may want to display additional information on the side of the form. Use the `aside` prop for that, passing the component of your choice:
 
@@ -399,7 +401,7 @@ const PostEdit = props => {
     const redirect = useRedirect();
 
     const onSuccess = () => {
-        notify(`Changes saved`)
+        notify(`Changes saved`);
         redirect('/posts');
         refresh();
     };
@@ -421,13 +423,16 @@ The default `onSuccess` function is:
 ```jsx
 // for the <Create> component:
 () => {
-    notify('ra.notification.created', 'info', { smart_count: 1 });
+    notify('ra.notification.created', { messageArgs: { smart_count: 1 } });
     redirect('edit', basePath, data.id, data);
 }
 
 // for the <Edit> component: 
 () => {
-    notify('ra.notification.updated', 'info', { smart_count: 1 }, mutationMode === 'undoable');
+    notify('ra.notification.created', {
+        messageArgs: { smart_count: 1 },
+        undoable: mutationMode === 'undoable'
+    });
     redirect('list', basePath, data.id, data);
 }
 ```
@@ -446,7 +451,7 @@ const PostEdit = props => {
     const redirect = useRedirect();
 
   const onSuccess = ({ data }) => {
-        notify(`Changes to post "${data.title}" saved`)
+        notify(`Changes to post "${data.title}" saved`);
         redirect('/posts');
         refresh();
     };
@@ -481,7 +486,7 @@ const PostEdit = props => {
     const redirect = useRedirect();
 
     const onFailure = (error) => {
-        notify(`Could not edit post: ${error.message}`)
+        notify(`Could not edit post: ${error.message}`);
         redirect('/posts');
         refresh();
     };
@@ -498,17 +503,17 @@ const PostEdit = props => {
 
 The `onFailure` function receives the error from the dataProvider call (`dataProvider.create()` or `dataProvider.update()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format)).
 
-The default `onOnFailure` function is:
+The default `onFailure` function is:
 
 ```jsx
 // for the <Create> component:
 (error) => {
-    notify(typeof error === 'string' ? error : error.message || 'ra.notification.http_error', 'warning');
+    notify(typeof error === 'string' ? error : error.message || 'ra.notification.http_error', { type: 'warning' });
 }
 
 // for the <Edit> component: 
 (error) => {
-    notify(typeof error === 'string' ? error : error.message || 'ra.notification.http_error', 'warning');
+    notify(typeof error === 'string' ? error : error.message || 'ra.notification.http_error', { type: 'warning' });
     if (mutationMode === 'undoable' || mutationMode === 'pessimistic') {
         refresh();
     }
@@ -577,7 +582,7 @@ const PostList = props => (
 
 **Note**: `<CloneButton>` is designed to be used in a `<Datagrid>` and in an edit view `<Actions>` component, not inside the form `<Toolbar>`. The `Toolbar` is basically for submitting the form, not for going to another resource.
 
-Alternately, users need to prepopulate a record based on a *related* record. For instance, to create a comment related to an exising post. 
+Alternately, users need to prepopulate a record based on a *related* record. For instance, to create a comment related to an existing post. 
 
 By default, the `<Create>` view starts with an empty `record`. However, if the `location` object (injected by [react-router-dom](https://reacttraining.com/react-router/web/api/location)) contains a `record` in its `state`, the `<Create>` view uses that `record` instead of the empty object. That's how the `<CloneButton>` works under the hood.
 
@@ -737,6 +742,7 @@ const MyEdit = props => {
     const {
         basePath, // deduced from the location, useful for action buttons
         defaultTitle, // the translated title based on the resource, e.g. 'Post #123'
+        error,  // error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the `onFailure` side effect.
         loaded, // boolean that is false until the record is available
         loading, // boolean that is true on mount, and false once the record was fetched
         record, // record fetched via dataProvider.getOne() based on the id from the location
@@ -797,6 +803,7 @@ Here are all the props you can set on the `<SimpleForm>` component:
 * [`toolbar`](#toolbar)
 * [`variant`](#variant)
 * [`margin`](#margin)
+* [`component`](#simpleform-component)
 * [`warnWhenUnsavedChanges`](#warning-about-unsaved-changes)
 * [`sanitizeEmptyValues`](#setting-empty-values-to-null)
 
@@ -938,7 +945,7 @@ You can also opt out the location synchronization by passing `false` to the `syn
 ```jsx
 export const PostEdit = (props) => (
     <Edit {...props}>
-        <TabbedForm syncWithLocation>
+        <TabbedForm syncWithLocation={false}>
             <FormTab label="summary">
                 <TextInput disabled label="Id" source="id" />
                 <TextInput source="title" validate={required()} />
@@ -969,6 +976,7 @@ export const PostEdit = (props) => (
 ```
 {% endraw %}
 **Tip**: When `syncWithLocation` is `false`, the `path` prop of the `<FormTab>` components is ignored.
+
 ### Label Decoration
 
 `<FormTab>` scans its children for the `addLabel` prop, and automatically wraps a child in a `<Labeled>` component when found. This displays a label on top of the child, based on the `label` prop. This is not necessary for `<Input>` components, as they already contain their label. Also, all the react-admin `<Field>` components have a default prop `addLabel: true`, which explains why react-admin shows a label on top of Fields when they are used as children of `<FormTab>`. 
@@ -1006,7 +1014,7 @@ const PostEdit = props => (
 
 By default `<TabbedForm>` uses `<TabbedFormTabs>`, an internal react-admin component, to renders tabs. You can pass a custom component as the `tabs` prop to override the default component. Besides, props from `<TabbedFormTabs>` are passed to material-ui's `<Tabs>` component inside `<TabbedFormTabs>`.
 
-The following example shows how to make use of scrollable `<Tabs>`. Pass the `scrollable` prop to `<TabbedFormTabs>` and pass that as the `tabs` prop to `<TabbedForm>`.
+The following example shows how to make use of scrollable `<Tabs>`. Pass `variant="scrollable"` and `scrollButtons="auto"` props to `<TabbedFormTabs>` and use it in the `tabs` prop from `<TabbedForm>`.
 
 ```jsx
 import * as React from "react";
@@ -1018,7 +1026,7 @@ import {
 
 export const PostEdit = (props) => (
     <Edit {...props}>
-        <TabbedForm tabs={<TabbedFormTabs scrollButtons="auto" />}>
+        <TabbedForm tabs={<TabbedFormTabs variant="scrollable" scrollButtons="auto" />}>
             ...
         </TabbedForm>
     </Edit>
@@ -1212,12 +1220,17 @@ The value of the form `validate` prop must be a function taking the record as in
 const validateUserCreation = (values) => {
     const errors = {};
     if (!values.firstName) {
-        errors.firstName = ['The firstName is required'];
+        errors.firstName = 'The firstName is required';
     }
     if (!values.age) {
-        errors.age = ['The age is required'];
+        // You can return translation keys
+        errors.age = 'ra.validation.required';
     } else if (values.age < 18) {
-        errors.age = ['Must be over 18'];
+        // Or an object if the translation messages need parameters
+        errors.age = {
+            message: 'ra.validation.minValue',
+            args: { min: 18 }
+        };
     }
     return errors
 };
@@ -1269,7 +1282,7 @@ const validateFirstName = [required(), minLength(2), maxLength(15)];
 const validateEmail = email();
 const validateAge = [number(), minValue(18)];
 const validateZipCode = regex(/^\d{5}$/, 'Must be a valid Zip Code');
-const validateSex = choices(['m', 'f'], 'Must be Male or Female');
+const validateGender = choices(['m', 'f', 'nc'], 'Please choose one of the values');
 
 export const UserCreate = (props) => (
     <Create {...props}>
@@ -1278,10 +1291,11 @@ export const UserCreate = (props) => (
             <TextInput label="Email" source="email" validate={validateEmail} />
             <TextInput label="Age" source="age" validate={validateAge}/>
             <TextInput label="Zip Code" source="zip" validate={validateZipCode}/>
-            <SelectInput label="Sex" source="sex" choices={[
+            <SelectInput label="Gender" source="gender" choices={[
                 { id: 'm', name: 'Male' },
                 { id: 'f', name: 'Female' },
-            ]} validate={validateSex}/>
+                { id: 'nc', name: 'Prefer not say' },
+            ]} validate={validateGender}/>
         </SimpleForm>
     </Create>
 );
@@ -1316,7 +1330,7 @@ const ageValidation = (value, allValues) => {
     if (value < 18) {
         return 'Must be over 18';
     }
-    return [];
+    return undefined;
 };
 
 const validateFirstName = [required(), maxLength(15)];
@@ -1376,7 +1390,7 @@ export default {
 
 See the [Translation documentation](Translation.md#translation-messages) for details.
 
-**Tip**: Make sure to define validation functions or array of functions in a variable outside of your component, instead of defining them directly in JSX. This can result in a new function or array at every render, and trigger infinite rerender.
+**Tip**: Make sure to define validation functions or array of functions in a variable outside your component, instead of defining them directly in JSX. This can result in a new function or array at every render, and trigger infinite rerender.
 
 {% raw %}
 ```jsx
@@ -1411,17 +1425,25 @@ You can validate the entire form data server-side by returning a Promise in the 
 const validateUserCreation = async (values) => {
     const errors = {};
     if (!values.firstName) {
-        errors.firstName = ['The firstName is required'];
+        errors.firstName = 'The firstName is required';
     }
     if (!values.age) {
-        errors.age = ['The age is required'];
+        errors.age = 'The age is required';
     } else if (values.age < 18) {
-        errors.age = ['Must be over 18'];
+        errors.age = 'Must be over 18';
     }
 
-    const isEmailUnique = await checkEmailIsUnique(values.userName);
+    const isEmailUnique = await checkEmailIsUnique(values.email);
     if (!isEmailUnique) {
-        errors.email = ['Email already used'];
+        // Return a message directly
+        errors.email = 'Email already used';
+        // Or a translation key
+        errors.email = 'myapp.validation.email_not_unique';
+        // Or an object if the translation needs parameters
+        errors.email = {
+            message: 'myapp.validation.email_not_unique',
+            args: { email: values.email }
+        };
     }
     return errors
 };
@@ -1453,7 +1475,7 @@ const validateEmailUnicity = async (value) => {
 
     }
 
-    return errors
+    return undefined;
 };
 
 const emailValidators = [required(), validateEmailUnicity];
@@ -1477,7 +1499,9 @@ The form can be validated by the server after its submission. In order to displa
 
 {% raw %}
 ```jsx
-import { useMutation } from 'react-admin';
+import * as React from 'react';
+import { useCallback } from 'react';
+import { Create, SimpleForm, TextInput, useMutation } from 'react-admin';
 
 export const UserCreate = (props) => {
     const [mutate] = useMutation();
@@ -1499,7 +1523,7 @@ export const UserCreate = (props) => {
     );
 
     return (
-        <Create undoable={false} {...props}>
+        <Create {...props}>
             <SimpleForm save={save}>
                 <TextInput label="First Name" source="firstName" />
                 <TextInput label="Age" source="age" />
@@ -1511,6 +1535,8 @@ export const UserCreate = (props) => {
 {% endraw %}
 
 **Tip**: The shape of the returned validation errors must correspond to the form: a key needs to match a `source` prop.
+
+**Tip**: The returned validation errors might have any validation format we support (simple strings or object with message and args) for each key.
 
 ## Submit On Enter
 
@@ -1652,7 +1678,7 @@ import { Edit, SimpleForm, SaveButton, Toolbar } from 'react-admin';
 
 const PostEditToolbar = props => (
     <Toolbar {...props} >
-        <SaveButton disabled={!props.pristine} />
+        <SaveButton disabled={props.pristine} />
     </Toolbar>
 );
 
@@ -1679,7 +1705,7 @@ Here are the props received by the `Toolbar` component when passed as the `toolb
 
 ### CSS API
 
-The `<Toolbar>` accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
+The `<Toolbar>` accepts the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
 
 | Rule name        | Description                                                                     |
 | ---------------- | ------------------------------------------------------------------------------- |
@@ -1776,6 +1802,27 @@ By default, react-admin input components use the Material Design "dense" margin.
 export const PostEdit = (props) => (
     <Edit {...props}>
         <SimpleForm margin="normal">
+            ...
+        </SimpleForm>
+    </Edit>
+);
+```
+
+### SimpleForm component
+
+By default, the `SimpleForm` view renders the main form's children inside a `CardContentInner`, an internal `react-admin` component which returns a material-ui `<CardContent>` element.
+
+To customize that, you can override the main container by passing a `component` prop :
+
+```jsx
+const MyChildrenContainerComponent = props => (
+    <div>{props.children}</div>
+);
+
+// Use a custom component as root container of the form's children 
+const PostEdit = props => (
+    <Edit {...props}>
+        <SimpleForm component={MyChildrenContainerComponent}>
             ...
         </SimpleForm>
     </Edit>
@@ -2014,6 +2061,7 @@ const defaultSubscription = {
     pristine: true,
     valid: true,
     invalid: true,
+    validating: true,
 };
 ```
 {% endraw %}
@@ -2179,9 +2227,9 @@ const PostEdit = props => {
     const redirect = useRedirect();
     const onFailure = (error) => {
         if (error.code == 123) {
-            notify('Could not save changes: concurrent edition in progress', 'warning');
+            notify('Could not save changes: concurrent edition in progress', { type: 'warning' });
         } else {
-            notify('ra.notification.http_error', 'warning')
+            notify('ra.notification.http_error', { type: 'warning' });
         }
         redirect('list', props.basePath);
     }
@@ -2280,9 +2328,7 @@ const SaveWithNoteButton = props => {
                 },
                 {
                     onSuccess: ({ data: newRecord }) => {
-                        notify('ra.notification.created', 'info', {
-                            smart_count: 1,
-                        });
+                        notify('ra.notification.created', { messageArgs: { smart_count: 1 } });
                         redirectTo(redirect, basePath, newRecord.id, newRecord);
                     },
                 }

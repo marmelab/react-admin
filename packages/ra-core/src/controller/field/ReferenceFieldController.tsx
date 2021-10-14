@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode, ReactElement } from 'react';
+import { ReactNode, ReactElement } from 'react';
 import get from 'lodash/get';
 
 import { Record } from '../../types';
@@ -10,7 +10,7 @@ interface ChildrenParams extends UseReferenceProps {
     resourceLinkPath: string | false;
 }
 
-interface Props {
+export interface ReferenceFieldControllerProps {
     basePath: string;
     children: (params: ChildrenParams) => ReactNode;
     record?: Record;
@@ -49,16 +49,14 @@ interface Props {
  *     <TextField source="name" />
  * </ReferenceField>
  */
-export const ReferenceFieldController: FunctionComponent<Props> = ({
-    children,
-    record,
-    source,
-    ...props
-}) => {
+export const ReferenceFieldController = (
+    props: ReferenceFieldControllerProps
+) => {
+    const { children, record, source, ...rest } = props;
     const id = get(record, source);
     return children({
-        ...useReference({ ...props, id }),
-        resourceLinkPath: getResourceLinkPath({ ...props, record, source }),
+        ...useReference({ ...rest, id }),
+        resourceLinkPath: getResourceLinkPath({ ...rest, record, source }),
     }) as ReactElement<any>;
 };
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Fragment, FC } from 'react';
+import { Fragment } from 'react';
 import MuiToolbar from '@material-ui/core/Toolbar';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -16,14 +16,15 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const ReviewEditToolbar: FC<ToolbarProps<Review>> = ({
-    basePath,
-    handleSubmitWithRedirect,
-    invalid,
-    record,
-    resource,
-    saving,
-}) => {
+const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
+    const {
+        basePath,
+        handleSubmitWithRedirect,
+        invalid,
+        record,
+        resource,
+        saving,
+    } = props;
     const classes = useStyles();
 
     if (!record) return null;

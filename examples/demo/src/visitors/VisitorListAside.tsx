@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import { Card as MuiCard, CardContent } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
@@ -30,7 +29,7 @@ const Card = withStyles(theme => ({
     },
 }))(MuiCard);
 
-const Aside: FC = () => (
+const Aside = () => (
     <Card>
         <CardContent>
             <FilterLiveSearch />

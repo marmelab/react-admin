@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, memo } from 'react';
+import { memo, FC } from 'react';
 import get from 'lodash/get';
 import Chip, { ChipProps } from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
@@ -17,7 +17,7 @@ const useStyles = makeStyles(
     { name: 'RaChipField' }
 );
 
-export const ChipField: FC<ChipFieldProps> = memo<ChipFieldProps>(props => {
+export const ChipField: FC<ChipFieldProps> = memo(props => {
     const {
         className,
         classes: classesOverride,
@@ -56,9 +56,12 @@ ChipField.defaultProps = {
 };
 
 ChipField.propTypes = {
+    // @ts-ignore
     ...ChipField.propTypes,
     ...fieldPropTypes,
 };
+
+ChipField.displayName = 'ChipField';
 
 export interface ChipFieldProps
     extends PublicFieldProps,

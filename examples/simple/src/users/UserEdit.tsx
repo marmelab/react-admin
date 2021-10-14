@@ -5,6 +5,7 @@ import {
     CloneButton,
     DeleteWithConfirmButton,
     Edit,
+    EditActionsProps,
     FormTab,
     required,
     SaveButton,
@@ -42,7 +43,7 @@ const UserEditToolbar = props => {
     );
 };
 
-const EditActions = ({ basePath, data, hasShow }) => (
+const EditActions = ({ basePath, data, hasShow }: EditActionsProps) => (
     <TopToolbar>
         <CloneButton
             className="button-clone"
@@ -53,16 +54,26 @@ const EditActions = ({ basePath, data, hasShow }) => (
     </TopToolbar>
 );
 
-const UserEdit = ({ permissions, ...props }) => (
-    <Edit
-        title={<UserTitle />}
-        aside={<Aside />}
-        actions={<EditActions />}
-        {...props}
-    >
+const UserEditForm = ({ permissions, save, ...props }) => {
+    const newSave = values =>
+        new Promise((resolve, reject) => {
+            if (values.name === 'test') {
+                return resolve({
+                    name: {
+                        message: 'ra.validation.minLength',
+                        args: { min: 10 },
+                    },
+                });
+            }
+            return save(values);
+        });
+
+    return (
         <TabbedForm
             defaultValue={{ role: 'user' }}
             toolbar={<UserEditToolbar />}
+            {...props}
+            save={newSave}
         >
             <FormTab label="user.form.summary" path="">
                 {permissions === 'admin' && <TextInput disabled source="id" />}
@@ -87,8 +98,20 @@ const UserEdit = ({ permissions, ...props }) => (
                 </FormTab>
             )}
         </TabbedForm>
-    </Edit>
-);
+    );
+};
+const UserEdit = ({ permissions, ...props }) => {
+    return (
+        <Edit
+            title={<UserTitle />}
+            aside={<Aside />}
+            actions={<EditActions />}
+            {...props}
+        >
+            <UserEditForm permissions={permissions} />
+        </Edit>
+    );
+};
 
 UserEdit.propTypes = {
     id: PropTypes.any.isRequired,

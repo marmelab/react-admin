@@ -18,23 +18,32 @@ run: run-simple
 run-simple: ## run the simple example
 	@yarn -s run-simple
 
+run-no-code: ## run the no-code example
+	@yarn -s run-no-code
+
 run-tutorial: ## run the tutorial example
 	@yarn -s run-tutorial
 
-run-demo: ## run the demo example
+run-demo: ## run the ecommerce example
 	@yarn -s run-demo
 
-run-demo-watch: ## run the demo example with watch on the ra dependencies
+run-demo-watch: ## run the ecommerce example and watch changes in ra dependencies
 	@yarn -s run-demo-watch
 
-build-demo: ## compile the demo example to static js
+build-demo: ## compile the ecommerce example to static js
 	@yarn -s build-demo
 
-run-graphql-demo: ## run the demo example
+run-graphql-demo: ## run the ecommerce example with a graphql backend
 	@yarn -s run-graphql-demo
 
-run-graphql-demo-watch: ## run the demo example with watch on the ra dependencies
+run-graphql-demo-watch: ## run the ecommerce example with a graphql backend and watch changes in ra dependencies
 	@yarn -s run-graphql-demo-watch
+
+run-crm: ## run the crm example
+	@yarn -s run-crm
+
+build-crm: ## run the crm example
+	@yarn -s build-crm
 
 build-ra-core:
 	@echo "Transpiling ra-core files...";
@@ -95,11 +104,15 @@ build-ra-input-rich-text:
 	@echo "Transpiling ra-input-rich-text files...";
 	@cd ./packages/ra-input-rich-text && yarn -s build
 
+build-ra-no-code:
+	@echo "Transpiling ra-no-code files...";
+	@cd ./packages/ra-no-code && yarn -s build
+
 build-data-generator:
 	@echo "Transpiling data-generator files...";
 	@cd ./examples/data-generator && yarn -s build
 
-build: build-ra-core build-ra-test build-ra-ui-materialui build-ra-data-fakerest build-ra-data-json-server build-ra-data-localstorage build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphql-simple build-ra-i18n-polyglot build-ra-input-rich-text build-data-generator build-ra-language-english build-ra-language-french build-react-admin  ## compile ES6 files to JS
+build: build-ra-core build-ra-test build-ra-ui-materialui build-ra-data-fakerest build-ra-data-json-server build-ra-data-localstorage build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphql-simple build-ra-i18n-polyglot build-ra-input-rich-text build-data-generator build-ra-language-english build-ra-language-french build-react-admin build-ra-no-code  ## compile ES6 files to JS
 
 doc: ## compile doc as html and launch doc web server
 	@yarn -s doc

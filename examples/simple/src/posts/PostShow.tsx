@@ -21,17 +21,18 @@ import {
     UrlField,
     useShowController,
     useLocale,
+    Record,
 } from 'react-admin';
 import { Link } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 import PostTitle from './PostTitle';
 
-const CreateRelatedComment = ({ record }) => (
+const CreateRelatedComment = ({ record }: { record?: Record }) => (
     <Button
         component={Link}
         to={{
             pathname: '/comments/create',
-            state: { record: { post_id: record.id } },
+            state: { record: { post_id: record?.id } },
         }}
     >
         Add comment

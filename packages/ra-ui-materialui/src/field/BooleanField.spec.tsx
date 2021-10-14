@@ -85,6 +85,43 @@ describe('<BooleanField />', () => {
         expect(queryByTitle('ra.boolean.false')).toBeNull();
     });
 
+    it('should display tick and truthy text if looseValue is true and value is truthy', () => {
+        const defaultProps = {
+            record: { id: 123, published: 1 },
+            source: 'published',
+            resource: 'posts',
+            classes: {},
+        };
+        const { queryByTitle } = render(
+            <BooleanField {...defaultProps} looseValue />
+        );
+        expect(queryByTitle('ra.boolean.true')).not.toBeNull();
+        expect(
+            (queryByTitle('ra.boolean.true').firstChild as HTMLElement).dataset
+                .testid
+        ).toBe('true');
+        expect(queryByTitle('ra.boolean.false')).toBeNull();
+    });
+
+    it('should display cross and falsy text if looseValue is true and value is falsy', () => {
+        const defaultProps = {
+            record: { id: 123, published: 0 },
+            source: 'published',
+            resource: 'posts',
+            classes: {},
+        };
+
+        const { queryByTitle } = render(
+            <BooleanField {...defaultProps} looseValue />
+        );
+        expect(queryByTitle('ra.boolean.false')).not.toBeNull();
+        expect(
+            (queryByTitle('ra.boolean.false').firstChild as HTMLElement).dataset
+                .testid
+        ).toBe('false');
+        expect(queryByTitle('ra.boolean.true')).toBeNull();
+    });
+
     it.each([null, undefined])(
         'should display the emptyText when is present and the value is %s',
         published => {

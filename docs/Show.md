@@ -19,6 +19,7 @@ Here are all the props accepted by the `<Show>` component:
 * [`actions`](#actions)
 * [`aside`](#aside-component)
 * [`component`](#component)
+* [`onFailure`](#onfailure)
 
 ### CSS API
 
@@ -125,7 +126,9 @@ export const PostShow = (props) => (
 
 ### Aside component
 
-You may want to display additional information on the side of the resource detail. Use the `aside` prop for that, passing the component of your choice:
+![Aside component](./img/aside.png)
+
+You may want to display additional information on the side of the resource detail. Use the `aside` prop for that, passing the element of your choice:
 
 {% raw %}
 ```jsx
@@ -139,27 +142,30 @@ const Aside = () => (
 );
 
 const PostShow = props => (
-    <Show aside={Aside} {...props}>
+    <Show aside={<Aside />} {...props}>
         ...
     </Show>
 );
 ```
 {% endraw %}
 
-The `aside` component receives the same props as the `Show` child component: `basePath`, `record`, `resource`, and `version`. That means you can display secondary details of the current record in the aside component:
+You can use the `useRecordContext` hook to display non-editable details about the current record in the aside component: 
 
 {% raw %}
 ```jsx
-const Aside = ({ record }) => (
-    <div style={{ width: 200, margin: '1em' }}>
-        <Typography variant="h6">Post details</Typography>
-        {record && (
-            <Typography variant="body2">
-                Creation date: {record.createdAt}
-            </Typography>
-        )}
-    </div>
-);
+const Aside = () => {
+    const record = useRecordContext();
+    return (
+        <div style={{ width: 200, margin: '1em' }}>
+            <Typography variant="h6">Post details</Typography>
+            {record && (
+                <Typography variant="body2">
+                    Creation date: {record.createdAt}
+                </Typography>
+            )}
+        </div>
+    );
+}
 ```
 {% endraw %}
 
@@ -188,6 +194,50 @@ const PostShow = props => (
 ```
 
 The default value for the `component` prop is `Card`.
+
+
+### `onFailure`
+
+By default, when the getOne action fails at the dataProvider level, react-admin shows an error notification and  refreshes the page.
+
+You can override this behavior and pass custom side effects by providing a function as `onFailure` prop:
+
+```jsx
+import * as React from 'react';
+import { useNotify, useRefresh, useRedirect, Show, SimpleShowLayout } from 'react-admin';
+
+const PostShow = props => {
+    const notify = useNotify();
+    const refresh = useRefresh();
+    const redirect = useRedirect();
+
+    const onFailure = (error) => {
+        notify(`Could not load post: ${error.message}`)
+        redirect('/posts');
+        refresh();
+    };
+
+    return (
+        <Show onFailure={onFailure} {...props}>
+            <SimpleShowLayout>
+                ...
+            </SimpleShowLayout>
+        </Show>
+    );
+}
+```
+
+The `onFailure` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format)).
+
+The default `onFailure` function is:
+
+```jsx
+(error) => {
+    notify('ra.notification.item_doesnt_exist', 'warning');
+    redirect('list', basePath);
+    refresh();
+}
+```
 
 ## The `<ShowGuesser>` component
 
@@ -232,6 +282,7 @@ const MyShow = props => {
     const {
         basePath, // deduced from the location, useful for action buttons
         defaultTitle, // the translated title based on the resource, e.g. 'Post #123'
+        error,  // error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the `onFailure` side effect.
         loaded, // boolean that is false until the record is available
         loading, // boolean that is true on mount, and false once the record was fetched
         record, // record fetched via dataProvider.getOne() based on the id from the location
@@ -375,7 +426,7 @@ export const PostShow = (props) => (
 
 By default, `<TabbedShowLayout>` renders its tabs using `<TabbedShowLayoutTabs>`, an internal react-admin component. You can pass a custom component as the `tabs` prop to override that default. Also, props passed to `<TabbedShowLayoutTabs>` are passed to the material-ui's `<Tabs>` component inside `<TabbedShowLayoutTabs>`. That means you can create a custom `tabs` component without copying several components from the react-admin source.
 
-For instance, to make use of scrollable `<Tabs>`, you can pass a `variant="scrollable"` prop to `<TabbedShowLayoutTabs>` and use it in the `tabs` prop from `<TabbedShowLayout>` as follows:
+For instance, to make use of scrollable `<Tabs>`, you can pass `variant="scrollable"` and `scrollButtons="auto"` props to `<TabbedShowLayoutTabs>` and use it in the `tabs` prop from `<TabbedShowLayout>` as follows:
 
 ```jsx
 import {
@@ -385,8 +436,8 @@ import {
 } from 'react-admin';
 
 const ScrollableTabbedShowLayout = props => (
-    <Show{...props}>
-        <TabbedShowLayout tabs={<TabbedShowLayoutTabs variant="scrollable" {...props} />}>
+    <Show {...props}>
+        <TabbedShowLayout tabs={<TabbedShowLayoutTabs variant="scrollable" scrollButtons="auto" {...props} />}>
             ...
         </TabbedShowLayout>
     </Show>

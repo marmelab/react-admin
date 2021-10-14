@@ -14,13 +14,14 @@ import LoadingIndicator from './LoadingIndicator';
 import Menu, { MenuProps } from './Menu';
 import MenuItemLink, { MenuItemLinkProps } from './MenuItemLink';
 import NotFound from './NotFound';
-import Notification from './Notification';
+import Notification, { NotificationProps } from './Notification';
 import Responsive, { ResponsiveProps } from './Responsive';
 import Sidebar, { SidebarProps } from './Sidebar';
 import Title, { TitleProps, TitlePropType } from './Title';
 import TitleForRecord from './TitleForRecord';
 import TopToolbar from './TopToolbar';
-import UserMenu from './UserMenu';
+import UserMenu, { UserMenuProps } from './UserMenu';
+export * from './createMuiTheme';
 
 export {
     AppBar,
@@ -40,6 +41,7 @@ export {
     MenuItemLink,
     NotFound,
     Notification,
+    NotificationProps,
     Responsive,
     Sidebar,
     Title,
@@ -63,4 +65,5 @@ export type {
     ResponsiveProps,
     SidebarProps,
     TitleProps,
+    UserMenuProps,
 };

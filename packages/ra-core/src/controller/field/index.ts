@@ -1,6 +1,12 @@
-import ReferenceArrayFieldController from './ReferenceArrayFieldController';
-import ReferenceFieldController from './ReferenceFieldController';
-import ReferenceManyFieldController from './ReferenceManyFieldController';
+import ReferenceArrayFieldController, {
+    ReferenceArrayFieldControllerProps,
+} from './ReferenceArrayFieldController';
+import ReferenceFieldController, {
+    ReferenceFieldControllerProps,
+} from './ReferenceFieldController';
+import ReferenceManyFieldController, {
+    ReferenceManyFieldControllerProps,
+} from './ReferenceManyFieldController';
 import getResourceLinkPath, { LinkToType } from './getResourceLinkPath';
 import useReferenceArrayFieldController from './useReferenceArrayFieldController';
 import useReferenceManyFieldController from './useReferenceManyFieldController';
@@ -11,7 +17,12 @@ import { ListControllerProps } from '../useListController';
 export type ReferenceArrayProps = ListControllerProps;
 export type ReferenceManyProps = ListControllerProps;
 
-export type { LinkToType };
+export type {
+    LinkToType,
+    ReferenceArrayFieldControllerProps,
+    ReferenceFieldControllerProps,
+    ReferenceManyFieldControllerProps,
+};
 
 export {
     useReferenceArrayFieldController,

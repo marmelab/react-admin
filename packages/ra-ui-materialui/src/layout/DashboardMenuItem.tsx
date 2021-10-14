@@ -1,25 +1,20 @@
 import * as React from 'react';
-import { FC } from 'react';
 import PropTypes from 'prop-types';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import { useTranslate } from 'ra-core';
 
 import MenuItemLink from './MenuItemLink';
 
-const DashboardMenuItem: FC<DashboardMenuItemProps> = ({
-    locale,
-    onClick,
-    ...props
-}) => {
+const DashboardMenuItem = (props: DashboardMenuItemProps) => {
+    const { locale, ...rest } = props;
     const translate = useTranslate();
     return (
         <MenuItemLink
-            onClick={onClick}
             to="/"
             primaryText={translate('ra.page.dashboard')}
             leftIcon={<DashboardIcon />}
             exact
-            {...props}
+            {...rest}
         />
     );
 };
@@ -29,7 +24,10 @@ export interface DashboardMenuItemProps {
     locale?: string;
     onClick?: () => void;
     dense?: boolean;
-    sidebarIsOpen: boolean;
+    /**
+     * @deprecated
+     */
+    sidebarIsOpen?: boolean;
 }
 
 DashboardMenuItem.propTypes = {

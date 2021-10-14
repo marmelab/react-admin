@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react';
-import useQuery from './useQuery';
+import { useQuery } from './useQuery';
 
 interface ChildrenFuncParams {
     data?: any;
@@ -9,7 +9,7 @@ interface ChildrenFuncParams {
     error?: any;
 }
 
-interface Props {
+export interface QueryProps {
     children: (params: ChildrenFuncParams) => JSX.Element;
     type: string;
     resource?: string;
@@ -66,7 +66,7 @@ interface Props {
  *     </Query>
  * );
  */
-const Query: FunctionComponent<Props> = ({
+const Query: FunctionComponent<QueryProps> = ({
     children,
     type,
     resource,

@@ -1,18 +1,14 @@
 import * as React from 'react';
-import { FunctionComponent } from 'react';
 import { useTranslate, ValidationError, ValidationErrorMessage } from 'ra-core';
 
-interface Props {
+export interface InputHelperTextProps {
     helperText?: string | boolean;
     error?: ValidationErrorMessage;
     touched: boolean;
 }
 
-const InputHelperText: FunctionComponent<Props> = ({
-    helperText,
-    touched,
-    error,
-}) => {
+const InputHelperText = (props: InputHelperTextProps) => {
+    const { helperText, touched, error } = props;
     const translate = useTranslate();
 
     return touched && error ? (

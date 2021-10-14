@@ -1,11 +1,16 @@
 import * as React from 'react';
-import { FC, ReactElement, SyntheticEvent } from 'react';
+import { ReactElement, SyntheticEvent } from 'react';
 import PropTypes from 'prop-types';
-import { Record, RedirectionSideEffect, MutationMode } from 'ra-core';
+import {
+    Record,
+    RedirectionSideEffect,
+    MutationMode,
+    getMutationMode,
+} from 'ra-core';
 
 import { ButtonProps } from './Button';
-import DeleteWithUndoButton from './DeleteWithUndoButton';
-import DeleteWithConfirmButton from './DeleteWithConfirmButton';
+import { DeleteWithUndoButton } from './DeleteWithUndoButton';
+import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
 
 /**
  * Button used to delete a single record. Added by default by the <Toolbar> of edit and show views.
@@ -44,22 +49,21 @@ import DeleteWithConfirmButton from './DeleteWithConfirmButton';
  *     return <Edit actions={<EditActions />} {...props} />;
  * };
  */
-const DeleteButton: FC<DeleteButtonProps> = ({
-    undoable,
-    mutationMode = 'undoable',
-    record,
-    ...props
-}) => {
+export const DeleteButton = (props: DeleteButtonProps) => {
+    const { undoable, mutationMode, record, ...rest } = props;
+    const mode = getMutationMode(mutationMode, undoable);
     if (!record || record.id == null) {
         return null;
     }
-    return undoable || mutationMode === 'undoable' ? (
-        <DeleteWithUndoButton record={record} {...props} />
+
+    return mode === 'undoable' ? (
+        <DeleteWithUndoButton record={record} {...rest} />
     ) : (
         <DeleteWithConfirmButton
-            mutationMode={mutationMode}
+            mutationMode={mode}
             record={record}
-            {...props}
+            undoable={undoable}
+            {...rest}
         />
     );
 };
@@ -93,6 +97,7 @@ export type DeleteButtonProps = Props & ButtonProps;
 DeleteButton.propTypes = {
     basePath: PropTypes.string,
     label: PropTypes.string,
+    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     record: PropTypes.any,
     // @ts-ignore
     redirect: PropTypes.oneOfType([
@@ -104,5 +109,3 @@ DeleteButton.propTypes = {
     undoable: PropTypes.bool,
     icon: PropTypes.element,
 };
-
-export default DeleteButton;

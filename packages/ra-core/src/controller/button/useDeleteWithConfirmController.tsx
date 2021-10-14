@@ -89,7 +89,12 @@ const useDeleteWithConfirmController = (
         onSuccess: response => {
             setOpen(false);
             if (onSuccess === undefined) {
-                notify('ra.notification.deleted', 'info', { smart_count: 1 });
+                notify(
+                    'ra.notification.deleted',
+                    'info',
+                    { smart_count: 1 },
+                    mutationMode === 'undoable'
+                );
                 redirect(redirectTo, basePath || `/${resource}`);
                 refresh();
             } else {
@@ -133,6 +138,7 @@ const useDeleteWithConfirmController = (
 
     const handleDelete = useCallback(
         event => {
+            event.stopPropagation();
             deleteOne({
                 payload: { id: record.id, previousData: record },
             });

@@ -10,7 +10,7 @@ import {
     Record,
     RecordMap,
 } from '../types';
-import useQueryWithStore from './useQueryWithStore';
+import { useQueryWithStore } from './useQueryWithStore';
 import {
     getIds,
     getTotal,
@@ -33,9 +33,9 @@ interface UseGetManyReferenceOptions {
  *
  * The return value updates according to the request state:
  *
- * - start: { loading: true, loaded: false }
- * - success: { data: [data from store], ids: [ids from response], total: [total from response], loading: false, loaded: true }
- * - error: { error: [error from response], loading: false, loaded: true }
+ * - start: { loading: true, loaded: false, refetch }
+ * - success: { data: [data from store], ids: [ids from response], total: [total from response], loading: false, loaded: true, refetch }
+ * - error: { error: [error from response], loading: false, loaded: false, refetch }
  *
  * This hook will return the cached result when called a second time
  * with the same parameters, until the response arrives.
@@ -52,7 +52,7 @@ interface UseGetManyReferenceOptions {
  * @param {Function} options.onSuccess Side effect function to be executed upon success, e.g. { onSuccess: { refresh: true } }
  * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) }
  *
- * @returns The current request state. Destructure as { data, total, ids, error, loading, loaded }.
+ * @returns The current request state. Destructure as { data, total, ids, error, loading, loaded, refetch }.
  *
  * @example
  *
@@ -96,6 +96,7 @@ const useGetManyReference = (
         error,
         loading,
         loaded,
+        refetch,
     } = useQueryWithStore(
         {
             type: 'getManyReference',
@@ -130,7 +131,15 @@ const useGetManyReference = (
         [ids, allRecords]
     );
 
-    return { data, ids: ids || defaultIds, total, error, loading, loaded };
+    return {
+        data,
+        ids: ids || defaultIds,
+        total,
+        error,
+        loading,
+        loaded,
+        refetch,
+    };
 };
 
 interface DataSelectorResult<RecordType extends Record = Record> {

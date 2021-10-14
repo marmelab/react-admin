@@ -69,6 +69,7 @@ const useLogout = (): Logout => {
                 ) {
                     newLocation.state = {
                         nextPathname: history.location.pathname,
+                        nextSearch: history.location.search,
                     };
                 }
                 if (redirectToParts[1]) {

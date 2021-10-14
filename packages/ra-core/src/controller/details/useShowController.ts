@@ -1,7 +1,7 @@
 import useVersion from '../useVersion';
 import { useCheckMinimumRequiredProps } from '../checkMinimumRequiredProps';
-import { Record, Identifier } from '../../types';
-import { useGetOne } from '../../dataProvider';
+import { Record, Identifier, OnFailure } from '../../types';
+import { useGetOne, Refetch } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
 import { useNotify, useRedirect, useRefresh } from '../../sideEffect';
 import { CRUD_GET_ONE } from '../../actions';
@@ -14,6 +14,7 @@ export interface ShowProps {
     hasShow?: boolean;
     hasList?: boolean;
     id?: Identifier;
+    onFailure?: OnFailure;
     resource?: string;
     [key: string]: any;
 }
@@ -24,6 +25,7 @@ export interface ShowControllerProps<RecordType extends Record = Record> {
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
     data?: RecordType;
+    error?: any;
     loading: boolean;
     loaded: boolean;
     hasCreate?: boolean;
@@ -32,6 +34,7 @@ export interface ShowControllerProps<RecordType extends Record = Record> {
     hasShow?: boolean;
     resource: string;
     record?: RecordType;
+    refetch: Refetch;
     version: number;
 }
 
@@ -56,25 +59,33 @@ export const useShowController = <RecordType extends Record = Record>(
     props: ShowProps
 ): ShowControllerProps<RecordType> => {
     useCheckMinimumRequiredProps('Show', ['basePath', 'resource'], props);
-    const { basePath, hasCreate, hasEdit, hasList, hasShow, id } = props;
+    const {
+        basePath,
+        hasCreate,
+        hasEdit,
+        hasList,
+        hasShow,
+        id,
+        onFailure,
+    } = props;
     const resource = useResourceContext(props);
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();
     const refresh = useRefresh();
     const version = useVersion();
-    const { data: record, loading, loaded } = useGetOne<RecordType>(
-        resource,
-        id,
-        {
-            action: CRUD_GET_ONE,
-            onFailure: () => {
+    const { data: record, error, loading, loaded, refetch } = useGetOne<
+        RecordType
+    >(resource, id, {
+        action: CRUD_GET_ONE,
+        onFailure:
+            onFailure ??
+            (() => {
                 notify('ra.notification.item_doesnt_exist', 'warning');
                 redirect('list', basePath);
                 refresh();
-            },
-        }
-    );
+            }),
+    });
 
     const getResourceLabel = useGetResourceLabel();
     const defaultTitle = translate('ra.page.show', {
@@ -84,12 +95,14 @@ export const useShowController = <RecordType extends Record = Record>(
     });
 
     return {
+        error,
         loading,
         loaded,
         defaultTitle,
         resource,
         basePath,
         record,
+        refetch,
         hasCreate,
         hasEdit,
         hasList,

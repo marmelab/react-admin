@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { FC, ReactElement } from 'react';
+import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ActionDelete from '@material-ui/icons/Delete';
-import { fade } from '@material-ui/core/styles/colorManipulator';
+import { alpha } from '@material-ui/core/styles/colorManipulator';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     useDeleteMany,
@@ -22,7 +22,7 @@ const useStyles = makeStyles(
         deleteButton: {
             color: theme.palette.error.main,
             '&:hover': {
-                backgroundColor: fade(theme.palette.error.main, 0.12),
+                backgroundColor: alpha(theme.palette.error.main, 0.12),
                 // Reset on mouse devices
                 '@media (hover: none)': {
                     backgroundColor: 'transparent',
@@ -33,7 +33,7 @@ const useStyles = makeStyles(
     { name: 'RaBulkDeleteWithUndoButton' }
 );
 
-const BulkDeleteWithUndoButton: FC<BulkDeleteWithUndoButtonProps> = props => {
+const BulkDeleteWithUndoButton = (props: BulkDeleteWithUndoButtonProps) => {
     const {
         basePath,
         classes: classesOverride,
@@ -60,7 +60,7 @@ const BulkDeleteWithUndoButton: FC<BulkDeleteWithUndoButtonProps> = props => {
             unselectAll(resource);
             refresh();
         },
-        onFailure: error =>
+        onFailure: error => {
             notify(
                 typeof error === 'string'
                     ? error
@@ -74,7 +74,9 @@ const BulkDeleteWithUndoButton: FC<BulkDeleteWithUndoButtonProps> = props => {
                             ? error.message
                             : undefined,
                 }
-            ),
+            );
+            refresh();
+        },
         undoable: true,
     });
 
@@ -118,7 +120,7 @@ BulkDeleteWithUndoButton.propTypes = {
     classes: PropTypes.object,
     label: PropTypes.string,
     resource: PropTypes.string,
-    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
+    selectedIds: PropTypes.arrayOf(PropTypes.any),
     icon: PropTypes.element,
 };
 

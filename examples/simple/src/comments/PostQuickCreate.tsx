@@ -11,6 +11,7 @@ import {
     Toolbar,
     required,
     showNotification,
+    ReduxState,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 import CancelButton from './PostQuickCreateCancelButton';
@@ -36,7 +37,9 @@ const useStyles = makeStyles({
 const PostQuickCreate = ({ onCancel, onSave, ...props }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const submitting = useSelector(state => state.admin.loading > 0);
+    const submitting = useSelector<ReduxState, boolean>(
+        state => state.admin.loading > 0
+    );
 
     const handleSave = useCallback(
         values => {

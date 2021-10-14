@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FunctionComponent, ComponentType } from 'react';
+import { ComponentType } from 'react';
 
 import CoreAdminContext from './CoreAdminContext';
 import CoreAdminUI from './CoreAdminUI';
@@ -86,28 +86,29 @@ export type ChildrenFunction = () => ComponentType[];
  *     );
  * };
  */
-const CoreAdmin: FunctionComponent<AdminProps> = ({
-    appLayout,
-    authProvider,
-    catchAll,
-    children,
-    customReducers,
-    customRoutes = [],
-    customSagas,
-    dashboard,
-    dataProvider,
-    disableTelemetry,
-    history,
-    i18nProvider,
-    initialState,
-    layout,
-    loading,
-    loginPage,
-    logoutButton,
-    menu, // deprecated, use a custom layout instead
-    theme,
-    title = 'React Admin',
-}) => {
+const CoreAdmin = (props: AdminProps) => {
+    const {
+        appLayout,
+        authProvider,
+        catchAll,
+        children,
+        customReducers,
+        customRoutes = [],
+        customSagas,
+        dashboard,
+        dataProvider,
+        disableTelemetry,
+        history,
+        i18nProvider,
+        initialState,
+        layout,
+        loading,
+        loginPage,
+        logoutButton,
+        menu, // deprecated, use a custom layout instead
+        theme,
+        title = 'React Admin',
+    } = props;
     return (
         <CoreAdminContext
             authProvider={authProvider}

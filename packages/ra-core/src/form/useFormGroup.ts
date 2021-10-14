@@ -52,7 +52,7 @@ type FormGroupState = {
  *     );
  * }
  *
- * @param {string] name The form group name
+ * @param {string} name The form group name
  * @returns {FormGroupState} The form group state
  */
 export const useFormGroup = (name: string): FormGroupState => {
@@ -104,7 +104,7 @@ export const useFormGroup = (name: string): FormGroupState => {
 /**
  * Get the state of a form group
  *
- * @param {FieldStates} fieldStates A map of field states from final-form where the key is the field name.
+ * @param {FieldState[]} fieldStates A map of field states from final-form where the key is the field name.
  * @returns {FormGroupState} The state of the group.
  */
 export const getFormGroupState = (

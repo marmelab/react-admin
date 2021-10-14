@@ -1,10 +1,4 @@
-import React, {
-    useState,
-    useEffect,
-    useCallback,
-    FC,
-    CSSProperties,
-} from 'react';
+import React, { useState, useEffect, useCallback, CSSProperties } from 'react';
 import { useVersion, useDataProvider } from 'react-admin';
 import { useMediaQuery, Theme } from '@material-ui/core';
 import { subDays } from 'date-fns';
@@ -51,7 +45,7 @@ const styles = {
 const Spacer = () => <span style={{ width: '1em' }} />;
 const VerticalSpacer = () => <span style={{ height: '1em' }} />;
 
-const Dashboard: FC = () => {
+const Dashboard = () => {
     const [state, setState] = useState<State>({});
     const version = useVersion();
     const dataProvider = useDataProvider();

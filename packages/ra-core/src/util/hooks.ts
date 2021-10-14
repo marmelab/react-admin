@@ -1,10 +1,11 @@
+import * as React from 'react';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import isEqual from 'lodash/isEqual';
 
 // thanks Kent C Dodds for the following helpers
 
 export function useSafeSetState<T>(
-    initialState?: T
+    initialState?: T | (() => T)
 ): [T, React.Dispatch<React.SetStateAction<T>>] {
     const [state, setState] = useState(initialState);
 

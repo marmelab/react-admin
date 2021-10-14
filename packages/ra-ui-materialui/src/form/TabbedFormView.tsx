@@ -5,6 +5,7 @@ import {
     cloneElement,
     isValidElement,
     ReactElement,
+    ReactNode,
     useState,
 } from 'react';
 import PropTypes from 'prop-types';
@@ -22,7 +23,7 @@ import Toolbar from './Toolbar';
 import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
 import { ClassesOverride } from '../types';
 
-export const TabbedFormView = (props: TabbedFormViewProps) => {
+export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
     const {
         basePath,
         children,
@@ -44,6 +45,7 @@ export const TabbedFormView = (props: TabbedFormViewProps) => {
         undoable,
         variant,
         margin,
+        validating,
         ...rest
     } = props;
     const classes = useTabbedFormViewStyles(props);
@@ -124,6 +126,7 @@ export const TabbedFormView = (props: TabbedFormViewProps) => {
                     resource,
                     saving,
                     submitOnEnter,
+                    validating,
                     undoable,
                 })}
         </form>
@@ -183,6 +186,7 @@ TabbedFormView.defaultProps = {
 
 export interface TabbedFormViewProps extends FormWithRedirectRenderProps {
     basePath?: string;
+    children?: ReactNode;
     classes?: ClassesOverride<typeof useTabbedFormViewStyles>;
     className?: string;
     margin?: 'none' | 'normal' | 'dense';
@@ -221,7 +225,6 @@ const sanitizeRestProps = ({
     submitting,
     touched = null,
     valid,
-    validating,
     values,
     visited = null,
     __versions = null,

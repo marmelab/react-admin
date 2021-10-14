@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { sanitizeListRestProps, useListContext } from 'ra-core';
@@ -23,7 +23,26 @@ export interface FilterProps {
     variant?: string;
 }
 
-const Filter: FC<FilterProps> = props => {
+/**
+ * Filter button/form combo
+ *
+ * @example
+ *
+ * const PostFilter = (props) => (
+ *     <Filter {...props}>
+ *         <TextInput label="Search" source="q" alwaysOn />
+ *         <TextInput label="Title" source="title" defaultValue="Hello, World!" />
+ *     </Filter>
+ * );
+ *
+ * export const PostList = (props) => (
+ *     <List {...props} filters={<PostFilter />}>
+ *         ...
+ *     </List>
+ * );
+ *
+ */
+const Filter = (props: FilterProps) => {
     const classes = useStyles(props);
     const {
         resource,

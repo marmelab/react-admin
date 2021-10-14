@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useRef, useCallback, useEffect, useMemo } from 'react';
 import { Form, FormProps, FormRenderProps } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
-import { submitErrorsMutators } from 'final-form-submit-errors';
 
 import useInitializeFormWithRecord from './useInitializeFormWithRecord';
 import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
@@ -19,6 +18,7 @@ import { RedirectionSideEffect } from '../sideEffect';
 import { useDispatch } from 'react-redux';
 import { setAutomaticRefresh } from '../actions/uiActions';
 import { FormContextProvider } from './FormContextProvider';
+import submitErrorsMutators from './submitErrorsMutators';
 
 /**
  * Wrapper around react-final-form's Form to handle redirection on submit,
@@ -70,6 +70,13 @@ const FormWithRedirect = ({
     const redirect = useRef(props.redirect);
     const onSave = useRef(save);
     const formGroups = useRef<{ [key: string]: string[] }>({});
+    const finalMutators = useMemo(
+        () =>
+            mutators === defaultMutators
+                ? mutators
+                : { ...defaultMutators, ...mutators },
+        [mutators]
+    );
 
     // We don't use state here for two reasons:
     // 1. There no way to execute code only after the state has been updated
@@ -128,11 +135,9 @@ const FormWithRedirect = ({
         [setOnSave]
     );
 
-    const finalInitialValues = getFormInitialValues(
-        initialValues,
-        defaultValue,
-        record
-    );
+    const finalInitialValues = useMemo(
+        () => getFormInitialValues(initialValues, defaultValue, record),
+    [JSON.stringify({initialValues, defaultValue, record})]); // eslint-disable-line
 
     const submit = values => {
         const finalRedirect =
@@ -162,7 +167,7 @@ const FormWithRedirect = ({
                 initialValues={finalInitialValues}
                 initialValuesEqual={initialValuesEqual}
                 keepDirtyOnReinitialize={keepDirtyOnReinitialize}
-                mutators={mutators} // necessary for ArrayInput
+                mutators={finalMutators} // necessary for ArrayInput
                 onSubmit={submit}
                 subscription={subscription} // don't redraw entire form each time one field changes
                 validate={validate}
@@ -190,7 +195,7 @@ export type FormWithRedirectProps = FormWithRedirectOwnProps &
 
 export type FormWithRedirectRenderProps = Omit<
     FormViewProps,
-    'chilren' | 'render' | 'setRedirect'
+    'children' | 'render' | 'setRedirect'
 >;
 export type FormWithRedirectRender = (
     props: FormWithRedirectRenderProps
@@ -227,6 +232,7 @@ const defaultSubscription = {
     pristine: true,
     valid: true,
     invalid: true,
+    validating: true,
 };
 
 export type SetRedirect = (redirect: RedirectionSideEffect) => void;

@@ -19,7 +19,7 @@ import DefaultPagination from './pagination/Pagination';
 import BulkDeleteButton from '../button/BulkDeleteButton';
 import BulkActionsToolbar from './BulkActionsToolbar';
 import DefaultActions from './ListActions';
-import Empty from './Empty';
+import { Empty } from './Empty';
 import { ListProps } from '../types';
 
 export const ListView = (props: ListViewProps) => {
@@ -124,7 +124,10 @@ ListView.propTypes = {
     // @ts-ignore-line
     exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     filterDefaultValues: PropTypes.object,
-    filters: PropTypes.element,
+    filters: PropTypes.oneOfType([
+        PropTypes.element,
+        PropTypes.arrayOf(PropTypes.element),
+    ]),
     filterValues: PropTypes.object,
     hasCreate: PropTypes.bool,
     hideFilter: PropTypes.func,
@@ -194,7 +197,8 @@ const useStyles = makeStyles(
 
 export interface ListViewProps
     extends Omit<ListProps, 'basePath' | 'hasCreate' | 'perPage' | 'resource'>,
-        ListControllerProps {
+        // Partial because we now get those props via context
+        Partial<ListControllerProps> {
     children: ReactElement;
 }
 
@@ -241,6 +245,7 @@ const sanitizeRestProps: (
     page = null,
     permissions = null,
     perPage = null,
+    refetch = null,
     resource = null,
     selectedIds = null,
     setFilters = null,

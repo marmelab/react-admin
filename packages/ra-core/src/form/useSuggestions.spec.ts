@@ -10,15 +10,10 @@ describe('getSuggestions', () => {
 
     const defaultOptions = {
         choices,
-        allowEmpty: false,
-        emptyText: '',
-        emptyValue: null,
         getChoiceText: ({ value }) => value,
         getChoiceValue: ({ id }) => id,
-        limitChoicesToValue: false,
         matchSuggestion: undefined,
         optionText: 'value',
-        optionValue: 'id',
         selectedItem: undefined,
     };
 
@@ -86,6 +81,7 @@ describe('getSuggestions', () => {
             })('one')
         ).toEqual([choices[0]]);
     });
+
     it('should add emptySuggestion if allowEmpty is true', () => {
         expect(
             getSuggestions({
@@ -97,6 +93,49 @@ describe('getSuggestions', () => {
             { id: 1, value: 'one' },
             { id: 2, value: 'two' },
             { id: 3, value: 'three' },
+        ]);
+    });
+
+    it('should add createSuggestion if allowCreate is true', () => {
+        expect(
+            getSuggestions({
+                ...defaultOptions,
+                allowCreate: true,
+            })('')
+        ).toEqual([
+            { id: 1, value: 'one' },
+            { id: 2, value: 'two' },
+            { id: 3, value: 'three' },
+            { id: '@@create', value: 'ra.action.create' },
+        ]);
+    });
+
+    it('should not add createSuggestion if allowCreate is true and the current filter matches exactly the selected item', () => {
+        expect(
+            getSuggestions({
+                ...defaultOptions,
+                selectedItem: { id: 1, value: 'one' },
+                allowCreate: true,
+            })('one')
+        ).toEqual([
+            { id: 2, value: 'two' },
+            { id: 3, value: 'three' },
+        ]);
+    });
+
+    it('should add createSuggestion if allowCreate is true and selectedItem is an array', () => {
+        expect(
+            getSuggestions({
+                ...defaultOptions,
+                selectedItem: [
+                    { id: 1, value: 'one' },
+                    { id: 2, value: 'two' },
+                ],
+                allowCreate: true,
+            })('')
+        ).toEqual([
+            { id: 3, value: 'three' },
+            { id: '@@create', value: 'ra.action.create' },
         ]);
     });
 

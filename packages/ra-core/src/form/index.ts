@@ -12,7 +12,7 @@ import FormWithRedirect, {
     HandleSubmitWithRedirect,
 } from './FormWithRedirect';
 import useInput, { InputProps, UseInputValue } from './useInput';
-import ValidationError from './ValidationError';
+import ValidationError, { ValidationErrorProps } from './ValidationError';
 import useInitializeFormWithRecord from './useInitializeFormWithRecord';
 import sanitizeEmptyValues from './sanitizeEmptyValues';
 import useChoices, {
@@ -25,6 +25,7 @@ import useChoices, {
 import useSuggestions from './useSuggestions';
 import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
 import useResetSubmitErrors from './useResetSubmitErrors';
+import submitErrorsMutators from './submitErrorsMutators';
 
 export type {
     ChoicesProps,
@@ -41,6 +42,7 @@ export type {
     OptionTextElement,
     OptionText,
     UseChoicesOptions,
+    ValidationErrorProps,
 };
 
 export {
@@ -49,13 +51,14 @@ export {
     FormField,
     FormWithRedirect,
     sanitizeEmptyValues,
+    submitErrorsMutators,
     useChoices,
     useInput,
     useInitializeFormWithRecord,
     useSuggestions,
-    ValidationError,
     useWarnWhenUnsavedChanges,
     useResetSubmitErrors,
+    ValidationError,
 };
 export { isRequired } from './FormField';
 export * from './validate';

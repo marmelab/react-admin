@@ -28,6 +28,7 @@ export interface ReferenceArrayInputProps extends InputProps {
     label?: string;
     reference: string;
     resource?: string;
+    enableGetChoices?: (filters: any) => boolean;
     [key: string]: any;
 }
 
@@ -155,7 +156,6 @@ const ReferenceArrayInput = ({
     );
 
     const translate = useTranslate();
-
     return (
         <ResourceContextProvider value={props.reference}>
             <ReferenceArrayInputContextProvider value={controllerProps}>

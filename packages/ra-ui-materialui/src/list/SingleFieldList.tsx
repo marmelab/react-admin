@@ -3,7 +3,6 @@ import {
     cloneElement,
     Children,
     HtmlHTMLAttributes,
-    FC,
     ComponentType,
 } from 'react';
 import PropTypes from 'prop-types';
@@ -15,6 +14,9 @@ import {
     sanitizeListRestProps,
     useListContext,
     useResourceContext,
+    Record,
+    RecordMap,
+    Identifier,
     RecordContextProvider,
     ComponentPropType,
 } from 'ra-core';
@@ -75,7 +77,7 @@ const handleClick = () => {};
  *     </SingleFieldList>
  * </ReferenceManyField>
  */
-const SingleFieldList: FC<SingleFieldListProps> = props => {
+const SingleFieldList = (props: SingleFieldListProps) => {
     const {
         classes: classesOverride,
         className,
@@ -146,20 +148,25 @@ SingleFieldList.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
     component: ComponentPropType,
-    data: PropTypes.object,
+    data: PropTypes.any,
     ids: PropTypes.array,
     // @ts-ignore
     linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     resource: PropTypes.string,
 };
 
-export interface SingleFieldListProps
+export interface SingleFieldListProps<RecordType extends Record = Record>
     extends HtmlHTMLAttributes<HTMLDivElement> {
     className?: string;
     classes?: ClassesOverride<typeof useStyles>;
-    component?: ComponentType<any>;
+    component?: string | ComponentType<any>;
     linkType?: string | false;
     children: React.ReactElement;
+    // can be injected when using the component without context
+    basePath?: string;
+    data?: RecordMap<RecordType>;
+    ids?: Identifier[];
+    loaded?: boolean;
 }
 
 export default SingleFieldList;

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import {
     Create,
     CreateProps,
@@ -50,7 +49,7 @@ export const validatePasswords = ({
     return errors;
 };
 
-const VisitorCreate: FC<CreateProps> = props => {
+const VisitorCreate = (props: CreateProps) => {
     const classes = useStyles(props);
 
     return (

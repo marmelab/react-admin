@@ -1,10 +1,4 @@
-import {
-    Children,
-    FunctionComponent,
-    ReactElement,
-    ComponentType,
-    createElement,
-} from 'react';
+import { Children, ReactElement, ComponentType, createElement } from 'react';
 import { Location } from 'history';
 
 import warning from '../util/warning';
@@ -19,7 +13,7 @@ type WithPermissionsChildren = (
     params: WithPermissionsChildrenParams
 ) => ReactElement;
 
-interface Props {
+export interface WithPermissionsProps {
     authParams?: object;
     children?: WithPermissionsChildren;
     component?: ComponentType<any>;
@@ -65,14 +59,15 @@ const isEmptyChildren = children => Children.count(children) === 0;
  *         </Admin>
  *     );
  */
-const WithPermissions: FunctionComponent<Props> = ({
-    authParams,
-    children,
-    render,
-    component,
-    staticContext,
-    ...props
-}) => {
+const WithPermissions = (props: WithPermissionsProps) => {
+    const {
+        authParams,
+        children,
+        render,
+        component,
+        staticContext,
+        ...rest
+    } = props;
     warning(
         (render && children && !isEmptyChildren(children)) ||
             (render && component) ||
@@ -84,16 +79,16 @@ const WithPermissions: FunctionComponent<Props> = ({
     const { permissions } = usePermissionsOptimized(authParams);
     // render even though the usePermissions() call isn't finished (optimistic rendering)
     if (component) {
-        return createElement(component, { permissions, ...props });
+        return createElement(component, { permissions, ...rest });
     }
     // @deprecated
     if (render) {
-        return render({ permissions, ...props });
+        return render({ permissions, ...rest });
     }
     // @deprecated
     if (children) {
-        return children({ permissions, ...props });
+        return children({ permissions, ...rest });
     }
 };
 
-export default WithPermissions as ComponentType<Props>;
+export default WithPermissions as ComponentType<WithPermissionsProps>;

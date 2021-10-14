@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, useCallback, MouseEventHandler } from 'react';
+import { useCallback, MouseEventHandler } from 'react';
 import PropTypes, { ReactComponentLike } from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -8,7 +8,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import { fade } from '@material-ui/core/styles/colorManipulator';
+import { alpha } from '@material-ui/core/styles/colorManipulator';
 import ActionCheck from '@material-ui/icons/CheckCircle';
 import AlertError from '@material-ui/icons/ErrorOutline';
 import classnames from 'classnames';
@@ -22,7 +22,7 @@ const useStyles = makeStyles(
         confirmWarning: {
             color: theme.palette.error.main,
             '&:hover': {
-                backgroundColor: fade(theme.palette.error.main, 0.12),
+                backgroundColor: alpha(theme.palette.error.main, 0.12),
                 // Reset on mouse devices
                 '@media (hover: none)': {
                     backgroundColor: 'transparent',
@@ -53,7 +53,7 @@ const useStyles = makeStyles(
  *     onClose={() => { // do something }}
  * />
  */
-const Confirm: FC<ConfirmProps> = props => {
+const Confirm = (props: ConfirmProps) => {
     const {
         isOpen,
         loading,

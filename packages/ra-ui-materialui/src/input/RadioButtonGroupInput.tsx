@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import {
     FormControl,
@@ -88,9 +87,7 @@ const useStyles = makeStyles(
  *
  * The object passed as `options` props is passed to the material-ui <RadioButtonGroup> component
  */
-const RadioButtonGroupInput: FunctionComponent<
-    ChoicesInputProps<RadioGroupProps> & FormControlProps
-> = props => {
+const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
     const {
         choices = [],
         classes: classesOverride,
@@ -149,6 +146,7 @@ const RadioButtonGroupInput: FunctionComponent<
                 resource={resource}
                 className={rest.className}
                 isRequired={isRequired}
+                margin={margin}
                 meta={meta}
                 input={input}
             >
@@ -161,7 +159,7 @@ const RadioButtonGroupInput: FunctionComponent<
             component="fieldset"
             margin={margin}
             error={touched && !!(error || submitError)}
-            {...sanitizeInputRestProps(rest)}
+            {...sanitizeRestProps(rest)}
         >
             <FormLabel component="legend" className={classes.label}>
                 <FieldTitle
@@ -197,8 +195,8 @@ const RadioButtonGroupInput: FunctionComponent<
 };
 
 RadioButtonGroupInput.propTypes = {
-    choices: PropTypes.arrayOf(PropTypes.any).isRequired,
-    label: PropTypes.string,
+    choices: PropTypes.arrayOf(PropTypes.any),
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     options: PropTypes.object,
     optionText: PropTypes.oneOfType([
         PropTypes.string,
@@ -218,5 +216,43 @@ RadioButtonGroupInput.defaultProps = {
     row: true,
     translateChoice: true,
 };
+
+const sanitizeRestProps = ({
+    addLabel,
+    afterSubmit,
+    allowNull,
+    beforeSubmit,
+    choices,
+    className,
+    crudGetMatching,
+    crudGetOne,
+    data,
+    filter,
+    filterToQuery,
+    formatOnBlur,
+    isEqual,
+    limitChoicesToValue,
+    multiple,
+    name,
+    pagination,
+    perPage,
+    ref,
+    reference,
+    refetch,
+    render,
+    setFilter,
+    setPagination,
+    setSort,
+    sort,
+    subscription,
+    type,
+    validateFields,
+    validation,
+    value,
+    ...rest
+}: any) => sanitizeInputRestProps(rest);
+
+export type RadioButtonGroupInputProps = ChoicesInputProps<RadioGroupProps> &
+    FormControlProps;
 
 export default RadioButtonGroupInput;

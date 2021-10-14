@@ -82,4 +82,14 @@ describe('FieldTitle', () => {
         const { container } = render(<FieldTitle label="foo" isRequired />);
         expect(container.firstChild.textContent).toEqual('foo *');
     });
+
+    it('should return null if label is false', () => {
+        const { container } = render(<FieldTitle label={false} isRequired />);
+        expect(container.firstChild).toBeNull();
+    });
+
+    it('should return null if label is empty string', () => {
+        const { container } = render(<FieldTitle label="" isRequired />);
+        expect(container.firstChild).toBeNull();
+    });
 });

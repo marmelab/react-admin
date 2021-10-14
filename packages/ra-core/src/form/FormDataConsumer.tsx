@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactNode, FunctionComponent } from 'react';
+import { ReactNode } from 'react';
 import { useFormState } from 'react-final-form';
 import { FormSubscription } from 'final-form';
 import get from 'lodash/get';
@@ -32,7 +32,7 @@ interface Props extends ConnectedProps {
 
 /**
  * Get the current (edited) value of the record from the form and pass it
- * to child function
+ * to a child function
  *
  * @example
  *
@@ -74,14 +74,8 @@ const FormDataConsumer = ({ subscription, ...props }: ConnectedProps) => {
     return <FormDataConsumerView formData={formState.values} {...props} />;
 };
 
-export const FormDataConsumerView: FunctionComponent<Props> = ({
-    children,
-    form,
-    formData,
-    source,
-    index,
-    ...rest
-}) => {
+export const FormDataConsumerView = (props: Props) => {
+    const { children, form, formData, source, index, ...rest } = props;
     let scopedFormData = formData;
     let getSource;
     let getSourceHasBeenCalled = false;

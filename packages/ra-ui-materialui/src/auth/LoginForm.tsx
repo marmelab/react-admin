@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Field, Form } from 'react-final-form';
 import {
@@ -52,7 +51,7 @@ const Input = ({
     />
 );
 
-const LoginForm: FunctionComponent<Props> = props => {
+const LoginForm = (props: Props) => {
     const { redirectTo } = props;
     const [loading, setLoading] = useSafeSetState(false);
     const login = useLogin();

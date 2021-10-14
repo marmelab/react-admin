@@ -2,9 +2,20 @@ import * as React from 'react';
 import { Children, cloneElement, isValidElement, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslate, useGetIdentity } from 'ra-core';
-import { Tooltip, IconButton, Menu, Button, Avatar } from '@material-ui/core';
+import {
+    Tooltip,
+    IconButton,
+    Menu,
+    Button,
+    Avatar,
+    PopoverOrigin,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+
+import { ClassesOverride } from '../types';
+
+const defaultIcon = <AccountCircle />;
 
 const useStyles = makeStyles(
     theme => ({
@@ -20,13 +31,29 @@ const useStyles = makeStyles(
     { name: 'RaUserMenu' }
 );
 
-const UserMenu = props => {
+const AnchorOrigin: PopoverOrigin = {
+    vertical: 'bottom',
+    horizontal: 'right',
+};
+
+const TransformOrigin: PopoverOrigin = {
+    vertical: 'top',
+    horizontal: 'right',
+};
+
+const UserMenu = (props: UserMenuProps) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const translate = useTranslate();
     const { loaded, identity } = useGetIdentity();
     const classes = useStyles(props);
 
-    const { children, label, icon, logout } = props;
+    const {
+        children,
+        label = 'ra.auth.user_menu',
+        icon = defaultIcon,
+        logout,
+    } = props;
+
     if (!logout && !children) return null;
     const open = Boolean(anchorEl);
 
@@ -70,15 +97,13 @@ const UserMenu = props => {
             )}
             <Menu
                 id="menu-appbar"
+                disableScrollLock
                 anchorEl={anchorEl}
-                anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                }}
-                transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                }}
+                anchorOrigin={AnchorOrigin}
+                transformOrigin={TransformOrigin}
+                // Make sure the menu is display under the button and not over the appbar
+                // See https://material-ui.com/components/menus/#customized-menus
+                getContentAnchorEl={null}
                 open={open}
                 onClose={handleClose}
             >
@@ -97,14 +122,18 @@ const UserMenu = props => {
 
 UserMenu.propTypes = {
     children: PropTypes.node,
-    label: PropTypes.string.isRequired,
+    classes: PropTypes.object,
+    label: PropTypes.string,
     logout: PropTypes.element,
     icon: PropTypes.node,
 };
 
-UserMenu.defaultProps = {
-    label: 'ra.auth.user_menu',
-    icon: <AccountCircle />,
-};
+export interface UserMenuProps {
+    children?: React.ReactNode;
+    classes?: ClassesOverride<typeof useStyles>;
+    label?: string;
+    logout?: React.ReactNode;
+    icon?: React.ReactNode;
+}
 
 export default UserMenu;

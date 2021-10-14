@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ChangeEvent, memo } from 'react';
+import { ChangeEvent, memo, useMemo } from 'react';
 import { InputAdornment } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { Form } from 'react-final-form';
@@ -22,7 +22,7 @@ import TextInput from '../../input/TextInput';
  *     </Card>
  * );
  */
-const FilterLiveSearch: FC<{ source?: string }> = props => {
+const FilterLiveSearch = (props: { source?: string }) => {
     const { source = 'q', ...rest } = props;
     const { filterValues, setFilters } = useListFilterContext();
     const translate = useTranslate();
@@ -36,11 +36,18 @@ const FilterLiveSearch: FC<{ source?: string }> = props => {
         }
     };
 
+    const initialValues = useMemo(
+        () => ({
+            [source]: filterValues[source],
+        }),
+        [filterValues, source]
+    );
+
     const onSubmit = () => undefined;
 
     return (
-        <Form onSubmit={onSubmit}>
-            {({ handleSubmit }) => (
+        <Form initialValues={initialValues} onSubmit={onSubmit}>
+            {() => (
                 <TextInput
                     resettable
                     helperText={false}

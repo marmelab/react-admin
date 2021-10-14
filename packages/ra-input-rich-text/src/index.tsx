@@ -1,11 +1,5 @@
 import debounce from 'lodash/debounce';
-import React, {
-    useRef,
-    useEffect,
-    useCallback,
-    FunctionComponent,
-    ComponentProps,
-} from 'react';
+import React, { useRef, useEffect, useCallback, ComponentProps } from 'react';
 import Quill, { QuillOptionsStatic } from 'quill';
 import { useInput, FieldTitle } from 'ra-core';
 import { InputHelperText } from 'ra-ui-materialui';
@@ -22,7 +16,7 @@ import styles from './styles';
 
 const useStyles = makeStyles(styles, { name: 'RaRichTextInput' });
 
-interface Props {
+export interface RichTextInputProps {
     label?: string | false;
     options?: QuillOptionsStatic;
     source: string;
@@ -45,7 +39,7 @@ interface Props {
     [key: string]: any;
 }
 
-const RichTextInput: FunctionComponent<Props> = props => {
+const RichTextInput = (props: RichTextInputProps) => {
     const {
         options = {}, // Quill editor options
         toolbar = true,
@@ -137,16 +131,14 @@ const RichTextInput: FunctionComponent<Props> = props => {
             className="ra-rich-text-input"
             margin={margin}
         >
-            {label !== '' && label !== false && (
-                <InputLabel shrink htmlFor={id} className={classes.label}>
-                    <FieldTitle
-                        label={label}
-                        source={source}
-                        resource={resource}
-                        isRequired={isRequired}
-                    />
-                </InputLabel>
-            )}
+            <InputLabel shrink htmlFor={id} className={classes.label}>
+                <FieldTitle
+                    label={label}
+                    source={source}
+                    resource={resource}
+                    isRequired={isRequired}
+                />
+            </InputLabel>
             <div data-testid="quill" ref={divRef} className={variant} />
             <FormHelperText
                 error={!!error}
@@ -163,7 +155,8 @@ const RichTextInput: FunctionComponent<Props> = props => {
 };
 
 RichTextInput.propTypes = {
-    label: PropTypes.string,
+    // @ts-ignore
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     options: PropTypes.object,
     source: PropTypes.string,
     fullWidth: PropTypes.bool,

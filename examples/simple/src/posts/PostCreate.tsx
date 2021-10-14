@@ -73,7 +73,7 @@ const PostCreate = ({ permissions, ...props }) => {
                 toolbar={<PostCreateToolbar />}
                 initialValues={initialValues}
                 validate={values => {
-                    const errors = {};
+                    const errors = {} as any;
                     ['title', 'teaser'].forEach(field => {
                         if (!values[field]) {
                             errors[field] = 'Required field';

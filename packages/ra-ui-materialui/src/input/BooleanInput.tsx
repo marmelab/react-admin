@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FunctionComponent, useCallback } from 'react';
+import { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
@@ -11,25 +11,23 @@ import sanitizeInputRestProps from './sanitizeInputRestProps';
 import InputHelperText from './InputHelperText';
 import InputPropTypes from './InputPropTypes';
 
-const BooleanInput: FunctionComponent<
-    InputProps<SwitchProps> &
-        Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'>
-> = ({
-    format,
-    label,
-    fullWidth,
-    helperText,
-    onBlur,
-    onChange,
-    onFocus,
-    options,
-    disabled,
-    parse,
-    resource,
-    source,
-    validate,
-    ...rest
-}) => {
+const BooleanInput = (props: BooleanInputProps) => {
+    const {
+        format,
+        label,
+        fullWidth,
+        helperText,
+        onBlur,
+        onChange,
+        onFocus,
+        options,
+        disabled,
+        parse,
+        resource,
+        source,
+        validate,
+        ...rest
+    } = props;
     const {
         id,
         input: { onChange: finalFormOnChange, type, value, ...inputProps },
@@ -98,5 +96,8 @@ BooleanInput.propTypes = {
 BooleanInput.defaultProps = {
     options: {},
 };
+
+export type BooleanInputProps = InputProps<SwitchProps> &
+    Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'>;
 
 export default BooleanInput;

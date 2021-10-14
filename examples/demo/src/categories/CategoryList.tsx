@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import { EditButton, List, ListProps, useListContext } from 'react-admin';
 import inflection from 'inflection';
 import {
@@ -31,7 +30,7 @@ const useStyles = makeStyles({
     },
 });
 
-const CategoryGrid: FC = props => {
+const CategoryGrid = (props: any) => {
     const classes = useStyles(props);
     const { data, ids } = useListContext<Category>();
     return ids ? (
@@ -68,7 +67,7 @@ const CategoryGrid: FC = props => {
     ) : null;
 };
 
-const CategoryList: FC<ListProps> = props => (
+const CategoryList = (props: ListProps) => (
     <List
         {...props}
         sort={{ field: 'name', order: 'ASC' }}

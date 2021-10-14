@@ -65,17 +65,20 @@ The react-admin project includes 5 Data Providers:
 * [Simple GraphQL](https://graphql.org/): [marmelab/ra-data-graphql-simple](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-graphql-simple). A GraphQL provider built with Apollo and tailored to target a simple GraphQL implementation.
 * Local JSON: [marmelab/ra-data-fakerest](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-fakerest). Based on a local object, it doesn't even use HTTP. Use it for testing purposes.
 * Local Storage: [marmelab/ra-data-localstorage](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-localstorage). User editions are persisted across refreshes and between sessions. This allows local-first apps, and can be useful in tests.
+- **[Supabase](https://supabase.io/)**: [marmelab/ra-supabase](https://github.com/marmelab/ra-supabase).
 
 Developers from the react-admin community have open-sourced Data Providers for many more backends:
 
 * **[AWS Amplify](https://docs.amplify.aws)**: [MrHertal/react-admin-amplify](https://github.com/MrHertal/react-admin-amplify)
 * **[Configurable Identity Property REST Client](https://github.com/zachrybaker/ra-data-rest-client)**: [zachrybaker/ra-data-rest-client](https://github.com/zachrybaker/ra-data-rest-client)
 * **[coreBOS](https://corebos.com/)**: [React-Admin coreBOS Integration](https://github.com/coreBOS/reactadminportal)
-* **[Django Rest Framework](https://www.django-rest-framework.org/)**: [synaptic-cl/ra-data-drf](https://github.com/synaptic-cl/ra-data-drf)
+* **[Django Rest Framework](https://www.django-rest-framework.org/)**: [bmihelac/ra-data-django-rest-framework](https://github.com/bmihelac/ra-data-django-rest-framework)
+* **[Eve](https://docs.python-eve.org/en/stable/)**: [smeng9/ra-data-eve](https://github.com/smeng9/ra-data-eve)
 * **[Express & Sequelize](https://github.com/lalalilo/express-sequelize-crud)**: [express-sequelize-crud](https://github.com/lalalilo/express-sequelize-crud)
 * **[Feathersjs](https://www.feathersjs.com/)**: [josx/ra-data-feathers](https://github.com/josx/ra-data-feathers)
 * **[Firebase Firestore](https://firebase.google.com/docs/firestore)**: [benwinding/react-admin-firebase](https://github.com/benwinding/react-admin-firebase).
 * **[Firebase Realtime Database](https://firebase.google.com/docs/database)**: [aymendhaya/ra-data-firebase-client](https://github.com/aymendhaya/ra-data-firebase-client).
+* **[Google Sheets](https://www.google.com/sheets/about/)**: [marmelab/ra-data-google-sheets](https://github.com/marmelab/ra-data-google-sheets)
 * **[GraphQL](https://graphql.org/)**: [marmelab/ra-data-graphql](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-graphql) (uses [Apollo](https://www.apollodata.com/))
 * **[HAL](http://stateless.co/hal_specification.html)**: [b-social/ra-data-hal](https://github.com/b-social/ra-data-hal)
 * **[Hasura](https://github.com/hasura/graphql-engine)**: [hasura/ra-data-hasura](https://github.com/hasura/ra-data-hasura), auto generates valid GraphQL queries based on the properties exposed by the Hasura API.
@@ -91,17 +94,19 @@ Developers from the react-admin community have open-sourced Data Providers for m
 * **[Mixer](https://github.com/ckoliber/ra-data-mixer)**: [ckoliber/ra-data-mixer](https://github.com/ckoliber/ra-data-mixer)
 * **[Moleculer Microservices](https://github.com/RancaguaInnova/moleculer-data-provider)**: [RancaguaInnova/moleculer-data-provider](https://github.com/RancaguaInnova/moleculer-data-provider)
 * **[NestJS CRUD](https://github.com/nestjsx/crud)**: [rayman1104/ra-data-nestjsx-crud](https://github.com/rayman1104/ra-data-nestjsx-crud)
+* **[OData](https://www.odata.org/)**: [Groopit/ra-data-odata-server](https://github.com/Groopit/ra-data-odata-server)
+* **[OpenCRUD](https://www.opencrud.org/)**: [weakky/ra-data-opencrud](https://github.com/Weakky/ra-data-opencrud)
 * **[Parse](https://parseplatform.org/)**: [almahdi/ra-data-parse](https://github.com/almahdi/ra-data-parse)
 * **[PostGraphile](https://www.graphile.org/postgraphile/)**: [bowlingx/ra-postgraphile](https://github.com/BowlingX/ra-postgraphile)
 * **[PostgREST](https://postgrest.org/)**: [raphiniert-com/ra-data-postgrest](https://github.com/raphiniert-com/ra-data-postgrest)
 * **[Prisma](https://github.com/weakky/ra-data-prisma)**: [weakky/ra-data-prisma](https://github.com/weakky/ra-data-prisma)
 * **[Prisma Version 2](https://www.prisma.io/)**: [panter/ra-data-prisma](https://github.com/panter/ra-data-prisma)
 * **[ProcessMaker3](https://www.processmaker.com/)**: [ckoliber/ra-data-processmaker3](https://github.com/ckoliber/ra-data-processmaker3)
-* **[OpenCRUD](https://www.opencrud.org/)**: [weakky/ra-data-opencrud](https://github.com/Weakky/ra-data-opencrud)
 * **[REST-HAPI](https://github.com/JKHeadley/rest-hapi)**: [ra-data-rest-hapi](https://github.com/mkg20001/ra-data-rest-hapi)
 * **[Sails.js](https://sailsjs.com/)**: [mpampin/ra-data-json-sails](https://github.com/mpampin/ra-data-json-sails)
 * **[Spring Boot](https://spring.io/projects/spring-boot)**: [vishpat/ra-data-springboot-rest](https://github.com/vishpat/ra-data-springboot-rest) 
 * **[Strapi](https://strapi.io/)**: [nazirov91/ra-strapi-rest](https://github.com/nazirov91/ra-strapi-rest)
+- **[Supabase](https://supabase.io/)**: [marmelab/ra-supabase](https://github.com/marmelab/ra-supabase)
 
 If you've written a Data Provider for another backend, and open-sourced it, please help complete this list with your package.
 
@@ -147,9 +152,9 @@ Here is how this Data Provider maps react-admin calls to API calls:
 | ------------------ | --------------------------------------------------------------------------------------- |
 | `getList`          | `GET http://my.api.url/posts?sort=["title","ASC"]&range=[0, 24]&filter={"title":"bar"}` |
 | `getOne`           | `GET http://my.api.url/posts/123`                                                       |
-| `getMany`          | `GET http://my.api.url/posts?filter={"id":[123,456,789]}`                               |
+| `getMany`          | `GET http://my.api.url/posts?filter={"ids":[123,456,789]}`                              |
 | `getManyReference` | `GET http://my.api.url/posts?filter={"author_id":345}`                                  |
-| `create`           | `POST http://my.api.url/posts`                                                      |
+| `create`           | `POST http://my.api.url/posts`                                                          |
 | `update`           | `PUT http://my.api.url/posts/123`                                                       |
 | `updateMany`       | Multiple calls to `PUT http://my.api.url/posts/123`                                     |
 | `delete`           | `DELETE http://my.api.url/posts/123`                                                    |
@@ -560,7 +565,7 @@ Content-Type: application/json
 ### getMany
 
 ```
-GET http://path.to.my.api/posts?filter={"id":[123,124,125]}
+GET http://path.to.my.api/posts?filter={"ids":[123,124,125]}
 
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -671,7 +676,7 @@ export default {
 
     getMany: (resource, params) => {
         const query = {
-            filter: JSON.stringify({ id: params.ids }),
+            filter: JSON.stringify({ ids: params.ids }),
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
         return httpClient(url).then(({ json }) => ({ data: json }));

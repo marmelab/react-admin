@@ -14,7 +14,7 @@ import {
     Typography,
     useMediaQuery,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import jsonExport from 'jsonexport/dist';
 import {
     ListBase,
@@ -22,7 +22,6 @@ import {
     ListActions,
     DateField,
     EditButton,
-    Filter,
     PaginationLimit,
     ReferenceField,
     ReferenceInput,
@@ -37,14 +36,12 @@ import {
     useTranslate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
-const CommentFilter = props => (
-    <Filter {...props}>
-        <SearchInput source="q" alwaysOn />
-        <ReferenceInput source="post_id" reference="posts">
-            <SelectInput optionText="title" />
-        </ReferenceInput>
-    </Filter>
-);
+const commentFilters = [
+    <SearchInput source="q" alwaysOn />,
+    <ReferenceInput source="post_id" reference="posts">
+        <SelectInput optionText="title" />
+    </ReferenceInput>,
+];
 
 const exporter = (records, fetchRelatedRecords) =>
     fetchRelatedRecords(records, 'post_id', 'posts').then(posts => {
@@ -76,7 +73,7 @@ const CommentPagination = () => {
     const translate = useTranslate();
     const nbPages = Math.ceil(total / perPage) || 1;
     if (!loading && (total === 0 || (ids && !ids.length))) {
-        return <PaginationLimit total={total} page={page} ids={ids} />;
+        return <PaginationLimit />;
     }
 
     return (
@@ -209,15 +206,12 @@ const CommentList = props => (
 );
 
 const ListView = () => {
-    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
     const { defaultTitle } = useListContext();
     return (
         <>
             <Title defaultTitle={defaultTitle} />
-            <ListToolbar
-                filters={<CommentFilter />}
-                actions={<ListActions />}
-            />
+            <ListToolbar filters={commentFilters} actions={<ListActions />} />
             {isSmall ? <CommentMobileList /> : <CommentGrid />}
             <CommentPagination />
         </>

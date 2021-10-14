@@ -24,6 +24,7 @@ title: "Reference"
 * [`<BooleanInput>`](./Inputs.md#booleaninput-and-nullablebooleaninput)
 * [`<BulkDeleteButton>`](./List.md#bulkactionbuttons)
 * [`<BulkExportButton>`](./List.md#bulkactionbuttons)
+* [`<BulkUpdateButton>`](./List.md#bulkactionbuttons)
 * [`<Calendar>`](https://marmelab.com/ra-enterprise/modules/ra-calendar#calendar)<img class="icon" src="./img/premium.svg" />
 * [`<CheckboxGroupInput>`](./Inputs.md#checkboxgroupinput)
 * [`<ChipField>`](./Fields.md#chipfield)
@@ -40,6 +41,7 @@ title: "Reference"
 * [`<DatagridRow>`](./List.md#body-element)
 * `<DatagridCell>`
 * `<DatagridHeaderCell>`
+* [`<DatagridHeader>`](./List.md#header-element)
 * [`<DateField>`](./Fields.md#datefield)
 * [`<DateInput>`](./Inputs.md#dateinput)
 * [`<DateTimeInput>`](./Inputs.md#datetimeinput)
@@ -52,11 +54,12 @@ title: "Reference"
 * [`<EditButton>`](./Buttons.md#editbutton)
 * [`<EditDialog>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog--editdialog)<img class="icon" src="./img/premium.svg" />
 * [`<EmailField>`](./Fields.md#emailfield)
+* [`<Empty>`](./List.md#empty-empty-page-component)  
 * [`<FileField>`](./Fields.md#filefield)
 * [`<FileInput>`](./Inputs.md#fileinput)
 * [`<Filter>`](./List.md#filters-filter-inputs)
 * [`<FilterButton>`](./Buttons.md#filterbutton)
-* [`<FilterForm>`](./List.md#custom-form-component)
+* [`<FilterForm>`](./List.md#custom-filter-form)
 * [`<FilterList>`](./List.md#the-filterlist-sidebar)
 * [`<FilterListItem>`](./List.md#the-filterlist-sidebar)
 * [`<FilterLiveSearch>`](./List.md#live-search)
@@ -169,6 +172,7 @@ title: "Reference"
 * [`useHasLock`](https://marmelab.com/ra-enterprise/modules/ra-realtime#locks-on-content)<img class="icon" src="./img/premium.svg" />
 * [`useHasLocks`](https://marmelab.com/ra-enterprise/modules/ra-realtime#locks-on-content)<img class="icon" src="./img/premium.svg" />
 * [`useInput`](./Inputs.md#the-useinput-hook)
+* [`useList`](./List.md#uselist)
 * [`useListContext`](./List.md#uselistcontext)
 * [`useListController`](./List.md#uselistcontroller)
 * `useListParams`
@@ -180,20 +184,20 @@ title: "Reference"
 * `useLogoutIfAccessDenied`
 * [`useMediaQuery`](./Theming.md#usemediaquery-hook)
 * [`useMutation`](./Actions.md#usemutation-hook)
-* [`useNotify`](./Actions.md#handling-side-effects-in-usedataprovider)
+* [`useNotify`](./Actions.md#usenotify)
 * `usePaginationState`
 * [`usePermissions`](./Authentication.md#usepermissions-hook)
 * [`usePreferences`](https://marmelab.com/ra-enterprise/modules/ra-preferences#usepreferences-reading-and-writing-user-preferences)<img class="icon" src="./img/premium.svg" />
 * [`useQuery`](./Actions.md#usequery-hook)
 * [`useQueryWithStore`](./Actions.md#usequerywithstore-hook)
-* [`useRedirect`](./Actions.md#handling-side-effects-in-usedataprovider)
-* [`useResourceAppLocation`](https://marmelab.com/ra-enterprise/modules/ra-navigation#useresourceapplocation-access-current-resource-app-location)<img class="icon" src="./img/premium.svg" />
+* [`useRedirect`](./Actions.md#useredirect)
 * `useReference`
 * `useReferenceArrayFieldController`
 * `useReferenceArrayInputController`
 * `useReferenceInputController`
 * `useReferenceManyFieldController`
-* [`useRefresh`](./Actions.md#handling-side-effects-in-usedataprovider)
+* [`useRefresh`](./Actions.md#userefresh)
+* [`useResourceAppLocation`](https://marmelab.com/ra-enterprise/modules/ra-navigation#useresourceapplocation-access-current-resource-app-location)<img class="icon" src="./img/premium.svg" />
 * [`useSearch`](https://marmelab.com/ra-enterprise/modules/ra-search#the-usesearch-hook)<img class="icon" src="./img/premium.svg" />
 * [`useSetLocale`](./Translation.md#usesetlocale-changing-locale-at-runtime)
 * [`useShowController`](./Show.md#useshowcontroller)
@@ -205,7 +209,7 @@ title: "Reference"
 * [`useUpdate`](./Actions.md#useupdate)
 * `useUpdateLoading`
 * [`useUpdateMany`](./Actions.md#useupdatemany)
-* [`useUnselectAll`](./Actions.md#handling-side-effects-in-usedataprovider)
+* [`useUnselectAll`](./Actions.md#useunselectall)
 * [`useWarnWhenUnsavedChanges`](./CreateEdit.md#warning-about-unsaved-changes)
 * `useVersion`
 * [`withDataProvider`](./Actions.md#legacy-components-query-mutation-and-withdataprovider)

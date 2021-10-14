@@ -16,8 +16,10 @@ import {
     useTranslate,
 } from 'ra-core';
 
-interface Props {
+export interface NotificationProps extends Omit<SnackbarProps, 'open'> {
     type?: string;
+    autoHideDuration?: number;
+    multiLine?: boolean;
 }
 
 const useStyles = makeStyles(
@@ -34,21 +36,26 @@ const useStyles = makeStyles(
             backgroundColor: theme.palette.error.light,
             color: theme.palette.error.contrastText,
         },
-        undo: {
-            color: theme.palette.primary.light,
+        undo: (props: NotificationProps) => ({
+            color:
+                props.type === 'success'
+                    ? theme.palette.success.contrastText
+                    : theme.palette.primary.light,
+        }),
+        multiLine: {
+            whiteSpace: 'pre-wrap',
         },
     }),
     { name: 'RaNotification' }
 );
 
-const Notification: React.FunctionComponent<
-    Props & Omit<SnackbarProps, 'open'>
-> = props => {
+const Notification = (props: NotificationProps) => {
     const {
         classes: classesOverride,
         type,
         className,
         autoHideDuration,
+        multiLine,
         ...rest
     } = props;
     const [open, setOpen] = useState(false);
@@ -91,12 +98,13 @@ const Notification: React.FunctionComponent<
                 autoHideDuration
             }
             disableWindowBlurListener={notification && notification.undoable}
-            onExited={handleExited}
+            TransitionProps={{ onExited: handleExited }}
             onClose={handleRequestClose}
             ContentProps={{
                 className: classnames(
                     styles[(notification && notification.type) || type],
-                    className
+                    className,
+                    { [styles['multiLine']]: multiLine }
                 ),
             }}
             action={
@@ -118,11 +126,14 @@ const Notification: React.FunctionComponent<
 
 Notification.propTypes = {
     type: PropTypes.string,
+    autoHideDuration: PropTypes.number,
+    multiLine: PropTypes.bool,
 };
 
 Notification.defaultProps = {
     type: 'info',
     autoHideDuration: 4000,
+    multiLine: false,
 };
 
 export default Notification;

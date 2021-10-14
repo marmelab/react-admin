@@ -1,10 +1,13 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render } from '@testing-library/react';
+import { render, act, waitFor } from '@testing-library/react';
+import { renderWithRedux } from 'ra-test';
 import { MemoryRouter } from 'react-router-dom';
-import { ListContextProvider } from 'ra-core';
+import { ListContextProvider, DataProviderContext } from 'ra-core';
 
-import { ReferenceArrayFieldView } from './ReferenceArrayField';
+import ReferenceArrayField, {
+    ReferenceArrayFieldView,
+} from './ReferenceArrayField';
 import TextField from './TextField';
 import SingleFieldList from '../list/SingleFieldList';
 
@@ -202,5 +205,104 @@ describe('<ReferenceArrayField />', () => {
             </MemoryRouter>
         );
         expect(container.getElementsByClassName('myClass')).toHaveLength(1);
+    });
+
+    it('should have defined data when loaded', async () => {
+        let resolve;
+        const promise = new Promise<any>(res => {
+            resolve = res;
+        });
+        const WeakField = ({ record }: any) => <div>{record.title}</div>;
+        const dataProvider = {
+            getMany: () =>
+                promise.then(() => ({
+                    data: [
+                        { id: 1, title: 'bar1' },
+                        { id: 2, title: 'bar2' },
+                    ],
+                })),
+        };
+        const { queryByText } = renderWithRedux(
+            <DataProviderContext.Provider value={dataProvider}>
+                <ReferenceArrayField
+                    record={{ id: 123, barIds: [1, 2] }}
+                    className="myClass"
+                    resource="foos"
+                    reference="bars"
+                    source="barIds"
+                    basePath="/foos"
+                >
+                    <SingleFieldList linkType={false}>
+                        <WeakField />
+                    </SingleFieldList>
+                </ReferenceArrayField>
+            </DataProviderContext.Provider>,
+            { admin: { resources: { bars: { data: {} } } } }
+        );
+        expect(queryByText('bar1')).toBeNull();
+        act(() => resolve());
+        await waitFor(() => {
+            expect(queryByText('bar1')).not.toBeNull();
+        });
+    });
+
+    it('should throw an error if used without a Resource for the reference', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        class ErrorBoundary extends React.Component<
+            {
+                onError?: (
+                    error: Error,
+                    info: { componentStack: string }
+                ) => void;
+            },
+            { error: Error | null }
+        > {
+            constructor(props) {
+                super(props);
+                this.state = { error: null };
+            }
+
+            static getDerivedStateFromError(error) {
+                // Update state so the next render will show the fallback UI.
+                return { error };
+            }
+
+            componentDidCatch(error, errorInfo) {
+                // You can also log the error to an error reporting service
+                this.props.onError(error, errorInfo);
+            }
+
+            render() {
+                if (this.state.error) {
+                    // You can render any custom fallback UI
+                    return <h1>Something went wrong.</h1>;
+                }
+
+                return this.props.children;
+            }
+        }
+        const onError = jest.fn();
+        renderWithRedux(
+            <ErrorBoundary onError={onError}>
+                <ReferenceArrayField
+                    record={{ id: 123, barIds: [1, 2] }}
+                    className="myClass"
+                    resource="foos"
+                    reference="bars"
+                    source="barIds"
+                    basePath="/foos"
+                >
+                    <SingleFieldList>
+                        <TextField source="title" />
+                    </SingleFieldList>
+                </ReferenceArrayField>
+            </ErrorBoundary>,
+            { admin: { resources: { comments: { data: {} } } } }
+        );
+        await waitFor(() => {
+            expect(onError.mock.calls[0][0].message).toBe(
+                'You must declare a <Resource name="bars"> in order to use a <ReferenceArrayField reference="bars">'
+            );
+        });
     });
 });

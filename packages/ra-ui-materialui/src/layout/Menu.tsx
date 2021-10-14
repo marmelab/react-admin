@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { FC, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { shallowEqual, useSelector } from 'react-redux';
 import lodashGet from 'lodash/get';
 // @ts-ignore
-import { useMediaQuery, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import DefaultIcon from '@material-ui/icons/ViewList';
 import classnames from 'classnames';
@@ -23,12 +22,14 @@ const useStyles = makeStyles(
             flexDirection: 'column',
             justifyContent: 'flex-start',
             marginTop: '0.5em',
+            marginBottom: '1em',
             [theme.breakpoints.only('xs')]: {
                 marginTop: 0,
             },
-            [theme.breakpoints.up('md')]: {
-                marginTop: '1.5em',
-            },
+            transition: theme.transitions.create('width', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+            }),
         },
         open: {
             width: lodashGet(theme, 'menu.width', MENU_WIDTH),
@@ -40,23 +41,46 @@ const useStyles = makeStyles(
     { name: 'RaMenu' }
 );
 
-const Menu: FC<MenuProps> = props => {
+const Menu = (props: MenuProps) => {
+    const resources = useSelector(getResources, shallowEqual) as Array<any>;
+    const getResourceLabel = useGetResourceLabel();
     const {
+        hasDashboard,
+        dense,
+        children = (
+            <>
+                {hasDashboard && <DashboardMenuItem dense={dense} />}
+                {resources
+                    .filter(r => r.hasList)
+                    .map(resource => (
+                        <MenuItemLink
+                            key={resource.name}
+                            to={{
+                                pathname: `/${resource.name}`,
+                                state: { _scrollToTop: true },
+                            }}
+                            primaryText={getResourceLabel(resource.name, 2)}
+                            leftIcon={
+                                resource.icon ? (
+                                    <resource.icon />
+                                ) : (
+                                    <DefaultIcon />
+                                )
+                            }
+                            dense={dense}
+                        />
+                    ))}
+            </>
+        ),
         classes: classesOverride,
         className,
-        dense,
-        hasDashboard,
         onMenuClick,
         logout,
         ...rest
     } = props;
     const classes = useStyles(props);
-    const isXSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('xs')
-    );
     const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
-    const resources = useSelector(getResources, shallowEqual) as Array<any>;
-    const getResourceLabel = useGetResourceLabel();
+
     return (
         <div
             className={classnames(
@@ -69,42 +93,24 @@ const Menu: FC<MenuProps> = props => {
             )}
             {...rest}
         >
-            {hasDashboard && (
-                <DashboardMenuItem
-                    onClick={onMenuClick}
-                    dense={dense}
-                    sidebarIsOpen={open}
-                />
-            )}
-            {resources
-                .filter(r => r.hasList)
-                .map(resource => (
-                    <MenuItemLink
-                        key={resource.name}
-                        to={{
-                            pathname: `/${resource.name}`,
-                            state: { _scrollToTop: true },
-                        }}
-                        primaryText={getResourceLabel(resource.name, 2)}
-                        leftIcon={
-                            resource.icon ? <resource.icon /> : <DefaultIcon />
-                        }
-                        onClick={onMenuClick}
-                        dense={dense}
-                        sidebarIsOpen={open}
-                    />
-                ))}
-            {isXSmall && logout}
+            {children}
         </div>
     );
 };
 
 export interface MenuProps {
+    children?: ReactNode;
     classes?: object;
     className?: string;
     dense?: boolean;
     hasDashboard?: boolean;
+    /**
+     * @deprecated
+     */
     logout?: ReactNode;
+    /**
+     * @deprecated
+     */
     onMenuClick?: () => void;
 }
 

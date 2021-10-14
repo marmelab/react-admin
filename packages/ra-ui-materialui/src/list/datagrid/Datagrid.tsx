@@ -1,12 +1,13 @@
 import * as React from 'react';
 import {
-    isValidElement,
-    Children,
     cloneElement,
+    createElement,
+    isValidElement,
     useCallback,
     useRef,
     useEffect,
     FC,
+    ComponentType,
     ReactElement,
     useMemo,
 } from 'react';
@@ -17,24 +18,20 @@ import {
     useVersion,
     Identifier,
     Record,
+    RecordMap,
+    SortPayload,
 } from 'ra-core';
-import {
-    Checkbox,
-    Table,
-    TableProps,
-    TableCell,
-    TableHead,
-    TableRow,
-} from '@material-ui/core';
+import { Table, TableProps } from '@material-ui/core';
 import classnames from 'classnames';
 import union from 'lodash/union';
 import difference from 'lodash/difference';
 
-import DatagridHeaderCell from './DatagridHeaderCell';
+import { DatagridHeader } from './DatagridHeader';
 import DatagridLoading from './DatagridLoading';
 import DatagridBody, { PureDatagridBody } from './DatagridBody';
 import useDatagridStyles from './useDatagridStyles';
 import { ClassesOverride } from '../../types';
+import { RowClickFunction } from './DatagridRow';
 import DatagridContextProvider from './DatagridContextProvider';
 
 /**
@@ -110,10 +107,12 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     const classes = useDatagridStyles(props);
     const {
         optimized = false,
-        body = optimized ? <PureDatagridBody /> : <DatagridBody />,
+        body = optimized ? PureDatagridBody : DatagridBody,
+        header = DatagridHeader,
         children,
         classes: classesOverride,
         className,
+        empty,
         expand,
         hasBulkActions = false,
         hover,
@@ -144,47 +143,13 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         isRowExpandable,
     ]);
 
-    const updateSort = useCallback(
-        event => {
-            event.stopPropagation();
-            const newField = event.currentTarget.dataset.field;
-            const newOrder =
-                currentSort.field === newField
-                    ? currentSort.order === 'ASC'
-                        ? 'DESC'
-                        : 'ASC'
-                    : event.currentTarget.dataset.order;
-
-            setSort(newField, newOrder);
-        },
-        [currentSort.field, currentSort.order, setSort]
-    );
-
-    const handleSelectAll = useCallback(
-        event => {
-            if (event.target.checked) {
-                const all = ids.concat(
-                    selectedIds.filter(id => !ids.includes(id))
-                );
-                onSelect(
-                    isRowSelectable
-                        ? all.filter(id => isRowSelectable(data[id]))
-                        : all
-                );
-            } else {
-                onSelect([]);
-            }
-        },
-        [data, ids, onSelect, isRowSelectable, selectedIds]
-    );
-
     const lastSelected = useRef(null);
 
     useEffect(() => {
-        if (selectedIds.length === 0) {
+        if (!selectedIds || selectedIds.length === 0) {
             lastSelected.current = null;
         }
-    }, [selectedIds.length]);
+    }, [JSON.stringify(selectedIds)]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const handleToggleItem = useCallback(
         (id, event) => {
@@ -237,15 +202,15 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     /**
      * Once loaded, the data for the list may be empty. Instead of
      * displaying the table header with zero data rows,
-     * the datagrid displays nothing in this case.
+     * the datagrid displays nothing or a custom empty component.
      */
     if (loaded && (ids.length === 0 || total === 0)) {
+        if (empty) {
+            return empty;
+        }
+
         return null;
     }
-
-    const all = isRowSelectable
-        ? ids.filter(id => isRowSelectable(data[id]))
-        : ids;
 
     /**
      * After the initial load, if the data for the list isn't empty,
@@ -260,58 +225,26 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                 size={size}
                 {...sanitizeListRestProps(rest)}
             >
-                <TableHead className={classes.thead}>
-                    <TableRow
-                        className={classnames(classes.row, classes.headerRow)}
-                    >
-                        {expand && (
-                            <TableCell
-                                padding="none"
-                                className={classnames(
-                                    classes.headerCell,
-                                    classes.expandHeader
-                                )}
-                            />
-                        )}
-                        {hasBulkActions && (
-                            <TableCell
-                                padding="checkbox"
-                                className={classes.headerCell}
-                            >
-                                <Checkbox
-                                    className="select-all"
-                                    color="primary"
-                                    checked={
-                                        selectedIds.length > 0 &&
-                                        all.length > 0 &&
-                                        all.every(id =>
-                                            selectedIds.includes(id)
-                                        )
-                                    }
-                                    onChange={handleSelectAll}
-                                />
-                            </TableCell>
-                        )}
-                        {Children.map(children, (field, index) =>
-                            isValidElement(field) ? (
-                                <DatagridHeaderCell
-                                    className={classes.headerCell}
-                                    currentSort={currentSort}
-                                    field={field}
-                                    isSorting={
-                                        currentSort.field ===
-                                        ((field.props as any).sortBy ||
-                                            (field.props as any).source)
-                                    }
-                                    key={(field.props as any).source || index}
-                                    resource={resource}
-                                    updateSort={updateSort}
-                                />
-                            ) : null
-                        )}
-                    </TableRow>
-                </TableHead>
-                {cloneElement(
+                {createOrCloneElement(
+                    header,
+                    {
+                        children,
+                        classes,
+                        className,
+                        currentSort,
+                        data,
+                        hasExpand: !!expand,
+                        hasBulkActions,
+                        ids,
+                        isRowSelectable,
+                        onSelect,
+                        resource,
+                        selectedIds,
+                        setSort,
+                    },
+                    children
+                )}
+                {createOrCloneElement(
                     body,
                     {
                         basePath,
@@ -337,20 +270,29 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     );
 });
 
+const createOrCloneElement = (element, props, children) =>
+    isValidElement(element)
+        ? cloneElement(element, props, children)
+        : createElement(element, props, children);
+
 Datagrid.propTypes = {
     basePath: PropTypes.string,
-    body: PropTypes.element,
+    // @ts-ignore
+    body: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     children: PropTypes.node.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
-    currentSort: PropTypes.shape({
+    currentSort: PropTypes.exact({
         field: PropTypes.string,
         order: PropTypes.string,
     }),
-    data: PropTypes.object,
+    data: PropTypes.any,
+    empty: PropTypes.element,
     // @ts-ignore
     expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     hasBulkActions: PropTypes.bool,
+    // @ts-ignore
+    header: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     hover: PropTypes.bool,
     ids: PropTypes.arrayOf(PropTypes.any),
     loading: PropTypes.bool,
@@ -367,14 +309,9 @@ Datagrid.propTypes = {
     isRowExpandable: PropTypes.func,
 };
 
-type RowClickFunction = (
-    id: Identifier,
-    basePath: string,
-    record: Record
-) => string;
-
-export interface DatagridProps extends Omit<TableProps, 'size' | 'classes'> {
-    body?: ReactElement;
+export interface DatagridProps<RecordType extends Record = Record>
+    extends Omit<TableProps, 'size' | 'classes' | 'onSelect'> {
+    body?: ReactElement | ComponentType;
     classes?: ClassesOverride<typeof useDatagridStyles>;
     className?: string;
     expand?:
@@ -386,13 +323,28 @@ export interface DatagridProps extends Omit<TableProps, 'size' | 'classes'> {
               resource: string;
           }>;
     hasBulkActions?: boolean;
+    header?: ReactElement | ComponentType;
     hover?: boolean;
+    empty?: ReactElement;
     isRowSelectable?: (record: Record) => boolean;
     isRowExpandable?: (record: Record) => boolean;
     optimized?: boolean;
     rowClick?: string | RowClickFunction;
     rowStyle?: (record: Record, index: number) => any;
     size?: 'medium' | 'small';
+    // can be injected when using the component without context
+    basePath?: string;
+    currentSort?: SortPayload;
+    data?: RecordMap<RecordType>;
+    ids?: Identifier[];
+    loaded?: boolean;
+    onSelect?: (ids: Identifier[]) => void;
+    onToggleItem?: (id: Identifier) => void;
+    setSort?: (sort: string, order?: string) => void;
+    selectedIds?: Identifier[];
+    total?: number;
 }
+
+Datagrid.displayName = 'Datagrid';
 
 export default Datagrid;

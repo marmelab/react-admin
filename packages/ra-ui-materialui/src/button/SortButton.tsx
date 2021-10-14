@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ReactElement, memo } from 'react';
+import { ReactElement, memo } from 'react';
 import {
     Button,
     Menu,
@@ -35,7 +35,7 @@ import {
  * import * as React from 'react';
  * import { TopToolbar, SortButton, CreateButton, ExportButton } from 'react-admin';
  *
- * const ListActions: FC = props => (
+ * const ListActions = props => (
  *     <TopToolbar>
  *         <SortButton fields={['reference', 'sales', 'stock']} />
  *         <CreateButton basePath={props.basePath} />
@@ -43,11 +43,8 @@ import {
  *     </TopToolbar>
  * );
  */
-const SortButton: FC<SortButtonProps> = ({
-    fields,
-    label = 'ra.sort.sort_by',
-    icon = defaultIcon,
-}) => {
+const SortButton = (props: SortButtonProps) => {
+    const { fields, label = 'ra.sort.sort_by', icon = defaultIcon } = props;
     const { resource, currentSort, setSort } = useListSortContext();
     const translate = useTranslate();
     const isXSmall = useMediaQuery((theme: Theme) =>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Children, FC, ReactElement } from 'react';
+import { Children, ReactElement, ReactNode } from 'react';
 import classnames from 'classnames';
 import FormInput from './FormInput';
 import PropTypes from 'prop-types';
@@ -7,7 +7,7 @@ import { FormWithRedirectRenderProps, MutationMode, Record } from 'ra-core';
 import Toolbar from './Toolbar';
 import CardContentInner from '../layout/CardContentInner';
 
-export const SimpleFormView: FC<SimpleFormViewProps> = ({
+export const SimpleFormView = ({
     basePath,
     children,
     className,
@@ -26,8 +26,9 @@ export const SimpleFormView: FC<SimpleFormViewProps> = ({
     toolbar,
     undoable,
     variant,
+    validating,
     ...rest
-}) => (
+}: SimpleFormViewProps): ReactElement => (
     <form
         className={classnames('simple-form', className)}
         {...sanitizeRestProps(rest)}
@@ -61,6 +62,7 @@ export const SimpleFormView: FC<SimpleFormViewProps> = ({
                 resource,
                 saving,
                 submitOnEnter,
+                validating,
                 undoable,
             })}
     </form>
@@ -98,6 +100,7 @@ SimpleFormView.defaultProps = {
 
 export interface SimpleFormViewProps extends FormWithRedirectRenderProps {
     basePath?: string;
+    children?: ReactNode;
     className?: string;
     component?: React.ComponentType<any>;
     margin?: 'none' | 'normal' | 'dense';
@@ -134,7 +137,6 @@ const sanitizeRestProps = ({
     submitting,
     touched = null,
     valid,
-    validating,
     values,
     visited = null,
     __versions = null,

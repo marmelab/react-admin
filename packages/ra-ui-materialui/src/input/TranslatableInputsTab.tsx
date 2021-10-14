@@ -24,7 +24,9 @@ export const TranslatableInputsTab = (
             label={translate(`ra.locales.${locale}`, {
                 _: capitalize(locale),
             })}
-            className={invalid && touched ? classes.error : undefined}
+            className={`${classes.root} ${
+                invalid && touched ? classes.error : ''
+            }`}
             {...rest}
         />
     );
@@ -32,6 +34,11 @@ export const TranslatableInputsTab = (
 
 const useStyles = makeStyles(
     theme => ({
+        root: {
+            fontSize: '0.8em',
+            minHeight: theme.spacing(3),
+            minWidth: theme.spacing(6),
+        },
         error: { color: theme.palette.error.main },
     }),
     { name: 'RaTranslatableInputsTab' }

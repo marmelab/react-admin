@@ -15,7 +15,7 @@ import {
     useRefresh,
     RedirectionSideEffect,
 } from '../../sideEffect';
-import { useGetOne, useUpdate } from '../../dataProvider';
+import { useGetOne, useUpdate, Refetch } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
 import { CRUD_GET_ONE, CRUD_UPDATE } from '../../actions';
 import {
@@ -49,6 +49,7 @@ export interface EditControllerProps<RecordType extends Record = Record> {
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
     data?: RecordType;
+    error?: any;
     defaultTitle: string;
     hasCreate?: boolean;
     hasEdit?: boolean;
@@ -74,6 +75,7 @@ export interface EditControllerProps<RecordType extends Record = Record> {
     setTransform: SetTransformData;
     successMessage?: string;
     record?: RecordType;
+    refetch: Refetch;
     redirect: RedirectionSideEffect;
     resource: string;
     version: number;
@@ -137,18 +139,16 @@ export const useEditController = <RecordType extends Record = Record>(
         setTransform,
     } = useSaveModifiers({ onSuccess, onFailure, transform });
 
-    const { data: record, loading, loaded } = useGetOne<RecordType>(
-        resource,
-        id,
-        {
-            action: CRUD_GET_ONE,
-            onFailure: () => {
-                notify('ra.notification.item_doesnt_exist', 'warning');
-                redirect('list', basePath);
-                refresh();
-            },
-        }
-    );
+    const { data: record, error, loading, loaded, refetch } = useGetOne<
+        RecordType
+    >(resource, id, {
+        action: CRUD_GET_ONE,
+        onFailure: () => {
+            notify('ra.notification.item_doesnt_exist', 'warning');
+            redirect('list', basePath);
+            refresh();
+        },
+    });
 
     const getResourceLabel = useGetResourceLabel();
     const defaultTitle = translate('ra.page.edit', {
@@ -247,6 +247,7 @@ export const useEditController = <RecordType extends Record = Record>(
     );
 
     return {
+        error,
         loading,
         loaded,
         saving,
@@ -262,6 +263,7 @@ export const useEditController = <RecordType extends Record = Record>(
         setOnSuccess,
         setOnFailure,
         setTransform,
+        refetch,
         resource,
         basePath,
         record,

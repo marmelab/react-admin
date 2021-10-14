@@ -23,7 +23,18 @@ export type Validator = (
     value: any,
     values: any,
     props: any
-) => ValidationErrorMessage | null | undefined;
+) =>
+    | ValidationErrorMessage
+    | null
+    | undefined
+    | Promise<ValidationErrorMessage | null | undefined>;
+
+// type predicate, see https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates
+function isValidationErrorMessageWithArgs(
+    error: ReturnType<Validator>
+): error is ValidationErrorMessageWithArgs {
+    return error.hasOwnProperty('message');
+}
 
 interface MessageFuncParams {
     args: any;
@@ -65,24 +76,38 @@ const memoize: Memoize = (fn: any) =>
 
 const isFunction = value => typeof value === 'function';
 
+export const combine2Validators = (
+    validator1: Validator,
+    validator2: Validator
+): Validator => {
+    return (value, values, meta) => {
+        const result1 = validator1(value, values, meta);
+        if (!result1) {
+            return validator2(value, values, meta);
+        }
+        if (
+            typeof result1 === 'string' ||
+            isValidationErrorMessageWithArgs(result1)
+        ) {
+            return result1;
+        }
+
+        return result1.then(resolvedResult1 => {
+            if (!resolvedResult1) {
+                return validator2(value, values, meta);
+            }
+            return resolvedResult1;
+        });
+    };
+};
+
 // Compose multiple validators into a single one for use with final-form
-export const composeValidators = (...validators) => async (
-    value,
-    values,
-    meta
-) => {
+export const composeValidators = (...validators) => {
     const allValidators = (Array.isArray(validators[0])
         ? validators[0]
         : validators
-    ).filter(isFunction);
-
-    for (const validator of allValidators) {
-        const error = await validator(value, values, meta);
-
-        if (error) {
-            return error;
-        }
-    }
+    ).filter(isFunction) as Validator[];
+    return allValidators.reduce(combine2Validators, () => null);
 };
 
 // Compose multiple validators into a single one for use with final-form
@@ -94,7 +119,7 @@ export const composeSyncValidators = (...validators) => (
     const allValidators = (Array.isArray(validators[0])
         ? validators[0]
         : validators
-    ).filter(isFunction);
+    ).filter(isFunction) as Validator[];
 
     for (const validator of allValidators) {
         const error = validator(value, values, meta);

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactNode, FunctionComponent } from 'react';
+import { ReactNode } from 'react';
 import classnames from 'classnames';
 import { Paper, Popper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -27,7 +27,7 @@ interface Props {
     suggestionsContainerProps?: any;
 }
 
-const AutocompleteSuggestionList: FunctionComponent<Props> = props => {
+const AutocompleteSuggestionList = (props: Props) => {
     const {
         children,
         className,

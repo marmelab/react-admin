@@ -30,7 +30,7 @@ import TopToolbar from '../layout/TopToolbar';
  *         </Edit>
  *     );
  */
-const EditActions = ({ className, ...rest }: EditActionsProps) => {
+export const EditActions = ({ className, ...rest }: EditActionsProps) => {
     const { basePath, record } = useEditContext(rest);
     const { hasShow } = useResourceDefinition(rest);
 
@@ -54,8 +54,10 @@ export interface EditActionsProps {
     basePath?: string;
     className?: string;
     data?: Record;
-    hasShow?: boolean;
+    hasCreate?: boolean;
+    hasEdit?: boolean;
     hasList?: boolean;
+    hasShow?: boolean;
     resource?: string;
 }
 
@@ -63,8 +65,9 @@ EditActions.propTypes = {
     basePath: PropTypes.string,
     className: PropTypes.string,
     data: PropTypes.object,
+    hasCreate: PropTypes.bool,
+    hasEdit: PropTypes.bool,
     hasShow: PropTypes.bool,
+    hasList: PropTypes.bool,
     resource: PropTypes.string,
 };
-
-export default EditActions;

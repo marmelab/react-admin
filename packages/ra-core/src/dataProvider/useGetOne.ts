@@ -6,7 +6,7 @@ import {
     ReduxState,
     UseDataProviderOptions,
 } from '../types';
-import useQueryWithStore from './useQueryWithStore';
+import { useQueryWithStore, Refetch } from './useQueryWithStore';
 
 /**
  * Call the dataProvider.getOne() method and return the resolved value
@@ -14,9 +14,9 @@ import useQueryWithStore from './useQueryWithStore';
  *
  * The return value updates according to the request state:
  *
- * - start: { loading: true, loaded: false }
- * - success: { data: [data from response], loading: false, loaded: true }
- * - error: { error: [error from response], loading: false, loaded: true }
+ * - start: { loading: true, loaded: false, refetch }
+ * - success: { data: [data from response], loading: false, loaded: true, refetch }
+ * - error: { error: [error from response], loading: false, loaded: false, refetch }
  *
  * This hook will return the cached result when called a second time
  * with the same parameters, until the response arrives.
@@ -28,7 +28,7 @@ import useQueryWithStore from './useQueryWithStore';
  * @param {Function} options.onSuccess Side effect function to be executed upon success, e.g. { onSuccess: { refresh: true } }
  * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) }
  *
- * @returns The current request state. Destructure as { data, error, loading, loaded }.
+ * @returns The current request state. Destructure as { data, error, loading, loaded, refetch }.
  *
  * @example
  *
@@ -69,6 +69,7 @@ export type UseGetOneHookValue<RecordType extends Record = Record> = {
     loading: boolean;
     loaded: boolean;
     error?: any;
+    refetch: Refetch;
 };
 
 export default useGetOne;

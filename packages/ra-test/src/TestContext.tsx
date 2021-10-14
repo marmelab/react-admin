@@ -33,6 +33,7 @@ export interface TestContextProps {
     initialState?: object;
     enableReducers?: boolean;
     history?: History;
+    customReducers?: object;
     children: ReactNode | TextContextChildrenFunction;
 }
 
@@ -54,7 +55,7 @@ const dataProviderDefaultResponse = { data: null };
  * @example
  * // in a react testing-library test, using jest.
  * const utils = render(
- *     <TestContext initialState={{ admin: { resources: { post: { data: { 1: {id: 1, title: 'foo' } } } } } }}>
+ *     <TestContext initialState={{ admin: { resources: { posts: { data: { 1: {id: 1, title: 'foo' } } } } } }}>
  *         {({ store }) => {
  *              dispatchSpy = jest.spyOn(store, 'dispatch');
  *              return <Show {...defaultShowProps} />
@@ -69,7 +70,11 @@ export class TestContext extends Component<TestContextProps> {
     constructor(props) {
         super(props);
         this.history = props.history || createMemoryHistory();
-        const { initialState = {}, enableReducers = false } = props;
+        const {
+            initialState = {},
+            enableReducers = false,
+            customReducers = {},
+        } = props;
 
         this.storeWithDefault = enableReducers
             ? createAdminStore({
@@ -78,6 +83,7 @@ export class TestContext extends Component<TestContextProps> {
                       Promise.resolve(dataProviderDefaultResponse)
                   ),
                   history: createMemoryHistory(),
+                  customReducers,
               })
             : createStore(() => merge({}, defaultStore, initialState));
     }

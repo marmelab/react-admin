@@ -65,6 +65,20 @@ testUtils = render(
 
 This means that reducers will work as they will within the app.
 
+### Passing your custom reducers
+
+If your component relies on customReducers which are passed originally to the `<Admin/>` component, you can plug them in the TestContext using the `customReducers` props:
+
+```jsx
+testUtils = render(
+    <TestContext enableReducers customReducers={myCustomReducers}>
+        <MyCustomEditView />
+    </TestContext>
+);
+```
+
+Note you should also enable the default react-admin reducers in order to supply the custom ones. 
+
 ### Spying on the store 'dispatch'
 
 If you are using `useDispatch` within your components, it is likely you will want to test that actions have been dispatched with the correct arguments. You can return the `store` being used within the tests using a `renderProp`.
@@ -86,9 +100,39 @@ it('should send the user to another url', () => {
 });
 ```
 
+### Using the 'renderWithRedux' wrapper function
+
+Instead of wrapping the component under test with the `TestContext` by yourself you can use all of the above options and test your components almost like using just `@testing-library/react` thanks to the `renderWithRedux` wrapper function.
+
+It will return the same output as the `render` method from `@testing-library/react` but will add the `dispatch` and `reduxStore` helpers.
+
+```jsx
+import { defaultStore } from 'ra-test';
+//...
+const { dispatch, reduxStore, ...testUtils } = renderWithRedux(
+    <MyCustomEditView />, 
+    initialState, 
+    options,
+    myCustomReducers
+);
+
+it('should initilize store', () => {
+    const storeState = reduxStore.getState();
+    storeState.router.location.key = ''
+    expect(storeState).toEqual({...defaultStore, ...initialState});
+});
+
+it('should send the user to another url', () => {
+    fireEvent.click(testUtils.getByText('Go to next'));
+    expect(dispatch).toHaveBeenCalledWith(`/next-url`);
+});
+```
+
+All of the arguments except the first one - the component under test, are optional and could be omitted by passing an empty object - `{}`
+
 ### Testing Permissions
 
-As explained on the [Auth Provider chapter](./Authentication.md#authorization), it's possible to manage permissions via the `authProvider` in order to filter page and fields the users can see.
+As explained on the [Auth Provider chapter](https://marmelab.com/react-admin/Authentication.html#authorization), it's possible to manage permissions via the `authProvider` in order to filter page and fields the users can see.
 
 In order to avoid regressions and make the design explicit to your co-workers, it's better to unit test which fields are supposed to be displayed or hidden for each permission.
 
@@ -98,7 +142,7 @@ Here is an example with Jest and TestingLibrary, which is testing the [`UserShow
 // UserShow.spec.js
 import * as React from "react";
 import { render } from '@testing-library/react';
-import { Tab, TextField } from 'react-admin';
+import { Tab, TextField, DataProviderContext } from 'react-admin';
 
 import UserShow from './UserShow';
 
@@ -111,21 +155,23 @@ describe('UserShow', () => {
             expect(tabs.length).toEqual(1);
         });
 
-        it('should show the user identity in the first tab', () => {
+        it('should show the user identity in the first tab', async () => {
             const dataProvider = {
-                getOne: jest.fn().resolve({
+                getOne: () => Promise.resolve({
                     id: 1,
                     name: 'Leila'
                 })
             }
             const testUtils = render(
-                <TestContext>
-                    <UserShow permissions="user" id="1" />
-                </TestContext>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <TestContext>
+                        <UserShow permissions="user" id="1" />
+                    </TestContext>
+                </DataProviderContext.Provider>
             );
 
-            expect(testUtils.queryByDisplayValue('1')).not.toBeNull();
-            expect(testUtils.queryByDisplayValue('Leila')).not.toBeNull();
+            expect(await testUtils.findByDisplayValue('1')).not.toBeNull();
+            expect(await testUtils.findByDisplayValue('Leila')).not.toBeNull();
         });
     });
 
@@ -137,39 +183,43 @@ describe('UserShow', () => {
             expect(tabs.length).toEqual(2);
         });
 
-        it('should show the user identity in the first tab', () => {
+        it('should show the user identity in the first tab', async () => {
             const dataProvider = {
-                getOne: jest.fn().resolve({
+                getOne: () => Promise.resolve({
                     id: 1,
                     name: 'Leila'
                 })
             }
             const testUtils = render(
-                <TestContext>
-                    <UserShow permissions="user" id="1" />
-                </TestContext>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <TestContext>
+                        <UserShow permissions="user" id="1" />
+                    </TestContext>
+                </DataProviderContext.Provider>
             );
 
-            expect(testUtils.queryByDisplayValue('1')).not.toBeNull();
-            expect(testUtils.queryByDisplayValue('Leila')).not.toBeNull();
+            expect(await testUtils.findByDisplayValue('1')).not.toBeNull();
+            expect(await testUtils.findByDisplayValue('Leila')).not.toBeNull();
         });
 
-        it('should show the user role in the second tab', () => {
+        it('should show the user role in the second tab', async () => {
             const dataProvider = {
-                getOne: jest.fn().resolve({
+                getOne: () => Promise.resolve({
                     id: 1,
                     name: 'Leila',
                     role: 'admin'
                 })
             }
             const testUtils = render(
-                <TestContext>
-                    <UserShow permissions="user" id="1" />
-                </TestContext>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <TestContext>
+                        <UserShow permissions="user" id="1" />
+                    </TestContext>
+                </DataProviderContext.Provider>
             );
 
             fireEvent.click(testUtils.getByText('Security'));
-            expect(testUtils.queryByDisplayValue('admin')).not.toBeNull();
+            expect(await testUtils.findByDisplayValue('admin')).not.toBeNull();
         });
     });
 });

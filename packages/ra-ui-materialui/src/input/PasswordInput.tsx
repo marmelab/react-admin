@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import { useTranslate } from 'ra-core';
 import { InputAdornment, IconButton } from '@material-ui/core';
 import Visibility from '@material-ui/icons/Visibility';
@@ -11,10 +11,8 @@ export interface PasswordInputProps extends TextInputProps {
     initiallyVisible?: boolean;
 }
 
-const PasswordInput: FC<PasswordInputProps> = ({
-    initiallyVisible = false,
-    ...props
-}) => {
+const PasswordInput = (props: PasswordInputProps) => {
+    const { initiallyVisible = false, ...rest } = props;
     const [visible, setVisible] = useState(initiallyVisible);
     const translate = useTranslate();
 
@@ -24,7 +22,7 @@ const PasswordInput: FC<PasswordInputProps> = ({
 
     return (
         <TextInput
-            {...props}
+            {...rest}
             type={visible ? 'text' : 'password'}
             InputProps={{
                 endAdornment: (

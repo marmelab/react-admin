@@ -12,6 +12,7 @@ const englishMessages: TranslationMessages = {
             clone: 'Clone',
             confirm: 'Confirm',
             create: 'Create',
+            create_item: 'Create %{item}',
             delete: 'Delete',
             edit: 'Edit',
             export: 'Export',
@@ -21,6 +22,8 @@ const englishMessages: TranslationMessages = {
             remove: 'Remove',
             save: 'Save',
             search: 'Search',
+            select_all: 'Select all',
+            select_row: 'Select this row',
             show: 'Show',
             sort: 'Sort',
             undo: 'Undo',
@@ -29,6 +32,9 @@ const englishMessages: TranslationMessages = {
             close: 'Close',
             open_menu: 'Open menu',
             close_menu: 'Close menu',
+            update: 'Update',
+            move_up: 'Move up',
+            move_down: 'Move down',
         },
         boolean: {
             true: 'Yes',
@@ -78,6 +84,10 @@ const englishMessages: TranslationMessages = {
                 'Are you sure you want to delete this %{name}? |||| Are you sure you want to delete these %{smart_count} items?',
             bulk_delete_title:
                 'Delete %{name} |||| Delete %{smart_count} %{name}',
+            bulk_update_content:
+                'Are you sure you want to update this %{name}? |||| Are you sure you want to update these %{smart_count} items?',
+            bulk_update_title:
+                'Update %{name} |||| Update %{smart_count} %{name}',
             delete_content: 'Are you sure you want to delete this item?',
             delete_title: 'Delete %{name} #%{id}',
             details: 'Details',
@@ -132,6 +142,7 @@ const englishMessages: TranslationMessages = {
                 'Cannot load the translations for the specified language',
             canceled: 'Action cancelled',
             logged_out: 'Your session has ended, please reconnect.',
+            not_authorized: "You're not authorized to access this resource.",
         },
         validation: {
             required: 'Required',
