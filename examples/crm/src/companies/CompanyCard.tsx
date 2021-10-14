@@ -25,7 +25,7 @@ const classes = {
 const StyledMuiLink = styled(MuiLink)(({ theme }) => ({
     [`& .${classes.paper}`]: {
         height: 200,
-        width: 193.5,
+        width: 184,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',

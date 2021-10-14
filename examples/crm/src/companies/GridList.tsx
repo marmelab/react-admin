@@ -5,18 +5,11 @@ import { useListContext, Identifier } from 'react-admin';
 import { CompanyCard } from './CompanyCard';
 import { Company } from '../types';
 
-const PREFIX = 'ImageList';
-
-const classes = {
-    gridList: `${PREFIX}-gridList`,
-    paper: `${PREFIX}-paper`,
-};
-
 const times = (nbChildren: number, fn: (key: number) => any) =>
     Array.from({ length: nbChildren }, (_, key) => fn(key));
 
 const LoadingGridList = () => (
-    <Box display="flex" flexWrap="wrap" width={1008} gap={10}>
+    <Box display="flex" flexWrap="wrap" width={1008} gap={1}>
         {times(15, key => (
             <Paper
                 sx={{
@@ -38,7 +31,7 @@ const LoadedGridList = () => {
     if (!ids || !data) return null;
 
     return (
-        <Box className={classes.gridList}>
+        <Box display="flex" flexWrap="wrap" width="100%" gap={1}>
             {ids.map((id: Identifier) => (
                 <CompanyCard key={id} record={data[id]} />
             ))}
