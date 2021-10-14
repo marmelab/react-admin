@@ -1,4 +1,4 @@
-import React, { LegacyRef, MutableRefObject, RefCallback } from 'react';
+import { LegacyRef, MutableRefObject, RefCallback } from 'react';
 
 // https://github.com/gregberge/react-merge-refs
 export function mergeRefs<T = any>(
@@ -9,7 +9,7 @@ export function mergeRefs<T = any>(
             if (typeof ref === 'function') {
                 ref(value);
             } else if (ref != null) {
-                (ref as React.MutableRefObject<T | null>).current = value;
+                (ref as MutableRefObject<T | null>).current = value;
             }
         });
     };
