@@ -19,6 +19,7 @@ Here are all the props accepted by the `<Show>` component:
 * [`actions`](#actions)
 * [`aside`](#aside-component)
 * [`component`](#component)
+* [`onFailure`](#onfailure)
 
 ### CSS API
 
@@ -193,6 +194,50 @@ const PostShow = props => (
 ```
 
 The default value for the `component` prop is `Card`.
+
+
+### `onFailure`
+
+By default, when the getOne action fails at the dataProvider level, react-admin shows an error notification and  refreshes the page.
+
+You can override this behavior and pass custom side effects by providing a function as `onFailure` prop:
+
+```jsx
+import * as React from 'react';
+import { useNotify, useRefresh, useRedirect, Show, SimpleShowLayout } from 'react-admin';
+
+const PostShow = props => {
+    const notify = useNotify();
+    const refresh = useRefresh();
+    const redirect = useRedirect();
+
+    const onFailure = (error) => {
+        notify(`Could not load post: ${error.message}`)
+        redirect('/posts');
+        refresh();
+    };
+
+    return (
+        <Show onFailure={onFailure} {...props}>
+            <SimpleShowLayout>
+                ...
+            </SimpleShowLayout>
+        </Show>
+    );
+}
+```
+
+The `onFailure` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format)).
+
+The default `onFailure` function is:
+
+```jsx
+(error) => {
+    notify('ra.notification.item_doesnt_exist', 'warning');
+    redirect('list', basePath);
+    refresh();
+}
+```
 
 ## The `<ShowGuesser>` component
 

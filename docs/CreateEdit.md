@@ -500,7 +500,7 @@ const PostEdit = props => {
 
 The `onFailure` function receives the error from the dataProvider call (`dataProvider.create()` or `dataProvider.update()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format)).
 
-The default `onOnFailure` function is:
+The default `onFailure` function is:
 
 ```jsx
 // for the <Create> component:

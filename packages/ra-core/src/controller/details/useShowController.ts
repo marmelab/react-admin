@@ -1,6 +1,6 @@
 import useVersion from '../useVersion';
 import { useCheckMinimumRequiredProps } from '../checkMinimumRequiredProps';
-import { Record, Identifier } from '../../types';
+import { Record, Identifier, OnFailure } from '../../types';
 import { useGetOne, Refetch } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
 import { useNotify, useRedirect, useRefresh } from '../../sideEffect';
@@ -14,6 +14,7 @@ export interface ShowProps {
     hasShow?: boolean;
     hasList?: boolean;
     id?: Identifier;
+    onFailure?: OnFailure;
     resource?: string;
     [key: string]: any;
 }
@@ -58,7 +59,15 @@ export const useShowController = <RecordType extends Record = Record>(
     props: ShowProps
 ): ShowControllerProps<RecordType> => {
     useCheckMinimumRequiredProps('Show', ['basePath', 'resource'], props);
-    const { basePath, hasCreate, hasEdit, hasList, hasShow, id } = props;
+    const {
+        basePath,
+        hasCreate,
+        hasEdit,
+        hasList,
+        hasShow,
+        id,
+        onFailure,
+    } = props;
     const resource = useResourceContext(props);
     const translate = useTranslate();
     const notify = useNotify();
@@ -69,11 +78,13 @@ export const useShowController = <RecordType extends Record = Record>(
         RecordType
     >(resource, id, {
         action: CRUD_GET_ONE,
-        onFailure: () => {
-            notify('ra.notification.item_doesnt_exist', 'warning');
-            redirect('list', basePath);
-            refresh();
-        },
+        onFailure:
+            onFailure ??
+            (() => {
+                notify('ra.notification.item_doesnt_exist', 'warning');
+                redirect('list', basePath);
+                refresh();
+            }),
     });
 
     const getResourceLabel = useGetResourceLabel();
