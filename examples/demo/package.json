@@ -27,8 +27,7 @@
         "react-router": "^5.1.0",
         "react-router-dom": "^5.1.0",
         "react-scripts": "^4.0.3",
-        "recharts": "^1.8.5",
-        "redux-saga": "^1.0.0"
+        "recharts": "^1.8.5"
     },
     "scripts": {
         "analyze": "source-map-explorer 'build/static/js/*.js'",

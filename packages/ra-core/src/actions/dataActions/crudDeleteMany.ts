@@ -1,37 +1,16 @@
 import { Identifier, Record } from '../../types';
 import { DELETE_MANY } from '../../core';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
-import { NotificationSideEffect, RefreshSideEffect } from '../../sideEffect';
 
 export const crudDeleteMany = (
     resource: string,
-    ids: Identifier[],
-    basePath: string,
-    refresh: RefreshSideEffect = true
+    ids: Identifier[]
 ): CrudDeleteManyAction => ({
     type: CRUD_DELETE_MANY,
     payload: { ids },
     meta: {
         resource,
         fetch: DELETE_MANY,
-        onSuccess: {
-            notification: {
-                body: 'ra.notification.deleted',
-                level: 'info',
-                messageArgs: {
-                    smart_count: ids.length,
-                },
-            },
-            basePath,
-            refresh,
-            unselectAll: true,
-        },
-        onFailure: {
-            notification: {
-                body: 'ra.notification.http_error',
-                level: 'warning',
-            },
-        },
     },
 });
 
@@ -46,15 +25,6 @@ export interface CrudDeleteManyAction {
     readonly meta: {
         resource: string;
         fetch: typeof DELETE_MANY;
-        onSuccess: {
-            notification: NotificationSideEffect;
-            refresh: RefreshSideEffect;
-            basePath: string;
-            unselectAll: boolean;
-        };
-        onFailure: {
-            notification: NotificationSideEffect;
-        };
     };
 }
 
@@ -75,7 +45,6 @@ export interface CrudDeleteMAnyFailureAction {
     readonly requestPayload: RequestPayload;
     readonly meta: {
         resource: string;
-        notification: NotificationSideEffect;
         fetchResponse: typeof DELETE_MANY;
         fetchStatus: typeof FETCH_ERROR;
     };
@@ -90,10 +59,6 @@ export interface CrudDeleteManySuccessAction {
     readonly requestPayload: RequestPayload;
     readonly meta: {
         resource: string;
-        notification: NotificationSideEffect;
-        refresh: RefreshSideEffect;
-        basePath: string;
-        unselectAll: boolean;
         fetchResponse: typeof DELETE_MANY;
         fetchStatus: typeof FETCH_END;
     };

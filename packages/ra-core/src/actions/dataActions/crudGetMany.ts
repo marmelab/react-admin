@@ -1,7 +1,6 @@
 import { Identifier, Record } from '../../types';
 import { GET_MANY } from '../../core';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
-import { NotificationSideEffect } from '../../sideEffect';
 
 export const crudGetMany = (
     resource: string,
@@ -12,12 +11,6 @@ export const crudGetMany = (
     meta: {
         resource,
         fetch: GET_MANY,
-        onFailure: {
-            notification: {
-                body: 'ra.notification.http_error',
-                level: 'warning',
-            },
-        },
     },
 });
 
@@ -32,9 +25,6 @@ export interface CrudGetManyAction {
     readonly meta: {
         resource: string;
         fetch: typeof GET_MANY;
-        onFailure: {
-            notification: NotificationSideEffect;
-        };
     };
 }
 
@@ -55,7 +45,6 @@ export interface CrudGetManyFailureAction {
     readonly requestPayload: RequestPayload;
     readonly meta: {
         resource: string;
-        notification: NotificationSideEffect;
         fetchResponse: typeof GET_MANY;
         fetchStatus: typeof FETCH_ERROR;
     };

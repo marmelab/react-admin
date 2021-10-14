@@ -1,7 +1,6 @@
 import { Record, PaginationPayload, SortPayload } from '../../types';
 import { GET_LIST } from '../../core';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
-import { NotificationSideEffect } from '../../sideEffect';
 
 export const crudGetMatching = (
     reference: string,
@@ -16,12 +15,6 @@ export const crudGetMatching = (
         resource: reference,
         relatedTo,
         fetch: GET_LIST,
-        onFailure: {
-            notification: {
-                body: 'ra.notification.http_error',
-                level: 'warning',
-            },
-        },
     },
 });
 
@@ -39,9 +32,6 @@ export interface CrudGetMatchingAction {
         resource: string;
         fetch: typeof GET_LIST;
         relatedTo: string;
-        onFailure: {
-            notification: NotificationSideEffect;
-        };
     };
 }
 
@@ -64,7 +54,6 @@ export interface CrudGetMatchingFailureAction {
     readonly meta: {
         resource: string;
         relatedTo: string;
-        notification: NotificationSideEffect;
         fetchResponse: typeof GET_LIST;
         fetchStatus: typeof FETCH_ERROR;
     };
