@@ -48,7 +48,12 @@ const CustomUserMenu = (props: any) => (
 
 const CustomAppBar = (props: any) => {
     return (
-        <StyledAppBar {...props} elevation={1} userMenu={<CustomUserMenu />}>
+        <StyledAppBar
+            {...props}
+            color="secondary"
+            elevation={1}
+            userMenu={<CustomUserMenu />}
+        >
             <Typography
                 variant="h6"
                 color="inherit"

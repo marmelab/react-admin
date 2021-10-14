@@ -45,10 +45,10 @@ const classes = {
 };
 
 const StyledEdit = styled(Edit)({
-    [`& .${classes.price}`]: { width: '7em' },
-    [`& .${classes.width}`]: { width: '7em' },
-    [`& .${classes.height}`]: { width: '7em' },
-    [`& .${classes.stock}`]: { width: '7em' },
+    [`& .RaFormInput-input.${classes.price}`]: { width: '7em' },
+    [`& .RaFormInput-input.${classes.width}`]: { width: '7em' },
+    [`& .RaFormInput-input.${classes.height}`]: { width: '7em' },
+    [`& .RaFormInput-input.${classes.stock}`]: { width: '7em' },
     [`& .${classes.widthFormGroup}`]: { display: 'inline-block' },
     [`& .${classes.heightFormGroup}`]: {
         display: 'inline-block',

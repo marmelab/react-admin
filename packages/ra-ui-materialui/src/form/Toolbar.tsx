@@ -237,7 +237,7 @@ const StyledToolbar = styled(MuiToolbar, { name: PREFIX })(({ theme }) => ({
         zIndex: 2,
     },
 
-    [`&.${ToolbarClasses.defaultToolbar}`]: {
+    [`& .${ToolbarClasses.defaultToolbar}`]: {
         flex: 1,
         display: 'flex',
         justifyContent: 'space-between',
