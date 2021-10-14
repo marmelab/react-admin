@@ -39,7 +39,7 @@ const classes = {
 };
 
 const AsideRoot = styled('div')(({ theme }) => ({
-    [`& .${classes.root}`]: {
+    [`&.${classes.root}`]: {
         width: 400,
         [theme.breakpoints.down('lg')]: {
             display: 'none',

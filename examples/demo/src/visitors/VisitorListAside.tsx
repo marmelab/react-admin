@@ -23,8 +23,8 @@ const classes = {
 };
 
 const StyledCard = styled(Card)(({ theme }) => ({
-    [`& .${classes.root}`]: {
-        [theme.breakpoints.up('sm')]: {
+    [`&.${classes.root}`]: {
+        [theme.breakpoints.up('md')]: {
             order: -1,
             width: '15em',
             marginRight: '1em',
@@ -36,7 +36,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
 }));
 
 const Aside = () => (
-    <StyledCard>
+    <StyledCard className={classes.root}>
         <CardContent>
             <FilterLiveSearch />
 

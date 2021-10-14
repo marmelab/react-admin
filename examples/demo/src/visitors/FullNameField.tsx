@@ -14,7 +14,7 @@ const classes = {
 };
 
 const Root = styled('div')(({ theme }) => ({
-    [`& .${classes.root}`]: {
+    [`&.${classes.root}`]: {
         display: 'flex',
         flexWrap: 'nowrap',
         alignItems: 'center',

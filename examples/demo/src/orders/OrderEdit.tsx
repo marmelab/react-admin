@@ -27,7 +27,7 @@ const classes = {
 };
 
 const StyledEdit = styled(Edit)({
-    [`& .${classes.root}`]: { alignItems: 'flex-start' },
+    [`&.${classes.root}`]: { alignItems: 'flex-start' },
 });
 
 interface OrderTitleProps {
@@ -227,12 +227,7 @@ const OrderForm = (props: any) => {
     );
 };
 const OrderEdit = (props: EditProps) => (
-    <StyledEdit
-        title={<OrderTitle />}
-        classes={classes}
-        {...props}
-        component="div"
-    >
+    <StyledEdit title={<OrderTitle />} {...props} component="div">
         <OrderForm />
     </StyledEdit>
 );

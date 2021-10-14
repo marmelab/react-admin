@@ -28,7 +28,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
         },
     },
 
-    [`& .${classes.main}`]: (props: Props) => ({
+    [`& .${classes.main}`]: {
         overflow: 'inherit',
         padding: 16,
         background: `url(${
@@ -40,7 +40,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
         '& .icon': {
             color: theme.palette.mode === 'dark' ? 'inherit' : '#dc2440',
         },
-    }),
+    },
 
     [`& .${classes.title}`]: {},
 }));
