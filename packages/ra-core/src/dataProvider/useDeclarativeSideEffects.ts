@@ -3,7 +3,6 @@ import {
     useRedirect,
     useRefresh,
     useUnselectAll,
-    NotificationSideEffect,
     RedirectionSideEffect,
 } from '../sideEffect';
 import { OnSuccess, OnFailure } from '../types';
@@ -76,7 +75,11 @@ const useDeclarativeSideEffects = () => {
 };
 
 export interface DeclarativeSideEffect {
-    notification?: NotificationSideEffect;
+    notification?: {
+        body: string;
+        level: 'info' | 'warning' | 'error';
+        messageArgs?: any;
+    };
     redirectTo?: RedirectionSideEffect;
     refresh?: boolean;
     unselectAll?: boolean;
