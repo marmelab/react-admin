@@ -276,10 +276,6 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         [filterValue, getChoiceValue, input]
     );
 
-    const onCreateNewItem = () => {
-        inputEl.current.blur();
-    };
-
     const {
         getCreateItem,
         handleChange: handleChangeWithCreateSupport,
@@ -290,7 +286,6 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         createItemLabel,
         createValue,
         handleChange,
-        onCreateNewItem,
         filter: filterValue,
         onCreate,
         optionText,
@@ -328,6 +323,8 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                 ? inputText(getChoiceText(selectedItem).props.record)
                 : getChoiceText(selectedItem)
         );
+
+        inputEl.current.blur();
     }, [
         input.value,
         handleFilterChange,
