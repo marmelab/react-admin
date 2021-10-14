@@ -18,6 +18,7 @@ import {
 
 export interface NotificationProps extends Omit<SnackbarProps, 'open'> {
     type?: string;
+    autoHideDuration?: number;
     multiLine?: boolean;
 }
 
@@ -125,6 +126,7 @@ const Notification = (props: NotificationProps) => {
 
 Notification.propTypes = {
     type: PropTypes.string,
+    autoHideDuration: PropTypes.number,
     multiLine: PropTypes.bool,
 };
 
