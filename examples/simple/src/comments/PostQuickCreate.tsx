@@ -2,16 +2,16 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
-    CREATE,
     SaveButton,
     SimpleForm,
     TextInput,
     Toolbar,
     required,
-    showNotification,
     ReduxState,
+    useCreate,
+    useNotify,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 import CancelButton from './PostQuickCreateCancelButton';
@@ -41,31 +41,24 @@ PostQuickCreateToolbar.propTypes = {
 };
 
 const PostQuickCreate = ({ onCancel, onSave, ...props }) => {
-    const dispatch = useDispatch();
+    const [create] = useCreate();
+    const notify = useNotify();
     const submitting = useSelector<ReduxState, boolean>(
         state => state.admin.loading > 0
     );
 
     const handleSave = useCallback(
         values => {
-            dispatch({
-                type: 'QUICK_CREATE',
-                payload: { data: values },
-                meta: {
-                    fetch: CREATE,
-                    resource: 'posts',
-                    onSuccess: {
-                        callback: ({ payload: { data } }) => onSave(data),
-                    },
-                    onFailure: {
-                        callback: ({ error }) => {
-                            dispatch(showNotification(error.message, 'error'));
-                        },
-                    },
+            create('posts', values, {
+                onSuccess: ({ data }) => {
+                    onSave(data);
+                },
+                onFailure: error => {
+                    notify(error.message, 'error');
                 },
             });
         },
-        [dispatch, onSave]
+        [create, notify, onSave]
     );
 
     return (
