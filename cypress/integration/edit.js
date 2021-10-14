@@ -130,9 +130,13 @@ describe('Edit Page', () => {
         );
     });
 
-    it('should allow to select an item from the AutocompleteInput without showing the choices again after', () => {
+    it.only('should allow to select an item from the AutocompleteInput without showing the choices again after', () => {
         EditCommentPage.navigate();
+        cy.get(
+            '[value="Accusantium qui nihil voluptatum quia voluptas maxime ab similique - 1"]'
+        );
         cy.get(EditCommentPage.elements.input('post_id'))
+            .type('{selectall}')
             .clear()
             .type('Sed quo');
         cy.get('[role="tooltip"]').within(() => {
