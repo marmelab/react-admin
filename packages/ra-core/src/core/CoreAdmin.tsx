@@ -94,7 +94,6 @@ const CoreAdmin = (props: AdminProps) => {
         children,
         customReducers,
         customRoutes = [],
-        customSagas,
         dashboard,
         dataProvider,
         disableTelemetry,
@@ -116,7 +115,6 @@ const CoreAdmin = (props: AdminProps) => {
             i18nProvider={i18nProvider}
             history={history}
             customReducers={customReducers}
-            customSagas={customSagas}
             initialState={initialState}
         >
             <CoreAdminUI

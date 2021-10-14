@@ -1,39 +1,13 @@
 import { Record } from '../../types';
 import { CREATE } from '../../core';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
-import {
-    NotificationSideEffect,
-    RedirectionSideEffect,
-} from '../../sideEffect';
 
-export const crudCreate = (
-    resource: string,
-    data: any,
-    basePath: string,
-    redirectTo: RedirectionSideEffect = 'edit'
-): CrudCreateAction => ({
+export const crudCreate = (resource: string, data: any): CrudCreateAction => ({
     type: CRUD_CREATE,
     payload: { data },
     meta: {
         resource,
         fetch: CREATE,
-        onSuccess: {
-            notification: {
-                body: 'ra.notification.created',
-                level: 'info',
-                messageArgs: {
-                    smart_count: 1,
-                },
-            },
-            redirectTo,
-            basePath,
-        },
-        onFailure: {
-            notification: {
-                body: 'ra.notification.http_error',
-                level: 'warning',
-            },
-        },
     },
 });
 
@@ -48,14 +22,6 @@ export interface CrudCreateAction {
     readonly meta: {
         resource: string;
         fetch: typeof CREATE;
-        onSuccess: {
-            notification: NotificationSideEffect;
-            redirectTo: RedirectionSideEffect;
-            basePath: string;
-        };
-        onFailure: {
-            notification: NotificationSideEffect;
-        };
     };
 }
 
@@ -76,7 +42,6 @@ export interface CrudCreateFailureAction {
     readonly requestPayload: RequestPayload;
     readonly meta: {
         resource: string;
-        notification: NotificationSideEffect;
         fetchResponse: typeof CREATE;
         fetchStatus: typeof FETCH_ERROR;
     };
@@ -91,9 +56,6 @@ export interface CrudCreateSuccessAction {
     readonly requestPayload: RequestPayload;
     readonly meta: {
         resource: string;
-        notification: NotificationSideEffect;
-        redirectTo: RedirectionSideEffect;
-        basePath: string;
         fetchResponse: typeof CREATE;
         fetchStatus: typeof FETCH_END;
     };

@@ -483,7 +483,6 @@ export interface AdminProps {
     children?: AdminChildren;
     customReducers?: object;
     customRoutes?: CustomRoutes;
-    customSagas?: any[];
     dashboard?: DashboardComponent;
     dataProvider: DataProvider | LegacyDataProvider;
     disableTelemetry?: boolean;

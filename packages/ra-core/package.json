@@ -27,7 +27,6 @@
         "watch": "tsc --outDir esm --module es2015 --watch"
     },
     "devDependencies": {
-        "@redux-saga/testing-utils": "^1.0.2",
         "@testing-library/react": "^11.2.3",
         "@types/history": "^4.7.2",
         "@types/node-polyglot": "^0.4.31",
@@ -49,7 +48,6 @@
         "react-router-dom": "^5.1.0",
         "react-test-renderer": "^16.9.0 || ^17.0.0",
         "redux": "^3.7.2 || ^4.0.3",
-        "redux-saga": "^1.0.0",
         "rimraf": "^2.6.3"
     },
     "peerDependencies": {
@@ -61,8 +59,7 @@
         "react-redux": "^7.1.0",
         "react-router": "^5.1.0",
         "react-router-dom": "^5.1.0",
-        "redux": "^3.7.2 || ^4.0.3",
-        "redux-saga": "^1.0.0"
+        "redux": "^3.7.2 || ^4.0.3"
     },
     "dependencies": {
         "classnames": "~2.2.5",
