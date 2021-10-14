@@ -23,7 +23,7 @@ const classes = {
 };
 
 const StyledGridList = styled(MuiGridList)(({ theme }) => ({
-    [`& .${classes.gridList}`]: {
+    [`&.${classes.gridList}`]: {
         margin: 0,
     },
 
@@ -49,17 +49,16 @@ const StyledGridList = styled(MuiGridList)(({ theme }) => ({
 
 const useColsForWidth = () => {
     const theme = useTheme();
-    const xs = useMediaQuery(theme.breakpoints.up('xs'));
     const sm = useMediaQuery(theme.breakpoints.up('sm'));
     const md = useMediaQuery(theme.breakpoints.up('md'));
     const lg = useMediaQuery(theme.breakpoints.up('lg'));
+    const xl = useMediaQuery(theme.breakpoints.up('xl'));
 
-    if (xs) return 2;
-    if (sm) return 3;
-    if (md) return 3;
+    if (xl) return 6;
     if (lg) return 5;
-
-    return 6;
+    if (md) return 4;
+    if (sm) return 3;
+    return 2;
 };
 
 const times = (nbChildren: number, fn: (key: number) => any) =>
