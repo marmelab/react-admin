@@ -73,7 +73,7 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                                 if (logoutUser) {
                                     notify(
                                         getErrorMessage(
-                                            error,
+                                            e,
                                             'ra.notification.logged_out'
                                         ),
                                         'warning'
@@ -81,7 +81,7 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                                 } else {
                                     notify(
                                         getErrorMessage(
-                                            error,
+                                            e,
                                             'ra.notification.not_authorized'
                                         ),
                                         'warning'
