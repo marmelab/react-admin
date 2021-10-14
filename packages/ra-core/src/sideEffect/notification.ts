@@ -2,12 +2,13 @@ import { put, takeEvery } from 'redux-saga/effects';
 import {
     showNotification,
     NotificationType,
+    NotificationOptions,
 } from '../actions/notificationActions';
 
 export interface NotificationSideEffect {
     body: string;
     level: NotificationType;
-    messageArgs?: object;
+    notificationOptions?: NotificationOptions;
 }
 
 interface ActionWithSideEffect {
@@ -27,21 +28,25 @@ function* handleNotification({
     error,
     meta: { notification, optimistic },
 }: ActionWithSideEffect) {
-    const { body, level, messageArgs = {} } = notification;
+    const { body, level, notificationOptions = {} } = notification;
+    const { autoHideDuration, messageArgs, undoable = false } =
+        notificationOptions || {};
     if (error) {
         return yield put(
             showNotification(
                 typeof error === 'string' ? error : error.message || body,
                 level || 'warning',
                 {
+                    autoHideDuration,
                     messageArgs,
-                    undoable: false,
+                    undoable,
                 }
             )
         );
     }
     yield put(
         showNotification(body, level || 'info', {
+            autoHideDuration,
             messageArgs,
             undoable: optimistic,
         })
