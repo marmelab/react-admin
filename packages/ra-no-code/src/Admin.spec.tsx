@@ -8,6 +8,8 @@ import { ApplicationContext } from './ApplicationContext';
 
 describe('Admin', () => {
     it('should be functional', async () => {
+        jest.setTimeout(10000);
+
         const customers = fs.readFileSync(
             path.resolve(__dirname, '../assets/ra-customers.csv'),
             {
