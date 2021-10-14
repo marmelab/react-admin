@@ -166,7 +166,6 @@ title: "Reference"
 * [`useGetMany`](./Actions.md#usegetmany)
 * [`useGetManyReference`](./Actions.md#usegetmanyreference)
 * `useGetMatching`
-* `useGetMatchingReferences`
 * [`useGetOne`](./Actions.md#usegetone)
 * [`useGetPermissions`](./Authentication.md#usegetpermissions-hook)
 * [`useHasLock`](https://marmelab.com/ra-enterprise/modules/ra-realtime#locks-on-content)<img class="icon" src="./img/premium.svg" />
