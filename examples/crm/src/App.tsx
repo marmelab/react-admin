@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Admin, Resource, ListGuesser, defaultTheme } from 'react-admin';
-import { createTheme } from '@mui/material/styles';
+import { Admin, Resource, ListGuesser } from 'react-admin';
 
 import { dataProvider } from './dataProvider';
 import { authProvider } from './authProvider';
@@ -10,16 +9,12 @@ import companies from './companies';
 import deals from './deals';
 import { Dashboard } from './dashboard/Dashboard';
 
-// FIXME MUI bug https://github.com/mui-org/material-ui/issues/13394
-const theme = createTheme(defaultTheme);
-
 const App = () => (
     <Admin
         dataProvider={dataProvider}
         authProvider={authProvider}
         layout={Layout}
         dashboard={Dashboard}
-        theme={theme}
     >
         <Resource name="deals" {...deals} />
         <Resource name="contacts" {...contacts} />

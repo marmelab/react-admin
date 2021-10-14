@@ -46,6 +46,8 @@ const Header = () => {
                             <Tabs
                                 value={currentPath}
                                 aria-label="Navigation Tabs"
+                                indicatorColor="secondary"
+                                textColor="inherit"
                             >
                                 <Tab
                                     label={'Dashboard'}
