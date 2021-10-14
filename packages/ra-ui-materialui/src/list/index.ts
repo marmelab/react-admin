@@ -1,5 +1,4 @@
 export * from './BulkActionsToolbar';
-export * from './BulkDeleteAction';
 export * from './datagrid';
 export * from './Empty';
 export * from './filter';
