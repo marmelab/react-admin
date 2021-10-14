@@ -32,7 +32,8 @@ const useNotify = () => {
                 | (NotificationOptions & { type: NotificationType }),
             messageArgs: any = {},
             undoable: boolean = false,
-            autoHideDuration?: number
+            autoHideDuration?: number,
+            multiLine?: boolean
         ) => {
             if (typeof type === 'string') {
                 warning(
@@ -44,6 +45,7 @@ const useNotify = () => {
                         messageArgs,
                         undoable,
                         autoHideDuration,
+                        multiLine,
                     })
                 );
             } else {
