@@ -309,7 +309,7 @@ You can customize the notification message confirming the deletion by providing 
 
 ```jsx
 import * as React from 'react';
-import { Toolbar, SimpleForm } from '../form';
+import { DeleteWithConfirmButton, Toolbar, SimpleForm } from 'react-admin';
 
 translateOptions = {
     id: 'custom identifier',
