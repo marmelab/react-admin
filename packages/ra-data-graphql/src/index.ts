@@ -24,7 +24,6 @@ import {
     QueryOptions,
     OperationVariables,
     ServerError,
-    ServerParseError,
 } from '@apollo/client';
 
 import buildApolloClient from './buildApolloClient';
