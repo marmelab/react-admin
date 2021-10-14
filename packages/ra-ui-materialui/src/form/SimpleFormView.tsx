@@ -11,7 +11,7 @@ export const SimpleFormView = ({
     basePath,
     children,
     className,
-    component: Component,
+    component: Component = CardContentInner,
     handleSubmit,
     handleSubmitWithRedirect,
     invalid,
@@ -22,8 +22,8 @@ export const SimpleFormView = ({
     redirect,
     resource,
     saving,
-    submitOnEnter,
-    toolbar,
+    submitOnEnter = true,
+    toolbar = DefaultToolbar,
     undoable,
     variant,
     validating,
@@ -92,11 +92,7 @@ SimpleFormView.propTypes = {
     validate: PropTypes.func,
 };
 
-SimpleFormView.defaultProps = {
-    submitOnEnter: true,
-    toolbar: <Toolbar />,
-    component: CardContentInner,
-};
+const DefaultToolbar = <Toolbar />;
 
 export interface SimpleFormViewProps extends FormWithRedirectRenderProps {
     basePath?: string;

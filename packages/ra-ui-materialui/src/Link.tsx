@@ -2,24 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Link as RRLink, LinkProps as RRLinkProps } from 'react-router-dom';
-import { styled } from '@mui/material';
-
-const PREFIX = 'RaLink';
-
-export const LinkClasses = {
-    link: `${PREFIX}-link`,
-};
-
-const StyledLink = styled(RRLink)(({ theme }) => ({
-    [`& .${LinkClasses.link}`]: {
-        textDecoration: 'none',
-        color: theme.palette.primary.main,
-    },
-}));
-
-export interface LinkProps extends RRLinkProps {
-    className?: string;
-}
+import { styled, Link as MuiLink } from '@mui/material';
 
 export const Link = (props: LinkProps) => {
     const { to, children, className, ...rest } = props;
@@ -34,6 +17,26 @@ export const Link = (props: LinkProps) => {
         </StyledLink>
     );
 };
+
+const PREFIX = 'RaLink';
+
+export const LinkClasses = {
+    link: `${PREFIX}-link`,
+};
+
+const MuiRouterLink = (props: RRLinkProps) => (
+    <MuiLink component={RRLink} {...props} />
+);
+
+const StyledLink = styled(MuiRouterLink)(({ theme }) => ({
+    [`&.${LinkClasses.link}`]: {
+        textDecoration: 'none',
+    },
+}));
+
+export interface LinkProps extends RRLinkProps {
+    className?: string;
+}
 
 Link.propTypes = {
     className: PropTypes.string,

@@ -160,7 +160,9 @@ const Root = styled('div', { name: PREFIX })(({ theme }) => ({
         marginBottom: -theme.spacing(1),
     },
 
-    [`& .${SingleFieldListClasses.link}`]: {},
+    [`& .${SingleFieldListClasses.link}`]: {
+        textDecoration: 'none',
+    },
 }));
 
 // useful to prevent click bubbling in a datagrid with rowClick

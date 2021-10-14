@@ -36,10 +36,10 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         redirect: defaultRedirect,
         resource,
         saving,
-        submitOnEnter,
+        submitOnEnter = true,
         syncWithLocation = true,
-        tabs,
-        toolbar,
+        tabs = DefaultTabs,
+        toolbar = DefaultToolbar,
         undoable,
         variant,
         margin,
@@ -153,7 +153,7 @@ TabbedFormView.propTypes = {
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
-    tabs: PropTypes.element.isRequired,
+    tabs: PropTypes.element,
     toolbar: PropTypes.element,
     translate: PropTypes.func,
     undoable: PropTypes.bool,
@@ -162,11 +162,8 @@ TabbedFormView.propTypes = {
     version: PropTypes.number,
 };
 
-TabbedFormView.defaultProps = {
-    submitOnEnter: true,
-    tabs: <TabbedFormTabs />,
-    toolbar: <Toolbar />,
-};
+const DefaultTabs = <TabbedFormTabs />;
+const DefaultToolbar = <Toolbar />;
 
 export interface TabbedFormViewProps extends FormWithRedirectRenderProps {
     basePath?: string;
@@ -222,10 +219,10 @@ export const TabbedFormClasses = {
 };
 
 const Root = styled('form', { name: PREFIX })(({ theme }) => ({
-    [`&.${TabbedFormClasses.errorTabButton}`]: {
+    [`& .${TabbedFormClasses.errorTabButton}`]: {
         color: theme.palette.error.main,
     },
-    [`&.${TabbedFormClasses.content}`]: {
+    [`& .${TabbedFormClasses.content}`]: {
         paddingTop: theme.spacing(1),
         paddingLeft: theme.spacing(2),
         paddingRight: theme.spacing(2),
