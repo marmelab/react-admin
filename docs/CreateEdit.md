@@ -109,7 +109,7 @@ You can customize the `<Create>` and `<Edit>` components using the following pro
 
 ### CSS API
 
-The `<Create>` and `<Edit>` components accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
+The `<Create>` and `<Edit>` components accepts the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
 
 | Rule name   | Description                                                                                |
 | ----------- | ------------------------------------------------------------------------------------------ |
@@ -401,7 +401,7 @@ const PostEdit = props => {
     const redirect = useRedirect();
 
     const onSuccess = () => {
-        notify(`Changes saved`)
+        notify(`Changes saved`);
         redirect('/posts');
         refresh();
     };
@@ -423,13 +423,16 @@ The default `onSuccess` function is:
 ```jsx
 // for the <Create> component:
 () => {
-    notify('ra.notification.created', 'info', { smart_count: 1 });
+    notify('ra.notification.created', { messageArgs: { smart_count: 1 } });
     redirect('edit', basePath, data.id, data);
 }
 
 // for the <Edit> component: 
 () => {
-    notify('ra.notification.updated', 'info', { smart_count: 1 }, mutationMode === 'undoable');
+    notify('ra.notification.created', {
+        messageArgs: { smart_count: 1 },
+        undoable: mutationMode === 'undoable'
+    });
     redirect('list', basePath, data.id, data);
 }
 ```
@@ -448,7 +451,7 @@ const PostEdit = props => {
     const redirect = useRedirect();
 
   const onSuccess = ({ data }) => {
-        notify(`Changes to post "${data.title}" saved`)
+        notify(`Changes to post "${data.title}" saved`);
         redirect('/posts');
         refresh();
     };
@@ -483,7 +486,7 @@ const PostEdit = props => {
     const redirect = useRedirect();
 
     const onFailure = (error) => {
-        notify(`Could not edit post: ${error.message}`)
+        notify(`Could not edit post: ${error.message}`);
         redirect('/posts');
         refresh();
     };
@@ -505,12 +508,12 @@ The default `onFailure` function is:
 ```jsx
 // for the <Create> component:
 (error) => {
-    notify(typeof error === 'string' ? error : error.message || 'ra.notification.http_error', 'warning');
+    notify(typeof error === 'string' ? error : error.message || 'ra.notification.http_error', { type: 'warning' });
 }
 
 // for the <Edit> component: 
 (error) => {
-    notify(typeof error === 'string' ? error : error.message || 'ra.notification.http_error', 'warning');
+    notify(typeof error === 'string' ? error : error.message || 'ra.notification.http_error', { type: 'warning' });
     if (mutationMode === 'undoable' || mutationMode === 'pessimistic') {
         refresh();
     }
@@ -1387,7 +1390,7 @@ export default {
 
 See the [Translation documentation](Translation.md#translation-messages) for details.
 
-**Tip**: Make sure to define validation functions or array of functions in a variable outside of your component, instead of defining them directly in JSX. This can result in a new function or array at every render, and trigger infinite rerender.
+**Tip**: Make sure to define validation functions or array of functions in a variable outside your component, instead of defining them directly in JSX. This can result in a new function or array at every render, and trigger infinite rerender.
 
 {% raw %}
 ```jsx
@@ -1702,7 +1705,7 @@ Here are the props received by the `Toolbar` component when passed as the `toolb
 
 ### CSS API
 
-The `<Toolbar>` accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
+The `<Toolbar>` accepts the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
 
 | Rule name        | Description                                                                     |
 | ---------------- | ------------------------------------------------------------------------------- |
@@ -2224,9 +2227,9 @@ const PostEdit = props => {
     const redirect = useRedirect();
     const onFailure = (error) => {
         if (error.code == 123) {
-            notify('Could not save changes: concurrent edition in progress', 'warning');
+            notify('Could not save changes: concurrent edition in progress', { type: 'warning' });
         } else {
-            notify('ra.notification.http_error', 'warning')
+            notify('ra.notification.http_error', { type: 'warning' });
         }
         redirect('list', props.basePath);
     }
@@ -2325,9 +2328,7 @@ const SaveWithNoteButton = props => {
                 },
                 {
                     onSuccess: ({ data: newRecord }) => {
-                        notify('ra.notification.created', 'info', {
-                            smart_count: 1,
-                        });
+                        notify('ra.notification.created', { messageArgs: { smart_count: 1 } });
                         redirectTo(redirect, basePath, newRecord.id, newRecord);
                     },
                 }
