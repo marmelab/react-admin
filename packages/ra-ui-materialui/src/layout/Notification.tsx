@@ -16,7 +16,7 @@ import {
     useTranslate,
 } from 'ra-core';
 
-export interface NotificationProps {
+export interface NotificationProps extends Omit<SnackbarProps, 'open'> {
     type?: string;
     multiLine?: boolean;
 }
@@ -35,7 +35,7 @@ const useStyles = makeStyles(
             backgroundColor: theme.palette.error.light,
             color: theme.palette.error.contrastText,
         },
-        undo: (props: NotificationProps & Omit<SnackbarProps, 'open'>) => ({
+        undo: (props: NotificationProps) => ({
             color:
                 props.type === 'success'
                     ? theme.palette.success.contrastText
@@ -48,9 +48,7 @@ const useStyles = makeStyles(
     { name: 'RaNotification' }
 );
 
-const Notification = (
-    props: NotificationProps & Omit<SnackbarProps, 'open'>
-) => {
+const Notification = (props: NotificationProps) => {
     const {
         classes: classesOverride,
         type,
