@@ -6,9 +6,8 @@ import Query from './Query';
 import { CoreAdmin, Resource } from '../core';
 import { renderWithRedux, TestContext } from 'ra-test';
 import DataProviderContext from './DataProviderContext';
-import { showNotification, refreshView, setListSelectedIds } from '../actions';
+import { showNotification } from '../actions';
 import { useNotify, useRefresh } from '../sideEffect';
-import { History } from 'history';
 
 describe('Query', () => {
     it('should render its child', () => {
