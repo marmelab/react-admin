@@ -11,6 +11,7 @@ If you still relied on sagas, you have to port your saga code to react `useEffec
 ## Removed Deprecated Elements
 
 - Removed `<BulkDeleteAction>` (use `<BulkDeleteButton>` instead)
+- Removed declarative side effects in dataProvider hooks (e.g. `{ onSuccess: { refresh: true } }`). Use function side effects instead (e.g. `{ onSuccess: () => { refresh(); } }`)
 
 # Upgrade to 3.0
 
