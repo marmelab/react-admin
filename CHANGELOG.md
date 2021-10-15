@@ -10,7 +10,7 @@
 - Blur input on suggestion create ([#6646](https://github.com/marmelab/react-admin/pull/6646)) ([andrico1234](https://github.com/andrico1234))
 - Add support for multiline notifications ([#6670](https://github.com/marmelab/react-admin/pull/6670)) ([WiXSL](https://github.com/WiXSL))
 - Introduce simpler signature for the `notify` function returned by `useNotify` ([#6671](https://github.com/marmelab/react-admin/pull/6671)) ([WiXSL](https://github.com/WiXSL))
-- Returns `error` from controllers & add support for custom `onFailure` on `useShowController` ([#6680](https://github.com/marmelab/react-admin/pull/6680)) ([djhi](https://github.com/djhi))
+- Returns `error` from controllers & add support for custom `onFailure` on `useShowController` and `useEditController` ([#6680](https://github.com/marmelab/react-admin/pull/6680)) ([djhi](https://github.com/djhi))
 - Extract sidebar toggle button ([#6603](https://github.com/marmelab/react-admin/pull/6603)) ([djhi](https://github.com/djhi))
 - [GraphQL] Upgrade graphql packages dependencies (Apollo v3) ([#6614](https://github.com/marmelab/react-admin/pull/6614)) ([djhi](https://github.com/djhi))
 
