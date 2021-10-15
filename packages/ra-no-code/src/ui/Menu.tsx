@@ -4,8 +4,6 @@ import { ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import lodashGet from 'lodash/get';
-// @ts-ignore
-import { useMediaQuery, Theme } from '@mui/material';
 import classnames from 'classnames';
 import { ReduxState } from 'ra-core';
 
@@ -22,7 +20,6 @@ const classes = {
     closed: `${PREFIX}-closed`,
 };
 
-// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
 const Root = styled('div')(({ theme }) => ({
     [`& .${classes.main}`]: {
         display: 'flex',
@@ -50,18 +47,7 @@ export const MENU_WIDTH = 240;
 export const CLOSED_MENU_WIDTH = 55;
 
 export const Menu = (props: MenuProps) => {
-    const {
-        className,
-        dense,
-        hasDashboard,
-        onMenuClick,
-        logout,
-        ...rest
-    } = props;
-
-    const isXSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('sm')
-    );
+    const { className, dense, hasDashboard, ...rest } = props;
     const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
     const [resources] = useResourcesConfiguration();
 
@@ -79,27 +65,17 @@ export const Menu = (props: MenuProps) => {
                 {...rest}
             >
                 {hasDashboard && (
-                    <DashboardMenuItem
-                        onClick={onMenuClick}
-                        dense={dense}
-                        sidebarIsOpen={open}
-                    />
+                    <DashboardMenuItem dense={dense} sidebarIsOpen={open} />
                 )}
                 {Object.keys(resources).map(resource => (
                     <ResourceMenuItem
                         key={resource}
                         resource={resources[resource]}
-                        onClick={onMenuClick}
                         dense={dense}
                         sidebarIsOpen={open}
                     />
                 ))}
-                <NewResourceMenuItem
-                    onClick={onMenuClick}
-                    dense={dense}
-                    sidebarIsOpen={open}
-                />
-                {isXSmall && logout}
+                <NewResourceMenuItem dense={dense} sidebarIsOpen={open} />
             </div>
         </Root>
     );
