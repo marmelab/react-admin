@@ -39,7 +39,7 @@
     },
     "peerDependencies": {
         "graphql": "^15.6.0",
-        "ra-core": "^3.9.0"
+        "ra-core": "^4.0.0-alpha.0"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
