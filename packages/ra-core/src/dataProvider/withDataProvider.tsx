@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { DataProvider } from '../types';
 
-import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDeclarativeSideEffects';
+import useDataProvider from './useDataProvider';
 
 export interface DataProviderProps {
     dataProvider: DataProvider;
@@ -58,10 +58,7 @@ export interface DataProviderProps {
 const withDataProvider = <P extends object>(
     Component: React.ComponentType<P>
 ): React.FunctionComponent<P & DataProviderProps> => (props: P) => (
-    <Component
-        {...props}
-        dataProvider={useDataProviderWithDeclarativeSideEffects()}
-    />
+    <Component {...props} dataProvider={useDataProvider()} />
 );
 
 export default withDataProvider;

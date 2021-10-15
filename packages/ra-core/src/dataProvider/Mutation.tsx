@@ -60,11 +60,6 @@ const Mutation = ({
     // This is used to detect options in useDataProvider
     options = { onSuccess: undefined },
 }: MutationProps) =>
-    children(
-        ...useMutation(
-            { type, resource, payload },
-            { ...options, withDeclarativeSideEffectsSupport: true }
-        )
-    );
+    children(...useMutation({ type, resource, payload }, options));
 
 export default Mutation;

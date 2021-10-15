@@ -569,6 +569,7 @@ const BulkDeletePostsButton = ({ selectedIds }) => {
 ```
 
 ## Synchronizing Dependant Queries
+
 `useQuery` and all its corresponding specialized hooks support an `enabled` option. This is useful if you need to have a query executed only when a condition is met. For example, in the following example, we only fetch the categories if we have at least one post:
 ```jsx
 // fetch posts
