@@ -1,5 +1,32 @@
 # Changelog
 
+## v3.19.0
+
+- [Feature] Allow lazy loading of choices in ReferenceInput ([#6013](https://github.com/marmelab/react-admin/pull/6013)) ([@ValentinH](https://github.com/ValentinH))
+- Fix MUI 4.12 deprecation warnings ([#6587](https://github.com/marmelab/react-admin/pull/6587)) ([fzaninotto](https://github.com/fzaninotto))
+- Upgrade TypeScript version to 4.4 ([#6588](https://github.com/marmelab/react-admin/pull/6588)) ([fzaninotto](https://github.com/fzaninotto))
+- [Feature] Add support for custom url in SimpleList ([#6594](https://github.com/marmelab/react-admin/pull/6594)) ([djhi](https://github.com/djhi))
+- [Feature] Added support for customizing the styles of the Datagrid expand panels  ([#6596](https://github.com/marmelab/react-admin/pull/6596)) ([mjomble](https://github.com/mjomble))
+- Extract sidebar toggle button ([#6603](https://github.com/marmelab/react-admin/pull/6603)) ([djhi](https://github.com/djhi))
+- [TypeScript] Support custom DataProvider type with useDataProvider ([#6605](https://github.com/marmelab/react-admin/pull/6605)) ([djhi](https://github.com/djhi))
+- Refactor ArrayInput and SimpleFormIterator with context ([#6612](https://github.com/marmelab/react-admin/pull/6612)) ([djhi](https://github.com/djhi))
+- [GraphQL] Upgrade graphql packages dependencies (Apollo v3) ([#6614](https://github.com/marmelab/react-admin/pull/6614)) ([djhi](https://github.com/djhi))
+- [GraphQL] Refactor graphql providers and migrate to the new dataProvider signature ([#6628](https://github.com/marmelab/react-admin/pull/6628)) ([djhi](https://github.com/djhi))
+- [Doc] Fix menus examples ([#6637](https://github.com/marmelab/react-admin/pull/6636)) ([WiXSL](https://github.com/WiXSL))
+- [TypeScript] Fix simple project type errors ([#6637](https://github.com/marmelab/react-admin/pull/6637)) ([WiXSL](https://github.com/WiXSL))
+- [TypeScript] Fix export TranslationMessages StringMap type ([#6638](https://github.com/marmelab/react-admin/pull/6638)) ([WiXSL](https://github.com/WiXSL))
+- [TypeScript] Add missing types for TranslationMessages ([#6640](https://github.com/marmelab/react-admin/pull/6640)) ([Aikain](https://github.com/Aikain))
+- [GraphQL]: Fix Simple Response Parser Modify all Objects ([#6643](https://github.com/marmelab/react-admin/pull/6643)) ([djhi](https://github.com/djhi))
+- [GraphQL]: Fix Simple Response Parser Modify all Objects ([#6643](https://github.com/marmelab/react-admin/pull/6643)) ([djhi](https://github.com/djhi))
+- [Feature]: Blur input on suggestion create ([#6646](https://github.com/marmelab/react-admin/pull/6646)) ([andrico1234](https://github.com/andrico1234))
+- [GraphQL]: add basic network error handling ([#6648](https://github.com/marmelab/react-admin/pull/6648)) ([djhi](https://github.com/djhi))
+- [Doc]: Fixed typo in Auth doc ([#6649](https://github.com/marmelab/react-admin/pull/6649)) ([davidhenley](https://github.com/davidhenley))
+- [Feature]: Add support for multilone notifications ([#6670](https://github.com/marmelab/react-admin/pull/6670)) ([WiXSL](https://github.com/WiXSL))
+- [Feature]: Introduce simpler signature for the `notify` function returned by `useNotify` ([#6671](https://github.com/marmelab/react-admin/pull/6671)) ([WiXSL](https://github.com/WiXSL))
+-  Fix remove unused import ([#6676](https://github.com/marmelab/react-admin/pull/6676)) ([WiXSL](https://github.com/WiXSL))
+-  Fix react import ([#6677](https://github.com/marmelab/react-admin/pull/6677)) ([WiXSL](https://github.com/WiXSL))
+-  [Feature] Returns `error` from controllers & add support for custom `onFailure` on `useShowController` ([#6680](https://github.com/marmelab/react-admin/pull/6680)) ([djhi](https://github.com/djhi))
+
 ## v3.18.3
 
 - Fix custom menus do not shrink when sidebar is closed (#6635) ([djhi](https://github.com/djhi))
