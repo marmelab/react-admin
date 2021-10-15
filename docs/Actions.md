@@ -726,7 +726,7 @@ redirect('edit', '/posts', 1);
 redirect('create', '/posts');
 ```
 
-Note that `useRedirect` doesn't allow to redirect to pages outside the current React app. For that, you should use `document.location`.
+Note that `useRedirect` allows to redirect to pages outside the current React app.
 
 ### `useRefresh`
 
@@ -926,11 +926,11 @@ const ApproveButton = ({ record }) => {
 };
 ```
 
-**Tip**: When using the Data Provider hooks for regular pages (List, Edit, etc), react-admin always specifies a custom action name, related to the component asking for the data. For instance, in the `<List>` page, the action is called `CRUD_GET_LIST`. So unless you call the Data Provider hooks yourself, no `CUSTOM_FETCH` action should be dispatched.
+**Tip**: When using the Data Provider hooks for regular pages (List, Edit, etc.), react-admin always specifies a custom action name, related to the component asking for the data. For instance, in the `<List>` page, the action is called `CRUD_GET_LIST`. So unless you call the Data Provider hooks yourself, no `CUSTOM_FETCH` action should be dispatched.
 
 ## Legacy Components: `<Query>`, `<Mutation>`, and `withDataProvider`
 
-Before react had hooks, react-admin used render props and higher order components to provide the same functionality. Legacy code will likely contain instances of `<Query>`, `<Mutation>`, and `withDataProvider`. Their syntax, which is identical to their hook counterpart, is illustrated below.
+Before `React` had hooks, react-admin used render props and higher order components to provide the same functionality. Legacy code will likely contain instances of `<Query>`, `<Mutation>`, and `withDataProvider`. Their syntax, which is identical to their hook counterpart, is illustrated below.
 
 You can fetch and display a user profile using the `<Query>` component, which uses render props:
 
