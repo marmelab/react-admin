@@ -156,8 +156,8 @@ const Root = styled('div', { name: PREFIX })(({ theme }) => ({
     [`& .${SingleFieldListClasses.root}`]: {
         display: 'flex',
         flexWrap: 'wrap',
-        marginTop: -theme.spacing(1),
-        marginBottom: -theme.spacing(1),
+        marginTop: theme.spacing(-1),
+        marginBottom: theme.spacing(-1),
     },
 
     [`& .${SingleFieldListClasses.link}`]: {

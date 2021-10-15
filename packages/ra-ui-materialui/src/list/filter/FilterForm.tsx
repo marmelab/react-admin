@@ -217,7 +217,7 @@ export const FilterFormClasses = {
 
 const StyledForm = styled('form', { name: PREFIX })(({ theme }) => ({
     [`&.${FilterFormClasses.form}`]: {
-        marginTop: -theme.spacing(2),
+        marginTop: theme.spacing(-2),
         paddingTop: 0,
         display: 'flex',
         alignItems: 'flex-end',

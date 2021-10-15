@@ -256,7 +256,7 @@ const Root = styled('div', { name: PREFIX })(({ theme }) => ({
     },
 
     [`& .${ListClasses.bulkActionsDisplayed}`]: {
-        marginTop: -theme.spacing(8),
+        marginTop: theme.spacing(-8),
         transition: theme.transitions.create('margin-top'),
     },
 
