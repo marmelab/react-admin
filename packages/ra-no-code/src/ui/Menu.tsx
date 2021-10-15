@@ -87,7 +87,6 @@ export interface MenuProps {
     dense?: boolean;
     hasDashboard?: boolean;
     logout?: ReactNode;
-    onMenuClick?: () => void;
 }
 
 Menu.propTypes = {
@@ -95,9 +94,4 @@ Menu.propTypes = {
     dense: PropTypes.bool,
     hasDashboard: PropTypes.bool,
     logout: PropTypes.element,
-    onMenuClick: PropTypes.func,
-};
-
-Menu.defaultProps = {
-    onMenuClick: () => null,
 };
