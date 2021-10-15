@@ -4,8 +4,7 @@ import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 
 export const crudGetOne = (
     resource: string,
-    id: Identifier,
-    basePath: string
+    id: Identifier
 ): CrudGetOneAction => ({
     type: CRUD_GET_ONE,
     payload: { id },
@@ -35,7 +34,6 @@ export interface CrudGetOneLoadingAction {
     readonly payload: RequestPayload;
     readonly meta: {
         resource: string;
-        basePath: string;
     };
 }
 

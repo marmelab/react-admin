@@ -5,8 +5,7 @@ import { FETCH_END, FETCH_ERROR } from '../fetchActions';
 export const crudUpdateMany = (
     resource: string,
     ids: Identifier[],
-    data: any,
-    basePath: string
+    data: any
 ): CrudUpdateManyAction => ({
     type: CRUD_UPDATE_MANY,
     payload: { ids, data },
