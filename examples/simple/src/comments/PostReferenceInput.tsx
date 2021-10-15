@@ -3,7 +3,6 @@ import { styled } from '@mui/material/styles';
 import { Fragment, useState, useCallback } from 'react';
 import { FormSpy, useForm } from 'react-final-form';
 
-import { makeStyles } from '@mui/styles';
 import {
     Button,
     Dialog,
@@ -23,7 +22,6 @@ const classes = {
     button: `${PREFIX}-button`,
 };
 
-// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
 const Root = styled('div')({
     [`& .${classes.button}`]: {
         margin: '10px 24px',
