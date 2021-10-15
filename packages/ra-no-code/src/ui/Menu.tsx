@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { ReactNode } from 'react';
+import { ReactNode, FC } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import lodashGet from 'lodash/get';
@@ -46,7 +46,7 @@ const Root = styled('div')(({ theme }) => ({
 export const MENU_WIDTH = 240;
 export const CLOSED_MENU_WIDTH = 55;
 
-export const Menu = (props: MenuProps) => {
+export const Menu: FC<MenuProps> = (props: MenuProps) => {
     const { className, dense, hasDashboard, ...rest } = props;
     const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
     const [resources] = useResourcesConfiguration();
