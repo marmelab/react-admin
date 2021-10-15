@@ -52,10 +52,7 @@ export const StyledTable = styled(Table, { name: PREFIX })(({ theme }) => ({
         padding: 0,
         width: theme.spacing(6),
     },
-    [`& .${DatagridClasses.expandedPanel}`]: {
-        padding: 0,
-        width: theme.spacing(6),
-    },
+    [`& .${DatagridClasses.expandedPanel}`]: {},
     [`& .${DatagridClasses.expandIconCell}`]: {
         width: theme.spacing(6),
     },
