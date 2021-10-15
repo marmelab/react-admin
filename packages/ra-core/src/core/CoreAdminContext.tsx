@@ -29,7 +29,6 @@ export type ChildrenFunction = () => ComponentType[];
 export interface AdminContextProps {
     authProvider?: AuthProvider | LegacyAuthProvider;
     children?: AdminChildren;
-    customSagas?: any[];
     customReducers?: object;
     customRoutes?: CustomRoutes;
     dashboard?: DashboardComponent;
@@ -48,7 +47,6 @@ const CoreAdminContext = (props: AdminContextProps) => {
         children,
         history,
         customReducers,
-        customSagas,
         initialState,
     } = props;
     const reduxIsAlreadyInitialized = !!useContext(ReactReduxContext);
@@ -93,7 +91,6 @@ React-admin requires a valid dataProvider function to work.`);
             ? createAdminStore({
                   authProvider: finalAuthProvider,
                   customReducers,
-                  customSagas,
                   dataProvider: finalDataProvider,
                   initialState,
                   history: finalHistory,

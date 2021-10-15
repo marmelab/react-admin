@@ -1,32 +1,16 @@
 import { Identifier, Record } from '../../types';
 import { GET_ONE } from '../../core';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
-import {
-    NotificationSideEffect,
-    RedirectionSideEffect,
-    RefreshSideEffect,
-} from '../../sideEffect';
 
 export const crudGetOne = (
     resource: string,
-    id: Identifier,
-    basePath: string,
-    refresh: RefreshSideEffect = true
+    id: Identifier
 ): CrudGetOneAction => ({
     type: CRUD_GET_ONE,
     payload: { id },
     meta: {
         resource,
         fetch: GET_ONE,
-        basePath,
-        onFailure: {
-            notification: {
-                body: 'ra.notification.item_doesnt_exist',
-                level: 'warning',
-            },
-            redirectTo: 'list',
-            refresh,
-        },
     },
 });
 
@@ -41,12 +25,6 @@ export interface CrudGetOneAction {
     readonly meta: {
         resource: string;
         fetch: typeof GET_ONE;
-        basePath: string;
-        onFailure: {
-            notification: NotificationSideEffect;
-            redirectTo: RedirectionSideEffect;
-            refresh: RefreshSideEffect;
-        };
     };
 }
 
@@ -56,7 +34,6 @@ export interface CrudGetOneLoadingAction {
     readonly payload: RequestPayload;
     readonly meta: {
         resource: string;
-        basePath: string;
     };
 }
 
@@ -68,9 +45,6 @@ export interface CrudGetOneFailureAction {
     readonly requestPayload: RequestPayload;
     readonly meta: {
         resource: string;
-        notification: NotificationSideEffect;
-        redirectTo: RedirectionSideEffect;
-        refresh: RefreshSideEffect;
         fetchResponse: typeof GET_ONE;
         fetchStatus: typeof FETCH_ERROR;
     };

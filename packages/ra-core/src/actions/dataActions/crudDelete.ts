@@ -1,43 +1,17 @@
 import { Identifier, Record } from '../../types';
 import { DELETE } from '../../core';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
-import {
-    NotificationSideEffect,
-    RedirectionSideEffect,
-    RefreshSideEffect,
-} from '../../sideEffect';
 
 export const crudDelete = (
     resource: string,
     id: Identifier,
-    previousData: Record,
-    basePath: string,
-    redirectTo: RedirectionSideEffect = 'list',
-    refresh: RefreshSideEffect = true
+    previousData: Record
 ): CrudDeleteAction => ({
     type: CRUD_DELETE,
     payload: { id, previousData },
     meta: {
         resource,
         fetch: DELETE,
-        onSuccess: {
-            notification: {
-                body: 'ra.notification.deleted',
-                level: 'info',
-                messageArgs: {
-                    smart_count: 1,
-                },
-            },
-            refresh,
-            redirectTo,
-            basePath,
-        },
-        onFailure: {
-            notification: {
-                body: 'ra.notification.http_error',
-                level: 'warning',
-            },
-        },
     },
 });
 
@@ -53,15 +27,6 @@ export interface CrudDeleteAction {
     readonly meta: {
         resource: string;
         fetch: typeof DELETE;
-        onSuccess: {
-            notification: NotificationSideEffect;
-            redirectTo: RedirectionSideEffect;
-            refresh: RefreshSideEffect;
-            basePath: string;
-        };
-        onFailure: {
-            notification: NotificationSideEffect;
-        };
     };
 }
 
@@ -82,7 +47,6 @@ export interface CrudDeleteFailureAction {
     readonly requestPayload: RequestPayload;
     readonly meta: {
         resource: string;
-        notification: NotificationSideEffect;
         fetchResponse: typeof CRUD_DELETE;
         fetchStatus: typeof FETCH_ERROR;
     };
@@ -97,10 +61,6 @@ export interface CrudDeleteSuccessAction {
     readonly requestPayload: RequestPayload;
     readonly meta: {
         resource: string;
-        notification: NotificationSideEffect;
-        redirectTo: RedirectionSideEffect;
-        refresh: RefreshSideEffect;
-        basePath: string;
         fetchResponse: typeof CRUD_DELETE;
         fetchStatus: typeof FETCH_END;
     };

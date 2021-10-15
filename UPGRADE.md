@@ -1,3 +1,17 @@
+# Upgrade to 4.0
+
+## Redux-Saga Was Removed
+
+The use of sagas has been deprecated for a while. React-admin v4 doesn't support them anymore. That means that the Redux actions don't include meta parameters anymore to trigger sagas, the Redux store doesn't include the saga middleware, and the saga-based side effects were removed.
+
+In particular, the data action creators (like `crudGetList`) don't support the `onSuccess` and `onFailure` callbacks anymore. You should use the related data provider hook (e.g. `useGetList`) instead.
+
+If you still relied on sagas, you have to port your saga code to react `useEffect`, which is the standard way to write side effects in modern react.
+
+## Removed Deprecated Elements
+
+- Removed `<BulkDeleteAction>` (use `<BulkDeleteButton>` instead)
+
 # Upgrade to 3.0
 
 We took advantage of the major release to fix all the problems in react-admin that required a breaking change. As a consequence, you'll need to do many small changes in the code of existing react-admin v2 applications. Follow this step-by-step guide to upgrade to react-admin v3.

@@ -1,7 +1,5 @@
 import { createStore, compose, applyMiddleware } from 'redux';
 import { routerMiddleware } from 'connected-react-router';
-import createSagaMiddleware from 'redux-saga';
-import { all, fork } from 'redux-saga/effects';
 import { History } from 'history';
 
 import {
@@ -11,7 +9,6 @@ import {
     InitialState,
 } from '../types';
 import createAppReducer from '../reducer';
-import { adminSaga } from '../sideEffect';
 import { CLEAR_STATE } from '../actions/clearActions';
 
 interface Window {
@@ -23,7 +20,6 @@ interface Params {
     history: History;
     authProvider?: AuthProvider;
     customReducers?: any;
-    customSagas?: any[];
     i18nProvider?: I18nProvider;
     initialState?: InitialState;
     locale?: string;
@@ -34,7 +30,6 @@ export default ({
     history,
     customReducers = {},
     authProvider = null,
-    customSagas = [],
     initialState,
 }: Params) => {
     const appReducer = createAppReducer(customReducers, history);
@@ -57,12 +52,6 @@ export default ({
                   },
             action
         );
-    const saga = function* rootSaga() {
-        yield all(
-            [adminSaga(dataProvider, authProvider), ...customSagas].map(fork)
-        );
-    };
-    const sagaMiddleware = createSagaMiddleware();
     const typedWindow = typeof window !== 'undefined' && (window as Window);
 
     const composeEnhancers =
@@ -78,10 +67,7 @@ export default ({
     const store = createStore(
         resettableAppReducer,
         typeof initialState === 'function' ? initialState() : initialState,
-        composeEnhancers(
-            applyMiddleware(sagaMiddleware, routerMiddleware(history))
-        )
+        composeEnhancers(applyMiddleware(routerMiddleware(history)))
     );
-    sagaMiddleware.run(saga);
     return store;
 };

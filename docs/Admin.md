@@ -38,7 +38,6 @@ Here are all the props accepted by the component:
 - [`theme`](#theme)
 - [`layout`](#layout)
 - [`customReducers`](#customreducers)
-- [`customSagas`](#customsagas)
 - [`customRoutes`](#customroutes)
 - [`loginPage`](#loginpage)
 - [`logoutButton`](#logoutbutton)
@@ -384,42 +383,6 @@ Now the state will look like:
     "routing": { /*...*/ }, // used by connected-react-router
     "bitcoinRate": 123, // managed by rateReducer
 }
-```
-
-## `customSagas`
-
-The `<Admin>` app uses [redux-saga](https://github.com/redux-saga/redux-saga) to handle side effects (AJAX calls, notifications, redirections, etc).
-
-If your components dispatch custom actions, you probably need to register your own side effects as sagas. Let's imagine that you want to show a notification whenever the `BITCOIN_RATE_RECEIVED` action is dispatched. You probably have a saga looking like the following:
-
-```jsx
-// in src/bitcoinSaga.js
-import { put, takeEvery } from 'redux-saga/effects';
-import { showNotification } from 'react-admin';
-
-export default function* bitcoinSaga() {
-    yield takeEvery('BITCOIN_RATE_RECEIVED', function* () {
-        yield put(showNotification('Bitcoin rate updated'));
-    })
-}
-```
-
-To register this saga in the `<Admin>` app, simply pass it in the `customSagas` prop:
-
-```jsx
-// in src/App.js
-import * as React from "react";
-import { Admin } from 'react-admin';
-
-import bitcoinSaga from './bitcoinSaga';
-
-const App = () => (
-    <Admin customSagas={[ bitcoinSaga ]} dataProvider={simpleRestProvider('http://path.to.my.api')}>
-        ...
-    </Admin>
-);
-
-export default App;
 ```
 
 ## `customRoutes`

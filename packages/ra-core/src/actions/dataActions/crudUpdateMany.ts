@@ -1,38 +1,17 @@
 import { Identifier } from '../../types';
 import { UPDATE_MANY } from '../../core';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
-import { NotificationSideEffect, RefreshSideEffect } from '../../sideEffect';
 
 export const crudUpdateMany = (
     resource: string,
     ids: Identifier[],
-    data: any,
-    basePath: string,
-    refresh: RefreshSideEffect = true
+    data: any
 ): CrudUpdateManyAction => ({
     type: CRUD_UPDATE_MANY,
     payload: { ids, data },
     meta: {
         resource,
         fetch: UPDATE_MANY,
-        onSuccess: {
-            notification: {
-                body: 'ra.notification.updated',
-                level: 'info',
-                messageArgs: {
-                    smart_count: ids.length,
-                },
-            },
-            basePath,
-            refresh,
-            unselectAll: true,
-        },
-        onFailure: {
-            notification: {
-                body: 'ra.notification.http_error',
-                level: 'warning',
-            },
-        },
     },
 });
 
@@ -48,15 +27,6 @@ export interface CrudUpdateManyAction {
     readonly meta: {
         resource: string;
         fetch: typeof UPDATE_MANY;
-        onSuccess: {
-            notification: NotificationSideEffect;
-            refresh: RefreshSideEffect;
-            basePath: string;
-            unselectAll: boolean;
-        };
-        onFailure: {
-            notification: NotificationSideEffect;
-        };
     };
 }
 
@@ -77,7 +47,6 @@ export interface CrudUpdateManyFailureAction {
     readonly requestPayload: RequestPayload;
     readonly meta: {
         resource: string;
-        notification: NotificationSideEffect;
         fetchResponse: typeof UPDATE_MANY;
         fetchStatus: typeof FETCH_ERROR;
     };
@@ -92,10 +61,6 @@ export interface CrudUpdateManySuccessAction {
     readonly requestPayload: RequestPayload;
     readonly meta: {
         resource: string;
-        notification: NotificationSideEffect;
-        refresh: RefreshSideEffect;
-        basePath: string;
-        unselectAll: boolean;
         fetchResponse: typeof UPDATE_MANY;
         fetchStatus: typeof FETCH_END;
     };

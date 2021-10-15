@@ -1,44 +1,18 @@
 import { Identifier, Record } from '../../types';
 import { UPDATE } from '../../core';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
-import {
-    NotificationSideEffect,
-    RedirectionSideEffect,
-    RefreshSideEffect,
-} from '../../sideEffect';
 
 export const crudUpdate = (
     resource: string,
     id: Identifier,
     data: any,
-    previousData: any,
-    basePath: string,
-    redirectTo: RedirectionSideEffect = 'show',
-    refresh: RefreshSideEffect = true
+    previousData: any
 ): CrudUpdateAction => ({
     type: CRUD_UPDATE,
     payload: { id, data, previousData },
     meta: {
         resource,
         fetch: UPDATE,
-        onSuccess: {
-            notification: {
-                body: 'ra.notification.updated',
-                level: 'info',
-                messageArgs: {
-                    smart_count: 1,
-                },
-            },
-            refresh,
-            redirectTo,
-            basePath,
-        },
-        onFailure: {
-            notification: {
-                body: 'ra.notification.http_error',
-                level: 'warning',
-            },
-        },
     },
 });
 
@@ -55,15 +29,6 @@ export interface CrudUpdateAction {
     readonly meta: {
         resource: string;
         fetch: typeof UPDATE;
-        onSuccess: {
-            notification: NotificationSideEffect;
-            redirectTo: RedirectionSideEffect;
-            refresh: RefreshSideEffect;
-            basePath: string;
-        };
-        onFailure: {
-            notification: NotificationSideEffect;
-        };
     };
 }
 
@@ -84,7 +49,6 @@ export interface CrudUpdateFailureAction {
     readonly requestPayload: RequestPayload;
     readonly meta: {
         resource: string;
-        notification: NotificationSideEffect;
         fetchResponse: typeof UPDATE;
         fetchStatus: typeof FETCH_ERROR;
     };
@@ -99,10 +63,6 @@ export interface CrudUpdateSuccessAction {
     readonly requestPayload: RequestPayload;
     readonly meta: {
         resource: string;
-        notification: NotificationSideEffect;
-        redirectTo: RedirectionSideEffect;
-        refresh: RefreshSideEffect;
-        basePath: string;
         fetchResponse: typeof UPDATE;
         fetchStatus: typeof FETCH_END;
     };

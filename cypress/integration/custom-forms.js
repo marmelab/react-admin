@@ -7,7 +7,7 @@ describe('Custom Forms', () => {
 
     beforeEach(() => CreatePage.navigate());
 
-    it('should allows to preview the selected post', () => {
+    it('should allow to preview the selected post', () => {
         cy.get(CreatePage.elements.postSelect).click();
         cy.get(CreatePage.elements.postItem(12)).click();
 
@@ -21,7 +21,7 @@ describe('Custom Forms', () => {
         cy.get(CreatePage.elements.modalCloseButton).click();
     });
 
-    it('should allows to create a new post', () => {
+    it('should allow to create a new post', () => {
         cy.get(CreatePage.elements.showPostCreateModalButton).click();
 
         CreatePage.setInputValue('input', 'title', 'Bazinga!');

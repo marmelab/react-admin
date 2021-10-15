@@ -27,7 +27,6 @@
         "watch": "tsc --outDir esm --module es2015 --watch"
     },
     "devDependencies": {
-        "@redux-saga/testing-utils": "^1.0.2",
         "@types/history": "^4.7.2",
         "@types/node-polyglot": "^0.4.31",
         "@types/query-string": "5.1.0",

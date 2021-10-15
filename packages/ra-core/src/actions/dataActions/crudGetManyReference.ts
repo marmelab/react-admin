@@ -6,7 +6,6 @@ import {
 } from '../../types';
 import { GET_MANY_REFERENCE } from '../../core';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
-import { NotificationSideEffect } from '../../sideEffect';
 
 export const crudGetManyReference = (
     reference: string,
@@ -24,12 +23,6 @@ export const crudGetManyReference = (
         resource: reference,
         relatedTo,
         fetch: GET_MANY_REFERENCE,
-        onFailure: {
-            notification: {
-                body: 'ra.notification.http_error',
-                level: 'warning',
-            },
-        },
     },
 });
 
@@ -50,9 +43,6 @@ export interface CrudGetManyReferenceAction {
         resource: string;
         fetch: typeof GET_MANY_REFERENCE;
         relatedTo: string;
-        onFailure: {
-            notification: NotificationSideEffect;
-        };
     };
 }
 
@@ -77,7 +67,6 @@ export interface CrudGetManyReferenceFailureAction {
     readonly meta: {
         resource: string;
         relatedTo: string;
-        notification: NotificationSideEffect;
         fetchResponse: typeof GET_MANY_REFERENCE;
         fetchStatus: typeof FETCH_ERROR;
     };
