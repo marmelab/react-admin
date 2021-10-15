@@ -736,7 +736,7 @@ redirect('edit', '/post', 1, {}, { record: { post_id: record.id } });
 redirect(false);
 ```
 
-Note that `useRedirect` allows to redirect to pages outside the current React app.
+Note that `useRedirect` allows redirection to an absolute url outside the current React app.
 
 ### `useRefresh`
 
