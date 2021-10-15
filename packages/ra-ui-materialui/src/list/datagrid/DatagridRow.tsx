@@ -41,7 +41,12 @@ const computeNbColumns = (expand, children, hasBulkActions) =>
           React.Children.toArray(children).filter(child => !!child).length // non-null children
         : 0; // we don't need to compute columns if there is no expand panel;
 
-const defaultClasses = { expandIconCell: '', checkbox: '', rowCell: '' };
+const defaultClasses = {
+    expandIconCell: '',
+    checkbox: '',
+    rowCell: '',
+    expandedPanel: '',
+};
 
 const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
     const {
@@ -204,7 +209,11 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                 )}
             </TableRow>
             {expandable && expanded && (
-                <TableRow key={`${id}-expand`} id={`${id}-expand`}>
+                <TableRow
+                    key={`${id}-expand`}
+                    id={`${id}-expand`}
+                    className={classes.expandedPanel}
+                >
                     <TableCell colSpan={nbColumns}>
                         {isValidElement(expand)
                             ? cloneElement(expand, {
