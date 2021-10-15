@@ -4,5 +4,5 @@
     "examples/data-generator",
     "packages/*"
   ],
-  "version": "3.18.3"
+  "version": "4.0.0-alpha.0"
 }

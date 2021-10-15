@@ -1,6 +1,6 @@
 {
     "name": "ra-ui-materialui",
-    "version": "3.18.3",
+    "version": "4.0.0-alpha.0",
     "description": "UI Components for react-admin with MaterialUI",
     "files": [
         "*.md",
@@ -26,8 +26,8 @@
         "watch": "tsc --outDir esm --module es2015 --watch"
     },
     "devDependencies": {
-        "@mui/material": "^5.0.2",
         "@mui/icons-material": "^5.0.1",
+        "@mui/material": "^5.0.2",
         "@testing-library/react": "^11.2.3",
         "@types/query-string": "5.1.0",
         "cross-env": "^5.2.0",
@@ -35,8 +35,8 @@
         "final-form": "^4.20.2",
         "final-form-arrays": "^3.0.2",
         "ignore-styles": "~5.0.1",
-        "ra-core": "^3.18.3",
-        "ra-test": "^3.18.3",
+        "ra-core": "^4.0.0-alpha.0",
+        "ra-test": "^4.0.0-alpha.0",
         "react": "^17.0.0",
         "react-dom": "^17.0.0",
         "react-final-form": "^6.5.2",
@@ -49,8 +49,8 @@
         "rimraf": "^2.6.3"
     },
     "peerDependencies": {
-        "@mui/material": "^5.0.2",
         "@mui/icons-material": "^5.0.1",
+        "@mui/material": "^5.0.2",
         "final-form": "^4.20.2",
         "final-form-arrays": "^3.0.2",
         "ra-core": "^3.14.0",

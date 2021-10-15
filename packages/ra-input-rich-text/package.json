@@ -1,6 +1,6 @@
 {
     "name": "ra-input-rich-text",
-    "version": "3.18.3",
+    "version": "4.0.0-alpha.0",
     "description": "<RichTextInput> component for react-admin, useful for editing HTML code in admin GUIs.",
     "main": "lib/index.js",
     "module": "esm/index.js",
@@ -53,8 +53,8 @@
     },
     "devDependencies": {
         "@types/prop-types": "^15.6.0",
-        "ra-core": "^3.18.3",
-        "ra-ui-materialui": "^3.18.3",
+        "ra-core": "^4.0.0-alpha.0",
+        "ra-ui-materialui": "^4.0.0-alpha.0",
         "rimraf": "^2.6.3"
     }
 }
