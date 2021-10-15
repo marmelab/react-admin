@@ -43,8 +43,6 @@ export const Menu = (props: MenuProps) => {
             </>
         ),
         className,
-        onMenuClick = DefaultMenuClick,
-        logout,
         ...rest
     } = props;
 
@@ -72,25 +70,13 @@ export interface MenuProps {
     className?: string;
     dense?: boolean;
     hasDashboard?: boolean;
-    /**
-     * @deprecated
-     */
-    logout?: ReactNode;
-    /**
-     * @deprecated
-     */
-    onMenuClick?: () => void;
 }
 
 Menu.propTypes = {
     className: PropTypes.string,
     dense: PropTypes.bool,
     hasDashboard: PropTypes.bool,
-    logout: PropTypes.element,
-    onMenuClick: PropTypes.func,
 };
-
-const DefaultMenuClick = () => null;
 
 const PREFIX = 'RaMenu';
 
