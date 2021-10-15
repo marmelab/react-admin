@@ -74,12 +74,6 @@ const Query: FunctionComponent<QueryProps> = ({
     // Provides an undefined onSuccess just so the key `onSuccess` is defined
     // This is used to detect options in useDataProvider
     options = { onSuccess: undefined },
-}) =>
-    children(
-        useQuery(
-            { type, resource, payload },
-            { ...options, withDeclarativeSideEffectsSupport: true }
-        )
-    );
+}) => children(useQuery({ type, resource, payload }, options));
 
 export default Query;
