@@ -96,7 +96,7 @@ const Root = styled(Toolbar, { name: PREFIX })(({ theme }) => ({
         justifyContent: 'space-between',
         backgroundColor:
             theme.palette.mode === 'light'
-                ? alpha(theme.palette.primary.light, 0.85)
+                ? alpha(theme.palette.primary.light, 0.15)
                 : theme.palette.primary.dark,
         minHeight: theme.spacing(8),
         height: theme.spacing(8),
