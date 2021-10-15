@@ -710,10 +710,12 @@ const DashboardButton = () => {
 };
 ```
 
-The callback takes 3 arguments:
- - the page to redirect the user to ('list', 'create', 'edit', 'show', or a custom path)
- - the current `basePath`
- - the `id` of the record to redirect to (if any)
+The callback takes 5 arguments:
+ - The page to redirect the user to ('list', 'create', 'edit', 'show', a function or a custom path)
+ - The current `basePath`
+ - The `id` of the record to redirect to (if any)
+ - A record like object to be passed to the first argument, when the first argument is a function
+ - A `state` to be set to the location
 
 Here are more examples of `useRedirect` calls: 
 
@@ -724,6 +726,14 @@ redirect('list', '/posts');
 redirect('edit', '/posts', 1);
 // redirect to the post creation page:
 redirect('create', '/posts');
+// redirect to the result of a function
+redirect((redirectTo, basePath, id, data) => { 
+    return  id > 1 ? '/posts' : '/comments';
+}, '/posts', 1, {});
+// redirect to edit view with state data
+redirect('edit', '/post', 1, {}, { record: { post_id: record.id } });
+// do not redirect (resets the record form)
+redirect(false);
 ```
 
 Note that `useRedirect` allows to redirect to pages outside the current React app.
