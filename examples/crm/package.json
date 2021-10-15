@@ -11,9 +11,9 @@
         "faker": "~5.4.0",
         "lodash": "~4.17.5",
         "prop-types": "^15.7.2",
-        "ra-data-fakerest": "^3.13.4",
+        "ra-data-fakerest": "^4.0.0-alpha.0",
         "react": "^17.0.0",
-        "react-admin": "^3.15.0",
+        "react-admin": "^4.0.0-alpha.0",
         "react-beautiful-dnd": "^13.0.0",
         "react-dom": "^17.0.0",
         "react-scripts": "^4.0.1"
