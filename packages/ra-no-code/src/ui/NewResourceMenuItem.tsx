@@ -43,7 +43,6 @@ export const NewResourceMenuItem = (
         event: MouseEvent<HTMLAnchorElement> & MouseEvent<HTMLLIElement>
     ) => {
         setShowImportResourceDialog(true);
-        props.onClick(event);
     };
 
     const handleCloseImportNewResourceDialog = () => {

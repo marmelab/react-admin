@@ -54,7 +54,7 @@ const exporter = posts => {
     jsonExport(data, (err, csv) => downloadCSV(csv, 'posts'));
 };
 
-const useStyles = styled(Datagrid)(({ theme }) => ({
+const StyledDatagrid = styled(Datagrid)(({ theme }) => ({
     '& .title': {
         maxWidth: '20em',
         overflow: 'hidden',
@@ -124,7 +124,11 @@ const PostList = props => {
                     }
                 />
             ) : (
-                <Datagrid rowClick={rowClick} expand={PostPanel} optimized>
+                <StyledDatagrid
+                    rowClick={rowClick}
+                    expand={PostPanel}
+                    optimized
+                >
                     <TextField source="id" />
                     <TextField source="title" cellClassName="title" />
                     <DateField
@@ -156,7 +160,7 @@ const PostList = props => {
                         <EditButton />
                         <ShowButton />
                     </PostListActionToolbar>
-                </Datagrid>
+                </StyledDatagrid>
             )}
         </List>
     );

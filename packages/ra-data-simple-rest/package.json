@@ -33,6 +33,6 @@
         "rimraf": "^2.6.3"
     },
     "peerDependencies": {
-        "ra-core": "^3.17.2"
+        "ra-core": "^4.0.0-alpha.0"
     }
 }
