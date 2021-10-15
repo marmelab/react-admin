@@ -22,8 +22,8 @@ const Root = styled('div')(({ theme }) => ({
 
     [`& .${classes.avatar}`]: {
         marginRight: theme.spacing(1),
-        marginTop: -theme.spacing(0.5),
-        marginBottom: -theme.spacing(0.5),
+        marginTop: theme.spacing(-0.5),
+        marginBottom: theme.spacing(-0.5),
     },
 }));
 
