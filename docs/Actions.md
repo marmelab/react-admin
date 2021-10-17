@@ -731,7 +731,7 @@ redirect((redirectTo, basePath, id, data) => {
     return  id > 1 ? '/posts' : '/comments';
 }, '/posts', 1, {});
 // redirect to edit view with state data
-redirect('edit', '/post', 1, {}, { record: { post_id: record.id } });
+redirect('edit', '/posts', 1, {}, { record: { post_id: record.id } });
 // do not redirect (resets the record form)
 redirect(false);
 ```
