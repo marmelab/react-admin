@@ -68,7 +68,7 @@ The `dataProvider` is also the ideal place to add custom HTTP headers, authentic
 
 ## `authProvider`
 
-The `authProvider` prop expect an object with 5 methods, each returning a Promise, to control the authentication strategy:
+The `authProvider` prop expect an object with 6 methods, each returning a Promise, to control the authentication strategy:
 
 ```jsx
 const authProvider = {
@@ -76,6 +76,7 @@ const authProvider = {
     logout: params => Promise.resolve(),
     checkAuth: params => Promise.resolve(),
     checkError: error => Promise.resolve(),
+    getIdentity: params => Promise.resolve(),
     getPermissions: params => Promise.resolve(),
 };
 
