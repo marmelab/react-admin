@@ -220,6 +220,35 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         [input.value, getSuggestionFromValue]
     );
 
+    const doesQueryMatchSuggestion = useMemo(() => {
+        if (isValidElement(optionText)) {
+            return choices.some(choice => matchSuggestion(filterValue, choice));
+        }
+
+        const isFunction = typeof optionText === 'function';
+
+        if (isFunction) {
+            const hasOption = choices.some(choice => {
+                const text = optionText(choice) as string;
+
+                return get(choice, text) === filterValue;
+            });
+
+            const selectedItemText = optionText(selectedItem);
+
+            return hasOption || selectedItemText === filterValue;
+        }
+
+        const selectedItemText = get(selectedItem, optionText);
+        const hasOption = choices.some(choice => {
+            return get(choice, optionText) === filterValue;
+        });
+
+        return selectedItemText === filterValue || hasOption;
+    }, [choices, optionText, filterValue, matchSuggestion, selectedItem]);
+
+    const shouldAllowCreate = !doesQueryMatchSuggestion;
+
     const { getChoiceText, getChoiceValue, getSuggestions } = useSuggestions({
         allowEmpty,
         choices,
@@ -293,6 +322,8 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                 ? inputText(getChoiceText(selectedItem).props.record)
                 : getChoiceText(selectedItem)
         );
+
+        inputEl.current.blur();
     }, [
         input.value,
         handleFilterChange,
@@ -503,7 +534,9 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                     });
                     const suggestions = [
                         ...getSuggestions(filterValue),
-                        ...(onCreate || create ? [getCreateItem()] : []),
+                        ...((onCreate || create) && shouldAllowCreate
+                            ? [getCreateItem()]
+                            : []),
                     ];
 
                     return (

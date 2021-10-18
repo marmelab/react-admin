@@ -15,14 +15,13 @@ import {
     useTranslate,
 } from 'ra-core';
 
-export const Notification = (
-    props: NotificationProps & Omit<SnackbarProps, 'open'>
-) => {
+export const Notification = (props: NotificationProps) => {
     const {
         classes: classesOverride,
         type = 'info',
         autoHideDuration = 4000,
         className,
+        multiLine,
         ...rest
     } = props;
     const [open, setOpen] = useState(false);
@@ -71,7 +70,8 @@ export const Notification = (
                     NotificationClasses[
                         (notification && notification.type) || type
                     ],
-                    className
+                    className,
+                    { [NotificationClasses.multiLine]: multiLine }
                 ),
             }}
             action={
@@ -93,6 +93,8 @@ export const Notification = (
 
 Notification.propTypes = {
     type: PropTypes.string,
+    autoHideDuration: PropTypes.number,
+    multiLine: PropTypes.bool,
 };
 
 const PREFIX = 'RaNotification';
@@ -102,6 +104,7 @@ export const NotificationClasses = {
     error: `${PREFIX}-error`,
     warning: `${PREFIX}-warning`,
     undo: `${PREFIX}-undo`,
+    multiLine: `${PREFIX}-multiLine`,
 };
 
 const StyledButton = styled(Button, { name: PREFIX })(
@@ -127,9 +130,13 @@ const StyledButton = styled(Button, { name: PREFIX })(
                     ? theme.palette.success.contrastText
                     : theme.palette.primary.light,
         },
+        [`& .${NotificationClasses.multiLine}`]: {
+            whiteSpace: 'pre-wrap',
+        },
     })
 );
 
-export interface NotificationProps {
+export interface NotificationProps extends Omit<SnackbarProps, 'open'> {
     type?: string;
+    multiLine?: boolean;
 }

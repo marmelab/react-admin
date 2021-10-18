@@ -49,6 +49,7 @@ export interface EditControllerProps<RecordType extends Record = Record> {
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
     data?: RecordType;
+    error?: any;
     defaultTitle: string;
     hasCreate?: boolean;
     hasEdit?: boolean;
@@ -138,18 +139,16 @@ export const useEditController = <RecordType extends Record = Record>(
         setTransform,
     } = useSaveModifiers({ onSuccess, onFailure, transform });
 
-    const { data: record, loading, loaded, refetch } = useGetOne<RecordType>(
-        resource,
-        id,
-        {
-            action: CRUD_GET_ONE,
-            onFailure: () => {
-                notify('ra.notification.item_doesnt_exist', 'warning');
-                redirect('list', basePath);
-                refresh();
-            },
-        }
-    );
+    const { data: record, error, loading, loaded, refetch } = useGetOne<
+        RecordType
+    >(resource, id, {
+        action: CRUD_GET_ONE,
+        onFailure: () => {
+            notify('ra.notification.item_doesnt_exist', 'warning');
+            redirect('list', basePath);
+            refresh();
+        },
+    });
 
     const getResourceLabel = useGetResourceLabel();
     const defaultTitle = translate('ra.page.edit', {
@@ -248,6 +247,7 @@ export const useEditController = <RecordType extends Record = Record>(
     );
 
     return {
+        error,
         loading,
         loaded,
         saving,

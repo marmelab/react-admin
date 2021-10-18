@@ -18,6 +18,7 @@ export const DatagridClasses = {
     expandIconCell: `${PREFIX}-expandIconCell`,
     expandIcon: `${PREFIX}-expandIcon`,
     expanded: `${PREFIX}-expanded`,
+    expandedPanel: `${PREFIX}-expandedPanel`,
 };
 
 export const StyledTable = styled(Table, { name: PREFIX })(({ theme }) => ({
@@ -64,4 +65,5 @@ export const StyledTable = styled(Table, { name: PREFIX })(({ theme }) => ({
     [`& .${DatagridClasses.expandIcon}.${DatagridClasses.expanded}`]: {
         transform: 'rotate(0deg)',
     },
+    [`& .${DatagridClasses.expandedPanel}`]: {},
 }));
