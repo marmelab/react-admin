@@ -967,7 +967,7 @@ You can replace `<DisabledInput>` with a disabled or read-only `TextInput`. For 
 +<TextInput source="id" disabled />
 ```
 
-See material-ui [`TextField` documentation](https://material-ui.com/components/text-fields/#textfield) for available options.
+See material-ui [`TextField` documentation](https://v4.mui.com/components/text-fields/#textfield) for available options.
 
 ## The SideBar Width Must Be Set Through The `theme`
 

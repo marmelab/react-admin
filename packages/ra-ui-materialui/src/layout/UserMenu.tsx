@@ -102,7 +102,7 @@ const UserMenu = (props: UserMenuProps) => {
                 anchorOrigin={AnchorOrigin}
                 transformOrigin={TransformOrigin}
                 // Make sure the menu is display under the button and not over the appbar
-                // See https://material-ui.com/components/menus/#customized-menus
+                // See https://v4.mui.com/components/menus/#customized-menus
                 getContentAnchorEl={null}
                 open={open}
                 onClose={handleClose}

@@ -111,7 +111,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 
 ![CustomBooleanInputCheckIcon](./img/custom-switch-icon.png)
 
-Refer to [Material UI Switch documentation](https://material-ui.com/api/switch) for more details.
+Refer to [Material UI Switch documentation](https://v4.mui.com/api/switch) for more details.
 
 `<NullableBooleanInput />` renders as a dropdown list, allowing choosing between `true`, `false`, and `null` values.
 
@@ -161,11 +161,11 @@ import { NullableBooleanInput } from 'react-admin';
 | ---------- | ------------------------------------------------------------- |
 | `input`    | Applied to the underlying Material UI's `TextField` component |
 
-To override the style of all instances of `<NullableBooleanInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaNullableBooleanInput` key.
+To override the style of all instances of `<NullableBooleanInput>` using the [material-ui style overrides](https://v4.mui.com/customization/globals/#css), use the `RaNullableBooleanInput` key.
 
 ### `<DateInput>`
 
-Ideal for editing dates, `<DateInput>` renders an HTML `<input type="date">` element, that most browsers display as a standard [Date Picker](https://material-ui.com/components/pickers/#date-pickers). 
+Ideal for editing dates, `<DateInput>` renders an HTML `<input type="date">` element, that most browsers display as a standard [Date Picker](https://v4.mui.com/components/pickers/#date-pickers). 
 
 ![DateInput](./img/date-input.gif)
 
@@ -185,7 +185,7 @@ import { DateInput } from 'react-admin';
 
 ### `<DateTimeInput>`
 
-An input for editing dates with time. `<DateTimeInput>` renders a standard browser [Date and Time Picker](https://material-ui.com/components/pickers/#date-amp-time-pickers), so the appearance depends on the browser (and falls back to a text input on safari).
+An input for editing dates with time. `<DateTimeInput>` renders a standard browser [Date and Time Picker](https://v4.mui.com/components/pickers/#date-amp-time-pickers), so the appearance depends on the browser (and falls back to a text input on safari).
 
 ![DateTimeInput](./img/date-time-input.gif)
 
@@ -258,7 +258,7 @@ Note that the image upload returns a [File](https://developer.mozilla.org/en/doc
 | `preview`       | Styles pass to the underlying `FileInput` component  |
 | `removeButton`  | Styles pass to the underlying `FileInput` component  |
 
-To override the style of all instances of `<ImageInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaImageInput` key.
+To override the style of all instances of `<ImageInput>` using the [material-ui style overrides](https://v4.mui.com/customization/globals/#css), use the `RaImageInput` key.
 
 ### `<FileInput>`
 
@@ -319,7 +319,7 @@ Note that the file upload returns a [File](https://developer.mozilla.org/en/docs
 | `preview`       | Applied to each children                                                          |
 | `removeButton`  | Applied to each of the Material UI's `IconButton` component used as remove button |
 
-To override the style of all instances of `<FileInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaFileInput` key.
+To override the style of all instances of `<FileInput>` using the [material-ui style overrides](https://v4.mui.com/customization/globals/#css), use the `RaFileInput` key.
 
 ### `<MarkdownInput>`
 
@@ -642,7 +642,7 @@ If you want to limit the initial choices shown to the current value only, you ca
 When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set).
 Ex. `<AutocompleteInput shouldRenderSuggestions={(val) => { return val.trim().length > 2 }} />` would not render any suggestions until the 3rd character has been entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
 
-`<AutocompleteInput>` renders a [material-ui `<TextField>` component](https://material-ui.com/api/text-field/). Use the `options` attribute to override any of the `<TextField>` attributes:
+`<AutocompleteInput>` renders a [material-ui `<TextField>` component](https://v4.mui.com/api/text-field/). Use the `options` attribute to override any of the `<TextField>` attributes:
 
 {% raw %}
 ```jsx
@@ -800,7 +800,7 @@ const CreateCategory = () => {
 | `container`            | Applied to the root element          |
 | `suggestionsContainer` | Applied to the suggestions container |
 
-To override the style of all instances of `<AutocompleteInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaAutocompleteInput` key.
+To override the style of all instances of `<AutocompleteInput>` using the [material-ui style overrides](https://v4.mui.com/customization/globals/#css), use the `RaAutocompleteInput` key.
 
 
 ### `<RadioButtonGroupInput>`
@@ -893,7 +893,7 @@ Lastly, use the `options` attribute if you want to override any of Material UI's
 ```
 {% endraw %}
 
-Refer to [Material UI RadioGroup documentation](https://material-ui.com/api/radio-group) for more details.
+Refer to [Material UI RadioGroup documentation](https://v4.mui.com/api/radio-group) for more details.
 
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<RadioButtonGroupInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
@@ -911,12 +911,12 @@ import { RadioButtonGroupInput, ReferenceInput } from 'react-admin';
 | ---------- | ------------------------------------------------------------- |
 | `label`    | Applied to the underlying Material UI's `FormLabel` component |
 
-To override the style of all instances of `<RadioButtonGroupInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaRadioButtonGroupInput` key.
+To override the style of all instances of `<RadioButtonGroupInput>` using the [material-ui style overrides](https://v4.mui.com/customization/globals/#css), use the `RaRadioButtonGroupInput` key.
 
 
 ### `<SelectInput>`
 
-To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material ui's `<Select>`](https://material-ui.com/api/select). 
+To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material ui's `<Select>`](https://v4.mui.com/api/select). 
 
 ![SelectInput](./img/select-input.gif)
 
@@ -1021,7 +1021,7 @@ Lastly, use the `options` attribute if you want to override any of Material UI's
 ```
 {% endraw %}
 
-Refer to [Material UI Select documentation](https://material-ui.com/api/select) for more details.
+Refer to [Material UI Select documentation](https://v4.mui.com/api/select) for more details.
 
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<SelectInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
@@ -1185,7 +1185,7 @@ const CreateCategory = () => {
 | --------------- | --------------------------------------------------------- |
 | `input`         | Applied to the underlying `ResettableTextField` component |
 
-To override the style of all instances of `<SelectInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaSelectInput` key.
+To override the style of all instances of `<SelectInput>` using the [material-ui style overrides](https://v4.mui.com/customization/globals/#css), use the `RaSelectInput` key.
 
 ## Array Inputs
 
@@ -1417,7 +1417,7 @@ However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the 
 When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set).
 Ex. `<AutocompleteArrayInput shouldRenderSuggestions={(val) => { return val.trim().length > 2 }} />` would not render any suggestions until the 3rd character has been entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
 
-Lastly, `<AutocompleteArrayInput>` renders a [material-ui `<TextField>` component](https://material-ui.com/api/text-field/). Use the `options` attribute to override any of the `<TextField>` attributes:
+Lastly, `<AutocompleteArrayInput>` renders a [material-ui `<TextField>` component](https://v4.mui.com/api/text-field/). Use the `options` attribute to override any of the `<TextField>` attributes:
 
 {% raw %}
 ```jsx
@@ -1585,7 +1585,7 @@ const CreateTag = () => {
 | `inputRootFilled`       | Styles pass as the `root` class of the underlying Material UI's `TextField` component input when `variant` prop is `filled` |
 | `inputInput`            | Styles pass as the `input` class of the underlying Material UI's `TextField` component input                                |
 
-To override the style of all instances of `<AutocompleteArrayInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaAutocompleteArrayInput` key.
+To override the style of all instances of `<AutocompleteArrayInput>` using the [material-ui style overrides](https://v4.mui.com/customization/globals/#css), use the `RaAutocompleteArrayInput` key.
 
 ### `<CheckboxGroupInput>`
 
@@ -1614,7 +1614,7 @@ import { CheckboxGroupInput } from 'react-admin';
 | `optionValue` | Optional | `string`                   | `id`    | Field name of record containing the value to use as input value                                                                        |
 | `row`         | Optional | `boolean`                  | `true`  | Display group of elements in a compact row.                                                                                            |
 
-Refer to [Material UI Checkbox documentation](https://material-ui.com/api/checkbox/) for more details.
+Refer to [Material UI Checkbox documentation](https://v4.mui.com/api/checkbox/) for more details.
 
 `<CheckboxGroupInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
@@ -1688,7 +1688,7 @@ import { FavoriteBorder, Favorite } from '@material-ui/icons';
 | `root`     | Applied to the root element                                   |
 | `label`    | Applied to the underlying Material UI's `FormLabel` component |
 
-To override the style of all instances of `<CheckboxGroupInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaCheckboxGroupInput` key.
+To override the style of all instances of `<CheckboxGroupInput>` using the [material-ui style overrides](https://v4.mui.com/customization/globals/#css), use the `RaCheckboxGroupInput` key.
 
 ### `<DualListInput>`
 
@@ -1709,7 +1709,7 @@ Check [the `ra-relationships` documentation](https://marmelab.com/ra-enterprise/
 
 ### `<SelectArrayInput>`
 
-To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [Material ui's `<Select>`](https://material-ui.com/api/select). 
+To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [Material ui's `<Select>`](https://v4.mui.com/api/select). 
 
 ![SelectArrayInput](./img/select-array-input.gif)
 
@@ -1810,7 +1810,7 @@ Lastly, use the `options` attribute if you want to override any of the `<Select>
 ```
 {% endraw %}
 
-Refer to [the Select documentation](https://material-ui.com/api/select) for more details.
+Refer to [the Select documentation](https://v4.mui.com/api/select) for more details.
 
 The `SelectArrayInput` component **cannot** be used inside a `ReferenceInput` but can be used inside a `ReferenceArrayInput`.
 
@@ -1972,7 +1972,7 @@ const CreateTag = () => {
 | `chip`     | Applied to each Material UI's `Chip` component used as selected item               |
 | `chips`    | Applied to the container of Material UI's `Chip` components used as selected items |
 
-To override the style of all instances of `<SelectArrayInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaSelectArrayInput` key.
+To override the style of all instances of `<SelectArrayInput>` using the [material-ui style overrides](https://v4.mui.com/customization/globals/#css), use the `RaSelectArrayInput` key.
 
 
 ## Reference Inputs 

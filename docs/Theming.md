@@ -197,7 +197,7 @@ If you want to read more about higher-order components, check out this SitePoint
 
 ## `useMediaQuery` Hook
 
-To provide an optimized experience on mobile, tablet, and desktop devices, you often need to display different components depending on the screen size. Material-ui provides a hook dedicated to help such responsive layouts: [useMediaQuery](https://material-ui.com/components/use-media-query/#usemediaquery).
+To provide an optimized experience on mobile, tablet, and desktop devices, you often need to display different components depending on the screen size. Material-ui provides a hook dedicated to help such responsive layouts: [useMediaQuery](https://v4.mui.com/components/use-media-query/#usemediaquery).
 
 It expects a function receiving the material-ui theme as a parameter, and returning a media query. Use the theme breakpoints to check for common screen sizes. The hook returns a boolean indicating if the current screen matches the media query or not.
 
@@ -251,7 +251,7 @@ export const PostList = (props) => {
 
 ## Using a Predefined Theme
 
-Material UI also supports [complete theming](https://material-ui.com/customization/themes) out of the box. Material UI ships two base themes: light and dark. React-admin uses the light one by default. To use the dark one, pass it to the `<Admin>` component, in the `theme` prop (along with `createMuiTheme()`).
+Material UI also supports [complete theming](https://v4.mui.com/customization/themes) out of the box. Material UI ships two base themes: light and dark. React-admin uses the light one by default. To use the dark one, pass it to the `<Admin>` component, in the `theme` prop (along with `createMuiTheme()`).
 
 ```jsx
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -273,7 +273,7 @@ const App = () => (
 
 ## Writing a Custom Theme
 
-If you need more fine-tuning, you'll need to write your own `theme` object, following [Material UI themes documentation](https://material-ui.com/customization/themes/).
+If you need more fine-tuning, you'll need to write your own `theme` object, following [Material UI themes documentation](https://v4.mui.com/customization/themes/).
 
 For instance, here is how to override the default react-admin theme:
 
@@ -320,7 +320,7 @@ A `theme` object can contain the following keys:
 * `typography`
 * `zIndex`
 
-**Tip**: Check [Material UI default theme documentation](https://material-ui.com/customization/default-theme/) to see the default values and meaning for these keys.
+**Tip**: Check [Material UI default theme documentation](https://v4.mui.com/customization/default-theme/) to see the default values and meaning for these keys.
 
 Once your theme is defined, pass it to the `<Admin>` component, in the `theme` prop.
 
@@ -703,7 +703,7 @@ const App = () => (
 
 ## Replacing The AppBar
 
-By default, React-admin uses [Material-ui's `<AppBar>` component](https://material-ui.com/api/app-bar/) together with a custom container that internally uses a [Slide](https://material-ui.com/api/slide) to hide the `AppBar` on scroll. Here is an example of how to change this container with any component:
+By default, React-admin uses [Material-ui's `<AppBar>` component](https://v4.mui.com/api/app-bar/) together with a custom container that internally uses a [Slide](https://v4.mui.com/api/slide) to hide the `AppBar` on scroll. Here is an example of how to change this container with any component:
 
 ```jsx
 // in src/MyAppBar.js
@@ -887,7 +887,7 @@ import Badge from '@material-ui/core/Badge';
 
 The `letfIcon` prop allows to set the menu left icon.
 
-Additional props are passed down to [the underling material-ui `<MenuItem>` component](https://material-ui.com/api/menu-item/#menuitem-api).
+Additional props are passed down to [the underling material-ui `<MenuItem>` component](https://v4.mui.com/api/menu-item/#menuitem-api).
 
 **Tip**: The `<MenuItemLink>` component makes use of the React Router [NavLink](https://reacttraining.com/react-router/web/api/NavLink) component, hence allowing to customize the active menu style. For instance, here is how to use a custom theme to show a left border for the active menu:
 
