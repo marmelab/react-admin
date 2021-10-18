@@ -202,7 +202,11 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                 )}
             </TableRow>
             {expandable && expanded && (
-                <TableRow key={`${id}-expand`} id={`${id}-expand`}>
+                <TableRow
+                    key={`${id}-expand`}
+                    id={`${id}-expand`}
+                    className={DatagridClasses.expandedPanel}
+                >
                     <TableCell colSpan={nbColumns}>
                         {isValidElement(expand)
                             ? cloneElement(expand, {

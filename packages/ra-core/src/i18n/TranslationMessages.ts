@@ -1,4 +1,4 @@
-interface StringMap {
+export interface StringMap {
     [key: string]: StringMap | string | undefined;
 }
 
@@ -26,6 +26,8 @@ export interface TranslationMessages extends StringMap {
             remove: string;
             save: string;
             search: string;
+            select_all: string;
+            select_row: string;
             show: string;
             sort: string;
             undo: string;

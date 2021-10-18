@@ -612,7 +612,7 @@ const ApproveButton = ({ record }) => {
         })
         .catch(error => {
             // failure side effects go here 
-            notify(`Comment approval error: ${error.message}`, 'warning');
+            notify(`Comment approval error: ${error.message}`, { type: 'warning' });
         });
     
     return <Button label="Approve" onClick={approve} disabled={loading} />;
@@ -636,28 +636,40 @@ import { useNotify } from 'react-admin';
 const NotifyButton = () => {
     const notify = useNotify();
     const handleClick = () => {
-        notify(`Comment approved`, 'success');
+        notify(`Comment approved`, { type: 'success' });
     }
     return <button onClick={handleClick}>Notify</button>;
 };
 ```
 
-The callback takes 5 arguments:
- - the message to display
- - the level of the notification (`info`, `success` or `warning` - the default is `info`)
- - an `options` object to pass to the `translate` function (because notification messages are translated if your admin has an `i18nProvider`). It is useful for inserting variables into the translation.
- - an `undoable` boolean. Set it to `true` if the notification should contain an "undo" button
- - a `duration` number. Set it to `0` if the notification should not be dismissible.
+The callback takes 6 arguments:
+- The message to display
+- The level of the notification (`info`, `success` or `warning` - the default is `info`)
+- An `options` object to pass to the `translate` function (because notification messages are translated if your admin has an `i18nProvider`). It is useful for inserting variables into the translation.
+- An `undoable` boolean. Set it to `true` if the notification should contain an "undo" button
+- A `duration` number. Set it to `0` if the notification should not be dismissible.
+- A `multiLine` boolean. Set it to `true` if the notification message should be shown in more than one line.
 
 Here are more examples of `useNotify` calls: 
 
-```jsx
+```js
 // notify a warning
 notify(`This is a warning`, 'warning');
 // pass translation arguments
 notify('item.created', 'info', { resource: 'post' });
 // send an undoable notification
 notify('Element updated', 'info', undefined, true);
+```
+
+**Tip**: The callback also allows a signature with only 2 arguments, the message to display and an object with the rest of the arguments
+
+```js
+// notify an undoable success message, with translation arguments
+notify('Element deleted', {
+    type: 'success',
+    undoable: true,
+    messageArgs: { resource: 'post' }
+});
 ```
 
 **Tip**: When using `useNotify` as a side effect for an `undoable` Edit form, you MUST set the fourth argument to `true`, otherwise the "undo" button will not appear, and the actual update will never occur.
@@ -670,7 +682,7 @@ const PostEdit = props => {
     const notify = useNotify();
 
     const onSuccess = () => {
-        notify(`Changes saved`, undefined, undefined, true);
+        notify('Changes saved`', { undoable: true });
     };
 
     return (
@@ -699,10 +711,12 @@ const DashboardButton = () => {
 };
 ```
 
-The callback takes 3 arguments:
- - the page to redirect the user to ('list', 'create', 'edit', 'show', or a custom path)
- - the current `basePath`
- - the `id` of the record to redirect to (if any)
+The callback takes 5 arguments:
+ - The page to redirect the user to ('list', 'create', 'edit', 'show', a function or a custom path)
+ - The current `basePath`
+ - The `id` of the record to redirect to (if any)
+ - A record like object to be passed to the first argument, when the first argument is a function
+ - A `state` to be set to the location
 
 Here are more examples of `useRedirect` calls: 
 
@@ -713,9 +727,17 @@ redirect('list', '/posts');
 redirect('edit', '/posts', 1);
 // redirect to the post creation page:
 redirect('create', '/posts');
+// redirect to the result of a function
+redirect((redirectTo, basePath, id, data) => { 
+    return  data.hasComments ? '/comments' : '/posts';
+}, '/posts', 1, { hasComments: true });
+// redirect to edit view with state data
+redirect('edit', '/posts', 1, {}, { record: { post_id: record.id } });
+// do not redirect (resets the record form)
+redirect(false);
 ```
 
-Note that `useRedirect` doesn't allow to redirect to pages outside the current React app. For that, you should use `document.location`.
+Note that `useRedirect` allows redirection to an absolute url outside the current React app.
 
 ### `useRefresh`
 
@@ -792,7 +814,7 @@ const ApproveButton = ({ record }) => {
                 redirect('/comments');
                 notify('Comment approved');
             },
-            onFailure: (error) => notify(`Comment approval error: ${error.message}`, 'warning'),
+            onFailure: (error) => notify(`Comment approval error: ${error.message}`, { type: 'warning' }),
         }
     );
     return <Button label="Approve" onClick={approve} disabled={loading} />;
@@ -842,9 +864,9 @@ const ApproveButton = ({ record }) => {
 +           onSuccess: () => {
                 redirect('/comments');
 -               notify('Comment approved');
-+               notify('Comment approved', 'info', {}, true);
++               notify('Comment approved', { undoable: true });
             },
-            onFailure: (error) => notify(`Error: ${error.message}`, 'warning'),
+            onFailure: (error) => notify(`Error: ${error.message}`, { type: 'warning' }),
         }
     );
     return <Button label="Approve" onClick={approve} disabled={loading} />;
@@ -871,9 +893,9 @@ const ApproveButton = ({ record }) => {
             mutationMode: 'undoable',
             onSuccess: () => {
                 redirect('/comments');
-                notify('Comment approved', 'info', {}, true);
+                notify('Comment approved', { undoable: true });
             },
-            onFailure: (error) => notify(`Error: ${error.message}`, 'warning'),
+            onFailure: (error) => notify(`Error: ${error.message}`, { type: 'warning' }),
         }
     );
     return <Button label="Approve" onClick={approve} disabled={loading} />;
@@ -906,16 +928,16 @@ const ApproveButton = ({ record }) => {
             mutationMode: 'undoable',
             onSuccess: ({ data }) => {
                 redirect('/comments');
-                notify('Comment approved', 'info', {}, true);
+                notify('Comment approved', { undoable: true });
             },
-            onFailure: (error) => notify(`Error: ${error.message}`, 'warning'),
+            onFailure: (error) => notify(`Error: ${error.message}`, { type: 'warning' }),
         }
     );
     return <Button label="Approve" onClick={approve} disabled={loading} />;
 };
 ```
 
-**Tip**: When using the Data Provider hooks for regular pages (List, Edit, etc), react-admin always specifies a custom action name, related to the component asking for the data. For instance, in the `<List>` page, the action is called `CRUD_GET_LIST`. So unless you call the Data Provider hooks yourself, no `CUSTOM_FETCH` action should be dispatched.
+**Tip**: When using the Data Provider hooks for regular pages (List, Edit, etc.), react-admin always specifies a custom action name, related to the component asking for the data. For instance, in the `<List>` page, the action is called `CRUD_GET_LIST`. So unless you call the Data Provider hooks yourself, no `CUSTOM_FETCH` action should be dispatched.
 
 ## Legacy Components: `<Query>`, `<Mutation>`, and `withDataProvider`
 
@@ -988,10 +1010,10 @@ const ApproveButton = ({ record }) => {
     const options = {
         mutationMode: 'undoable',
         onSuccess: ({ data }) => {
-            notify('Comment approved', 'info', {}, true);
+            notify('Comment approved', { undoable: true });
             redirect('/comments');
         },
-        onFailure: (error) => notify(`Error: ${error.message}`, 'warning'),
+        onFailure: (error) => notify(`Error: ${error.message}`, { type: 'warning' }),
     };
     return (
         <Mutation
@@ -1081,7 +1103,7 @@ const ApproveButton = ({ record }) => {
                 redirect('/comments');
             })
             .catch((e) => {
-                notify('Error: comment not approved', 'warning')
+                notify('Error: comment not approved', { type: 'warning' })
             })
             .finally(() => {
                 setLoading(false);

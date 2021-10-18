@@ -924,4 +924,91 @@ describe('<ReferenceArrayInputController />', () => {
         expect(children.mock.calls[0][0].resource).toEqual('posts');
         expect(children.mock.calls[0][0].basePath).toEqual('/posts');
     });
+
+    describe('enableGetChoices', () => {
+        it('should not fetch possible values using crudGetMatching on load but only when enableGetChoices returns true', async () => {
+            const children = jest.fn().mockReturnValue(<div />);
+            await new Promise(resolve => setTimeout(resolve, 100)); // empty the query deduplication in useQueryWithStore
+            const enableGetChoices = jest.fn().mockImplementation(({ q }) => {
+                return q ? q.length > 2 : false;
+            });
+            const { dispatch } = renderWithRedux(
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <ReferenceArrayInputController
+                            {...defaultProps}
+                            allowEmpty
+                            enableGetChoices={enableGetChoices}
+                        >
+                            {children}
+                        </ReferenceArrayInputController>
+                    )}
+                />,
+                { admin: { resources: { tags: { data: {} } } } }
+            );
+
+            // not call on start
+            await waitFor(() => {
+                expect(dispatch).not.toHaveBeenCalled();
+            });
+            expect(enableGetChoices).toHaveBeenCalledWith({ q: '' });
+
+            const { setFilter } = children.mock.calls[0][0];
+            setFilter('hello world');
+
+            await waitFor(() => {
+                expect(dispatch).toHaveBeenCalledTimes(5);
+            });
+            expect(dispatch.mock.calls[0][0]).toEqual({
+                type: CRUD_GET_MATCHING,
+                meta: {
+                    relatedTo: 'posts@tag_ids',
+                    resource: 'tags',
+                },
+                payload: {
+                    pagination: {
+                        page: 1,
+                        perPage: 25,
+                    },
+                    sort: {
+                        field: 'id',
+                        order: 'DESC',
+                    },
+                    filter: { q: 'hello world' },
+                },
+            });
+            expect(enableGetChoices).toHaveBeenCalledWith({ q: 'hello world' });
+        });
+
+        it('should fetch current value using getMany even if enableGetChoices is returning false', async () => {
+            const children = jest.fn(() => <div />);
+
+            const { dispatch } = renderWithRedux(
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <ReferenceArrayInputController
+                            {...defaultProps}
+                            input={{ value: [5, 6] }}
+                            enableGetChoices={() => false}
+                        >
+                            {children}
+                        </ReferenceArrayInputController>
+                    )}
+                />,
+                { admin: { resources: { tags: { data: { 5: {}, 6: {} } } } } }
+            );
+            await waitFor(() => {
+                expect(dispatch).toHaveBeenCalledWith({
+                    type: CRUD_GET_MANY,
+                    meta: {
+                        resource: 'tags',
+                    },
+                    payload: { ids: [5, 6] },
+                });
+            });
+            expect(dispatch).toHaveBeenCalledTimes(5);
+        });
+    });
 });

@@ -362,20 +362,20 @@ You can create a custom menu component using the `<DashboardMenuItem>` and `<Men
 ```jsx
 // in src/Menu.js
 import * as React from 'react';
-import { DashboardMenuItem, MenuItemLink } from 'react-admin';
+import { DashboardMenuItem, Menu, MenuItemLink } from 'react-admin';
 import BookIcon from '@material-ui/icons/Book';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import PeopleIcon from '@material-ui/icons/People';
 import LabelIcon from '@material-ui/icons/Label';
 
-export const Menu = () => (
-    <div>
+export const Menu = (props) => (
+    <Menu {...props}>
         <DashboardMenuItem />
         <MenuItemLink to="/posts" primaryText="Posts" leftIcon={<BookIcon />}/>
         <MenuItemLink to="/comments" primaryText="Comments" leftIcon={<ChatBubbleIcon />}/>
         <MenuItemLink to="/users" primaryText="Users" leftIcon={<PeopleIcon />}/>
         <MenuItemLink to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />}/>
-    </div>
+    </Menu>
 );
 ```
 

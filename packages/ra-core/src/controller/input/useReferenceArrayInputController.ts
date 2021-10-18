@@ -51,6 +51,7 @@ export const useReferenceArrayInputController = (
         options,
         reference,
         source,
+        enableGetChoices,
     } = props;
     const resource = useResourceContext(props);
     const translate = useTranslate();
@@ -258,6 +259,9 @@ export const useReferenceArrayInputController = (
     // filter out not found references - happens when the dataProvider doesn't guarantee referential integrity
     const finalReferenceRecords = referenceRecords.filter(Boolean);
 
+    const isGetMatchingEnabled = enableGetChoices
+        ? enableGetChoices(finalFilter)
+        : true;
     const {
         data: matchingReferences,
         ids: matchingReferencesIds,
@@ -271,6 +275,8 @@ export const useReferenceArrayInputController = (
         source,
         resource,
         options
+            ? { ...options, enabled: isGetMatchingEnabled }
+            : { enabled: isGetMatchingEnabled }
     );
 
     // We merge the currently selected records with the matching ones, otherwise
@@ -363,6 +369,7 @@ export interface UseReferenceArrayInputOptions {
     resource?: string;
     sort?: SortPayload;
     source: string;
+    enableGetChoices?: (filters: any) => boolean;
 }
 
 const defaultFilterToQuery = searchText => ({ q: searchText });

@@ -379,7 +379,7 @@ const CustomResetViewsButton = ({ selectedIds }) => {
                 notify('Posts updated');
                 unselectAll('posts');
             },
-            onFailure: error => notify('Error: posts not updated', 'warning'),
+            onFailure: error => notify('Error: posts not updated', { type: 'warning' }),
         }
     );
 
@@ -427,7 +427,7 @@ const CustomResetViewsButton = ({ selectedIds }) => {
                 notify('Posts updated');
                 unselectAll('posts');
             },
-            onFailure: error => notify('Error: posts not updated', 'warning'),
+            onFailure: error => notify('Error: posts not updated', { type: 'warning' }),
         }
     );
     const handleClick = () => setOpen(true);
@@ -489,10 +489,10 @@ const CustomResetViewsButton = ({ selectedIds }) => {
             onSuccess: () => {
                 refresh();
 -               notify('Posts updated');
-+               notify('Posts updated', 'info', '{}, true); // the last argument forces the display of 'undo' in the notification
++               notify('Posts updated', { undoable: true }); // the last argument forces the display of 'undo' in the notification
                 unselectAll('posts');
             },
-            onFailure: error => notify('Error: posts not updated', 'warning'),
+            onFailure: error => notify('Error: posts not updated', { type: 'warning' }),
 +           mutationMode: 'undoable'
         }
     );
@@ -2394,6 +2394,7 @@ The `Datagrid` component accepts the usual `className` prop but you can override
 | `expandIconCell` | Applied to each expandable cell                               |
 | `expandIcon`     | Applied to each expand icon                                   |
 | `expanded`       | Applied to each expanded icon                                 |
+| `expandedPanel`  | Applied to each expandable panel                              |
 | `checkbox`       | Applied to each checkbox cell                                 |
 
 You can customize the `<Datagrid>` styles by passing a `classes` object as prop, through `useStyles()`. Here is an example:
