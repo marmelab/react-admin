@@ -15,7 +15,7 @@ If you still relied on sagas, you have to port your saga code to react `useEffec
 
 ## Removed connected-react-router
 
-If you were dispatching `connected-react-router` actions to navigate, you'll now have to use `¶eact-router` hooks:
+If you were dispatching `connected-react-router` actions to navigate, you'll now have to use `react-router` hooks:
 
 ```diff
 -import { useDispatch } from 'react-redux';
