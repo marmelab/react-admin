@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { ComponentType, useContext, useState } from 'react';
 import { Provider, ReactReduxContext } from 'react-redux';
-import { History } from 'history';
-import { createHashHistory } from 'history';
-import { ConnectedRouter } from 'connected-react-router';
+import { createHashHistory, History } from 'history';
+import { Router } from 'react-router';
 
 import { AuthContext, convertLegacyAuthProvider } from '../auth';
 import {
@@ -73,13 +72,7 @@ React-admin requires a valid dataProvider function to work.`);
             <AuthContext.Provider value={finalAuthProvider}>
                 <DataProviderContext.Provider value={finalDataProvider}>
                     <TranslationProvider i18nProvider={i18nProvider}>
-                        {typeof window !== 'undefined' ? (
-                            <ConnectedRouter history={finalHistory}>
-                                {children}
-                            </ConnectedRouter>
-                        ) : (
-                            children
-                        )}
+                        <Router history={finalHistory}>{children}</Router>
                     </TranslationProvider>
                 </DataProviderContext.Provider>
             </AuthContext.Provider>

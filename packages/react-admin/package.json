@@ -38,7 +38,6 @@
         "@emotion/styled": "^11.3.0",
         "@mui/icons-material": "^5.0.1",
         "@mui/material": "^5.0.2",
-        "connected-react-router": "^6.5.2",
         "final-form": "^4.20.2",
         "final-form-arrays": "^3.0.2",
         "ra-core": "^4.0.0-alpha.0",

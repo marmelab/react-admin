@@ -1,5 +1,4 @@
-import { createStore, compose, applyMiddleware } from 'redux';
-import { routerMiddleware } from 'connected-react-router';
+import { createStore, StoreEnhancer } from 'redux';
 import { History } from 'history';
 
 import {
@@ -12,7 +11,7 @@ import createAppReducer from '../reducer';
 import { CLEAR_STATE } from '../actions/clearActions';
 
 interface Window {
-    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: (traceOptions: object) => Function;
+    __REDUX_DEVTOOLS_EXTENSION__?: (traceOptions: object) => StoreEnhancer;
 }
 
 interface Params {
@@ -54,20 +53,14 @@ export default ({
         );
     const typedWindow = typeof window !== 'undefined' && (window as Window);
 
-    const composeEnhancers =
-        (process.env.NODE_ENV === 'development' &&
-            typeof typedWindow !== 'undefined' &&
-            typedWindow.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
-            typedWindow.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-                trace: true,
-                traceLimit: 25,
-            })) ||
-        compose;
-
     const store = createStore(
         resettableAppReducer,
         typeof initialState === 'function' ? initialState() : initialState,
-        composeEnhancers(applyMiddleware(routerMiddleware(history)))
+        typedWindow.__REDUX_DEVTOOLS_EXTENSION__ &&
+            typedWindow.__REDUX_DEVTOOLS_EXTENSION__({
+                trace: true,
+                traceLimit: 25,
+            })
     );
     return store;
 };
