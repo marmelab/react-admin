@@ -33,7 +33,7 @@ export interface UIState {
 }
 
 // Match the medium breakpoint defined in the material-ui theme
-// See https://material-ui.com/customization/breakpoints/#breakpoints
+// See https://v4.mui.com/customization/breakpoints/#breakpoints
 const isDesktop = (): boolean =>
     // (min-width: 960px) => theme.breakpoints.up('md')
     typeof window !== 'undefined' &&

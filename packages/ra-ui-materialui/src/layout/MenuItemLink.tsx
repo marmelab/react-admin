@@ -49,7 +49,7 @@ const useStyles = makeStyles(
  * @prop {ReactNode} leftIcon The menu icon
  *
  * Additional props are passed down to the underling material-ui <MenuItem> component
- * @see https://material-ui.com/api/menu-item/#menuitem-api
+ * @see https://v4.mui.com/api/menu-item/#menuitem-api
  *
  * @example // You can create a custom menu component using the <DashboardMenuItem> and <MenuItemLink> components:
  *
