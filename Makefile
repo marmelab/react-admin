@@ -162,3 +162,11 @@ test-e2e: ## launch end-to-end tests (ex. BROWSER=firefox make test-e2e)
 test-e2e-local: ## launch end-to-end tests for development
 	@echo 'Starting e2e tests environment. Ensure you started the simple example first (make run-simple)'
 	@cd cypress && yarn -s start
+
+storybook: ## Launch the storybook
+	@echo "Running storybook..."
+	@ONLY=${ONLY} yarn -s storybook
+
+build-storybook: ## Build the storybook
+	@echo "Building storybook..."
+	@yarn -s build-storybook
