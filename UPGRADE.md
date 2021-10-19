@@ -13,6 +13,27 @@ If you still relied on sagas, you have to port your saga code to react `useEffec
 - Removed `<BulkDeleteAction>` (use `<BulkDeleteButton>` instead)
 - Removed declarative side effects in dataProvider hooks (e.g. `{ onSuccess: { refresh: true } }`). Use function side effects instead (e.g. `{ onSuccess: () => { refresh(); } }`)
 
+## Removed connected-react-router
+
+If you were dispatching `connected-react-router` actions to navigate, you'll now have to use `¶eact-router` hooks:
+
+```diff
+-import { useDispatch } from 'react-redux';
+-import { push } from 'connected-react-router';
++import { useHistory } from 'react-router';
+
+const MyComponent = () => {
+-    const dispatch = useDispatch();
++    const history = useHistory();
+
+    const myHandler = () => {
+-        dispatch(push('/my-url'));
++        history.push('/my-url');
+    }
+}
+
+```
+
 # Upgrade to 3.0
 
 We took advantage of the major release to fix all the problems in react-admin that required a breaking change. As a consequence, you'll need to do many small changes in the code of existing react-admin v2 applications. Follow this step-by-step guide to upgrade to react-admin v3.
