@@ -1,5 +1,4 @@
 import { combineReducers, Reducer } from 'redux';
-import { connectRouter } from 'connected-react-router';
 import admin, {
     getResources as adminGetResources,
     getReferenceResource as adminGetReferenceResource,
@@ -14,7 +13,6 @@ interface CustomReducers {
 export default (customReducers: CustomReducers, history) =>
     combineReducers({
         admin,
-        router: connectRouter(history),
         ...customReducers,
     });
 

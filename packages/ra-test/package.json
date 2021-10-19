@@ -33,7 +33,6 @@
         "@types/react-redux": "^7.1.1",
         "@types/react-router": "^5.1.0",
         "@types/react-router-dom": "^5.1.0",
-        "connected-react-router": "^6.5.2",
         "cross-env": "^5.2.0",
         "final-form": "^4.20.2",
         "history": "^4.7.2",
