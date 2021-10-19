@@ -19,7 +19,7 @@ const RejectButton = ({ record }: { record: Review }) => {
         { status: 'rejected' },
         record,
         {
-            undoable: true,
+            mutationMode: 'undoable',
             onSuccess: () => {
                 notify(
                     'resources.reviews.notification.rejected_success',

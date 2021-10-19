@@ -206,7 +206,7 @@ const VisitorForm = (props: any) => {
                         <Toolbar
                             record={formProps.record}
                             basePath={formProps.basePath}
-                            undoable={true}
+                            mutationMode="undoable"
                             invalid={formProps.invalid}
                             handleSubmit={formProps.handleSubmit}
                             saving={formProps.saving}
