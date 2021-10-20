@@ -34,6 +34,53 @@ const MyComponent = () => {
 
 ```
 
+## Removed the undoable prop in Favor of mutationMode
+
+We removed the `undoable` prop as we introduced the `mutationMode` in v3. This impact the following hooks and components:
+
+- `useDeleteWithConfirmController`
+- `useEditController`
+- `useDataProvider`
+- `useMutation`
+
+- `BulkDeleteButton`
+- `BulkDeleteWithConfirmButton`
+- `DeleteButton`
+- `DeleteWithConfirmButton`
+- `Edit`
+
+Wherever you were using `undoable`, replace it with `mutationMode`:
+
+```diff
+const {
+    open,
+    loading,
+    handleDialogOpen,
+    handleDialogClose,
+    handleDelete,
+} = useDeleteWithConfirmController({
+    resource,
+    record,
+    redirect,
+    basePath,
+    onClick,
+-    undoable: true
++    mutationMode: 'undoable'
+});
+```
+
+Or in a component:
+```diff
+export const PostEdit = (props) => (
+-    <Edit {...props} undoable>
++    <Edit {...props} mutationMode="undoable">
+        <SimpleForm>
+            <TextInput source="title" />
+        </SimpleForm>
+    </Edit>
+);
+```
+
 # Upgrade to 3.0
 
 We took advantage of the major release to fix all the problems in react-admin that required a breaking change. As a consequence, you'll need to do many small changes in the code of existing react-admin v2 applications. Follow this step-by-step guide to upgrade to react-admin v3.
