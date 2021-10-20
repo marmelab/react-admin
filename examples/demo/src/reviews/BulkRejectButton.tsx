@@ -27,7 +27,7 @@ const BulkRejectButton = (props: BulkActionProps) => {
         { status: 'rejected' },
         {
             action: CRUD_UPDATE_MANY,
-            undoable: true,
+            mutationMode: 'undoable',
             onSuccess: () => {
                 notify(
                     'resources.reviews.notification.approved_success',

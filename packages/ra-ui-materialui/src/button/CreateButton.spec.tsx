@@ -2,6 +2,7 @@ import * as React from 'react';
 import { render } from '@testing-library/react';
 import expect from 'expect';
 import { TestContext } from 'ra-test';
+import { MutationMode } from 'ra-core';
 import { ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import CreateButton from './CreateButton';
@@ -18,7 +19,7 @@ const invalidButtonDomProps = {
     resource: 'posts',
     saving: false,
     submitOnEnter: true,
-    undoable: false,
+    mutationMode: 'pessimistic' as MutationMode,
 };
 
 describe('<CreateButton />', () => {

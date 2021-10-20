@@ -108,7 +108,6 @@ TabbedForm.propTypes = {
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
-    undoable: PropTypes.bool,
     validate: PropTypes.func,
     sanitizeEmptyValues: PropTypes.bool,
 };
@@ -141,8 +140,6 @@ export interface TabbedFormProps
     syncWithLocation?: boolean;
     tabs?: ReactElement;
     toolbar?: ReactElement;
-    /** @deprecated use mutationMode: undoable instead */
-    undoable?: boolean;
     variant?: 'standard' | 'outlined' | 'filled';
     warnWhenUnsavedChanges?: boolean;
 }

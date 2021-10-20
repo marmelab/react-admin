@@ -40,7 +40,6 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         syncWithLocation = true,
         tabs = DefaultTabs,
         toolbar = DefaultToolbar,
-        undoable,
         variant,
         margin,
         validating,
@@ -124,7 +123,6 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                     saving,
                     submitOnEnter,
                     validating,
-                    undoable,
                 })}
         </Root>
     );
@@ -156,7 +154,6 @@ TabbedFormView.propTypes = {
     tabs: PropTypes.element,
     toolbar: PropTypes.element,
     translate: PropTypes.func,
-    undoable: PropTypes.bool,
     validate: PropTypes.func,
     value: PropTypes.number,
     version: PropTypes.number,
@@ -176,8 +173,6 @@ export interface TabbedFormViewProps extends FormWithRedirectRenderProps {
     syncWithLocation?: boolean;
     tabs?: ReactElement;
     toolbar?: ReactElement;
-    /** @deprecated use mutationMode: undoable instead */
-    undoable?: boolean;
     variant?: 'standard' | 'outlined' | 'filled';
     submitOnEnter?: boolean;
     __versions?: any; // react-final-form internal prop, missing in their type

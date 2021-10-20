@@ -6,6 +6,7 @@ import { render } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import { TestContext } from 'ra-test';
+import { MutationMode } from 'ra-core';
 
 import { CloneButton } from './CloneButton';
 
@@ -23,7 +24,7 @@ const invalidButtonDomProps = {
     resource: 'posts',
     saving: false,
     submitOnEnter: true,
-    undoable: false,
+    mutationMode: 'pessimistic' as MutationMode,
 };
 
 describe('<CloneButton />', () => {

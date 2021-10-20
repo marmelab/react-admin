@@ -1,12 +1,7 @@
 import * as React from 'react';
 import { ReactElement, SyntheticEvent } from 'react';
 import PropTypes from 'prop-types';
-import {
-    Record,
-    RedirectionSideEffect,
-    MutationMode,
-    getMutationMode,
-} from 'ra-core';
+import { Record, RedirectionSideEffect, MutationMode } from 'ra-core';
 
 import { ButtonProps } from './Button';
 import { DeleteWithUndoButton } from './DeleteWithUndoButton';
@@ -16,7 +11,7 @@ import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
  * Button used to delete a single record. Added by default by the <Toolbar> of edit and show views.
  *
  * @typedef {Object} Props The props you can use (other props are injected if you used it in the <Toolbar>)
- * @prop {boolean} undoable Confirm the deletion using an undo button in a notification or a confirmation dialog. Defaults to 'false'.
+ * @prop {boolean} mutationMode Either 'pessimistic', 'optimistic' or 'undoable'. Determine whether the deletion uses an undo button in a notification or a confirmation dialog. Defaults to 'undoable'.
  * @prop {Object} record The current resource record
  * @prop {string} className
  * @prop {string} label Button label. Defaults to 'ra.action.delete, translated.
@@ -39,7 +34,7 @@ import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
  *                 basePath={basePath}
  *                 record={data}
  *                 resource={resource}
- *                 undoable={false} // Renders the <DeleteWithConfirmButton>
+ *                 mutationMode="pessimistic" // Renders the <DeleteWithConfirmButton>
  *             />
  *         </TopToolbar>
  *     );
@@ -50,19 +45,17 @@ import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
  * };
  */
 export const DeleteButton = (props: DeleteButtonProps) => {
-    const { undoable, mutationMode, record, ...rest } = props;
-    const mode = getMutationMode(mutationMode, undoable);
+    const { mutationMode = 'undoable', record, ...rest } = props;
     if (!record || record.id == null) {
         return null;
     }
 
-    return mode === 'undoable' ? (
+    return mutationMode === 'undoable' ? (
         <DeleteWithUndoButton record={record} {...rest} />
     ) : (
         <DeleteWithConfirmButton
-            mutationMode={mode}
+            mutationMode={mutationMode}
             record={record}
-            undoable={undoable}
             {...rest}
         />
     );
@@ -88,8 +81,6 @@ interface Props {
     pristine?: boolean;
     saving?: boolean;
     submitOnEnter?: boolean;
-    /** @deprecated use mutationMode: undoable instead */
-    undoable?: boolean;
 }
 
 export type DeleteButtonProps = Props & ButtonProps;
@@ -106,6 +97,5 @@ DeleteButton.propTypes = {
         PropTypes.func,
     ]),
     resource: PropTypes.string,
-    undoable: PropTypes.bool,
     icon: PropTypes.element,
 };

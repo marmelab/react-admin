@@ -22,7 +22,6 @@ export const EditView = (props: EditViewProps) => {
         className,
         component: Content = Card,
         title,
-        undoable,
         mutationMode,
         ...rest
     } = props;
@@ -89,7 +88,6 @@ export const EditView = (props: EditViewProps) => {
                                     ? save
                                     : children.props.save,
                             saving,
-                            undoable,
                             mutationMode,
                             version,
                         })
@@ -142,7 +140,6 @@ EditView.propTypes = {
     setOnSuccess: PropTypes.func,
     setOnFailure: PropTypes.func,
     setTransform: PropTypes.func,
-    undoable: PropTypes.bool,
 };
 
 const sanitizeRestProps = ({

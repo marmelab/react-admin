@@ -66,7 +66,6 @@ export const Toolbar: FC<ToolbarProps> = props => {
         resource,
         saving,
         submitOnEnter = true,
-        undoable,
         mutationMode,
         validating,
         ...rest
@@ -111,7 +110,6 @@ export const Toolbar: FC<ToolbarProps> = props => {
                             basePath={basePath}
                             record={record}
                             resource={resource}
-                            undoable={undoable}
                             mutationMode={mutationMode}
                         />
                     )}
@@ -148,9 +146,9 @@ export const Toolbar: FC<ToolbarProps> = props => {
                                   button.props.submitOnEnter,
                                   submitOnEnter
                               ),
-                              undoable: valueOrDefault(
-                                  button.props.undoable,
-                                  undoable
+                              mutationMode: valueOrDefault(
+                                  button.props.mutationMode,
+                                  mutationMode
                               ),
                           })
                         : null
@@ -177,8 +175,6 @@ export interface ToolbarProps<RecordType extends Record = Record>
     basePath?: string;
     record?: RecordType;
     resource?: string;
-    /** @deprecated use mutationMode: undoable instead */
-    undoable?: boolean;
     validating?: boolean;
 }
 
@@ -199,7 +195,6 @@ Toolbar.propTypes = {
     resource: PropTypes.string,
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
-    undoable: PropTypes.bool,
     validating: PropTypes.bool,
 };
 

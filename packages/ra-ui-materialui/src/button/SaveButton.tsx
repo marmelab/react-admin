@@ -6,16 +6,17 @@ import CircularProgress from '@mui/material/CircularProgress';
 import ContentSave from '@mui/icons-material/Save';
 import classnames from 'classnames';
 import {
-    useTranslate,
-    useNotify,
-    RedirectionSideEffect,
+    HandleSubmitWithRedirect,
+    MutationMode,
     OnSuccess,
     OnFailure,
-    TransformData,
     Record,
-    HandleSubmitWithRedirect,
-    useSaveContext,
+    RedirectionSideEffect,
+    TransformData,
     useFormContext,
+    useNotify,
+    useSaveContext,
+    useTranslate,
 } from 'ra-core';
 
 import { sanitizeButtonRestProps } from './Button';
@@ -128,7 +129,7 @@ export const SaveButton = (props: SaveButtonProps) => {
             event.preventDefault();
         } else {
             if (invalid) {
-                notify('ra.message.invalid_form', 'warning');
+                notify('ra.message.invalid_form', { type: 'warning' });
             }
             // always submit form explicitly regardless of button type
             if (event) {
@@ -203,7 +204,7 @@ interface Props {
     handleSubmit?: (event?: SyntheticEvent<HTMLFormElement>) => Promise<Object>;
     record?: Record;
     resource?: string;
-    undoable?: boolean;
+    mutationMode?: MutationMode;
 }
 
 export type SaveButtonProps = Props & ButtonProps;

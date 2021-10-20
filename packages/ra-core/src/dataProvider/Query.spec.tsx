@@ -267,7 +267,7 @@ describe('Query', () => {
                     resource="foo"
                     options={{
                         onSuccess: () => {
-                            notify('Youhou!', 'info');
+                            notify('Youhou!', { type: 'info' });
                         },
                     }}
                 >
@@ -297,10 +297,7 @@ describe('Query', () => {
 
         await waitFor(() => {
             expect(dispatchSpy).toHaveBeenCalledWith(
-                showNotification('Youhou!', 'info', {
-                    messageArgs: {},
-                    undoable: false,
-                })
+                showNotification('Youhou!', 'info')
             );
         });
     });
@@ -322,7 +319,7 @@ describe('Query', () => {
                     resource="foo"
                     options={{
                         onFailure: () => {
-                            notify('Damn!', 'warning');
+                            notify('Damn!', { type: 'warning' });
                         },
                     }}
                 >
@@ -352,10 +349,7 @@ describe('Query', () => {
 
         await waitFor(() => {
             expect(dispatchSpy).toHaveBeenCalledWith(
-                showNotification('Damn!', 'warning', {
-                    messageArgs: {},
-                    undoable: false,
-                })
+                showNotification('Damn!', 'warning')
             );
         });
     });

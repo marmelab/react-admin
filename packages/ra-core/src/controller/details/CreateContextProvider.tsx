@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 
 import { Record } from '../../types';
 import { RecordContextProvider } from '../RecordContext';
@@ -34,7 +34,7 @@ export const CreateContextProvider = ({
     children,
     value,
 }: {
-    children: ReactElement;
+    children: ReactNode;
     value: CreateControllerProps;
 }) => (
     <CreateContext.Provider value={value}>

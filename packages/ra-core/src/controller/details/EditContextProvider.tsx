@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 import { Record } from '../../types';
 import { RecordContextProvider } from '../RecordContext';
 import { EditContext } from './EditContext';
@@ -33,7 +33,7 @@ export const EditContextProvider = ({
     children,
     value,
 }: {
-    children: ReactElement;
+    children: ReactNode;
     value: EditControllerProps;
 }) => (
     <EditContext.Provider value={value}>

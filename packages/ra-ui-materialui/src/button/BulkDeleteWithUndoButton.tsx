@@ -62,7 +62,7 @@ export const BulkDeleteWithUndoButton = (
             );
             refresh();
         },
-        undoable: true,
+        mutationMode: 'undoable',
     });
 
     const handleClick = e => {

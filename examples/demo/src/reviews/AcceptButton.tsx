@@ -19,7 +19,7 @@ const AcceptButton = ({ record }: { record: Review }) => {
         { status: 'accepted' },
         record,
         {
-            undoable: true,
+            mutationMode: 'undoable',
             onSuccess: () => {
                 notify(
                     'resources.reviews.notification.approved_success',

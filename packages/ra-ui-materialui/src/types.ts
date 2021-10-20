@@ -37,8 +37,6 @@ export interface EditProps extends ResourceComponentPropsWithId {
     classes?: any;
     className?: string;
     component?: ElementType;
-    /** @deprecated use mutationMode: undoable instead */
-    undoable?: boolean;
     mutationMode?: MutationMode;
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;

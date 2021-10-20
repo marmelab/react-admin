@@ -24,7 +24,6 @@ export const SimpleFormView = ({
     saving,
     submitOnEnter = true,
     toolbar = DefaultToolbar,
-    undoable,
     variant,
     validating,
     ...rest
@@ -63,7 +62,6 @@ export const SimpleFormView = ({
                 saving,
                 submitOnEnter,
                 validating,
-                undoable,
             })}
     </form>
 );
@@ -88,7 +86,6 @@ SimpleFormView.propTypes = {
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
     toolbar: PropTypes.element,
-    undoable: PropTypes.bool,
     validate: PropTypes.func,
 };
 
@@ -104,8 +101,6 @@ export interface SimpleFormViewProps extends FormWithRedirectRenderProps {
     record?: Record;
     resource?: string;
     toolbar?: ReactElement;
-    /** @deprecated use mutationMode: undoable instead */
-    undoable?: boolean;
     variant?: 'standard' | 'outlined' | 'filled';
     submitOnEnter?: boolean;
     __versions?: any; // react-final-form internal prop, missing in their type

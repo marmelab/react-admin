@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { render, waitFor, fireEvent } from '@testing-library/react';
 import expect from 'expect';
-import { DataProvider, DataProviderContext } from 'ra-core';
+import { DataProvider, DataProviderContext, MutationMode } from 'ra-core';
 import { renderWithRedux, TestContext } from 'ra-test';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Toolbar, SimpleForm } from '../form';
@@ -23,7 +23,7 @@ const invalidButtonDomProps = {
     resource: 'posts',
     saving: false,
     submitOnEnter: true,
-    undoable: false,
+    mutationMode: 'undoable' as MutationMode,
 };
 
 describe('<DeleteWithUndoButton />', () => {
@@ -65,9 +65,14 @@ describe('<DeleteWithUndoButton />', () => {
         basePath: '',
         id: '123',
         resource: 'posts',
-        location: {},
-        match: {},
-        undoable: false,
+        location: {
+            pathname: '',
+            search: undefined,
+            state: undefined,
+            hash: undefined,
+        },
+        match: { isExact: true, path: '', url: '', params: undefined },
+        mutationMode: 'pessimistic' as MutationMode,
     };
 
     it('should allow to override the onSuccess side effects', async () => {

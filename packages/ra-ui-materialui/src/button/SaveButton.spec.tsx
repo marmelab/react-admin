@@ -30,7 +30,7 @@ const invalidButtonDomProps = {
     resource: 'posts',
     saving: false,
     submitOnEnter: true,
-    undoable: false,
+    mutationMode: 'pessimistic',
 };
 
 describe('<SaveButton />', () => {
@@ -192,9 +192,7 @@ describe('<SaveButton />', () => {
         expect(dispatchSpy).toHaveBeenCalledWith({
             payload: {
                 message: 'ra.message.invalid_form',
-                messageArgs: {},
                 type: 'warning',
-                undoable: false,
             },
             type: 'RA/SHOW_NOTIFICATION',
         });
@@ -217,7 +215,7 @@ describe('<SaveButton />', () => {
             path: '/customers/123',
             url: '/customers/123',
         },
-        undoable: false,
+        mutationMode: 'pessimistic',
     };
 
     it('should allow to override the onSuccess side effects', async () => {

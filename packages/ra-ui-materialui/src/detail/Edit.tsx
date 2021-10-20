@@ -27,7 +27,6 @@ import { EditView } from './EditView';
  * - successMessage
  * - title
  * - mutationMode
- * - undoable (deprecated)
  *
  * @example
  *
@@ -94,5 +93,4 @@ Edit.propTypes = {
     successMessage: PropTypes.string,
     title: PropTypes.node,
     transform: PropTypes.func,
-    undoable: PropTypes.bool,
 };
