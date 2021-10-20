@@ -35,8 +35,6 @@ export interface EditProps {
     hasList?: boolean;
     id?: Identifier;
     resource?: string;
-    /** @deprecated use mutationMode: undoable instead */
-    undoable?: boolean;
     mutationMode?: MutationMode;
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
@@ -110,11 +108,9 @@ export const useEditController = <RecordType extends Record = Record>(
         hasShow,
         id,
         successMessage,
-        // @deprecated use mutationMode: undoable instead
-        undoable = true,
         onSuccess,
         onFailure,
-        mutationMode = undoable ? 'undoable' : undefined,
+        mutationMode = 'undoable',
         transform,
     } = props;
     const resource = useResourceContext(props);

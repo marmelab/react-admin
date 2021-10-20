@@ -5,13 +5,14 @@ import ActionDelete from '@mui/icons-material/Delete';
 import inflection from 'inflection';
 import { alpha, styled } from '@mui/material/styles';
 import {
-    useTranslate,
-    useDeleteMany,
-    useRefresh,
-    useNotify,
-    useUnselectAll,
     CRUD_DELETE_MANY,
+    MutationMode,
+    useDeleteMany,
+    useNotify,
+    useRefresh,
     useResourceContext,
+    useTranslate,
+    useUnselectAll,
 } from 'ra-core';
 
 import { Confirm } from '../layout';
@@ -27,6 +28,7 @@ export const BulkDeleteWithConfirmButton = (
         confirmContent = 'ra.message.bulk_delete_content',
         icon = defaultIcon,
         label = 'ra.action.delete',
+        mutationMode = 'pessimistic',
         onClick,
         selectedIds,
         ...rest
@@ -63,6 +65,7 @@ export const BulkDeleteWithConfirmButton = (
             );
             setOpen(false);
         },
+        mutationMode,
     });
 
     const handleClick = e => {
@@ -128,7 +131,7 @@ const sanitizeRestProps = ({
     ...rest
 }: Omit<
     BulkDeleteWithConfirmButtonProps,
-    'resource' | 'selectedIds' | 'icon'
+    'resource' | 'selectedIds' | 'icon' | 'mutationMode'
 >) => rest;
 
 export interface BulkDeleteWithConfirmButtonProps
@@ -137,6 +140,7 @@ export interface BulkDeleteWithConfirmButtonProps
     confirmContent?: React.ReactNode;
     confirmTitle?: string;
     icon?: ReactElement;
+    mutationMode: MutationMode;
 }
 
 const PREFIX = 'RaBulkDeleteWithConfirmButton';
@@ -164,8 +168,9 @@ BulkDeleteWithConfirmButton.propTypes = {
     basePath: PropTypes.string,
     confirmTitle: PropTypes.string,
     confirmContent: PropTypes.string,
+    icon: PropTypes.element,
     label: PropTypes.string,
+    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     resource: PropTypes.string,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
-    icon: PropTypes.element,
 };

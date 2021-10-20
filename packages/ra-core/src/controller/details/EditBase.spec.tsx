@@ -43,7 +43,7 @@ describe('EditBase', () => {
             <DataProviderContext.Provider value={dataProvider}>
                 <EditBase
                     {...defaultProps}
-                    undoable={false}
+                    mutationMode="pessimistic"
                     onSuccess={onSuccess}
                 >
                     <Child />
@@ -86,7 +86,7 @@ describe('EditBase', () => {
             <DataProviderContext.Provider value={dataProvider}>
                 <EditBase
                     {...defaultProps}
-                    undoable={false}
+                    mutationMode="pessimistic"
                     onSuccess={onSuccess}
                 >
                     <>
@@ -124,7 +124,7 @@ describe('EditBase', () => {
             <DataProviderContext.Provider value={dataProvider}>
                 <EditBase
                     {...defaultProps}
-                    undoable={false}
+                    mutationMode="pessimistic"
                     onFailure={onFailure}
                 >
                     <Child />
@@ -167,7 +167,7 @@ describe('EditBase', () => {
             <DataProviderContext.Provider value={dataProvider}>
                 <EditBase
                     {...defaultProps}
-                    undoable={false}
+                    mutationMode="pessimistic"
                     onFailure={onFailure}
                 >
                     <>
@@ -205,7 +205,7 @@ describe('EditBase', () => {
             <DataProviderContext.Provider value={dataProvider}>
                 <EditBase
                     {...defaultProps}
-                    undoable={false}
+                    mutationMode="pessimistic"
                     transform={transform}
                 >
                     <Child />
@@ -248,7 +248,7 @@ describe('EditBase', () => {
             <DataProviderContext.Provider value={dataProvider}>
                 <EditBase
                     {...defaultProps}
-                    undoable={false}
+                    mutationMode="pessimistic"
                     transform={transform}
                 >
                     <>

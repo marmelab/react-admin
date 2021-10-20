@@ -137,10 +137,9 @@ const useDataProvider = <
                     const type = name.toString();
                     const {
                         action = 'CUSTOM_FETCH',
-                        undoable = false,
                         onSuccess = undefined,
                         onFailure = undefined,
-                        mutationMode = undoable ? 'undoable' : 'pessimistic',
+                        mutationMode = 'pessimistic',
                         enabled = true,
                         ...rest
                     } = options || {};

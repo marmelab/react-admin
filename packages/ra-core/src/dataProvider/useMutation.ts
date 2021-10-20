@@ -30,7 +30,7 @@ import useDataProvider from './useDataProvider';
  * @param {Object} query.payload The payload object, e.g; { post_id: 12 }
  * @param {Object} options
  * @param {string} options.action Redux action type
- * @param {boolean} options.undoable Set to true to run the mutation locally before calling the dataProvider
+ * @param {boolean} options.mutationMode Either 'optimistic', 'pessimistic' or 'undoable'
  * @param {boolean} options.returnPromise Set to true to return the result promise of the mutation
  * @param {Function} options.onSuccess Side effect function to be executed upon success, e.g. () => refresh()
  * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. (error) => notify(error.message)
@@ -51,7 +51,7 @@ import useDataProvider from './useDataProvider';
  * - {Object} query.payload The payload object, e.g. { id: 123, data: { isApproved: true } }
  * - {Object} options
  * - {string} options.action Redux action type
- * - {boolean} options.undoable Set to true to run the mutation locally before calling the dataProvider
+ * - {boolean} options.mutationMode Either 'optimistic', 'pessimistic' or 'undoable'
  * - {boolean} options.returnPromise Set to true to return the result promise of the mutation
  * - {Function} options.onSuccess Side effect function to be executed upon success or failure, e.g. { onSuccess: response => refresh() }
  * - {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) }
@@ -111,7 +111,7 @@ import useDataProvider from './useDataProvider';
  *              payload: { id: record.id, data: { stock: 0 } }
  *         },
  *         {
- *              undoable: true,
+ *              mutationMode: 'undoable',
  *              action: CRUD_UPDATE,
  *              onSuccess: response => notify('Success !'),
  *              onFailure: error => notify('Failure !')
@@ -211,8 +211,6 @@ export interface MutationOptions {
     returnPromise?: boolean;
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
-    /** @deprecated use mutationMode: undoable instead */
-    undoable?: boolean;
     mutationMode?: MutationMode;
 }
 

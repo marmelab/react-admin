@@ -123,10 +123,11 @@ describe('useCreateController', () => {
             type: 'RA/SHOW_NOTIFICATION',
             payload: {
                 messageArgs: { smart_count: 1 },
-                undoable: false,
                 autoHideDuration: undefined,
                 type: 'info',
                 message: 'ra.notification.created',
+                multiLine: undefined,
+                undoable: false,
             },
         });
     });
@@ -157,10 +158,11 @@ describe('useCreateController', () => {
             type: 'RA/SHOW_NOTIFICATION',
             payload: {
                 messageArgs: { _: 'not good' },
-                undoable: false,
                 autoHideDuration: undefined,
                 type: 'warning',
                 message: 'not good',
+                multiLine: undefined,
+                undoable: false,
             },
         });
     });

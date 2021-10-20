@@ -72,7 +72,7 @@ export const BulkUpdateWithUndoButton = (
             action: CRUD_UPDATE_MANY,
             onSuccess,
             onFailure,
-            undoable: true,
+            mutationMode: 'undoable',
         }
     );
 

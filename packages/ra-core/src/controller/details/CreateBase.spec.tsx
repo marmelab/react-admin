@@ -41,11 +41,7 @@ describe('CreateBase', () => {
         };
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <CreateBase
-                    {...defaultProps}
-                    undoable={false}
-                    onSuccess={onSuccess}
-                >
+                <CreateBase {...defaultProps} onSuccess={onSuccess}>
                     <Child />
                 </CreateBase>
             </DataProviderContext.Provider>,
@@ -84,11 +80,7 @@ describe('CreateBase', () => {
         };
         const { getByLabelText } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <CreateBase
-                    {...defaultProps}
-                    undoable={false}
-                    onSuccess={onSuccess}
-                >
+                <CreateBase {...defaultProps} onSuccess={onSuccess}>
                     <>
                         <SetOnSuccess />
                         <Child />
@@ -122,11 +114,7 @@ describe('CreateBase', () => {
         };
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <CreateBase
-                    {...defaultProps}
-                    undoable={false}
-                    onFailure={onFailure}
-                >
+                <CreateBase {...defaultProps} onFailure={onFailure}>
                     <Child />
                 </CreateBase>
             </DataProviderContext.Provider>,
@@ -165,11 +153,7 @@ describe('CreateBase', () => {
         };
         const { getByLabelText } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <CreateBase
-                    {...defaultProps}
-                    undoable={false}
-                    onFailure={onFailure}
-                >
+                <CreateBase {...defaultProps} onFailure={onFailure}>
                     <>
                         <SetOnSuccess />
                         <Child />
@@ -203,11 +187,7 @@ describe('CreateBase', () => {
         };
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <CreateBase
-                    {...defaultProps}
-                    undoable={false}
-                    transform={transform}
-                >
+                <CreateBase {...defaultProps} transform={transform}>
                     <Child />
                 </CreateBase>
             </DataProviderContext.Provider>,
@@ -246,11 +226,7 @@ describe('CreateBase', () => {
         };
         const { getByLabelText } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <CreateBase
-                    {...defaultProps}
-                    undoable={false}
-                    transform={transform}
-                >
+                <CreateBase {...defaultProps} transform={transform}>
                     <>
                         <SetOnSuccess />
                         <Child />

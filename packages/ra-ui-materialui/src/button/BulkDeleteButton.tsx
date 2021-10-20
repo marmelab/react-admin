@@ -8,6 +8,7 @@ import {
     BulkDeleteWithUndoButton,
     BulkDeleteWithUndoButtonProps,
 } from './BulkDeleteWithUndoButton';
+import { MutationMode } from 'ra-core';
 
 /**
  * Deletes the selected rows.
@@ -32,15 +33,18 @@ import {
  *     </List>
  * );
  */
-export const BulkDeleteButton = (props: BulkDeleteButtonProps) =>
-    props.undoable ? (
+export const BulkDeleteButton = ({
+    mutationMode = 'undoable',
+    ...props
+}: BulkDeleteButtonProps) =>
+    mutationMode === 'undoable' ? (
         <BulkDeleteWithUndoButton {...props} />
     ) : (
-        <BulkDeleteWithConfirmButton {...props} />
+        <BulkDeleteWithConfirmButton mutationMode={mutationMode} {...props} />
     );
 
 interface Props {
-    undoable?: boolean;
+    mutationMode?: MutationMode;
 }
 
 export type BulkDeleteButtonProps = Props &
@@ -51,10 +55,6 @@ BulkDeleteButton.propTypes = {
     label: PropTypes.string,
     resource: PropTypes.string,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
-    undoable: PropTypes.bool,
+    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     icon: PropTypes.element,
-};
-
-BulkDeleteButton.defaultProps = {
-    undoable: true,
 };

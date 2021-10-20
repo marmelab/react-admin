@@ -7,7 +7,6 @@ const OptionsProperties = [
     'meta',
     'onFailure',
     'onSuccess',
-    'undoable',
     'mutationMode',
     'enabled',
 ];

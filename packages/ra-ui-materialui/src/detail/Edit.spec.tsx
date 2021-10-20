@@ -1,7 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import { waitFor, fireEvent, act } from '@testing-library/react';
-import { DataProviderContext, undoableEventEmitter } from 'ra-core';
+import { DataProviderContext, Record, undoableEventEmitter } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
 
 import { Edit } from './Edit';
@@ -11,8 +11,8 @@ describe('<Edit />', () => {
         basePath: '',
         id: '123',
         resource: 'foo',
-        location: {},
-        match: {},
+        location: {} as any,
+        match: {} as any,
     };
 
     it('should call dataProvider.getOne() and pass the result to its child as record', async () => {
@@ -54,7 +54,11 @@ describe('<Edit />', () => {
 
         const { queryAllByText, getByText } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <Edit {...defaultEditProps} id="1234" undoable={false}>
+                <Edit
+                    {...defaultEditProps}
+                    id="1234"
+                    mutationMode="pessimistic"
+                >
                     <FakeForm />
                 </Edit>
             </DataProviderContext.Provider>,
@@ -250,7 +254,7 @@ describe('<Edit />', () => {
                     <Edit
                         {...defaultEditProps}
                         onSuccess={onSuccess}
-                        undoable={false}
+                        mutationMode="pessimistic"
                     >
                         <FakeForm />
                     </Edit>
@@ -297,7 +301,7 @@ describe('<Edit />', () => {
                     <Edit
                         {...defaultEditProps}
                         onSuccess={onSuccess}
-                        undoable={false}
+                        mutationMode="pessimistic"
                     >
                         <FakeForm />
                     </Edit>
@@ -341,7 +345,7 @@ describe('<Edit />', () => {
                     <Edit
                         {...defaultEditProps}
                         onFailure={onFailure}
-                        undoable={false}
+                        mutationMode="pessimistic"
                     >
                         <FakeForm />
                     </Edit>
@@ -387,7 +391,7 @@ describe('<Edit />', () => {
                     <Edit
                         {...defaultEditProps}
                         onFailure={onFailure}
-                        undoable={false}
+                        mutationMode="pessimistic"
                     >
                         <FakeForm />
                     </Edit>
@@ -438,7 +442,7 @@ describe('<Edit />', () => {
                     <Edit
                         {...defaultEditProps}
                         transform={transform}
-                        undoable={false}
+                        mutationMode="pessimistic"
                     >
                         <FakeForm />
                     </Edit>
@@ -499,7 +503,7 @@ describe('<Edit />', () => {
                     <Edit
                         {...defaultEditProps}
                         transform={transform}
-                        undoable={false}
+                        mutationMode="pessimistic"
                     >
                         <FakeForm />
                     </Edit>

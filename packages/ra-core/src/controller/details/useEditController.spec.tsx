@@ -110,7 +110,10 @@ describe('useEditController', () => {
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <SaveContextProvider value={saveContextValue}>
-                    <EditController {...defaultProps} undoable={false}>
+                    <EditController
+                        {...defaultProps}
+                        mutationMode="pessimistic"
+                    >
                         {({ save }) => {
                             saveCallback = save;
                             return null;
@@ -162,7 +165,7 @@ describe('useEditController', () => {
         expect(crudUpdateAction.meta.resource).toEqual('posts');
     });
 
-    it('should return a save callback when undoable is false', async () => {
+    it('should return a save callback when mutationMode is pessimistic', async () => {
         let saveCallback;
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
@@ -172,7 +175,10 @@ describe('useEditController', () => {
         const { dispatch } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <SaveContextProvider value={saveContextValue}>
-                    <EditController {...defaultProps} undoable={false}>
+                    <EditController
+                        {...defaultProps}
+                        mutationMode="pessimistic"
+                    >
                         {({ save }) => {
                             saveCallback = save;
                             return null;
@@ -217,7 +223,7 @@ describe('useEditController', () => {
                 <SaveContextProvider value={saveContextValue}>
                     <EditController
                         {...defaultProps}
-                        undoable={false}
+                        mutationMode="pessimistic"
                         onSuccess={onSuccess}
                     >
                         {({ save }) => {
@@ -251,7 +257,7 @@ describe('useEditController', () => {
                 <SaveContextProvider value={saveContextValue}>
                     <EditController
                         {...defaultProps}
-                        undoable={false}
+                        mutationMode="pessimistic"
                         onSuccess={onSuccess}
                     >
                         {({ save }) => {
@@ -289,7 +295,7 @@ describe('useEditController', () => {
                 <SaveContextProvider value={saveContextValue}>
                     <EditController
                         {...defaultProps}
-                        undoable={false}
+                        mutationMode="pessimistic"
                         onFailure={onFailure}
                     >
                         {({ save }) => {
@@ -323,7 +329,7 @@ describe('useEditController', () => {
                 <SaveContextProvider value={saveContextValue}>
                     <EditController
                         {...defaultProps}
-                        undoable={false}
+                        mutationMode="pessimistic"
                         onFailure={onFailure}
                     >
                         {({ save }) => {
@@ -368,7 +374,7 @@ describe('useEditController', () => {
                 <SaveContextProvider value={saveContextValue}>
                     <EditController
                         {...defaultProps}
-                        undoable={false}
+                        mutationMode="pessimistic"
                         transform={transform}
                     >
                         {({ save }) => {
@@ -412,7 +418,7 @@ describe('useEditController', () => {
                 <SaveContextProvider value={saveContextValue}>
                     <EditController
                         {...defaultProps}
-                        undoable={false}
+                        mutationMode="pessimistic"
                         transform={transform}
                     >
                         {({ save }) => {

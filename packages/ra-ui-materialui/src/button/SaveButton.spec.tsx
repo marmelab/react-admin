@@ -30,7 +30,7 @@ const invalidButtonDomProps = {
     resource: 'posts',
     saving: false,
     submitOnEnter: true,
-    undoable: false,
+    mutationMode: 'pessimistic',
 };
 
 describe('<SaveButton />', () => {
@@ -217,7 +217,7 @@ describe('<SaveButton />', () => {
             path: '/customers/123',
             url: '/customers/123',
         },
-        undoable: false,
+        mutationMode: 'pessimistic',
     };
 
     it('should allow to override the onSuccess side effects', async () => {

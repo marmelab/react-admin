@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { render, waitFor, fireEvent } from '@testing-library/react';
 import expect from 'expect';
-import { DataProvider, DataProviderContext } from 'ra-core';
+import { DataProvider, DataProviderContext, MutationMode } from 'ra-core';
 import { renderWithRedux, TestContext } from 'ra-test';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
@@ -24,7 +24,7 @@ const invalidButtonDomProps = {
     resource: 'posts',
     saving: false,
     submitOnEnter: true,
-    undoable: false,
+    mutationMode: 'pessimistic' as MutationMode,
 };
 
 describe('<DeleteWithConfirmButton />', () => {
@@ -68,7 +68,7 @@ describe('<DeleteWithConfirmButton />', () => {
         resource: 'posts',
         location: {},
         match: {},
-        undoable: false,
+        mutationMode: 'pessimistic',
     };
 
     it('should allow to override the resource', async () => {
@@ -114,7 +114,7 @@ describe('<DeleteWithConfirmButton />', () => {
         });
     });
 
-    it('should allows to undo the deletion after confirmation if undoable is true', async () => {
+    it('should allows to undo the deletion after confirmation if mutationMode is undoable', async () => {
         const dataProvider = ({
             getOne: () =>
                 Promise.resolve({
@@ -124,7 +124,7 @@ describe('<DeleteWithConfirmButton />', () => {
         } as unknown) as DataProvider;
         const EditToolbar = props => (
             <Toolbar {...props}>
-                <DeleteWithConfirmButton undoable />
+                <DeleteWithConfirmButton mutationMode="undoable" />
             </Toolbar>
         );
         const {

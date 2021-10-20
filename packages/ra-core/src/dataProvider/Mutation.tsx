@@ -32,7 +32,7 @@ export interface MutationProps {
  * @param {Object} payload The payload object, e.g; { id: 12 }
  * @param {Object} options
  * @param {string} options.action Redux action type
- * @param {boolean} options.undoable Set to true to run the mutation locally before calling the dataProvider
+ * @param {boolean} options.mutationMode Either 'optimistic', 'pessimistic' or 'undoable'
  * @param {boolean} options.returnPromise Set to true to return the result promise of the mutation
  * @param {Function} options.onSuccess Side effect function to be executed upon success or failure, e.g. { onSuccess: response => refresh() }
  * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) }

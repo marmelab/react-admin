@@ -11,7 +11,6 @@ import ActionDelete from '@mui/icons-material/Delete';
 import classnames from 'classnames';
 import inflection from 'inflection';
 import {
-    getMutationMode,
     MutationMode,
     OnSuccess,
     OnFailure,
@@ -35,19 +34,17 @@ export const DeleteWithConfirmButton = (
         confirmContent = 'ra.message.delete_content',
         icon = defaultIcon,
         label = 'ra.action.delete',
-        mutationMode,
+        mutationMode = 'pessimistic',
         onClick,
         record,
         redirect = 'list',
         onSuccess,
         onFailure,
-        undoable,
         ...rest
     } = props;
     const translate = useTranslate();
 
     const resource = useResourceContext(props);
-    const mode = getMutationMode(mutationMode, undoable);
 
     const {
         open,
@@ -59,7 +56,7 @@ export const DeleteWithConfirmButton = (
         record,
         redirect,
         basePath,
-        mutationMode: mutationMode || mode,
+        mutationMode,
         onClick,
         onSuccess,
         onFailure,
@@ -129,8 +126,6 @@ interface Props {
     submitOnEnter?: boolean;
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
-    /** @deprecated use mutationMode: undoable instead */
-    undoable?: boolean;
 }
 
 export type DeleteWithConfirmButtonProps = Props & ButtonProps;
@@ -142,7 +137,6 @@ DeleteWithConfirmButton.propTypes = {
     confirmContent: PropTypes.string,
     label: PropTypes.string,
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
-    undoable: PropTypes.bool,
     record: PropTypes.any,
     redirect: PropTypes.oneOfType([
         PropTypes.string,

@@ -19,7 +19,7 @@ export interface DataProviderProps {
  * In addition to the 2 usual parameters of the dataProvider methods (resource,
  * payload), the Proxy supports a third parameter for every call. It's an
  * object literal which may contain side effects, or make the action optimistic
- * (with undoable: true).
+ * (with mutationMode: 'undoable').
  *
  * @see useDataProvider
  *

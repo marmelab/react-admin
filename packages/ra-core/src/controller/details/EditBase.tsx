@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { useEditController } from './useEditController';
+import { ReactNode } from 'react';
+import { useEditController, EditProps } from './useEditController';
 import { EditContextProvider } from './EditContextProvider';
 
 /**
@@ -31,7 +32,10 @@ import { EditContextProvider } from './EditContextProvider';
  *     </EditBase>
  * );
  */
-export const EditBase = ({ children, ...props }) => (
+export const EditBase = ({
+    children,
+    ...props
+}: EditProps & { children: ReactNode }) => (
     <EditContextProvider value={useEditController(props)}>
         {children}
     </EditContextProvider>

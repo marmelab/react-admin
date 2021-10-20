@@ -12,7 +12,12 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import classnames from 'classnames';
-import { Record, RedirectionSideEffect, useTranslate } from 'ra-core';
+import {
+    MutationMode,
+    Record,
+    RedirectionSideEffect,
+    useTranslate,
+} from 'ra-core';
 import { LocationDescriptor } from 'history';
 
 /**
@@ -127,7 +132,7 @@ interface Props {
     pristine?: boolean;
     record?: Record;
     resource?: string;
-    undoable?: boolean;
+    mutationMode?: MutationMode;
 }
 
 export type ButtonProps = Props & MuiButtonProps;
@@ -145,7 +150,7 @@ export const sanitizeButtonRestProps = ({
     resource,
     saving,
     submitOnEnter,
-    undoable,
+    mutationMode,
     ...rest
 }: any) => rest;
 
