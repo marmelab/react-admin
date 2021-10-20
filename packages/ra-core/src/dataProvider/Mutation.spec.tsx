@@ -54,7 +54,7 @@ describe('Mutation', () => {
                     resource="foo"
                     options={{
                         onSuccess: () => {
-                            notify('Youhou!', 'info');
+                            notify('Youhou!', { type: 'info' });
                         },
                     }}
                 >
@@ -85,10 +85,7 @@ describe('Mutation', () => {
         fireEvent.click(testElement);
         await waitFor(() => {
             expect(dispatchSpy).toHaveBeenCalledWith(
-                showNotification('Youhou!', 'info', {
-                    messageArgs: {},
-                    undoable: false,
-                })
+                showNotification('Youhou!', 'info')
             );
         });
     });
@@ -110,7 +107,7 @@ describe('Mutation', () => {
                     resource="foo"
                     options={{
                         onFailure: () => {
-                            notify('Damn!', 'warning');
+                            notify('Damn!', { type: 'warning' });
                         },
                     }}
                 >
@@ -141,10 +138,7 @@ describe('Mutation', () => {
         fireEvent.click(testElement);
         await waitFor(() => {
             expect(dispatchSpy).toHaveBeenCalledWith(
-                showNotification('Damn!', 'warning', {
-                    messageArgs: {},
-                    undoable: false,
-                })
+                showNotification('Damn!', 'warning')
             );
         });
     });

@@ -140,7 +140,7 @@ export const useEditController = <RecordType extends Record = Record>(
     >(resource, id, {
         action: CRUD_GET_ONE,
         onFailure: () => {
-            notify('ra.notification.item_doesnt_exist', 'warning');
+            notify('ra.notification.item_doesnt_exist', { type: 'warning' });
             redirect('list', basePath);
             refresh();
         },
@@ -189,11 +189,13 @@ export const useEditController = <RecordType extends Record = Record>(
                                   notify(
                                       successMessage ||
                                           'ra.notification.updated',
-                                      'info',
                                       {
-                                          smart_count: 1,
-                                      },
-                                      mutationMode === 'undoable'
+                                          type: 'info',
+                                          messageArgs: {
+                                              smart_count: 1,
+                                          },
+                                          undoable: mutationMode === 'undoable',
+                                      }
                                   );
                                   redirect(redirectTo, basePath, data.id, data);
                               },
@@ -207,14 +209,16 @@ export const useEditController = <RecordType extends Record = Record>(
                                           ? error
                                           : error.message ||
                                                 'ra.notification.http_error',
-                                      'warning',
                                       {
-                                          _:
-                                              typeof error === 'string'
-                                                  ? error
-                                                  : error && error.message
-                                                  ? error.message
-                                                  : undefined,
+                                          type: 'warning',
+                                          messageArgs: {
+                                              _:
+                                                  typeof error === 'string'
+                                                      ? error
+                                                      : error && error.message
+                                                      ? error.message
+                                                      : undefined,
+                                          },
                                       }
                                   );
                                   if (

@@ -192,9 +192,7 @@ describe('<SaveButton />', () => {
         expect(dispatchSpy).toHaveBeenCalledWith({
             payload: {
                 message: 'ra.message.invalid_form',
-                messageArgs: {},
                 type: 'warning',
-                undoable: false,
             },
             type: 'RA/SHOW_NOTIFICATION',
         });

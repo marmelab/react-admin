@@ -129,7 +129,7 @@ export const SaveButton = (props: SaveButtonProps) => {
             event.preventDefault();
         } else {
             if (invalid) {
-                notify('ra.message.invalid_form', 'warning');
+                notify('ra.message.invalid_form', { type: 'warning' });
             }
             // always submit form explicitly regardless of button type
             if (event) {
