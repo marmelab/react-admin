@@ -45,12 +45,12 @@ const App = () => {
     }, []);
 
     if (!dataProvider) {
-        return <div>Loading < /div>;
+        return <div>Loading</div>;
     }
 
     return (
-        <Admin dataProvider= { dataProvider } >
-            <Resource name="Post" list = { PostList } edit = { PostEdit } create = { PostCreate } />
+        <Admin dataProvider={ dataProvider }>
+            <Resource name="Post" list={ PostList } edit={ PostEdit } create={ PostCreate } />
         </Admin>
     );
 }
