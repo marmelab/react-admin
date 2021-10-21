@@ -118,7 +118,7 @@ export type Options = {
     override?: {
         [key: string]: (params: any) => BuildQueryResult;
     };
-    buildQuery: BuildQueryFactory;
+    buildQuery?: BuildQueryFactory;
     query?: GetQueryOptions;
     mutation?: GetMutationOptions;
     watchQuery?: GetWatchQueryOptions;
