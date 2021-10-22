@@ -3,8 +3,6 @@ import { useRef, useCallback, useEffect, useMemo } from 'react';
 import { Form, FormProps, FormRenderProps } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 
-import useInitializeFormWithRecord from './useInitializeFormWithRecord';
-import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
 import useResetSubmitErrors from './useResetSubmitErrors';
 import sanitizeEmptyValues from './sanitizeEmptyValues';
 import getFormInitialValues from './getFormInitialValues';
@@ -19,6 +17,7 @@ import { useDispatch } from 'react-redux';
 import { setAutomaticRefresh } from '../actions/uiActions';
 import { FormContextProvider } from './FormContextProvider';
 import submitErrorsMutators from './submitErrorsMutators';
+import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
 
 /**
  * Wrapper around react-final-form's Form to handle redirection on submit,
@@ -137,7 +136,8 @@ const FormWithRedirect = ({
 
     const finalInitialValues = useMemo(
         () => getFormInitialValues(initialValues, defaultValue, record),
-    [JSON.stringify({initialValues, defaultValue, record})]); // eslint-disable-line
+        [JSON.stringify({ initialValues, defaultValue, record })] // eslint-disable-line
+    );
 
     const submit = values => {
         const finalRedirect =
@@ -159,7 +159,7 @@ const FormWithRedirect = ({
     return (
         <FormContextProvider value={formContextValue}>
             <Form
-                key={version} // support for refresh button
+                key={`${version}_${record?.id || ''}`} // support for refresh button
                 debug={debug}
                 decorators={decorators}
                 destroyOnUnregister={destroyOnUnregister}
@@ -177,6 +177,7 @@ const FormWithRedirect = ({
                     <FormView
                         {...props}
                         {...formProps}
+                        key={`${version}_${record?.id || ''}`} // support for refresh button
                         record={record}
                         setRedirect={setRedirect}
                         saving={formProps.submitting || saving}
@@ -253,17 +254,14 @@ const FormView = ({
     setRedirect,
     ...props
 }: FormViewProps) => {
-    // if record changes (after a getOne success or a refresh), the form must be updated
-    useInitializeFormWithRecord(props.record);
-    useWarnWhenUnsavedChanges(warnWhenUnsavedChanges);
     useResetSubmitErrors();
+    useWarnWhenUnsavedChanges(warnWhenUnsavedChanges);
     const dispatch = useDispatch();
+    const { redirect, handleSubmit, pristine } = props;
 
     useEffect(() => {
-        dispatch(setAutomaticRefresh(props.pristine));
-    }, [dispatch, props.pristine]);
-
-    const { redirect, handleSubmit } = props;
+        dispatch(setAutomaticRefresh(pristine));
+    }, [dispatch, pristine]);
 
     /**
      * We want to let developers define the redirection target from inside the form,

@@ -14,7 +14,7 @@ describe('FormWithRedirect', () => {
 
     it('Does not make the form dirty when reinitialized from a record', () => {
         const renderProp = jest.fn(() => (
-            <Input source="name" defaultValue="Bar" />
+            <Input source="name" initialValue="Bar" />
         ));
         const { getByDisplayValue, rerender } = renderWithRedux(
             <FormWithRedirect
@@ -40,12 +40,8 @@ describe('FormWithRedirect', () => {
             />
         );
 
-        expect(renderProp.mock.calls[3][0].pristine).toEqual(true);
-        expect(getByDisplayValue('Foo')).not.toBeNull();
-        // 4 times because the first initialization with an empty value
-        // triggers a change on the input which has a defaultValue
-        // This is expected and identical to what FinalForm does (https://final-form.org/docs/final-form/types/FieldConfig#defaultvalue)
-        expect(renderProp).toHaveBeenCalledTimes(4);
+        expect(renderProp.mock.calls[1][0].pristine).toEqual(true);
+        expect(renderProp).toHaveBeenCalledTimes(2);
     });
 
     it('Does not make the form dirty when initialized from a record with a missing field and this field has an initialValue', () => {
@@ -65,9 +61,6 @@ describe('FormWithRedirect', () => {
 
         expect(renderProp.mock.calls[0][0].pristine).toEqual(true);
         expect(getByDisplayValue('Bar')).not.toBeNull();
-        // 4 times because the first initialization with an empty value
-        // triggers a change on the input which has a defaultValue
-        // This is expected and identical to what FinalForm does (https://final-form.org/docs/final-form/types/FieldConfig#defaultvalue)
         expect(renderProp).toHaveBeenCalledTimes(1);
     });
 
@@ -153,16 +146,17 @@ describe('FormWithRedirect', () => {
                 saving={false}
                 version={0}
                 record={{
-                    id: 1,
-                    anotherServerAddedProp: 'Bar',
+                    id: 2,
+                    name: undefined,
+                    anotherServerAddedProp: 'Bazinga',
                 }}
                 render={renderProp}
             />
         );
 
+        expect(renderProp).toHaveBeenCalledTimes(3);
         expect(renderProp.mock.calls[2][0].pristine).toEqual(false);
         expect(getByDisplayValue('Bar')).not.toBeNull();
-        expect(renderProp).toHaveBeenCalledTimes(3);
     });
 
     it('Does not make the form dirty when reinitialized from a different record with a missing field and this field has an initialValue', async () => {
@@ -190,9 +184,9 @@ describe('FormWithRedirect', () => {
                 saving={false}
                 version={0}
                 record={{
-                    id: 1,
+                    id: 2,
                     name: undefined,
-                    anotherServerAddedProp: 'Bar',
+                    anotherServerAddedProp: 'Bazinga',
                 }}
                 render={renderProp}
             />
@@ -200,10 +194,9 @@ describe('FormWithRedirect', () => {
 
         await waitFor(() => {
             expect(getByDisplayValue('Bar')).not.toBeNull();
-            expect(
-                renderProp.mock.calls[renderProp.mock.calls.length - 1][0]
-                    .pristine
-            ).toEqual(false);
         });
+        expect(
+            renderProp.mock.calls[renderProp.mock.calls.length - 1][0].pristine
+        ).toEqual(true);
     });
 });

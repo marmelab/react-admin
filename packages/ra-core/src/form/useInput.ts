@@ -4,13 +4,11 @@ import {
     FieldProps,
     FieldRenderProps,
     FieldInputProps,
-    useForm,
 } from 'react-final-form';
 import { Validator, composeValidators } from './validate';
 import isRequired from './isRequired';
 import { useFormGroupContext } from './useFormGroupContext';
 import { useFormContext } from './useFormContext';
-import { useRecordContext } from '../controller';
 
 export interface InputProps<T = any>
     extends Omit<
@@ -53,7 +51,6 @@ const useInput = ({
     const finalName = name || source;
     const formGroupName = useFormGroupContext();
     const formContext = useFormContext();
-    const record = useRecordContext();
 
     useEffect(() => {
         if (!formContext || !formGroupName) {
@@ -110,43 +107,6 @@ const useInput = ({
         },
         [onFocus, customOnFocus]
     );
-
-    const form = useForm();
-    const recordId = record?.id;
-    // Every time the record changes and doesn't include a value for this field,
-    // reset the field value to the initialValue (or defaultValue)
-    useEffect(() => {
-        if (
-            typeof input.checked !== 'undefined' || // checkbox that has a value from record
-            (input.value != null && input.value !== '') // any other input that has a value from record
-        ) {
-            // no need to apply a default value
-            return;
-        }
-
-        // Apply the default value if provided
-        // We use a change here which will make the form dirty but this is expected
-        // and identical to what FinalForm does (https://final-form.org/docs/final-form/types/FieldConfig#defaultvalue)
-        if (defaultValue != null) {
-            form.change(source, defaultValue);
-        }
-
-        // apply initial value if provided
-        if (initialValue != null) {
-            form.batch(() => {
-                form.change(source, initialValue);
-                form.resetFieldState(source);
-            });
-        }
-    }, [
-        recordId,
-        input.value,
-        input.checked,
-        defaultValue,
-        initialValue,
-        source,
-        form,
-    ]);
 
     // If there is an input prop, this input has already been enhanced by final-form
     // This is required in for inputs used inside other inputs (such as the SelectInput inside a ReferenceInput)
