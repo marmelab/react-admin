@@ -99,6 +99,18 @@ const useStyles = makeStyles(
         fixed: {
             position: 'fixed',
             height: 'calc(100vh - 3em)',
+            width: (props: { open?: boolean }) =>
+                props.open
+                    ? lodashGet(theme, 'sidebar.width', DRAWER_WIDTH)
+                    : lodashGet(
+                          theme,
+                          'sidebar.closedWidth',
+                          CLOSED_DRAWER_WIDTH
+                      ),
+            transition: theme.transitions.create('width', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+            }),
             overflowX: 'hidden',
             // hide scrollbar
             scrollbarWidth: 'none',
