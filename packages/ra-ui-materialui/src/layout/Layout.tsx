@@ -59,6 +59,8 @@ const styles = theme =>
             flexGrow: 1,
         },
         content: {
+            backgroundColor: theme.palette.background.default,
+            zIndex: 2,
             display: 'flex',
             flexDirection: 'column',
             flexGrow: 1,
