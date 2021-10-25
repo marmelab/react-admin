@@ -92,7 +92,8 @@ export type BuildQuery = (
     resource: string,
     params: any
 ) => BuildQueryResult;
-type BuildQueryFactory = (
+
+export type BuildQueryFactory = (
     introspectionResults: IntrospectionResult
 ) => BuildQuery;
 
@@ -113,7 +114,7 @@ export type GetWatchQueryOptions = (
 
 export type Options = {
     client?: ApolloClient<unknown>;
-    clientOptions?: ApolloClientOptions<unknown>;
+    clientOptions?: Partial<ApolloClientOptions<unknown>>;
     introspection?: false | IntrospectionOptions;
     override?: {
         [key: string]: (params: any) => BuildQueryResult;
