@@ -2,6 +2,8 @@ import * as React from 'react';
 import { useRef, useCallback, useEffect, useMemo } from 'react';
 import { Form, FormProps, FormRenderProps } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
+import { useHistory } from 'react-router';
+import { useDispatch } from 'react-redux';
 
 import useResetSubmitErrors from './useResetSubmitErrors';
 import sanitizeEmptyValues from './sanitizeEmptyValues';
@@ -13,7 +15,6 @@ import {
     OnFailure,
 } from '../types';
 import { RedirectionSideEffect } from '../sideEffect';
-import { useDispatch } from 'react-redux';
 import { setAutomaticRefresh } from '../actions/uiActions';
 import { FormContextProvider } from './FormContextProvider';
 import submitErrorsMutators from './submitErrorsMutators';
@@ -50,6 +51,7 @@ const FormWithRedirect = ({
     defaultValue,
     destroyOnUnregister,
     form,
+    formRootPathname,
     initialValues,
     initialValuesEqual,
     keepDirtyOnReinitialize = true,
@@ -68,6 +70,7 @@ const FormWithRedirect = ({
 }: FormWithRedirectProps) => {
     const redirect = useRef(props.redirect);
     const onSave = useRef(save);
+    const history = useHistory();
     const formGroups = useRef<{ [key: string]: string[] }>({});
     const finalMutators = useMemo(
         () =>
@@ -184,6 +187,9 @@ const FormWithRedirect = ({
                         render={render}
                         save={save}
                         warnWhenUnsavedChanges={warnWhenUnsavedChanges}
+                        formRootPathname={
+                            formRootPathname ?? history.location.pathname
+                        }
                     />
                 )}
             />
@@ -213,6 +219,7 @@ export type FormWithRedirectSave = (
 
 export interface FormWithRedirectOwnProps {
     defaultValue?: any;
+    formRootPathname?: string;
     record?: RaRecord;
     redirect?: RedirectionSideEffect;
     render: FormWithRedirectRender;
@@ -249,13 +256,14 @@ interface FormViewProps
 }
 
 const FormView = ({
+    formRootPathname,
     render,
     warnWhenUnsavedChanges,
     setRedirect,
     ...props
 }: FormViewProps) => {
     useResetSubmitErrors();
-    useWarnWhenUnsavedChanges(warnWhenUnsavedChanges);
+    useWarnWhenUnsavedChanges(warnWhenUnsavedChanges, formRootPathname);
     const dispatch = useDispatch();
     const { redirect, handleSubmit, pristine } = props;
 

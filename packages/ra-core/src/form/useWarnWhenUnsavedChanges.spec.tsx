@@ -8,7 +8,7 @@ import { Route, MemoryRouter, useHistory } from 'react-router-dom';
 import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
 
 const FormBody = ({ handleSubmit, submitSucceeded }) => {
-    useWarnWhenUnsavedChanges(true);
+    useWarnWhenUnsavedChanges(true, '/form');
     const history = useHistory();
     const onLeave = () => {
         history.push('/somewhere');
@@ -66,7 +66,7 @@ const App = () => (
             callback(confirmed);
         }}
     >
-        <Route path="/form">
+        <Route path="/form/:subpath?">
             <FormUnderTest />
         </Route>
         <Route path="/submitted" render={() => <span>Submitted</span>} />
@@ -96,7 +96,7 @@ describe('useWarnWhenUnsavedChanges', () => {
         await waitFor(() => getByText('Submitted'));
     });
 
-    test.only.each([
+    test.each([
         ['simple', 'First Name'],
         ['nested', 'Author'],
     ])(

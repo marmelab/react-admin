@@ -9,11 +9,14 @@ import { useTranslate } from '../i18n';
  * - If the user confirms, the navigation continues and the changes are lost.
  * - If the user cancels, the navigation is cancelled and the changes are kept.
  */
-const useWarnWhenUnsavedChanges = (enable: boolean) => {
+const useWarnWhenUnsavedChanges = (
+    enable: boolean,
+    formRootPathname: string
+) => {
     const history = useHistory();
     const translate = useTranslate();
     const { pristine } = useFormState(UseFormStateSubscription);
-    const initialLocation = useRef(history.location.pathname);
+    const initialLocation = useRef(formRootPathname);
 
     useEffect(() => {
         if (!enable) {
