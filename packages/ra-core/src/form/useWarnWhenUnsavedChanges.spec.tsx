@@ -34,6 +34,15 @@ const FormBody = ({ handleSubmit, submitSucceeded }) => {
                 aria-labelledby="author-label"
                 component="input"
             />
+            <button type="button" onClick={() => history.push('/form')}>
+                Root form
+            </button>
+            <button type="button" onClick={() => history.push('/form/part1')}>
+                Form part 1
+            </button>
+            <button type="button" onClick={() => history.push('/form/part2')}>
+                Form part 2
+            </button>
             <button type="button" onClick={onLeave}>
                 Leave
             </button>
@@ -57,9 +66,9 @@ const FormUnderTest = ({ initialValues = {} }) => {
     );
 };
 
-const App = () => (
+const App = ({ initialEntries = ['/form'] }) => (
     <MemoryRouter
-        initialEntries={['/form']}
+        initialEntries={initialEntries}
         initialIndex={0}
         getUserConfirmation={(message, callback) => {
             const confirmed = window.confirm(message);
@@ -111,6 +120,69 @@ describe('useWarnWhenUnsavedChanges', () => {
             });
             expect(getByDisplayValue('John Doe')).not.toBeNull();
             fireEvent.click(getByText('Submit'));
+            // We don't check whether the redirection happened because final-form keeps the form
+            // dirty state even after the submit.
+            expect(window.confirm).not.toHaveBeenCalled();
+        }
+    );
+
+    test.each([
+        ['simple', 'First Name'],
+        ['nested', 'Author'],
+    ])(
+        'should not warn when navigating to a sub page of a form with submit button after updating %s field',
+        async (_, field) => {
+            window.confirm = jest.fn().mockReturnValue(true);
+            const { getByLabelText, getByDisplayValue, getByText } = render(
+                <App />
+            );
+            fireEvent.change(getByLabelText(field), {
+                target: { value: 'John Doe' },
+            });
+            expect(getByDisplayValue('John Doe')).not.toBeNull();
+            fireEvent.click(getByText('Form part 1'));
+            // We don't check whether the redirection happened because final-form keeps the form
+            // dirty state even after the submit.
+            expect(window.confirm).not.toHaveBeenCalled();
+        }
+    );
+
+    test.each([
+        ['simple', 'First Name'],
+        ['nested', 'Author'],
+    ])(
+        'should not warn when navigating from a sub page of a form to the another part with submit button after updating %s field',
+        async (_, field) => {
+            window.confirm = jest.fn().mockReturnValue(true);
+            const { getByLabelText, getByDisplayValue, getByText } = render(
+                <App initialEntries={['/form/part1']} />
+            );
+            fireEvent.change(getByLabelText(field), {
+                target: { value: 'John Doe' },
+            });
+            expect(getByDisplayValue('John Doe')).not.toBeNull();
+            fireEvent.click(getByText('Form part 2'));
+            // We don't check whether the redirection happened because final-form keeps the form
+            // dirty state even after the submit.
+            expect(window.confirm).not.toHaveBeenCalled();
+        }
+    );
+
+    test.each([
+        ['simple', 'First Name'],
+        ['nested', 'Author'],
+    ])(
+        'should not warn when navigating from a sub page of a form to the root part with submit button after updating %s field',
+        async (_, field) => {
+            window.confirm = jest.fn().mockReturnValue(true);
+            const { getByLabelText, getByDisplayValue, getByText } = render(
+                <App initialEntries={['/form/part1']} />
+            );
+            fireEvent.change(getByLabelText(field), {
+                target: { value: 'John Doe' },
+            });
+            expect(getByDisplayValue('John Doe')).not.toBeNull();
+            fireEvent.click(getByText('Root form'));
             // We don't check whether the redirection happened because final-form keeps the form
             // dirty state even after the submit.
             expect(window.confirm).not.toHaveBeenCalled();
