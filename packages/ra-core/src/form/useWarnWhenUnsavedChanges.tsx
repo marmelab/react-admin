@@ -25,7 +25,6 @@ const useWarnWhenUnsavedChanges = (enable: boolean) => {
                 initialLocation.current
             );
 
-            console.log({ pristine });
             if (!pristine && !isInsideForm) {
                 return translate('ra.message.unsaved_changes');
             }
