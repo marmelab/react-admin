@@ -17,6 +17,9 @@ export const Basic = () => {
         ids: [1, 2],
         loading: false,
         loaded: true,
+        filter: {
+            category: 'deals',
+        },
     });
     return (
         <ListContextProvider value={listContext}>
