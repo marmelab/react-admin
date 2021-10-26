@@ -212,11 +212,10 @@ export const FilterListItemClasses = {
 };
 
 const StyledListItem = styled(ListItem, { name: PREFIX })(({ theme }) => ({
-    [`&.${FilterListItemClasses.listItem}`]: {
-        paddingLeft: '2em',
-    },
+    [`&.${FilterListItemClasses.listItem}`]: {},
     [`& .${FilterListItemClasses.listItemButton}`]: {
         paddingRight: '2em',
+        paddingLeft: '2em',
     },
     [`& .${FilterListItemClasses.listItemText}`]: {
         margin: 0,
