@@ -27,14 +27,10 @@ describe('<useList />', () => {
             { id: 1, title: 'hello' },
             { id: 2, title: 'world' },
         ];
-        const ids = [1, 2];
 
         render(
             <UseList
                 data={data}
-                ids={ids}
-                loaded
-                loading
                 filter={{ title: 'world' }}
                 sort={{ field: 'id', order: 'ASC' }}
                 callback={callback}
@@ -45,7 +41,7 @@ describe('<useList />', () => {
             expect.objectContaining({
                 currentSort: { field: 'id', order: 'ASC' },
                 loaded: true,
-                loading: true,
+                loading: false,
                 data: {
                     2: { id: 2, title: 'world' },
                 },
@@ -64,14 +60,10 @@ describe('<useList />', () => {
             { id: 3, items: 'four' },
             { id: 4, items: ['five'] },
         ];
-        const ids = [1, 2, 3, 4];
 
         render(
             <UseList
                 data={data}
-                ids={ids}
-                loaded
-                loading
                 filter={{ items: ['two', 'four', 'five'] }}
                 sort={{ field: 'id', order: 'ASC' }}
                 callback={callback}
@@ -83,7 +75,7 @@ describe('<useList />', () => {
                 expect.objectContaining({
                     currentSort: { field: 'id', order: 'ASC' },
                     loaded: true,
-                    loading: true,
+                    loading: false,
                     data: {
                         1: { id: 1, items: ['one', 'two'] },
                         3: { id: 3, items: 'four' },
@@ -103,7 +95,6 @@ describe('<useList />', () => {
             { id: 1, title: 'hello' },
             { id: 2, title: 'world' },
         ];
-        const ids = [1, 2];
 
         const SortButton = () => {
             const listContext = useListContext();
@@ -118,9 +109,6 @@ describe('<useList />', () => {
         const { getByText } = render(
             <UseList
                 data={data}
-                ids={ids}
-                loaded
-                loading
                 sort={{ field: 'title', order: 'DESC' }}
                 callback={callback}
             >
@@ -133,7 +121,7 @@ describe('<useList />', () => {
                 expect.objectContaining({
                     currentSort: { field: 'title', order: 'DESC' },
                     loaded: true,
-                    loading: true,
+                    loading: false,
                     data: {
                         2: { id: 2, title: 'world' },
                         1: { id: 1, title: 'hello' },
@@ -151,7 +139,7 @@ describe('<useList />', () => {
                 expect.objectContaining({
                     currentSort: { field: 'title', order: 'ASC' },
                     loaded: true,
-                    loading: true,
+                    loading: false,
                     data: {
                         1: { id: 1, title: 'hello' },
                         2: { id: 2, title: 'world' },
@@ -175,14 +163,10 @@ describe('<useList />', () => {
             { id: 6, title: 'plop' },
             { id: 7, title: 'bazinga' },
         ];
-        const ids = [1, 2, 3, 4, 5, 6, 7];
 
         render(
             <UseList
                 data={data}
-                ids={ids}
-                loaded
-                loading
                 sort={{ field: 'id', order: 'ASC' }}
                 page={2}
                 perPage={5}
@@ -195,7 +179,7 @@ describe('<useList />', () => {
                 expect.objectContaining({
                     currentSort: { field: 'id', order: 'ASC' },
                     loaded: true,
-                    loading: true,
+                    loading: false,
                     data: {
                         6: { id: 6, title: 'plop' },
                         7: { id: 7, title: 'bazinga' },

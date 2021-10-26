@@ -14,9 +14,6 @@ export const Basic = () => {
             { id: 1, title: 'Hello', has_newsletter: true },
             { id: 2, title: 'World', has_newsletter: false },
         ],
-        ids: [1, 2],
-        loading: false,
-        loaded: true,
         filter: {
             category: 'deals',
         },
