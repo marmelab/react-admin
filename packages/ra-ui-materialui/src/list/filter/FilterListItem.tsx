@@ -174,8 +174,12 @@ export const FilterListItem = memo(
                 onClick={toggleFilter}
                 selected={isSelected}
                 className={FilterListItemClasses.listItem}
+                disablePadding
             >
-                <ListItemButton>
+                <ListItemButton
+                    disableGutters
+                    className={FilterListItemClasses.listItemButton}
+                >
                     <ListItemText
                         primary={
                             isValidElement(label)
@@ -203,14 +207,16 @@ const PREFIX = 'RaFilterListItem';
 
 export const FilterListItemClasses = {
     listItem: `${PREFIX}-listItem`,
+    listItemButton: `${PREFIX}-listItemButton`,
     listItemText: `${PREFIX}-listItemText`,
 };
 
 const StyledListItem = styled(ListItem, { name: PREFIX })(({ theme }) => ({
-    [`&.${FilterListItemClasses.listItem}`]: {
+    [`&.${FilterListItemClasses.listItem}`]: {},
+    [`& .${FilterListItemClasses.listItemButton}`]: {
+        paddingRight: '2em',
         paddingLeft: '2em',
     },
-
     [`& .${FilterListItemClasses.listItemText}`]: {
         margin: 0,
     },
