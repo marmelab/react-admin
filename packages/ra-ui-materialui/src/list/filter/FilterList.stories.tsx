@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { useList, ListContextProvider } from 'ra-core';
-import { Card, CardContent } from '@mui/material';
+import { useList, useListContext, ListContextProvider } from 'ra-core';
+import { Box, Typography, Card, CardContent } from '@mui/material';
 import MailIcon from '@mui/icons-material/MailOutline';
 import CategoryIcon from '@mui/icons-material/LocalOffer';
 import { FilterList } from './FilterList';
@@ -60,6 +60,17 @@ export const Basic = () => {
                     </FilterList>
                 </CardContent>
             </Card>
+            <FilterValue />
         </ListContextProvider>
+    );
+};
+
+const FilterValue = () => {
+    const { filterValues } = useListContext();
+    return (
+        <Box sx={{ margin: '1em' }}>
+            <Typography>Filter values:</Typography>
+            <pre>{JSON.stringify(filterValues, null, 2)}</pre>
+        </Box>
     );
 };
