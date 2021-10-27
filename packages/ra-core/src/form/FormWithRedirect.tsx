@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useRef, useCallback, useEffect, useMemo } from 'react';
 import { Form, FormProps, FormRenderProps } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
-import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 
 import useResetSubmitErrors from './useResetSubmitErrors';
@@ -70,7 +69,6 @@ const FormWithRedirect = ({
 }: FormWithRedirectProps) => {
     const redirect = useRef(props.redirect);
     const onSave = useRef(save);
-    const history = useHistory();
     const formGroups = useRef<{ [key: string]: string[] }>({});
     const finalMutators = useMemo(
         () =>
@@ -187,9 +185,7 @@ const FormWithRedirect = ({
                         render={render}
                         save={save}
                         warnWhenUnsavedChanges={warnWhenUnsavedChanges}
-                        formRootPathname={
-                            formRootPathname ?? history.location.pathname
-                        }
+                        formRootPathname={formRootPathname}
                     />
                 )}
             />

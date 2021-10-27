@@ -11,12 +11,14 @@ import { useTranslate } from '../i18n';
  */
 const useWarnWhenUnsavedChanges = (
     enable: boolean,
-    formRootPathname: string
+    formRootPathname?: string
 ) => {
     const history = useHistory();
     const translate = useTranslate();
     const { pristine } = useFormState(UseFormStateSubscription);
-    const initialLocation = useRef(formRootPathname);
+    const initialLocation = useRef(
+        formRootPathname || history.location.pathname
+    );
 
     useEffect(() => {
         if (!enable) {
