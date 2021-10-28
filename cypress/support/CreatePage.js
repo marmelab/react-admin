@@ -1,6 +1,7 @@
 export default url => ({
     elements: {
         addAuthor: '.button-add-authors',
+        addBacklink: '.button-add-backlinks',
         body: 'body',
         input: (name, type = 'input') => {
             if (type === 'rich-text-input') {
@@ -62,11 +63,13 @@ export default url => ({
         });
     },
 
-    submit() {
+    submit(shouldNotify = true) {
         cy.get(this.elements.submitButton).click();
-        cy.get(this.elements.snackbar);
-        cy.get(this.elements.body).click(); // dismiss notification
-        cy.wait(200); // let the notification disappear (could block further submits)
+        if (shouldNotify) {
+            cy.get(this.elements.snackbar);
+            cy.get(this.elements.body).click(); // dismiss notification
+            cy.wait(200); // let the notification disappear (could block further submits)
+        }
     },
 
     submitWithKeyboard() {
