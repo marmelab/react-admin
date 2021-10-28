@@ -96,6 +96,7 @@ const CommentCreateButton = () => (
 | `label`       | Optional | `string`        | 'ra.action.create' | label or translation message to use          |
 | `icon`        | Optional | `ReactElement`  | -                  | iconElement, e.g. `<CommentIcon />`          |
 | `scrollToTop` | Optional | `boolean`       | `true`             | Scroll to top after link                     |
+| `source`      | Optional | `object`        | `true`             | Prefill value, see [prefilling](./CreateEdit.md#prefilling-a-create-record) |
 
 It also supports [all the other `<Button>` props](#button).
 

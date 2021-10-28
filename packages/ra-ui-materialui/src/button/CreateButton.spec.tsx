@@ -19,6 +19,7 @@ const invalidButtonDomProps = {
     saving: false,
     submitOnEnter: true,
     undoable: false,
+    source: { id: 123, foo: 'bar' },
 };
 
 describe('<CreateButton />', () => {

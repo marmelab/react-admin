@@ -6,9 +6,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import ContentAdd from '@material-ui/icons/Add';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
-import { useTranslate, useResourceContext } from 'ra-core';
+import { useTranslate, useResourceContext, Record } from 'ra-core';
+import { stringify } from 'query-string';
 
 import Button, { ButtonProps, sanitizeButtonRestProps } from './Button';
+import { shallowEqual } from 'react-redux';
 
 /**
  * Opens the Create view of a given resource
@@ -32,6 +34,7 @@ const CreateButton = (props: CreateButtonProps) => {
         label = 'ra.action.create',
         scrollToTop = true,
         variant,
+        source,
         ...rest
     } = props;
     const classes = useStyles(props);
@@ -44,8 +47,13 @@ const CreateButton = (props: CreateButtonProps) => {
         () => ({
             pathname: basePath ? `${basePath}/create` : `/${resource}/create`,
             state: { _scrollToTop: scrollToTop },
+            search: source
+                ? stringify({
+                      source: JSON.stringify(source),
+                  })
+                : undefined,
         }),
-        [basePath, resource, scrollToTop]
+        [basePath, resource, scrollToTop, source]
     );
     return isSmall ? (
         <Fab
@@ -94,6 +102,7 @@ interface Props {
     basePath?: string;
     icon?: ReactElement;
     scrollToTop?: boolean;
+    source?: Omit<Record, 'id'>;
 }
 
 export type CreateButtonProps = Props & ButtonProps;
@@ -104,6 +113,7 @@ CreateButton.propTypes = {
     className: PropTypes.string,
     icon: PropTypes.element,
     label: PropTypes.string,
+    source: PropTypes.object,
 };
 
 export default memo(CreateButton, (prevProps, nextProps) => {
@@ -112,6 +122,7 @@ export default memo(CreateButton, (prevProps, nextProps) => {
         prevProps.label === nextProps.label &&
         prevProps.translate === nextProps.translate &&
         prevProps.to === nextProps.to &&
-        prevProps.disabled === nextProps.disabled
+        prevProps.disabled === nextProps.disabled &&
+        shallowEqual(prevProps.source, nextProps.source)
     );
 });
