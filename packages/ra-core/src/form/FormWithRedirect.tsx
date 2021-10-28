@@ -64,6 +64,7 @@ const FormWithRedirect = ({
     );
     const form = useForm({
         defaultValues: finalInitialValues,
+        mode: 'onChange',
     });
     const { control, handleSubmit, formState, reset } = form;
     const { isSubmitting } = formState;
