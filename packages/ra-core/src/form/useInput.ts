@@ -50,6 +50,8 @@ const defaultParseFormat = value => value;
 export const useInput = ({
     defaultValue,
     id,
+    input: previouslyProvidedInput,
+    meta: previouslyProvidedMeta,
     name,
     source,
     validate,
@@ -94,7 +96,7 @@ export const useInput = ({
         },
     });
 
-    const meta = {
+    const meta = previouslyProvidedMeta || {
         invalid,
         isTouched: isTouched || isSubmitted,
         isDirty,
@@ -114,11 +116,12 @@ export const useInput = ({
 
     // Extract the event handlers so that we can provide ours
     // allowing users to provide theirs without breaking the form
-    const { onBlur, onChange, ...inputProps } = input;
+    const { onBlur, onChange, ...inputProps } =
+        previouslyProvidedInput || input;
 
     const handleBlur = useCallback(
         event => {
-            onBlur();
+            onBlur(event);
             if (typeof customOnBlur === 'function') {
                 customOnBlur(event);
             }
