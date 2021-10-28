@@ -9,7 +9,7 @@
         "@types/recharts": "^1.8.10",
         "data-generator-retail": "^4.0.0-alpha.0",
         "fakerest": "^3.0.0",
-        "fetch-mock": "~6.3.0",
+        "fetch-mock": "~9.11.0",
         "json-graphql-server": "~2.3.0",
         "proxy-polyfill": "^0.3.0",
         "ra-data-fakerest": "^4.0.0-alpha.0",
