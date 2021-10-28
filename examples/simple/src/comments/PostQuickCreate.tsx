@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
+import { Dialog, DialogTitle, DialogContent } from '@mui/material';
 import {
     SaveButton,
     SimpleForm,
@@ -11,19 +12,15 @@ import {
     required,
     ReduxState,
     useCreate,
+    useCreateSuggestionContext,
     useNotify,
+    useTranslate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 import CancelButton from './PostQuickCreateCancelButton';
 
-const PREFIX = 'PostQuickCreate';
-
-const classes = {
-    form: `${PREFIX}-form`,
-};
-
 const StyledSimpleForm = styled(SimpleForm)({
-    [`& .${classes.form}`]: { padding: 0 },
+    [`& .MuiCardContent-root`]: { padding: 0 },
 });
 
 // We need a custom toolbar to add our custom buttons
@@ -40,7 +37,8 @@ PostQuickCreateToolbar.propTypes = {
     onCancel: PropTypes.func.isRequired,
 };
 
-const PostQuickCreate = ({ onCancel, onSave, ...props }) => {
+const PostQuickCreate = props => {
+    const { onCancel, onCreate } = useCreateSuggestionContext();
     const [create] = useCreate();
     const notify = useNotify();
     const submitting = useSelector<ReduxState, boolean>(
@@ -51,44 +49,55 @@ const PostQuickCreate = ({ onCancel, onSave, ...props }) => {
         values => {
             create('posts', values, {
                 onSuccess: ({ data }) => {
-                    onSave(data);
+                    onCreate(data);
                 },
                 onFailure: error => {
                     notify(error.message, 'error');
                 },
             });
         },
-        [create, notify, onSave]
+        [create, notify, onCreate]
     );
+    const translate = useTranslate();
 
     return (
-        <StyledSimpleForm
-            save={handleSave}
-            saving={submitting}
-            redirect={false}
-            toolbar={
-                <PostQuickCreateToolbar
-                    onCancel={onCancel}
-                    submitting={submitting}
-                />
-            }
-            classes={{ form: classes.form }}
-            {...props}
+        <Dialog
+            data-testid="dialog-add-post"
+            fullWidth
+            open
+            onClose={onCancel}
+            aria-label={translate('simple.create-post')}
         >
-            <TextInput source="title" validate={required()} />
-            <TextInput
-                source="teaser"
-                validate={required()}
-                fullWidth={true}
-                multiline={true}
-            />
-        </StyledSimpleForm>
+            <DialogTitle>{translate('simple.create-post')}</DialogTitle>
+            <DialogContent>
+                <StyledSimpleForm
+                    save={handleSave}
+                    saving={submitting}
+                    redirect={false}
+                    toolbar={
+                        <PostQuickCreateToolbar
+                            onCancel={onCancel}
+                            submitting={submitting}
+                        />
+                    }
+                    {...props}
+                >
+                    <TextInput
+                        source="title"
+                        defaultValue=""
+                        validate={required()}
+                    />
+                    <TextInput
+                        defaultValue=""
+                        source="teaser"
+                        validate={required()}
+                        fullWidth={true}
+                        multiline={true}
+                    />
+                </StyledSimpleForm>
+            </DialogContent>
+        </Dialog>
     );
-};
-
-PostQuickCreate.propTypes = {
-    onCancel: PropTypes.func.isRequired,
-    onSave: PropTypes.func.isRequired,
 };
 
 export default PostQuickCreate;

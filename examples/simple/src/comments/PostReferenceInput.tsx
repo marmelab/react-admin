@@ -1,10 +1,7 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { Fragment, useState, useCallback } from 'react';
-import {
-    useFormContext as useReactHookFormContext,
-    useWatch,
-} from 'react-hook-form';
+import { useWatch } from 'react-hook-form';
 
 import {
     Button,
@@ -34,22 +31,9 @@ const Root = styled('div')({
 
 const PostReferenceInput = props => {
     const translate = useTranslate();
-
-    const { setValue } = useReactHookFormContext();
     const post_id = useWatch({ name: 'post_id' });
 
-    const [showCreateDialog, setShowCreateDialog] = useState(false);
     const [showPreviewDialog, setShowPreviewDialog] = useState(false);
-    const [newPostId, setNewPostId] = useState('');
-    const [version, setVersion] = useState(0);
-
-    const handleNewClick = useCallback(
-        event => {
-            event.preventDefault();
-            setShowCreateDialog(true);
-        },
-        [setShowCreateDialog]
-    );
 
     const handleShowClick = useCallback(
         event => {
@@ -59,36 +43,15 @@ const PostReferenceInput = props => {
         [setShowPreviewDialog]
     );
 
-    const handleCloseCreate = useCallback(() => {
-        setShowCreateDialog(false);
-    }, [setShowCreateDialog]);
-
     const handleCloseShow = useCallback(() => {
         setShowPreviewDialog(false);
     }, [setShowPreviewDialog]);
 
-    const handleSave = useCallback(
-        post => {
-            setShowCreateDialog(false);
-            setNewPostId(post.id);
-            setVersion(previous => previous + 1);
-            setValue('post_id', post.id);
-        },
-        [setShowCreateDialog, setNewPostId, setValue]
-    );
-
     return (
         <Root>
-            <ReferenceInput key={version} {...props} defaultValue={newPostId}>
-                <SelectInput optionText="title" />
+            <ReferenceInput defaultValue="" {...props}>
+                <SelectInput optionText="title" create={<PostQuickCreate />} />
             </ReferenceInput>
-            <Button
-                data-testid="button-add-post"
-                className={classes.button}
-                onClick={handleNewClick}
-            >
-                {translate('ra.action.create')}
-            </Button>
             {post_id ? (
                 <Fragment>
                     <Button
@@ -126,23 +89,6 @@ const PostReferenceInput = props => {
                     </Dialog>
                 </Fragment>
             ) : null}
-            <Dialog
-                data-testid="dialog-add-post"
-                fullWidth
-                open={showCreateDialog}
-                onClose={handleCloseCreate}
-                aria-label={translate('simple.create-post')}
-            >
-                <DialogTitle>{translate('simple.create-post')}</DialogTitle>
-                <DialogContent>
-                    <PostQuickCreate
-                        onCancel={handleCloseCreate}
-                        onSave={handleSave}
-                        basePath="/posts"
-                        resource="posts"
-                    />
-                </DialogContent>
-            </Dialog>
         </Root>
     );
 };

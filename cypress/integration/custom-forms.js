@@ -22,7 +22,8 @@ describe('Custom Forms', () => {
     });
 
     it('should allow to create a new post', () => {
-        cy.get(CreatePage.elements.showPostCreateModalButton).click();
+        cy.get(CreatePage.elements.postSelect).click();
+        cy.get(CreatePage.elements.postItem('@@ra-create')).click();
 
         CreatePage.setInputValue('input', 'title', 'Bazinga!');
         CreatePage.setInputValue('textarea', 'teaser', 'Bazingaaaaaaaa!');
