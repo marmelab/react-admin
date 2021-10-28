@@ -347,7 +347,7 @@ export const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
     const handleFocus = useCallback(
         openMenu => event => {
             openMenu(event);
-            finalInput.onFocus(event);
+            if (finalInput.onFocus) finalInput.onFocus(event);
         },
         [finalInput]
     );
