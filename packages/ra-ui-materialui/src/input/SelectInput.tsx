@@ -224,8 +224,11 @@ export const SelectInput = (props: SelectInputProps) => {
         if (onCreate || create) {
             const createItem = getCreateItem();
             return (
-                <MenuItem value={createItem.id} key={createItem.id}>
-                    {createItem.name}
+                <MenuItem
+                    value={getChoiceValue(createItem)}
+                    disabled={get(createItem, disableValue)}
+                >
+                    {renderMenuItemOption(createItem)}
                 </MenuItem>
             );
         }
