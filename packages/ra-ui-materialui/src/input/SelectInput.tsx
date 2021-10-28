@@ -369,7 +369,7 @@ const StyledResettableTextField = styled(ResettableTextField)(({ theme }) => ({
     },
 }));
 
-export type SelectInputProps = InputProps<TextFieldProps> &
+export type SelectInputProps = Omit<InputProps<TextFieldProps>, 'source'> &
     ChoicesInputProps<TextFieldProps> &
     Omit<SupportCreateSuggestionOptions, 'handleChange'> &
     Omit<TextFieldProps, 'label' | 'helperText' | 'classes'> & {
