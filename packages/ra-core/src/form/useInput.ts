@@ -72,6 +72,7 @@ export const useInput = ({
     const {
         field: input,
         fieldState: { invalid, isTouched, isDirty, error },
+        formState: { isSubmitted },
     } = useController({
         name: finalName,
         defaultValue,
@@ -93,7 +94,12 @@ export const useInput = ({
         },
     });
 
-    const meta = { invalid, isTouched, isDirty, error };
+    const meta = {
+        invalid,
+        isTouched: isTouched || isSubmitted,
+        isDirty,
+        error,
+    };
 
     useEffect(() => {
         if (!formContext || !formGroupName) {
