@@ -74,9 +74,10 @@ describe('Edit Page', () => {
 
             cy.get(EditPostPage.elements.addBacklinkButton).click();
 
-            EditPostPage.clickInput('backlinks[0].url');
-            cy.get(EditPostPage.elements.input('backlinks[0].url')).blur();
+            EditPostPage.clickInput('backlinks.0.url');
+            cy.get(EditPostPage.elements.input('backlinks.0.url')).blur();
 
+            EditPostPage.submit();
             cy.contains('Required');
         });
 
