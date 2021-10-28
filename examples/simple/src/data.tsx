@@ -45,6 +45,16 @@ export default {
                     url: 'http://example.com/bar/baz.html',
                 },
             ],
+            authors: [
+                {
+                    user_id: 3,
+                    role: 'headwriter',
+                },
+                {
+                    user_id: 1,
+                    role: 'cowriter',
+                },
+            ],
             notifications: [12, 31, 42],
         },
         {

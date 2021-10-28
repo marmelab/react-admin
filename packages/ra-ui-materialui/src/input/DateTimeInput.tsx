@@ -1,8 +1,9 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
-import { useInput, FieldTitle, InputProps } from 'ra-core';
+import { useInput, FieldTitle } from 'ra-core';
 
+import { InputProps } from './types';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
 
@@ -21,7 +22,6 @@ const parseDateTime = (value: string) => new Date(value);
 export const DateTimeInput = ({
     defaultValue,
     format = formatDateTime,
-    initialValue,
     label,
     helperText,
     margin = 'dense',
@@ -39,7 +39,6 @@ export const DateTimeInput = ({
     const { id, input, isRequired, meta } = useInput({
         defaultValue,
         format,
-        initialValue,
         onBlur,
         onChange,
         onFocus,
@@ -51,22 +50,19 @@ export const DateTimeInput = ({
         ...rest,
     });
 
-    const { error, submitError, touched } = meta;
+    const { error, isTouched } = meta;
 
     return (
         <TextField
             id={id}
             {...input}
-            // Workaround https://github.com/final-form/react-final-form/issues/529
-            // and https://github.com/final-form/react-final-form/issues/431
-            value={format(input.value) || ''}
             variant={variant}
             margin={margin}
-            error={!!(touched && (error || submitError))}
+            error={isTouched && !!error}
             helperText={
                 <InputHelperText
-                    touched={touched}
-                    error={error || submitError}
+                    touched={isTouched}
+                    error={error}
                     helperText={helperText}
                 />
             }

@@ -2,10 +2,9 @@ import { useContext, useMemo } from 'react';
 import { ArrayInputContext, ArrayInputContextValue } from './ArrayInputContext';
 
 /**
- * A hook to access an array input mutators and meta as provided by react-final-form-array.
+ * A hook to access an array input mutators and meta as provided by react-hook-form-array.
  * Useful to create custom array input iterators.
  * @see {ArrayInput}
- * @see {@link https://github.com/final-form/react-final-form-arrays|react-final-form-array}
  */
 export const useArrayInput = (
     props?: Partial<ArrayInputContextValue>
@@ -13,13 +12,20 @@ export const useArrayInput = (
     const context = useContext(ArrayInputContext);
     const memo = useMemo(
         () => ({
-            fields: props?.fields,
-            meta: props?.meta,
+            swap: props.swap,
+            move: props.move,
+            prepend: props.prepend,
+            append: props.append,
+            remove: props.remove,
+            insert: props.insert,
+            update: props.update,
+            replace: props.replace,
+            fields: props.fields,
         }),
         [props]
     );
 
-    if (props?.fields && props?.meta) {
+    if (props?.fields) {
         return memo;
     }
 

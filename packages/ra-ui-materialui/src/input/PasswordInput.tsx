@@ -41,6 +41,6 @@ export const PasswordInput = (props: PasswordInputProps) => {
     );
 };
 
-export interface PasswordInputProps extends TextInputProps {
+export type PasswordInputProps = TextInputProps & {
     initiallyVisible?: boolean;
-}
+};

@@ -1,10 +1,11 @@
-import React, { cloneElement, ReactElement, SyntheticEvent } from 'react';
+import React, { cloneElement, ReactElement } from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import Button, { ButtonProps } from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import ContentSave from '@mui/icons-material/Save';
 import classnames from 'classnames';
+import { UseFormHandleSubmit } from 'react-hook-form';
 import {
     HandleSubmitWithRedirect,
     MutationMode,
@@ -20,7 +21,6 @@ import {
 } from 'ra-core';
 
 import { sanitizeButtonRestProps } from './Button';
-import { FormRenderProps } from 'react-final-form';
 
 /**
  * Submit button for resource forms (Edit and Create).
@@ -182,9 +182,7 @@ const defaultIcon = <ContentSave />;
 interface Props {
     classes?: object;
     className?: string;
-    handleSubmitWithRedirect?:
-        | HandleSubmitWithRedirect
-        | FormRenderProps['handleSubmit'];
+    handleSubmitWithRedirect?: HandleSubmitWithRedirect;
     // @deprecated
     onSave?: (values: object, redirect: RedirectionSideEffect) => void;
     onSuccess?: OnSuccess;
@@ -201,7 +199,7 @@ interface Props {
     variant?: string;
     // May be injected by Toolbar - sanitized in Button
     basePath?: string;
-    handleSubmit?: (event?: SyntheticEvent<HTMLFormElement>) => Promise<Object>;
+    handleSubmit?: UseFormHandleSubmit<any>;
     record?: Record;
     resource?: string;
     mutationMode?: MutationMode;

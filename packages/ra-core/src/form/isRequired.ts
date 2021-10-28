@@ -1,4 +1,4 @@
-const isRequired = validate => {
+export const isRequired = validate => {
     if (validate && validate.isRequired) {
         return true;
     }
@@ -7,5 +7,3 @@ const isRequired = validate => {
     }
     return false;
 };
-
-export default isRequired;

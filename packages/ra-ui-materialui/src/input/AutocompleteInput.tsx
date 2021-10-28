@@ -14,7 +14,7 @@ import {
     TextField,
     InputAdornment,
     IconButton,
-    InputProps,
+    InputProps as MuiInputProps,
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import { TextFieldProps } from '@mui/material/TextField';
@@ -29,6 +29,7 @@ import {
     warning,
 } from 'ra-core';
 
+import { InputProps } from './types';
 import { InputHelperText } from './InputHelperText';
 import { AutocompleteSuggestionList } from './AutocompleteSuggestionList';
 import { AutocompleteSuggestionItem } from './AutocompleteSuggestionItem';
@@ -104,7 +105,6 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
     const {
         allowEmpty,
         className,
-        classes: classesOverride,
         clearAlwaysVisible,
         choices = [],
         createLabel,
@@ -145,7 +145,6 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         optionText = 'name',
         optionValue = 'id',
         parse,
-        refetch,
         resettable,
         resource,
         setFilter,
@@ -192,7 +191,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         id,
         input,
         isRequired,
-        meta: { touched, error, submitError },
+        meta: { isTouched, error },
     } = useInput({
         format,
         id: idOverride,
@@ -386,7 +385,9 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
     const handleFocus = useCallback(
         openMenu => event => {
             openMenu(event);
-            input.onFocus(event);
+            if (input.onFocus) {
+                input.onFocus(event);
+            }
         },
         [input]
     );
@@ -566,7 +567,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                                     onFocus,
                                     ...InputPropsWithoutEndAdornment,
                                 }}
-                                error={!!(touched && (error || submitError))}
+                                error={isTouched && !!error}
                                 label={
                                     <FieldTitle
                                         label={label}
@@ -586,8 +587,8 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                                 })}
                                 helperText={
                                     <InputHelperText
-                                        touched={touched}
-                                        error={error || submitError}
+                                        touched={isTouched}
+                                        error={error}
                                         helperText={helperText}
                                     />
                                 }
@@ -650,23 +651,31 @@ const handleMouseDownClearButton = event => {
 };
 
 interface Options {
-    InputProps?: InputProps;
+    InputProps?: MuiInputProps;
     labelProps?: any;
     suggestionsContainerProps?: any;
     fullWidth?: boolean;
 }
 
-export interface AutocompleteInputProps
-    extends ChoicesInputProps<TextFieldProps>,
-        UseChoicesOptions,
-        Omit<SupportCreateSuggestionOptions, 'handleChange' | 'optionText'>,
-        Omit<DownshiftProps<any>, 'onChange'> {
-    clearAlwaysVisible?: boolean;
-    resettable?: boolean;
-    loaded?: boolean;
-    loading?: boolean;
-    options?: Options;
-}
+export type AutocompleteInputProps = Omit<InputProps, 'source'> &
+    ChoicesInputProps<TextFieldProps> &
+    UseChoicesOptions &
+    Omit<SupportCreateSuggestionOptions, 'handleChange' | 'optionText'> &
+    Omit<DownshiftProps<any>, 'onChange'> & {
+        className?: string;
+        clearAlwaysVisible?: boolean;
+        resettable?: boolean;
+        options?: Options;
+        allowEmpty?: boolean;
+        emptyText?: string;
+        emptyValue?: string;
+        inputText?: (record?: any) => string;
+        limitChoicesToValue?: boolean;
+        matchSuggestion?: (filterValue: string, choice: any) => boolean;
+        setFilter?: (filter: string) => void;
+        shouldRenderSuggestions?: (filter: string) => boolean;
+        suggestionLimit?: number;
+    };
 
 const PREFIX = 'RaAutocompleteInput';
 

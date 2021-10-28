@@ -1,10 +1,14 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { useInput, FieldTitle, InputProps } from 'ra-core';
+import { useInput, FieldTitle } from 'ra-core';
 import { TextFieldProps } from '@mui/material/TextField';
 
-import { ResettableTextField } from './ResettableTextField';
+import {
+    ResettableTextField,
+    ResettableTextFieldProps,
+} from './ResettableTextField';
 import { InputHelperText } from './InputHelperText';
+import { InputProps } from './types';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 
 /**
@@ -23,6 +27,7 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
  */
 export const TextInput = (props: TextInputProps) => {
     const {
+        defaultValue,
         label,
         format,
         helperText,
@@ -40,8 +45,9 @@ export const TextInput = (props: TextInputProps) => {
         id,
         input,
         isRequired,
-        meta: { error, submitError, touched },
+        meta: { error, isTouched },
     } = useInput({
+        defaultValue,
         format,
         onBlur,
         onChange,
@@ -59,21 +65,18 @@ export const TextInput = (props: TextInputProps) => {
             id={id}
             {...input}
             label={
-                label !== '' &&
-                label !== false && (
-                    <FieldTitle
-                        label={label}
-                        source={source}
-                        resource={resource}
-                        isRequired={isRequired}
-                    />
-                )
+                <FieldTitle
+                    label={label}
+                    source={source}
+                    resource={resource}
+                    isRequired={isRequired}
+                />
             }
-            error={!!(touched && (error || submitError))}
+            error={!!(isTouched && error)}
             helperText={
                 <InputHelperText
-                    touched={touched}
-                    error={error || submitError}
+                    touched={isTouched}
+                    error={error}
                     helperText={helperText}
                 />
             }
@@ -96,4 +99,5 @@ TextInput.defaultProps = {
 };
 
 export type TextInputProps = InputProps<TextFieldProps> &
+    ResettableTextFieldProps &
     Omit<TextFieldProps, 'label' | 'helperText'>;

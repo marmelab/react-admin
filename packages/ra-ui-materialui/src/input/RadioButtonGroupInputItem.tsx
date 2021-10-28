@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useField } from 'react-final-form';
+import { useController } from 'react-hook-form';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import { useChoices } from 'ra-core';
@@ -19,11 +19,9 @@ export const RadioButtonGroupInputItem = ({
     });
     const label = getChoiceText(choice);
     const value = getChoiceValue(choice);
-    const {
-        input: { type, ...inputProps },
-    } = useField(source, {
-        type: 'radio',
-        value,
+    const { field } = useController({
+        name: source,
+        defaultValue: value,
     });
 
     const nodeId = `${source}_${value}`;
@@ -36,7 +34,7 @@ export const RadioButtonGroupInputItem = ({
                 <Radio
                     id={nodeId}
                     color="primary"
-                    {...inputProps}
+                    {...field}
                     onChange={(_, isActive) => isActive && onChange(value)}
                 />
             }

@@ -29,9 +29,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         className,
         handleSubmit,
         handleSubmitWithRedirect,
-        invalid,
         mutationMode,
-        pristine,
         record,
         redirect: defaultRedirect,
         resource,
@@ -42,7 +40,6 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         toolbar = DefaultToolbar,
         variant,
         margin,
-        validating,
         ...rest
     } = props;
     const match = useRouteMatch();
@@ -114,15 +111,12 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                     className: 'toolbar',
                     handleSubmitWithRedirect,
                     handleSubmit,
-                    invalid,
                     mutationMode,
-                    pristine,
                     record,
                     redirect: defaultRedirect,
                     resource,
                     saving,
                     submitOnEnter,
-                    validating,
                 })}
         </Root>
     );
@@ -133,7 +127,7 @@ TabbedFormView.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
-    handleSubmit: PropTypes.func, // passed by react-final-form
+    handleSubmit: PropTypes.func,
     initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     invalid: PropTypes.bool,
     location: PropTypes.object,
@@ -175,33 +169,18 @@ export interface TabbedFormViewProps extends FormWithRedirectRenderProps {
     toolbar?: ReactElement;
     variant?: 'standard' | 'outlined' | 'filled';
     submitOnEnter?: boolean;
-    __versions?: any; // react-final-form internal prop, missing in their type
 }
 
 const sanitizeRestProps = ({
-    active,
-    dirty,
-    dirtyFields,
-    dirtyFieldsSinceLastSubmit,
-    dirtySinceLastSubmit,
-    error,
-    errors,
-    form,
-    hasSubmitErrors,
-    hasValidationErrors,
-    initialValues,
-    modified = null,
-    modifiedSinceLastSubmit,
+    dirtyFields = null,
+    errors = null,
     save = null,
-    submitError,
-    submitErrors,
-    submitFailed,
-    submitSucceeded,
-    submitting,
     touched = null,
-    valid,
-    values,
-    visited = null,
+    isDirty = null,
+    isSubmitted = null,
+    isSubmitting = null,
+    isValid = null,
+    submitCount = null,
     __versions = null,
     ...props
 }) => props;

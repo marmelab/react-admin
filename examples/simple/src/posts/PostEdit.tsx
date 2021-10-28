@@ -1,4 +1,3 @@
-import RichTextInput from 'ra-input-rich-text';
 import * as React from 'react';
 import {
     TopToolbar,
@@ -27,10 +26,10 @@ import {
     minValue,
     number,
     required,
-    FormDataConsumer,
     useCreateSuggestionContext,
     EditActionsProps,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
+import RichTextInput from 'ra-input-rich-text';
 import {
     Box,
     BoxProps,
@@ -43,6 +42,7 @@ import {
 
 import PostTitle from './PostTitle';
 import TagReferenceInput from './TagReferenceInput';
+import { RoleSelectInput } from './RoleSelectInput';
 
 const CreateCategory = ({
     onAddChoice,
@@ -105,7 +105,7 @@ const PostEdit = ({ permissions, ...props }) => {
     return (
         <Edit title={<PostTitle />} actions={<EditActions />} {...props}>
             <TabbedForm
-                initialValues={{ average_note: 0 }}
+                defaultValues={{ average_note: 0 }}
                 warnWhenUnsavedChanges
             >
                 <FormTab label="post.form.summary">
@@ -151,37 +151,7 @@ const PostEdit = ({ permissions, ...props }) => {
                                 >
                                     <AutocompleteInput />
                                 </ReferenceInput>
-                                <FormDataConsumer>
-                                    {({
-                                        formData,
-                                        scopedFormData,
-                                        getSource,
-                                        ...rest
-                                    }) =>
-                                        scopedFormData &&
-                                        scopedFormData.user_id ? (
-                                            <SelectInput
-                                                label="Role"
-                                                source={getSource('role')}
-                                                choices={[
-                                                    {
-                                                        id: 'headwriter',
-                                                        name: 'Head Writer',
-                                                    },
-                                                    {
-                                                        id: 'proofreader',
-                                                        name: 'Proof reader',
-                                                    },
-                                                    {
-                                                        id: 'cowriter',
-                                                        name: 'Co-Writer',
-                                                    },
-                                                ]}
-                                                {...rest}
-                                            />
-                                        ) : null
-                                    }
-                                </FormDataConsumer>
+                                <RoleSelectInput source="role" />
                             </SimpleFormIterator>
                         </ArrayInput>
                     )}
@@ -206,10 +176,7 @@ const PostEdit = ({ permissions, ...props }) => {
                             <TextInput source="url" validate={required()} />
                         </SimpleFormIterator>
                     </ArrayInput>
-                    <DateInput
-                        source="published_at"
-                        options={{ locale: 'pt' }}
-                    />
+                    <DateInput source="published_at" />
                     <SelectInput
                         create={
                             <CreateCategory

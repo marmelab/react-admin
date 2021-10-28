@@ -9,7 +9,6 @@ export const ImageInput = (props: ImageInputProps) => {
         <StyledFileInput
             labelMultiple="ra.input.image.upload_several"
             labelSingle="ra.input.image.upload_single"
-            classes={ImageInputClasses}
             {...props}
         />
     );

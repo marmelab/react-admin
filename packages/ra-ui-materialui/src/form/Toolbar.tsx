@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import classnames from 'classnames';
 import { Record, RedirectionSideEffect, MutationMode } from 'ra-core';
-import { FormRenderProps } from 'react-final-form';
+import { UseFormHandleSubmit } from 'react-hook-form';
 
 import { SaveButton, DeleteButton } from '../button';
 
@@ -96,9 +96,8 @@ export const Toolbar: FC<ToolbarProps> = props => {
             {Children.count(children) === 0 ? (
                 <div className={ToolbarClasses.defaultToolbar}>
                     <SaveButton
-                        handleSubmitWithRedirect={
-                            handleSubmitWithRedirect || handleSubmit
-                        }
+                        handleSubmitWithRedirect={handleSubmitWithRedirect}
+                        handleSubmit={handleSubmit}
                         disabled={disabled}
                         invalid={invalid}
                         redirect={redirect}
@@ -165,7 +164,7 @@ export interface ToolbarProps<RecordType extends Record = Record>
     className?: string;
 
     handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
-    handleSubmit?: FormRenderProps['handleSubmit'];
+    handleSubmit?: UseFormHandleSubmit<any>;
     invalid?: boolean;
     mutationMode?: MutationMode;
     pristine?: boolean;

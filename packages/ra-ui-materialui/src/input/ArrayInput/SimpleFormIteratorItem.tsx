@@ -16,7 +16,6 @@ import { Record } from 'ra-core';
 import { FormInput } from '../../form/FormInput';
 import { SimpleFormIteratorClasses } from './useSimpleFormIteratorStyles';
 import { useSimpleFormIterator } from './useSimpleFormIterator';
-import { ArrayInputContextValue } from './ArrayInputContext';
 import {
     SimpleFormIteratorItemContext,
     SimpleFormIteratorItemContextValue,
@@ -150,7 +149,7 @@ export const SimpleFormIteratorItem = (props: SimpleFormIteratorItemProps) => {
 
 export type DisableRemoveFunction = (record: Record) => boolean;
 
-export type SimpleFormIteratorItemProps = ArrayInputContextValue & {
+export type SimpleFormIteratorItemProps = {
     basePath: string;
     children?: ReactNode;
     disabled?: boolean;

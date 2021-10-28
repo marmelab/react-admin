@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useForm } from 'react-final-form';
+import { useFormContext, useFormState } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import get from 'lodash/get';
 
@@ -20,7 +20,9 @@ import { useTranslate } from '../i18n';
  * @see history.block()
  */
 const useWarnWhenUnsavedChanges = (enable: boolean) => {
-    const form = useForm();
+    const { isDirty, dirtyFields, isSubmitSuccessful } = useFormState();
+    const formContext = useFormContext();
+
     const history = useHistory();
     const translate = useTranslate();
 
@@ -43,27 +45,19 @@ const useWarnWhenUnsavedChanges = (enable: boolean) => {
 
         if (unsavedChanges) {
             Object.keys(unsavedChanges).forEach(key =>
-                form.change(key, unsavedChanges[key])
+                formContext.setValue(key, unsavedChanges[key])
             );
             window.sessionStorage.removeItem('unsavedChanges');
         }
 
         // on unmount : check and save unsaved changes, then cancel navigation
         return () => {
-            const formState = form.getState();
-            if (
-                formState.dirty &&
-                (!formState.submitSucceeded ||
-                    (formState.submitSucceeded &&
-                        formState.dirtySinceLastSubmit))
-            ) {
+            if (isDirty && !isSubmitSuccessful) {
                 if (!window.confirm(translate('ra.message.unsaved_changes'))) {
-                    const dirtyFields = formState.submitSucceeded
-                        ? formState.dirtySinceLastSubmit
-                        : formState.dirtyFields;
+                    const values = formContext.getValues();
                     const dirtyFieldValues = Object.keys(dirtyFields).reduce(
                         (acc, key) => {
-                            acc[key] = get(formState.values, key);
+                            acc[key] = get(values, key);
                             return acc;
                         },
                         {}

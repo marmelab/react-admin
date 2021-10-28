@@ -1,12 +1,15 @@
 import * as React from 'react';
 import { useRef, useCallback, useEffect, useMemo } from 'react';
-import { Form, FormProps, FormRenderProps } from 'react-final-form';
-import arrayMutators from 'final-form-arrays';
+import {
+    FormProvider,
+    FormState,
+    SubmitHandler,
+    useForm,
+    UseFormProps,
+} from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 
-import useInitializeFormWithRecord from './useInitializeFormWithRecord';
 import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
-import useResetSubmitErrors from './useResetSubmitErrors';
-import sanitizeEmptyValues from './sanitizeEmptyValues';
 import getFormInitialValues from './getFormInitialValues';
 import {
     FormContextValue,
@@ -15,16 +18,15 @@ import {
     OnFailure,
 } from '../types';
 import { RedirectionSideEffect } from '../sideEffect';
-import { useDispatch } from 'react-redux';
 import { setAutomaticRefresh } from '../actions/uiActions';
 import { FormContextProvider } from './FormContextProvider';
-import submitErrorsMutators from './submitErrorsMutators';
+import { useDeepCompareEffect } from '../util';
 
 /**
- * Wrapper around react-final-form's Form to handle redirection on submit,
+ * Wrapper around react-hook-form's Form to handle redirection on submit,
  * legacy defaultValue prop, and array inputs.
  *
- * Requires a render function, just like react-final-form
+ * Requires a render function
  *
  * @example
  *
@@ -46,37 +48,35 @@ import submitErrorsMutators from './submitErrorsMutators';
  * @param {Props} props
  */
 const FormWithRedirect = ({
-    debug,
-    decorators,
-    defaultValue,
-    destroyOnUnregister,
-    form,
-    initialValues,
-    initialValuesEqual,
-    keepDirtyOnReinitialize = true,
-    mutators = defaultMutators,
+    defaultValues,
     record,
     render,
     save,
     saving,
-    subscription = defaultSubscription,
-    validate,
-    validateOnBlur,
     version,
     warnWhenUnsavedChanges,
     sanitizeEmptyValues: shouldSanitizeEmptyValues = true,
     ...props
 }: FormWithRedirectProps) => {
+    const finalInitialValues = useMemo(
+        () => getFormInitialValues(defaultValues, record),
+        [JSON.stringify({ defaultValues, record })] // eslint-disable-line
+    );
+    const form = useForm({
+        defaultValues: finalInitialValues,
+    });
+    const { control, handleSubmit, formState, reset } = form;
+    const { isSubmitting } = formState;
+
+    useDeepCompareEffect(() => {
+        if (record) {
+            reset(record);
+        }
+    }, [record, reset]);
+
     const redirect = useRef(props.redirect);
     const onSave = useRef(save);
     const formGroups = useRef<{ [key: string]: string[] }>({});
-    const finalMutators = useMemo(
-        () =>
-            mutators === defaultMutators
-                ? mutators
-                : { ...defaultMutators, ...mutators },
-        [mutators]
-    );
 
     // We don't use state here for two reasons:
     // 1. There no way to execute code only after the state has been updated
@@ -105,6 +105,7 @@ const FormWithRedirect = ({
 
     const formContextValue = useMemo<FormContextValue>(
         () => ({
+            control,
             setOnSave,
             getGroupFields: name => formGroups.current[name] || [],
             registerGroup: name => {
@@ -132,66 +133,47 @@ const FormWithRedirect = ({
                 }
             },
         }),
-        [setOnSave]
+        [control, setOnSave]
     );
 
-    const finalInitialValues = useMemo(
-        () => getFormInitialValues(initialValues, defaultValue, record),
-    [JSON.stringify({initialValues, defaultValue, record})]); // eslint-disable-line
-
-    const submit = values => {
+    const submit = handleSubmit(values => {
         const finalRedirect =
             typeof redirect.current === undefined
                 ? props.redirect
                 : redirect.current;
 
         if (shouldSanitizeEmptyValues) {
-            const sanitizedValues = sanitizeEmptyValues(
-                finalInitialValues,
-                values
-            );
-            return onSave.current(sanitizedValues, finalRedirect);
+            // FIXME: This is probably unnecessary with react-hook-form
+            // const sanitizedValues = sanitizeEmptyValues(
+            //     finalInitialValues,
+            //     values
+            // );
+            return onSave.current(values, finalRedirect);
         } else {
             return onSave.current(values, finalRedirect);
         }
-    };
+    });
 
     return (
-        <FormContextProvider value={formContextValue}>
-            <Form
-                key={version} // support for refresh button
-                debug={debug}
-                decorators={decorators}
-                destroyOnUnregister={destroyOnUnregister}
-                form={form}
-                initialValues={finalInitialValues}
-                initialValuesEqual={initialValuesEqual}
-                keepDirtyOnReinitialize={keepDirtyOnReinitialize}
-                mutators={finalMutators} // necessary for ArrayInput
-                onSubmit={submit}
-                subscription={subscription} // don't redraw entire form each time one field changes
-                validate={validate}
-                validateOnBlur={validateOnBlur}
-                render={formProps => (
-                    // @ts-ignore Ignored because of a weird error about the active prop
-                    <FormView
-                        {...props}
-                        {...formProps}
-                        record={record}
-                        setRedirect={setRedirect}
-                        saving={formProps.submitting || saving}
-                        render={render}
-                        save={save}
-                        warnWhenUnsavedChanges={warnWhenUnsavedChanges}
-                    />
-                )}
-            />
-        </FormContextProvider>
+        <FormProvider {...form}>
+            <FormContextProvider value={formContextValue}>
+                <FormView
+                    {...props}
+                    {...formState}
+                    handleSubmit={submit}
+                    record={record}
+                    setRedirect={setRedirect}
+                    saving={isSubmitting || saving}
+                    render={render}
+                    warnWhenUnsavedChanges={warnWhenUnsavedChanges}
+                />
+            </FormContextProvider>
+        </FormProvider>
     );
 };
 
 export type FormWithRedirectProps = FormWithRedirectOwnProps &
-    Omit<FormProps, 'onSubmit'>;
+    Omit<UseFormProps, 'onSubmit'>;
 
 export type FormWithRedirectRenderProps = Omit<
     FormViewProps,
@@ -210,8 +192,9 @@ export type FormWithRedirectSave = (
     }
 ) => void;
 
-export interface FormWithRedirectOwnProps {
+export type FormWithRedirectOwnProps = Partial<FormState<any>> & {
     defaultValue?: any;
+    handleSubmit?: SubmitHandler<any>;
     record?: RaRecord;
     redirect?: RedirectionSideEffect;
     render: FormWithRedirectRender;
@@ -220,28 +203,13 @@ export interface FormWithRedirectOwnProps {
     saving?: boolean;
     version?: number;
     warnWhenUnsavedChanges?: boolean;
-}
-
-const defaultMutators = {
-    ...arrayMutators,
-    ...submitErrorsMutators,
-};
-
-const defaultSubscription = {
-    submitting: true,
-    pristine: true,
-    valid: true,
-    invalid: true,
-    validating: true,
 };
 
 export type SetRedirect = (redirect: RedirectionSideEffect) => void;
 export type HandleSubmitWithRedirect = (
     redirect?: RedirectionSideEffect
 ) => void;
-interface FormViewProps
-    extends FormWithRedirectOwnProps,
-        Omit<FormRenderProps, 'render' | 'component'> {
+interface FormViewProps extends FormWithRedirectOwnProps {
     handleSubmitWithRedirect?: HandleSubmitWithRedirect;
     setRedirect: SetRedirect;
     warnWhenUnsavedChanges?: boolean;
@@ -250,18 +218,18 @@ interface FormViewProps
 const FormView = ({
     render,
     warnWhenUnsavedChanges,
+    save,
     setRedirect,
     ...props
 }: FormViewProps) => {
     // if record changes (after a getOne success or a refresh), the form must be updated
-    useInitializeFormWithRecord(props.record);
     useWarnWhenUnsavedChanges(warnWhenUnsavedChanges);
-    useResetSubmitErrors();
+    // useResetSubmitErrors();
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(setAutomaticRefresh(props.pristine));
-    }, [dispatch, props.pristine]);
+        dispatch(setAutomaticRefresh(!props.isDirty));
+    }, [dispatch, props.isDirty]);
 
     const { redirect, handleSubmit } = props;
 
@@ -284,6 +252,7 @@ const FormView = ({
     const handleSubmitWithRedirect = useCallback(
         (redirectTo = redirect) => {
             setRedirect(redirectTo);
+            // @ts-ignore
             handleSubmit();
         },
         [setRedirect, redirect, handleSubmit]

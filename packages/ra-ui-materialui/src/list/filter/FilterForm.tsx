@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import {
     useEffect,
     useCallback,
@@ -8,12 +7,12 @@ import {
     ReactNode,
 } from 'react';
 import PropTypes from 'prop-types';
+import { styled } from '@mui/material/styles';
 import { useListContext, useResourceContext } from 'ra-core';
-import { Form, FormRenderProps, FormSpy } from 'react-final-form';
-import arrayMutators from 'final-form-arrays';
 import classnames from 'classnames';
 import lodashSet from 'lodash/set';
 import lodashGet from 'lodash/get';
+import { useForm, UseFormProps, FormProvider } from 'react-hook-form';
 
 import { FilterFormInput } from './FilterFormInput';
 import { FilterContext } from '../FilterContext';
@@ -89,53 +88,27 @@ FilterFormBase.propTypes = {
 };
 
 const sanitizeRestProps = ({
-    active,
-    dirty,
-    dirtyFields,
-    dirtyFieldsSinceLastSubmit,
-    dirtySinceLastSubmit,
     displayedFilters,
-    error,
-    errors,
     filterValues,
-    form,
-    handleSubmit,
-    hasSubmitErrors,
-    hasValidationErrors,
     hideFilter,
-    invalid,
-    modified,
-    modifiedSinceLastSubmit,
-    pristine,
     resource,
     setFilters,
-    submitError,
-    submitErrors,
-    submitFailed,
-    submitSucceeded,
-    submitting,
-    touched,
-    valid,
-    validating,
-    values,
-    visited,
     ...props
 }: Partial<FilterFormProps>) => props;
 
-export interface FilterFormProps
-    extends Omit<FormRenderProps, 'initialValues'>,
-        Omit<HtmlHTMLAttributes<HTMLFormElement>, 'children'> {
-    className?: string;
-    resource?: string;
-    filterValues: any;
-    hideFilter: (filterName: string) => void;
-    setFilters: (filters: any, displayedFilters: any) => void;
-    displayedFilters: any;
-    filters: ReactNode[];
-    initialValues?: any;
-    margin?: 'none' | 'normal' | 'dense';
-    variant?: 'standard' | 'outlined' | 'filled';
-}
+export type FilterFormProps = UseFormProps &
+    Omit<HtmlHTMLAttributes<HTMLFormElement>, 'children'> & {
+        className?: string;
+        resource?: string;
+        filterValues: any;
+        hideFilter: (filterName: string) => void;
+        setFilters: (filters: any, displayedFilters: any) => void;
+        displayedFilters: any;
+        filters: ReactNode[];
+        initialValues?: any;
+        margin?: 'none' | 'normal' | 'dense';
+        variant?: 'standard' | 'outlined' | 'filled';
+    };
 
 export const mergeInitialValuesWithDefaultValues = (
     initialValues,
@@ -176,37 +149,28 @@ export const FilterForm = props => {
         filters
     );
 
+    const form = useForm({
+        defaultValues: mergedInitialValuesWithDefaultValues,
+    });
+    const { formState, watch } = form;
+    const { isDirty, isValid } = formState;
+
+    useEffect(() => {
+        const subscription = watch(values => {
+            if (!isDirty || !isValid) {
+                return;
+            }
+            setFilters(values, displayedFilters);
+        });
+        return () => subscription.unsubscribe();
+    }, [displayedFilters, setFilters, watch, isDirty, isValid]);
+
     return (
-        <Form
-            onSubmit={handleFinalFormSubmit}
-            initialValues={mergedInitialValuesWithDefaultValues}
-            mutators={{ ...arrayMutators }}
-            render={formProps => (
-                <>
-                    <FormSpy
-                        subscription={FormSpySubscription}
-                        onChange={({ pristine, values, invalid }) => {
-                            if (pristine || invalid) {
-                                return;
-                            }
-                            setFilters(values, displayedFilters);
-                        }}
-                    />
-                    <FilterFormBase
-                        {...formProps}
-                        {...rest}
-                        filters={filters}
-                    />
-                </>
-            )}
-        />
+        <FormProvider {...form}>
+            <FilterFormBase {...rest} filters={filters} />
+        </FormProvider>
     );
 };
-
-const handleFinalFormSubmit = () => {};
-
-// Options to instruct the FormSpy that it should only listen to the values and pristine changes
-const FormSpySubscription = { values: true, pristine: true, invalid: true };
 
 const PREFIX = 'RaFilterForm';
 

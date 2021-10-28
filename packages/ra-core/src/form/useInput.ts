@@ -1,59 +1,99 @@
 import { useCallback, ChangeEvent, FocusEvent, useEffect } from 'react';
 import {
-    useField as useFinalFormField,
-    FieldProps,
-    FieldRenderProps,
-    FieldInputProps,
-    useForm,
-} from 'react-final-form';
-import { Validator, composeValidators } from './validate';
-import isRequired from './isRequired';
+    ControllerFieldState,
+    ControllerRenderProps,
+    useController,
+} from 'react-hook-form';
+import { useTranslate } from '../i18n';
+import {
+    Validator,
+    composeValidators,
+    ValidationErrorMessageWithArgs,
+} from './validate';
+import { isRequired } from './isRequired';
 import { useFormGroupContext } from './useFormGroupContext';
 import { useFormContext } from './useFormContext';
-import { useRecordContext } from '../controller';
 
-export interface InputProps<T = any>
-    extends Omit<
-        FieldProps<any, FieldRenderProps<any, HTMLElement>, HTMLElement>,
-        'validate' | 'children'
-    > {
+export interface InputProps<T = any> {
     defaultValue?: any;
     id?: string;
-    input?: FieldInputProps<any, HTMLElement>;
-    meta?: any;
+    input?: Input;
+    meta?: InputMeta;
     name?: string;
     onBlur?: (event: FocusEvent<T>) => void;
     onChange?: (event: ChangeEvent | any) => void;
     onFocus?: (event: FocusEvent<T>) => void;
     options?: T;
+    parse?: (value: string) => any;
+    format?: (value: any) => string;
     resource?: string;
     source: string;
     validate?: Validator | Validator[];
     isRequired?: boolean;
 }
 
-export interface UseInputValue extends FieldRenderProps<any, HTMLElement> {
+export type InputMeta = ControllerFieldState;
+export type Input = Omit<ControllerRenderProps, 'onBlur'> & {
+    onBlur: (event: FocusEvent) => void;
+    onFocus?: (event: FocusEvent) => void;
+};
+
+export interface UseInputValue {
     id: string;
+    input: Input;
+    meta: InputMeta;
     isRequired: boolean;
 }
 
-const useInput = ({
+const defaultParseFormat = value => value;
+
+export const useInput = ({
     defaultValue,
-    initialValue,
     id,
     name,
     source,
     validate,
     onBlur: customOnBlur,
     onChange: customOnChange,
-    onFocus: customOnFocus,
+    onFocus,
     isRequired: isRequiredOption,
+    format = defaultParseFormat,
+    parse = defaultParseFormat,
     ...options
 }: InputProps): UseInputValue => {
     const finalName = name || source;
     const formGroupName = useFormGroupContext();
     const formContext = useFormContext();
-    const record = useRecordContext();
+    const translate = useTranslate();
+
+    const sanitizedValidate = Array.isArray(validate)
+        ? composeValidators(validate)
+        : validate;
+    const {
+        field: input,
+        fieldState: { invalid, isTouched, isDirty, error },
+    } = useController({
+        name: finalName,
+        defaultValue,
+        rules: {
+            validate: async value => {
+                if (!sanitizedValidate) return;
+                const error = await sanitizedValidate(value);
+
+                if (!error) return;
+                if ((error as ValidationErrorMessageWithArgs).message) {
+                    const {
+                        message,
+                        args,
+                    } = error as ValidationErrorMessageWithArgs;
+                    return translate(message, { _: message, ...args });
+                }
+                return translate(error as string, { _: error });
+            },
+        },
+    });
+
+    const meta = { invalid, isTouched, isDirty, error };
 
     useEffect(() => {
         if (!formContext || !formGroupName) {
@@ -66,24 +106,13 @@ const useInput = ({
         };
     }, [formContext, formGroupName, source]);
 
-    const sanitizedValidate = Array.isArray(validate)
-        ? composeValidators(validate)
-        : validate;
-
-    const { input, meta } = useFinalFormField(finalName, {
-        initialValue,
-        defaultValue,
-        validate: sanitizedValidate,
-        ...options,
-    });
-
     // Extract the event handlers so that we can provide ours
     // allowing users to provide theirs without breaking the form
-    const { onBlur, onChange, onFocus, ...inputProps } = input;
+    const { onBlur, onChange, ...inputProps } = input;
 
     const handleBlur = useCallback(
         event => {
-            onBlur(event);
+            onBlur();
             if (typeof customOnBlur === 'function') {
                 customOnBlur(event);
             }
@@ -93,83 +122,34 @@ const useInput = ({
 
     const handleChange = useCallback(
         event => {
-            onChange(event);
+            let finalEvent = event;
+            if (parse) {
+                finalEvent = {
+                    ...event,
+                    target: {
+                        ...event.target,
+                        value: parse(event.target ? event.target.value : event),
+                    },
+                };
+            }
+            onChange(finalEvent);
             if (typeof customOnChange === 'function') {
-                customOnChange(event);
+                customOnChange(finalEvent);
             }
         },
-        [onChange, customOnChange]
+        [customOnChange, parse, onChange]
     );
-
-    const handleFocus = useCallback(
-        event => {
-            onFocus(event);
-            if (typeof customOnFocus === 'function') {
-                customOnFocus(event);
-            }
-        },
-        [onFocus, customOnFocus]
-    );
-
-    const form = useForm();
-    const recordId = record?.id;
-    // Every time the record changes and doesn't include a value for this field,
-    // reset the field value to the initialValue (or defaultValue)
-    useEffect(() => {
-        if (
-            typeof input.checked !== 'undefined' || // checkbox that has a value from record
-            (input.value != null && input.value !== '') // any other input that has a value from record
-        ) {
-            // no need to apply a default value
-            return;
-        }
-
-        // Apply the default value if provided
-        // We use a change here which will make the form dirty but this is expected
-        // and identical to what FinalForm does (https://final-form.org/docs/final-form/types/FieldConfig#defaultvalue)
-        if (defaultValue != null) {
-            form.change(source, defaultValue);
-        }
-
-        // apply initial value if provided
-        if (initialValue != null) {
-            form.batch(() => {
-                form.change(source, initialValue);
-                form.resetFieldState(source);
-            });
-        }
-    }, [
-        recordId,
-        input.value,
-        input.checked,
-        defaultValue,
-        initialValue,
-        source,
-        form,
-    ]);
-
-    // If there is an input prop, this input has already been enhanced by final-form
-    // This is required in for inputs used inside other inputs (such as the SelectInput inside a ReferenceInput)
-    if (options.input) {
-        return {
-            id: id || source,
-            input: options.input,
-            meta: options.meta,
-            isRequired: isRequiredOption || isRequired(validate),
-        };
-    }
 
     return {
         id: id || source,
         input: {
             ...inputProps,
+            value: format(inputProps.value),
             onBlur: handleBlur,
             onChange: handleChange,
-            onFocus: handleFocus,
+            onFocus,
         },
         meta,
         isRequired: isRequiredOption || isRequired(validate),
     };
 };
-
-export default useInput;

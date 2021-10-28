@@ -7,11 +7,10 @@ import {
     BooleanInput,
     Create,
     DateInput,
-    FormDataConsumer,
     NumberInput,
+    NumberInputProps,
     ReferenceInput,
     SaveButton,
-    SelectInput,
     SimpleForm,
     SimpleFormIterator,
     TextInput,
@@ -20,7 +19,9 @@ import {
     FileInput,
     FileField,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
-import { FormSpy } from 'react-final-form';
+import { useWatch } from 'react-hook-form';
+import format from 'date-fns/format';
+import { RoleSelectInput } from './RoleSelectInput';
 
 const PostCreateToolbar = props => (
     <Toolbar {...props}>
@@ -51,41 +52,42 @@ const PostCreateToolbar = props => (
     </Toolbar>
 );
 
+// FIXME? ArrayInput default value doesn't work anymore
 const backlinksDefaultValue = [
     {
-        date: new Date(),
+        date: format(new Date(), 'YYYY-MM-DD'),
         url: 'http://google.com',
     },
 ];
 const PostCreate = ({ permissions, ...props }) => {
-    const initialValues = useMemo(
+    const dateDefaultValue = useMemo(() => new Date(), []);
+    const defaultValues = useMemo(
         () => ({
             average_note: 0,
         }),
         []
     );
 
-    const dateDefaultValue = useMemo(() => new Date(), []);
-
     return (
         <Create {...props}>
             <SimpleForm
                 toolbar={<PostCreateToolbar />}
-                initialValues={initialValues}
-                validate={values => {
-                    const errors = {} as any;
-                    ['title', 'teaser'].forEach(field => {
-                        if (!values[field]) {
-                            errors[field] = 'Required field';
-                        }
-                    });
+                defaultValues={defaultValues}
+                // FIXME
+                // validate={values => {
+                //     const errors = {} as any;
+                //     ['title', 'teaser'].forEach(field => {
+                //         if (!values[field]) {
+                //             errors[field] = 'Required field';
+                //         }
+                //     });
 
-                    if (values.average_note < 0 || values.average_note > 5) {
-                        errors.average_note = 'Should be between 0 and 5';
-                    }
+                //     if (values.average_note < 0 || values.average_note > 5) {
+                //         errors.average_note = 'Should be between 0 and 5';
+                //     }
 
-                    return errors;
-                }}
+                //     return errors;
+                // }}
             >
                 <FileInput
                     source="pdffile"
@@ -97,24 +99,14 @@ const PostCreate = ({ permissions, ...props }) => {
                 <TextInput autoFocus source="title" />
                 <TextInput source="teaser" fullWidth={true} multiline={true} />
                 <RichTextInput source="body" validate={required()} />
-                <FormSpy subscription={{ values: true }}>
-                    {({ values }) =>
-                        values.title ? (
-                            <NumberInput source="average_note" />
-                        ) : null
-                    }
-                </FormSpy>
+                <AverageNoteInput source="average_note" />
 
                 <DateInput
                     source="published_at"
                     defaultValue={dateDefaultValue}
                 />
                 <BooleanInput source="commentable" defaultValue />
-                <ArrayInput
-                    source="backlinks"
-                    defaultValue={backlinksDefaultValue}
-                    validate={[required()]}
-                >
+                <ArrayInput source="backlinks" validate={[required()]}>
                     <SimpleFormIterator>
                         <DateInput source="date" />
                         <TextInput source="url" />
@@ -130,42 +122,21 @@ const PostCreate = ({ permissions, ...props }) => {
                             >
                                 <AutocompleteInput />
                             </ReferenceInput>
-                            <FormDataConsumer>
-                                {({
-                                    formData,
-                                    scopedFormData,
-                                    getSource,
-                                    ...rest
-                                }) =>
-                                    scopedFormData && scopedFormData.user_id ? (
-                                        <SelectInput
-                                            label="Role"
-                                            source={getSource('role')}
-                                            choices={[
-                                                {
-                                                    id: 'headwriter',
-                                                    name: 'Head Writer',
-                                                },
-                                                {
-                                                    id: 'proofreader',
-                                                    name: 'Proof reader',
-                                                },
-                                                {
-                                                    id: 'cowriter',
-                                                    name: 'Co-Writer',
-                                                },
-                                            ]}
-                                            {...rest}
-                                        />
-                                    ) : null
-                                }
-                            </FormDataConsumer>
+                            <RoleSelectInput source="role" />
                         </SimpleFormIterator>
                     </ArrayInput>
                 )}
             </SimpleForm>
         </Create>
     );
+};
+
+const AverageNoteInput = (props: NumberInputProps) => {
+    const title = useWatch({ name: 'title' });
+
+    return title ? (
+        <NumberInput key={title} defaultValue={0} {...props} />
+    ) : null;
 };
 
 export default PostCreate;

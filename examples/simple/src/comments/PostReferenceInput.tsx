@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { Fragment, useState, useCallback } from 'react';
-import { FormSpy, useForm } from 'react-final-form';
+import {
+    useFormContext as useReactHookFormContext,
+    useWatch,
+} from 'react-hook-form';
 
 import {
     Button,
@@ -32,7 +35,8 @@ const Root = styled('div')({
 const PostReferenceInput = props => {
     const translate = useTranslate();
 
-    const { change } = useForm();
+    const { setValue } = useReactHookFormContext();
+    const post_id = useWatch({ name: 'post_id' });
 
     const [showCreateDialog, setShowCreateDialog] = useState(false);
     const [showPreviewDialog, setShowPreviewDialog] = useState(false);
@@ -68,9 +72,9 @@ const PostReferenceInput = props => {
             setShowCreateDialog(false);
             setNewPostId(post.id);
             setVersion(previous => previous + 1);
-            change('post_id', post.id);
+            setValue('post_id', post.id);
         },
-        [setShowCreateDialog, setNewPostId, change]
+        [setShowCreateDialog, setNewPostId, setValue]
     );
 
     return (
@@ -85,48 +89,43 @@ const PostReferenceInput = props => {
             >
                 {translate('ra.action.create')}
             </Button>
-            <FormSpy
-                subscription={{ values: true }}
-                render={({ values }) =>
-                    values.post_id ? (
-                        <Fragment>
+            {post_id ? (
+                <Fragment>
+                    <Button
+                        data-testid="button-show-post"
+                        className={classes.button}
+                        onClick={handleShowClick}
+                    >
+                        {translate('ra.action.show')}
+                    </Button>
+                    <Dialog
+                        data-testid="dialog-show-post"
+                        fullWidth
+                        open={showPreviewDialog}
+                        onClose={handleCloseShow}
+                        aria-label={translate('simple.create-post')}
+                    >
+                        <DialogTitle>
+                            {translate('simple.create-post')}
+                        </DialogTitle>
+                        <DialogContent>
+                            <PostPreview
+                                id={post_id}
+                                basePath="/posts"
+                                resource="posts"
+                            />
+                        </DialogContent>
+                        <DialogActions>
                             <Button
-                                data-testid="button-show-post"
-                                className={classes.button}
-                                onClick={handleShowClick}
+                                data-testid="button-close-modal"
+                                onClick={handleCloseShow}
                             >
-                                {translate('ra.action.show')}
+                                {translate('simple.action.close')}
                             </Button>
-                            <Dialog
-                                data-testid="dialog-show-post"
-                                fullWidth
-                                open={showPreviewDialog}
-                                onClose={handleCloseShow}
-                                aria-label={translate('simple.create-post')}
-                            >
-                                <DialogTitle>
-                                    {translate('simple.create-post')}
-                                </DialogTitle>
-                                <DialogContent>
-                                    <PostPreview
-                                        id={values.post_id}
-                                        basePath="/posts"
-                                        resource="posts"
-                                    />
-                                </DialogContent>
-                                <DialogActions>
-                                    <Button
-                                        data-testid="button-close-modal"
-                                        onClick={handleCloseShow}
-                                    >
-                                        {translate('simple.action.close')}
-                                    </Button>
-                                </DialogActions>
-                            </Dialog>
-                        </Fragment>
-                    ) : null
-                }
-            />
+                        </DialogActions>
+                    </Dialog>
+                </Fragment>
+            ) : null}
             <Dialog
                 data-testid="dialog-add-post"
                 fullWidth

@@ -104,7 +104,7 @@ export const useCreateController = <
         basePath,
         hasEdit,
         hasShow,
-        record = {},
+        record,
         successMessage,
         onSuccess,
         onFailure,
@@ -242,7 +242,7 @@ export const useCreateController = <
     };
 };
 
-export const getRecord = ({ state, search }, record: any = {}) => {
+export const getRecord = ({ state, search }, record: any) => {
     if (state && state.record) {
         return state.record;
     }

@@ -24,7 +24,7 @@ import { useTranslate } from '../i18n';
  * - getChoiceValue: Returns the choice value
  * - getSuggestions: A function taking a filter value (string) and returning the matching suggestions
  */
-const useSuggestions = ({
+export const useSuggestions = ({
     allowCreate,
     allowDuplicates,
     allowEmpty,
@@ -95,8 +95,6 @@ const useSuggestions = ({
         getSuggestions,
     };
 };
-
-export default useSuggestions;
 
 const escapeRegExp = value =>
     value ? value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') : ''; // $& means the whole matched string

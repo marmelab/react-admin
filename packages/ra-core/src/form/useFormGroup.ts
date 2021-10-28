@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useForm } from 'react-final-form';
+import { useFormState } from 'react-hook-form';
 import isEqual from 'lodash/isEqual';
 import { useFormContext } from './useFormContext';
-import { FieldState } from 'final-form';
 
 type FormGroupState = {
     dirty: boolean;
@@ -56,7 +55,7 @@ type FormGroupState = {
  * @returns {FormGroupState} The form group state
  */
 export const useFormGroup = (name: string): FormGroupState => {
-    const form = useForm();
+    const { dirtyFields, touchedFields, errors } = useFormState();
     const formContext = useFormContext();
     const [state, setState] = useState<FormGroupState>({
         dirty: false,
@@ -68,49 +67,51 @@ export const useFormGroup = (name: string): FormGroupState => {
     });
 
     useEffect(() => {
-        const unsubscribe = form.subscribe(
-            () => {
-                const fields = formContext.getGroupFields(name);
-                const fieldStates = fields
-                    .map(field => {
-                        return form.getFieldState(field);
-                    })
-                    .filter(fieldState => fieldState != undefined); // eslint-disable-line
-                const newState = getFormGroupState(fieldStates);
+        const fields = formContext.getGroupFields(name);
+        const fieldStates = fields
+            .map(field => ({
+                name: field,
+                dirty: !!dirtyFields[field],
+                errors: errors[field],
+                invalid: !!errors[field],
+                pristine: !dirtyFields[field],
+                touched: !!touchedFields[field],
+                valid: !errors[field],
+            }))
+            .filter(fieldState => fieldState != undefined); // eslint-disable-line
+        const newState = getFormGroupState(fieldStates);
 
-                setState(oldState => {
-                    if (!isEqual(oldState, newState)) {
-                        return newState;
-                    }
-
-                    return oldState;
-                });
-            },
-            {
-                errors: true,
-                invalid: true,
-                dirty: true,
-                pristine: true,
-                valid: true,
-                touched: true,
+        setState(oldState => {
+            if (!isEqual(oldState, newState)) {
+                return newState;
             }
-        );
-        return unsubscribe;
-    }, [form, formContext, name]);
+
+            return oldState;
+        });
+    }, [dirtyFields, errors, touchedFields, formContext, name]);
 
     return state;
 };
 
+type FieldState = {
+    name: string;
+    dirty: boolean;
+    error?: string;
+    invalid: boolean;
+    pristine: boolean;
+    touched: boolean;
+    valid: boolean;
+};
 /**
  * Get the state of a form group
  *
- * @param {FieldState[]} fieldStates A map of field states from final-form where the key is the field name.
+ * @param {FieldState[]} fieldStates A map of field states from react-hook-form where the key is the field name.
  * @returns {FormGroupState} The state of the group.
  */
 export const getFormGroupState = (
-    fieldStates: FieldState<any>[]
+    fieldStates: FieldState[]
 ): FormGroupState => {
-    return fieldStates.reduce(
+    return fieldStates.reduce<FormGroupState>(
         (acc, fieldState) => {
             let errors = acc.errors || {};
 

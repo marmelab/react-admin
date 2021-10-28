@@ -10,6 +10,7 @@ import {
     ReferenceField,
     ReferenceFieldProps,
     ReferenceArrayField,
+    ReferenceArrayFieldProps,
     RichTextField,
     TextField,
     UrlField,
@@ -81,7 +82,7 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
     },
     referenceArray: {
         component: ReferenceArrayField,
-        representation: (props: InputProps) =>
+        representation: (props: ReferenceArrayFieldProps) =>
             `<ReferenceArrayField source="${props.source}" reference="${props.reference}"><TextField source="id" /></ReferenceArrayField>`,
     },
     referenceArrayChild: {

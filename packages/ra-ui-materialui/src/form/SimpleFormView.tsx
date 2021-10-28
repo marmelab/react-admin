@@ -14,10 +14,8 @@ export const SimpleFormView = ({
     component: Component = CardContentInner,
     handleSubmit,
     handleSubmitWithRedirect,
-    invalid,
     margin,
     mutationMode,
-    pristine,
     record,
     redirect,
     resource,
@@ -25,7 +23,6 @@ export const SimpleFormView = ({
     submitOnEnter = true,
     toolbar = DefaultToolbar,
     variant,
-    validating,
     ...rest
 }: SimpleFormViewProps): ReactElement => (
     <form
@@ -53,15 +50,12 @@ export const SimpleFormView = ({
                 basePath,
                 handleSubmitWithRedirect,
                 handleSubmit,
-                invalid,
                 mutationMode,
-                pristine,
                 record,
                 redirect,
                 resource,
                 saving,
                 submitOnEnter,
-                validating,
             })}
     </form>
 );
@@ -70,7 +64,7 @@ SimpleFormView.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string,
-    handleSubmit: PropTypes.func, // passed by react-final-form
+    handleSubmit: PropTypes.func,
     invalid: PropTypes.bool,
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     pristine: PropTypes.bool,
@@ -103,33 +97,18 @@ export interface SimpleFormViewProps extends FormWithRedirectRenderProps {
     toolbar?: ReactElement;
     variant?: 'standard' | 'outlined' | 'filled';
     submitOnEnter?: boolean;
-    __versions?: any; // react-final-form internal prop, missing in their type
 }
 
 const sanitizeRestProps = ({
-    active,
-    dirty,
-    dirtyFields,
-    dirtyFieldsSinceLastSubmit,
-    dirtySinceLastSubmit,
-    error,
-    errors,
-    form,
-    hasSubmitErrors,
-    hasValidationErrors,
-    initialValues,
-    modified = null,
-    modifiedSinceLastSubmit,
+    dirtyFields = null,
+    errors = null,
     save = null,
-    submitError,
-    submitErrors,
-    submitFailed,
-    submitSucceeded,
-    submitting,
     touched = null,
-    valid,
-    values,
-    visited = null,
+    isDirty = null,
+    isSubmitted = null,
+    isSubmitting = null,
+    isValid = null,
+    submitCount = null,
     __versions = null,
     ...props
 }) => props;

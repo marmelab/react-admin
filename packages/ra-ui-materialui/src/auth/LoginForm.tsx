@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import { Field, Form } from 'react-final-form';
+import { useForm, Controller } from 'react-hook-form';
 import {
     Button,
     CardActions,
@@ -16,18 +16,7 @@ export const LoginForm = (props: LoginFormProps) => {
     const login = useLogin();
     const translate = useTranslate();
     const notify = useNotify();
-
-    const validate = (values: FormData) => {
-        const errors = { username: undefined, password: undefined };
-
-        if (!values.username) {
-            errors.username = translate('ra.validation.required');
-        }
-        if (!values.password) {
-            errors.password = translate('ra.validation.required');
-        }
-        return errors;
-    };
+    const { control, handleSubmit } = useForm();
 
     const submit = values => {
         setLoading(true);
@@ -57,55 +46,86 @@ export const LoginForm = (props: LoginFormProps) => {
     };
 
     return (
-        <Form
-            onSubmit={submit}
-            validate={validate}
-            render={({ handleSubmit }) => (
-                <Root onSubmit={handleSubmit} noValidate>
-                    <div className={LoginFormClasses.form}>
-                        <div className={LoginFormClasses.input}>
-                            <Field
+        <Root onSubmit={handleSubmit(submit)} noValidate>
+            <div className={LoginFormClasses.form}>
+                <div className={LoginFormClasses.input}>
+                    <Controller
+                        control={control}
+                        name="username"
+                        defaultValue=""
+                        rules={{
+                            validate: value =>
+                                !value
+                                    ? translate('ra.validation.required')
+                                    : undefined,
+                        }}
+                        render={({
+                            field,
+                            fieldState: { isTouched, error },
+                        }) => (
+                            <TextField
                                 autoFocus
                                 id="username"
-                                name="username"
-                                component={Input}
                                 label={translate('ra.auth.username')}
                                 disabled={loading}
+                                helperText={isTouched && error}
+                                error={!!(isTouched && error)}
+                                fullWidth
+                                {...field}
                             />
-                        </div>
-                        <div className={LoginFormClasses.input}>
-                            <Field
+                        )}
+                    />
+                </div>
+                <div className={LoginFormClasses.input}>
+                    <Controller
+                        control={control}
+                        name="password"
+                        defaultValue=""
+                        rules={{
+                            validate: value =>
+                                !value
+                                    ? translate('ra.validation.required')
+                                    : undefined,
+                        }}
+                        render={({
+                            field,
+                            fieldState: { isTouched, error },
+                        }) => (
+                            <TextField
+                                autoFocus
                                 id="password"
-                                name="password"
-                                component={Input}
-                                label={translate('ra.auth.password')}
                                 type="password"
-                                disabled={loading}
                                 autoComplete="current-password"
+                                disabled={loading}
+                                label={translate('ra.auth.password')}
+                                helperText={isTouched && error}
+                                error={!!(isTouched && error)}
+                                fullWidth
+                                {...field}
                             />
-                        </div>
-                    </div>
-                    <CardActions>
-                        <Button
-                            variant="contained"
-                            type="submit"
-                            color="primary"
-                            disabled={loading}
-                            className={LoginFormClasses.button}
-                        >
-                            {loading && (
-                                <CircularProgress
-                                    className={LoginFormClasses.icon}
-                                    size={18}
-                                    thickness={2}
-                                />
-                            )}
-                            {translate('ra.auth.sign_in')}
-                        </Button>
-                    </CardActions>
-                </Root>
-            )}
-        />
+                        )}
+                    />
+                </div>
+            </div>
+            <CardActions>
+                <Button
+                    variant="contained"
+                    type="submit"
+                    color="primary"
+                    disabled={loading}
+                    className={LoginFormClasses.button}
+                >
+                    {loading && (
+                        <CircularProgress
+                            className={LoginFormClasses.icon}
+                            size={18}
+                            thickness={2}
+                        />
+                    )}
+                    {translate('ra.auth.sign_in')}
+                </Button>
+            </CardActions>
+        </Root>
     );
 };
 
@@ -139,25 +159,6 @@ const Root = styled('form', { name: 'RaLoginForm' })(({ theme }) => ({
 export interface LoginFormProps {
     redirectTo?: string;
 }
-
-interface FormData {
-    username: string;
-    password: string;
-}
-
-const Input = ({
-    meta: { touched, error }, // eslint-disable-line react/prop-types
-    input: inputProps, // eslint-disable-line react/prop-types
-    ...props
-}) => (
-    <TextField
-        error={!!(touched && error)}
-        helperText={touched && error}
-        {...inputProps}
-        {...props}
-        fullWidth
-    />
-);
 
 LoginForm.propTypes = {
     redirectTo: PropTypes.string,

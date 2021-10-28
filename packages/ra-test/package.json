@@ -34,7 +34,7 @@
         "@types/react-router": "^5.1.0",
         "@types/react-router-dom": "^5.1.0",
         "cross-env": "^5.2.0",
-        "final-form": "^4.20.2",
+        "react-hook-form": "^7.17.5",
         "history": "^4.7.2",
         "ignore-styles": "~5.0.1",
         "ra-core": "^4.0.0-alpha.0",

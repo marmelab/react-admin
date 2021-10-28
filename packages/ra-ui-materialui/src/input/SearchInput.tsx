@@ -3,9 +3,10 @@ import { styled } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
 import { InputAdornment } from '@mui/material';
 import { TextFieldProps } from '@mui/material/TextField';
-import { useTranslate, InputProps } from 'ra-core';
+import { useTranslate } from 'ra-core';
 
 import { TextInput } from './TextInput';
+import { InputProps } from './types';
 
 export const SearchInput = (props: SearchInputProps) => {
     const translate = useTranslate();

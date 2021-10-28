@@ -37,7 +37,7 @@ const RichTextInput = (props: RichTextInputProps) => {
         id,
         isRequired,
         input: { value, onChange },
-        meta: { touched, error },
+        meta: { isTouched, error },
     } = useInput({ source, ...rest });
 
     const lastValueChange = useRef(value);
@@ -100,7 +100,7 @@ const RichTextInput = (props: RichTextInputProps) => {
 
     return (
         <StyledFormControl
-            error={!!(touched && error)}
+            error={isTouched && !!error}
             fullWidth={fullWidth}
             className={`ra-rich-text-input ${RaRichTextClasses.root}`}
             margin={margin}
@@ -117,13 +117,13 @@ const RichTextInput = (props: RichTextInputProps) => {
             </InputLabel>
             <div data-testid="quill" ref={divRef} className={variant} />
             <FormHelperText
-                error={!!error}
+                error={!!error && isTouched}
                 className={!!error ? 'ra-rich-text-input-error' : ''}
             >
                 <InputHelperText
                     error={error}
                     helperText={helperText}
-                    touched={touched}
+                    touched={isTouched}
                 />
             </FormHelperText>
         </StyledFormControl>

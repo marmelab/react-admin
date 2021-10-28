@@ -111,7 +111,7 @@ export const useSupportCreateSuggestion = (
 
 export interface SupportCreateSuggestionOptions {
     create?: ReactElement;
-    createValue?: string;
+    createValue?: any;
     createLabel?: string;
     createItemLabel?: string;
     filter?: string;

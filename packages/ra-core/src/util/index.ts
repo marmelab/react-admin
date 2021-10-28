@@ -10,8 +10,8 @@ import Ready from './Ready';
 import resolveRedirectTo from './resolveRedirectTo';
 import warning from './warning';
 import useWhyDidYouUpdate from './useWhyDidYouUpdate';
-import { useSafeSetState, useTimeout } from './hooks';
 import { getMutationMode } from './getMutationMode';
+export * from './hooks';
 export * from './indexById';
 export * from './mergeRefs';
 
@@ -28,8 +28,6 @@ export {
     resolveRedirectTo,
     warning,
     useWhyDidYouUpdate,
-    useSafeSetState,
-    useTimeout,
     getMutationMode,
 };
 

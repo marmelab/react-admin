@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { useState } from 'react';
-import { useForm } from 'react-final-form';
+import { useFormContext } from 'react-hook-form';
 import {
     AutocompleteArrayInput,
     ReferenceArrayInput,
@@ -43,12 +43,12 @@ const TagReferenceInput = ({
     source: string;
     label?: string;
 }) => {
-    const { change } = useForm();
+    const { setValue } = useFormContext();
     const [filter, setFilter] = useState(true);
 
     const handleAddFilter = () => {
         setFilter(!filter);
-        change('tags', []);
+        setValue('tags', []);
     };
 
     return (

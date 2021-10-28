@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { useTranslate, ValidationError, ValidationErrorMessage } from 'ra-core';
+import { useTranslate } from 'ra-core';
+import { FieldError } from 'react-hook-form';
 
 export const InputHelperText = (props: InputHelperTextProps) => {
     const { helperText, touched, error } = props;
     const translate = useTranslate();
 
     return touched && error ? (
-        <ValidationError error={error} />
+        <>{error.message}</>
     ) : typeof helperText === 'string' ? (
         <>{translate(helperText, { _: helperText })}</>
     ) : helperText !== false ? (
@@ -24,6 +25,6 @@ const defaultInnerHTML = { __html: '&#8203;' };
 
 export interface InputHelperTextProps {
     helperText?: string | boolean;
-    error?: ValidationErrorMessage;
+    error?: FieldError;
     touched: boolean;
 }

@@ -14,10 +14,10 @@ import classNames from 'classnames';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { Record, ValidationError } from 'ra-core';
-import { FieldArrayRenderProps } from 'react-final-form-arrays';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { CSSTransitionProps } from 'react-transition-group/CSSTransition';
 
+import { ArrayInputContextValue } from './ArrayInputContext';
 import { useArrayInput } from './useArrayInput';
 import {
     SimpleFormIteratorClasses,
@@ -53,8 +53,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         defaultValue,
         getItemLabel = DefaultLabelFn,
     } = props;
-    const { fields, meta } = useArrayInput(props);
-    const { error, submitFailed } = meta;
+    const { fields, remove, append, move } = useArrayInput(props);
     const nodeRef = useRef(null);
 
     // We need a unique id for each field for a proper enter/exit animation
@@ -78,17 +77,17 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     const removeField = useCallback(
         (index: number) => {
             ids.current.splice(index, 1);
-            fields.remove(index);
+            remove(index);
         },
-        [fields]
+        [remove]
     );
 
     const addField = useCallback(
-        (item: any = undefined) => {
+        (item: any = {}) => {
             ids.current.push(nextId.current++);
-            fields.push(item);
+            append(item);
         },
-        [fields]
+        [append]
     );
 
     // add field and call the onClick event of the button passed as addButton prop
@@ -106,9 +105,9 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
             const item = ids.current[origin];
             ids.current[origin] = ids.current[destination];
             ids.current[destination] = item;
-            fields.move(origin, destination);
+            move(origin, destination);
         },
-        [fields]
+        [move]
     );
 
     const records = get(record, source);
@@ -130,16 +129,16 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                     className
                 )}
             >
-                {submitFailed && typeof error !== 'object' && error && (
+                {/* {submitFailed && typeof error !== 'object' && error && (
                     <FormHelperText error>
                         <ValidationError error={error as string} />
                     </FormHelperText>
-                )}
+                )} */}
                 <TransitionGroup component={null}>
                     {fields.map((member, index) => (
                         <CSSTransition
                             nodeRef={nodeRef}
-                            key={ids.current[index]}
+                            key={member.id}
                             timeout={500}
                             classNames="fade"
                             {...TransitionProps}
@@ -149,12 +148,10 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                                 disabled={disabled}
                                 disableRemove={disableRemove}
                                 disableReordering={disableReordering}
-                                fields={fields}
                                 getItemLabel={getItemLabel}
                                 index={index}
                                 margin={margin}
-                                member={member}
-                                meta={meta}
+                                member={`${source}.${index}`}
                                 onRemoveField={removeField}
                                 onReorder={handleReorder}
                                 record={(records && records[index]) || {}}
@@ -202,9 +199,6 @@ SimpleFormIterator.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
     // @ts-ignore
-    fields: PropTypes.object,
-    meta: PropTypes.object,
-    // @ts-ignore
     record: PropTypes.object,
     source: PropTypes.string,
     resource: PropTypes.string,
@@ -215,7 +209,7 @@ SimpleFormIterator.propTypes = {
 };
 
 export interface SimpleFormIteratorProps
-    extends Partial<Omit<FieldArrayRenderProps<any, HTMLElement>, 'meta'>> {
+    extends Partial<ArrayInputContextValue> {
     addButton?: ReactElement;
     basePath?: string;
     children?: ReactNode;

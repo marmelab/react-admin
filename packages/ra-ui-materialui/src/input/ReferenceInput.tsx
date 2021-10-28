@@ -3,16 +3,15 @@ import PropTypes from 'prop-types';
 import {
     useInput,
     useReferenceInputController,
-    InputProps,
     warning as warningLog,
     ListContextProvider,
     ReferenceInputValue,
-    UseInputValue,
     ResourceContextProvider,
 } from 'ra-core';
 
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { ReferenceError } from './ReferenceError';
+import { InputProps } from './types';
 
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
@@ -179,10 +178,7 @@ const sanitizeRestProps = ({
     ...rest
 }) => sanitizeInputRestProps(rest);
 
-export interface ReferenceInputViewProps
-    extends ReferenceInputValue,
-        ReferenceInputProps,
-        Omit<UseInputValue, 'id'> {}
+export type ReferenceInputViewProps = ReferenceInputValue & ReferenceInputProps;
 
 export const ReferenceInputView = (props: ReferenceInputViewProps) => {
     const {
@@ -212,7 +208,7 @@ export const ReferenceInputView = (props: ReferenceInputViewProps) => {
         throw new Error('<ReferenceInput> only accepts a single child');
     }
 
-    // This is not a final-form error but an unrecoverable error from the
+    // This is not a form error but an unrecoverable error from the
     // useReferenceInputController hook
     if (error) {
         return <ReferenceError label={label} error={error} />;
@@ -220,7 +216,7 @@ export const ReferenceInputView = (props: ReferenceInputViewProps) => {
 
     // When the useReferenceInputController returns a warning, it means it
     // had an issue trying to load the referenced record
-    // We display it by overriding the final-form meta
+    // We display it by overriding the form meta
     const finalMeta = warning
         ? {
               ...meta,

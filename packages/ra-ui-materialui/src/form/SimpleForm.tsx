@@ -76,7 +76,6 @@ export interface SimpleFormProps
     children: ReactNode;
     className?: string;
     component?: React.ComponentType<any>;
-    initialValues?: any;
     margin?: 'none' | 'normal' | 'dense';
     mutationMode?: MutationMode;
     resource?: string;

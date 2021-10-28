@@ -2,9 +2,9 @@ import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 import difference from 'lodash/difference';
+import { useFormContext } from 'react-hook-form';
 import { Record, SortPayload, ReduxState, Identifier } from '../../types';
 import { useGetMany } from '../../dataProvider';
-import { FieldInputProps, useForm } from 'react-final-form';
 import useGetMatching from '../../dataProvider/useGetMatching';
 import { useTranslate } from '../../i18n';
 import { getStatusForArrayInput as getDataStatus } from './referenceDataStatus';
@@ -13,6 +13,7 @@ import { usePaginationState, useSortState } from '..';
 import { ListControllerProps } from '../useListController';
 import { indexById, removeEmpty, useSafeSetState } from '../../util';
 import { ReferenceArrayInputContextValue } from './ReferenceArrayInputContext';
+import { Input } from '../../form';
 
 /**
  * Prepare data for the ReferenceArrayInput components
@@ -119,12 +120,12 @@ export const useReferenceArrayInputController = (
         perPage: initialPerPage,
     });
 
-    const form = useForm();
+    const form = useFormContext();
     const onSelect = useCallback(
         (newIds: Identifier[]) => {
             // This could happen when user unselect all items using the datagrid for instance
             if (newIds.length === 0) {
-                form.change(input.name, EmptyArray);
+                form.setValue(input.name, EmptyArray);
                 return;
             }
 
@@ -132,24 +133,24 @@ export const useReferenceArrayInputController = (
             newIds.forEach(newId => {
                 newValue.add(newId);
             });
-            form.change(input.name, Array.from(newValue));
+            form.setValue(input.name, Array.from(newValue));
         },
         [form, input.value, input.name]
     );
 
     const onUnselectItems = useCallback(() => {
-        form.change(input.name, EmptyArray);
+        form.setValue(input.name, EmptyArray);
     }, [form, input.name]);
 
     const onToggleItem = useCallback(
         (id: Identifier) => {
             if (input.value.some(selectedId => selectedId === id)) {
-                form.change(
+                form.setValue(
                     input.name,
                     input.value.filter(selectedId => selectedId !== id)
                 );
             } else {
-                form.change(input.name, [...input.value, id]);
+                form.setValue(input.name, [...input.value, id]);
             }
         },
         [form, input.name, input.value]
@@ -360,7 +361,7 @@ export interface UseReferenceArrayInputOptions {
     basePath?: string;
     filter?: any;
     filterToQuery?: (filter: any) => any;
-    input: FieldInputProps<any, HTMLElement>;
+    input: Input;
     options?: any;
     page?: number;
     perPage?: number;

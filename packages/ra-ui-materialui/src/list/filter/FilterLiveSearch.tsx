@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ChangeEvent, memo, useMemo } from 'react';
 import { InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { Form } from 'react-final-form';
+import { useForm, FormProvider } from 'react-hook-form';
 import { useTranslate, useListFilterContext } from 'ra-core';
 
 import { TextInput } from '../../input';
@@ -26,7 +26,6 @@ export const FilterLiveSearch = memo((props: { source?: string }) => {
     const { source = 'q', ...rest } = props;
     const { filterValues, setFilters } = useListFilterContext();
     const translate = useTranslate();
-
     const onSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target) {
             setFilters({ ...filterValues, [source]: event.target.value }, null);
@@ -36,18 +35,21 @@ export const FilterLiveSearch = memo((props: { source?: string }) => {
         }
     };
 
-    const initialValues = useMemo(
+    const defaultValues = useMemo(
         () => ({
             [source]: filterValues[source],
         }),
         [filterValues, source]
     );
+    const form = useForm({
+        defaultValues,
+    });
 
     const onSubmit = () => undefined;
 
     return (
-        <Form initialValues={initialValues} onSubmit={onSubmit}>
-            {() => (
+        <FormProvider {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
                 <TextInput
                     resettable
                     helperText={false}
@@ -63,7 +65,7 @@ export const FilterLiveSearch = memo((props: { source?: string }) => {
                     onChange={onSearchChange}
                     {...rest}
                 />
-            )}
-        </Form>
+            </form>
+        </FormProvider>
     );
 });

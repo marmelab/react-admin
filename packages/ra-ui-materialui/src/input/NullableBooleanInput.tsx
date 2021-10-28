@@ -4,10 +4,11 @@ import PropTypes from 'prop-types';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import classnames from 'classnames';
-import { useInput, useTranslate, FieldTitle, InputProps } from 'ra-core';
+import { useInput, useTranslate, FieldTitle } from 'ra-core';
 
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
+import { InputProps } from './types';
 
 export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
     const {
@@ -37,7 +38,7 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
         id,
         input,
         isRequired,
-        meta: { error, submitError, touched },
+        meta: { error, isTouched },
     } = useInput({
         format,
         onBlur,
@@ -64,11 +65,11 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
                     isRequired={isRequired}
                 />
             }
-            error={!!(touched && (error || submitError))}
+            error={isTouched && !!error}
             helperText={
                 <InputHelperText
-                    touched={touched}
-                    error={error || submitError}
+                    touched={isTouched}
+                    error={error}
                     helperText={helperText}
                 />
             }
@@ -110,7 +111,7 @@ const getBooleanFromString = (value: string): boolean | null => {
     return null;
 };
 
-const getStringFromBoolean = (value?: boolean | null): string => {
+const getStringFromBoolean = (value?: boolean | string | null): string => {
     if (value === true) return 'true';
     if (value === false) return 'false';
     return '';

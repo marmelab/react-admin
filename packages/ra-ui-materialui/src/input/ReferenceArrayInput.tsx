@@ -3,9 +3,9 @@ import { ReactElement, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
     getFieldLabelTranslationArgs,
-    InputProps,
     useReferenceArrayInputController,
     useInput,
+    UseInputValue,
     useTranslate,
     SortPayload,
     PaginationPayload,
@@ -17,7 +17,7 @@ import {
 
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { ReferenceError } from './ReferenceError';
-import { FieldInputProps, FieldMetaState } from 'react-final-form';
+import { InputProps } from './types';
 
 /**
  * An Input component for fields containing a list of references to another resource.
@@ -205,7 +205,7 @@ const sanitizeRestProps = ({
     ...rest
 }: any) => sanitizeInputRestProps(rest);
 
-export interface ReferenceArrayInputViewProps {
+export type ReferenceArrayInputViewProps = UseInputValue & {
     allowEmpty?: boolean;
     basePath?: string;
     children: ReactElement;
@@ -215,12 +215,10 @@ export interface ReferenceArrayInputViewProps {
     error?: string;
     helperText?: string | boolean;
     id: string;
-    input: FieldInputProps<any, HTMLElement>;
     isRequired: boolean;
     label?: string;
     loaded: boolean;
     loading: boolean;
-    meta: FieldMetaState<any>;
     onChange: any;
     options?: any;
     reference: string;
@@ -231,7 +229,7 @@ export interface ReferenceArrayInputViewProps {
     source: string;
     translate: Translate;
     warning?: string;
-}
+};
 
 export const ReferenceArrayInputView = ({
     allowEmpty,
@@ -323,7 +321,7 @@ ReferenceArrayInputView.propTypes = {
     warning: PropTypes.string,
 };
 
-export interface ReferenceArrayInputProps extends InputProps {
+export interface ReferenceArrayInputProps extends InputProps<any> {
     allowEmpty?: boolean;
     basePath?: string;
     children: ReactElement;

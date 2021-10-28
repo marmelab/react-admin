@@ -99,7 +99,7 @@ export interface LabeledProps {
     id?: string;
     input?: any;
     isRequired?: boolean;
-    label?: string | ReactElement;
+    label?: string | ReactElement | false;
     meta?: any;
     resource?: string;
     source?: string;

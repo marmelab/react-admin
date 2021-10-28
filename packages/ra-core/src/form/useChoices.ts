@@ -15,9 +15,15 @@ export interface ChoicesInputProps<T = any>
     extends Omit<InputProps<T>, 'source'> {
     // Optional as choices inputs can be used inside Reference inputs which inject the source
     source?: string;
-
-    // Optional as choices inputs can be used inside Reference inputs which inject the choices
     choices?: object[];
+    loaded?: boolean;
+    loading?: boolean;
+
+    // Options
+    disableValue?: string;
+    optionValue?: string;
+    optionText?: OptionText;
+    translateChoice?: boolean;
 }
 
 export interface ChoicesProps {

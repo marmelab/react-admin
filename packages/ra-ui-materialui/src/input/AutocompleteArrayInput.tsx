@@ -1,23 +1,26 @@
 import React, {
+    isValidElement,
     useCallback,
     useEffect,
     useRef,
     useMemo,
-    isValidElement,
 } from 'react';
 import { styled } from '@mui/material/styles';
 import Downshift, { DownshiftProps } from 'downshift';
 import classNames from 'classnames';
 import get from 'lodash/get';
-import { TextField, Chip, InputProps } from '@mui/material';
+import { TextField, Chip, InputProps as MuiInputProps } from '@mui/material';
 import { TextFieldProps } from '@mui/material/TextField';
 import {
-    useInput,
-    FieldTitle,
     ChoicesInputProps,
-    useSuggestions,
-    warning,
+    FieldTitle,
+    Input,
+    InputMeta,
     mergeRefs,
+    useInput,
+    useSuggestions,
+    UseSuggestionsOptions,
+    warning,
 } from 'ra-core';
 import debounce from 'lodash/debounce';
 
@@ -29,6 +32,7 @@ import {
     SupportCreateSuggestionOptions,
     useSupportCreateSuggestion,
 } from './useSupportCreateSuggestion';
+import { InputProps } from './types';
 
 /**
  * An Input component for an autocomplete field, using an array of objects for the options
@@ -163,16 +167,9 @@ export const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
     let inputEl = useRef<HTMLInputElement>();
     let anchorEl = useRef<any>();
 
-    const {
-        id,
-        input,
-        isRequired,
-        meta: { touched, error, submitError },
-    } = useInput({
+    const { id, input, isRequired, meta } = useInput({
         format,
         id: idOverride,
-        input: inputOverride,
-        meta: metaOverride,
         onBlur,
         onChange,
         onFocus,
@@ -183,7 +180,10 @@ export const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
         ...rest,
     });
 
-    const values = input.value || emptyArray;
+    const finalInput = inputOverride || input;
+    const finalMeta = metaOverride || meta;
+    const values = finalInput.value || emptyArray;
+    const { error, isTouched } = finalMeta;
 
     const [filterValue, setFilterValue] = React.useState('');
 
@@ -253,10 +253,10 @@ export const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
                     0,
                     selectedItems.length - 1
                 );
-                input.onChange(newSelectedItems.map(getChoiceValue));
+                finalInput.onChange(newSelectedItems.map(getChoiceValue));
             }
         },
-        [filterValue.length, getChoiceValue, input, selectedItems]
+        [filterValue.length, getChoiceValue, finalInput, selectedItems]
     );
 
     const handleChange = useCallback(
@@ -267,9 +267,15 @@ export const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
                     ? [...selectedItems]
                     : [...selectedItems, finalItem];
             setFilterValue('');
-            input.onChange(newSelectedItems.map(getChoiceValue));
+            finalInput.onChange(newSelectedItems.map(getChoiceValue));
         },
-        [allowDuplicates, getChoiceValue, input, selectedItems, setFilterValue]
+        [
+            allowDuplicates,
+            getChoiceValue,
+            finalInput,
+            selectedItems,
+            setFilterValue,
+        ]
     );
 
     const {
@@ -291,9 +297,9 @@ export const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
         item => () => {
             const newSelectedItems = [...selectedItems];
             newSelectedItems.splice(newSelectedItems.indexOf(item), 1);
-            input.onChange(newSelectedItems.map(getChoiceValue));
+            finalInput.onChange(newSelectedItems.map(getChoiceValue));
         },
-        [input, selectedItems, getChoiceValue]
+        [finalInput, selectedItems, getChoiceValue]
     );
 
     // This function ensures that the suggestion list stay aligned to the
@@ -333,17 +339,17 @@ export const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
         event => {
             setFilterValue('');
             handleFilterChange('');
-            input.onBlur(event);
+            finalInput.onBlur(event);
         },
-        [handleFilterChange, input, setFilterValue]
+        [handleFilterChange, finalInput, setFilterValue]
     );
 
     const handleFocus = useCallback(
         openMenu => event => {
             openMenu(event);
-            input.onFocus(event);
+            finalInput.onFocus(event);
         },
-        [input]
+        [finalInput]
     );
 
     const handleClick = useCallback(
@@ -477,7 +483,7 @@ export const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
                                     onFocus,
                                     ...InputPropsWithoutInputRef,
                                 }}
-                                error={!!(touched && (error || submitError))}
+                                error={!!(isTouched && error)}
                                 label={
                                     <FieldTitle
                                         label={label}
@@ -497,8 +503,8 @@ export const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
                                 })}
                                 helperText={
                                     <InputHelperText
-                                        touched={touched}
-                                        error={error || submitError}
+                                        touched={isTouched}
+                                        error={error}
                                         helperText={helperText}
                                     />
                                 }
@@ -559,16 +565,25 @@ const emptyArray = [];
 const DefaultSetFilter = () => {};
 
 interface Options {
-    InputProps?: InputProps;
+    InputProps?: MuiInputProps;
     labelProps?: any;
     suggestionsContainerProps?: any;
 }
 
 export interface AutocompleteArrayInputProps
-    extends ChoicesInputProps<TextFieldProps>,
+    extends Omit<InputProps, 'source'>,
+        Omit<ChoicesInputProps, 'onBlur' | 'onFocus' | 'onChange'>,
+        Omit<UseSuggestionsOptions, 'choices'>,
         Omit<SupportCreateSuggestionOptions, 'handleChange'>,
         Omit<DownshiftProps<any>, 'onChange'> {
+    input?: Input;
+    meta?: InputMeta;
     options?: Options;
+    debounce?: number;
+    loaded?: boolean;
+    loading?: boolean;
+    setFilter?: (filter: string) => void;
+    shouldRenderSuggestions?: (val: string) => boolean;
 }
 
 const PREFIX = 'RaAutocompleteArrayInput';

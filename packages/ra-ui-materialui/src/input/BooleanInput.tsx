@@ -5,14 +5,16 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormGroup, { FormGroupProps } from '@mui/material/FormGroup';
 import Switch, { SwitchProps } from '@mui/material/Switch';
-import { FieldTitle, useInput, InputProps } from 'ra-core';
+import { FieldTitle, useInput } from 'ra-core';
 
+import { InputProps } from './types';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
 import { InputPropTypes } from './InputPropTypes';
 
 export const BooleanInput = (props: BooleanInputProps) => {
     const {
+        defaultValue = false,
         format,
         label,
         fullWidth,
@@ -30,10 +32,11 @@ export const BooleanInput = (props: BooleanInputProps) => {
     } = props;
     const {
         id,
-        input: { onChange: finalFormOnChange, type, value, ...inputProps },
+        input: { onChange: finalFormOnChange, value, ...inputProps },
         isRequired,
-        meta: { error, submitError, touched },
+        meta: { error, isTouched },
     } = useInput({
+        defaultValue,
         format,
         onBlur,
         onChange,
@@ -41,7 +44,6 @@ export const BooleanInput = (props: BooleanInputProps) => {
         parse,
         resource,
         source,
-        type: 'checkbox',
         validate,
         ...rest,
     });
@@ -63,6 +65,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
                         onChange={handleChange}
                         {...inputProps}
                         {...options}
+                        checked={value}
                         disabled={disabled}
                     />
                 }
@@ -75,10 +78,10 @@ export const BooleanInput = (props: BooleanInputProps) => {
                     />
                 }
             />
-            <FormHelperText error={!!(error || submitError)}>
+            <FormHelperText error={isTouched && !!error}>
                 <InputHelperText
-                    touched={touched}
-                    error={error || submitError}
+                    touched={isTouched}
+                    error={error}
                     helperText={helperText}
                 />
             </FormHelperText>

@@ -21,6 +21,7 @@ import {
 import { InputHelperText } from './InputHelperText';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { Labeled } from './Labeled';
+import { InputProps } from './types';
 import { LinearProgress } from '../layout';
 import {
     useSupportCreateSuggestion,
@@ -105,7 +106,6 @@ export const SelectInput = (props: SelectInputProps) => {
     const {
         allowEmpty,
         choices = [],
-        classes: classesOverride,
         className,
         create,
         createLabel,
@@ -163,7 +163,7 @@ export const SelectInput = (props: SelectInputProps) => {
         ...rest,
     });
 
-    const { touched, error, submitError } = meta;
+    const { isTouched, error } = meta;
 
     const renderEmptyItemOption = useCallback(() => {
         return React.isValidElement(emptyText)
@@ -252,11 +252,11 @@ export const SelectInput = (props: SelectInputProps) => {
                 }
                 className={className}
                 clearAlwaysVisible
-                error={!!(touched && (error || submitError))}
+                error={isTouched && !!error}
                 helperText={
                     <InputHelperText
-                        touched={touched}
-                        error={error || submitError}
+                        touched={isTouched}
+                        error={error}
                         helperText={helperText}
                     />
                 }
@@ -369,6 +369,11 @@ const StyledResettableTextField = styled(ResettableTextField)(({ theme }) => ({
     },
 }));
 
-export type SelectInputProps = ChoicesInputProps<TextFieldProps> &
+export type SelectInputProps = InputProps<TextFieldProps> &
+    ChoicesInputProps<TextFieldProps> &
     Omit<SupportCreateSuggestionOptions, 'handleChange'> &
-    Omit<TextFieldProps, 'label' | 'helperText' | 'classes'>;
+    Omit<TextFieldProps, 'label' | 'helperText' | 'classes'> & {
+        allowEmpty?: boolean;
+        emptyText?: string;
+        emptyValue?: string;
+    };

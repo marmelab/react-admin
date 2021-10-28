@@ -11,17 +11,12 @@ import {
     Chip,
 } from '@mui/material';
 import classnames from 'classnames';
-import {
-    FieldTitle,
-    useInput,
-    InputProps,
-    ChoicesProps,
-    useChoices,
-} from 'ra-core';
+import { FieldTitle, useInput, ChoicesInputProps, useChoices } from 'ra-core';
 import { InputHelperText } from './InputHelperText';
 import { SelectProps } from '@mui/material/Select';
 import { FormControlProps } from '@mui/material/FormControl';
 import { Labeled } from './Labeled';
+import { InputProps } from './types';
 import { LinearProgress } from '../layout';
 import {
     SupportCreateSuggestionOptions,
@@ -121,7 +116,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
     const {
         input,
         isRequired,
-        meta: { error, submitError, touched },
+        meta: { error, isTouched },
     } = useInput({
         format,
         onBlur,
@@ -203,14 +198,14 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
             <StyledFormControl
                 margin={margin}
                 className={classnames(SelectArrayInputClasses.root, className)}
-                error={touched && !!(error || submitError)}
+                error={isTouched && !!error}
                 variant={variant}
                 {...sanitizeRestProps(rest)}
             >
                 <InputLabel
                     ref={inputLabel}
                     id={`${label}-outlined-label`}
-                    error={touched && !!(error || submitError)}
+                    error={isTouched && !!error}
                 >
                     <FieldTitle
                         label={label}
@@ -223,7 +218,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                     autoWidth
                     labelId={`${label}-outlined-label`}
                     multiple
-                    error={!!(touched && (error || submitError))}
+                    error={isTouched && !!error}
                     renderValue={(selected: any[]) => (
                         <div className={SelectArrayInputClasses.chips}>
                             {selected
@@ -251,10 +246,10 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                 >
                     {finalChoices.map(renderMenuItem)}
                 </Select>
-                <FormHelperText error={touched && !!(error || submitError)}>
+                <FormHelperText error={isTouched && !!error}>
                     <InputHelperText
-                        touched={touched}
-                        error={error || submitError}
+                        touched={isTouched}
+                        error={error}
                         helperText={helperText}
                     />
                 </FormHelperText>
@@ -264,17 +259,19 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
     );
 };
 
-export interface SelectArrayInputProps
-    extends Omit<ChoicesProps, 'choices' | 'optionText'>,
-        Omit<SupportCreateSuggestionOptions, 'handleChange'>,
-        Omit<InputProps<SelectProps>, 'source'>,
-        Omit<
-            FormControlProps,
-            'defaultValue' | 'onBlur' | 'onChange' | 'onFocus'
-        > {
-    choices?: object[];
-    source?: string;
-}
+export type SelectArrayInputProps = InputProps<SelectProps> &
+    Omit<ChoicesInputProps, 'choices' | 'optionText'> &
+    Omit<SupportCreateSuggestionOptions, 'handleChange'> &
+    Omit<
+        FormControlProps,
+        'defaultValue' | 'onBlur' | 'onChange' | 'onFocus'
+    > & {
+        choices?: object[];
+        source?: string;
+        allowEmpty?: boolean;
+        emptyText?: string;
+        emptyValue?: string;
+    };
 
 SelectArrayInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),

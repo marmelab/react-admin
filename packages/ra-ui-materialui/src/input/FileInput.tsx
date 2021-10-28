@@ -11,16 +11,15 @@ import { shallowEqual } from 'react-redux';
 import { useDropzone, DropzoneOptions } from 'react-dropzone';
 import FormHelperText from '@mui/material/FormHelperText';
 import classnames from 'classnames';
-import { useInput, useTranslate, InputProps } from 'ra-core';
+import { useInput, useTranslate } from 'ra-core';
 
+import { InputProps } from './types';
 import { Labeled } from './Labeled';
 import { FileInputPreview } from './FileInputPreview';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
 
-export const FileInput = (
-    props: FileInputProps & InputProps<FileInputOptions>
-) => {
+export const FileInput = (props: FileInputProps) => {
     const {
         accept,
         children,
@@ -88,13 +87,15 @@ export const FileInput = (
         isRequired,
     } = useInput({
         format: format || transformFiles,
+        // FIXME
+        // @ts-ignore
         parse: parse || transformFiles,
         source,
         type: 'file',
         validate,
         ...rest,
     });
-    const { touched, error, submitError } = meta;
+    const { isTouched, error } = meta;
     const files = value ? (Array.isArray(value) ? value : [value]) : [];
 
     const onDrop = (newFiles, rejectedFiles, event) => {
@@ -172,10 +173,10 @@ export const FileInput = (
                         <p>{translate(labelSingle)}</p>
                     )}
                 </div>
-                <FormHelperText>
+                <FormHelperText error={isTouched && !!error}>
                     <InputHelperText
-                        touched={touched}
-                        error={error || submitError}
+                        touched={isTouched}
+                        error={error}
                         helperText={helperText}
                     />
                 </FormHelperText>
@@ -242,16 +243,17 @@ const StyledLabeled = styled(Labeled, { name: PREFIX })(({ theme }) => ({
     [`&.${FileInputClasses.root}`]: { width: '100%' },
 }));
 
-export interface FileInputProps {
+export type FileInputProps = InputProps<FileInputOptions> & {
     accept?: string;
     children?: ReactNode;
+    className?: ReactNode;
     labelMultiple?: string;
     labelSingle?: string;
     maxSize?: number;
     minSize?: number;
     multiple?: boolean;
     placeholder?: ReactNode;
-}
+};
 
 export interface FileInputOptions extends DropzoneOptions {
     inputProps?: any;

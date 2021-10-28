@@ -14,6 +14,7 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { CheckboxGroupInputItem } from './CheckboxGroupInputItem';
 import { InputHelperText } from './InputHelperText';
 import classnames from 'classnames';
+import { InputProps } from './types';
 import { Labeled } from './Labeled';
 import { LinearProgress } from '../layout';
 
@@ -118,9 +119,9 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
 
     const {
         id,
-        input: { onChange: finalFormOnChange, onBlur: finalFormOnBlur, value },
+        input: { onChange: finalFormOnChange, value },
         isRequired,
-        meta: { error, submitError, touched },
+        meta: { error, isTouched },
     } = useInput({
         format,
         onBlur,
@@ -148,9 +149,8 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
             } else {
                 finalFormOnChange(value.filter(v => v != newValue)); // eslint-disable-line eqeqeq
             }
-            finalFormOnBlur(); // HACK: See https://github.com/final-form/react-final-form/issues/365#issuecomment-515045503
         },
-        [finalFormOnChange, finalFormOnBlur, value]
+        [finalFormOnChange, value]
     );
 
     if (loading) {
@@ -172,7 +172,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         <StyledFormControl
             component="fieldset"
             margin={margin}
-            error={touched && !!(error || submitError)}
+            error={isTouched && !!error}
             className={classnames(CheckboxGroupInputClasses.root, className)}
             {...sanitizeRestProps(rest)}
         >
@@ -204,8 +204,8 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
             </FormGroup>
             <FormHelperText>
                 <InputHelperText
-                    touched={touched}
-                    error={error || submitError}
+                    touched={isTouched}
+                    error={error}
                     helperText={helperText}
                 />
             </FormHelperText>
@@ -226,7 +226,6 @@ const sanitizeRestProps = ({
 CheckboxGroupInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
     className: PropTypes.string,
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     source: PropTypes.string,
     options: PropTypes.object,
     optionText: PropTypes.oneOfType([
@@ -249,9 +248,11 @@ CheckboxGroupInput.defaultProps = {
     row: true,
 };
 
-export interface CheckboxGroupInputProps
-    extends ChoicesInputProps<CheckboxProps>,
-        FormControlProps {}
+export type CheckboxGroupInputProps = InputProps &
+    ChoicesInputProps<CheckboxProps> &
+    FormControlProps & {
+        row?: boolean;
+    };
 
 const PREFIX = 'RaCheckboxGroupInput';
 

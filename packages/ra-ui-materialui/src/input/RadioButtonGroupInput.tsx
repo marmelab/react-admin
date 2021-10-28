@@ -16,6 +16,7 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
 import { RadioButtonGroupInputItem } from './RadioButtonGroupInputItem';
 import { Labeled } from './Labeled';
+import { InputProps } from './types';
 import { LinearProgress } from '../layout';
 
 /**
@@ -121,7 +122,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         ...rest,
     });
 
-    const { error, submitError, touched } = meta;
+    const { error, isTouched } = meta;
 
     if (loading) {
         return (
@@ -144,7 +145,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         <StyledFormControl
             component="fieldset"
             margin={margin}
-            error={touched && !!(error || submitError)}
+            error={isTouched && !!error}
             {...sanitizeRestProps(rest)}
         >
             <FormLabel
@@ -174,8 +175,8 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
             </RadioGroup>
             <FormHelperText>
                 <InputHelperText
-                    touched={touched}
-                    error={error || submitError}
+                    touched={isTouched}
+                    error={error}
                     helperText={helperText}
                 />
             </FormHelperText>
@@ -241,8 +242,11 @@ const sanitizeRestProps = ({
     ...rest
 }: any) => sanitizeInputRestProps(rest);
 
-export type RadioButtonGroupInputProps = ChoicesInputProps<RadioGroupProps> &
-    FormControlProps;
+export type RadioButtonGroupInputProps = InputProps &
+    ChoicesInputProps<RadioGroupProps> &
+    FormControlProps & {
+        row?: boolean;
+    };
 
 const PREFIX = 'RaRadioButtonGroupInput';
 

@@ -1,8 +1,9 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
-import { useInput, FieldTitle, InputProps } from 'ra-core';
+import { useInput, FieldTitle } from 'ra-core';
 
+import { InputProps } from './types';
 import { InputHelperText } from './InputHelperText';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 
@@ -42,7 +43,7 @@ export const NumberInput = ({
         id,
         input,
         isRequired,
-        meta: { error, submitError, touched },
+        meta: { error, isTouched },
     } = useInput({
         format,
         onBlur,
@@ -63,11 +64,11 @@ export const NumberInput = ({
             id={id}
             {...input}
             variant={variant}
-            error={!!(touched && (error || submitError))}
+            error={isTouched && !!error}
             helperText={
                 <InputHelperText
-                    touched={touched}
-                    error={error || submitError}
+                    touched={isTouched}
+                    error={error}
                     helperText={helperText}
                 />
             }
