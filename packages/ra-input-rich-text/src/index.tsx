@@ -36,7 +36,7 @@ const RichTextInput = (props: RichTextInputProps) => {
     const {
         id,
         isRequired,
-        input: { value, onChange },
+        input: { value, onChange, onBlur },
         meta: { isTouched, error },
     } = useInput({ source, ...rest });
 
@@ -52,7 +52,10 @@ const RichTextInput = (props: RichTextInputProps) => {
 
             if (lastValueChange.current !== value) {
                 lastValueChange.current = value;
+                console.log({ value });
                 onChange(value);
+                // Quill does not provide a way to trigger onBlur event but react-hook-form needs it to set the field as touched
+                onBlur(undefined);
             }
         }, 500),
         [onChange]
@@ -117,8 +120,9 @@ const RichTextInput = (props: RichTextInputProps) => {
             </InputLabel>
             <div data-testid="quill" ref={divRef} className={variant} />
             <FormHelperText
-                error={!!error && isTouched}
+                error={isTouched && !!error}
                 className={!!error ? 'ra-rich-text-input-error' : ''}
+                role={isTouched && !!error ? 'alert' : undefined}
             >
                 <InputHelperText
                     error={error}
