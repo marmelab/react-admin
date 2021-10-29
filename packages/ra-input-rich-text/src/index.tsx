@@ -52,7 +52,6 @@ const RichTextInput = (props: RichTextInputProps) => {
 
             if (lastValueChange.current !== value) {
                 lastValueChange.current = value;
-                console.log({ value });
                 onChange(value);
                 // Quill does not provide a way to trigger onBlur event but react-hook-form needs it to set the field as touched
                 onBlur(undefined);
@@ -84,6 +83,8 @@ const RichTextInput = (props: RichTextInputProps) => {
             if (onTextChange.cancel) {
                 onTextChange.cancel();
             }
+            editor.current.closest('.ql-container').previousSibling.remove();
+            editor.current = null;
             quillInstance.current = null;
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
