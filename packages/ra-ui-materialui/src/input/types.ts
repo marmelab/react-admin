@@ -2,6 +2,7 @@ import { ReactElement } from 'react';
 import { InputProps as BaseInputProps } from 'ra-core';
 
 export type InputProps<ElementType = unknown> = BaseInputProps<ElementType> & {
+    alwaysOn?: boolean;
     disabled?: boolean;
     fullWidth?: boolean;
     helperText?: string | boolean;
