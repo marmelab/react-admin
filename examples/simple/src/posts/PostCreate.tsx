@@ -59,6 +59,12 @@ const backlinksDefaultValue = [
         url: 'http://google.com',
     },
 ];
+
+const range = (min: number, max: number) => value => {
+    if (value < min || value > max) {
+        return 'Should be between 0 and 5';
+    }
+};
 const PostCreate = ({ permissions, ...props }) => {
     const dateDefaultValue = useMemo(() => new Date(), []);
     const defaultValues = useMemo(
@@ -73,40 +79,6 @@ const PostCreate = ({ permissions, ...props }) => {
             <SimpleForm
                 toolbar={<PostCreateToolbar />}
                 defaultValues={defaultValues}
-                resolver={values => {
-                    const errors = {} as any;
-                    ['title', 'teaser'].forEach(field => {
-                        if (!values[field]) {
-                            errors[field] = { message: 'Required field' };
-                        }
-                    });
-
-                    if (values.average_note < 0 || values.average_note > 5) {
-                        errors.average_note = {
-                            message: 'Should be between 0 and 5',
-                        };
-                    }
-
-                    return {
-                        values: Object.keys(errors).length > 0 ? {} : values,
-                        errors,
-                    };
-                }}
-                // FIXME
-                // validate={values => {
-                //     const errors = {} as any;
-                //     ['title', 'teaser'].forEach(field => {
-                //         if (!values[field]) {
-                //             errors[field] = 'Required field';
-                //         }
-                //     });
-
-                //     if (values.average_note < 0 || values.average_note > 5) {
-                //         errors.average_note = 'Should be between 0 and 5';
-                //     }
-
-                //     return errors;
-                // }}
             >
                 <FileInput
                     source="pdffile"
@@ -115,10 +87,18 @@ const PostCreate = ({ permissions, ...props }) => {
                 >
                     <FileField source="src" title="title" />
                 </FileInput>
-                <TextInput autoFocus source="title" />
-                <TextInput source="teaser" fullWidth={true} multiline={true} />
+                <TextInput autoFocus source="title" validate={required()} />
+                <TextInput
+                    source="teaser"
+                    fullWidth={true}
+                    multiline={true}
+                    validate={required()}
+                />
                 <RichTextInput source="body" validate={required()} />
-                <AverageNoteInput source="average_note" />
+                <AverageNoteInput
+                    source="average_note"
+                    validate={range(0, 5)}
+                />
 
                 <DateInput
                     source="published_at"
