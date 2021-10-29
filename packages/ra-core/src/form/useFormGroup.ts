@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useFormState } from 'react-hook-form';
+import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import { useFormContext } from './useFormContext';
 
@@ -55,7 +56,7 @@ type FormGroupState = {
  * @returns {FormGroupState} The form group state
  */
 export const useFormGroup = (name: string): FormGroupState => {
-    const { dirtyFields, touchedFields, errors } = useFormState();
+    const { dirtyFields, touchedFields, errors, isSubmitted } = useFormState();
     const formContext = useFormContext();
     const [state, setState] = useState<FormGroupState>({
         dirty: false,
@@ -68,14 +69,15 @@ export const useFormGroup = (name: string): FormGroupState => {
 
     useEffect(() => {
         const fields = formContext.getGroupFields(name);
+
         const fieldStates = fields
             .map(field => ({
                 name: field,
-                dirty: !!dirtyFields[field],
-                errors: errors[field],
-                invalid: !!errors[field],
-                pristine: !dirtyFields[field],
-                touched: !!touchedFields[field],
+                dirty: !!get(dirtyFields, field),
+                errors: get(errors, field),
+                invalid: !!get(errors, field),
+                pristine: !get(dirtyFields, field),
+                touched: !!get(touchedFields, field) || isSubmitted,
                 valid: !errors[field],
             }))
             .filter(fieldState => fieldState != undefined); // eslint-disable-line
@@ -88,7 +90,7 @@ export const useFormGroup = (name: string): FormGroupState => {
 
             return oldState;
         });
-    }, [dirtyFields, errors, touchedFields, formContext, name]);
+    }, [dirtyFields, errors, touchedFields, formContext, name, isSubmitted]);
 
     return state;
 };

@@ -6,7 +6,10 @@ import { InputHelperText } from './InputHelperText';
 describe('InputHelperText', () => {
     it('does render empty string when the input has not been touched yet and has no helper text', () => {
         const { container } = render(
-            <InputHelperText touched={false} error="Crap!" />
+            <InputHelperText
+                touched={false}
+                error={{ type: 'validate', message: 'Crap!' }}
+            />
         );
         expect(container.innerHTML).toBe('<span>​</span>');
     });
@@ -24,7 +27,7 @@ describe('InputHelperText', () => {
             <InputHelperText
                 helperText="Please help!"
                 touched={false}
-                error="Crap!"
+                error={{ type: 'validate', message: 'Crap!' }}
             />
         );
 
@@ -34,7 +37,11 @@ describe('InputHelperText', () => {
 
     it('renders the error instead of the helperText when there is an error and the input was touched', () => {
         const { getByText, queryByText } = render(
-            <InputHelperText helperText="Please help!" touched error="Crap!" />
+            <InputHelperText
+                helperText="Please help!"
+                touched
+                error={{ type: 'validate', message: 'Crap!' }}
+            />
         );
 
         expect(queryByText('Please help!')).toBeNull();

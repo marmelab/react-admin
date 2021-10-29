@@ -14,7 +14,6 @@ export const TranslatableInputsTab = (
 ) => {
     const { groupKey = '', locale, ...rest } = props;
     const { invalid, touched } = useFormGroup(`${groupKey}${locale}`);
-
     const translate = useTranslate();
 
     return (
@@ -50,7 +49,7 @@ const StyledTab = styled(Tab, { name: PREFIX })(({ theme }) => ({
         minWidth: theme.spacing(6),
     },
 
-    [`& .${TranslatableInputsTabClasses.error}`]: {
+    [`&.${TranslatableInputsTabClasses.error}`]: {
         color: theme.palette.error.main,
     },
 }));
