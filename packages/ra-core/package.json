@@ -27,7 +27,8 @@
         "watch": "tsc --outDir esm --module es2015 --watch"
     },
     "devDependencies": {
-        "@testing-library/react": "^11.2.3",
+        "@testing-library/react": "^12.1.2",
+        "@testing-library/user-event": "^13.5.0",
         "@types/history": "^4.7.2",
         "@types/node-polyglot": "^0.4.31",
         "@types/query-string": "5.1.0",
