@@ -19,8 +19,10 @@ export interface ValidationErrorMessageWithArgs {
 
 export type ValidationErrorMessage = string | ValidationErrorMessageWithArgs;
 
-export type Validator = (
-    value: any
+export type Validator<ValueType = any, ValuesType = any, PropsTypes = any> = (
+    value: ValueType,
+    values: ValuesType,
+    props: PropsTypes
 ) =>
     | ValidationErrorMessage
     | null
@@ -37,6 +39,7 @@ function isValidationErrorMessageWithArgs(
 interface MessageFuncParams {
     args: any;
     value: any;
+    values: any;
 }
 
 type MessageFunc = (params: MessageFuncParams) => ValidationErrorMessage;
@@ -44,12 +47,14 @@ type MessageFunc = (params: MessageFuncParams) => ValidationErrorMessage;
 const getMessage = (
     message: string | MessageFunc,
     messageArgs: any,
-    value: any
+    value: any,
+    values: any
 ) =>
     typeof message === 'function'
         ? message({
               args: messageArgs,
               value,
+              values,
           })
         : messageArgs
         ? {
@@ -75,10 +80,10 @@ export const combine2Validators = (
     validator1: Validator,
     validator2: Validator
 ): Validator => {
-    return value => {
-        const result1 = validator1(value);
+    return (value, values, meta) => {
+        const result1 = validator1(value, values, meta);
         if (!result1) {
-            return validator2(value);
+            return validator2(value, values, meta);
         }
         if (
             typeof result1 === 'string' ||
@@ -89,14 +94,14 @@ export const combine2Validators = (
 
         return result1.then(resolvedResult1 => {
             if (!resolvedResult1) {
-                return validator2(value);
+                return validator2(value, values, meta);
             }
             return resolvedResult1;
         });
     };
 };
 
-// Compose multiple validators into a single one for use with react-hook-form
+// Compose multiple validators into a single one for use with final-form
 export const composeValidators = (...validators) => {
     const allValidators = (Array.isArray(validators[0])
         ? validators[0]
@@ -105,15 +110,19 @@ export const composeValidators = (...validators) => {
     return allValidators.reduce(combine2Validators, () => null);
 };
 
-// Compose multiple validators into a single one for use with react-hook-form
-export const composeSyncValidators = (...validators) => value => {
+// Compose multiple validators into a single one for use with final-form
+export const composeSyncValidators = (...validators) => (
+    value,
+    values,
+    meta
+) => {
     const allValidators = (Array.isArray(validators[0])
         ? validators[0]
         : validators
     ).filter(isFunction) as Validator[];
 
     for (const validator of allValidators) {
-        const error = validator(value);
+        const error = validator(value, values, meta);
 
         if (error) {
             return error;
@@ -135,8 +144,10 @@ export const composeSyncValidators = (...validators) => value => {
  */
 export const required = memoize((message = 'ra.validation.required') =>
     Object.assign(
-        value =>
-            isEmpty(value) ? getMessage(message, undefined, value) : undefined,
+        (value, values) =>
+            isEmpty(value)
+                ? getMessage(message, undefined, value, values)
+                : undefined,
         { isRequired: true }
     )
 );
@@ -155,9 +166,9 @@ export const required = memoize((message = 'ra.validation.required') =>
  * <TextInput type="password" name="password" validate={passwordValidators} />
  */
 export const minLength = memoize(
-    (min, message = 'ra.validation.minLength') => value =>
+    (min, message = 'ra.validation.minLength') => (value, values) =>
         !isEmpty(value) && value.length < min
-            ? getMessage(message, { min }, value)
+            ? getMessage(message, { min }, value, values)
             : undefined
 );
 
@@ -175,9 +186,9 @@ export const minLength = memoize(
  * <TextInput name="name" validate={nameValidators} />
  */
 export const maxLength = memoize(
-    (max, message = 'ra.validation.maxLength') => value =>
+    (max, message = 'ra.validation.maxLength') => (value, values) =>
         !isEmpty(value) && value.length > max
-            ? getMessage(message, { max }, value)
+            ? getMessage(message, { max }, value, values)
             : undefined
 );
 
@@ -195,9 +206,9 @@ export const maxLength = memoize(
  * <NumberInput name="foo" validate={fooValidators} />
  */
 export const minValue = memoize(
-    (min, message = 'ra.validation.minValue') => value =>
+    (min, message = 'ra.validation.minValue') => (value, values) =>
         !isEmpty(value) && value < min
-            ? getMessage(message, { min }, value)
+            ? getMessage(message, { min }, value, values)
             : undefined
 );
 
@@ -215,9 +226,9 @@ export const minValue = memoize(
  * <NumberInput name="foo" validate={fooValidators} />
  */
 export const maxValue = memoize(
-    (max, message = 'ra.validation.maxValue') => value =>
+    (max, message = 'ra.validation.maxValue') => (value, values) =>
         !isEmpty(value) && value > max
-            ? getMessage(message, { max }, value)
+            ? getMessage(message, { max }, value, values)
             : undefined
 );
 
@@ -233,10 +244,11 @@ export const maxValue = memoize(
  * const ageValidators = [number('Must be a number')];
  * <TextInput name="age" validate={ageValidators} />
  */
-export const number = memoize((message = 'ra.validation.number') => value =>
-    !isEmpty(value) && isNaN(Number(value))
-        ? getMessage(message, undefined, value)
-        : undefined
+export const number = memoize(
+    (message = 'ra.validation.number') => (value, values) =>
+        !isEmpty(value) && isNaN(Number(value))
+            ? getMessage(message, undefined, value, values)
+            : undefined
 );
 
 /**
@@ -253,9 +265,9 @@ export const number = memoize((message = 'ra.validation.number') => value =>
  * <TextInput name="zip" validate={zipValidators} />
  */
 export const regex = lodashMemoize(
-    (pattern, message = 'ra.validation.regex') => value =>
+    (pattern, message = 'ra.validation.regex') => (value, values) =>
         !isEmpty(value) && typeof value === 'string' && !pattern.test(value)
-            ? getMessage(message, { pattern }, value)
+            ? getMessage(message, { pattern }, value, values)
             : undefined,
     (pattern, message) => {
         return pattern.toString() + message;
@@ -296,8 +308,9 @@ const oneOfTypeMessage: MessageFunc = ({ args }) => ({
  * const genderValidators = [choices(['male', 'female'], 'Must be either Male or Female')];
  * <TextInput name="gender" validate={genderValidators} />
  */
-export const choices = memoize((list, message = oneOfTypeMessage) => value =>
-    !isEmpty(value) && list.indexOf(value) === -1
-        ? getMessage(message, { list }, value)
-        : undefined
+export const choices = memoize(
+    (list, message = oneOfTypeMessage) => (value, values) =>
+        !isEmpty(value) && list.indexOf(value) === -1
+            ? getMessage(message, { list }, value, values)
+            : undefined
 );

@@ -2,7 +2,9 @@ import { useCallback, ChangeEvent, FocusEvent, useEffect } from 'react';
 import {
     ControllerFieldState,
     ControllerRenderProps,
+    InternalFieldName,
     useController,
+    useFormContext as useReactHookFormContext,
 } from 'react-hook-form';
 import { useTranslate } from '../i18n';
 import {
@@ -14,59 +16,27 @@ import { isRequired } from './isRequired';
 import { useFormGroupContext } from './useFormGroupContext';
 import { useFormContext } from './useFormContext';
 
-export interface InputProps<T = any> {
-    defaultValue?: any;
-    id?: string;
-    input?: Input;
-    meta?: InputMeta;
-    name?: string;
-    onBlur?: (event: FocusEvent<T>) => void;
-    onChange?: (event: ChangeEvent | any) => void;
-    onFocus?: (event: FocusEvent<T>) => void;
-    options?: T;
-    parse?: (value: string) => any;
-    format?: (value: any) => string;
-    resource?: string;
-    source: string;
-    validate?: Validator | Validator[];
-    isRequired?: boolean;
-}
-
-export type InputMeta = ControllerFieldState;
-export type Input = Omit<ControllerRenderProps, 'onBlur'> & {
-    onBlur: (event: FocusEvent) => void;
-    onFocus?: (event: FocusEvent) => void;
-};
-
-export interface UseInputValue {
-    id: string;
-    input: Input;
-    meta: InputMeta;
-    isRequired: boolean;
-}
-
-const defaultParseFormat = value => value;
-
-export const useInput = ({
-    defaultValue,
-    id,
-    input: previouslyProvidedInput,
-    meta: previouslyProvidedMeta,
-    name,
-    source,
-    validate,
-    onBlur: customOnBlur,
-    onChange: customOnChange,
-    onFocus,
-    isRequired: isRequiredOption,
-    format = defaultParseFormat,
-    parse = defaultParseFormat,
-    ...options
-}: InputProps): UseInputValue => {
+export const useInput = (props: InputProps): UseInputValue => {
+    const {
+        defaultValue,
+        id,
+        input: previouslyProvidedInput,
+        meta: previouslyProvidedMeta,
+        name,
+        source,
+        validate,
+        onBlur: customOnBlur,
+        onChange: customOnChange,
+        onFocus,
+        isRequired: isRequiredOption,
+        format = defaultParseFormat,
+        parse = defaultParseFormat,
+    } = props;
     const finalName = name || source;
     const formGroupName = useFormGroupContext();
     const formContext = useFormContext();
     const translate = useTranslate();
+    const { getValues } = useReactHookFormContext();
 
     const sanitizedValidate = Array.isArray(validate)
         ? composeValidators(validate)
@@ -81,7 +51,11 @@ export const useInput = ({
         rules: {
             validate: async value => {
                 if (!sanitizedValidate) return;
-                const error = await sanitizedValidate(value);
+                const error = await sanitizedValidate(
+                    value,
+                    getValues(),
+                    props
+                );
 
                 if (!error) return;
                 if ((error as ValidationErrorMessageWithArgs).message) {
@@ -162,3 +136,37 @@ export const useInput = ({
         isRequired: isRequiredOption || isRequired(validate),
     };
 };
+
+export interface InputProps<T = any> {
+    defaultValue?: any;
+    id?: string;
+    input?: Input;
+    meta?: InputMeta;
+    name?: string;
+    onBlur?: (event: FocusEvent<T>) => void;
+    onChange?: (event: ChangeEvent | any) => void;
+    onFocus?: (event: FocusEvent<T>) => void;
+    options?: T;
+    parse?: (value: string) => any;
+    format?: (value: any) => string;
+    resource?: string;
+    source: string;
+    validate?: Validator | Validator[];
+    isRequired?: boolean;
+    deps?: InternalFieldName[];
+}
+
+export type InputMeta = ControllerFieldState;
+export type Input = Omit<ControllerRenderProps, 'onBlur'> & {
+    onBlur: (event: FocusEvent) => void;
+    onFocus?: (event: FocusEvent) => void;
+};
+
+export interface UseInputValue {
+    id: string;
+    input: Input;
+    meta: InputMeta;
+    isRequired: boolean;
+}
+
+const defaultParseFormat = value => value;

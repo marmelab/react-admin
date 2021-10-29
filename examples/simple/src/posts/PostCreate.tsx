@@ -18,6 +18,7 @@ import {
     required,
     FileInput,
     FileField,
+    Validator,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import { useWatch } from 'react-hook-form';
 import format from 'date-fns/format';
@@ -60,8 +61,13 @@ const backlinksDefaultValue = [
     },
 ];
 
-const range = (min: number, max: number) => value =>
-    value < min || value > max ? 'Should be between 0 and 5' : undefined;
+const range = (min: number, max: number): Validator<number> => (
+    value,
+    values,
+    props
+) => {
+    return value < min || value > max ? 'Should be between 0 and 5' : undefined;
+};
 
 const PostCreate = ({ permissions, ...props }) => {
     const dateDefaultValue = useMemo(() => new Date(), []);
