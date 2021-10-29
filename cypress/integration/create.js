@@ -264,7 +264,7 @@ describe('Create Page', () => {
         ];
         CreatePage.setValues(values);
         CreatePage.submit(false);
-        cy.contains('Required field');
+        cy.contains('Required');
     });
 
     it('should not reset form values when an input with defaultValue is dynamically added', () => {

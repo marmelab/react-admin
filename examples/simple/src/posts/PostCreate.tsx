@@ -60,11 +60,9 @@ const backlinksDefaultValue = [
     },
 ];
 
-const range = (min: number, max: number) => value => {
-    if (value < min || value > max) {
-        return 'Should be between 0 and 5';
-    }
-};
+const range = (min: number, max: number) => value =>
+    value < min || value > max ? 'Should be between 0 and 5' : undefined;
+
 const PostCreate = ({ permissions, ...props }) => {
     const dateDefaultValue = useMemo(() => new Date(), []);
     const defaultValues = useMemo(
