@@ -85,7 +85,7 @@ const FormWithRedirect = ({
         shouldUseNativeValidation,
     });
     const { control, handleSubmit, formState, reset } = form;
-    const { isSubmitting } = formState;
+    const { isDirty, isValid, isSubmitting } = formState;
 
     useDeepCompareEffect(() => {
         if (record) {
@@ -178,7 +178,8 @@ const FormWithRedirect = ({
             <FormContextProvider value={formContextValue}>
                 <FormView
                     {...props}
-                    {...formState}
+                    isDirty={isDirty}
+                    isValid={isValid}
                     handleSubmit={submit}
                     record={record}
                     setRedirect={setRedirect}

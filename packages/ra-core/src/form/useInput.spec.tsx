@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { FunctionComponent, ReactElement } from 'react';
-import { render, fireEvent } from '@testing-library/react';
-import { Form, useFormState } from 'react-final-form';
+import { fireEvent, screen } from '@testing-library/react';
+import { useWatch } from 'react-hook-form';
+import { MemoryRouter } from 'react-router';
 import FormWithRedirect from './FormWithRedirect';
-import useInput, { InputProps } from './useInput';
+import { useInput, InputProps } from './useInput';
 import { required } from './validate';
-import { renderWithRedux } from '../../../ra-test/esm';
+import { renderWithRedux } from 'ra-test';
 
 const Input: FunctionComponent<
     { children: (props: any) => ReactElement } & InputProps
@@ -17,23 +18,25 @@ const Input: FunctionComponent<
 describe('useInput', () => {
     it('returns the props needed for an input', () => {
         let inputProps;
-        render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
-                    <Input
-                        defaultValue="A title"
-                        source="title"
-                        resource="posts"
-                        validate={required()}
-                    >
-                        {props => {
-                            inputProps = props;
-                            return <div />;
-                        }}
-                    </Input>
-                )}
-            />
+        renderWithRedux(
+            <MemoryRouter>
+                <FormWithRedirect
+                    save={jest.fn()}
+                    render={() => (
+                        <Input
+                            defaultValue="A title"
+                            source="title"
+                            resource="posts"
+                            validate={required()}
+                        >
+                            {props => {
+                                inputProps = props;
+                                return <div />;
+                            }}
+                        </Input>
+                    )}
+                />
+            </MemoryRouter>
         );
 
         expect(inputProps.id).toEqual('title');
@@ -46,18 +49,20 @@ describe('useInput', () => {
 
     it('allows to override the input id', () => {
         let inputProps;
-        render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
-                    <Input id="my-title" source="title" resource="posts">
-                        {props => {
-                            inputProps = props;
-                            return <div />;
-                        }}
-                    </Input>
-                )}
-            />
+        renderWithRedux(
+            <MemoryRouter>
+                <FormWithRedirect
+                    save={jest.fn()}
+                    render={() => (
+                        <Input id="my-title" source="title" resource="posts">
+                            {props => {
+                                inputProps = props;
+                                return <div />;
+                            }}
+                        </Input>
+                    )}
+                />
+            </MemoryRouter>
         );
 
         expect(inputProps.id).toEqual('my-title');
@@ -70,196 +75,200 @@ describe('useInput', () => {
         const handleBlur = jest.fn();
         const handleChange = jest.fn();
         const handleFocus = jest.fn();
-        let formApi;
 
-        const { getByLabelText } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={({ form }) => {
-                    formApi = form;
+        const Watcher = () => {
+            const title = useWatch({ name: 'title' });
 
-                    return (
-                        <Input
-                            source="title"
-                            resource="posts"
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                            onFocus={handleFocus}
-                        >
-                            {({ id, input }) => {
-                                return (
-                                    <input
-                                        type="text"
-                                        id={id}
-                                        aria-label="Title"
-                                        {...input}
-                                    />
-                                );
-                            }}
-                        </Input>
-                    );
-                }}
-            />
+            return <p>{title}</p>;
+        };
+
+        renderWithRedux(
+            <MemoryRouter>
+                <FormWithRedirect
+                    save={jest.fn()}
+                    render={() => {
+                        return (
+                            <>
+                                <Input
+                                    source="title"
+                                    resource="posts"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    onFocus={handleFocus}
+                                >
+                                    {({ id, input }) => {
+                                        return (
+                                            <input
+                                                type="text"
+                                                id={id}
+                                                aria-label="Title"
+                                                {...input}
+                                            />
+                                        );
+                                    }}
+                                </Input>
+                                <Watcher />
+                            </>
+                        );
+                    }}
+                />
+            </MemoryRouter>
         );
-        const input = getByLabelText('Title');
-        // Temporary workaround until we can upgrade testing-library in v4
-        input.focus();
-        expect(handleFocus).toHaveBeenCalled();
-        expect(formApi.getState().active).toEqual('title');
-
+        const input = screen.getByLabelText('Title');
         fireEvent.change(input, {
             target: { value: 'A title' },
         });
         expect(handleChange).toHaveBeenCalled();
-        expect(formApi.getState().values).toEqual({ title: 'A title' });
+        expect(screen.getByText('A title')).not.toBeNull();
 
-        input.blur();
+        fireEvent.blur(input);
         expect(handleBlur).toHaveBeenCalled();
-        expect(formApi.getState().active).toBeUndefined();
     });
 
     it('applies the defaultValue when input does not have a value', () => {
-        const { queryByDisplayValue } = renderWithRedux(
-            <FormWithRedirect
-                onSubmit={jest.fn()}
-                render={() => {
-                    return (
-                        <Input
-                            source="title"
-                            resource="posts"
-                            defaultValue="foo"
-                        >
-                            {({ id, input }) => {
-                                return (
-                                    <input
-                                        type="text"
-                                        id={id}
-                                        aria-label="Title"
-                                        {...input}
-                                    />
-                                );
-                            }}
-                        </Input>
-                    );
-                }}
-            />
+        renderWithRedux(
+            <MemoryRouter>
+                <FormWithRedirect
+                    save={jest.fn()}
+                    render={() => {
+                        return (
+                            <Input
+                                source="title"
+                                resource="posts"
+                                defaultValue="foo"
+                            >
+                                {({ id, input }) => {
+                                    return (
+                                        <input
+                                            type="text"
+                                            id={id}
+                                            aria-label="Title"
+                                            {...input}
+                                        />
+                                    );
+                                }}
+                            </Input>
+                        );
+                    }}
+                />
+            </MemoryRouter>
         );
-        expect(queryByDisplayValue('foo')).not.toBeNull();
+        expect(screen.queryByDisplayValue('foo')).not.toBeNull();
     });
 
     it('does not apply the defaultValue when input has a value of 0', () => {
-        const { queryByDisplayValue } = renderWithRedux(
-            <FormWithRedirect
-                onSubmit={jest.fn()}
-                record={{ id: 1, views: 0 }}
-                render={() => {
-                    return (
-                        <Input
-                            source="views"
-                            resource="posts"
-                            defaultValue={99}
-                        >
-                            {({ id, input }) => {
-                                return (
-                                    <input
-                                        type="number"
-                                        id={id}
-                                        aria-label="Views"
-                                        {...input}
-                                    />
-                                );
-                            }}
-                        </Input>
-                    );
-                }}
-            />
+        renderWithRedux(
+            <MemoryRouter>
+                <FormWithRedirect
+                    save={jest.fn()}
+                    record={{ id: 1, views: 0 }}
+                    render={() => {
+                        return (
+                            <Input
+                                source="views"
+                                resource="posts"
+                                defaultValue={99}
+                            >
+                                {({ id, input }) => {
+                                    return (
+                                        <input
+                                            type="number"
+                                            id={id}
+                                            aria-label="Views"
+                                            {...input}
+                                        />
+                                    );
+                                }}
+                            </Input>
+                        );
+                    }}
+                />
+            </MemoryRouter>
         );
-        expect(queryByDisplayValue('99')).toBeNull();
+        expect(screen.queryByDisplayValue('99')).toBeNull();
     });
 
     it('applies the initialValue when input does not have a value', () => {
-        const { queryByDisplayValue } = renderWithRedux(
-            <FormWithRedirect
-                onSubmit={jest.fn()}
-                render={() => {
-                    return (
-                        <Input
-                            source="title"
-                            resource="posts"
-                            initialValue="foo"
-                        >
-                            {({ id, input }) => {
-                                return (
-                                    <input
-                                        type="text"
-                                        id={id}
-                                        aria-label="Title"
-                                        {...input}
-                                    />
-                                );
-                            }}
-                        </Input>
-                    );
-                }}
-            />
+        renderWithRedux(
+            <MemoryRouter>
+                <FormWithRedirect
+                    save={jest.fn()}
+                    render={() => {
+                        return (
+                            <Input
+                                source="title"
+                                resource="posts"
+                                defaultValue="foo"
+                            >
+                                {({ id, input }) => {
+                                    return (
+                                        <input
+                                            type="text"
+                                            id={id}
+                                            aria-label="Title"
+                                            {...input}
+                                        />
+                                    );
+                                }}
+                            </Input>
+                        );
+                    }}
+                />
+            </MemoryRouter>
         );
-        expect(queryByDisplayValue('foo')).not.toBeNull();
+        expect(screen.queryByDisplayValue('foo')).not.toBeNull();
     });
 
-    it('does not apply the initialValue when input has a value of 0', () => {
-        const { queryByDisplayValue } = renderWithRedux(
-            <FormWithRedirect
-                onSubmit={jest.fn()}
-                record={{ id: 1, views: 0 }}
-                render={() => {
-                    return (
-                        <Input
-                            source="views"
-                            resource="posts"
-                            initialValue={99}
-                        >
-                            {({ id, input }) => {
-                                return (
-                                    <input
-                                        type="number"
-                                        id={id}
-                                        aria-label="Views"
-                                        {...input}
-                                    />
-                                );
-                            }}
-                        </Input>
-                    );
-                }}
-            />
+    it('does not apply the defaultValue when input has a value of 0', () => {
+        renderWithRedux(
+            <MemoryRouter>
+                <FormWithRedirect
+                    save={jest.fn()}
+                    record={{ id: 1, views: 0 }}
+                    render={() => {
+                        return (
+                            <Input
+                                source="views"
+                                resource="posts"
+                                defaultValue={99}
+                            >
+                                {({ id, input }) => {
+                                    return (
+                                        <input
+                                            type="number"
+                                            id={id}
+                                            aria-label="Views"
+                                            {...input}
+                                        />
+                                    );
+                                }}
+                            </Input>
+                        );
+                    }}
+                />
+            </MemoryRouter>
         );
-        expect(queryByDisplayValue('99')).toBeNull();
+        expect(screen.queryByDisplayValue('99')).toBeNull();
     });
 
     const BooleanInput = ({
         source,
-        initialValue,
+        defaultValue,
     }: {
         source: string;
-        initialValue?: boolean;
+        defaultValue?: boolean;
     }) => (
-        <Input
-            source={source}
-            initialValue={initialValue}
-            type="checkbox"
-            resource="posts"
-        >
-            {() => <BooleanInputValue source={source} />}
+        <Input source={source} defaultValue={defaultValue} resource="posts">
+            {props => <BooleanInputValue {...props} />}
         </Input>
     );
 
-    const BooleanInputValue = ({ source }) => {
-        const values = useFormState().values;
+    const BooleanInputValue = ({ input }) => {
         return (
             <>
-                {typeof values[source] === 'undefined'
+                {typeof input.value === 'undefined'
                     ? 'undefined'
-                    : values[source]
+                    : input.value
                     ? 'true'
                     : 'false'}
             </>
@@ -267,65 +276,85 @@ describe('useInput', () => {
     };
 
     it('does not change the value if the field is of type checkbox and has no value', () => {
-        const { queryByText } = renderWithRedux(
-            <FormWithRedirect
-                onSubmit={jest.fn()}
-                record={{ id: 1 }}
-                render={() => <BooleanInput source="is_published" />}
-            />
+        renderWithRedux(
+            <MemoryRouter>
+                <FormWithRedirect
+                    save={jest.fn()}
+                    record={{ id: 1 }}
+                    render={() => <BooleanInput source="is_published" />}
+                />
+            </MemoryRouter>
         );
-        expect(queryByText('undefined')).not.toBeNull();
+        expect(screen.queryByText('undefined')).not.toBeNull();
     });
 
-    it('applies the initialValue true when the field is of type checkbox and has no value', () => {
-        const { queryByText } = renderWithRedux(
-            <FormWithRedirect
-                onSubmit={jest.fn()}
-                record={{ id: 1 }}
-                render={() => (
-                    <BooleanInput source="is_published" initialValue={true} />
-                )}
-            />
+    it('applies the defaultValue true when the field is of type checkbox and has no value', () => {
+        renderWithRedux(
+            <MemoryRouter>
+                <FormWithRedirect
+                    save={jest.fn()}
+                    render={() => (
+                        <BooleanInput
+                            source="is_published"
+                            defaultValue={true}
+                        />
+                    )}
+                />
+            </MemoryRouter>
         );
-        expect(queryByText('true')).not.toBeNull();
+        expect(screen.queryByText('true')).not.toBeNull();
     });
 
-    it('applies the initialValue false when the field is of type checkbox and has no value', () => {
-        const { queryByText } = renderWithRedux(
-            <FormWithRedirect
-                onSubmit={jest.fn()}
-                record={{ id: 1 }}
-                render={() => (
-                    <BooleanInput source="is_published" initialValue={false} />
-                )}
-            />
+    it('applies the defaultValue false when the field is of type checkbox and has no value', () => {
+        renderWithRedux(
+            <MemoryRouter>
+                <FormWithRedirect
+                    save={jest.fn()}
+                    render={() => (
+                        <BooleanInput
+                            source="is_published"
+                            defaultValue={false}
+                        />
+                    )}
+                />
+            </MemoryRouter>
         );
-        expect(queryByText('false')).not.toBeNull();
+        expect(screen.queryByText('false')).not.toBeNull();
     });
 
     it('does not apply the initialValue true when the field is of type checkbox and has a value', () => {
-        const { queryByText } = renderWithRedux(
-            <FormWithRedirect
-                onSubmit={jest.fn()}
-                record={{ id: 1, is_published: false }}
-                render={() => (
-                    <BooleanInput source="is_published" initialValue={true} />
-                )}
-            />
+        renderWithRedux(
+            <MemoryRouter>
+                <FormWithRedirect
+                    save={jest.fn()}
+                    record={{ id: 1, is_published: false }}
+                    render={() => (
+                        <BooleanInput
+                            source="is_published"
+                            defaultValue={true}
+                        />
+                    )}
+                />
+            </MemoryRouter>
         );
-        expect(queryByText('false')).not.toBeNull();
+        expect(screen.queryByText('false')).not.toBeNull();
     });
 
     it('does not apply the initialValue false when the field is of type checkbox and has a value', () => {
-        const { queryByText } = renderWithRedux(
-            <FormWithRedirect
-                onSubmit={jest.fn()}
-                record={{ id: 1, is_published: true }}
-                render={() => (
-                    <BooleanInput source="is_published" initialValue={false} />
-                )}
-            />
+        renderWithRedux(
+            <MemoryRouter>
+                <FormWithRedirect
+                    save={jest.fn()}
+                    record={{ id: 1, is_published: true }}
+                    render={() => (
+                        <BooleanInput
+                            source="is_published"
+                            defaultValue={false}
+                        />
+                    )}
+                />
+            </MemoryRouter>
         );
-        expect(queryByText('true')).not.toBeNull();
+        expect(screen.queryByText('true')).not.toBeNull();
     });
 });

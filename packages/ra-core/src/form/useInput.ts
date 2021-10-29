@@ -6,6 +6,7 @@ import {
     useController,
     useFormContext as useReactHookFormContext,
 } from 'react-hook-form';
+import get from 'lodash/get';
 import { useTranslate } from '../i18n';
 import {
     Validator,
@@ -15,6 +16,8 @@ import {
 import { isRequired } from './isRequired';
 import { useFormGroupContext } from './useFormGroupContext';
 import { useFormContext } from './useFormContext';
+import { useRecordContext } from '../controller';
+import { useDeepCompareEffect } from '../util';
 
 export const useInput = (props: InputProps): UseInputValue => {
     const {
@@ -36,7 +39,8 @@ export const useInput = (props: InputProps): UseInputValue => {
     const formGroupName = useFormGroupContext();
     const formContext = useFormContext();
     const translate = useTranslate();
-    const { getValues } = useReactHookFormContext();
+    const { getValues, reset } = useReactHookFormContext();
+    const record = useRecordContext();
 
     const sanitizedValidate = Array.isArray(validate)
         ? composeValidators(validate)
@@ -69,6 +73,17 @@ export const useInput = (props: InputProps): UseInputValue => {
             },
         },
     });
+
+    useDeepCompareEffect(() => {
+        if (
+            record &&
+            get(record, source) === undefined &&
+            defaultValue != undefined // eslint-disable-line eqeqeq
+        ) {
+            console.log('input reset');
+            reset({ ...getValues(), [source]: defaultValue });
+        }
+    }, [record, reset]);
 
     const meta = previouslyProvidedMeta || {
         invalid,

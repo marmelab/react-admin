@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { useFormContext, useFormState } from 'react-hook-form';
+import { useFormState } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
-import get from 'lodash/get';
 
 import { useTranslate } from '../i18n';
 
@@ -19,60 +18,40 @@ import { useTranslate } from '../i18n';
  *
  * @see history.block()
  */
-const useWarnWhenUnsavedChanges = (enable: boolean) => {
-    const { isDirty, dirtyFields, isSubmitSuccessful } = useFormState();
-    const formContext = useFormContext();
-
+const useWarnWhenUnsavedChanges = (
+    enable: boolean,
+    formRootPathname?: string
+) => {
     const history = useHistory();
     const translate = useTranslate();
-
-    // Keep track of the current location inside the form (e.g. active tab)
-    const formLocation = useRef(history.location);
-    useEffect(() => {
-        formLocation.current = history.location;
-    }, [history.location]);
+    const { isDirty } = useFormState();
+    const initialLocation = useRef(
+        formRootPathname || history.location.pathname
+    );
 
     useEffect(() => {
         if (!enable) {
-            window.sessionStorage.removeItem('unsavedChanges');
             return;
         }
 
-        // on mount: apply unsaved changes
-        const unsavedChanges = JSON.parse(
-            window.sessionStorage.getItem('unsavedChanges')
-        );
-
-        if (unsavedChanges) {
-            Object.keys(unsavedChanges).forEach(key =>
-                formContext.setValue(key, unsavedChanges[key])
+        const release = history.block(location => {
+            const isInsideForm = location.pathname.startsWith(
+                initialLocation.current
             );
-            window.sessionStorage.removeItem('unsavedChanges');
-        }
 
-        // on unmount : check and save unsaved changes, then cancel navigation
+            if (isDirty && !isInsideForm) {
+                return translate('ra.message.unsaved_changes');
+            }
+
+            return undefined;
+        });
+
         return () => {
-            if (isDirty && !isSubmitSuccessful) {
-                if (!window.confirm(translate('ra.message.unsaved_changes'))) {
-                    const values = formContext.getValues();
-                    const dirtyFieldValues = Object.keys(dirtyFields).reduce(
-                        (acc, key) => {
-                            acc[key] = get(values, key);
-                            return acc;
-                        },
-                        {}
-                    );
-                    window.sessionStorage.setItem(
-                        'unsavedChanges',
-                        JSON.stringify(dirtyFieldValues)
-                    );
-                    history.push(formLocation.current);
-                }
-            } else {
-                window.sessionStorage.removeItem('unsavedChanges');
+            if (release) {
+                release();
             }
         };
-    }, [translate]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [isDirty, enable, history, translate]);
 };
 
 export default useWarnWhenUnsavedChanges;

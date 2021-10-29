@@ -17,10 +17,6 @@ describe('useCreateController', () => {
             hash: undefined,
         };
 
-        it('should return an empty record by default', () => {
-            expect(getRecord(location, undefined)).toEqual({});
-        });
-
         it('should return location state record when set', () => {
             expect(
                 getRecord(
