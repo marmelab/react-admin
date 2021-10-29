@@ -48,11 +48,20 @@ import { useDeepCompareEffect } from '../util';
  * @param {Props} props
  */
 const FormWithRedirect = ({
+    context,
+    criteriaMode,
     defaultValues,
+    delayError,
+    mode,
     record,
     render,
+    resolver,
+    reValidateMode,
     save,
     saving,
+    shouldFocusError,
+    shouldUnregister,
+    shouldUseNativeValidation,
     version,
     warnWhenUnsavedChanges,
     sanitizeEmptyValues: shouldSanitizeEmptyValues = true,
@@ -63,7 +72,16 @@ const FormWithRedirect = ({
         [JSON.stringify({ defaultValues, record })] // eslint-disable-line
     );
     const form = useForm({
+        context,
+        criteriaMode,
         defaultValues: finalInitialValues,
+        delayError,
+        mode,
+        resolver,
+        reValidateMode,
+        shouldFocusError,
+        shouldUnregister,
+        shouldUseNativeValidation,
     });
     const { control, handleSubmit, formState, reset } = form;
     const { isSubmitting } = formState;
