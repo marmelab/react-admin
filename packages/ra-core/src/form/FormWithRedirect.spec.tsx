@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { screen, waitFor } from '@testing-library/dom';
+import { screen } from '@testing-library/dom';
 import { renderWithRedux } from 'ra-test';
 
 import FormWithRedirect from './FormWithRedirect';
