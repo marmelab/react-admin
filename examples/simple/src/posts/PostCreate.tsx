@@ -73,6 +73,25 @@ const PostCreate = ({ permissions, ...props }) => {
             <SimpleForm
                 toolbar={<PostCreateToolbar />}
                 defaultValues={defaultValues}
+                resolver={values => {
+                    const errors = {} as any;
+                    ['title', 'teaser'].forEach(field => {
+                        if (!values[field]) {
+                            errors[field] = { message: 'Required field' };
+                        }
+                    });
+
+                    if (values.average_note < 0 || values.average_note > 5) {
+                        errors.average_note = {
+                            message: 'Should be between 0 and 5',
+                        };
+                    }
+
+                    return {
+                        values: Object.keys(errors).length > 0 ? {} : values,
+                        errors,
+                    };
+                }}
                 // FIXME
                 // validate={values => {
                 //     const errors = {} as any;

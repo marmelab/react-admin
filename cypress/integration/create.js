@@ -254,8 +254,7 @@ describe('Create Page', () => {
         EditPage.delete();
     });
 
-    // FIXME: restore if possible
-    it.skip('should not accept creation without required fields', () => {
+    it('should not accept creation without required fields', () => {
         const values = [
             {
                 type: 'textarea',
@@ -264,7 +263,7 @@ describe('Create Page', () => {
             },
         ];
         CreatePage.setValues(values);
-        CreatePage.submit();
+        CreatePage.submit(false);
         cy.contains('Required field');
     });
 
