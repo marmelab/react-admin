@@ -215,6 +215,7 @@ export type FormWithRedirectSave = (
 export type FormWithRedirectOwnProps = Partial<FormState<any>> & {
     defaultValue?: any;
     handleSubmit?: SubmitHandler<any>;
+    formRootPathname?: string;
     record?: RaRecord;
     redirect?: RedirectionSideEffect;
     render: FormWithRedirectRender;
@@ -236,14 +237,15 @@ interface FormViewProps extends FormWithRedirectOwnProps {
 }
 
 const FormView = ({
+    formRootPathname,
     render,
-    warnWhenUnsavedChanges,
     save,
     setRedirect,
+    warnWhenUnsavedChanges,
     ...props
 }: FormViewProps) => {
     // if record changes (after a getOne success or a refresh), the form must be updated
-    useWarnWhenUnsavedChanges(warnWhenUnsavedChanges);
+    useWarnWhenUnsavedChanges(warnWhenUnsavedChanges, formRootPathname);
     // useResetSubmitErrors();
     const dispatch = useDispatch();
 
