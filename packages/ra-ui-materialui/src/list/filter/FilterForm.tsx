@@ -167,7 +167,11 @@ export const FilterForm = props => {
 
     return (
         <FormProvider {...form}>
-            <FilterFormBase {...rest} filters={filters} />
+            <FilterFormBase
+                {...rest}
+                initialValues={mergedInitialValuesWithDefaultValues}
+                filters={filters}
+            />
         </FormProvider>
     );
 };
