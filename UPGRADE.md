@@ -81,6 +81,19 @@ export const PostEdit = (props) => (
 );
 ```
 
+## Migrated From final-form to react-hook-form
+
+- `initialValues` has been removed in favor of `defaultValues` for all form components (`FormWithRedirect`, `SimpleForm` and `TabbedForm`).
+- `initialValue` has been removed in favor of `defaultValue` on all inputs.
+- `react-hook-form` does not support form level validation and field level validation at the same time. You must choose one of the two modes.
+- field level validators won't run automatically when values of other inputs change. If one of your validator requires access to the other values, remember to specify the [`deps`](https://react-hook-form.com/api/useform/register) on the input:
+
+```jsx
+const sameAsPassword = (value, values) => value !== values.password ? 'Not the same as password' : undefined;
+
+<TextInput type="password" source="confirmPassword" validate={sameAsPassword} deps={['password']}>
+```
+
 # Upgrade to 3.0
 
 We took advantage of the major release to fix all the problems in react-admin that required a breaking change. As a consequence, you'll need to do many small changes in the code of existing react-admin v2 applications. Follow this step-by-step guide to upgrade to react-admin v3.
