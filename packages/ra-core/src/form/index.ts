@@ -47,4 +47,5 @@ export * from './FormGroupContextProvider';
 export * from './useFormGroup';
 export * from './useFormGroupContext';
 export * from './useInput';
+export * from './useRecordAsFormDefaultValues';
 export * from './useSuggestions';

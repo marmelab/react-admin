@@ -20,7 +20,7 @@ import {
 import { RedirectionSideEffect } from '../sideEffect';
 import { setAutomaticRefresh } from '../actions/uiActions';
 import { FormContextProvider } from './FormContextProvider';
-import { useDeepCompareEffect } from '../util';
+import { useRecordAsFormDefaultValues } from './useRecordAsFormDefaultValues';
 
 /**
  * Wrapper around react-hook-form's Form to handle redirection on submit,
@@ -64,7 +64,6 @@ const FormWithRedirect = ({
     shouldUseNativeValidation,
     version,
     warnWhenUnsavedChanges,
-    sanitizeEmptyValues: shouldSanitizeEmptyValues = true,
     ...props
 }: FormWithRedirectProps) => {
     const finalInitialValues = useMemo(
@@ -84,14 +83,8 @@ const FormWithRedirect = ({
         shouldUnregister,
         shouldUseNativeValidation,
     });
-    const { control, handleSubmit, formState, reset } = form;
+    const { control, handleSubmit, formState } = form;
     const { isDirty, isValid, isSubmitting } = formState;
-
-    useDeepCompareEffect(() => {
-        if (record) {
-            reset(record);
-        }
-    }, [record, reset]);
 
     const redirect = useRef(props.redirect);
     const onSave = useRef(save);
@@ -161,16 +154,7 @@ const FormWithRedirect = ({
                 ? props.redirect
                 : redirect.current;
 
-        if (shouldSanitizeEmptyValues) {
-            // FIXME: This is probably unnecessary with react-hook-form
-            // const sanitizedValues = sanitizeEmptyValues(
-            //     finalInitialValues,
-            //     values
-            // );
-            return onSave.current(values, finalRedirect);
-        } else {
-            return onSave.current(values, finalRedirect);
-        }
+        return onSave.current(values, finalRedirect);
     });
 
     return (
@@ -220,7 +204,6 @@ export type FormWithRedirectOwnProps = Partial<FormState<any>> & {
     redirect?: RedirectionSideEffect;
     render: FormWithRedirectRender;
     save?: FormWithRedirectSave;
-    sanitizeEmptyValues?: boolean;
     saving?: boolean;
     version?: number;
     warnWhenUnsavedChanges?: boolean;
@@ -245,6 +228,7 @@ const FormView = ({
     ...props
 }: FormViewProps) => {
     // if record changes (after a getOne success or a refresh), the form must be updated
+    useRecordAsFormDefaultValues(props.record);
     useWarnWhenUnsavedChanges(warnWhenUnsavedChanges, formRootPathname);
     // useResetSubmitErrors();
     const dispatch = useDispatch();
