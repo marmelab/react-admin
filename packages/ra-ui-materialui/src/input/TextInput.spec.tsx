@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { render, fireEvent } from '@testing-library/react';
-import { Form } from 'react-final-form';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { FormWithRedirect, required } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 
 import { TextInput } from './TextInput';
-import { required } from 'ra-core';
 
 describe('<TextInput />', () => {
     const defaultProps = {
@@ -12,14 +12,14 @@ describe('<TextInput />', () => {
     };
 
     it('should render the input correctly', () => {
-        const { getByLabelText } = render(
-            <Form
-                initialValues={{ title: 'hello' }}
-                onSubmit={jest.fn}
+        renderWithRedux(
+            <FormWithRedirect
+                defaultValues={{ title: 'hello' }}
+                save={jest.fn}
                 render={() => <TextInput {...defaultProps} />}
             />
         );
-        const TextFieldElement = getByLabelText(
+        const TextFieldElement = screen.getByLabelText(
             'resources.posts.fields.title'
         ) as HTMLInputElement;
         expect(TextFieldElement.value).toEqual('hello');
@@ -27,63 +27,73 @@ describe('<TextInput />', () => {
     });
 
     it('should use a ResettableTextField when type is password', () => {
-        const { getByLabelText } = render(
-            <Form
-                initialValues={{ title: 'hello' }}
-                onSubmit={jest.fn}
+        renderWithRedux(
+            <FormWithRedirect
+                defaultValues={{ title: 'hello' }}
+                save={jest.fn}
                 render={() => <TextInput {...defaultProps} type="password" />}
             />
         );
-        const TextFieldElement = getByLabelText('resources.posts.fields.title');
+        const TextFieldElement = screen.getByLabelText(
+            'resources.posts.fields.title'
+        );
         expect(TextFieldElement.getAttribute('type')).toEqual('password');
     });
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
-            const { queryByText } = render(
-                <Form
-                    onSubmit={jest.fn}
+            renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn}
                     render={() => (
                         <TextInput {...defaultProps} validate={required()} />
                     )}
                 />
             );
-            const error = queryByText('ra.validation.required');
+            const error = screen.queryByText('ra.validation.required');
             expect(error).toBeNull();
         });
 
         it('should not be displayed if field has been touched but is valid', () => {
-            const { getByLabelText, queryByText } = render(
-                <Form
-                    onSubmit={jest.fn}
+            renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn}
                     render={() => (
                         <TextInput {...defaultProps} validate={required()} />
                     )}
                 />
             );
 
-            const input = getByLabelText('resources.posts.fields.title *');
+            const input = screen.getByLabelText(
+                'resources.posts.fields.title *'
+            );
             fireEvent.change(input, { target: { value: 'test' } });
-            input.blur();
-            const error = queryByText('ra.validation.required');
+            const error = screen.queryByText('ra.validation.required');
             expect(error).toBeNull();
         });
 
-        it('should be displayed if field has been touched and is invalid', () => {
-            const { getByLabelText, queryByText } = render(
-                <Form
-                    onSubmit={jest.fn}
-                    render={() => (
-                        <TextInput {...defaultProps} validate={required()} />
+        it('should be displayed on submit if field is invalid', async () => {
+            renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <TextInput
+                                {...defaultProps}
+                                validate={required()}
+                            />
+                            <button type="submit">Save</button>
+                        </form>
                     )}
                 />
             );
 
-            const input = getByLabelText('resources.posts.fields.title *');
-            input.focus();
-            input.blur();
-            const error = queryByText('ra.validation.required');
-            expect(error).not.toBeNull();
+            fireEvent.click(screen.getByText('Save'));
+
+            await waitFor(() => {
+                const error = screen.queryByText('ra.validation.required');
+                expect(error).not.toBeNull();
+            });
         });
     });
 });

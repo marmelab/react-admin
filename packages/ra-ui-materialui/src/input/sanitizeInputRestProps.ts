@@ -30,7 +30,6 @@ export const sanitizeInputRestProps = ({
     textAlign,
     translate,
     translateChoice,
-    type,
     validate,
     value,
     ...rest
