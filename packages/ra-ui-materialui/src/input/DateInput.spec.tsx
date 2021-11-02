@@ -28,18 +28,24 @@ describe('<DateInput />', () => {
     });
 
     it('should accept a date string as value', async () => {
-        const save = jest.fn();
+        let values = {};
+        const save = jest.fn(formValues => {
+            values = formValues;
+        });
         renderWithRedux(
-            <FormWithRedirect
-                save={save}
-                defaultValues={{ publishedAt: '2021-09-11' }}
-                render={({ handleSubmit }) => (
-                    <form onSubmit={handleSubmit}>
-                        <DateInput {...defaultProps} />
-                        <button type="submit">Save</button>
-                    </form>
-                )}
-            />
+            <>
+                <FormWithRedirect
+                    save={save}
+                    defaultValues={{ publishedAt: '2021-09-11' }}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <DateInput {...defaultProps} />
+                            <button type="submit">Save</button>
+                        </form>
+                    )}
+                />
+                <p>{JSON.stringify(values)}</p>
+            </>
         );
         const input = screen.getByLabelText(
             'resources.posts.fields.publishedAt'
@@ -49,24 +55,30 @@ describe('<DateInput />', () => {
         expect(input.value).toBe('2021-10-22');
         fireEvent.click(screen.getByText('Save'));
         await waitFor(() => {
-            expect(save).toHaveBeenCalledWith({ publishedAt: '2021-10-22' });
+            expect(screen.queryAllByText('2021-10-22')).not.toBeNull();
         });
     });
 
     it('should accept a date time string as value', async () => {
-        const save = jest.fn();
+        let values = {};
+        const save = jest.fn(formValues => {
+            values = formValues;
+        });
 
         renderWithRedux(
-            <FormWithRedirect
-                save={save}
-                defaultValues={{ publishedAt: '2021-09-11T06:51:17.772Z' }}
-                render={({ handleSubmit }) => (
-                    <form onSubmit={handleSubmit}>
-                        <DateInput {...defaultProps} />
-                        <button type="submit">Save</button>
-                    </form>
-                )}
-            />
+            <>
+                <FormWithRedirect
+                    save={save}
+                    defaultValues={{ publishedAt: '2021-09-11T06:51:17.772Z' }}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <DateInput {...defaultProps} />
+                            <button type="submit">Save</button>
+                        </form>
+                    )}
+                />
+                <p>{JSON.stringify(values)}</p>
+            </>
         );
         const input = screen.getByLabelText(
             'resources.posts.fields.publishedAt'
@@ -75,34 +87,38 @@ describe('<DateInput />', () => {
 
         fireEvent.click(screen.getByText('Save'));
         await waitFor(() => {
-            expect(save).toHaveBeenCalledWith({
-                publishedAt: '2021-09-11T06:51:17.772Z',
-            });
+            expect(
+                screen.queryAllByText('2021-09-11T06:51:17.772Z')
+            ).not.toBeNull();
         });
         userEvent.type(input, '2021-10-22');
 
         fireEvent.click(screen.getByText('Save'));
         await waitFor(() => {
-            expect(save).toHaveBeenCalledWith({
-                publishedAt: '2021-10-22',
-            });
+            expect(screen.queryAllByText('2021-10-22')).not.toBeNull();
         });
     });
 
     it('should accept a date object as value', async () => {
-        const save = jest.fn();
+        let values = {};
+        const save = jest.fn(formValues => {
+            values = formValues;
+        });
 
         renderWithRedux(
-            <FormWithRedirect
-                save={jest.fn()}
-                defaultValues={{ publishedAt: new Date('2021-09-11') }}
-                render={({ handleSubmit }) => (
-                    <form onSubmit={handleSubmit}>
-                        <DateInput {...defaultProps} />
-                        <button type="submit">Save</button>
-                    </form>
-                )}
-            />
+            <>
+                <FormWithRedirect
+                    save={save}
+                    defaultValues={{ publishedAt: new Date('2021-09-11') }}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <DateInput {...defaultProps} />
+                            <button type="submit">Save</button>
+                        </form>
+                    )}
+                />
+                <p>{JSON.stringify(values)}</p>
+            </>
         );
         const input = screen.getByLabelText(
             'resources.posts.fields.publishedAt'
@@ -110,114 +126,103 @@ describe('<DateInput />', () => {
         expect(input.value).toBe('2021-09-11');
         fireEvent.click(screen.getByText('Save'));
         await waitFor(() => {
-            expect(save).toHaveBeenCalledWith({
-                publishedAt: new Date('2021-09-11'),
-            });
+            expect(
+                screen.queryAllByText(new Date('2021-09-11').toISOString())
+            ).not.toBeNull();
         });
         userEvent.type(input, '2021-10-22');
 
         fireEvent.click(screen.getByText('Save'));
         await waitFor(() => {
-            expect(save).toHaveBeenCalledWith({
-                publishedAt: '2021-10-22',
-            });
+            expect(screen.queryAllByText('2021-10-22')).not.toBeNull();
         });
     });
 
-    it('should accept a parse function', () => {
-        let formApi;
+    it('should accept a parse function', async () => {
+        let values = {};
+        const save = jest.fn(formValues => {
+            values = formValues;
+        });
         renderWithRedux(
-            <FormWithRedirect
-                save={jest.fn()}
-                defaultValues={{ publishedAt: new Date('2021-09-11') }}
-                render={({ form }) => {
-                    formApi = form;
-                    return (
-                        <DateInput
-                            {...defaultProps}
-                            parse={val => new Date(val)}
-                        />
-                    );
-                }}
-            />
+            <>
+                <FormWithRedirect
+                    save={save}
+                    defaultValues={{ publishedAt: new Date('2021-09-11') }}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <DateInput
+                                {...defaultProps}
+                                parse={val => new Date(val)}
+                            />
+                            <button type="submit">Save</button>
+                        </form>
+                    )}
+                />
+                <p>{JSON.stringify(values)}</p>
+            </>
         );
         const input = screen.getByLabelText(
             'resources.posts.fields.publishedAt'
         ) as HTMLInputElement;
         expect(input.value).toBe('2021-09-11');
-        expect(formApi.getState().values.publishedAt).toEqual(
-            new Date('2021-09-11')
-        );
         fireEvent.change(input, {
             target: { value: '2021-10-22' },
         });
-        expect(formApi.getState().values.publishedAt).toEqual(
-            new Date('2021-10-22')
-        );
+        fireEvent.click(screen.getByText('Save'));
+        await waitFor(() => {
+            expect(
+                screen.queryAllByText(new Date('2021-10-22').toISOString())
+            ).not.toBeNull();
+        });
     });
 
-    it('should accept a parse function returning null', () => {
-        let formApi;
+    it('should accept a parse function returning null', async () => {
+        let values = {};
+        const save = jest.fn(formValues => {
+            values = formValues;
+        });
         renderWithRedux(
-            <FormWithRedirect
-                save={jest.fn()}
-                defaultValues={{ publishedAt: new Date('2021-09-11') }}
-                render={({ form }) => {
-                    formApi = form;
-                    return <DateInput {...defaultProps} parse={val => null} />;
-                }}
-            />
+            <>
+                <FormWithRedirect
+                    save={save}
+                    defaultValues={{ publishedAt: new Date('2021-09-11') }}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <DateInput {...defaultProps} parse={val => null} />
+                            <button type="submit">Save</button>
+                        </form>
+                    )}
+                />
+                <p>{JSON.stringify(values)}</p>
+            </>
         );
         const input = screen.getByLabelText(
             'resources.posts.fields.publishedAt'
         ) as HTMLInputElement;
         expect(input.value).toBe('2021-09-11');
-        expect(formApi.getState().values.publishedAt).toEqual(
-            new Date('2021-09-11')
-        );
         fireEvent.change(input, {
             target: { value: '' },
         });
-        // Uncommenting this line makes the test fail, cf https://github.com/marmelab/react-admin/issues/6573
-        // fireEvent.blur(input);
-        expect(formApi.getState().values.publishedAt).toBeNull();
+        await waitFor(() => {
+            expect(screen.queryAllByText('null')).not.toBeNull();
+        });
     });
 
     it('should not make the form dirty on initialization', () => {
         const publishedAt = new Date().toISOString();
-        let formApi: FormApi;
+        let dirty;
         renderWithRedux(
             <FormWithRedirect
                 save={jest.fn}
                 record={{ id: 1, publishedAt }}
-                render={({ form }) => {
-                    formApi = form;
+                render={({ handleSubmit, isDirty }) => {
+                    dirty = isDirty;
                     return <DateInput {...defaultProps} />;
                 }}
             />
         );
         expect(screen.getByDisplayValue(format(publishedAt, 'YYYY-MM-DD')));
-        expect(formApi.getState().dirty).toEqual(false);
-    });
-
-    it('should call `input.onChange` method when changed', () => {
-        let formApi;
-        renderWithRedux(
-            <FormWithRedirect
-                save={jest.fn()}
-                render={({ form }) => {
-                    formApi = form;
-                    return <DateInput {...defaultProps} />;
-                }}
-            />
-        );
-        const input = screen.getByLabelText(
-            'resources.posts.fields.publishedAt'
-        );
-        fireEvent.change(input, {
-            target: { value: '2010-01-04' },
-        });
-        expect(formApi.getState().values.publishedAt).toEqual('2010-01-04');
+        expect(dirty).toEqual(false);
     });
 
     describe('error message', () => {
