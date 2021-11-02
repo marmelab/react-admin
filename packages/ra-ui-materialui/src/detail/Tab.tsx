@@ -134,7 +134,7 @@ Tab.propTypes = {
     icon: PropTypes.element,
     label: PropTypes.string.isRequired,
     path: PropTypes.string,
-    spacing: any,
+    spacing: PropTypes.any,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
