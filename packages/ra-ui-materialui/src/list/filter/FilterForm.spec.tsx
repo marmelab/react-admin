@@ -1,6 +1,7 @@
-import expect from 'expect';
-import { fireEvent } from '@testing-library/react';
 import * as React from 'react';
+import expect from 'expect';
+import { waitFor } from '@testing-library/react';
+import fireEvent from '@testing-library/user-event';
 import { renderWithRedux } from 'ra-test';
 import { minLength } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -43,7 +44,7 @@ describe('<FilterForm />', () => {
         expect(queryAllByLabelText('Name')).toHaveLength(1);
     });
 
-    it('should change the filter when the user updates an input', () => {
+    it('should change the filter when the user updates an input', async () => {
         const filters = [<TextInput source="title" label="Title" />];
         const displayedFilters = {
             title: true,
@@ -60,13 +61,16 @@ describe('<FilterForm />', () => {
                 />
             </ThemeProvider>
         );
-        fireEvent.change(queryByLabelText('Title'), {
-            target: { value: 'foo' },
+        await waitFor(() => {
+            expect(queryByLabelText('Title')).not.toBeNull();
         });
-        expect(setFilters).toHaveBeenCalledWith(
-            { title: 'foo' },
-            { title: true }
-        );
+        fireEvent.type(queryByLabelText('Title'), 'foo');
+        await waitFor(() => {
+            expect(setFilters).toHaveBeenCalledWith(
+                { title: 'foo' },
+                { title: true }
+            );
+        });
     });
 
     it('should not change the filter when the user updates an input with an invalid value', () => {
@@ -92,9 +96,7 @@ describe('<FilterForm />', () => {
                 />
             </ThemeProvider>
         );
-        fireEvent.change(queryByLabelText('Title'), {
-            target: { value: 'foo' },
-        });
+        fireEvent.type(queryByLabelText('Title'), 'foo');
         expect(setFilters).not.toHaveBeenCalled();
     });
 
@@ -126,7 +128,7 @@ describe('<FilterForm />', () => {
             );
 
             const select = queryByLabelText('SelectWithUndefinedAllowEmpty');
-            fireEvent.mouseDown(select);
+            fireEvent.click(select);
             const options = queryAllByRole('option');
             expect(options.length).toEqual(3);
         });
@@ -158,7 +160,7 @@ describe('<FilterForm />', () => {
                 </ThemeProvider>
             );
             const select = queryByLabelText('SelectWithFalseAllowEmpty');
-            fireEvent.mouseDown(select);
+            fireEvent.click(select);
             const options = queryAllByRole('option');
             expect(options.length).toEqual(2);
         });
@@ -190,7 +192,7 @@ describe('<FilterForm />', () => {
                 </ThemeProvider>
             );
             const select = queryByLabelText('SelectWithTrueAllowEmpty');
-            fireEvent.mouseDown(select);
+            fireEvent.click(select);
             const options = queryAllByRole('option');
             expect(options.length).toEqual(3);
         });

@@ -23,6 +23,7 @@ import {
     SingleFieldList,
     TextField,
     TextInput,
+    useInput,
     useTranslate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
@@ -31,7 +32,17 @@ export const PostIcon = BookIcon;
 
 const QuickFilter = ({ label, source, defaultValue }) => {
     const translate = useTranslate();
-    return <Chip sx={{ marginBottom: 1 }} label={translate(label)} />;
+    const input = useInput({ source, defaultValue });
+    return (
+        <>
+            <input
+                type="hidden"
+                {...input.input}
+                value={input.input.value?.toString()}
+            />
+            <Chip sx={{ marginBottom: 1 }} label={translate(label)} />
+        </>
+    );
 };
 
 const postFilter = [

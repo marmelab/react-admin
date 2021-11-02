@@ -151,19 +151,22 @@ export const FilterForm = props => {
 
     const form = useForm({
         defaultValues: mergedInitialValuesWithDefaultValues,
+        mode: 'onChange',
     });
     const { formState, watch } = form;
-    const { isDirty, isValid } = formState;
+    const { isValid } = formState;
 
     useEffect(() => {
         const subscription = watch(values => {
-            if (!isDirty || !isValid) {
+            if (!isValid) {
                 return;
             }
             setFilters(values, displayedFilters);
         });
-        return () => subscription.unsubscribe();
-    }, [displayedFilters, setFilters, watch, isDirty, isValid]);
+        return () => {
+            subscription.unsubscribe();
+        };
+    }, [displayedFilters, setFilters, watch, isValid]);
 
     return (
         <FormProvider {...form}>
