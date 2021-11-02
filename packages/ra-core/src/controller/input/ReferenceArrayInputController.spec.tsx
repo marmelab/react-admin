@@ -1,12 +1,12 @@
 import * as React from 'react';
 import expect from 'expect';
 import { waitFor, fireEvent } from '@testing-library/react';
-import { Form } from 'react-final-form';
 import { renderWithRedux } from 'ra-test';
 import ReferenceArrayInputController, {
     ReferenceArrayInputControllerChildrenFuncParams,
 } from './ReferenceArrayInputController';
-import { CRUD_GET_MATCHING, CRUD_GET_MANY } from '../../../lib';
+import { CRUD_GET_MATCHING, CRUD_GET_MANY } from '../../actions';
+import { FormWithRedirect } from '../../form';
 import { SORT_ASC } from '../../reducer/admin/resource/list/queryReducer';
 
 describe('<ReferenceArrayInputController />', () => {
@@ -24,8 +24,8 @@ describe('<ReferenceArrayInputController />', () => {
             <div>{loading.toString()}</div>
         ));
         const { queryByText } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ReferenceArrayInputController
                         {...defaultProps}
@@ -46,8 +46,8 @@ describe('<ReferenceArrayInputController />', () => {
             <div>{loading.toString()}</div>
         ));
         const { queryByText } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ReferenceArrayInputController
                         {...defaultProps}
@@ -67,8 +67,8 @@ describe('<ReferenceArrayInputController />', () => {
             <div>{loading.toString()}</div>
         ));
         const { queryByText } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ReferenceArrayInputController
                         {...defaultProps}
@@ -101,8 +101,8 @@ describe('<ReferenceArrayInputController />', () => {
         const children = jest.fn(({ error }) => <div>{error}</div>);
 
         const { queryByText } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ReferenceArrayInputController {...defaultProps}>
                         {children}
@@ -126,8 +126,8 @@ describe('<ReferenceArrayInputController />', () => {
     it('should set error in case of references fetch error and there are no data found for the references already selected', () => {
         const children = jest.fn(({ error }) => <div>{error}</div>);
         const { queryByText } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ReferenceArrayInputController
                         {...defaultProps}
@@ -154,8 +154,8 @@ describe('<ReferenceArrayInputController />', () => {
     it('should not display an error in case of references fetch error but data from at least one selected reference was found', () => {
         const children = jest.fn(({ error }) => <div>{error}</div>);
         const { queryByText } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ReferenceArrayInputController
                         {...defaultProps}
@@ -193,8 +193,8 @@ describe('<ReferenceArrayInputController />', () => {
     it('should set warning if references fetch fails but selected references are not empty', async () => {
         const children = jest.fn(({ warning }) => <div>{warning}</div>);
         const { queryByText } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ReferenceArrayInputController
                         {...defaultProps}
@@ -239,8 +239,8 @@ describe('<ReferenceArrayInputController />', () => {
     it('should set warning if references were found but selected references are not complete', async () => {
         const children = jest.fn(({ warning }) => <div>{warning}</div>);
         const { queryByText } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ReferenceArrayInputController
                         {...defaultProps}
@@ -285,8 +285,8 @@ describe('<ReferenceArrayInputController />', () => {
     it('should set warning if references were found but selected references are empty', () => {
         const children = jest.fn(({ warning }) => <div>{warning}</div>);
         const { queryByText } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ReferenceArrayInputController
                         {...defaultProps}
@@ -316,8 +316,8 @@ describe('<ReferenceArrayInputController />', () => {
     it('should not set warning if all references were found', async () => {
         const children = jest.fn(({ warning }) => <div>{warning}</div>);
         const { queryByText } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ReferenceArrayInputController
                         {...defaultProps}
@@ -361,8 +361,8 @@ describe('<ReferenceArrayInputController />', () => {
         const children = jest.fn(() => <div />);
         await new Promise(resolve => setTimeout(resolve, 100)); // empty the query deduplication in useQueryWithStore
         const { dispatch } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ReferenceArrayInputController {...defaultProps} allowEmpty>
                         {children}
@@ -395,8 +395,8 @@ describe('<ReferenceArrayInputController />', () => {
         const children = jest.fn(() => <div />);
 
         const { dispatch } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ReferenceArrayInputController
                         {...defaultProps}
@@ -435,8 +435,8 @@ describe('<ReferenceArrayInputController />', () => {
         ));
 
         const { dispatch, getByLabelText } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ReferenceArrayInputController {...defaultProps}>
                         {children}
@@ -475,8 +475,8 @@ describe('<ReferenceArrayInputController />', () => {
         ));
 
         const { dispatch, getByLabelText } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ReferenceArrayInputController
                         {...defaultProps}
@@ -516,8 +516,8 @@ describe('<ReferenceArrayInputController />', () => {
         const children = jest.fn(() => <div />);
 
         const { dispatch } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ReferenceArrayInputController
                         {...defaultProps}
@@ -546,8 +546,8 @@ describe('<ReferenceArrayInputController />', () => {
         ));
 
         const { dispatch, getByLabelText } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ReferenceArrayInputController
                         {...defaultProps}
@@ -580,8 +580,8 @@ describe('<ReferenceArrayInputController />', () => {
         const children = jest.fn(() => <div />);
 
         const { dispatch, rerender } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ReferenceArrayInputController
                         {...defaultProps}
@@ -595,8 +595,8 @@ describe('<ReferenceArrayInputController />', () => {
         );
 
         rerender(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ReferenceArrayInputController
                         {...defaultProps}
@@ -623,8 +623,8 @@ describe('<ReferenceArrayInputController />', () => {
         });
 
         rerender(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ReferenceArrayInputController
                         {...defaultProps}
@@ -652,8 +652,8 @@ describe('<ReferenceArrayInputController />', () => {
         });
 
         rerender(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ReferenceArrayInputController
                         {...defaultProps}
@@ -686,8 +686,8 @@ describe('<ReferenceArrayInputController />', () => {
         const children = jest.fn(() => <div />);
 
         const { dispatch, rerender } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ReferenceArrayInputController
                         {...defaultProps}
@@ -721,8 +721,8 @@ describe('<ReferenceArrayInputController />', () => {
             });
         });
         rerender(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ReferenceArrayInputController
                         {...defaultProps}
@@ -749,8 +749,8 @@ describe('<ReferenceArrayInputController />', () => {
         const children = jest.fn(() => <div />);
 
         const { dispatch, rerender } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ReferenceArrayInputController
                         {...defaultProps}
@@ -772,8 +772,8 @@ describe('<ReferenceArrayInputController />', () => {
             });
         });
         rerender(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ReferenceArrayInputController
                         {...defaultProps}
@@ -823,8 +823,8 @@ describe('<ReferenceArrayInputController />', () => {
         };
 
         const { getByLabelText, dispatch } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ReferenceArrayInputController
                         {...defaultProps}
@@ -907,8 +907,8 @@ describe('<ReferenceArrayInputController />', () => {
     it('should call its children with the correct resource and basePath', () => {
         const children = jest.fn(() => null);
         renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ReferenceArrayInputController
                         {...defaultProps}
@@ -933,8 +933,8 @@ describe('<ReferenceArrayInputController />', () => {
                 return q ? q.length > 2 : false;
             });
             const { dispatch } = renderWithRedux(
-                <Form
-                    onSubmit={jest.fn()}
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
                             {...defaultProps}
@@ -950,7 +950,24 @@ describe('<ReferenceArrayInputController />', () => {
 
             // not call on start
             await waitFor(() => {
-                expect(dispatch).not.toHaveBeenCalled();
+                expect(dispatch).not.toHaveBeenCalledWith({
+                    type: CRUD_GET_MATCHING,
+                    meta: {
+                        relatedTo: 'posts@tag_ids',
+                        resource: 'tags',
+                    },
+                    payload: {
+                        pagination: {
+                            page: 1,
+                            perPage: 25,
+                        },
+                        sort: {
+                            field: 'id',
+                            order: 'DESC',
+                        },
+                        filter: { q: '' },
+                    },
+                });
             });
             expect(enableGetChoices).toHaveBeenCalledWith({ q: '' });
 
@@ -958,9 +975,10 @@ describe('<ReferenceArrayInputController />', () => {
             setFilter('hello world');
 
             await waitFor(() => {
-                expect(dispatch).toHaveBeenCalledTimes(5);
+                // One of those call is from FormWithRedirect when it enables automatic refresh
+                expect(dispatch).toHaveBeenCalledTimes(6);
             });
-            expect(dispatch.mock.calls[0][0]).toEqual({
+            expect(dispatch.mock.calls[1][0]).toEqual({
                 type: CRUD_GET_MATCHING,
                 meta: {
                     relatedTo: 'posts@tag_ids',
@@ -985,8 +1003,8 @@ describe('<ReferenceArrayInputController />', () => {
             const children = jest.fn(() => <div />);
 
             const { dispatch } = renderWithRedux(
-                <Form
-                    onSubmit={jest.fn()}
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
                             {...defaultProps}
@@ -1008,7 +1026,8 @@ describe('<ReferenceArrayInputController />', () => {
                     payload: { ids: [5, 6] },
                 });
             });
-            expect(dispatch).toHaveBeenCalledTimes(5);
+            // One of those call is from FormWithRedirect when it enables automatic refresh
+            expect(dispatch).toHaveBeenCalledTimes(6);
         });
     });
 });
