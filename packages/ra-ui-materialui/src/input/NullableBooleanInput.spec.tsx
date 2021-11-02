@@ -1,8 +1,8 @@
 import * as React from 'react';
 import expect from 'expect';
-import { fireEvent, render, waitFor } from '@testing-library/react';
-import { Form } from 'react-final-form';
-
+import { fireEvent } from '@testing-library/react';
+import { FormWithRedirect } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 import { NullableBooleanInput } from './NullableBooleanInput';
 
 describe('<NullableBooleanInput />', () => {
@@ -12,15 +12,16 @@ describe('<NullableBooleanInput />', () => {
         value: '',
     };
 
-    it('should give three different choices for true, false or unknown', async () => {
-        let formApi;
-        const { getByText, getByRole, getAllByRole } = render(
-            <Form
-                onSubmit={jest.fn}
-                render={({ form }) => {
-                    formApi = form;
-                    return <NullableBooleanInput {...defaultProps} />;
-                }}
+    it('should give three different choices for true, false or unknown', () => {
+        const {
+            container,
+            getByText,
+            getByRole,
+            getAllByRole,
+        } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
+                render={() => <NullableBooleanInput {...defaultProps} />}
             />
         );
         const select = getByRole('button');
@@ -29,28 +30,31 @@ describe('<NullableBooleanInput />', () => {
         expect(options.length).toEqual(3);
 
         fireEvent.click(getByText('ra.boolean.null'));
-        await waitFor(() => {
-            expect(formApi.getState().values.isPublished).toBeUndefined();
-        });
+        expect(container.querySelector('input').getAttribute('value')).toBe('');
 
         fireEvent.mouseDown(select);
         fireEvent.click(getByText('ra.boolean.false'));
-        await waitFor(() => {
-            expect(formApi.getState().values.isPublished).toEqual(false);
-        });
+        expect(container.querySelector('input').getAttribute('value')).toBe(
+            'false'
+        );
 
         fireEvent.mouseDown(select);
         fireEvent.click(getByText('ra.boolean.true'));
-        await waitFor(() => {
-            expect(formApi.getState().values.isPublished).toEqual(true);
-        });
+        expect(container.querySelector('input').getAttribute('value')).toBe(
+            'true'
+        );
     });
 
     it('should select the option "true" if value is true', () => {
-        const { container, getByRole, getByText, getAllByText } = render(
-            <Form
-                onSubmit={jest.fn}
-                initialValues={{
+        const {
+            container,
+            getByRole,
+            getByText,
+            getAllByText,
+        } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
+                defaultValues={{
                     isPublished: true,
                 }}
                 render={() => (
@@ -78,9 +82,14 @@ describe('<NullableBooleanInput />', () => {
     });
 
     it('should select the option "true" if defaultValue is true', () => {
-        const { container, getByRole, getByText, getAllByText } = render(
-            <Form
-                onSubmit={jest.fn}
+        const {
+            container,
+            getByRole,
+            getByText,
+            getAllByText,
+        } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <NullableBooleanInput
                         source="isPublished"
@@ -107,10 +116,15 @@ describe('<NullableBooleanInput />', () => {
     });
 
     it('should select the option "false" if value is false', () => {
-        const { getByRole, getByText, getAllByText, container } = render(
-            <Form
-                onSubmit={jest.fn}
-                initialValues={{
+        const {
+            getByRole,
+            getByText,
+            getAllByText,
+            container,
+        } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
+                defaultValues={{
                     isPublished: false,
                 }}
                 render={() => (
@@ -138,9 +152,14 @@ describe('<NullableBooleanInput />', () => {
     });
 
     it('should select the option "false" if defaultValue is false', () => {
-        const { getByRole, getByText, getAllByText, container } = render(
-            <Form
-                onSubmit={jest.fn}
+        const {
+            getByRole,
+            getByText,
+            getAllByText,
+            container,
+        } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <NullableBooleanInput
                         source="isPublished"
@@ -167,10 +186,10 @@ describe('<NullableBooleanInput />', () => {
     });
 
     it('should select the option "null" if value is null', () => {
-        const { getByRole, getByText, container } = render(
-            <Form
-                onSubmit={jest.fn}
-                initialValues={{
+        const { getByRole, getByText, container } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
+                defaultValues={{
                     isPublished: null,
                 }}
                 render={() => (
@@ -196,9 +215,9 @@ describe('<NullableBooleanInput />', () => {
     });
 
     it('should select the option "null" if defaultValue is null', () => {
-        const { getByRole, getByText, container } = render(
-            <Form
-                onSubmit={jest.fn}
+        const { getByRole, getByText, container } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <NullableBooleanInput
                         source="isPublished"
@@ -223,10 +242,10 @@ describe('<NullableBooleanInput />', () => {
     });
 
     it('should allow to customize the label of the null option', () => {
-        const { getByRole, getByText, container } = render(
-            <Form
-                onSubmit={jest.fn}
-                initialValues={{
+        const { getByRole, getByText, container } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
+                defaultValues={{
                     isPublished: null,
                 }}
                 render={() => (
@@ -245,10 +264,10 @@ describe('<NullableBooleanInput />', () => {
     });
 
     it('should allow to customize the label of the false option', () => {
-        const { getByRole, getByText, container } = render(
-            <Form
-                onSubmit={jest.fn}
-                initialValues={{
+        const { getByRole, getByText, container } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
+                defaultValues={{
                     isPublished: null,
                 }}
                 render={() => (
@@ -267,10 +286,10 @@ describe('<NullableBooleanInput />', () => {
     });
 
     it('should allow to customize the label of the true option', () => {
-        const { getByRole, getByText, container } = render(
-            <Form
-                onSubmit={jest.fn}
-                initialValues={{
+        const { getByRole, getByText, container } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
+                defaultValues={{
                     isPublished: null,
                 }}
                 render={() => (
