@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { render, fireEvent } from '@testing-library/react';
-import { Form } from 'react-final-form';
+import { fireEvent, waitFor } from '@testing-library/react';
+import { FormWithRedirect } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 
 import { ImageInput } from './ImageInput';
 import { ImageField } from '../field';
@@ -18,9 +19,9 @@ describe('<ImageInput />', () => {
     };
 
     it('should display a dropzone for single file dropping', () => {
-        const { queryByText } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { queryByText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ImageInput {...defaultProps}>
                         <div />
@@ -33,9 +34,9 @@ describe('<ImageInput />', () => {
     });
 
     it('should display a dropzone for multiple files dropping', () => {
-        const { queryByText } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { queryByText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ImageInput {...defaultProps} multiple>
                         <div />
@@ -51,12 +52,12 @@ describe('<ImageInput />', () => {
     it.skip('should correctly update upon drop when allowing a single file', async () => {
         const onSubmit = jest.fn();
 
-        const { getByTestId, getByLabelText } = render(
-            <Form
-                initialValues={{
+        const { getByTestId, getByLabelText } = renderWithRedux(
+            <FormWithRedirect
+                defaultValues={{
                     image: undefined,
                 }}
-                onSubmit={onSubmit}
+                save={onSubmit}
                 render={({ handleSubmit }) => (
                     <form onSubmit={handleSubmit}>
                         <ImageInput {...defaultProps}>
@@ -88,12 +89,12 @@ describe('<ImageInput />', () => {
     it.skip('should correctly update upon drop when allowing multiple files', async () => {
         const onSubmit = jest.fn();
 
-        const { getByTestId, getByLabelText } = render(
-            <Form
-                initialValues={{
+        const { getByTestId, getByLabelText } = renderWithRedux(
+            <FormWithRedirect
+                defaultValues={{
                     images: [],
                 }}
-                onSubmit={onSubmit}
+                save={onSubmit}
                 render={({ handleSubmit }) => (
                     <form onSubmit={handleSubmit}>
                         <ImageInput {...defaultPropsMultiple}>
@@ -128,18 +129,18 @@ describe('<ImageInput />', () => {
         });
     });
 
-    it('should correctly update upon removal when allowing a single file', () => {
+    it('should correctly update upon removal when allowing a single file', async () => {
         const onSubmit = jest.fn();
 
-        const { getByLabelText, getByTitle } = render(
-            <Form
-                initialValues={{
+        const { getByLabelText, getByTitle } = renderWithRedux(
+            <FormWithRedirect
+                defaultValues={{
                     image: {
                         src: 'test.png',
                         title: 'cats',
                     },
                 }}
-                onSubmit={onSubmit}
+                save={onSubmit}
                 render={({ handleSubmit }) => (
                     <form onSubmit={handleSubmit}>
                         <ImageInput {...defaultProps}>
@@ -155,17 +156,23 @@ describe('<ImageInput />', () => {
         fireEvent.click(getByLabelText('ra.action.delete'));
         fireEvent.click(getByLabelText('Save'));
 
-        expect(onSubmit.mock.calls[0][0]).toEqual({
-            image: null,
+        await waitFor(() => {
+            expect(onSubmit.mock.calls[0][0]).toEqual({
+                image: null,
+            });
         });
     });
 
-    it('should correctly update upon removal when allowing multiple file (removing first file)', () => {
+    it('should correctly update upon removal when allowing multiple file (removing first file)', async () => {
         const onSubmit = jest.fn();
 
-        const { getByLabelText, getAllByLabelText, getByTitle } = render(
-            <Form
-                initialValues={{
+        const {
+            getByLabelText,
+            getAllByLabelText,
+            getByTitle,
+        } = renderWithRedux(
+            <FormWithRedirect
+                defaultValues={{
                     images: [
                         {
                             src: 'test.png',
@@ -177,7 +184,7 @@ describe('<ImageInput />', () => {
                         },
                     ],
                 }}
-                onSubmit={onSubmit}
+                save={onSubmit}
                 render={({ handleSubmit }) => (
                     <form onSubmit={handleSubmit}>
                         <ImageInput {...defaultPropsMultiple}>
@@ -193,22 +200,28 @@ describe('<ImageInput />', () => {
         fireEvent.click(getAllByLabelText('ra.action.delete')[0]);
         fireEvent.click(getByLabelText('Save'));
 
-        expect(onSubmit.mock.calls[0][0]).toEqual({
-            images: [
-                {
-                    src: 'test2.png',
-                    title: 'cats2',
-                },
-            ],
+        await waitFor(() => {
+            expect(onSubmit.mock.calls[0][0]).toEqual({
+                images: [
+                    {
+                        src: 'test2.png',
+                        title: 'cats2',
+                    },
+                ],
+            });
         });
     });
 
-    it('should correctly update upon removal when allowing multiple files (removing second file)', () => {
+    it('should correctly update upon removal when allowing multiple files (removing second file)', async () => {
         const onSubmit = jest.fn();
 
-        const { getAllByLabelText, getByLabelText, getByTitle } = render(
-            <Form
-                initialValues={{
+        const {
+            getAllByLabelText,
+            getByLabelText,
+            getByTitle,
+        } = renderWithRedux(
+            <FormWithRedirect
+                defaultValues={{
                     images: [
                         {
                             src: 'test.png',
@@ -220,7 +233,7 @@ describe('<ImageInput />', () => {
                         },
                     ],
                 }}
-                onSubmit={onSubmit}
+                save={onSubmit}
                 render={({ handleSubmit }) => (
                     <form onSubmit={handleSubmit}>
                         <ImageInput {...defaultPropsMultiple}>
@@ -237,21 +250,23 @@ describe('<ImageInput />', () => {
         fireEvent.click(getAllByLabelText('ra.action.delete')[1]);
         fireEvent.click(getByLabelText('Save'));
 
-        expect(onSubmit.mock.calls[0][0]).toEqual({
-            images: [
-                {
-                    src: 'test.png',
-                    title: 'cats',
-                },
-            ],
+        await waitFor(() => {
+            expect(onSubmit.mock.calls[0][0]).toEqual({
+                images: [
+                    {
+                        src: 'test.png',
+                        title: 'cats',
+                    },
+                ],
+            });
         });
     });
 
     it('should display correct custom label', () => {
         const test = (expectedLabel, expectedLabelText = expectedLabel) => {
-            const { getByText } = render(
-                <Form
-                    onSubmit={jest.fn()}
+            const { getByText } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <ImageInput
                             {...defaultProps}
@@ -274,15 +289,15 @@ describe('<ImageInput />', () => {
 
     describe('Image Preview', () => {
         it('should display file preview using child as preview component', () => {
-            const { queryByTitle } = render(
-                <Form
-                    initialValues={{
+            const { queryByTitle } = renderWithRedux(
+                <FormWithRedirect
+                    defaultValues={{
                         image: {
                             url: 'http://foo.com/bar.jpg',
                             title: 'Hello world!',
                         },
                     }}
-                    onSubmit={jest.fn()}
+                    save={jest.fn()}
                     render={() => (
                         <ImageInput {...defaultProps} source="image">
                             <ImageField source="url" title="title" />
@@ -299,10 +314,10 @@ describe('<ImageInput />', () => {
         });
 
         it('should display all files (when several) previews using child as preview component', () => {
-            const { queryByTitle } = render(
-                <Form
-                    onSubmit={jest.fn()}
-                    initialValues={{
+            const { queryByTitle } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
+                    defaultValues={{
                         images: [
                             {
                                 url: 'http://foo.com/bar.jpg',
@@ -335,11 +350,12 @@ describe('<ImageInput />', () => {
             );
         });
 
-        it('should update previews when updating input value', () => {
-            const { queryByTitle, rerender } = render(
-                <Form
-                    onSubmit={jest.fn()}
-                    initialValues={{
+        // Skipped until https://github.com/jsdom/jsdom/issues/1568 is fixed
+        it.skip('should update previews when updating input value', () => {
+            const { queryByTitle, getByTestId } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
+                    defaultValues={{
                         image: {
                             title: 'Hello world!',
                             url: 'http://static.acme.com/foo.jpg',
@@ -359,22 +375,12 @@ describe('<ImageInput />', () => {
                 'http://static.acme.com/foo.jpg'
             );
 
-            rerender(
-                <Form
-                    onSubmit={jest.fn()}
-                    initialValues={{
-                        image: {
-                            title: 'Hello world!',
-                            url: 'http://static.acme.com/bar.jpg',
-                        },
-                    }}
-                    render={() => (
-                        <ImageInput {...defaultProps} source="image">
-                            <ImageField source="url" title="title" />
-                        </ImageInput>
-                    )}
-                />
+            const file = createFile(
+                'http://static.acme.com/bar.jpg',
+                1234,
+                'image/jpeg'
             );
+            fireEvent.drop(getByTestId('dropzone'), createDataTransfer([file]));
 
             const updatedPreviewImage = queryByTitle('Hello world!');
             expect(updatedPreviewImage).not.toBeNull();
@@ -387,12 +393,12 @@ describe('<ImageInput />', () => {
         it.skip('should update previews when dropping a file', async () => {
             const onSubmit = jest.fn();
 
-            const { getByTestId, queryByRole } = render(
-                <Form
-                    initialValues={{
+            const { getByTestId, queryByRole } = renderWithRedux(
+                <FormWithRedirect
+                    defaultValues={{
                         images: [],
                     }}
-                    onSubmit={onSubmit}
+                    save={onSubmit}
                     render={({ handleSubmit }) => (
                         <form onSubmit={handleSubmit}>
                             <ImageInput {...defaultPropsMultiple}>
