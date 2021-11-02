@@ -95,12 +95,12 @@ You can replace the list of default actions by your own element using the `actio
 ```jsx
 import * as React from 'react';
 import { cloneElement } from 'react';
-import { List, ListActions, Button } from 'react-admin';
+import { List, ListActions, Button, FilterButton } from 'react-admin';
 import IconEvent from '@material-ui/icons/Event';
 
 const ListActions = (props) => (
     <TopToolbar>
-        {cloneElement(props.filters, { context: 'button' })}
+        <FilterButton/>
         <CreateButton/>
         <ExportButton/>
         {/* Add your custom actions */}
@@ -132,6 +132,7 @@ import {
     TopToolbar,
     CreateButton,
     ExportButton,
+    FilterButton,
     Button,
     sanitizeListRestProps    
 } from 'react-admin';
@@ -140,7 +141,6 @@ import IconEvent from '@material-ui/icons/Event';
 const ListActions = (props) => {
     const {
         className,
-        filters,
         maxResults,
         ...rest
     } = props;
@@ -149,7 +149,7 @@ const ListActions = (props) => {
     } = useListContext();
     return (
         <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
-            {cloneElement(filters, { context: 'button' })}
+            <FilterButton />
             <CreateButton />
             <ExportButton disabled={total === 0} maxResults={maxResults} />
             {/* Add your custom actions */}
