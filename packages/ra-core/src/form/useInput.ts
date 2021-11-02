@@ -80,7 +80,6 @@ export const useInput = (props: InputProps): UseInputValue => {
             get(record, source) === undefined &&
             defaultValue != undefined // eslint-disable-line eqeqeq
         ) {
-            console.log('input reset');
             reset({ ...getValues(), [source]: defaultValue });
         }
     }, [record, reset]);
@@ -120,19 +119,25 @@ export const useInput = (props: InputProps): UseInputValue => {
 
     const handleChange = useCallback(
         event => {
-            let finalEvent = event;
             if (parse) {
-                finalEvent = {
-                    ...event,
-                    target: {
-                        ...event.target,
-                        value: parse(event.target ? event.target.value : event),
-                    },
-                };
+                const value = event?.target?.value ?? event;
+                if (event?.target) {
+                    const finalEvent = {
+                        ...event,
+                        target: {
+                            ...event.target,
+                            value: parse(
+                                event.target ? event.target.value : event
+                            ),
+                        },
+                    };
+                    onChange(finalEvent);
+                } else {
+                    onChange(parse(value));
+                }
             }
-            onChange(finalEvent);
             if (typeof customOnChange === 'function') {
-                customOnChange(finalEvent);
+                customOnChange(event);
             }
         },
         [customOnChange, parse, onChange]
