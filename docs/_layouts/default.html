@@ -45,53 +45,6 @@
 
     <body>
         <header>
-            <div
-                id="banner"
-                style="
-                    background-color: rgb(243, 168, 71);
-                    padding: 3px;
-                    text-align: center;
-                    color: #1f2937;
-                    display: none;
-                "
-            >
-                React-admin Enterprise is 1 year old! To celebrate, new
-                customers get a 20% discount on yearly
-                <a
-                    style="color: #1e3a8a"
-                    href="https://app.gumroad.com/reactadmin#LFaKw"
-                    >Team</a
-                >
-                &amp;
-                <a
-                    style="color: #1e3a8a"
-                    href="https://reactadmin.gumroad.com/#DvTQvi"
-                    >Business</a
-                >
-                plans.
-                <span aria-label="Close" style="position: absolute; right: 10px"
-                    ><a href="javascript:hideBanner()" style="color: #1f2937"
-                        ><span aria-hidden="true">X</span></a
-                    ></span
-                >
-            </div>
-            <script>
-                function hideBanner() {
-                    document.getElementById('banner').style.display = 'none';
-                    window.localStorage.setItem('hideBannerDate', Date.now());
-                }
-                const hideBannerDate = parseInt(
-                    window.localStorage.getItem('hideBannerDate'),
-                    10
-                );
-                if (
-                    !hideBannerDate ||
-                    Date.now() - hideBannerDate > 14 * 24 * 60 * 60 * 1000
-                ) {
-                    // two weeks
-                    document.getElementById('banner').style.display = 'block';
-                }
-            </script>
             <nav>
                 <a href="#" data-target="slide-out" class="sidenav-trigger"
                     ><i class="material-icons">menu</i></a
@@ -195,7 +148,7 @@
                     .replace(/^-+/, '') // Trim - from start of text
                     .replace(/-+$/, ''); // Trim - from end of text
             }
-            document.addEventListener('DOMContentLoaded', function () {
+            function buildPageToC() {
                 M.Sidenav.init(document.querySelectorAll('.sidenav'));
                 // Initialize version selector
                 M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
@@ -212,7 +165,73 @@
                     collapseDepth: 2,
                     hasInnerContainers: true,
                 });
+            }
+            // build ToC on page load
+            document.addEventListener('DOMContentLoaded', function () {
+                buildPageToC();
             });
+
+            var allMenus = Array.from(document.querySelectorAll(`.sidenav a.nav-link`));
+            var navLinks = allMenus.map(link => link.href);
+            
+            function replaceContent(text) {
+                var tmpElement = document.createElement('div');
+                tmpElement.innerHTML = text;
+                var content = document.querySelector('.DocSearch-content');
+                content.innerHTML = tmpElement.querySelector('.DocSearch-content').innerHTML;
+                window.scrollTo(0, 0);
+                buildPageToC();
+            }
+            
+            function changeSelectedMenu() {
+                var activeMenu = document.querySelector(`.sidenav li.active`);
+                activeMenu && activeMenu.classList.remove('active');
+                allMenus.find(menuEl => menuEl.href === location.href)
+                    .parentNode.classList.add('active');
+            }
+            
+            // Replace full page reloads by a fill of the content area
+            // so that the side navigation keeps its state
+            function catchNavigation() {
+                // use a global event listener to also catch links inside the content area 
+                document.addEventListener('click', (event) => {
+                    var link = event.target.closest('a');
+                    if (!link) {
+                        return; // click not on a link
+                    }
+                    var location = document.location.href.split('#')[0];
+                    var href = link.href;
+                    if (href.indexOf(`${location}#`) === 0) {
+                        return; // click on an anchor in the current page
+                    }
+                    if (!navLinks.includes(href)) {
+                        return; // not a navigation link
+                    }
+                    // now we're sure it's an internal navigation link
+                    // transform it to an AJAX call
+                    event.preventDefault();
+                    // fetch the new content
+                    fetch(href)
+                        .then(res => res.text())
+                        .then(replaceContent);
+                    // change the URL
+                    history.pushState(null, null, href);
+                    changeSelectedMenu();
+                })
+                // make back button work again
+                window.addEventListener('popstate', (event) => {
+                    if (document.location.href.indexOf('#') !== -1) {
+                        // popstate triggered by a click on an anchor, not back button
+                        return;
+                    }
+                    // fetch the new content
+                    fetch(location.pathname)
+                        .then(res => res.text())
+                        .then(replaceContent);
+                    changeSelectedMenu();
+                })
+            }
+            catchNavigation();
         </script>
         <script
             type="text/javascript"
