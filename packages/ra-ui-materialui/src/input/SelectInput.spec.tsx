@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
-import { Form } from 'react-final-form';
-import { TestTranslationProvider } from 'ra-core';
+import { fireEvent, waitFor } from '@testing-library/react';
+import { TestTranslationProvider, FormWithRedirect, required } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { SelectInput } from './SelectInput';
-import { required } from 'ra-core';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 
 const theme = createTheme({});
@@ -21,11 +20,11 @@ describe('<SelectInput />', () => {
     };
 
     it('should use the input parameter value as the initial input value', () => {
-        const { container } = render(
+        const { container } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <Form
-                    initialValues={{ language: 'ang' }}
-                    onSubmit={jest.fn()}
+                <FormWithRedirect
+                    defaultValues={{ language: 'ang' }}
+                    save={jest.fn()}
                     render={() => <SelectInput {...defaultProps} />}
                 />
             </ThemeProvider>
@@ -35,10 +34,10 @@ describe('<SelectInput />', () => {
     });
 
     it('should render choices as mui MenuItem components', async () => {
-        const { getByRole, getByText, queryAllByRole } = render(
+        const { getByRole, getByText, queryAllByRole } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <Form
-                    onSubmit={jest.fn()}
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => <SelectInput {...defaultProps} />}
                 />
             </ThemeProvider>
@@ -56,10 +55,10 @@ describe('<SelectInput />', () => {
     });
 
     it('should render disable choices marked so', () => {
-        const { getByRole, getByText } = render(
+        const { getByRole, getByText } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <Form
-                    onSubmit={jest.fn()}
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <SelectInput
                             {...defaultProps}
@@ -82,10 +81,10 @@ describe('<SelectInput />', () => {
     });
 
     it('should add an empty menu when allowEmpty is true', () => {
-        const { getByRole, queryAllByRole } = render(
+        const { getByRole, queryAllByRole } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <Form
-                    onSubmit={jest.fn()}
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => <SelectInput {...defaultProps} allowEmpty />}
                 />
             </ThemeProvider>
@@ -101,10 +100,10 @@ describe('<SelectInput />', () => {
     it('should add an empty menu with custom value when allowEmpty is true', () => {
         const emptyValue = 'test';
 
-        const { getByRole, queryAllByRole } = render(
+        const { getByRole, queryAllByRole } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <Form
-                    onSubmit={jest.fn()}
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <SelectInput
                             {...defaultProps}
@@ -126,10 +125,10 @@ describe('<SelectInput />', () => {
     it('should add an empty menu with proper text when emptyText is a string', () => {
         const emptyText = 'Default';
 
-        const { getByRole, getByText, queryAllByRole } = render(
+        const { getByRole, getByText, queryAllByRole } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <Form
-                    onSubmit={jest.fn()}
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <SelectInput
                             allowEmpty
@@ -156,10 +155,10 @@ describe('<SelectInput />', () => {
             </div>
         );
 
-        const { getByRole, getByText, queryAllByRole } = render(
+        const { getByRole, getByText, queryAllByRole } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <Form
-                    onSubmit={jest.fn()}
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <SelectInput
                             allowEmpty
@@ -180,10 +179,10 @@ describe('<SelectInput />', () => {
     });
 
     it('should not add a falsy (null or false) element when allowEmpty is false', () => {
-        const { getByRole, queryAllByRole } = render(
+        const { getByRole, queryAllByRole } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <Form
-                    onSubmit={jest.fn()}
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => <SelectInput {...defaultProps} />}
                 />
             </ThemeProvider>
@@ -195,10 +194,10 @@ describe('<SelectInput />', () => {
     });
 
     it('should use optionValue as value identifier', () => {
-        const { getByRole, getByText } = render(
+        const { getByRole, getByText } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <Form
-                    onSubmit={jest.fn()}
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <SelectInput
                             {...defaultProps}
@@ -220,10 +219,10 @@ describe('<SelectInput />', () => {
     });
 
     it('should use optionValue including "." as value identifier', () => {
-        const { getByRole, getByText } = render(
+        const { getByRole, getByText } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <Form
-                    onSubmit={jest.fn()}
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <SelectInput
                             {...defaultProps}
@@ -245,10 +244,10 @@ describe('<SelectInput />', () => {
     });
 
     it('should use optionText with a string value as text identifier', () => {
-        const { getByRole, getByText } = render(
+        const { getByRole, getByText } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <Form
-                    onSubmit={jest.fn()}
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <SelectInput
                             {...defaultProps}
@@ -270,10 +269,10 @@ describe('<SelectInput />', () => {
     });
 
     it('should use optionText with a string value including "." as text identifier', () => {
-        const { getByRole, getByText } = render(
+        const { getByRole, getByText } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <Form
-                    onSubmit={jest.fn()}
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <SelectInput
                             {...defaultProps}
@@ -295,10 +294,10 @@ describe('<SelectInput />', () => {
     });
 
     it('should use optionText with a function value as text identifier', () => {
-        const { getByRole, getByText } = render(
+        const { getByRole, getByText } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <Form
-                    onSubmit={jest.fn()}
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <SelectInput
                             {...defaultProps}
@@ -324,10 +323,10 @@ describe('<SelectInput />', () => {
             <span data-value={record.id} aria-label={record.foobar} />
         );
 
-        const { getByRole, getByLabelText } = render(
+        const { getByRole, getByLabelText } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <Form
-                    onSubmit={jest.fn()}
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <SelectInput
                             {...defaultProps}
@@ -349,11 +348,11 @@ describe('<SelectInput />', () => {
     });
 
     it('should translate the choices by default', () => {
-        const { getByRole, getByText, queryAllByRole } = render(
+        const { getByRole, getByText, queryAllByRole } = renderWithRedux(
             <ThemeProvider theme={theme}>
                 <TestTranslationProvider translate={x => `**${x}**`}>
-                    <Form
-                        onSubmit={jest.fn()}
+                    <FormWithRedirect
+                        save={jest.fn()}
                         render={() => <SelectInput {...defaultProps} />}
                     />
                 </TestTranslationProvider>
@@ -372,11 +371,11 @@ describe('<SelectInput />', () => {
     });
 
     it('should not translate the choices if translateChoice is false', () => {
-        const { getByRole, getByText, queryAllByRole } = render(
+        const { getByRole, getByText, queryAllByRole } = renderWithRedux(
             <ThemeProvider theme={theme}>
                 <TestTranslationProvider translate={x => `**${x}**`}>
-                    <Form
-                        onSubmit={jest.fn()}
+                    <FormWithRedirect
+                        save={jest.fn()}
                         render={() => (
                             <SelectInput
                                 {...defaultProps}
@@ -400,10 +399,10 @@ describe('<SelectInput />', () => {
     });
 
     it('should display helperText if prop is present', () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <Form
-                    onSubmit={jest.fn()}
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <SelectInput
                             {...defaultProps}
@@ -419,10 +418,10 @@ describe('<SelectInput />', () => {
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
-            const { queryAllByText } = render(
+            const { queryAllByText } = renderWithRedux(
                 <ThemeProvider theme={theme}>
-                    <Form
-                        onSubmit={jest.fn()}
+                    <FormWithRedirect
+                        save={jest.fn()}
                         render={() => (
                             <SelectInput
                                 {...defaultProps}
@@ -437,12 +436,11 @@ describe('<SelectInput />', () => {
         });
 
         it('should not be displayed if field has been touched but is valid', () => {
-            const { getByLabelText, queryAllByText } = render(
+            const { getByLabelText, queryAllByText } = renderWithRedux(
                 <ThemeProvider theme={theme}>
-                    <Form
-                        validateOnBlur
-                        initialValues={{ language: 'ang' }}
-                        onSubmit={jest.fn()}
+                    <FormWithRedirect
+                        defaultValues={{ language: 'ang' }}
+                        save={jest.fn()}
                         render={() => (
                             <SelectInput
                                 {...defaultProps}
@@ -460,12 +458,12 @@ describe('<SelectInput />', () => {
             expect(error.length).toEqual(0);
         });
 
-        it('should be displayed if field has been touched and is invalid', () => {
-            const { getByLabelText, getByRole, getByText } = render(
+        it('should be displayed if field has been touched and is invalid', async () => {
+            const { getByLabelText, getByRole, getByText } = renderWithRedux(
                 <ThemeProvider theme={theme}>
-                    <Form
-                        validateOnBlur
-                        onSubmit={jest.fn()}
+                    <FormWithRedirect
+                        save={jest.fn()}
+                        mode="onChange"
                         render={() => (
                             <SelectInput
                                 {...defaultProps}
@@ -493,17 +491,18 @@ describe('<SelectInput />', () => {
             input.blur();
             select.blur();
 
-            const error = getByText('ra.validation.required');
-            expect(error).not.toBeNull();
+            await waitFor(() => {
+                const error = getByText('ra.validation.required');
+                expect(error).not.toBeNull();
+            });
         });
     });
 
     it('should not render a LinearProgress if loading is true and a second has not passed yet', () => {
-        const { queryByRole } = render(
+        const { queryByRole } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <Form
-                    validateOnBlur
-                    onSubmit={jest.fn()}
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <SelectInput
                             {...{
@@ -521,11 +520,10 @@ describe('<SelectInput />', () => {
     });
 
     it('should render a LinearProgress if loading is true and a second has passed', async () => {
-        const { queryByRole } = render(
+        const { queryByRole } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <Form
-                    validateOnBlur
-                    onSubmit={jest.fn()}
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <SelectInput
                             {...{
@@ -545,11 +543,10 @@ describe('<SelectInput />', () => {
     });
 
     it('should not render a LinearProgress if loading is false', () => {
-        const { queryByRole } = render(
+        const { queryByRole } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <Form
-                    validateOnBlur
-                    onSubmit={jest.fn()}
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => <SelectInput {...defaultProps} />}
                 />
             </ThemeProvider>
@@ -562,11 +559,15 @@ describe('<SelectInput />', () => {
         const choices = [...defaultProps.choices];
         const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
 
-        const { getByLabelText, getByRole, getByText, queryByText } = render(
+        const {
+            getByLabelText,
+            getByRole,
+            getByText,
+            queryByText,
+        } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <Form
-                    validateOnBlur
-                    onSubmit={jest.fn()}
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <SelectInput
                             {...defaultProps}
@@ -591,22 +592,27 @@ describe('<SelectInput />', () => {
         fireEvent.click(getByText('ra.action.create'));
         await new Promise(resolve => setImmediate(resolve));
         input.blur();
-
-        expect(
-            // The selector ensure we don't get the options from the menu but the select value
-            queryByText(newChoice.name, { selector: '[role=button]' })
-        ).not.toBeNull();
+        await waitFor(() => {
+            expect(
+                // The selector ensure we don't get the options from the menu but the select value
+                queryByText(newChoice.name, { selector: '[role=button]' })
+            ).not.toBeNull();
+        });
     });
 
     it('should support creation of a new choice through the onCreate event with a promise', async () => {
         const choices = [...defaultProps.choices];
         const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
 
-        const { getByLabelText, getByRole, getByText, queryByText } = render(
+        const {
+            getByLabelText,
+            getByRole,
+            getByText,
+            queryByText,
+        } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <Form
-                    validateOnBlur
-                    onSubmit={jest.fn()}
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <SelectInput
                             {...defaultProps}
@@ -658,11 +664,15 @@ describe('<SelectInput />', () => {
             return <button onClick={handleClick}>Get the kid</button>;
         };
 
-        const { getByLabelText, getByRole, getByText, queryByText } = render(
+        const {
+            getByLabelText,
+            getByRole,
+            getByText,
+            queryByText,
+        } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <Form
-                    validateOnBlur
-                    onSubmit={jest.fn()}
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <SelectInput
                             {...defaultProps}

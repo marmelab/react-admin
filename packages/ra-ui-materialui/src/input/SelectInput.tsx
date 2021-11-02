@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useCallback } from 'react';
+import { ReactElement, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import MenuItem from '@mui/material/MenuItem';
@@ -377,6 +377,6 @@ export type SelectInputProps = Omit<InputProps<TextFieldProps>, 'source'> &
     Omit<SupportCreateSuggestionOptions, 'handleChange'> &
     Omit<TextFieldProps, 'label' | 'helperText' | 'classes'> & {
         allowEmpty?: boolean;
-        emptyText?: string;
+        emptyText?: string | ReactElement;
         emptyValue?: string;
     };

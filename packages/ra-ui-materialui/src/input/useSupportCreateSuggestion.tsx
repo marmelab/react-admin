@@ -78,7 +78,7 @@ export const useSupportCreateSuggestion = (
             );
         },
         handleChange: async eventOrValue => {
-            const value = eventOrValue.target?.value || eventOrValue;
+            const value = eventOrValue.target?.value ?? eventOrValue;
             const finalValue = Array.isArray(value) ? [...value].pop() : value;
 
             if (eventOrValue?.preventDefault) {
