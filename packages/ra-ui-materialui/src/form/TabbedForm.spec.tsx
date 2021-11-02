@@ -9,7 +9,8 @@ import {
 } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { fireEvent, isInaccessible } from '@testing-library/react';
+import { isInaccessible, screen, waitFor } from '@testing-library/react';
+import fireEvent from '@testing-library/user-event';
 
 import { defaultTheme } from '../defaultTheme';
 import { TabbedForm } from './TabbedForm';
@@ -25,7 +26,7 @@ describe('<TabbedForm />', () => {
     const sideEffectValue = {};
 
     it('should display the tabs', () => {
-        const { queryAllByRole } = renderWithRedux(
+        renderWithRedux(
             <MemoryRouter initialEntries={['/']}>
                 <ThemeProvider theme={createTheme(defaultTheme)}>
                     <SaveContextProvider value={saveContextValue}>
@@ -40,7 +41,7 @@ describe('<TabbedForm />', () => {
             </MemoryRouter>
         );
 
-        const tabs = queryAllByRole('tab');
+        const tabs = screen.queryAllByRole('tab');
         expect(tabs.length).toEqual(2);
     });
 
@@ -49,7 +50,7 @@ describe('<TabbedForm />', () => {
             <p>submitOnEnter: {submitOnEnter.toString()}</p>
         );
 
-        const { queryByText, rerender } = renderWithRedux(
+        const { rerender } = renderWithRedux(
             <MemoryRouter initialEntries={['/']}>
                 <ThemeProvider theme={createTheme(defaultTheme)}>
                     <SaveContextProvider value={saveContextValue}>
@@ -67,7 +68,7 @@ describe('<TabbedForm />', () => {
             </MemoryRouter>
         );
 
-        expect(queryByText('submitOnEnter: false')).not.toBeNull();
+        expect(screen.queryByText('submitOnEnter: false')).not.toBeNull();
 
         rerender(
             <MemoryRouter initialEntries={['/']}>
@@ -84,18 +85,15 @@ describe('<TabbedForm />', () => {
             </MemoryRouter>
         );
 
-        expect(queryByText('submitOnEnter: true')).not.toBeNull();
+        expect(screen.queryByText('submitOnEnter: true')).not.toBeNull();
     });
 
-    it('should set the style of an inactive Tab button with errors', async () => {
-        const { getAllByRole, getByLabelText } = renderWithRedux(
+    it('should set the style of any Tab button with errors on submit', async () => {
+        renderWithRedux(
             <MemoryRouter initialEntries={['/posts/1']} initialIndex={0}>
                 <ThemeProvider theme={createTheme(defaultTheme)}>
                     <SaveContextProvider value={saveContextValue}>
-                        <TabbedForm
-                            classes={{ errorTabButton: 'error' }}
-                            resource="posts"
-                        >
+                        <TabbedForm resource="posts">
                             <FormTab label="tab1">
                                 <TextInput
                                     source="title"
@@ -114,99 +112,32 @@ describe('<TabbedForm />', () => {
             </MemoryRouter>
         );
 
-        const tabs = getAllByRole('tab');
-        fireEvent.click(tabs[1]);
-        const input = getByLabelText('resources.posts.fields.description');
-        fireEvent.change(input, { target: { value: 'foo' } });
-        fireEvent.blur(input);
-        fireEvent.click(tabs[0]);
-        expect(tabs[0].classList.contains('error')).toEqual(false);
-        expect(tabs[1].classList.contains('error')).toEqual(true);
-    });
-
-    it('should set the style of an active Tab button with errors', () => {
-        const { getAllByRole, getByLabelText } = renderWithRedux(
-            <MemoryRouter initialEntries={['/posts/1']} initialIndex={0}>
-                <ThemeProvider theme={createTheme(defaultTheme)}>
-                    <SaveContextProvider value={saveContextValue}>
-                        <TabbedForm
-                            classes={{ errorTabButton: 'error' }}
-                            resource="posts"
-                        >
-                            <FormTab label="tab1">
-                                <TextInput
-                                    source="title"
-                                    validate={required()}
-                                />
-                            </FormTab>
-                            <FormTab label="tab2">
-                                <TextInput
-                                    source="description"
-                                    validate={required()}
-                                />
-                            </FormTab>
-                        </TabbedForm>
-                    </SaveContextProvider>
-                </ThemeProvider>
-            </MemoryRouter>
+        const tabs = screen.getAllByRole('tab');
+        fireEvent.click(screen.getByText('tab2'));
+        const input = screen.getByLabelText(
+            'resources.posts.fields.description'
         );
+        fireEvent.type(input, 'fooooooooo');
+        fireEvent.click(screen.getByLabelText('ra.action.save'));
 
-        const tabs = getAllByRole('tab');
-        fireEvent.click(tabs[1]);
-        const input = getByLabelText('resources.posts.fields.description *');
-        fireEvent.blur(input);
-        expect(tabs[0].classList.contains('error')).toEqual(false);
-        expect(tabs[1].classList.contains('error')).toEqual(true);
-    });
-
-    it('should set the style of any Tab button with errors on submit', () => {
-        const { getAllByRole, getByLabelText } = renderWithRedux(
-            <MemoryRouter initialEntries={['/posts/1']} initialIndex={0}>
-                <ThemeProvider theme={createTheme(defaultTheme)}>
-                    <SaveContextProvider value={saveContextValue}>
-                        <TabbedForm
-                            classes={{ errorTabButton: 'error' }}
-                            resource="posts"
-                        >
-                            <FormTab label="tab1">
-                                <TextInput
-                                    source="title"
-                                    validate={required()}
-                                />
-                            </FormTab>
-                            <FormTab label="tab2">
-                                <TextInput
-                                    source="description"
-                                    validate={minLength(10)}
-                                />
-                            </FormTab>
-                        </TabbedForm>
-                    </SaveContextProvider>
-                </ThemeProvider>
-            </MemoryRouter>
-        );
-
-        const tabs = getAllByRole('tab');
-        fireEvent.click(tabs[1]);
-        const input = getByLabelText('resources.posts.fields.description');
-        fireEvent.blur(input);
-        fireEvent.change(input, { target: { value: 'fooooooooo' } });
-        fireEvent.click(getByLabelText('ra.action.save'));
-        expect(tabs[0].classList.contains('error')).toEqual(true);
-        expect(tabs[1].classList.contains('error')).toEqual(false);
+        await waitFor(() => {
+            expect(
+                tabs[0].classList.contains('RaTabbedForm-errorTabButton')
+            ).toEqual(true);
+        });
+        expect(
+            tabs[1].classList.contains('RaTabbedForm-errorTabButton')
+        ).toEqual(false);
     });
 
     it('should sync tabs with location by default', () => {
         const history = createMemoryHistory({ initialEntries: ['/'] });
 
-        const { getAllByRole, getByLabelText } = renderWithRedux(
+        renderWithRedux(
             <Router history={history}>
                 <ThemeProvider theme={createTheme(defaultTheme)}>
                     <SaveContextProvider value={saveContextValue}>
-                        <TabbedForm
-                            classes={{ errorTabButton: 'error' }}
-                            resource="posts"
-                        >
+                        <TabbedForm resource="posts">
                             <FormTab label="tab1">
                                 <TextInput
                                     source="title"
@@ -225,35 +156,37 @@ describe('<TabbedForm />', () => {
             </Router>
         );
 
-        const tabs = getAllByRole('tab');
+        const tabs = screen.getAllByRole('tab');
         fireEvent.click(tabs[1]);
         expect(history.location.pathname).toEqual('/1');
         expect(
-            getByLabelText('resources.posts.fields.description')
+            screen.getByLabelText('resources.posts.fields.description')
         ).not.toBeNull();
         expect(
-            isInaccessible(getByLabelText('resources.posts.fields.title *'))
+            isInaccessible(
+                screen.getByLabelText('resources.posts.fields.title *')
+            )
         ).toEqual(true);
         fireEvent.click(tabs[0]);
         expect(history.location.pathname).toEqual('/');
-        expect(getByLabelText('resources.posts.fields.title *')).not.toBeNull();
         expect(
-            isInaccessible(getByLabelText('resources.posts.fields.description'))
+            screen.getByLabelText('resources.posts.fields.title *')
+        ).not.toBeNull();
+        expect(
+            isInaccessible(
+                screen.getByLabelText('resources.posts.fields.description')
+            )
         ).toEqual(true);
     });
 
     it('should not sync tabs with location if syncWithLocation is false', () => {
         const history = createMemoryHistory({ initialEntries: ['/'] });
 
-        const { getAllByRole, getByLabelText } = renderWithRedux(
+        renderWithRedux(
             <Router history={history}>
                 <ThemeProvider theme={createTheme(defaultTheme)}>
                     <SaveContextProvider value={saveContextValue}>
-                        <TabbedForm
-                            classes={{ errorTabButton: 'error' }}
-                            resource="posts"
-                            syncWithLocation={false}
-                        >
+                        <TabbedForm resource="posts" syncWithLocation={false}>
                             <FormTab label="tab1">
                                 <TextInput
                                     source="title"
@@ -272,20 +205,26 @@ describe('<TabbedForm />', () => {
             </Router>
         );
 
-        const tabs = getAllByRole('tab');
+        const tabs = screen.getAllByRole('tab');
         fireEvent.click(tabs[1]);
         expect(history.location.pathname).toEqual('/');
         expect(
-            getByLabelText('resources.posts.fields.description')
+            screen.getByLabelText('resources.posts.fields.description')
         ).not.toBeNull();
         expect(
-            isInaccessible(getByLabelText('resources.posts.fields.title *'))
+            isInaccessible(
+                screen.getByLabelText('resources.posts.fields.title *')
+            )
         ).toEqual(true);
         fireEvent.click(tabs[0]);
         expect(history.location.pathname).toEqual('/');
-        expect(getByLabelText('resources.posts.fields.title *')).not.toBeNull();
         expect(
-            isInaccessible(getByLabelText('resources.posts.fields.description'))
+            screen.getByLabelText('resources.posts.fields.title *')
+        ).not.toBeNull();
+        expect(
+            isInaccessible(
+                screen.getByLabelText('resources.posts.fields.description')
+            )
         ).toEqual(true);
     });
 });
