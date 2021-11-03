@@ -1,7 +1,8 @@
 import * as React from 'react';
 import debounce from 'lodash/debounce';
-import { render, fireEvent, waitFor } from '@testing-library/react';
-import { Form } from 'react-final-form';
+import { fireEvent, waitFor } from '@testing-library/react';
+import { FormWithRedirect } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 
 import RichTextInput from './index';
 
@@ -31,10 +32,10 @@ describe('RichTextInput', () => {
         jest.useFakeTimers();
         const handleChange = jest.fn();
         debounce.mockImplementation(fn => fn);
-        const { getByTestId, rerender } = render(
-            <Form
-                initialValues={{ body: '<p>test</p>' }}
-                onSubmit={jest.fn()}
+        const { getByTestId } = renderWithRedux(
+            <FormWithRedirect
+                defaultValues={{ body: '<p>test</p>' }}
+                save={jest.fn()}
                 render={() => (
                     <RichTextInput source="body" onChange={handleChange} />
                 )}
@@ -48,19 +49,8 @@ describe('RichTextInput', () => {
             target: { innerHTML: '<p>test1</p>' },
         });
 
-        // ensuring the first 'text-change' event had been handled
-        jest.runOnlyPendingTimers();
-
-        rerender(
-            <Form
-                initialValues={{ body: '<p>test1</p>' }}
-                onSubmit={jest.fn()}
-                render={() => (
-                    <RichTextInput source="body" onChange={handleChange} />
-                )}
-            />
-        );
-
-        expect(handleChange).toHaveBeenCalledTimes(1);
+        await waitFor(() => {
+            expect(handleChange).toHaveBeenCalledTimes(1);
+        });
     });
 });
