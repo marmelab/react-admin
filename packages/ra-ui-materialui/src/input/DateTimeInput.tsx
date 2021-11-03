@@ -45,7 +45,6 @@ export const DateTimeInput = ({
         parse,
         resource,
         source,
-        type: 'datetime-local',
         validate,
         ...rest,
     });
@@ -56,6 +55,7 @@ export const DateTimeInput = ({
         <TextField
             id={id}
             {...input}
+            type="datetime-local"
             variant={variant}
             margin={margin}
             error={isTouched && !!error}
