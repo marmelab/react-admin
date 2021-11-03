@@ -52,7 +52,6 @@ export const NumberInput = ({
         parse,
         resource,
         source,
-        type: 'number',
         validate,
         ...rest,
     });
@@ -62,6 +61,7 @@ export const NumberInput = ({
     return (
         <TextField
             id={id}
+            type="number"
             {...input}
             variant={variant}
             error={isTouched && !!error}

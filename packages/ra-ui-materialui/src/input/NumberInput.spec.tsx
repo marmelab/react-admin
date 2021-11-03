@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { render, fireEvent } from '@testing-library/react';
-import { Form } from 'react-final-form';
-import { required } from 'ra-core/lib';
+import { fireEvent, waitFor } from '@testing-library/react';
+import { FormWithRedirect, required } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 
 import { NumberInput } from './NumberInput';
 
@@ -12,10 +12,10 @@ describe('<NumberInput />', () => {
     };
 
     it('should use a mui TextField', () => {
-        const { getByLabelText } = render(
-            <Form
-                onSubmit={jest.fn}
-                initialValues={{ views: 12 }}
+        const { getByLabelText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
+                defaultValues={{ views: 12 }}
                 render={() => <NumberInput {...defaultProps} />}
             />
         );
@@ -28,9 +28,9 @@ describe('<NumberInput />', () => {
 
     describe('props', () => {
         it('should accept `step` prop and pass it to native input', () => {
-            const { getByLabelText } = render(
-                <Form
-                    onSubmit={jest.fn}
+            const { getByLabelText } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => <NumberInput {...defaultProps} step="0.1" />}
                 />
             );
@@ -48,9 +48,9 @@ describe('<NumberInput />', () => {
                 value = event.target.value;
             });
 
-            const { getByLabelText } = render(
-                <Form
-                    onSubmit={jest.fn}
+            const { getByLabelText } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <NumberInput {...defaultProps} onChange={onChange} />
                     )}
@@ -61,49 +61,32 @@ describe('<NumberInput />', () => {
             expect(value).toEqual('3');
         });
 
-        it('should keep calling redux-form original event', () => {
-            let value;
-            const onChange = jest.fn(event => {
-                value = event.target.value;
+        it('should cast value as a numeric one', async () => {
+            let values;
+            let save = jest.fn(formValues => {
+                values = formValues;
             });
-            let formApi;
 
-            const { getByLabelText } = render(
-                <Form
-                    onSubmit={jest.fn}
-                    render={({ form }) => {
-                        formApi = form;
-                        return (
-                            <NumberInput
-                                {...defaultProps}
-                                onChange={onChange}
-                            />
-                        );
-                    }}
-                />
-            );
-            const input = getByLabelText('resources.posts.fields.views');
-            fireEvent.change(input, { target: { value: 3 } });
-            expect(value).toEqual('3');
-            expect(formApi.getState().values.views).toEqual(3);
-        });
-
-        it('should cast value as a numeric one', () => {
-            let formApi;
-
-            const { getByLabelText } = render(
-                <Form
-                    onSubmit={jest.fn}
-                    render={({ form }) => {
-                        formApi = form;
-                        return <NumberInput {...defaultProps} />;
-                    }}
-                />
+            const { getByLabelText, getByText } = renderWithRedux(
+                <>
+                    <FormWithRedirect
+                        save={save}
+                        render={({ handleSubmit }) => (
+                            <form onSubmit={handleSubmit}>
+                                <NumberInput {...defaultProps} />
+                                <button type="submit">Save</button>
+                            </form>
+                        )}
+                    />
+                </>
             );
             const input = getByLabelText('resources.posts.fields.views');
             fireEvent.change(input, { target: { value: '3' } });
-            expect(formApi.getState().values.views).toEqual(3);
-            expect(typeof formApi.getState().values.views).toEqual('number');
+            fireEvent.click(getByText('Save'));
+
+            await waitFor(() => {
+                expect(values.views).toStrictEqual(3);
+            });
         });
     });
 
@@ -111,9 +94,9 @@ describe('<NumberInput />', () => {
         it('should be customizable via the `onFocus` prop', () => {
             const onFocus = jest.fn();
 
-            const { getByLabelText } = render(
-                <Form
-                    onSubmit={jest.fn}
+            const { getByLabelText } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <NumberInput {...defaultProps} onFocus={onFocus} />
                     )}
@@ -123,35 +106,15 @@ describe('<NumberInput />', () => {
             input.focus();
             expect(onFocus).toHaveBeenCalled();
         });
-
-        it('should keep calling redux-form original event', () => {
-            const onFocus = jest.fn();
-            let formApi;
-
-            const { getByLabelText } = render(
-                <Form
-                    onSubmit={jest.fn}
-                    render={({ form }) => {
-                        formApi = form;
-                        return (
-                            <NumberInput {...defaultProps} onFocus={onFocus} />
-                        );
-                    }}
-                />
-            );
-            const input = getByLabelText('resources.posts.fields.views');
-            input.focus();
-            expect(formApi.getState().active).toEqual('views');
-        });
     });
 
     describe('onBlur event', () => {
         it('should be customizable via the `onBlur` prop', () => {
             const onBlur = jest.fn();
 
-            const { getByLabelText } = render(
-                <Form
-                    onSubmit={jest.fn}
+            const { getByLabelText } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <NumberInput {...defaultProps} onBlur={onBlur} />
                     )}
@@ -162,36 +125,13 @@ describe('<NumberInput />', () => {
             input.blur();
             expect(onBlur).toHaveBeenCalled();
         });
-
-        it('should keep calling redux-form original event', () => {
-            const onBlur = jest.fn();
-            let formApi;
-
-            const { getByLabelText } = render(
-                <Form
-                    onSubmit={jest.fn}
-                    render={({ form }) => {
-                        formApi = form;
-                        return (
-                            <NumberInput {...defaultProps} onBlur={onBlur} />
-                        );
-                    }}
-                />
-            );
-            const input = getByLabelText('resources.posts.fields.views');
-            input.focus();
-            expect(formApi.getState().active).toEqual('views');
-            input.blur();
-            expect(onBlur).toHaveBeenCalled();
-            expect(formApi.getState().active).toBeUndefined();
-        });
     });
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
-            const { queryByText } = render(
-                <Form
-                    onSubmit={jest.fn}
+            const { queryByText } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <NumberInput {...defaultProps} validate={required()} />
                     )}
@@ -202,10 +142,10 @@ describe('<NumberInput />', () => {
         });
 
         it('should not be displayed if field has been touched but is valid', () => {
-            const { getByLabelText, queryByText } = render(
-                <Form
-                    onSubmit={jest.fn}
-                    validateOnBlur
+            const { getByLabelText, queryByText } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
+                    mode="onChange"
                     render={() => (
                         <NumberInput {...defaultProps} validate={required()} />
                     )}
@@ -213,17 +153,16 @@ describe('<NumberInput />', () => {
             );
             const input = getByLabelText('resources.posts.fields.views *');
             fireEvent.change(input, { target: { value: '3' } });
-            input.blur();
 
             const error = queryByText('ra.validation.required');
             expect(error).toBeNull();
         });
 
-        it('should be displayed if field has been touched and is invalid', () => {
-            const { getByLabelText, getByText } = render(
-                <Form
-                    onSubmit={jest.fn}
-                    validateOnBlur
+        it('should be displayed if field has been touched and is invalid', async () => {
+            const { getByLabelText, getByText } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
+                    mode="onBlur"
                     render={() => (
                         <NumberInput {...defaultProps} validate={required()} />
                     )}
@@ -233,8 +172,9 @@ describe('<NumberInput />', () => {
             input.focus();
             input.blur();
 
-            const error = getByText('ra.validation.required');
-            expect(error).not.toBeNull();
+            await waitFor(() => {
+                expect(getByText('ra.validation.required')).not.toBeNull();
+            });
         });
     });
 });
