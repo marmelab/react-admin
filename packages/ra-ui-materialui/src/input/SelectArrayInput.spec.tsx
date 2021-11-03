@@ -1,8 +1,8 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, fireEvent, waitFor } from '@testing-library/react';
-import { Form } from 'react-final-form';
-import { TestTranslationProvider } from 'ra-core';
+import { fireEvent, waitFor } from '@testing-library/react';
+import { FormWithRedirect, TestTranslationProvider } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 
 import { SelectArrayInput } from './SelectArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
@@ -19,9 +19,9 @@ describe('<SelectArrayInput />', () => {
     };
 
     it('should use a mui Select', () => {
-        const { queryByTestId } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { queryByTestId } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => <SelectArrayInput {...defaultProps} />}
             />
         );
@@ -29,10 +29,10 @@ describe('<SelectArrayInput />', () => {
     });
 
     it('should use the input parameter value as the initial input value', () => {
-        const { getByDisplayValue } = render(
-            <Form
-                initialValues={{ categories: ['programming', 'lifestyle'] }}
-                onSubmit={jest.fn()}
+        const { getByDisplayValue } = renderWithRedux(
+            <FormWithRedirect
+                defaultValues={{ categories: ['programming', 'lifestyle'] }}
+                save={jest.fn()}
                 render={() => <SelectArrayInput {...defaultProps} />}
             />
         );
@@ -40,9 +40,9 @@ describe('<SelectArrayInput />', () => {
     });
 
     it('should reveal choices on click', () => {
-        const { getByRole, queryByText } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByRole, queryByText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => <SelectArrayInput {...defaultProps} />}
             />
         );
@@ -56,9 +56,9 @@ describe('<SelectArrayInput />', () => {
     });
 
     it('should use optionValue as value identifier', () => {
-        const { getByRole, getByText, getByDisplayValue } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByRole, getByText, getByDisplayValue } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <SelectArrayInput
                         {...defaultProps}
@@ -76,9 +76,9 @@ describe('<SelectArrayInput />', () => {
     });
 
     it('should use optionValue including "." as value identifier', () => {
-        const { getByRole, getByText, getByDisplayValue } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByRole, getByText, getByDisplayValue } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <SelectArrayInput
                         {...defaultProps}
@@ -99,9 +99,9 @@ describe('<SelectArrayInput />', () => {
     });
 
     it('should use optionText with a string value as text identifier', () => {
-        const { getByRole, queryByText } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByRole, queryByText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <SelectArrayInput
                         {...defaultProps}
@@ -116,9 +116,9 @@ describe('<SelectArrayInput />', () => {
     });
 
     it('should use optionText with a string value including "." as text identifier', () => {
-        const { getByRole, queryByText } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByRole, queryByText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <SelectArrayInput
                         {...defaultProps}
@@ -138,9 +138,9 @@ describe('<SelectArrayInput />', () => {
     });
 
     it('should use optionText with a function value as text identifier', () => {
-        const { getByRole, queryByText } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByRole, queryByText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <SelectArrayInput
                         {...defaultProps}
@@ -156,9 +156,9 @@ describe('<SelectArrayInput />', () => {
 
     it('should use optionText with an element value as text identifier', () => {
         const Foobar = ({ record = undefined }) => <span>{record.foobar}</span>;
-        const { getByRole, queryByText } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByRole, queryByText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <SelectArrayInput
                         {...defaultProps}
@@ -173,9 +173,9 @@ describe('<SelectArrayInput />', () => {
     });
 
     it('should render disable choices marked so', () => {
-        const { getByRole, getByText } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByRole, getByText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <SelectArrayInput
                         {...defaultProps}
@@ -197,10 +197,10 @@ describe('<SelectArrayInput />', () => {
     });
 
     it('should translate the choices', () => {
-        const { getByRole, queryByText } = render(
+        const { getByRole, queryByText } = renderWithRedux(
             <TestTranslationProvider translate={x => `**${x}**`}>
-                <Form
-                    onSubmit={jest.fn()}
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => <SelectArrayInput {...defaultProps} />}
                 />
             </TestTranslationProvider>
@@ -211,9 +211,9 @@ describe('<SelectArrayInput />', () => {
     });
 
     it('should display helperText if prop is specified', () => {
-        const { queryByText } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { queryByText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <SelectArrayInput
                         {...defaultProps}
@@ -228,9 +228,9 @@ describe('<SelectArrayInput />', () => {
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
             const validate = () => 'Required field.';
-            const { queryByText } = render(
-                <Form
-                    onSubmit={jest.fn()}
+            const { queryByText } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <SelectArrayInput
                             {...defaultProps}
@@ -242,11 +242,12 @@ describe('<SelectArrayInput />', () => {
             expect(queryByText('ra.validation.required')).toBeNull();
         });
 
-        it('should be displayed if field has been touched and is invalid', () => {
+        it('should be displayed if field has been touched and is invalid', async () => {
             const validate = () => 'Required field.';
-            const { queryByText } = render(
-                <Form
-                    onSubmit={jest.fn()}
+            const { queryByText } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
+                    mode="onChange"
                     render={() => (
                         <SelectArrayInput
                             {...defaultProps}
@@ -255,72 +256,76 @@ describe('<SelectArrayInput />', () => {
                     )}
                 />
             );
-            expect(queryByText('Required field.')).toBeDefined();
+
+            await waitFor(() => {
+                expect(queryByText('Required field.')).toBeDefined();
+            });
         });
+    });
 
-        it('should not render a LinearProgress if loading is true and a second has not passed yet', () => {
-            const { queryByRole } = render(
-                <Form
-                    validateOnBlur
-                    onSubmit={jest.fn()}
-                    render={() => (
-                        <SelectArrayInput
-                            {...{
-                                ...defaultProps,
-                                loaded: true,
-                                loading: true,
-                            }}
-                        />
-                    )}
-                />
-            );
+    it('should not render a LinearProgress if loading is true and a second has not passed yet', () => {
+        const { queryByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
+                render={() => (
+                    <SelectArrayInput
+                        {...{
+                            ...defaultProps,
+                            loaded: true,
+                            loading: true,
+                        }}
+                    />
+                )}
+            />
+        );
 
-            expect(queryByRole('progressbar')).toBeNull();
-        });
+        expect(queryByRole('progressbar')).toBeNull();
+    });
 
-        it('should render a LinearProgress if loading is true and a second has passed', async () => {
-            const { queryByRole } = render(
-                <Form
-                    validateOnBlur
-                    onSubmit={jest.fn()}
-                    render={() => (
-                        <SelectArrayInput
-                            {...{
-                                ...defaultProps,
-                                loaded: true,
-                                loading: true,
-                            }}
-                        />
-                    )}
-                />
-            );
+    it('should render a LinearProgress if loading is true and a second has passed', async () => {
+        const { queryByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
+                render={() => (
+                    <SelectArrayInput
+                        {...{
+                            ...defaultProps,
+                            loaded: true,
+                            loading: true,
+                        }}
+                    />
+                )}
+            />
+        );
 
-            await new Promise(resolve => setTimeout(resolve, 1001));
+        await new Promise(resolve => setTimeout(resolve, 1001));
 
-            expect(queryByRole('progressbar')).not.toBeNull();
-        });
+        expect(queryByRole('progressbar')).not.toBeNull();
+    });
 
-        it('should not render a LinearProgress if loading is false', () => {
-            const { queryByRole } = render(
-                <Form
-                    validateOnBlur
-                    onSubmit={jest.fn()}
-                    render={() => <SelectArrayInput {...defaultProps} />}
-                />
-            );
+    it('should not render a LinearProgress if loading is false', () => {
+        const { queryByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
+                render={() => <SelectArrayInput {...defaultProps} />}
+            />
+        );
 
-            expect(queryByRole('progressbar')).toBeNull();
-        });
+        expect(queryByRole('progressbar')).toBeNull();
     });
 
     it('should support creation of a new choice through the onCreate event', async () => {
         const choices = [...defaultProps.choices];
         const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
 
-        const { getByLabelText, getByRole, getByText, queryAllByText } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
+        const {
+            getByLabelText,
+            getByRole,
+            getByText,
+            queryAllByText,
+        } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <SelectArrayInput
                         {...defaultProps}
@@ -344,7 +349,7 @@ describe('<SelectArrayInput />', () => {
         fireEvent.click(getByText('ra.action.create'));
         await new Promise(resolve => setImmediate(resolve));
         input.blur();
-        // 2 because there is both the chip for the new selected item and the option (event if hidden)
+        // 2 because there is both the chip for the new selected item and the option (even if hidden)
         expect(queryAllByText(newChoice.name).length).toEqual(2);
     });
 
@@ -352,10 +357,14 @@ describe('<SelectArrayInput />', () => {
         const choices = [...defaultProps.choices];
         const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
 
-        const { getByLabelText, getByRole, getByText, queryAllByText } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
+        const {
+            getByLabelText,
+            getByRole,
+            getByText,
+            queryAllByText,
+        } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <SelectArrayInput
                         {...defaultProps}
@@ -404,10 +413,14 @@ describe('<SelectArrayInput />', () => {
             return <button onClick={handleClick}>Get the kid</button>;
         };
 
-        const { getByLabelText, getByRole, getByText, queryAllByText } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
+        const {
+            getByLabelText,
+            getByRole,
+            getByText,
+            queryAllByText,
+        } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <SelectArrayInput
                         {...defaultProps}
