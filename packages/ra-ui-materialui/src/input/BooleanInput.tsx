@@ -32,7 +32,12 @@ export const BooleanInput = (props: BooleanInputProps) => {
     } = props;
     const {
         id,
-        input: { onChange: finalFormOnChange, value, ...inputProps },
+        input: {
+            onBlur: formOnBlur,
+            onChange: formOnChange,
+            value,
+            ...inputProps
+        },
         isRequired,
         meta: { error, isTouched },
     } = useInput({
@@ -50,9 +55,10 @@ export const BooleanInput = (props: BooleanInputProps) => {
 
     const handleChange = useCallback(
         (event, value) => {
-            finalFormOnChange(value);
+            formOnChange(value);
+            formOnBlur(undefined);
         },
-        [finalFormOnChange]
+        [formOnBlur, formOnChange]
     );
 
     return (
