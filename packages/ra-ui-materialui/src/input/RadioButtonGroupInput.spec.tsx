@@ -1,8 +1,8 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, fireEvent } from '@testing-library/react';
-import { Form } from 'react-final-form';
-import { TestTranslationProvider } from 'ra-core';
+import { fireEvent, waitFor } from '@testing-library/react';
+import { FormWithRedirect, TestTranslationProvider } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 
 import { RadioButtonGroupInput } from './RadioButtonGroupInput';
 
@@ -17,9 +17,9 @@ describe('<RadioButtonGroupInput />', () => {
     };
 
     it('should render choices as radio inputs', () => {
-        const { getByLabelText, queryByText } = render(
-            <Form
-                onSubmit={jest.fn}
+        const { getByLabelText, queryByText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <RadioButtonGroupInput
                         {...defaultProps}
@@ -46,9 +46,9 @@ describe('<RadioButtonGroupInput />', () => {
             </span>
         );
 
-        const { getByLabelText, queryByText } = render(
-            <Form
-                onSubmit={jest.fn}
+        const { getByLabelText, queryByText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <RadioButtonGroupInput
                         resource={'people'}
@@ -80,9 +80,9 @@ describe('<RadioButtonGroupInput />', () => {
 
     it('should trigger custom onChange when clicking radio button', async () => {
         const onChange = jest.fn();
-        const { getByLabelText, queryByText } = render(
-            <Form
-                onSubmit={jest.fn}
+        const { getByLabelText, queryByText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <RadioButtonGroupInput
                         {...defaultProps}
@@ -95,18 +95,21 @@ describe('<RadioButtonGroupInput />', () => {
         expect(queryByText('Credit card')).not.toBeNull();
         const input1 = getByLabelText('VISA') as HTMLInputElement;
         fireEvent.click(input1);
-        expect(onChange).toBeCalledWith('visa');
-
+        await waitFor(() => {
+            expect(onChange).toBeCalledWith('visa');
+        });
         const input2 = getByLabelText('Mastercard') as HTMLInputElement;
         fireEvent.click(input2);
-        expect(onChange).toBeCalledWith('mastercard');
+        await waitFor(() => {
+            expect(onChange).toBeCalledWith('mastercard');
+        });
     });
 
-    it('should use the value provided by final-form as the initial input value', () => {
-        const { getByLabelText } = render(
-            <Form
-                onSubmit={jest.fn}
-                initialValues={{ type: 'mastercard' }}
+    it('should use the value provided by the form as the initial input value', () => {
+        const { getByLabelText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
+                defaultValues={{ type: 'mastercard' }}
                 render={() => <RadioButtonGroupInput {...defaultProps} />}
             />
         );
@@ -123,9 +126,9 @@ describe('<RadioButtonGroupInput />', () => {
             { id: 1, name: 'VISA' },
             { id: 2, name: 'Mastercard' },
         ];
-        const { getByLabelText } = render(
-            <Form
-                onSubmit={jest.fn}
+        const { getByLabelText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <RadioButtonGroupInput
                         {...defaultProps}
@@ -141,9 +144,9 @@ describe('<RadioButtonGroupInput />', () => {
     });
 
     it('should use optionValue as value identifier', () => {
-        const { getByLabelText } = render(
-            <Form
-                onSubmit={jest.fn}
+        const { getByLabelText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <RadioButtonGroupInput
                         {...defaultProps}
@@ -159,9 +162,9 @@ describe('<RadioButtonGroupInput />', () => {
     });
 
     it('should use optionValue including "." as value identifier', () => {
-        const { getByLabelText } = render(
-            <Form
-                onSubmit={jest.fn}
+        const { getByLabelText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn}
                 render={() => (
                     <RadioButtonGroupInput
                         {...defaultProps}
@@ -179,9 +182,9 @@ describe('<RadioButtonGroupInput />', () => {
     });
 
     it('should use optionText with a string value as text identifier', () => {
-        const { queryByText } = render(
-            <Form
-                onSubmit={jest.fn}
+        const { queryByText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn}
                 render={() => (
                     <RadioButtonGroupInput
                         {...defaultProps}
@@ -195,9 +198,9 @@ describe('<RadioButtonGroupInput />', () => {
     });
 
     it('should use optionText with a string value including "." as text identifier', () => {
-        const { queryByText } = render(
-            <Form
-                onSubmit={jest.fn}
+        const { queryByText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn}
                 render={() => (
                     <RadioButtonGroupInput
                         {...defaultProps}
@@ -213,9 +216,9 @@ describe('<RadioButtonGroupInput />', () => {
     });
 
     it('should use optionText with a function value as text identifier', () => {
-        const { queryByText } = render(
-            <Form
-                onSubmit={jest.fn}
+        const { queryByText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn}
                 render={() => (
                     <RadioButtonGroupInput
                         {...defaultProps}
@@ -232,9 +235,9 @@ describe('<RadioButtonGroupInput />', () => {
         const Foobar = ({ record }: { record?: any }) => (
             <span>{record.longname}</span>
         );
-        const { queryByText } = render(
-            <Form
-                onSubmit={jest.fn}
+        const { queryByText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn}
                 render={() => (
                     <RadioButtonGroupInput
                         {...defaultProps}
@@ -248,10 +251,10 @@ describe('<RadioButtonGroupInput />', () => {
     });
 
     it('should translate the choices by default', () => {
-        const { queryByText } = render(
+        const { queryByText } = renderWithRedux(
             <TestTranslationProvider translate={x => `**${x}**`}>
-                <Form
-                    onSubmit={jest.fn}
+                <FormWithRedirect
+                    save={jest.fn}
                     render={() => (
                         <RadioButtonGroupInput
                             {...defaultProps}
@@ -265,10 +268,10 @@ describe('<RadioButtonGroupInput />', () => {
     });
 
     it('should not translate the choices if translateChoice is false', () => {
-        const { queryByText } = render(
+        const { queryByText } = renderWithRedux(
             <TestTranslationProvider translate={x => `**${x}**`}>
-                <Form
-                    onSubmit={jest.fn}
+                <FormWithRedirect
+                    save={jest.fn}
                     render={() => (
                         <RadioButtonGroupInput
                             {...defaultProps}
@@ -284,9 +287,9 @@ describe('<RadioButtonGroupInput />', () => {
     });
 
     it('should display helperText if prop is present in meta', () => {
-        const { queryByText } = render(
-            <Form
-                onSubmit={jest.fn}
+        const { queryByText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn}
                 render={() => (
                     <RadioButtonGroupInput
                         {...defaultProps}
@@ -303,10 +306,9 @@ describe('<RadioButtonGroupInput />', () => {
             // This validator always returns an error
             const validate = () => 'ra.validation.error';
 
-            const { queryByText } = render(
-                <Form
-                    onSubmit={jest.fn}
-                    validateOnBlur
+            const { queryByText } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn}
                     render={() => (
                         <RadioButtonGroupInput
                             {...defaultProps}
@@ -318,14 +320,14 @@ describe('<RadioButtonGroupInput />', () => {
             expect(queryByText('ra.validation.required')).toBeNull();
         });
 
-        it('should be displayed if field has been touched and is invalid', () => {
+        it('should be displayed if field has been touched and is invalid', async () => {
             // This validator always returns an error
             const validate = () => 'ra.validation.error';
 
-            const { getByLabelText, getByText } = render(
-                <Form
-                    onSubmit={jest.fn}
-                    validateOnBlur
+            const { getByLabelText, queryByText } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn}
+                    mode="onChange"
                     render={() => (
                         <RadioButtonGroupInput
                             {...defaultProps}
@@ -336,23 +338,22 @@ describe('<RadioButtonGroupInput />', () => {
             );
 
             const input = getByLabelText('Mastercard') as HTMLInputElement;
-            input.focus();
             fireEvent.click(input);
             expect(input.checked).toBe(true);
 
-            input.blur();
-
-            expect(getByText('ra.validation.error')).not.toBeNull();
+            await waitFor(() => {
+                expect(queryByText('ra.validation.error')).not.toBeNull();
+            });
         });
 
-        it('should be displayed even with a helper Text', () => {
+        it('should be displayed even with a helper Text', async () => {
             // This validator always returns an error
             const validate = () => 'ra.validation.error';
 
-            const { getByLabelText, getByText, queryByText } = render(
-                <Form
-                    onSubmit={jest.fn}
-                    validateOnBlur
+            const { getByLabelText, getByText, queryByText } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn}
+                    mode="onChange"
                     render={() => (
                         <RadioButtonGroupInput
                             {...defaultProps}
@@ -363,11 +364,12 @@ describe('<RadioButtonGroupInput />', () => {
                 />
             );
             const input = getByLabelText('Mastercard') as HTMLInputElement;
-            input.focus();
             fireEvent.click(input);
             expect(input.checked).toBe(true);
 
-            input.blur();
+            await waitFor(() => {
+                expect(queryByText('ra.validation.error')).not.toBeNull();
+            });
 
             const error = getByText('ra.validation.error');
             expect(error).toBeDefined();
@@ -377,10 +379,9 @@ describe('<RadioButtonGroupInput />', () => {
     });
 
     it('should not render a LinearProgress if loading is true and a second has not passed yet', () => {
-        const { queryByRole } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
+        const { queryByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <RadioButtonGroupInput
                         {...{
@@ -397,10 +398,9 @@ describe('<RadioButtonGroupInput />', () => {
     });
 
     it('should render a LinearProgress if loading is true and a second has passed', async () => {
-        const { queryByRole } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
+        const { queryByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <RadioButtonGroupInput
                         {...{
@@ -419,10 +419,9 @@ describe('<RadioButtonGroupInput />', () => {
     });
 
     it('should not render a LinearProgress if loading is false', () => {
-        const { queryByRole } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
+        const { queryByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <RadioButtonGroupInput
                         {...{
