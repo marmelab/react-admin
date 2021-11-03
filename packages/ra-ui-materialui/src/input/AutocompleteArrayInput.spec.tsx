@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { fireEvent, render, waitFor } from '@testing-library/react';
-import { Form } from 'react-final-form';
+import { fireEvent, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import expect from 'expect';
+import { FormWithRedirect, TestTranslationProvider } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
-import { TestTranslationProvider } from 'ra-core';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 
 describe('<AutocompleteArrayInput />', () => {
@@ -14,9 +15,9 @@ describe('<AutocompleteArrayInput />', () => {
     };
 
     it('should extract suggestions from choices', () => {
-        const { getByLabelText, getByText, queryAllByRole } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByLabelText, getByText, queryAllByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         {...defaultProps}
@@ -40,9 +41,9 @@ describe('<AutocompleteArrayInput />', () => {
     });
 
     it('should use optionText with a string value as text identifier', () => {
-        const { getByLabelText, getByText, queryAllByRole } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByLabelText, getByText, queryAllByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         {...defaultProps}
@@ -68,9 +69,9 @@ describe('<AutocompleteArrayInput />', () => {
     });
 
     it('should use optionText with a string value including "." as text identifier', () => {
-        const { getByLabelText, getByText, queryAllByRole } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByLabelText, getByText, queryAllByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         {...defaultProps}
@@ -96,9 +97,9 @@ describe('<AutocompleteArrayInput />', () => {
     });
 
     it('should use optionText with a function value as text identifier', () => {
-        const { getByLabelText, getByText, queryAllByRole } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByLabelText, getByText, queryAllByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         {...defaultProps}
@@ -124,9 +125,9 @@ describe('<AutocompleteArrayInput />', () => {
     });
 
     it('should translate the choices by default', () => {
-        const { getByLabelText, getByText, queryAllByRole } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByLabelText, getByText, queryAllByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <TestTranslationProvider translate={x => `**${x}**`}>
                         <AutocompleteArrayInput
@@ -153,9 +154,9 @@ describe('<AutocompleteArrayInput />', () => {
     });
 
     it('should not translate the choices if translateChoice is false', () => {
-        const { getByLabelText, getByText, queryAllByRole } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByLabelText, getByText, queryAllByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <TestTranslationProvider translate={x => `**${x}**`}>
                         <AutocompleteArrayInput
@@ -184,9 +185,9 @@ describe('<AutocompleteArrayInput />', () => {
 
     it('should make debounced calls to setFilter', async () => {
         const setFilter = jest.fn();
-        const { getByLabelText } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByLabelText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         {...defaultProps}
@@ -210,9 +211,9 @@ describe('<AutocompleteArrayInput />', () => {
     });
 
     it('should respect shouldRenderSuggestions over default if passed in', async () => {
-        const { getByLabelText, queryAllByRole } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByLabelText, queryAllByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         {...defaultProps}
@@ -236,9 +237,9 @@ describe('<AutocompleteArrayInput />', () => {
     });
 
     it('should not fail when value is empty and new choices are applied', () => {
-        const { getByLabelText, rerender } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByLabelText, rerender } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         {...defaultProps}
@@ -249,8 +250,8 @@ describe('<AutocompleteArrayInput />', () => {
         );
 
         rerender(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         {...defaultProps}
@@ -266,9 +267,9 @@ describe('<AutocompleteArrayInput />', () => {
     });
 
     it('should repopulate the suggestions after the suggestions are dismissed', () => {
-        const { getByLabelText, queryAllByRole } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByLabelText, queryAllByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         {...defaultProps}
@@ -294,13 +295,12 @@ describe('<AutocompleteArrayInput />', () => {
 
     it('should not rerender searchText while having focus and new choices arrive', () => {
         const optionText = jest.fn();
-        const { getByLabelText, queryAllByRole, rerender } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByLabelText, queryAllByRole, rerender } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         {...defaultProps}
-                        meta={{ active: true }}
                         choices={[{ id: 't', name: 'Technical' }]}
                         optionText={v => {
                             optionText(v);
@@ -319,12 +319,11 @@ describe('<AutocompleteArrayInput />', () => {
         expect(queryAllByRole('option')).toHaveLength(0);
 
         rerender(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         {...defaultProps}
-                        meta={{ active: true }}
                         choices={[
                             { id: 't', name: 'Technical' },
                             { id: 'p', name: 'Programming' },
@@ -342,9 +341,9 @@ describe('<AutocompleteArrayInput />', () => {
     });
 
     it('should revert the searchText on blur', () => {
-        const { getByLabelText, queryAllByRole } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByLabelText, queryAllByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         {...defaultProps}
@@ -366,15 +365,15 @@ describe('<AutocompleteArrayInput />', () => {
     });
 
     it('should show the suggestions when the input value is empty and the input is focused and choices arrived late', () => {
-        const { getByLabelText, queryAllByRole, rerender } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByLabelText, queryAllByRole, rerender } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => <AutocompleteArrayInput {...defaultProps} />}
             />
         );
         rerender(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         {...defaultProps}
@@ -397,9 +396,9 @@ describe('<AutocompleteArrayInput />', () => {
 
     it('should resolve value from input value', () => {
         const onChange = jest.fn();
-        const { getByLabelText, getByRole } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByLabelText, getByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         {...defaultProps}
@@ -425,74 +424,66 @@ describe('<AutocompleteArrayInput />', () => {
 
     it('should reset filter when input value changed', async () => {
         const setFilter = jest.fn();
-        let formApi;
-        const { getByLabelText } = render(
-            <Form
-                onSubmit={jest.fn()}
-                initialValues={{ tags: ['t'] }}
-                render={({ form }) => {
-                    formApi = form;
-                    return (
-                        <AutocompleteArrayInput
-                            {...defaultProps}
-                            choices={[
-                                { id: 't', name: 'Technical' },
-                                { id: 'p', name: 'Programming' },
-                            ]}
-                            setFilter={setFilter}
-                        />
-                    );
-                }}
+        const { getByLabelText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
+                defaultValues={{ tags: ['t'] }}
+                render={() => (
+                    <AutocompleteArrayInput
+                        {...defaultProps}
+                        choices={[
+                            { id: 't', name: 'Technical' },
+                            { id: 'p', name: 'Programming' },
+                        ]}
+                        setFilter={setFilter}
+                    />
+                )}
             />
         );
         const input = getByLabelText('resources.posts.fields.tags', {
             selector: 'input',
         });
-        fireEvent.change(input, { target: { value: 'p' } });
+        userEvent.type(input, 'p');
         await new Promise(resolve => setTimeout(resolve, 260));
         expect(setFilter).toHaveBeenCalledTimes(1);
         expect(setFilter).toHaveBeenCalledWith('p');
-        formApi.change('tags', ['p']);
+        userEvent.type(input, '{arrowdown}{enter}');
         await waitFor(() => {
             expect(setFilter).toHaveBeenCalledTimes(2);
-            expect(setFilter).toHaveBeenCalledWith('');
         });
+        expect(setFilter).toHaveBeenCalledWith('');
     });
 
     it('should reset filter only when needed, even if the value is an array of objects (fixes #4454)', async () => {
         const setFilter = jest.fn();
-        let formApi;
-        const { getByLabelText } = render(
-            <Form
-                onSubmit={jest.fn()}
-                initialValues={{ tags: [{ id: 't' }] }}
-                render={({ form }) => {
-                    formApi = form;
-                    return (
-                        <AutocompleteArrayInput
-                            {...defaultProps}
-                            choices={[
-                                { id: 't', name: 'Technical' },
-                                { id: 'p', name: 'Programming' },
-                            ]}
-                            parse={value =>
-                                value && value.map(v => ({ id: v }))
-                            }
-                            format={value => value && value.map(v => v.id)}
-                            setFilter={setFilter}
-                        />
-                    );
-                }}
+        const { getByLabelText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
+                defaultValues={{ tags: [{ id: 't' }] }}
+                render={() => (
+                    <AutocompleteArrayInput
+                        {...defaultProps}
+                        choices={[
+                            { id: 't', name: 'Technical' },
+                            { id: 'p', name: 'Programming' },
+                        ]}
+                        parse={value => value && value.map(v => ({ id: v }))}
+                        format={value => value && value.map(v => v.id)}
+                        setFilter={setFilter}
+                    />
+                )}
             />
         );
         const input = getByLabelText('resources.posts.fields.tags', {
             selector: 'input',
         });
-        fireEvent.change(input, { target: { value: 'p' } });
+
+        userEvent.type(input, 'p');
         await new Promise(resolve => setTimeout(resolve, 260));
         expect(setFilter).toHaveBeenCalledTimes(1);
         expect(setFilter).toHaveBeenCalledWith('p');
-        formApi.change('tags', ['p']);
+        userEvent.type(input, '{arrowdown}{enter}');
+
         await waitFor(() => {
             expect(setFilter).toHaveBeenCalledTimes(2);
             expect(setFilter).toHaveBeenCalledWith('');
@@ -504,9 +495,9 @@ describe('<AutocompleteArrayInput />', () => {
             <div aria-label={record.name} />
         );
 
-        const { getByLabelText } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByLabelText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         {...defaultProps}
@@ -530,9 +521,9 @@ describe('<AutocompleteArrayInput />', () => {
     });
 
     it('should display helperText', () => {
-        const { getByText } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         {...defaultProps}
@@ -548,9 +539,9 @@ describe('<AutocompleteArrayInput />', () => {
         const failingValidator = () => 'ra.validation.error';
 
         it('should not be displayed if field is pristine', () => {
-            const { queryByText } = render(
-                <Form
-                    onSubmit={jest.fn()}
+            const { queryByText } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <AutocompleteArrayInput
                             {...defaultProps}
@@ -563,10 +554,11 @@ describe('<AutocompleteArrayInput />', () => {
             expect(queryByText('ra.validation.error')).toBeNull();
         });
 
-        it('should be displayed if field has been touched and is invalid', () => {
-            const { getByLabelText, queryByText } = render(
-                <Form
-                    onSubmit={jest.fn()}
+        it('should be displayed if field has been touched and is invalid', async () => {
+            const { getByLabelText, queryByText } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
+                    mode="onBlur"
                     render={() => (
                         <AutocompleteArrayInput
                             {...defaultProps}
@@ -582,14 +574,16 @@ describe('<AutocompleteArrayInput />', () => {
             fireEvent.focus(input);
             fireEvent.blur(input);
 
-            expect(queryByText('ra.validation.error')).not.toBeNull();
+            await waitFor(() => {
+                expect(queryByText('ra.validation.error')).not.toBeNull();
+            });
         });
     });
 
     it('updates suggestions when input is blurred and refocused', () => {
-        const { getByLabelText, queryAllByRole } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByLabelText, queryAllByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         {...defaultProps}
@@ -619,9 +613,9 @@ describe('<AutocompleteArrayInput />', () => {
     it('does not automatically select a matched choice if there is only one', async () => {
         const onChange = jest.fn();
 
-        const { getByLabelText, queryAllByRole } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByLabelText, queryAllByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         {...defaultProps}
@@ -645,9 +639,9 @@ describe('<AutocompleteArrayInput />', () => {
     });
 
     it('passes options.suggestionsContainerProps to the suggestions container', () => {
-        const { getByLabelText } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByLabelText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         {...defaultProps}
@@ -670,9 +664,9 @@ describe('<AutocompleteArrayInput />', () => {
     });
 
     it('should limit suggestions when suggestionLimit is passed', () => {
-        const { getByLabelText, queryAllByRole } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByLabelText, queryAllByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         {...defaultProps}
@@ -693,10 +687,9 @@ describe('<AutocompleteArrayInput />', () => {
     });
 
     it('should not render a LinearProgress if loading is true and a second has not passed yet', () => {
-        const { queryByRole } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
+        const { queryByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         {...{
@@ -713,10 +706,9 @@ describe('<AutocompleteArrayInput />', () => {
     });
 
     it('should render a LinearProgress if loading is true and a second has passed', async () => {
-        const { queryByRole } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
+        const { queryByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         {...{
@@ -735,10 +727,9 @@ describe('<AutocompleteArrayInput />', () => {
     });
 
     it('should not render a LinearProgress if loading is false', () => {
-        const { queryByRole } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
+        const { queryByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         {...{
@@ -766,10 +757,14 @@ describe('<AutocompleteArrayInput />', () => {
             return newChoice;
         };
 
-        const { getByLabelText, getByText, queryByText, rerender } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
+        const {
+            getByLabelText,
+            getByText,
+            queryByText,
+            rerender,
+        } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         source="language"
@@ -789,14 +784,12 @@ describe('<AutocompleteArrayInput />', () => {
         fireEvent.click(getByText('ra.action.create_item'));
         await new Promise(resolve => setImmediate(resolve));
         rerender(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         source="language"
                         resource="posts"
-                        resettable
                         choices={choices}
                         onCreate={handleCreate}
                     />
@@ -823,17 +816,20 @@ describe('<AutocompleteArrayInput />', () => {
             });
         };
 
-        const { getByLabelText, getByText, queryByText, rerender } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
+        const {
+            getByLabelText,
+            getByText,
+            queryByText,
+            rerender,
+        } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         source="language"
                         resource="posts"
                         choices={choices}
                         onCreate={handleCreate}
-                        resettable
                     />
                 )}
             />
@@ -847,14 +843,12 @@ describe('<AutocompleteArrayInput />', () => {
         fireEvent.click(getByText('ra.action.create_item'));
         await new Promise(resolve => setImmediate(resolve));
         rerender(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         source="language"
                         resource="posts"
-                        resettable
                         choices={choices}
                         onCreate={handleCreate}
                     />
@@ -882,17 +876,20 @@ describe('<AutocompleteArrayInput />', () => {
             return <button onClick={handleClick}>Get the kid</button>;
         };
 
-        const { getByLabelText, rerender, getByText, queryByText } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
+        const {
+            getByLabelText,
+            rerender,
+            getByText,
+            queryByText,
+        } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         source="language"
                         resource="posts"
                         choices={choices}
                         create={<Create />}
-                        resettable
                     />
                 )}
             />
@@ -907,14 +904,12 @@ describe('<AutocompleteArrayInput />', () => {
         fireEvent.click(getByText('Get the kid'));
         await new Promise(resolve => setImmediate(resolve));
         rerender(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteArrayInput
                         source="language"
                         resource="posts"
-                        resettable
                         choices={choices}
                         create={<Create />}
                     />
