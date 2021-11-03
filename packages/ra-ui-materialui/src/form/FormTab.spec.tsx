@@ -1,5 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
+import { waitFor } from '@testing-library/react';
 import { SaveContextProvider, SideEffectContextProvider } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -17,7 +18,7 @@ describe('<FormTab label="foo" />', () => {
     const sideEffectValue = {};
 
     it('should display <Toolbar />', () => {
-        const { queryByLabelText } = renderWithRedux(
+        const { queryByLabelText, unmount } = renderWithRedux(
             <ThemeProvider theme={createTheme(defaultTheme)}>
                 <SaveContextProvider value={saveContextValue}>
                     <SideEffectContextProvider value={sideEffectValue}>
@@ -32,10 +33,14 @@ describe('<FormTab label="foo" />', () => {
             </ThemeProvider>
         );
         expect(queryByLabelText('ra.action.save')).not.toBeNull();
+        expect(
+            queryByLabelText('resources.undefined.fields.name')
+        ).not.toBeNull();
+        unmount();
     });
 
     it('should not alter default margin or variant', () => {
-        const { queryByLabelText } = renderWithRedux(
+        const { queryByLabelText, unmount } = renderWithRedux(
             <ThemeProvider theme={createTheme(defaultTheme)}>
                 <SaveContextProvider value={saveContextValue}>
                     <SideEffectContextProvider value={sideEffectValue}>
@@ -55,17 +60,22 @@ describe('<FormTab label="foo" />', () => {
         expect(inputElement.parentElement.parentElement.classList).toContain(
             'MuiFormControl-marginDense'
         );
+        unmount();
     });
 
-    it('should render a TabbedForm with FormTabs having custom props without warnings', () => {
+    it('should render a TabbedForm with FormTabs having custom props without warnings', async () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
         const record = { id: 'gazebo', name: 'foo' };
-        const { container } = renderWithRedux(
+        const {
+            container,
+            queryByLabelText,
+            queryByDisplayValue,
+        } = renderWithRedux(
             <ThemeProvider theme={createTheme(defaultTheme)}>
                 <SaveContextProvider value={saveContextValue}>
                     <SideEffectContextProvider value={sideEffectValue}>
-                        <TabbedForm>
+                        <TabbedForm defaultValues={record}>
                             <FormTab
                                 label="First"
                                 basePath="/posts"
@@ -84,7 +94,7 @@ describe('<FormTab label="foo" />', () => {
                                 margin="dense"
                                 variant="filled"
                             >
-                                <TextInput source="name" />
+                                <TextInput source="first_name" />
                             </FormTab>
                             <FormTab
                                 label="Third"
@@ -94,13 +104,23 @@ describe('<FormTab label="foo" />', () => {
                                 margin="normal"
                                 variant="outlined"
                             >
-                                <TextInput source="name" />
+                                <TextInput source="last_name" />
                             </FormTab>
                         </TabbedForm>
                     </SideEffectContextProvider>
                 </SaveContextProvider>
             </ThemeProvider>
         );
+
+        await waitFor(() => {
+            expect(queryByLabelText('First')).not.toBeNull();
+        });
+        expect(queryByLabelText('Second')).not.toBeNull();
+        expect(queryByLabelText('Third')).not.toBeNull();
+
+        await waitFor(() => {
+            expect(queryByDisplayValue('foo')).not.toBeNull();
+        });
         expect(spy).not.toHaveBeenCalled();
         expect(container).not.toBeNull();
 

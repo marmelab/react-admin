@@ -40,7 +40,7 @@ export const useInput = (props: InputProps): UseInputValue => {
     const formContext = useFormContext();
     const translate = useTranslate();
     const { getValues, reset } = useReactHookFormContext();
-    const record = useRecordContext();
+    const record = useRecordContext(props);
 
     const sanitizedValidate = Array.isArray(validate)
         ? composeValidators(validate)

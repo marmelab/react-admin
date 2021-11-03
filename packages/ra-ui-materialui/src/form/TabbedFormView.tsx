@@ -98,6 +98,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                                           value: syncWithLocation
                                               ? tabPath
                                               : index,
+                                          ...tab.props,
                                       })
                                     : null
                             }
