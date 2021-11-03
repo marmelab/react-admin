@@ -1,9 +1,8 @@
 import * as React from 'react';
 import expect from 'expect';
 import { CheckboxGroupInput } from './CheckboxGroupInput';
-import { render, fireEvent } from '@testing-library/react';
-import { Form } from 'react-final-form';
-import { TestTranslationProvider } from 'ra-core';
+import { fireEvent, waitFor } from '@testing-library/react';
+import { FormWithRedirect, TestTranslationProvider } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
 
 describe('<CheckboxGroupInput />', () => {
@@ -17,9 +16,9 @@ describe('<CheckboxGroupInput />', () => {
     };
 
     it('should render choices as checkbox components', () => {
-        const { getByLabelText } = render(
-            <Form
-                onSubmit={jest.fn}
+        const { getByLabelText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => <CheckboxGroupInput {...defaultProps} />}
             />
         );
@@ -34,10 +33,10 @@ describe('<CheckboxGroupInput />', () => {
     });
 
     it('should use the input parameter value as the initial input value', () => {
-        const { getByLabelText } = render(
-            <Form
-                onSubmit={jest.fn}
-                initialValues={{
+        const { getByLabelText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
+                defaultValues={{
                     tags: ['ang'],
                 }}
                 render={() => (
@@ -58,9 +57,9 @@ describe('<CheckboxGroupInput />', () => {
     });
 
     it('should use optionValue as value identifier', () => {
-        const { getByLabelText } = render(
-            <Form
-                onSubmit={jest.fn}
+        const { getByLabelText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <CheckboxGroupInput
                         {...defaultProps}
@@ -75,9 +74,9 @@ describe('<CheckboxGroupInput />', () => {
     });
 
     it('should use optionValue including "." as value identifier', () => {
-        const { getByLabelText } = render(
-            <Form
-                onSubmit={jest.fn}
+        const { getByLabelText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <CheckboxGroupInput
                         {...defaultProps}
@@ -92,9 +91,9 @@ describe('<CheckboxGroupInput />', () => {
     });
 
     it('should use optionText with a string value as text identifier', () => {
-        const { queryByLabelText } = render(
-            <Form
-                onSubmit={jest.fn}
+        const { queryByLabelText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <CheckboxGroupInput
                         {...defaultProps}
@@ -108,9 +107,9 @@ describe('<CheckboxGroupInput />', () => {
     });
 
     it('should use optionText with a string value including "." as text identifier', () => {
-        const { queryByLabelText } = render(
-            <Form
-                onSubmit={jest.fn}
+        const { queryByLabelText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <CheckboxGroupInput
                         {...defaultProps}
@@ -124,9 +123,9 @@ describe('<CheckboxGroupInput />', () => {
     });
 
     it('should use optionText with a function value as text identifier', () => {
-        const { queryByLabelText } = render(
-            <Form
-                onSubmit={jest.fn}
+        const { queryByLabelText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <CheckboxGroupInput
                         {...defaultProps}
@@ -143,9 +142,9 @@ describe('<CheckboxGroupInput />', () => {
         const Foobar = ({ record }) => (
             <span data-testid="label">{record.foobar}</span>
         );
-        const { queryByLabelText, queryByTestId } = render(
-            <Form
-                onSubmit={jest.fn}
+        const { queryByLabelText, queryByTestId } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <CheckboxGroupInput
                         {...defaultProps}
@@ -167,8 +166,8 @@ describe('<CheckboxGroupInput />', () => {
                     React: 'React **',
                 }}
             >
-                <Form
-                    onSubmit={jest.fn}
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => <CheckboxGroupInput {...defaultProps} />}
                 />
             </TestTranslationProvider>
@@ -185,8 +184,8 @@ describe('<CheckboxGroupInput />', () => {
                     React: 'React **',
                 }}
             >
-                <Form
-                    onSubmit={jest.fn}
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <CheckboxGroupInput
                             {...defaultProps}
@@ -203,9 +202,9 @@ describe('<CheckboxGroupInput />', () => {
     });
 
     it('should display helperText', () => {
-        const { queryByText } = render(
-            <Form
-                onSubmit={jest.fn}
+        const { queryByText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <CheckboxGroupInput
                         {...defaultProps}
@@ -219,9 +218,9 @@ describe('<CheckboxGroupInput />', () => {
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
-            const { container } = render(
-                <Form
-                    onSubmit={jest.fn}
+            const { container } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => <CheckboxGroupInput {...defaultProps} />}
                 />
             );
@@ -231,9 +230,9 @@ describe('<CheckboxGroupInput />', () => {
         });
 
         it('should be empty if field has been touched but is valid', () => {
-            const { container } = render(
-                <Form
-                    onSubmit={jest.fn}
+            const { container } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => <CheckboxGroupInput {...defaultProps} />}
                 />
             );
@@ -242,14 +241,18 @@ describe('<CheckboxGroupInput />', () => {
             );
         });
 
-        it('should be displayed if field has been touched and is invalid', () => {
+        it('should be displayed if field has been touched and is invalid', async () => {
             // This validator always returns an error
             const validate = () => 'ra.validation.error';
 
-            const { queryByLabelText, getByText } = render(
-                <Form
-                    onSubmit={jest.fn}
-                    validateOnBlur
+            const {
+                queryByLabelText,
+                queryByText,
+                getByText,
+            } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
+                    mode="onChange"
                     render={() => (
                         <CheckboxGroupInput
                             {...defaultProps}
@@ -262,7 +265,9 @@ describe('<CheckboxGroupInput />', () => {
             fireEvent.click(input);
             expect(input.checked).toBe(true);
 
-            fireEvent.blur(input);
+            await waitFor(() => {
+                expect(queryByText('ra.validation.error')).not.toBeNull();
+            });
             const error = getByText('ra.validation.error');
             expect(error).toBeDefined();
             expect(error.classList.contains('Mui-error')).toEqual(true);
@@ -270,10 +275,9 @@ describe('<CheckboxGroupInput />', () => {
     });
 
     it('should not render a LinearProgress if loading is true and a second has not passed yet', () => {
-        const { queryByRole } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
+        const { queryByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <CheckboxGroupInput
                         {...{
@@ -290,10 +294,9 @@ describe('<CheckboxGroupInput />', () => {
     });
 
     it('should render a LinearProgress if loading is true and a second has passed', async () => {
-        const { queryByRole } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
+        const { queryByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <CheckboxGroupInput
                         {...{
@@ -312,10 +315,9 @@ describe('<CheckboxGroupInput />', () => {
     });
 
     it('should not render a LinearProgress if loading is false', () => {
-        const { queryByRole } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
+        const { queryByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <CheckboxGroupInput
                         {...{

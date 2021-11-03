@@ -119,7 +119,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
 
     const {
         id,
-        input: { onChange: finalFormOnChange, value },
+        input: { onBlur: formOnBlur, onChange: formOnChange, value },
         isRequired,
         meta: { error, isTouched },
     } = useInput({
@@ -145,12 +145,14 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
                 newValue = event.target.value;
             }
             if (isChecked) {
-                finalFormOnChange([...(value || []), ...[newValue]]);
+                formOnChange([...(value || []), ...[newValue]]);
             } else {
-                finalFormOnChange(value.filter(v => v != newValue)); // eslint-disable-line eqeqeq
+                formOnChange(value.filter(v => v != newValue)); // eslint-disable-line eqeqeq
             }
+
+            formOnBlur(undefined);
         },
-        [finalFormOnChange, value]
+        [formOnBlur, formOnChange, value]
     );
 
     if (loading) {
