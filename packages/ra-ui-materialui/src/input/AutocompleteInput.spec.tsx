@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent, waitFor } from '@testing-library/react';
+import { FormWithRedirect, TestTranslationProvider } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 
 import { AutocompleteInput } from './AutocompleteInput';
-import { Form } from 'react-final-form';
-import { TestTranslationProvider } from 'ra-core';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 
 describe('<AutocompleteInput />', () => {
@@ -24,9 +24,9 @@ describe('<AutocompleteInput />', () => {
     };
 
     it('should use a Downshift', () => {
-        const { getByRole } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteInput
                         {...defaultProps}
@@ -39,9 +39,9 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('should set AutocompleteInput value to an empty string when the selected item is null', () => {
-        const { queryByDisplayValue } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { queryByDisplayValue } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteInput
                         {...defaultProps}
@@ -54,10 +54,10 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('should use the input parameter value as the initial state and input searchText', () => {
-        const { queryByDisplayValue } = render(
-            <Form
-                onSubmit={jest.fn()}
-                initialValues={{ role: 2 }}
+        const { queryByDisplayValue } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
+                defaultValues={{ role: 2 }}
                 render={() => (
                     <AutocompleteInput
                         {...defaultProps}
@@ -70,10 +70,14 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('should use optionValue as value identifier', async () => {
-        const { getByLabelText, queryByText, queryByDisplayValue } = render(
-            <Form
-                onSubmit={jest.fn()}
-                initialValues={{ role: 2 }}
+        const {
+            getByLabelText,
+            queryByText,
+            queryByDisplayValue,
+        } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
+                defaultValues={{ role: 2 }}
                 render={() => (
                     <AutocompleteInput
                         {...defaultProps}
@@ -97,10 +101,14 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('should use optionValue including "." as value identifier', async () => {
-        const { getByLabelText, queryByDisplayValue, queryByText } = render(
-            <Form
-                onSubmit={jest.fn()}
-                initialValues={{ role: 2 }}
+        const {
+            getByLabelText,
+            queryByDisplayValue,
+            queryByText,
+        } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
+                defaultValues={{ role: 2 }}
                 render={() => (
                     <AutocompleteInput
                         {...defaultProps}
@@ -124,10 +132,14 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('should use optionText with a string value as text identifier', async () => {
-        const { getByLabelText, queryByText, queryByDisplayValue } = render(
-            <Form
-                onSubmit={jest.fn()}
-                initialValues={{ role: 2 }}
+        const {
+            getByLabelText,
+            queryByText,
+            queryByDisplayValue,
+        } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
+                defaultValues={{ role: 2 }}
                 render={() => (
                     <AutocompleteInput
                         {...defaultProps}
@@ -152,10 +164,14 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('should use optionText with a string value including "." as text identifier', async () => {
-        const { getByLabelText, queryByText, queryByDisplayValue } = render(
-            <Form
-                onSubmit={jest.fn()}
-                initialValues={{ role: 2 }}
+        const {
+            getByLabelText,
+            queryByText,
+            queryByDisplayValue,
+        } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
+                defaultValues={{ role: 2 }}
                 render={() => (
                     <AutocompleteInput
                         {...defaultProps}
@@ -180,10 +196,14 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('should use optionText with a function value as text identifier', async () => {
-        const { getByLabelText, queryByText, queryByDisplayValue } = render(
-            <Form
-                onSubmit={jest.fn()}
-                initialValues={{ role: 2 }}
+        const {
+            getByLabelText,
+            queryByText,
+            queryByDisplayValue,
+        } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
+                defaultValues={{ role: 2 }}
                 render={() => (
                     <AutocompleteInput
                         {...defaultProps}
@@ -208,11 +228,11 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('should translate the value by default', () => {
-        const { queryByDisplayValue } = render(
+        const { queryByDisplayValue } = renderWithRedux(
             <TestTranslationProvider translate={x => `**${x}**`}>
-                <Form
-                    onSubmit={jest.fn()}
-                    initialValues={{ role: 2 }}
+                <FormWithRedirect
+                    save={jest.fn()}
+                    defaultValues={{ role: 2 }}
                     render={() => (
                         <AutocompleteInput
                             {...defaultProps}
@@ -226,11 +246,11 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('should not translate the value if translateChoice is false', () => {
-        const { queryByDisplayValue } = render(
+        const { queryByDisplayValue } = renderWithRedux(
             <TestTranslationProvider translate={x => `**${x}**`}>
-                <Form
-                    onSubmit={jest.fn()}
-                    initialValues={{ role: 2 }}
+                <FormWithRedirect
+                    save={jest.fn()}
+                    defaultValues={{ role: 2 }}
                     render={() => (
                         <AutocompleteInput
                             {...defaultProps}
@@ -246,9 +266,9 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('should show the suggestions on focus', async () => {
-        const { getByLabelText, queryByText } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByLabelText, queryByText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteInput
                         {...defaultProps}
@@ -268,9 +288,9 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('should respect shouldRenderSuggestions over default if passed in', async () => {
-        const { getByLabelText, queryByText } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { getByLabelText, queryByText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteInput
                         {...defaultProps}
@@ -295,10 +315,10 @@ describe('<AutocompleteInput />', () => {
 
     describe('Fix issue #1410', () => {
         it('should not fail when value is null and new choices are applied', () => {
-            const { getByLabelText, rerender } = render(
-                <Form
-                    onSubmit={jest.fn()}
-                    initialValues={{ role: null }}
+            const { getByLabelText, rerender } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
+                    defaultValues={{ role: null }}
                     render={() => (
                         <AutocompleteInput
                             {...defaultProps}
@@ -315,9 +335,9 @@ describe('<AutocompleteInput />', () => {
             input.focus();
 
             rerender(
-                <Form
-                    onSubmit={jest.fn()}
-                    initialValues={{ role: null }}
+                <FormWithRedirect
+                    save={jest.fn()}
+                    defaultValues={{ role: null }}
                     render={() => (
                         <AutocompleteInput
                             {...defaultProps}
@@ -331,10 +351,10 @@ describe('<AutocompleteInput />', () => {
         });
 
         it('should repopulate the suggestions after the suggestions are dismissed', () => {
-            const { getByLabelText, queryByText } = render(
-                <Form
-                    onSubmit={jest.fn()}
-                    initialValues={{ role: null }}
+            const { getByLabelText, queryByText } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
+                    defaultValues={{ role: null }}
                     render={() => (
                         <AutocompleteInput
                             {...defaultProps}
@@ -358,10 +378,10 @@ describe('<AutocompleteInput />', () => {
         });
 
         it('should not rerender searchText while having focus and new choices arrive', () => {
-            const { getByLabelText, rerender } = render(
-                <Form
-                    onSubmit={jest.fn()}
-                    initialValues={{ role: null }}
+            const { getByLabelText, rerender } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
+                    defaultValues={{ role: null }}
                     render={() => (
                         <AutocompleteInput
                             {...defaultProps}
@@ -376,9 +396,9 @@ describe('<AutocompleteInput />', () => {
             fireEvent.change(input, { target: { value: 'foo' } });
 
             rerender(
-                <Form
-                    onSubmit={jest.fn()}
-                    initialValues={{ role: null }}
+                <FormWithRedirect
+                    save={jest.fn()}
+                    defaultValues={{ role: null }}
                     render={() => (
                         <AutocompleteInput
                             {...defaultProps}
@@ -392,10 +412,10 @@ describe('<AutocompleteInput />', () => {
         });
 
         it('should revert the searchText when allowEmpty is false', async () => {
-            const { getByLabelText } = render(
-                <Form
-                    onSubmit={jest.fn()}
-                    initialValues={{ role: 2 }}
+            const { getByLabelText } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
+                    defaultValues={{ role: 2 }}
                     render={() => (
                         <AutocompleteInput
                             {...defaultProps}
@@ -416,9 +436,9 @@ describe('<AutocompleteInput />', () => {
         });
 
         it('should show the suggestions when the input value is null and the input is focussed and choices arrived late', () => {
-            const { getByLabelText, queryByText, rerender } = render(
-                <Form
-                    onSubmit={jest.fn()}
+            const { getByLabelText, queryByText, rerender } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => <AutocompleteInput {...defaultProps} />}
                 />
             );
@@ -429,8 +449,8 @@ describe('<AutocompleteInput />', () => {
             fireEvent.focus(input);
 
             rerender(
-                <Form
-                    onSubmit={jest.fn()}
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <AutocompleteInput
                             {...defaultProps}
@@ -456,10 +476,10 @@ describe('<AutocompleteInput />', () => {
 
         it('should reset filter when input value changed', () => {
             const setFilter = jest.fn();
-            const { getByLabelText, rerender } = render(
-                <Form
-                    onSubmit={jest.fn()}
-                    initialValues={{ role: 2 }}
+            const { getByLabelText, rerender } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
+                    record={{ id: 1, role: 2 }}
                     render={() => (
                         <AutocompleteInput
                             {...defaultProps}
@@ -480,9 +500,9 @@ describe('<AutocompleteInput />', () => {
             expect(setFilter).toHaveBeenCalledWith('bar');
 
             rerender(
-                <Form
-                    onSubmit={jest.fn()}
-                    initialValues={{ role: 1 }}
+                <FormWithRedirect
+                    save={jest.fn()}
+                    record={{ id: 1, role: 1 }}
                     render={() => (
                         <AutocompleteInput
                             {...defaultProps}
@@ -504,9 +524,9 @@ describe('<AutocompleteInput />', () => {
                 <div aria-label={record && record.name} />
             );
 
-            const { getByLabelText, queryByLabelText } = render(
-                <Form
-                    onSubmit={jest.fn()}
+            const { getByLabelText, queryByLabelText } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <AutocompleteInput
                             {...defaultProps}
@@ -532,9 +552,9 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('should display helperText if specified', () => {
-        const { queryByText } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { queryByText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteInput
                         {...defaultProps}
@@ -551,9 +571,9 @@ describe('<AutocompleteInput />', () => {
         const failingValidator = () => 'ra.validation.error';
 
         it('should not be displayed if field is pristine', () => {
-            const { queryByText } = render(
-                <Form
-                    onSubmit={jest.fn()}
+            const { queryByText } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <AutocompleteInput
                             {...defaultProps}
@@ -566,10 +586,11 @@ describe('<AutocompleteInput />', () => {
             expect(queryByText('ra.validation.error')).toBeNull();
         });
 
-        it('should be displayed if field has been touched and is invalid', () => {
-            const { getByLabelText, queryByText } = render(
-                <Form
-                    onSubmit={jest.fn()}
+        it('should be displayed if field has been touched and is invalid', async () => {
+            const { getByLabelText, queryByText } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
+                    mode="onBlur"
                     render={() => (
                         <AutocompleteInput
                             {...defaultProps}
@@ -585,15 +606,17 @@ describe('<AutocompleteInput />', () => {
             fireEvent.focus(input);
             fireEvent.blur(input);
 
-            expect(queryByText('ra.validation.error')).not.toBeNull();
+            await waitFor(() => {
+                expect(queryByText('ra.validation.error')).not.toBeNull();
+            });
         });
     });
 
     describe('Fix issue #2121', () => {
         it('updates suggestions when input is blurred and refocused', () => {
-            const { queryAllByRole, getByLabelText } = render(
-                <Form
-                    onSubmit={jest.fn()}
+            const { queryAllByRole, getByLabelText } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
                     render={() => (
                         <AutocompleteInput
                             {...defaultProps}
@@ -622,9 +645,9 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('does not automatically select a matched choice if there is only one', async () => {
-        const { queryAllByRole, getByLabelText } = render(
-            <Form
-                onSubmit={jest.fn()}
+        const { queryAllByRole, getByLabelText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteInput
                         {...defaultProps}
@@ -646,10 +669,10 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('passes options.suggestionsContainerProps to the suggestions container', () => {
-        const { getByLabelText } = render(
-            <Form
-                onSubmit={jest.fn()}
-                initialValues={{ role: 2 }}
+        const { getByLabelText } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
+                defaultValues={{ role: 2 }}
                 render={() => (
                     <AutocompleteInput
                         {...defaultProps}
@@ -678,10 +701,10 @@ describe('<AutocompleteInput />', () => {
 
     describe('Fix issue #4660', () => {
         it('should accept 0 as an input value', () => {
-            const { queryByDisplayValue } = render(
-                <Form
-                    onSubmit={jest.fn()}
-                    initialValues={{ role: 0 }}
+            const { queryByDisplayValue } = renderWithRedux(
+                <FormWithRedirect
+                    save={jest.fn()}
+                    defaultValues={{ role: 0 }}
                     render={() => (
                         <AutocompleteInput
                             {...defaultProps}
@@ -695,10 +718,9 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('should not render a LinearProgress if loading is true and a second has not passed yet', () => {
-        const { queryByRole } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
+        const { queryByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteInput
                         {...{
@@ -715,10 +737,9 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('should render a LinearProgress if loading is true and a second has passed', async () => {
-        const { queryByRole } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
+        const { queryByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteInput
                         {...{
@@ -737,10 +758,9 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('should not render a LinearProgress if loading is false', () => {
-        const { queryByRole } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
+        const { queryByRole } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => <AutocompleteInput {...defaultProps} />}
             />
         );
@@ -762,10 +782,14 @@ describe('<AutocompleteInput />', () => {
             return newChoice;
         };
 
-        const { getByLabelText, getByText, queryByText, rerender } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
+        const {
+            getByLabelText,
+            getByText,
+            queryByDisplayValue,
+            rerender,
+        } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteInput
                         source="language"
@@ -785,9 +809,8 @@ describe('<AutocompleteInput />', () => {
         fireEvent.click(getByText('ra.action.create_item'));
         await new Promise(resolve => setImmediate(resolve));
         rerender(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteInput
                         source="language"
@@ -799,9 +822,8 @@ describe('<AutocompleteInput />', () => {
                 )}
             />
         );
-        fireEvent.click(getByLabelText('ra.action.clear_input_value'));
 
-        expect(queryByText('New Kid On The Block')).not.toBeNull();
+        expect(queryByDisplayValue('New Kid On The Block')).not.toBeNull();
     });
 
     it('should support creation of a new choice through the onCreate event with a promise', async () => {
@@ -820,10 +842,14 @@ describe('<AutocompleteInput />', () => {
             });
         };
 
-        const { getByLabelText, getByText, queryByText, rerender } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
+        const {
+            getByLabelText,
+            getByText,
+            queryByDisplayValue,
+            rerender,
+        } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteInput
                         source="language"
@@ -844,9 +870,8 @@ describe('<AutocompleteInput />', () => {
         fireEvent.click(getByText('ra.action.create_item'));
         await new Promise(resolve => setImmediate(resolve));
         rerender(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteInput
                         source="language"
@@ -858,9 +883,8 @@ describe('<AutocompleteInput />', () => {
                 )}
             />
         );
-        fireEvent.click(getByLabelText('ra.action.clear_input_value'));
 
-        expect(queryByText('New Kid On The Block')).not.toBeNull();
+        expect(queryByDisplayValue('New Kid On The Block')).not.toBeNull();
     });
 
     it('should support creation of a new choice through the create element', async () => {
@@ -880,10 +904,14 @@ describe('<AutocompleteInput />', () => {
             return <button onClick={handleClick}>Get the kid</button>;
         };
 
-        const { getByLabelText, rerender, getByText, queryByText } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
+        const {
+            getByLabelText,
+            rerender,
+            getByText,
+            queryByDisplayValue,
+        } = renderWithRedux(
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteInput
                         source="language"
@@ -905,9 +933,8 @@ describe('<AutocompleteInput />', () => {
         fireEvent.click(getByText('Get the kid'));
         await new Promise(resolve => setImmediate(resolve));
         rerender(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <AutocompleteInput
                         source="language"
@@ -919,8 +946,7 @@ describe('<AutocompleteInput />', () => {
                 )}
             />
         );
-        fireEvent.click(getByLabelText('ra.action.clear_input_value'));
 
-        expect(queryByText('New Kid On The Block')).not.toBeNull();
+        expect(queryByDisplayValue('New Kid On The Block')).not.toBeNull();
     });
 });
