@@ -14,20 +14,15 @@ module.exports = {
         checkOptions: {},
         reactDocgen: 'none',
     },
-    babelDefault: async options => {
+    babel: async options => {
         const { plugins = [] } = options;
         return {
             ...options,
             plugins: [
                 ...plugins,
+                ['@babel/plugin-proposal-class-properties', { loose: true }],
                 [
-                    require.resolve('@babel/plugin-proposal-class-properties'),
-                    { loose: true },
-                ],
-                [
-                    require.resolve(
-                        '@babel/plugin-proposal-private-property-in-object'
-                    ),
+                    '@babel/plugin-proposal-private-property-in-object',
                     { loose: true },
                 ],
             ],
