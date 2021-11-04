@@ -4,8 +4,8 @@ import expect from 'expect';
 import {
     DataProviderContext,
     DataProvider,
+    FormWithRedirect,
     SaveContextProvider,
-    FormContextProvider,
 } from 'ra-core';
 import { renderWithRedux, TestContext } from 'ra-test';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -39,14 +39,6 @@ describe('<SaveButton />', () => {
         saving: false,
         setOnFailure: jest.fn(),
     };
-    const formContextValue = {
-        setOnSave: jest.fn(),
-        registerGroup: jest.fn(),
-        unregisterField: jest.fn(),
-        unregisterGroup: jest.fn(),
-        registerField: jest.fn(),
-        getGroupFields: jest.fn(),
-    };
 
     it('should render as submit type with no DOM errors', () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
@@ -55,9 +47,11 @@ describe('<SaveButton />', () => {
             <TestContext>
                 <ThemeProvider theme={theme}>
                     <SaveContextProvider value={saveContextValue}>
-                        <FormContextProvider value={formContextValue}>
-                            <SaveButton {...invalidButtonDomProps} />
-                        </FormContextProvider>
+                        <FormWithRedirect
+                            render={() => (
+                                <SaveButton {...invalidButtonDomProps} />
+                            )}
+                        />
                     </SaveContextProvider>
                 </ThemeProvider>
             </TestContext>
@@ -76,9 +70,9 @@ describe('<SaveButton />', () => {
             <TestContext>
                 <ThemeProvider theme={theme}>
                     <SaveContextProvider value={saveContextValue}>
-                        <FormContextProvider value={formContextValue}>
-                            <SaveButton disabled={true} />
-                        </FormContextProvider>
+                        <FormWithRedirect
+                            render={() => <SaveButton disabled={true} />}
+                        />
                     </SaveContextProvider>
                 </ThemeProvider>
             </TestContext>
@@ -91,9 +85,9 @@ describe('<SaveButton />', () => {
             <TestContext>
                 <ThemeProvider theme={theme}>
                     <SaveContextProvider value={saveContextValue}>
-                        <FormContextProvider value={formContextValue}>
-                            <SaveButton submitOnEnter />
-                        </FormContextProvider>
+                        <FormWithRedirect
+                            render={() => <SaveButton submitOnEnter />}
+                        />
                     </SaveContextProvider>
                 </ThemeProvider>
             </TestContext>
@@ -108,9 +102,9 @@ describe('<SaveButton />', () => {
             <TestContext>
                 <ThemeProvider theme={theme}>
                     <SaveContextProvider value={saveContextValue}>
-                        <FormContextProvider value={formContextValue}>
-                            <SaveButton submitOnEnter={false} />
-                        </FormContextProvider>
+                        <FormWithRedirect
+                            render={() => <SaveButton submitOnEnter={false} />}
+                        />
                     </SaveContextProvider>
                 </ThemeProvider>
             </TestContext>
@@ -127,12 +121,14 @@ describe('<SaveButton />', () => {
             <TestContext>
                 <ThemeProvider theme={theme}>
                     <SaveContextProvider value={saveContextValue}>
-                        <FormContextProvider value={formContextValue}>
-                            <SaveButton
-                                handleSubmitWithRedirect={onSubmit}
-                                saving={false}
-                            />
-                        </FormContextProvider>
+                        <FormWithRedirect
+                            render={() => (
+                                <SaveButton
+                                    handleSubmitWithRedirect={onSubmit}
+                                    saving={false}
+                                />
+                            )}
+                        />
                     </SaveContextProvider>
                 </ThemeProvider>
             </TestContext>
@@ -149,12 +145,14 @@ describe('<SaveButton />', () => {
             <TestContext>
                 <ThemeProvider theme={theme}>
                     <SaveContextProvider value={saveContextValue}>
-                        <FormContextProvider value={formContextValue}>
-                            <SaveButton
-                                handleSubmitWithRedirect={onSubmit}
-                                saving
-                            />
-                        </FormContextProvider>
+                        <FormWithRedirect
+                            render={() => (
+                                <SaveButton
+                                    handleSubmitWithRedirect={onSubmit}
+                                    saving
+                                />
+                            )}
+                        />
                     </SaveContextProvider>
                 </ThemeProvider>
             </TestContext>
@@ -175,12 +173,14 @@ describe('<SaveButton />', () => {
                     return (
                         <ThemeProvider theme={theme}>
                             <SaveContextProvider value={saveContextValue}>
-                                <FormContextProvider value={formContextValue}>
-                                    <SaveButton
-                                        handleSubmitWithRedirect={onSubmit}
-                                        invalid
-                                    />
-                                </FormContextProvider>
+                                <FormWithRedirect
+                                    render={() => (
+                                        <SaveButton
+                                            handleSubmitWithRedirect={onSubmit}
+                                            invalid
+                                        />
+                                    )}
+                                />
                             </SaveContextProvider>
                         </ThemeProvider>
                     );
@@ -387,7 +387,7 @@ describe('<SaveButton />', () => {
             <DataProviderContext.Provider value={dataProvider}>
                 <ThemeProvider theme={theme}>
                     <Edit {...defaultEditProps}>
-                        <SimpleForm>
+                        <SimpleForm mode="onChange">
                             <TextInput
                                 source="title"
                                 validate={validateAsync}
@@ -408,7 +408,9 @@ describe('<SaveButton />', () => {
             target: { value: 'ipsum' },
         });
 
-        expect(getByLabelText('ra.action.save')['disabled']).toEqual(true);
+        await waitFor(() => {
+            expect(getByLabelText('ra.action.save')['disabled']).toEqual(true);
+        });
 
         // The SaveButton should be enabled again after validation
         await waitFor(() => {

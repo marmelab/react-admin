@@ -5,7 +5,10 @@ import Button, { ButtonProps } from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import ContentSave from '@mui/icons-material/Save';
 import classnames from 'classnames';
-import { UseFormHandleSubmit } from 'react-hook-form';
+import {
+    useFormContext as useReactHookFormContext,
+    UseFormHandleSubmit,
+} from 'react-hook-form';
 import {
     HandleSubmitWithRedirect,
     MutationMode,
@@ -79,6 +82,9 @@ export const SaveButton = (props: SaveButtonProps) => {
         ...rest
     } = props;
 
+    const hookFormContext = useReactHookFormContext();
+    const { formState } = hookFormContext;
+    const { isValidating } = formState;
     const notify = useNotify();
     const translate = useTranslate();
     const formContext = useFormContext();
@@ -145,6 +151,7 @@ export const SaveButton = (props: SaveButtonProps) => {
 
     const type = submitOnEnter ? 'submit' : 'button';
     const displayedLabel = label && translate(label, { _: label });
+
     return (
         <StyledButton
             className={classnames(SaveButtonClasses.button, className)}
@@ -155,7 +162,7 @@ export const SaveButton = (props: SaveButtonProps) => {
             // This is because the "default" color does not exist anymore
             color="primary"
             aria-label={displayedLabel}
-            disabled={disabled}
+            disabled={disabled || isValidating}
             {...sanitizeButtonRestProps(rest)}
         >
             {saving ? (
