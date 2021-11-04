@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { render, waitFor, within, fireEvent } from '@testing-library/react';
-import { Form } from 'react-final-form';
-import { useListContext } from 'ra-core';
+import { waitFor, within, fireEvent } from '@testing-library/react';
+import { FormWithRedirect, useListContext } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
 import addDays from 'date-fns/add_days';
+
 import { Datagrid } from '../list';
 import { TextField } from '../field';
 import {
@@ -25,7 +25,7 @@ describe('<ReferenceArrayInput />', () => {
 
     it('should display an error if error is defined', () => {
         const MyComponent = () => <div>MyComponent</div>;
-        const { queryByDisplayValue, queryByText } = render(
+        const { queryByDisplayValue, queryByText } = renderWithRedux(
             <ReferenceArrayInputView
                 {...{
                     ...defaultProps,
@@ -42,7 +42,7 @@ describe('<ReferenceArrayInput />', () => {
 
     it('should send an error to the children if warning is defined', () => {
         const MyComponent = ({ meta }) => <div>{meta.helperText}</div>;
-        const { queryByText, queryByRole } = render(
+        const { queryByText, queryByRole } = renderWithRedux(
             <ReferenceArrayInputView
                 {...{
                     ...defaultProps,
@@ -60,7 +60,7 @@ describe('<ReferenceArrayInput />', () => {
 
     it('should not send an error to the children if warning is not defined', () => {
         const MyComponent = ({ meta }) => <div>{JSON.stringify(meta)}</div>;
-        const { queryByText, queryByRole } = render(
+        const { queryByText, queryByRole } = renderWithRedux(
             <ReferenceArrayInputView
                 {...{
                     ...defaultProps,
@@ -81,7 +81,7 @@ describe('<ReferenceArrayInput />', () => {
         const MyComponent = ({ choices }) => (
             <div>{JSON.stringify(choices)}</div>
         );
-        const { queryByRole, queryByText } = render(
+        const { queryByRole, queryByText } = renderWithRedux(
             <ReferenceArrayInputView
                 {...{
                     ...defaultProps,
@@ -100,7 +100,7 @@ describe('<ReferenceArrayInput />', () => {
         const MyComponent = ({ choices }) => (
             <div>{JSON.stringify(choices)}</div>
         );
-        const { queryByRole, queryByText } = render(
+        const { queryByRole, queryByText } = renderWithRedux(
             <ReferenceArrayInputView
                 {...{
                     ...defaultProps,
@@ -124,7 +124,7 @@ describe('<ReferenceArrayInput />', () => {
             return <div />;
         };
         const onChange = jest.fn();
-        render(
+        renderWithRedux(
             <ReferenceArrayInputView
                 {...defaultProps}
                 allowEmpty
@@ -144,7 +144,7 @@ describe('<ReferenceArrayInput />', () => {
             return <div />;
         };
         const onChange = jest.fn();
-        render(
+        renderWithRedux(
             <ReferenceArrayInputView
                 {...defaultProps}
                 allowEmpty
@@ -159,7 +159,7 @@ describe('<ReferenceArrayInput />', () => {
 
     it('should pass meta down to child component', () => {
         const MyComponent = ({ meta }) => <div>{JSON.stringify(meta)}</div>;
-        const { queryByText } = render(
+        const { queryByText } = renderWithRedux(
             <ReferenceArrayInputView
                 {...defaultProps}
                 allowEmpty
@@ -189,8 +189,8 @@ describe('<ReferenceArrayInput />', () => {
         };
 
         const { getByLabelText } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
+            <FormWithRedirect
+                save={jest.fn()}
                 render={() => (
                     <ReferenceArrayInput {...defaultProps}>
                         <Children />
@@ -234,9 +234,9 @@ describe('<ReferenceArrayInput />', () => {
 
     test('should allow to use a Datagrid', async () => {
         const { getByLabelText, queryByText } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
-                initialValues={{ tag_ids: [5] }}
+            <FormWithRedirect
+                save={jest.fn()}
+                defaultValues={{ tag_ids: [5] }}
                 render={() => (
                     <ReferenceArrayInput
                         reference="tags"
