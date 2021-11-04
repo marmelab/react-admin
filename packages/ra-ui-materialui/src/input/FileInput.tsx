@@ -82,7 +82,7 @@ export const FileInput = (props: FileInputProps) => {
 
     const {
         id,
-        input: { onChange, value, ...inputProps },
+        input: { onBlur, onChange, value },
         meta,
         isRequired,
     } = useInput({
@@ -106,6 +106,7 @@ export const FileInput = (props: FileInputProps) => {
         } else {
             onChange(updatedFiles[0]);
         }
+        onBlur(undefined);
 
         if (options.onDrop) {
             options.onDrop(newFiles, rejectedFiles, event);
@@ -121,6 +122,7 @@ export const FileInput = (props: FileInputProps) => {
         } else {
             onChange(null);
         }
+        onBlur(undefined);
 
         if (options.onRemove) {
             options.onRemove(file);
@@ -158,13 +160,7 @@ export const FileInput = (props: FileInputProps) => {
                     className={FileInputClasses.dropZone}
                     {...getRootProps()}
                 >
-                    <input
-                        id={id}
-                        {...getInputProps({
-                            ...inputProps,
-                            ...inputPropsOptions,
-                        })}
-                    />
+                    <input id={id} {...getInputProps()} />
                     {placeholder ? (
                         placeholder
                     ) : multiple ? (
