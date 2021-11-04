@@ -76,9 +76,8 @@ export const useInput = (props: InputProps): UseInputValue => {
 
     useDeepCompareEffect(() => {
         if (
-            record &&
-            get(record, source) === undefined &&
-            !get(getValues(), source) === undefined &&
+            (!record || get(record, source) == undefined) && // eslint-disable-line eqeqeq
+            get(getValues(), source) == undefined && // eslint-disable-line eqeqeq
             defaultValue != undefined // eslint-disable-line eqeqeq
         ) {
             reset({ ...getValues(), [source]: defaultValue });

@@ -53,7 +53,6 @@ const PostCreateToolbar = props => (
     </Toolbar>
 );
 
-// FIXME? ArrayInput default value doesn't work anymore
 const backlinksDefaultValue = [
     {
         date: format(new Date(), 'YYYY-MM-DD'),
@@ -109,7 +108,11 @@ const PostCreate = ({ permissions, ...props }) => {
                     defaultValue={dateDefaultValue}
                 />
                 <BooleanInput source="commentable" defaultValue />
-                <ArrayInput source="backlinks" validate={[required()]}>
+                <ArrayInput
+                    source="backlinks"
+                    validate={[required()]}
+                    defaultValue={backlinksDefaultValue}
+                >
                     <SimpleFormIterator>
                         <DateInput source="date" />
                         <TextInput source="url" />

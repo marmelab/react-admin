@@ -27,14 +27,13 @@ describe('Create Page', () => {
         );
     });
 
-    // FIXME: restore if possible
-    it.skip('should put the ArrayInput default value', () => {
+    it('should put the ArrayInput default value', () => {
         const currentDate = new Date();
         const currentDateString = currentDate.toISOString().slice(0, 10);
-        cy.get(CreatePage.elements.input('backlinks[0].date')).should(el =>
+        cy.get(CreatePage.elements.input('backlinks.0.date')).should(el =>
             expect(el).to.have.value(currentDateString)
         );
-        cy.get(CreatePage.elements.input('backlinks[0].url')).should(el =>
+        cy.get(CreatePage.elements.input('backlinks.0.url')).should(el =>
             expect(el).to.have.value('http://google.com')
         );
     });
