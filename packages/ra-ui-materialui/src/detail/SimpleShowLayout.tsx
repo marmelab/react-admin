@@ -1,7 +1,13 @@
 import * as React from 'react';
-import { Children, isValidElement, cloneElement, ReactNode } from 'react';
-import { Stack } from '@mui/material';
+import {
+    Children,
+    isValidElement,
+    cloneElement,
+    ElementType,
+    ReactNode,
+} from 'react';
 import { styled } from '@mui/material/styles';
+import { Card } from '@mui/material';
 import { ResponsiveStyleValue } from '@mui/system';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -45,19 +51,17 @@ export const SimpleShowLayout = ({
     basePath,
     className,
     children,
+    component: Component = Root,
     record,
     resource,
     spacing = 1,
     version,
     ...rest
 }: SimpleShowLayoutProps) => (
-    <StyledStack
+    <Component
         spacing={spacing}
         className={className}
         key={version}
-        sx={{
-            padding: 2,
-        }}
         {...sanitizeRestProps(rest)}
     >
         {Children.map(children, field =>
@@ -93,12 +97,13 @@ export const SimpleShowLayout = ({
                 </div>
             ) : null
         )}
-    </StyledStack>
+    </Component>
 );
 
 export interface SimpleShowLayoutProps {
     basePath?: string;
     className?: string;
+    component?: ElementType;
     children: ReactNode;
     record?: Record;
     resource?: string;
@@ -116,6 +121,13 @@ SimpleShowLayout.propTypes = {
     version: PropTypes.number,
 };
 
+const PREFIX = 'RaSimpleShowLayout';
+
+const Root = styled(Card, { name: PREFIX })(({ theme }) => ({
+    flex: 1,
+    padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
+}));
+
 const sanitizeRestProps = ({
     children,
     className,
@@ -127,13 +139,3 @@ const sanitizeRestProps = ({
     translate,
     ...rest
 }: any) => rest;
-
-const PREFIX = 'RaSimpleShowLayout';
-
-export const SimpleShowLayoutClasses = {
-    root: `${PREFIX}-root`,
-};
-
-const StyledStack = styled(Stack, { name: PREFIX })({
-    [`&.${SimpleShowLayoutClasses.root}`]: {},
-});

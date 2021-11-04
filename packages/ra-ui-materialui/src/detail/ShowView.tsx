@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { cloneElement, Children, ReactElement } from 'react';
+import { cloneElement, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
-import { Card } from '@mui/material';
 import classnames from 'classnames';
 import {
     ShowControllerProps,
@@ -20,19 +19,14 @@ export const ShowView = (props: ShowViewProps) => {
         aside,
         children,
         className,
-        component: Content = Card,
+        component: Content = 'div',
         title,
         ...rest
     } = props;
 
-    const {
-        basePath,
-        defaultTitle,
-        hasList,
-        record,
-        resource,
-        version,
-    } = useShowContext(props);
+    const { defaultTitle, hasList, record, resource, version } = useShowContext(
+        props
+    );
     const { hasEdit } = useResourceDefinition(props);
 
     const finalActions =
@@ -48,6 +42,7 @@ export const ShowView = (props: ShowViewProps) => {
     return (
         <Root
             className={classnames('show-page', ShowClasses.root, className)}
+            key={version}
             {...sanitizeRestProps(rest)}
         >
             <TitleForRecord
@@ -57,7 +52,6 @@ export const ShowView = (props: ShowViewProps) => {
             />
             {finalActions &&
                 cloneElement(finalActions, {
-                    basePath,
                     data: record,
                     hasList,
                     hasEdit,
@@ -65,28 +59,13 @@ export const ShowView = (props: ShowViewProps) => {
                     //  Ensure we don't override any user provided props
                     ...finalActions.props,
                 })}
-            <div
+            <Content
                 className={classnames(ShowClasses.main, {
                     [ShowClasses.noActions]: !finalActions,
                 })}
             >
-                <Content className={ShowClasses.card}>
-                    {record &&
-                        cloneElement(Children.only(children), {
-                            resource,
-                            basePath,
-                            record,
-                            version,
-                        })}
-                </Content>
-                {aside &&
-                    cloneElement(aside, {
-                        resource,
-                        basePath,
-                        record,
-                        version,
-                    })}
-            </div>
+                {record && children}
+            </Content>
         </Root>
     );
 };
@@ -139,7 +118,6 @@ export const ShowClasses = {
     root: `${PREFIX}-root`,
     main: `${PREFIX}-main`,
     noActions: `${PREFIX}-noActions`,
-    card: `${PREFIX}-card`,
 };
 
 const Root = styled('div', { name: PREFIX })({
@@ -149,8 +127,5 @@ const Root = styled('div', { name: PREFIX })({
     },
     [`& .${ShowClasses.noActions}`]: {
         marginTop: '1em',
-    },
-    [`& .${ShowClasses.card}`]: {
-        flex: '1 1 auto',
     },
 });

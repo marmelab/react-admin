@@ -1,5 +1,5 @@
+import { useParams } from 'react-router-dom';
 import useVersion from '../useVersion';
-import { useCheckMinimumRequiredProps } from '../checkMinimumRequiredProps';
 import { Record, Identifier, OnFailure } from '../../types';
 import { useGetOne, Refetch } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
@@ -20,7 +20,6 @@ export interface ShowProps {
 }
 
 export interface ShowControllerProps<RecordType extends Record = Record> {
-    basePath?: string;
     defaultTitle: string;
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
@@ -39,7 +38,12 @@ export interface ShowControllerProps<RecordType extends Record = Record> {
 }
 
 /**
- * Prepare data for the Show view
+ * Prepare data for the Show view.
+ *
+ * useShowController does a few things:
+ * - it grabs the id from the URL and the resource name from the ResourceContext,
+ * - it fetches the record via useGetOne,
+ * - it prepares the page title.
  *
  * @param {Object} props The props passed to the Show component.
  *
@@ -50,22 +54,20 @@ export interface ShowControllerProps<RecordType extends Record = Record> {
  * import { useShowController } from 'react-admin';
  * import ShowView from './ShowView';
  *
- * const MyShow = props => {
- *     const controllerProps = useShowController(props);
- *     return <ShowView {...controllerProps} {...props} />;
+ * const MyShow = () => {
+ *     const controllerProps = useShowController();
+ *     return <ShowView {...controllerProps} />;
  * }
  */
 export const useShowController = <RecordType extends Record = Record>(
     props: ShowProps
 ): ShowControllerProps<RecordType> => {
-    useCheckMinimumRequiredProps('Show', ['basePath', 'resource'], props);
     const {
-        basePath,
         hasCreate,
         hasEdit,
         hasList,
         hasShow,
-        id,
+        id: propsId,
         onFailure,
     } = props;
     const resource = useResourceContext(props);
@@ -74,15 +76,16 @@ export const useShowController = <RecordType extends Record = Record>(
     const redirect = useRedirect();
     const refresh = useRefresh();
     const version = useVersion();
+    const { id } = useParams<{ id?: string }>();
     const { data: record, error, loading, loaded, refetch } = useGetOne<
         RecordType
-    >(resource, id, {
+    >(resource, propsId || id, {
         action: CRUD_GET_ONE,
         onFailure:
             onFailure ??
             (() => {
                 notify('ra.notification.item_doesnt_exist', 'warning');
-                redirect('list', basePath);
+                redirect('list', resource);
                 refresh();
             }),
     });
@@ -100,7 +103,6 @@ export const useShowController = <RecordType extends Record = Record>(
         loaded,
         defaultTitle,
         resource,
-        basePath,
         record,
         refetch,
         hasCreate,

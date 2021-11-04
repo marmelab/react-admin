@@ -86,3 +86,27 @@ export interface UseRecordContextParams<
     record?: RecordType;
     [key: string]: any;
 }
+
+/**
+ * Render prop version of useRecordContext
+ *
+ * @example
+ * const BookShow = () => (
+ *    <Show>
+ *       <SimpleShowLayout>
+ *         <WithRecord render={record => <span>{record.title}</span>} />
+ *      </SimpleShowLayout>
+ *   </Show>
+ * );
+ */
+export const WithRecord = <RecordType extends Record>({
+    render,
+}: WithRecordProps<RecordType>) => {
+    const record = useRecordContext<RecordType>();
+    return render(record);
+};
+
+export interface WithRecordProps<RecordType extends Record> {
+    render: (record: RecordType) => ReactNode;
+    label?: string;
+}

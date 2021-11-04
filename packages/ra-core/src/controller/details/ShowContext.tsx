@@ -20,7 +20,6 @@ import { ShowControllerProps } from './useShowController';
  * };
  */
 export const ShowContext = createContext<ShowControllerProps>({
-    basePath: null,
     record: null,
     defaultTitle: null,
     loaded: null,

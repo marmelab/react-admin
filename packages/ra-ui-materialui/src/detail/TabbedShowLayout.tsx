@@ -10,7 +10,7 @@ import {
 } from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
-import { Divider } from '@mui/material';
+import { Card, Divider } from '@mui/material';
 import { Route } from 'react-router-dom';
 import { useRouteMatch } from 'react-router-dom';
 import { escapePath, Record } from 'ra-core';
@@ -170,11 +170,10 @@ export const TabbedShowLayoutClasses = {
     content: `${PREFIX}-content`,
 };
 
-const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+const Root = styled(Card, { name: PREFIX })(({ theme }) => ({
+    flex: 1,
     [`& .${TabbedShowLayoutClasses.content}`]: {
-        paddingTop: theme.spacing(1),
-        paddingLeft: theme.spacing(2),
-        paddingRight: theme.spacing(2),
+        padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
     },
 }));
 
