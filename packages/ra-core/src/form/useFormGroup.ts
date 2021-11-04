@@ -60,7 +60,7 @@ export const useFormGroup = (name: string): FormGroupState => {
     const formContext = useFormContext();
     const [state, setState] = useState<FormGroupState>({
         dirty: false,
-        errors: undefined,
+        errors: {},
         invalid: false,
         pristine: true,
         touched: false,
@@ -83,14 +83,18 @@ export const useFormGroup = (name: string): FormGroupState => {
             .filter(fieldState => fieldState != undefined); // eslint-disable-line
         const newState = getFormGroupState(fieldStates);
 
-        setState(oldState => {
-            if (!isEqual(oldState, newState)) {
-                return newState;
-            }
-
-            return oldState;
-        });
-    }, [dirtyFields, errors, touchedFields, formContext, name, isSubmitted]);
+        if (!isEqual(state, newState)) {
+            setState(newState);
+        }
+    }, [
+        dirtyFields,
+        errors,
+        touchedFields,
+        formContext,
+        name,
+        isSubmitted,
+        state,
+    ]);
 
     return state;
 };
@@ -134,7 +138,7 @@ export const getFormGroupState = (
         },
         {
             dirty: false,
-            errors: undefined,
+            errors: {},
             invalid: false,
             pristine: true,
             valid: true,

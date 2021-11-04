@@ -2,15 +2,12 @@ import * as React from 'react';
 import {
     Children,
     cloneElement,
-    MouseEvent,
-    MouseEventHandler,
     isValidElement,
     ReactElement,
     ReactNode,
     useMemo,
 } from 'react';
 import { Typography } from '@mui/material';
-import classNames from 'classnames';
 import { Record } from 'ra-core';
 
 import { FormInput } from '../../form/FormInput';
@@ -36,7 +33,6 @@ export const SimpleFormIteratorItem = (props: SimpleFormIteratorItemProps) => {
         removeButton,
         reOrderButtons,
         resource,
-        source,
         variant,
     } = props;
 
@@ -50,17 +46,6 @@ export const SimpleFormIteratorItem = (props: SimpleFormIteratorItemProps) => {
             return disableRemove;
         }
         return disableRemove && disableRemove(record);
-    };
-
-    // remove field and call the onClick event of the button passed as removeButton prop
-    const handleRemoveButtonClick = (
-        originalOnClickHandler: MouseEventHandler,
-        index: number
-    ) => (event: MouseEvent) => {
-        remove(index);
-        if (originalOnClickHandler) {
-            originalOnClickHandler(event);
-        }
     };
 
     const context = useMemo<SimpleFormIteratorItemContextValue>(
@@ -84,17 +69,7 @@ export const SimpleFormIteratorItem = (props: SimpleFormIteratorItemProps) => {
                         >
                             {getItemLabel(index)}
                         </Typography>
-                        {!disabled &&
-                            !disableReordering &&
-                            cloneElement(reOrderButtons, {
-                                index,
-                                max: total,
-                                reOrder,
-                                className: classNames(
-                                    'button-reorder',
-                                    `button-reorder-${source}-${index}`
-                                ),
-                            })}
+                        {!disabled && !disableReordering && reOrderButtons}
                     </div>
                 </div>
                 <section className={SimpleFormIteratorClasses.form}>
@@ -130,16 +105,7 @@ export const SimpleFormIteratorItem = (props: SimpleFormIteratorItemProps) => {
                 </section>
                 {!disabled && !disableRemoveField(record) && (
                     <span className={SimpleFormIteratorClasses.action}>
-                        {cloneElement(removeButton, {
-                            onClick: handleRemoveButtonClick(
-                                removeButton.props.onClick,
-                                index
-                            ),
-                            className: classNames(
-                                'button-remove',
-                                `button-remove-${source}-${index}`
-                            ),
-                        })}
+                        {removeButton}
                     </span>
                 )}
             </li>

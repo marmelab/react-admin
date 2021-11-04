@@ -78,11 +78,12 @@ export const useInput = (props: InputProps): UseInputValue => {
         if (
             record &&
             get(record, source) === undefined &&
+            !get(getValues(), source) === undefined &&
             defaultValue != undefined // eslint-disable-line eqeqeq
         ) {
             reset({ ...getValues(), [source]: defaultValue });
         }
-    }, [record, reset]);
+    }, [record]);
 
     const meta = previouslyProvidedMeta || {
         invalid,

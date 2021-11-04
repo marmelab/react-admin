@@ -354,7 +354,7 @@ describe('<SimpleFormIterator />', () => {
             </ThemeProvider>
         );
 
-        const addItemElement = getByText('ra.action.add').closest('button');
+        const addItemElement = getByText('ra.action.add');
 
         fireEvent.click(addItemElement);
         await waitFor(() => {
@@ -508,7 +508,7 @@ describe('<SimpleFormIterator />', () => {
     });
 
     it('should not display the default remove button if a custom remove button is passed', () => {
-        const { getByText, queryAllByText } = renderWithRedux(
+        const { queryAllByText } = renderWithRedux(
             <ThemeProvider theme={theme}>
                 <SaveContextProvider value={saveContextValue}>
                     <SideEffectContextProvider value={sideEffectValue}>
@@ -534,7 +534,7 @@ describe('<SimpleFormIterator />', () => {
         );
 
         expect(queryAllByText('ra.action.remove').length).toBe(0);
-        expect(getByText('Custom Remove Button')).not.toBeNull();
+        expect(queryAllByText('Custom Remove Button').length).not.toBe(0);
     });
 
     it('should not display the default reorder element if a custom reorder element is passed', () => {
@@ -542,7 +542,7 @@ describe('<SimpleFormIterator />', () => {
             <button>Custom reorder Button</button>
         );
 
-        const { getByText, queryAllByLabelText } = renderWithRedux(
+        const { queryAllByText, queryAllByLabelText } = renderWithRedux(
             <ThemeProvider theme={theme}>
                 <SaveContextProvider value={saveContextValue}>
                     <SideEffectContextProvider value={sideEffectValue}>
@@ -567,11 +567,11 @@ describe('<SimpleFormIterator />', () => {
 
         expect(queryAllByLabelText('ra.action.move_up').length).toBe(0);
         expect(queryAllByLabelText('ra.action.move_down').length).toBe(0);
-        expect(getByText('Custom reorder Button')).not.toBeNull();
+        expect(queryAllByText('Custom reorder Button').length).not.toBe(0);
     });
 
     it('should display custom row label', () => {
-        const { getByText } = renderWithRedux(
+        const { queryAllByText } = renderWithRedux(
             <ThemeProvider theme={theme}>
                 <SaveContextProvider value={saveContextValue}>
                     <SideEffectContextProvider value={sideEffectValue}>
@@ -594,8 +594,8 @@ describe('<SimpleFormIterator />', () => {
             </ThemeProvider>
         );
 
-        expect(getByText('3.0')).toBeDefined();
-        expect(getByText('3.1')).toBeDefined();
+        expect(queryAllByText('3.0').length).not.toBe(0);
+        expect(queryAllByText('3.1').length).not.toBe(0);
     });
 
     it('should call the onClick method when the custom add button is clicked', async () => {
@@ -627,7 +627,7 @@ describe('<SimpleFormIterator />', () => {
 
     it('should call the onClick method when the custom remove button is clicked', async () => {
         const onClick = jest.fn().mockImplementation(e => e.preventDefault());
-        const { getByText } = renderWithRedux(
+        const { getAllByText } = renderWithRedux(
             <ThemeProvider theme={theme}>
                 <SaveContextProvider value={saveContextValue}>
                     <SideEffectContextProvider value={sideEffectValue}>
@@ -653,12 +653,12 @@ describe('<SimpleFormIterator />', () => {
                 </SaveContextProvider>
             </ThemeProvider>
         );
-        fireEvent.click(getByText('Custom Remove Button'));
+        fireEvent.click(getAllByText('Custom Remove Button')[0]);
         expect(onClick).toHaveBeenCalled();
     });
 
     it('should display the custom add button', () => {
-        const { getByText } = renderWithRedux(
+        const { getAllByText } = renderWithRedux(
             <ThemeProvider theme={theme}>
                 <SaveContextProvider value={saveContextValue}>
                     <SideEffectContextProvider value={sideEffectValue}>
@@ -678,11 +678,11 @@ describe('<SimpleFormIterator />', () => {
             </ThemeProvider>
         );
 
-        expect(getByText('Custom Add Button')).not.toBeNull();
+        expect(getAllByText('Custom Add Button').length).not.toBe(0);
     });
 
     it('should display the custom remove button', () => {
-        const { getByText } = renderWithRedux(
+        const { getAllByText } = renderWithRedux(
             <ThemeProvider theme={theme}>
                 <SaveContextProvider value={saveContextValue}>
                     <SideEffectContextProvider value={sideEffectValue}>
@@ -707,6 +707,6 @@ describe('<SimpleFormIterator />', () => {
             </ThemeProvider>
         );
 
-        expect(getByText('Custom Remove Button')).not.toBeNull();
+        expect(getAllByText('Custom Remove Button').length).not.toBe(0);
     });
 });

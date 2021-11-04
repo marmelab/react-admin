@@ -9,11 +9,11 @@ import {
     useMemo,
     useRef,
 } from 'react';
-import { FormHelperText, styled } from '@mui/material';
+import { styled } from '@mui/material';
 import classNames from 'classnames';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
-import { Record, ValidationError } from 'ra-core';
+import { Record } from 'ra-core';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { CSSTransitionProps } from 'react-transition-group/CSSTransition';
 
@@ -129,11 +129,6 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                     className
                 )}
             >
-                {/* {submitFailed && typeof error !== 'object' && error && (
-                    <FormHelperText error>
-                        <ValidationError error={error as string} />
-                    </FormHelperText>
-                )} */}
                 <TransitionGroup component={null}>
                     {fields.map((member, index) => (
                         <CSSTransition
