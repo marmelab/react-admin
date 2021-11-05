@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import {
     ShowContextProvider,
@@ -55,7 +55,7 @@ import { ShowView } from './ShowView';
  * export default App;
  */
 export const Show = (
-    props: ShowProps & { children: ReactElement }
+    props: ShowProps & { children: ReactNode; resource?: string }
 ): ReactElement => {
     useCheckMinimumRequiredProps('Show', ['children'], props);
     const controllerProps = useShowController(props);
@@ -76,8 +76,7 @@ export const Show = (
 
 Show.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    aside: PropTypes.element,
-    children: PropTypes.element,
+    children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
     hasCreate: PropTypes.bool,

@@ -59,7 +59,6 @@ export interface CreateProps extends ResourceComponentProps {
 
 export interface ShowProps extends ResourceComponentPropsWithId {
     actions?: ReactElement | false;
-    aside?: ReactElement;
     classes?: any;
     className?: string;
     component?: ElementType;

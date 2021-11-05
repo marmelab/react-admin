@@ -96,8 +96,5 @@
     ],
     "dependencies": {
         "typescript": "^4.4.0"
-    },
-    "resolutions": {
-        "@babel/plugin-proposal-class-properties": "7.14.5"
     }
 }

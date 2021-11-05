@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cloneElement, ReactElement } from 'react';
+import { cloneElement, ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import classnames from 'classnames';
@@ -73,14 +73,12 @@ export const ShowView = (props: ShowViewProps) => {
 interface ShowViewProps
     extends ShowProps,
         Partial<Omit<ShowControllerProps, 'resource'>> {
-    children: ReactElement;
+    children: ReactNode;
 }
 
 ShowView.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    aside: PropTypes.element,
-    basePath: PropTypes.string,
-    children: PropTypes.element,
+    children: PropTypes.node,
     className: PropTypes.string,
     defaultTitle: PropTypes.any,
     hasEdit: PropTypes.bool,
