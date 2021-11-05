@@ -10,7 +10,7 @@ interface CustomReducers {
     [key: string]: Reducer;
 }
 
-export default (customReducers: CustomReducers, history) =>
+export default (customReducers: CustomReducers) =>
     combineReducers({
         admin,
         ...customReducers,

@@ -1,9 +1,11 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render } from '@testing-library/react';
-import { refreshView } from 'ra-core';
+import { render, screen } from '@testing-library/react';
+import { refreshView, useGetOne, DataProviderContext } from 'ra-core';
 
 import TestContext, { defaultStore } from './TestContext';
+
+import { WithDataProvider } from './TestContext.stories';
 
 const primedStore = {
     admin: {
@@ -159,6 +161,12 @@ describe('TestContext.js', () => {
                     foo: testValue,
                 },
             });
+        });
+
+        it('should work with useDataProvider actions', async () => {
+            render(<WithDataProvider />);
+            expect(screen.getByText('loading')).toBeDefined();
+            await screen.findByText('foo');
         });
     });
 });

@@ -1,12 +1,6 @@
 import { createStore, StoreEnhancer } from 'redux';
-import { History } from 'history';
 
-import {
-    AuthProvider,
-    DataProvider,
-    I18nProvider,
-    InitialState,
-} from '../types';
+import { InitialState } from '../types';
 import createAppReducer from '../reducer';
 import { CLEAR_STATE } from '../actions/clearActions';
 
@@ -15,23 +9,12 @@ interface Window {
 }
 
 interface Params {
-    dataProvider: DataProvider;
-    history: History;
-    authProvider?: AuthProvider;
     customReducers?: any;
-    i18nProvider?: I18nProvider;
     initialState?: InitialState;
-    locale?: string;
 }
 
-export default ({
-    dataProvider,
-    history,
-    customReducers = {},
-    authProvider = null,
-    initialState,
-}: Params) => {
-    const appReducer = createAppReducer(customReducers, history);
+export default ({ customReducers = {}, initialState }: Params) => {
+    const appReducer = createAppReducer(customReducers);
 
     const resettableAppReducer = (state, action) =>
         appReducer(
