@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { isValidElement, ReactElement, ReactNode } from 'react';
-import PropTypes, { any } from 'prop-types';
+import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 import { Tab as MuiTab, TabProps as MuiTabProps, Stack } from '@mui/material';
 import { ResponsiveStyleValue } from '@mui/system';
