@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cloneElement, ReactElement, ReactNode } from 'react';
+import { cloneElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import classnames from 'classnames';
@@ -16,7 +16,6 @@ import { ShowProps } from '../types';
 export const ShowView = (props: ShowViewProps) => {
     const {
         actions,
-        aside,
         children,
         className,
         component: Content = 'div',
