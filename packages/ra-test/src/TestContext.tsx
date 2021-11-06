@@ -6,11 +6,7 @@ import merge from 'lodash/merge';
 import { createMemoryHistory, History } from 'history';
 import { Router } from 'react-router-dom';
 
-import {
-    convertLegacyDataProvider,
-    createAdminStore,
-    ReduxState,
-} from 'ra-core';
+import { createAdminStore, ReduxState } from 'ra-core';
 
 export const defaultStore = {
     admin: {
@@ -36,8 +32,6 @@ export interface TestContextProps {
     customReducers?: object;
     children: ReactNode | TextContextChildrenFunction;
 }
-
-const dataProviderDefaultResponse = { data: null };
 
 /**
  * Simulate a react-admin context in unit tests

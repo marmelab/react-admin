@@ -5,15 +5,6 @@ import { Record, useResourceDefinition, useRecordContext } from 'ra-core';
 import { EditButton } from '../button';
 import TopToolbar from '../layout/TopToolbar';
 
-const sanitizeRestProps = ({
-    basePath,
-    className,
-    hasEdit,
-    hasList,
-    resource,
-    ...rest
-}: any) => rest;
-
 /**
  * Action Toolbar for the Show view
  *

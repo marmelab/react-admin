@@ -1,7 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen } from '@testing-library/react';
-import { refreshView, useGetOne, DataProviderContext } from 'ra-core';
+import { refreshView } from 'ra-core';
 
 import TestContext, { defaultStore } from './TestContext';
 
