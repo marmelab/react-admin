@@ -9,7 +9,7 @@ The Show view is the simplest view in an admin: it displays a single record. You
 
 ```jsx
 import { useParams } from 'react-router-dom';
-import { useGetOne } from 'react-admin';
+import { useGetOne, Title } from 'react-admin';
 import { Card, Stack, Typography } from '@mui/material';
 
 /**
@@ -21,18 +21,21 @@ const BookShow = () => {
     if (loading) { return <Loading />; }
     if (error) { return <Error />; }
     return (
-        <Card>
-            <Stack spacing={1}>
-                <div>
-                    <Typography variant="caption" display="block">Title</Typography>
-                    <Typography variant="body2">{data.title}</Typography>
-                </div>
-                <div>
-                    <Typography variant="caption" display="block">Publication Date</Typography>
-                    <Typography variant="body2">{new Date(data.published_at).toDateString()}</Typography>
-                </div>
-            </Stack>
-        </Card>
+        <div>
+            <Title title="Book Show"/>
+            <Card>
+                <Stack spacing={1}>
+                    <div>
+                        <Typography variant="caption" display="block">Title</Typography>
+                        <Typography variant="body2">{data.title}</Typography>
+                    </div>
+                    <div>
+                        <Typography variant="caption" display="block">Publication Date</Typography>
+                        <Typography variant="body2">{new Date(data.published_at).toDateString()}</Typography>
+                    </div>
+                </Stack>
+            </Card>
+        </div>
     );
 };
 ```
@@ -45,7 +48,7 @@ When you build Show views like the one above, you have to repeat quite a lot of 
 
 ```jsx
 import { useParams } from 'react-router-dom';
-import { useGetOne, Labeled, TextField, DateField } from 'react-admin';
+import { useGetOne, Title, Labeled, TextField, DateField } from 'react-admin';
 import { Card, Stack } from '@mui/material';
 
 const BookShow = () => {
@@ -54,16 +57,19 @@ const BookShow = () => {
     if (loading) { return <Loading />; }
     if (error) { return <Error />; }
     return (
-        <Card>
-            <Stack spacing={1}>
-                <Labeled label="Title">
-                    <TextField source="title" record={data} />
-                </Labeled>
-                <Labeled label="Publication Date">
-                    <DateField source="published_at" record={data} />
-                </Labeled>
-            </Stack>
-        </Card>
+        <div>
+            <Title title="Book Show"/>
+            <Card>
+                <Stack spacing={1}>
+                    <Labeled label="Title">
+                        <TextField source="title" record={data} />
+                    </Labeled>
+                    <Labeled label="Publication Date">
+                        <DateField source="published_at" record={data} />
+                    </Labeled>
+                </Stack>
+            </Card>
+        </div>
     );
 };
 ```
@@ -72,7 +78,7 @@ Field components require a `record` to render, but they can grab it from a `Reco
 
 ```jsx
 import { useParams } from 'react-router-dom';
-import { useGetOne, RecordContextProvider, Labeled, TextField, DateField } from 'react-admin';
+import { useGetOne, RecordContextProvider, Title, Labeled, TextField, DateField } from 'react-admin';
 import { Card, Stack } from '@mui/material';
 
 const BookShow = () => {
@@ -82,16 +88,19 @@ const BookShow = () => {
     if (error) { return <Error />; }
     return (
         <RecordContextProvider value={data}>
-            <Card>
-                <Stack spacing={1}>
-                    <Labeled label="Title">
-                        <TextField source="title" />
-                    </Labeled>
-                    <Labeled label="Publication Date">
-                        <DateField source="published_at" />
-                    </Labeled>
-                </Stack>
-            </Card>
+            <div>
+                <Title title="Book Show"/>
+                <Card>
+                    <Stack spacing={1}>
+                        <Labeled label="Title">
+                            <TextField source="title" />
+                        </Labeled>
+                        <Labeled label="Publication Date">
+                            <DateField source="published_at" />
+                        </Labeled>
+                    </Stack>
+                </Card>
+            </div>
         </RecordContextProvider>
     );
 };
@@ -101,7 +110,7 @@ Displaying a stack of fields with a label in a Card is such a common task that r
 
 ```jsx
 import { useParams } from 'react-router-dom';
-import { useGetOne, RecordContextProvider, SimpleShowLayout, TextField, DateField } from 'react-admin';
+import { useGetOne, RecordContextProvider, SimpleShowLayout, Title, TextField, DateField } from 'react-admin';
 
 const BookShow = () => {
     const { id } = useParams();
@@ -110,31 +119,62 @@ const BookShow = () => {
     if (error) { return <Error />; }
     return (
         <RecordContextProvider value={data}>
-            <SimpleShowLayout>
-                <TextField label="Title" source="title" />
-                <DateField label="Publication Date" source="published_at" />
-            </SimpleShowLayout>
+            <div>
+                <Title title="Book Show" />
+                <SimpleShowLayout>
+                    <TextField label="Title" source="title" />
+                    <DateField label="Publication Date" source="published_at" />
+                </SimpleShowLayout>
+            </div>
         </RecordContextProvider>
     );
 };
 ```
 
-The initial logic that fetches the record from the API and places it in a context is also common, and react-admin exposes the `<Show>` component to do it. So the example can be further simplified to the following:
+The initial logic that grabs the id from the location and fetches the record from the API is also common, and react-admin exposes the `useShowController` hook to do it: 
 
 ```jsx
-import { Show, SimpleShowLayout, TextField, DateField } from 'react-admin';
+import { useShowController, SimpleShowLayout, Title, TextField, DateField } from 'react-admin';
+
+const BookShow = () => {
+    const { data, loading, error } = useShowController();
+    if (loading) { return <Loading />; }
+    if (error) { return <Error />; }
+    return (
+        <RecordContextProvider value={data}>
+            <div>
+                <Title title="Book Show" />
+                <SimpleShowLayout>
+                    <TextField label="Title" source="title" />
+                    <DateField label="Publication Date" source="published_at" />
+                </SimpleShowLayout>
+            </div>
+        </RecordContextProvider>
+    );
+};
+```
+
+Notice that `useShowController` doesn't need the 'books' resource name - it relies on the `ResourceContext`, set by the `<Resource>` component, to guess it.
+
+As calling the Show controller and putting its result into a context is also common, react-admin provides the `<ShowBase>` component to do it. So the example can be further simplified to the following: 
+
+```jsx
+import { ShowBase, SimpleShowLayout, Title, TextField, DateField } from 'react-admin';
 
 const BookShow = () => (
-    <Show resource="books">
-        <SimpleShowLayout>
-            <TextField label="Title" source="title" />
-            <DateField label="Publication Date" source="published_at" />
-        </SimpleShowLayout>
-    </Show>
+    <ShowBase>
+        <div>
+            <Title title="Book Show" />
+            <SimpleShowLayout>
+                <TextField label="Title" source="title" />
+                <DateField label="Publication Date" source="published_at" />
+            </SimpleShowLayout>
+        </div>
+    </ShowBase>
 );
 ```
 
-And since the `<BookShow>` component is designed to be used within a `<Resource>`, there is no need to specify the `resource` prop in `<Show>`. The `<Resource>` component creates a `<ResourceContext>` with the resource name ('books' in the above example), and the `<Show>` component can use this context value when the `resource` prop isn't set. So we can reduce the boilerplate code even more: 
+`<ShowBase>` is a headless component: it renders only its children. But almost every show view needs a wrapping `<div>` and a title. That's why react-admin provides the `<Show>` component, which includes the `<ShowBase>` component, a title build from the resource name, and even an "Edit" button if the resource has an edit component:
 
 ```jsx
 import { Show, SimpleShowLayout, TextField, DateField } from 'react-admin';
