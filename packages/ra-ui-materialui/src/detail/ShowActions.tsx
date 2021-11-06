@@ -40,7 +40,7 @@ const sanitizeRestProps = ({
  *     );
  */
 export const ShowActions = (props: ShowActionsProps) => {
-    const { record } = useRecordContext(props);
+    const record = useRecordContext(props);
     const { hasEdit } = useResourceDefinition();
     if (!hasEdit) {
         return null;

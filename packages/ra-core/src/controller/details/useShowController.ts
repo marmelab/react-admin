@@ -11,7 +11,6 @@ export interface ShowProps {
     id?: Identifier;
     onFailure?: OnFailure;
     resource?: string;
-    [key: string]: any;
 }
 
 export interface ShowControllerProps<RecordType extends Record = Record> {
@@ -78,7 +77,9 @@ export const useShowController = <RecordType extends Record = Record>(
         onFailure:
             onFailure ??
             (() => {
-                notify('ra.notification.item_doesnt_exist', 'warning');
+                notify('ra.notification.item_doesnt_exist', {
+                    type: 'warning',
+                });
                 redirect('list', resource);
                 refresh();
             }),

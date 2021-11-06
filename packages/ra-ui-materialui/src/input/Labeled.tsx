@@ -76,7 +76,6 @@ export const Labeled = (props: LabeledProps) => {
 };
 
 Labeled.propTypes = {
-    basePath: PropTypes.string,
     children: PropTypes.element,
     className: PropTypes.string,
     fullWidth: PropTypes.bool,

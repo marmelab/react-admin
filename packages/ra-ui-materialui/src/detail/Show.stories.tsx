@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Admin, Resource } from 'react-admin';
+import { Admin } from 'react-admin';
+import { Resource, useRecordContext } from 'ra-core';
 import { createMemoryHistory } from 'history';
 import { Stack, Card } from '@mui/material';
 import { TextField } from '../field';
@@ -24,7 +25,24 @@ const dataProvider = {
 
 const history = createMemoryHistory({ initialEntries: ['/books/1/show'] });
 
-const PostShow = () => (
+const BookTitle = () => {
+    const record = useRecordContext();
+    return record ? <span>{record.title}</span> : null;
+};
+
+const PostShowBasic = () => (
+    <Show>
+        <BookTitle />
+    </Show>
+);
+
+export const Basic = () => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource name="books" show={PostShowBasic} />
+    </Admin>
+);
+
+const PostShowWithFields = () => (
     <Show>
         <Card sx={{ padding: 2, flex: 1 }}>
             <Stack spacing={2}>
@@ -46,8 +64,8 @@ const PostShow = () => (
     </Show>
 );
 
-export const Basic = () => (
+export const WithFields = () => (
     <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" show={PostShow} />
+        <Resource name="books" show={PostShowWithFields} />
     </Admin>
 );

@@ -53,10 +53,15 @@ import { ShowView } from './ShowView';
  * );
  * export default App;
  */
-export const Show = (props: ShowProps): ReactElement => (
-    <ResourceContextProvider value={props.resource}>
-        <ShowBase {...props}>
-            <ShowView {...props} />
+export const Show = ({
+    id,
+    resource,
+    onFailure,
+    ...rest
+}: ShowProps): ReactElement => (
+    <ResourceContextProvider value={resource}>
+        <ShowBase id={id} onFailure={onFailure}>
+            <ShowView {...rest} />
         </ShowBase>
     </ResourceContextProvider>
 );

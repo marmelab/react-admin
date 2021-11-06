@@ -48,7 +48,6 @@ import { Labeled } from '../input';
  *     export default App;
  */
 export const SimpleShowLayout = ({
-    basePath,
     className,
     children,
     component: Component = Root,
@@ -77,7 +76,6 @@ export const SimpleShowLayout = ({
                         <Labeled
                             record={record}
                             resource={resource}
-                            basePath={basePath}
                             label={field.props.label}
                             source={field.props.source}
                             disabled={false}
@@ -91,7 +89,6 @@ export const SimpleShowLayout = ({
                         cloneElement(field, {
                             record,
                             resource,
-                            basePath,
                         })
                     )}
                 </div>
@@ -101,7 +98,6 @@ export const SimpleShowLayout = ({
 );
 
 export interface SimpleShowLayoutProps {
-    basePath?: string;
     className?: string;
     component?: ElementType;
     children: ReactNode;
@@ -112,7 +108,6 @@ export interface SimpleShowLayoutProps {
 }
 
 SimpleShowLayout.propTypes = {
-    basePath: PropTypes.string,
     className: PropTypes.string,
     children: PropTypes.node,
     record: PropTypes.object,

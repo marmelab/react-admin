@@ -62,6 +62,8 @@ export interface ShowProps {
     children: ReactNode;
     className?: string;
     component?: ElementType;
+    id?: Identifier;
+    onFailure?: OnFailure;
     resource?: string;
     title?: string | ReactElement;
 }

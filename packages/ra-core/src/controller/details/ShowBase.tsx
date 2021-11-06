@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { useShowController } from './useShowController';
+import { ReactElement } from 'react';
+import { useShowController, ShowProps } from './useShowController';
 import { ShowContextProvider } from './ShowContextProvider';
 
 /**
@@ -11,10 +12,10 @@ import { ShowContextProvider } from './ShowContextProvider';
  * - id: The record identifier
  * - resource: The resource
  *
- * @example // Custom edit layout
+ * @example // Custom show layout
  *
- * const PostShow = props => (
- *     <ShowBase {...props}>
+ * const PostShow = () => (
+ *     <ShowBase resource="posts">
  *         <Grid container>
  *             <Grid item xs={8}>
  *                 <SimpleForm>
@@ -31,7 +32,10 @@ import { ShowContextProvider } from './ShowContextProvider';
  *     </ShowBase>
  * );
  */
-export const ShowBase = ({ children, ...props }) => (
+export const ShowBase = ({
+    children,
+    ...props
+}: ShowProps & { children: ReactElement }) => (
     <ShowContextProvider value={useShowController(props)}>
         {children}
     </ShowContextProvider>
