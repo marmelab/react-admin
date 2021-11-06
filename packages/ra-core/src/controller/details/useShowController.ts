@@ -48,7 +48,17 @@ export interface ShowControllerProps<RecordType extends Record = Record> {
  * const MyShow = () => {
  *     const controllerProps = useShowController();
  *     return <ShowView {...controllerProps} />;
- * }
+ * };
+ *
+ * @example // useShowController can also take its parameters from props
+ *
+ * import { useShowController } from 'react-admin';
+ * import ShowView from './ShowView';
+ *
+ * const MyShow = () => {
+ *     const controllerProps = useShowController({ resource: 'posts', id: 1234 });
+ *     return <ShowView {...controllerProps} />;
+ * };
  */
 export const useShowController = <RecordType extends Record = Record>(
     props: ShowProps
