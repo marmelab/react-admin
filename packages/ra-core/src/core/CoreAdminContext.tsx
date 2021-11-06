@@ -82,11 +82,8 @@ React-admin requires a valid dataProvider function to work.`);
     const [store] = useState(() =>
         !reduxIsAlreadyInitialized
             ? createAdminStore({
-                  authProvider: finalAuthProvider,
                   customReducers,
-                  dataProvider: finalDataProvider,
                   initialState,
-                  history: finalHistory,
               })
             : undefined
     );

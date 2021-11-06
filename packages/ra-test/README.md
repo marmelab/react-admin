@@ -65,7 +65,45 @@ testUtils = render(
 
 This means that reducers will work as they will within the app.
 
-### Passing your custom reducers
+### Testing With The Data Provider
+
+React-admin's dataProvider hooks like `useGetOne` and `useGetList` rely on the Redux store, and require that the resource they are called on is registered. That means that you can't call `useGetOne('books', id)` unless you register the `books` resource. In a normal admin, the `<Resource>` component takes care of it. But when testing components with the `TestContext` wrapper, you need to register the resource by passing an initial state for the Redux store.
+
+Besides, to make the dataProvider available to your component, you must wrap it inside a `DataProviderContext`:
+
+```jsx
+import { useGetOne, DataProviderContext } from 'react-admin';
+import { TestContext } from 'ra-test';
+
+test('should render a book', async () => {
+    const dataProvider = {
+        getOne: () => Promise.resolve({ data: { id: 123, title: 'The Lord of the Rings' } }),
+    };
+
+    const Book = ({ id }) => {
+        const { data, loaded } = useGetOne('books', id);
+        return loaded ? <span>{data.title}</span> : <span>loading</span>;
+    };
+
+    render(
+        <TestContext
+            // reducers must be enabled to use the dataProvider hooks, as they rely on Redux
+            enableReducers={true}
+            // the initial state contain a 'books' resource to let book queries with the data provider hooks work
+            initialState={{ admin: { resources: { books: { data: {} } } } }}
+        >
+            <DataProviderContext.Provider value={dataProvider}>
+                <Book id={1} />
+            </DataProviderContext.Provider>
+        </TestContext>
+    );
+
+    expect(screen.getByText('loading')).toBeDefined();
+    expect(await screen.findByText('The Lord of the Rings')).toBeDefined();
+});
+```
+
+### Passing Custom Reducers
 
 If your component relies on customReducers which are passed originally to the `<Admin/>` component, you can plug them in the TestContext using the `customReducers` props:
 
