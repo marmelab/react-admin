@@ -1,11 +1,5 @@
 import * as React from 'react';
-import {
-    Children,
-    isValidElement,
-    cloneElement,
-    ElementType,
-    ReactNode,
-} from 'react';
+import { Children, isValidElement, cloneElement, ReactNode } from 'react';
 import { styled } from '@mui/material/styles';
 import { Card } from '@mui/material';
 import { ResponsiveStyleValue } from '@mui/system';
@@ -50,14 +44,13 @@ import { Labeled } from '../input';
 export const SimpleShowLayout = ({
     className,
     children,
-    component: Component = Root,
     record,
     resource,
     spacing = 1,
     version,
     ...rest
 }: SimpleShowLayoutProps) => (
-    <Component
+    <StyledStack
         spacing={spacing}
         className={className}
         key={version}
@@ -94,12 +87,11 @@ export const SimpleShowLayout = ({
                 </div>
             ) : null
         )}
-    </Component>
+    </StyledStack>
 );
 
 export interface SimpleShowLayoutProps {
     className?: string;
-    component?: ElementType;
     children: ReactNode;
     record?: Record;
     resource?: string;
@@ -118,7 +110,7 @@ SimpleShowLayout.propTypes = {
 
 const PREFIX = 'RaSimpleShowLayout';
 
-const Root = styled(Card, { name: PREFIX })(({ theme }) => ({
+const StyledStack = styled(Card, { name: PREFIX })(({ theme }) => ({
     flex: 1,
     padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
 }));
