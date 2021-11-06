@@ -94,7 +94,7 @@ export interface UseRecordContextParams<
  * const BookShow = () => (
  *    <Show>
  *       <SimpleShowLayout>
- *         <WithRecord render={record => <span>{record.title}</span>} />
+ *          <WithRecord render={record => <span>{record.title}</span>} />
  *      </SimpleShowLayout>
  *   </Show>
  * );
@@ -103,7 +103,7 @@ export const WithRecord = <RecordType extends Record>({
     render,
 }: WithRecordProps<RecordType>) => {
     const record = useRecordContext<RecordType>();
-    return render(record);
+    return record ? render(record) : null;
 };
 
 export interface WithRecordProps<RecordType extends Record> {
