@@ -1,12 +1,7 @@
 import * as React from 'react';
 import { ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import {
-    ShowContextProvider,
-    ResourceContextProvider,
-    useCheckMinimumRequiredProps,
-    useShowController,
-} from 'ra-core';
+import { ShowBase, ResourceContextProvider } from 'ra-core';
 
 import { ShowProps } from '../types';
 import { ShowView } from './ShowView';
@@ -14,11 +9,14 @@ import { ShowView } from './ShowView';
 /**
  * Page component for the Show view
  *
- * The `<Show>` component renders the page title and actions,
- * fetches the record from the data provider.
- * It is not responsible for rendering the actual form -
- * that's the job of its child component (usually `<SimpleShowLayout>`),
- * to which it passes the `record` as prop.
+ * The `<Show>` component handles the headless logic of the Show page:
+ * - it calls useShowcontroller to fetch the record from the data provider,
+ * - it creates a ShowContext and a RecordContext,
+ * - it computes the default page title
+ * - it renders the page layout with the correct title and actions
+ *
+ * `<Show>` is not responsible for rendering the actual page -
+ * that's the job of its child component (usually `<SimpleShowLayout>`).
  *
  * The <Show> component accepts the following props:
  *
@@ -55,27 +53,17 @@ import { ShowView } from './ShowView';
  * );
  * export default App;
  */
-export const Show = (props: ShowProps): ReactElement => {
-    useCheckMinimumRequiredProps('Show', ['children'], props);
-    const controllerProps = useShowController(props);
-    const body = (
-        <ShowContextProvider value={controllerProps}>
+export const Show = (props: ShowProps): ReactElement => (
+    <ResourceContextProvider value={props.resource}>
+        <ShowBase {...props}>
             <ShowView {...props} />
-        </ShowContextProvider>
-    );
-    return props.resource ? (
-        // support resource override via props
-        <ResourceContextProvider value={props.resource}>
-            {body}
-        </ResourceContextProvider>
-    ) : (
-        body
-    );
-};
+        </ShowBase>
+    </ResourceContextProvider>
+);
 
 Show.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    children: PropTypes.node,
+    children: PropTypes.node.isRequired,
     className: PropTypes.string,
     component: PropTypes.elementType,
     resource: PropTypes.string,
